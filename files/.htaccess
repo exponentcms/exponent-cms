@@ -15,3 +15,7 @@ Options -ExecCGI
 <FilesMatch "\.(php|phps|php3|php4|php5|php7|pl|py|jsp|asp|htm|html|shtml|sh|cgi|txt)$">
     ForceType text/plain
 </FilesMatch>
+
+#<Files *.php?|*.phtml>
+#    deny from all
+#</Files>

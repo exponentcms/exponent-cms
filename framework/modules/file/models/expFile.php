@@ -419,7 +419,7 @@ class expFile extends expRecord {
         //if the file exists and we don't want to overwrite it, create a new one
         if (file_exists($_destFullPath) && $_force == false) {
             $_destFile = self::resolveDuplicateFilename($_destFullPath);
-            $_destFullPath = BASE . $_destDir . $_destFile;
+//            $_destFullPath = BASE . $_destDir . $_destFile;
         }
 
         //Check to see if the directory exists.  If not, create the directory structure.
@@ -431,36 +431,36 @@ class expFile extends expRecord {
         // and change the name.
         $resized = false;
         $maxwidth = intval($_max_width);
-        if (!empty($maxwidth)) {
-            $tempFile = tempnam(sys_get_temp_dir(), 'exp_upload_') . '_' . $_destFile;
-            move_uploaded_file($_FILES[$_postName]['tmp_name'], $tempFile);
-            require_once(BASE . 'framework/modules/pixidou/includes/class.upload/class.upload.php');
-            $handle = new upload($tempFile);
-            if ($handle->uploaded) {
-                $handle->file_new_name_body = $_destFile;
-                $handle->file_new_name_ext = '';
-                $handle->image_resize = true;
-                $handle->image_x = $maxwidth;
-                $handle->image_y = $maxwidth;
-                $handle->image_ratio_no_zoom_in = true;
-                $handle->jpeg_quality = THUMB_QUALITY;
-                $handle->process(BASE . $_destDir);
-                if ($handle->processed) {
-                    if ($handle->image_src_x != $handle->image_dst_x) $resized = true;
-                    $handle->clean();
-                }
-            }
-        } else {
-            $tmp = move_uploaded_file($_FILES[$_postName]['tmp_name'], $_destFullPath);
+        require_once(BASE . 'external/class.upload/class.upload.php');
+        $handle = new upload($_FILES[$_postName]);
+        $handle->file_new_name_body = pathinfo($_destFile, PATHINFO_FILENAME);
+//        $handle->file_new_name_ext = '';
+        $handle->dir_chmod = octdec(DIR_DEFAULT_MODE_STR + 0);
+        $handle->forbidden = array('application/x-shockwave-flash');
+        $handle->image_auto_rotate = false;  // don't auto-rotate jpeg images based on EXIF data
+        if (!empty($maxwidth) && $handle->uploaded) {
+            $handle->image_resize = true;
+            $handle->image_x = $maxwidth;
+            $handle->image_y = $maxwidth;
+            $handle->image_ratio_no_zoom_in = true;  //fixme class.upload >0.33 image_no_enlarging
+            $handle->jpeg_quality = THUMB_QUALITY;
+        }
+        $handle->process(BASE . $_destDir);
+        if ($handle->processed && $handle->image_src_x != $handle->image_dst_x) {
+            $resized = true;
+        }
+        $handle->clean();
+        if (DEVELOPMENT && UPLOAD_LOGGER) {
+            eLog($handle->log, gt('CLASS.UPLOAD'), BASE . 'tmp/upload.htm');
         }
 
-        if (file_exists($_destFullPath)) {
+        if (file_exists($handle->file_dst_pathname)) {
             $__oldumask = umask(0);
-            chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
+            chmod($handle->file_dst_pathname, octdec(FILE_DEFAULT_MODE_STR + 0));
             umask($__oldumask);
             // Checking
             if ($__oldumask != umask()) {
-                flash('error', gt('An error occurred while setting file permissions') . ': ' . $_destFullPath);
+                flash('error', gt('An error occurred while setting file permissions') . ': ' . $handle->file_dst_pathname);
             }
         } else {
             return 'could not move';
@@ -469,7 +469,7 @@ class expFile extends expRecord {
         // At this point, we are good to go.
 
         // Create a new expFile Object for further processing
-        $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
+        $_fileParams = array('filename' => $handle->file_dst_name, 'directory' => $_destDir);
         $_objFile = new expFile ($_fileParams);
 
         // Insert new File Record
@@ -536,7 +536,7 @@ class expFile extends expRecord {
         //if the file exists and we don't want to overwrite it, create a new one
         if (file_exists($_destFullPath) && $_force == false) {
             $_destFile = self::resolveDuplicateFilename($_destFullPath);
-            $_destFullPath = BASE . $_destDir . $_destFile;
+//            $_destFullPath = BASE . $_destDir . $_destFile;
         }
 
         //Check to see if the directory exists.  If not, create the directory structure.
@@ -548,37 +548,36 @@ class expFile extends expRecord {
         // and change the name.
         $resized = false;
         $maxwidth = intval($_max_width);
-        if (!empty($maxwidth)) {
-            $tempFile = tempnam(sys_get_temp_dir(), 'exp_upload_') . '_' . $_destFile;
-//            move_uploaded_file($_FILES[$fileName]['tmp_name'], $tempFile);
-            file_put_contents($tempFile, file_get_contents('php://input'));
-            require_once(BASE . 'framework/modules/pixidou/includes/class.upload/class.upload.php');
-            $handle = new upload($tempFile);
-            if ($handle->uploaded) {
-                $handle->file_new_name_body = $_destFile;
-                $handle->file_new_name_ext = '';
-                $handle->image_resize = true;
-                $handle->image_x = $maxwidth;
-                $handle->image_y = $maxwidth;
-                $handle->image_ratio_no_zoom_in = true;
-                $handle->jpeg_quality = THUMB_QUALITY;
-                $handle->process(BASE . $_destDir);
-                if ($handle->processed) {
-                    if ($handle->image_src_x != $handle->image_dst_x) $resized = true;
-                    $handle->clean();
-                }
-            }
-        } else {
-            file_put_contents($_destFullPath, file_get_contents('php://input', 'r'));
+        require_once(BASE . 'external/class.upload/class.upload.php');
+        $handle = new upload('php:' . $fileName);
+        $handle->file_new_name_body = pathinfo($_destFile, PATHINFO_FILENAME);
+//        $handle->file_new_name_ext = '';
+        $handle->dir_chmod = octdec(DIR_DEFAULT_MODE_STR + 0);
+        $handle->forbidden = array('application/x-shockwave-flash');
+        $handle->image_auto_rotate = false;  // don't auto-rotate jpeg images based on EXIF data
+        if (!empty($maxwidth) && $handle->uploaded) {
+            $handle->image_resize = true;
+            $handle->image_x = $maxwidth;
+            $handle->image_y = $maxwidth;
+            $handle->image_ratio_no_zoom_in = true;  //fixme class.upload >0.33 image_no_enlarging
+            $handle->jpeg_quality = THUMB_QUALITY;
+        }
+        $handle->process(BASE . $_destDir);
+        if ($handle->processed && $handle->image_src_x != $handle->image_dst_x) {
+            $resized = true;
+        }
+        $handle->clean();
+        if (DEVELOPMENT && UPLOAD_LOGGER) {
+            eLog($handle->log, gt('CLASS.UPLOAD'), BASE . 'tmp/upload.htm');
         }
 
-        if (file_exists($_destFullPath)) {
+        if (file_exists($handle->file_dst_pathname)) {
             $__oldumask = umask(0);
-            chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
+            chmod($handle->file_dst_pathname, octdec(FILE_DEFAULT_MODE_STR + 0));
             umask($__oldumask);
             // Checking
             if ($__oldumask != umask()) {
-                flash('error', gt('An error occurred while setting file permissions') . ': ' . $_destFullPath);
+                flash('error', gt('An error occurred while setting file permissions') . ': ' . $handle->file_dst_pathname);
             }
         } else {
             return 'could not move';
@@ -587,7 +586,7 @@ class expFile extends expRecord {
         // At this point, we are good to go.
 
         // Create a new expFile Object for further processing
-        $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
+        $_fileParams = array('filename' => $handle->file_dst_name, 'directory' => $_destDir);
         $_objFile = new expFile ($_fileParams);
 
         // Insert new File Record

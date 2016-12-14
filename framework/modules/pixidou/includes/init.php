@@ -28,9 +28,9 @@
 	 +------------------------------------------------------------------------+
 	 */
 
-	require_once('includes/class.upload/class.upload.php');
+    require_once('../../../exponent.php');
+    require_once(BASE . 'external/class.upload/class.upload.php');
 	require_once('includes/classes/classPixidou.php');
-	require_once('../../../exponent.php');
 
 //	define('PROCESS_DIR', './images/');
 	define('PROCESS_DIR', BASE.'tmp/pixidou/');

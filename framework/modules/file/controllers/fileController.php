@@ -609,15 +609,19 @@ class fileController extends expController {
         //extensive suitability check before doing anything with the file...
         if (isset($_SERVER['HTTP_X_FILE_NAME'])) {  //HTML5 XHR upload
             $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME'],false,false,null,$destDir,intval(QUICK_UPLOAD_WIDTH));
-            $file->poster = $user->id;
-            $file->posted = $file->last_accessed = time();
-            $file->save();
-            if (!empty($quikFolder)) {
-                $expcat = new expCat($quikFolder);
-                $params['expCat'][0] = $expcat->id;
-                $file->update($params);
+            if (is_object($file)) {
+                $file->poster = $user->id;
+                $file->posted = $file->last_accessed = time();
+                $file->save();
+                if (!empty($quikFolder)) {
+                    $expcat = new expCat($quikFolder);
+                    $params['expCat'][0] = $expcat->id;
+                    $file->update($params);
+                }
+                $ar = new expAjaxReply(200, gt('Your File was uploaded successfully'), $file->id);
+            } else {
+                $ar = new expAjaxReply(300, gt("File was not uploaded!").' - '.$file);
             }
-            $ar = new expAjaxReply(200, gt('Your File was uploaded successfully'), $file->id);
             $ar->send();
         } else {  //$_POST upload
             if (($_FILES['uploadfile'] == "none") OR (empty($_FILES['uploadfile']['name'])) ) {
