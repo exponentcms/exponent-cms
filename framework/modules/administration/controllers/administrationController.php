@@ -674,7 +674,8 @@ class administrationController extends expController {
 
 					$tar = new Archive_Tar($dest,$compression);
 
-					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
+//					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
+                    $tar->setErrorHandling(PEAR_ERROR_PRINT);
 					$return = $tar->extract(dirname($dest));
 					if (!$return) {
 						flash('error',gt('Error extracting TAR archive'));
@@ -687,7 +688,8 @@ class administrationController extends expController {
 
 					$zip = new Archive_Zip($dest);
 
-					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
+//					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
+                    $zip->setErrorHandling(PEAR_ERROR_PRINT);
 					if ($zip->extract(array('add_path'=>dirname($dest))) == 0) {
 						flash('error',gt('Error extracting ZIP archive').': '.$zip->_error_code . ' : ' . $zip->_error_string . '<br />');
 					} else {
@@ -1222,6 +1224,19 @@ class administrationController extends expController {
         }
         uasort($elf_themes,'strnatcmp');
 
+        // Available Code Editors
+        $code_editors = array(''=>gt('None'));
+        if (is_readable(BASE.'external/editors')) {
+        	$theme_dh = opendir(BASE.'external/editors');
+        	while (($editor_file = readdir($theme_dh)) !== false) {
+//        		if ($editor_file != '..' && $editor_file != '.' && $editor_file != 'ckeditor' && $editor_file != 'tinymce' && is_readable(BASE.'external/editors/'.$editor_file.'/')) {
+                if (!in_array($editor_file, array('..', '.', 'ckeditor', 'tinymce')) && is_readable(BASE.'external/editors/'.$editor_file.'/')) {
+                    $code_editors[strtolower($editor_file)] = ucwords($editor_file);
+        		}
+        	}
+        }
+        uasort($code_editors,'strnatcmp');
+
         // Available Languages
 	    $langs = expLang::langList();
 //        ksort($langs);
@@ -1317,6 +1332,7 @@ class administrationController extends expController {
             'as_themes'=>$as_themes,
             'themes'=>$themes,
             'elf_themes'=>$elf_themes,
+            'code_editors'=>$code_editors,
             'langs'=>$langs,
             'protocol'=>$protocol,
             'currency'=>$currency,

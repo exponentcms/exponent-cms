@@ -291,6 +291,7 @@
                         </div>
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[EDITOR_FAST_SAVE]" label="Always Save Inline Editing Changes w/o Prompt?"|gettext checked=$smarty.const.EDITOR_FAST_SAVE value=1}
+                    {control type="dropdown" name="sc[SITE_CODE_EDITOR]" label="Code Snippet Editor"|gettext items=$code_editors default=$smarty.const.SITE_CODE_EDITOR description='Optional syntax highlighting editor'|gettext}
                 </div>
                 <div id="tab12">
 	                <div class="info-header">
