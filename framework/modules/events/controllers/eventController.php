@@ -1318,7 +1318,6 @@ class eventController extends expController {
 
     public function get_ical_events($exticalurl, $startdate=null, $enddate=null, &$dy=0, $key=0, $multiday=false) {
         $extevents = array();
-//            require_once BASE . 'external/iCalcreator.class.php';
         require_once BASE . 'external/iCalcreator-2.22/iCalcreator.php';
         $v = new vcalendar(); // initiate new CALENDAR
         if (stripos($exticalurl, 'http') === 0) {
@@ -1347,7 +1346,13 @@ class eventController extends expController {
             $endDay = date('j', $enddate);
         }
         // get all events within period split out recurring events as single events per each day
-        $eventArray = $v->selectComponents($startYear, $startMonth, $startDay, $endYear, $endMonth, $endDay, 'vevent');
+        try {
+            $eventArray = $v->selectComponents($startYear, $startMonth, $startDay, $endYear, $endMonth, $endDay, 'vevent');
+        }
+        catch( Exception $e ) {
+            return array();
+        }
+
         // Set the timezone to GMT
         @date_default_timezone_set('GMT');
         $tzarray = getTimezonesAsDateArrays($v);
