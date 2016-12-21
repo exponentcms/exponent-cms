@@ -40,7 +40,7 @@
 		            <li role="presentation"><a href="#tab8" role="tab" data-toggle="tab"><em>{"Maintenance"|gettext}</em></a></li>
 		            <li role="presentation"><a href="#tab9" role="tab" data-toggle="tab"><em>{"Security"|gettext}</em></a></li>
 					<li role="presentation"><a href="#tab10" role="tab" data-toggle="tab"><em>{"Help Links"|gettext}</em></a></li>
-					<li role="presentation"><a href="#tab11" role="tab" data-toggle="tab"><em>{"WYSIWYG Editor"|gettext}</em></a></li>
+					<li role="presentation"><a href="#tab11" role="tab" data-toggle="tab"><em>{"Content Editors"|gettext}</em></a></li>
 		            <li role="presentation"><a href="#tab12" role="tab" data-toggle="tab"><em>{"Error Messages"|gettext}</em></a></li>
 		            <li role="presentation"><a href="#tab13" role="tab" data-toggle="tab"><em>{"PDF Generation"|gettext}</em></a></li>
 					<li role="presentation"><a href="#tab14" role="tab" data-toggle="tab"><em>{"Minify"|gettext}</em></a></li>
@@ -266,9 +266,9 @@
                 <div id="tab11" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help with"|gettext|cat:" "|cat:("WYSIWYG Editor Settings"|gettext) module="wysiwyg-editor-settings"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("Content Editor Settings"|gettext) module="wysiwyg-editor-settings"}
                         </div>
-		                <h2>{"WYSIWYG Editor Settings"|gettext}</h2>
+		                <h2>{"Content Editor Settings"|gettext}</h2>
                     </div>
                     {$paramc = ["editor" => "ckeditor"]}
                     {$paramt = ["editor" => "tinymce"]}
@@ -282,10 +282,13 @@
                             <div id="tinymce-div" class="alt-item" style="display:none;">
                                 {showmodule controller=expHTMLEditor action=manage params=$paramt}
                             </div>
+                            {control type="checkbox" postfalse=1 name="sc[EDITOR_FAST_SAVE]" label="Always Save Inline Editing Changes w/o Prompt?"|gettext checked=$smarty.const.EDITOR_FAST_SAVE value=1}
                         </div>
                     </div>
-                    {control type="checkbox" postfalse=1 name="sc[EDITOR_FAST_SAVE]" label="Always Save Inline Editing Changes w/o Prompt?"|gettext checked=$smarty.const.EDITOR_FAST_SAVE value=1}
-                    {control type="dropdown" name="sc[SITE_CODE_EDITOR]" label="Code Snippet Editor"|gettext items=$code_editors default=$smarty.const.SITE_CODE_EDITOR description='Optional syntax highlighting editor'|gettext}
+                    {group label='Code Snippet Editor'}
+                        {control type="dropdown" name="sc[SITE_CODE_EDITOR]" label="Syntax Highlighting Editor"|gettext items="Ace Editor,CodeMirror"|gettxtlist values="ace,codemirror" includeblank="None"|gettext default=$smarty.const.SITE_CODE_EDITOR description='Optional syntax highlighting editor'|gettext}
+                        {control type="dropdown" name="sc[SITE_CODE_EDITOR_THEME]" label="Syntax Highlighting Editor Theme"|gettext items="Ambiance,Cobalt,Eclipse,Monokai,Twilight"|gettxtlist values="ambiance,cobalt,eclipse,monokai,twilight" default=$smarty.const.SITE_CODE_EDITOR_THEME description='Optional syntax highlighting editor theme'|gettext}
+                    {/group}
                 </div>
                 <div id="tab12" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">

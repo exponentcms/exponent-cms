@@ -1224,19 +1224,6 @@ class administrationController extends expController {
         }
         uasort($elf_themes,'strnatcmp');
 
-        // Available Code Editors
-        $code_editors = array(''=>gt('None'));
-        if (is_readable(BASE.'external/editors')) {
-        	$theme_dh = opendir(BASE.'external/editors');
-        	while (($editor_file = readdir($theme_dh)) !== false) {
-//        		if ($editor_file != '..' && $editor_file != '.' && $editor_file != 'ckeditor' && $editor_file != 'tinymce' && is_readable(BASE.'external/editors/'.$editor_file.'/')) {
-                if (!in_array($editor_file, array('..', '.', 'ckeditor', 'tinymce')) && is_readable(BASE.'external/editors/'.$editor_file.'/')) {
-                    $code_editors[strtolower($editor_file)] = ucwords($editor_file);
-        		}
-        	}
-        }
-        uasort($code_editors,'strnatcmp');
-
         // Available Languages
 	    $langs = expLang::langList();
 //        ksort($langs);
@@ -1332,7 +1319,6 @@ class administrationController extends expController {
             'as_themes'=>$as_themes,
             'themes'=>$themes,
             'elf_themes'=>$elf_themes,
-            'code_editors'=>$code_editors,
             'langs'=>$langs,
             'protocol'=>$protocol,
             'currency'=>$currency,

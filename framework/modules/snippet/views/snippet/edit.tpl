@@ -36,7 +36,7 @@
     <script src="{/literal}{$cdn}{literal}ace.js" type="text/javascript" charset="utf-8"></script>
     <script>
         var editor = ace.edit("body");
-        editor.setTheme("ace/theme/twilight");
+        editor.setTheme("ace/theme/{/literal}{$smarty.const.SITE_CODE_EDITOR_THEME}{literal}");
         editor.getSession().setMode("ace/mode/javascript");
 //        editor.getSession().setUseWrapMode(true);
         editor.setOptions({
@@ -61,8 +61,9 @@
     <script src="{/literal}{$cdn}{literal}codemirror.js"></script>
     <link rel="stylesheet" href="{/literal}{$cdn}{literal}codemirror.css">
     <link rel="stylesheet" href="{/literal}{$cdn}{literal}addon/fold/foldgutter.css">
-    <link rel="stylesheet" href="{/literal}{$cdn}{literal}theme/twilight.css">
+    <link rel="stylesheet" href="{/literal}{$cdn}{literal}theme/{/literal}{$smarty.const.SITE_CODE_EDITOR_THEME}{literal}.css">
     <script src="{/literal}{$cdn}{literal}addon/selection/active-line.js"></script>
+    <script src="{/literal}{$cdn}{literal}addon/edit/matchbrackets.js"></script>
     <script src="{/literal}{$cdn}{literal}addon/fold/foldcode.js"></script>
     <script src="{/literal}{$cdn}{literal}addon/fold/foldgutter.js"></script>
     <script src="{/literal}{$cdn}{literal}addon/fold/brace-fold.js"></script>
@@ -71,7 +72,7 @@
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("body"), {
             lineNumbers: true,
-            theme: "twilight",
+            theme: "{/literal}{$smarty.const.SITE_CODE_EDITOR_THEME}{literal}",
             mode: "javascript",
 //            lineWrapping: true,
             styleActiveLine: true,

@@ -29,6 +29,7 @@ if (!defined('SITE_DESCRIPTION')) define('SITE_DESCRIPTION','');
 if (!defined('SITE_WYSIWYG_EDITOR')) define('SITE_WYSIWYG_EDITOR','ckeditor');
 if (!defined('EDITOR_FAST_SAVE')) define('EDITOR_FAST_SAVE','0');
 if (!defined('SITE_CODE_EDITOR')) define('SITE_CODE_EDITOR','');
+if (!defined('SITE_CODE_EDITOR_THEME')) define('SITE_CODE_EDITOR_THEME','twilight');
 
 if (!defined('LESS_COMPILER')) define('LESS_COMPILER','less.php');
 if (!defined('LESS_COMPILER_MAP')) define('LESS_COMPILER_MAP','0');
