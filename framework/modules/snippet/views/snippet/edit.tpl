@@ -31,11 +31,14 @@
 
 {if $smarty.const.SITE_CODE_EDITOR == 'ace'}
 {literal}
-    <script src="{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    {/literal}{$cdn = $smarty.const.PATH_RELATIVE|cat:'external/editors/ace/src-noconflict/'}{literal}
+    {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/'}{literal}
+    <script src="{/literal}{$cdn}{literal}ace.js" type="text/javascript" charset="utf-8"></script>
     <script>
         var editor = ace.edit("body");
         editor.setTheme("ace/theme/twilight");
         editor.getSession().setMode("ace/mode/javascript");
+//        editor.getSession().setUseWrapMode(true);
         editor.setOptions({
             maxLines: 20,
             minLines: 20,
@@ -53,21 +56,25 @@
     }
 {/css}
 {literal}
-    <script src="{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/CodeMirror/lib/codemirror.js"></script>
-    <link rel="stylesheet" href="{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/CodeMirror/lib/codemirror.css">
-    <link rel="stylesheet" href="{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/CodeMirror/addon/fold/foldgutter.css">
-    <link rel="stylesheet" href="{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/CodeMirror//theme/twilight.css">
-    <script src="{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/CodeMirror/addon/fold/foldcode.js"></script>
-    <script src="{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/CodeMirror/addon/fold/foldgutter.js"></script>
-    <script src="{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/CodeMirror/addon/fold/brace-fold.js"></script>
-    <script src="{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/CodeMirror/addon/fold/comment-fold.js"></script>
-    <script src="{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/CodeMirror/mode/javascript/javascript.js"></script>
+    {/literal}{$cdn = $smarty.const.PATH_RELATIVE|cat:'external/editors/CodeMirror/'}{literal}
+    {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.0/'}{literal}
+    <script src="{/literal}{$cdn}{literal}codemirror.js"></script>
+    <link rel="stylesheet" href="{/literal}{$cdn}{literal}codemirror.css">
+    <link rel="stylesheet" href="{/literal}{$cdn}{literal}addon/fold/foldgutter.css">
+    <link rel="stylesheet" href="{/literal}{$cdn}{literal}theme/twilight.css">
+    <script src="{/literal}{$cdn}{literal}addon/selection/active-line.js"></script>
+    <script src="{/literal}{$cdn}{literal}addon/fold/foldcode.js"></script>
+    <script src="{/literal}{$cdn}{literal}addon/fold/foldgutter.js"></script>
+    <script src="{/literal}{$cdn}{literal}addon/fold/brace-fold.js"></script>
+    <script src="{/literal}{$cdn}{literal}addon/fold/comment-fold.js"></script>
+    <script src="{/literal}{$cdn}{literal}mode/javascript/javascript.js"></script>
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("body"), {
             lineNumbers: true,
             theme: "twilight",
             mode: "javascript",
 //            lineWrapping: true,
+            styleActiveLine: true,
             foldGutter: true,
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         });
