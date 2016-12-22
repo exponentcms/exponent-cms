@@ -239,7 +239,7 @@ class form extends baseform {
             expCSS::pushToHead(array(
                 "corecss"=>"forms-bootstrap"
             ));
-            $btn_class = 'btn btn-default';
+            $btn_class = 'btn  btn-primary';
             if (BTN_SIZE == 'large') {
                 $btn_size = '';  // actually default size, NOT true bootstrap large
             } elseif (BTN_SIZE == 'small') {
@@ -248,11 +248,13 @@ class form extends baseform {
                 $btn_size = 'btn-small';
             }
             $btn_class .= ' ' . $btn_size;
+            $back = '<i class="icon icon-step-backward"></i> ' . gt('Back');
+            $next = gt('Next') . ' <i class="icon icon-step-forward"></i>';
         } elseif (bs3()) {
             expCSS::pushToHead(array(
                 "corecss"=>"forms-bootstrap3"
             ));
-            $btn_class = 'btn btn-default';
+            $btn_class = 'btn btn-default btn-primary';
             if (BTN_SIZE == 'large') {
                 $btn_size = 'btn-lg';
             } elseif (BTN_SIZE == 'small') {
@@ -263,11 +265,15 @@ class form extends baseform {
                 $btn_size = '';
             }
             $btn_class .= ' ' . $btn_size;
+            $back = '<i class="fa fa-step-backward"></i> ' . gt('Back');
+            $next = gt('Next') . ' <i class="fa fa-step-forward"></i>';
         } else {
             expCSS::pushToHead(array(
                 "corecss"=>"forms"
             ));
             $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
+            $back = '&lt; ' . gt('Back');
+            $next = gt('Next') . ' &gt;';
         };
 		if (expJavascript::inAjaxAction()) {
 			$ws_load = "webshim.setOptions({loadStyles:false,canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
@@ -329,6 +335,8 @@ class form extends baseform {
                 //    description: false,
                 //    legend: false,
                     btnClass: '" . $btn_class . "',
+                    backLabel: '" . $back . "',
+                    nextLabel: '" . $next . "',
                     titleClick: true,";
             if (bs3()) {
                 $content .= "
