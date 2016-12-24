@@ -25,7 +25,7 @@
 class AdminerCKeditor {
 	/** @access protected */
 	var $scripts, $options;
-	
+
 	/**
 	* @param array
 	* @param string in format "skin: 'custom', preInit: function () { }"
@@ -34,13 +34,13 @@ class AdminerCKeditor {
 		$this->scripts = $scripts;
 		$this->options = $options;
 	}
-	
+
 	function head() {
 		foreach ($this->scripts as $script) {
 			echo "<script type='text/javascript' src='" . h($script) . "'></script>\n";
 		}
 	}
-	
+
 	function selectVal(&$val, $link, $field) {
 		// copied from tinymce.php
         if (preg_match("~body~", $field["field"]) && $val != '&nbsp;') {
@@ -61,7 +61,7 @@ class AdminerCKeditor {
 			}
 		}
 	}
-	
+
 	function editInput($table, $field, $attrs, $value) {
 		static $lang = "";
 		if (!$lang && preg_match("~text~", $field["type"]) && preg_match("~body~", $field["field"])) {
@@ -89,11 +89,11 @@ CKEDITOR.replace('fields-" . js_escape($field["field"]) . "',{
 		filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php?update=ck',
 		filebrowserLinkWindowWidth : 320,
 		filebrowserLinkWindowHeight : 600,
-		extraPlugins : 'autosave,tableresize,image2,uploadimage,quicktable,showborders',
+		extraPlugins : 'autosave,tableresize,image2,uploadimage,uploadfile,quicktable,showborders',
 		removePlugins: 'image,forms,flash',
     });
 </script>";
 		}
 	}
-	
+
 }

@@ -25,6 +25,7 @@ if (!defined('MAINTENANCE_RETURN_TIME')) define('MAINTENANCE_RETURN_TIME','0');
 if (!defined('DEVELOPMENT')) define('DEVELOPMENT','0');
 if (!defined('LOGGER')) define('LOGGER','0');
 if (!defined('DEBUG_HISTORY')) define('DEBUG_HISTORY','0');
+if (!defined('UPLOAD_LOGGER')) define('UPLOAD_LOGGER','0');
 if (!defined('AJAX_ERROR_REPORTING')) define('AJAX_ERROR_REPORTING','0');
 
 ?>
