@@ -31,7 +31,6 @@
 
 {if $smarty.const.SITE_CODE_EDITOR == 'ace'}
 {literal}
-    {/literal}{$cdn = $smarty.const.PATH_RELATIVE|cat:'external/editors/ace/src-noconflict/'}{literal}
     {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/'}{literal}
     <script src="{/literal}{$cdn}{literal}ace.js" type="text/javascript" charset="utf-8"></script>
     <script>
@@ -56,7 +55,6 @@
     }
 {/css}
 {literal}
-    {/literal}{$cdn = $smarty.const.PATH_RELATIVE|cat:'external/editors/CodeMirror/'}{literal}
     {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.0/'}{literal}
     <script src="{/literal}{$cdn}{literal}codemirror.js"></script>
     <link rel="stylesheet" href="{/literal}{$cdn}{literal}codemirror.css">

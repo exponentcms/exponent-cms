@@ -217,11 +217,12 @@
                                 // `mimes` is not set for support everything kind of text file
                                 load : function(textarea) {
                                     if (typeof ace !== 'object') {
-                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ace.js'));
-                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ext-modelist.js'));
-                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ext-settings_menu.js'));
-                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ext-language_tools.js'));
-                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ext-searchbox.js'));
+                                        {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/'}{literal}
+                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ace.js'));
+                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ext-modelist.js'));
+                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ext-settings_menu.js'));
+                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ext-language_tools.js'));
+                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ext-searchbox.js'));
                                     }
                                     var self = this, editor, editorBase, mode,
                                     ta = $(textarea),
@@ -311,7 +312,7 @@
                                     ace.require('ace/ext/settings_menu').init(editor);
                                     editor.$blockScrolling = Infinity;
                                     editor.setOptions({
-                                        theme: 'ace/theme/monokai',
+                                        theme: 'ace/theme/twilight',
                                         mode: 'ace/mode/' + mode,
                                         wrap: true,
                                         enableBasicAutocompletion: true,
