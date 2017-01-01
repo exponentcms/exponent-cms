@@ -247,7 +247,7 @@ class expString {
     public static function escape($value) {
         global $db;
 
-        if ($db->havedb) {
+        if (!empty($db->havedb)) {
             return $db->escapeString($value);
         }
 

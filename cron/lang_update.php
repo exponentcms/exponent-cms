@@ -23,6 +23,7 @@
 
 output("Updating the Exponent Language System!\n");
 
+$trans_only = false;
 for ($ac=1; $ac < $_SERVER['argc']; $ac++) {
 	if ($_SERVER['argv'][$ac] == '-t'){
         $trans_only = true;  // only do translation, NO phrase extraction
@@ -79,7 +80,7 @@ output("Now Translating ".count($default_lang)." Unique Phrases!\n");
 //exit();
 
 foreach ($lang_list as $key=>$value) {
-    if ($key!="English - US") {
+    if (!empty($key) && $key!="English - US") {
         output("Now attempting to translate new ".$key." phrases\n");
         expSettings::change('LANGUAGE', $key);
         exec ('php ./lang_translate.php', $output);
