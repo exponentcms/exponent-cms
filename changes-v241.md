@@ -14,6 +14,7 @@
 - elFinder to v2.1.19
 - easypost library to v3.2.1
 - swiftmailer library to v5.4.5
+- bootstrap-datetimepicker to v4.17.44
 
 
 #### v240patch5 adds these features to v240 previous releases:

@@ -62,7 +62,7 @@ OwlCarousel2,2.2.0,github.com/smashingboxes/OwlCarousel2,2.2.0,
 colorbox,1.6.4,www.jacklmoore.com/colorbox,1.6.4,using style #5 renamed to jquery.colorbox.css
 Searcher,0.3.0,github.com/lloiser/jquery-searcher/,0.3.0,
 DateTimePicker,2.5.4exp,xdsoft.net/jqplugins/datetimepicker/,2.5.4,we add .js auto-close on inline date select and extra 'reset' work & remove .css z-index issue
-Bootstrap DateTimePicker,4.17.37,github.com/Eonasdan/bootstrap-datetimepicker,4.17.43,patch for 'today' in side-by-side view
+Bootstrap DateTimePicker,4.17.44,github.com/Eonasdan/bootstrap-datetimepicker,4.17.44,patch for 'today' in side-by-side view
 moment.js,2.17.1,github.com/moment/moment,2.17.1,needed for Bootstrap DateTimePicker
 strength-meter,1.1.3,github.com/kartik-v/strength-meter,1.1.3,
 Sortable,1.4.2exp,github.com/RubaXa/Sortable,1.4.2,patched with dragout fix
