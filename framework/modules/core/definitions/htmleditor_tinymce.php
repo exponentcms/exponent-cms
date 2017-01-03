@@ -21,51 +21,51 @@
  * @package    Core
  */
 return array(
-    'id'         => array(
+    'id' => array(
         DB_FIELD_TYPE => DB_DEF_ID,
-        DB_PRIMARY    => true,
-        DB_INCREMENT  => true
+        DB_PRIMARY => true,
+        DB_INCREMENT => true
     ),
-    'name'       => array(
+    'name' => array(
         DB_FIELD_TYPE => DB_DEF_STRING,
-        DB_FIELD_LEN  => 100
+        DB_FIELD_LEN => 100
     ),
-    'active'     => array(
+    'active' => array(
         DB_FIELD_TYPE => DB_DEF_BOOLEAN
     ),
-    'skin'       => array(
+    'skin' => array(
         DB_FIELD_TYPE => DB_DEF_STRING,
-        DB_FIELD_LEN  => 100
+        DB_FIELD_LEN => 100
     ),
-    'data'       => array(
+    'data' => array(
         DB_FIELD_TYPE => DB_DEF_STRING,
-        DB_FIELD_LEN  => 10000
+        DB_FIELD_LEN => 10000
     ),
-    'plugins'    => array(
+    'plugins' => array(
         DB_FIELD_TYPE => DB_DEF_STRING,
-        DB_FIELD_LEN  => 255
+        DB_FIELD_LEN => 10000
     ),
-    'scayt_on'   => array(
+    'scayt_on' => array(
         DB_FIELD_TYPE => DB_DEF_BOOLEAN
     ),
     'paste_word' => array(
         DB_FIELD_TYPE => DB_DEF_BOOLEAN
     ),
-    'stylesset'  => array(
+    'stylesset' => array(
         DB_FIELD_TYPE => DB_DEF_STRING,
-        DB_FIELD_LEN  => 10000
+        DB_FIELD_LEN => 10000
     ),
     'formattags' => array(
         DB_FIELD_TYPE => DB_DEF_STRING,
-        DB_FIELD_LEN  => 10000
+        DB_FIELD_LEN => 10000
     ),
-    'fontnames'  => array(
+    'fontnames' => array(
         DB_FIELD_TYPE => DB_DEF_STRING,
-        DB_FIELD_LEN  => 10000
+        DB_FIELD_LEN => 10000
     ),
-    'additionalconfig'=>array(
-   		DB_FIELD_TYPE=>DB_DEF_STRING,
-   		DB_FIELD_LEN=>10000
+    'additionalconfig' => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 10000
     ),
 );
 

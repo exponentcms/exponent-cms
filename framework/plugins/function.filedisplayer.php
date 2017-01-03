@@ -35,31 +35,31 @@
  */
 function smarty_function_filedisplayer($params,&$smarty) {
     $config = $smarty->getTemplateVars('config');
-    
+
     // make sure we have a view, and files..otherwise return nada.
     if (empty($params['view']) || empty($params['files'])) return "";
-    
+
     // get the view, pass params and render & return it.
     $view = isset($params['view']) ? $params['view'] : 'Downloadable Files';
 //	$title = isset($params['title']) ? $params['title'] : '';
 
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
     $config['uniqueid'] = str_replace($badvals, "", $smarty->getTemplateVars('__loc')->src).$params['record']->id;
-    // if we only want primary image on listing page and it's a listing set array to first item only
-//    if ($config['pio'] && $params['is_listing']) {
-//        $tmp = reset($params['files']);
-//        unset($params['files']);
-//        $params['files'][] = $tmp;
-//    };
-    
+    // if we only want primary image (pio) on listing page and it's a listing set array to first item only
+    if ($config['pio'] && $params['is_listing']) {
+        $tmp = reset($params['files']);
+        unset($params['files']);
+        $params['files'][] = $tmp;
+    };
+
     $float = ($config['ffloat']=="Above" || $config['ffloat']=="Below") ? "" : "float:".strtolower($config['ffloat']).";";
     $width = !empty($config['fwidth']) ? $config['fwidth'] : "200";
-    
+
     switch ($config['ffloat']) {
         case 'Left':
             $margin = "margin-right:".$config['fmargin']."px;";
             break;
-        
+
         case 'Right':
             $margin = "margin-left:".$config['fmargin']."px;";
             break;
@@ -68,7 +68,7 @@ function smarty_function_filedisplayer($params,&$smarty) {
             $margin = "";
             break;
     }
-    
+
     $html = '<div class="display-files" style="'.$float.'width:'.$width.'px;'.$margin.'">';
     $template = expTemplate::get_common_template($view, $smarty->getTemplateVars('__loc'), 'file');
 	$template->assign('files', $params['files']);

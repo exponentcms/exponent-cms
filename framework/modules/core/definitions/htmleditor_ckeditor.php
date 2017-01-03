@@ -21,40 +21,40 @@
  * @package Core
  */
 return array(
-	'id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID,
-		DB_PRIMARY=>true,
-		DB_INCREMENT=>true),
-	'name'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-    'active'=>array(
-   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-	'skin'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'data'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>10000),
-	'plugins'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>255),
-	'scayt_on'=>array(
-		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-	'paste_word'=>array(
-		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-    'stylesset'=>array(
-   		DB_FIELD_TYPE=>DB_DEF_STRING,
-   		DB_FIELD_LEN=>10000),
-    'formattags'=>array(
-   		DB_FIELD_TYPE=>DB_DEF_STRING,
-   		DB_FIELD_LEN=>10000),
-    'fontnames'=>array(
-   		DB_FIELD_TYPE=>DB_DEF_STRING,
-   		DB_FIELD_LEN=>10000),
-	'additionalconfig'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>10000),
+    'id' => array(
+        DB_FIELD_TYPE => DB_DEF_ID,
+        DB_PRIMARY => true,
+        DB_INCREMENT => true),
+    'name' => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 100),
+    'active' => array(
+        DB_FIELD_TYPE => DB_DEF_BOOLEAN),
+    'skin' => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 100),
+    'data' => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 10000),
+    'plugins' => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 10000),
+    'scayt_on' => array(
+        DB_FIELD_TYPE => DB_DEF_BOOLEAN),
+    'paste_word' => array(
+        DB_FIELD_TYPE => DB_DEF_BOOLEAN),
+    'stylesset' => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 10000),
+    'formattags' => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 10000),
+    'fontnames' => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 10000),
+    'additionalconfig' => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 10000),
 );
 
 ?>
