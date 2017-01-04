@@ -728,7 +728,7 @@ class formsController extends expController {
 //                            $finfo = finfo_open(FILEINFO_MIME_TYPE);
 //                            $ftype = finfo_file($finfo, $relpath . $attachment);
 //                            finfo_close($finfo);
-                                    $mail->attach_file_on_disk(BASE . $attachment, expFile::getMimeType($attachment));
+                                    $mail->attach_file_on_disk(BASE . $attachment, expFile::getMimeType(BASE . $attachment));
                                 }
                             }
                         }
