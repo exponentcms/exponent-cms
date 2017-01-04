@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="add-to-cart" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/addToCart.css"}
 
 {/css}
@@ -20,7 +20,7 @@
 {if !empty($params.error)}
     {message class=error text=$params.error|gettext}
 {/if}
-<div class="module cart add-to-cart"> 
+<div class="module cart add-to-cart">
     <h1>{$product->title}</h1>
     {if $product->expFile.mainimage[0]->id}
         {img file_id=$product->expFile.mainimage[0]->id w=150 class="prod-img"}

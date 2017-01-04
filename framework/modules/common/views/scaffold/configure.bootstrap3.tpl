@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -33,7 +33,7 @@
                         </a>
                     </li>
                 {/foreach}
-            </ul>            
+            </ul>
             <div class="tab-content">
                 {foreach from=$views item=body name=body}
                     <div id="tab{$smarty.foreach.body.iteration}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.body.first} in active{/if}">

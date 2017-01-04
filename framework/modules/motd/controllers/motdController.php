@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -42,7 +42,7 @@ class motdController extends expController {
     static function displayname() { return gt("Message of the Day"); }
     static function description() { return gt("Display a message for a given day of the year."); }
     static function isSearchable() { return true; }
-    
+
     function show() {
 //        global $db;
         expHistory::set('viewable', $this->params);
@@ -56,17 +56,17 @@ class motdController extends expController {
                 $message = $this->motd->find('first', null, 'RAND()');
             }
         }
-        
+
         assign_to_template(array(
             'message'=>$message
         ));
     }
-    
+
     function showall() {
         expHistory::set('viewable', $this->params);
         $page = new expPaginator(array(
                     'model'=>'motd',
-                    'where'=>$this->aggregateWhereClause(), 
+                    'where'=>$this->aggregateWhereClause(),
                     'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
                     'order'=>'month,day',
                     'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
@@ -78,12 +78,12 @@ class motdController extends expController {
                         gt('Message')=>'body'
                     ),
                 ));
-        
+
         assign_to_template(array(
             'page'=>$page
         ));
     }
-    
+
     function update() {
         $timestamp = mktime(0, 0, 0, $this->params['month'], 1);
         $endday = expDateTime::endOfMonthDay($timestamp);
@@ -92,7 +92,7 @@ class motdController extends expController {
         }
         parent::update();
     }
-    
+
 //    function index() {
 //        redirect_to(array('controller'=>'motd', 'action'=>'show'));
 ////        $this->show();

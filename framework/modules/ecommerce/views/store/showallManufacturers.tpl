@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -35,7 +35,7 @@
 		{foreach from=$manufacturers item=manufacturer}
 			<li><a href="{link action=showallByManufacturer id=$manufacturer->id}">{$manufacturer->title}</a></li>
 		{/foreach}
-	</ul>	
+	</ul>
 	{permissions}
         {if $permissions.create || $permissions.edit}
             <div id="prod-admin module-actions">

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,7 +22,7 @@
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{"General"|gettext}</em></a></li>
                 <li><a href="#tab2"><em>{"SEO"|gettext}</em></a></li>
-            </ul>            
+            </ul>
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
                     <h2>{'Photo Item'|gettext}</h2>
@@ -54,7 +54,7 @@
 	    {*<div class="loadingdiv">{"Loading Photo Item"|gettext}</div>*}
         {loading title="Loading Photo Item"|gettext}
         {control type=buttongroup submit="Save Photo"|gettext cancel="Cancel"|gettext}
-    {/form}   
+    {/form}
 </div>
 
 {script unique="editform" yui3mods="exptabs"}

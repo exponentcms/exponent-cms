@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -52,7 +52,7 @@
             {/permissions}
         {/if}
 	<div id="catnav" class="catnav">
-		<ul>	
+		<ul>
 			{foreach from=$categories item=category}
     			{if $category->is_active==1 || $user->is_acting_admin}
                     <li style="margin-left: {$category->depth * 10}px" class="{if $curcat->id==$category->id}current{/if}{if $category->is_active!=1} inactive{/if}">

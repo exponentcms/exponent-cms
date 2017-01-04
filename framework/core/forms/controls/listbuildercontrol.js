@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +18,7 @@ var newList = new Array();
 function addSelectedItem(name, process) {
 	var key;
 	var srccontrol = document.getElementById("source_"+name);
-	
+
 	//if (!newList[name]) {
 	if (srccontrol.type == 'select-one') {
 		if (process == 'copy') {
@@ -50,7 +50,7 @@ function removeSelectedItem(name, process) {
 	var ptChoices = document.getElementById("dest_" + name);
 	if (ptChoices.selectedIndex >= 0) {
 		var srccontrol = document.getElementById("source_"+name);
-		if (srccontrol.type == 'select-one') {		
+		if (srccontrol.type == 'select-one') {
 		//if (!newList[name]) {
 			if (process == 'copy') {
 				key = moveItem(name,"dest_","source_", "copyonly");
@@ -79,17 +79,17 @@ function moveItem(name,from,to, process) {
 	var g_dst = document.getElementById(to+name);
 	var i=0;
 
-	
+
 	if (g_src.selectedIndex < 0) return;
-	
+
 	var key = g_src.options[g_src.selectedIndex].value;
 	var value = g_src.options[g_src.selectedIndex].text;
-	
+
 	if(process == "copyonly" && from == "dest_") {
 		g_src.options[g_src.selectedIndex] = null;
 		return key;
 	}
-	
+
 	for (i = 0;i < g_dst.length; i++) {
 		// alert(g_dst.options[i].value);
 		// alert(value);
@@ -97,9 +97,9 @@ function moveItem(name,from,to, process) {
 			return;
 		}
 	}
-	
+
 	g_dst.options[g_dst.options.length] = new Option(value,key,false,true);
-	
+
 	if (process != "copyonly") {
 		g_src.options[g_src.selectedIndex] = null;
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -53,7 +53,7 @@ var FlashDetect = new function(){
     ];
     /**
      * Extract the ActiveX version of the plugin.
-     * 
+     *
      * @param {Object} The flash ActiveX object.
      * @type String
      */
@@ -66,7 +66,7 @@ var FlashDetect = new function(){
     };
     /**
      * Try and retrieve an ActiveX object having a specified name.
-     * 
+     *
      * @param {String} name The ActiveX object name lookup.
      * @return One of ActiveX object or a simple object having an attribute of activeXError with a value of true.
      * @type Object
@@ -82,8 +82,8 @@ var FlashDetect = new function(){
     };
     /**
      * Parse an ActiveX $version string into an object.
-     * 
-     * @param {String} str The ActiveX Object GetVariable($version) return value. 
+     *
+     * @param {String} str The ActiveX Object GetVariable($version) return value.
      * @return An object having raw, major, minor, revision and revisionStr attributes.
      * @type Object
      */
@@ -99,7 +99,7 @@ var FlashDetect = new function(){
     };
     /**
      * Parse a standard enabledPlugin.description into an object.
-     * 
+     *
      * @param {String} str The enabledPlugin.description value.
      * @return An object having raw, major, minor, revision and revisionStr attributes.
      * @type Object
@@ -111,14 +111,14 @@ var FlashDetect = new function(){
         return {
             "raw":str,
             "major":parseInt(majorMinor[0], 10),
-            "minor":parseInt(majorMinor[1], 10), 
+            "minor":parseInt(majorMinor[1], 10),
             "revisionStr":revisionStr,
             "revision":parseRevisionStrToInt(revisionStr)
         };
     };
     /**
      * Parse the plugin revision string into an integer.
-     * 
+     *
      * @param {String} The revision in string format.
      * @type Number
      */
@@ -127,7 +127,7 @@ var FlashDetect = new function(){
     };
     /**
      * Is the major version greater than or equal to a specified version.
-     * 
+     *
      * @param {Number} version The minimum required major version.
      * @type Boolean
      */
@@ -136,7 +136,7 @@ var FlashDetect = new function(){
     };
     /**
      * Is the minor version greater than or equal to a specified version.
-     * 
+     *
      * @param {Number} version The minimum required minor version.
      * @type Boolean
      */
@@ -145,7 +145,7 @@ var FlashDetect = new function(){
     };
     /**
      * Is the revision version greater than or equal to a specified version.
-     * 
+     *
      * @param {Number} version The minimum required revision version.
      * @type Boolean
      */
@@ -154,7 +154,7 @@ var FlashDetect = new function(){
     };
     /**
      * Is the version greater than or equal to a specified major, minor and revision.
-     * 
+     *
      * @param {Number} major The minimum required major version.
      * @param {Number} (Optional) minor The minimum required minor version.
      * @param {Number} (Optional) revision The minimum required revision version.
@@ -187,7 +187,7 @@ var FlashDetect = new function(){
                 var versionObj = parseStandardVersion(version);
                 self.raw = versionObj.raw;
                 self.major = versionObj.major;
-                self.minor = versionObj.minor; 
+                self.minor = versionObj.minor;
                 self.revisionStr = versionObj.revisionStr;
                 self.revision = versionObj.revision;
                 self.installed = true;
@@ -203,7 +203,7 @@ var FlashDetect = new function(){
                         var versionObj = parseActiveXVersion(version);
                         self.raw = versionObj.raw;
                         self.major = versionObj.major;
-                        self.minor = versionObj.minor; 
+                        self.minor = versionObj.minor;
                         self.revision = versionObj.revision;
                         self.revisionStr = versionObj.revisionStr;
                     }

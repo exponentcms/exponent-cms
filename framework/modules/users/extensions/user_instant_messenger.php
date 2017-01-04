@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -25,7 +25,7 @@ class user_instant_messenger extends expRecord {
 
     public function name() { return 'Instant Messenger Info'; }
 	public function description() { return 'The extension allows users to enter their IM accounts for most IM services.'; }
-	
+
 }
 
 ?>

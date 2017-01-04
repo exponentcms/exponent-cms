@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -34,7 +34,7 @@ return array(
 		DB_FIELD_LEN=>100),
 	"is_processed"=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN
-	)	
+	)
 );
 
 ?>

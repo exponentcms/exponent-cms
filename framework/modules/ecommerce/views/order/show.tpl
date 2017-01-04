@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -29,9 +29,9 @@
                     <li><a href="#addinfo"><em>{'Additional Information'|gettext}</em></a></li>
                     <li><a href="#notes"><em>{'Notes & Communications'|gettext}</em></a></li>
                 {/if}
-            {/permissions}                                                           
-        </ul>   
-                 
+            {/permissions}
+        </ul>
+
         <div class="yui-content exp-ecom-table">
             <div id="invoice">
                 <div id="buttons">
@@ -43,8 +43,8 @@
                         {if $permissions.manage}
                             <a class="{button_style}" href="{link controller='order' action='createReferenceOrder' id=$order->id}">{'Spawn Reference Order'|gettext}</a>
                         {/if}
-                    {/permissions} 
-                </div>               
+                    {/permissions}
+                </div>
                 {exp_include file="invoice.tpl"}
             </div>
             <div id="ordhistory">
@@ -54,12 +54,12 @@
                     <table class="order-info">
                         <thead>
                             <tr>
-                                <!--th>The current status of this order is: {$order->getStatus()}</th-->  
+                                <!--th>The current status of this order is: {$order->getStatus()}</th-->
                                 <th>{'Order Type and Order Status'|gettext}</th>
-                            </tr> 
+                            </tr>
                         </thead>
                         <tbody>
-                            <tr><td>                                
+                            <tr><td>
                                 {form action=setStatus}
                                     {control type="hidden" name="id" value=$order->id}
                                     {control type="dropdown" name="order_type_id" label="Change order type to:"|gettext frommodel=order_type orderby='rank' value=$order->order_type_id orderby=title}
@@ -75,17 +75,17 @@
                                     {control id=msgbox type="textarea" name="comment" label="or enter a Comment"|gettext rows=6 cols=45}
                                     {control type="checkbox" name="save_message" label="Save this message to use in the future?"|gettext value=1}
                                     {control type=buttongroup submit="Save change"|gettext}
-                                {/form}                 
+                                {/form}
                             </td></tr>
                     </table>
                 {/if}
                 {/permissions}
-                
+
                 <table class="order-info">
                     <thead>
                         <tr>
                             <th>{'Status Change History'|gettext}</th>
-                        </tr> 
+                        </tr>
                     </thead>
                     <tbody>
                     {foreach from=$order->order_status_changes item=change}
@@ -121,9 +121,9 @@
                     <thead>
                         <tr>
                             <th colspan="2">{'Shipping Information'|gettext}</th>
-                        </tr> 
+                        </tr>
                     </thead>
-                    <tbody>                         
+                    <tbody>
                     {if $permissions.manage}
                     {if $order->shipping_required}
                         <tr>
@@ -200,10 +200,10 @@
                             </td>
                         </tr>
                     {else}
-                        <tr><td> 
+                        <tr><td>
                             {'Tracking #'|gettext}:</td><td>{$order->shipping_tracking_number}{br}
-                        </td></tr> 
-                        <tr><td> 
+                        </td></tr>
+                        <tr><td>
                             {'Date Shipped'|gettext}:</td><td>
                             {if $order->shipped != 0}
                                 {$order->shipped|format_date}
@@ -223,13 +223,13 @@
                     <thead>
                         <tr>
                             <th colspan="2">{'Transaction state:'|gettext} {$bt->transaction_state}</th>
-                        </tr> 
+                        </tr>
                     </thead>
-                    <tbody>     
+                    <tbody>
                     <tr>
                         <td>{'Ref #:'|gettext} {if $billing->calculator != null}{$bt->getRefNum()}{/if}
                         </td>
-                    </tr> 
+                    </tr>
                     <tr>
                         <td>{'Amount:'|gettext} {$bt->billing_cost|currency}
                         </td>
@@ -238,7 +238,7 @@
                         <tr>
                             <td>{'By:'|gettext} {$bt->getPoster()} {'on'|gettext} {$bt->getTimestamp()}
                             </td>
-                        </tr> 
+                        </tr>
                     {/if}
                     {if $permissions.manage && $smarty.foreach.foo.first}
                         <tr>
@@ -258,7 +258,7 @@
                                         {control type="buttongroup" submit="Void Authorization"|gettext}
                                     {/form}
                                 {/if}
-                            {/if}                            
+                            {/if}
                             {if $bt->transaction_state == "complete" || $bt->transaction_state == "paid"}
                                 {if $billing->calculator != null && $bt->creditEnabled() == true}
                                     {form action=creditTransaction}
@@ -277,7 +277,7 @@
             </div>
     {permissions}
         {if $permissions.manage}
-            <div id="addinfo">              
+            <div id="addinfo">
                 <h2>{'Sales Reps and Referrers'|gettext}</h2>
                 <table border="0" cellspacing="0" cellpadding="0">
                     <thead>
@@ -340,7 +340,7 @@
                     <thead>
                         <tr>
                             <th>{'Email'|gettext}</th>
-                        </tr> 
+                        </tr>
                     </thead>
                     <tbody>
                         <tr>
@@ -366,10 +366,10 @@
                                     {control type=buttongroup submit="Email Customer"|gettext}
                                 {/form}
                             {/if}
-                            {/permissions}                        
+                            {/permissions}
                         </td>
                     </tr>
-                </table>     
+                </table>
                 {simplenote content_type="order" content_id=$order->id require_login="1" require_approval="0" require_notification="0" tab="notes" title="Notes on this order"|gettext}
             </div>
         {/if}

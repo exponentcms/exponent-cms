@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -109,7 +109,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                     {control type="password" name="password2" label="Confirm Password"|gettext required=true}
                 </div>
             </div>
-            
+
             <!--The following field is an anti-spam measure to prevent fraudulent account creation. -->
             {* control type="antispam" *}
         {/if}

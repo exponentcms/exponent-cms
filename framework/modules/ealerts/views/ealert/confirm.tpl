@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +18,7 @@
     <blockquote>
         {'Thank you for confirming your subscriptions.  You are now subscribed to receive email alerts for the following topics.'|gettext}
     </blockquote>
-    
+
     <ul>
         {foreach from=$ealerts item=ealert}
             <li>{$ealert->ealert_title}</li>

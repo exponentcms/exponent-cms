@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -48,7 +48,7 @@ function smarty_function_pagenextlink($params,&$smarty) {
 		$newpage = $params['page']->page + 1;
 		echo '<a class="'.$class.'" href="#" onclick="page('.$newpage.')">'.$text.'</a>';
 	}
-	//eDebug($page);	
+	//eDebug($page);
 }
 
 ?>

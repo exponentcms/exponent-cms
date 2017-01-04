@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="shippingtable" corecss="tables"}
 {literal}
 .exp-skin-table td {
@@ -139,7 +139,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var addrange = Y.one('#newrange');
     var definc = 5.00;
     var odev = "odd";
-    
+
     var rowTemplate = function (i){
     return '<tr class="row row-'+i+' '+odev+'">'+
             '<td class="from">'+
@@ -165,7 +165,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 			{literal}
 			'</tr>';
     }
-    
+
     var updateUpRange = function (rc){
         // stb.one('#to-'+rc).on({
         //     'key':function(e){
@@ -173,7 +173,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         //     }
         // });
     }
-    
+
     var setRemover = function (rem){
         stb.one('.row-'+rem+' .delete').on('click',function(e){
             e.halt();
@@ -184,13 +184,13 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             e.target.ancestor('.row').remove ();
         });
     }
-    
+
     if (stb.all('tr.row')._nodes.length>1) {
         stb.all('tr.row').each(function(n,k){
             setRemover(k+1);
         });
     };
-    
+
     var addNewRow = function(e) {
         e.halt();
         odev=(odev=="odd")?"even":"odd";
@@ -203,7 +203,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         if (!Y.Lang.isNull(oldrowdelete)) oldrowdelete.setStyle('display','none');
         setRemover(rowcount)
     }
-    
+
     addrange.on({'click':addNewRow});
 //    Y.one('#tablebasedcalculator').removeClass('hide');
 //    Y.one('.loadingdiv').remove();

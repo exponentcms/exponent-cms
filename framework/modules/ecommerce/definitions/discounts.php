@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -48,18 +48,18 @@ return array(
         DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
     'uses_per_coupon'=>array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER),
-    'uses_per_user'=>array( 
+    'uses_per_user'=>array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER),
     'allow_other_coupons'=>array(
         DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-    'group_ids'=>array( 
+    'group_ids'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100000),
     'minimum_order_amount'=>array(
         DB_FIELD_TYPE=>DB_DEF_DECIMAL,
         FORM_FIELD_FILTER=>MONEY),
     'action_type'=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER),   
+        DB_FIELD_TYPE=>DB_DEF_INTEGER),
     'discount_amount'=>array(
         DB_FIELD_TYPE=>DB_DEF_DECIMAL,
         FORM_FIELD_FILTER=>MONEY),
@@ -72,7 +72,7 @@ return array(
         DB_FIELD_TYPE=>DB_DEF_ID),
     "required_shipping_method"=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>100),    
+        DB_FIELD_LEN=>100),
     'created_at'=>array(
         DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
     'edited_at'=>array(

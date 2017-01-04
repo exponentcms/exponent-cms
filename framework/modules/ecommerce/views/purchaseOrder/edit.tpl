@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="purchase-orders" corecss="tables" link="`$asset_path`css/purchaseorder.css"}
 
 {/css}
@@ -126,12 +126,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 //end: Dispatch.end
             }
         };
-        
+
         var uri = baseURL + "view=vendorinfo";
 
         var request = Y.io(uri, cfg);
     };
-    
+
     var rowColor = function () {
         rc = (rc == 'odd') ? 'even' : 'odd';
         return rc;
@@ -144,14 +144,14 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 e.halt();
                 e.currentTarget.ancestor('tr').remove();
             });
-        
+
         //var id = id; // Transaction ID.
         //var args = args[1]; // 'ipsum'.
     };
 
     var addItemRow = function (e){
         e.halt();
-        
+
         var cfg = {
             method: 'POST',
             form: {
@@ -166,17 +166,17 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 //end: Dispatch.end
             }
         };
-        
+
         var uri = baseURL + "view=porow";
 
         var request = Y.io(uri, cfg);
-        
+
         //Y.log(Y.one('#controlRowValues'));
         //ctrlRow.get('parentNode').insert('<tr><td colspan="9">testing</td></tr>',ctrlRow);
     };
 
     // Y.on('io:start', function(){
-    //     
+    //
     // });
 
     //Y.on('io:complete', rowIOComplete);

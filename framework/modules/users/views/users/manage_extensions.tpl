@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,7 +16,7 @@
 {css unique="manage_groups" corecss="tables"}
 
 {/css}
- 
+
 <div class="module users manage-extensions">
     <div class="info-header">
         <div class="related-actions">

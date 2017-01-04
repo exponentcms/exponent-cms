@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,7 @@
  */
 
 function integer_filter_class() {
-	
+
 	this.on_key_press = function(ptObject, evt) {
 		//This will allow backspace to work.
 		evt = (evt) ? evt : event;
@@ -23,26 +23,26 @@ function integer_filter_class() {
 			if (sChar == g_aIgnore[n]) return true;
 		}
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(sChar));
-		
+
 		return !this.isValueIllegal(strNewVal);
 
 	}
-	
+
 	this.onblur = function(ptObject) {
 		//Do nothing for integer
 	}
-	
+
 	this.onfocus = function(ptObject) {
 		//Do nothing for integer
 	}
-	
+
 	this.onpaste = function(ptObject, evt) {
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(evt.charCode));
 		alert(strNewVal);
 		return !this.isValueIllegal(strNewVal);
 
 	}
-	
+
 	this.isValueIllegal = function(strValue) {
 		var bIsIllegal = isNaN(parseInt(strValue, 10));
 		if (!bIsIllegal) {

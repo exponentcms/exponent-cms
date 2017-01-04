@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -35,11 +35,11 @@
  */
 function smarty_function_optiondisplayer($params,&$smarty) {
     global $db;
-    
+
     $groupname = $params['options'];
     $product = $params['product'];
     $display_price_as = isset($params['display_price_as']) ? $params['display_price_as'] : 'diff';
-    
+
     // get the option group
     $og = new optiongroup();
     //$group = $og->find('bytitle', $groupname);
@@ -50,11 +50,11 @@ function smarty_function_optiondisplayer($params,&$smarty) {
 
     // if there are no  options we can return now
     if (empty($options)) return false;
-    
+
     // find the default option if there is one.
     $default = $db->selectValue('option', 'id', 'optiongroup_id='.$group->id.' AND is_default=1');
     if (!array_key_exists($default,$options)) $default = null;
-    
+
     $view = $params['view'];
     if ($view != 'checkboxes' && $view != 'dropdown') {
         if (!empty($params['view'])) {
@@ -63,13 +63,13 @@ function smarty_function_optiondisplayer($params,&$smarty) {
             $view = 'dropdown';
         }
     }
-    
+
     //if((isset() || $group->required == false) $includeblank = $params['includeblank'] ;
     //elseif((isset($params['includeblank']) && $params['includeblank'] == false) || $group->required == true) $includeblank = false;
 
     // only include a blank if not 'required', otherwise we need to display it, or if forced by param
     $includeblank = $group->required == false && !isset($params['includeblank']) ? gt('-- Please Select an Option --') : $params['includeblank'];
-    
+
     $template = expTemplate::get_common_template($view, $smarty->getTemplateVars('__loc'), 'options');
     $template->assign('product', $product);
     $template->assign('options', $options);
@@ -77,9 +77,9 @@ function smarty_function_optiondisplayer($params,&$smarty) {
     $template->assign('params', $params);
     $template->assign('default', $default);
     $template->assign('includeblank', $includeblank);
-    $template->assign('required', $params['required']);    
-    $template->assign('selected', $params['selected']); 
-    
+    $template->assign('required', $params['required']);
+    $template->assign('selected', $params['selected']);
+
     echo $template->render();
 }
 

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,7 @@
  *}
 
 {form action=update_model_alias}
-	{control type="hidden" name="tab_loaded[model_alias]" value=1} 
+	{control type="hidden" name="tab_loaded[model_alias]" value=1}
 	{control type="hidden" name="product_id" value=$product_id}
     {control type="hidden" name="id" value=$model_alias->id}
     {control type="text" name="model" label="Model Alias:"|gettext value=$model_alias->model}

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +15,7 @@
 
 <div class="module store action">
     <h1>{$moduletitle|default:"Add a Product"|gettext}</h1>
-    
+
     {form controller=store action=edit}
         {control type="hidden" name="id" value=0}
         {control type="dropdown" name="product_type" label="Select Product Type"|gettext items=$product_types default="product"}

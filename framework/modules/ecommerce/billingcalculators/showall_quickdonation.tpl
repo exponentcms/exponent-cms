@@ -29,26 +29,26 @@
 				{control type="text" name="donate[dollar_amount]" value=`$record.donate.dollar_amount` size=7 filter=money required=1}
             </td>
         </tr>
-		
+
 		<tr>
 			<td>Would you like to make this donation recurring every month? </td>
 			 <td>
 				{control type="radiogroup" name="donate[extra][recurring]" items="Yes,No" values="Recurring:Yes,Recurring:No" default="Recurring:Yes" value=`$record.donate.extra.recurring`}
             </td>
 		</tr>
-		
+
 		<tr>
 			<td>Choose which day for your donation to be processed each month: </td>
 			 <td>
 				{control type="radiogroup" name="donate[extra][recurring_day]" items="1st of the Month,15th of the Month" values="Recurring Day:1st of the Month,Recurring Day:15th of the Month" default="Recurring Day:1st of the Month" value=`$record.donate.extra.recurring_day`}
             </td>
 		</tr>
-		
+
 		<tr>
 			<td colspan="2" style="padding-top: 10px;">** If you select to make your donation recurring, your first recurrence will start the month following your initial donation today.</td>
 		</tr>
 	</table>
-	
+
 	<h3>Billing Address</h3>
 	<table>
 		<tr>
@@ -57,14 +57,14 @@
 				{control type="text" name="address[firstname]" value=`$record.address.firstname` required=1}
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td>&#160;&#160;Middle Name</td>
 			<td>
 				{control type="text" name="address[middlename]" value=`$record.address.middlename`}
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td>* Last Name</td>
 			<td>
@@ -89,27 +89,27 @@
 				{control type="text" name="address[address2]" value=`$record.address.address2`}
 			</td>
 		</tr>
-	
+
 		<tr>
 			<td>* City</td>
 			<td>
 				{control type="text" name="address[city]" value=`$record.address.city` required=1}
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td>* State</td>
-			<td class="state_field"> 
+			<td class="state_field">
 				{control type=state name=address[state] includeblank="-- Choose a State -- " default=`$record.address.state` label="" required=1}
 			</td>
 		</tr>
 		<tr>
 			<td>* Country/State:</td>
-			<td>       
+			<td>
 				{control type=country name=address[country] default=`$record.address.country`}
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td>* Zip&#160;Code</td>
 			<td>
@@ -123,14 +123,14 @@
                 {control type=tel name="address[phone]" value=`$record.address.phone` required=1}
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td>* Address Type</td>
 			<td>
 				{control type="dropdown" name="address[address_type]" items="Business,Military,Residential"|gettxtlist default=$record->address_type|default:"Residential"|gettext value=`$record.address.address_type`}
 			</td>
 		</tr>
-	
+
 		<tr>
 			<td>* Email Address</td>
 			<td>
@@ -144,10 +144,10 @@
 		<tr>
 			<td>*&#160;Card&#160;Type</td>
 			<td class="creditcard-form">
-	
+
 					{control type="dropdown" name="billing[cc_type]" values="MasterCard,VisaCard" items="MasterCard,Visa"}
-			
-			
+
+
 			</td>
 		</tr>
 
@@ -164,7 +164,7 @@
 			<td class="creditcard-form dropdown">
 				{control type="dropdown" name="billing[expiration_month]" items="01,02,03,04,05,06,07,08,09,10,11,12" default="01"}
 				<div>/</div>
-				{control type="dropdown" name="billing[expiration_year]" items="2012,2013,2014,2015,2016,2017,2018"}
+				{control type="dropdown" name="billing[expiration_year]" items="2017,2018,2019,2020,2021,2022,2023,2024"}
 			</td>
 		</tr>
 
@@ -182,8 +182,8 @@
 				<input type="submit" class="awesome medium yellow" value="Next Page"/>
 			</td>
 		</tr>
-			
+
 	</table>
-       
+
 	{/form}
 </div>

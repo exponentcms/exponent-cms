@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,7 +25,7 @@
                 <li><a href="#tab4"><em>{'Videos'|gettext}</em></a></li>
                 <li><a href="#tab5"><em>{'Additional Information'|gettext}</em></a></li>
                 <li><a href="#tab6"><em>{'SEO'|gettext}</em></a></li>
-            </ul>            
+            </ul>
             <div class="yui-content">
             <div id="tab1">
                 <h2>{'Help Document'|gettext}</h2>
@@ -67,7 +67,7 @@
 	    {*<div class="loadingdiv">{"Loading Help Item"|gettext}</div>*}
         {loading title="Loading Help Item"|gettext}
         {control type=buttongroup submit="Save Help Doc"|gettext cancel="Cancel"|gettext}
-    {/form}     
+    {/form}
 </div>
 
 {script unique="editform" yui3mods="exptabs"}

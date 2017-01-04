@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,11 +19,11 @@
 
 <div class="module cart split-shipping">
     <h1>{$moduletitle|default:"Choose which addresses to ship your items."|gettext}</h1>
-    
+
     {if $addresses_dd|@count < 1}
         <a href="{link controller=address action=create}">
             {'It doesn\'t appear you have any addresses setup yet.  Click here to add an address.'|gettext}
-        </a>    
+        </a>
     {else}
         {form action="saveSplitShipping"}
             {foreach from=$order->orderitem item=orderitem}

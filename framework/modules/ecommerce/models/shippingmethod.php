@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -44,24 +44,24 @@ class shippingmethod extends expRecord {
 		$this->addresses_id = $address->id;
 		unset($address->id);
 		$this->update($address);
-	}	
-	
+	}
+
 	function afterSave() {
 		$this->updateOrderitems($this->id);  //FIXME this has a global $order
 	}
-	
+
 	function updateOrderitems() {
 		global $order; //FIXME we do NOT want the global $order
 
 		//FIXME update the shippingmethod id for each orderitem..again, this is only here until we implement split shipping.
-        // once we have that we'll need to figure out which orderitems get which shippingmethod id.     
+        // once we have that we'll need to figure out which orderitems get which shippingmethod id.
         foreach($order->orderitem as $item) {
             if (empty($item->shippingmethods_id)) {
                 $item->update(array('shippingmethods_id'=>$this->id));
             }
         }
 	}
-	
+
 	function requiresShipping($order) {
 	    //global $order;
 	    $orderitem = new orderitem();

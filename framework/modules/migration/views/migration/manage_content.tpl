@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -43,7 +43,7 @@
 			<tbody>
 				{foreach from=$modules item=module name=modules}
 					{if !$module->notmigrating}
-						<tr class="{cycle values="even,odd"}">            
+						<tr class="{cycle values="even,odd"}">
 							<td><input type=checkbox name="migrate[]" label=" " value='{$module->module}' checked=1></td>
 							<td><input type=checkbox name="replace[]" label=" " value='{$module->module}'></td>
 							<td>{$module->module}</td>

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -107,7 +107,7 @@
         </div>
         {loading title="Loading File Download Item"|gettext}
         {control type=buttongroup submit="Save File"|gettext cancel="Cancel"|gettext}
-    {/form}   
+    {/form}
 </div>
 
 {script unique="editform" yui3mods="exptabs"}

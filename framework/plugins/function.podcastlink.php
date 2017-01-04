@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -37,7 +37,7 @@ function smarty_function_podcastlink($params,&$smarty) {
 	if (!isset($params['module'])) $params['module'] = $loc->mod;
 	if (!isset($params['src'])) $params['src'] = $loc->src;
 	if (!isset($params['int'])) $params['int'] = $loc->int;
-	
+
 	echo expCore::makePodcastLink($params);
 }
 

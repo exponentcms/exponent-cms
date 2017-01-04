@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -49,10 +49,10 @@ class upscalculator extends shippingcalculator {
         // Require the main ups class and upsRate
         include_once(BASE.'external/ups-php/classes/class.ups.php');
         include_once(BASE.'external/ups-php/classes/class.upsRate.php');
-        
+
         $upsConnect = new ups($this->configdata['accessnumber'],$this->configdata['username'],$this->configdata['password']);
 	    $upsConnect->setTemplatePath(BASE.'external/ups-php/xml/');
-	    
+
 	    $upsConnect->setTestingMode($this->configdata['testmode']); // Change this to 0 for production
 
 	    $upsRate = new upsRate($upsConnect);
@@ -69,20 +69,20 @@ class upscalculator extends shippingcalculator {
 
         // get the current shippingmethod and format the address for ups
         $currentmethod = $order->getCurrentShippingMethod();
-	    $upsRate->shipTo($this->formatAddress($currentmethod));  
-        
+	    $upsRate->shipTo($this->formatAddress($currentmethod));
+
         // set the standard box sizes.
         $box_width  = empty($this->configdata['default_width']) ? 0 : $this->configdata['default_width'];
         $box_height = empty($this->configdata['default_height']) ? 0 : $this->configdata['default_height'];
-        $box_length = empty($this->configdata['default_length']) ? 0 : $this->configdata['default_length'];               
+        $box_length = empty($this->configdata['default_length']) ? 0 : $this->configdata['default_length'];
         $box_volume = $box_height * $box_width * $box_length;
-        
+
         // set some starting/default values
 //        $weight = 0;
 //        $volume = 0;
         $count = 0;
         $package_items = array();
-        
+
         // loop each product in this shipment and create the packages
         $has_giftcard = false;
         foreach ($order->orderitem as $item) {
@@ -111,23 +111,23 @@ class upscalculator extends shippingcalculator {
                 }
             }
         }
-        
+
         //FIXME kludge for the giftcard shipping
         if (count($package_items) == 0 && $has_giftcard) {
             $rates = array(
                 "03"=>array("id"=>"03", "title"=>"UPS Ground", "cost"=>5.00),
                 "02"=>array("id"=>"02", "title"=>"UPS Second Day Air", "cost"=>10.00),
-                "01"=>array("id"=>"01", "title"=>"UPS Next Day Air", "cost"=>20.00) 
+                "01"=>array("id"=>"01", "title"=>"UPS Next Day Air", "cost"=>20.00)
              );
-             
-             return $rates; 
+
+             return $rates;
         }
 
         if (empty($package_items)) return array();  // why proceed with zero packages?
 
         // sort the items by volume
         $package_items = expSorter::sort(array('array'=>$package_items,'sortby'=>'volume', 'order'=>'DESC'));
-        
+
         // loop over all the items and try to put them into packages in a semi-intelligent manner
         // we have sorted the list of items from biggest to smallest.  Items with a volume larger than
         // our standard box will generate a package with the dimensions set to the size of the item.
@@ -137,7 +137,7 @@ class upscalculator extends shippingcalculator {
         $total_weight = 0;
         while(!empty($package_items)) {
             $no_more_room = true;
-            $used = array();         
+            $used = array();
             foreach($package_items as $idx=>$pi) {
                 if ($pi->volume > $box_volume) {
 #                    echo $pi->name."is too big for standard box <br>";
@@ -170,8 +170,8 @@ class upscalculator extends shippingcalculator {
             // remove the used items from the array so they wont be there on the next go around.
             foreach ($used as $idx) {
                 unset($package_items[$idx]);
-            }            
-            
+            }
+
             // if there is no more room left in the current box or we are out of items then
             // add the package to the shipment.
             if ($no_more_room || (empty($package_items) && $total_weight > 0)) {
@@ -192,11 +192,11 @@ class upscalculator extends shippingcalculator {
                 $total_weight = 0;
             }
         }
-            
+
 	    $upsRate->shipment(array('description' => 'my description','serviceType' => '03'));
 
 	    $rateFromUPS = $upsRate->sendRateRequest();
-	    
+
 	    $handling = empty($has_giftcard) ? 0 : 5;  //FIXME adding a $5 fee if shipping a gift card???
         if (empty($rateFromUPS)) {
 //            return 0;
@@ -219,12 +219,12 @@ class upscalculator extends shippingcalculator {
             flash('error','UPS: '.$rateFromUPS['RatingServiceSelectionResponse']['Response']['Error']['ErrorDescription']['VALUE']);
 	        return $rateFromUPS['RatingServiceSelectionResponse']['Response']['Error']['ErrorDescription']['VALUE'];
 	    }
-    }	
-    
+    }
+
 //   	public function configForm() {
 //   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/upscalculator/configure.tpl';
 //   	}
-	
+
 	//process config form
 	function parseConfig($values) {
 	    $config_vars = array(
@@ -251,20 +251,20 @@ class upscalculator extends shippingcalculator {
                 );
 	        }
 	    }
-	    
+
 		return $config;
 	}
-	
+
 	function availableMethods() {
 	    if (empty($this->configdata['shipping_methods'])) return array();
 	    $available_methods = array();
 	    foreach ($this->configdata['shipping_methods'] as $method) {
 	        $available_methods[$method] = $this->shippingmethods[$method];
 	    }
-	    
+
 	    return $available_methods;
 	}
-	
+
 	function formatAddress($params) {
 	    $addy['companyName'] = isset($params->companyName) ? $params->companyName : '';
 	    $addy['attentionName'] = isset($params->firstname) ? $params->firstname : '';
@@ -279,7 +279,7 @@ class upscalculator extends shippingcalculator {
 	    $addy['phone'] = isset($params->phone) ? $params->phone : '';
 	    return $addy;
 	}
-	
+
 //	public static function sortByVolume($a, $b) {
 ////	    eDebug($a);
 //	    return ($a->volume > $b->volume ? -1 : 1);

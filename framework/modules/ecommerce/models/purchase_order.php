@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -23,11 +23,11 @@
 class purchase_order extends expRecord {
     public $table = 'purchase_order';
 	public $has_one = array('vendor');
-        
+
     public function __construct($params=null, $get_assoc=false, $get_attached=false) {
         parent::__construct($params, $get_assoc, $get_attached);
     }
-    
+
 }
 
 ?>

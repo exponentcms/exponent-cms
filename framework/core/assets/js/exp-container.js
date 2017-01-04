@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,10 +20,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event', function(Y) {
         hideMenus();
         e.target.addClass('current-trigger').next().setStyles({'display':'block','zIndex':50});
     }
-    
+
     var hideMenus = function(e) {
         Y.all(".container-chrome .container-menu").setStyle('display','none').each(function(n){
-            n.previous().removeClass('current-trigger');  
+            n.previous().removeClass('current-trigger');
         });
     }
 
@@ -36,11 +36,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event', function(Y) {
 
         if (Y.UA.ie < 9 && Y.UA.ie > 6) {
             Y.delegate('click', showMenu, document.body, '.container-chrome .trigger');
-            Y.on('click', hideMenus, document.body);            
+            Y.on('click', hideMenus, document.body);
         } else {
             Y.on('click', hideMenus, document.body);
             Y.delegate('click', showMenu, document.body, '.container-chrome .trigger');
-            
+
         };
 
         // move hard coded mod menus inside the mod wrapper they pertain to

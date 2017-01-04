@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -40,9 +40,9 @@ function smarty_function_time_duration($params,&$smarty) {
 		$duration = $params['start'] - $params['end'];
 	}
 	if ($duration < 0) $duration *= -1;
-	
+
 	$type = strtolower(isset($params['type']) ? $params['type'] : "hms");
-	
+
 	$slots = array();
 	if (strstr($type,"d") !== false) {
 		$slots["d"] = floor($duration / 86400);
@@ -57,7 +57,7 @@ function smarty_function_time_duration($params,&$smarty) {
 		$duration -= $slots["m"] * 60;
 	}
 	if (strstr($type,"s") !== false) $slots["s"] = $duration;
-	
+
 	$smarty->assign($params['assign'],$slots);
 }
 

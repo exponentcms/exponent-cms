@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -31,5 +31,5 @@
         {control type="html" name="body" label="Message"|gettext value="<h3>"|cat:"New content was added titled"|gettext|cat:" '"|cat:$record->title|cat:"'"|gettext|cat:".</h3><hr>"|cat:$record->body}
         {control type="buttongroup" submit="Send E-Alert"|gettext cancel="Cancel"|gettext}
     {/form}
-            
+
 </div>

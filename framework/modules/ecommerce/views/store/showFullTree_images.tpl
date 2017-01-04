@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -57,7 +57,7 @@
             </div>
         {/permissions}
     {/if}
-    
+
     <div class="bodycopy">{$current_category->body}</div>
 
     {if $categories|@count > 0}
@@ -153,5 +153,5 @@
                 {/if}
             </div>
         {/permissions}
-    {/if} 
+    {/if}
 </div>

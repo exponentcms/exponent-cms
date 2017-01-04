@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -46,7 +46,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 	} else {
 		$rerank = 1;
 	}
-	
+
     // does it need permissions menu items?
 	if ($user->isAdmin()) {
 //		$userlink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'userperms', '_common'=>1));
@@ -114,13 +114,13 @@ function smarty_function_getchromemenu($params,&$smarty) {
         $deletelink = $router->makeLink(array('controller'=>'container', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>$rerank));
 		$list .= '<li><a href="'.$deletelink.'" class="delete" onclick="return confirm(\''.gt("Remove this module and send the content to the Recycle Bin to be recovered later?").'\')">'.gt("Remove Module").'</a></li>';
 	}
-	
+
     // does it need a help menu item?
 	if (HELP_ACTIVE) {
 		$helplink = help::makeHelpLink(expModules::getControllerName($module->info['class']));
 		$list .= '<li><a href="'.$helplink.'" class="helplink" target="_blank">'.gt("Get Help").'</a></li>';
 	}
-	
+
 	$list .= '</ul>';
 
     expCSS::pushToHead(array(
@@ -133,7 +133,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
         "unique"=>'container-chrome',
         "src"=>JS_RELATIVE."exp-container.js"
      ));
-	
+
 	echo $list;
 }
 

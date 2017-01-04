@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -35,7 +35,7 @@ class keywords {
         }
 
 		return $keywords;
-	}													
+	}
 
 	public static function getExcludedWords() {
 		$puncs = array('&#160;', '.', ',', "'", '"', ':', '!', "\r", "\n", "\t");
@@ -48,7 +48,7 @@ class keywords {
 
 		$id = is_object($section) ? $section->id : $section;
 		$refs = $db->selectObjects('sectionref', 'section='.$id);
-	
+
 		ob_start();
 		$mods = array();
 		foreach ($refs as $ref) {

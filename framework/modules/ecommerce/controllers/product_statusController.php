@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -27,10 +27,10 @@ class product_statusController extends expController {
     static function description() { return gt("Manage e-Commerce product status codes"); }
     static function hasSources() { return false; }
     static function hasContent() { return false; }
-    
+
     public function manage() {
         expHistory::set('viewable', $this->params);
-        
+
         $page = new expPaginator(array(
 			'model'=>'product_status',
 			'where'=>1,
@@ -45,15 +45,15 @@ class product_statusController extends expController {
             'page'=>$page
         ));
     }
-    
+
     public function showall() {
         redirect_to(array('controller'=>'product_status', 'action'=>'manage'));
     }
-    
+
     public function show() {
         redirect_to(array('controller'=>'product_status', 'action'=>'manage'));
     }
-    
+
 }
 
 ?>

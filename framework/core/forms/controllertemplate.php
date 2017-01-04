@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -107,7 +107,7 @@ class controllertemplate extends basetemplate {
 
 		$this->tpl->assign("__view", $this->view);
 		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
-		
+
 		$this->tpl->assign("__loc",$controller->loc);
 		$this->tpl->assign("__name", $controller->baseclassname);  //FIXME probably not used in 2.0?
         $this->tpl->assign("controller", $controller->baseclassname);

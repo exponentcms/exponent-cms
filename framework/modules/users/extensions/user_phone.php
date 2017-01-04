@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -25,7 +25,7 @@ class user_phone extends expRecord {
 
     public function name() { return 'Phone Numbers'; }
 	public function description() { return 'The extension allows users to enter their phone numbers.'; }
-	
+
 }
 
 ?>

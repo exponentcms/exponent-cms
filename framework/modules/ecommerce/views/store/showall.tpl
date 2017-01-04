@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,11 +12,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="storefront" link="`$asset_path`css/storefront.css" corecss="button,clearfix"}
 
 {/css}
- 
+
 <div class="module store showall">
     <div class="category-breadcrumb">
         <a href="{link controller=store action=showall}" title="{'View the Store'|gettext}">{'Store'|gettext}</a>{if count($ancestors)}&#160;&#160;&raquo;&#160;{/if}
@@ -201,7 +201,7 @@
 {script unique="expanding-text" yui3mods="anim-easing,node,anim"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-    
+
     var modules = Y.all('.showall.store .bodycopy');
 
     modules.each(function(n,k){

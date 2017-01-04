@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="prod-listing">    
+<div class="prod-listing">
     <div class="image">
         <a href="{link controller=store action=show title=$listing->sef_url}">
             {if $listing->expFile.mainimage[0]->id != ""}

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -31,7 +31,7 @@
 			            <a href="#tab{$smarty.foreach.tabs.iteration}"><em>{$tab.name}</em></a>
 			        </li>
 			    {/foreach}
-			</ul>            
+			</ul>
             <div class="yui-content">
                 {foreach from=$views item=body name=body}
                     <div id="tab{$smarty.foreach.body.iteration}">
@@ -50,8 +50,8 @@
 {literal}
 	/**
 	 * add exp-tabs module and file to the YUI configuration object.
-	 * Including the dependencies (requires) here saves 
-	 * YUI and extra http call after loading exp-tabs, 
+	 * Including the dependencies (requires) here saves
+	 * YUI and extra http call after loading exp-tabs,
 	 * which also contains the dependencies
 	 */
 
@@ -64,7 +64,7 @@
      * Now, we just have to specify exptabs as the module.
      * Looking in exp-tabs.js, you can see that on line 1, that's the module name.
      */
-    
+
 	YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 		// Y.expTabs is the function defined in the exptabs script
 		// we're passing it a static js object, with nothing but a
@@ -72,7 +72,7 @@
 
         Y.expTabs({srcNode: '#config-tabs'});
 
-        // I didn't add this stuff to the tab script, as it's not essential to 
+        // I didn't add this stuff to the tab script, as it's not essential to
         // the tab functionality itself.
         Y.one('#config-tabs').removeClass('hide');
         Y.one('.loadingdiv').remove();

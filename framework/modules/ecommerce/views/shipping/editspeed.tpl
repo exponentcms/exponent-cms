@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,7 +16,7 @@
 <div class="module shipping configure">
     <h1>{'Configure'|gettext} {$calculator->title} {'Speed'|gettext}</h1>
     <blockquote>{'Use this form to configure'|gettext} {$calculator->title} {'speed'|gettext}</blockquote>
-    
+
     {form action=saveEditSpeed}
   		{control type="hidden" name="shippingcalculator_id" value=$calculator->id}
         {include file=$calculator->editspeed()}

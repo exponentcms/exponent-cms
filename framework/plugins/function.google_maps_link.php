@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -35,10 +35,10 @@
 function smarty_function_google_maps_link($params,&$smarty) {
 	$link = '';
 
-	if (!empty($params['street'])) $link .= addPlus($link).urlencode(trim($params['street'])); 
-	if (!empty($params['city'])) $link .= addPlus($link).urlencode(trim($params['city'])); 
-	if (!empty($params['state'])) $link .= addPlus($link).urlencode(trim($params['state'])); 
-	if (!empty($params['zip'])) $link .= addPlus($link).urlencode(trim($params['zip'])); 
+	if (!empty($params['street'])) $link .= addPlus($link).urlencode(trim($params['street']));
+	if (!empty($params['city'])) $link .= addPlus($link).urlencode(trim($params['city']));
+	if (!empty($params['state'])) $link .= addPlus($link).urlencode(trim($params['state']));
+	if (!empty($params['zip'])) $link .= addPlus($link).urlencode(trim($params['zip']));
 
 	echo 'http://maps.google.com/maps?f=q&hl=en&geocode=&q='.$link;
 

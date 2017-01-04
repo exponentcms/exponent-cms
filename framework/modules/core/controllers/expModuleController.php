@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,7 +28,7 @@ class expModuleController extends expController {
     static function author() { return "Phillip Ball"; }
     static function hasSources() { return false; }
     static function hasContent() { return false; }
-    
+
     function manage () {
         expHistory::set('manageable', $this->params);
         $controllers = expModules::listActiveControllers();
@@ -42,9 +42,9 @@ class expModuleController extends expController {
     function update () {
         global $db;
         //$db->delete('modstate');
-        
+
         $aMods = $db->selectObjects('modstate',1);
-        		        
+
         foreach ($aMods as $key => $value) {
             if (!empty($this->params['mods']) && array_key_exists($value->module,expModules::getControllerName($this->params['mods']))) {
                 $aMods[$key]->active = $this->params['mods'][$value->module];
@@ -55,7 +55,7 @@ class expModuleController extends expController {
             }
             unset($this->params['mods'][$value->module]);
         }
-        
+
         if (!empty($this->params['mods'])) {
             foreach ($this->params['mods'] as $key => $value) {
                 $aMod = new stdClass();

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,7 +22,7 @@
  */
 class ecomconfig extends expConfig {
     public static function getConfig($configname) {
-        
+
         /**
          * this allows the sourcing on the store config to stay consistent.
          * This way, when we call ecomconfig::getConfig('config_we_want') we
@@ -31,7 +31,7 @@ class ecomconfig extends expConfig {
          * @author Phillip Ball
          */
         $config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
-        
+
         //$config = new expConfig(expCore::makeLocation('ecomconfig'));
         if (isset($config->config[$configname])) {
             return $config->config[$configname];
@@ -39,7 +39,7 @@ class ecomconfig extends expConfig {
             return null;
         }
     }
-	
+
 	public static function splitConfigUpCharge($upcharge = array(), $type = 'region') {
 		$upchargeRate = array();
         if(count($upcharge))

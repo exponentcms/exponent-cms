@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -35,7 +35,7 @@
  * @param $repeat
  */
 function smarty_block_css($params,$content,&$smarty, &$repeat) {
-	if ($content) {		
+	if ($content) {
 		if (empty($params['unique'])) die("<strong style='color:red'>".gt("The 'unique' parameter is required for the {css} plugin.")."</strong>");
 
 		expCSS::pushToHead(array(

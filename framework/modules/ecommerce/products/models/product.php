@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -78,16 +78,16 @@ class product extends expRecord {
         $this->user_input_fields = expUnserialize($this->user_input_fields);
         /*if (!empty($this->childProduct))
         {
-            foreach($this->childProduct as &$child) 
+            foreach($this->childProduct as &$child)
             {
-                $child->expFile = $this->expFile;    
+                $child->expFile = $this->expFile;
             }
         } */
         if (!empty($this->parent_id)) {
             $parent = new product($this->parent_id, false, true);
             //eDebug($parent->expFile);
             $this->expFile = $parent->expFile;
-            //eDebug($this); 
+            //eDebug($this);
         }
 
         if (!empty($this->meta_fb))
@@ -125,7 +125,7 @@ class product extends expRecord {
 
     function getSurcharge() {
         $sc = 0;
-        //take parent level surcharge, but override surcharge child product is set            
+        //take parent level surcharge, but override surcharge child product is set
         if ($this->surcharge == 0 && $this->parent_id != 0) {
             $parentProd = new product($this->parent_id);
             $sc = $parentProd->surcharge;
@@ -326,7 +326,7 @@ class product extends expRecord {
                     /*foreach($this->childProduct as $child)
                     {
                         if ($child->id == $ckey) $this->createOrderItem($child, $params, $user_input_info);
-                        break;   
+                        break;
                     }*/
                 }
 
@@ -339,8 +339,8 @@ class product extends expRecord {
     function displayForm($form, $params) {
         // eDebug($form, true);
         //$product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
-        //$product = new $product_type($this->params['product_id'],true,true);     
-        //eDebug($product);   
+        //$product = new $product_type($this->params['product_id'],true,true);
+        //eDebug($product);
         //if (!empty($product->user_input_fields)) $product->user_input_fields = expUnserialize($product->user_input_fields);
         //eDebug($product);
         $form = new controllertemplate(new storeController(), $this->getForm($form));
@@ -350,9 +350,9 @@ class product extends expRecord {
             $form->assign('children', $params['children']);
         }
 
-        /*if (!empty($this->params['children'])) 
+        /*if (!empty($this->params['children']))
         {
-            $form->assign('children', expUnserialize($this->params['children']));   
+            $form->assign('children', expUnserialize($this->params['children']));
         }*/
         echo $form->render();
     }
@@ -396,11 +396,11 @@ class product extends expRecord {
         $params['products_price'] = $price;
         $params['user_input_fields'] = serialize($user_input_info);
         $params['orderid'] = $orderid;
-        /*$params['products_status'] = 
-        $params['products_warehouse_location'] = 
+        /*$params['products_status'] =
+        $params['products_warehouse_location'] =
         $params['products_model'] = $product->model;*/
         $item = new orderitem($params);
-        //eDebug($item); 
+        //eDebug($item);
         $item->products_price = $price;
 
         /*eDebug($item->quantity);
@@ -663,7 +663,7 @@ class product extends expRecord {
         }
 
         // if there are no categories specified we'll set this to the 0 category..meaning uncategorized'
-        //eDebug($this->params['storeCategory']); 
+        //eDebug($this->params['storeCategory']);
         if (empty($catArray)) {
             $db->delete('product_storeCategories', 'product_id=' . $id);
 //            $catArray = array(0);
@@ -718,7 +718,7 @@ class product extends expRecord {
                     //$db->decrement('product_storeCategories', 'rank', 1, ' AND storecategories_id=' . $delcat);
                 }
             }
-            //die();           
+            //die();
         }
     }
 

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -29,7 +29,7 @@ class storeCategoryFeeds extends storeCategory {
         'shopzilla_product_types',
         'shopping_product_types'
     );
-	
+
 	public function __construct($params=null, $get_assoc=true, $get_attached=true) {
 		parent::__construct($params, $get_assoc, $get_attached);
 	}

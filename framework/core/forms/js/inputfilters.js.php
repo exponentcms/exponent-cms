@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,11 +26,11 @@ function GetResultingValue(ptObject, strInsert) {
 	if (document.selection) {
 		var trCaret = window.document.selection.createRange();
 		var trPrefix = ptObject.createTextRange();
-		
+
 		var trSuffix = trPrefix.duplicate();
-		
+
 		trPrefix.setEndPoint("EndToStart", trCaret);
-		
+
 		trSuffix.setEndPoint("StartToEnd", trCaret);
 		strPostValue = trPrefix.text + strInsert + trSuffix.text;
 	}
@@ -39,8 +39,8 @@ function GetResultingValue(ptObject, strInsert) {
 		var startPos = ptObject.selectionStart;
 		var endPos = ptObject.selectionEnd;
 		strPostValue = ptObject.value.substring(0, startPos) + strInsert + ptObject.value.substring(endPos, ptObject.value.length);
-	} 
-	//SAFARI support, 
+	}
+	//SAFARI support,
 	//I know this isn't quite right, but if anyone can get it to work let us know!!
 	else if (window.getSelection) {
 		strPostValue = ptObject.value + strInsert;
@@ -50,15 +50,15 @@ function GetResultingValue(ptObject, strInsert) {
 
 function IsNotNumber(strValue) {
 	if (strValue == ".") return false;
-	
+
 	if (isNaN(parseFloat(strValue,10))) return true;
-	
+
 	if (strValue.match(/.*[\+\-]/) != null) return true;
-	
+
 	if (strValue.match(/[^0123456789\-\+\.]/) != null) return true;
-	
+
 	if (strValue.match(/.+\..+\./) != null) return true;
-	
+
 	return false;
 }
 
@@ -76,7 +76,7 @@ function fireEvent(element,event){
     }
 }
 
-<?php 
+<?php
 	$dh = opendir(".");
 	while (($file=readdir($dh)) !== false) {
 		if (is_file($file) && substr($file,0,1) != "." && $file != "inputfilters.js.php") {

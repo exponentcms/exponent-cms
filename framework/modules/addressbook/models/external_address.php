@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -27,7 +27,7 @@ class external_address extends expRecord {
 			    'firstname'=>array('message'=>'First name is a required field.'),
 			    'lastname'=>array('message'=>'Last name is a required field.'),
 			    'address1'=>array('message'=>'Street Address is a required field.'),
-			    'city'=>array('message'=>'City name is a required field.'),			    
+			    'city'=>array('message'=>'City name is a required field.'),
 		    ),
 		    'is_valid_zipcode'=>array(
 			    'zip'=>array('message'=>'The zip code you entered does not appear to be a valid US zip code.')
@@ -42,7 +42,7 @@ class external_address extends expRecord {
                 'state'=>array('message'=>'You must select a valid state, or select --Non US-- and enter a state manually.')
             )
 		);
-    
+
 	public function __construct($params=null, $get_assoc = false, $get_attached = false) {
 		global $db;
 		parent::__construct($params, $get_assoc, $get_attached);
@@ -56,44 +56,44 @@ class external_address extends expRecord {
 	public function dropdownByUser($user) {
 		$id = is_numeric($user) ? $user : $user->id;
 		$addys = $this->find('all', 'user_id='.$id, 'is_default DESC');
-		
+
 		$ddmenu = array();
 		foreach($addys as $addy) {
 			$ddmenu[$addy->id] = "$addy->firstname $addy->middlename $addy->lastname, $addy->address1, $addy->address2, $addy->city...";
 		}
 
 		return $ddmenu;
-	}	
-    
+	}
+
     function afterValidationOnUpdate()
     {
         //echo "This worked - update";
-        //die();    
+        //die();
     }
-    
+
     //this is here as a somewhat clunky workaround to allow easier checkout.
-    //we're still creating a user account for everyone, but making it smoother for those that provide a 
+    //we're still creating a user account for everyone, but making it smoother for those that provide a
     //password, and making it seem like it's anonymous for those that aren't
     function afterValidationOnCreate()
-    {                             
+    {
         global $user, $db;
         //check if user is logged in.  If so, then we won't have the password and capture fields
         //eDebug($_POST,true);
-      
+
         if (!$user->isLoggedIn())
         {
-            //user is not logged in, so we assume they are creating their first address 
+            //user is not logged in, so we assume they are creating their first address
             //we'll check to see if they have elected to 'remember me' and if so, check the username and passwords.
             //if not, then we just check the captha and create an account manually
 
-            
+
             $password = expString::sanitize($_POST['password']);
             if (isset($_POST['remember_me']) && $_POST['remember_me'] == true)
             {
                 $user->username = expString::sanitize($_POST['email']);
                 $validateUser = $user->setPassword($password,expString::sanitize($_POST['password2']));
                 if (!is_bool($validateUser))
-                 {                    
+                 {
                     expValidator::failAndReturnToForm($validateUser, expString::sanitize($_POST));
                  }
             } else {
@@ -101,9 +101,9 @@ class external_address extends expRecord {
                 $password = md5(time().mt_rand(50, 1000));  //generate random password
                 $user->setPassword($password, $password);
             }
-            
+
             //expValidator::check_antispam($_POST, "Your anti-spam verification failed.  Please try again.");
-            
+
             //if we've come this far, we're good to create the new user account
             $user->email = expString::sanitize($_POST['email']);
             $user->firstname = expString::sanitize($_POST['firstname']);
@@ -123,9 +123,9 @@ class external_address extends expRecord {
             $user->login($user->username,$password);
             $this->user_id = $user->id;
             $this->is_default = true;
-            //eDebug($user,true); 
-            //$user-> = $_POST['first_name'];          
-            //eDebug($this,true);  
+            //eDebug($user,true);
+            //$user-> = $_POST['first_name'];
+            //eDebug($this,true);
             //set this back since we now have a logged in user and we don't want things going goofy if they logout and log back in and such
             expSession::un_set("ALLOW_ANONYMOUS_CHECKOUT");
         }

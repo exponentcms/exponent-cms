@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +15,7 @@
 
 <div class="module faq edit-answer">
     <h1>{'Format Email Reply'|gettext}</h1>
-    
+
     {form action="update_answer"}
         <table>
         <tr>
@@ -30,5 +30,5 @@
         {control type="html" name="body" label="Message"|gettext value=$reply}
         {control type="buttongroup" submit="Send Email"|gettext cancel="Cancel"|gettext}
     {/form}
-            
+
 </div>

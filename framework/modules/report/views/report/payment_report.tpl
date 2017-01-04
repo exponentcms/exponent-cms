@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,7 @@
 {/css}
 
 <div class="module report build-report">
-    <div id="report-form" class="exp-ecom-table">    
+    <div id="report-form" class="exp-ecom-table">
     <table border="0" width="50%" align="center" cellspacing="0" cellpadding="0">
         <thead>
             <tr>
@@ -31,7 +31,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="even">   
+            <tr class="even">
                   <td>
                     {'Visa'|gettext}
                 </td>
@@ -39,7 +39,7 @@
                     {'val'|gettext}
                 </td>
             </tr>
-            <tr class="odd">   
+            <tr class="odd">
                   <td>
                     {'MasterCard'|gettext}
                 </td>
@@ -47,7 +47,7 @@
                     {'val'|gettext}
                 </td>
             </tr>
-            <tr class="even">   
+            <tr class="even">
                   <td>
                     {'American Express'|gettext}
                 </td>
@@ -55,7 +55,7 @@
                     {'val'|gettext}
                 </td>
             </tr>
-            <tr class="odd">   
+            <tr class="odd">
                   <td>
                     {'Discover'|gettext}
                 </td>
@@ -63,7 +63,7 @@
                     {'val'|gettext}
                 </td>
             </tr>
-             <tr class="even">   
+             <tr class="even">
                   <td>
                     {'PayPal'|gettext}
                 </td>
@@ -71,7 +71,7 @@
                     {'val'|gettext}
                 </td>
             </tr>
-            <tr class="odd">   
+            <tr class="odd">
                   <td>
                     {'Total'|gettext}
                 </td>
@@ -81,6 +81,6 @@
             </tr>
         </tbody>
     </table>
-    
+
     </div>
 </div>

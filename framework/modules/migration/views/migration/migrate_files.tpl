@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -59,7 +59,7 @@
 		</thead>
 		<tbody>
 			{foreach from=$files item=file name=files}
-				<tr class="{cycle values="even,odd"}">            
+				<tr class="{cycle values="even,odd"}">
 					<td width="5%">{if $file->exists}{img src=$smarty.const.ICON_RELATIVE|cat:'clean.png'}{else}<span style="color:red"><strong>??</strong></span>{/if}</td>
 					<td width="30%">{$file->filename}</td>
 					<td width="65%">{$file->directory}</td>

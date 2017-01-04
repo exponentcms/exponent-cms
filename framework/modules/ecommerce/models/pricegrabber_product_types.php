@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,12 +22,12 @@
  */
 class pricegrabber_product_types extends product_type {
 	public $table = 'pricegrabber_product_types';
-	
+
 //	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
 //		global $db;
 //		parent::__construct($params, $get_assoc, $get_attached);
 //	}
-	
+
 }
 
 ?>

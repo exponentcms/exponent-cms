@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,11 +22,11 @@
  */
 class taxclass extends expRecord {
     public $table = 'tax_class';
-        
+
     public function __construct($params=null, $get_assoc=false, $get_attached=false) {  // change param default values
         parent::__construct($params, $get_assoc, $get_attached);
     }
-    
+
     public static function getProductTax($item) {
         global $db;
 
@@ -43,7 +43,7 @@ class taxclass extends expRecord {
         $my_zone = $db->selectValue('tax_geo', 'zone_id', 'country_id='.intval($global_config->config['store']['country']).' AND region_id='.intval($global_config->config['store']['state']));
         $zones = $db->selectColumn('tax_geo', 'zone_id', 'country_id='.intval($item->shippingmethod->country).' AND region_id='.intval($item->shippingmethod->state));
         if (empty($my_zone) && empty($zones)) return false;
-        
+
         // first locate any local origin tax
         $rate = $db->selectValue('tax_rate', 'rate', 'zone_id='.$my_zone.' AND origin_tax=1 AND inactive!=1 AND class_id='.$item->product->tax_class_id);
         if (empty($rate))
@@ -51,10 +51,10 @@ class taxclass extends expRecord {
         //$item->products_tax = round(($rate * .01) * $item->products_price_adjusted,2); // * $item->quantity ;
         return round(($rate * .01) * $item->products_price_adjusted, 2); // * $item->quantity ;
         //$item->save();
-        
+
         //return $item->products_tax;
     }
-    
+
     public static function getCartTaxZones($order) {
         global $db;
 
@@ -74,12 +74,12 @@ class taxclass extends expRecord {
             $sql .= " AND tr.origin_tax=1 AND inactive!=1) OR (tg.country_id=".intval($item->shippingmethod->country)." AND tg.region_id=".intval($item->shippingmethod->state)." AND inactive!=1) ";
             $sql .= "ORDER BY origin_tax DESC";
             $zone = $db->selectObjectBySql($sql);
-            if (!empty($zone)) $zones[$zone->name] = $zone;            
+            if (!empty($zone)) $zones[$zone->name] = $zone;
         }
-        
+
         return $zones;
     }
-    
+
 }
 
 ?>

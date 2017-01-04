@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -69,7 +69,7 @@
 		{permissions}
             {if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $permissions.configure
                  || $container->permissions.manage || $container->permissions.edit || $container->permissions.delete || $container->permissions.configure)}
-                
+
                 {* repeating css and JS calls in case they only have module management, and are not admins *}
                 {css unique="admin-container" link="`$asset_path`css/admin-container.css"}
 

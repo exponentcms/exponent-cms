@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -35,7 +35,7 @@
 			<tr>
 				<th>{'Is Admin'|gettext}:</th>
 				<td>
-				{if $u->is_acting_admin == 1}	
+				{if $u->is_acting_admin == 1}
 					{'Yes'|gettext}
 				{else}
 					{'No'|gettext}
@@ -51,7 +51,7 @@
             </td></tr>
 		</table>
 	</div>
-	
+
 	<div id="addresses_info">
 		<h1>{'Addresses Information'|gettext}</h1>
 		<table class="exp-skin-table">
@@ -80,7 +80,7 @@
 							{foreach from=$shippings item=shipping}
 								{$shipping|address}
 								{br}
-							{/foreach}	
+							{/foreach}
 						{/if}
 					</td>
 				</tr>
@@ -92,7 +92,7 @@
 			</tbody>
 		</table>
 	</div>
-	
+
 	<div id="orders">
 		<h1>{'Order Information'|gettext}</h1>
 		{pagelinks paginate=$orders top=1}

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -32,5 +32,5 @@
         {/if}
         {control type="checkbox" name="include_in_faq" label="Post to FAQs"|gettext|cat:"?" value=1 checked=$record->include_in_faq}
         {control type="buttongroup" submit="Save FAQ"|gettext cancel="Cancel"|gettext}
-    {/form} 
+    {/form}
 </div>

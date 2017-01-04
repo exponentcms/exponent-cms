@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -39,7 +39,7 @@ class faq extends expRecord {
             'submitter_email'=>array('message'=>'The email address you entered does not appear to be valid.'),
         )
    );
-        
+
 }
 
 ?>

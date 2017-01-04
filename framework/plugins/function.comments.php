@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -50,8 +50,8 @@ function smarty_function_comments($params,&$smarty) {
     $require_approval = empty($params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $params['require_approval'];
     $require_notification = empty($params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $params['require_notification'];
     $notification_email = empty($params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $params['notification_email'];
-    
-	renderAction(array('controller'=>'expComment', 
+
+	renderAction(array('controller'=>'expComment',
 			'action'=>'showComments',
 //			'content_id'=>$params['content_id'],
 //			'content_type'=>$params['content_type'],

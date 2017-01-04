@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,11 +13,11 @@
  *
  *}
 
-<div class="options dropdown"> 
+<div class="options dropdown">
     {$gid=$group->id}
     {if isset($selected.$gid)}
         {control id="options`$group->id`" type=dropdown name="options[`$group->id`][]" label=$group->title items=$options includeblank=$includeblank value=$selected.$gid.0 required=$required}
-    {else}    
+    {else}
         {control id="options`$group->id`" type=dropdown name="options[`$group->id`][]" label=$group->title items=$options includeblank=$includeblank value=$default required=$required}
     {/if}
 </div>

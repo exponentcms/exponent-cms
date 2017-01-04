@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -122,7 +122,7 @@ class passthru extends billingcalculator {
 
     function userFormUpdate($params) {
         //eDebug($params,true);
-        //eturn array('order_type'=>$params['order_type'],'order_status'=>$params['order_status'],'sales_rep_1_id'=>$params['sales_rep_1_id'],'sales_rep_2_id'=>$params['sales_rep_2_id'],'sales_rep_3_id'=>$params['sales_rep_3_id']);        
+        //eturn array('order_type'=>$params['order_type'],'order_status'=>$params['order_status'],'sales_rep_1_id'=>$params['sales_rep_1_id'],'sales_rep_2_id'=>$params['sales_rep_2_id'],'sales_rep_3_id'=>$params['sales_rep_3_id']);
         $obj = new stdClass();
         $obj->order_type = $params['order_type'];
         $obj->order_status = $params['order_status'];
@@ -162,7 +162,7 @@ class passthru extends billingcalculator {
 //        $opts2 = new stdClass();
 //        $opts2->result = $object;
         //eDebug($opts,true);
-        /*$opts->result = $object;        
+        /*$opts->result = $object;
         $opts->cc_number = 'xxxx-xxxx-xxxx-'.substr($opts->cc_number, -4);*/
         $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
         $this->createBillingTransaction($billingmethod, number_format(0, 2, '.', ''), $opts->result, $trax_state);

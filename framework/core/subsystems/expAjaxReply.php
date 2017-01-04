@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,7 +36,7 @@ class expAjaxReply {
 	public function send() {
 		if (!expJavascript::inAjaxAction()) {
 			if (isset($this->redirecturl)) {
-				redirect_to($this->redirecturl);	
+				redirect_to($this->redirecturl);
 			}
 		} else {
 			if ($p = expJavascript::requiresJSON()) {

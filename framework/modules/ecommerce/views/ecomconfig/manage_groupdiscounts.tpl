@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -45,7 +45,7 @@
 			</tr>
 		</tbody>
 	</table>
-	
+
 	{if $group_discounts|@count > 0}
 	<h2>{'Modify existing group discount'|gettext}</h2>
 	{permissions}

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,7 +26,7 @@
 	        <li><a href="#tab2"><em>{'Shipping Methods'|gettext}</em></a></li>
 	        <li><a href="#tab3"><em>{'Shipping Origin'|gettext}</em></a></li>
 	        <li><a href="#tab4"><em>{'Packaging Defaults'|gettext}</em></a></li>
-        </ul>            
+        </ul>
         <div class="yui-content">
 	        <div id="tab1">
 	            {control type="text" name="username" label="UPS Username"|gettext value=$calculator->configdata.username required=1}

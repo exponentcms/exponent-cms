@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,7 +52,7 @@ class expValidator {
 	public static function numericality_of($field, $object, $opts) {
         if (is_numeric($object->$field)) {
             return true;
-        } else { 
+        } else {
             return ucwords($field).' must be a valid number.';
         }
     }
@@ -68,10 +68,10 @@ class expValidator {
 	public static function alphanumericality_of($field, $object, $opts) {
         $reg = "#[^a-z0-9\s-_)(/]#i";
         $count = preg_match($reg, $object->$field, $matches);
-        
+
         if ($count > 0){
             return ucwords($field).' contains invalid characters.';
-        } else { 
+        } else {
             return true;
         }
     }
@@ -116,7 +116,7 @@ class expValidator {
 	 * @param $opts
 	 */
 	public static function confirmation_of($field, $object, $opts) {
-        //STUB::TODO        
+        //STUB::TODO
     }
 
 	/**
@@ -125,7 +125,7 @@ class expValidator {
 	 * @param $opts
 	 */
 	public static function format_of($field, $object, $opts) {
-        //STUB::TODO    
+        //STUB::TODO
     }
 
 	/**
@@ -141,7 +141,7 @@ class expValidator {
             return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field)." must be longer than ".$opts['length']." characters long.";
         } else {
             return true;
-        } 
+        }
     }
 
 	/**
@@ -177,7 +177,7 @@ class expValidator {
 	public static function is_valid_zipcode($field, $object, $opts) {
         $match = array();
         if($object->country != 223) return true; //if non-us, than we won't validate the zip
-        
+
 		$pattern = "/^\d{5}([\-]\d{4})?$/";
 		if (!preg_match($pattern, $object->$field, $match, PREG_OFFSET_CAPTURE)) {
 			return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field)." is not a valid US zip code.";
@@ -213,14 +213,14 @@ class expValidator {
      *
      * @return bool|string
      */
-    public static function is_valid_state($field, $object, $opts) {        
+    public static function is_valid_state($field, $object, $opts) {
         if(($object->state == -2 && !empty($object->non_us_state)) || $object->country != 223 || $object->state > 0) {
             return true; //supplied a non-us state/province, so we're OK
         } else {
             return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field)." is not a valid US state abbreviation.";
         }
     }
-    
+
 	/**
      * Checks if object field contains a valude email address
      *
@@ -237,7 +237,7 @@ class expValidator {
         //
         if(self::isValidEmail($email))
         {
-            return true; 
+            return true;
         }
         else
         {
@@ -325,7 +325,7 @@ class expValidator {
           }
           else if (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/', str_replace("\\\\","",$local)))
           {
-             // character not valid in local part unless 
+             // character not valid in local part unless
              // local part is quoted
              if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\","",$local)))
              {
@@ -377,12 +377,12 @@ class expValidator {
             case 'recaptcha':
                 if (empty($params["g-recaptcha-response"])) {
                     self::failAndReturnToForm($msg, $params);  // there was no response
-                } 
-                
+                }
+
                 if (!defined('RECAPTCHA_PRIVATE_KEY')) {
                     self::failAndReturnToForm(gt('reCAPTCHA is not properly configured. Please contact an administrator.'), $params);
                 }
-                
+
                 require_once(BASE . 'external/ReCaptcha/autoload.php');
                 $reCaptcha = new \ReCaptcha\ReCaptcha(RECAPTCHA_PRIVATE_KEY);
 
@@ -442,7 +442,7 @@ class expValidator {
                 break;
             }
         }
-        
+
         if (count($post['_formError']) > 0) {
             self::failAndReturnToForm($post['_formError'], $post);
         }
@@ -456,10 +456,10 @@ class expValidator {
 	 * @param null $post
 	 */
 	public static function failAndReturnToForm($msg='', $post=null) {
-        if (!is_array($msg)) 
+        if (!is_array($msg))
             $msg = array($msg);
         flash('error', $msg);
-        if (!empty($post)) 
+        if (!empty($post))
             expSession::set('last_POST',$post);
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit();
@@ -472,7 +472,7 @@ class expValidator {
 	 */
 	public static function setErrorField($field) {
         $errors = expSession::get('last_post_errors');
-        if (!in_array($field, $errors)) 
+        if (!in_array($field, $errors))
             $errors[] = $field;
         expSession::set('last_post_errors', $errors);
     }
@@ -485,10 +485,10 @@ class expValidator {
 	 * @param null $post
 	 */
 	public static function flashAndReturnToForm($queue='message', $msg, $post=null) {
-        if (!is_array($msg)) 
+        if (!is_array($msg))
             $msg = array($msg);
         flash($queue, $msg);
-        if (!empty($post)) 
+        if (!empty($post))
             expSession::set('last_POST',$post);
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit();

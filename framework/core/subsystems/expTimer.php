@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,21 +36,21 @@ class expTimer {
     var $endtime     = 0;
     var $elapsed     = 0;
     var $timername   = "Exponent Internal Timer";
-    
+
     public function __construct($start = true) {
         if($start) $this->start();
     }
-    
+
     public function start() {
         $this->starttime = $this->_time();
     }
-    
+
     /*
      * reset/restort timer and return current time
      */
     public function stop() {
         $this->endtime = $this->_time();
-        $this->_compute();    
+        $this->_compute();
         $ret = $this->elapsed();
         $this->clear();
         $this->start();
@@ -62,7 +62,7 @@ class expTimer {
      */
     public function mark($reset = false) {
         $this->endtime = $this->_time();
-        $this->_compute();    
+        $this->_compute();
         $ret = $this->elapsed();
         if ($reset) {
             $this->clear();
@@ -70,7 +70,7 @@ class expTimer {
         }
         return $ret;
     }
-    
+
     /*
      * zeroize all timer values
      */
@@ -80,29 +80,29 @@ class expTimer {
         $this->elapsed     = 0;
         $this->timername   = "Not Named";
     }
-    
+
     /*
      * return elapsed time
      */
     public function elapsed() {
         return $this->elapsed;
     }
-    
+
     public function setTimerName($name) {
         $this->timername = $name;
     }
-    
+
     public function getTimerName() {
         return $this->timername;
     }
-    
+
     private function _time() {
-        $mtime = microtime(); 
-        $mtime = explode(' ', $mtime); 
-        $mtime = $mtime[1] + $mtime[0]; 
-        return $mtime; 
+        $mtime = microtime();
+        $mtime = explode(' ', $mtime);
+        $mtime = $mtime[1] + $mtime[0];
+        return $mtime;
     }
-    
+
     private function _compute() {
         $this->elapsed = (($this->endtime) - ($this->starttime));
     }

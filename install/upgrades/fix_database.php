@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -47,7 +47,7 @@ class fix_database extends upgradescript {
 	function needed() {
 		return true;  // run this script
 	}
-	
+
 	/**
 	 * searches the database for possible problems and attempts to fix them
 	 * @return bool

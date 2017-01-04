@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -23,14 +23,14 @@
  */
 
 /**
- * Smarty {simplenote} function plugin 
- * 
+ * Smarty {simplenote} function plugin
+ *
  * Type:     function<br>
  * Name:     simplenote<br>
  * Purpose:  Include the SimpleNote Attachable Item on the page.<br>
- * 
+ *
  * @example {simplenote content_type="product" content_id=$record->id}
- * 
+ *
  * @param array $params
  * @param mixed $smarty
  * @return string

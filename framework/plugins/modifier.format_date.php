@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -39,7 +39,7 @@ function smarty_modifier_format_date($timestamp,$format=DISPLAY_DATE_FORMAT) {
 	// reference the PHP_OS constant to figure that one out.
 	if (strtolower(substr(PHP_OS,0,3)) == 'win') {
 		// We are running on a windows platform.  Run the replacements
-		
+
 		// Preserve the '%%'
 		$toks = explode('%%',$format);
 		for ($i = 0, $iMax = count($toks); $i < $iMax; $i++) {

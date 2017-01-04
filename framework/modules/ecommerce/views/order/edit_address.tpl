@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -49,7 +49,7 @@
         {control type=text name='address[address1]' label="Street Address"|gettext value=$record->address1 required=true}
         {control type=text name='address[address2]' label="Apt/Suite #"|gettext value=$record->address2}
         {control type=text name='address[city]' label="City"|gettext value=$record->city required=true}
-        
+
         {*{control type=state name='address[state]' label="*"|cat:"State" includeblank="-- Choose a State --"|gettext default=$record->state add_other=true all_us_territories=true exclude="6,8,10,17,30,46,50"}*}
         {*{control type=text name='address[non_us_state]' label="&#160;"|cat:("State/Province if non-US"|gettext) value=$record->non_us_state}*}
         {*{control type=country name='address[country]' label="&#160;"|cat:("Country"|gettext) default=$record->country|default:223}*}

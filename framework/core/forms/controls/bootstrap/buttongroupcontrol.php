@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -54,7 +54,7 @@ class buttongroupcontrol extends formcontrol {
 		if ($this->submit . $this->reset . $this->cancel == "") return "";
 		$html = "<div id=\"".$name."Control\" class=\"control buttongroup".$disabled."\">";
 		$html .= $this->controlToHTML($name);
-		$html .= "</div>";			
+		$html .= "</div>";
 		return $html;
 	}
 
@@ -117,7 +117,7 @@ class buttongroupcontrol extends formcontrol {
 //		    "corecss"=>"button",
 //		    )
 //		);
-		
+
 		return $html;
 	}
 

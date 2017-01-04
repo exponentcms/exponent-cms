@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -43,8 +43,8 @@
                                 {icon img='delete.png' action=delete id=$listing->id title="Delete `$listing->title`"}
                             {/if}
                         </div>
-                    {/permissions}  
-                </td>                   
+                    {/permissions}
+                </td>
             </tr>
             {/foreach}
         </tbody>

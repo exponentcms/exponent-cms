@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,18 +22,18 @@
  */
 class optiongroup extends expRecord {
 	public $has_many = array('option');
-   
+
     public $default_sort_field = 'rank';
     public $default_sort_direction = 'ASC';
     public $input_needed = false;
-   
+
 //    protected $attachable_item_types = array();
-	
+
 	public $validates = array(
 		'presence_of'=>array(
 			'title'=>array('message'=>'Name is a required field.'),
 		));
-        
+
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {
         global $db;
 
@@ -44,16 +44,16 @@ class optiongroup extends expRecord {
             $this->timesImplemented = 0;
         }
 
-        //sort the options based on the master sort order 
+        //sort the options based on the master sort order
         if(!empty($this->id))
-        {               
+        {
             foreach ($this->option as &$opt)
             {
                 $om = new option_master($opt->option_master_id);
                 $opt->rank = $om->rank;
                 if (!empty($opt->show_input))
                     $this->input_needed = true;
-            }            
+            }
             usort($this->option, array("optiongroup_master", "sortOptions"));
         }
         if (!empty($this->product_id))
@@ -81,39 +81,39 @@ class optiongroup extends expRecord {
         $obj->title = $this->title;
         $obj->allow_multiple = $this->allow_multiple;
         $obj->required = $this->required;
-        $obj->rank = $this->rank;  
-        
+        $obj->rank = $this->rank;
+
         eDebug( $obj->rank);
         if(empty($obj->rank))
         {
-            $obj->rank = $db->max('optiongroup','rank', null, "product_id=" . $this->product_id) + 1 ;      
+            $obj->rank = $db->max('optiongroup','rank', null, "product_id=" . $this->product_id) + 1 ;
         }
         eDebug( $obj->rank);
-        if (empty($obj->id)) 
-        {   
+        if (empty($obj->id))
+        {
             $this->id = $db->insertObject($obj, 'optiongroup');
         }
-        else {            
-            $db->updateObject($obj, 'optiongroup');   
-        } 
-           
+        else {
+            $db->updateObject($obj, 'optiongroup');
+        }
+
     }
-    
+
     public function hasEnabledOptions()
     {
-        if(empty($this->option)) return false;                
+        if(empty($this->option)) return false;
         foreach ($this->option as $o)
         {
-            if ($o->enable) return true;            
+            if ($o->enable) return true;
         }
         return false;
     }
-    
+
     static function sortOptiongroups($a,$b)
     {
         if ($a->rank < $b->rank) return -1;
         else if ($a->rank > $b->rank) return 1;
-        else if ($a->rank == $b->rank) return 0; 
+        else if ($a->rank == $b->rank) return 0;
     }
 
 }

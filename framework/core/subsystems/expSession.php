@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -62,15 +62,15 @@ class expSession {
     public static function deleteVar($var) {
         self::un_set($var);
     }
-    
+
     public static function setCache($params=array()) {
         $_SESSION[SYS_SESSION_KEY]['cache'][$params['module']] = $params['val'];
     }
-    
+
     public static function setTableCache($tablename, $desc) {
         $_SESSION[SYS_SESSION_KEY]['cache']['table_descriptions'][$tablename] = $desc;
     }
-    
+
     public static function getTableCache($tablename) {
         if (isset($_SESSION[SYS_SESSION_KEY]['cache']['table_descriptions'][$tablename])) {
             return $_SESSION[SYS_SESSION_KEY]['cache']['table_descriptions'][$tablename];
@@ -78,7 +78,7 @@ class expSession {
             return null;
         }
     }
-    
+
     public static function issetTableCache($tablename) {
         return isset($_SESSION[SYS_SESSION_KEY]['cache']['table_descriptions'][$tablename]) ? true : false;
     }

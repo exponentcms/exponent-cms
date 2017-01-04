@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,7 +26,7 @@ class shippingspeeds extends expRecord {
 		'presence_of'=>array(
 			'speed'=>array('message'=>'Shipping speed is a required field.'),
 		));
-	
+
 }
 
 ?>

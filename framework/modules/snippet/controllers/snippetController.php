@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -41,7 +41,7 @@ class snippetController extends expController {
 
     static function displayname() { return gt("Code Snippets"); }
     static function description() { return gt("Use this to easily place snippets of code, i.e. Javascript, embedded video, etc, on your site."); }
-	
+
 	public function showall() {
 	    expHistory::set('viewable', $this->params);
 		$where = $this->aggregateWhereClause();
@@ -54,7 +54,7 @@ class snippetController extends expController {
 		assign_to_template(array(
             'items'=>$items
         ));
-	}	
+	}
 
 	public function showall_highlight() {
 	    expHistory::set('viewable', $this->params);
@@ -63,7 +63,7 @@ class snippetController extends expController {
 //		$items = $this->text->find('all', $where, $order);
 		$items = $this->snippet->find('all', $where, $order);
 		foreach ($items as $item) {
-			$item->body = highlight_string($item->body, true); 
+			$item->body = highlight_string($item->body, true);
 		}
 		assign_to_template(array(
             'items'=>$items

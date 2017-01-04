@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -80,7 +80,7 @@ class orderitem extends expRecord {
 
     public function getCartSummary() {
         // if (!empty($this->user_input_fields)) {
-        //     return "<span style='font-style:italic'>SKU:" . $this->product->model . "</span><br/>"; // . 
+        //     return "<span style='font-style:italic'>SKU:" . $this->product->model . "</span><br/>"; // .
         //     // "<p style='font-size:10px; line-height: 110%'>" . $this->getUserInputFields() . "</p>";
         // }else{
         return empty($this->product->model) ? "" : "<div style='font-style:italic'>SKU:" . $this->product->model . "</div>";
@@ -110,22 +110,22 @@ class orderitem extends expRecord {
         return $optgrp->title . ": " . $option->title;
     }
 
-    /*function getPriceWithOptions() {  
+    /*function getPriceWithOptions() {
         //$opts = expUnserialize($this->options);
         //eDebug($this,true) ;
-        $price = $this->product->getBasePrice(); 
+        $price = $this->product->getBasePrice();
         if (count($this->opts))
         {
             foreach ($this->opts as $opt) {
                 $selected_option = new option($opt[0]);
                 $cost = $selected_option->modtype == '$' ? $selected_option->amount :  $this->product->getBasePrice() * ($selected_option->amount * .01);
-                $cost = $selected_option->updown == '+' ? $cost : $cost * -1;                      
+                $cost = $selected_option->updown == '+' ? $cost : $cost * -1;
                 $price += $cost;
                 //$options[] = array($selected_option->id,$selected_option->title,$selected_option->modtype,$selected_option->updown,$selected_option->amount);
             }
         }
         return $price;
-        
+
     }*/
 
     function getWeight() {
@@ -141,7 +141,7 @@ class orderitem extends expRecord {
     }
 
     function merge($params) {
-        // check to see if this item was in the old cart we are merging..if so we will 
+        // check to see if this item was in the old cart we are merging..if so we will
         // up tick the quantity...otherwise we will just add the item to the cart.
         $existing_item = $this->find('first', "orders_id=" . $params['orders_id'] . " AND product_id=" . $this->product_id . " AND product_type='" . $this->product_type . "' AND options='" . $this->options . "'");
         if (empty($existing_item)) {

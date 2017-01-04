@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -60,7 +60,7 @@ function smarty_function_yuimenubar($params,&$smarty) {
         }
 		YAHOO.util.Event.onDOMReady(buildmenu);
     ';
-	
+
 	expJavascript::pushToFoot(array(
 	    "unique"=>"yuimenubar-".$params['buildon'],
 	    "yui2mods"=>"menu",
@@ -68,7 +68,7 @@ function smarty_function_yuimenubar($params,&$smarty) {
 	    "content"=>$menu,
 	    "src"=>""
 	 ));
-	
+
 }
-	
+
 ?>

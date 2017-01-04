@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,7 +16,7 @@
 <div class="module notfound search-results">
     <h1>{$smarty.const.SITE_404_TITLE}</h1>
     {$smarty.const.SITE_404_HTML}
-    
+
     {if $page->records|@count > 0}
         <h2>{'Could this be what you are looking for'|gettext}?</h2>
         <span class="searched_for">

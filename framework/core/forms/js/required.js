@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -62,10 +62,10 @@ function checkRequired(locForm) {
 					for (var i=0; i<document.form.group1.length; i++)  {
                         if (document.form.group1[i].checked)  {
                             found_it = document.form.group1[i].value //set found_it equal to checked button's value
-                        } 
-                    }       
+                        }
+                    }
 				} else {
-				    //alert (locForm.elements[field].type);				    
+				    //alert (locForm.elements[field].type);
 					if (val == "") {
 						locForm.elements[field].focus();
 						alert(decodeURIComponent(locForm.elements[field].getAttribute("caption")) + " is a required field.");

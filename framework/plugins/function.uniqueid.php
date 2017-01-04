@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -41,10 +41,10 @@ function smarty_function_uniqueid($params,&$smarty) {
     } else {
         $id = $randstr;
     }
-    
+
     if (!empty($params['prepend'])) $id = $params['prepend'].$id;
-    
-    if (isset($params['assign'])){ 
+
+    if (isset($params['assign'])){
         $smarty->assign($params['assign'],$id);
     } else {
         echo $id;

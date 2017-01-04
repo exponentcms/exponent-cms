@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -120,7 +120,7 @@ class forms_control extends expRecord {
 
         $db->switchValues($this->tablename, 'rank', $newrank, $this->rank, "forms_id='" . $this->forms_id . "'");
     }
-    
+
 }
 
 ?>

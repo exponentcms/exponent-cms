@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,7 +26,7 @@ EXPONENT.tv = YAHOO.widget.TreeView;
 
 var refreshDD = function () {
     dds = YAHOO.util.Dom.getElementsByClassName("dragtable");
-    
+
     for (var i=0; i<dds.length; i++ ){
         //Y.log(dds[i].id);
         new EXPONENT.DragDropTree(dds[i].id.replace("dragtable",""));
@@ -85,7 +85,7 @@ var buildContextMenu = function(div, addable) {
     // function editUserPerms (){
     //  window.location="{/literal}{$smarty.const.PATH_RELATIVE}{literal}index.php?module=navigation&_common=1&action=userperms&int="+currentMenuNode.data.id;
     // }
-    // 
+    //
     // function editGroupPerms (){
     //  window.location="{/literal}{$smarty.const.PATH_RELATIVE}{literal}index.php?module=navigation&_common=1&action=groupperms&int="+currentMenuNode.data.id;
     // }
@@ -129,7 +129,7 @@ var buildContextMenu = function(div, addable) {
                                                     itemdata:navoptions,
                                                     lazyload: true
                                                      });
-    oContextMenu.subscribe("triggerContextMenu", onTriggerContextMenu); 
+    oContextMenu.subscribe("triggerContextMenu", onTriggerContextMenu);
 }
 
 EXPONENT.DragDropTree = function(id, sGroup, config) {
@@ -152,18 +152,18 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
         var real = this.getEl();
         var nodebeingdragged = tree.getNodeByElement(YAHOO.util.Dom.get(real.id));
         nodebeingdragged.collapse();
-        
+
         var draglabel = YAHOO.util.Dom.get(real.id.replace("dragtable","ygtvlabelel")).innerHTML;
         this.ddclassindicator = "nodrop";
         proxy.innerHTML = "<div id=\"dropindicator\" class=\""+this.ddclassindicator+"\">&#160;</div><span id=\"draglable\">"+draglabel+"</span>";
         this.setDelta(-10,-10);
-    
+
         YAHOO.util.Dom.setStyle(proxy, 'width', 'auto');
         YAHOO.util.Dom.setStyle(proxy, 'height', 'auto');
         YAHOO.util.Dom.setStyle(proxy, 'border', '2px solid #669');
         YAHOO.util.Dom.setStyle(proxy, 'border-width', '1px 2px 2px 1px');
         YAHOO.util.Dom.setStyle(proxy, 'background', '#fff');
-    
+
         this.destTop = [0,0];
         this.destMiddle = [0,0];
         this.destBottom = [0,0];
@@ -179,13 +179,13 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
                 YAHOO.util.Dom.addClass("dragtable"+tree._nodes[n].children[tree._nodes[n].children.length-1].index, 'bottomoflist')
             };
         }
-    
+
         DDM.refreshCache();
     },
 
     onDrag: function(e){
         this.mousepos = YAHOO.util.Event.getXY(e);
-    
+
         if (this.curHovEl!=0){
             if (this.mousepos[1]>=this.destTop[0] && this.mousepos[1]<=this.destTop[1]) {
                 YAHOO.util.Dom.setStyle(this.curHovEl, 'background','url('+EXPONENT.ICON_RELATIVE+'/dhr.gif) repeat-x 0 0 #cee2ef');
@@ -211,15 +211,15 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
         }
         var oldclass = YAHOO.util.Dom.get('dropindicator').getAttribute("class");
         YAHOO.util.Dom.replaceClass('dropindicator',oldclass,this.ddclassindicator);
-    
+
         //Y.log(YAHOO.util.Dom.get('dropindicator').getAttribute("class"));
-    
+
     },
 
     onDragOver: function(e, id) {
         var srcEl = this.getEl();
         this.curHovEl = Dom.get(id);
-    
+
         var destY = Math.floor(YAHOO.util.Dom.getY(this.curHovEl));
         var destHeight = parseInt(YAHOO.util.Dom.getStyle(this.curHovEl, 'height'));
         var destDivide = Math.floor(destHeight/3);
@@ -250,16 +250,16 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
         var dragSecId = srcEl.getAttribute("id").replace("section","");
         var draggedNode = tree.getNodeByElement(YAHOO.util.Dom.get(this.id));
         var droppedOnNode = tree.getNodeByElement(YAHOO.util.Dom.get(id));
-    
+
         var allnodes = YAHOO.util.Dom.getElementsByClassName('dragtable', 'div');
-    
+
         YAHOO.util.Dom.removeClass(allnodes, 'putinbetween');
         YAHOO.util.Dom.removeClass(allnodes, 'dropattop');
         YAHOO.util.Dom.removeClass(allnodes, 'dropatbottom');
         YAHOO.util.Dom.removeClass(allnodes, 'addtome');
         YAHOO.util.Dom.setStyle(id, 'background','none');
-    
-    
+
+
         if (this.mousepos[1]>=this.destTop[0] && this.mousepos[1]<=this.destTop[1]) {
             this.moveNode(draggedNode,droppedOnNode,"addbefore");
         }
@@ -277,14 +277,14 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
         var real = this.getEl();
 
         Dom.setStyle(proxy, "visibility", "");
-        var a = new YAHOO.util.Motion( 
-            proxy, { 
-                points: { 
+        var a = new YAHOO.util.Motion(
+            proxy, {
+                points: {
                     to: Dom.getXY(real)
                 }
-            }, 
-            0.2, 
-            YAHOO.util.Easing.easeOut 
+            },
+            0.2,
+            YAHOO.util.Easing.easeOut
         );
 
         var proxyid = proxy.id;
@@ -306,7 +306,7 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
             draggedNode.insertBefore(droppedOnNode);
             tree.getRoot().refresh();
         }
-        
+
         if(type=="addafter") {
             tree.popNode(draggedNode);
             draggedNode.insertAfter(droppedOnNode);
@@ -323,7 +323,7 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
             tree.getRoot().refresh();
         }
         var iUrl = EXPONENT.PATH_RELATIVE+"index.php?ajax_action=1&controller="+applicationModule+"&action=reorder";
-        YAHOO.util.Connect.asyncRequest('POST', iUrl, 
+        YAHOO.util.Connect.asyncRequest('POST', iUrl,
         {
             success : function (o){
                 refreshDD();
@@ -333,14 +333,14 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
             },
             timeout : 50000
         },"move="+draggedNode.data.id+"&target="+droppedOnNode.data.id+"&type="+type);
-        
+
         refreshDD();
     }
 });
 
 YAHOO.widget.TaskNode = function(oData, oParent, expanded, checked, obj) {
 
-    if (oData) { 
+    if (oData) {
         this.init(oData, oParent, expanded);
         this.setUpLabel(oData);
         this.href = obj.href;
@@ -389,7 +389,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
          // the parent's display state
          if (checked && checked === true) {
              this.check();
-         // otherwise the parent needs to be updated only if its checkstate 
+         // otherwise the parent needs to be updated only if its checkstate
          // needs to change from fully selected to partially selected
          } else if (this.parent && 2 === this.parent.checkState) {
               this.updateParent();
@@ -399,7 +399,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
          /**
           * Custom event that is fired when the check box is clicked.  The
           * custom event is defined on the tree instance, so there is a single
-          * event that handles all nodes in the tree.  The node clicked is 
+          * event that handles all nodes in the tree.  The node clicked is
           * provided as an argument.  Note, your custom node implentation can
           * implement its own node specific events this way.
           *
@@ -421,23 +421,23 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
       * @for YAHOO.widget.TaskNode
       * @type string
       */
-     getCheckElId: function() { 
-         return "ygtvcheck" + this.index; 
+     getCheckElId: function() {
+         return "ygtvcheck" + this.index;
      },
 
      /**
       * Returns the check box element
       * @return the check html element (img)
       */
-     getCheckEl: function() { 
-         return document.getElementById(this.getCheckElId()); 
+     getCheckEl: function() {
+         return document.getElementById(this.getCheckElId());
      },
 
      /**
       * The style of the check element, derived from its current state
       * @return {string} the css style for the current check state
       */
-     getCheckStyle: function() { 
+     getCheckStyle: function() {
          return "ygtvcheck" + this.checkState;
      },
 
@@ -445,7 +445,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
     /**
       * Invoked when the user clicks the check box
       */
-     checkClick: function(oArgs) { 
+     checkClick: function(oArgs) {
  		var node = oArgs.node;
  		var target = YAHOO.util.Event.getTarget(oArgs.event);
  		if (YAHOO.util.Dom.hasClass(target,'ygtvspacer')) {
@@ -465,14 +465,14 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
      /**
       * Override to get the check click event
       */
-     onCheckClick: function() { 
+     onCheckClick: function() {
          this.logger.log("onCheckClick: " + this);
      },
 
      /**
       * Refresh the state of this node's parent, and cascade up.
       */
-     updateParent: function() { 
+     updateParent: function() {
          var p = this.parent;
 
          if (!p || !p.updateParent) {
@@ -514,7 +514,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
       * If the node has been rendered, update the html to reflect the current
       * state of the node.
       */
-     updateCheckHtml: function() { 
+     updateCheckHtml: function() {
          if (this.parent && this.parent.childrenRendered) {
              this.getCheckEl().className = this.getCheckStyle();
          }
@@ -522,10 +522,10 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
 
      /**
       * Updates the state.  The checked property is true if the state is 1 or 2
-      * 
+      *
       * @param state the new check state
       */
-     setCheckState: function(state) { 
+     setCheckState: function(state) {
          this.checkState = state;
          this.checked = (state > 0);
      },
@@ -533,7 +533,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
      /**
       * Check this node
       */
-     check: function() { 
+     check: function() {
          this.logger.log("check");
          this.setCheckState(2);
          for (var i=0, l=this.children.length; i<l; i=i+1) {
@@ -549,7 +549,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
      /**
       * Uncheck this node
       */
-     uncheck: function() { 
+     uncheck: function() {
          this.setCheckState(0);
          for (var i=0, l=this.children.length; i<l; i=i+1) {
              var c = this.children[i];
@@ -567,7 +567,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
      },
 
      // Overrides YAHOO.widget.TextNode
-     getNodeHtml: function() {                                                                                                                                           
+     getNodeHtml: function() {
          var sb = [];
          var getNode = 'EXPONENT.tv.getNode(\'' +
                          this.tree.id + '\',' + this.index + ')';
@@ -579,7 +579,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
          }
          if (this.className) {
              sb[sb.length] = ' ' + this.className;
-         }           
+         }
          sb[sb.length] = '"><tr class="ygtvrow">';
 
          for (var i=0;i<this.depth;++i) {
@@ -593,7 +593,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
              sb[sb.length] = '"><a href="#" class="ygtvspacer" style="display:block;text-decoration:none;">&#160;</a></td>';
          }
 
-         sb[sb.length] = '<td id="' + this.contentElId; 
+         sb[sb.length] = '<td id="' + this.contentElId;
          sb[sb.length] = '" class="ygtvcell ';
          sb[sb.length] = this.contentStyle  + ' ygtvcontent" ';
          sb[sb.length] = (this.nowrap) ? ' nowrap="nowrap" ' : '';
@@ -642,9 +642,9 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
          sb[sb.length] = ' >';
          //if (this.image != 0) sb[sb.length] = '<img class="filepic" src="'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+this.image+'&amp;w=18&amp;h=18&amp;zc=1">&#160;';
          sb[sb.length] = this.label;
-              
+
          //sb[sb.length] = this.lft+' | '+this.label+'-'+this.id+' | '+this.rgt;
-         
+
          sb[sb.length] = '</a>';
          sb[sb.length] = '</td>';             sb[sb.length] = '</td></tr></table></div>';
 
@@ -660,27 +660,27 @@ EXPONENT.DragDropTree.init = function(div,obj,mod,menu,expandonstart,addable) {
     var root = tree.getRoot();
     var node = [];
     node[0]=root;
-    
+
     for(var o=0; o<obj.length;o++){
         var parent = node[obj[o].parent_id];
         var params = {label:obj[o].title, id:obj[o].id };
         node[obj[o].id] = new YAHOO.widget.TaskNode(params, parent,expandonstart, obj[o].value, obj[o]);
     }
-    
+
     YAHOO.util.Event.on('expandall', 'click', function(e){
         tree.unsubscribe("expandComplete",refreshDD);
         tree.expandAll();
         tree.subscribe("expandComplete",refreshDD);
         refreshDD();
-    });   
-    
+    });
+
     YAHOO.util.Event.on('collapseall', 'click', function(e){
         tree.unsubscribe("collapseComplete",refreshDD);
         tree.collapseAll();
         tree.subscribe("collapseComplete",refreshDD);
         refreshDD();
-    });   
-    
+    });
+
     tree.draw();
     refreshDD();
     tree.createEvent("nodemoved");

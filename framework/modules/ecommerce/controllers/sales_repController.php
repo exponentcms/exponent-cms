@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -27,10 +27,10 @@ class sales_repController extends expController {
     static function author() { return "Fred Dirkse - OIC Group, Inc"; }
     static function hasSources() { return false; }
     static function hasContent() { return false; }
-    
+
     public function manage() {
         expHistory::set('manageable', $this->params);
-        
+
         $page = new expPaginator(array(
 			'model'=>'sales_rep',
 			'where'=>1,
@@ -44,23 +44,23 @@ class sales_repController extends expController {
             'page'=>$page
         ));
     }
-    
+
     public function showall() {
         redirect_to(array('controller'=>'sales_rep', 'action'=>'manage'));
 //        $this->manage();
     }
-    
+
     public function show() {
         redirect_to(array('controller'=>'sales_rep', 'action'=>'manage'));
 //        $this->manage();
     }
-    
+
     /*public function update() {
         global $db;
         //reset others
         if ($this->params['is_default']){
             $o->is_default = false;
-            $db->updateObject($o, 'order_type', 'is_default=1'); 
+            $db->updateObject($o, 'order_type', 'is_default=1');
         }
         parent::update();
     }*/

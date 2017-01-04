@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,10 +26,10 @@ class order_typeController extends expController {
     static function description() { return gt("Manage e-Commerce Order Types"); }
     static function hasSources() { return false; }
     static function hasContent() { return false; }
-    
+
     public function manage() {
         expHistory::set('viewable', $this->params);
-        
+
         $page = new expPaginator(array(
 			'model'=>'order_type',
 			'where'=>1,
@@ -43,17 +43,17 @@ class order_typeController extends expController {
             'page'=>$page
         ));
     }
-    
+
     public function showall() {
         redirect_to(array('controller'=>'order_type', 'action'=>'manage'));
 //        $this->manage();
     }
-    
+
     public function show() {
         redirect_to(array('controller'=>'order_type', 'action'=>'manage'));
 //        $this->manage();
     }
-    
+
     public function update() {
         global $db;
 
@@ -61,7 +61,7 @@ class order_typeController extends expController {
         if ($this->params['is_default']){
             $o = new stdClass();
             $o->is_default = false;
-            $db->updateObject($o, 'order_type', 'is_default=1'); 
+            $db->updateObject($o, 'order_type', 'is_default=1');
         }
         parent::update();
     }

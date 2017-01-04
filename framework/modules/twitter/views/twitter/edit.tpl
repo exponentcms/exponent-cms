@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,5 +19,5 @@
         {control type=hidden name=id value=$record->id}
 	    {control type=textarea cols="60" rows=5 name=body label="Tweet (trimmed to 140 characters)"|gettext value='' focus=1}
         {control type=buttongroup submit="Send Tweet"|gettext cancel="Cancel"|gettext}
-    {/form}   
+    {/form}
 </div>

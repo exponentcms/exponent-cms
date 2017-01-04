@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -66,7 +66,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-jso
                 anim.animate();
             }
         };
-        
+
     var shippingMethod = {
         switchShippingMethodLink : YAHOO.util.Dom.get('shippingmethodoptionslink'),
         servicepicker : YAHOO.util.Dom.get('servicepicker'),
@@ -78,7 +78,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-jso
         ssDisplay : YAHOO.util.Dom.get('cur-calc'),
 //        ajx : new EXPONENT.AjaxEvent(),
         init : function(){
-            
+
             //listen carefully...
             YAHOO.util.Event.on(this.switchShippingMethodLink, 'click', this.showswitcher, this, true);
             YAHOO.util.Event.on(this.servicepicker, 'click', this.serviceswitcher, this, true);
@@ -97,35 +97,35 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-jso
                         targ = targ.parentNode;
                     }
                 }
-                
+
             },this,true);
-            
+
             if (typeof(EXPONENT.onQuantityAdjusted)==="undefined") {
                 EXPONENT.onQuantityAdjusted = new YAHOO.util.CustomEvent('Quantity Adjusted',this,false,false, YAHOO.util.CustomEvent.FLAT);
             }
             //EXPONENT.onQuantityAdjusted.subscribe(this.refreshPrices);
             EXPONENT.onQuantityAdjusted.subscribe(updateService);
-    
+
             this.switchCalc = new YAHOO.widget.Panel("calculators", { width:"250px", visible:false, zindex:55, constraintoviewport:false, close:false,draggable:false } );
             this.switchCalc.render(document.body);
-    
+
             this.switchCalc.beforeShowEvent.subscribe(function(e){
-                this.cfg.setProperty("context",['servicepicker','tl','bl']); 
+                this.cfg.setProperty("context",['servicepicker','tl','bl']);
             });
-            
+
             this.optionPanel();
-            
+
         },
         optionPanel : function(){
             if (this.switchPanelsmo) {this.switchPanelsmo.destroy()}
             this.switchPanelsmo = new YAHOO.widget.Panel("shippingmethodoptions", { width:"250px", visible:false, zindex:56, constraintoviewport:false, close:false,draggable:false } );
             this.switchPanelsmo.render(document.body);
-        
+
             this.switchPanelsmo.beforeShowEvent.subscribe(function(e){
-                this.cfg.setProperty("context",['shippingmethodoptionslink','tl','bl']); 
+                this.cfg.setProperty("context",['shippingmethodoptionslink','tl','bl']);
             });
             this.serviceOptions = YAHOO.util.Dom.get('shpmthdopts');
-            
+
             this.shpmthdopswtch = YAHOO.util.Dom.getElementsByClassName('shpmthdopswtch');
             YAHOO.util.Event.on(this.shpmthdopswtch, 'click', this.selectNewOption, this, true);
             YAHOO.util.Event.on('shippingmethodoptionslink', 'click', this.showswitcher, this, true);
@@ -140,25 +140,25 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-jso
             this.switchCalc.show();
         },
         refreshPrices : function(e){
-            
+
             var ej = new EXPONENT.AjaxEvent();
             ej.subscribe(function (o) {
                 var opts = YAHOO.util.Dom.getElementsByClassName('shpmthdopswtch', 'a');
                 var curop = YAHOO.util.Dom.get('shippingmethodoptionslink');
                 var i=0;
                 for (var val in o.data.methods){
-                    
+
                     if (YAHOO.util.Dom.hasClass(curop, o.data.methods[val].id)) {
                         curop.innerHTML = o.data.methods[val].title+" ($"+o.data.methods[val].cost+")<span></span>";
                     };
-                    
+
                     opts[i].innerHTML = o.data.methods[val].title+" ($"+o.data.methods[val].cost+")";
                     i++;
                 }
-                
+
             },this);
             ej.fetch({action:"listPrices",controller:"shippingController",json:1});
-          }, 
+          },
           selectNewOption : function(e){
               YAHOO.util.Dom.setStyle("shipping-service", 'background', 'url('+EXPONENT.THEME_RELATIVE+'../common/skin/ecom/checkout/loader.gif) 99% 50% no-repeat');
               //checkoutDisable();
@@ -169,9 +169,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-jso
               this.switchPanelsmo.hide();
               //this.udID.innerHTML = "<img style='float:left;margin-right:3px;' src=\""+EXPONENT.THEME_RELATIVE+"images/loader2.gif\">Updating<span></span>";
               this.switchForm = YAHOO.util.Dom.get('shpmthdopts');
-              
+
               var aj = new EXPONENT.AjaxEvent();
-              
+
               aj.subscribe(function (o) {
 
                   YAHOO.util.Dom.get('shprceup').innerHTML = o.data.title + "<br /> ($" + o.data.cost + ")" ;
@@ -188,9 +188,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-jso
               YAHOO.util.Dom.setStyle("shipping-service", 'background', 'url('+EXPONENT.THEME_RELATIVE+'../common/skin/ecom/checkout/loader.gif) 99% 50% no-repeat');
               YAHOO.util.Event.stopEvent(e);
               var targ = YAHOO.util.Event.getTarget(e);
-              
+
               var scid = YAHOO.util.Dom.get('shipcalc_id').value = targ.rel;
-              
+
               this.switchCalc.hide();
               //this.udID.innerHTML = "<img style='float:left;margin-right:3px;' src=\""+EXPONENT.THEME_RELATIVE+"images/loader2.gif\">Updating<span></span>";
               var ajx = new EXPONENT.AjaxEvent();
@@ -201,8 +201,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-jso
               },this);
               ajx.fetch({form:this.serviceForm,json:1});
           }
-    }   
-    
+    }
+
     var giftmessage = {
         init : function () {
             var msgpops = YAHOO.util.Dom.getElementsByClassName('ordermessage', 'a');
@@ -211,17 +211,17 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-jso
             this.msgpanel.render(document.body);
             this.oForm = YAHOO.util.Dom.get("omform");
             YAHOO.util.Event.on(this.oForm, 'submit', this.handleSubmit, this, true);
-            
+
             //this.nosave = YAHOO.util.Dom.get('nosave');
             this.msgto = YAHOO.util.Dom.get('shpmessageto');
             this.msgfrom = YAHOO.util.Dom.get('shpmessagefrom');
             this.msgmsg = YAHOO.util.Dom.get('shpmessage');
-            
+
             //this.nosave.value = 0;
             this.msgpanel.hideEvent.subscribe(function(e){
                 //this.nosave.value = 0;
             },this,true);
-            
+
         },
         popmsgs : function (e) {
             this.msgto.value = "Loading...";
@@ -234,7 +234,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-jso
             var aj = new EXPONENT.AjaxEvent();
             var targ = YAHOO.util.Event.getTarget(e);
             YAHOO.util.Dom.get('shippingmessageid').value = targ.rel;
-            
+
             aj.subscribe(function(o){
                 this.msgto.disabled = false;
                 this.msgfrom.disabled = false;
@@ -244,16 +244,16 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-jso
                 this.msgmsg.value = o.data.message;
             },this);
             aj.fetch({form:this.oForm,json:1});
-            
+
             YAHOO.util.Event.stopEvent(e);
             this.msgpanel.show();
         },
         handleSubmit : function (e) {
             this.nosave.value = 0;
-            
+
             YAHOO.util.Event.stopEvent(e);
             var ajx = new EXPONENT.AjaxEvent();
-            
+
             ajx.subscribe(function(o){
 
             },this);
@@ -261,21 +261,21 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-jso
             this.msgpanel.hide();
         }
     }
-    
+
     var updateService = function (elem){
         //Grab shipping method options
         YAHOO.util.Dom.setStyle("shipping-service", 'background', 'url('+EXPONENT.THEME_RELATIVE+'../common/skin/ecom/checkout/loader.gif) 99% 50% no-repeat');
         var ajx = new EXPONENT.AjaxEvent();
-    
+
         ajx.subscribe(function (o) {
             YAHOO.util.Dom.get('shipping-services').innerHTML = o;
             shippingMethod.optionPanel();
             checkoutEnable();
         });
-    
+
         ajx.fetch({action:"renderOptions",controller:"shipping"});
     }
-    
+
     function unhide() {
         var hiding = YAHOO.util.Dom.getElementsByClassName('hide');
         YAHOO.util.Dom.removeClass(hiding,'hide');
@@ -285,7 +285,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-jso
         var tohide = YAHOO.util.Dom.getElementsByClassName('tohide');
         YAHOO.util.Dom.setStyle(tohide, 'display', 'none');
     }
-    
+
     //initialize things
     function inititCheckout(){
         hide();

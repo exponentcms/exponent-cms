@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -32,12 +32,12 @@ class banner extends expRecord {
         'presence_of'=>array(
             'url'=>array('message'=>'URL is a required field.')
         ));
-        
+
     public function increaseImpressions() {
         $this->impressions++;
         $this->save();
     }
-    
+
     public function increaseClicks() {
         $this->clicks++;
         $this->save();

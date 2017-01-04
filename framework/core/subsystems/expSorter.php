@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -21,7 +21,7 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
- 
+
 class expSorter {
 
     public $sort_array = array();
@@ -30,12 +30,12 @@ class expSorter {
     public $ignore_case = false;
 	public $sort_type = '';  // ''=usort, 'a'=uasort, 'k'=uksort
 
-    
+
     public function __construct($params) {
-        if (isset($params['array'])) $this->sort_array = $params['array']; 
+        if (isset($params['array'])) $this->sort_array = $params['array'];
         if (isset($params['sortby'])) $this->sort_object_property = $params['sortby'];
         if (isset($params['order'])) $this->sort_order = $params['order'];
-        if (isset($params['ignore_case'])) $this->ignore_case = $params['ignore_case'];   
+        if (isset($params['ignore_case'])) $this->ignore_case = $params['ignore_case'];
         if (isset($params['type'])) $this->sort_type = $params['type'];
 
         if ($this->sort_order == 'ASC') {
@@ -52,7 +52,7 @@ class expSorter {
         }
 
     }
-    
+
     public function sortASC($a,$b) {
         $col = $this->sort_object_property;
         if (is_string($a->$col) && $this->ignore_case) {
@@ -60,7 +60,7 @@ class expSorter {
         } else {
             $aval = $a->$col;
         }
-        
+
         if (is_string($b->$col) && $this->ignore_case) {
             $bval = strtolower($b->$col);
         } else {
@@ -68,22 +68,22 @@ class expSorter {
         }
         return ($aval < $bval ? -1 : 1);
     }
-    
+
     public function sortDESC($a,$b) {
         $col = $this->sort_object_property;
-        
+
         if (is_string($a->$col) && $this->ignore_case) {
             $aval = strtolower($a->$col);
         } else {
             $aval = $a->$col;
         }
-        
+
         if (is_string($b->$col) && $this->ignore_case) {
             $bval = strtolower($b->$col);
         } else {
             $bval = $b->$col;
         }
-        
+
         return ($aval > $bval ? -1 : 1);
     }
 
@@ -95,7 +95,7 @@ class expSorter {
 	 */
 	public static function sort($params) {
         if (empty($params['array'])) return array();
-        $sortby = empty($params['sortby']) ? NULL : $params['sortby']; 
+        $sortby = empty($params['sortby']) ? NULL : $params['sortby'];
         $order = empty($params['order']) ? NULL : $params['order'];
         if (empty($sortby)) $sortby = $params['order'];
         if (strstr($order," ")) {

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -20,7 +20,7 @@
 /**
  * Form Template Wrapper
  *
- * This class is used for site wide forms.  
+ * This class is used for site wide forms.
  *
  * @package Subsystems-Forms
  * @subpackage Template

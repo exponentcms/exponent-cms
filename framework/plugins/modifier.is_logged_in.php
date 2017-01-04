@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -34,7 +34,7 @@
  */
 function smarty_modifier_is_logged_in($string) {
 	if(expSession::loggedIn()) {
-		return true; 
+		return true;
 	} else {
 		return false;
 	}

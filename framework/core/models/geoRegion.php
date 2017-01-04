@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,7 +22,7 @@
  */
 class geoRegion extends expRecord {
 	public $table = 'geo_region';
-	
+
 	public function __construct($params=null, $get_assoc=false, $get_attached=false) {
 	    global $db;
 

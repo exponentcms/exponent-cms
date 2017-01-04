@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -127,10 +127,10 @@ class authorizedotnet extends creditcard {
             $data['x_type'] = "AUTH_ONLY";
         }
 
-        //Check if it is test mode and assign the proper url        
+        //Check if it is test mode and assign the proper url
         if ($config['testmode']) {
             $url = "https://test.authorize.net/gateway/transact.dll";
-            //$data["x_test_request"] = "TRUE"; 
+            //$data["x_test_request"] = "TRUE";
             flash('message', gt('Authorize.net is in TEST Mode!'));
 
         } else {
@@ -219,10 +219,10 @@ class authorizedotnet extends creditcard {
             $data['x_email_customer'] = 'FALSE';
         }
 
-        //Check if it is test mode and assign the proper url        
+        //Check if it is test mode and assign the proper url
         if ($config['testmode']) {
             $url = "https://test.authorize.net/gateway/transact.dll";
-            //$data["x_test_request"] = "TRUE"; 
+            //$data["x_test_request"] = "TRUE";
             flash('message', gt('Authorize.net is in TEST Mode!'));
 
         } else {
@@ -304,7 +304,7 @@ class authorizedotnet extends creditcard {
     }
 
 	 function delayed_capture($billingmethod, $amount, $order) {
-	
+
         global $user;
 
         $config = unserialize($this->config);
@@ -314,7 +314,7 @@ class authorizedotnet extends creditcard {
             'x_login'          => $config['username'],
             'x_tran_key'       => $config['transaction_key'],
             'x_type'           => 'PRIOR_AUTH_CAPTURE',
-				
+
             'x_amount'         => $amount,
             'x_card_num'       => substr($opts->cc_number, -4),
 		//		'x_trans_id'       => $transaction_id,
@@ -331,10 +331,10 @@ class authorizedotnet extends creditcard {
             $data['x_email_customer'] = 'FALSE';
         }
 
-        //Check if it is test mode and assign the proper url        
+        //Check if it is test mode and assign the proper url
         if ($config['testmode']) {
             $url = "https://test.authorize.net/gateway/transact.dll";
-            //$data["x_test_request"] = "TRUE"; 
+            //$data["x_test_request"] = "TRUE";
             flash('message', gt('Authorize.net is in TEST Mode!'));
 
         } else {
@@ -371,7 +371,7 @@ class authorizedotnet extends creditcard {
 
         flash('message', gt('Captured Transaction Successfully.'));
         redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $billingmethod->orders_id));
-     
+
     }
 
 	function void_transaction($billingmethod, $order) {
@@ -403,10 +403,10 @@ class authorizedotnet extends creditcard {
             $data['x_email_customer'] = 'FALSE';
         }
 
-        //Check if it is test mode and assign the proper url        
+        //Check if it is test mode and assign the proper url
         if ($config['testmode']) {
             $url = "https://test.authorize.net/gateway/transact.dll";
-            //$data["x_test_request"] = "TRUE"; 
+            //$data["x_test_request"] = "TRUE";
             flash('message', gt('Authorize.net is in TEST Mode!'));
 
         } else {

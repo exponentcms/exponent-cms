@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -19,10 +19,10 @@
  * @subpackage Models
  * @package Modules
  */
- 
+
 class expeAlerts extends expRecord {
     public $table = 'expeAlerts';
-    
+
     public function __construct($params=array()) {
         global $db;
         if ((isset($params['module']) || isset($params['controller'])) && isset($params['src'])) {
@@ -33,28 +33,28 @@ class expeAlerts extends expRecord {
             parent::__construct($params, false, false);
         }
     }
-    
+
     // we are going to override the build and beforeSave functions to
     // make sure the name of the controller is in the right format
     public function build($params=array()) {
         parent::build($params);
         if (!empty($this->module)) $this->module = expModules::getControllerName($this->module);
     }
-    
+
     public function beforeSave() {
         if (!empty($this->module)) $this->module = expModules::getControllerName($this->module);
         parent::beforeSave();
     }
-    
+
     public static function getPendingBySubscriber($id) {
         return self::getBySubscriber($id, true);
     }
-    
+
     public static function getBySubscriber($id, $pending=false) {
         global $db;
-        
+
         $enabled = empty($pending) ? 1 : 0;
-        
+
         // find pending subscriptions  //FIXME, not pulling any items?
         $sql  = 'SELECT e.* FROM '.$db->prefix.'expeAlerts e ';
         $sql .= 'JOIN '.$db->prefix.'expeAlerts_subscribers es ON e.id=es.subscribers_id ';

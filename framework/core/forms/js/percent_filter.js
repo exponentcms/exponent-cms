@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,21 +14,21 @@
  */
 
 function percent_filter_class() {
-	
+
 	this.on_key_press = function(ptObject, evt) {
 		evt = (evt) ? evt : event;
 		sChar = (evt.charCode) ? evt.charCode : evt.keyCode;
-		
+
 		//This will allow backspace to work.
 		for (var n =0; n < g_aIgnore.length; n++) {
 			if (sChar == g_aIgnore[n]) return true;
 		}
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(sChar));
-		
+
 		return !this.isValueIllegal(strNewVal);
 
 	}
-	
+
 	this.onblur = function(ptObject) {
 		ptObject.value = this.FormatPercent(ptObject.value, true);
 		if (ptObject.value != ptObject.previousValue) {
@@ -36,31 +36,31 @@ function percent_filter_class() {
             fireEvent(ptObject,"change");
         }
 	}
-	
+
 	this.onfocus = function(ptObject) {
 		this.previousValue = ptObject.value
 	}
-	
+
 	this.onpaste = function(ptObject, evt) {
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(evt.charCode));
 		alert(strNewVal);
 		return !this.isValueIllegal(strNewVal);
 
 	}
-	
+
 	this.isValueIllegal = function(strValue) {
 		var bIsIllegal = false;
-		
+
 		if (strValue.match(/\%.*\%/) != null) bIsIllegal = true;
 		else if (strValue.match(/\%.+/) != null) bIsIllegal = true;
 		else if (strValue.match(/\..*\./) != null) bIsIllegal = true;
 		else if (parseInt(strValue) > 999) bIsIllegal = true;
 		else if (strValue.match(/\.+\d{5}/) != null) bIsIllegal = true;
 		else if (IsNotNumber(strValue.replace("%", "").replace(" ", ""))) bIsIllegal = true;
-		
+
 		return bIsIllegal;
 	}
-	
+
 	this.FormatPercent = function(strValue, bIncludeDP) {
 		strValue = strValue.replace(/\%/g, "");
 		if (strValue.length != 0) {
@@ -74,7 +74,7 @@ function percent_filter_class() {
 			else if (iDP == 1) strValue += "00";
 			else if (iDP == 2) strValue += "0";
 			else if ((iDP > 2) && (iDP < strValue.length)) strValue =  strValue.substr(0,strValue.length - iDP+5);
-			
+
 			// Ensure number is postfixed
 			strValue = strValue + " %";
 		}

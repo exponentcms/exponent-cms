@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -23,7 +23,7 @@
 	        <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Accepted'|gettext}<br>{'Credit Cards'|gettext}</em></a></li>
 	        <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
 	        <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}</em></a></li>
-        </ul>            
+        </ul>
         <div class="tab-content">
 	        <div id="tab1" role="tabpanel" class="tab-pane fade in active">
 	            {control type="text" name="vendor" label="Vendor (Merchant)"|gettext value=$calculator->configdata.vendor}

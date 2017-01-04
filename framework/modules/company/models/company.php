@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -30,11 +30,11 @@ class company extends expRecord {
 		));
      protected $attachable_item_types = array(
         'content_expFiles'=>'expFile',
-        //'content_expTags'=>'expTag', 
+        //'content_expTags'=>'expTag',
         //'content_expComments'=>'expComment',
         //'content_expSimpleNote'=>'expSimpleNote',
     );
-	
+
 }
 
 ?>

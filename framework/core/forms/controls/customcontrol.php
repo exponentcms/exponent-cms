@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,9 +28,9 @@ if (!defined('EXPONENT')) exit('');
 class customcontrol extends formcontrol {
 
 	var $html;
-	
+
 	static function name() { return "Custom Control"; }
-	
+
 	function __construct($html = "") {
 		$this->html = $html;
 	}

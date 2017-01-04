@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -42,7 +42,7 @@ function smarty_block_page($params,$content,&$smarty, &$repeat) {
 		echo '<fieldset'.$title.'>
                   <legend>'.$description.'</legend>';
 	} else {
-		echo $content;	
+		echo $content;
 		echo '</fieldset>';
 	}
 

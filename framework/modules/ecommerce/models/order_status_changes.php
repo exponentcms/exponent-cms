@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -27,7 +27,7 @@ class order_status_changes extends expRecord {
             'from_status_id'=>array('message'=>'Cound not determine which status this order was being changed from.'),
             'to_status_id'=>array('message'=>'Cound not determine which status this order was being changed to.'),
         ));
-        
+
 }
 
 ?>

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,7 +25,7 @@
         {'aren\'t hurting anything.  If you do not have a good idea of what a table does or why it is there'|gettext}
         {'it is probably best to just leave it.'|gettext}
     </blockquote>
-    
+
     {form action=delete_unused_tables}
         <table class="exp-skin-table">
         <thead>

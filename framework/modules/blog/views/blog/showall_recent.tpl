@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -161,7 +161,7 @@
             {/if}
         </div>
         {/if}
-    {/foreach}    
+    {/foreach}
     {if $page->total_records > $config.headcount}
         {pagelinks paginate=$page more=1 text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
     {/if}

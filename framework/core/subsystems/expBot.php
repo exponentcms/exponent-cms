@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,19 +26,19 @@ class expBot {
 
     public $url = '';
     public $method = 'GET';
-    
+
     public function __construct($params) {
         $this->url = isset($params['url']) ? $params['url'] : '';
         $this->method = isset($params['method']) ? $params['method'] : '';
     }
-    
+
     public function fire() {
         $convo  = $this->method." ".$this->url."&ajax_action=1 HTTP/1.1\r\n";
         if ($this->method == 'POST') $convo .= "Content-Type: multipart/form-data\r\n";
         $convo .= "Host: " . HOSTNAME . "\r\n";
         $convo .= "User-Agent:  ExponentCMS/".EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR.".".EXPONENT_VERSION_REVISION."  Build/".EXPONENT_VERSION_ITERATION." PHP/".phpversion()."\r\n";
         $convo .= "Connection: Close\r\n\r\n";
-        
+
         try {
             $theSpawn = fsockopen(HOSTNAME, 80);
             try {

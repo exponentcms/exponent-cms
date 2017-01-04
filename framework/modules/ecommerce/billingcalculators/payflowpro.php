@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -62,7 +62,7 @@ class payflowpro extends creditcard {
 
     /*function preprocess($billingmethod, $opts, $params)
     {
-       
+
     } */
 
 //    function process($billingmethod, $opts, $params, $invoice_number) {
@@ -178,7 +178,7 @@ class payflowpro extends creditcard {
         $headers[] = "X-VPS-VIT-Client-Version: 0.01"; // For your info
         $headers[] = "X-VPS-VIT-Client-Architecture: x86"; // For your info
         $headers[] = "X-VPS-VIT-Integration-Product: ExponentCMS"; // For your info, would populate with application name
-        $headers[] = "X-VPS-VIT-Integration-Version: 2.0"; // Application version    
+        $headers[] = "X-VPS-VIT-Integration-Version: 2.0"; // Application version
 
         $user_agent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"; // play as Mozilla
         $ch = curl_init();
@@ -193,7 +193,7 @@ class payflowpro extends creditcard {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpstr); //adding POST data
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); //verifies ssl certificate
         curl_setopt($ch, CURLOPT_FORBID_REUSE, true); //forces closure of connection when done
-        curl_setopt($ch, CURLOPT_POST, 1); //data sent as POST 
+        curl_setopt($ch, CURLOPT_POST, 1); //data sent as POST
 
         $result = curl_exec($ch);
 
@@ -324,7 +324,7 @@ class payflowpro extends creditcard {
         $headers[] = "X-VPS-VIT-Client-Version: 0.01"; // For your info
         $headers[] = "X-VPS-VIT-Client-Architecture: x86"; // For your info
         $headers[] = "X-VPS-VIT-Integration-Product: ExponentCMS"; // For your info, would populate with application name
-        $headers[] = "X-VPS-VIT-Integration-Version: 2.0"; // Application version   
+        $headers[] = "X-VPS-VIT-Integration-Version: 2.0"; // Application version
 
         $user_agent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"; // play as Mozilla
         $ch = curl_init();
@@ -339,7 +339,7 @@ class payflowpro extends creditcard {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpstr); //adding POST data
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); //verifies ssl certificate
         curl_setopt($ch, CURLOPT_FORBID_REUSE, true); //forces closure of connection when done
-        curl_setopt($ch, CURLOPT_POST, 1); //data sent as POST 
+        curl_setopt($ch, CURLOPT_POST, 1); //data sent as POST
 
         /*eDebug($config);
         eDebug($nvpstr);
@@ -458,7 +458,7 @@ class payflowpro extends creditcard {
         $headers[] = "X-VPS-VIT-Client-Version: 0.01"; // For your info
         $headers[] = "X-VPS-VIT-Client-Architecture: x86"; // For your info
         $headers[] = "X-VPS-VIT-Integration-Product: ExponentCMS"; // For your info, would populate with application name
-        $headers[] = "X-VPS-VIT-Integration-Version: 2.0"; // Application version   
+        $headers[] = "X-VPS-VIT-Integration-Version: 2.0"; // Application version
 
         $user_agent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"; // play as Mozilla
         $ch = curl_init();
@@ -473,7 +473,7 @@ class payflowpro extends creditcard {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpstr); //adding POST data
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); //verifies ssl certificate
         curl_setopt($ch, CURLOPT_FORBID_REUSE, true); //forces closure of connection when done
-        curl_setopt($ch, CURLOPT_POST, 1); //data sent as POST 
+        curl_setopt($ch, CURLOPT_POST, 1); //data sent as POST
 
         $result = curl_exec($ch);
 
@@ -572,7 +572,7 @@ class payflowpro extends creditcard {
         $headers[] = "X-VPS-VIT-Client-Version: 0.01"; // For your info
         $headers[] = "X-VPS-VIT-Client-Architecture: x86"; // For your info
         $headers[] = "X-VPS-VIT-Integration-Product: ExponentCMS"; // For your info, would populate with application name
-        $headers[] = "X-VPS-VIT-Integration-Version: 2.0"; // Application version   
+        $headers[] = "X-VPS-VIT-Integration-Version: 2.0"; // Application version
 
         $user_agent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"; // play as Mozilla
         $ch = curl_init();
@@ -587,7 +587,7 @@ class payflowpro extends creditcard {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpstr); //adding POST data
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); //verifies ssl certificate
         curl_setopt($ch, CURLOPT_FORBID_REUSE, true); //forces closure of connection when done
-        curl_setopt($ch, CURLOPT_POST, 1); //data sent as POST 
+        curl_setopt($ch, CURLOPT_POST, 1); //data sent as POST
 
         $result = curl_exec($ch);
 
@@ -691,7 +691,7 @@ class payflowpro extends creditcard {
         $headers[] = "X-VPS-VIT-Client-Version: 0.01"; // For your info
         $headers[] = "X-VPS-VIT-Client-Architecture: x86"; // For your info
         $headers[] = "X-VPS-VIT-Integration-Product: ExponentCMS"; // For your info, would populate with application name
-        $headers[] = "X-VPS-VIT-Integration-Version: 2.0"; // Application version   
+        $headers[] = "X-VPS-VIT-Integration-Version: 2.0"; // Application version
 
         $user_agent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"; // play as Mozilla
         $ch = curl_init();
@@ -706,7 +706,7 @@ class payflowpro extends creditcard {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpstr); //adding POST data
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); //verifies ssl certificate
         curl_setopt($ch, CURLOPT_FORBID_REUSE, true); //forces closure of connection when done
-        curl_setopt($ch, CURLOPT_POST, 1); //data sent as POST 
+        curl_setopt($ch, CURLOPT_POST, 1); //data sent as POST
 
         $result = curl_exec($ch);
 
@@ -714,7 +714,7 @@ class payflowpro extends creditcard {
         curl_close($ch);
 
         $response = $this->parseResponse($result); //result array
-        //eDebug($response,true); 
+        //eDebug($response,true);
 //        $object = new stdClass();
         $trax_amount = 0;
         $trax_state = '';

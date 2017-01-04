@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -51,7 +51,7 @@
 		<ul class="yui-nav">
 			<li class="selected"><a href="#tab1">{"Top Search"|gettext}</a></li>
 			<li><a href="#tab2">{"Chart View"|gettext}</a></li>
-		</ul>    
+		</ul>
 		<div id="pane" class="yui-content">
 			<div id="tab1">
 				<table class="exp-skin-table">

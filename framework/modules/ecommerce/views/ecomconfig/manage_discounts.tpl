@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -24,12 +24,12 @@
             <h2>{"Manage Discounts"|gettext}</h2>
             <blockquote>{"Here you can configure discounts to be used in your store."|gettext}</blockquote>
         </div>
-        
+
         {*icon class=edit action=edit_optiongroup_master record=$group}
         {icon class=delete action=delete_optiongroup_master record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"*}
-       
+
         {icon class=add controller="ecomconfig" action="edit_discount" text="Create a New Store Discount"|gettext}
-            
+
         {if $page|@count > 0}
             <h3>{"Modify existing store discounts"|gettext}</h3>
            {pagelinks paginate=$page top=1}

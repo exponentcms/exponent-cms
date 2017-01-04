@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,7 +36,7 @@
 function smarty_function_object_to_js($params,&$smarty) {
 	echo "var ".$params['name']." = new Array();\n";
 	if (isset($params['objects']) && count($params['objects']) > 0) {
-		
+
 		//Write Out DataClass. This is generated from the data object.
 		echo expJavascript::jClass($params['objects'][0],"class_".$params['name']);
 
@@ -44,10 +44,10 @@ function smarty_function_object_to_js($params,&$smarty) {
 		foreach ($params['objects'] as $object) {
 			echo $params['name'].".push(".expJavascript::jObject($object,"class_".$params['name']).");\n";
 			//Stuff in a unique id for reference.
-			echo $params['name']."[".$params['name'].".length-1].__ID = ".$params['name'].".length-1;\n";		
+			echo $params['name']."[".$params['name'].".length-1].__ID = ".$params['name'].".length-1;\n";
 		}
 	}
-	
+
 	return "";
 }
 

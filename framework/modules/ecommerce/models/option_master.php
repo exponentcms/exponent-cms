@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,7 +28,7 @@ class option_master extends expRecord {
         'alphanumericality_of'=>array(
             'title'=>array('message'=>'Option name must only contain alphnumeric characters, spaces, hypens, or dashes.')
 		));
-		
+
 	public function __construct($params=null, $get_assoc=true, $get_attached=true) {
 	    global $db;
 
@@ -41,7 +41,7 @@ class option_master extends expRecord {
         if (!empty($this->product_id))
             $this->grouping_sql = " AND optiongroup_master_id='".$this->optiongroup_master_id."'";
 	}
-    
+
     public function update($params=array())
     {
         global $db;
@@ -49,26 +49,26 @@ class option_master extends expRecord {
         $this->grouping_sql = " AND optiongroup_master_id='".$this->optiongroup_master_id."'";
         //need to accomodate rank so can't call parent
         //eDebug($params, true);
-        //$this->beforeSave();        
+        //$this->beforeSave();
         $obj = new stdClass();
         $obj->optiongroup_master_id = $params['optiongroup_master_id'];
         $obj->title = $params['title'];
-        
+
         $valObj = new option_master($params);
         $valObj->validate();
-        
+
         //if we've made it here, the test validation worked so we can continue
         $obj->id = $params['id'];
-        
-        if (empty($params['id'])) 
+
+        if (empty($params['id']))
         {
-            $obj->rank = $db->max('option_master','rank', null, 'optiongroup_master_id=' . $params['optiongroup_master_id']) + 1 ;   
+            $obj->rank = $db->max('option_master','rank', null, 'optiongroup_master_id=' . $params['optiongroup_master_id']) + 1 ;
             $db->insertObject($obj, 'option_master');
         }
         else {
             $obj->rank = $params['rank'];
-            $db->updateObject($obj, 'option_master');   
-        } 
+            $db->updateObject($obj, 'option_master');
+        }
     }
 
     public function beforeSave() {

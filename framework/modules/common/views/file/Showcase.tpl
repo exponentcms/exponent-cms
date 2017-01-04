@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -65,7 +65,7 @@ margin:{$config.spacing}px;
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var thumbs = Y.all('.thumb-imgs .image-link');
-    
+
     thumbs.on('click',function(e){
         e.halt();
     });
@@ -77,7 +77,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         mainimg.setAttribute('src',EXPONENT.PATH_RELATIVE+"thumb.php?id="+newid+"&w={/literal}{$miw}{literal}&h={/literal}{$miw}{literal}&far=TL&f=jpeg&q={/literal}{$quality|default:75}{literal}");
         mainimg.setAttribute('title',newtitle);
     });
-    //Y.Lightbox.init();    
+    //Y.Lightbox.init();
 });
 {/literal}
 {/script}

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -162,7 +162,7 @@ class creditcard extends billingcalculator {
     //the returned object will be saved in the session and passed to post_process.
     //If need be this could use another method of data storage, as long post_process can get the data.
     function userFormUpdate($params) {
-        //eDebug($params);        
+        //eDebug($params);
         if (!$this->validate_card_number($params['cc_number']) || !$this->validate_card_type($params['cc_number'], $params['cc_type']))
             expValidator::failAndReturnToForm(gt("Either the card number you entered is not a") . " " . $this->cards[$params['cc_type']] . ", " . gt("or the credit card you entered is not a valid credit card number. Please select the proper credit card type and verify the number entered and try again.") . "<br/>" . gt("For your security, your previously entered credit card information has been cleared."));
         if (!$this->validate_card_expire($params['expiration_month'] . substr($params['expiration_year'], 2, 2))) expValidator::failAndReturnToForm(gt("Please enter a valid expiration data.") . "<br/>" . gt("For your security, your previously entered credit card information has been cleared."));
@@ -170,10 +170,10 @@ class creditcard extends billingcalculator {
 
         //eDebug(debug_backtrace(), true);
         //eDebug($params);
-        //this is broke to fuck, as you can't validate more than one type of anything without overwriting it. duh. 
+        //this is broke to fuck, as you can't validate more than one type of anything without overwriting it. duh.
         //so calling twice instead....needs to be  fixed though TODO:
         //expValidator::validate(array('presence_of'=>'cc_number'), $params);
-        //expValidator::validate(array('presence_of'=>'cvv'), $params); 
+        //expValidator::validate(array('presence_of'=>'cvv'), $params);
         $this->opts = new stdClass();
         //$this->opts->first_name = $params["first_name"];
         //$this->opts->last_name = $params["last_name"];

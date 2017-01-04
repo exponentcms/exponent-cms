@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -28,7 +28,7 @@
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         {control type="hidden" name="product_type" value=$record->product_type}
-        
+
         <div id="editproduct-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
 	            <li class="selected"><a href="#tab1"><em>{'General Info'|gettext}</em></a></li>
@@ -37,7 +37,7 @@
 	            <!--li><a href="#tab4"><em>Quantity Info</em></a></li-->
 	            <!--li><a href="#tab5"><em>Shipping Info</em></a></li-->
 	            <li><a href="#tab6"><em>{'Categories'|gettext}</em></a></li>
-            </ul>            
+            </ul>
             <div class="yui-content">
 	            <div id="tab1">
 	                {control type="text" name="model" label="Model #"|gettext value=$record->model focus=1}
