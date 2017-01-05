@@ -601,6 +601,8 @@ abstract class expController {
         if (!empty($this->params['copy'])) {
             $record->id = null;
             if (isset($record->sef_url)) $record->sef_url = null;
+            if (isset($record->publish)) $record->publish = null;
+            if (isset($record->unpublish)) $record->unpublish = null;
         }
         assign_to_template(array(
             'record'     => $record,
