@@ -265,8 +265,8 @@
                     }, 2000);
                 }
         } else if (messageType == "notification") {
-            var notification = new CKEDITOR.plugins.notification(editorInstance, { message: editorInstance.lang.autosave.autoSaveMessage, type: 'success' });
-            notification.show();
+//            var notification = new CKEDITOR.plugins.notification(editorInstance, { message: editorInstance.lang.autosave.autoSaveMessage, type: 'success' });
+//            notification.show();
         }
     }
 
