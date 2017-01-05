@@ -28,6 +28,7 @@ Version 2.4.1 - Specific changes from previous version
 - regression fix (v240) `<meta charset...>` tag wasn't properly closed with quote
 - regression fix event announcement view; edit/delete wasn't passing date_id; added copy command
 - regression fix (v240p2) 404 errors NOT being dispatched unless new optional page redirection support is turned on
+- fix making copies of module items doesn't initialize publish/unpublish dates
 
 #### v240patch5 updates these 3rd party libraries in v240 previous releases:
 - (optional) mPDF to v6.1.2
