@@ -1,3 +1,6 @@
+Version 2.4.1 - Specific changes from previous version
+------------------------------------------------------
+
 #### v241 adds these features to v240 previous releases:
 - add optional syntax highlighting editor support for code snippet module (CodeMirror or Ace editors)
 - activates new ckeditor drag/drop file upload which allows instantly uploading a non-image file to insert the link
@@ -22,7 +25,7 @@
 - adds separate forms showall_portfolio custom view configuration in addition to show item custom view
 
 #### v240patch5 fixes these issues in v240 previous releases:
-- regression fix (v240) <meta charset...> tag wasn't properly closed with quote
+- regression fix (v240) `<meta charset...>` tag wasn't properly closed with quote
 - regression fix event announcement view; edit/delete wasn't passing date_id; added copy command
 - regression fix (v240p2) 404 errors NOT being dispatched unless new optional page redirection support is turned on
 
