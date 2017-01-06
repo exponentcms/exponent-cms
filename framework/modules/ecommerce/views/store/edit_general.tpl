@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -31,8 +31,8 @@
 	{/if}
 {else}
 	{control type="text" name="general[child_rank]" label="Rank"|gettext value=$record->child_rank}
-	{control type="hidden" name="general[parent_id]" value=$record->parent_id}  
-	{control type="hidden" name="general[product_type]" value='childProduct'}  
+	{control type="hidden" name="general[parent_id]" value=$record->parent_id}
+	{control type="hidden" name="general[product_type]" value='childProduct'}
 	{control type="text" name="general[model]" label="Model # / SKU"|gettext value=$record->model}
 	{control type="text" class="title" name="general[title]" label="Product Name"|gettext value=$record->title} {* FIXME not in child product*}
 	{control type="dropdown" name="general[companies_id]" label="Manufacturer"|gettext includeblank=true frommodel=company value=$record->companies_id} {* FIXME not in child product*}

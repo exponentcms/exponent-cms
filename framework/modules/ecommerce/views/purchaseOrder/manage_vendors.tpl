@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="purchase-orders" corecss="tables" link="`$asset_path`css/purchaseorder.css"}
 
 {/css}
@@ -22,7 +22,7 @@
     <h1>{"Viewing Vendors"|gettext}</h1>
 
     <div class="module-actions">
-        {icon action=manage class=manage text="Manage Purchase Orders"|gettext}  |  
+        {icon action=manage class=manage text="Manage Purchase Orders"|gettext}  |
         {icon action=create class=add text="Create new Purchase Order"|gettext}{br}{br}
         {icon action=edit_vendor class=add text="Add a new vendor"|gettext}
     </div>

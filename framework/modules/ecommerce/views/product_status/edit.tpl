@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,7 +17,7 @@
     <h1>
         {if $record->id == ""}{'New Product Status'|gettext}{else}{'Editing'|gettext} {$record->title}{/if}
     </h1>
-    
+
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         {control type="text" name="title" label="Status Type"|gettext value=$record->title focus=1}

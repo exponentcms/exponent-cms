@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,7 +26,7 @@
 	        <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Shipping Carriers'|gettext}</em></a></li>
 	        <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'Shipping Origin'|gettext}</em></a></li>
 	        <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{'Packaging Defaults'|gettext}</em></a></li>
-        </ul>            
+        </ul>
         <div class="tab-content">
 	        <div id="tab1" role="tabpanel" class="tab-pane fade in active">
 	            {control type="text" name="apikey" label="Live API Key"|gettext value=$calculator->configdata.apikey required=1}

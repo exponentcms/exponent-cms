@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -59,7 +59,7 @@
 					</tbody>
 				</table>
 			</div>
-			
+
 			{if $cartsWithoutItems|@count gt 1}
 				{*{br}*}
 				<div class="exp-skin-table exp-ecom-table">
@@ -77,7 +77,7 @@
 									</tr>
 								</thead>
 								<tbody>
-								{foreach from=$cartsWithoutItems item=item} 
+								{foreach from=$cartsWithoutItems item=item}
 									{if is_object($item)}
 									<tr class="{cycle values="odd,even"}">
 										<td>{$item->last_visit}</td>
@@ -97,7 +97,7 @@
 					</div>
 				</div>
 			{/if}
-			
+
 			{if $cartsWithItems|@count gt 1}
 				{*{br}*}
 				<div class="exp-skin-table exp-ecom-table">
@@ -115,7 +115,7 @@
 									</tr>
 								</thead>
 								<tbody>
-								{foreach from=$cartsWithItems item=item} 
+								{foreach from=$cartsWithItems item=item}
 									{if is_array($item)}
                                     {cycle values="odd,even" assign=row}
 									<tr class="{$row}">
@@ -142,7 +142,7 @@
 												</tr>
 											</thead>
 											<tbody>
-											{foreach from=$item item=item2}  
+											{foreach from=$item item=item2}
 												{if isset($item2->products_name)}
 													<tr>
 														<td>{$item2->products_name}</td>

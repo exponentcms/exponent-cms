@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="storeListing" link="`$asset_path`css/storefront.css" corecss="button,clearfix"}
 
 {/css}
@@ -213,7 +213,7 @@
 {script unique="expanding-text" yui3mods="anim-easing,node,anim"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-    
+
     var modules = Y.all('.showall.store .bodycopy');
 
     modules.each(function(n,k){

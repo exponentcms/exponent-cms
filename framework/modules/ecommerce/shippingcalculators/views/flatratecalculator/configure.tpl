@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,7 +17,7 @@
     <div id="flatrate-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
 	        <li class="selected"><a href="#tab1"><em>{'General Settings'|gettext}</em></a></li>
-        </ul>            
+        </ul>
         <div class="yui-content">
 	        <div id="tab1">
                 <blockquote>{'Apply a single shipping rate to every order regardless of size or total cost'|gettext}</blockquote>

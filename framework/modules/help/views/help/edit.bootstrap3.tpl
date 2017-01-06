@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,7 +25,7 @@
                 <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{'Videos'|gettext}</em></a></li>
                 <li role="presentation"><a href="#tab5" role="tab" data-toggle="tab"><em>{'Additional Information'|gettext}</em></a></li>
                 <li role="presentation"><a href="#tab6" role="tab" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
-            </ul>            
+            </ul>
             <div class="tab-content">
             <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                 <h2>{'Help Document'|gettext}</h2>
@@ -67,7 +67,7 @@
 	    {*<div class="loadingdiv">{"Loading Help Item"|gettext}</div>*}
         {loading title="Loading Help Item"|gettext}
         {control type=buttongroup submit="Save Help Doc"|gettext cancel="Cancel"|gettext}
-    {/form}     
+    {/form}
 </div>
 
 {script unique="tabload" jquery=1 bootstrap="tab,transition"}

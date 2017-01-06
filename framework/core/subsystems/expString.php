@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -247,7 +247,7 @@ class expString {
     public static function escape($value) {
         global $db;
 
-        if ($db->havedb) {
+        if (!empty($db->havedb)) {
             return $db->escapeString($value);
         }
 

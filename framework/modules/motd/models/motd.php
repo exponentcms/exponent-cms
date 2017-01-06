@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -29,7 +29,7 @@ class motd extends expRecord {
 //            'month'=>array('message'=>'Month is a required field.'),
             'day'=>array('message'=>'Day is a required field.'),
         ));
-        
+
     public $months = array(
         0=>"Every Month",
 		1=>"January",

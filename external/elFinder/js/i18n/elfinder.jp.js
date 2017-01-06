@@ -2,9 +2,17 @@
  * Japanese translation
  * @author Tomoaki Yoshida <info@yoshida-studio.jp>
  * @author Naoki Sawada <hypweb@gmail.com>
- * @version 2016-11-13
+ * @version 2016-12-02
  */
-if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
+(function(root, factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['elfinder'], factory);
+	} else if (typeof exports !== 'undefined') {
+		module.exports = factory(require('elfinder'));
+	} else {
+		factory(root.elFinder);
+	}
+}(this, function(elFinder) {
 	elFinder.prototype.i18.jp = {
 		translator : 'Tomoaki Yoshida &lt;info@yoshida-studio.jp&gt;, Naoki Sawada &lt;hypweb@gmail.com&gt;',
 		language   : 'Japanese',
@@ -257,6 +265,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'confirmRm'       : '本当にファイルを削除しますか?<br/>この操作は取り消せません！',
 			'confirmRepl'     : '古いファイルを新しいファイルで上書きしますか？',
 			'confirmConvUTF8' : 'UTF-8 以外の文字が含まれています。<br/>UTF-8  に変換しますか？<br/>変換後の保存でコンテンツは UTF-8 になります。', // from v2.1 added 08.04.2014
+			'confirmNonUTF8'  : 'このファイルの文字エンコーディングを判別できませんでした。編集するには一時的に UTF-8 に変換する必要があります。<br/>文字エンコーディングを指定してください。', // from v2.1.19 added 28.11.2016
 			'confirmNotSave'  : '変更されています。<br/>保存せずに閉じると編集内容が失われます。', // from v2.1 added 15.7.2015
 			'apllyAll'        : '全てに適用します',
 			'name'            : '名前',
@@ -334,7 +343,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'confirmUnmount'      : '$1をアンマウントしますか?',  // from v2.1 added 30.04.2012
 			'dropFilesBrowser': 'ブラウザからファイルをドロップまたは貼り付け', // from v2.1 added 30.05.2012
 			'dropPasteFiles'  : 'ここにファイルをドロップ または URLリスト, 画像(クリップボード) を貼り付け', // from v2.1 added 07.04.2014
-			'encoding'        : '文字コード', // from v2.1 added 19.12.2014
+			'encoding'        : 'エンコーディング', // from v2.1 added 19.12.2014
 			'locale'          : 'ロケール',   // from v2.1 added 19.12.2014
 			'searchTarget'    : '検索範囲: $1',                // from v2.1 added 22.5.2015
 			'searchMime'      : '指定した MIME タイプで検索', // from v2.1 added 22.5.2015
@@ -377,6 +386,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'emptyIncSearch'  : '現在のビュー内に該当するアイテムはありません。\\A[Enter]キーで検索対象を拡げます。', // from v2.1.16 added 5.10.2016
 			'textLabel'       : 'テキストラベル', // from v2.1.17 added 13.10.2016
 			'minsLeft'        : '残り$1分', // from v2.1.17 added 13.11.2016
+			'openAsEncoding'  : '選択したエンコーディングで開き直す', // from v2.1.19 added 2.12.2016
+			'saveAsEncoding'  : '選択したエンコーディングで保存', // from v2.1.19 added 2.12.2016
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : '不明',
@@ -460,5 +471,5 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'kindVideoOGG'    : 'Ogg ムービー'
 		}
 	};
-}
+}));
 

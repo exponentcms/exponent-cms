@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -35,7 +35,7 @@
  */  //FIXME old school way of calling?
 function smarty_function_chain($params,&$smarty) {
     if (empty($params['module']) && empty($params['controller']))  return false;
-    
+
     if (isset($params['source'])) $params['src'] = $params['source'];
 
     $src = isset($params['src']) ? $params['src'] : $smarty->getTemplateVars('__loc')->src;
@@ -71,7 +71,7 @@ function smarty_function_chain($params,&$smarty) {
             "source"=>$source,
             "scope"=>$scope
         );
-        
+
         //because of the silly way we have to toggle chrome
         if (!empty($params['chrome'])) {
             $cfg['chrome'] = true;

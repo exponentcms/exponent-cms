@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -27,13 +27,13 @@ return array(
         DB_INCREMENT=>true),
     'first_name'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>200),    
+        DB_FIELD_LEN=>200),
     'last_name'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>200),    
+        DB_FIELD_LEN=>200),
     'initials'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>4),    
+        DB_FIELD_LEN=>4),
 );
 
 ?>

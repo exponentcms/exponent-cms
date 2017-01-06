@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -31,7 +31,7 @@
     {$css}
 </style>
 
-<div id="invoice" style="color:#000000; font-size:100%; position:relative; text-align: left; margin: 0px; padding: 0px;">   
+<div id="invoice" style="color:#000000; font-size:100%; position:relative; text-align: left; margin: 0px; padding: 0px;">
     <div id="invoice-data">
         <table style="border:0 none; width:100%; color:#000000; margin-bottom: 1em; " border="0" cellspacing="0" cellpadding="0">
             <thead>
@@ -200,13 +200,13 @@
                     </th>
                     <th style="border:1px solid #DEDEDE;">
                         {"Description"|gettext}
-                    </th>                    
+                    </th>
                     <th style="text-align:right; border:1px solid #DEDEDE;">
                         {"Price"|gettext}
                     </th>
                     <th style="text-align:right; border:1px solid #DEDEDE;">
                         {"Amount"|gettext}
-                    </th>                    
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -221,23 +221,23 @@
                     <td style="border:1px solid #DEDEDE;">
                         {$oi->getProductsName()}
                         {if $oi->opts[0]}
-                            {br}                             
+                            {br}
                             {foreach from=$oi->opts item=options}
                                 {$oi->getOption($options)}{br}
-                            {/foreach}                            
+                            {/foreach}
                         {/if}
-                        {$oi->getUserInputFields('br')} 
+                        {$oi->getUserInputFields('br')}
                         {$oi->getExtraData()}
-                    </td>                 
+                    </td>
                     <td style="text-align:right; border:1px solid #DEDEDE;">
                         {$oi->products_price|number_format:2}
                     </td>
                     <td style="text-align:right; border:1px solid #DEDEDE;">
                         {$oi->getLineItemTotal()|number_format:2}
-                    </td>                   
+                    </td>
                 </tr>
             {/foreach}
-            
+
             </tbody>
         </table>
 
@@ -246,7 +246,7 @@
                 <tr style="background:none repeat scroll 0 0 #CDCDCD;">
                     <th colspan=3 style="text-align: left; border:1px solid #DEDEDE;">
                         {"Totals"|gettext}
-                    </th>                    
+                    </th>
                </tr>
             </thead>
             <tbody>
@@ -260,7 +260,7 @@
                     <td  style="text-align:right; border:1px solid #DEDEDE; border-left:0px;">{$order->subtotal|number_format:2}
                     </td>
                 </tr>
-                 {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isCartDiscount()} 
+                 {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isCartDiscount()}
                  <tr class="{cycle values="odd, even"}">
                     <td style="border:1px solid #DEDEDE;">
                         {"Total Discounts (Code"|gettext}: {$order->order_discounts[0]->coupon_code})
@@ -280,7 +280,7 @@
                     </td>
                     <td style="text-align:right; border:1px solid #DEDEDE;  border-left:0px;">{$order->total|number_format:2}
                     </td>
-                </tr>   
+                </tr>
                 {/if}
                 {if !$order->shipping_taxed}
                   <tr class="{cycle values="odd, even"}">
@@ -301,11 +301,11 @@
                 {/if}
                 <tr class="{cycle values="odd, even"}">
                     <td style="border:1px solid #DEDEDE;">
-                        {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isShippingDiscount()} 
+                        {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isShippingDiscount()}
                             {"Shipping & Handling (Discount Code"|gettext}: {$order->order_discounts[0]->coupon_code})
                         {else}
                             {"Shipping & Handling"|gettext}
-                        {/if}                    
+                        {/if}
                     </td>
                     <td style="border:1px solid #DEDEDE; border-right:0px;">
                         {currency_symbol}
@@ -351,8 +351,8 @@
                     </td>
                     <td style="text-align:right;border:1px solid #DEDEDE;  border-left:0px;">{$order->grand_total|number_format:2}
                     </td>
-                </tr>                                                                       
-               
+                </tr>
+
             </tbody>
         </table>
     </div>

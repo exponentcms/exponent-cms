@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -28,7 +28,7 @@
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         {control type="hidden" name="product_type" value=$record->product_type}
-        
+
         <div id="editproduct-tabs" class="">
             <ul class="nav nav-tabs" role="tablist">
 	            <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General Info'|gettext}</em></a></li>
@@ -37,7 +37,7 @@
 	            <!--li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>Quantity Info</em></a></li-->
 	            <!--li role="presentation"><a href="#tab5" role="tab" data-toggle="tab"><em>Shipping Info</em></a></li-->
 	            <li role="presentation"><a href="#tab6" role="tab" data-toggle="tab"><em>{'Categories'|gettext}</em></a></li>
-            </ul>            
+            </ul>
             <div class="tab-content">
 	            <div id="tab1" role="tabpanel" class="tab-pane fade in active">
 	                {control type="text" name="model" label="Model #"|gettext value=$record->model focus=1}

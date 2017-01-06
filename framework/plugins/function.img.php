@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -66,21 +66,21 @@ function smarty_function_img($params,&$smarty) {
 	} else {
 		$src = URL_FULL.'thumb.php?';
 	}
-	
+
 	// figure out which file we're showing
 	//if (isset($params['src'])) $src .= '?src='.$params['src'];
 	if (isset($params['file'])) $src .= 'file='.$params['file'];
 	if (isset($params['file_id'])) $src .= 'id='.$params['file_id'];
-    
+
 	/*if (((isset($params['width']) || isset($params['height']) || isset($params['square']))&&empty($params['lgcy']))||(!empty($params['lgcy']))) {
 	    $src .= '&amp;lgcy=1';
-	    
+
 		// get the image dimensions
 		if (isset($params['constraint'])) $src .= '&amp;constraint=1';
 		if (isset($params['square'])) $src .= '&amp;square='.$params['square'];
 		if (isset($params['width'])) $src .= '&amp;width='.$params['width'];
 		if (isset($params['height'])) $src .= '&amp;height='.$params['height'];
-		    	
+
 	} else { */
 	    //  phpthumb get angry unless you pass it certain values:
 	    $allowedGETparameters = array(  //full explanation available here: http://phpthumb.sourceforge.net/demo/docs/phpthumb.readme.txt
@@ -110,7 +110,7 @@ function smarty_function_img($params,&$smarty) {
 										*/
 								'bc', 	// border hex color (default = 000000)
 								'bg', 	// background hex color (default = FFFFFF)
-								'bgt', 	// 
+								'bgt', 	//
 								'fltr', /*filter system. Call as an array as follows:
 										   - "brit" (Brightness) [ex: &fltr[]=brit|<value>]
 											 where <value> is the amount +/- to adjust brightness
@@ -395,7 +395,7 @@ function smarty_function_img($params,&$smarty) {
 										   browser will prompt to save to this filename rather
 										   than display the image
 										*/
-								'phpThumbDebug', //  
+								'phpThumbDebug', //
 								'hash', //  deprecated I think...
 								'md5s', /*  MD5 hash of the source image -- if this parameter is
 										   passed with the hash of the source image then the
@@ -417,8 +417,8 @@ function smarty_function_img($params,&$smarty) {
 										 */
 								'nocache'//  ?
 								);
-	    
-	
+
+
 	    foreach ($params as $key=>$ptv) {
             if (in_array($key,$allowedGETparameters)) {
                 // so we'll only build our GET string off what phpThumb wants
@@ -426,7 +426,7 @@ function smarty_function_img($params,&$smarty) {
             }
 	    }
 	//}
-	
+
 	//If we are in the production mode, display default image for the dead link images
 //	if (!DEVELOPMENT) {
 //		$src .= '&amp;err=' . PATH_RELATIVE. 'framework/core/assets/images/default_preview_notfound.gif';

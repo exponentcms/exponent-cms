@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -32,7 +32,7 @@
 		{pagelinks paginate=$page top=1}
 		<table id="prods" class="exp-skin-table">
 			<thead>
-				<tr>				   
+				<tr>
 					<th>{'Name'|gettext}</th>
 					<th>{'Action'|gettext}</th>
 				</tr>

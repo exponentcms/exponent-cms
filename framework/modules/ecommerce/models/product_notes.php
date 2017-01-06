@@ -1,8 +1,8 @@
 <?php
-  
+
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -25,7 +25,7 @@ class product_notes extends expRecord
 {
     public $table = 'product_notes';
     public $has_one = array('product');
-    
+
 //    public function __construct($params=array(), $get_assoc=true, $get_attached=true)
 //    {
 //        global $db;

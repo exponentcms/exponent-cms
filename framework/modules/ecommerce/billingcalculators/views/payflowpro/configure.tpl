@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -23,7 +23,7 @@
 	        <li><a href="#tab2"><em>{'Accepted'|gettext}<br>{'Credit Cards'|gettext}</em></a></li>
 	        <li><a href="#tab3"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
 	        <li><a href="#tab4"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}</em></a></li>
-        </ul>            
+        </ul>
         <div class="yui-content">
 	        <div id="tab1">
 	            {control type="text" name="vendor" label="Vendor (Merchant)"|gettext value=$calculator->configdata.vendor}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,12 +22,12 @@
  */
 class storeCategory extends expNestedNode {
 	public $table = 'storeCategories';
-	public $attachable_table = 'content_storeCategories';     
-                                                            
+	public $attachable_table = 'content_storeCategories';
+
     protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile', 
-    ); 
-	
+        'content_expFiles'=>'expFile',
+    );
+
 	public function __construct($params=null, $get_assoc=true, $get_attached=true) {
 		global $db;
 
@@ -41,7 +41,7 @@ class storeCategory extends expNestedNode {
 			$this->rgt = $db->max($this->table,'rgt');
 		}
 	}
-	
+
 	public function getEcomSubcategories() {
 		global $db;
 
@@ -51,7 +51,7 @@ class storeCategory extends expNestedNode {
 		} else {
 			$children = $db->selectNestedNodeChildren($this->table, $this->id);
 		}
-		
+
 		for ($i = 0, $iMax = count($children); $i < $iMax; $i++) {
 			$sql  = 'SELECT count(DISTINCT p.id) as c FROM '.$db->prefix.'product p JOIN '.$db->prefix.'product_storeCategories sc ';
           	$sql .= 'ON p.id = sc.product_id WHERE sc.storecategories_id IN (';
@@ -72,7 +72,7 @@ class storeCategory extends expNestedNode {
 	 */
 	public function getCategoryImage($id = '') {
 		global $db;
-		
+
 		if(!empty($id)) {
 			$image = $db->selectObject("expFiles", "id ={$id}");
 			$file = $image->directory . $image->filename;
@@ -83,10 +83,10 @@ class storeCategory extends expNestedNode {
 			}
 		} else {
 			return $this->getFirstImageId();
-			
+
 		}
 	}
-   
+
     public function getFirstImageId() {
         global $db;
 
@@ -106,7 +106,7 @@ class storeCategory extends expNestedNode {
 			$file = $item->directory . $item->filename;
 			if(file_exists($file)) {
 				return $item->expfiles_id;
-			} 
+			}
 		}
     }
 

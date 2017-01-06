@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -84,19 +84,19 @@
 		echo "Cannot open file ($filename)";
 		exit;
 	}
-	
+
 	//Check if the file is writable
 	if (fwrite($handle, $content) == FALSE) {
 		$action_msg = "ER";
 	}
-    
+
     $count=0;
     $num_images=0;
     $num_videos=0;
     $num_cats=0;
     $num_products=0;
     $columns = '';
-    
+
 	//Get all the sections
     if ($include_images) {
         $image_sections = $db->selectObjects('sectionref',"module LIKE '%photo%'");
@@ -116,9 +116,9 @@
     }
     $sections = $db->selectColumn('section','sef_name','public = 1 and active = 1');
 	foreach ($sections as $item) {
-		
+
 		$columns = '<url>'.chr(13).chr(10);
-	
+
 		$columns.='    <loc>';
 		$columns.=URL_FULL.$item;
 		$columns.='</loc>'.chr(13).chr(10);
@@ -128,7 +128,7 @@
 		$columns.='    <lastmod>';
 		$columns.= date('Y-m-d');
 		$columns.='</lastmod>'.chr(13).chr(10);
-		
+
 		$columns.='    <changefreq>';
 		$columns.= $freq;
 		$columns.='</changefreq>'.chr(13).chr(10);
@@ -282,7 +282,7 @@
             }
         }
     }
-	
+
     $content='</urlset>'.chr(13).chr(10);
 
     // Write the footer to our opened file.
@@ -290,7 +290,7 @@
         $action_msg = "ER";
     }
     $action_msg = "SC";
-    fclose($handle);        
+    fclose($handle);
     echo "Generated $count link(s)";
     if ($include_images) echo ", $num_images image(s)";
     if ($include_videos) echo ", $num_videos video(s)";

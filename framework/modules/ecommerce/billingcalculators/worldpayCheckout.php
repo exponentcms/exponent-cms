@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,7 +22,7 @@
 
 //TODO: make into php5 class with access modifiers properties and all that jazz.
 class worldpayCheckout extends billingcalculator {
-    
+
     /**
      * The name that will be displayes in the payment methods selector admin screen.
      *

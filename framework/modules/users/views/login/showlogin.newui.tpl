@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -74,22 +74,22 @@
                         <p>
                             {if $smarty.const.ECOM}
                                 {if $oicount>0}
-                                
+
                                     {"If you are a new customer, select this option to continue with the checkout process."|gettext}{br}{br}
                                     {"We will gather billing and shipping information, and you will have the option to create an account so can track your order status."|gettext}{br}{br}
 
                                     {icon button=true module=cart action=customerSignup text="Continue Checking Out"|gettext}
                                 {else}
                                     {"If you are a new customer, add an item to your cart to continue with the checkout process."|gettext}{br}{br}
-                                    
+
                                     {$backlink = makeLink(expHistory::getBack(1))}
                                     <a class="btn btn-primary" href="{$backlink}">{"Keep Shopping"|gettext}</a>
                                 {/if}
                             {else}
                                 {"Create a new account here."|gettext}
-                                
+
                                 <a class="btn btn-primary" href="{link controller=users action=create}">{"Create an Account"|gettext}</a>
-                                
+
                             {/if}
                         </p>
                     </div>

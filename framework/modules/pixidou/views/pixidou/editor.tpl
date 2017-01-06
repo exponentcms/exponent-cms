@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -46,8 +46,10 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+        {*<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >*}
+        <meta charset="{$smarty.const.LANG_CHARSET}">
         <title>Pixidou - {'Open Source AJAX Image Editor'|gettext}</title>
+        <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
 	    <link rel="stylesheet" type="text/css" href="{$smarty.const.YUI2_RELATIVE}yui2-reset-fonts/yui2-reset-fonts.css" >
 	    <link rel="stylesheet" type="text/css" href="{$smarty.const.YUI2_RELATIVE}assets/skins/sam/skin.css" >
         <link rel="stylesheet" type="text/css" href="{$smarty.const.PATH_RELATIVE}framework/modules/pixidou/assets/css/pixidou.css" >

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -42,7 +42,7 @@
                     <a href={link controller=help action=show version=$item->help_version->version title=$item->sef_url} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
                 </{$config.item_level|default:'h2'}>
             </dt>
-            
+
             <dd>
             {permissions}
             <div class="item-actions">
@@ -62,7 +62,7 @@
                 {/if}
             </div>
             {/permissions}
-            
+
             <div class="bodycopy">
                 {*{$item->summary}*}
                 {*{$item->body|summarize:"html":"paralinks"}*}

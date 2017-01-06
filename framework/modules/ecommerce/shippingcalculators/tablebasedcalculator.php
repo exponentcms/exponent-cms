@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,7 +28,7 @@ class tablebasedcalculator extends shippingcalculator {
     //overridden methods:
 	// public $table = 'table_based_shipping_charges';
 	public $has_many = array('shippingspeeds');
-	
+
     public function name() { return gt('Simple'); }
     public function description() { return gt('Order Total Cost based shipping calculator'); }
     public function addressRequired() { return false; }
@@ -42,13 +42,13 @@ class tablebasedcalculator extends shippingcalculator {
     }
 
     public function getRates($order) {
-        $a = $order->total;        
-		
+        $a = $order->total;
+
 		//get the rates
 		for($i = 0; $i < @count($this->configdata['from']); $i++) {
-			// We need to check if it is not the last in the array since we don't have a 'to' value in the last element            
-            if(count($this->configdata['from']) != ($i + 1)) {                
-				if( expUtil::isNumberGreaterThanOrEqualTo($a,$this->configdata['from'][$i]) && expUtil::isNumberLessThanOrEqualTo($a,$this->configdata['to'][$i])) {  
+			// We need to check if it is not the last in the array since we don't have a 'to' value in the last element
+            if(count($this->configdata['from']) != ($i + 1)) {
+				if( expUtil::isNumberGreaterThanOrEqualTo($a,$this->configdata['from'][$i]) && expUtil::isNumberLessThanOrEqualTo($a,$this->configdata['to'][$i])) {
 					foreach($this->shippingspeeds as $item) {
 						$c[] = @$this->configdata[str_replace(' ', '_', $item->speed)][$i];
 					}
@@ -61,15 +61,15 @@ class tablebasedcalculator extends shippingcalculator {
 					}
 					break;
 				}
-			}            
+			}
 		}
 		 //if certain states, add $$ from config
         $currentMethod = $order->getCurrentShippingMethod();
-		
+
 		//Get the config and parse to get the states/regions only
 		$upcharge = ecomconfig::getConfig('upcharge');
 		$stateUpcharge = ecomconfig::splitConfigUpCharge($upcharge, 'region');
-		
+
         //2 - alaska
         //21 - hawaii
         //52 - PuertoRico
@@ -78,7 +78,7 @@ class tablebasedcalculator extends shippingcalculator {
 	    if(!empty($c)) {
             for ($i = 0, $iMax = count($c); $i < $iMax; $i++) {
 				if (array_key_exists($currentMethod->state, $stateUpcharge)) {
-					$c[$i] += $stateUpcharge[$currentMethod->state]; // $c[$i] += $stateUpcharge[$currentMethod->state]; Commented this though i'm not sure if this is done intentionally 
+					$c[$i] += $stateUpcharge[$currentMethod->state]; // $c[$i] += $stateUpcharge[$currentMethod->state]; Commented this though i'm not sure if this is done intentionally
 				}
                 if($i > 9) $rates[($i+1)] = array(
                     'id' => 0 . ($i+1),
@@ -92,19 +92,19 @@ class tablebasedcalculator extends shippingcalculator {
                 );
 			}
 		}
-	     
+
         if(!count($rates)) $rates['01'] = array(
             'id' => '01',
             'title' => gt("Table Based Shipping is Currently NOT Configured"),
             'cost' => 0
         );
 		return $rates;
-    }    
-    
+    }
+
 //    public function configForm() {
 //       return BASE.'framework/modules/ecommerce/shippingcalculators/views/tablebasedcalculator/configure.tpl';
 //    }
-    
+
     //process config form
     function parseConfig($values) {
 		global $db;
@@ -143,14 +143,14 @@ class tablebasedcalculator extends shippingcalculator {
 
         return $sorted_config;
     }
-    
+
     function availableMethods() {
         $shippingmethods = array();
         for ($i = 0, $iMax = count($this->shippingspeeds); $i < $iMax; $i++) {
             if($i > 9 ) $shippingmethods[($i+1)] = $this->shippingspeeds[$i]->speed;
 			else $shippingmethods[0 . ($i+1)] = $this->shippingspeeds[$i]->speed;
 		}
-		
+
         return $shippingmethods;
     }
 
@@ -175,7 +175,7 @@ class tablebasedcalculator extends shippingcalculator {
     public function getMessage() {
         return $this->configdata['message'];
     }
-	
+
 }
 
 ?>

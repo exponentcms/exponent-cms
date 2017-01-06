@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,7 +25,7 @@
                     <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Files'|gettext}</em></a></li>
                 {/if}
                 <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
-            </ul>            
+            </ul>
             <div class="tab-content yui3-skin-sam">
                 <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                     <h2>{'Portfolio Piece'|gettext}</h2>
@@ -59,7 +59,7 @@
 	    {*<div class="loadingdiv">{'Loading Portfolio Item'|gettext}</div>*}
         {loading title='Loading Portfolio Item'|gettext}
         {control type=buttongroup submit="Save Portfolio Piece"|gettext cancel="Cancel"|gettext}
-    {/form}   
+    {/form}
 </div>
 
 {script unique="tabload" jquery=1 bootstrap="tab,transition"}

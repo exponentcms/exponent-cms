@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,32 +24,32 @@ class optiongroup_master extends expRecord {
 	public $has_many = array('option_master');
     //public $has_many_options = array('option_master'=>array('sort'=>'rank', 'sortdir'=>'ASC'));
 //	protected $attachable_item_types = array();
-    
+
 	public $validates = array(
 		'presence_of'=>array(
 			'title'=>array('message'=>'Option Group name is a required field.')),
         'alphanumericality_of'=>array(
             'title'=>array('message'=>'Option Group name must only contain alphnumeric characters, spaces, hypens, or dashes.')
 		));
-		
+
 	public function __construct($params=null, $get_assoc=true, $get_attached=true) {
 	    global $db;
-	    parent::__construct($params, $get_assoc, $get_attached);	    
+	    parent::__construct($params, $get_assoc, $get_attached);
         if(!empty($this->id))
-        { 
+        {
             $this->timesImplemented = $db->countObjects('optiongroup', 'optiongroup_master_id='.$this->id);
             usort($this->option_master, array("optiongroup_master", "sortOptions"));
         } else {
             $this->timesImplemented = 0;
         }
 	}
-    
+
     static function sortOptions($a,$b)
     {
         if ($a->rank < $b->rank) return -1;
         else if ($a->rank > $b->rank) return 1;
-        else if ($a->rank == $b->rank) return 0; 
-    }  
+        else if ($a->rank == $b->rank) return 0;
+    }
 }
 
 ?>

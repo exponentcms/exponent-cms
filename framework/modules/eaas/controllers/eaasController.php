@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -42,16 +42,16 @@ class eaasController extends expController {
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
     public $tabs = array(
-        'aboutus'=>'About Us', 
-        'blog'=>'Blog', 
-        'photo'=>'Photos', 
+        'aboutus'=>'About Us',
+        'blog'=>'Blog',
+        'photo'=>'Photos',
         'media'=>'Media',
         'event'=>'Events',
-        'filedownload'=>'File Downloads', 
+        'filedownload'=>'File Downloads',
         'news'=>'News'
     );
     protected $data = array();
-    
+
     static function displayname() { return gt("Exponent as a Service"); }
 
     static function description() { return gt("This module allows you make service calls and return JSON for parts of Exponent"); }
@@ -177,8 +177,8 @@ class eaasController extends expController {
                 $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
             } else {
                 $limit = '';
-            }       
-            
+            }
+
             $order = isset($this->params['order']) ? $this->params['order'] : 'publish DESC';
             $items = $news->find('all', $this->aggregateWhereClause('news'), $order, $limit);
             $this->data['records'] = $items;
@@ -251,7 +251,7 @@ class eaasController extends expController {
                 $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
             } else {
                 $limit = '';
-            }       
+            }
 
             $order = isset($this->params['order']) ? $this->params['order'] : 'created_at ASC';
 
@@ -276,8 +276,8 @@ class eaasController extends expController {
                 $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
             } else {
                 $limit = '';
-            }       
-            
+            }
+
             $order = isset($this->params['order']) ? $this->params['order'] : 'rank';
             $items = $photo->find('all', $this->aggregateWhereClause('photo'), $order, $limit);
             $this->data['records'] = $items;
@@ -300,8 +300,8 @@ class eaasController extends expController {
                 $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
             } else {
                 $limit = '';
-            }       
-            
+            }
+
             $order = isset($this->params['order']) ? $this->params['order'] : 'publish DESC';
             $items = $blog->find('all', $this->aggregateWhereClause('blog'), $order, $limit);
             $this->data['records'] = $items;
@@ -324,8 +324,8 @@ class eaasController extends expController {
                 $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
             } else {
                 $limit = '';
-            }       
-            
+            }
+
 //            $order = isset($this->params['order']) ? $this->params['order'] : 'created_at';  //FIXME we shoud be getting upcoming events
 //            $items = $event->find('all', $this->aggregateWhereClause('event'), $order, $limit);  //FIXME needs 'upcoming' type of find
             $items = $event->find('upcoming', $this->aggregateWhereClause('event'), false, $limit);  //new 'upcoming' type of find
@@ -349,7 +349,7 @@ class eaasController extends expController {
         parent::configure();
         $order = isset($this->params['order']) ? $this->params['order'] : 'section';
         $dir = isset($this->params['dir']) ? $this->params['dir'] : '';
-        
+
         $views = expTemplate::get_config_templates($this, $this->loc);
         $pullable = array();
         $page = array();
@@ -419,7 +419,7 @@ class eaasController extends expController {
                 $loc = expCore::makeLocation($type, $src);
                 $sql .= " OR location_data ='".serialize($loc)."'";
             }
-            
+
         }
         $sql .= ')';
         $model = $this->basemodel_name;

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -41,7 +41,7 @@ require_once('exponent.php');
 if(DEVELOPMENT)
 	$timer = new expTimer();
 
-// if the user has turned on sef_urls then we need to route the request, otherwise we can just 
+// if the user has turned on sef_urls then we need to route the request, otherwise we can just
 // skip it and default back to the old way of doing things.
 if ($db->havedb) {
     $router->routeRequest();
@@ -96,7 +96,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
 		$pftheme = expTheme::getPrinterFriendlyTheme();  	// get the printer friendly theme
 		$page = $pftheme == null ? $page : $pftheme;		// if there was no theme found then just use the current subtheme
 	}
- 
+
 	if (is_readable($page)) {
 		if (!expJavascript::inAjaxAction()) {
 			include($page);

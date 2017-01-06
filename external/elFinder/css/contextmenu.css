@@ -104,7 +104,7 @@
 .elfinder .elfinder-contextmenu-rtl .elfinder-contextmenu-arrow { left:5px; background-position: 0 -10px; }
 
 /* command extra icon's <a>, <span> tag */
-.elfinder .elfinder-contextmenu-extra-icon a,
+.elfinder .elfinder-contextmenu-extra-icon a, 
 .elfinder .elfinder-contextmenu-extra-icon span {
 	display: inline-block;
 	width: 100%;

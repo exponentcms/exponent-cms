@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,38 +20,38 @@ YUI.add('gallery-lightbox', function(Y) {
 	 * See Lokesh Dhakar's original at http://www.huddletogether.com/projects/lightbox2/.
 	 * Currently supports everything that module supports with plans to integrate
 	 * additional functionality (i.e. non-images, slideshow mode, etc.) coming soon.
-	 * 
+	 *
 	 * @module gallery-lightbox
 	 */
-	
+
 	var L = Y.Lang,
 		Node = Y.Node,
-		
+
 		PX = "px",
-		
+
 		CLICK = "click",
-		
+
 		ANIM = "anim",
 		ACTIVE_IMAGE = "activeImage",
 		IMAGE_ARRAY = "imageArray",
 		OVERLAY_OPACITY = "overlayOpacity",
 		OVERLAY_DURATION = "overlayDuration",
-		
+
 		LIGHTBOX = "lightbox",
 		OVERLAY = "overlay",
 		PREV_LINK = "prevLink",
 		NEXT_LINK = "nextLink",
 		HOVER_NAV = "hoverNav",
-	
+
 		// global lightbox instance
 		lightboxInstance = null;
-	
+
 	/**** BEGIN EXTENDING THE NODE CLASS ****/
-	
+
 	// Add a few helper methods to the Node class that hopefully will be added
 	// in a future release of the Node class.  They simplify showing/hiding a given node
 	// by manipulating its "display" style.
-	
+
 	Y.mix(
 		Node.prototype, {
 			/**
@@ -64,7 +64,7 @@ YUI.add('gallery-lightbox', function(Y) {
 				this.setStyle("display", "");
 				return this;
 			},
-			
+
 			/**
 		     * Hide a node.
 		     *
@@ -75,7 +75,7 @@ YUI.add('gallery-lightbox', function(Y) {
 				this.setStyle("display", "none");
 				return this;
 			},
-			
+
 			/**
 		     * Check is a node is being shown. Specifically not called "visible"
 		     * so as not to confuse it with the visibility property.
@@ -86,7 +86,7 @@ YUI.add('gallery-lightbox', function(Y) {
 			displayed: function() {
 				return this.getStyle("display") != "none";
 			},
-			
+
 			/**
 		     * Toggle the display of an element.
 		     *
@@ -119,7 +119,7 @@ YUI.add('gallery-lightbox', function(Y) {
 	var LB = function (config) {
 		LB.superclass.constructor.apply(this, arguments);
 	};
-	
+
 	/**
      * The identity of the widget.
      *
@@ -128,7 +128,7 @@ YUI.add('gallery-lightbox', function(Y) {
      * @static
      */
 	LB.NAME = LIGHTBOX;
-	
+
 	/**
      * Static property used to define the default attribute configuration of
      * the Widget.
@@ -152,7 +152,7 @@ YUI.add('gallery-lightbox', function(Y) {
 			value: "a[rel^=lightbox]",
 			validator: L.isString
 		},
-		
+
 		/**
          * The width of the border surrounding the displayed content.  This is used during
          * resize operations.
@@ -165,7 +165,7 @@ YUI.add('gallery-lightbox', function(Y) {
 			value: 10,
 			validator: L.isNumber
 		},
-		
+
 		/**
          * The amount of time (in seconds) for the overlay to take to appear when the
          * Lightbox is displayed.
@@ -178,7 +178,7 @@ YUI.add('gallery-lightbox', function(Y) {
 			value: 0.2,
 			validator: L.isNumber
 		},
-		
+
 		/**
          * The opacity of the overlay element once it is displayed.  This value is used
          * during animation so that the overlay appears to be eased in.
@@ -191,7 +191,7 @@ YUI.add('gallery-lightbox', function(Y) {
 			value: 0.8,
 			validator: L.isNumber
 		},
-		
+
 		/**
          * The amount of time (in seconds) each reisze animation should take.  This is used
          * specifically during Lightbox height and width resize transformations.
@@ -204,7 +204,7 @@ YUI.add('gallery-lightbox', function(Y) {
 			value: 0.3,
 			validator: L.isNumber
 		},
-		
+
 		/**
          * Whether or the Lighbox module should use animation when displaying, changing images,
          * and hiding.  If set to false, the values of attributes that control animation settings
@@ -218,7 +218,7 @@ YUI.add('gallery-lightbox', function(Y) {
 			value: !L.isUndefined(Y.Anim),
 			validator: L.isBoolean
 		},
-		
+
 		/**
          * A managed array of images that Lightbox can currently cycle through. The size of this array
          * is defined by the number of images in a particular image group.  This array determines
@@ -231,7 +231,7 @@ YUI.add('gallery-lightbox', function(Y) {
 		imageArray: {
 			validator: L.isArray
 		},
-		
+
 		/**
          * The index of the currently displayed image in the "imageArray."
          *
@@ -241,7 +241,7 @@ YUI.add('gallery-lightbox', function(Y) {
 		activeImage: {
 			validator: L.isNumber
 		},
-		
+
 		/**
          * Set of strings to be used when displaying content.  These can be customized
          * (i.e. for internationalization) if necessary.
@@ -256,7 +256,7 @@ YUI.add('gallery-lightbox', function(Y) {
 			}
 		}
 	};
-	
+
 	Y.extend(LB, Y.Base, {
 		/**
 	     * Construction logic executed during Lightbox instantiation. This
@@ -300,7 +300,7 @@ YUI.add('gallery-lightbox', function(Y) {
 				create = Node.create;
 
 			objBody.append(create('<div id="overlay"></div>'));
-		
+
 	        objBody.append(create('<div id="lightbox"></div>')
 				.append(create('<div id="outerImageContainer"></div>')
 					.append(create('<div id="imageContainer"></div>')
@@ -324,33 +324,33 @@ YUI.add('gallery-lightbox', function(Y) {
 					)
 				)
 			);
-			
+
 			this._bindStartListener();
-			
+
 			Y.one("#overlay").hide().on(CLICK, function () { this.end(); }, this);
 			Y.one("#lightbox").hide().on(CLICK, function (evt) {
 				if (evt.currentTarget.get("id") === LIGHTBOX) {
 					this.end();
 				}
 			}, this);
-			
+
 			var size = (this.get(ANIM) ? 250 : 1) + PX;
-			
+
 			Y.one("#outerImageContainer").setStyles({ width: size, height: size });
 			Y.one("#prevLink").on(CLICK, function (evt) { evt.halt(); this._changeImage(this.get(ACTIVE_IMAGE) - 1); }, this);
 			Y.one("#nextLink").on(CLICK, function (evt) { evt.halt(); this._changeImage(this.get(ACTIVE_IMAGE) + 1); }, this);
 			Y.one("#bottomNavClose").on(CLICK, function (evt) { evt.halt(); this.end(); }, this);
-			
+
 			L.later(0, this, function () {
-				var ids = "overlay lightbox outerImageContainer imageContainer lightboxImage hoverNav prevLink nextLink loading " + 
+				var ids = "overlay lightbox outerImageContainer imageContainer lightboxImage hoverNav prevLink nextLink loading " +
                 	"imageDataContainer imageData imageDetails caption numberDisplay bottomNav bottomNavClose";
-            	
+
 				Y.Array.each(ids.split(" "), function (element, index, array) {
 					this.addAttr(element, { value: Y.one("#" + element) });
 				}, this);
 			});
 		},
-		
+
 		/**
 	     * Display overlay and Lightbox.  If image is part of a set, it
 	     * adds those images to an array so that a user can navigate between them.
@@ -363,7 +363,7 @@ YUI.add('gallery-lightbox', function(Y) {
 			Y.all("select, object, embed").each(function() {
 				this.setStyle("visibility", "hidden");
 			});
-			
+
 			// Stretch overlap to fill page and fade in
 			var overlay = this.get(OVERLAY).setStyles({ height: Y.DOM.docHeight() + PX, width: Y.DOM.docWidth() + PX }).show();
 			if (this.get(ANIM)) {
@@ -378,10 +378,10 @@ YUI.add('gallery-lightbox', function(Y) {
 			} else {
 				overlay.setStyle("opacity", this.get(OVERLAY_OPACITY));
 			}
-			
+
 			var imageArray = [],
 				imageNum = 0;
-			
+
 			if (selectedLink.get("rel") === LIGHTBOX) {
 				// If image is NOT part of a set, add single image to imageArray
 				imageArray.push([selectedLink.get("href"), selectedLink.get("title")]);
@@ -398,16 +398,16 @@ YUI.add('gallery-lightbox', function(Y) {
 
 				while (imageArray[imageNum][0] !== selectedLink.get("href")) { imageNum++; }
 			}
-			
+
 			this.set(IMAGE_ARRAY, imageArray);
-			
+
 			var lightboxTop = Y.DOM.docScrollY() + (Y.DOM.winHeight() / 10),
 				lightboxLeft = Y.DOM.docScrollX();
 			this.get(LIGHTBOX).setStyles({ display: "block", top: lightboxTop + PX, left: lightboxLeft + PX });
-			
+
 			this._changeImage(imageNum);
 		},
-		
+
 		/**
 	     * Hide the overlay and Lightbox and unbind any event listeners.
 	     *
@@ -417,9 +417,9 @@ YUI.add('gallery-lightbox', function(Y) {
 		end: function () {
 			this._disableKeyboardNav();
 			this.get(LIGHTBOX).hide();
-			
+
 			var overlay = this.get(OVERLAY);
-			
+
 			if (this.get(ANIM)) {
 				var anim = new Y.Anim({
 					node: overlay,
@@ -433,12 +433,12 @@ YUI.add('gallery-lightbox', function(Y) {
 			} else {
 				overlay.setStyles({ opacity: 0 }).hide();
 			}
-			
+
 			Y.all("select, object, embed").each(function() {
 				this.setStyle("visibility", "visible");
 			});
 		},
-		
+
 		/**
 	     * Helper method responsible for binding listener to the page to process
 	     * lightbox anchors and images.
@@ -452,7 +452,7 @@ YUI.add('gallery-lightbox', function(Y) {
 				this.start(evt.currentTarget);
 			}, this), document.body, this.get("selector"));
 		},
-		
+
 		/**
 	     * Display the selected index by first showing a loading screen, preloading it
 	     * and displaying it once it has been loaded.
@@ -463,7 +463,7 @@ YUI.add('gallery-lightbox', function(Y) {
 	     */
 		_changeImage: function (imageNum) {
 			this.set(ACTIVE_IMAGE, imageNum);
-			
+
 			// Hide elements during transition
 			if (this.get(ANIM)) {
 				this.get("loading").show();
@@ -472,15 +472,15 @@ YUI.add('gallery-lightbox', function(Y) {
 			this.get(HOVER_NAV).hide();
 			this.get(PREV_LINK).hide();
 			this.get(NEXT_LINK).hide();
-			
+
 			// Hack: Opera9 doesn't support something in scriptaculous opacity and appear fx
 			// TODO: Do I need this since we are using YUI? Is this a scriptaculous/Opera
 			// bug, or just Opera bug?
 			this.get("imageDataContainer").setStyle("opacity", 0.0001);
 			this.get("numberDisplay").hide();
-			
+
 			var imagePreloader = new Image();
-			
+
 			// Once image is preloaded, resize image container
 			imagePreloader.onload = Y.bind(function () {
 				this.get("lightboxImage").set("src", this.get(IMAGE_ARRAY)[imageNum][0]);
@@ -488,7 +488,7 @@ YUI.add('gallery-lightbox', function(Y) {
 			}, this);
 			imagePreloader.src = this.get(IMAGE_ARRAY)[imageNum][0];
 		},
-		
+
 		/**
 	     * Resize the image container so it is large enough to display the entire image.
 	     * Once this is complete it will delegate to another method to actually display the image.
@@ -503,27 +503,27 @@ YUI.add('gallery-lightbox', function(Y) {
 			var outerImageContainer = this.get("outerImageContainer"),
 				widthCurrent = outerImageContainer.get("offsetWidth"),
 				heightCurrent = outerImageContainer.get("offsetHeight"),
-			
+
 			// Get new width and height
 				widthNew = imgWidth + this.get("borderWidth") * 2,
 				heightNew = imgHeight + this.get("borderWidth") * 2,
-				
+
 			// calculate size difference between new and old image
 				wDiff = widthCurrent - widthNew,
 				hDiff = heightCurrent - heightNew,
-				
+
 				afterResize = Y.bind(function () {
 					this.get(PREV_LINK).setStyles({ height: imgHeight + PX });
 					this.get(NEXT_LINK).setStyles({ height: imgHeight + PX });
 					this.get("imageDataContainer").setStyles({ width: widthNew + PX });
-					
+
 					this._showImage();
 				}, this);
-			
+
 			if (wDiff !== 0 || hDiff !== 0) {
 				if (this.get(ANIM)) {
 					var resizeDuration = this.get("resizeDuration"),
-					
+
 					anim = new Y.Anim({
 						node: outerImageContainer,
     					easing: Y.Easing.easeBoth,
@@ -531,7 +531,7 @@ YUI.add('gallery-lightbox', function(Y) {
 						to: { width: widthNew + PX },
 						duration: resizeDuration
 					}),
-					
+
 					onEnd = function () {
 						anim.getEvent("end").detach(onEnd);
 						this.setAttrs({
@@ -542,9 +542,9 @@ YUI.add('gallery-lightbox', function(Y) {
 						this.on("end", afterResize);
 						this.run();
 					};
-					
+
 					anim.on("end", onEnd);
-					
+
 					anim.run();
 				} else {
 					outerImageContainer.setStyles({ width: widthNew + PX, height: heightNew + PX});
@@ -556,7 +556,7 @@ YUI.add('gallery-lightbox', function(Y) {
 				L.later(100, this, afterResize);
 			}
 		},
-		
+
 		/**
 	     * Display the currently loaded image and then try to preload any neighboring images.
 	     *
@@ -565,30 +565,30 @@ YUI.add('gallery-lightbox', function(Y) {
 	     */
 		_showImage: function () {
 			this.get("loading").hide();
-			
+
 			var lightBoxImage = this.get("lightboxImage");
-			
+
 			if (this.get(ANIM)) {
-				
+
 				var startOpacity = lightBoxImage.getStyle("display") === "none" ? 0 : lightBoxImage.getStyle("opacity") || 0,
 					anim = new Y.Anim({
 						node: lightBoxImage,
 						from: { opacity: startOpacity },
 						to: { opacity: 1 }
 					});
-	
+
 				anim.on("end", this._updateDetails, this);
-		
+
 				lightBoxImage.setStyle("opacity", startOpacity).show();
 				anim.run();
 			} else {
 				lightBoxImage.setStyle("opacity", 1).show();
 				this._updateDetails();
 			}
-			
+
 			this._preloadNeighborImages();
 		},
-		
+
 		/**
 	     * Use the title of the image as a caption and display information
 	     * about the current image and it's location in an image set (if applicable).
@@ -597,25 +597,25 @@ YUI.add('gallery-lightbox', function(Y) {
 	     * @private
 	     */
 		_updateDetails: function () {
-			
+
 			var imageArray = this.get(IMAGE_ARRAY),
 				activeImage = this.get(ACTIVE_IMAGE),
 				caption = imageArray[activeImage][1];
-			
+
 			// If caption is not null
 			if (caption !== "") {
 				this.get("caption").setContent(caption).show();
 			}
-			
+
 			// If image is part of a set display "Image x of x"
 			if (imageArray.length > 1) {
 				this.get("numberDisplay").setContent(this.get("strings.labelImage") + " " + (activeImage + 1) + " " + this.get("strings.labelOf") + "  " + imageArray.length).show();
 			}
-			
+
 			var imageDataContainer = this.get("imageDataContainer");
-			
+
 			if (this.get(ANIM)) {
-				
+
 				var startOpacity = imageDataContainer.getStyle("display") === "none" ? 0 : imageDataContainer.getStyle("opacity") || 0,
 					anim = new Y.Anim({
 						node: imageDataContainer,
@@ -623,23 +623,23 @@ YUI.add('gallery-lightbox', function(Y) {
 						to: { opacity: 1 },
 						duration: this.get("resizeDuration")
 					});
-		
+
 				anim.on("end", function () {
 					// Update overlay size and update nav
 					this.get(OVERLAY).setStyle("height", Y.DOM.docHeight() + PX);
 					this._updateNav();
 				}, this);
-		
+
 				imageDataContainer.setStyle("opacity", startOpacity).show();
 				anim.run();
 			} else {
-				
+
 				imageDataContainer.setStyle("opacity", 1).show();
 				this.get(OVERLAY).setStyle("height", Y.DOM.docHeight() + PX);
 				this._updateNav();
 			}
 		},
-		
+
 		/**
 	     * Update the navigation elements to display forward and/or backward
 	     * links if they're appropriate.
@@ -649,22 +649,22 @@ YUI.add('gallery-lightbox', function(Y) {
 	     */
 		_updateNav: function () {
 			var activeImage = this.get(ACTIVE_IMAGE);
-			
+
 			this.get(HOVER_NAV).show();
-			
+
 			// If not first image in set, display previous image button
 			if (activeImage > 0) {
 				this.get(PREV_LINK).show();
 			}
-			
+
 			// If not first image in set, display previous image button
 			if (activeImage < (this.get(IMAGE_ARRAY).length - 1)) {
 				this.get(NEXT_LINK).show();
 			}
-			
+
 			this._enableKeyboardNav();
 		},
-		
+
 		/**
 	     * Enable keyboard shortcuts for closing Lightbox or switching images.
 	     *
@@ -674,7 +674,7 @@ YUI.add('gallery-lightbox', function(Y) {
 		_enableKeyboardNav: function () {
 			Y.one(document.body).on("keydown", this._keyboardAction, this);
 		},
-		
+
 		/**
 	     * Disable keyboard shortcuts for closing Lightbox or switching images.
 	     *
@@ -684,7 +684,7 @@ YUI.add('gallery-lightbox', function(Y) {
 		_disableKeyboardNav: function () {
 			Y.one(document.body).unsubscribe("keydown", this._keyboardAction);
 		},
-		
+
 		/**
 	     * Handle key strokes to allow for users to close Lightbox or switch images.
 	     *
@@ -695,7 +695,7 @@ YUI.add('gallery-lightbox', function(Y) {
 			var keyCode = evt.keyCode,
 				escapeKey = 27,
 				key = String.fromCharCode(keyCode).toLowerCase();
-			
+
 			if (key.match(/x|o|c/) || (keyCode === escapeKey)) { // close lightbox
 				this.end();
 			} else if ((key === 'p') || (keyCode === 37)) { // Display the previous image
@@ -710,7 +710,7 @@ YUI.add('gallery-lightbox', function(Y) {
 				}
 			}
 		},
-		
+
 		/**
 	     * Preload images that are adjacent to the current image, if they exist,
 	     * to reduce waiting time.
@@ -722,24 +722,24 @@ YUI.add('gallery-lightbox', function(Y) {
 			var activeImage = this.get(ACTIVE_IMAGE),
 				imageArray = this.get(IMAGE_ARRAY),
 				preloadNextImage, preloadPrevImage;
-			
+
 			if (imageArray.length > activeImage + 1) {
 				preloadNextImage = new Image();
 				preloadNextImage.src = imageArray[activeImage + 1][0];
 			}
-			
+
 			if (activeImage > 0) {
 				preloadPrevImage = new Image();
 				preloadPrevImage.src = imageArray[activeImage - 1][0];
 			}
 		}
 	});
-	
+
 	Y.Lightbox = {
 		/**
 		 * This method returns the single, global LightBox instance.  Upon creation,
 		 * the Lightbox instance attaches itself to the page and is ready to be used.
-		 * 
+		 *
 		 * @method init
 		 * @return { Lightbox } global instance
 		 * @static

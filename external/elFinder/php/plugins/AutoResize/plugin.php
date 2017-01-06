@@ -73,16 +73,16 @@ class elFinderPluginAutoResize {
 		if (is_array($volOpts)) {
 			$opts = array_merge($this->opts, $volOpts);
 		}
-
+		
 		if (! $opts['enable']) {
 			return false;
 		}
-
+		
 		$srcImgInfo = getimagesize($src);
 		if ($srcImgInfo === false) {
 			return false;
 		}
-
+		
 		// check target image type
 		$imgTypes = array(
 			IMAGETYPE_GIF  => IMG_GIF,
@@ -94,20 +94,20 @@ class elFinderPluginAutoResize {
 		if (! isset($imgTypes[$srcImgInfo[2]]) || ! ($opts['targetType'] & $imgTypes[$srcImgInfo[2]])) {
 			return false;
 		}
-
+		
 		if ($opts['forceEffect'] || $srcImgInfo[0] > $opts['maxWidth'] || $srcImgInfo[1] > $opts['maxHeight']) {
 			return $this->resize($volume, $src, $srcImgInfo, $opts['maxWidth'], $opts['maxHeight'], $opts['quality'], $opts['preserveExif']);
 		}
-
+		
 		return false;
 	}
-
+	
 	private function resize($volume, $src, $srcImgInfo, $maxWidth, $maxHeight, $jpgQuality, $preserveExif) {
 		$zoom = min(($maxWidth/$srcImgInfo[0]),($maxHeight/$srcImgInfo[1]));
 		$width = round($srcImgInfo[0] * $zoom);
 		$height = round($srcImgInfo[1] * $zoom);
 		$unenlarge = true;
-
+		
 		return $volume->imageUtil('resize', $src, compact('width', 'height', 'jpgQuality', 'preserveExif', 'unenlarge'));
 	}
 }

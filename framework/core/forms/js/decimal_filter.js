@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,55 +14,55 @@
  */
 
 function decimal_filter_class() {
-	
+
 	this.on_key_press = function(ptObject, evt) {
 		evt = (evt) ? evt : event;
 		sChar = (evt.charCode) ? evt.charCode : evt.keyCode;
-		
+
 		//This will allow backspace to work.
 		for (var n =0; n < g_aIgnore.length; n++) {
 			if (sChar == g_aIgnore[n]) return true;
 		}
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(sChar));
-		
+
 		return !this.isValueIllegal(strNewVal);
 
 	}
-	
+
 	this.onblur = function(ptObject) {
 		var iDPPos = ptObject.value.indexOf(".");
 		if (iDPPos == -1) return;
-		
+
 		var bValueChanged = false;
-		
+
 		if (iDPPos == ptObject.value.length -1) {
 			ptObject.value = ptObject.value.substr(0, ptObject.value.length -1);
 			bValueChanged = true;
 		}
-		
+
 		if (iDPPos == 0) {
 			var dNewValue = "0" + ptObject.value;
 			ptObject.value = dNewValue;
 			bValueChanged = true;
 		}
-		
+
 		if (bValueChanged) {
 //            ptObject.fireEvent("onchange");
             fireEvent(ptObject,"change");
         }
 	}
-	
+
 	this.onfocus = function(ptObject) {
 		//Do nothing for decimal
 	}
-	
+
 	this.onpaste = function(ptObject, evt) {
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(evt.charCode));
 		alert(strNewVal);
 		return !this.isValueIllegal(strNewVal);
 
 	}
-	
+
 	this.isValueIllegal = function(strValue) {
 		bIsIllegal = IsNotNumber(strValue);
 		if (!bIsIllegal) {

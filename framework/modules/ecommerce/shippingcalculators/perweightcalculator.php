@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -64,12 +64,12 @@ class perweightcalculator extends shippingcalculator {
             )
         );
 	    return $rates;
-    }	
-    
+    }
+
 //   	public function configForm() {
 //   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/perweightcalculator/configure.tpl';
 //   	}
-	
+
 	//process config form
 	function parseConfig($values) {
 	    $config_vars = array(
@@ -85,11 +85,11 @@ class perweightcalculator extends shippingcalculator {
 	        } else {
 	            $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
 	        }
-	        
+
 	    }
 		return $config;
 	}
-	
+
 	function availableMethods() {
 	    return $this->shippingmethods;
 	}

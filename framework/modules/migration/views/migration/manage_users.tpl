@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -46,20 +46,20 @@
 			</thead>
 			<tbody>
 				{foreach from=$users item=user name=users}
-					<tr class="{cycle values="even,odd"}">            
+					<tr class="{cycle values="even,odd"}">
 						<td>
 							{if ($user->exists == true)}
 								<em>(exists)</em>
 							{else}
 								{control type="checkbox" name="users[]" label=" " value=$user->id checked=true}
-							{/if}			
+							{/if}
 						</td>
 						<td>
 							{if ($user->exists == true)}
 								{control type="checkbox" name="rep_users[]" label=" " value=$user->id checked=false}
 							{else}
 								<em>(new)</em>
-							{/if}			
+							{/if}
 						</td>
 						<td>
 							{$user->username}
@@ -72,7 +72,7 @@
 						</td>
 						<td>
 							{if $user->is_acting_admin == 1}{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}{/if}
-						</td>            
+						</td>
 					</tr>
 				{foreachelse}
 					<tr><td colspan=5>{'No users found to migrate from the database'|gettext} {$config.database}</td></tr>
@@ -93,20 +93,20 @@
 			</thead>
 			<tbody>
 				{foreach from=$groups item=group name=groups}
-					<tr class="{cycle values="even,odd"}">            
+					<tr class="{cycle values="even,odd"}">
 						<td>
 							{if ($group->exists == true)}
 								<em>(exists)</em>
 							{else}
 								{control type="checkbox" name="groups[]" label=" " value=$group->id checked=true}
-							{/if}			
+							{/if}
 						</td>
 						<td>
 							{if ($group->exists == true)}
 								{control type="checkbox" name="rep_groups[]" label=" " value=$group->id checked=false}
 							{else}
 								<em>(new)</em>
-							{/if}			
+							{/if}
 						</td>
 						<td>
 							{$group->name}
@@ -116,7 +116,7 @@
 						</td>
 						<td>
 							{if $group->inclusive}<strong>{"Default"|gettext}</strong>{else}{"Normal"|gettext}{/if}
-						</td>            
+						</td>
 					</tr>
 				{foreachelse}
 					<tr><td colspan=5>{'No groups found to migrate from the database'|gettext} {$config.database}</td></tr>

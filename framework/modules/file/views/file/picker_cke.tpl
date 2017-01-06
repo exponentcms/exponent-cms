@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,8 +16,10 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    {*<meta http-equiv="content-type" content="text/html; charset=utf-8" />*}
+    <meta charset="{$smarty.const.LANG_CHARSET}">
     <title>{'File Manager'|gettext}  |  Exponent CMS</title>
+    <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
     {css unique="picker" corecss="msgq,button,admin-global" link="`$asset_path`css/filemanager.css"}
 
     {/css}
@@ -51,7 +53,7 @@
 
     <div id="pagelinks">&#160;</div>
     <div id="dynamicdata">
-    
+
     </div>
     {if (!$user->globalPerm('prevent_uploads'))}
     <div id="actionbar">
@@ -122,7 +124,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     		{/if}
     		{literal}
     	}
-    
+
         batchBack = function () {
             window.opener.EXPONENT.batchAddFiles.{/literal}{$update}{literal}(batchIDs);
             window.close();
@@ -199,16 +201,16 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
         // set up the info panel
         var infopanel =  new YAHOO.widget.Panel(
-            "infopanel", 
-            { 
-                width:"800px", 
-                height:"500px", 
+            "infopanel",
+            {
+                width:"800px",
+                height:"500px",
                 fixedCenter:true,
                 modal:true,
                 close:true,
-                visible:false, 
-                constraintoviewport:true 
-            } 
+                visible:false,
+                constraintoviewport:true
+            }
         );
         infopanel.render();
         infopanel.subscribe('hide',function(event){
@@ -272,7 +274,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 }
             });
         }
-        
+
         //set up autocomplete
         var getTerms = function(query) {
             var cat = Y.one('#select_folder');
@@ -283,7 +285,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             }
             myDataSource.sendRequest('sort=id&dir=desc&startIndex=0&update='+update+'&filter='+filter+'&results={/literal}{$smarty.const.FM_LIMIT}{literal}&query=' + query + '&cat=' + catvalue,myDataTable.onDataReturnInitializeTable, myDataTable);
         };
-    
+
         var oACDS = new YAHOO.util.FunctionDataSource(getTerms);
         oACDS.queryMatchContains = true;
         var oAutoComp = new YAHOO.widget.AutoComplete("dt_input","dt_ac_container", oACDS);
@@ -377,20 +379,20 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                                 +editorstring
                                 +deletestring;
         };
-    
+
         var formatBatch = function(elCell, oRecord, oColumn, sData) {
             var checked = (batchIDs[oRecord.getData()['id']]) ? 'checked="checked" ' : '';
             var pickerstring = '<input id="id'+oRecord.getData()['id']+'" class="batchcheck" '+ checked +'type="checkbox">';
             elCell.innerHTML =  pickerstring;
         };
-    
+
         // request to share
         var editShare = function (callback, newValue) {
             var record = this.getRecord(),
                 column = this.getColumn(),
                 oldValue = this.value,
                 datatable = this.getDataTable();
-            
+
             var es = new EXPONENT.AjaxEvent();
             es.subscribe(function (o) {
                 if(o.replyCode<299) {
@@ -402,7 +404,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             },this);
             es.fetch({action:"editShare",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + encodeURIComponent(newValue)});
         };
-    
+
         // request to change the title
         var editTitle = function (callback, newValue) {
             var record = this.getRecord(),
@@ -420,7 +422,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             },this);
             et.fetch({action:"editTitle",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + encodeURIComponent(newValue)});
         };
-    
+
         // request to change the alt
         var editAlt = function (callback, newValue) {
             var record = this.getRecord(),
@@ -466,7 +468,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             { key:"alt",label:"{/literal}{"alt"|gettext}{literal}",sortable:true,formatter:formatAlt,editor: new YAHOO.widget.TextboxCellEditor({asyncSubmitter:editAlt})},
             { key:"shared",label:'<img src="'+EXPONENT.PATH_RELATIVE+'framework/modules/file/assets/images/public.png" title="{/literal}{"Make File Public"|gettext}{literal}" />',formatter:formatShared,editor: new YAHOO.widget.CheckboxCellEditor({checkboxOptions:[{label:"{/literal}{"Make this file public?"|gettext}{literal}",value:1}],asyncSubmitter:editShare})},
             { label:"{/literal}{"Actions"|gettext}{literal}",sortable:false,formatter: formatactions}
-            
+
         ];
 
 //        if (update != 'noupdate' && update != 'ck' && update != 'tiny') {
@@ -541,10 +543,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             paginator: new YAHOO.widget.Paginator({rowsPerPage:{/literal}{$smarty.const.FM_LIMIT}{literal},containers:"pagelinks"}), // Enables pagination,
             generateRequest: myRequestBuilder
         };
-    
+
         // DataTable instance
         var myDataTable = new YAHOO.widget.DataTable("dynamicdata", myColumnDefs, myDataSource, myConfigs);
-    
+
         // Update totalRecords on the fly with value from server
         myDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
             if (oPayload == null) {
@@ -553,7 +555,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             oPayload.totalRecords = oResponse.meta.totalRecords;
             return oPayload;
         }
-    
+
         // handling what to do depending on what cell we are clicking on
         myDataTable.onEventShowCellEditor = function(oArgs) {
             var currentColumn = this.getColumn(oArgs.target).field;

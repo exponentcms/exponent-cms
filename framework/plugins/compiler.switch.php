@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -30,15 +30,15 @@
  *      you load smarty and create an instance of it in your source code.
  *
  * <code>
- *   $this->smartyObj->loadPlugin('smarty_compiler_switch');    
+ *   $this->smartyObj->loadPlugin('smarty_compiler_switch');
  * </code>
- * 
+ *
  * @author Jeremy Pyne <jeremy.pyne@gmail.com>
  * - Donations: Accepted via PayPal at the above address.
  * - Updated: 02/10/2010 - Version 3.2
  * - File: smarty/plugins/compiler.switch.php
  * - Licence: CC:BY/NC/SA  http://creativecommons.org/licenses/by-nc-sa/3.0/
- * 
+ *
  * - Updates
  *    Version 2:
  *       Changed the break attribute to cause a break to be printed before the next case, instead of before this
@@ -53,11 +53,11 @@
  *       $smarty->loadPlugin('smarty_compiler_switch');
  *    Version 3.2:
  *       Fixed a bug when chaining multiple {case} statements without a {break}.
- *    Version 3.5: 
- *       Updated to work with Smarty 3.0 release.  (Tested and working with 3.0.5, no longer compatible with 3.0rcx releases.)  
+ *    Version 3.5:
+ *       Updated to work with Smarty 3.0 release.  (Tested and working with 3.0.5, no longer compatible with 3.0rcx releases.)
  *    Version 3.6:
  *       Updated to work with Smarty 3.1 release.  (Tested and working on 3.1.3, No longer compatible with 3.0 releases.)
- * 
+ *
  * - Bugs/Notes:
  *
  * Sample usage:
@@ -228,7 +228,7 @@ class Smarty_Compiler_Default extends Smarty_Internal_CompileBase {
 }
 
 
-class Smarty_Compiler_Break extends Smarty_Internal_CompileBase { 
+class Smarty_Compiler_Break extends Smarty_Internal_CompileBase {
     public $required_attributes = array();
     public $optional_attributes = array();
     public $shorttag_order = array();
@@ -252,7 +252,7 @@ class Smarty_Compiler_Break extends Smarty_Internal_CompileBase {
     }
 }
 
-class Smarty_Compiler_Caseclose extends Smarty_Internal_CompileBase { 
+class Smarty_Compiler_Caseclose extends Smarty_Internal_CompileBase {
     public $required_attributes = array();
     public $optional_attributes = array();
     public $shorttag_order = array();
@@ -276,7 +276,7 @@ class Smarty_Compiler_Caseclose extends Smarty_Internal_CompileBase {
     }
 }
 
-class Smarty_Compiler_Switchclose extends Smarty_Internal_CompileBase { 
+class Smarty_Compiler_Switchclose extends Smarty_Internal_CompileBase {
     public $required_attributes = array();
     public $optional_attributes = array();
     public $shorttag_order = array();
@@ -305,7 +305,7 @@ class Smarty_Compiler_Switchclose extends Smarty_Internal_CompileBase {
 /**
  * Filter the template after it is generated to fix switch bugs.
  *    Remove any spaces after the 'switch () {' code and before the first case.  Any tabs or spaces
- *       for layout would cause php errors witch this reged will fix. 
+ *       for layout would cause php errors witch this reged will fix.
  *
  * @param string $compiled
  * @param Smarty_Compiler $smarty

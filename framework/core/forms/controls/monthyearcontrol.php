@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,7 +24,7 @@
  * @subpackage Control
  */
 class monthyearcontrol extends formcontrol {
-	
+
 	function __construct($default_month = null,$default_year = null) {
 		if (empty($default_month)) $default_month = date("m");
 		if (empty($default_year)) $default_year = date("Y");
@@ -41,7 +41,7 @@ class monthyearcontrol extends formcontrol {
         $html .= "</div>";
         return $html;
     }
-	
+
 	function controlToHTML($name,$label=null) {
 		$html = '<select ' . (bs3() ? 'class="form-control" ' : '') . 'id="' . $name . '_month" name="' . $name . '_month">';
 		for ($i = 1; $i <= 12; $i++) {

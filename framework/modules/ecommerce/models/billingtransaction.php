@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -21,7 +21,7 @@
  * @package Modules
  */
 class billingtransaction extends expRecord {
-    public $has_one = array('billingcalculator'); 
+    public $has_one = array('billingcalculator');
 	public $table = 'billingtransactions';
 
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {
@@ -31,21 +31,21 @@ class billingtransaction extends expRecord {
         $this->billing_options = empty($this->billing_options) ? array() : expUnserialize($this->billing_options);
     }
 
-    public function captureEnabled() 
+    public function captureEnabled()
     {
-        return $this->billingcalculator->calculator->captureEnabled(); 
+        return $this->billingcalculator->calculator->captureEnabled();
     }
-    
-    public function voidEnabled() 
+
+    public function voidEnabled()
     {
         return $this->billingcalculator->calculator->voidEnabled();
     }
-    
-    public function creditEnabled() 
+
+    public function creditEnabled()
     {
         return $this->billingcalculator->calculator->creditEnabled();
     }
-    
+
     public function getRefNum()
     {
         //$opts = expUnserialize($this->billing_options);

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -352,9 +352,12 @@ class fileController extends expController {
 //            $files = $this->$modelname->find('all',$filter,$sort.' '.$dir, $results, $startIndex);
             $files = $this->$modelname->find('all', $filter, $sort.' '.$dir);
 
+            $querycat = !empty($this->params['cat']) ? $this->params['cat'] : '0';
             $groupedfiles = array();
             foreach ($files as $key=>$file) {
-                if (empty($file->expCat[0]->title)) {
+                $filecat = !empty($file->expCat[0]->id) ? $file->expCat[0]->id : 0;
+//                if (empty($file->expCat[0]->title)) {
+                if (($querycat == $filecat || $querycat == -1)) {
                     $totalrecords++;
                     if (count($groupedfiles) < ($startIndex + $results)) {
                         $groupedfiles[$key] = $files[$key];
@@ -606,15 +609,19 @@ class fileController extends expController {
         //extensive suitability check before doing anything with the file...
         if (isset($_SERVER['HTTP_X_FILE_NAME'])) {  //HTML5 XHR upload
             $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME'],false,false,null,$destDir,intval(QUICK_UPLOAD_WIDTH));
-            $file->poster = $user->id;
-            $file->posted = $file->last_accessed = time();
-            $file->save();
-            if (!empty($quikFolder)) {
-                $expcat = new expCat($quikFolder);
-                $params['expCat'][0] = $expcat->id;
-                $file->update($params);
+            if (is_object($file)) {
+                $file->poster = $user->id;
+                $file->posted = $file->last_accessed = time();
+                $file->save();
+                if (!empty($quikFolder)) {
+                    $expcat = new expCat($quikFolder);
+                    $params['expCat'][0] = $expcat->id;
+                    $file->update($params);
+                }
+                $ar = new expAjaxReply(200, gt('Your File was uploaded successfully'), $file->id);
+            } else {
+                $ar = new expAjaxReply(300, gt("File was not uploaded!").' - '.$file);
             }
-            $ar = new expAjaxReply(200, gt('Your File was uploaded successfully'), $file->id);
             $ar->send();
         } else {  //$_POST upload
             if (($_FILES['uploadfile'] == "none") OR (empty($_FILES['uploadfile']['name'])) ) {

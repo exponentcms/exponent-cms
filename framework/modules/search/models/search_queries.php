@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -23,12 +23,12 @@
 
 class search_queries extends expRecord {
 //	public $table = 'search_queries';
-	
+
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
 //		global $db;
 		parent::__construct($params, $get_assoc, $get_attached);
 	}
-	
+
 }
 
 ?>

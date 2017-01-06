@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,8 +52,8 @@ class search extends expRecord {
         //setup the sql query
         /*$sql  = "SELECT *, MATCH (s.title,s.body) AGAINST ('".$terms."') as score from ".$db->prefix."search as s ";
 		$sql .= "LEFT OUTER JOIN ".$db->prefix."product p ON s.original_id = p.id WHERE MATCH(title,body) against ('".$terms."' IN BOOLEAN MODE)";
-		
-        SELECT *, MATCH (s.title,s.body) AGAINST ('army combat uniform') as score from exponent_search as s 
+
+        SELECT *, MATCH (s.title,s.body) AGAINST ('army combat uniform') as score from exponent_search as s
         LEFT OUTER JOIN exponent_product p ON s.original_id = p.id WHERE MATCH(s.title,s.body) against ('army combat uniform' IN BOOLEAN MODE)*/
 
         $sql = "SELECT *, MATCH (s.title, s.body) AGAINST ('" . $terms . "*') as score from " . $db->prefix . "search as s ";
@@ -84,10 +84,10 @@ class search extends expRecord {
                 if (!product::canView($records[$i]->original_id)) {
                     unset($recs[$i]); // product is not available for viewing
                 }
-                /*else 
+                /*else
                 {
                     $records[$i] = new product($records[$i]->original_id);
-                    $records[$i]->score = $score;   
+                    $records[$i]->score = $score;
                 }*/
             } else if ($records[$i]->ref_type == 'section') {
 //                $section = $db->selectObject('section', 'id=' . $records[$i]->original_id);

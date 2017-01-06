@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -41,8 +41,8 @@
         <p>
             <a class="{button_style}" href="{link controller='order' action='clearCart' id=$order->id}">{'Start a New Shopping Cart'|gettext}</a>
         </p>
-    </div>    
-        
+    </div>
+
 </div>
 
 {script unique="verify-submit-form" yui3mods="node"}
@@ -52,11 +52,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     Y.one('#submit-verify').on('click',function(e){
     //alert("Here");
         e.halt();
-        var frm = Y.one('#verifyAndRestoreCartForm');  
+        var frm = Y.one('#verifyAndRestoreCartForm');
         var ln = Y.one('#lastname');
         var em = Y.one('#email');
-        var zc = Y.one('#zip_code');                
-        
+        var zc = Y.one('#zip_code');
+
         if(ln.get('value) == '')
         {
             alert("{/literal}{"Please verify your Last Name to continue."|gettext}{literal}");
@@ -72,8 +72,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             alert("{/literal}{"Please verify your Zip Code to continue."|gettext}{literal}");
             return false;
         }
-        frm.submit();                
-    });                        
+        frm.submit();
+    });
 });
 {/literal}
 {/script}

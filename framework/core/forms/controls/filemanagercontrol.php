@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -485,7 +485,7 @@ class filemanagercontrol extends formcontrol {
              ));
         return $html;
     }
-    
+
     function buildImages() {
     	$assets_path = SCRIPT_RELATIVE.'framework/core/forms/controls/assets/';
         if (empty($this->value)) return null;
@@ -504,7 +504,7 @@ class filemanagercontrol extends formcontrol {
 
         if (empty($filearray)) return null;
         $this->count = count($filearray);
-        
+
         $subTypeName = empty($this->subtype) ? "expFile[]" : "expFile[".$this->subtype."][]";
         // loop over each file and build out the HTML
         //$cycle = "odd";
@@ -529,25 +529,25 @@ class filemanagercontrol extends formcontrol {
             $html .= "</li>";
             //$cycle = $cycle=="odd" ? "even" : "odd";
         }
-        
+
         return $html;
     }
-    
+
     function controlToHTML($name,$label) {
         return $this->html;
     }
-    
+
     static function form($object) {
         $form = new form();
         if (!isset($object->html)) {
             $object->html = "";
-        } 
+        }
         $form->register("html",'',new htmleditorcontrol($object->html));
         if (!expJavascript::inAjaxAction())
             $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         return $form;
     }
-    
+
     static function update($values, $object) {
         if ($object == null) $object = new htmlcontrol();
         $object->html = preg_replace("/<br ?\/>$/","",trim($values['html']));
@@ -556,7 +556,7 @@ class filemanagercontrol extends formcontrol {
         $object->is_static = 1;
         return $object;
     }
-    
+
 }
 
 ?>

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -307,7 +307,7 @@
                 filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php?update=ck',
                 filebrowserLinkWindowWidth : 320,
                 filebrowserLinkWindowHeight : 600,
-                extraPlugins : 'autosave,tableresize,sourcedialog,image2,uploadimage,quicktable,showborders,{/literal}{stripSlashes($editor->plugins)}{literal}',
+                extraPlugins : 'autosave,tableresize,sourcedialog,image2,uploadimage,uploadfile,quicktable,showborders,{/literal}{stripSlashes($editor->plugins)}{literal}',
                 removePlugins: 'image,forms,flash',
                 image2_alignClasses: [ 'image-left', 'image-center', 'image-right' ],
                 image2_captionedClass: 'image-captioned',

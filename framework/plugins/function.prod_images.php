@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -42,7 +42,7 @@ function smarty_function_prod_images($params,&$smarty) {
     }
 
     $rec = $params['record'];
-    
+
     if ($rec->main_image_functionality == 'iws') {
         $images = $rec->expFile['imagesforswatches'];
     } else {
@@ -52,14 +52,14 @@ function smarty_function_prod_images($params,&$smarty) {
     $additionalImages = !empty($rec->expFile['images']) ? $rec->expFile['images'] : array();
 
     $mainImages = !empty($additionalImages) ? array_merge($images, $additionalImages) : $images;
-    
+
 //    $mainthmb = !empty($rec->expFile['mainthumbnail'][0]) ? $rec->expFile['mainthumbnail'][0] : $mainImages[0] ;
 //    $addImgs = array_merge(array($mainthmb),$additionalImages);
     $addImgs = $additionalImages;
 
     //pulling in store configs. This is a placeholder for now, so we'll manually set them til we get that worked in.
     $config = $smarty->getTemplateVars('config');
-    
+
     // $config = array(
     //     "listing-width"=>148,
     //     "listing-height"=>148,
@@ -69,7 +69,7 @@ function smarty_function_prod_images($params,&$smarty) {
     //     "swatch-box"=>30,
     //     "swatch-pop"=>100
     //     );
-        
+
     switch ($params['display']) {
         case 'single':
         case 'thumbnail':
@@ -86,14 +86,14 @@ function smarty_function_prod_images($params,&$smarty) {
                                    "return"=>1,
                                    "class"=>$class
                                    );
-                                            
+
             if (!$images[0]->id) {
                 unset($imgparams['file_id']);
                 $imgparams['src'] = PATH_RELATIVE . 'framework/modules/ecommerce/assets/images/no-image.jpg';
                 $imgparams['alt'] = gt('No image found for').' '.$rec->title;
             }
             $img = smarty_function_img($imgparams,$smarty);
-            
+
             $html .= $img;
             $html .= '</a>';
         break;
@@ -102,7 +102,7 @@ function smarty_function_prod_images($params,&$smarty) {
             if (count($addImgs)<=1) {
                 $config['displayheight'] = ceil(($mainImages[0]->image_height * $config['displaywidth'])/$mainImages[0]->image_width);
             }
-            
+
             if (count($addImgs)>1) {
                 $adi = '<ul class="thumbnails">';
                 for ($i = 0, $iMax = count($addImgs); $i < $iMax; $i++) {
@@ -112,16 +112,16 @@ function smarty_function_prod_images($params,&$smarty) {
                 $adi .= $thmb;
                 $adi .= '</ul>';
             }
-            
+
             // shrink shrink the display window to fit the selected image if no height is set
             if ($config['displayheight']==0) {
                 $config['displayheight'] = (($config['displaywidth'] * $mainImages[0]->image_height) / $mainImages[0]->image_width);
             }
             $html = '<div class="ecom-images loading-images" style="width:'.$config['displaywidth'].'px;">';
-            
+
             // if configured, the additional thumb images will display at the bottom
             $html .= ($config['thumbsattop']==1) ? $adi : '';
-            
+
             $html .= '<ul class="enlarged" style="height:'.$config['displayheight'].'px;width:'.$config['displaywidth'].'px;">';
 
             for ($i = 0, $iMax = count($mainImages); $i < $iMax; $i++) {
@@ -130,10 +130,10 @@ function smarty_function_prod_images($params,&$smarty) {
             }
             $html .= $img;
             $html .= '</ul>';
-            
+
             // if configured, the additional thumb images will display at the bottom
             $html .= ($config['thumbsattop']!=1) ? $adi : '';
-            
+
             $html .= '</div>';
 
             // javascripting

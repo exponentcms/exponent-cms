@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="myID" corecss="tables"}
 {literal}
 .control label.label {
@@ -26,7 +26,7 @@
 {/css}
 <div id="storeconfig" class="module upcharge manage">
     <h1>{"Location Up-Charge Rate Settings"|gettext}</h1>
-	
+
 	{form action=update_upcharge}
 		{'Select the configuration of the Up charge Rate for the Countries and States/Provinces:'|gettext}
         <table class="exp-skin-table">

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,7 +17,7 @@
     <div id="instore-tabs" class="">
         <ul class="nav nav-tabs" role="tablist">
 	        <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General Settings'|gettext}</em></a></li>
-        </ul>            
+        </ul>
         <div class="tab-content">
 	        <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                 {control type="text" name="rate" label="Per Weight Shipping Rate"|gettext size=5 filter=money value=$calculator->configdata.rate description='The shipping cost will be multiplied by the overall weight of an order that uses this shipping method'|gettext}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -27,25 +27,25 @@ class product_type extends expNestedNode {
 //		global $db;
 //		parent::__construct($params, $get_assoc, $get_attached);
 //	}
-	
+
 	public function saveCategories($catArray, $cat_id, $type) {
         global $db;
 
 		$product_type_id = $type . "_id";
         // We need to reset the current category
 		$db->delete("{$type}_storeCategories", "storecategories_id =".$cat_id);
-			
+
 		if(count($catArray) > 0) {
 			foreach($catArray as $item) {
 				if($item <> 0) {
                     $assoc = new stdClass();
 					$assoc->storecategories_id  = $cat_id;
 					$assoc->$product_type_id    = $item;
-					$db->insertObject($assoc, "{$type}_storeCategories");    
+					$db->insertObject($assoc, "{$type}_storeCategories");
 				}
 			}
 		}
-		
+
     }
 
 }

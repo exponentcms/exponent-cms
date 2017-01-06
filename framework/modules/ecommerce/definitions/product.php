@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -43,11 +43,11 @@ return array(
     "feed_title"=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100,
-        DB_INDEX=>10), 
+        DB_INDEX=>10),
 	"google_product_type"=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100,
-        DB_INDEX=>10), 
+        DB_INDEX=>10),
 	"bing_product_type"=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100,
@@ -55,7 +55,7 @@ return array(
 	"nextag_product_type"=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100,
-        DB_INDEX=>10), 
+        DB_INDEX=>10),
 	"shopzilla_product_type"=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100,
@@ -198,7 +198,7 @@ return array(
 		DB_FIELD_LEN=>10000),
     'user_input_fields'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>10000),    
+        DB_FIELD_LEN=>10000),
     "parent_id"=>array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER),
     "child_rank"=>array(

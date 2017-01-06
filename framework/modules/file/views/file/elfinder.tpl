@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,18 +20,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+      {*<meta http-equiv="content-type" content="text/html; charset=utf-8" />*}
+    <meta charset="{$smarty.const.LANG_CHARSET}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
     <title>{'File Manager'|gettext}  |  Exponent CMS</title>
-
-    <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
-    <!--[if lt IE 9]>
-        <script src="{$smarty.const.JQUERY_SCRIPT}" charset="utf-8"></script>
-    <![endif]-->
-    <!--[if gte IE 9]><!-->
-        <script src="{$smarty.const.JQUERY2_SCRIPT}" charset="utf-8"></script>
-    <!--<![endif]-->
-    <script src="{$smarty.const.JQUERYUI_SCRIPT}" type="text/javascript" charset="utf-8"></script>
+    <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
 
     <link rel="stylesheet" href="{$smarty.const.JQUERY_RELATIVE}css/smoothness/jquery-ui.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
@@ -51,6 +44,15 @@
 
     {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/theme.css" type="text/css">  *}{* default OSX theme *}
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder{$smarty.const.ELFINDER_THEME}/css/theme.css" type="text/css">
+
+    <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
+    <!--[if lt IE 9]>
+        <script src="{$smarty.const.JQUERY_SCRIPT}" charset="utf-8"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+        <script src="{$smarty.const.JQUERY2_SCRIPT}" charset="utf-8"></script>
+    <!--<![endif]-->
+    <script src="{$smarty.const.JQUERYUI_SCRIPT}" type="text/javascript" charset="utf-8"></script>
 
     <!-- elfinder core -->
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.js"></script>
@@ -215,11 +217,12 @@
                                 // `mimes` is not set for support everything kind of text file
                                 load : function(textarea) {
                                     if (typeof ace !== 'object') {
-                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ace.js'));
-                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ext-modelist.js'));
-                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ext-settings_menu.js'));
-                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ext-language_tools.js'));
-                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ext-searchbox.js'));
+                                        {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/'}{literal}
+                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ace.js'));
+                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ext-modelist.js'));
+                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ext-settings_menu.js'));
+                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ext-language_tools.js'));
+                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ext-searchbox.js'));
                                     }
                                     var self = this, editor, editorBase, mode,
                                     ta = $(textarea),
@@ -309,7 +312,7 @@
                                     ace.require('ace/ext/settings_menu').init(editor);
                                     editor.$blockScrolling = Infinity;
                                     editor.setOptions({
-                                        theme: 'ace/theme/monokai',
+                                        theme: 'ace/theme/twilight',
                                         mode: 'ace/mode/' + mode,
                                         wrap: true,
                                         enableBasicAutocompletion: true,

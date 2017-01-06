@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -39,11 +39,11 @@
                 <span class="showtitle"><a href="{link controller=store action=show title=$result->sef_url}">{$result->title}{if $result->model}, SKU: {$result->model}{/if}</a></span>
                 {if $result->body != ""}<br /><span class="summary">{$result->body|strip_tags|truncate:240}</span>{/if}
             </div>
-            <div class="showrightcol"> 
+            <div class="showrightcol">
                 <div class="showprice">
-                {if $result->availability_type == 3}       
+                {if $result->availability_type == 3}
                     {'Call for Price'|gettext}
-                {else}                   
+                {else}
                     {if $result->use_special_price}
                         <span style="font-size:14px; text-decoration: line-through;">{$result->base_price|currency}</span>
                         <span style="color:red;">{$result->special_price|currency}</span>
@@ -54,12 +54,12 @@
                 </div>
                 <div style="text-align: right;">
                     <a href="{link controller=store action=show title=$result->sef_url}" class="exp-ecom-link {button_style color=blue}" rel="nofollow"><strong><em>{'View Item'|gettext}</em></strong></a>
-                </div> 
+                </div>
             </div>
             {clear}
         </div>
         {*/if*}
-    {/foreach}  
+    {/foreach}
     {$page->links}
 
 </div>

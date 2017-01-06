@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -30,7 +30,7 @@ class discounts extends expRecord {
         'uniqueness_of' => array(
             'coupon_code' => array('message' => 'That Coupon Code is already in use.'),
         )/*,
-        'numericality_of'=>array(           
+        'numericality_of'=>array(
            'discount_amount'=>array('message'=>'Please enter a proper value for Discount Amount.'),
            'discount_percent'=>array('message'=>'Please enter a proper value for Discount Percent.'),
            'minimum_order_amount'=>array('message'=>'Please enter a proper value for Minimum Order Amount.') )      */
@@ -44,7 +44,7 @@ class discounts extends expRecord {
     -- Free Shipping
     -- Fixed discount for shipping
     -- Buy X get Y free (must have items in cart, per conditions)  (not implemented yet)
-    
+
     */
     public $actions = array(
         3 => 'Pecentage off entire cart',
@@ -56,7 +56,7 @@ class discounts extends expRecord {
     //public $discount_types = array(1=>'%', 2=>'$');
 
     public function getCouponByName($code) {
-        //if valid, return objec, else return null       
+        //if valid, return objec, else return null
         return $this->find('first', 'coupon_code="' . trim($code) . '"');
     }
 
@@ -64,7 +64,7 @@ class discounts extends expRecord {
         //FJD TODO: actually calculate this
         //if never_expired return false
         //if current datetime is within being and end valid dates, return false
-        //else return true        
+        //else return true
         if (!$this->enabled)
             return false;
         if ($this->never_expires == true)
@@ -81,7 +81,7 @@ class discounts extends expRecord {
 
     /*public static function getUsersDiscounts(&$order) {
         $no_more_discounts = false;
-        
+
         $groupdiscounts = groupdiscounts::getGroupDiscountsForUser();
         foreach($groupdiscounts as $discount) {
             if ($discount->discount_type == 2 && $no_more_discounts == false) {
@@ -105,7 +105,7 @@ class discounts extends expRecord {
         $this->startdate_time = datetimecontrol::parseData('startdate_time', $params) + $this->startdate;
         $this->enddate = datetimecontrol::parseData('enddate', $params);
         $this->enddate_time = datetimecontrol::parseData('enddate_time', $params) + $this->enddate;
-        //                   eDebug($_POST);   
+        //                   eDebug($_POST);
         //eDebug($params);
         //eDebug($this, true);
         parent::update($params);
@@ -123,7 +123,7 @@ class discounts extends expRecord {
         //1. uses per coupon
         //2. uses per customer
 
-        //4. check group requirements                   
+        //4. check group requirements
         //-1 = 'ALL LOGGED IN USERS'
         //-2 => 'ALL NON-LOGGED IN USERS'
         $required_groups = expUnserialize($this->group_ids);
@@ -154,7 +154,7 @@ class discounts extends expRecord {
         }
 
         //check rules of products in cart
-        //FJD TODO: not yet implemeneted 
+        //FJD TODO: not yet implemeneted
 
         return $retMessage;
     }
@@ -187,7 +187,7 @@ class discounts extends expRecord {
 #        if ($discount->discount_type == 2) {
 #            $amount_off = $discount->discount_amount;
 #        } elseif ($discount->discount_type == 1) {
-#            // if the discount type is a percentage then we need to find out when to apply it 
+#            // if the discount type is a percentage then we need to find out when to apply it
 #            // to the order
 #            if ($discount->apply_when == 1) {
 #                $amount_off = $order->total * ($discount->discount_amount * .01);
@@ -196,7 +196,7 @@ class discounts extends expRecord {
 #                $amount_off = $total_shipping * ($discount->discount_amount * .01);
 #            }
 #        }
-#        
+#
 #        return $amount_off;
 #    }
 }

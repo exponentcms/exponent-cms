@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -32,7 +32,7 @@ class hiddenfieldcontrol extends formcontrol {
 	function __construct($default = "") {
         $this->default = $default;
 	}
-	
+
 	function toHTML($label,$name) {
 		$html = $this->controlToHTML($name,$label);
 		return $html;
@@ -45,15 +45,15 @@ class hiddenfieldcontrol extends formcontrol {
 		$html .= ' />';
 		return $html;
 	}
-	
+
 	static function parseData($name, $values, $for_db = false) {
 		return isset($values[$name])?1:0;
 	}
-	
+
     static function templateFormat($db_data, $ctl) {
 		return ($db_data==1)?gt("Yes"):gt("No");
 	}
-	
+
 	static function form($object) {
 		$form = new form();
 		if (!isset($object->identifier)) {
@@ -62,8 +62,8 @@ class hiddenfieldcontrol extends formcontrol {
 			$object->default = false;
 			$object->flip = false;
 			$object->required = false;
-		} 
-		
+		}
+
 		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
 		$form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
@@ -73,10 +73,10 @@ class hiddenfieldcontrol extends formcontrol {
         $form->register(null, null, new htmlcontrol('<br />'));
 		if (!expJavascript::inAjaxAction())
 			$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
-		
+
 		return $form;
 	}
-	
+
     static function update($values, $object) {
 		if ($object == null) $object = new checkboxcontrol();
 		if ($values['identifier'] == "") {
@@ -92,7 +92,7 @@ class hiddenfieldcontrol extends formcontrol {
 		$object->required = !empty($values['required']);
 		return $object;
 	}
-	
+
 }
 
 ?>

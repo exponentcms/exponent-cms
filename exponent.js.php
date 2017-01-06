@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -68,9 +68,9 @@ EXPONENT.YUI3_CONFIG = {
                             me.type = "css";
                             me.path = me.path.replace(/\.js/, ".css");
                             me.path = me.path.replace(/\/yui2-skin/, "/assets/skins/sam/yui2-skin");
-                        }   
-                    }   
-                }   
+                        }
+                    }
+                }
             }
         }
     }

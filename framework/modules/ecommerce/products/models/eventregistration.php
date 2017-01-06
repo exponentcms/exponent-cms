@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -161,8 +161,8 @@ class eventregistration extends expRecord {
     function displayForm($form, $params) {
         // eDebug($params, true);
         //$product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
-        //$product = new $product_type($this->params['product_id'],true,true);     
-        //eDebug($product);   
+        //$product = new $product_type($this->params['product_id'],true,true);
+        //eDebug($product);
         //if (!empty($product->user_input_fields)) $product->user_input_fields = expUnserialize($product->user_input_fields);
         //eDebug($product);
         $form = new controllertemplate(new storeController(), $this->getForm($form));
@@ -175,9 +175,9 @@ class eventregistration extends expRecord {
             $form->assign('extra_data', expUnserialize($params['extra_data']));
         }
 
-        /*if (!empty($this->params['children'])) 
+        /*if (!empty($this->params['children']))
         {
-            $form->assign('children', expUnserialize($this->params['children']));   
+            $form->assign('children', expUnserialize($this->params['children']));
         }*/
         if (!empty($params['no_output'])) {
             return $form->render();
@@ -302,7 +302,7 @@ class eventregistration extends expRecord {
 
     function getSurcharge() {
         $sc = 0;
-        //take parent level surcharge, but override surcharge child product is set            
+        //take parent level surcharge, but override surcharge child product is set
         if ($this->surcharge == 0 && $this->parent_id != 0) {
             $parentProd = new product($this->parent_id);
             $sc = $parentProd->surcharge;

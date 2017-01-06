@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -40,7 +40,7 @@ class companyController extends expController {
     static function displayname() { return gt("e-Commerce Manufacturer Listings"); }
     static function description() { return gt("Displays product manufacturer listings"); }
 	static function hasSources() { return false; }
-	
+
 	function showall() {
         expHistory::set('viewable', $this->params);
         $page = new expPaginator(array(
@@ -56,40 +56,40 @@ class companyController extends expController {
                 gt('Website')=>'website'
             ),
         ));
-        
+
         assign_to_template(array(
             'page'=>$page,
             'items'=>$page->records
         ));
     }
-    
+
     function show()
     {
 //        global $db, $user, $router;
         global $user, $router;
         //eDebug($this->params,true);
-        
+
         expHistory::set('viewable', $this->params);
-        
-        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p ';             
-            
-        $sql_start  = 'SELECT DISTINCT p.* FROM '.DB_TABLE_PREFIX.'_product p ';            
+
+        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p ';
+
+        $sql_start  = 'SELECT DISTINCT p.* FROM '.DB_TABLE_PREFIX.'_product p ';
         //$sql = 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
         $sql = 'WHERE ';
         if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ' ;
         //$sql .= 'sc.storecategories_id IN (';
-        //$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')';         
+        //$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')';
         $sql .=  'p.companies_id=' . $this->params['id'];
         $sql .=  ' AND p.parent_id = 0';
-        
+
         $count_sql = $count_sql_start . $sql;
         $sql = $sql_start . $sql;
-        
+
         //eDebug($sql);
         $order = 'id'; //$this->config['orderby'];
         $dir = 'DESC'; //$this->config['orderby_dir'];
         //eDebug($this->config);
-       
+
         $page = new expPaginator(array(
             'model_field'=>'product_type',
             'sql'=>$sql,
@@ -107,7 +107,7 @@ class companyController extends expController {
             ),
         ));
 
-        //$ancestors = $this->category->pathToNode();   
+        //$ancestors = $this->category->pathToNode();
         //$categories = ($this->parent == 0) ? $this->category->getTopLevel(null,false,true) : $this->category->getChildren(null,false,true);
         //eDebug($page);
         //$rerankSQL = "SELECT DISTINCT p.* FROM ".DB_TABLE_PREFIX."_product p JOIN ".DB_TABLE_PREFIX."_product_storeCategories sc ON  p.id = sc.product_id WHERE sc.storecategories_id=".$this->category->id." ORDER BY rank ASC";
@@ -126,27 +126,27 @@ class companyController extends expController {
 //        global $db, $user, $router;
         global $user, $router;
         //eDebug($this->params,true);
-        
+
         expHistory::set('viewable', $this->params);
-        
-        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p ';             
-            
-        $sql_start  = 'SELECT DISTINCT p.* FROM '.DB_TABLE_PREFIX.'_product p ';            
+
+        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p ';
+
+        $sql_start  = 'SELECT DISTINCT p.* FROM '.DB_TABLE_PREFIX.'_product p ';
         //$sql = 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
         $sql = 'WHERE ';
         if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ' ;
         //$sql .= 'sc.storecategories_id IN (';
-        //$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')';         
+        //$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')';
         $sql .=  'p.companies_id=' . $this->params['id'];
-        
+
         $count_sql = $count_sql_start . $sql;
         $sql = $sql_start . $sql;
-        
+
         //eDebug($sql);
         $order = 'id'; //$this->config['orderby'];
         $dir = 'DESC'; //$this->config['orderby_dir'];
         //eDebug($this->config);
-       
+
         $page = new expPaginator(array(
             'model_field'=>'product_type',
             'sql'=>$sql,
@@ -164,7 +164,7 @@ class companyController extends expController {
             ),
         ));
 
-        //$ancestors = $this->category->pathToNode();   
+        //$ancestors = $this->category->pathToNode();
         //$categories = ($this->parent == 0) ? $this->category->getTopLevel(null,false,true) : $this->category->getChildren(null,false,true);
         //eDebug($page);
         //$rerankSQL = "SELECT DISTINCT p.* FROM ".DB_TABLE_PREFIX."_product p JOIN ".DB_TABLE_PREFIX."_product_storeCategories sc ON  p.id = sc.product_id WHERE sc.storecategories_id=".$this->category->id." ORDER BY rank ASC";

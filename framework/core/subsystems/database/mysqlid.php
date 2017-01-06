@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -57,7 +57,7 @@ class mysqlid_database {
      * @internal param bool $new Whether or not to force the PHP connection function to establish
      *   a distinctly new connection handle to the server.
      */
-   
+
 //   function __construct($log_file = null){
 //        //$log_file==null ? $this->$logFile = BASE . '/tmp/sql.log' : $log_file;
 //        if ($log_file == null) $this->logFile = BASE . 'tmp/sql.log';
@@ -75,13 +75,13 @@ class mysqlid_database {
         $this->writeLog("Total Duration:" . $this->totalDuration);
         $this->writeLog("Total Time:" . $totalTime . "\n");
         fclose($this->logFH);
-   }  
+   }
 
    function writeLog($message)
    {
        fwrite($this->logFH, $message . "\n");
    }
-   
+
    function query_time ($func = '', $displ = FALSE) {
         $qt = 0;
         $qn = 0;
@@ -89,7 +89,7 @@ class mysqlid_database {
         $sql_time = mysqli_fetch_assoc($res);
         $this->totalQueries = $sql_time['Query_ID'];
         $this->totalDuration += $sql_time['Duration'];
-        
+
        // eDebug($sql_time);
         /*foreach ($sql_time as $o) {
             eDebug($o);
@@ -100,7 +100,7 @@ class mysqlid_database {
             return $qt;
         else echo "$qn Queries&#160;in&#160;".$qt."&#160;sec.";
         return ;*/
-        $this->writeLog("------------------------------------------"); 
+        $this->writeLog("------------------------------------------");
         $this->writeLog("Func: " . $func);
         $this->writeLog("Query: " . $sql_time['Query']);
         $this->writeLog("Duration: " . $sql_time['Duration']);

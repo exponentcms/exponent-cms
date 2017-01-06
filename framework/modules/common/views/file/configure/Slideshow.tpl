@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {group label="Image Slideshow Configuration"|gettext}
     {control type=text name="width" label="Slideshow width"|gettext value=$config.width|default:350 size="5"}
     {control type=text name="height" label="Slideshow height"|gettext value=$config.height|default:200 size="5"}

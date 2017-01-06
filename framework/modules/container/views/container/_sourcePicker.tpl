@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,7 +22,7 @@
 					href="{$dest}&ss={$container->info.source}&sm={$container->info.class}">
 			* {$container->info.module} - {'Use this Module\'s Content'|gettext} *
 		</a>
-	</div>	
+	</div>
 	{$container->output}
 </div>
 {else}

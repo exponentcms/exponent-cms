@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,10 +22,11 @@ include_once('../exponent.php');
 <!DOCTYPE HTML>
 <html>
 <head>
+<!--    <meta http-equiv="Content-Type" content="text/html; charset=--><?php //echo LANG_CHARSET; ?><!--"/>-->
+    <meta charset="<?php echo LANG_CHARSET; ?>">
     <title><?php echo gt('Exponent CMS : Install Wizard Help'); ?></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>"/>
     <meta name="Generator" content="Exponent Content Management System - <?php echo expVersion::getVersion(true); ?>"/>
-    <link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>external/normalize/normalize.css"/>
+     <link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>external/normalize/normalize.css"/>
     <link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/forms.css"/>
     <link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/button.css"/>
     <link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/tables.css"/>

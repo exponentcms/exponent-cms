@@ -5,7 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.plugins.setLang('autosave', 'en', {
     dateFormat: 'LLL',
     autoSaveMessage: 'Auto Saved',
-    loadSavedContent: 'An auto-saved version of this content from "{0}" has been found. Would you like to compare content versions and choose which one to load?',
+    loadSavedContent: 'An auto-saved version of this content from "{0}" has been found. Would you like to compare content versions and choose which one to load? Clicking Cancel will remove previously auto-saved content.',
     title: 'Compare auto-saved content with that loaded from the website',
     loadedContent: 'Loaded content',
     autoSavedContent: 'Auto-saved content from: \'',

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -146,7 +146,7 @@ class order extends expRecord {
         ) {
             return new order();
         } else {
-            // if ecomm is turned off, no cart.		    
+            // if ecomm is turned off, no cart.
             //$active = ;
 //            if (empty($active)) return null;
             $order = new order(); //initialize a new order object to use the find function from.
@@ -173,8 +173,8 @@ class order extends expRecord {
                 if (empty($usercart->id)) {
                     // no SESSION cart was found and user is not logged in...
                     //let's see if they have a cart_id cookie set and we'll snag that if so
-                    //they won't have any user data, since they are "logged in" once they get to 
-                    //checkout, so all we're really doing here is populating a cart for return 
+                    //they won't have any user data, since they are "logged in" once they get to
+                    //checkout, so all we're really doing here is populating a cart for return
                     //shoppers
                     $cookie_cart_id = isset($_COOKIE['cid']) ? $_COOKIE['cid'] : 0;
                     //eDebug($cookie_cart_id,true);
@@ -190,7 +190,7 @@ class order extends expRecord {
                             //1) Was Not logged in
                             if (empty($tmpCart->user_id) /*&& count($tmpCart->orderitem) == 0*/) {
                                 $cart = new order($cookie_cart_id);
-                                //update the session ticket and return count                                                                
+                                //update the session ticket and return count
                                 $cart->update(array('sessionticket_ticket' => $ticket, 'return_count' => $cart->setReturnCount($orig_referrer)));
                                 order::setCartCookie($cart);
                                 flash('message', gt('Welcome back'));
@@ -217,7 +217,7 @@ class order extends expRecord {
                                         if (isset($sessAr['validated']) && $sessAr['validated']) {
                                             //already went through validation and we're good to go
                                             $cart = new order($sessAr['cid']);
-                                            //update the session ticket and return count                              
+                                            //update the session ticket and return count
                                             $cart->update(array('sessionticket_ticket' => $ticket, 'return_count' => $cart->mergeReturnCount($sessioncart->return_count), 'orig_referrer' => $sessioncart->orig_referrer));
                                             order::setCartCookie($cart);
                                             expSession::un_set('verify_shopper');
@@ -455,7 +455,7 @@ class order extends expRecord {
             }
         }
 
-        #FJD - TODOD: this will require some more work; eg. combining a free shipping discount code with a 
+        #FJD - TODOD: this will require some more work; eg. combining a free shipping discount code with a
         #product in the cart that is also forcing shipping.  He coupon could require the lowest shipping
         #method, but the product could require overnight or a high-end shipping, so we need to account for this
         //check discounts requiring forced shipping
@@ -542,15 +542,15 @@ class order extends expRecord {
     //this is taking into account only one discount allowed for the time being
     //and does not include the tax calculations - this is a simple cart estimate discount
     /*function updateOrderDiscounts()
-    {      
+    {
         $this->totalBeforeDiscounts = $this->total; // reference to the origional total
         $this->cart_discounts = 0;
         $this->total_applied_discounts = 0;
         foreach ($this->getOrderDiscounts() as $od)
-        {               
+        {
             $od->validate();
             $this->cart_discounts += $od->caclulateDiscount();
-        }                                                                    
+        }
         $this->total_applied_discounts = $this->cart_discounts;
         $this->total = $this->totalBeforeDiscounts - $this->total_applied_discounts;
     }*/
@@ -607,7 +607,7 @@ class order extends expRecord {
         $this->tax = 0;
         $validateDiscountMessage = '';
         //eDebug($this->surcharge_total);
-        //hate doing double loops, but we need to have the subtotal figured out already for 
+        //hate doing double loops, but we need to have the subtotal figured out already for
         //doing the straight dollar disoount calculations below
         for ($i = 0, $iMax = count($this->orderitem); $i < $iMax; $i++) {
             // figure out the amount of the discount
@@ -616,7 +616,7 @@ class order extends expRecord {
                 // change the price of the orderitem..this is needed for when we calculate tax below.
                 $this->orderitem[$i]->products_price = $this->orderitem[$i]->products_price - $discount_amount;
                 // keep a tally  of the total amount being subtracted by this discount.
-                $this->total_discounts += $discount_amount;                
+                $this->total_discounts += $discount_amount;
             }*/
             //$this->orderitem[$i]->products_price = $this->orderitem[$i]->getPriceWithOptions(); // * $this->orderitem[$i]->quantity;
             $this->orderitem[$i]->products_price_adjusted = $this->orderitem[$i]->products_price;
@@ -634,14 +634,14 @@ class order extends expRecord {
             //multiple and accomdate the "weight" and 'allow other discounts' type settings
             //this foreach will only fire once as of now, and will only hit on one or the other
             //TODO: We need to use produce_price_adjusted in the loops to accommodate for more than one discount
-            //otherwise it's just resetting them now instead of adding them 
+            //otherwise it's just resetting them now instead of adding them
             foreach ($cartDiscounts as $od) {
                 //do not calculate invalid discounts, but don't remove either
                 $discount = new discounts($od->discounts_id);
                 /*$validateDiscountMessage = $discount->validateDiscount();
              if($validateDiscountMessage != '') break;*/
 
-                //percentage discount             
+                //percentage discount
                 if ($discount->action_type == 3) {
                     $discount_amount = round(
                         $this->orderitem[$i]->products_price * ($discount->discount_percent / 100),
@@ -653,10 +653,10 @@ class order extends expRecord {
                     $this->total_discounts += $discount_amount * $this->orderitem[$i]->quantity;
                 }
 
-                //straight $$ discount 
+                //straight $$ discount
                 if ($discount->action_type == 4) {
                     $this->total_discounts = $discount->discount_amount;
-                    //what % of the order is this product with all it's quantity                    
+                    //what % of the order is this product with all it's quantity
                     $percentOfTotalOrder = ($this->orderitem[$i]->products_price * $this->orderitem[$i]->quantity) / $this->subtotal;
                     //figoure out how much that'll be and what each quanityt piece will bare
                     $discountAmountPerItem = round(
@@ -685,8 +685,8 @@ class order extends expRecord {
         $this->taxzones = taxclass::getCartTaxZones($this);
 
         // add the "cart discounts" - percentage for sure, but straight can work also should be added after the final total is calculated,
-        //including tax but not shipping                                                     
-        // $this->updateOrderDiscounts();  
+        //including tax but not shipping
+        // $this->updateOrderDiscounts();
 
         /*foreach ($cartDiscounts as $od)
      {
@@ -738,7 +738,7 @@ class order extends expRecord {
         }
         $this->shippingDiscount = $this->shipping_total_before_discounts - $this->shipping_total;
 
-        //check here to make sure we don't discount ourselves into oblivion          
+        //check here to make sure we don't discount ourselves into oblivion
         $orderTotalPreDiscounts = $this->subtotal + $this->tax + $this->shipping_total;
         if ($this->total_discounts > $orderTotalPreDiscounts) $this->total_discounts = $orderTotalPreDiscounts;
         $this->total = $this->subtotal - $this->total_discounts;
@@ -749,7 +749,7 @@ class order extends expRecord {
         $this->grand_total = ($this->subtotal - $this->total_discounts) + $this->tax + $this->shipping_total + $this->surcharge_total;
 
         //if($validateDiscountMessage != '') flash('message',$validateDiscountMessage);
-        //eDebug($this, true); 
+        //eDebug($this, true);
     }
 
     /**
@@ -764,7 +764,7 @@ class order extends expRecord {
         //$invoice_num = $db->max('orders', 'invoice_id') + 1;
 
         //start by locking the table to prevent another session from starting this same
-        //function before we are done with it.  Other sessions will wait until we're done, which 
+        //function before we are done with it.  Other sessions will wait until we're done, which
         //should be just a few milliseconds.
         $db->lockTable("orders_next_invoice_id");
 
@@ -793,7 +793,7 @@ class order extends expRecord {
             }
         }
 
-        //unlock the table and return.          
+        //unlock the table and return.
         $db->unlockTables();
 
         return $invoice_num;

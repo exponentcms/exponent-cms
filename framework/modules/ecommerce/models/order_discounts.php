@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,20 +22,20 @@
  */
 class order_discounts extends expRecord {
     public $table = 'order_discounts';
-    public $has_one = array('discounts');    
+    public $has_one = array('discounts');
     /*public $validates = array(
         'presence_of'=>array(
             'title'=>array('message'=>'Title is a required field.')
         ));*/
-        
-   
+
+
     function validate($redirectOnFailureTo = array('controller'=>'cart', 'action'=>'checkout'))
     {
         global $router;
         /*$discount = new discounts($this->discounts_id);
-        $validateDiscountMessage = $discount->validateDiscount();*/        
+        $validateDiscountMessage = $discount->validateDiscount();*/
         $validateDiscountMessage = $this->discounts->validateDiscount();  //FIXME this has a global $order
-        
+
         if ($validateDiscountMessage == "")
         {
             return true;
@@ -45,18 +45,18 @@ class order_discounts extends expRecord {
             //somthing is wrong so we need to remove the code, flash an erorr, and redirect to rebuild the cart
             $this->delete();
             flash('error', $validateDiscountMessage . gt("This discount code has been removed from your cart."));
-            //redirect_to($redirectOnFailureTo);          
+            //redirect_to($redirectOnFailureTo);
             redirect_to($router->current_url,true);
-        }        
+        }
     }
-        
+
     function caclulateDiscount()
     {
         global $order; //FIXME we do NOT want the global $order, but it's not used
 
         $discount = new discounts($this->discounts_id);
         //check discount type and calculate accordingly
-        //eDebug($this);   
+        //eDebug($this);
         //eDebug($discount, true);
         if ($discount->action_type == 3)  //Pecentage off entire cart
         {
@@ -70,30 +70,30 @@ class order_discounts extends expRecord {
             return $discount->discount_amount;
         }
     }
-      
+
     public function isCartDiscount()
     {
         if ($this->discounts->action_type < 5) return true;
         else return false;
     }
-    
+
     public function isShippingDiscount()
     {
         if ($this->discounts->action_type >= 5) return true;
         else return false;
     }
-    
+
     public function requiresForcedShipping()
     {
         if(empty($this->discounts->required_shipping_calculator_id))return false;
         else return true;
-    }  
-    
+    }
+
     public function getRequiredShippingCalculatorId()
-    {           
+    {
         return $this->discounts->required_shipping_calculator_id;
     }
-    
+
     public function getRequiredShippingMethod()
     {
         return $this->discounts->required_shipping_method;

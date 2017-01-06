@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,7 +22,7 @@
 	        <li class="selected"><a href="#tab1"><em>{'Wordpay Checkout'|gettext}<br>{'Settings'|gettext}</em></a></li>
 	        <li><a href="#tab2"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
 	        <li><a href="#tab3"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}}</em></a></li>
-        </ul>            
+        </ul>
         <div class="yui-content">
 	        <div id="tab1">
 	            {control type="text" name="username" label="API Username"|gettext value=$calculator->configdata.username}

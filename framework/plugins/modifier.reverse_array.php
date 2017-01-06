@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,7 +28,7 @@
  * Type:     modifier<br>
  * Name:     reverse_array<br>
  * Purpose:  reverse arrays
- * 
+ *
  * @param array
  * @return array
  */

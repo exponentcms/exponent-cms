@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -674,7 +674,8 @@ class administrationController extends expController {
 
 					$tar = new Archive_Tar($dest,$compression);
 
-					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
+//					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
+                    $tar->setErrorHandling(PEAR_ERROR_PRINT);
 					$return = $tar->extract(dirname($dest));
 					if (!$return) {
 						flash('error',gt('Error extracting TAR archive'));
@@ -687,7 +688,8 @@ class administrationController extends expController {
 
 					$zip = new Archive_Zip($dest);
 
-					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
+//					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
+                    $zip->setErrorHandling(PEAR_ERROR_PRINT);
 					if ($zip->extract(array('add_path'=>dirname($dest))) == 0) {
 						flash('error',gt('Error extracting ZIP archive').': '.$zip->_error_code . ' : ' . $zip->_error_string . '<br />');
 					} else {

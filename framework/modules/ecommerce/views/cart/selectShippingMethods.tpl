@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,7 +19,7 @@
 
 <div class="module cart select-shipping-methods">
     <h1>{$moduletitle|default:"Select Shipping Methods"|gettext}</h1>
-    
+
     {form action=saveShippingMethods}
         {foreach from=$shipping_items item=shippingitem}
             <h2>{'Choose shipping'|gettext}</h2>

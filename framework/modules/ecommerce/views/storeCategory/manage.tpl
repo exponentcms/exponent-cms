@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -24,6 +24,6 @@
             {'This is where you can add, edit and rearrange categories.'|gettext}
             {'Right-click on the category to display the command menu.'|gettext}
         </blockquote>
-	</div>	
+	</div>
 	{control type="tagtree" addable="true" id="managecats" name="managecats" controller=storeCategory draggable=true menu=true}
 </div>

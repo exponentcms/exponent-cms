@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -63,9 +63,9 @@
             return false;
         }
         return true;
-    }   
+    }
 
-    
+
     function validateCreditCard(form, cc_type_field, cc_number_field, cc_expiry_month_field, cc_expiry_year_field, cvv_field) {
         var cc_type_field = (cc_type_field == null) ? "cc_type" : cc_type_field;
         var cc_number_field = (cc_number_field == null) ? "cc_number" : cc_number_field;
@@ -78,12 +78,12 @@
         ccExpiryMonth = document.getElementById(cc_expiry_month_field);
         ccExpiryYear = document.getElementById(cc_expiry_year_field);
         ccCVV = document.getElementById(cc_cvv_field);
-        if (ccNumber.value.length == 0){ 
+        if (ccNumber.value.length == 0){
             alert("Please enter a valid Card Number.");
             ccNumber.focus();
             return false;
         }
-        
+
         tmpyear = ccExpiryYear.options[ccExpiryYear.selectedIndex].value;
         tmpmonth = ccExpiryMonth.options[ccExpiryMonth.selectedIndex].value;
         if (!(new CardType()).isExpiryDate(tmpyear, tmpmonth)) {
@@ -93,7 +93,7 @@
         card = ccType.options[ccType.selectedIndex].value;
         var retval = eval(card + ".checkCardNumber(\"" + ccNumber.value + "\", " + tmpyear + ", " + tmpmonth + ");");
         cardname = "";
-        
+
         if (!retval) {
             // The cardnumber has the valid luhn checksum, but we want to know which
             // cardtype it belongs to.
@@ -125,7 +125,7 @@
         return true;
     }
 /*************************************************************************\
-Object CardType([String cardtype, String rules, String len, int year, 
+Object CardType([String cardtype, String rules, String len, int year,
                                         int month])
 cardtype    : type of card, eg: MasterCard, Visa, etc.
 rules       : rules of the cardnumber, eg: "4", "6011", "34,37".
@@ -179,14 +179,14 @@ function checkCardNumber() {
     var cardnumber = (argc > 0) ? argv[0] : this.cardnumber;
     var year = (argc > 1) ? argv[1] : this.year;
     var month = (argc > 2) ? argv[2] : this.month;
-    
+
     this.setCardNumber(cardnumber);
     this.setExpiryDate(year, month);
-    
+
     if (!this.isCardNumber())
         return false;
     return this.isExpiryDate();
-    
+
 
 }
 /*************************************************************************\
@@ -214,7 +214,7 @@ function isCardNumber() {
     var cardnumber = (argc > 0) ? argv[0] : this.cardnumber;
     if (!this.luhnCheck())
         return false;
-    
+
     for (var n = 0; n < this.len.size; n++)
         if (cardnumber.toString().length == this.len[n]) {
             for (var m = 0; m < this.rules.size; m++) {
@@ -235,10 +235,10 @@ else return false.
 function isExpiryDate() {
     var argv = isExpiryDate.arguments;
     var argc = isExpiryDate.arguments.length;
-    
+
     year = argc > 0 ? argv[0] : this.year;
     month = argc > 1 ? argv[1] : this.month;
-    
+
     if (!isNum(year+""))
         return false;
     if (!isNum(month+""))
@@ -246,7 +246,7 @@ function isExpiryDate() {
     today = new Date();
     expiry = new Date(year, month);
     return today.getTime() <= expiry.getTime();
-}   
+}
 
 /*************************************************************************\
 boolean isNum(String argvalue)
@@ -342,7 +342,7 @@ function setLen(len) {
     // Create the len array.
     if (len.length == 0 || len == null)
         len = "13,14,15,16,19";
-    
+
     var tmplen = len;
     n = 1;
     while (tmplen.indexOf(",") != -1) {
@@ -369,7 +369,7 @@ function setRules(rules) {
     // Create the rules array.
     if (rules.length == 0 || rules == null)
         rules = "0,1,2,3,4,5,6,7,8,9";
-      
+
     var tmprules = rules;
     n = 1;
     while (tmprules.indexOf(",") != -1) {

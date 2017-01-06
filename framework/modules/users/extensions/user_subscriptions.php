@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -42,7 +42,7 @@ class user_subscriptions extends expRecord {
         // if not user id then we should not be doing anything here
         if (empty($params['user_id'])) return false;
         $this->user_id = $params['user_id'];
-        
+
         // all user subscriptions have been deleted, we now must (re)create those selected
         if (!empty($params['expeAlert'])) {
             $subscription = new stdClass();

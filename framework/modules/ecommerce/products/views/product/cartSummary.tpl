@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -42,7 +42,7 @@
                                     {foreach key=key from=$options item=option}
                                         <li>{$option[1]} {if $option[4]!=0}({$option[3]}{currency_symbol}{$option[4]}){/if}</li>
                                     {/foreach}
-                                </ul> 
+                                </ul>
                             </div>
                         {/if}
                         {if $item->getUserInputFields() != ''}
@@ -54,7 +54,7 @@
                             </div>
                         {/if}
                     </div>
-                </div>        
+                </div>
                 {script unique="z-index" yui3mods="node"}
                 {literal}
                     YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {

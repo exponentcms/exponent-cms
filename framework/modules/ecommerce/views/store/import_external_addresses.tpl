@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 <div class="module importexport manage">
     <h1>{'Upload Your CSV File of External Addresses (MilitaryClothing.com, NameTapes.com, or Amazon)'|gettext}</h1>
     <blockquote>{'This will clear any existing external addresses for this source and replace with the addresses you upload.'|gettext}</blockquote>

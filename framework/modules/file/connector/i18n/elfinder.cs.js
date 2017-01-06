@@ -2,9 +2,17 @@
  * Czech translation
  * @author Jay Gridley <gridley.jay@hotmail.com>
  * @author RobiNN <admin@robonetwork.cf>
- * @version 2016-9-16
+ * @version 2016-11-21
  */
-if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
+(function(root, factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['elfinder'], factory);
+	} else if (typeof exports !== 'undefined') {
+		module.exports = factory(require('elfinder'));
+	} else {
+		factory(root.elFinder);
+	}
+}(this, function(elFinder) {
 	elFinder.prototype.i18.cs = {
 		translator : 'Jay Gridley &lt;gridley.jay@hotmail.com&gt;, RobiNN &lt;admin@robonetwork.cf&gt;',
 		language   : 'čeština',
@@ -99,7 +107,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errFolderUpload'      : 'Pokud chcete nahrát do složky, zkuste použít prohlížeč Google Chrome.', // from v2.1 added 26.6.2015
 			'errSearchTimeout'     : 'Vypršení časového limitu při hledání "$1". Je částečně výsledkem hledání.', // from v2.1 added 12.1.2016
 			'errReauthRequire'     : 'Opětovné povolení je nutné.', // from v2.1.10 added 3.24.2016
-			'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
+			'errMaxTargets'        : 'Maximální počet volitelných předmětů je $1.', // from v2.1.17 added 17.10.2016
+            'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
 
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'Vytvořit archív',
@@ -189,6 +198,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'ntfchmod'    : 'Změna souboru', // from v2.1 added 20.6.2015
 			'ntfpreupload': 'Zkontrolujte název nahravaného souboru', // from v2.1 added 31.11.2015
 			'ntfzipdl'    : 'Vytvořit soubor ke stažení', // from v2.1.7 added 23.1.2016
+			'ntfparents'  : 'Získání informací o cestě', // from v2.1.17 added 2.11.2016
+			'ntfchunkmerge': 'Zpracování nahraného souboru', // from v2.1.17 added 2.11.2016
 
 			/************************************ dates **********************************/
 			'dateUnknown' : 'neznámý',
@@ -366,6 +377,15 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'contextmenu'     : 'Kontextové menu', // from v2.1.15 added 9.9.2016
 			'pageTurning'     : 'Otáčení stránky', // from v2.1.15 added 9.10.2016
 			'volumeRoots'     : 'Kořeny média', // from v2.1.16 added 16.10.2016
+			'reset'           : 'Reset', // from v2.1.16 added 1.10.2016
+			'bgcolor'         : 'Barva pozadí', // from v2.1.16 added 1.10.2016
+			'colorPicker'     : 'Výběr barvy', // from v2.1.16 added 1.10.2016
+			'8pxgrid'         : '8px mřížka', // from v2.1.16 added 4.10.2016
+			'enabled'         : 'Povoleno', // from v2.1.16 added 4.10.2016
+			'disabled'        : 'Zakázáno', // from v2.1.16 added 4.10.2016
+			'emptyIncSearch'  : 'Výsledky hledání jsou prázdné v aktuálním zobrazení.\\Stisknutím tlačítka [Enter] rozšíříte vyhledávání cíle.', // from v2.1.16 added 5.10.2016
+			'textLabel'       : 'Nápis textu', // from v2.1.17 added 13.10.2016
+			'minsLeft'        : '$1 minut zůstává', // from v2.1.17 added 13.11.2016
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Neznámý',
@@ -449,5 +469,4 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'kindVideoOGG'    : 'Ogg video'
 		}
 	};
-	}
-
+}));

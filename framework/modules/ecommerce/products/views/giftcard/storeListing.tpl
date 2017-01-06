@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,8 +12,8 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
-<div class="prod-listing">    
+
+<div class="prod-listing">
     <div class="bd">
         <div class="thimage">
             <a href="{link action=show title=$listing->sef_url}" title="{$listing->body|format_tooltip}">
@@ -24,7 +24,7 @@
                 {else}
                     {img src="`$asset_path`images/no-image.jpg" constraint=1 w=$config.listingwidth|default:140 h=$config.listingheighth|default:150 alt="'No Image Available'|gettext"}
                 {/if}
-            </a>                    
+            </a>
         </div>
         <div class="bodycopy">
             <h2>
@@ -35,7 +35,7 @@
             <span class="description">{$listing->body|truncate:50:"..."}</span>
             <span class="price">{$listing->base_price|currency}</span>
 			<a href="{link controller=cart action=addItem product_id=$listing->id product_type=$listing->product_type}" class="fox-link addtocart {button_style size=large color=blue}" rel="nofollow"><em>{'Add to cart'|gettext}</em><span></span></a>
-            
+
             {permissions}
             <div class="item-actions">
                 {if $permissions.configure || $permissions.manage}

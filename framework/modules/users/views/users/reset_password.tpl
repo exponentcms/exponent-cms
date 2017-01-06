@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,7 +19,7 @@
         {'To reset your password, enter your username or email address below.'|gettext}&#160;&#160;
         {'An email will be sent to the email address you provided along with instructions to reset your password.'|gettext}
     </blockquote>
-    
+
     {form action=send_new_password}
         {control type="text" name="username" label="Username/Email"|gettext}
 		{control type=antispam}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -113,7 +113,7 @@ class fedexcalculator extends shippingcalculator {
         $count         = 0;
         $package_items = array();
 
-        // loop each product in this shipment and create the packages        
+        // loop each product in this shipment and create the packages
         foreach ($order->orderitem as $item) {
             for ($i = 0; $i < $item->quantity; $i++) {
                 if (empty($item->product->no_shipping) && $item->product->requiresShipping == true) {
@@ -185,7 +185,7 @@ class fedexcalculator extends shippingcalculator {
                     $space_left = $space_left - $pi->volume;
                     $total_weight += $pi->weight;
 #                    echo "Adding ".$pi->name."<br>";
-#                    echo "Space left in current box: ".$space_left."<br>";                
+#                    echo "Space left in current box: ".$space_left."<br>";
                     $used[] = $idx;
                     $no_more_room = true;
                 }
@@ -237,7 +237,7 @@ class fedexcalculator extends shippingcalculator {
 //            }
 
             $response = $client->getRates($request);
-            //eDebug($response,true);    
+            //eDebug($response,true);
             if ($response->HighestSeverity != 'FAILURE' && $response->HighestSeverity != 'ERROR') {
                 //echo 'Rates for following service type(s) were returned.'. Newline. Newline;
                 //echo '<table border="1">';
@@ -247,7 +247,7 @@ class fedexcalculator extends shippingcalculator {
                 //array(
                 //"03"=>array("id"=>"03", "title"=>"UPS Ground", "cost"=>5.00),
                 //"02"=>array("id"=>"02", "title"=>"UPS Second Day Air", "cost"=>10.00),
-                //"01"=>array("id"=>"01", "title"=>"UPS Next Day Air", "cost"=>20.00) 
+                //"01"=>array("id"=>"01", "title"=>"UPS Next Day Air", "cost"=>20.00)
                 //);
 //             eDebug($this->configdata['shipping_methods']);
 //             eDebug($response->RateReplyDetails);

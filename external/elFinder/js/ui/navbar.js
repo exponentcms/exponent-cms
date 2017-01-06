@@ -20,9 +20,15 @@ $.fn.elfindernavbar = function(fm, opts) {
 				wz.data('rectangle', $.extend(wzRect, { cwdEdge: (fm.direction === 'ltr')? cwdOffset.left : cwdOffset.left + cwd.width() }));
 			};
 
-		fm.bind('wzresize', function() {
-			nav.height(wz.height() - delta);
-		});
+			fm.one('cssloaded', function() {
+				var old = delta;
+				delta = nav.outerHeight() - nav.height();
+				if (old !== delta) {
+					fm.trigger('wzresize');
+				}
+			}).bind('wzresize', function() {
+				nav.height(wz.height() - delta);
+			});
 		
 		if (fm.UA.Touch) {
 			autoHide = fm.storage('autoHide') || {};
@@ -107,15 +113,17 @@ $.fn.elfindernavbar = function(fm, opts) {
 			nav.width(setWidth);
 		} else {
 			if (fm.UA.Mobile) {
-				nav.data('defWidth', nav.width());
-				$(window).on('resize.' + fm.namespace, function(e){
-					setWidth = nav.parent().width() / 2;
-					if (nav.data('defWidth') > setWidth) {
-						nav.width(setWidth);
-					} else {
-						nav.width(nav.data('defWidth'));
-					}
-					nav.data('width', nav.width());
+				fm.one('cssloaded', function() {
+					nav.data('defWidth', nav.width());
+					$(window).on('resize.' + fm.namespace, function(e){
+						setWidth = nav.parent().width() / 2;
+						if (nav.data('defWidth') > setWidth) {
+							nav.width(setWidth);
+						} else {
+							nav.width(nav.data('defWidth'));
+						}
+						nav.data('width', nav.width());
+					});
 				});
 			}
 		}

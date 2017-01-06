@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="purchase-orders" corecss="tables" link="`$asset_path`css/purchaseorder.css"}
 
 {/css}
@@ -44,7 +44,7 @@
             {/foreach}
 		</ul>
 	</div>
-	
+
 	<div class="rightcol">
         <div class="module-actions">
             {icon action=create class=add text="Create new Purchase Order"|gettext}
@@ -94,24 +94,24 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 	var vendors = Y.all('.purchaseorder.manage .leftcol ul li a');
 	var purchaseOrderTable = Y.one("#purchaseOrderDynmicData");
 	var filterVendor = function (e) {
-		
+
 		//Altered the default event of the anchor tag
 		e.halt();
-		 
+
 		//Removed the previous current class
 		Y.all('.purchaseorder.manage .leftcol ul li').removeClass('current');
-		
-		//Add the current class 
+
+		//Add the current class
 		e.currentTarget.ancestor('li').addClass('current');
-		
+
 		//Get the url for the request
 		var uri =  e.currentTarget.getAttribute('href');
-		
+
 		 // Define a function to handle the response data.
 		function onSuccess(transactionId, responseObject) {
 			var id = id; // Transaction ID.
 			var dataJson = responseObject.response; // Response data.
-			
+
 			data = '';
 			var data = Y.JSON.parse(dataJson);
 			var rows = '';
@@ -120,7 +120,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 			});
 			purchaseOrderTable.set("innerHTML", rows);
 			responseObject = null;
-			
+
 		};
 
 		// Subscribe to event "io:success"
@@ -129,7 +129,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 		// Make an HTTP request
 		var request = Y.io(uri);
     };
-	
+
 	vendors.on('click',filterVendor);
 });
 {/literal}

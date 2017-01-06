@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -90,7 +90,7 @@ class passwordcontrol extends genericcontrol {
             },
         });",
                 ));
-                
+
 //                expJavascript::pushToFoot(array(
 //                    "unique"=>"password-meter".$name,
 //                    "jquery"=>"pwstrength-bootstrap",

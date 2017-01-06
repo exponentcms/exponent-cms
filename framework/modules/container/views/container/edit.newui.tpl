@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -27,7 +27,7 @@
             </div>
             <h2>{if $is_edit}{'Edit Module'|gettext}{else}{'Add New Content'|gettext}{/if}</h2>
         </div>
-        
+
         {if $error}
         {message class=error text=$error}
     </div>
@@ -40,7 +40,7 @@
                 {control type=hidden name=rank value=$container->rank}
                 {control type=hidden name=rerank value=$rerank}
                 {control type=hidden name=current_section value=$current_section}
-                
+
                 {control type=text size=31 horizontal="1" label="Module Title"|gettext name="title" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext focus=1}
 
                 {if $smarty.const.INVERT_HIDE_TITLE}
@@ -55,7 +55,7 @@
                 {control type="checkbox" horizontal="1" name="is_private" label='Hide Module?'|gettext value=1 checked=$container->is_private description='Should this module be hidden from users without a view permission?'|gettext}
 
                 {control type="dropdown" horizontal="1" id="modcntrol" name=modcntrol items=$modules size=count($modules) includeblank="-- Select a Module --"|gettext label="Type of Content"|gettext disabled=1 value=$container->internal->mod}
-                
+
                 {if $is_edit}{control type=hidden id="modcntrol" name=modcntrol value=$container->internal->mod}{/if}
 
                 {if $is_edit == 0}

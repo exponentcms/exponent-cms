@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -46,7 +46,7 @@
 			<tr>
 				<td colspan=2>
 					{control type="textarea" name="user_input_description[0]" label="Description For Users"|gettext height=200 value=$record->user_input_fields.0.description}
-				</td> 
+				</td>
 			</tr>
 		</table>
 	</div>
@@ -74,7 +74,7 @@
 			<tr>
 				<td colspan=2>
 					{control type="textarea" name="user_input_description[1]" label="Description For Users"|gettext height=200 value=$record->user_input_fields.1.description}
-				</td> 
+				</td>
 			</tr>
 		</table>
 	</div>
@@ -102,7 +102,7 @@
 			<tr>
 				<td colspan=2>
 					{control type="textarea" name="user_input_description[2]" label="Description For Users"|gettext height=200 value=$record->user_input_fields.2.description}
-				</td> 
+				</td>
 			</tr>
 		</table>
 	</div>
@@ -130,7 +130,7 @@
 			<tr>
 				<td colspan=2>
 					{control type="textarea" name="user_input_description[3]" label="Description For Users"|gettext height=200 value=$record->user_input_fields.3.description}
-				</td> 
+				</td>
 			</tr>
 		</table>
 	</div>
@@ -158,7 +158,7 @@
 			<tr>
 				<td colspan=2>
 					{control type="textarea" name="user_input_description[4]" label="Description For Users"|gettext height=200 value=$record->user_input_fields.4.description}
-				</td> 
+				</td>
 			</tr>
 		</table>
 	</div>
@@ -186,7 +186,7 @@
 			<tr>
 				<td colspan=2>
 					{control type="textarea" name="user_input_description[5]" label="Description For Users"|gettext height=200 value=$record->user_input_fields.5.description}
-				</td> 
+				</td>
 			</tr>
 		</table>
 	</div>

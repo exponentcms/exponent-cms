@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -100,7 +100,18 @@ class popupdatetimecontrol extends formcontrol
         $img .= "\n";
 
         $html = "";
-        $html .= '<input type="hidden" name="' . $name . '" id="' . $idname . '" value="' . (date('n/j/Y H:i',$this->default)) . '" />';
+        if (is_numeric($this->default)) {
+            if ($this->showdate && !$this->showtime) {
+                $default = date('n/j/Y', $this->default);
+            } elseif (!$this->showdate && $this->showtime) {
+                $default = date('H:i', $this->default);
+            } else {
+                $default = date('n/j/Y H:i', $this->default);
+            }
+        } else {
+            $default = $this->default;
+        }
+        $html .= '<input type="hidden" name="' . $name . '" id="' . $idname . '" value="' . $default . '" />';
         $html .= "\n";
         $html .= '<span class="';
         if ($this->disabled) {
@@ -114,14 +125,7 @@ class popupdatetimecontrol extends formcontrol
         if ($this->default == null) {
             $html .= '&lt;' . gt('No Date Selected') . '&gt;';
         } else {
-            if ($this->showtime) {
-                $html .= strftime(DISPLAY_DATE_FORMAT, $this->default) . ' ' . strftime(
-                        DISPLAY_TIME_FORMAT,
-                        $this->default
-                    );
-            } else {
-                $html .= strftime(DISPLAY_DATE_FORMAT, $this->default);
-            }
+            $html .= $default;
         }
         $html .= '</span>';
         $html .= "\n";
@@ -195,6 +199,7 @@ class popupdatetimecontrol extends formcontrol
                     formatTime:'g:i a',
                     step: 15,
                     dayOfWeekStart: " . DISPLAY_START_OF_WEEK . ",
+                    value: '".$default."',
                     onChangeDateTime:function(dp,input){
                         $('#" . $idname . "').val(input.val());
                         $('#" . $idname . "_span').html(input.val());

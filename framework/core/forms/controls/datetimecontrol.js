@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,7 +16,7 @@
 function exponent_forms_disable_datetime(id,frm,disable) {
 	var elem = document.getElementById("__"+id);
 	var status = elem.value;
-	
+
 	var ctl_elems = new Array();
 
 	if (status[0] == "1") {
@@ -29,7 +29,7 @@ function exponent_forms_disable_datetime(id,frm,disable) {
 		ctl_elems.push(document.getElementById(id+"_minute"));
 		ctl_elems.push(document.getElementById(id+"_ampm"));
 	}
-	
+
 	for (var i = 0; i < ctl_elems.length; i++) {
 		if (disable) ctl_elems[i].setAttribute("disabled","disabled");
 		else ctl_elems[i].removeAttribute("disabled");

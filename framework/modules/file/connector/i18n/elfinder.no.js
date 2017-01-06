@@ -3,7 +3,15 @@
  * @author Stian Jacobsen <stian@promonorge.no>
  * @version 2014-12-19
  */
-if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
+(function(root, factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['elfinder'], factory);
+	} else if (typeof exports !== 'undefined') {
+		module.exports = factory(require('elfinder'));
+	} else {
+		factory(root.elFinder);
+	}
+}(this, function(elFinder) {
 	elFinder.prototype.i18.no = {
 		translator : 'Stian Jacobsen &lt;stian@promonorge.no&gt;',
 		language   : 'Norwegian Bokmål',
@@ -11,7 +19,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 		fancyDateFormat : '$1 h:i A', // will produce smth like: Today 12:25 PM
 		direction  : 'ltr',
 		messages   : {
-			
+
 			/********************************** errors **********************************/
 			'error'                : 'Feil',
 			'errUnknown'           : 'Ukjent feil.',
@@ -56,7 +64,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errUploadTotalSize'   : 'Innholdet overgår maksimum tillatt størrelse.',
 			'errUploadFileSize'    : 'Filen vergår maksimum tillatt størrelse.',
 			'errUploadMime'        : 'Filtypen ikke tillatt.',
-			'errUploadTransfer'    : '"$1" overførings feil.', 
+			'errUploadTransfer'    : '"$1" overførings feil.',
 			'errNotReplace'        : 'Object "$1" already exists at this location and can not be replaced by object with another type.',
 			'errReplace'           : 'Unable to replace "$1".',
 			'errSave'              : 'Kunne ikke lagre "$1".',
@@ -125,7 +133,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdpixlr'     : 'Edit on Pixlr',
             'cmdlinks'     : 'Switch to Page/Module Selector',
 
-			/*********************************** buttons ***********************************/ 
+			/*********************************** buttons ***********************************/
 			'btnClose'  : 'Lukk',
 			'btnSave'   : 'Lagre',
 			'btnRm'     : 'Slett',
@@ -230,7 +238,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'viewlist'        : 'Listevisning',
 			'viewicons'       : 'Ikoner',
 			'places'          : 'Områder',
-			'calc'            : 'Beregn', 
+			'calc'            : 'Beregn',
 			'path'            : 'Bane',
 			'aliasfor'        : 'Alias for',
 			'locked'          : 'Låst',
@@ -241,7 +249,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'yes'             : 'ja',
 			'no'              : 'nei',
 			'link'            : 'Link',
-			'searcresult'     : 'Søkeresultater',  
+			'searcresult'     : 'Søkeresultater',
 			'selected'        : 'valgte filer',
 			'about'           : 'Om',
 			'shortcuts'       : 'Snarveier',
@@ -366,4 +374,4 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'kindVideoOGG'    : 'Ogg film'
 		}
 	};
-}
+}));

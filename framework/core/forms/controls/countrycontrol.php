@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -91,7 +91,7 @@ class countrycontrol extends dropdowncontrol {
             $object->abbv = false;
             $object->show_all = false;
             $object->required = false;
-        } 
+        }
         if (empty($object->description)) $object->description = "";
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));

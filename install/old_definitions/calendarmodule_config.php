@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -57,14 +57,14 @@ return array(
 	    DB_FIELD_LEN=>75),
 	'feed_desc'=>array(
     	DB_FIELD_TYPE=>DB_DEF_STRING,
-	    DB_FIELD_LEN=>200),	
+	    DB_FIELD_LEN=>200),
 	'rss_limit'=>array(
 	    DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'rss_cachetime'=>array(
-	    DB_FIELD_TYPE=>DB_DEF_INTEGER),		
+	    DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'reminder_notify'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>200),		
+		DB_FIELD_LEN=>200),
 	"email_title_reminder"=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>250),
@@ -81,7 +81,7 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	"email_signature"=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>500),	
+		DB_FIELD_LEN=>500),
     'printlink'=>array(
    	    DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
     'hidemoduletitle'=>array(

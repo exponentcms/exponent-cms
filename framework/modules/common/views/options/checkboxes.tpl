@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,7 +17,7 @@
     <span class="{if bs3()||bs2()}control-label{else}label{/if}">{if $group->required == true}<span class="required" title="{'This entry is required'|gettext}">*&#160;</span>{/if}{$group->title}</span>
     {$gid=$group->id}
     {foreach from=$options item=option key=id}
-        {if is_array($selected.$gid) && in_array($id, $selected.$gid)}  
+        {if is_array($selected.$gid) && in_array($id, $selected.$gid)}
             {control type="checkbox" name="options[`$group->id`][]" label=$option value=$id checked=true}
         {else}
             {control type="checkbox" name="options[`$group->id`][]" label=$option value=$id}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,13 +22,13 @@
  */
 class option extends expRecord {
 //    protected $attachable_item_types = array();
-    
+
 	public $validates = array(
 		'presence_of'=>array(
 			'title'=>array('message'=>'Name is a required field.'),
 			'optiongroup_id'=>array('message'=>'You must pick an option group for this option.'),
-		));		
-    
+		));
+
 }
 
 ?>

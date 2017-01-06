@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,8 +26,8 @@
  */
 class photoController extends photosController {
     public $useractions = array(
-        'showall'=>'Gallery', 
-        'slideshow'=>'Slideshow', 
+        'showall'=>'Gallery',
+        'slideshow'=>'Slideshow',
         //'showall_tags'=>"Tag Categories"
     );
 

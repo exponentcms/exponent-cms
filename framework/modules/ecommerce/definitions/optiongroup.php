@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -35,7 +35,7 @@ return array(
 	'allow_multiple'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'required'=>array(
-		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),	
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
     'rank'=>array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER),
 );

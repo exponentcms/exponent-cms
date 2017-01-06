@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,25 +52,25 @@ class expRss extends expRecord {
         }
         $this->getAttachableItems();
     }
-    
+
     // we are going to override the build and beforeSave functions to
     // make sure the name of the controller is in the right format
     public function build($params=array()) {
         parent::build($params);
         if (!empty($this->module)) $this->module = expModules::getControllerName($this->module);
     }
-    
+
     public function beforeSave() {
         if (!empty($this->module)) $this->module = expModules::getControllerName($this->module);
         parent::beforeSave();
     }
-    
+
     public function getFeedItems($limit = 0) {
         require_once(BASE.'external/feedcreator.class.php');
 
         // get all the feeds available to this expRss object
         $feeds = $this->getFeeds();
-        
+
         $items = array();
         // loop over and build out a master list of rss items
         foreach ($feeds as $feed) {
@@ -83,17 +83,17 @@ class expRss extends expRecord {
                 $items = array_merge($items, $controller->getRSSContent($limit));
             }
         }
-        
+
         return $items;
     }
-    
+
     public function getFeeds($where = '') {
         if (!empty($this->module)) $where .= "module='".$this->module."'";
         if (!empty($this->src)) {
             $where .= empty($where) ? '' : ' AND ';
             $where .= "src='".$this->src."'";
         }
-        
+
         return $this->find('all', $where);
     }
 }

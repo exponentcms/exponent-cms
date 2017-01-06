@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,7 +20,7 @@
         {br}
         <em>{'The current version is'|gettext} {$current_version->version}</em>
     </blockquote>
-    
+
     {icon class=add action=edit_version text="Add a New Help Version"|gettext}{br}
     {icon class=add action=edit text="Add a New Help Document"|gettext}{br}
     {icon class=manage action=manage_versions text="Manage Help Versions"|gettext}{br}
@@ -59,5 +59,5 @@
         </tbody>
     </table>
     {$page->links}
-        
+
 </div>

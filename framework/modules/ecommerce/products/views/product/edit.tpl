@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -108,7 +108,7 @@
     };
 
     YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-       
+
 //       var lastTab = !Y.Lang.isNull(Y.Cookie.get("edit-tab")) ? Y.Cookie.get("edit-tab") : 0;
        var tabs = Y.all('#dynamicload li a');
        var cdiv = Y.one('#loadcontent');
@@ -118,7 +118,7 @@
        });
 
        var cTabs = cdiv.all('.exp-ajax-tab');
-       
+
        var loadTab = function (e){
            e.halt();
            var tab = e.currentTarget;
@@ -127,7 +127,7 @@
            var puri =  tab.getAttribute('href');
 
 //           Y.Cookie.set("edit-tab", tIndex);
-           
+
            tabs.removeClass('current');
            tab.addClass('current');
            cTabs.hide();
@@ -136,7 +136,7 @@
            };
            cTab.show();
        }
-       
+
        var parseScripts = function (id,o){
            this.all('script').each(function(n){
                if(!n.get('src')){
@@ -153,7 +153,7 @@
                Y.Get.css(url);
            });
        }
-       
+
        tabs.on('click',loadTab);
 
        // load all the tabs if we are copying in order to save all the data

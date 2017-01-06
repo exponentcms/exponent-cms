@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 <table class="mini-cal">
     <a class="evnav module-actions" href="{link action=showall view='showall_Mini-Calendar' time=$prevmonth}" rel={$prevmonth} title="{'Prev Month'|gettext}">&laquo;</a>
     &#160;&#160;{$now|format_date:"%B"}&#160;&#160;

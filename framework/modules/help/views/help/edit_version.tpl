@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -29,5 +29,5 @@
         {control type=text name=title label="Version Name"|gettext value=$record->title}
         {control type="checkbox" name="is_current" label="Make this the current version"|gettext value=1 checked=$record->is_current}
         {control type=buttongroup submit="Save Version"|gettext cancel="Cancel"|gettext}
-    {/form}   
+    {/form}
 </div>

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -516,6 +516,7 @@ class remove_oldfiles extends upgradescript {
             'framework/modules/countdown/assets/js/',
             'framework/modules/photoalbum/views/photos/',
             'framework/modules/expEvent/',
+            'framework/modules/pixidou/includes/class.upload/',
             'framework/modules/headline/',
             'framework/modules/flowplayer/',
             'framework/modules/youtube/',
@@ -554,6 +555,7 @@ class remove_oldfiles extends upgradescript {
 			'external/easypost-php-3.0.3/',
 			'external/easypost-php-3.1.0/',
 			'external/easypost-php-3.1.1/',
+            'external/easypost-php-3.1.3/',
             'external/editors/connector/',
             'external/editors/FCKeditor/',
             'external/editors/ckeditor/images',
@@ -618,6 +620,7 @@ class remove_oldfiles extends upgradescript {
 			'external/swiftmailer-5.4.1/',
 			'external/swiftmailer-5.4.2/',
             'external/swiftmailer-5.4.3/',
+            'external/swiftmailer-5.4.4/',
             'external/webshims-1.15.10/',
             'external/yui3/',
             'external/lissa/',

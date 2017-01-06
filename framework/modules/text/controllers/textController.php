@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -227,7 +227,7 @@ class textController extends expController {
             'editor'=>$settings,
         ));
 	}
-	
+
 	public function showRandom() {
 	    expHistory::set('viewable', $this->params);
 		//This is a better way to do showRandom, you can pull in random text from all over the site (if aggregated) if you need to.
@@ -238,11 +238,11 @@ class textController extends expController {
             'items'=>$this->text->find('all', $where, $order, $limit)
         ));
 	}
-    
+
     public function update() {
         // update the record.
         $this->text->update($this->params);
-        
+
         // update the search index since text is relegated to page content.
         $nav = new navigationController();
         $nav->addContentToSearch();

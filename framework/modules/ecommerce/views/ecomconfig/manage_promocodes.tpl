@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,7 +22,7 @@
         <h2>{'Promotional Codes'|gettext}</h2>
         <blockquote>{'Here you can configure promotional codes to give to users.'|gettext}</blockquote>
 	</div>
-	
+
 	<h3>{'Add a new promo code'|gettext}</h3>
 	<table class="exp-skin-table">
 		<thead>
@@ -44,7 +44,7 @@
 			</tr>
 		</tbody>
 	</table>
-	
+
 	{if $promo_codes|@count > 0}
 	<h2>{'Modify existing group discount'|gettext}</h2>
 	<table class="exp-skin-table">

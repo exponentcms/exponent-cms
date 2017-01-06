@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -79,7 +79,7 @@
                             </div>
                         {/permissions}
                     </td>
-				</tr>    
+				</tr>
 			{foreachelse}
 				<tr><td colspan="4"><p>{message text='You don\'t have any addresses in your address book yet'|gettext}</p></td></tr>
 			{/foreach}

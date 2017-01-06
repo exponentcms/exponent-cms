@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -34,14 +34,14 @@
  */
 function smarty_function_getfileicon($params,&$smarty) {
 	global $db;
-	
+
 	if (!isset($params['file'])) {
 	    //$file = $db->selectObject("file","id=".$params['id']);
 	    $file = new expFile($params['id']);
 	} else {
 		$file = $params['file'];
 	}
-	
+
 	$mimetype = $db->selectObject("mimetype","mimetype='".$file->mimetype."'");
 	if ($mimetype->icon != "") {
 		echo '<img src="'.MIMEICON_RELATIVE .$mimetype->icon.'"/>';

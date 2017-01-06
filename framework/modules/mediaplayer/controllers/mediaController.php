@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -39,7 +39,7 @@ class mediaController extends expController {
     static function displayname() { return gt("Media Player"); }
     static function description() { return gt("Display video files, YouTube links, or play audio streams on your site."); }
     static function isSearchable() { return true; }
-    
+
     function showall() {
         expHistory::set('viewable', $this->params);
         $page = new expPaginator(array(
@@ -57,7 +57,7 @@ class mediaController extends expController {
                 gt('Description')=>'body'
             ),
         ));
-        
+
         assign_to_template(array(
             'page'=>$page,
             'items'=>$page->records,

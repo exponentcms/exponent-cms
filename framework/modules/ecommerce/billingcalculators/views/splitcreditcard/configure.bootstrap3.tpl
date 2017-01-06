@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +18,7 @@
         <ul class="nav nav-tabs" role="tablist">
 	        <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'Split Credit Card'|gettext}<br>{'Settings'|gettext}</em></a></li>
 	        <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Accepted'|gettext}<br>{'Credit Cards'|gettext}</em></a></li>
-        </ul>            
+        </ul>
         <div class="tab-content">
 	        <div id="tab1" role="tabpanel" class="tab-pane fade in active">
 	            {*control type="checkbox" name="email_admin" label="Send a notification that a new order was received?"|gettext value=1 checked=$calculator->configdata.email_admin*}

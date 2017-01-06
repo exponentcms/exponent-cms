@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,4 +22,4 @@
         {*<a class="{button_style}" href="{link action=logout}">{'Logout'|gettext}</a>*}
         {icon button=true action=logout text='Logout'|gettext}
     </div>
-{/if}	
+{/if}

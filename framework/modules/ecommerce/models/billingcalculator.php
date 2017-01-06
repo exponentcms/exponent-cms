@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -41,13 +41,13 @@ class billingcalculator extends expRecord {
 //    public $use_title = '';
     public $payment_type = '';
 
-    public function __construct($params=null, $get_assoc=true, $get_attached=true) {        
+    public function __construct($params=null, $get_assoc=true, $get_attached=true) {
         parent::__construct($params, $get_assoc, $get_attached);
 
         // set the calculator
         if (!empty($this->calculator_name))
             $this->calculator = new $this->calculator_name();
-        
+
         // grab the config data for this calculator
         $this->configdata = empty($this->config) ? array() : unserialize($this->config);
     }
@@ -192,10 +192,10 @@ class billingcalculator extends expRecord {
         $bt->extra_data = '';  //FIXME what is this used for?
         //FIXME we need a transaction_state of complete, authorized, authorization pending, error, void, or refunded; or paid or payment due
         $bt->transaction_state = $trax_state;
-        //$bt->result = $result;    
+        //$bt->result = $result;
         $bt->save();
     }
-    
+
     /**
      * Return default billing calculator
      *

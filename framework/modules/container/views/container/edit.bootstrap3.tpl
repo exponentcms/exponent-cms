@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -27,7 +27,7 @@
         </div>
         <h2>{if $is_edit}{'Edit Module'|gettext}{else}{'Add New Content'|gettext}{/if}</h2>
     </div>
-    
+
     {if $error}
     {message class=error text=$error}
 </div>

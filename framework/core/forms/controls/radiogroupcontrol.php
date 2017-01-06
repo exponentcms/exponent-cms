@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -92,7 +92,7 @@ class radiogroupcontrol extends formcontrol {
     			$html .= '</tr><tr>';
     			$i = 0;
             }
-			$html .= '<td style="border:none; padding-left:5px">'.$radio->toHTML($rlabel, $name).'</td>';
+			$html .= '<td style="border:none;">'.$radio->toHTML($rlabel, $name).'</td>';
 			$i++;
 		}
 		$html .= '</tr></table>';

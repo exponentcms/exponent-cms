@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -50,7 +50,7 @@
                 <li style="margin-left: {$childdepth}px">
                     <a href="{link controller=store action=showall title=$category->sef_url}">{$category->title}</a> <span class="productsincategory">({$category->product_count})</span>
                 </li>
-            {/foreach}          
+            {/foreach}
             {br}
             {if $user->isAdmin()}
                 <li><a href="{link controller=store action=showallUncategorized}">{'Show uncategorized products'|gettext}</a></li>

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -58,8 +58,12 @@ class expLang {
         $default_lang_file = BASE . "framework/core/lang/English - US.php";
         if (DEVELOPMENT)
             $default_lang = include($default_lang_file);
+        if (empty($default_lang))
+  	        $default_lang = array();
         $target_lang_file = BASE . "framework/core/lang/" . utf8_decode(LANG) . ".php";
         $cur_lang = include($target_lang_file);
+        if (empty($cur_lang))
+            $cur_lang = array();
 
         // here's where we locate and merge any custom module language files
         $dir = THEME_ABSOLUTE . 'modules';

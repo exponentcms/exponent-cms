@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -54,6 +54,8 @@ if (($_FILES['upload'] == "none") OR (empty($_FILES['upload']['name']))) {
         $message = gt("The file is zero length.");
 //            } else if (($_FILES['upload']["type"] != "image/pjpeg") AND ($_FILES['upload']["type"] != "image/jpeg") AND ($_FILES['upload']["type"] != "image/png")) {
 //                $message = gt("The image must be in either JPG or PNG format. Please upload a JPG or PNG instead.");
+    } elseif (preg_match("/([^\w\s\d\-_~,;:\[\]\(\).])|([\.]{2,})/", $_FILES['upload']['name'])) {
+        $message = gt("Invalid file name.");
     } else {
         if (!is_uploaded_file($_FILES['upload']["tmp_name"])) {
             $message = gt("You may be attempting to hack our server.");

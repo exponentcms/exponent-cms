@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,24 +26,24 @@
 abstract class basetemplate {
 	// Smarty template object.
 	var $tpl;
-	
+
 	// This is the directory of the particular module, used to identify the moduel
 	var $module = "";
-	
+
 	// The full server-side filename of the .tpl file being used.
 	// This will be used by modules on the outside, for retrieving view configs.
 	var $viewfile = "";
-	
+
 	// Name of the view (for instance, 'Default' for 'Default.tpl')
 	var $view = "";
-	
+
 	// Full server-side directory path of the .tpl file being used.
 	var $viewdir = "";
-	
+
 	//fix for the wamp/lamp issue
 //	var $langdir = "";
-	//	
-	
+	//
+
 	function __construct($item_type, $item_dir, $view = "Default")
     {
 //        global $head_config;
@@ -120,16 +120,16 @@ abstract class basetemplate {
 
         // strip file type
 		$this->view = substr(basename($this->viewfile),0,-4);
-		
+
         $this->tpl->setTemplateDir($this->viewdir);
-		
+
         $this->tpl->setCompileDir(BASE . 'tmp/views_c');
         $this->tpl->compile_id = framework() . '_' . md5($this->viewfile);
 
 		$this->tpl->assign("__view", $this->view);
 		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
 	}
-	
+
 	/**
 	 * Assign a variable to the template.
 	 *
@@ -139,7 +139,7 @@ abstract class basetemplate {
 	function assign($var, $val) {
 		$this->tpl->assign($var, $val);
 	}
-	
+
 	/**
 	 * Render the template and echo it to the screen.
 	 */
@@ -154,7 +154,7 @@ abstract class basetemplate {
             }
         }
 	}
-	
+
 	function register_permissions($perms, $locs) {
 		$permissions_register = array();
 		if (!is_array($perms)) $perms = array($perms);
@@ -167,7 +167,7 @@ abstract class basetemplate {
 		}
 		$this->tpl->assign('permissions', $permissions_register);
 	}
-	
+
 	/**
 	 * Render the template and return the result to the caller.
 	 * @return bool|mixed|string

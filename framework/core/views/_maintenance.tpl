@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,9 +16,10 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset={$smarty.const.LANG_CHARSET}"/>
-        <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
+        {*<meta http-equiv="Content-Type" content="text/html; charset={$smarty.const.LANG_CHARSET}"/>*}
+        <meta charset="{$smarty.const.LANG_CHARSET}">
         <title>{$smarty.const.SITE_TITLE} :: {'Down for Maintenance.'|gettext}</title>
+        <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
         <style type="text/css" media="screen">
             html {
                 background : #397993;

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,7 +17,7 @@
 
 {/css}
 
-{if $queues|@count!=0} 
+{if $queues|@count!=0}
 {foreach from=$queues item=queue key=qname}
     {if $qname == 'danger'}  {* allow for twitter bootstrap names *}
         {$qname = 'error'}

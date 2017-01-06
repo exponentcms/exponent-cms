@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,7 +26,7 @@ class model_alias extends expRecord {
         'presence_of'=>array(
             'model'=>array('message'=>'Model / SKU is a required field.')
         ));
-	
+
 }
 
 ?>

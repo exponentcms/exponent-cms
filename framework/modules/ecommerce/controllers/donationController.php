@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,12 +52,12 @@ class donationController extends expController {
             'causes'=>$causes
         ));
     }
-    
+
     function metainfo() {
         global $router;
 
         if (empty($router->params['action'])) return false;
-        
+
         // figure out what metadata to pass back based on the action we are in.
         $action   = $router->params['action'];
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
@@ -74,20 +74,20 @@ class donationController extends expController {
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
         }
-        
+
         return $metainfo;
     }
-    
+
 //    function index() {
 //        redirect_to(array('controller'=>'donation', 'action'=>'showall'));
 ////        $this->showall();
 //    }
-    
+
     function show() {
         redirect_to(array('controller'=>'donation', 'action'=>'showall'));
 //        $this->showall();
     }
-    
+
     function delete() {
         redirect_to(array('controller'=>'donation', 'action'=>'showall'));
 //        $this->showall();

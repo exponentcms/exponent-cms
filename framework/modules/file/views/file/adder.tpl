@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,8 +16,10 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    {*<meta http-equiv="content-type" content="text/html; charset=utf-8" />*}
+    <meta charset="{$smarty.const.LANG_CHARSET}">
     <title>{'Add Existing Files'|gettext}  |  Exponent CMS</title>
+    <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
     {css unique="deleter" corecss="msgq,button,tables,common,admin-global" link="`$asset_path`css/filemanager.css"}
 
     {/css}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -48,7 +48,7 @@ class freeshippingcalculator extends shippingcalculator {
         return true;
     }
 
-    public function getRates($order) {                        
+    public function getRates($order) {
 	    $rates = array(
             '01'=>array(
                 'id'=>'01',
@@ -57,12 +57,12 @@ class freeshippingcalculator extends shippingcalculator {
             )
         );
 	    return $rates;
-    }	
-    
+    }
+
 //   	public function configForm() {
 //   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/freeshippingcalculator/configure.tpl';
 //   	}
-	
+
 	//process config form
 	function parseConfig($values) {
 	    $config_vars = array(
@@ -72,10 +72,10 @@ class freeshippingcalculator extends shippingcalculator {
         $config = array();
 	    foreach ($config_vars as $varname) {
 	        $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
-	    }   	    
+	    }
 		return $config;
 	}
-	
+
 	function availableMethods() {
 	    return $this->shippingmethods;
 	}

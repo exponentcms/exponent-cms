@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -44,14 +44,14 @@
 
 {*FIXME convert to yui3*}
 {script unique="DDTreeNav" yui3mods="node,yui2-yahoo-dom-event,yui2-treeview,yui2-menu,yui2-animation,yui2-dragdrop,yui2-json,yui2-container,yui2-connection"}
-{literal} 
+{literal}
 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-var YAHOO = Y.YUI2;    
+var YAHOO = Y.YUI2;
 
 //////////////////////////////////////////////////////////////////////////////
 // dragdrop
 //////////////////////////////////////////////////////////////////////////////
-	
+
 	var Dom = YAHOO.util.Dom;
 	var Event = YAHOO.util.Event;
 	var DDM = YAHOO.util.DragDropMgr;
@@ -92,10 +92,10 @@ var YAHOO = Y.YUI2;
 		var destEl = Dom.get(id);
 		var dragSecId = srcEl.getAttribute("id").replace("section","");
 		var hoveredSecId = id.replace("addafter","");
-		hoveredSecId = hoveredSecId.replace("addbefore",""); 
-		
+		hoveredSecId = hoveredSecId.replace("addbefore","");
+
 		//Y.log('hover - '+dragSecId+' over - '+hoveredSecId);
-		
+
 		if (YAHOO.util.Dom.hasClass(destEl,"addbefore") && dragSecId!=hoveredSecId){
 			YAHOO.util.Dom.addClass(destEl,"addbefore-h");
 			YAHOO.util.Dom.get("dropindicator").className ="dropattop";
@@ -130,8 +130,8 @@ var YAHOO = Y.YUI2;
 		var dragSecId = srcEl.getAttribute("id").replace("section","");
 		var hoveredSecId = id.replace("addafter","");
 		hoveredSecId = hoveredSecId.replace("addbefore","");
-		
-		
+
+
 		var draggedNode = tree.getNodeByElement(YAHOO.util.Dom.get(this.id));
 		var droppedOnNode = tree.getNodeByElement(YAHOO.util.Dom.get(id));
 
@@ -154,16 +154,16 @@ var YAHOO = Y.YUI2;
 		var real = this.getEl();
 
 		Dom.setStyle(proxy, "visibility", "");
-		var a = new YAHOO.util.Motion( 
-			proxy, { 
-				points: { 
+		var a = new YAHOO.util.Motion(
+			proxy, {
+				points: {
 					to: Dom.getXY(real)
 				}
-			}, 
-			0.2, 
-			YAHOO.util.Easing.easeOut 
+			},
+			0.2,
+			YAHOO.util.Easing.easeOut
 		)
-		
+
 		var proxyid = proxy.id;
 		var thisid = this.id;
 
@@ -176,7 +176,7 @@ var YAHOO = Y.YUI2;
 			});
 		a.animate();
 	}
-	
+
 	refreshDD = function () {
 		dds = YAHOO.util.Dom.getElementsByClassName("draggables");
 		//Y.log(dds);
@@ -185,7 +185,7 @@ var YAHOO = Y.YUI2;
 			new DDSend(dds[dd].getAttribute("id").replace("section",""));
 		}
 	}
-	
+
 //////////////////////////////////////////////////////////////////////////////
 // tree
 //////////////////////////////////////////////////////////////////////////////
@@ -213,14 +213,14 @@ var YAHOO = Y.YUI2;
 			//Y.log(lotl);
 		}
 	}
-	
+
 	function appendToNode(moveMe,moveMeUnder) {
 		if(moveMe.data.id!=moveMeUnder.data.id){
 			saveToDB(moveMe.data.id,moveMeUnder.data.id,"append");
 			tree.popNode(moveMe);
 			//moveMeUnder.expand();
 			//tree.subscribe("expand",moveMeUnder.expand);
-			if (moveMeUnder.dynamicLoadComplete==true){			
+			if (moveMeUnder.dynamicLoadComplete==true){
 				if(moveMeUnder.children[0]){
 					moveMe.insertBefore(moveMeUnder.children[0]);
 				} else {
@@ -232,7 +232,7 @@ var YAHOO = Y.YUI2;
 			tree.getRoot().refresh();
 		}
 	}
-	
+
 	function addTopNode (){
 		window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_section&parent=0";
 	}
@@ -240,7 +240,7 @@ var YAHOO = Y.YUI2;
 	function addSubNode (){
 		window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_section&parent="+currentMenuNode.data.id;
 	}
-	
+
 	function addContentSubNode (){
 		window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_contentpage&parent="+currentMenuNode.data.id;
 	}
@@ -260,7 +260,7 @@ var YAHOO = Y.YUI2;
 	function viewNode (){
 		window.location=eXp.PATH_RELATIVE+"index.php?section="+currentMenuNode.data.id;
 	}
-	
+
 	function editNode (){
 		if (currentMenuNode.data.obj.alias_type==0){
 			window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_contentpage&id="+currentMenuNode.data.id;
@@ -272,7 +272,7 @@ var YAHOO = Y.YUI2;
 			window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_internalalias&id="+currentMenuNode.data.id;
 		}
 	}
-	
+
 	function deleteNode (){
 		var handleYes = function() {
 			this.hide();
@@ -307,7 +307,7 @@ var YAHOO = Y.YUI2;
 												{ text:"{/literal}{"Cancel"|gettext}{literal}",  handler:handleNo } ]
 										} );
 		delpage.setHeader("Remove \""+currentMenuNode.data.name+"\" from hierarchy");
-		
+
 		// Render the Dialog
 		delpage.render(document.body);
 		delpage.show();
@@ -331,13 +331,13 @@ var YAHOO = Y.YUI2;
 
 	function saveToDB(move,target,type) {
 		var iUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=navigation&action=DragnDropReRank";
-		YAHOO.util.Connect.asyncRequest('POST', iUrl, 
+		YAHOO.util.Connect.asyncRequest('POST', iUrl,
 		{
 			success : function (o){
 				refreshDD();
 			},
 			failure : function(o){
-				
+
 			},
 			timeout : 50000
 		},"move="+move+"&target="+target+"&type="+type);
@@ -394,7 +394,7 @@ var YAHOO = Y.YUI2;
 		tree.subscribe("expandComplete",refreshDD);
 		tree.subscribe("collapseComplete",refreshDD);
 		tree.subscribe("nodemoved",refreshDD);
-	   
+
 		tree.draw();
 		refreshDD();
 
@@ -410,7 +410,7 @@ var YAHOO = Y.YUI2;
 			YAHOO.util.Event.preventDefault(e);
 		});
 	}
-	
+
 	function buildHTML(section) {
 		var last = (section.last==true)?'lastonthelist':'';
 		var draggable = (section.manage!=false)? 'draggables' : 'nondraggables' ;
@@ -431,7 +431,7 @@ var YAHOO = Y.YUI2;
 		var html = '<div class="'+draggable+'" id="section'+section.id+'">'+drag+'<a href="'+section.link+'"><span class="sectionlabel'+activeclass+atype+'" id="sectionlabel'+section.id+'">'+section.name+'</span></a></div><div class="'+dragafters+' '+last+'" id="addafter'+section.id+'"></div>';
 		return html;
 	}
-	
+
 	function initTree (){
 		var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=navigation&action=returnChildrenAsJSON&json=1&id="+0;
 		var callback = {
@@ -448,9 +448,9 @@ var YAHOO = Y.YUI2;
 		YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 	}
 
-	// context menu 
+	// context menu
 	var currentMenuNode = null;
-	
+
 	function onTriggerContextMenu(p_oEvent) {
 		var theID = this.contextEventTarget;
         if(YAHOO.util.Dom.getAncestorByClassName(theID,"nondraggables")){
@@ -462,7 +462,7 @@ var YAHOO = Y.YUI2;
 			this.cancel();
 		}
 	}
-	
+
 	if (usr.is_acting_admin==1 || usr.is_admin==1) {
 		var navoptions = [
 				{ classname:"addsubpage", text: "{/literal}{"Add A Subpage"|gettext}{literal}", onclick: { fn: addSubNode },
@@ -509,7 +509,7 @@ var YAHOO = Y.YUI2;
 																	lazyload: true,
 																	autosubmenudisplay: true
 																	 });
-	oContextMenu.subscribe("triggerContextMenu", onTriggerContextMenu); 
+	oContextMenu.subscribe("triggerContextMenu", onTriggerContextMenu);
 
 	DDSend.init = function() {
 		YAHOO.util.Event.on(["mode0", "mode1"], "click", changeIconMode);
@@ -522,7 +522,7 @@ var YAHOO = Y.YUI2;
 
 		initTree();
 	}
-	
+
     DDSend.init();
 //once the DOM has loaded, we can go ahead and set up our tree:
 

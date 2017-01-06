@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,7 +22,7 @@
 
 	define("SCRIPT_EXP_RELATIVE","framework/modules/file/connector/");
 	define("SCRIPT_FILENAME","ckeditor_link.php");
-	
+
 	require_once('../../../../exponent.php');
 ?>
 <!DOCTYPE HTML>
@@ -39,11 +39,11 @@
                 if (paramName == 'update' || paramName == 'filter') {
                     if (paramName == 'update') {
                         var parmu = pathArray.indexOf('update');
-                        if (parmu > 0) 
+                        if (parmu > 0)
 							return pathArray[parmu+1];
                     } else if (paramName == 'filter') {  //fixme we never get here?
                         var parmf = pathArray.indexOf('filter');
-                        if (parmf > 0) 
+                        if (parmf > 0)
 							return pathArray[parmf+1];
                     }
                 }
@@ -57,7 +57,7 @@
 					return (match && match.length > 1) ? match[1] : '' ;
 				}
 			}
-			
+
 			function onPageSelect(section, text, title) {
                 var update = getUrlParam('update');
                 if (update !== 'noupdate' && typeof top.tinymce !== 'undefined' && top.tinymce !== null) update = 'tiny';

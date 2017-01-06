@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -32,7 +32,7 @@ class flatratecalculator extends shippingcalculator {
 
     public $shippingmethods = array("01"=>"Flat Rate");
 
-    public function getRates($order) {        
+    public function getRates($order) {
 	    $rates = array(
             '01'=>array(
                 'id'=>'01',
@@ -41,12 +41,12 @@ class flatratecalculator extends shippingcalculator {
             )
         );
 	    return $rates;
-    }	
-    
+    }
+
 //   	public function configForm() {
 //   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/flatratecalculator/configure.tpl';
 //   	}
-	
+
 	//process config form
 	function parseConfig($values) {
 	    $config_vars = array(
@@ -59,12 +59,12 @@ class flatratecalculator extends shippingcalculator {
 	        } else {
 	            $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
 	        }
-	        
+
 	    }
-	    
+
 		return $config;
 	}
-	
+
 	function availableMethods() {
 	    return $this->shippingmethods;
 	}

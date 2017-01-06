@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,7 @@
     </blockquote>
 	{form action=approve_submit}
 		{control type=hidden name=id value=$comment->id}
-		
+
 	    <strong>{'Poster\'s Name'|gettext}: {$user->firstname} {$user->lastname}</strong>{br}
 	    <strong>{'Poster\'s Email'|gettext}: {$user->email}{br}
 		{control type=textarea name=body label="Comment"|gettext rows=6 cols=35 value=$comment->body}

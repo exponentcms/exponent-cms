@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -56,7 +56,7 @@
             <li><a href="#tab5">{"Combo Chart"|gettext}</a></li>
             <li><a href="#tab6">{"Line Chart"|gettext}</a></li>
             <li><a href="#tab7">{"Pie Chart"|gettext}</a></li>
-		</ul>            
+		</ul>
 		<div class="yui-content">
 			<div id="tab1">
                 <table border="0" cellspacing="0" cellpadding="0" class="exp-ecom-table exp-skin-table">
@@ -118,7 +118,7 @@
                     </tr>
                 {/foreach}
             </tbody>
-        </table>                
+        </table>
     </div>
     {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
     {loading}

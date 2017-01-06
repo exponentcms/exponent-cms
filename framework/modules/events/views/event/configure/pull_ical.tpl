@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -68,7 +68,7 @@
 
             feedtoadd = '';
         });
-    
+
         var remClick = function(e){
            if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
                 e.halt();

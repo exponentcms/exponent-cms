@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -67,7 +67,7 @@ class linksController extends expController {
             'rank'=>($order==='rank')?1:0
         ));
     }
-    
+
     public function show() {
         redirect_to(array("controller"=>'links',"action"=>'showall',"src"=>$this->loc->src));
     }

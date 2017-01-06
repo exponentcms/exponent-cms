@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,11 +28,11 @@ if (!defined('EXPONENT')) exit('');
 
 	var $html;
 	var $span;
-	
+
 	static function name() { return "Static - WYSIWYG Text"; }
     static function isStatic() { return true; }
 	static function isSimpleControl() { return true; }
-	
+
 	function __construct($html = "",$span = true) {
 		$this->span = $span;
 		$this->html = $html;
@@ -46,24 +46,24 @@ if (!defined('EXPONENT')) exit('');
 			return parent::toHTML($label,$name);
 		}
 	}
-	
+
 	function controlToHTML($name,$label) {
         if ($this->horizontal&&bs3()) return '<div class="col-sm-offset-2 col-sm-10">' . $this->html . '</div>';
 		return $this->html;
 	}
-	
+
 	static function form($object) {
 		$form = new form();
         if (empty($object)) $object = new stdClass();
 		if (!isset($object->html)) {
 			$object->html = "";
-		} 
+		}
 		$form->register("html",'',new htmleditorcontrol($object->html));
 		if (!expJavascript::inAjaxAction())
 			$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		return $form;
 	}
-	
+
     static function update($values, $object) {
 		if ($object == null) $object = new htmlcontrol();
 		$object->html = preg_replace("/<br ?\/>$/","",trim($values['html']));
@@ -72,7 +72,7 @@ if (!defined('EXPONENT')) exit('');
 		$object->is_static = 1;
 		return $object;
 	}
-	
+
 }
 
 ?>

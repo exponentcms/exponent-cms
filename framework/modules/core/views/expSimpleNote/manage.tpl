@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -61,6 +61,6 @@
                 <tr><td>{'There are no notes awaiting approval'|gettext}</td></tr>
             {/foreach}
         </tbody>
-    </table>        
+    </table>
     {$page->links}
 </div>

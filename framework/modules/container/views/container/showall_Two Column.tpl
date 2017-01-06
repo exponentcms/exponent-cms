@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,11 +12,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="container" link="`$asset_path`css/container.css"}
 
 {/css}
- 
+
 <div class="containermodule two-column"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
     {viewfile module=$singlemodule view=$singleview var=viewfile}
 	{$container=$containers.1}

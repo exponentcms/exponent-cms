@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,7 +16,7 @@
 <h2>{'Show these banners'|gettext}</h2>
 <table>
 {foreach from=$banners item=banner}
-    <tr>    					        
+    <tr>
         <td>{control type="checkbox" name="banners[]" label=" " value=$banner->id checked=$config.banners}</td>
         <td>{img file_id=$banner->expFile[0]->id w=96 h=48}</td>
         <td>{$banner->title}{br}{$banner->company->title}</td>

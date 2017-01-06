@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -30,7 +30,7 @@ if (!defined('EXPONENT')) exit('');
 class radiocontrol extends formcontrol {
 
     static function name() { return "Radio Button"; }
-    
+
     function __construct($default = false, $value = "", $groupname="radiogroup", $flip=false, $onclick="") {
         $this->default = $default;
         //$this->id = isset($this->id) ? $this->id : $this->name;
@@ -70,7 +70,7 @@ class radiocontrol extends formcontrol {
 
         return $html;
     }
-    
+
     function controlToHTML($name,$label=null) {
         $idname = createValidId($this->groupname . $this->value);
         $html = '<input class="radiobutton form-control" type="radio" value="' . $this->value .'" id="' . $idname . '" name="' . $this->groupname . '"';
@@ -82,7 +82,7 @@ class radiocontrol extends formcontrol {
         $html .= ' />';
         return $html;
     }
-    
+
     function controlToHTML_newschool($name, $label) {
 //        $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
         $this->name = empty($this->name) ? $name : $this->name;
@@ -115,7 +115,7 @@ class radiocontrol extends formcontrol {
         $html .= ' />';
         return $html;
     }
-    
+
     static function form($object) {
         $form = new form();
         if (!isset($object->identifier)) {
@@ -124,17 +124,17 @@ class radiocontrol extends formcontrol {
             $object->caption = "";
             $object->default = false;
             $object->flip = false;
-        } 
+        }
         $form->register("groupname",gt('Group Name'),new textcontrol($object->groupname));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
         $form->register("flip",gt('Caption on Right'), new checkboxcontrol($object->flip,false));
         if (!expJavascript::inAjaxAction())
             $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
-        
+
         return $form;
     }
-    
+
     static function update($values, $object) {
         if ($object == null) $object = new radiocontrol();
         if ($values['groupname'] == "") {

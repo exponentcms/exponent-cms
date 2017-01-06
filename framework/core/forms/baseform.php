@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -29,7 +29,7 @@ abstract class baseform {
 
 	var $meta    = array();
 	var $scripts = array();
-	
+
 	var $name    = "form";
 	var $method  = "post";
 	var $action  = "";
@@ -74,10 +74,10 @@ abstract class baseform {
 		$this->meta["int"] = $loc->int;
 		return true;
 	}
-	
+
 	/**
 	 * Adds a javascript to the form.
-	 * 
+	 *
 	 * This may be used for validation, dynamic controls, etc.
 	 *
 	 * @param string $name The internal name to reference the script.  This is used
@@ -92,7 +92,7 @@ abstract class baseform {
 			return true;
 		} else return false;
 	}
-	
+
 	/**
 	 * Removes a javascript from the form.
 	 *
@@ -105,7 +105,7 @@ abstract class baseform {
 		if (isset($this->scripts[$name])) unset($this->scripts[$name]);
 		return true;
 	}
-	
+
 	abstract function toHTML($form_id);
 
 }

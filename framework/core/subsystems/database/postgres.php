@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -44,7 +44,7 @@ class postgres_database extends database {
 			$in_error = false;
 		}
 	}
-	
+
 	function isValid() {
 		return ($this->connection != null);
 	}
@@ -55,7 +55,7 @@ class postgres_database extends database {
 			$host_data = explode(":",$hostname);
 			$hostname = $host_data[0];
 			$port = $hostname[1];
-      
+
       if ($password != "" ) {
         if ($hostname == "localhost") $dsn = "user=$username password=$password dbname=$database";
 			  else $dsn = "host=$hostname user=$username password=$password dbname=$database";
@@ -63,23 +63,23 @@ class postgres_database extends database {
         if ($hostname == "localhost") $dsn = "user=$username dbname=$database";
 			  else $dsn = "host=$hostname user=$username dbname=$database";
       }
-			
+
 			if ($new) {
 				$this->connection = pg_connect($dsn,PGSQL_CONNECT_FORCE_NEW);
 			} else {
 				$this->connection = pg_connect($dsn);
 			}
-	
+
 			@trigger_error( $this->connection );
-			
+
 			$this->prefix = DB_TABLE_PREFIX . '_';
 		}
 	}
-	
+
 	function createTable($tablename,$datadef,$info) {
 		$sql = "CREATE TABLE \"".$this->prefix."$tablename\" (";
 		$alter_sql = array();
-		
+
 		foreach ($datadef as $name=>$def) {
 			$sql .= $this->fieldSQL($name,$def) . ",";
 			// PostGres is stupid, you cant specify NOT NULL in the Create Table
@@ -114,7 +114,7 @@ class postgres_database extends database {
 							break;
 					}
 				}
-				$alter_sql[] = 'ALTER TABLE "'.$this->prefix.$tablename . '" ALTER COLUMN "'.$name.'" SET DEFAULT '."'".$default."'";				
+				$alter_sql[] = 'ALTER TABLE "'.$this->prefix.$tablename . '" ALTER COLUMN "'.$name.'" SET DEFAULT '."'".$default."'";
 			}
 		}
 		$sql = substr($sql,0,-1);
@@ -135,9 +135,9 @@ class postgres_database extends database {
 			eLog($indexes_sql);
 			pg_query($indexes_sql);
 		}
-		
+
 	}
-	
+
 	function fieldSQL($name,$def) {
 		$sql = '"'.$name.'"';
 		if (!isset($def[DB_FIELD_TYPE])) {
@@ -161,18 +161,18 @@ class postgres_database extends database {
 		} else {
 			return false; // must specify known FIELD_TYPE
 		}
-		
+
 		//if (isset($def[DB_PRIMARY]) && $def[DB_PRIMARY]) $sql .= " PRIMARY KEY";
-		
+
 		if (isset($def[DB_DEFAULT])) $sql .= " DEFAULT '" . $def[DB_DEFAULT] . "'";
-		
+
 		return $sql;
 	}
-	
+
 	function alterTable($tablename,$newdatadef,$info,$aggressive = false) {
 		$dd = $this->getDataDefinition($tablename);
 		$modified = false;
-		
+
 		if ($aggressive) {
 			$oldcols = array_diff_assoc($dd, $newdatadef);
 			if (count($oldcols)) {
@@ -183,7 +183,7 @@ class postgres_database extends database {
 				}
 			}
 		}
-		
+
 		$diff = array_diff_assoc($newdatadef,$dd);
 		if (count($diff)) {
 			$modified = true;
@@ -193,30 +193,30 @@ class postgres_database extends database {
 				pg_query($this->connection,$sql);
 			}
 		}
-		
+
 		if ($modified) {
 			return TABLE_ALTER_SUCCEEDED;
 		} else {
 			return TABLE_ALTER_NOT_NEEDED;
 		}
 	}
-	
+
 	function dropTable($table) {
 		$sql = "DROP TABLE ".$this->prefix.$table;
 		pg_query($this->connection,$sql);
 	}
-	
+
 	function sql($sql, $escape = true) {
 		$res = pg_query($sql);
 		return $res;
 	}
-	
+
 	function selectObjects($table,$where = null, $orderby = null) {
 		$sql = "SELECT * FROM " . $this->prefix.$table;
 		if ($where != null) $sql .= " WHERE $where";
 		$res = @pg_query($sql);
 		$this->checkError($res);
-		
+
 		$records = array();
 		for ($i = 0; $i < @pg_num_rows($res); $i++) {
 			$records[] = pg_fetch_object($res);
@@ -224,13 +224,13 @@ class postgres_database extends database {
 		@pg_free_result($res);
 		return $records;
 	}
-	
+
 	function selectObjectsIndexedArray($table,$where = null, $orderby = null) {
 		$sql = "SELECT * FROM " . $this->prefix.$table;
 		if ($where != null) $sql .= " WHERE $where";
 		$res = pg_query($sql);
 		$this->checkError($res);
-		
+
 		$records = array();
 		for ($i = 0; $i < pg_num_rows($res); $i++) {
 			$o = pg_fetch_object($res);
@@ -239,7 +239,7 @@ class postgres_database extends database {
 		pg_free_result($res);
 		return $records;
 	}
-	
+
 	function countObjects($table,$where = null) {
 		$sql = "SELECT COUNT(*) as num FROM " . $this->prefix . $table;
 		if ($where != null) $sql .= " WHERE $where";
@@ -251,7 +251,7 @@ class postgres_database extends database {
 			return $num->num;
 		} else return 0;
 	}
-	
+
 	function selectObject($table,$where) {
 		$sql = "SELECT * FROM " . $this->prefix . $table . " WHERE $where";
 		#echo $sql.'<br />';
@@ -260,7 +260,7 @@ class postgres_database extends database {
 		if ($res == null) return null;
 		return pg_fetch_object($res);
 	}
-	
+
 	function insertObject($object,$table) {
 		$sql = "INSERT INTO " . $this->prefix.$table . " (";
 		$values = ") VALUES (";
@@ -278,13 +278,13 @@ class postgres_database extends database {
 			} else return 0;
 		} else return 0;
 	}
-	
+
 	function delete($table,$where = null) {
 		$sql = "DELETE FROM " . $this->prefix . $table;
 		if ($where != null) $sql .= " WHERE " . $where;
 		pg_query($this->connection,$sql);
 	}
-	
+
 	function updateObject($object,$table,$where=null, $identifier='id', $is_revisioned=false) {
 		$sql = "UPDATE " . $this->prefix.$table . " SET ";
 		foreach (get_object_vars($object) as $var=>$val) {
@@ -293,11 +293,11 @@ class postgres_database extends database {
 		$sql = substr($sql,0,-1) . " WHERE ";
 		if ($where != null) $sql .= $where;
 		else $sql .= "id=" . $object->id;
-		
+
 		#echo '//'.$sql.'<br />';
 		return (pg_query($this->connection,$sql) != false);
 	}
-	
+
 	function max($table,$attribute,$groupfields = null,$where = null) {
 		if (is_array($groupfields)) $groupfields = implode(",",$groupfields);
 		$sql = "SELECT MAX($attribute) as fieldmax FROM " . $this->prefix . "$table";
@@ -310,7 +310,7 @@ class postgres_database extends database {
 		if (!$o) return null;
 		return $o->fieldmax;
 	}
-	
+
 	function min($table,$attribute,$groupfields = null,$where = null) {
 		if (is_array($groupfields)) $groupfields = implode(",",$groupfields);
 		$sql = "SELECT MIN($attribute) as fieldmin FROM " . $this->prefix . "$table";
@@ -323,28 +323,28 @@ class postgres_database extends database {
 		if (!$o) return null;
 		return $o->fieldmin;
 	}
-	
+
 	function switchValues($table,$field,$a,$b,$additional_where = null) {
 		if ($additional_where == null) {
 			$additional_where = 'true';
 		}
 		$object_a = $this->selectObject($table,"$field='$a' AND $additional_where");
 		$object_b = $this->selectObject($table,"$field='$b' AND $additional_where");
-		
+
 		if ($object_a && $object_b) {
 			$tmp = $object_a->$field;
 			$object_a->$field = $object_b->$field;
 			$object_b->$field = $tmp;
-			
+
 			$this->updateObject($object_a,$table);
 			$this->updateObject($object_b,$table);
-			
+
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	function tableExists($table) {
 		$sql = "SELECT COUNT(relname) as num FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON (relnamespace = pg_namespace.oid) WHERE relkind IN ('r') AND nspname = 'public' AND relname = '".$this->prefix.$table."'";
 		$res = pg_query($this->connection,$sql);
@@ -355,7 +355,7 @@ class postgres_database extends database {
 			return ($o->num != 0);
 		} else return false;
 	}
-	
+
 	function getTables($prefixed_only=true) {
 		$sql = "SELECT relname as tablename FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON (relnamespace = pg_namespace.oid) WHERE relkind IN ('r') AND nspname = 'public'";
 		$res = pg_query($this->connection,$sql);
@@ -372,12 +372,12 @@ class postgres_database extends database {
 		pg_free_result($res);
 		return $tables;
 	}
-	
+
 	function optimize($table) {
 		$sql = 'VACUUM FULL "'. $this->prefix.$table.'"';
 		pg_query($this->connection,$sql);
 	}
-	
+
 	function tableInfo($table) {
 	// Logic here
 		$sql = "SELECT relpages * 8192 AS data_total FROM pg_class WHERE relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'public') AND relname='$table'";
@@ -394,11 +394,11 @@ class postgres_database extends database {
 		$sizeobj->data_overhead = 0;
 		return $sizeobj;
 	}
-	
+
 	function tableIsEmpty($table) {
 		return ($this->countObjects($table) == 0);
 	}
-	
+
 	function databaseInfo() {
 		$stat = array();
 		$i = strlen($this->prefix);
@@ -407,7 +407,7 @@ class postgres_database extends database {
 		}
 		return $stat;
 	}
-	
+
 	function getDataDefinition($table) {
 		$sql = <<<ENDSQL
 SELECT
@@ -428,16 +428,16 @@ WHERE
 	and a.atttypid = t.oid
 ORDER BY a.attnum
 ENDSQL;
-		
+
 		$dd = array();
-		
+
 		$res = pg_query($this->connection,$sql);
 		$this->checkError($res);
 		for ($i = 0; $i < pg_num_rows($res); $i++) {
 			$o = pg_fetch_object($res);
-			
+
 			$fld = array();
-			
+
 			switch ($o->type) {
 				case "int8":
 					$fld[DB_FIELD_TYPE] = DB_DEF_ID;
@@ -459,26 +459,26 @@ ENDSQL;
 					$fld[DB_FIELD_TYPE] = DB_DEF_DECIMAL;
 					break;
 			}
-			
+
 			$dd[$o->field] = $fld;
 		}
-		
+
 		return $dd;
 	}
-	
+
 	function increment($table,$field,$step,$where = null) {
 		if ($where == null) $where = 'true';
 		$sql = "UPDATE ".$this->prefix."$table SET $field=$field+$step WHERE $where";
 		return pg_query($this->connection,$sql);
 	}
-	
+
 	function decrement($table,$field,$step,$where = null) {
 		return $this->increment($table,$field,-1*$step,$where);
 	}
-	
+
 	function testPrivileges() {
 		$status = array();
-		
+
 		$tablename = "___testertable".uniqid("");
 		$dd = array(
 			"id"=>array(
@@ -489,13 +489,13 @@ ENDSQL;
 				DB_FIELD_TYPE=>DB_DEF_STRING,
 				DB_FIELD_LEN=>100)
 		);
-		
+
 		$this->createTable($tablename,$dd,array());
 		if (!$this->tableExists($tablename)) {
 			$status["CREATE TABLE"] = false;
 			return $status;
 		} else $status["CREATE TABLE"] = true;
-		
+
 		$o = new stdClass();
 		$o->name = "Testing Name";
 		$insert_id = $this->insertObject($o,$tablename);
@@ -503,29 +503,29 @@ ENDSQL;
 			$status["INSERT"] = false;
 			return $status;
 		} else $status["INSERT"] = true;
-		
+
 		$o = $this->selectObject($tablename,"id=".$insert_id);
 		if ($o == null || $o->name != "Testing Name") {
 			$status["SELECT"] = false;
 			return $status;
 		} else $status["SELECT"] = true;
-		
+
 		$o->name = "Testing 2";
 		if (!$this->updateObject($o,$tablename)) {
 			$status["UPDATE"] = false;
 			return $status;
 		} else $status["UPDATE"] = true;
-		
+
 		$this->delete($tablename,"id=".$insert_id);
 		$o = $this->selectObject($tablename,"id=".$insert_id);
 		if ($o != null) {
 			$status["DELETE"] = false;
 			return $status;
 		} else $status["DELETE"] = true;
-		
+
 		$dd["thirdcol"] = array(
 			DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
-		
+
 		$this->alterTable($tablename,$dd,array());
 		$o = new stdClass();
 		$o->name = "Alter Test";
@@ -534,32 +534,32 @@ ENDSQL;
 			$status["ALTER TABLE"] = false;
 			return $status;
 		} else $status["ALTER TABLE"] = true;
-		
+
 		$this->dropTable($tablename);
 		if ($this->tableExists($tablename)) {
 			$status["DROP TABLE"] = false;
 			return $status;
 		} else $status["DROP TABLE"] = true;
-		
+
 		foreach ($this->getTables() as $t) {
 			if (substr($t,0,14+strlen($this->prefix)) == $this->prefix."___testertable") $this->dropTable($t);
 		}
-		
+
 		return $status;
 	}
-	
+
 	function error() {
 		return $this->error;
 	}
-	
+
 	function inError() {
 		return ($this->in_error == true);
 	}
-	
+
 	function limit($num,$offset) {
 		return ' LIMIT '.$num.' OFFSET '.$offset.' ';
 	}
-	
+
 	function toggle($table, $col, $where=null) {
 		$obj = $this->selectObject($table, $where);
 		$obj->$col = ($obj->$col == 0) ? 1 : 0;
@@ -605,14 +605,14 @@ ENDSQL;
                 } else {
                         $sql .= ' b.* ';
                 }
-	
+
 		$sql .= ' FROM '.$this->prefix.$tableA.' a JOIN '.$this->prefix.$tableB.' b ';
-		$sql .= is_null($keyB) ? 'USING('.$keyA.')' : 'ON a.'.$keyA.' = b.'.$keyB; 
-                
+		$sql .= is_null($keyB) ? 'USING('.$keyA.')' : 'ON a.'.$keyA.' = b.'.$keyB;
+
 		if ($where == null) $where = "1";
                 if ($orderby == null) $orderby = '';
                 else $orderby = "ORDER BY " . $orderby;
-	
+
                 $res = @pg_query($this->connection,$sql." WHERE $where $orderby");
                 if ($res == null) return array();
                 $objects = array();
@@ -655,7 +655,7 @@ ENDSQL;
                 }
                 return $resarray[0];
     }
-	
+
 	function selectDropdown($table,$col,$where = null,$orderby = null) {
                 if ($where == null) $where = "1";
                 if ($orderby == null) $orderby = '';
@@ -733,7 +733,7 @@ ENDSQL;
 
                 return $dd;
 	}
-	
+
 	function getDDFieldType($fieldObj) {
 		$type = strtolower($fieldObj->Type);
 
@@ -748,7 +748,7 @@ ENDSQL;
 			return DB_DEF_STRING;
 		}
 	}
-	
+
 	function getDDStringLen($fieldObj) {
 		$type = strtolower($fieldObj->Type);
 		if ($type == "text") return 65535;

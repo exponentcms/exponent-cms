@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -112,7 +112,7 @@ class paypalExpressCheckout extends billingcalculator {
 //            $country = new geoCountry($state->country_id);
 
             $config = expUnserialize($this->config);
-            //eDebug($config, true);  
+            //eDebug($config, true);
             if ($config['testmode']) {
                 /**
                  * This is the URL that the buyer is first sent to to authorize payment with their paypal account
@@ -224,7 +224,7 @@ class paypalExpressCheckout extends billingcalculator {
                 $opts->result->errorCode = "";
                 $opts->result->message = gt("The following errors occurred") . ": ";
 
-                // its possible there are more than one error. 
+                // its possible there are more than one error.
                 foreach ($nvpResArray as $k => $v) {
                     if (is_array($v)) {
                         $opts->result->errorCode .= $v['ERRORCODE'] . ", ";
@@ -328,31 +328,31 @@ class paypalExpressCheckout extends billingcalculator {
 
         //eDebug($it);
         //eDebug($tt);
-        //eDebug($data);  
-        //eDebug($billing_options, true);  
+        //eDebug($data);
+        //eDebug($billing_options, true);
 
         $nvpResArray = $this->paypalApiCall($data);
-        //eDebug($nvpResArray);  
+        //eDebug($nvpResArray);
 
-        //if ($nvpResArray['ACK'] == 'Failure' || $nvpResArray['ACK'] == 'FailureWithWarning') 
-        //{ 
-        //FJD: somehow some orders have snuck through wihtout fully processing, so I switched this 
-        //around to check for succcess ONLY and then default to an error otherwise    
+        //if ($nvpResArray['ACK'] == 'Failure' || $nvpResArray['ACK'] == 'FailureWithWarning')
+        //{
+        //FJD: somehow some orders have snuck through wihtout fully processing, so I switched this
+        //around to check for succcess ONLY and then default to an error otherwise
         if (!empty($nvpResArray['curl_error'])) {
-            //curl error            
+            //curl error
             $opts->result->errorCode = $nvpResArray['curl_errno']; //Response reason code
             $opts->result->message = $nvpResArray['curl_error'];
 
-            //$opts->result = $object;                
+            //$opts->result = $object;
             $transaction_state = "Temporary Failure";
             $trax_state = "error";
         } else if ($nvpResArray['ACK'] == 'Success' || $nvpResArray['ACK'] == 'SuccessWithWarning') {
             /*
-            [TOKEN] => EC-7YW97132PA0236148 [TIMESTAMP] => 2010-01-16T21:49:15Z [CORRELATIONID] => 7f49bba2eac7e 
-            [ACK] => Success [VERSION] => 59.0 [BUILD] => 1152253 [TRANSACTIONID] => 1AA09727DG247464P [TRANSACTIONTYPE] => cart 
-            [PAYMENTTYPE] => instant [ORDERTIME] => 2010-01-16T21:49:14Z [AMT] => 118.09 [FEEAMT] => 3.72 [TAXAMT] => 6.75 
-            [CURRENCYCODE] => USD [PAYMENTSTATUS] => Pending [PENDINGREASON] => paymentreview [REASONCODE] => None 
-            [PROTECTIONELIGIBILITY] => Ineligible 
+            [TOKEN] => EC-7YW97132PA0236148 [TIMESTAMP] => 2010-01-16T21:49:15Z [CORRELATIONID] => 7f49bba2eac7e
+            [ACK] => Success [VERSION] => 59.0 [BUILD] => 1152253 [TRANSACTIONID] => 1AA09727DG247464P [TRANSACTIONTYPE] => cart
+            [PAYMENTTYPE] => instant [ORDERTIME] => 2010-01-16T21:49:14Z [AMT] => 118.09 [FEEAMT] => 3.72 [TAXAMT] => 6.75
+            [CURRENCYCODE] => USD [PAYMENTSTATUS] => Pending [PENDINGREASON] => paymentreview [REASONCODE] => None
+            [PROTECTIONELIGIBILITY] => Ineligible
             */
             $opts->result->status = $nvpResArray['ACK'];
             $opts->result->errorCode = 0;
@@ -398,7 +398,7 @@ class paypalExpressCheckout extends billingcalculator {
 //            $trax_state = "error";
             $trax_state = $opts->result->payment_status;
         }
-        //eDebug($billing_options,true);                                                               
+        //eDebug($billing_options,true);
 //        $billingmethod->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $transaction_state));
         $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
         $this->createBillingTransaction($billingmethod, number_format($billingcost, 2, '.', ''), $opts->result, $trax_state);
@@ -870,9 +870,9 @@ class paypalExpressCheckout extends billingcalculator {
         }
 
         // now we'll group the related NVPs into their own arrays and make a multidimensional array out of the whole thing
-        // Take note that the Key of the new array will be L_0, L_1... L_n The L_ forces the array to have a string index. 
-        // If we let it have numeric indicies array_merge_recursive() wouldn't work as expected. Since "non-related data" is 
-        // also in the multidimensional you'll be treating this thing as a associative array anyway so really this is easier 
+        // Take note that the Key of the new array will be L_0, L_1... L_n The L_ forces the array to have a string index.
+        // If we let it have numeric indicies array_merge_recursive() wouldn't work as expected. Since "non-related data" is
+        // also in the multidimensional you'll be treating this thing as a associative array anyway so really this is easier
         $multiArr = array();
         foreach ($nvpArray as $k => $v) {
             // check if it has a number at the end of the key
@@ -882,7 +882,7 @@ class paypalExpressCheckout extends billingcalculator {
                 // merge the new array to the multidimensional array
                 $multiArr = array_merge_recursive($multiArr, array("L_$matches[0]" => array(preg_replace("/(L_)|$matches[0]/", "", $k) => $v)));
             } else {
-                // if the key doesn't have a number at the end we don't need to do anythin special to try to match up any related data as above. 
+                // if the key doesn't have a number at the end we don't need to do anythin special to try to match up any related data as above.
                 // Simply stick it on the multidimensional array
                 $multiArr[$k] = $v;
             }

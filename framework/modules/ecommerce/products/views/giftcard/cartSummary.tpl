@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2016 OIC Group, Inc.
+ * Copyright (c) 2004-2017 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -31,7 +31,7 @@
 				{if $message.From}
 					<strong>{'From'|gettext}:</strong> {$message.From}
 				{/if}
-				{br}{$message.Message|truncate:50:"..."}    
+				{br}{$message.Message|truncate:50:"..."}
 			</div>
         </td>
     </tr>

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,14 +26,14 @@ class billingmethod extends expRecord {
     public $has_one = array('billingcalculator');
     public $has_many = array('billingtransaction');
     public $get_assoc_for = array('billingtransaction');
-    
+
     static public $payment_types = array (
-                'VisaCard' => 'Visa',  
-                'AmExCard' => 'American Express', 
-                'MasterCard' => 'Mastercard', 
-                'DiscoverCard' => 'Discover', 
-                'paypalExpressCheckout' => 'PayPal', 
-                'passthru' => 'Passthru', 
+                'VisaCard' => 'Visa',
+                'AmExCard' => 'American Express',
+                'MasterCard' => 'Mastercard',
+                'DiscoverCard' => 'Discover',
+                'paypalExpressCheckout' => 'PayPal',
+                'passthru' => 'Passthru',
                 'worldpayCheckout' => 'WorldPay',
                 'cash' => 'Cash',
                 'paylater' => 'Billed'
@@ -46,13 +46,13 @@ class billingmethod extends expRecord {
         // unpack the billing_options data
         $this->billing_options = empty($this->billing_options) ? array() : unserialize($this->billing_options);
     }
-     
+
 	public function setAddress($address) {
 		$address = is_numeric($address) ? new address($address) : $address;
 		$this->addresses_id = isset($address->id) ? $address->id : '';
 		unset($address->id);
 		$this->update($address);
-	}	
+	}
 }
 
 ?>

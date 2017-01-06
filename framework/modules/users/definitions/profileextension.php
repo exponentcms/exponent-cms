@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,7 +36,7 @@ return array(
 		DB_FIELD_LEN=>100),
 	'classfile'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>1000),    
+		DB_FIELD_LEN=>1000),
 	'rank'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'active'=>array(

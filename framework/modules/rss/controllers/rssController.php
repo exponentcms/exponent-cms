@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -51,7 +51,7 @@ class rssController extends expController {
             'feeds'=>$rss->getFeeds('enable_rss=1')
         ));
     }
-    
+
     function show() {
         redirect_to(array('controller'=>'rss', 'action'=>'showall'));
 //        $this->showall();

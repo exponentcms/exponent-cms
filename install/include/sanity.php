@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -95,7 +95,7 @@ function sanity_checkDirectory($dir,$flag) {
 	if ($status != SANITY_FINE) {
 		return $status;
 	}
-	
+
 	if (is_readable(BASE.$dir)) {
 		$dh = opendir(BASE.$dir);
 		while (($file = readdir($dh)) !== false) {
@@ -137,7 +137,7 @@ function sanity_checkFiles() {
 		'tmp/rsscache'=>sanity_checkDirectory('tmp/rsscache',SANITY_READWRITE),
         'tmp/views_c'=>sanity_checkDirectory('tmp/views_c',SANITY_READWRITE),
 	);
-	
+
 	return $status;  // any error or warning is fatal
 }
 

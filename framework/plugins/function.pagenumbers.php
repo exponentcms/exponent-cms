@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -40,7 +40,7 @@ function smarty_function_pagenumbers($params,&$smarty) {
 
 	// We always start with page one.
 	if ($page->numberOfPages > 1) {
-		if ($page->page == 1) {	
+		if ($page->page == 1) {
 			echo '<span class="'.$class.'">1</a>&#160;';
 		} else {
 			echo '<a class="'.$class.'" href="#" onclick="page(1)">1</a> ... ';
@@ -54,17 +54,17 @@ function smarty_function_pagenumbers($params,&$smarty) {
 			echo '<a class="'.$class.'" href="#" onclick="page('.$steppage.')">'.$steppage.'</a> ... ';
 		}
 	}
-	
+
 	// Loop over the rest of the pages to show and echo out the links
 	if ($page->numberOfPages <= $page->pageLinksToShow) {
 		$start = 2;
-		$end = $page->numberOfPages;	
+		$end = $page->numberOfPages;
 	} else {
 		if (($page->numberOfPages - $page->page) >= $page->pageLinksToShow) {
 			$start = $page->page == 1 ? 2 : $page->page;
 		} elseif ( ($page->numberOfPages - $page->page) < $page->pageLinksToShow) {
 			$start = $page->numberOfPages - $page->pageLinksToShow;
-		} 
+		}
 		$end = $start + $page->pageLinksToShow;
 	}
 

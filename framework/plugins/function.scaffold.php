@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -69,7 +69,7 @@ function smarty_function_scaffold($params,&$smarty) {
            			}
         		}
 
-		        //write out the control itself...and then we're done. 
+		        //write out the control itself...and then we're done.
 		        if (isset($col[FORM_FIELD_ONCLICK])) $ctl['onclick'] = $col[FORM_FIELD_ONCLICK];
 		        $ctl['label'] = isset($col[FORM_FIELD_LABEL]) ? $col[FORM_FIELD_LABEL] : $key;
 		        $ctl['name'] = isset($col[FORM_FIELD_NAME]) ? $col[FORM_FIELD_NAME] : $key;

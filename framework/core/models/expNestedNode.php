@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -41,21 +41,21 @@ abstract class expNestedNode extends expRecord {
 //        //'content_expComments'=>'expComment',
 //        //'content_expSimpleNote'=>'expSimpleNote',
 //    );
-    
+
 	public function __construct($params=null, $get_assoc = false, $get_attached = false) {
 		parent::__construct($params, $get_assoc, $get_attached);
-		
+
 		// if this object is empty we'll treat it like a top level'
 		if (empty($this->id)) {
 			global $db;
 			$this->lft = $db->min($this->table, 'lft');
 			$this->rgt = $db->max($this->table, 'rgt');
-		} 
+		}
 	}
-	
+
 	public function create($params) {
 		global $db;
-		$this->checkForAttachableItems($params);  
+		$this->checkForAttachableItems($params);
 		$this->build($params);
 		$parent_id = isset($this->parent_id) ? $this->parent_id : 0;
 		if ($parent_id == 0) {
@@ -67,11 +67,11 @@ abstract class expNestedNode extends expRecord {
 			$parent = $db->selectObject($this->table, 'id='.$parent_id);
 			if(empty($parent)) return null;
 			$children = $db->selectNestedBranch($parent->id);
-			
+
 			// if this node has no children then we adjust based off the parents lft val
 			// otherwise we setup the lft & rgt and adjust from the parents rgt field.
 			$adjust_val = empty($children) ? $parent->lft : $parent->rgt;
-			
+
 			// set the lft & rgt for this node and adjust the rest accordingly.
 			$this->lft = $adjust_val + 1;
 			$this->rgt = $adjust_val + 2;
@@ -114,7 +114,7 @@ abstract class expNestedNode extends expRecord {
 
 		//push nodes over to make room new node(s)
 		$db->adjustNestedTreeFrom($this->table, $insertpoint, $width);
-        
+
         //insert the new node(s) by adjusting their lft & rgt values
         $this->refresh(); //if we're moving this node down we need to do this.
         $differential = $insertpoint - $this->lft;
@@ -122,10 +122,10 @@ abstract class expNestedNode extends expRecord {
         $orginal_lft = $this->lft;
         $orginal_rgt = $this->rgt;
         $db->adjustNestedTreeBetween($this->table, $this->lft, $this->rgt, $differential);
-         
+
         //simulate a delete by shifting down from the hole created by the moved node(s)
         $db->adjustNestedTreeFrom($this->table, $orginal_rgt + 1, ($width * -1));
-        
+
         //refresh the moved node to get it's new values from the DB before updating the parent_id
         $this->refresh();
         // $parent = $db->selectNestedNodeParent($this->table, $this->id);
@@ -139,46 +139,46 @@ abstract class expNestedNode extends expRecord {
     //  if ($insertpoint < $this->lft) $differential = $differential-2;
     //  $orginal_lft = $this->lft;
     //  $orginal_rgt = $this->rgt;
-    //  
+    //
     //  //push nodes over to make room new node(s)
     //  $db->adjustNestedTreeFrom($this->table, $insertpoint, $width);
-    // 
+    //
     //  //insert the new node(s) by adjusting their lft & rgt values
     //  $this->refresh(); //if we're moving this node down we need to do this.
     //  $db->adjustNestedTreeBetween($this->table, $this->lft, $this->rgt, $differential);
-    // 
+    //
     //  //simulate a delete by shifting down from the hole created by the moved node(s)
     //  $db->adjustNestedTreeFrom($this->table, $orginal_rgt + 1, ($width * -1));
-    // 
+    //
     //  //refresh the moved node to get it's new values from the DB before updating the parent_id
     //  $this->refresh();
     //  $parent = $db->selectNestedNodeParent($this->table, $this->id);
     //  $this->parent_id = $parent->id;
     //  $this->save();
     // }
-    // 
+    //
 	public function delete($where = '') {
 		global $db;
 		$db->deleteNestedNode($this->table, $this->lft, $this->rgt);
 	}
 
-	public function pathToNode() {	
+	public function pathToNode() {
 		global $db;
 		return $db->selectPathToNestedNode($this->table, $this->id);
 	}
 
 	public function getTopLevel($name = "", $get_assoc=false, $get_attached=false) {
-		global $db;	
+		global $db;
         $where = 'parent_id=0';
         if ($name != "") $where.=" AND title='" . $name . "'";
         $where .= ' ORDER BY lft ASC';
 
-      /* if ($name != "" ) 
+      /* if ($name != "" )
        {
             echo "Name: " . $name . "Where: " . $where . "<br>";
             eDebug($db->selectExpObjects($this->tablename, $where, $this->classname, false, false),true);
        }*/
-       
+
         return $db->selectExpObjects($this->tablename, $where, $this->classname, $get_assoc, $get_attached);
 	}
 
@@ -234,7 +234,7 @@ abstract class expNestedNode extends expRecord {
         *
         */
         $where = 'parent_id='.$this->id;
-        if ($childName != "") $where.=" AND title='" . $childName . "'"; 
+        if ($childName != "") $where.=" AND title='" . $childName . "'";
         $where .= " ORDER BY rgt ASC";
         return $db->selectExpObjects($this->tablename, $where, $this->classname, $get_assoc, $get_attached);
 	}
@@ -260,13 +260,13 @@ abstract class expNestedNode extends expRecord {
 		foreach($db->selectNestedBranch($this->table, $this->id) as $child) {
 			$children[] = new $this->classname($child->id, false, false);
 		}
-	
+
 		return $children;
 	}
 
 	public function getFullTree() {
 		global $db;
-		
+
 		$tree = array();
 		foreach($db->selectNestedTree($this->table) as $node) {
             $obj = new $this->classname($node->id, false, true);
