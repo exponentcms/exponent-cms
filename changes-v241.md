@@ -23,6 +23,7 @@ Version 2.4.1 - Specific changes from previous version
 #### v240patch5 adds these features to v240 previous releases:
 - updates/adds/exposes support for mPDF v6.1 and DOMPDF v0.7.0, fixes html2pdf support
 - adds separate forms showall_portfolio custom view configuration in addition to show item custom view
+- adds ability to delete multiple expired news items at once
 
 #### v240patch5 fixes these issues in v240 previous releases:
 - regression fix (v240) `<meta charset...>` tag wasn't properly closed with quote
