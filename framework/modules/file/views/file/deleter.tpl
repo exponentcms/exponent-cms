@@ -69,7 +69,7 @@
                         {/foreach}
                     </tbody>
                 </table>
-                {control type=buttongroup submit="Delete Selected Files"|gettext}
+                {control type=buttongroup submit="Delete Selected Files"|gettext color=red}
             {/form}
         {else}
             {'There don\'t appear to be any missing files'|gettext}

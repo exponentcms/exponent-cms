@@ -29,7 +29,7 @@
             <tr>
                 <td colspan="2">
                     {*<input class="{button_style}" type="submit" value="{'Delete Selected'|gettext}" />*}
-                    {control type=buttongroup submit='Delete Selected'|gettext}
+                    {control type=buttongroup submit='Delete Selected'|gettext color=red}
                 </td>
             </tr>
         </table>

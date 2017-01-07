@@ -41,7 +41,7 @@
                 {pagelinks paginate=$page bottom=1}
                 <a class="selectall" href="#" id="sa_conts" onclick="selectAll(1); return false;">{"Select All"|gettext}</a> / <a class="selectnone" href="#" id="sn_conts" onclick="selectAll(0); return false;">{"Select None"|gettext}</a>
                 {br}{br}
-                {control type=buttongroup submit="Delete Selected Photo Items"|gettext cancel="Cancel"|gettext}
+                {control type=buttongroup submit="Delete Selected Photo Items"|gettext color=red cancel="Cancel"|gettext}
             {/form}
         </ul>
     </div>
