@@ -533,6 +533,8 @@ function smarty_function_control($params, &$smarty) {
         //if (isset($params['value'])) $control->default = $params['value'];
         if (isset($params['caption'])) $control->caption = $params['caption'];
         if (isset($params['description'])) $control->description = $params['description'];
+        if (isset($params['color'])) $control->color = $params['color'];
+        if (isset($params['cancel_color'])) $control->cancel_color = $params['cancel_color'];
         if (isset($params['size'])) $control->size = $params['size'];
         if (isset($params['nowrap'])) $control->nowrap = "nowrap";
         if (isset($params['flip'])) $control->flip = $params['flip'];
