@@ -195,6 +195,7 @@ class newsController extends expController {
             'action'=>$this->params['action'],
             'src'=>$this->loc->src,
             'columns'=>array(
+                'actupon'           => true,
                 gt('Title')=>'title',
                 gt('Published On')=>'publish',
                 gt('Status')=>'unpublish'
@@ -208,6 +209,18 @@ class newsController extends expController {
 
     public function showExpired() {
         redirect_to(array('controller'=>'news', 'action'=>'showUnpublished','src'=>$this->params['src']));
+    }
+
+    public function delete_expired() {
+        if (!empty($this->params['act-upon'])) {
+            foreach ($this->params['act-upon'] as $item) {
+                $news = new news(intval($item));
+                if ($news) {
+                    $news->delete();
+                }
+            }
+        }
+        expHistory::back();
     }
 
 //    public function configure() {
