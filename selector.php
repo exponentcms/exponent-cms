@@ -93,7 +93,7 @@ if (is_readable(BASE.$page)) {
 	include(BASE.$page);
 	expTheme::satisfyThemeRequirements();
 } else {
-	echo sprintf(gt('Page').' "%s" '.gt('not readable.'),BASE.$page);
+	echo sprintf(gt('Page')." '%s' ".gt('not readable.'),BASE.$page);
 }
 
 ob_end_flush();

@@ -1171,7 +1171,7 @@ class formsController extends expController {
                     $this->params['_formError'] = gt('Identifier must be unique.');
                     expSession::set('last_POST', $this->params);
                 } elseif ($name == 'id' || $name == 'ip' || $name == 'user_id' || $name == 'timestamp' || $name == 'location_data') {
-                    $this->params['_formError'] = sprintf(gt('Identifier cannot be "%s".'), $name);
+                    $this->params['_formError'] = sprintf(gt("Identifier cannot be '%s'."), $name);
                     expSession::set('last_POST', $this->params);
                 } else {
                     if (!isset($this->params['id'])) {
@@ -1734,7 +1734,7 @@ class formsController extends expController {
 
             //Check to see if the line got split, otherwise throw an error
             if ($lineInfo == null) {
-                $this->params['_formError'] = sprintf(gt('This file does not appear to be delimited by "%s". <br />Please specify a different delimiter.<br /><br />'), $this->params["delimiter"]);
+                $this->params['_formError'] = sprintf(gt("This file does not appear to be delimited by '%s'. <br />Please specify a different delimiter.<br /><br />"), $this->params["delimiter"]);
                 expSession::set("last_POST", $this->params);
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit("");
@@ -1912,7 +1912,7 @@ class formsController extends expController {
 
         //Check to see if the line got split, otherwise throw an error
         if ($lineInfo == null) {
-            $this->params['_formError'] = sprintf(gt('This file does not appear to be delimited by "%s". <br />Please specify a different delimiter.<br /><br />'), $this->params["delimiter"]);
+            $this->params['_formError'] = sprintf(gt("This file does not appear to be delimited by '%s'. <br />Please specify a different delimiter.<br /><br />"), $this->params["delimiter"]);
             expSession::set("last_POST", $this->params);
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit("");
