@@ -176,7 +176,7 @@ if ($errcount > 0) {
             echo gt(
                     "Next, we'll"
                 ) . ' <a href="http://docs.exponentcms.org/docs/current/update-tables" target="_blank">' .
-                gt('Install Tables') . '</a>, ' . gt(
+                gt('Update Tables') . '</a>, ' . gt(
                     "and then run through any upgrade scripts needed to bring your code and database up to date."
                 );
             ?>
