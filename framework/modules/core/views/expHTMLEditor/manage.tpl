@@ -67,11 +67,11 @@
                     {if !$active}
                         <span class="active">{'Active'|gettext}</span>
                     {else}
-						<a class="inactive" href="{link module="expHTMLEditor" action=activate editor=$editor id="default"}" title={"Activate this Toolbar"|gettext}>{'Activate'|gettext}</a>
+						<a class="inactive" href="{link module="expHTMLEditor" action=activate editor=$editor id="default"}" title="{"Activate this Toolbar"|gettext}">{'Activate'|gettext}</a>
                     {/if}
                 </td>
                 <td>
-                    <a href="{link module="expHTMLEditor" action=preview editor=$editor id=0}" title={"Preview this Toolbar"|gettext}>{"Default"|gettext}</a>
+                    <a href="{link module="expHTMLEditor" action=preview editor=$editor id=0}" title="{"Preview this Toolbar"|gettext}">{"Default"|gettext}</a>
                 </td>
                 <td>
                     {if $editor == 'ckeditor'}
@@ -98,11 +98,11 @@
                     {if $cfg->active}
                         <span class="active">{'Active'|gettext}</span>
                     {else}
-                        <a class="inactive" href="{link module="expHTMLEditor" action=activate editor=$editor id=$cfg->id}" title={"Activate this Toolbar"|gettext}>{'Activate'|gettext}</a>
+                        <a class="inactive" href="{link module="expHTMLEditor" action=activate editor=$editor id=$cfg->id}" title="{"Activate this Toolbar"|gettext}">{'Activate'|gettext}</a>
                     {/if}
                 </td>
                 <td>
-					<a href="{link module="expHTMLEditor" action=preview editor=$editor id=$cfg->id}" title={"Preview this Toolbar"|gettext}>{$cfg->name}</a>
+					<a href="{link module="expHTMLEditor" action=preview editor=$editor id=$cfg->id}" title="{"Preview this Toolbar"|gettext}">{$cfg->name}</a>
                 </td>
                 <td>
                     {$cfg->skin}
