@@ -80,6 +80,17 @@ elFinder.prototype._options = {
 	uploadMaxChunkSize : 10485760,
 	
 	/**
+	 * Regular expression of file name to exclude when uploading folder
+	 * 
+	 * @type Object
+	 * @default { win: /^(?:desktop\.ini|thumbs\.db)$/i, mac: /^\.ds_store$/i }
+	 */
+	folderUploadExclude : {
+		win: /^(?:desktop\.ini|thumbs\.db)$/i,
+		mac: /^\.ds_store$/i
+	},
+	
+	/**
 	 * Timeout for upload using iframe
 	 *
 	 * @type Number
@@ -363,6 +374,10 @@ elFinder.prototype._options = {
 			// Enable automatic switching function ["New Folder" / "Into New Folder"] of toolbar buttton
 			intoNewFolderToolbtn: false,
 		},
+		resize: {
+			// defalt status of snap to 8px grid of the jpeg image ("enable" or "disable")
+			grid8px : 'enable'
+		},
 		help : {view : ['about', 'shortcuts', 'help', 'debug']}
 	},
 	
@@ -398,6 +413,15 @@ elFinder.prototype._options = {
 	 * @default ""
 	 */
 	startPathHash : '',
+
+	/**
+	 * Emit a sound when a file is deleted
+	 * Sounds are in sounds/ folder
+	 * 
+	 * @type Boolean
+	 * @default true
+	 */
+	sound : true,
 	
 	/**
 	 * UI plugins to load.
