@@ -59,7 +59,7 @@ if (!defined('EXPONENT')) {
         echo gt("We recommend having a recent database backup before performing an upgrade.") . '  ';
         echo gt("If you do not have a recent backup, then first");
         echo ' <a href="' . expCore::makeLink(array('controller' => 'file', 'action' => 'export_eql')) . '">' . gt(
-                'Export Database'
+                'Restore Database'
             ) . '</a> ';
         echo gt("and then run the upgrade process again.");
         ?>

@@ -525,12 +525,12 @@
                                 <li>{'Online Donations'|gettext}</li>
                                 <li>{'Online Event Registration'|gettext}</li>
                             </ul>
-                            <li>{'Activate a Payment Option'|gettext} <a href="{link controller=billing action=manage}" title={'Configure Billing Settings'|gettext}>{'here'|gettext}</a></li>
+                            <li>{'Activate a Payment Option'|gettext} <a href="{link controller=billing action=manage}" title="{'Configure Billing Settings'|gettext}">{'here'|gettext}</a></li>
                             <ul>
                                 <li>{'Most Payment Options need configuration which requires establishing an account with a payment service'|gettext}</li>
                                 <li>{'\'Bill Me\' is the easiest to set up'|gettext}</li>
                             </ul>
-                            <li>{'Activate a Shipping Option'|gettext} <a href="{link controller=shipping action=manage}" title={'Configure Shipping Information'|gettext}>{'here'|gettext}</a></li>
+                            <li>{'Activate a Shipping Option'|gettext} <a href="{link controller=shipping action=manage}" title="{'Configure Shipping Information'|gettext}">{'here'|gettext}</a></li>
                             <ul>
                                 <li>{'Most Shipping Options need configuration which requires establishing an account with a shipping service'|gettext}</li>
                                 <li>{'\'In Store Pickup\' is the easiest to set up'|gettext}</li>
@@ -543,8 +543,8 @@
                                 </ul>
                                 <li>{'Create a Product (with optional sub-steps)'|gettext}</li>
                                 <ul>
-                                    <li>{'Create a Store Category'|gettext} <a href="{link controller=storeCategory action=manage}" title={'Manage Store Categories'|gettext}>{'here'|gettext}</a></li>
-                                    <li>{'Create a Manufacturer'|gettext} <a href="{link controller=company action=showall}" title={'Manage Manufacturers'|gettext}>{'here'|gettext}</a></li>
+                                    <li>{'Create a Store Category'|gettext} <a href="{link controller=storeCategory action=manage}" title="{'Manage Store Categories'|gettext}">{'here'|gettext}</a></li>
+                                    <li>{'Create a Manufacturer'|gettext} <a href="{link controller=company action=showall}" title="{'Manage Manufacturers'|gettext}">{'here'|gettext}</a></li>
                                     <li>{'Create a Tax Class/Zone/Rate for applicable sales tax(es)'|gettext} <a href="{link controller=tax action=manage}" title={'Manage Taxes'|gettext}>{'here'|gettext}</a></li>
                                     <li>{'Create the Product (product, donation, event, or gift card) and assign a category'|gettext} <a href="{link controller=store action=edit}" title={'Add a Product'|gettext}>{'here'|gettext}</a></li>
                                 </ul>

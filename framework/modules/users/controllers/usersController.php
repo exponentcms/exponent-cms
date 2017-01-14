@@ -1313,7 +1313,7 @@ class usersController extends expController {
 
         //Check to see if the line got split, otherwise throw an error
         if ($lineInfo == null) {
-            $this->params['_formError'] = sprintf(gt('This file does not appear to be delimited by "%s". <br />Please specify a different delimiter.<br /><br />'), $this->params["delimiter"]);
+            $this->params['_formError'] = sprintf(gt("This file does not appear to be delimited by '%s'. <br />Please specify a different delimiter.<br /><br />"), $this->params["delimiter"]);
             expSession::set("last_POST", $this->params);
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit("");

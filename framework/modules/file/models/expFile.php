@@ -1883,7 +1883,7 @@ class expFile extends expRecord {
                                 }
                                 //						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
                                 $errors[] = sprintf(
-                                    gt('Table "%s" not found in the database (line %d)'),
+                                    gt("Table '%s' not found in the database (line %d)"),
                                     $table,
                                     $line_number
                                 );
@@ -1903,7 +1903,7 @@ class expFile extends expRecord {
                                 if (!$db->tableExists($table)) {
                                     $db->createTable($table, $tabledef, array());
                                     $errors[] = sprintf(
-                                        gt('*  However...we successfully recreated the "%s" Table from the EQL file'),
+                                        gt("*  However...we successfully recreated the '%s' Table from the EQL file"),
                                         $table
                                     );
                                 } else {
@@ -1945,7 +1945,7 @@ class expFile extends expRecord {
                                                 $db->insertObject($object, $table);
                                             } else {
                                                 $errors[] = sprintf(
-                                                    gt('Unable to decipher "%s" record (line %d)'),
+                                                    gt("Unable to decipher '%s' record (line %d)"),
                                                     $pair[0],
                                                     $line_number
                                                 );
@@ -1958,7 +1958,7 @@ class expFile extends expRecord {
                                     }
                                 } else {
                                     $errors[] = sprintf(
-                                        gt('Invalid specifier type "%s" (line %d)'),
+                                        gt("Invalid specifier type '%s' (line %d)"),
                                         $pair[0],
                                         $line_number
                                     );
@@ -2123,10 +2123,10 @@ class expFile extends expRecord {
                         if (is_object($object)) {
                             $data[$table]->records[] = object2Array($object);  //FIXME should we convert this? object2array?
                         } else {
-                            $errors[] = sprintf(gt('Unable to decipher "%s" record (line %d)'), $pair[0], $line_number);
+                            $errors[] = sprintf(gt("Unable to decipher '%s' record (line %d)"), $pair[0], $line_number);
                         }
                     } else {
-                        $errors[] = sprintf(gt('Invalid specifier type "%s" (line %d)'), $pair[0], $line_number);
+                        $errors[] = sprintf(gt("Invalid specifier type '%s' (line %d)"), $pair[0], $line_number);
                     }
                 }
             }

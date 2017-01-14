@@ -116,7 +116,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
 			expTheme::runAction();
 		}
 	} else {
-		echo sprintf(gt('Page "%s" not readable.'), $page);
+		echo sprintf(gt("Page '%s' not readable."), $page);
 	}
 
 	if (PRINTER_FRIENDLY == 1 || EXPORT_AS_PDF == 1) {
