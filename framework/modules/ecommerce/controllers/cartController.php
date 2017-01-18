@@ -28,8 +28,10 @@ class cartController extends expController {
     public $useractions = array(
         'show'                         => 'Show Shopping Cart',
     );
-
-        // hide the configs we don't need
+    protected $remove_permissions = array(
+        'edit',
+    );
+    // hide the configs we don't need
     public $remove_configs = array(
         'aggregation',
         'categories',
@@ -229,7 +231,7 @@ class cartController extends expController {
                     $newqty     = $item->product->minimum_order_quantity;
                 }
                 // adjust multiple quantity here
-                if ($newqty % $item->product->multiple_order_quantity) {
+                if ($item->product->multiple_order_quantity && $newqty % $item->product->multiple_order_quantity) {
                     $qtyMessage = $item->product->title . ' must be ordered in multiples of ' . $item->product->multiple_order_quantity . '. The quantity has been adjusted up and added to your cart.<br/><br/>';
                     $offset = $newqty % $item->product->multiple_order_quantity;
                     $newqty     = $newqty - $offset + $item->product->multiple_order_quantity;
