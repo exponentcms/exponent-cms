@@ -210,7 +210,9 @@ class expHistory {
 	    $index = count($this->history[$url_type]) - $goback;
 	    if ($index < 0) $index=0;
 	    $url = $this->history[$url_type][$index]['params'];
-	    if ( (!isset($this->history[$url_type][$index]['params'])) || ($url['controller'] == $router->params['controller'] && $url['action'] == $router->params['action'])) {
+	    if ($this->history[$url_type][$index]['url_type'] == 'base') {
+            $url = array('section'=>'SITE_DEFAULT_SECTION');
+        } elseif ( (!isset($this->history[$url_type][$index]['params'])) || ($url['controller'] == $router->params['controller'] && $url['action'] == $router->params['action'])) {
 	        $url = isset($this->history[$url_type][$index-1]['params']) ? $this->history[$url_type][$index-1]['params'] : array('section'=>'SITE_DEFAULT_SECTION');
 	    }
 
