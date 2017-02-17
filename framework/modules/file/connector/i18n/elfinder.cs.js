@@ -2,7 +2,7 @@
  * Czech translation
  * @author Jay Gridley <gridley.jay@hotmail.com>
  * @author RobiNN <admin@robonetwork.cf>
- * @version 2016-11-21
+ * @version 2017-1-16
  */
 (function(root, factory) {
 	if (typeof define === 'function' && define.amd) {
@@ -108,7 +108,7 @@
 			'errSearchTimeout'     : 'Vypršení časového limitu při hledání "$1". Je částečně výsledkem hledání.', // from v2.1 added 12.1.2016
 			'errReauthRequire'     : 'Opětovné povolení je nutné.', // from v2.1.10 added 3.24.2016
 			'errMaxTargets'        : 'Maximální počet volitelných předmětů je $1.', // from v2.1.17 added 17.10.2016
-            'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
+          'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
 
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'Vytvořit archív',
@@ -146,9 +146,9 @@
 			'cmdopendir'   : 'Otevření složky', // from v2.1 added 13.1.2016
 			'cmdcolwidth'  : 'Obnovení šířku sloupce', // from v2.1.13 added 12.06.2016
 			'cmdfullscreen': 'Celá obrazovka', // from v2.1.15 added 03.08.2016
-            'cmdmove'      : 'Posouvat', // from v2.1.15 added 21.08.2016
+          'cmdmove'      : 'Posouvat', // from v2.1.15 added 21.08.2016
 			'cmdpixlr'     : 'Edit on Pixlr',
-            'cmdlinks'     : 'Switch to Page/Module Selector',
+          'cmdlinks'     : 'Switch to Page/Module Selector',
 
 			/*********************************** buttons ***********************************/
 			'btnClose'  : 'Zavřít',
@@ -266,6 +266,7 @@
 			'confirmRm'       : 'Opravdu chcete odstranit tyto soubory?<br/>Operace nelze vrátit!',
 			'confirmRepl'     : 'Nahradit staré soubory novými?',
 			'confirmConvUTF8' : 'Není v UTF-8, převést do UTF-8?<br/>Obsah po převodu se stává UTF-8.', // from v2.1 added 08.04.2014
+			'confirmNonUTF8'  : 'Kódování tohoto souboru nemoholo rozpoznán. Pro úpravy je třeba dočasně převést do kódování UTF-8.<br/>Prosím, vyberte kódování znaků souboru.', // from v2.1.19 added 28.11.2016
 			'confirmNotSave'  : 'Byl změněn.<br/>Pokud obsahuje neuložené změny, dojde ke ztrátě práce.', // from v2.1 added 15.7.2015
 			'apllyAll'        : 'Pro všechny',
 			'name'            : 'Název',
@@ -386,6 +387,9 @@
 			'emptyIncSearch'  : 'Výsledky hledání jsou prázdné v aktuálním zobrazení.\\Stisknutím tlačítka [Enter] rozšíříte vyhledávání cíle.', // from v2.1.16 added 5.10.2016
 			'textLabel'       : 'Nápis textu', // from v2.1.17 added 13.10.2016
 			'minsLeft'        : '$1 minut zůstává', // from v2.1.17 added 13.11.2016
+			'openAsEncoding'  : 'Otevřít pomocí zvoleného kódování', // from v2.1.19 added 2.12.2016
+			'saveAsEncoding'  : 'Uložit s vybraným kódováním', // from v2.1.19 added 2.12.2016
+			'selectFolder'    : 'Vyberte složku', // from v2.1.20 added 13.12.2016
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Neznámý',

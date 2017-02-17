@@ -127,8 +127,8 @@ Installation
 Downloads
 ------------
 **Stable releases** ([Changelog](https://github.com/Studio-42/elFinder/blob/master/Changelog))
- + [elFinder 2.1.20](https://github.com/Studio-42/elFinder/archive/2.1.20.zip)
- + [elFinder 2.0.7](https://github.com/Studio-42/elFinder/archive/2.0.7.zip)
+ + [elFinder 2.1.21](https://github.com/Studio-42/elFinder/archive/2.1.21.zip)
+ + [elFinder 2.0.8](https://github.com/Studio-42/elFinder/archive/2.0.8.zip)
 
 **Nightly builds**
  + [elFinder 2.1.x (Nightly)](https://github.com/Studio-42/elFinder/archive/2.1.zip)
@@ -169,6 +169,7 @@ You can create or modify the language file to use translation tool. Please refer
  * [Ruby/Rails](https://github.com/phallstrom/el_finder)
  * [Django](https://github.com/mikery/django-elfinder)
  * [Laravel](https://github.com/barryvdh/laravel-elfinder)
+ * [JavaScript/Efw](https://github.com/efwGrp/efw3.X/blob/master/help/api_efw_tag.md#elfinder-tag)
 
 3rd party Volume Drivers
 --------------------
