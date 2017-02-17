@@ -35,6 +35,7 @@ ini_set('max_file_uploads', FM_SIMLIMIT); // allow uploading up to FM_SIMLIMIT f
 include BASE . 'external/elFinder/php/elFinderConnector.class.php';
 include BASE . 'external/elFinder/php/elFinder.class.php';
 
+include BASE . 'external/elFinder/php/elFinderPlugin.php';
 //include BASE . 'external/elFinder/php/libs/GdBmp.php';  // will also autoload if needed
 //include BASE . 'external/elFinder/php/plugins/AutoResize/plugin.php'; // will also autoload if needed
 //include BASE . 'external/elFinder/php/plugins/AutoRotate/plugin.php';
@@ -458,15 +459,15 @@ $opts = array(
                 'application/x-zip',
                 'application/x-zip-compressed',
                 'application/zip',
-                'audio/*',
-                'image/*',
+                'audio',
+                'image',
                 'multipart/x-gzip',
                 'multipart/x-zip',
                 'text/plain',
                 'text/rtf',
                 'text/richtext',
                 'text/xml',
-                'video/*',
+                'video',
                 'text/csv'
             ),
             'uploadDeny'      => array('application/x-shockwave-flash'),

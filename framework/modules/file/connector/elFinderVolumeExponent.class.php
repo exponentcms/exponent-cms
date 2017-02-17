@@ -239,10 +239,10 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      * @return array|false
      * @author Dave Leffler
      */
-    public function paste($volume, $src, $dst, $rmSrc = false)
+    public function paste($volume, $src, $dst, $rmSrc = false, $hashes = array())
     {
         $this->_move_expFile($src, $dst);
-        $result = parent::paste($volume, $src, $dst, $rmSrc);
+        $result = parent::paste($volume, $src, $dst, $rmSrc, $hashes);
         $this->_remove_expFile($src); // remove the duplicate expFile record pointing to old location
 
         $opath = $this->decode($src);
