@@ -148,6 +148,13 @@ class expMail {
 		$this->mailer = Swift_Mailer::newInstance($this->transport);
 		$this->message = new Swift_Message();
 
+        // Bad recipient reporter
+//        $reporter = new Swift_Plugins_Reporters_eDebugHtmlReporter();
+//        $this->mailer->registerPlugin(
+//            new Swift_Plugins_ReporterPlugin($reporter)
+//        );
+
+        // Debug output
 		switch (SMTP_DEBUGGING) {
 			case 1:
 				//To use the eDebugLogger for Exponent
@@ -237,7 +244,7 @@ class expMail {
 		}
 		if (empty($params['to'])) {
 			$params['to'] = array(trim(SMTP_FROMADDRESS)); // default address is ours
-			eLog('ERROR',gt('We didn\'t get a \'to\' address, so we set default'));
+			eLog(gt('We didn\'t get a \'to\' address, so we set default'),'ERROR');
 		}
         $this->addTo($params['to']);
 
@@ -290,7 +297,7 @@ class expMail {
 						$address = $name;
 					$sent[] = $address;
 				}
-				eLog('ERROR',gt('E-Mail NOT sent to').' - '.implode(', ', $sent));
+				eLog(gt('E-Mail NOT sent to').' - '.implode(', ', $sent),'ERROR');
 			}
 		}
 		return $numsent;
@@ -389,7 +396,7 @@ class expMail {
 		}
 		if (empty($params['to'])) {
 			$params['to'] = array(trim(SMTP_FROMADDRESS)); // default address is ours
-			eLog('ERROR',gt('We didn\'t get a \'to\' address, so we set default'));
+			eLog(gt('We didn\'t get a \'to\' address, so we set default'),'ERROR');
 		}
         $this->addTo($params['to']);  // we only do this to save addresses in our object
 
@@ -430,7 +437,7 @@ class expMail {
 			} catch (Swift_TransportException $e) {
 				flash('error',gt('Batch Send Mail Failed!').' - '.$address.' - '.$e->getMessage());
 				if (DEVELOPMENT && LOGGER) {
-					eLog('ERROR',gt('Batch E-Mail NOT sent to').' - '.implode(', ', $params['to']));
+					eLog(gt('Batch E-Mail NOT sent to').' - '.implode(', ', $params['to']),'ERROR');
 				}
 			}
 		}
@@ -662,7 +669,7 @@ class expMail {
             }
         }
         $this->to = $email;
-        if (!empty($email)) {
+        if (!empty($email)) {  // && Swift_Validate::email($email)
             $this->message->setTo($email);  //fixme this resets the 'to' addresses, unless using $this->message->addTo($email);
 //			$this->message->addTo($email);  //if you need to reset the 'to' addresses, use $this->flushRecipients();
         }
@@ -713,7 +720,9 @@ class expMail {
             }
         }
         $this->cc = $email;
-		$this->message->addCc($email, $name);
+        if (!empty($email)) {  // && Swift_Validate::email($email)
+            $this->message->addCc($email, $name);
+        }
 	}
 
 	/**
@@ -761,7 +770,9 @@ class expMail {
             }
         }
         $this->bcc = $email;
-		$this->message->addBcc($email, $name);
+        if (!empty($email)) {  // && Swift_Validate::email($email)
+            $this->message->addBcc($email, $name);
+        }
 	}
 
     /**
@@ -797,7 +808,7 @@ class expMail {
             }
         }
         $this->from = $email;
-        if (!empty($email)) {
+        if (!empty($email)) {  // && Swift_Validate::email($email)
             $this->message->setFrom($email);  //note this is appropriate? or cumulative $this->message->addFrom($email);
         }
 	}
