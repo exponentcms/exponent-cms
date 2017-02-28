@@ -1,5 +1,26 @@
 ### Version History
 
+*3.2.1 (2017/02/28)*
+
+* Added missing documentation for NPM given latest changes @ron666
+
+*3.2.0 (2017/02/28)*
+
+* Fixed typo in header file @ron666
+* Added Ukrainian translation (https://github.com/johndyer/mediaelement/pull/2100) @DmitryKrekota
+* Added Swedish translation (https://github.com/johndyer/mediaelement/pull/2101) @xpetter
+* Fixed issue with poster image not being shown up on YouTube on mobile devices @ron666
+* Removed hacks for old browsers (https://github.com/johndyer/mediaelement/pull/2102) @jimmywarting
+* Fixed issue with Win8 Safari not detecting `src` attribute properly @ron666
+* Fixed `secondsToTimeCode` method not being called with all parameters (https://github.com/johndyer/mediaelement/pull/2103) @dmongrel
+* Added workflow to set WARIA text elements, added `isString` method (https://github.com/johndyer/mediaelement/pull/2105) @DmitryKrekota
+* Added new `resources` section in documentation @ron666 
+* Cleaned up translation files and move others to `mediaelement-plugins` repo @ron666
+* Fixed wrong link in documentation (https://github.com/johndyer/mediaelement/pull/2106) @7huo
+* Added fix to avoid `jQuery.noConflict()` issues @ron666
+* Reorganized renderers and created `build/renderers` folder to keep bundles' size low @ron666
+* Integrated Twitch renderer @ron666
+
 *3.1.3 (2017/02/23)*
 
 * Fixed typo in `usage.md` in regards of Automatic start (https://github.com/johndyer/mediaelement/pull/2071) @SvenJuergens
