@@ -20,7 +20,7 @@ class.upload,0.33,github.com/verot/class.upload.php,0.33,Correct flip operation 
 iCalCreator,2.22.0,github.com/iCalcreator/iCalcreator,2.22.0,php7 fixes & vcalendar $this->filename fix
 scssphp,0.3.1exp,github.com/leafo/scssphp,0.6.7,added Server\cachedCompile()
 lessphp,0.5.0,github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
-less.php,1.7.0.10,github.com/oyejorge/less.php,1.7.0.10,
+less.php,1.7.0.10,github.com/oyejorge/less.php,1.7.0.13,
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap,3.3.7,twitter.github.com/bootstrap,3.3.7,patched bootstrap.less includes swatches & exp variables
@@ -41,7 +41,7 @@ excanvas,r3,code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircl
 CKEditor,4.6.2,ckeditor.com,4.6.2,"add fieldinsert (exp), tableresize, sourcedialog, image2 & imageupload widgets & kama skin"
 TinyMCE,4.5.4,tinymce.com,4.5.4,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
 PLUpload,2.3.1,github.com/moxiecode/plupload,2.3.1,"needed for TinyMCE Quick Upload, placed in that plugin folder"
-elFinder,2.1.21n,elfinder.org,2.1.21n,"use https://github.com/nao-pon/elFinder, customized in /framework with Exponent php classes and .js files"
+elFinder,2.1.21n,elfinder.org,2.1.22n,"use https://github.com/nao-pon/elFinder, customized in /framework with Exponent php classes and .js files"
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
 jQuery,2.2.4,jquery.com,2.2.4,
 jQuery Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon

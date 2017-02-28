@@ -470,7 +470,9 @@ $opts = array(
                 'video',
                 'text/csv'
             ),
-            'uploadDeny'      => array('application/x-shockwave-flash'),
+            'uploadDeny'      => array(
+                'application/x-shockwave-flash'
+            ),
             'uploadOrder'     => 'allow,deny',
             'uploadOverwrite' => true,
 //            'uploadMaxSize'   => '128m',

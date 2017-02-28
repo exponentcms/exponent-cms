@@ -647,7 +647,7 @@ class expCSS {
                     }
             }
         } else {
-            return true;  // the .css file already exists and we're not in develeopment
+            return true;  // the .css file already exists and we're not in development
         }
     }
 

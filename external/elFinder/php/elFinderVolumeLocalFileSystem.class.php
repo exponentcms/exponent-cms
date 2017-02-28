@@ -95,7 +95,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 		}
 		$this->root = $this->getFullPath($this->root, $cwd);
 		if (!empty($this->options['startPath'])) {
-			$this->options['startPath'] = $this->getFullPath($this->options['startPath'], $cwd);
+			$this->options['startPath'] = $this->getFullPath($this->options['startPath'], $this->root);
 		}
 		
 		if (is_null($this->options['syncChkAsTs'])) {
@@ -564,7 +564,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	protected function _subdirs($path) {
 
 		$dirs = false;
-		if (is_dir($path)) {
+		if (is_dir($path) && is_readable($path)) {
 			if (class_exists('FilesystemIterator', false)) {
 				$dirItr = new ParentIterator(
 					new RecursiveDirectoryIterator($path,
@@ -1102,14 +1102,10 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 				}
 			} else {
 				$dstDir = dirname($path);
-				$res = false;
 				$result = array();
 				foreach($ls as $name) {
 					$target = $dstDir.DIRECTORY_SEPARATOR.$name;
-					if (is_dir($target)) {
-						$this->delTree($target);
-					}
-					if (rename($dir.DIRECTORY_SEPARATOR.$name, $target)) {
+					if (self::localMoveRecursive($dir.DIRECTORY_SEPARATOR.$name, $target, true, $this->options['copyJoin'])) {
 						$result[] = $target;
 					}
 				}
