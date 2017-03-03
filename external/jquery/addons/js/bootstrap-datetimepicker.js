@@ -1,4 +1,4 @@
-/*! version : 4.17.45
+/*! version : 4.17.47
  =========================================================
  bootstrap-datetimejs
  https://github.com/Eonasdan/bootstrap-datetimepicker
@@ -355,7 +355,7 @@
                             .append(dateView.addClass('col-md-6'))
                             .append(timeView.addClass('col-md-6'))
                     );
-                    if (options.toolbarPlacement === 'bottom' || options.toolbarPlacement === 'default') { //exp
+                    if (options.toolbarPlacement === 'bottom') {
                         template.append(toolbar);
                     }
                     return template;
@@ -947,7 +947,6 @@
 
                 input.blur();
 
-                currentViewMode = 0;
                 viewDate = date.clone();
 
                 return picker;
