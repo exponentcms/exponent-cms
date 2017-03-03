@@ -253,6 +253,35 @@ class expTagController extends expController {
         expHistory::returnTo('viewable');
     }
 
+    /**
+     * get the metainfo for this module
+     *
+     * @return array
+     */
+    function metainfo() {
+        global $router;
+
+        if (empty($router->params['action']))
+            return false;
+
+        // figure out what metadata to pass back based on the action we are in.
+        switch ($router->params['action']) {
+            case 'show':
+                $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
+                $tag = $router->params['title'];
+                // set the meta info
+                $metainfo['title'] = ucwords(gt('items')) . ' ' . gt('tagged') . ': ' . $tag;
+                $metainfo['keywords'] = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
+                $metainfo['canonical'] = $router->plainPath();
+                return $metainfo;
+                break;
+            default:
+                $metainfo = parent::metainfo();
+        }
+        return $metainfo;
+    }
+
     function import() {
         assign_to_template(array(
             'type' => $this
