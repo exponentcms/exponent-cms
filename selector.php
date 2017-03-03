@@ -26,6 +26,44 @@ function epb($buffer, $mode) {
     return expProcessBuffer($buffer);
 }
 
+//Scrub Input
+// strip out possible xss exploits via old school url
+foreach ($_GET as $key=>$var) {
+    if (is_string($var) && strpos($var,'">')) {
+        unset(
+            $_GET[$key],
+            $_REQUEST[$key]
+        );
+    }
+}
+//fixme only old school url and forms have these variables here
+// conventional method to ensure the 'id' is only an id
+if (isset($_REQUEST['id'])) {
+    $_REQUEST['id'] = intval($_REQUEST['id']);
+    if (isset($_GET['id']))
+        $_GET['id'] = $_REQUEST['id'];
+    if (isset($_POST['id']))
+        $_POST['id'] = $_REQUEST['id'];
+}
+// do the same for the other id's
+foreach ($_REQUEST as $key=>$var) {
+    if (is_string($var) && strlen($key) >= 3 && strrpos($key,'_id',-3) !== false) {
+        $_REQUEST[$key] = intval($_REQUEST[$key]);
+        if (isset($_GET[$key]))
+            $_GET[$key] = $_REQUEST[$key];
+        if (isset($_POST[$key]))
+            $_POST[$key] = $_REQUEST[$key];
+    }
+    if ($key == 'src') {
+        $_REQUEST[$key] = preg_replace("/[^A-Za-z0-9@-]/", '', $_REQUEST[$key]);
+        if (isset($_GET[$key]))
+            $_GET[$key] = $_REQUEST[$key];
+        if (isset($_POST[$key]))
+            $_POST[$key] = $_REQUEST[$key];
+    }
+}
+expString::sanitize($_REQUEST);  // strip other exploits like sql injections
+
 ob_start('epb');
 $microtime_str = explode(' ',microtime());
 $i_start = $microtime_str[0] + $microtime_str[1];

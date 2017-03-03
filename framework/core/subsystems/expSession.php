@@ -107,15 +107,16 @@ class expSession {
         }
 
     //	$sessid  = '';
-		if (isset($_GET['expid']))
-		{
-			$sessid = $_GET['expid'];
-		}
-		else if (isset($_POST['expid']))
-		{
-			$sessid =  $_POST['expid'];
-		}
-		else if (!isset($_COOKIE[SYS_SESSION_COOKIE]))
+//		if (isset($_GET['expid']))
+//		{
+//			$sessid = $_GET['expid'];
+//		}
+//		else if (isset($_POST['expid']))
+//		{
+//			$sessid =  $_POST['expid'];
+//		}
+//		else
+        if (!isset($_COOKIE[SYS_SESSION_COOKIE]))
 		{
 			$sessid = md5(uniqid(mt_rand(), true));
 		}

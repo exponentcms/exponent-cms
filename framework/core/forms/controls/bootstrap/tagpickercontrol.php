@@ -34,9 +34,9 @@ class tagpickercontrol extends formcontrol {
         return "Tag Picker";
     }
 
-    static function getFieldDefinition() {
-        return array();
-    }
+//    static function getFieldDefinition() {
+//        return array();
+//    }
 
     function __construct($collections = array(), $subtype = null) {
 //        global $db;

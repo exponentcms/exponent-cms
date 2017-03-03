@@ -245,11 +245,11 @@ class expCSS {
     public static function themeCSS() {
         global $css_theme, $head_config, $less_vars;
 
+        if (!isset($less_vars['menu_width']))
+            $less_vars['menu_width'] = 769;  // compiler will crash without expected variables assigned
+        if (!isset($less_vars['swatch']))
+            $less_vars['swatch'] = '';  // compiler will crash without expected variables assigned
 //        // code for testing scss compiler
-//        if (!isset($less_vars['menu_width']))
-//            $less_vars['menu_width'] = 769;  // compiler will crash without expected variables assigned
-//        if (!isset($less_vars['swatch']))
-//            $less_vars['swatch'] = '';  // compiler will crash without expected variables assigned
 //        self::auto_compile_scss('external/bootstrap3/scss/test_2.scss', 'tmp/css/test.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap3/scss/bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap3/scss/newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
@@ -647,7 +647,7 @@ class expCSS {
                     }
             }
         } else {
-            return true;  // the .css file already exists and we're not in develeopment
+            return true;  // the .css file already exists and we're not in development
         }
     }
 

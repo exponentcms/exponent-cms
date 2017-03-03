@@ -1,5 +1,8 @@
 elFinder
 ========
+
+**WARNING: IF YOU HAVE OLDER VERSIONS OF ELFINDER ON PUBLIC SERVERS, IT MAY CAUSE SERIOUS DAMAGE TO YOUR SERVER AND VISITED USER. YOU SHOULD UPDATE TO THE LATEST VERSION OR REMOVE IT FROM THE SERVER.**
+
 <pre>
       _ ______ _           _           
      | |  ____(_)         | |          
@@ -127,8 +130,8 @@ Installation
 Downloads
 ------------
 **Stable releases** ([Changelog](https://github.com/Studio-42/elFinder/blob/master/Changelog))
- + [elFinder 2.1.20](https://github.com/Studio-42/elFinder/archive/2.1.20.zip)
- + [elFinder 2.0.7](https://github.com/Studio-42/elFinder/archive/2.0.7.zip)
+ + [elFinder 2.1.22](https://github.com/Studio-42/elFinder/archive/2.1.22.zip)
+ + [elFinder 2.0.9](https://github.com/Studio-42/elFinder/archive/2.0.9.zip)
 
 **Nightly builds**
  + [elFinder 2.1.x (Nightly)](https://github.com/Studio-42/elFinder/archive/2.1.zip)
@@ -169,6 +172,7 @@ You can create or modify the language file to use translation tool. Please refer
  * [Ruby/Rails](https://github.com/phallstrom/el_finder)
  * [Django](https://github.com/mikery/django-elfinder)
  * [Laravel](https://github.com/barryvdh/laravel-elfinder)
+ * [JavaScript/Efw](https://github.com/efwGrp/efw3.X/blob/master/help/api_efw_tag.md#elfinder-tag)
 
 3rd party Volume Drivers
 --------------------

@@ -427,25 +427,10 @@ class blogController extends expController {
             // set the meta info
             $u = user::getUserByName(expString::sanitize($request['author']));
             $str = user::getUserAttribution($u->id);
-//            switch (DISPLAY_ATTRIBUTION) {
-//                case "firstlast":
-//                    $str = $u->firstname . " " . $u->lastname;
-//                    break;
-//                case "lastfirst":
-//                    $str = $u->lastname . ", " . $u->firstname;
-//                    break;
-//                case "first":
-//                    $str = $u->firstname;
-//                    break;
-//                case "username":
-//                default:
-//                    $str = $u->username;
-//                    break;
-//            }
 
             if (!empty($str)) {
                 $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
-                $metainfo['title'] = gt('Showing all Blog Posts written by') ." \"" . $str . "\"";
+                $metainfo['title'] = gt('Blog') . ' ' . gt('items') . ' ' . gt('authored by') . ': ' . $str;
 //                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
                 $metainfo['keywords'] = $str;
 //                $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;  //FIXME $object not set

@@ -1337,7 +1337,7 @@ abstract class expController {
 
         switch ($action) {
             case 'showall':
-                $metainfo['title'] = gt("Showing") . " " . static::displayname() . ' - ' . SITE_TITLE;
+                $metainfo['title'] = ucwords($this->basemodel_name) . ' ' . gt('items') . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
                 break;
@@ -1444,7 +1444,7 @@ abstract class expController {
             $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
             $tag = $request['tag'];
             // set the meta info
-            $metainfo['title'] = gt('Showing all') . ' ' . ucwords($this->basemodel_name) . ' ' . gt('tagged as') . ' ' . $tag;
+            $metainfo['title'] = ucwords($this->basemodel_name) . ' ' . gt('items') . ' ' . gt('tagged') . ': ' . $tag;
 //            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object not set
             $metainfo['keywords'] = $request['tag'];
 //            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object not set
@@ -1472,7 +1472,7 @@ abstract class expController {
             $mk = mktime(0, 0, 0, $request['month'], 01, $request['year']);
             $ts = strftime('%B, %Y', $mk);
             // set the meta info
-            $metainfo['title'] = gt('Showing all') . ' ' . ucwords($this->basemodel_name) . ' ' . gt('written in') . ' ' . $ts;
+            $metainfo['title'] = ucwords($this->basemodel_name) . ' ' . gt('items') . ' ' . gt('dated') . ': ' . $ts;
 //            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object not set
             $metainfo['keywords'] = SITE_KEYWORDS;
 //            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object not set

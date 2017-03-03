@@ -585,18 +585,24 @@ class expTheme
         }
 
         // if we are in an action and have action maps to work with...
-        if (self::inAction() && (!empty($action_maps[$module]) && (array_key_exists(
-                        $_REQUEST['action'],
-                        $action_maps[$module]
-                    ) || array_key_exists('*', $action_maps[$module])))
+        if (self::inAction()
+            && ((!empty($action_maps[$module]) || !empty($action_maps['*']))
+                && ((isset($action_maps[$module]) && array_key_exists($_REQUEST['action'], $action_maps[$module]))
+                    || (isset($action_maps[$module]) && array_key_exists('*', $action_maps[$module]))  // wildcard action
+                    || (isset($action_maps['*']) && array_key_exists($_REQUEST['action'], $action_maps['*']))  // wildcard module
+                )
+            )
         ) {
             $actionname = array_key_exists($_REQUEST['action'], $action_maps[$module]) ? $_REQUEST['action'] : '*';
-            $actiontheme = explode(":", $action_maps[$module][$actionname]);
+            if (!empty($action_maps[$module][$actionname]))
+                $actiontheme = explode(":", $action_maps[$module][$actionname]);
 
             // this resets the section object. we're suppressing notices with @ because getSectionObj sets constants, which cannot be changed
             // since this will be the second time Exponent calls this function on the page load.
             if (!empty($actiontheme[1])) {
                 $sectionObj = @$router->getSectionObj($actiontheme[1]);
+            } elseif (empty($actiontheme[0]) && !empty($action_maps['*'][$_REQUEST['action']])) {
+                $actiontheme[0] = $action_maps['*'][$_REQUEST['action']];
             }
 
             if ($actiontheme[0] == "default" || $actiontheme[0] == "Default" || $actiontheme[0] == "index") {
