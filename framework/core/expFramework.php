@@ -412,7 +412,7 @@ function renderAction(array $parms=array()) {
         if (!expPermissions::check($perm_action, $controller->loc)) {
             if (expTheme::inAction()) {
                 flash('error', gt("You don't have permission to")." ".$lc_perms[$lc_perm_action]);
-                notfoundController::handle_not_authorized();
+//                notfoundController::handle_not_authorized();
                 expHistory::returnTo('viewable');
             } else {
                 return false;
@@ -422,7 +422,7 @@ function renderAction(array $parms=array()) {
         if (!expPermissions::check($common_action, $controller->loc)) {
             if (expTheme::inAction()) {
                 flash('error', gt("You don't have permission to")." ".$lc_perms[$lc_common_action]);
-                notfoundController::handle_not_authorized();
+//                notfoundController::handle_not_authorized();
                 expHistory::returnTo('viewable');
             } else {
                 return false;
@@ -433,7 +433,7 @@ function renderAction(array $parms=array()) {
         if (!$user->isLoggedIn()) {
             $msg = empty($controller->requires_login[$lc_perm_action]) ? gt("You must be logged in to perform this action") : gt($controller->requires_login[$lc_perm_action]);
             flash('error', $msg);
-            notfoundController::handle_not_authorized();
+//            notfoundController::handle_not_authorized();
             expHistory::redirecto_login();
         }
     } elseif (array_key_exists($lc_common_action, $controller->requires_login)) {
@@ -441,7 +441,7 @@ function renderAction(array $parms=array()) {
         if (!$user->isLoggedIn()) {
             $msg = empty($controller->requires_login[$lc_common_action]) ? gt("You must be logged in to perform this action") : gt($controller->requires_login[$lc_common_action]);
             flash('error', $msg);
-            notfoundController::handle_not_authorized();
+//            notfoundController::handle_not_authorized();
             expHistory::redirecto_login();
         }
     }
