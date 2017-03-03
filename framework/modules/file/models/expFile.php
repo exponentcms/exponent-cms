@@ -437,6 +437,12 @@ class expFile extends expRecord {
 //        $handle->file_new_name_ext = '';
         $handle->dir_chmod = octdec(DIR_DEFAULT_MODE_STR + 0);
         $handle->forbidden = array('application/x-shockwave-flash');
+        $handle->mime_types += array(
+            'php4' => 'text/html',
+            'php5' => 'text/html',
+            'php7' => 'text/html',
+            'php2' => 'text/html'
+        );
         $handle->image_auto_rotate = false;  // don't auto-rotate jpeg images based on EXIF data
         if (!empty($maxwidth) && $handle->uploaded) {
             $handle->image_resize = true;
@@ -554,6 +560,12 @@ class expFile extends expRecord {
 //        $handle->file_new_name_ext = '';
         $handle->dir_chmod = octdec(DIR_DEFAULT_MODE_STR + 0);
         $handle->forbidden = array('application/x-shockwave-flash');
+        $handle->mime_types += array(
+            'php4' => 'text/html',
+            'php5' => 'text/html',
+            'php7' => 'text/html',
+            'php2' => 'text/html'
+        );
         $handle->image_auto_rotate = false;  // don't auto-rotate jpeg images based on EXIF data
         if (!empty($maxwidth) && $handle->uploaded) {
             $handle->image_resize = true;

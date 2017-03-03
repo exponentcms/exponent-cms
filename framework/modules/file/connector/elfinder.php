@@ -21,6 +21,8 @@
  */
 
 require_once("../../../../exponent.php");
+if (empty($user->id))
+    exit();
 
 if (DEVELOPMENT) {
     set_time_limit(0);
