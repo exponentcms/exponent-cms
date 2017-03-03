@@ -869,7 +869,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mejs = {};
 
 // version number
-mejs.version = '3.2.1';
+mejs.version = '3.2.3';
 
 // Basic HTML5 settings
 mejs.html5media = {
@@ -972,7 +972,31 @@ var Renderer = function () {
 			var renderers = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
 
+			var renderersLength = renderers.length;
+
 			renderers = renderers.length ? renderers : this.order;
+
+			// If renderers are not set, set a default order:
+			// 1) Native renderers (HTML5, HLS, M(PEG)-DASH, FLV)
+			// 2) Flash shims (RTMP, FLV, HLS, M(PEG)-DASH, MP3, OGG)
+			// 3) Iframe renderers (YouTube, SoundCloud, Facebook. etc.)
+			if (!renderersLength) {
+				(function () {
+					var rendererIndicator = [/^(html5|native)/, /^flash/, /iframe$/],
+					    rendererRanking = function rendererRanking(renderer) {
+						for (var i = 0; i < rendererIndicator.length; i++) {
+							if (renderer.match(rendererIndicator[i]) !== null) {
+								return i;
+							}
+						}
+						return rendererIndicator.length;
+					};
+
+					renderers.sort(function (a, b) {
+						return rendererRanking(a) - rendererRanking(b);
+					});
+				})();
+			}
 
 			for (var i = 0, il = renderers.length; i < il; i++) {
 				var key = renderers[i],
@@ -1139,7 +1163,11 @@ Object.assign(_player2.default.prototype, {
 		// build button
 		var t = this,
 		    fullscreenTitle = (0, _general.isString)(t.options.fullscreenText) ? t.options.fullscreenText : _i18n2.default.t('mejs.fullscreen'),
-		    fullscreenBtn = $('<div class="' + t.options.classPrefix + 'button ' + t.options.classPrefix + 'fullscreen-button">' + ('<button type="button" aria-controls="' + t.id + '" title="' + fullscreenTitle + '" aria-label="' + fullscreenTitle + '" tabindex="0"></button>') + '</div>').appendTo(controls).on('click', function () {
+		    fullscreenBtn = $('<div class="' + t.options.classPrefix + 'button ' + t.options.classPrefix + 'fullscreen-button">' + ('<button type="button" aria-controls="' + t.id + '" title="' + fullscreenTitle + '" aria-label="' + fullscreenTitle + '" tabindex="0"></button>') + '</div>');
+
+		t.addControlElement(fullscreenBtn, 'fullscreen');
+
+		fullscreenBtn.on('click', function () {
 
 			// toggle fullscreen
 			var isFullScreen = Features.HAS_TRUE_NATIVE_FULLSCREEN && Features.IS_FULLSCREEN || player.isFullScreen;
@@ -1582,18 +1610,23 @@ Object.assign(_player2.default.prototype, {
   * @public
   */
 	buildplaypause: function buildplaypause(player, controls, layers, media) {
+
 		var t = this,
 		    op = t.options,
 		    playTitle = (0, _general.isString)(op.playText) ? op.playText : _i18n2.default.t('mejs.play'),
 		    pauseTitle = (0, _general.isString)(op.pauseText) ? op.pauseText : _i18n2.default.t('mejs.pause'),
-		    play = $('<div class="' + t.options.classPrefix + 'button ' + t.options.classPrefix + 'playpause-button ' + (t.options.classPrefix + 'play">') + ('<button type="button" aria-controls="' + t.id + '" title="' + playTitle + '" aria-label="' + pauseTitle + '" tabindex="0"></button>') + '</div>').appendTo(controls).click(function () {
+		    play = $('<div class="' + t.options.classPrefix + 'button ' + t.options.classPrefix + 'playpause-button ' + (t.options.classPrefix + 'play">') + ('<button type="button" aria-controls="' + t.id + '" title="' + playTitle + '" aria-label="' + pauseTitle + '" tabindex="0"></button>') + '</div>'),
+		    playBtn = play.find('button');
+
+		t.addControlElement(play, 'playpause');
+
+		play.click(function () {
 			if (media.paused) {
 				media.play();
 			} else {
 				media.pause();
 			}
-		}),
-		    playBtn = play.find('button');
+		});
 
 		/**
    * @private
@@ -1696,9 +1729,11 @@ Object.assign(_player2.default.prototype, {
 
 		var t = this,
 		    autoRewindInitial = player.options.autoRewind,
-		    tooltip = player.options.enableProgressTooltip ? '<span class="' + t.options.classPrefix + 'time-float">' + ('<span class="' + t.options.classPrefix + 'time-float-current">00:00</span>') + ('<span class="' + t.options.classPrefix + 'time-float-corner"></span>') + '</span>' : "";
+		    tooltip = player.options.enableProgressTooltip ? '<span class="' + t.options.classPrefix + 'time-float">' + ('<span class="' + t.options.classPrefix + 'time-float-current">00:00</span>') + ('<span class="' + t.options.classPrefix + 'time-float-corner"></span>') + '</span>' : "",
+		    rail = $('<div class="' + t.options.classPrefix + 'time-rail">' + ('<span class="' + t.options.classPrefix + 'time-total ' + t.options.classPrefix + 'time-slider">') + ('<span class="' + t.options.classPrefix + 'time-buffering"></span>') + ('<span class="' + t.options.classPrefix + 'time-loaded"></span>') + ('<span class="' + t.options.classPrefix + 'time-current"></span>') + ('<span class="' + t.options.classPrefix + 'time-handle"></span>') + ('' + tooltip) + '</span>' + '</div>');
 
-		$('<div class="' + t.options.classPrefix + 'time-rail">' + ('<span class="' + t.options.classPrefix + 'time-total ' + t.options.classPrefix + 'time-slider">') + ('<span class="' + t.options.classPrefix + 'time-buffering"></span>') + ('<span class="' + t.options.classPrefix + 'time-loaded"></span>') + ('<span class="' + t.options.classPrefix + 'time-current"></span>') + ('<span class="' + t.options.classPrefix + 'time-handle"></span>') + ('' + tooltip) + '</span>' + '</div>').appendTo(controls);
+		t.addControlElement(rail, 'progress');
+
 		controls.find('.' + t.options.classPrefix + 'time-buffering').hide();
 
 		t.rail = controls.find('.' + t.options.classPrefix + 'time-rail');
@@ -2098,9 +2133,10 @@ Object.assign(_player2.default.prototype, {
   * @param {HTMLElement} media
   */
 	buildcurrent: function buildcurrent(player, controls, layers, media) {
-		var t = this;
+		var t = this,
+		    time = $('<div class="' + t.options.classPrefix + 'time" role="timer" aria-live="off">' + ('<span class="' + t.options.classPrefix + 'currenttime">' + (0, _time.secondsToTimeCode)(0, player.options.alwaysShowHours, player.options.showTimecodeFrameCount, player.options.framesPerSecond) + '</span>') + '</div>');
 
-		$('<div class="' + t.options.classPrefix + 'time" role="timer" aria-live="off">' + ('<span class="' + t.options.classPrefix + 'currenttime">' + (0, _time.secondsToTimeCode)(0, player.options.alwaysShowHours, player.options.showTimecodeFrameCount, player.options.framesPerSecond) + '</span>') + '</div>').appendTo(controls);
+		t.addControlElement(time, 'current');
 
 		t.currenttime = t.controls.find('.' + t.options.classPrefix + 'currenttime');
 
@@ -2121,16 +2157,21 @@ Object.assign(_player2.default.prototype, {
   * @param {HTMLElement} media
   */
 	buildduration: function buildduration(player, controls, layers, media) {
+
 		var t = this;
 
 		if (controls.children().last().find('.' + t.options.classPrefix + 'currenttime').length > 0) {
-			$(t.options.timeAndDurationSeparator + '<span class="' + t.options.classPrefix + 'duration">' + ((0, _time.secondsToTimeCode)(t.options.duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond) + '</span>')).appendTo(controls.find('.' + t.options.classPrefix + 'time'));
+			var duration = $(t.options.timeAndDurationSeparator + '<span class="' + t.options.classPrefix + 'duration">' + ((0, _time.secondsToTimeCode)(t.options.duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond) + '</span>'));
+
+			duration.appendTo(controls.find('.' + t.options.classPrefix + 'time'));
 		} else {
 
 			// add class to current time
 			controls.find('.' + t.options.classPrefix + 'currenttime').parent().addClass(t.options.classPrefix + 'currenttime-container');
 
-			$('<div class="' + t.options.classPrefix + 'time ' + t.options.classPrefix + 'duration-container">' + ('<span class="' + t.options.classPrefix + 'duration">') + ((0, _time.secondsToTimeCode)(t.options.duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond) + '</span>') + '</div>').appendTo(controls);
+			var _duration = $('<div class="' + t.options.classPrefix + 'time ' + t.options.classPrefix + 'duration-container">' + ('<span class="' + t.options.classPrefix + 'duration">') + ((0, _time.secondsToTimeCode)(t.options.duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond) + '</span>') + '</div>');
+
+			t.addControlElement(_duration, 'duration');
 		}
 
 		t.durationD = t.controls.find('.' + t.options.classPrefix + 'duration');
@@ -2295,7 +2336,9 @@ Object.assign(_player2.default.prototype, {
 		player.captions = $('<div class="' + t.options.classPrefix + 'captions-layer ' + t.options.classPrefix + 'layer">' + ('<div class="' + t.options.classPrefix + 'captions-position ' + t.options.classPrefix + 'captions-position-hover"' + attr + '>') + ('<span class="' + t.options.classPrefix + 'captions-text"></span>') + '</div>' + '</div>').prependTo(layers).hide();
 
 		player.captionsText = player.captions.find('.' + t.options.classPrefix + 'captions-text');
-		player.captionsButton = $('<div class="' + t.options.classPrefix + 'button ' + t.options.classPrefix + 'captions-button">' + ('<button type="button" aria-controls="' + t.id + '" title="' + tracksTitle + '" aria-label="' + tracksTitle + '" tabindex="0"></button>') + ('<div class="' + t.options.classPrefix + 'captions-selector ' + t.options.classPrefix + 'offscreen">') + ('<ul class="' + t.options.classPrefix + 'captions-selector-list">') + ('<li class="' + t.options.classPrefix + 'captions-selector-list-item">') + ('<input type="radio" class="' + t.options.classPrefix + 'captions-selector-input" ') + ('name="' + player.id + '_captions" id="' + player.id + '_captions_none" ') + 'value="none" checked="checked" />' + ('<label class="' + t.options.classPrefix + 'captions-selector-label ') + (t.options.classPrefix + 'captions-selected" ') + ('for="' + player.id + '_captions_none">' + _i18n2.default.t('mejs.none') + '</label>') + '</li>' + '</ul>' + '</div>' + '</div>').appendTo(controls);
+		player.captionsButton = $('<div class="' + t.options.classPrefix + 'button ' + t.options.classPrefix + 'captions-button">' + ('<button type="button" aria-controls="' + t.id + '" title="' + tracksTitle + '" aria-label="' + tracksTitle + '" tabindex="0"></button>') + ('<div class="' + t.options.classPrefix + 'captions-selector ' + t.options.classPrefix + 'offscreen">') + ('<ul class="' + t.options.classPrefix + 'captions-selector-list">') + ('<li class="' + t.options.classPrefix + 'captions-selector-list-item">') + ('<input type="radio" class="' + t.options.classPrefix + 'captions-selector-input" ') + ('name="' + player.id + '_captions" id="' + player.id + '_captions_none" ') + 'value="none" checked="checked" />' + ('<label class="' + t.options.classPrefix + 'captions-selector-label ') + (t.options.classPrefix + 'captions-selected" ') + ('for="' + player.id + '_captions_none">' + _i18n2.default.t('mejs.none') + '</label>') + '</li>' + '</ul>' + '</div>' + '</div>');
+
+		t.addControlElement(player.captionsButton, 'tracks');
 
 		player.chaptersButton = $('<div class="' + t.options.classPrefix + 'button ' + t.options.classPrefix + 'chapters-button">' + ('<button type="button" aria-controls="' + t.id + '" title="' + chaptersTitle + '" aria-label="' + chaptersTitle + '" tabindex="0"></button>') + ('<div class="' + t.options.classPrefix + 'chapters-selector ' + t.options.classPrefix + 'offscreen">') + ('<ul class="' + t.options.classPrefix + 'chapters-selector-list"></ul>') + '</div>' + '</div>');
 
@@ -2306,7 +2349,7 @@ Object.assign(_player2.default.prototype, {
 			if (kind === 'subtitles' || kind === 'captions') {
 				subtitleCount++;
 			} else if (kind === 'chapters' && !controls.find('.' + t.options.classPrefix + 'chapter-selector').length) {
-				player.chaptersButton.appendTo(controls);
+				player.chaptersButton.insertAfter(player.captionsButton);
 			}
 		}
 
@@ -2437,6 +2480,10 @@ Object.assign(_player2.default.prototype, {
 			}
 			if (player.captionsButton) {
 				player.captionsButton.remove();
+			}
+
+			if (player.chaptersButton) {
+				player.chaptersButton.remove();
 			}
 		}
 	},
@@ -3146,8 +3193,11 @@ Object.assign(_player2.default.prototype, {
 		$('<div class="' + t.options.classPrefix + 'button ' + t.options.classPrefix + 'volume-button ' + t.options.classPrefix + 'mute">' + ('<button type="button" aria-controls="' + t.id + '" title="' + muteText + '" aria-label="' + muteText + '" tabindex="0"></button>') + '</div>' + ('<a href="javascript:void(0);" class="' + t.options.classPrefix + 'horizontal-volume-slider">') + ('<span class="' + t.options.classPrefix + 'offscreen">' + volumeControlText + '</span>') + ('<div class="' + t.options.classPrefix + 'horizontal-volume-total">') + ('<div class="' + t.options.classPrefix + 'horizontal-volume-current"></div>') + ('<div class="' + t.options.classPrefix + 'horizontal-volume-handle"></div>') + '</div>' + '</a>').appendTo(controls) :
 
 		// vertical version
-		$('<div class="' + t.options.classPrefix + 'button ' + t.options.classPrefix + 'volume-button ' + t.options.classPrefix + 'mute">' + ('<button type="button" aria-controls="' + t.id + '" title="' + muteText + '" aria-label="' + muteText + '" tabindex="0"></button>') + ('<a href="javascript:void(0);" class="' + t.options.classPrefix + 'volume-slider">') + ('<span class="' + t.options.classPrefix + 'offscreen">' + volumeControlText + '</span>') + ('<div class="' + t.options.classPrefix + 'volume-total">') + ('<div class="' + t.options.classPrefix + 'volume-current"></div>') + ('<div class="' + t.options.classPrefix + 'volume-handle"></div>') + '</div>' + '</a>' + '</div>').appendTo(controls),
-		    volumeSlider = t.container.find('.' + t.options.classPrefix + 'volume-slider, \n\t\t\t\t.' + t.options.classPrefix + 'horizontal-volume-slider'),
+		$('<div class="' + t.options.classPrefix + 'button ' + t.options.classPrefix + 'volume-button ' + t.options.classPrefix + 'mute">' + ('<button type="button" aria-controls="' + t.id + '" title="' + muteText + '" aria-label="' + muteText + '" tabindex="0"></button>') + ('<a href="javascript:void(0);" class="' + t.options.classPrefix + 'volume-slider">') + ('<span class="' + t.options.classPrefix + 'offscreen">' + volumeControlText + '</span>') + ('<div class="' + t.options.classPrefix + 'volume-total">') + ('<div class="' + t.options.classPrefix + 'volume-current"></div>') + ('<div class="' + t.options.classPrefix + 'volume-handle"></div>') + '</div>' + '</a>' + '</div>');
+
+		t.addControlElement(mute, 'volume');
+
+		var volumeSlider = t.container.find('.' + t.options.classPrefix + 'volume-slider, \n\t\t\t\t.' + t.options.classPrefix + 'horizontal-volume-slider'),
 		    volumeTotal = t.container.find('.' + t.options.classPrefix + 'volume-total, \n\t\t\t\t.' + t.options.classPrefix + 'horizontal-volume-total'),
 		    volumeCurrent = t.container.find('.' + t.options.classPrefix + 'volume-current, \n\t\t\t\t.' + t.options.classPrefix + 'horizontal-volume-current'),
 		    volumeHandle = t.container.find('.' + t.options.classPrefix + 'volume-handle, \n\t\t\t\t.' + t.options.classPrefix + 'horizontal-volume-handle'),
@@ -4162,9 +4212,12 @@ var MediaElementPlayer = function () {
 					// grab for use by features
 					t.findTracks();
 
+					// cache container to store control elements' original position
+					t.featurePosition = {};
+
 					// add user-defined features/controls
-					for (var featureIndex in t.options.features) {
-						var feature = t.options.features[featureIndex];
+					for (var i = 0, il = t.options.features.length; i < il; i++) {
+						var feature = t.options.features[i];
 						if (t['build' + feature]) {
 							try {
 								t['build' + feature](t, t.controls, t.layers, t.media);
@@ -4268,7 +4321,7 @@ var MediaElementPlayer = function () {
 							t.media.addEventListener('loadedmetadata', function (e) {
 								// if the <video height> was not set and the options.videoHeight was not set
 								// then resize to the real dimensions
-								if (t.options.videoHeight <= 0 && !t.domNode.getAttribute('height') && !isNaN(e.target.videoHeight)) {
+								if (t.options.videoHeight <= 0 && !t.domNode.getAttribute('height') && e.target !== null && !isNaN(e.target.videoHeight)) {
 									t.setPlayerSize(e.target.videoWidth, e.target.videoHeight);
 									t.setControlsSize();
 									t.media.setSize(e.target.videoWidth, e.target.videoHeight);
@@ -4747,6 +4800,34 @@ var MediaElementPlayer = function () {
 
 			t.container.trigger('controlsresize');
 		}
+
+		/**
+   * Add featured control element and cache its position in case features are reset
+   *
+   * @param {HTMLElement} element
+   * @param {String} key
+   */
+
+	}, {
+		key: 'addControlElement',
+		value: function addControlElement(element, key) {
+
+			var t = this;
+
+			if (t.featurePosition[key] !== undefined) {
+				element.insertAfter(t.controls.children(':eq(' + (t.featurePosition[key] - 1) + ')'));
+			} else {
+				element.appendTo(t.controls);
+				t.featurePosition[key] = t.controls.find(element).index();
+			}
+		}
+
+		/**
+   * Append layer to manipulate `<iframe>` elements safely.
+   *
+   * This allows the user to trigger events properly given that mouse/click don't get lost in the `<iframe>`.
+   */
+
 	}, {
 		key: 'createIframeLayer',
 		value: function createIframeLayer() {
@@ -5346,7 +5427,7 @@ var DashNativeRenderer = {
 	options: {
 		prefix: 'native_dash',
 		dash: {
-			// Special config: used to set the local path/URL of dash.js mediaplayer library
+			// Special config: used to set the local path/URL of dash.js player library
 			path: '//cdn.dashjs.org/latest/dash.mediaplayer.min.js',
 			debug: false
 		}
@@ -5373,7 +5454,8 @@ var DashNativeRenderer = {
 
 		var originalNode = mediaElement.originalNode,
 		    id = mediaElement.id + '_' + options.prefix,
-		    stack = {};
+		    preload = originalNode.getAttribute('preload'),
+		    autoplay = originalNode.getAttribute('autoplay');
 
 		var i = void 0,
 		    il = void 0,
@@ -5383,7 +5465,6 @@ var DashNativeRenderer = {
 		node = originalNode.cloneNode(true);
 		options = Object.assign(options, mediaElement.options);
 
-		// WRAPPERS for PROPs
 		var props = _mejs2.default.html5media.properties,
 		    assignGettersSetters = function assignGettersSetters(propName) {
 			var capName = '' + propName.substring(0, 1).toUpperCase() + propName.substring(1);
@@ -5398,16 +5479,12 @@ var DashNativeRenderer = {
 						if (propName === 'src') {
 
 							dashPlayer.attachSource(value);
-
-							if (node.getAttribute('autoplay')) {
+							if (autoplay) {
 								node.play();
 							}
 						}
 
 						node[propName] = value;
-					} else {
-						// store for after "READY" event fires
-						stack.push({ type: 'set', propName: propName, value: value });
 					}
 				}
 			};
@@ -5422,27 +5499,10 @@ var DashNativeRenderer = {
 
 			mediaElement.dashPlayer = dashPlayer = _dashPlayer;
 
-			// By default, console log is off
 			dashPlayer.getDebug().setLogToBrowserConsole(options.dash.debug);
+			dashPlayer.setAutoPlay(autoplay);
+			dashPlayer.setScheduleWhilePaused(preload === 'auto');
 
-			// do call stack
-			if (stack.length) {
-				for (i = 0, il = stack.length; i < il; i++) {
-
-					var stackItem = stack[i];
-
-					if (stackItem.type === 'set') {
-						var propName = stackItem.propName,
-						    capName = '' + propName.substring(0, 1).toUpperCase() + propName.substring(1);
-
-						node['set' + capName](stackItem.value);
-					} else if (stackItem.type === 'call') {
-						node[stackItem.methodName]();
-					}
-				}
-			}
-
-			// BUBBLE EVENTS
 			var events = _mejs2.default.html5media.events.concat(['click', 'mouseover', 'mouseout']),
 			    dashEvents = dashjs.MediaPlayer.events,
 			    assignEvents = function assignEvents(eventName) {
@@ -5974,11 +6034,11 @@ if (hasFlash) {
 			}
 		} else if (url.includes('.oga') || url.includes('.ogg')) {
 			return 'audio/ogg';
-		} else if (!_constants.HAS_MSE && !_constants.SUPPORTS_NATIVE_HLS && url.includes('.m3u8')) {
+		} else if (url.includes('.m3u8')) {
 			return 'application/x-mpegURL';
-		} else if (!_constants.HAS_MSE && url.includes('.mpd')) {
+		} else if (url.includes('.mpd')) {
 			return 'application/dash+xml';
-		} else if (!_constants.HAS_MSE && url.includes('.flv')) {
+		} else if (url.includes('.flv')) {
 			return 'video/flv';
 		} else {
 			return null;
@@ -6005,7 +6065,7 @@ if (hasFlash) {
    * @return {Boolean}
    */
 		canPlayType: function canPlayType(type) {
-			return hasFlash && ['video/mp4', 'video/rtmp', 'audio/rtmp', 'rtmp/mp4', 'audio/mp4'].includes(type) || !_constants.HAS_MSE && hasFlash && ['video/flv', 'video/x-flv'].includes(type);
+			return ['video/mp4', 'video/rtmp', 'audio/rtmp', 'rtmp/mp4', 'audio/mp4', 'video/flv', 'video/x-flv'].includes(type.toLowerCase());
 		},
 
 		create: FlashMediaElementRenderer.create
@@ -6028,7 +6088,7 @@ if (hasFlash) {
    * @return {Boolean}
    */
 		canPlayType: function canPlayType(type) {
-			return !_constants.HAS_MSE && hasFlash && ['application/x-mpegurl', 'vnd.apple.mpegurl', 'audio/mpegurl', 'audio/hls', 'video/hls'].includes(type.toLowerCase());
+			return ['application/x-mpegurl', 'vnd.apple.mpegurl', 'audio/mpegurl', 'audio/hls', 'video/hls'].includes(type.toLowerCase());
 		},
 
 		create: FlashMediaElementRenderer.create
@@ -6050,7 +6110,7 @@ if (hasFlash) {
    * @return {Boolean}
    */
 		canPlayType: function canPlayType(type) {
-			return !_constants.HAS_MSE && hasFlash && ['application/dash+xml'].includes(type);
+			return ['application/dash+xml'].includes(type.toLowerCase());
 		},
 
 		create: FlashMediaElementRenderer.create
@@ -6072,7 +6132,7 @@ if (hasFlash) {
    * @return {Boolean}
    */
 		canPlayType: function canPlayType(type) {
-			return hasFlash && ['audio/mp3'].includes(type);
+			return ['audio/mp3'].includes(type.toLowerCase());
 		},
 
 		create: FlashMediaElementRenderer.create
@@ -6094,7 +6154,7 @@ if (hasFlash) {
    * @return {Boolean}
    */
 		canPlayType: function canPlayType(type) {
-			return hasFlash && ['audio/ogg', 'audio/oga', 'audio/ogv'].includes(type);
+			return ['audio/ogg', 'audio/oga', 'audio/ogv'].includes(type.toLowerCase());
 		},
 
 		create: FlashMediaElementRenderer.create
@@ -6231,30 +6291,12 @@ var FlvNativeRenderer = {
 
 	options: {
 		prefix: 'native_flv',
-		/**
-   * Custom configuration for FLV player
-   *
-   * @see https://github.com/Bilibili/flv.js/blob/master/docs/api.md#config
-   * @type {Object}
-   */
 		flv: {
 			// Special config: used to set the local path/URL of flv.js library
 			path: '//cdnjs.cloudflare.com/ajax/libs/flv.js/1.1.0/flv.min.js',
-			cors: true,
-			enableWorker: false,
-			enableStashBuffer: true,
-			stashInitialSize: undefined,
-			isLive: false,
-			lazyLoad: true,
-			lazyLoadMaxDuration: 3 * 60,
-			deferLoadAfterSourceOpen: true,
-			statisticsInfoReportInterval: 600,
-			accurateSeek: false,
-			seekType: 'range', // [range, param, custom]
-			seekParamStart: 'bstart',
-			seekParamEnd: 'bend',
-			rangeLoadZeroStart: false,
-			customSeekHandler: undefined
+			// To modify more elements from FLV player,
+			// see https://github.com/Bilibili/flv.js/blob/master/docs/api.md#config
+			cors: true
 		}
 	},
 	/**
@@ -6278,8 +6320,7 @@ var FlvNativeRenderer = {
 	create: function create(mediaElement, options, mediaFiles) {
 
 		var originalNode = mediaElement.originalNode,
-		    id = mediaElement.id + '_' + options.prefix,
-		    stack = {};
+		    id = mediaElement.id + '_' + options.prefix;
 
 		var i = void 0,
 		    il = void 0,
@@ -6289,7 +6330,6 @@ var FlvNativeRenderer = {
 		node = originalNode.cloneNode(true);
 		options = Object.assign(options, mediaElement.options);
 
-		// WRAPPERS for PROPs
 		var props = _mejs2.default.html5media.properties,
 		    assignGettersSetters = function assignGettersSetters(propName) {
 			var capName = '' + propName.substring(0, 1).toUpperCase() + propName.substring(1);
@@ -6309,9 +6349,6 @@ var FlvNativeRenderer = {
 							flvPlayer.attachMediaElement(node);
 							flvPlayer.load();
 						}
-					} else {
-						// store for after "READY" event fires
-						stack.push({ type: 'set', propName: propName, value: value });
 					}
 				}
 			};
@@ -6326,24 +6363,6 @@ var FlvNativeRenderer = {
 
 			mediaElement.flvPlayer = flvPlayer = _flvPlayer;
 
-			// do call stack
-			if (stack.length) {
-				for (i = 0, il = stack.length; i < il; i++) {
-
-					var stackItem = stack[i];
-
-					if (stackItem.type === 'set') {
-						var propName = stackItem.propName,
-						    capName = '' + propName.substring(0, 1).toUpperCase() + propName.substring(1);
-
-						node['set' + capName](stackItem.value);
-					} else if (stackItem.type === 'call') {
-						node[stackItem.methodName]();
-					}
-				}
-			}
-
-			// BUBBLE EVENTS
 			var events = _mejs2.default.html5media.events.concat(['click', 'mouseover', 'mouseout']),
 			    assignEvents = function assignEvents(eventName) {
 
@@ -6551,6 +6570,7 @@ var NativeHls = {
   * @return {Hls}
   */
 	createInstance: function createInstance(settings) {
+		
 		var player = new Hls(settings.options);
 		_window2.default['__ready__' + settings.id](player);
 		return player;
@@ -6562,56 +6582,16 @@ var HlsNativeRenderer = {
 
 	options: {
 		prefix: 'native_hls',
-		/**
-   * Custom configuration for HLS player
-   *
-   * @see https://github.com/dailymotion/hls.js/blob/master/API.md#user-content-fine-tuning
-   * @type {Object}
-   */
 		hls: {
 			// Special config: used to set the local path/URL of hls.js library
 			path: '//cdn.jsdelivr.net/hls.js/latest/hls.min.js',
-			autoStartLoad: true,
-			startPosition: -1,
-			capLevelToPlayerSize: false,
-			debug: false,
-			maxBufferLength: 30,
-			maxMaxBufferLength: 600,
-			maxBufferSize: 60 * 1000 * 1000,
-			maxBufferHole: 0.5,
-			maxSeekHole: 2,
-			seekHoleNudgeDuration: 0.01,
-			maxFragLookUpTolerance: 0.2,
-			liveSyncDurationCount: 3,
-			liveMaxLatencyDurationCount: 10,
-			enableWorker: true,
-			enableSoftwareAES: true,
-			manifestLoadingTimeOut: 10000,
-			manifestLoadingMaxRetry: 6,
-			manifestLoadingRetryDelay: 500,
-			manifestLoadingMaxRetryTimeout: 64000,
-			levelLoadingTimeOut: 10000,
-			levelLoadingMaxRetry: 6,
-			levelLoadingRetryDelay: 500,
-			levelLoadingMaxRetryTimeout: 64000,
-			fragLoadingTimeOut: 20000,
-			fragLoadingMaxRetry: 6,
-			fragLoadingRetryDelay: 500,
-			fragLoadingMaxRetryTimeout: 64000,
-			startFragPrefech: false,
-			appendErrorMaxRetry: 3,
-			enableCEA708Captions: true,
-			stretchShortVideoTrack: true,
-			forceKeyFrameOnDiscontinuity: true,
-			abrEwmaFastLive: 5.0,
-			abrEwmaSlowLive: 9.0,
-			abrEwmaFastVoD: 4.0,
-			abrEwmaSlowVoD: 15.0,
-			abrEwmaDefaultEstimate: 500000,
-			abrBandWidthFactor: 0.8,
-			abrBandWidthUpFactor: 0.7
+			// To modify more elements from hls.js,
+			// see https://github.com/dailymotion/hls.js/blob/master/API.md#user-content-fine-tuning
+			autoStartLoad: false,
+			debug: false
 		}
 	},
+
 	/**
   * Determine if a specific element type can be played with this render
   *
@@ -6634,7 +6614,8 @@ var HlsNativeRenderer = {
 
 		var originalNode = mediaElement.originalNode,
 		    id = mediaElement.id + '_' + options.prefix,
-		    stack = {};
+		    preload = originalNode.getAttribute('preload'),
+		    autoplay = originalNode.getAttribute('autoplay');
 
 		var i = void 0,
 		    il = void 0,
@@ -6643,6 +6624,7 @@ var HlsNativeRenderer = {
 
 		node = originalNode.cloneNode(true);
 		options = Object.assign(options, mediaElement.options);
+		options.autoStartLoad = preload === 'auto';
 
 		// WRAPPERS for PROPs
 		var props = _mejs2.default.html5media.properties,
@@ -6661,20 +6643,20 @@ var HlsNativeRenderer = {
 						if (propName === 'src') {
 
 							hlsPlayer.destroy();
-							hlsPlayer = null;
 							hlsPlayer = NativeHls.createInstance({
 								options: options.hls,
 								id: id
 							});
 
 							hlsPlayer.attachMedia(node);
-							hlsPlayer.on(Hls.Events.MEDIA_ATTACHED, function () {
-								hlsPlayer.loadSource(value);
-							});
+							hlsPlayer.loadSource(value);
+
+							if (autoplay) {
+								hlsPlayer.on(hlsEvents.MANIFEST_PARSED, function () {
+									node.play();
+								});
+							}
 						}
-					} else {
-						// store for after "READY" event fires
-						stack.push({ type: 'set', propName: propName, value: value });
 					}
 				}
 			};
@@ -6689,40 +6671,23 @@ var HlsNativeRenderer = {
 
 			mediaElement.hlsPlayer = hlsPlayer = _hlsPlayer;
 
-			// do call stack
-			if (stack.length) {
-				for (i = 0, il = stack.length; i < il; i++) {
-
-					var stackItem = stack[i];
-
-					if (stackItem.type === 'set') {
-						var propName = stackItem.propName,
-						    capName = '' + propName.substring(0, 1).toUpperCase() + propName.substring(1);
-
-						node['set' + capName](stackItem.value);
-					} else if (stackItem.type === 'call') {
-						node[stackItem.methodName]();
-					}
-				}
-			}
-
-			// BUBBLE EVENTS
 			var events = _mejs2.default.html5media.events.concat(['click', 'mouseover', 'mouseout']),
 			    hlsEvents = Hls.Events,
 			    assignEvents = function assignEvents(eventName) {
 
 				if (eventName === 'loadedmetadata') {
-					(function () {
 
-						hlsPlayer.detachMedia();
+					hlsPlayer.detachMedia();
 
-						var url = node.src;
+					var url = node.src;
 
-						hlsPlayer.attachMedia(node);
-						hlsPlayer.on(hlsEvents.MEDIA_ATTACHED, function () {
-							hlsPlayer.loadSource(url);
+					hlsPlayer.attachMedia(node);
+					hlsPlayer.loadSource(url);
+					if (autoplay) {
+						hlsPlayer.on(hlsEvents.MANIFEST_PARSED, function () {
+							node.play();
 						});
-					})();
+					}
 				}
 
 				node.addEventListener(eventName, function (e) {
@@ -6747,6 +6712,8 @@ var HlsNativeRenderer = {
     * @see https://github.com/dailymotion/hls.js/blob/master/API.md#runtime-events
     * @see https://github.com/dailymotion/hls.js/blob/master/API.md#errors
     */
+			var recoverDecodingErrorDate = void 0,
+			    recoverSwapAudioCodecDate = void 0;
 			var assignHlsEvents = function assignHlsEvents(e, data) {
 				var event = (0, _general.createEvent)(e, node);
 				event.data = data;
@@ -6757,15 +6724,26 @@ var HlsNativeRenderer = {
 
 					// borrowed from http://dailymotion.github.io/hls.js/demo/
 					if (data.fatal) {
-						hlsPlayer.destroy();
-					} else {
 						switch (data.type) {
 							case 'mediaError':
-								hlsPlayer.recoverMediaError();
+								var now = new Date().getTime();
+								if (!recoverDecodingErrorDate || now - recoverDecodingErrorDate > 3000) {
+									recoverDecodingErrorDate = new Date().getTime();
+									hlsPlayer.recoverMediaError();
+								} else if (!recoverSwapAudioCodecDate || now - recoverSwapAudioCodecDate > 3000) {
+									recoverSwapAudioCodecDate = new Date().getTime();
+									console.warn('Attempting to swap Audio Codec and recover from media error');
+									hlsPlayer.swapAudioCodec();
+									hlsPlayer.recoverMediaError();
+								} else {
+									console.error('Cannot recover, last media error recovery failed');
+								}
 								break;
-
 							case 'networkError':
-								hlsPlayer.startLoad();
+								console.error('Network error');
+								break;
+							default:
+								hlsPlayer.destroy();
 								break;
 
 						}
@@ -6787,6 +6765,16 @@ var HlsNativeRenderer = {
 					break;
 				}
 			}
+		}
+
+		if (preload !== 'auto') {
+			node.addEventListener('play', function () {
+				hlsPlayer.startLoad();
+			}, false);
+
+			node.addEventListener('pause', function () {
+				hlsPlayer.stopLoad();
+			}, false);
 		}
 
 		node.setAttribute('id', id);
@@ -6821,6 +6809,10 @@ var HlsNativeRenderer = {
 
 		node.destroy = function () {
 			hlsPlayer.destroy();
+		};
+
+		node.stop = function () {
+			hlsPlayer.stopLoad();
 		};
 
 		var event = (0, _general.createEvent)('rendererready', node);

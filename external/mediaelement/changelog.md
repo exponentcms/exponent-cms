@@ -1,5 +1,18 @@
 ### Version History
 
+*3.2.3 (2017/03/02)*
+
+* Brought missing fix for HLS @ron666
+
+*3.2.2 (2017/03/02)*
+
+* Fixed issue with renderers order by sorting them when user does not specify any order for them @ron666
+* Added `addControlElement()` to preserve order of control elements when certain features are reset @ron666
+* Fixed issue with native HLS when processing errors @ron666
+* Fixed issue when no dimensions are being set in `<video>` tag for `<iframe>` renderers @ron666
+* Fixed issues with HLS and M(PEG)-DASH renderers to avoid downloading fragments before playing media @ron666
+* Cleaned code on native renderers @ron666
+
 *3.2.1 (2017/02/28)*
 
 * Added missing documentation for NPM given latest changes @ron666
