@@ -133,7 +133,7 @@ class Archive_Tar extends PEAR
     // }}}
 
     // {{{ destructor
-    function _Archive_Tar()
+    function __destruct ()
     {
         $this->_close();
         // ----- Look for a local copy to delete
@@ -363,7 +363,7 @@ class Archive_Tar extends PEAR
             }
             $this->_close();
         }
-        
+
         if (!$this->_openAppend())
             return false;
 
@@ -676,7 +676,7 @@ class Archive_Tar extends PEAR
       if ($this->_file) {
           if ($p_len === null)
               $p_len = 512;
-              
+
           if ($this->_compress_type == 'gz')
               $v_block = @gzread($this->_file, 512);
           else if ($this->_compress_type == 'bz2')
@@ -1417,7 +1417,7 @@ class Archive_Tar extends PEAR
     {
         if (filesize($this->_tarname) == 0)
           return $this->_openWrite();
-          
+
         if ($this->_compress) {
             $this->_close();
 
@@ -1430,7 +1430,7 @@ class Archive_Tar extends PEAR
                 $v_temp_tar = @gzopen($this->_tarname.".tmp", "rb");
             elseif ($this->_compress_type == 'bz2')
                 $v_temp_tar = @bzopen($this->_tarname.".tmp", "rb");
-                
+
             if ($v_temp_tar == 0) {
                 $this->_error('Unable to open file \''.$this->_tarname.'.tmp\' in binary read mode');
                 @rename($this->_tarname.".tmp", $this->_tarname);
@@ -1493,7 +1493,7 @@ class Archive_Tar extends PEAR
     {
         if (!$this->_openAppend())
             return false;
-            
+
         if ($this->_addList($p_filelist, $p_add_dir, $p_remove_dir))
            $this->_writeFooter();
 
