@@ -176,6 +176,7 @@
             var elf = $('#elfinder').elfinder({
                 url: EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/elfinder.php',  // connector URL
                 urlUpload: EXPONENT.URL_FULL + 'framework/modules/file/connector/elfinder.php',  // connector full URL
+                cssAutoLoad: false,
                 // commands : [
                 //     'pixlr',
                 //     'open', 'opendir', 'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook',
@@ -445,6 +446,10 @@
                         ['fullscreen'],
                         // extra options
                         {
+                            // also displays the text label on the button (true / false)
+                            displayTextLabel: false,
+                            // Exclude `displayTextLabel` setting UA type
+                            labelExcludeUA: ['Mobile'],
                             // auto hide on initial open
                             autoHideUA: ['Mobile']
                         }
@@ -453,6 +458,8 @@
                     tree : {
                         // expand current root on init
                         openRootOnLoad : true,
+                        // expand current work directory on open
+                        openCwdOnOpen  : true,
                         // auto load current dir parents
                         syncTree : true
                     },

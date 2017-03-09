@@ -144,6 +144,10 @@
   background-image: url('../images/16px/extract.png');
 }
 
+.elfinder-button-icon-fullscreen {
+  background-image: url('../images/16px/view-fullscreen.png');
+}
+
 .elfinder-button-icon-pixlr {
   background-image: url('../images/16px/pen.png');
 }
