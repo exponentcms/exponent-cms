@@ -79,7 +79,7 @@
                                     {else}
                                         {$alldaystyle = $style}
                                     {/if}
-                                    {$alldaystyle = "`$alldaystyle` border-color:`$item->color|brightness:+150`;border-style:solid;padding-left:2px;border-top:0;border-bottom:0;border-right:0;\""}
+                                    {$alldaystyle = "`$alldaystyle` border-color:`$item->color|brightness:-75`;border-style:solid;padding-left:2px;border-top:0;border-bottom:0;border-right:0;\""}
                                 {/if}
                                 {if !empty($style)}
                                     {$style = "`$style`\""}
