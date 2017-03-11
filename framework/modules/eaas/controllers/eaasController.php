@@ -356,7 +356,7 @@ class eaasController extends expController {
 
         foreach ($this->tabs as $tab => $name) {
             // news tab
-            if ($tab!='aboutus') {
+            if ($tab != 'aboutus') {
                 $pullable[$tab] = expModules::listInstalledControllers($tab);
                 $page[$tab] = new expPaginator(array(
                     'controller'=>$tab.'Controller',
@@ -382,13 +382,28 @@ class eaasController extends expController {
     }
 
     private function configImage($tab) {
-        if (count(@$this->config['expFile'][$tab.'_image'])>1) {
-            $ftmp[] = new expFile($this->config['expFile'][$tab.'_image'][0]);
-            $this->config['expFile'][$tab.'_image'] = $ftmp;
+        if (count(@$this->config['expFile'][$tab.'_image']) > 0) {
+            if (!is_object($this->config['expFile'][$tab.'_image'][0])) {
+                $ftmp[] = new expFile($this->config['expFile'][$tab . '_image'][0]);
+                $this->config['expFile'][$tab . '_image'][] = $ftmp;
+//            } else {
+//                $this->config['expFile'][$tab . '_image'][] = $this->config['expFile'][$tab . '_image'][0];
+            }
         } else {
             $this->config['expFile'][$tab.'_image'] = array();
         }
     }
+
+    public function saveconfig() {
+        foreach ($this->params['expFile'] as $expfile=>$tab) {
+            foreach ($tab as $key=>$file) {
+                if (!is_numeric($file)) {
+                    unset($this->params['expFile'][$expfile][$key]);
+                }
+            }
+        }
+        parent::saveconfig();
+   	}
 
     private function getImageBody($tab) {
         // create an empty 'banner' object to prevent errors in caller
@@ -396,8 +411,12 @@ class eaasController extends expController {
         $this->data['banner']['obj']->url = null;
         $this->data['banner']['md5'] = null;
 
-        if (count(@$this->config['expFile'][$tab.'_image'])>1) {
-            $img = new expFile($this->config['expFile'][$tab.'_image'][0]);
+        if (count(@$this->config['expFile'][$tab.'_image']) > 0) {
+            if (is_numeric($this->config['expFile'][$tab.'_image'][0])) {
+                $img = new expFile($this->config['expFile'][$tab.'_image'][0]);
+            } elseif (is_object($this->config['expFile'][$tab.'_image'][0])) {
+                $img =$this->config['expFile'][$tab.'_image'][0];
+            }
             if ($img) {
                 $this->data['banner']['obj'] = $img;
                 $this->data['banner']['md5'] = md5_file($img->path);

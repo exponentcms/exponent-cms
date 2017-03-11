@@ -52,7 +52,7 @@ class expConfig extends expRecord {
                 if (is_array($file)) foreach ($file as $key=>$filenum) {
                     if (is_numeric($filenum)) {
                         $this->config['expFile'][$type][$key] = new expFile($filenum);
-                    } else {
+                    } elseif (!is_object($filenum)) {
                         unset($this->config['expFile'][$type][$key]);
                     }
                 }
