@@ -59,8 +59,8 @@ class update_ecom3 extends upgradescript {
 	    global $db;
 
         // purchased == 0 or invoice_id == 0 on unsubmitted orders
-		$orders_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."orders` WHERE `invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now()-5184000) AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".$db->prefix."sessionticket`)");
-		$db->delete("orders","`invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now())-5184000 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".$db->prefix."sessionticket`)");
+		$orders_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."orders` WHERE `invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now()) - 2592000 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".$db->prefix."sessionticket`)");
+		$db->delete("orders","`invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now()) - 2592000 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".$db->prefix."sessionticket`)");
 		$orderitems_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."orderitems` WHERE `orders_id` NOT IN (SELECT `id` FROM `".$db->prefix."orders`)");
 		$db->delete("orderitems","`orders_id` NOT IN (SELECT `id` FROM `".$db->prefix."orders`)");
 		$shippingmethods_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."shippingmethods` WHERE `id` NOT IN (SELECT `shippingmethods_id` FROM `".$db->prefix."orders`)");
