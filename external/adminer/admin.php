@@ -19,16 +19,16 @@ require_once('../../exponent.php');
 function adminer_object() {
     // required to run any plugin
     include_once "./plugins/plugin.php";
-    
+
     // autoloader
     foreach (glob("plugins/*.php") as $filename) {
         include_once "./$filename";
     }
-    
+
     $plugins = array(
         // specify enabled plugins here
 //        new AdminerSimpleMenu(),
-        new AdminerJsonPreview(),
+//        new AdminerJsonPreview(),
 //        new AdminerDumpAlter,
         new AdminerDumpBz2,  // adds bz2 option to export
 //        new AdminerDumpDate,
@@ -39,12 +39,13 @@ function adminer_object() {
         ),  // add calendar popup for date/time fileds
         new AdminerEnumOption,  // turns enum fields into select input
         new AdminerTablesFilter,  // adds filter input to tables list
+        new AdminerSerializedPreview,  // displays unserialized data as a table
         new AdminerEditTextSerializedarea,  // displays unserialized data as a tooltip
         //new AdminerEmailTable,
         new AdminerEditForeign,
 //        new AdminerForeignSystem,
         new ConventionForeignKeys,
-        new AdminerVersionNoverify,  // disable adminer version check/notifiy
+        new AdminerVersionNoverify,  // disable adminer version check/notify
 
     );
     if (SITE_WYSIWYG_EDITOR == 'tinymce') {
@@ -67,7 +68,7 @@ function adminer_object() {
         /** Name in title and navigation
          * @return string HTML code
          */
-		function name() { // custom name in title and heading 
+		function name() { // custom name in title and heading
 			return gt('Exponent CMS Database');
 		}
 
@@ -82,14 +83,14 @@ function adminer_object() {
         /** Connection parameters
          * @return array ($server, $username, $password)
          */
-		function credentials() { // server, username and password for connecting to database 
+		function credentials() { // server, username and password for connecting to database
 			return array(DB_HOST, DB_USER , DB_PASS);
 		}
 
         /** Identifier of selected database
          * @return string
          */
-		function database() { // database name, will be escaped by Adminer 
+		function database() { // database name, will be escaped by Adminer
 			return DB_NAME;
 		}
 
@@ -139,8 +140,8 @@ function adminer_object() {
        		return true;
        	}
 
-	} 
-    
+	}
+
     return new AdminerCustomization($plugins);
 }
 
