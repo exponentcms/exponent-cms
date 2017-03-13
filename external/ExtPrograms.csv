@@ -8,7 +8,7 @@ minify,2.3.0,github.com/mrclay/minify,2.3.0,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
 YUI3,3.18.1,github.com/yui/yui3/releases,3.18.1,
 yui2in3,,github.com/yui/2in3,,
-recaptchalib,1.1.2,github.com/google/ReCAPTCHA,1.1.2,
+recaptchalib,1.1.3,github.com/google/ReCAPTCHA,1.1.3,
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
 feedcreator.class.php,1.80exp,sourceforge.net/projects/feedcreator,1.80dev,"blog.pothoven.net/2006/01/changing-feedcreatorclassphp-for.html, also merged 1.7.3 from Drupal"
 xmlrpc.php,4.1.1,github.com/gggeek/phpxmlrpc,4.1.1,
@@ -59,7 +59,7 @@ yadcf,0.9.1,github.com/vedmack/yadcf,0.9.1,
 tag-it,2,aehlke.github.io/tag-it/,2,renamed css file to same as js file for our loader
 multiselect,2,mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.1.0,excolo.github.io/Excolo-Slider/,1.1.0,
-OwlCarousel2,2.2.0,github.com/smashingboxes/OwlCarousel2,2.2.0,
+OwlCarousel2,2.2.1,github.com/smashingboxes/OwlCarousel2,2.2.1,
 colorbox,1.6.4,www.jacklmoore.com/colorbox,1.6.4,using style #5 renamed to jquery.colorbox.css
 Searcher,0.3.0,github.com/lloiser/jquery-searcher/,0.3.0,
 DateTimePicker,2.5.4exp,xdsoft.net/jqplugins/datetimepicker/,2.5.4,we add .js auto-close on inline date select and extra 'reset' work & remove .css z-index issue
