@@ -23,7 +23,7 @@
     {css unique="picker" corecss="msgq,button,admin-global" link="`$asset_path`css/filemanager.css"}
 
     {/css}
-    {css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.css"}
+    {css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.min.css"}
 
     {/css}
     <script type="text/javascript" src="{$smarty.const.YUI3_RELATIVE}yui/yui-min.js"></script>
