@@ -268,9 +268,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 '</td></tr></table>'
             );
             infopanel.show();
+            mejs.i18n.language('{/literal}{substr($smarty.const.LOCALE,0,2)}{literal}'); // Setting language
             $('audio,video').mediaelementplayer({
                 success: function(player, node) {
-                    $('#' + node.id + '-mode').html('mode: ' + player.pluginType);
+                    $('#' + node.id + '-mode').html('mode: ' + player.rendererName);
                 }
             });
         }

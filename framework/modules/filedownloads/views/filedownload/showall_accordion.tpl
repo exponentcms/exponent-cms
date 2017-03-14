@@ -133,9 +133,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     {/script}
 
     {script unique="filedownload-`$id`"}
+        mejs.i18n.language('{substr($smarty.const.LOCALE,0,2)}'); // Setting language
         $('audio,video').mediaelementplayer({
         	success: function(player, node) {
-        		$('#' + node.id + '-mode').html('mode: ' + player.pluginType);
+        		$('#' + node.id + '-mode').html('mode: ' + player.rendererName);
         	}
         });
     {/script}
