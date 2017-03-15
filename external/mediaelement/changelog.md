@@ -1,5 +1,19 @@
 ### Version History
 
+*3.2.4 (2017/03/14)*
+
+* Removed conditional on MS Edge to bypass Flash detection due to error on Browserstack @ron666
+* Added error event support in Flash shims (https://github.com/johndyer/mediaelement/pull/2115) @astr0junk
+* Added default `preload` element if not set on `video` or `audio` due to issue described on #2114 @ron666
+* Fixed typo in Facebook renderer @ron666
+* Added missing conditional to avoid issues in Android using Flash @ron666
+* Refactor loop related to dispatch/remove events (https://github.com/johndyer/mediaelement/pull/2127) @bricev
+* Removed unnecessary code from Tracks feature and fixed typo in HLS renderer @ron666
+* Escaped HTML tags in installation.md file (https://github.com/johndyer/mediaelement/pull/2130) @GeorgySerga
+* Integrated Drop Frame Support for Timecode (https://github.com/johndyer/mediaelement/pull/2126) @dmongrel
+* Added missing workflow to reintegrate slider when switching from live broadcast to regular file @ron666
+* Added documentation to install plugin in WordPress @ron666
+
 *3.2.3 (2017/03/02)*
 
 * Brought missing fix for HLS @ron666

@@ -497,9 +497,7 @@ var MediaElement = function MediaElement(idOrNode, options) {
 	t.mediaElement = _document2.default.createElement(options.fakeNodeName);
 	t.mediaElement.options = options;
 
-	var id = idOrNode,
-	    i = void 0,
-	    il = void 0;
+	var id = idOrNode;
 
 	if (typeof idOrNode === 'string') {
 		t.mediaElement.originalNode = _document2.default.getElementById(idOrNode);
@@ -513,6 +511,13 @@ var MediaElement = function MediaElement(idOrNode, options) {
 	if (t.mediaElement.originalNode !== undefined && t.mediaElement.originalNode !== null && t.mediaElement.appendChild) {
 		// change id
 		t.mediaElement.originalNode.setAttribute('id', id + '_from_mejs');
+
+		// to avoid some issues with Javascript interactions in the plugin, set `preload=none` if not set
+		// only if video/audio tags are detected
+		var tagName = t.mediaElement.originalNode.tagName.toLowerCase();
+		if (['video', 'audio'].includes(tagName) && !t.mediaElement.originalNode.getAttribute('preload')) {
+			t.mediaElement.originalNode.setAttribute('preload', 'none');
+		}
 
 		// add next to this one
 		t.mediaElement.originalNode.parentNode.insertBefore(t.mediaElement, t.mediaElement.originalNode);
@@ -574,7 +579,7 @@ var MediaElement = function MediaElement(idOrNode, options) {
 		var rendererArray = t.mediaElement.options.renderers.length ? t.mediaElement.options.renderers : _renderer.renderer.order;
 
 		// find the desired renderer in the array of possible ones
-		for (i = 0, il = rendererArray.length; i < il; i++) {
+		for (var i = 0, total = rendererArray.length; i < total; i++) {
 
 			var index = rendererArray[i];
 
@@ -671,7 +676,7 @@ var MediaElement = function MediaElement(idOrNode, options) {
 				type: value ? (0, _media.getTypeFromFile)(value) : ''
 			});
 		} else {
-			for (i = 0, il = value.length; i < il; i++) {
+			for (var i = 0, total = value.length; i < total; i++) {
 
 				var src = (0, _media.absolutizeUrl)(value[i].src),
 				    type = value[i].type;
@@ -725,12 +730,12 @@ var MediaElement = function MediaElement(idOrNode, options) {
 	t.mediaElement.getSrc = getSrc;
 	t.mediaElement.setSrc = setSrc;
 
-	for (i = 0, il = props.length; i < il; i++) {
+	for (var i = 0, total = props.length; i < total; i++) {
 		assignGettersSetters(props[i]);
 	}
 
-	for (i = 0, il = methods.length; i < il; i++) {
-		assignMethods(methods[i]);
+	for (var _i = 0, _total = methods.length; _i < _total; _i++) {
+		assignMethods(methods[_i]);
 	}
 
 	// IE && iOS
@@ -765,9 +770,9 @@ var MediaElement = function MediaElement(idOrNode, options) {
 		}
 
 		// remove the specific callback
-		for (var _i = 0, _il = callbacks.length; _i < _il; _i++) {
-			if (callbacks[_i] === callback) {
-				t.mediaElement.events[eventName].splice(_i, 1);
+		for (var _i2 = 0; _i2 < callbacks.length; _i2++) {
+			if (callbacks[_i2] === callback) {
+				t.mediaElement.events[eventName].splice(_i2, 1);
 				return true;
 			}
 		}
@@ -783,8 +788,8 @@ var MediaElement = function MediaElement(idOrNode, options) {
 		var callbacks = t.mediaElement.events[event.type];
 
 		if (callbacks) {
-			for (i = 0, il = callbacks.length; i < il; i++) {
-				callbacks[i].apply(null, [event]);
+			for (var _i3 = 0; _i3 < callbacks.length; _i3++) {
+				callbacks[_i3].apply(null, [event]);
 			}
 		}
 	};
@@ -820,8 +825,8 @@ var MediaElement = function MediaElement(idOrNode, options) {
 				}
 
 				// test <source> types to see if they are usable
-				for (i = 0; i < sources; i++) {
-					n = t.mediaElement.originalNode.childNodes[i];
+				for (var _i4 = 0; _i4 < sources; _i4++) {
+					n = t.mediaElement.originalNode.childNodes[_i4];
 					if (n.nodeType === Node.ELEMENT_NODE && n.tagName.toLowerCase() === 'source') {
 						src = n.getAttribute('src');
 						type = (0, _media.formatType)(src, n.getAttribute('type'));
@@ -869,7 +874,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mejs = {};
 
 // version number
-mejs.version = '3.2.3';
+mejs.version = '3.2.4';
 
 // Basic HTML5 settings
 mejs.html5media = {
@@ -984,7 +989,7 @@ var Renderer = function () {
 				(function () {
 					var rendererIndicator = [/^(html5|native)/, /^flash/, /iframe$/],
 					    rendererRanking = function rendererRanking(renderer) {
-						for (var i = 0; i < rendererIndicator.length; i++) {
+						for (var i = 0, total = rendererIndicator.length; i < total; i++) {
 							if (renderer.match(rendererIndicator[i]) !== null) {
 								return i;
 							}
@@ -998,7 +1003,7 @@ var Renderer = function () {
 				})();
 			}
 
-			for (var i = 0, il = renderers.length; i < il; i++) {
+			for (var i = 0, total = renderers.length; i < total; i++) {
 				var key = renderers[i],
 				    _renderer = this.renderers[key];
 
@@ -1373,7 +1378,7 @@ Object.assign(_player2.default.prototype, {
 				t.media.addEventListener('click', t.clickToPlayPauseCallback);
 
 				// show the divs that will restore things
-				for (var _i = 0, il = hoverDivs.length; _i < il; _i++) {
+				for (var _i = 0, total = hoverDivs.length; _i < total; _i++) {
 					hoverDivs[_i].show();
 				}
 
@@ -1783,7 +1788,7 @@ Object.assign(_player2.default.prototype, {
 				t.newTime = percentage <= 0.02 ? 0 : percentage * media.duration;
 
 				// fake seek to where the mouse is 
-				if (mouseIsDown && t.newTime.toFixed(4) !== media.currentTime.toFixed(4)) {
+				if (mouseIsDown && media.currentTime !== null && t.newTime.toFixed(4) !== media.currentTime.toFixed(4)) {
 					t.setCurrentRailHandle(t.newTime);
 					t.updateCurrent(t.newTime);
 				}
@@ -1791,7 +1796,7 @@ Object.assign(_player2.default.prototype, {
 				// position floating time box
 				if (!_constants.IS_IOS && !_constants.IS_ANDROID) {
 					t.timefloat.css('left', pos);
-					t.timefloatcurrent.html((0, _time.secondsToTimeCode)(t.newTime, player.options.alwaysShowHours));
+					t.timefloatcurrent.html((0, _time.secondsToTimeCode)(t.newTime, player.options.alwaysShowHours, player.options.showTimecodeFrameCount, player.options.framesPerSecond, player.options.secondsDecimalLength));
 					t.timefloat.show();
 				}
 			}
@@ -1807,7 +1812,7 @@ Object.assign(_player2.default.prototype, {
 
 			var seconds = media.currentTime,
 			    timeSliderText = _i18n2.default.t('mejs.time-slider'),
-			    time = (0, _time.secondsToTimeCode)(seconds, player.options.alwaysShowHours),
+			    time = (0, _time.secondsToTimeCode)(seconds, player.options.alwaysShowHours, player.options.showTimecodeFrameCount, player.options.framesPerSecond, player.options.secondsDecimalLength),
 			    duration = media.duration;
 
 			t.slider.attr({
@@ -1981,25 +1986,39 @@ Object.assign(_player2.default.prototype, {
 		// and indicate that is a live broadcast
 		media.addEventListener('progress', function (e) {
 			if (media.duration !== Infinity) {
+
+				if (controls.find('.' + t.options.classPrefix + 'broadcast').length) {
+					t.slider.show();
+					controls.find('.' + t.options.classPrefix + 'broadcast').remove();
+				}
+
 				player.setProgressRail(e);
 				if (!t.forcedHandlePause) {
 					player.setCurrentRail(e);
 				}
 			} else if (!controls.find('.' + t.options.classPrefix + 'broadcast').length) {
-				controls.find('.' + t.options.classPrefix + 'time-rail').empty().html('<span class="' + t.options.classPrefix + 'broadcast">' + _i18n2.default.t('mejs.live-broadcast') + '</span>');
+				controls.find('.' + t.options.classPrefix + 'time-rail').append('<span class="' + t.options.classPrefix + 'broadcast">' + _i18n2.default.t('mejs.live-broadcast') + '</span>');
+				t.slider.hide();
 			}
 		}, false);
 
 		// current time
 		media.addEventListener('timeupdate', function (e) {
 			if (media.duration !== Infinity) {
+
+				if (controls.find('.' + t.options.classPrefix + 'broadcast').length) {
+					t.slider.show();
+					controls.find('.' + t.options.classPrefix + 'broadcast').remove();
+				}
+
 				player.setProgressRail(e);
 				if (!t.forcedHandlePause) {
 					player.setCurrentRail(e);
 				}
 				updateSlider(e);
 			} else if (!controls.find('.' + t.options.classPrefix + 'broadcast').length) {
-				controls.find('.' + t.options.classPrefix + 'time-rail').empty().html('<span class="' + t.options.classPrefix + 'broadcast">' + _i18n2.default.t('mejs.live-broadcast') + '</span>');
+				controls.find('.' + t.options.classPrefix + 'time-rail').append('<span class="' + t.options.classPrefix + 'broadcast">' + _i18n2.default.t('mejs.live-broadcast') + '</span>');
+				t.slider.hide();
 			}
 		}, false);
 
@@ -2134,7 +2153,7 @@ Object.assign(_player2.default.prototype, {
   */
 	buildcurrent: function buildcurrent(player, controls, layers, media) {
 		var t = this,
-		    time = $('<div class="' + t.options.classPrefix + 'time" role="timer" aria-live="off">' + ('<span class="' + t.options.classPrefix + 'currenttime">' + (0, _time.secondsToTimeCode)(0, player.options.alwaysShowHours, player.options.showTimecodeFrameCount, player.options.framesPerSecond) + '</span>') + '</div>');
+		    time = $('<div class="' + t.options.classPrefix + 'time" role="timer" aria-live="off">' + ('<span class="' + t.options.classPrefix + 'currenttime">' + (0, _time.secondsToTimeCode)(0, player.options.alwaysShowHours, player.options.showTimecodeFrameCount, player.options.framesPerSecond, player.options.secondsDecimalLength) + '</span>') + '</div>');
 
 		t.addControlElement(time, 'current');
 
@@ -2161,7 +2180,7 @@ Object.assign(_player2.default.prototype, {
 		var t = this;
 
 		if (controls.children().last().find('.' + t.options.classPrefix + 'currenttime').length > 0) {
-			var duration = $(t.options.timeAndDurationSeparator + '<span class="' + t.options.classPrefix + 'duration">' + ((0, _time.secondsToTimeCode)(t.options.duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond) + '</span>'));
+			var duration = $(t.options.timeAndDurationSeparator + '<span class="' + t.options.classPrefix + 'duration">' + ((0, _time.secondsToTimeCode)(t.options.duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond, t.options.secondsDecimalLength) + '</span>'));
 
 			duration.appendTo(controls.find('.' + t.options.classPrefix + 'time'));
 		} else {
@@ -2169,7 +2188,7 @@ Object.assign(_player2.default.prototype, {
 			// add class to current time
 			controls.find('.' + t.options.classPrefix + 'currenttime').parent().addClass(t.options.classPrefix + 'currenttime-container');
 
-			var _duration = $('<div class="' + t.options.classPrefix + 'time ' + t.options.classPrefix + 'duration-container">' + ('<span class="' + t.options.classPrefix + 'duration">') + ((0, _time.secondsToTimeCode)(t.options.duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond) + '</span>') + '</div>');
+			var _duration = $('<div class="' + t.options.classPrefix + 'time ' + t.options.classPrefix + 'duration-container">' + ('<span class="' + t.options.classPrefix + 'duration">') + ((0, _time.secondsToTimeCode)(t.options.duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond, t.options.secondsDecimalLength) + '</span>') + '</div>');
 
 			t.addControlElement(_duration, 'duration');
 		}
@@ -2197,7 +2216,7 @@ Object.assign(_player2.default.prototype, {
 		}
 
 		if (t.currenttime) {
-			t.currenttime.html((0, _time.secondsToTimeCode)(currentTime, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond));
+			t.currenttime.html((0, _time.secondsToTimeCode)(currentTime, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond, t.options.secondsDecimalLength));
 		}
 	},
 
@@ -2217,12 +2236,12 @@ Object.assign(_player2.default.prototype, {
 		if (t.options.duration > 0) {
 			duration = t.options.duration;
 		}
-
-		//Toggle the long video class if the video is longer than an hour.
-		t.container.toggleClass(t.options.classPrefix + 'long-video', duration > 3600);
+		var timecode = (0, _time.secondsToTimeCode)(duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond, t.options.secondsDecimalLength);
+		/* Toggle long-video class if time code is >5 digits (MM:SS) */
+		t.container.toggleClass(t.options.classPrefix + 'long-video', timecode.length > 5);
 
 		if (t.durationD && duration > 0) {
-			t.durationD.html((0, _time.secondsToTimeCode)(duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond));
+			t.durationD.html(timecode);
 		}
 	}
 });
@@ -2321,12 +2340,9 @@ Object.assign(_player2.default.prototype, {
 		    chaptersTitle = (0, _general.isString)(t.options.chaptersText) ? t.options.chaptersText : _i18n2.default.t('mejs.captions-chapters'),
 		    total = player.tracks.length;
 
-		var i = void 0,
-		    kind = void 0;
-
 		// If browser will do native captions, prefer mejs captions, loop through tracks and hide
 		if (t.domNode.textTracks) {
-			for (i = t.domNode.textTracks.length - 1; i >= 0; i--) {
+			for (var i = t.domNode.textTracks.length - 1; i >= 0; i--) {
 				t.domNode.textTracks[i].mode = 'hidden';
 			}
 		}
@@ -2344,8 +2360,8 @@ Object.assign(_player2.default.prototype, {
 
 		var subtitleCount = 0;
 
-		for (i = 0; i < total; i++) {
-			kind = player.tracks[i].kind;
+		for (var _i = 0; _i < total; _i++) {
+			var kind = player.tracks[_i].kind;
 			if (kind === 'subtitles' || kind === 'captions') {
 				subtitleCount++;
 			} else if (kind === 'chapters' && !controls.find('.' + t.options.classPrefix + 'chapter-selector').length) {
@@ -2434,10 +2450,10 @@ Object.assign(_player2.default.prototype, {
 		player.isLoadingTrack = false;
 
 		// add to list
-		for (i = 0; i < total; i++) {
-			kind = player.tracks[i].kind;
-			if (kind === 'subtitles' || kind === 'captions') {
-				player.addTrackButton(player.tracks[i].trackId, player.tracks[i].srclang, player.tracks[i].label);
+		for (var _i2 = 0; _i2 < total; _i2++) {
+			var _kind = player.tracks[_i2].kind;
+			if (_kind === 'subtitles' || _kind === 'captions') {
+				player.addTrackButton(player.tracks[_i2].trackId, player.tracks[_i2].srclang, player.tracks[_i2].label);
 			}
 		}
 
@@ -2534,7 +2550,7 @@ Object.assign(_player2.default.prototype, {
 			return;
 		}
 
-		for (var i = 0; i < t.tracks.length; i++) {
+		for (var i = 0, total = t.tracks.length; i < total; i++) {
 			var track = t.tracks[i];
 			if (track.trackId === trackId) {
 				if (t.selectedTrack === null) {
@@ -2735,15 +2751,15 @@ Object.assign(_player2.default.prototype, {
 			// Loop the elements and remove anything that contains value="javascript:" or an `on*` attribute
 			// (`onerror`, `onclick`, etc.)
 			var allElements = div.getElementsByTagName('*');
-			for (var _i = 0, n = allElements.length; _i < n; _i++) {
-				var attributesObj = allElements[_i].attributes,
+			for (var _i3 = 0, n = allElements.length; _i3 < n; _i3++) {
+				var attributesObj = allElements[_i3].attributes,
 				    attributes = Array.prototype.slice.call(attributesObj);
 
 				for (var j = 0, total = attributes.length; j < total; j++) {
 					if (attributes[j].name.startsWith('on') || attributes[j].value.startsWith('javascript')) {
-						allElements[_i].parentNode.removeChild(allElements[_i]);
+						allElements[_i3].parentNode.removeChild(allElements[_i3]);
 					} else if (attributes[j].name === 'style') {
-						allElements[_i].removeAttribute(attributes[j].name);
+						allElements[_i3].removeAttribute(attributes[j].name);
 					}
 				}
 			}
@@ -2967,7 +2983,7 @@ _mejs2.default.TrackFormatParser = {
 		/**
    * @type {String}
    */
-		pattern_timecode: /^((?:[0-9]{1,2}:)?[0-9]{2}:[0-9]{2}([,.][0-9]{1,3})?) --\> ((?:[0-9]{1,2}:)?[0-9]{2}:[0-9]{2}([,.][0-9]{3})?)(.*)$/,
+		pattern: /^((?:[0-9]{1,2}:)?[0-9]{2}:[0-9]{2}([,.][0-9]{1,3})?) --\> ((?:[0-9]{1,2}:)?[0-9]{2}:[0-9]{2}([,.][0-9]{3})?)(.*)$/,
 
 		/**
    *
@@ -2975,16 +2991,15 @@ _mejs2.default.TrackFormatParser = {
    * @returns {{text: Array, times: Array}}
    */
 		parse: function parse(trackText) {
-			var lines = _mejs2.default.TrackFormatParser.split2(trackText, /\r?\n/),
+			var lines = trackText.split(/\r?\n/),
 			    entries = [];
 
-			var i = 0,
-			    timecode = void 0,
+			var timecode = void 0,
 			    text = void 0,
 			    identifier = void 0;
 
-			for (; i < lines.length; i++) {
-				timecode = this.pattern_timecode.exec(lines[i]);
+			for (var i = 0, total = lines.length; i < total; i++) {
+				timecode = this.pattern.exec(lines[i]);
 
 				if (timecode && i < lines.length) {
 					if (i - 1 >= 0 && lines[i - 1] !== '') {
@@ -3026,20 +3041,19 @@ _mejs2.default.TrackFormatParser = {
 			    styleNode = trackText.find('#' + container.attr('style')),
 			    entries = [];
 
-			var styles = void 0,
-			    i = void 0;
+			var styles = void 0;
 
 			if (styleNode.length) {
 				var attributes = styleNode.removeAttr('id').get(0).attributes;
 				if (attributes.length) {
 					styles = {};
-					for (i = 0; i < attributes.length; i++) {
+					for (var i = 0, total = attributes.length; i < total; i++) {
 						styles[attributes[i].name.split(":")[1]] = attributes[i].value;
 					}
 				}
 			}
 
-			for (i = 0; i < lines.length; i++) {
+			for (var _i4 = 0, _total = lines.length; _i4 < _total; _i4++) {
 				var style = void 0,
 				    _temp = {
 					start: null,
@@ -3048,17 +3062,17 @@ _mejs2.default.TrackFormatParser = {
 					text: null
 				};
 
-				if (lines.eq(i).attr('begin')) {
-					_temp.start = (0, _time.convertSMPTEtoSeconds)(lines.eq(i).attr('begin'));
+				if (lines.eq(_i4).attr('begin')) {
+					_temp.start = (0, _time.convertSMPTEtoSeconds)(lines.eq(_i4).attr('begin'));
 				}
-				if (!_temp.start && lines.eq(i - 1).attr('end')) {
-					_temp.start = (0, _time.convertSMPTEtoSeconds)(lines.eq(i - 1).attr('end'));
+				if (!_temp.start && lines.eq(_i4 - 1).attr('end')) {
+					_temp.start = (0, _time.convertSMPTEtoSeconds)(lines.eq(_i4 - 1).attr('end'));
 				}
-				if (lines.eq(i).attr('end')) {
-					_temp.stop = (0, _time.convertSMPTEtoSeconds)(lines.eq(i).attr('end'));
+				if (lines.eq(_i4).attr('end')) {
+					_temp.stop = (0, _time.convertSMPTEtoSeconds)(lines.eq(_i4).attr('end'));
 				}
-				if (!_temp.stop && lines.eq(i + 1).attr('begin')) {
-					_temp.stop = (0, _time.convertSMPTEtoSeconds)(lines.eq(i + 1).attr('begin'));
+				if (!_temp.stop && lines.eq(_i4 + 1).attr('begin')) {
+					_temp.stop = (0, _time.convertSMPTEtoSeconds)(lines.eq(_i4 + 1).attr('begin'));
 				}
 
 				if (styles) {
@@ -3073,43 +3087,13 @@ _mejs2.default.TrackFormatParser = {
 				if (_temp.start === 0) {
 					_temp.start = 0.200;
 				}
-				_temp.text = $.trim(lines.eq(i).html()).replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, "<a href='$1' target='_blank'>$1</a>");
+				_temp.text = $.trim(lines.eq(_i4).html()).replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, "<a href='$1' target='_blank'>$1</a>");
 				entries.push(_temp);
 			}
 			return entries;
 		}
-	},
-	/**
-  *
-  * @param {String} text
-  * @param {String} regex
-  * @returns {Array}
-  */
-	split2: function split2(text, regex) {
-		// normal version for compliant browsers
-		// see below for IE fix
-		return text.split(regex);
 	}
 };
-
-// test for browsers with bad String.split method.
-if ('x\n\ny'.split(/\n/gi).length !== 3) {
-	// add super slow IE8 and below version
-	_mejs2.default.TrackFormatParser.split2 = function (text, regex) {
-		var parts = [];
-		var chunk = '';
-
-		for (var i = 0; i < text.length; i++) {
-			chunk += text.substring(i, i + 1);
-			if (regex.test(chunk)) {
-				parts.push(chunk.replace(regex, ''));
-				chunk = '';
-			}
-		}
-		parts.push(chunk);
-		return parts;
-	};
-}
 
 },{"16":16,"24":24,"27":27,"4":4,"6":6}],13:[function(_dereq_,module,exports){
 'use strict';
@@ -3705,6 +3689,8 @@ var config = exports.config = {
 	enableKeyboard: true,
 	// When this player starts, it will pause other players
 	pauseOtherPlayers: true,
+	// Number of decimal places to show if frames are shown
+	secondsDecimalLength: 0,
 	// Array of keyboard actions such as play/pause
 	keyActions: [{
 		keys: [32, // SPACE
@@ -4216,7 +4202,7 @@ var MediaElementPlayer = function () {
 					t.featurePosition = {};
 
 					// add user-defined features/controls
-					for (var i = 0, il = t.options.features.length; i < il; i++) {
+					for (var i = 0, total = t.options.features.length; i < total; i++) {
 						var feature = t.options.features[i];
 						if (t['build' + feature]) {
 							try {
@@ -4996,7 +4982,7 @@ var MediaElementPlayer = function () {
 			});
 
 			// if (t.options.supportVR || (t.media.rendererName !== null && t.media.rendererName.match(/(youtube|facebook)/))) {
-			if (t.media.rendererName !== null && t.media.rendererName.match(/(youtube|facebook)/) && !(player.$media.attr('poster') || player.options.poster)) {
+			if (t.media.rendererName !== null && (t.media.rendererName.match(/(youtube|facebook)/) && !(player.$media.attr('poster') || player.options.poster) || _constants.IS_STOCK_ANDROID)) {
 				bigPlay.hide();
 			}
 
@@ -5026,7 +5012,9 @@ var MediaElementPlayer = function () {
 			}, false);
 
 			media.addEventListener('pause', function () {
-				bigPlay.show();
+				if (!_constants.IS_STOCK_ANDROID) {
+					bigPlay.show();
+				}
 			}, false);
 
 			media.addEventListener('waiting', function () {
@@ -5099,7 +5087,7 @@ var MediaElementPlayer = function () {
 
 			if (player.hasFocus && player.options.enableKeyboard) {
 				// find a matching key
-				for (var i = 0, il = player.options.keyActions.length; i < il; i++) {
+				for (var i = 0, total = player.options.keyActions.length; i < total; i++) {
 					var keyAction = player.options.keyActions[i];
 
 					for (var j = 0, jl = keyAction.keys.length; j < jl; j++) {
@@ -5457,9 +5445,7 @@ var DashNativeRenderer = {
 		    preload = originalNode.getAttribute('preload'),
 		    autoplay = originalNode.getAttribute('autoplay');
 
-		var i = void 0,
-		    il = void 0,
-		    node = null,
+		var node = null,
 		    dashPlayer = void 0;
 
 		node = originalNode.cloneNode(true);
@@ -5490,7 +5476,7 @@ var DashNativeRenderer = {
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -5518,8 +5504,8 @@ var DashNativeRenderer = {
 				});
 			};
 
-			for (i = 0, il = events.length; i < il; i++) {
-				assignEvents(events[i]);
+			for (var _i = 0, _total = events.length; _i < _total; _i++) {
+				assignEvents(events[_i]);
 			}
 
 			/**
@@ -5547,9 +5533,9 @@ var DashNativeRenderer = {
 		};
 
 		if (mediaFiles && mediaFiles.length > 0) {
-			for (i = 0, il = mediaFiles.length; i < il; i++) {
-				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[i].type)) {
-					node.setAttribute('src', mediaFiles[i].src);
+			for (var _i2 = 0, _total2 = mediaFiles.length; _i2 < _total2; _i2++) {
+				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[_i2].type)) {
+					node.setAttribute('src', mediaFiles[_i2].src);
 					break;
 				}
 			}
@@ -5700,11 +5686,11 @@ var PluginDetector = exports.PluginDetector = {
 		    ax = void 0;
 
 		// Firefox, Webkit, Opera; avoid MS Edge since `plugins` cannot be accessed
-		if (!_constants.IS_EDGE && _constants.NAV.plugins !== null && _constants.NAV.plugins !== undefined && _typeof(_constants.NAV.plugins[pluginName]) === 'object') {
+		if (_constants.NAV.plugins !== null && _constants.NAV.plugins !== undefined && _typeof(_constants.NAV.plugins[pluginName]) === 'object') {
 			description = _constants.NAV.plugins[pluginName].description;
 			if (description && !(typeof _constants.NAV.mimeTypes !== 'undefined' && _constants.NAV.mimeTypes[mimeType] && !_constants.NAV.mimeTypes[mimeType].enabledPlugin)) {
 				version = description.replace(pluginName, '').replace(/^\s+/, '').replace(/\sr/gi, '.').split('.');
-				for (var i = 0; i < version.length; i++) {
+				for (var i = 0, total = version.length; i < total; i++) {
 					version[i] = parseInt(version[i].match(/\d+/), 10);
 				}
 			}
@@ -5752,9 +5738,6 @@ var FlashMediaElementRenderer = {
 	create: function create(mediaElement, options, mediaFiles) {
 
 		var flash = {};
-
-		var i = void 0,
-		    il = void 0;
 
 		// store main variable
 		flash.options = options;
@@ -5831,7 +5814,7 @@ var FlashMediaElementRenderer = {
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -5864,15 +5847,15 @@ var FlashMediaElementRenderer = {
 			};
 		};
 		methods.push('stop');
-		for (i = 0, il = methods.length; i < il; i++) {
-			assignMethods(methods[i]);
+		for (var _i = 0, _total = methods.length; _i < _total; _i++) {
+			assignMethods(methods[_i]);
 		}
 
 		// give initial events like in others renderers
-		var initEvents = ['rendererready', 'loadeddata', 'loadedmetadata', 'canplay'];
+		var initEvents = ['rendererready', 'loadeddata', 'loadedmetadata', 'canplay', 'error'];
 
-		for (i = 0, il = initEvents.length; i < il; i++) {
-			var event = (0, _general.createEvent)(initEvents[i], flash);
+		for (var _i2 = 0, _total2 = initEvents.length; _i2 < _total2; _i2++) {
+			var event = (0, _general.createEvent)(initEvents[_i2], flash);
 			mediaElement.dispatchEvent(event);
 		}
 
@@ -5884,9 +5867,9 @@ var FlashMediaElementRenderer = {
 
 			// do call stack
 			if (flash.flashApiStack.length) {
-				for (i = 0, il = flash.flashApiStack.length; i < il; i++) {
+				for (var _i3 = 0, _total3 = flash.flashApiStack.length; _i3 < _total3; _i3++) {
 
-					var stackItem = flash.flashApiStack[i];
+					var stackItem = flash.flashApiStack[_i3];
 
 					if (stackItem.type === 'set') {
 						var propName = stackItem.propName,
@@ -6002,9 +5985,9 @@ var FlashMediaElementRenderer = {
 		};
 
 		if (mediaFiles && mediaFiles.length > 0) {
-			for (i = 0, il = mediaFiles.length; i < il; i++) {
-				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[i].type)) {
-					flash.setSrc(mediaFiles[i].src);
+			for (var _i4 = 0, _total4 = mediaFiles.length; _i4 < _total4; _i4++) {
+				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[_i4].type)) {
+					flash.setSrc(mediaFiles[_i4].src);
 					break;
 				}
 			}
@@ -6322,9 +6305,7 @@ var FlvNativeRenderer = {
 		var originalNode = mediaElement.originalNode,
 		    id = mediaElement.id + '_' + options.prefix;
 
-		var i = void 0,
-		    il = void 0,
-		    node = null,
+		var node = null,
 		    flvPlayer = void 0;
 
 		node = originalNode.cloneNode(true);
@@ -6354,7 +6335,7 @@ var FlvNativeRenderer = {
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -6381,15 +6362,15 @@ var FlvNativeRenderer = {
 				});
 			};
 
-			for (i = 0, il = events.length; i < il; i++) {
-				assignEvents(events[i]);
+			for (var _i = 0, _total = events.length; _i < _total; _i++) {
+				assignEvents(events[_i]);
 			}
 		};
 
 		if (mediaFiles && mediaFiles.length > 0) {
-			for (i = 0, il = mediaFiles.length; i < il; i++) {
-				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[i].type)) {
-					node.setAttribute('src', mediaFiles[i].src);
+			for (var _i2 = 0, _total2 = mediaFiles.length; _i2 < _total2; _i2++) {
+				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[_i2].type)) {
+					node.setAttribute('src', mediaFiles[_i2].src);
 					break;
 				}
 			}
@@ -6617,9 +6598,7 @@ var HlsNativeRenderer = {
 		    preload = originalNode.getAttribute('preload'),
 		    autoplay = originalNode.getAttribute('autoplay');
 
-		var i = void 0,
-		    il = void 0,
-		    hlsPlayer = void 0,
+		var hlsPlayer = null,
 		    node = null;
 
 		node = originalNode.cloneNode(true);
@@ -6662,7 +6641,7 @@ var HlsNativeRenderer = {
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -6698,8 +6677,8 @@ var HlsNativeRenderer = {
 				});
 			};
 
-			for (i = 0, il = events.length; i < il; i++) {
-				assignEvents(events[i]);
+			for (var _i = 0, _total = events.length; _i < _total; _i++) {
+				assignEvents(events[_i]);
 			}
 
 			/**
@@ -6759,9 +6738,9 @@ var HlsNativeRenderer = {
 		};
 
 		if (mediaFiles && mediaFiles.length > 0) {
-			for (i = 0, il = mediaFiles.length; i < il; i++) {
-				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[i].type)) {
-					node.setAttribute('src', mediaFiles[i].src);
+			for (var _i2 = 0, _total2 = mediaFiles.length; _i2 < _total2; _i2++) {
+				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[_i2].type)) {
+					node.setAttribute('src', mediaFiles[_i2].src);
 					break;
 				}
 			}
@@ -6901,9 +6880,7 @@ var HtmlMediaElement = {
 
 		var id = mediaElement.id + '_' + options.prefix;
 
-		var node = null,
-		    i = void 0,
-		    il = void 0;
+		var node = null;
 
 		// CREATE NODE
 		if (mediaElement.originalNode === undefined || mediaElement.originalNode === null) {
@@ -6931,7 +6908,7 @@ var HtmlMediaElement = {
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -6947,8 +6924,8 @@ var HtmlMediaElement = {
 			});
 		};
 
-		for (i = 0, il = events.length; i < il; i++) {
-			assignEvents(events[i]);
+		for (var _i = 0, _total = events.length; _i < _total; _i++) {
+			assignEvents(events[_i]);
 		}
 
 		// HELPER METHODS
@@ -6972,9 +6949,9 @@ var HtmlMediaElement = {
 		};
 
 		if (mediaFiles && mediaFiles.length > 0) {
-			for (i = 0, il = mediaFiles.length; i < il; i++) {
-				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[i].type)) {
-					node.setAttribute('src', mediaFiles[i].src);
+			for (var _i2 = 0, _total2 = mediaFiles.length; _i2 < _total2; _i2++) {
+				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[_i2].type)) {
+					node.setAttribute('src', mediaFiles[_i2].src);
 					break;
 				}
 			}
@@ -7141,7 +7118,7 @@ var YouTubeApi = {
 
 		var youTubeId = '';
 
-		for (var i = 0, il = parameters.length; i < il; i++) {
+		for (var i = 0, total = parameters.length; i < total; i++) {
 			var paramParts = parameters[i].split('=');
 			if (paramParts[0] === 'v') {
 				youTubeId = paramParts[1];
@@ -7239,9 +7216,7 @@ var YouTubeIframeRenderer = {
 		    apiStack = [],
 		    readyState = 4;
 
-		var i = void 0,
-		    il = void 0,
-		    youTubeApi = null,
+		var youTubeApi = null,
 		    paused = true,
 		    ended = false,
 		    youTubeIframe = null,
@@ -7389,7 +7364,7 @@ var YouTubeIframeRenderer = {
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -7420,8 +7395,8 @@ var YouTubeIframeRenderer = {
 			};
 		};
 
-		for (i = 0, il = methods.length; i < il; i++) {
-			assignMethods(methods[i]);
+		for (var _i = 0, _total = methods.length; _i < _total; _i++) {
+			assignMethods(methods[_i]);
 		}
 
 		// CREATE YouTube
@@ -7469,9 +7444,9 @@ var YouTubeIframeRenderer = {
 
 					// do call stack
 					if (apiStack.length) {
-						for (i = 0, il = apiStack.length; i < il; i++) {
+						for (var _i2 = 0, _total2 = apiStack.length; _i2 < _total2; _i2++) {
 
-							var stackItem = apiStack[i];
+							var stackItem = apiStack[_i2];
 
 							if (stackItem.type === 'set') {
 								var propName = stackItem.propName,
@@ -7494,15 +7469,15 @@ var YouTubeIframeRenderer = {
 						mediaElement.dispatchEvent(newEvent);
 					};
 
-					for (i = 0, il = events.length; i < il; i++) {
-						youTubeIframe.addEventListener(events[i], assignEvents, false);
+					for (var _i3 = 0, _total3 = events.length; _i3 < _total3; _i3++) {
+						youTubeIframe.addEventListener(events[_i3], assignEvents, false);
 					}
 
 					// send init events
 					var initEvents = ['rendererready', 'loadeddata', 'loadedmetadata', 'canplay'];
 
-					for (i = 0, il = initEvents.length; i < il; i++) {
-						var event = (0, _general.createEvent)(initEvents[i], youtube);
+					for (var _i4 = 0, _total4 = initEvents.length; _i4 < _total4; _i4++) {
+						var event = (0, _general.createEvent)(initEvents[_i4], youtube);
 						mediaElement.dispatchEvent(event);
 					}
 				},
@@ -7563,8 +7538,8 @@ var YouTubeIframeRenderer = {
 					}
 
 					// send events up
-					for (i = 0, il = events.length; i < il; i++) {
-						var event = (0, _general.createEvent)(events[i], youtube);
+					for (var _i5 = 0, _total5 = events.length; _i5 < _total5; _i5++) {
+						var event = (0, _general.createEvent)(events[_i5], youtube);
 						mediaElement.dispatchEvent(event);
 					}
 				},
@@ -7702,7 +7677,7 @@ var SUPPORT_POINTER_EVENTS = exports.SUPPORT_POINTER_EVENTS = function () {
 var html5Elements = ['source', 'track', 'audio', 'video'];
 var video = void 0;
 
-for (var i = 0, il = html5Elements.length; i < il; i++) {
+for (var i = 0, total = html5Elements.length; i < total; i++) {
 	video = _document2.default.createElement(html5Elements[i]);
 }
 
@@ -8085,9 +8060,7 @@ function getTypeFromFile(url) {
 		throw new Error('`url` argument must be a string');
 	}
 
-	var i = void 0,
-	    il = void 0,
-	    type = void 0;
+	var type = void 0;
 
 	// Validate `typeChecks` array
 	if (!Array.isArray(typeChecks)) {
@@ -8095,7 +8068,7 @@ function getTypeFromFile(url) {
 	}
 
 	if (typeChecks.length) {
-		for (i = 0, il = typeChecks.length; i < il; i++) {
+		for (var i = 0, total = typeChecks.length; i < total; i++) {
 			var _type = typeChecks[i];
 
 			if (typeof _type !== 'function') {
@@ -8105,9 +8078,9 @@ function getTypeFromFile(url) {
 	}
 
 	// do type checks first
-	for (i = 0, il = typeChecks.length; i < il; i++) {
+	for (var _i = 0, _total = typeChecks.length; _i < _total; _i++) {
 
-		type = typeChecks[i](url);
+		type = typeChecks[_i](url);
 
 		if (type !== undefined && type !== null) {
 			return type;
@@ -8310,7 +8283,7 @@ if (typeof Object.assign !== 'function') {
 
 		var to = Object(target);
 
-		for (var index = 1; index < arguments.length; index++) {
+		for (var index = 1, total = arguments.length; index < total; index++) {
 			var nextSource = arguments[index];
 
 			if (nextSource !== null) {
@@ -8398,6 +8371,7 @@ if (!String.prototype.startsWith) {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.isDropFrame = isDropFrame;
 exports.secondsToTimeCode = secondsToTimeCode;
 exports.timeCodeToSeconds = timeCodeToSeconds;
 exports.calculateTimeFormat = calculateTimeFormat;
@@ -8410,28 +8384,81 @@ var _mejs2 = _interopRequireDefault(_mejs);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
+ * Indicate if FPS is dropFrame (typically non-integer frame rates: 29.976)
+ *
+ * @param {Number} fps - Frames per second
+ * @return {Boolean}
+ */
+function isDropFrame() {
+	var fps = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 25;
+
+	return !(fps % 1 === 0);
+}
+/**
  * Format a numeric time in format '00:00:00'
  *
  * @param {Number} time - Ideally a number, but if not or less than zero, is defaulted to zero
  * @param {Boolean} forceHours
  * @param {Boolean} showFrameCount
  * @param {Number} fps - Frames per second
+ * @param {Number} secondsDecimalLength - Number of decimals to display if any
  * @return {String}
  */
 function secondsToTimeCode(time) {
 	var forceHours = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	var showFrameCount = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 	var fps = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 25;
+	var secondsDecimalLength = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
 
 
 	time = !time || typeof time !== 'number' || time < 0 ? 0 : time;
 
-	var frames = Math.floor((time % 1 * fps).toFixed(3));
+	var dropFrames = Math.round(fps * 0.066666),
+	    // Number of drop frames to drop on the minute marks (6%)
+	timeBase = Math.round(fps),
+	    framesPer24Hours = Math.round(fps * 3600) * 24,
+	    framesPer10Minutes = Math.round(fps * 600),
+	    frameSep = isDropFrame(fps) ? ';' : ':',
+	    hours = void 0,
+	    minutes = void 0,
+	    seconds = void 0,
+	    frames = void 0,
+	    f = Math.round(time * fps);
 
-	var hours = Math.floor(time / 3600) % 24,
-	    minutes = Math.floor(time / 60) % 60,
-	    seconds = Math.floor(time % 60);
+	if (isDropFrame(fps)) {
 
+		if (f < 0) {
+			f = framesPer24Hours + f;
+		}
+
+		f = f % framesPer24Hours;
+
+		var d = Math.floor(f / framesPer10Minutes);
+		var m = f % framesPer10Minutes;
+		f = f + dropFrames * 9 * d;
+		if (m > dropFrames) {
+			f = f + dropFrames * Math.floor((m - dropFrames) / Math.round(timeBase * 60 - dropFrames));
+		}
+
+		var timeBaseDivision = Math.floor(f / timeBase);
+
+		hours = Math.floor(Math.floor(timeBaseDivision / 60) / 60);
+		minutes = Math.floor(timeBaseDivision / 60) % 60;
+
+		if (showFrameCount) {
+			seconds = timeBaseDivision % 60;
+		} else {
+			seconds = (f / timeBase % 60).toFixed(secondsDecimalLength);
+		}
+	} else {
+		hours = Math.floor(time / 3600) % 24;
+		minutes = Math.floor(time / 60) % 60;
+		if (showFrameCount) {
+			seconds = Math.floor(time % 60);
+		} else {
+			seconds = (time % 60).toFixed(secondsDecimalLength);
+		}
+	}
 	hours = hours <= 0 ? 0 : hours;
 	minutes = minutes <= 0 ? 0 : minutes;
 	seconds = seconds <= 0 ? 0 : seconds;
@@ -8439,7 +8466,12 @@ function secondsToTimeCode(time) {
 	var result = forceHours || hours > 0 ? (hours < 10 ? '0' + hours : hours) + ':' : '';
 	result += (minutes < 10 ? '0' + minutes : minutes) + ':';
 	result += '' + (seconds < 10 ? '0' + seconds : seconds);
-	result += '' + (showFrameCount ? ':' + (frames < 10 ? '0' + frames : frames) : '');
+
+	if (showFrameCount) {
+		frames = (f % timeBase).toFixed(0);
+		frames = frames <= 0 ? 0 : frames;
+		result += frames < 10 ? frameSep + '0' + frames : '' + frameSep + frames;
+	}
 
 	return result;
 }
@@ -8448,17 +8480,19 @@ function secondsToTimeCode(time) {
  * Convert a '00:00:00' time string into seconds
  *
  * @param {String} time
- * @param {Boolean} showFrameCount
  * @param {Number} fps - Frames per second
  * @return {Number}
  */
 function timeCodeToSeconds(time) {
-	var showFrameCount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-	var fps = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 25;
+	var fps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 25;
 
 
 	if (typeof time !== 'string') {
 		throw new TypeError('Time must be a string');
+	}
+
+	if (time.indexOf(';') > 0) {
+		time = time.replace(';', ':');
 	}
 
 	if (!time.match(/\d{2}(\:\d{2}){0,3}/)) {
@@ -8471,7 +8505,13 @@ function timeCodeToSeconds(time) {
 	    hours = 0,
 	    minutes = 0,
 	    seconds = 0,
-	    frames = 0;
+	    frames = 0,
+	    totalMinutes = 0,
+	    dropFrames = Math.round(fps * 0.066666),
+	    // Number of drop frames to drop on the minute marks (6%)
+	timeBase = Math.round(fps),
+	    hFrames = timeBase * 3600,
+	    mFrames = timeBase * 60;
 
 	switch (parts.length) {
 		default:
@@ -8483,16 +8523,25 @@ function timeCodeToSeconds(time) {
 			seconds = parseInt(parts[1], 10);
 			break;
 		case 3:
+			hours = parseInt(parts[0], 10);
+			minutes = parseInt(parts[1], 10);
+			seconds = parseInt(parts[2], 10);
+			break;
 		case 4:
 			hours = parseInt(parts[0], 10);
 			minutes = parseInt(parts[1], 10);
 			seconds = parseInt(parts[2], 10);
-			frames = showFrameCount ? parseInt(parts[3]) / fps : 0;
+			frames = parseInt(parts[3], 10);
 			break;
-
 	}
 
-	output = hours * 3600 + minutes * 60 + seconds + frames;
+	if (isDropFrame(fps)) {
+		totalMinutes = 60 * hours + minutes;
+		output = hFrames * hours + mFrames * minutes + timeBase * seconds + frames - dropFrames * (totalMinutes - Math.floor(totalMinutes / 10));
+	} else {
+		output = (hFrames * hours + mFrames * minutes + fps * seconds + frames) / fps;
+	}
+
 	return parseFloat(output.toFixed(3));
 }
 
@@ -8575,7 +8624,7 @@ function convertSMPTEtoSeconds(SMPTE) {
 
 	SMPTE = SMPTE.split(':').reverse();
 
-	for (var i = 0; i < SMPTE.length; i++) {
+	for (var i = 0, total = SMPTE.length; i < total; i++) {
 		multiplier = 1;
 		if (i > 0) {
 			multiplier = Math.pow(60, i);
