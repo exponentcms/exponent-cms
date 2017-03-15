@@ -323,7 +323,7 @@
                     <div id="alt-control-pdf" class="alt-control">
                         <div class="control"><label class="label">{'PDF Generation Engine'|gettext}</label></div>
                         <div class="alt-body">
-                            {control type=radiogroup columns=4 name="sc[HTMLTOPDF_ENGINE]" items="None,mPDF v5,mPDF v6,mPDF v6.1,dompdf v0.6,dompdf v0.7,HTML2PDF,WKHTMLtoPDF"|gettxtlist values="none,expMPDF,expMPDF6,expMPDF61,expDOMPDF,expDOMPDF070,expHTML2PDF,expWKPDF" default=$smarty.const.HTMLTOPDF_ENGINE|default:"none"}
+                            {control type=radiogroup columns=4 name="sc[HTMLTOPDF_ENGINE]" items="None,mPDF v5,mPDF v6,mPDF v6.1,dompdf v0.6,dompdf v0.7,dompdf v0.8,HTML2PDF,WKHTMLtoPDF"|gettxtlist values="none,expMPDF,expMPDF6,expMPDF61,expDOMPDF,expDOMPDF070,expDOMPDF080,expHTML2PDF,expWKPDF" default=$smarty.const.HTMLTOPDF_ENGINE|default:"none"}
                             <div id="none-div" class="alt-item" style="display:none;">
                                 <blockquote>
                                 {'Export as PDF will be unavailable since there is no PDF Generation Engine installed and configured.'|gettext}
@@ -360,7 +360,7 @@
                                     </div>
                                 {/if}
                                 <blockquote>
-                                    {'MPDF v6 is an optional package, but the preferred generator.  To obtain it, you must first download, then install it using the method below.'|gettext}
+                                    {'MPDF v6 is an optional package, but a preferred generator.  To obtain it, you must first download, then install it using the method below.'|gettext}
                                     <ol>
                                         <li>{'Download the basic library'|gettext} <a href="https://github.com/mpdf/mpdf/archive/v6.0.0.zip" target="_blank">MPDF60.zip</a>
                                             {'and then extract it on your server into the \'external\' folder and rename the folder to \'mpdf6\'.'|gettext}</li>
@@ -382,7 +382,7 @@
                                 <blockquote>
                                     {'MPDF v6.1 is an optional package, but the preferred generator.  To obtain it, you must first download, then install it using the method below.'|gettext}
                                     <ol>
-                                        <li>{'Download the basic library'|gettext} <a href="https://github.com/mpdf/mpdf/archive/v6.1.2.zip" target="_blank">MPDF6.1.2.zip</a>
+                                        <li>{'Download the basic library'|gettext} <a href="https://github.com/mpdf/mpdf/archive/v6.1.3.zip" target="_blank">MPDF6.1.3.zip</a>
                                             {'and then extract it on your server into the \'external\' folder and rename the folder to \'mpdf61\'.'|gettext}</li>
                                         <li>{'(or) Download the Exponent Extension package'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf61.zip/download" target="_blank">mpdf61.zip</a>.
                                             {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}</li>
@@ -405,7 +405,7 @@
                                 </blockquote>
                             </div>
                             <div id="expDOMPDF070-div" class="alt-item" style="display:none;">
-                                {if !file_exists("`$smarty.const.BASE`external/dompdf/dompdf.php")}
+                                {if !file_exists("`$smarty.const.BASE`external/dompdf070/autoload.inc.php")}
                                     <div style="color:#ff0000;font-weight:bold;">
                                         {'dompdf v0.7 is NOT installed!'|gettext}
                                     </div>
@@ -416,6 +416,21 @@
                                 {/if}
                                 <blockquote>
                                     {'DOMPDF v0.7 is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf070.zip/download" target="_blank">dompdf070.zip</a>.
+                                    {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
+                                </blockquote>
+                            </div>
+                            <div id="expDOMPDF080-div" class="alt-item" style="display:none;">
+                                {if !file_exists("`$smarty.const.BASE`external/dompdf080/autoload.inc.php")}
+                                    <div style="color:#ff0000;font-weight:bold;">
+                                        {'dompdf v0.8 is NOT installed!'|gettext}
+                                    </div>
+                                {else}
+                                    <div>
+                                        {'dompdf v0.8 is installed!'|gettext}
+                                    </div>
+                                {/if}
+                                <blockquote>
+                                    {'DOMPDF v0.8 is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf080.zip/download" target="_blank">dompdf080.zip</a>.
                                     {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
                                 </blockquote>
                             </div>
@@ -435,7 +450,7 @@
                                 </blockquote>
                             </div>
                             <div id="expWKPDF-div" class="alt-item" style="display:none;">
-                                {if !file_exists("$smarty.const.HTMLTOPDF_PATH")}
+                                {if !file_exists("`$smarty.const.HTMLTOPDF_PATH`")}
                                     <div style="color:#ff0000;font-weight:bold;">
                                         {'WKHTMLtoPDF is NOT installed/configured!'|gettext}
                                     </div>
@@ -444,14 +459,15 @@
                                         {'WKHTMLtoPDF is installed!'|gettext}
                                     </div>
                                 {/if}
-                                {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility"|gettext value=$smarty.const.HTMLTOPDF_PATH}
-                                {control type="text" name="sc[HTMLTOPDF_PATH_TMP]" label="Full Path to the WKHTMLtoPDF Temp Directory"|gettext value=$smarty.const.HTMLTOPDF_PATH_TMP}
                                 <blockquote>
                                     {'To obtain the WKHTMLtoPDF, you\'ll need to first download the appropriate binary application from'|gettext} <a href="http://wkhtmltopdf.org/downloads.html" target="_blank">{"wkhtmltopdf site"|gettext}</a>.
                                     {"and then install it on your server."|gettext}
                                 </blockquote>
+                                {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility"|gettext value=$smarty.const.HTMLTOPDF_PATH}
+                                {control type="text" name="sc[HTMLTOPDF_PATH_TMP]" label="Full Path to the WKHTMLtoPDF Temp Directory"|gettext value=$smarty.const.HTMLTOPDF_PATH_TMP}
                             </div>
                             {control type="checkbox" postfalse=1 name="sc[HTMLTOPDF_OUTPUT]" label="Force PDF File Download?"|gettext checked=$smarty.const.HTMLTOPDF_OUTPUT value=1 description='Force a file download instead of display in window'|gettext}
+                            {control type="dropdown" name="sc[HTMLTOPDF_PAPER]" label="PDF Paper Size"|gettext items="A4,Letter,Legal"|gettxtlist values="A4,Letter,Legal" default=$smarty.const.HTMLTOPDF_PAPER description='Default Paper Size'|gettext}
                         </div>
                     </div>
                 </div>
