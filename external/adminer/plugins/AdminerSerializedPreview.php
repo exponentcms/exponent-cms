@@ -181,7 +181,7 @@ class AdminerSerializedPreview
 		}
 		$value .= ">";
 
-		foreach ($json as $key => $val) {
+		if (!empty($json)) foreach ($json as $key => $val) {
 			$value .= "<tr><th><code>" . h($key) . "</code>";
 			$value .= "<td>";
 

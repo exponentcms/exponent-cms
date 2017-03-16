@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -25,14 +25,14 @@
 class AdminerTinymce {
 	/** @access protected */
 	var $path;
-	
+
 	/**
 	* @param string
 	*/
 	function __construct($path = "tiny_mce/tiny_mce.js") {
 		$this->path = $path;
 	}
-	
+
 	function head() {
 		$lang = "en";
 		if (function_exists('get_lang')) { // since Adminer 3.2.0
@@ -86,7 +86,7 @@ tinyMCE.init({
 </script>
 <?php
 	}
-	
+
 	function selectVal(&$val, $link, $field) {
         if (preg_match("~body~", $field["field"]) && $val != '&nbsp;') {
 			$shortened = (substr($val, -10) == "<i>...</i>");
@@ -106,7 +106,7 @@ tinyMCE.init({
 			}
 		}
 	}
-	
+
 	function editInput($table, $field, $attrs, $value) {
         if (preg_match("~text~", $field["type"]) && preg_match("~body~", $field["field"])) {
 			return "<textarea$attrs id='fields-" . h($field["field"]) . "' rows='6' cols='50'>" . h($value) . "</textarea><script type='text/javascript'>
@@ -120,5 +120,5 @@ document.getElementById('form').onsubmit = function () {
 </script>";
 		}
 	}
-	
+
 }

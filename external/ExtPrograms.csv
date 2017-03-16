@@ -28,7 +28,7 @@ Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
 Bootswatch,3.3.7,bootswatch.com/,3.3.7,change 1st line variables.less comment to output to .css file
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.7.0,fortawesome.github.com/Font-Awesome,4.7.0,
-Adminer,4.2.5,www.adminer.org,4.2.5,"customized plugsins: tinymce, edit-textarea & edit-calendar"
+Adminer,4.3.0,www.adminer.org,4.3.0,"customized plugins: tinymce, edit-textarea & edit-calendar"
 SimpleAjaxUploader,2.6.1,github.com/LPology/Simple-Ajax-Uploader,2.6.1,also converted to yui module 2.5.3
 normalize.css,5.0.0,necolas.github.com/normalize.css/,5.0.0,auto included in bootstrap 3
 MediaElement.js,3.2.4,mediaelementjs.com/,3.2.4,
@@ -84,11 +84,11 @@ jquery.history.js,1.8b2,github.com/browserstate/history.js/,1.8b2,
 Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
-dompdf,0.6.2exp/0.7.0exp,github.com/dompdf/dompdf,0.8.0,"optional, patched to display our images and not break on bad tables"
+dompdf,0.8.0exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,0.8.0,"optional, patched to display our images and not break on bad tables"
 mPDF,6.1.3/6.0.0/5.7.4a,github.com/mpdf/mpdf,6.1.3,optional
 HTML2PDF,4.6.1,github.com/spipu/html2pdf,4.6.1,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.2.13,sourceforge.net/projects/tcpdf,6.2.13,"optional, used by HTML2PDF"
-Kint,1.0.10,github.com/raveren/kint,1.0.10,"optional, for formatted edebug output"
+Kint,1.1.0,github.com/kint-php/kint,1.1.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
 jQuery3,,jquery.com,3.1.1,

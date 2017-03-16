@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2016 OIC Group, Inc.
+# Copyright (c) 2004-2017 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -46,7 +46,9 @@ function adminer_object() {
 //        new AdminerForeignSystem,
         new ConventionForeignKeys,
         new AdminerVersionNoverify,  // disable adminer version check/notify
-
+//        new AdminerStructComments,
+        new AdminerTableIndexesStructure,
+        new AdminerTableStructure
     );
     if (SITE_WYSIWYG_EDITOR == 'tinymce') {
         $plugins[] = new AdminerTinymce(
@@ -146,7 +148,7 @@ function adminer_object() {
 }
 
 // include original Adminer or Adminer Editor
-include "./adminer-4.2.5-mysql.php";
+include "./adminer-4.3.0-mysql.php";
 
 if (SITE_WYSIWYG_EDITOR != 'tinymce') {
 ?>
