@@ -184,7 +184,8 @@ class helpController extends expController {
         foreach ($helplocs as $helploc) {
             if (!empty($helploc)) {
                 $helpsrc = expUnserialize($helploc);
-                $sectionlist[$helpsrc->src] = $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $helpsrc->src . '"');
+                $id = $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $helpsrc->src . '"');
+                $sectionlist[$helpsrc->src] = '(' . $id . ') ' . $db->selectValue('section', 'name', 'id="' . $id . '"');
             }
         }
         $sectionlist[$this->loc->src] .= ' '.gt("(current section)");
