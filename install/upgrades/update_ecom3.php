@@ -39,7 +39,7 @@ class update_ecom3 extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "An orders table record is added as the shopping cart for each site visitor which can make it huge.  This script prunes abandoned orders older than 60 days from the orders table and associated orphan records from other ecommerce tables."; }
+	function description() { return "An orders table record is added as the shopping cart for each site visitor which can make it huge.  This script prunes abandoned orders older than 7 days from the orders table and associated orphan records from other ecommerce tables."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -59,8 +59,8 @@ class update_ecom3 extends upgradescript {
 	    global $db;
 
         // purchased == 0 or invoice_id == 0 on unsubmitted orders
-		$orders_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."orders` WHERE `invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now()) - 2592000 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".$db->prefix."sessionticket`)");
-		$db->delete("orders","`invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now()) - 2592000 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".$db->prefix."sessionticket`)");
+		$orders_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."orders` WHERE `invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now()) - 604800 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".$db->prefix."sessionticket`)");
+		$db->delete("orders","`invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now()) - 604800 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".$db->prefix."sessionticket`)");
 		$orderitems_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."orderitems` WHERE `orders_id` NOT IN (SELECT `id` FROM `".$db->prefix."orders`)");
 		$db->delete("orderitems","`orders_id` NOT IN (SELECT `id` FROM `".$db->prefix."orders`)");
 		$shippingmethods_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."shippingmethods` WHERE `id` NOT IN (SELECT `shippingmethods_id` FROM `".$db->prefix."orders`)");
