@@ -68,7 +68,7 @@ function smarty_function_google_map($params,&$smarty) {
         $(document).ready(function()
         {
             geocoder.geocode({
-                address: '" . $address_string . "'
+                address: '" . expString::escape($address_string) . "'
                 }, function(results, status) {
                 if (status === google.maps.GeocoderStatus.OK)
                 {
