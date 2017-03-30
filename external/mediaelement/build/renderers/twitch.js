@@ -232,7 +232,6 @@ var TwitchIframeRenderer = {
 		var twitchPlayer = null,
 		    paused = true,
 		    ended = false,
-		    twitchIframe = null,
 		    hasStartedPlaying = false,
 		    volume = 1,
 		    duration = Infinity,
@@ -454,7 +453,7 @@ var TwitchIframeRenderer = {
 				paused = false;
 				ended = false;
 				sendEvents(['rendererready', 'loadedmetadata', 'loadeddata', 'canplay']);
-			}, false);
+			});
 			twitchPlayer.addEventListener('play', function () {
 				if (!hasStartedPlaying) {
 					hasStartedPlaying = true;
@@ -468,14 +467,14 @@ var TwitchIframeRenderer = {
 					twitchPlayer.getCurrentTime();
 					sendEvents(['timeupdate']);
 				}, 250);
-			}, false);
+			});
 			twitchPlayer.addEventListener('pause', function () {
 				paused = true;
 				ended = false;
 				if (!twitchPlayer.getEnded()) {
 					sendEvents(['pause']);
 				}
-			}, false);
+			});
 			twitchPlayer.addEventListener('ended', function () {
 				paused = true;
 				ended = true;
@@ -483,7 +482,7 @@ var TwitchIframeRenderer = {
 				clearInterval(timer);
 				hasStartedPlaying = false;
 				timer = null;
-			}, false);
+			});
 		};
 
 		// CREATE Twitch
@@ -496,7 +495,7 @@ var TwitchIframeRenderer = {
 			width: width,
 			height: height,
 			playsinline: false,
-			autoplay: false
+			autoplay: mediaElement.originalNode.autoplay
 		};
 
 		twitchSettings[type] = twitchId;
@@ -506,6 +505,7 @@ var TwitchIframeRenderer = {
 
 		mediaElement.originalNode.parentNode.insertBefore(twitchContainer, mediaElement.originalNode);
 		mediaElement.originalNode.style.display = 'none';
+		mediaElement.originalNode.autoplay = false;
 
 		// send it off for async loading and creation
 		twitchApi.enqueueIframe(twitchSettings);
@@ -518,14 +518,10 @@ var TwitchIframeRenderer = {
 		};
 		twitch.hide = function () {
 			twitch.pause();
-			if (twitchIframe) {
-				twitchIframe.style.display = 'none';
-			}
+			twitchContainer.style.display = 'none';
 		};
 		twitch.show = function () {
-			if (twitchIframe) {
-				twitchIframe.style.display = '';
-			}
+			twitchContainer.style.display = '';
 		};
 		twitch.destroy = function () {};
 
