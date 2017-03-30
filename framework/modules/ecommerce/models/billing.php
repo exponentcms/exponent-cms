@@ -102,7 +102,8 @@ class billing extends expRecord {
 //        $this->info = empty($this->calculator->id) ? '' : $this->calculator->userView($options);
         $this->info = (empty($this->calculator->id) || empty($options)) ? '' : $this->calculator->userView($this->billingmethod);
 
-		foreach($this->available_calculators as $key => $item) {
+        $this->form = array();
+        foreach($this->available_calculators as $key => $item) {
             if (class_exists($item)) {
                 $calc = new $item($key);
                 if (!expJavascript::inAjaxAction()) {  //fixme kludge for now to get order pdf's to print out
