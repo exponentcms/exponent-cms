@@ -776,7 +776,7 @@
         createCloseButton: function () {
             var $container = $('<div></div>');
             $container.addClass(this.getNamespace('close-button'));
-            var $icon = $('<button class="close"></button>');
+            var $icon = $('<button class="close" aria-label="close"></button>');
             $icon.append(this.options.closeIcon);
             $container.append($icon);
             $container.on('click', {dialog: this}, function (event) {
@@ -837,11 +837,23 @@
                 $button.append(button.label);
             }
 
+            // title
+            if (typeof button.title !== 'undefined') {
+                $button.attr('title',  button.title);
+            }
+
             // Css class
             if (typeof button.cssClass !== 'undefined' && $.trim(button.cssClass) !== '') {
                 $button.addClass(button.cssClass);
             } else {
                 $button.addClass('btn-default');
+            }
+
+            // Data attributes
+            if (typeof button.data === 'object' && button.data.constructor === {}.constructor) {
+                $.each(button.data, function (key, value) {
+                    $button.attr('data-' + key, value);
+                });
             }
 
             // Hotkey
@@ -1062,6 +1074,9 @@
                     $(this).remove();
                 }
                 BootstrapDialog.moveFocus();
+                if ($('.modal').hasClass('in')) {
+                  $('body').addClass('modal-open');
+                }
             });
 
             // Backdrop, I did't find a way to change bs3 backdrop option after the dialog is popped up, so here's a new wheel.
@@ -1302,31 +1317,31 @@
 
         var dialog = new BootstrapDialog(confirmOptions);
         dialog.setData('callback', confirmOptions.callback);
-        
+
         var buttons = [{
-            label: confirmOptions.btnCancelLabel,
-            cssClass: confirmOptions.btnCancelClass,
-            hotkey: confirmOptions.btnCancelHotkey,
-            action: function (dialog) {
-                if (typeof dialog.getData('callback') === 'function' && dialog.getData('callback').call(this, false) === false) {
-                    return false;
-                }
+                label: confirmOptions.btnCancelLabel,
+                cssClass: confirmOptions.btnCancelClass,
+                hotkey: confirmOptions.btnCancelHotkey,
+                action: function (dialog) {
+                    if (typeof dialog.getData('callback') === 'function' && dialog.getData('callback').call(this, false) === false) {
+                        return false;
+                    }
 
-                return dialog.close();
-            }
-        }, {
-            label: confirmOptions.btnOKLabel,
-            cssClass: confirmOptions.btnOKClass,
-            hotkey: confirmOptions.btnOKHotkey,
-            action: function (dialog) {
-                if (typeof dialog.getData('callback') === 'function' && dialog.getData('callback').call(this, true) === false) {
-                    return false;
+                    return dialog.close();
                 }
+            }, {
+                label: confirmOptions.btnOKLabel,
+                cssClass: confirmOptions.btnOKClass,
+                hotkey: confirmOptions.btnOKHotkey,
+                action: function (dialog) {
+                    if (typeof dialog.getData('callback') === 'function' && dialog.getData('callback').call(this, true) === false) {
+                        return false;
+                    }
 
-                return dialog.close();
-            }
-        }];
-        if(confirmOptions.btnsOrder === BootstrapDialog.BUTTONS_ORDER_OK_CANCEL) {
+                    return dialog.close();
+                }
+            }];
+        if (confirmOptions.btnsOrder === BootstrapDialog.BUTTONS_ORDER_OK_CANCEL) {
             buttons.reverse();
         }
         dialog.addButtons(buttons);
