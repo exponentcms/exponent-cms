@@ -375,7 +375,7 @@ elFinder.prototype._options = {
 		},
 		mkdir: {
 			// Enable automatic switching function ["New Folder" / "Into New Folder"] of toolbar buttton
-			intoNewFolderToolbtn: false,
+			intoNewFolderToolbtn: false
 		},
 		resize: {
 			// defalt status of snap to 8px grid of the jpeg image ("enable" or "disable")
@@ -477,7 +477,11 @@ elFinder.prototype._options = {
 			// expand current work directory on open
 			openCwdOnOpen  : true,
 			// auto load current dir parents
-			syncTree : true
+			syncTree : true,
+			// Numbar of max connctions of subdirs request
+			subdirsMaxConn : 3,
+			// Number of max simultaneous processing directory of subdirs
+			subdirsAtOnce : 5
 			// ,
 			// /**
 			//  * Add CSS class name to navbar directories (optional)
