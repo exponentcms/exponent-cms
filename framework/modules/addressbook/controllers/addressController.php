@@ -75,11 +75,10 @@ class addressController extends expController {
         global $user;
 
         $id = !empty($this->params['id']) ? $this->params['id'] : null;
+        $record = new address($id);
 
         // check to see if we should be editing.  You either need to be an admin, or editing own account.
-        if ($user->isAdmin() || ($user->id == $id)) {
-            $record = new address($id);
-        } else {
+        if (!($user->isAdmin() || ($user->id == $record->user_id))) {
             flash('error', gt('You do not have the proper permissions to edit this address'));
             expHistory::back();
         }
@@ -101,7 +100,7 @@ class addressController extends expController {
 
 		// check if the user is logged in.
 		expQueue::flashIfNotLoggedIn('message',gt('You must be logged in to manage your address book.'));  //fixme is this redundant to common routine?
-        if (!$user->isAdmin() && $this->params['user_id'] != $user->id) {
+        if (!$user->isAdmin() && (!empty($this->params['user_id']) && $this->params['user_id'] != $user->id)) {
             unset($this->params['user_id']);
         }
 		expHistory::set('viewable', $this->params);
