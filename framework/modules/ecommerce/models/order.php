@@ -744,7 +744,7 @@ class order extends expRecord {
         $this->total = $this->subtotal - $this->total_discounts;
 
         $estimate_shipping = true;
-        if ($estimate_shipping && !$this->shipping_total) $this->shipping_total = shipping::estimateShipping($this);
+        if ($estimate_shipping && !$this->shipping_total) $this->shipping_total = intval(shipping::estimateShipping($this));
 
         $this->grand_total = ($this->subtotal - $this->total_discounts) + $this->tax + $this->shipping_total + $this->surcharge_total;
 
