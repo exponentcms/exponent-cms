@@ -506,6 +506,33 @@ class expString {
     }
 
     /**
+     * check a javascript value to ensure it is a string or array
+     *  attempt to prevent javascript crashes when passed incorrect values
+     *
+     * @param $val
+     * @param $string_only
+     * @return string
+     */
+    public static function check_javascript($val, $string_only=false, $object_only=false) {
+        if (strpos($val,"'",0) === false || strpos($val,"'",-1) === false) {
+            if (!$string_only) {
+                if (!$object_only) {
+                    if (strpos($val, "[", 0) === false || strpos($val, "]", -1) === false) {
+                        $val = "[" . $val . "]";
+                    }
+                } else {
+                    if ($object_only && (strpos($val, "{", 0) === false || strpos($val, "}", -1) === false)) {
+                        $val = "{" . $val . "}";
+                    }
+                }
+            } else {
+                $val = "'" . $val . "'";
+            }
+        }
+        return $val;
+    }
+
+    /**
      * Scrub input string for possible security issues.
      *
      * @static

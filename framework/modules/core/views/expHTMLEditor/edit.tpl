@@ -52,22 +52,23 @@
             <h4>{'Blank or empty entries in the following text boxes result in using the default setting'|gettext}</h4>
             {'Please visit the help page for entry format requirements!'|gettext}
         </blockquote>
-		{control type=textarea cols=80 rows=10 name=data label="Toolbar Button Configuration"|gettext value=$record->data}
         {if $editor == 'ckeditor'}
-            {control type=textarea cols=80 rows=2 name=stylesset label="Styles List"|gettext value=$record->stylesset}
-            {control type=textarea cols=80 rows=2 name=formattags label="Format List"|gettext value=$record->formattags}
-            {control type=textarea cols=80 rows=2 name=fontnames label="Font List"|gettext value=$record->fontnames}
+            {control type=textarea cols=80 rows=10 name=data label="Toolbar Button Configuration"|gettext value=$record->data description='Comma separated Javascript Arrays'|gettext}
+            {control type=textarea cols=80 rows=2 name=stylesset label="Styles List"|gettext value=$record->stylesset description='Javascript Array of Javascript Objects, or Javascript string enclosed in single quotes'|gettext}
+            {control type=textarea cols=80 rows=2 name=formattags label="Format List"|gettext value=$record->formattags description='Javascript string MUST be enclosed in single quotes'|gettext}
+            {control type=textarea cols=80 rows=2 name=fontnames label="Font List"|gettext value=$record->fontnames description='Javascript string MUST be enclosed in single quotes'|gettext}
         {elseif $editor == 'tinymce'}
-            {control type=textarea cols=80 rows=2 name=stylesset label="Formats List"|gettext value=$record->stylesset}
-            {control type=textarea cols=80 rows=2 name=formattags label="Paragraph List"|gettext value=$record->formattags}
-            {control type=textarea cols=80 rows=2 name=fontnames label="Font Family List"|gettext value=$record->fontnames}
+            {control type=textarea cols=80 rows=10 name=data label="Toolbar Button Configuration"|gettext value=$record->data}
+            {control type=textarea cols=80 rows=2 name=stylesset label="Formats List (comma separated)"|gettext value=$record->stylesset description='Javascript objects in curly braces'|gettext}
+            {control type=textarea cols=80 rows=2 name=formattags label="Paragraph List"|gettext value=$record->formattags description='Javascript string MUST be enclosed in single quotes'|gettext}
+            {control type=textarea cols=80 rows=2 name=fontnames label="Font Family List"|gettext value=$record->fontnames description='Javascript string MUST be enclosed in single quotes'|gettext}
         {/if}
         {if $editor == 'ckeditor'}
             {control type=textarea cols=80 rows=2 name=plugins label="Load Custom Plugins (comma separated) MUST be installed first!"|gettext value=$record->plugins description='Adding an uninstalled plugin to this list may crash the site!'|gettext}
         {elseif $editor == 'tinymce'}
-            {control type=textarea cols=80 rows=2 name=plugins label="Load Plugins (comma separated) MUST be installed first!"|gettext value=$record->plugins description='You must specifically include standard plugins here.'|gettext}
+            {control type=textarea cols=80 rows=2 name=plugins label="Load Plugins (comma separated) MUST be installed first!"|gettext value=$record->plugins description='You must also specifically include standard plugins here.'|gettext}
         {/if}
-        {control type=textarea cols=80 rows=2 name=additionalconfig label="Additionial Configuration (comma separated javascript object)"|gettext value=$record->additionalconfig description='Adding an incorrectly formated configuration to this list may crash the site!'|gettext}
+        {control type=textarea cols=80 rows=2 name=additionalconfig label="Additionial Configuration (comma separated javascript object element)"|gettext value=$record->additionalconfig description='Adding an incorrectly formated configuration to this list will crash the site!'|gettext}
         {control type=buttongroup submit="Save Toolbar"|gettext cancel="Cancel"|gettext returntype="manageable"}
     {/form}
 </div>
