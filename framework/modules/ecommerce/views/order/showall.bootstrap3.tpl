@@ -95,7 +95,7 @@
                     </td>
                     <td style="text-align:right;"><span class="badge {if $listing->paid|lower == 'complete' || $listing->paid|lower == 'paid'}alert-success{/if}" title="{if $listing->paid|lower == 'complete' ||  $listing->paid|lower == 'paid'}{'Paid'|gettext}{else}{'Payment Due'|gettext}{/if}">{$listing->grand_total|currency}</span></td>
                     <td>{billingcalculator::getCalcTitle($listing->method)}</td>
-                    <td>{$listing->purchased|format_date:"%m/%d/%Y %I:%M%p"}</td>
+                    <td data-order="{$listing->purchased}">{$listing->purchased|format_date:"%m/%d/%Y %I:%M%p"}</td>
                     <td>{$listing->order_type}</td>
                     <td><span class="label label-{if $listing->order_status_id == $new_order}success{else}default{/if}">{$listing->status}</span></td>
                     <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png" color=green}</a>{/if}</td>
@@ -129,7 +129,7 @@
             columns: [
                 { type: 'html' },
                 { type: 'html' },
-                { type: 'html' },
+                { type: 'html-num-fmt' },
                 null,
                 null,
                 null,
@@ -218,6 +218,21 @@
             filter_default_label: "Select Status",
             select_type: 'select2'
         }]);
+
+        jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+            "currency-pre": function ( a ) {
+                a = (a==="-") ? 0 : a.replace( /[^\d\-\.]/g, "" );
+                return parseFloat( a );
+            },
+
+            "currency-asc": function ( a, b ) {
+                return a - b;
+            },
+
+            "currency-desc": function ( a, b ) {
+                return b - a;
+            }
+        } );
     });
 {/literal}
 {/script}
