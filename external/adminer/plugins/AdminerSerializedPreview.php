@@ -205,8 +205,11 @@ class AdminerSerializedPreview
 			} elseif (is_null($val)) {
 				// Handle null value.
 				$value .= "<code class='jush'>null</code>";
-			} else {
-				$value .= "<code class='jush'>" . h($val) . "</code>";
+			} elseif (is_string($val)) {
+                $value .= "<code class='jush'>" . h($val) . "</code>";
+            } elseif (is_object($val) || is_array($val)) {
+			    //fixme here is a nested object/array
+                $value .= "<code class='jush'>" . h(serialize($val)) . "</code>";
 			}
 		}
 
