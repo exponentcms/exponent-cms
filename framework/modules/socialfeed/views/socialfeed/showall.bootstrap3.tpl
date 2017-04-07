@@ -13,9 +13,18 @@
  *
  *}
 
+{if $config.socialfeed_display_type != 'pinboard'}
 {css unique="socialfeed" lesscss="`$asset_path`less/socialfeed.less"}
 
 {/css}
+{else}
+{css unique="socialfeed-notes" link="`$asset_path`css/notes.css"}
+
+{/css}
+{css unique="socialfeed-font" link="http://fonts.googleapis.com/css?family=Gloria+Hallelujah|Permanent+Marker"}
+
+{/css}
+{/if}
 
 {if $config.socialfeed_feeds_count < 4}
     {$config.socialfeed_feeds_count = 4}
@@ -39,16 +48,33 @@
         <a href="https://pinterest.com/{$config.socialfeed_pinterest_username}" target="_blank" title="{'View Page'|gettext}"><img style="height:20px;" src="{$asset_path}images/pinterest.png" alt="{'Pinterest'|gettext}"></a>
         {/if}
     </div>
-    <div class="row">
-        {if  $config.socialfeed_display_type == 'fluid'}
+    <div class="row pinboards items">
+        {if $config.socialfeed_display_type == 'fluid'}
         <div class="shuffle">
         {/if}
         {foreach $messages as $message}
-            {if  $config.socialfeed_display_type != 'fluid' && ($message@first || (($message@iteration - 1) is div by ($config.socialfeed_feeds_count / 4)))}
-            <div class="col-lg-3 col-md-4 col-sm-6{if $message@iteration >  $config.socialfeed_feeds_count / 4} hidden-xs{/if}{if $message@iteration >  $config.socialfeed_feeds_count / 4 * 2} hidden-sm{/if}{if $message@iteration >  $config.socialfeed_feeds_count / 4 * 3} hidden-md{/if}">
+            {$style = ''}
+            {$bs_style = ''}
+            {$pb_style = ''}
+            {if $message@iteration > $config.socialfeed_feeds_count / 4}
+                {$style = $style|cat:' hidden-xs'}
+            {/if}
+            {if $message@iteration > $config.socialfeed_feeds_count / 4 * 2}
+                {$style = $style|cat:' hidden-sm'}
+            {/if}
+            {if $message@iteration > $config.socialfeed_feeds_count / 4 * 3}
+                {$style = $style|cat:' hidden-md'}
+            {/if}
+            {if $config.socialfeed_display_type == 'pinboard'}
+                {$pb_style = $style}
+            {elseif $config.socialfeed_display_type != 'fluid'}
+                {$bs_style = $style}
+            {/if}
+            {if $config.socialfeed_display_type != 'fluid' && $config.socialfeed_display_type != 'pinboard' && ($message@first || (($message@iteration - 1) is div by ($config.socialfeed_feeds_count / 4)))}
+            <div class="items col-lg-3 col-md-4 col-sm-6{$bs_style}">
             {/if}
             {if $message.sftype == 'instagram'}
-                <div class="item instagram{if  $config.socialfeed_display_type == 'fluid'} col-lg-3 col-md-4 col-sm-6 col-xs-12{/if}">
+                <div class="item instagram{if $config.socialfeed_display_type == 'fluid'} col-lg-3 col-md-4 col-sm-6 col-xs-12{/if}{$pb_style}">
                     <div class="item-box">
                         {if (isset($message['post_url']) && !empty($message['post_url']))}
                             <a href="{$message['post_url']}" target="_blank" title="{'View Post'|gettext}"><img class="img-responsive" src="{$message['image_url']}" alt="{'Instagram Image'|gettext}"></a>
@@ -76,7 +102,7 @@
                     </div>
                 </div>
             {elseif $message.sftype == 'twitter'}
-                <div class="item twitter{if  $config.socialfeed_display_type == 'fluid'} col-lg-3 col-md-4 col-sm-6 col-xs-12{/if}">
+                <div class="item twitter{if $config.socialfeed_display_type == 'fluid'} col-lg-3 col-md-4 col-sm-6 col-xs-12{/if}{$pb_style}">
                     <div class="item-box">
                         <div class="post-content">
                             <p>{$message['tweet']}</p>
@@ -102,7 +128,7 @@
                     </div>
                 </div>
             {elseif $message.sftype == 'facebook'}
-                <div class="item facebook{if  $config.socialfeed_display_type == 'fluid'} col-lg-3 col-md-4 col-sm-6 col-xs-12{/if}">
+                <div class="item facebook{if $config.socialfeed_display_type == 'fluid'} col-lg-3 col-md-4 col-sm-6 col-xs-12{/if}{$pb_style}">
                     <div class="item-box">
                         <!-- Picture -->
                         {if (isset($message['picture']) && !empty($message['picture']))}
@@ -151,7 +177,7 @@
                     </div>
                 </div>
             {elseif $message.sftype == 'pinterest'}
-                <div class="item pinterest{if  $config.socialfeed_display_type == 'fluid'} col-lg-3 col-md-4 col-sm-6 col-xs-12{/if}">
+                <div class="item pinterest{if $config.socialfeed_display_type == 'fluid'} col-lg-3 col-md-4 col-sm-6 col-xs-12{/if}{$pb_style}">
                     <div class="item-box">
                         {if (isset($message['post_url']) && !empty($message['post_url']))}
                             <a href="{$message['post_url']}" target="_blank" title="{'View Post'|gettext}"><img class="img-responsive" src="{$message['image_url']}" alt="{'Pinterest Image'|gettext}"></a>
@@ -179,11 +205,11 @@
                     </div>
                 </div>
             {/if}
-            {if $config.socialfeed_display_type != 'fluid' && ($message@last || ($message@iteration is div by ($config.socialfeed_feeds_count / 4)))}
+            {if $config.socialfeed_display_type != 'fluid' && $config.socialfeed_display_type != 'pinboard' && ($message@last || ($message@iteration is div by ($config.socialfeed_feeds_count / 4)))}
             </div>
             {/if}
         {/foreach}
-        {if  $config.socialfeed_display_type == 'fluid'}
+        {if $config.socialfeed_display_type == 'fluid'}
         </div>
         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 shuffle__sizer"></div>
         {/if}
