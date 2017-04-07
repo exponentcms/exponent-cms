@@ -1,5 +1,19 @@
 ### Version History
 
+*4.0.3 (2017/04/04)*
+
+* Fixed typo when detecting dimensions for stretching: `auto` @ron666
+* Perform improvements to AJAX method to prevent "pre-flight" requests @ron666
+* Removed Captions menu height adjustment considered unnecessary @ron666
+* Fixed typo with event specific to Android and iOS @ron666
+* Fixed issue with Android not being able to play video when touching video area @ron666
+* Added `captionschange` event and fixed minor issue for `None` caption @ron666
+* Fixed show/hide of play, loading and buffer elements in various events @ron666
+* Fixed issues with setting source for `hls` renderer due to latest changes on library @ron666
+* Added documentation about how to use `MediaElement` with [React](https://facebook.github.io/react/) @ron666
+* Standardized way to create events for all native renderers @ron666
+* Fixed documentation in `utils.md` to indicate methods in `Features` section @ron666
+
 *4.0.2 (2017/03/23)*
 
 * Added new unit tests to increase code coverage @ron666

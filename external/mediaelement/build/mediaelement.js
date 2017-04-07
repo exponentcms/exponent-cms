@@ -934,7 +934,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mejs = {};
 
 // version number
-mejs.version = '4.0.2';
+mejs.version = '4.0.3';
 
 // Basic HTML5 settings
 mejs.html5media = {
@@ -1441,8 +1441,7 @@ var DashNativeRenderer = {
 				}
 
 				node.addEventListener(eventName, function (e) {
-					var event = _document2.default.createEvent('HTMLEvents');
-					event.initEvent(e.type, e.bubbles, e.cancelable);
+					var event = (0, _general.createEvent)(e.type, mediaElement);
 					mediaElement.dispatchEvent(event);
 				});
 			};
@@ -2298,8 +2297,7 @@ var FlvNativeRenderer = {
 				}
 
 				node.addEventListener(eventName, function (e) {
-					var event = _document2.default.createEvent('HTMLEvents');
-					event.initEvent(e.type, e.bubbles, e.cancelable);
+					var event = (0, _general.createEvent)(e.type, mediaElement);
 					mediaElement.dispatchEvent(event);
 				});
 			};
@@ -2595,18 +2593,15 @@ var HlsNativeRenderer = {
 
 				if (eventName === 'loadedmetadata') {
 
+					var url = mediaElement.originalNode.src;
 					hlsPlayer.detachMedia();
-
-					var url = node.src;
-
 					hlsPlayer.loadSource(url);
 					hlsPlayer.attachMedia(node);
 				}
 
 				node.addEventListener(eventName, function (e) {
 					// copy event
-					var event = _document2.default.createEvent('HTMLEvents');
-					event.initEvent(e.type, e.bubbles, e.cancelable);
+					var event = (0, _general.createEvent)(e.type, mediaElement);
 					mediaElement.dispatchEvent(event);
 				});
 			};
@@ -2859,8 +2854,7 @@ var HtmlMediaElement = {
 			node.addEventListener(eventName, function (e) {
 				// copy event
 
-				var event = _document2.default.createEvent('HTMLEvents');
-				event.initEvent(e.type, e.bubbles, e.cancelable);
+				var event = (0, _general.createEvent)(e.type, mediaElement);
 				mediaElement.dispatchEvent(event);
 			});
 		};
