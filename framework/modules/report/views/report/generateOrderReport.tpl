@@ -21,6 +21,7 @@
 {/css}
 
 <div class="module report generate-report">
+    <h1>{'Order Reports'|gettext}</h1>
     {$page->links}
     {form id="batch" controller=report}
         <div class="actions-to-apply">

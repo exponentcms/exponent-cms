@@ -26,6 +26,20 @@
 
 class expDateTime {
 
+    public static function is_date($str){
+        $str = str_replace('/', '-', $str);
+        $stamp = strtotime($str);
+        if (is_numeric($stamp)){
+
+            $month = date( 'm', $stamp );
+            $day   = date( 'd', $stamp );
+            $year  = date( 'Y', $stamp );
+
+            return checkdate($month, $day, $year);
+        }
+        return false;
+    }
+
 	/** exdoc
 	 * @state <b>UNDOCUMENTED</b>
 	 * @node To Be Deprecated

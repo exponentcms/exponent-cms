@@ -136,6 +136,9 @@ class expRouter {
                 foreach ($params as $key=>$value) {
                     if(!is_array($value) && strpos($key,'__') !== 0 && $key !== 'PHPSESSID') {
                         $value = trim($value);
+                        if (expDateTime::is_date($value)) {
+                            $value = strtotime($value);
+                        }
                         $key = trim($key);
                         if ($value != "") {
                             if ($key != 'module' && $key != 'action' && $key != 'controller') {
@@ -959,6 +962,7 @@ class expRouter {
         if(isset($this->ectid)) return $this->ectid;
         else return '';
     }
+
 }
 
 ?>

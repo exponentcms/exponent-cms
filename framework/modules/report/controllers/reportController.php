@@ -515,18 +515,22 @@ class reportController extends expController {
         $start_sql = "SELECT DISTINCT(o.id), ";
         $count_sql = "SELECT COUNT(DISTINCT(o.id)) as c, ";
         $sql = "o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, concat('".expCore::getCurrencySymbol()."',format(o.grand_total,2)) as grand_total, os.title as status_title, ot.title as order_type";
-        if ((count($p['order_status_changed']) == 1 && $p['order_status_changed'][0] != -1) || count($p['order_status_changed']) > 1 || (!empty($p['include_status_date']) && (!empty($p['date-sstartdate']) || !empty($p['date-senddate'])))) $sql .= ", FROM_UNIXTIME(osc.created_at,'%c/%e/%y %h:%i:%s %p') as status_changed_date";
+        if (isset($p['order_status_changed'])){
+            if ((count($p['order_status_changed']) == 1 && $p['order_status_changed'][0] != -1) || count($p['order_status_changed']) > 1 || (!empty($p['include_status_date']) && (!empty($p['date-sstartdate']) || !empty($p['date-senddate'])))) $sql .= ", FROM_UNIXTIME(osc.created_at,'%c/%e/%y %h:%i:%s %p') as status_changed_date";
+        }
         $sql .= " from " . $db->prefix . "orders as o ";
         $sql .= "INNER JOIN " . $db->prefix . "orderitems as oi ON oi.orders_id = o.id ";
         $sql .= "INNER JOIN " . $db->prefix . "order_type as ot ON ot.id = o.order_type_id ";
         $sql .= "INNER JOIN " . $db->prefix . "product as p ON oi.product_id = p.id ";
         //if ($p['order_type'][0] != -1) $sql .= "INNER JOIN " . $db->prefix . "order_type as ot ON o.order_type_id = ot.id ";
         $sql .= "INNER JOIN " . $db->prefix . "order_status as os ON os.id = o.order_status_id ";
-        if ((count($p['order_status_changed']) == 1 && $p['order_status_changed'][0] != -1) || count($p['order_status_changed']) > 1 || (!empty($p['include_status_date']) && (!empty($p['date-sstartdate']) || !empty($p['date-senddate'])))) $sql .= "INNER JOIN " . $db->prefix . "order_status_changes as osc ON osc.orders_id = o.id ";
+        if (isset($p['order_status_changed'])) {
+            if ((count($p['order_status_changed']) == 1 && $p['order_status_changed'][0] != -1) || count($p['order_status_changed']) > 1 || (!empty($p['include_status_date']) && (!empty($p['date-sstartdate']) || !empty($p['date-senddate'])))) $sql .= "INNER JOIN " . $db->prefix . "order_status_changes as osc ON osc.orders_id = o.id ";
+        }
         $sql .= "INNER JOIN " . $db->prefix . "billingmethods as b ON b.orders_id = o.id ";
         $sql .= "INNER JOIN " . $db->prefix . "shippingmethods as s ON s.id = oi.shippingmethods_id ";
         $sql .= "LEFT JOIN " . $db->prefix . "geo_region as gr ON (gr.id = b.state OR gr.id = s.state) ";
-        if ($p['discounts'][0] != -1) $sql .= "LEFT JOIN " . $db->prefix . "order_discounts as od ON od.orders_id = o.id ";
+        if (isset($p['discounts']) && $p['discounts'][0] != -1) $sql .= "LEFT JOIN " . $db->prefix . "order_discounts as od ON od.orders_id = o.id ";
 
         $sqlwhere = "WHERE o.purchased != 0";
 
@@ -545,41 +549,47 @@ class reportController extends expController {
 
         $inc = 0;
         $sqltmp = '';
-        foreach ($p['order_status'] as $os) {
-            if ($os == -1) continue;
-            else if ($inc == 0) {
-                $inc++;
-                $sqltmp .= " AND (o.order_status_id = " . $os;
-            } else {
-                $sqltmp .= " OR o.order_status_id = " . $os;
+        if (isset($p['product_status'])) {
+            foreach ($p['order_status'] as $os) {
+                if ($os == -1) continue;
+                else if ($inc == 0) {
+                    $inc++;
+                    $sqltmp .= " AND (o.order_status_id = " . $os;
+                } else {
+                    $sqltmp .= " OR o.order_status_id = " . $os;
+                }
             }
         }
         if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
 
         $inc = 0;
         $sqltmp = '';
-        foreach ($p['order_status_changed'] as $osc) {
-            if ($osc == -1) continue;
-            else if ($inc == 0) {
-                $inc++;
-                //$sqltmp .= " AND ((osc.to_status_id = " . $osc . " AND (osc.from_status_id != " . $osc . ")";
-                $sqltmp .= " AND (osc.to_status_id = " . $osc;
-            } else {
-                //$sqltmp .= " OR (osc.to_status_id = " . $osc . " AND (osc.from_status_id != " . $osc . ")";
-                $sqltmp .= " OR osc.to_status_id = " . $osc;
+        if (isset($p['product_status_changed'])) {
+            foreach ($p['order_status_changed'] as $osc) {
+                if ($osc == -1) continue;
+                else if ($inc == 0) {
+                    $inc++;
+                    //$sqltmp .= " AND ((osc.to_status_id = " . $osc . " AND (osc.from_status_id != " . $osc . ")";
+                    $sqltmp .= " AND (osc.to_status_id = " . $osc;
+                } else {
+                    //$sqltmp .= " OR (osc.to_status_id = " . $osc . " AND (osc.from_status_id != " . $osc . ")";
+                    $sqltmp .= " OR osc.to_status_id = " . $osc;
+                }
             }
         }
         if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
 
         $inc = 0;
         $sqltmp = '';
-        foreach ($p['order_type'] as $ot) {
-            if ($ot == -1) continue;
-            else if ($inc == 0) {
-                $inc++;
-                $sqltmp .= " AND (o.order_type_id = " . $ot;
-            } else {
-                $sqltmp .= " OR o.order_type_id = " . $ot;
+        if (isset($p['order_type'])) {
+            foreach ($p['order_type'] as $ot) {
+                if ($ot == -1) continue;
+                else if ($inc == 0) {
+                    $inc++;
+                    $sqltmp .= " AND (o.order_type_id = " . $ot;
+                } else {
+                    $sqltmp .= " OR o.order_type_id = " . $ot;
+                }
             }
         }
         if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
@@ -647,13 +657,15 @@ class reportController extends expController {
 
         $inc = 0;
         $sqltmp = '';
-        foreach ($p['discounts'] as $d) {
-            if ($d == -1) continue;
-            else if ($inc == 0) {
-                $inc++;
-                $sqltmp .= " AND (od.discounts_id = " . $d;
-            } else {
-                $sqltmp .= " OR od.discounts_id = " . $d;
+        if (isset($p['discounts'])) {
+            foreach ($p['discounts'] as $d) {
+                if ($d == -1) continue;
+                else if ($inc == 0) {
+                    $inc++;
+                    $sqltmp .= " AND (od.discounts_id = " . $d;
+                } else {
+                    $sqltmp .= " OR od.discounts_id = " . $d;
+                }
             }
         }
         if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
@@ -795,8 +807,8 @@ class reportController extends expController {
             'count_sql'  => $count_sql,
             'sql'        => $sql . $sqlwhere,
             'limit'      => empty($this->config['limit']) ? 350 : $this->config['limit'],
-            'order'      => 'invoice_id',
-            'dir'        => 'DESC',
+            'order'      => (isset($this->params['order']) ? $this->params['order'] : 'invoice_id'),
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->baseclassname,
             'action'     => $this->params['action'],
@@ -1071,15 +1083,17 @@ class reportController extends expController {
 
         $inc = 0;
         $sqltmp = '';
-        if (!empty($p['product_type'])) foreach ($p['product_type'] as $ot) {
-            if ($ot == '') continue;
-            else if ($inc == 0) {
-                $inc++;
-                $sqltmp .= " AND (p.product_type = '" . $ot . "'";
-            } else {
-                $sqltmp .= " OR p.product_type = '" . $ot . "'";
-            }
+        if (!empty($p['product_type'])) {
+            foreach ($p['product_type'] as $ot) {
+                if ($ot == '') continue;
+                else if ($inc == 0) {
+                    $inc++;
+                    $sqltmp .= " AND (p.product_type = '" . $ot . "'";
+                } else {
+                    $sqltmp .= " OR p.product_type = '" . $ot . "'";
+                }
 
+            }
         }
         if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
 
@@ -1182,9 +1196,10 @@ class reportController extends expController {
             //'count_sql'=>"SELECT COUNT(DISTINCT(p.id)) FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0",
             'count_sql'  => $count_sql . $sql . $sqlwhere,
             'limit'      => empty($this->config['limit']) ? 350 : $this->config['limit'],
-            'order'      => 'id',
+            'order'      => (isset($this->params['order']) ? $this->params['order'] : 'id'),
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
-            'controller' => 'store',
+            'controller' => $this->baseclassname,
             'action'     => $this->params['action'],
             'columns'    => array(
                 'actupon'     => true,
