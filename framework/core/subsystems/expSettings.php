@@ -194,7 +194,8 @@ class expSettings
                 $str .= "'" . intval($value) . "'";
             } else {
                 if ($directive != 'SESSION_TIMEOUT') {
-                    $str .= "'" . expString::escape(str_replace("'", "\'", $value)) . "'";  //FIXME is this still necessary since we stripslashes above???
+//                    $str .= "'" . expString::escape(str_replace("'", "\'", $value)) . "'";  //FIXME is this still necessary since we stripslashes above???
+                    $str .= "'" . expString::escape($value) . "'";
                 } //                    $str .= "'".$value."'";
                 else {
                     $str .= "'" . expString::escape(str_replace("'", '', $value)) . "'";
