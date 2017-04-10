@@ -27,11 +27,11 @@ class administrationController extends expController {
     protected $manage_permissions = array(
         'change'=>'Change Settings',
 	    'clear'=>'Clear Caches',  //FIXME this requires a logged in user to perform?
-	    "fix"=>"Fix Database",
-	    "install"=>"Installation",
+	    'fix'=>'Fix Database',
+	    'install'=>'Installation',
         'mass'=>'Mass Mailing',
         'save'=>'Save Settings',
-	    "theme"=>"Manage Themes",
+	    'theme'=>'Manage Themes',
 	    'test_smtp'=>'Test SMTP Server Settings',
 	    'toggle'=>'Toggle Settings',
 //        'update'=>'Update Settings',
@@ -89,13 +89,13 @@ class administrationController extends expController {
             if (is_readable($moddef)) {
                 $dh = opendir($moddef);
                 while (($file = readdir($dh)) !== false) {
-                    if (is_dir($moddef.'/'.$file) && ($file != '..' && $file != '.')) {
+                    if (($file != '..' && $file != '.') && is_dir($moddef.'/'.$file)) {
                         $dirpath = $moddef.'/'.$file.'/definitions';
                         if (file_exists($dirpath)) {
                             $def_dir = opendir($dirpath);
                             while (($def = readdir($def_dir)) !== false) {
                                 if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
-                                    if ((!in_array(substr($def,0,-4), $used_tables))) {
+                                    if (!in_array(substr($def,0,-4), $used_tables)) {
                                         $used_tables[] = strtolower(substr($def,0,-4));
                                     }
                                 }
@@ -108,7 +108,7 @@ class administrationController extends expController {
 
         foreach($tables as $table) {
             $basename = strtolower(str_replace($db->prefix, '', $table));
-            if (!in_array($basename, $used_tables) && !stristr($basename, 'forms')) {
+            if (!in_array($basename, $used_tables) && !stripos($basename, 'forms')) {
                 $unused_tables[$basename] = new stdClass();
                 $unused_tables[$basename]->name = $table;
                 $unused_tables[$basename]->rows = $db->countObjects($basename);
@@ -243,7 +243,7 @@ class administrationController extends expController {
    	}
 
     public function install_ecommerce_tables() {
-        global $db;
+//        global $db;
 
         $eql = BASE . "install/samples/ecommerce.eql";
         if (file_exists($eql)) {
@@ -254,7 +254,9 @@ class administrationController extends expController {
         }
         if (DEVELOPMENT && count($errors)) {
             $msg = gt('Errors were encountered importing the e-Commerce data.').'<ul>';
-            foreach ($errors as $e) $msg .= '<li>'.$e.'</li>';
+            foreach ($errors as $e) {
+                $msg .= '<li>' . $e . '</li>';
+            }
             $msg .= '</ul>';
             flash('error',$msg);
         } else {
@@ -717,7 +719,7 @@ class administrationController extends expController {
 						$files[] = array(
 							'absolute'=>$file,
 							'relative'=>$f,
-							'canCreate'=>expFile::canCreate(BASE.$file,1),
+							'canCreate'=>expFile::canCreate(BASE.$file),
 							'ext'=>substr($f,-3,3)
 						);
 					}
@@ -734,10 +736,10 @@ class administrationController extends expController {
 	public function install_extension_finish() {
         $patch =$this->params['patch']==1;
 		$sessid = session_id();
+        $success = array();
 		if (!file_exists(BASE."tmp/extensionuploads/$sessid") || !is_dir(BASE."tmp/extensionuploads/$sessid")) {
 			$nofiles = 1;
 		} else {
-			$success = array();
 			foreach (array_keys(expFile::listFlat(BASE."tmp/extensionuploads/$sessid",true,null,array(),BASE."tmp/extensionuploads/$sessid")) as $file) {
 				if ($file != '/archive.tar' && $file != '/archive.tar.gz' && $file != 'archive.tar.bz2' && $file != '/archive.zip') {
                     if ($patch) {  // this is a patch/fix extension
@@ -1278,7 +1280,7 @@ class administrationController extends expController {
         $data = $offset = $added = array();
         foreach ($list as $abbr => $info) {
             foreach ($info as $zone) {
-                if (!empty($zone['timezone_id']) AND !in_array($zone['timezone_id'],$added) AND in_array($zone['timezone_id'],$idents)) {
+                if (!empty($zone['timezone_id']) && !in_array($zone['timezone_id'],$added) && in_array($zone['timezone_id'],$idents)) {
                     try{
                         $z = new DateTimeZone($zone['timezone_id']);
                         $c = new DateTime(null, $z);
@@ -1337,19 +1339,18 @@ class administrationController extends expController {
     }
 
 	// now you can use $options;
-	private function formatOffset($offset) {
-			$hours = $offset / 3600;
-			$remainder = $offset % 3600;
-			$sign = $hours > 0 ? '+' : '-';
-			$hour = (int) abs($hours);
-			$minutes = (int) abs($remainder / 60);
+	private static function formatOffset($offset) {
+        $hours = $offset / 3600;
+        $remainder = $offset % 3600;
+        $sign = $hours > 0 ? '+' : '-';
+        $hour = (int) abs($hours);
+        $minutes = (int) abs($remainder / 60);
 
-			if ($hour == 0 AND $minutes == 0) {
-				$sign = ' ';
-			}
-			return 'GMT' . $sign . str_pad($hour, 2, '0', STR_PAD_LEFT)
-					.':'. str_pad($minutes,2, '0');
-
+        if ($hour == 0 && $minutes == 0) {
+            $sign = ' ';
+        }
+        return 'GMT' . $sign . str_pad($hour, 2, '0', STR_PAD_LEFT)
+                .':'. str_pad($minutes,2, '0');
 	}
 
     public function update_siteconfig () {
