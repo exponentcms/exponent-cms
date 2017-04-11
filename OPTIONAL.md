@@ -79,7 +79,7 @@ are PHP scripts which are installed/extracted into the Exponent file structure, 
 requires installation of server specific binary files onto the server. In many cases
 it can be both the fastest and most accurate, yet the most difficult to install and configure.
 
-v0.12.4 is the newest version which can be downloaded from http://wkhtmltopdf.org/downloads.html
+v0.12.4 is the newest version which can be downloaded from [wkhtmltopdf.org](http://wkhtmltopdf.org/downloads.html)
 
 ## Enhanced Debugging Output
 
