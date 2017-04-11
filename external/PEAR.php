@@ -178,6 +178,11 @@ class PEAR
     // }}}
     // {{{ destructor
 
+    function __destruct()
+    {
+        $this->_PEAR();
+    }
+
     /**
      * Destructor (the emulated type of...).  Does nothing right now,
      * but is included for forward compatibility, so subclass

@@ -63,6 +63,7 @@ var SoundCloudApi = {
 				script.src = '//w.soundcloud.com/player/api.js';
 
 				// Attach handlers for all browsers
+				// Is onload enough now? do IE9 support it?
 				script.onload = script.onreadystatechange = function () {
 					if (!done && (!SoundCloudApi.readyState || SoundCloudApi.readyState === "loaded" || SoundCloudApi.readyState === "complete")) {
 						done = true;
@@ -70,9 +71,7 @@ var SoundCloudApi = {
 
 						// Handle memory leak in IE
 						script.onload = script.onreadystatechange = null;
-						if (head && script.parentNode) {
-							head.removeChild(script);
-						}
+						script.remove();
 					}
 				};
 				head.appendChild(script);
@@ -136,11 +135,10 @@ var SoundCloudIframeRenderer = {
 		// create our fake element that allows events and such to work
 		var sc = {},
 		    apiStack = [],
-		    readyState = 4;
+		    readyState = 4,
+		    autoplay = mediaElement.originalNode.autoplay;
 
-		var i = void 0,
-		    il = void 0,
-		    duration = 0,
+		var duration = 0,
 		    currentTime = 0,
 		    bufferedTime = 0,
 		    volume = 1,
@@ -221,6 +219,10 @@ var SoundCloudIframeRenderer = {
 							var url = typeof value === 'string' ? value : value[0].src;
 
 							scPlayer.load(url);
+
+							if (autoplay) {
+								scPlayer.play();
+							}
 							break;
 
 						case 'currentTime':
@@ -263,7 +265,7 @@ var SoundCloudIframeRenderer = {
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -292,8 +294,8 @@ var SoundCloudIframeRenderer = {
 			};
 		};
 
-		for (i = 0, il = methods.length; i < il; i++) {
-			assignMethods(methods[i]);
+		for (var _i = 0, _total = methods.length; _i < _total; _i++) {
+			assignMethods(methods[_i]);
 		}
 
 		// add a ready method that SC can fire
@@ -301,11 +303,15 @@ var SoundCloudIframeRenderer = {
 
 			mediaElement.scPlayer = scPlayer = _scPlayer;
 
+			if (autoplay) {
+				scPlayer.play();
+			}
+
 			// do call stack
 			if (apiStack.length) {
-				for (i = 0, il = apiStack.length; i < il; i++) {
+				for (var _i2 = 0, _total2 = apiStack.length; _i2 < _total2; _i2++) {
 
-					var stackItem = apiStack[i];
+					var stackItem = apiStack[_i2];
 
 					if (stackItem.type === 'set') {
 						var propName = stackItem.propName,
@@ -378,8 +384,8 @@ var SoundCloudIframeRenderer = {
 			// give initial events
 			var initEvents = ['rendererready', 'loadeddata', 'loadedmetadata', 'canplay'];
 
-			for (var _i = 0, _il = initEvents.length; _i < _il; _i++) {
-				var event = mejs.Utils.createEvent(initEvents[_i], sc);
+			for (var _i3 = 0, _total3 = initEvents.length; _i3 < _total3; _i3++) {
+				var event = mejs.Utils.createEvent(initEvents[_i3], sc);
 				mediaElement.dispatchEvent(event);
 			}
 		};

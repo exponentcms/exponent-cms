@@ -38,7 +38,7 @@
         };
 
     this.tpl = {
-		main       : '<div class="ui-helper-clearfix elfinder-info-title {dirclass}"><span class="elfinder-cwd-icon {class} ui-corner-all"/>{title}</div><table class="elfinder-info-tb">{content}</table>',
+		main       : '<div class="ui-helper-clearfix elfinder-info-title {dirclass}"><span class="elfinder-cwd-icon {class} ui-corner-all"{style}/>{title}</div><table class="elfinder-info-tb">{content}</table>',
         itemTitle : '<strong>{name}</strong><span class="elfinder-info-kind">{kind}</span>' ,
         groupTitle : '<strong>{items}: {num}</strong>' ,
         row : '<tr><td>{label} : </td><td>{value}</td></tr>' ,
@@ -204,6 +204,7 @@
 					fm.autoSync();
 				});
 			},
+			style = '',
             size, tmb, file, title, dcnt, rdcnt, path;
 
         if (!cnt) {
@@ -219,7 +220,11 @@
         if (cnt == 1) {
             file = files[0];
 
-			view  = view.replace('{dirclass}', file.csscls? fm.escape(file.csscls) : '').replace('{class}', fm.mime2class(file.mime));
+			if (file.icon) {
+				style = ' '+fm.getIconStyle(file);
+			}
+
+			view  = view.replace('{dirclass}', file.csscls? fm.escape(file.csscls) : '').replace('{class}', fm.mime2class(file.mime)).replace('{style}', style);
 			title = tpl.itemTitle.replace('{name}', fm.escape(file.i18 || file.name)).replace('{kind}', '<span title="'+fm.escape(file.mime)+'">'+fm.mime2kind(file)+'</span>');
 
 			tmb = fm.tmb(file);
@@ -293,7 +298,7 @@
             content.push(row.replace(l , msg.modify).replace(v , fm.formatDate(file)));
             content.push(row.replace(l , msg.perms).replace(v , fm.formatPermissions(file)));
             content.push(row.replace(l , msg.locked).replace(v , file.locked ? msg.yes : msg.no));
-			file.owner && content.push(row.replace(l, msg.owner).replace(v, file.owner));
+			// file.owner && content.push(row.replace(l, msg.owner).replace(v, file.owner));
             file.group && content.push(row.replace(l, msg.group).replace(v, file.group));
             file.perm && content.push(row.replace(l, msg.perm).replace(v, fm.formatFileMode(file.perm)));
 

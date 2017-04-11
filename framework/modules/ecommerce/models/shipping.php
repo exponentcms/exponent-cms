@@ -239,6 +239,7 @@ class shipping extends expRecord {
                 return $rates['01']['cost'];
             }
         } else {
+//            return 0;
             return '-';
         }
     }

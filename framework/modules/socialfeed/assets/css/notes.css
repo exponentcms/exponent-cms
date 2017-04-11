@@ -1,0 +1,177 @@
+/*
+ * Copyright (c) 2004-2017.  OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ */
+
+.socialfeed .channel-links {
+    margin: -33px auto 25px;
+    text-align: right;
+    width: 90%
+}
+
+.socialfeed .channel-links img:hover {
+    zoom: 120%;
+    margin: 0;
+}
+
+/* PIN BOARD */
+.socialfeed .pinboards.items {
+    list-style: none;
+}
+
+.socialfeed .pinboards.items h4 {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.socialfeed .pinboards.items .item p {
+    font-size: 16px;
+}
+
+/*.socialfeed .pinboards.items .item {*/
+    /*text-decoration: none;*/
+    /*color: #000;*/
+    /*background: #ffc;*/
+    /*display: block;*/
+    /*height: 140px;*/
+    /*width: 140px;*/
+    /*padding: 1em;*/
+    /*position: relative;*/
+    /*float: left;*/
+/*}*/
+
+.socialfeed .pinboards.items .item .post-footer {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 10px;
+    width: 90%;
+}
+
+/*.socialfeed .pinboards.items .item a {*/
+    /*position: absolute;*/
+    /*right: 10px;*/
+    /*bottom: 10px;*/
+    /*color: inherit;*/
+/*}*/
+
+/*.socialfeed .pinboards.items {*/
+    /*margin: 10px 40px 50px 0;*/
+    /*float: left;*/
+/*}*/
+
+.socialfeed .pinboards.items .item .post-content {
+    /*font-size: 12px;*/
+    margin-top: 12px;
+    font-family: 'Gloria Hallelujah', cursive;
+    /*font-family: 'Permanent Marker', cursive;*/
+    /*font-size:120%;*/
+}
+
+.socialfeed .pinboards.items .item .post-content a {
+    color: black;
+    text-decoration: none;
+}
+
+.socialfeed .pinboards.items .item .img-responsive {
+    /*display: none;*/
+    position: absolute;
+    max-width: 87%;
+    /*top: 75%;*/
+    /*left: 60%;*/
+    zoom: 15%;
+    bottom: 80px;
+    right: 80px;
+    /*max-height: 454px;*/
+}
+
+/*.socialfeed .pinboards.items .item {*/
+    /*text-decoration: none;*/
+    /*color: #000;*/
+    /*background: #ffc;*/
+    /*display: block;*/
+    /*height: 140px;*/
+    /*width: 140px;*/
+    /*padding: 1em;*/
+    /*!* Firefox *!*/
+    /*-moz-box-shadow: 5px 5px 2px #212121;*/
+    /*!* Safari+Chrome *!*/
+    /*-webkit-box-shadow: 5px 5px 2px rgba(33, 33, 33, 0.7);*/
+    /*!* Opera *!*/
+    /*box-shadow: 5px 5px 2px rgba(33, 33, 33, 0.7);*/
+/*}*/
+
+.socialfeed .pinboards.items .item {
+    -webkit-transform: rotate(-6deg);
+    -o-transform: rotate(-6deg);
+    -moz-transform: rotate(-6deg);
+    -ms-transform: rotate(-6deg);
+}
+
+.socialfeed .pinboards.items .item:nth-child(even) {
+    -o-transform: rotate(4deg);
+    -webkit-transform: rotate(4deg);
+    -moz-transform: rotate(4deg);
+    -ms-transform: rotate(4deg);
+    position: relative;
+    top: 5px;
+    background:#cfc;
+}
+
+.socialfeed .pinboards.items .item:nth-child(3n) {
+    -o-transform: rotate(-3deg);
+    -webkit-transform: rotate(-3deg);
+    -moz-transform: rotate(-3deg);
+    -ms-transform: rotate(-3deg);
+    position: relative;
+    top: -5px;
+    background:#ccf;
+}
+
+.socialfeed .pinboards.items .item:nth-child(5n) {
+    -o-transform: rotate(5deg);
+    -webkit-transform: rotate(5deg);
+    -moz-transform: rotate(5deg);
+    -ms-transform: rotate(5deg);
+    position: relative;
+    top: -10px;
+    background: #fce0ff;
+}
+
+.socialfeed .pinboards.items .item:hover,
+.socialfeed .pinboards.items .item:focus {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    position: relative;
+    z-index: 5;
+}
+
+.socialfeed .pinboards.items .item {
+    text-decoration: none;
+    color: #000;
+    background: #ffc;
+    display: block;
+    height: 280px;
+    width: 210px;
+    padding: 1em;
+    -moz-box-shadow: 5px 5px 7px #212121;
+    -webkit-box-shadow: 5px 5px 7px rgba(33, 33, 33, 0.7);
+    box-shadow: 5px 5px 7px rgba(33, 33, 33, 0.7);
+    -moz-transition: -moz-transform 0.15s linear;
+    -o-transition: -o-transform 0.15s linear;
+    -webkit-transition: -webkit-transform 0.15s linear;
+    position: relative;
+    float: left;
+}

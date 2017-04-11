@@ -1,9 +1,9 @@
 /**
  * Simple Ajax Uploader
- * Version 2.5.5
+ * Version 2.6.2
  * https://github.com/LPology/Simple-Ajax-Uploader
  *
- * Copyright 2012-2016 LPology, LLC
+ * Copyright 2012-2017 LPology, LLC
  * Released under the MIT license
  */
 
@@ -44,6 +44,10 @@ var ss = window.ss || {},
     // Check for Safari -- it doesn't like multi file uploading. At all.
     // http://stackoverflow.com/a/9851769/1091949
     isSafari = Object.prototype.toString.call( window.HTMLElement ).indexOf( 'Constructor' ) > 0,
+
+    // Detect IE7-9
+    isIE7to9 = ( navigator.userAgent.indexOf('MSIE') !== -1 &&
+                 navigator.userAgent.indexOf('MSIE 1') === -1 ),
 
     isIE7 = ( navigator.userAgent.indexOf('MSIE 7') !== -1 ),
 
@@ -652,7 +656,8 @@ ss.SimpleUpload = function( options ) {
         progressUrl: false,
         sessionProgressUrl: false,
         nginxProgressUrl: false,
-        multiple: false,
+        multiple: false, // allow multiple, concurrent file uploads
+        multipleSelect: false, // allow multiple file selection
         maxUploads: 3,
         queue: true,
         checkProgressInterval: 500,
@@ -685,6 +690,8 @@ ss.SimpleUpload = function( options ) {
         onProgress: function( pct ) {},
         onUpdateFileSize: function( filesize ) {},
         onComplete: function( filename, response, uploadBtn, size ) {},
+        onDone: function( filename, status, textStatus, response, uploadBtn, size ) {},
+        onAllDone: function() {},
         onExtError: function( filename, extension ) {},
         onSizeError: function( filename, fileSize ) {},
         onError: function( filename, type, status, statusText, response, uploadBtn, size ) {},
@@ -1039,11 +1046,11 @@ ss.SimpleUpload.prototype = {
     rerouteClicks: function( elem ) {
         "use strict";
 
-        var self = this;
+        var self = this,
+            detachOver,
+            detachClick;
 
-        // ss.addEvent() returns a function to detach, which
-        // allows us to call elem.off() to remove mouseover listener
-        elem.off = ss.addEvent( elem, 'mouseover', function() {
+        detachOver = ss.addEvent( elem, 'mouseover', function() {
             if ( self._disabled ) {
                 return;
             }
@@ -1056,6 +1063,34 @@ ss.SimpleUpload.prototype = {
             ss.copyLayout( elem, self._input.parentNode );
             self._input.parentNode.style.visibility = 'visible';
         });
+
+        // Support keyboard interaction
+        detachClick = ss.addEvent( elem, 'click', function( e ) {
+            if ( e && e.preventDefault ) {
+                e.preventDefault();
+            }
+
+            if ( self._disabled ) {
+                return;
+            }
+
+            if ( !self._input ) {
+                self._createInput();
+            }
+
+            self._overBtn = elem;
+
+            if ( !isIE7to9 ) {
+                self._input.click();
+            }
+        });
+
+        // ss.addEvent() returns a function to detach, which
+        // allows us to call elem.off() to remove mouseover listener
+        elem.off = function() {
+            detachOver();
+            detachClick();
+        };
 
         if ( self._opts.autoCalibrate && !ss.isVisible( elem ) ) {
             self.log('Upload button not visible');
@@ -1294,7 +1329,7 @@ ss.IframeUpload = {
                             self._errorFinish( fileObj, '', '', false, 'error', progBox, sizeBox, pctBox, abortBtn, removeAbort );
                         }
 
-                        fileObj = opts = key = iframe = sizeBox = progBox = pctBox = abortBtn = removeAbort = null;
+                        opts = key = iframe = sizeBox = progBox = pctBox = abortBtn = removeAbort = null;
                     }, 600);
                 }
 
@@ -1316,7 +1351,7 @@ ss.IframeUpload = {
                         self._errorFinish( fileObj, '', e.message, false, 'error', progBox, sizeBox, pctBox, abortBtn, removeAbort );
                     }
 
-                    fileObj = opts = key = sizeBox = progBox = pctBox = null;
+                    opts = key = sizeBox = progBox = pctBox = null;
                 }
             });// end load
 
@@ -1349,7 +1384,7 @@ ss.IframeUpload = {
 
                     self.log('Upload aborted');
                     opts.onAbort.call( self, fileObj.name, fileObj.btn, fileObj.size );
-                    self._last( sizeBox, progBox, pctBox, abortBtn, removeAbort );
+                    self._last( sizeBox, progBox, pctBox, abortBtn, removeAbort, fileObj, 'abort' );
                 };
 
                 ss.addEvent( abortBtn, 'click', cancel );
@@ -1387,6 +1422,7 @@ ss.IframeUpload = {
     */
     _getProg: function( key, progBar, sizeBox, pctBox, counter ) {
         "use strict";
+        /*jshint sub:true*/
 
         var self = this,
             opts = this._opts,
@@ -1395,7 +1431,7 @@ ss.IframeUpload = {
             url,
             callback;
 
-        if ( !key ) {
+        if ( !key || !opts ) {
             return;
         }
 
@@ -1690,7 +1726,7 @@ ss.XhrUpload = {
                         }
 
                         opts.onAbort.call( self, fileObj.name, fileObj.btn, fileObj.size );
-                        self._last( sizeBox, progBox, pctBox, abortBtn, removeAbort );
+                        self._last( sizeBox, progBox, pctBox, abortBtn, removeAbort, fileObj, 'abort' );
 
                     } else {
                         if ( abortBtn ) {
@@ -1802,6 +1838,7 @@ ss.XhrUpload = {
 
     _initUpload: function( fileObj ) {
         "use strict";
+        /*jshint sub:true*/
 
         var params = {},
             headers = {},
@@ -1820,7 +1857,7 @@ ss.XhrUpload = {
         }
 
         headers['X-Requested-With'] = 'XMLHttpRequest';
-        headers['X-File-Name'] = fileObj.name;
+        headers['X-File-Name'] = ss.encodeUTF8( fileObj.name );
 
         if ( this._opts.responseType.toLowerCase() == 'json' ) {
             headers['Accept'] = 'application/json, text/javascript, */*; q=0.01';
@@ -1951,7 +1988,7 @@ ss.extendObj( ss.SimpleUpload.prototype, {
 
         // Don't allow multiple file selection in Safari -- it has a nasty bug
         // http://stackoverflow.com/q/7231054/1091949
-        if ( XhrOk && !isSafari && this._opts.multiple ) {
+        if ( XhrOk && !isSafari && this._opts.multipleSelect ) {
             this._input.multiple = true;
         }
 
@@ -2043,7 +2080,7 @@ ss.extendObj( ss.SimpleUpload.prototype, {
     /**
     * Final cleanup function after upload ends
     */
-    _last: function( sizeBox, progBox, pctBox, abortBtn, removeAbort ) {
+    _last: function( sizeBox, progBox, pctBox, abortBtn, removeAbort, fileObj, textStatus, status, response ) {
         "use strict";
 
         if ( sizeBox ) {
@@ -2085,8 +2122,16 @@ ss.extendObj( ss.SimpleUpload.prototype, {
 
         // Otherwise just go to the next upload as usual
         } else {
+            this._opts.onDone.call( this, fileObj.name, status, textStatus, response, fileObj.btn, fileObj.size );
+
             this._cycleQueue();
+
+            if ( this._queue.length === 0 && this._active === 0 ) {
+                this._opts.onAllDone.call( this );
+            }
         }
+
+        fileObj = textStatus = status = response = null;
     },
 
     /**
@@ -2097,9 +2142,9 @@ ss.extendObj( ss.SimpleUpload.prototype, {
 
         this.log( 'Upload failed: ' + status + ' ' + statusText );
         this._opts.onError.call( this, fileObj.name, errorType, status, statusText, response, fileObj.btn, fileObj.size );
-        this._last( sizeBox, progBox, pctBox, abortBtn, removeAbort );
+        this._last( sizeBox, progBox, pctBox, abortBtn, removeAbort, fileObj, 'error', status, response );
 
-        fileObj = status = statusText = response = errorType = sizeBox = progBox = pctBox = abortBtn = removeAbort = null;
+        statusText = errorType = sizeBox = progBox = pctBox = abortBtn = removeAbort = null;
     },
 
     /**
@@ -2120,8 +2165,8 @@ ss.extendObj( ss.SimpleUpload.prototype, {
         }
 
         this._opts.onComplete.call( this, fileObj.name, response, fileObj.btn, fileObj.size );
-        this._last( sizeBox, progBox, pctBox, abortBtn, removeAbort );
-        fileObj = status = statusText = response = sizeBox = progBox = pctBox = abortBtn = removeAbort = null;
+        this._last( sizeBox, progBox, pctBox, abortBtn, removeAbort, fileObj, 'success', status, response );
+        statusText = sizeBox = progBox = pctBox = abortBtn = removeAbort = null;
     },
 
     /**

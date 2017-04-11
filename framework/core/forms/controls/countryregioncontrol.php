@@ -133,6 +133,8 @@ class countryregioncontrol extends formcontrol {
         }
 		$html .= $c_dd->controlToHTML($c_name);
 		$html .="<br>";
+        if (!bs())
+            $html .="<label class='label'></label>";
 		$html .= $r_dd->controlToHTML($r_name);
 
 		return $html;

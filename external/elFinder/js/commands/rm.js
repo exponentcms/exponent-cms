@@ -7,6 +7,7 @@
  **/
 elFinder.prototype.commands.rm = function() {
 	
+	this.updateOnSelect  = false;
 	this.shortcuts = [{
 		pattern     : 'delete ctrl+backspace'
 	}];
@@ -14,7 +15,7 @@ elFinder.prototype.commands.rm = function() {
 	this.getstate = function(sel) {
 		var fm = this.fm;
 		sel = sel || fm.selected();
-		return !this._disabled && sel.length && $.map(sel, function(h) { var f = fm.file(h); return f && ! f.locked && ! fm.isRoot(f)? h : null }).length == sel.length
+		return sel.length && $.map(sel, function(h) { var f = fm.file(h); return f && ! f.locked && ! fm.isRoot(f)? h : null }).length == sel.length
 			? 0 : -1;
 	}
 	
@@ -96,6 +97,9 @@ elFinder.prototype.commands.rm = function() {
 							dfrd.reject(error);
 						})
 						.done(function(data) {
+							if (data.error || data.warning) {
+								data.sync = true;
+							}
 							dfrd.done(data);
 						})
 						.always(function() {

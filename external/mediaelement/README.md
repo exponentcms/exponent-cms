@@ -4,16 +4,16 @@ One file. Any browser. Same UI.
 
 * Author: John Dyer [http://j.hn/](http://j.hn/)
 * Website: [http://mediaelementjs.com/](http://mediaelementjs.com/)
-* License: [MIT](http://johndyer.mit-license.org/)
+* License: [MIT](http://mediaelement.mit-license.org/)
 * Meaning: Use everywhere, keep copyright, it'd be swell if you'd link back here.
 * Thanks: my employer, [Dallas Theological Seminary](http://www.dts.edu/)
-* Contributors: [all contributors](https://github.com/johndyer/mediaelement/graphs/contributors)
+* Contributors: [all contributors](https://github.com/mediaelement/mediaelement/graphs/contributors)
 * Currently maintained by Rafael Miranda (@ron666)
 
-[![GitHub Version](https://img.shields.io/npm/v/mediaelement.svg)](https://github.com/johndyer/mediaelement)
-[![Build Status](https://img.shields.io/travis/johndyer/mediaelement.svg)](https://travis-ci.org/johndyer/mediaelement)
-[![Coverage Status](https://img.shields.io/coveralls/johndyer/mediaelement.svg)](https://coveralls.io/github/johndyer/mediaelement)
-[![MIT License](https://img.shields.io/npm/l/mediaelement.svg)](https://johndyer.mit-license.org/)
+[![GitHub Version](https://img.shields.io/npm/v/mediaelement.svg)](https://github.com/mediaelement/mediaelement)
+[![Build Status](https://img.shields.io/travis/mediaelement/mediaelement.svg)](https://travis-ci.org/mediaelement/mediaelement)
+[![Coverage Status](https://img.shields.io/coveralls/mediaelement/mediaelement.svg)](https://coveralls.io/github/mediaelement/mediaelement)
+[![MIT License](https://img.shields.io/npm/l/mediaelement.svg)](https://mediaelement.mit-license.org/)
 [![CDNJS](https://img.shields.io/cdnjs/v/mediaelement.svg)](https://cdnjs.com/libraries/mediaelement)
 
 # Table of Contents
@@ -31,12 +31,16 @@ One file. Any browser. Same UI.
 
 _MediaElementPlayer: HTML5 `<video>` and `<audio>` player_
 
-A complete HTML/CSS audio/video player built on top `MediaElement.js` and `jQuery`. Many great HTML5 players have a completely separate Flash UI in fallback mode, but MediaElementPlayer.js uses the same HTML/CSS for all players.
+A complete HTML/CSS audio/video player built on top `MediaElement.js`. Many great HTML5 players have a completely separate Flash UI in fallback mode, but MediaElementPlayer.js uses the same HTML/CSS for all players.
 
 `MediaElement.js` is a set of custom Flash plugins that mimic the HTML5 MediaElement API for browsers that don't support HTML5 or don't support the media codecs you're using. 
 Instead of using Flash as a _fallback_, Flash is used to make the browser seem HTML5 compliant and enable codecs like H.264 (via Flash) on all browsers.
 
 In general, `MediaElement.js` supports **IE9+, MS Edge, Chrome, Firefox, Safari, iOS 8+** and **Android 4.0+**.
+
+## * IMPORTANT NOTE ABOUT `4.x` VERSION
+
+`jQuery` has been completely removed from the code base, with the only exception of converting `MediaElementPlayer` into a `jQuery` plugin.
 
 <a id="migration"></a>
 ## * IMPORTANT: Migrating from `2.x` to `3.x` version
@@ -77,12 +81,14 @@ The full documentation on how to install `MediaElement.js` is available at [Inst
 
 A brief guide on how to create and use instances of `MediaElement` available at [Usage](docs/usage.md).
 
-Additional features can be found at https://github.com/johndyer/mediaelement-plugins
+Additional features can be found at https://github.com/mediaelement/mediaelement-plugins
 
 <a id="api"></a>
 ## API and Configuration
    
 `MediaElement.js` has many options that you can take advantage from. Visit [API and Configuration](docs/api.md) for more details.
+
+Also, a `Utilities/Features` guide is available for development. Visit [Utilities/Features](docs/utils.md) for more details.
 
 <a id="guidelines"></a>
 ## Guidelines for Contributors

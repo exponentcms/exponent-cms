@@ -21,6 +21,7 @@
  * @package    Subsystems
  * @subpackage Subsystems
  */
+/** @define "BASE" "../../.." */
 
 class expHtmlToPDF
 {
@@ -28,7 +29,7 @@ class expHtmlToPDF
      * Private use variables.
      */
     public  $pdf = null;  // pdf engine object
-    protected $size = 'A4';
+    protected $size = HTMLTOPDF_PAPER;
     protected $orient = 'portrait';
 
     /**
@@ -76,11 +77,11 @@ class expHtmlToPDF
      * @param string $html        html code for page
      * @param bool   $use_file    a flag to show $html is an html file location to be loaded
      */
-    public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
+    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
         if (HTMLTOPDF_ENGINE != 'none') {
             $engine = HTMLTOPDF_ENGINE;
-            $this->pdf = new $engine($paper_size = "A4", $orientation = "portrait", $html, $use_file = false);
+            $this->pdf = new $engine($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html, $use_file);
         }
     }
 
@@ -143,22 +144,21 @@ class expHtmlToPDF
     public function set_orientation($orientation)
     {
         if (!empty($this->pdf)) {
-            $this->pdf->set_orientation($orientation);
             $this->orient = $orientation;
+            $this->pdf->set_orientation($this->orient);
         }
     }
 
     /**
      * Set page/paper size.
-     * By default page size is A4.
      *
      * @param string $size Formal paper size (eg; A4, letter...)
      */
     public function set_page_size($size)
     {
         if (!empty($this->pdf)) {
-            $this->pdf->set_page_size($size);
             $this->size = $size;
+            $this->pdf->set_page_size($this->size);
         }
     }
 
@@ -290,7 +290,7 @@ class expWKPDF extends expHtmlToPDF
      *
      * @throws Exception
      */
-    public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
+    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
         $this->cmd = HTMLTOPDF_PATH; //.self::_getCPU();
         if (!file_exists($this->cmd)) {
@@ -331,7 +331,6 @@ class expWKPDF extends expHtmlToPDF
 
     /**
      * Set page/paper size.
-     * By default page size is A4.
      *
      * @param string $size Formal paper size (eg; A4, letter...)
      */
@@ -546,7 +545,6 @@ class expWKPDF extends expHtmlToPDF
  * @package    Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
 
 class expDOMPDF extends expHtmlToPDF
 {
@@ -566,13 +564,13 @@ class expDOMPDF extends expHtmlToPDF
      * @param string $html        html code for page
      * @param bool   $use_file    a flag to show $html is an html file location to be loaded
      */
-    public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
+    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
         if (file_exists(BASE . 'external/dompdf/dompdf.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
             require_once(BASE . 'external/dompdf/dompdf_config.inc.php');
             $this->pdf = new DOMPDF();
-            $this->size = $paper_size;
+            $this->size = strtolower($paper_size);
             $this->orient = $orientation;
             $this->pdf->set_paper($this->size, $this->orient);
             if (!empty($html)) {
@@ -582,8 +580,6 @@ class expDOMPDF extends expHtmlToPDF
                     $this->pdf->load_html($html);
                 }
             }
-        } else {
-            return null;
         }
     }
 
@@ -631,19 +627,17 @@ class expDOMPDF extends expHtmlToPDF
 
     /**
      * Set page/paper size.
-     * By default page size is A4.
      *
      * @param string $size Formal paper size (eg; A4, letter...)
      */
     public function set_page_size($size)
     {
-        $this->size = $size;
+        $this->size = strtolower($size);
         $this->pdf->set_paper($this->size, $this->orient);
     }
 
     /**
      * Set page/paper size.
-     * By default page size is A4.
      *
      * @param string $size        Formal paper size (eg; A4, letter...)
      * @param string $orientation orientation of paper
@@ -651,7 +645,7 @@ class expDOMPDF extends expHtmlToPDF
     public function set_paper($size, $orientation = 'portrait')
     {
         if (!empty($size)) {
-            $this->size = $size;
+            $this->size = strtolower($size);
         }
         if (!empty($orientation)) {
             $this->orient = $orientation;
@@ -726,9 +720,8 @@ class expDOMPDF extends expHtmlToPDF
  * @package    Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
 
-class expDOMPDF070 extends expHtmlToPDF
+class expDOMPDF070 extends expDOMPDF
 {
 
     /**
@@ -746,14 +739,14 @@ class expDOMPDF070 extends expHtmlToPDF
      * @param string $html        html code for page
      * @param bool   $use_file    a flag to show $html is an html file location to be loaded
      */
-    public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
+    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
         if (file_exists(BASE . 'external/dompdf070/autoload.inc.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata'))
                 expFile::makeDirectory('tmp/ttfontdata');
             require_once(BASE . 'external/dompdf070/autoload.inc.php');
             $this->pdf = new Dompdf\Dompdf();
-            $this->size = $paper_size;
+            $this->size = strtolower($paper_size);
             $this->orient = $orientation;
             $this->pdf->setPaper($this->size, $this->orient);
             if (!empty($html)) {
@@ -763,39 +756,7 @@ class expDOMPDF070 extends expHtmlToPDF
                     $this->pdf->loadHtml($html);
                 }
             }
-        } else {
-            return null;
         }
-    }
-
-    /**
-     * Render and Return PDF using various options.
-     *
-     * @param string $mode How to output (constants from this same class).
-     * @param string $file The PDF's filename (the usage depends on $mode.
-     *
-     * @return string|boolean Depending on $mode, this may be success (boolean) or PDF (string).
-     */
-    public function createpdf($mode, $file)
-    {
-        $this->pdf->render();
-        switch ($mode) {
-            case self::$PDF_ASSTRING:
-                return $this->pdf->output();
-                break;
-            case self::$PDF_EMBEDDED:
-                $this->pdf->stream($file, array('Attachment' => false));
-                break;
-            case self::$PDF_SAVEFILE:
-                return file_put_contents($file, $this->pdf->output());
-                break;
-            case self::$PDF_DOWNLOAD:
-                $this->pdf->stream($file, array('Attachment' => true));
-                break;
-            default:
-                $this->pdf->stream($file, array('Attachment' => HTMLTOPDF_OUTPUT));
-        }
-        return true;
     }
 
     /**
@@ -812,19 +773,17 @@ class expDOMPDF070 extends expHtmlToPDF
 
     /**
      * Set page/paper size.
-     * By default page size is A4.
      *
      * @param string $size Formal paper size (eg; A4, letter...)
      */
     public function set_page_size($size)
     {
-        $this->size = $size;
+        $this->size = strtolower($size);
         $this->pdf->setPaper($this->size, $this->orient);
     }
 
     /**
      * Set page/paper size.
-     * By default page size is A4.
      *
      * @param string $size        Formal paper size (eg; A4, letter...)
      * @param string $orientation orientation of paper
@@ -832,7 +791,7 @@ class expDOMPDF070 extends expHtmlToPDF
     public function set_paper($size, $orientation = 'portrait')
     {
         if (!empty($size)) {
-            $this->size = $size;
+            $this->size = strtolower($size);
         }
         if (!empty($orientation)) {
             $this->orient = $orientation;
@@ -861,43 +820,54 @@ class expDOMPDF070 extends expHtmlToPDF
         $this->pdf->loadHtmlFile($htmlfile);
     }
 
-    /**
-     * Convert HTML to PDF.
-     */
-    public function render()
-    {
-        $this->pdf->render();
-    }
+}
+
+/**
+ * This is the class expDOMPDF080
+ * a wrapper for using dompdf v0.8.0
+ *
+ * @package    Subsystems
+ * @subpackage Subsystems
+ */
+
+class expDOMPDF080 extends expDOMPDF070
+{
 
     /**
-     * Streams the PDF to the client.
-     *
-     * @param string $filename the pdf file to output
-     * @param array  $options  options
-     *                         'compress' = > 1 or 0 - apply content stream compression, this is on (1) by default
-     *                         ◦   'Attachment' => 1 or 0 - if 1, force the browser to open a download dialog, on (1) by default
+     * Return status of pdf engine being installed correctly
      */
-    public function stream($filename, $options = null)
+    public static function installed()
     {
-        $this->pdf->stream($filename, $options);
+        return file_exists(BASE . 'external/dompdf080/autoload.inc.php');
     }
 
     /**
-     * Return PDF as a string.
+     * Constructor: initialize a pdf file file.
      *
-     * @param int $compress compress the output
-     *
-     * @return string
+     * @param string $paper_size page size
+     * @param string $orientation page orientation
+     * @param string $html html code for page
+     * @param bool $use_file a flag to show $html is an html file location to be loaded
      */
-    public function output($compress = null)
+    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
-        return $this->pdf->output($compress);
+        if (file_exists(BASE . 'external/dompdf080/autoload.inc.php')) {
+            if (!file_exists(BASE . 'tmp/ttfontdata'))
+                expFile::makeDirectory('tmp/ttfontdata');
+            require_once(BASE . 'external/dompdf080/autoload.inc.php');
+            $this->pdf = new Dompdf\Dompdf();
+            $this->size = $paper_size;
+            $this->orient = $orientation;
+            $this->pdf->setPaper($this->size, $this->orient);
+            if (!empty($html)) {
+                if ($use_file) {
+                    $this->pdf->loadHtmlFile($html);
+                } else {
+                    $this->pdf->loadHtml($html);
+                }
+            }
+        }
     }
-
-    public function set_grayscale($mode)
-    {
-    }
-
 }
 
 /**
@@ -907,7 +877,6 @@ class expDOMPDF070 extends expHtmlToPDF
  * @package    Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
 
 class expMPDF extends expHtmlToPDF
 {
@@ -927,7 +896,7 @@ class expMPDF extends expHtmlToPDF
      * @param string $html        html code for page
      * @param bool   $use_file    a flag to show $html is an html file location to be loaded
      */
-    public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
+    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
         if (file_exists(BASE . 'external/MPDF57/mpdf.php')) {
             if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
@@ -948,8 +917,6 @@ class expMPDF extends expHtmlToPDF
                 }
             }
             if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-        } else {
-            return null;
         }
     }
 
@@ -995,7 +962,6 @@ class expMPDF extends expHtmlToPDF
 
     /**
      * Set page/paper size.
-     * By default page size is A4.
      *
      * @param string $size Formal paper size (eg; A4, letter...)
      */
@@ -1009,7 +975,6 @@ class expMPDF extends expHtmlToPDF
 
     /**
      * Set page/paper size.
-     * By default page size is A4.
      *
      * @param string $size        Formal paper size (eg; A4, letter...)
      * @param string $orientation orientation of paper
@@ -1104,9 +1069,8 @@ class expMPDF extends expHtmlToPDF
  * @package    Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
 
-class expMPDF6 extends expHtmlToPDF
+class expMPDF6 extends expMPDF
 {
 
     /**
@@ -1124,7 +1088,7 @@ class expMPDF6 extends expHtmlToPDF
      * @param string $html        html code for page
      * @param bool   $use_file    a flag to show $html is an html file location to be loaded
      */
-    public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
+    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
         if (file_exists(BASE . 'external/mpdf60/mpdf.php')) {
             if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
@@ -1145,151 +1109,7 @@ class expMPDF6 extends expHtmlToPDF
                 }
             }
             if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-        } else {
-            return null;
         }
-    }
-
-    /**
-     * Render and Return PDF using various options.
-     *
-     * @param string $mode How to output (constants from this same class).
-     * @param string $file The PDF's filename (the usage depends on $mode.
-     *
-     * @return string|boolean Depending on $mode, this may be success (boolean) or PDF (string).
-     */
-    public function createpdf($mode, $file)
-    {
-//        $this->pdf->render();
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        switch ($mode) {
-            case self::$PDF_SAVEFILE:
-                return file_put_contents($file, $this->pdf->Output('S'));
-                break;
-            case self::$PDF_ASSTRING:
-            case self::$PDF_EMBEDDED:
-            case self::$PDF_DOWNLOAD:
-            default:
-                $this->pdf->Output($file, $mode);
-        }
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-        return true;
-    }
-
-    /**
-     * Set orientation, use constants from this class.
-     * By default orientation is portrait.
-     *
-     * @param string $orientation orientation of paper
-     */
-    public function set_orientation($orientation)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        $this->pdf->_setPageSize($this->size,$orientation);
-        $this->orient = strtoupper(substr($orientation, 0, 1));
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    /**
-     * Set page/paper size.
-     * By default page size is A4.
-     *
-     * @param string $size Formal paper size (eg; A4, letter...)
-     */
-    public function set_page_size($size)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        $this->pdf->_setPageSize($size,$this->orient);
-        $this->size = $size;
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    /**
-     * Set page/paper size.
-     * By default page size is A4.
-     *
-     * @param string $size        Formal paper size (eg; A4, letter...)
-     * @param string $orientation orientation of paper
-     */
-    public function set_paper($size, $orientation = 'portrait')
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        $this->pdf->_setPageSize($size,$orientation);
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    /**
-     * Set html content by string.
-     *
-     * @param string $html html content.
-     * @param null   $encoding
-     */
-    public function set_html($html, $encoding = null)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        $this->pdf->WriteHTML($html, $encoding);
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    /**
-     * Set html content by file.
-     *
-     * @param string $htmlfile the html file to use
-     */
-    public function set_html_file($htmlfile)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        $this->pdf->WriteHTML(file_get_contents($htmlfile));
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    /**
-     * Convert HTML to PDF.
-     */
-    public function render()
-    {
-        // MPDF doesn't require a render call
-    }
-
-    /**
-     * Streams the PDF to the client.
-     *
-     * @param string $filename the pdf file to output
-     * @param array  $options  options
-     *                         'compress' = > 1 or 0 - apply content stream compression, this is on (1) by default
-     *                         ◦   'Attachment' => 1 or 0 - if 1, force the browser to open a download dialog, on (1) by default
-     */
-    public function stream($filename, $options = null)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        $this->pdf->Output($filename, 'D');
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    /**
-     * Return PDF as a string.
-     *
-     * @param int $compress compress the output
-     *
-     * @return string
-     */
-    public function output($compress = null)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        return $this->pdf->Output(null, 'S');
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    public function set_grayscale($mode)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        if ($mode) {
-            $this->pdf->restrictColorSpace = 1;
-        } else {
-            $this->pdf->restrictColorSpace = 0;
-
-        }
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
 }
@@ -1301,9 +1121,8 @@ class expMPDF6 extends expHtmlToPDF
  * @package    Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
 
-class expMPDF61 extends expHtmlToPDF
+class expMPDF61 extends expMPDF6
 {
 
     /**
@@ -1321,7 +1140,7 @@ class expMPDF61 extends expHtmlToPDF
      * @param string $html        html code for page
      * @param bool   $use_file    a flag to show $html is an html file location to be loaded
      */
-    public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
+    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
         if (file_exists(BASE . 'external/mpdf61/mpdf.php')) {
             if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
@@ -1342,151 +1161,7 @@ class expMPDF61 extends expHtmlToPDF
                 }
             }
             if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-        } else {
-            return null;
         }
-    }
-
-    /**
-     * Render and Return PDF using various options.
-     *
-     * @param string $mode How to output (constants from this same class).
-     * @param string $file The PDF's filename (the usage depends on $mode.
-     *
-     * @return string|boolean Depending on $mode, this may be success (boolean) or PDF (string).
-     */
-    public function createpdf($mode, $file)
-    {
-//        $this->pdf->render();
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        switch ($mode) {
-            case self::$PDF_SAVEFILE:
-                return file_put_contents($file, $this->pdf->Output('S'));
-                break;
-            case self::$PDF_ASSTRING:
-            case self::$PDF_EMBEDDED:
-            case self::$PDF_DOWNLOAD:
-            default:
-                $this->pdf->Output($file, $mode);
-        }
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-        return true;
-    }
-
-    /**
-     * Set orientation, use constants from this class.
-     * By default orientation is portrait.
-     *
-     * @param string $orientation orientation of paper
-     */
-    public function set_orientation($orientation)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        $this->pdf->_setPageSize($this->size,$orientation);
-        $this->orient = strtoupper(substr($orientation, 0, 1));
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    /**
-     * Set page/paper size.
-     * By default page size is A4.
-     *
-     * @param string $size Formal paper size (eg; A4, letter...)
-     */
-    public function set_page_size($size)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        $this->pdf->_setPageSize($size,$this->orient);
-        $this->size = $size;
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    /**
-     * Set page/paper size.
-     * By default page size is A4.
-     *
-     * @param string $size        Formal paper size (eg; A4, letter...)
-     * @param string $orientation orientation of paper
-     */
-    public function set_paper($size, $orientation = 'portrait')
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        $this->pdf->_setPageSize($size,$orientation);
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    /**
-     * Set html content by string.
-     *
-     * @param string $html html content.
-     * @param null   $encoding
-     */
-    public function set_html($html, $encoding = null)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        $this->pdf->WriteHTML($html, $encoding);
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    /**
-     * Set html content by file.
-     *
-     * @param string $htmlfile the html file to use
-     */
-    public function set_html_file($htmlfile)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        $this->pdf->WriteHTML(file_get_contents($htmlfile));
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    /**
-     * Convert HTML to PDF.
-     */
-    public function render()
-    {
-        // MPDF doesn't require a render call
-    }
-
-    /**
-     * Streams the PDF to the client.
-     *
-     * @param string $filename the pdf file to output
-     * @param array  $options  options
-     *                         'compress' = > 1 or 0 - apply content stream compression, this is on (1) by default
-     *                         ◦   'Attachment' => 1 or 0 - if 1, force the browser to open a download dialog, on (1) by default
-     */
-    public function stream($filename, $options = null)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        $this->pdf->Output($filename, 'D');
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    /**
-     * Return PDF as a string.
-     *
-     * @param int $compress compress the output
-     *
-     * @return string
-     */
-    public function output($compress = null)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        return $this->pdf->Output(null, 'S');
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-    }
-
-    public function set_grayscale($mode)
-    {
-        ini_set('display_errors', 0);  // warnings must be turned off to work
-        if ($mode) {
-            $this->pdf->restrictColorSpace = 1;
-        } else {
-            $this->pdf->restrictColorSpace = 0;
-
-        }
-        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
 }
@@ -1498,7 +1173,6 @@ class expMPDF61 extends expHtmlToPDF
  * @package    Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
 
 class expHTML2PDF extends expHtmlToPDF
 {
@@ -1518,7 +1192,7 @@ class expHTML2PDF extends expHtmlToPDF
      * @param string $html        html code for page
      * @param bool   $use_file    a flag to show $html is an html file location to be loaded
      */
-    public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
+    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
         $html2pdf_loc = BASE . 'external/html2pdf/';
         $tcpdf_loc = BASE . 'external/TCPDF/';
@@ -1547,8 +1221,6 @@ class expHTML2PDF extends expHtmlToPDF
                 }
             }
             if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-        } else {
-            return null;
         }
     }
 
@@ -1594,7 +1266,6 @@ class expHTML2PDF extends expHtmlToPDF
 
     /**
      * Set page/paper size.
-     * By default page size is A4.
      *
      * @param string $size Formal paper size (eg; A4, letter...)
      */
@@ -1608,7 +1279,6 @@ class expHTML2PDF extends expHtmlToPDF
 
     /**
      * Set page/paper size.
-     * By default page size is A4.
      *
      * @param string $size        Formal paper size (eg; A4, letter...)
      * @param string $orientation orientation of paper

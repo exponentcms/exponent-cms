@@ -18,7 +18,7 @@
 {css unique="player" link="`$asset_path`css/player.css"}
 
 {/css}
-{css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.css"}
+{css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.min.css"}
 
 {/css}
 {css unique="mediaelement-skins" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mejs-skins.css"}
@@ -59,9 +59,10 @@
 
 {script unique="mediaplayer-`$name`"}
 {literal}
+    mejs.i18n.language('{/literal}{substr($smarty.const.LOCALE,0,2)}{literal}'); // Setting language
     $('audio,video').mediaelementplayer({
         success: function(player, node) {
-            $('#' + node.id + '-mode').html('mode: ' + player.pluginType);
+            $('#' + node.id + '-mode').html('mode: ' + player.rendererName);
         },
         features: [{/literal}{$control}{literal}]
     });

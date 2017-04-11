@@ -163,7 +163,7 @@
                 { type: 'text' },
                 { type: 'html' },
                 { type: 'text' },
-                { type: 'text' },
+                { type: 'num-fmt' },
                 { searchable: false, orderable: false },
             ],
             //order: [1, 'asc'],

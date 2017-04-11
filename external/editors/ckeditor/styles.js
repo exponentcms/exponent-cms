@@ -33,6 +33,7 @@ CKEDITOR.stylesSet.add( 'default', [
 	{ name: 'Address',			element: 'address' },
 	*/
 
+	/*
 	{ name: 'Italic Title',		element: 'h2', styles: { 'font-style': 'italic' } },
 	{ name: 'Subtitle',			element: 'h3', styles: { 'color': '#aaa', 'font-style': 'italic' } },
 	{
@@ -44,6 +45,7 @@ CKEDITOR.stylesSet.add( 'default', [
 			border: '1px solid #ccc'
 		}
 	},
+	*/
 
 	/* Inline styles */
 
@@ -59,7 +61,8 @@ CKEDITOR.stylesSet.add( 'default', [
 	{ name: 'Superscript',		element: 'sup' },
 	*/
 
-	{ name: 'Marker',			element: 'span', attributes: { 'class': 'marker' } },
+	// { name: 'Marker',			element: 'span', attributes: { 'class': 'marker' } },
+	{ name: 'Marker',			element: 'mark' },
 
 	{ name: 'Big',				element: 'big' },
 	{ name: 'Small',			element: 'small' },
@@ -76,21 +79,30 @@ CKEDITOR.stylesSet.add( 'default', [
 	{ name: 'Cited Work',		element: 'cite' },
 	{ name: 'Inline Quotation',	element: 'q' },
 
-	{ name: 'Language: RTL',	element: 'span', attributes: { 'dir': 'rtl' } },
-	{ name: 'Language: LTR',	element: 'span', attributes: { 'dir': 'ltr' } },
+	//{ name: 'Language: RTL',	element: 'span', attributes: { 'dir': 'rtl' } },
+	//{ name: 'Language: LTR',	element: 'span', attributes: { 'dir': 'ltr' } },
 
 	/* Object styles */
 
 	{
-		name: 'Styled Image (left)',
-		element: 'img',
-		attributes: { 'class': 'left' }
+		name: 'Styled image (left)',
+		type: 'widget',
+		widget: 'image',
+		attributes: { 'class': 'image-left' }
 	},
 
 	{
-		name: 'Styled Image (right)',
-		element: 'img',
-		attributes: { 'class': 'right' }
+		name: 'Styled image (right)',
+		type: 'widget',
+		widget: 'image',
+		attributes: { 'class': 'image-right' }
+	},
+
+	{
+		name: 'Styled image (center)',
+		type: 'widget',
+		widget: 'image',
+		attributes: { 'class': 'image-center' }
 	},
 
 	{
@@ -119,19 +131,19 @@ CKEDITOR.stylesSet.add( 'default', [
 
 	{ name: 'Featured Formula', type: 'widget', widget: 'mathjax', attributes: { 'class': 'math-featured' } },
 
-	{ name: '240p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-240p' }, group: 'size' },
-	{ name: '360p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-360p' }, group: 'size' },
-	{ name: '480p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-480p' }, group: 'size' },
-	{ name: '720p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-720p' }, group: 'size' },
-	{ name: '1080p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-1080p' }, group: 'size' },
+	{ name: '240p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-240p' } },
+	{ name: '360p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-360p' } },
+	{ name: '480p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-480p' } },
+	{ name: '720p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-720p' } },
+	{ name: '1080p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-1080p' } },
 
 	// Adding space after the style name is an intended workaround. For now, there
 	// is no option to create two styles with the same name for different widget types. See #16664.
-	{ name: '240p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-240p' }, group: 'size' },
-	{ name: '360p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-360p' }, group: 'size' },
-	{ name: '480p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-480p' }, group: 'size' },
-	{ name: '720p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-720p' }, group: 'size' },
-	{ name: '1080p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-1080p' }, group: 'size' }
+	{ name: '240p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-240p' } },
+	{ name: '360p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-360p' } },
+	{ name: '480p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-480p' } },
+	{ name: '720p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-720p' } },
+	{ name: '1080p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-1080p' } }
 
 ] );
 

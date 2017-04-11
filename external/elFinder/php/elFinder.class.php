@@ -156,6 +156,7 @@ class elFinder {
 		'url'       => array('target' => true, 'options' => false),
 		'callback'  => array('node' => true, 'json' => false, 'bind' => false, 'done' => false),
 		'chmod'     => array('targets' => true, 'mode' => true),
+		'subdirs'   => array('targets' => true),
 		'pixlr'     => array('target' => false, 'node' => false, 'image' => false, 'type' => false, 'title' => false)
 	);
 	
@@ -959,6 +960,7 @@ class elFinder {
 		$res = true;
 		if (is_object($volume) && method_exists($volume, 'netunmount')) {
 			$res = $volume->netunmount($netVolumes, $key);
+			$volume->clearSessionCache();
 		}
 		if ($res) {
 			if (is_string($key) && isset($netVolumes[$key])) {
@@ -1135,7 +1137,8 @@ class elFinder {
 		// so open default dir
 		if ((!$cwd || !$cwd['read']) && $init) {
 			$volume = $this->default;
-			$cwd    = $volume->dir($volume->defaultPath());
+			$target = $volume->defaultPath();
+			$cwd    = $volume->dir($target);
 		}
 		
 		if (!$cwd) {
@@ -1147,17 +1150,22 @@ class elFinder {
 
 		$files = array();
 
+		// get current working directory files list
+		if (($ls = $volume->scandir($cwd['hash'])) === false) {
+			return array('error' => $this->error(self::ERROR_OPEN, $cwd['name'], $volume->error()));
+		}
+		
+		if (isset($cwd['dirs']) && $cwd['dirs'] != 1) {
+			$cwd = $volume->dir($target);
+		}
+		
 		// get other volume root
 		if ($tree) {
 			foreach ($this->volumes as $id => $v) {
 				$files[] = $v->file($v->root());
 			}
 		}
-
-		// get current working directory files list
-		if (($ls = $volume->scandir($cwd['hash'])) === false) {
-			return array('error' => $this->error(self::ERROR_OPEN, $cwd['name'], $volume->error()));
-		}
+		
 		// long polling mode
 		if ($args['compare']) {
 			$sleep = max(1, (int)$volume->getOption('lsPlSleep'));
@@ -1642,6 +1650,26 @@ class elFinder {
 			}
 		}
 
+		return $result;
+	}
+
+	/**
+	 * Return has subdirs
+	 *
+	 * @param  array  command arguments
+	 * @return array
+	 * @author Dmitry Naoki Sawada
+	 **/
+	protected function subdirs($args) {
+	
+		$result  = array('subdirs' => array());
+		$targets = $args['targets'];
+	
+		foreach ($targets as $target) {
+			if (($volume = $this->volume($target)) !== false) {
+				$result['subdirs'][$target] = $volume->subdirs($target)? 1 : 0;
+			}
+		}
 		return $result;
 	}
 
@@ -2695,9 +2723,16 @@ class elFinder {
 			return array('error' => $this->error(self::ERROR_EXTRACT, '#'.$target, self::ERROR_FILE_NOT_FOUND));
 		}  
 
-		return ($file = $volume->extract($target, $makedir))
-			? array('added' => isset($file['read'])? array($file) : $file)
-			: array('error' => $this->error(self::ERROR_EXTRACT, $volume->path($target), $volume->error()));
+		$res = array();
+		if ($file = $volume->extract($target, $makedir)) {
+			$res['added'] = isset($file['read'])? array($file) : $file;
+			if ($err = $volume->error()) {
+				$res['warning'] = $err;
+			}
+		} else {
+			$res['error'] = $this->error(self::ERROR_EXTRACT, $volume->path($target), $volume->error());
+		}
+		return $res;
 	}
 	
 	/**
@@ -3494,6 +3529,21 @@ class elFinder {
 	
 		if ($dlurl) {
 			$url = parse_url($dlurl);
+			$ports = array(
+				'http'  => '80',
+				'ssl'   => '443',
+				'ftp'   => '21'
+			);
+			$url['scheme'] = strtolower($url['scheme']);
+			if ($url['scheme'] === 'https') {
+				$url['scheme'] = 'ssl';
+			}
+			if (! isset($url['port']) && isset($ports[$url['scheme']])) {
+				$url['port'] = $ports[$url['scheme']];
+			}
+			if (! isset($url['port'])) {
+				return false;
+			}
 			$cookies = array();
 			if ($data['cookies']) {
 				foreach ($data['cookies'] as $d => $c) {
@@ -3504,7 +3554,7 @@ class elFinder {
 			}
 
 			$query = isset($url['query']) ? '?'.$url['query'] : '';
-			$stream = stream_socket_client('ssl://'.$url['host'].':443');
+			$stream = stream_socket_client($url['scheme'].'://'.$url['host'].':'.$url['port']);
 			stream_set_timeout($stream, 300);
 			fputs($stream, "GET {$url['path']}{$query} HTTP/1.1\r\n");
 			fputs($stream, "Host: {$url['host']}\r\n");

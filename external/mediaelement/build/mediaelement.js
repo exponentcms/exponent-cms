@@ -447,6 +447,8 @@ var _mejs = _dereq_(6);
 
 var _mejs2 = _interopRequireDefault(_mejs);
 
+var _general = _dereq_(16);
+
 var _media = _dereq_(17);
 
 var _renderer = _dereq_(7);
@@ -488,7 +490,12 @@ var MediaElement = function MediaElement(idOrNode, options) {
    * Flag in `<object>` and `<embed>` to determine whether to use local or CDN
    * Possible values: 'always' (CDN version) or 'sameDomain' (local files)
    */
-		shimScriptAccess: 'sameDomain'
+		shimScriptAccess: 'sameDomain',
+		/**
+   * If error happens, set up HTML message
+   * @type {String}
+   */
+		customError: ''
 	};
 
 	options = Object.assign(t.defaults, options);
@@ -498,8 +505,7 @@ var MediaElement = function MediaElement(idOrNode, options) {
 	t.mediaElement.options = options;
 
 	var id = idOrNode,
-	    i = void 0,
-	    il = void 0;
+	    error = false;
 
 	if (typeof idOrNode === 'string') {
 		t.mediaElement.originalNode = _document2.default.getElementById(idOrNode);
@@ -513,6 +519,13 @@ var MediaElement = function MediaElement(idOrNode, options) {
 	if (t.mediaElement.originalNode !== undefined && t.mediaElement.originalNode !== null && t.mediaElement.appendChild) {
 		// change id
 		t.mediaElement.originalNode.setAttribute('id', id + '_from_mejs');
+
+		// to avoid some issues with Javascript interactions in the plugin, set `preload=none` if not set
+		// only if video/audio tags are detected
+		var tagName = t.mediaElement.originalNode.tagName.toLowerCase();
+		if (['video', 'audio'].includes(tagName) && !t.mediaElement.originalNode.getAttribute('preload')) {
+			t.mediaElement.originalNode.setAttribute('preload', 'none');
+		}
 
 		// add next to this one
 		t.mediaElement.originalNode.parentNode.insertBefore(t.mediaElement, t.mediaElement.originalNode);
@@ -574,7 +587,7 @@ var MediaElement = function MediaElement(idOrNode, options) {
 		var rendererArray = t.mediaElement.options.renderers.length ? t.mediaElement.options.renderers : _renderer.renderer.order;
 
 		// find the desired renderer in the array of possible ones
-		for (i = 0, il = rendererArray.length; i < il; i++) {
+		for (var i = 0, total = rendererArray.length; i < total; i++) {
 
 			var index = rendererArray[i];
 
@@ -613,6 +626,41 @@ var MediaElement = function MediaElement(idOrNode, options) {
 		if (t.mediaElement.renderer !== undefined && t.mediaElement.renderer !== null) {
 			t.mediaElement.renderer.setSize(width, height);
 		}
+	};
+
+	/**
+  *
+  * @param {Object[]} urlList
+  */
+	t.mediaElement.createErrorMessage = function (urlList) {
+
+		urlList = Array.isArray(urlList) ? urlList : [];
+
+		var errorContainer = _document2.default.createElement('div');
+		errorContainer.className = 'me_cannotplay';
+		errorContainer.style.width = '100%';
+		errorContainer.style.height = '100%';
+
+		var errorContent = t.mediaElement.options.customError;
+
+		if (!errorContent) {
+
+			var poster = t.mediaElement.originalNode.getAttribute('poster');
+			if (poster) {
+				errorContent += '<img src="' + poster + '" width="100%" height="100%" alt="' + _mejs2.default.i18n.t('mejs.download-file') + '">';
+			}
+
+			for (var i = 0, total = urlList.length; i < total; i++) {
+				var url = urlList[i];
+				errorContent += '<a href="' + url.src + '" data-type="' + url.type + '"><span>' + _mejs2.default.i18n.t('mejs.download-file') + ': ' + url.src + '</span></a>';
+			}
+		}
+
+		errorContainer.innerHTML = errorContent;
+
+		t.mediaElement.originalNode.parentNode.insertBefore(errorContainer, t.mediaElement.originalNode);
+		t.mediaElement.originalNode.style.display = 'none';
+		error = true;
 	};
 
 	var props = _mejs2.default.html5media.properties,
@@ -671,7 +719,7 @@ var MediaElement = function MediaElement(idOrNode, options) {
 				type: value ? (0, _media.getTypeFromFile)(value) : ''
 			});
 		} else {
-			for (i = 0, il = value.length; i < il; i++) {
+			for (var i = 0, total = value.length; i < total; i++) {
 
 				var src = (0, _media.absolutizeUrl)(value[i].src),
 				    type = value[i].type;
@@ -688,12 +736,22 @@ var MediaElement = function MediaElement(idOrNode, options) {
 		    event = void 0;
 
 		// Ensure that the original gets the first source found
+		if (!t.mediaElement.paused) {
+			t.mediaElement.pause();
+			event = (0, _general.createEvent)('pause', t.mediaElement);
+			t.mediaElement.dispatchEvent(event);
+		}
+
 		t.mediaElement.originalNode.setAttribute('src', mediaFiles[0].src || '');
+
+		if (t.mediaElement.querySelector('.me_cannotplay')) {
+			t.mediaElement.querySelector('.me_cannotplay').remove();
+		}
 
 		// did we find a renderer?
 		if (renderInfo === null) {
-			event = _document2.default.createEvent('HTMLEvents');
-			event.initEvent('error', false, false);
+			t.mediaElement.createErrorMessage(mediaFiles);
+			event = (0, _general.createEvent)('error', t.mediaElement);
 			event.message = 'No renderer found';
 			t.mediaElement.dispatchEvent(event);
 			return;
@@ -703,10 +761,11 @@ var MediaElement = function MediaElement(idOrNode, options) {
 		t.mediaElement.changeRenderer(renderInfo.rendererName, mediaFiles);
 
 		if (t.mediaElement.renderer === undefined || t.mediaElement.renderer === null) {
-			event = _document2.default.createEvent('HTMLEvents');
-			event.initEvent('error', false, false);
+			event = (0, _general.createEvent)('error', t.mediaElement);
 			event.message = 'Error creating renderer';
 			t.mediaElement.dispatchEvent(event);
+			t.mediaElement.createErrorMessage(mediaFiles);
+			return;
 		}
 	},
 	    assignMethods = function assignMethods(methodName) {
@@ -716,7 +775,14 @@ var MediaElement = function MediaElement(idOrNode, options) {
 				args[_key] = arguments[_key];
 			}
 
-			return t.mediaElement.renderer !== undefined && t.mediaElement.renderer !== null && typeof t.mediaElement.renderer[methodName] === 'function' ? t.mediaElement.renderer[methodName](args) : null;
+			if (t.mediaElement.renderer !== undefined && t.mediaElement.renderer !== null && typeof t.mediaElement.renderer[methodName] === 'function') {
+				try {
+					t.mediaElement.renderer[methodName](args);
+				} catch (e) {
+					t.mediaElement.createErrorMessage();
+				}
+			}
+			return null;
 		};
 	};
 
@@ -725,12 +791,12 @@ var MediaElement = function MediaElement(idOrNode, options) {
 	t.mediaElement.getSrc = getSrc;
 	t.mediaElement.setSrc = setSrc;
 
-	for (i = 0, il = props.length; i < il; i++) {
+	for (var i = 0, total = props.length; i < total; i++) {
 		assignGettersSetters(props[i]);
 	}
 
-	for (i = 0, il = methods.length; i < il; i++) {
-		assignMethods(methods[i]);
+	for (var _i = 0, _total = methods.length; _i < _total; _i++) {
+		assignMethods(methods[_i]);
 	}
 
 	// IE && iOS
@@ -765,9 +831,9 @@ var MediaElement = function MediaElement(idOrNode, options) {
 		}
 
 		// remove the specific callback
-		for (var _i = 0, _il = callbacks.length; _i < _il; _i++) {
-			if (callbacks[_i] === callback) {
-				t.mediaElement.events[eventName].splice(_i, 1);
+		for (var _i2 = 0; _i2 < callbacks.length; _i2++) {
+			if (callbacks[_i2] === callback) {
+				t.mediaElement.events[eventName].splice(_i2, 1);
 				return true;
 			}
 		}
@@ -783,8 +849,8 @@ var MediaElement = function MediaElement(idOrNode, options) {
 		var callbacks = t.mediaElement.events[event.type];
 
 		if (callbacks) {
-			for (i = 0, il = callbacks.length; i < il; i++) {
-				callbacks[i].apply(null, [event]);
+			for (var _i3 = 0; _i3 < callbacks.length; _i3++) {
+				callbacks[_i3].apply(null, [event]);
 			}
 		}
 	};
@@ -820,8 +886,8 @@ var MediaElement = function MediaElement(idOrNode, options) {
 				}
 
 				// test <source> types to see if they are usable
-				for (i = 0; i < sources; i++) {
-					n = t.mediaElement.originalNode.childNodes[i];
+				for (var _i4 = 0; _i4 < sources; _i4++) {
+					n = t.mediaElement.originalNode.childNodes[_i4];
 					if (n.nodeType === Node.ELEMENT_NODE && n.tagName.toLowerCase() === 'source') {
 						src = n.getAttribute('src');
 						type = (0, _media.formatType)(src, n.getAttribute('type'));
@@ -840,10 +906,9 @@ var MediaElement = function MediaElement(idOrNode, options) {
 		t.mediaElement.options.success(t.mediaElement, t.mediaElement.originalNode);
 	}
 
-	// @todo: Verify if this is needed
-	// if (t.mediaElement.options.error) {
-	// 	t.mediaElement.options.error(this.mediaElement, this.mediaElement.originalNode);
-	// }
+	if (error && t.mediaElement.options.error) {
+		t.mediaElement.options.error(t.mediaElement, t.mediaElement.originalNode);
+	}
 
 	return t.mediaElement;
 };
@@ -852,7 +917,7 @@ _window2.default.MediaElement = MediaElement;
 
 exports.default = MediaElement;
 
-},{"17":17,"2":2,"3":3,"6":6,"7":7}],6:[function(_dereq_,module,exports){
+},{"16":16,"17":17,"2":2,"3":3,"6":6,"7":7}],6:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -869,7 +934,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mejs = {};
 
 // version number
-mejs.version = '3.2.3';
+mejs.version = '4.0.3';
 
 // Basic HTML5 settings
 mejs.html5media = {
@@ -984,7 +1049,7 @@ var Renderer = function () {
 				(function () {
 					var rendererIndicator = [/^(html5|native)/, /^flash/, /iframe$/],
 					    rendererRanking = function rendererRanking(renderer) {
-						for (var i = 0; i < rendererIndicator.length; i++) {
+						for (var i = 0, total = rendererIndicator.length; i < total; i++) {
 							if (renderer.match(rendererIndicator[i]) !== null) {
 								return i;
 							}
@@ -998,7 +1063,7 @@ var Renderer = function () {
 				})();
 			}
 
-			for (var i = 0, il = renderers.length; i < il; i++) {
+			for (var i = 0, total = renderers.length; i < total; i++) {
 				var key = renderers[i],
 				    _renderer = this.renderers[key];
 
@@ -1074,6 +1139,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 var EN = exports.EN = {
 	"mejs.plural-form": 1,
+
+	// core/mediaelement.js
+	"mejs.download-file": "Download File",
 
 	// renderers/flash.js
 	"mejs.install-flash": "You are using a browser that does not have Flash player enabled or installed. Please turn on your Flash player plugin or download the latest version from https://get.adobe.com/flashplayer/",
@@ -1318,12 +1386,10 @@ var DashNativeRenderer = {
 		var originalNode = mediaElement.originalNode,
 		    id = mediaElement.id + '_' + options.prefix,
 		    preload = originalNode.getAttribute('preload'),
-		    autoplay = originalNode.getAttribute('autoplay');
+		    autoplay = originalNode.autoplay;
 
-		var i = void 0,
-		    il = void 0,
-		    node = null,
-		    dashPlayer = void 0;
+		var node = null,
+		    dashPlayer = null;
 
 		node = originalNode.cloneNode(true);
 		options = Object.assign(options, mediaElement.options);
@@ -1353,7 +1419,7 @@ var DashNativeRenderer = {
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -1363,8 +1429,8 @@ var DashNativeRenderer = {
 			mediaElement.dashPlayer = dashPlayer = _dashPlayer;
 
 			dashPlayer.getDebug().setLogToBrowserConsole(options.dash.debug);
-			dashPlayer.setAutoPlay(autoplay);
-			dashPlayer.setScheduleWhilePaused(preload === 'auto');
+			dashPlayer.setAutoPlay(preload && preload === 'auto' || autoplay);
+			dashPlayer.setScheduleWhilePaused(preload && preload === 'auto' || autoplay);
 
 			var events = _mejs2.default.html5media.events.concat(['click', 'mouseover', 'mouseout']),
 			    dashEvents = dashjs.MediaPlayer.events,
@@ -1375,14 +1441,13 @@ var DashNativeRenderer = {
 				}
 
 				node.addEventListener(eventName, function (e) {
-					var event = _document2.default.createEvent('HTMLEvents');
-					event.initEvent(e.type, e.bubbles, e.cancelable);
+					var event = (0, _general.createEvent)(e.type, mediaElement);
 					mediaElement.dispatchEvent(event);
 				});
 			};
 
-			for (i = 0, il = events.length; i < il; i++) {
-				assignEvents(events[i]);
+			for (var _i = 0, _total = events.length; _i < _total; _i++) {
+				assignEvents(events[_i]);
 			}
 
 			/**
@@ -1410,9 +1475,9 @@ var DashNativeRenderer = {
 		};
 
 		if (mediaFiles && mediaFiles.length > 0) {
-			for (i = 0, il = mediaFiles.length; i < il; i++) {
-				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[i].type)) {
-					node.setAttribute('src', mediaFiles[i].src);
+			for (var _i2 = 0, _total2 = mediaFiles.length; _i2 < _total2; _i2++) {
+				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[_i2].type)) {
+					node.setAttribute('src', mediaFiles[_i2].src);
 					break;
 				}
 			}
@@ -1421,7 +1486,7 @@ var DashNativeRenderer = {
 		node.setAttribute('id', id);
 
 		originalNode.parentNode.insertBefore(node, originalNode);
-		originalNode.removeAttribute('autoplay');
+		originalNode.autoplay = false;
 		originalNode.style.display = 'none';
 
 		NativeDash.prepareSettings({
@@ -1433,7 +1498,6 @@ var DashNativeRenderer = {
 		node.setSize = function (width, height) {
 			node.style.width = width + 'px';
 			node.style.height = height + 'px';
-
 			return node;
 		};
 
@@ -1563,11 +1627,11 @@ var PluginDetector = exports.PluginDetector = {
 		    ax = void 0;
 
 		// Firefox, Webkit, Opera; avoid MS Edge since `plugins` cannot be accessed
-		if (!_constants.IS_EDGE && _constants.NAV.plugins !== null && _constants.NAV.plugins !== undefined && _typeof(_constants.NAV.plugins[pluginName]) === 'object') {
+		if (_constants.NAV.plugins !== null && _constants.NAV.plugins !== undefined && _typeof(_constants.NAV.plugins[pluginName]) === 'object') {
 			description = _constants.NAV.plugins[pluginName].description;
 			if (description && !(typeof _constants.NAV.mimeTypes !== 'undefined' && _constants.NAV.mimeTypes[mimeType] && !_constants.NAV.mimeTypes[mimeType].enabledPlugin)) {
 				version = description.replace(pluginName, '').replace(/^\s+/, '').replace(/\sr/gi, '.').split('.');
-				for (var i = 0; i < version.length; i++) {
+				for (var i = 0, total = version.length; i < total; i++) {
 					version[i] = parseInt(version[i].match(/\d+/), 10);
 				}
 			}
@@ -1615,9 +1679,6 @@ var FlashMediaElementRenderer = {
 	create: function create(mediaElement, options, mediaFiles) {
 
 		var flash = {};
-
-		var i = void 0,
-		    il = void 0;
 
 		// store main variable
 		flash.options = options;
@@ -1694,7 +1755,7 @@ var FlashMediaElementRenderer = {
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -1727,15 +1788,15 @@ var FlashMediaElementRenderer = {
 			};
 		};
 		methods.push('stop');
-		for (i = 0, il = methods.length; i < il; i++) {
-			assignMethods(methods[i]);
+		for (var _i = 0, _total = methods.length; _i < _total; _i++) {
+			assignMethods(methods[_i]);
 		}
 
 		// give initial events like in others renderers
-		var initEvents = ['rendererready', 'loadeddata', 'loadedmetadata', 'canplay'];
+		var initEvents = ['rendererready', 'loadeddata', 'loadedmetadata', 'canplay', 'error'];
 
-		for (i = 0, il = initEvents.length; i < il; i++) {
-			var event = (0, _general.createEvent)(initEvents[i], flash);
+		for (var _i2 = 0, _total2 = initEvents.length; _i2 < _total2; _i2++) {
+			var event = (0, _general.createEvent)(initEvents[_i2], flash);
 			mediaElement.dispatchEvent(event);
 		}
 
@@ -1747,9 +1808,9 @@ var FlashMediaElementRenderer = {
 
 			// do call stack
 			if (flash.flashApiStack.length) {
-				for (i = 0, il = flash.flashApiStack.length; i < il; i++) {
+				for (var _i3 = 0, _total3 = flash.flashApiStack.length; _i3 < _total3; _i3++) {
 
-					var stackItem = flash.flashApiStack[i];
+					var stackItem = flash.flashApiStack[_i3];
 
 					if (stackItem.type === 'set') {
 						var propName = stackItem.propName,
@@ -1780,7 +1841,7 @@ var FlashMediaElementRenderer = {
 			flash.options.shimScriptAccess = 'sameDomain';
 		}
 
-		var autoplay = !!mediaElement.getAttribute('autoplay'),
+		var autoplay = mediaElement.originalNode.autoplay,
 		    flashVars = ['uid=' + flash.id, 'autoplay=' + autoplay, 'allowScriptAccess=' + flash.options.shimScriptAccess],
 		    isVideo = mediaElement.originalNode !== null && mediaElement.originalNode.tagName.toLowerCase() === 'video',
 		    flashHeight = isVideo ? mediaElement.originalNode.height : 1,
@@ -1861,13 +1922,13 @@ var FlashMediaElementRenderer = {
 		};
 
 		flash.destroy = function () {
-			flash.flashNode.parentNode.removeChild(flash.flashNode);
+			flash.flashNode.remove();
 		};
 
 		if (mediaFiles && mediaFiles.length > 0) {
-			for (i = 0, il = mediaFiles.length; i < il; i++) {
-				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[i].type)) {
-					flash.setSrc(mediaFiles[i].src);
+			for (var _i4 = 0, _total4 = mediaFiles.length; _i4 < _total4; _i4++) {
+				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[_i4].type)) {
+					flash.setSrc(mediaFiles[_i4].src);
 					break;
 				}
 			}
@@ -2185,10 +2246,8 @@ var FlvNativeRenderer = {
 		var originalNode = mediaElement.originalNode,
 		    id = mediaElement.id + '_' + options.prefix;
 
-		var i = void 0,
-		    il = void 0,
-		    node = null,
-		    flvPlayer = void 0;
+		var node = null,
+		    flvPlayer = null;
 
 		node = originalNode.cloneNode(true);
 		options = Object.assign(options, mediaElement.options);
@@ -2217,7 +2276,7 @@ var FlvNativeRenderer = {
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -2238,21 +2297,20 @@ var FlvNativeRenderer = {
 				}
 
 				node.addEventListener(eventName, function (e) {
-					var event = _document2.default.createEvent('HTMLEvents');
-					event.initEvent(e.type, e.bubbles, e.cancelable);
+					var event = (0, _general.createEvent)(e.type, mediaElement);
 					mediaElement.dispatchEvent(event);
 				});
 			};
 
-			for (i = 0, il = events.length; i < il; i++) {
-				assignEvents(events[i]);
+			for (var _i = 0, _total = events.length; _i < _total; _i++) {
+				assignEvents(events[_i]);
 			}
 		};
 
 		if (mediaFiles && mediaFiles.length > 0) {
-			for (i = 0, il = mediaFiles.length; i < il; i++) {
-				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[i].type)) {
-					node.setAttribute('src', mediaFiles[i].src);
+			for (var _i2 = 0, _total2 = mediaFiles.length; _i2 < _total2; _i2++) {
+				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[_i2].type)) {
+					node.setAttribute('src', mediaFiles[_i2].src);
 					break;
 				}
 			}
@@ -2261,7 +2319,7 @@ var FlvNativeRenderer = {
 		node.setAttribute('id', id);
 
 		originalNode.parentNode.insertBefore(node, originalNode);
-		originalNode.removeAttribute('autoplay');
+		originalNode.autoplay = false;
 		originalNode.style.display = 'none';
 
 		// Options that cannot be overridden
@@ -2281,7 +2339,9 @@ var FlvNativeRenderer = {
 		};
 
 		node.hide = function () {
-			flvPlayer.pause();
+			if (flvPlayer !== null) {
+				flvPlayer.pause();
+			}
 			node.style.display = 'none';
 			return node;
 		};
@@ -2292,7 +2352,9 @@ var FlvNativeRenderer = {
 		};
 
 		node.destroy = function () {
-			flvPlayer.destroy();
+			if (flvPlayer !== null) {
+				flvPlayer.destroy();
+			}
 		};
 
 		var event = (0, _general.createEvent)('rendererready', node);
@@ -2433,7 +2495,6 @@ var NativeHls = {
   * @return {Hls}
   */
 	createInstance: function createInstance(settings) {
-		
 		var player = new Hls(settings.options);
 		_window2.default['__ready__' + settings.id](player);
 		return player;
@@ -2478,16 +2539,14 @@ var HlsNativeRenderer = {
 		var originalNode = mediaElement.originalNode,
 		    id = mediaElement.id + '_' + options.prefix,
 		    preload = originalNode.getAttribute('preload'),
-		    autoplay = originalNode.getAttribute('autoplay');
+		    autoplay = originalNode.autoplay;
 
-		var i = void 0,
-		    il = void 0,
-		    hlsPlayer = void 0,
+		var hlsPlayer = null,
 		    node = null;
 
 		node = originalNode.cloneNode(true);
 		options = Object.assign(options, mediaElement.options);
-		options.autoStartLoad = preload === 'auto';
+		options.hls.autoStartLoad = preload && preload !== 'none' || autoplay;
 
 		// WRAPPERS for PROPs
 		var props = _mejs2.default.html5media.properties,
@@ -2511,21 +2570,15 @@ var HlsNativeRenderer = {
 								id: id
 							});
 
-							hlsPlayer.attachMedia(node);
 							hlsPlayer.loadSource(value);
-
-							if (autoplay) {
-								hlsPlayer.on(hlsEvents.MANIFEST_PARSED, function () {
-									node.play();
-								});
-							}
+							hlsPlayer.attachMedia(node);
 						}
 					}
 				}
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -2540,29 +2593,21 @@ var HlsNativeRenderer = {
 
 				if (eventName === 'loadedmetadata') {
 
+					var url = mediaElement.originalNode.src;
 					hlsPlayer.detachMedia();
-
-					var url = node.src;
-
-					hlsPlayer.attachMedia(node);
 					hlsPlayer.loadSource(url);
-					if (autoplay) {
-						hlsPlayer.on(hlsEvents.MANIFEST_PARSED, function () {
-							node.play();
-						});
-					}
+					hlsPlayer.attachMedia(node);
 				}
 
 				node.addEventListener(eventName, function (e) {
 					// copy event
-					var event = _document2.default.createEvent('HTMLEvents');
-					event.initEvent(e.type, e.bubbles, e.cancelable);
+					var event = (0, _general.createEvent)(e.type, mediaElement);
 					mediaElement.dispatchEvent(event);
 				});
 			};
 
-			for (i = 0, il = events.length; i < il; i++) {
-				assignEvents(events[i]);
+			for (var _i = 0, _total = events.length; _i < _total; _i++) {
+				assignEvents(events[_i]);
 			}
 
 			/**
@@ -2583,7 +2628,7 @@ var HlsNativeRenderer = {
 				mediaElement.dispatchEvent(event);
 
 				if (e === 'hlsError') {
-					console.error(e, data);
+					console.warn(e, data);
 
 					// borrowed from http://dailymotion.github.io/hls.js/demo/
 					if (data.fatal) {
@@ -2622,28 +2667,32 @@ var HlsNativeRenderer = {
 		};
 
 		if (mediaFiles && mediaFiles.length > 0) {
-			for (i = 0, il = mediaFiles.length; i < il; i++) {
-				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[i].type)) {
-					node.setAttribute('src', mediaFiles[i].src);
+			for (var _i2 = 0, _total2 = mediaFiles.length; _i2 < _total2; _i2++) {
+				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[_i2].type)) {
+					node.setAttribute('src', mediaFiles[_i2].src);
 					break;
 				}
 			}
 		}
 
-		if (preload !== 'auto') {
+		if (preload !== 'auto' && !autoplay) {
 			node.addEventListener('play', function () {
-				hlsPlayer.startLoad();
-			}, false);
+				if (hlsPlayer !== null) {
+					hlsPlayer.startLoad();
+				}
+			});
 
 			node.addEventListener('pause', function () {
-				hlsPlayer.stopLoad();
-			}, false);
+				if (hlsPlayer !== null) {
+					hlsPlayer.stopLoad();
+				}
+			});
 		}
 
 		node.setAttribute('id', id);
 
 		originalNode.parentNode.insertBefore(node, originalNode);
-		originalNode.removeAttribute('autoplay');
+		originalNode.autoplay = false;
 		originalNode.style.display = 'none';
 
 		NativeHls.prepareSettings({
@@ -2655,7 +2704,6 @@ var HlsNativeRenderer = {
 		node.setSize = function (width, height) {
 			node.style.width = width + 'px';
 			node.style.height = height + 'px';
-
 			return node;
 		};
 
@@ -2671,11 +2719,15 @@ var HlsNativeRenderer = {
 		};
 
 		node.destroy = function () {
-			hlsPlayer.destroy();
+			if (hlsPlayer !== null) {
+				hlsPlayer.destroy();
+			}
 		};
 
 		node.stop = function () {
-			hlsPlayer.stopLoad();
+			if (hlsPlayer !== null) {
+				hlsPlayer.stopLoad();
+			}
 		};
 
 		var event = (0, _general.createEvent)('rendererready', node);
@@ -2764,9 +2816,7 @@ var HtmlMediaElement = {
 
 		var id = mediaElement.id + '_' + options.prefix;
 
-		var node = null,
-		    i = void 0,
-		    il = void 0;
+		var node = null;
 
 		// CREATE NODE
 		if (mediaElement.originalNode === undefined || mediaElement.originalNode === null) {
@@ -2794,7 +2844,7 @@ var HtmlMediaElement = {
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -2804,21 +2854,19 @@ var HtmlMediaElement = {
 			node.addEventListener(eventName, function (e) {
 				// copy event
 
-				var event = _document2.default.createEvent('HTMLEvents');
-				event.initEvent(e.type, e.bubbles, e.cancelable);
+				var event = (0, _general.createEvent)(e.type, mediaElement);
 				mediaElement.dispatchEvent(event);
 			});
 		};
 
-		for (i = 0, il = events.length; i < il; i++) {
-			assignEvents(events[i]);
+		for (var _i = 0, _total = events.length; _i < _total; _i++) {
+			assignEvents(events[_i]);
 		}
 
 		// HELPER METHODS
 		node.setSize = function (width, height) {
 			node.style.width = width + 'px';
 			node.style.height = height + 'px';
-
 			return node;
 		};
 
@@ -2835,9 +2883,9 @@ var HtmlMediaElement = {
 		};
 
 		if (mediaFiles && mediaFiles.length > 0) {
-			for (i = 0, il = mediaFiles.length; i < il; i++) {
-				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[i].type)) {
-					node.setAttribute('src', mediaFiles[i].src);
+			for (var _i2 = 0, _total2 = mediaFiles.length; _i2 < _total2; _i2++) {
+				if (_renderer.renderer.renderers[options.prefix].canPlayType(mediaFiles[_i2].type)) {
+					node.setAttribute('src', mediaFiles[_i2].src);
 					break;
 				}
 			}
@@ -3004,7 +3052,7 @@ var YouTubeApi = {
 
 		var youTubeId = '';
 
-		for (var i = 0, il = parameters.length; i < il; i++) {
+		for (var i = 0, total = parameters.length; i < total; i++) {
 			var paramParts = parameters[i].split('=');
 			if (paramParts[0] === 'v') {
 				youTubeId = paramParts[1];
@@ -3102,9 +3150,7 @@ var YouTubeIframeRenderer = {
 		    apiStack = [],
 		    readyState = 4;
 
-		var i = void 0,
-		    il = void 0,
-		    youTubeApi = null,
+		var youTubeApi = null,
 		    paused = true,
 		    ended = false,
 		    youTubeIframe = null,
@@ -3205,7 +3251,7 @@ var YouTubeIframeRenderer = {
 							var url = typeof value === 'string' ? value : value[0].src,
 							    _videoId = YouTubeApi.getYouTubeId(url);
 
-							if (mediaElement.getAttribute('autoplay')) {
+							if (mediaElement.originalNode.autoplay) {
 								youTubeApi.loadVideoById(_videoId);
 							} else {
 								youTubeApi.cueVideoById(_videoId);
@@ -3252,7 +3298,7 @@ var YouTubeIframeRenderer = {
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -3283,8 +3329,8 @@ var YouTubeIframeRenderer = {
 			};
 		};
 
-		for (i = 0, il = methods.length; i < il; i++) {
-			assignMethods(methods[i]);
+		for (var _i = 0, _total = methods.length; _i < _total; _i++) {
+			assignMethods(methods[_i]);
 		}
 
 		// CREATE YouTube
@@ -3332,9 +3378,9 @@ var YouTubeIframeRenderer = {
 
 					// do call stack
 					if (apiStack.length) {
-						for (i = 0, il = apiStack.length; i < il; i++) {
+						for (var _i2 = 0, _total2 = apiStack.length; _i2 < _total2; _i2++) {
 
-							var stackItem = apiStack[i];
+							var stackItem = apiStack[_i2];
 
 							if (stackItem.type === 'set') {
 								var propName = stackItem.propName,
@@ -3357,15 +3403,15 @@ var YouTubeIframeRenderer = {
 						mediaElement.dispatchEvent(newEvent);
 					};
 
-					for (i = 0, il = events.length; i < il; i++) {
-						youTubeIframe.addEventListener(events[i], assignEvents, false);
+					for (var _i3 = 0, _total3 = events.length; _i3 < _total3; _i3++) {
+						youTubeIframe.addEventListener(events[_i3], assignEvents, false);
 					}
 
 					// send init events
 					var initEvents = ['rendererready', 'loadeddata', 'loadedmetadata', 'canplay'];
 
-					for (i = 0, il = initEvents.length; i < il; i++) {
-						var event = (0, _general.createEvent)(initEvents[i], youtube);
+					for (var _i4 = 0, _total4 = initEvents.length; _i4 < _total4; _i4++) {
+						var event = (0, _general.createEvent)(initEvents[_i4], youtube);
 						mediaElement.dispatchEvent(event);
 					}
 				},
@@ -3426,8 +3472,8 @@ var YouTubeIframeRenderer = {
 					}
 
 					// send events up
-					for (i = 0, il = events.length; i < il; i++) {
-						var event = (0, _general.createEvent)(events[i], youtube);
+					for (var _i5 = 0, _total5 = events.length; _i5 < _total5; _i5++) {
+						var event = (0, _general.createEvent)(events[_i5], youtube);
 						mediaElement.dispatchEvent(event);
 					}
 				},
@@ -3557,7 +3603,7 @@ var SUPPORT_POINTER_EVENTS = exports.SUPPORT_POINTER_EVENTS = function () {
 	element.style.pointerEvents = 'x';
 	documentElement.appendChild(element);
 	var supports = getComputedStyle && getComputedStyle(element, '').pointerEvents === 'auto';
-	documentElement.removeChild(element);
+	element.remove();
 	return !!supports;
 }();
 
@@ -3565,7 +3611,7 @@ var SUPPORT_POINTER_EVENTS = exports.SUPPORT_POINTER_EVENTS = function () {
 var html5Elements = ['source', 'track', 'audio', 'video'];
 var video = void 0;
 
-for (var i = 0, il = html5Elements.length; i < il; i++) {
+for (var i = 0, total = html5Elements.length; i < total; i++) {
 	video = _document2.default.createElement(html5Elements[i]);
 }
 
@@ -3795,7 +3841,7 @@ function splitEvents(events, id) {
 	// add player ID as an event namespace so it's easier to unbind them all later
 	var ret = { d: [], w: [] };
 	(events || '').split(' ').forEach(function (v) {
-		var eventName = v + '.' + id;
+		var eventName = '' + v + (id ? '.' + id : '');
 
 		if (eventName.startsWith('.')) {
 			ret.d.push(eventName);
@@ -3822,20 +3868,19 @@ function createEvent(eventName, target) {
 		throw new Error('Event name must be a string');
 	}
 
-	var event = void 0;
+	var eventFrags = eventName.match(/[a-z]+\.([a-z]+)/),
+	    detail = {
+		target: target
+	};
 
-	if (document.createEvent) {
-		event = document.createEvent('Event');
-		event.initEvent(eventName, true, false);
-	} else {
-		event = {};
-		event.type = eventName;
-		event.target = target;
-		event.canceleable = true;
-		event.bubbable = false;
+	if (eventFrags !== null) {
+		eventName = eventFrags[0];
+		detail.namespace = eventFrags[1];
 	}
 
-	return event;
+	return new window.CustomEvent(eventName, {
+		detail: detail
+	});
 }
 
 /**
@@ -3844,7 +3889,9 @@ function createEvent(eventName, target) {
  * @param {HTMLElement} targetNode - the node to compare against sourceNode
  */
 function isNodeAfter(sourceNode, targetNode) {
-	return !!(sourceNode && targetNode && sourceNode.compareDocumentPosition(targetNode) && Node.DOCUMENT_POSITION_PRECEDING);
+
+	return !!(sourceNode && targetNode && sourceNode.compareDocumentPosition(targetNode) & 2 // 2 : Node.DOCUMENT_POSITION_PRECEDING
+	);
 }
 
 /**
@@ -3948,31 +3995,10 @@ function getTypeFromFile(url) {
 		throw new Error('`url` argument must be a string');
 	}
 
-	var i = void 0,
-	    il = void 0,
-	    type = void 0;
+	for (var i = 0, total = typeChecks.length; i < total; i++) {
+		var type = typeChecks[i](url);
 
-	// Validate `typeChecks` array
-	if (!Array.isArray(typeChecks)) {
-		throw new Error('`typeChecks` must be an array');
-	}
-
-	if (typeChecks.length) {
-		for (i = 0, il = typeChecks.length; i < il; i++) {
-			var _type = typeChecks[i];
-
-			if (typeof _type !== 'function') {
-				throw new Error('Element in array must be a function');
-			}
-		}
-	}
-
-	// do type checks first
-	for (i = 0, il = typeChecks.length; i < il; i++) {
-
-		type = typeChecks[i](url);
-
-		if (type !== undefined && type !== null) {
+		if (type) {
 			return type;
 		}
 	}
@@ -4067,98 +4093,41 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * of polyfills provided by Babel.
  */
 
-// IE6,7,8
-// Production steps of ECMA-262, Edition 5, 15.4.4.14
-// Reference: http://es5.github.io/#x15.4.4.14
-if (!Array.prototype.indexOf) {
-	Array.prototype.indexOf = function (searchElement, fromIndex) {
-
-		var k = void 0;
-
-		// 1. const O be the result of calling ToObject passing
-		//	   the this value as the argument.
-		if (undefined === undefined || undefined === null) {
-			throw new TypeError('"this" is null or not defined');
+// ChildNode.remove polyfill
+// from: https://github.com/jserz/js_piece/blob/master/DOM/ChildNode/remove()/remove().md
+(function (arr) {
+	arr.forEach(function (item) {
+		if (item.hasOwnProperty('remove')) {
+			return;
 		}
-
-		var O = Object(undefined);
-
-		// 2. const lenValue be the result of calling the Get
-		//	   internal method of O with the argument "length".
-		// 3. const len be ToUint32(lenValue).
-		var len = O.length >>> 0;
-
-		// 4. If len is 0, return -1.
-		if (len === 0) {
-			return -1;
-		}
-
-		// 5. If argument fromIndex was passed const n be
-		//	   ToInteger(fromIndex); else const n be 0.
-		var n = +fromIndex || 0;
-
-		if (Math.abs(n) === Infinity) {
-			n = 0;
-		}
-
-		// 6. If n >= len, return -1.
-		if (n >= len) {
-			return -1;
-		}
-
-		// 7. If n >= 0, then const k be n.
-		// 8. Else, n<0, const k be len - abs(n).
-		//	   If k is less than 0, then const k be 0.
-		k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
-
-		// 9. Repeat, while k < len
-		while (k < len) {
-			// a. const Pk be ToString(k).
-			//   This is implicit for LHS operands of the in operator
-			// b. const kPresent be the result of calling the
-			//	HasProperty internal method of O with argument Pk.
-			//   This step can be combined with c
-			// c. If kPresent is true, then
-			//	i.	const elementK be the result of calling the Get
-			//		internal method of O with the argument ToString(k).
-			//   ii.	const same be the result of applying the
-			//		Strict Equality Comparison Algorithm to
-			//		searchElement and elementK.
-			//  iii.	If same is true, return k.
-			if (k in O && O[k] === searchElement) {
-				return k;
+		Object.defineProperty(item, 'remove', {
+			configurable: true,
+			enumerable: true,
+			writable: true,
+			value: function remove() {
+				this.parentNode.removeChild(this);
 			}
-			k++;
-		}
-		return -1;
-	};
-}
+		});
+	});
+})([Element.prototype, CharacterData.prototype, DocumentType.prototype]);
 
-// document.createEvent for IE8 or other old browsers that do not implement it
-// Reference: https://github.com/WebReflection/ie8/blob/master/build/ie8.max.js
-if (_document2.default.createEvent === undefined) {
-	_document2.default.createEvent = function () {
+// CustomEvent polyfill
+// Reference: https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
+(function () {
 
-		var e = _document2.default.createEventObject();
-		e.timeStamp = new Date().getTime();
-		e.enumerable = true;
-		e.writable = true;
-		e.configurable = true;
-		e.initEvent = function (type, bubbles, cancelable) {
-			undefined.type = type;
-			undefined.bubbles = !!bubbles;
-			undefined.cancelable = !!cancelable;
-			if (!undefined.bubbles) {
-				undefined.stopPropagation = function () {
-					undefined.stoppedPropagation = true;
-					undefined.cancelBubble = true;
-				};
-			}
-		};
+	if (typeof window.CustomEvent === "function") return false;
 
-		return e;
-	};
-}
+	function CustomEvent(event, params) {
+		params = params || { bubbles: false, cancelable: false, detail: undefined };
+		var evt = _document2.default.createEvent('CustomEvent');
+		evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+		return evt;
+	}
+
+	CustomEvent.prototype = window.Event.prototype;
+
+	window.CustomEvent = CustomEvent;
+})();
 
 // Object.assign polyfill
 // Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
@@ -4173,7 +4142,7 @@ if (typeof Object.assign !== 'function') {
 
 		var to = Object(target);
 
-		for (var index = 1; index < arguments.length; index++) {
+		for (var index = 1, total = arguments.length; index < total; index++) {
 			var nextSource = arguments[index];
 
 			if (nextSource !== null) {
@@ -4240,9 +4209,21 @@ if (!Array.prototype.includes) {
 	});
 }
 
+// String.includes polyfill
+// Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes
 if (!String.prototype.includes) {
-	String.prototype.includes = function () {
-		return String.prototype.indexOf.apply(this, arguments) !== -1;
+	String.prototype.includes = function (search, start) {
+		'use strict';
+
+		if (typeof start !== 'number') {
+			start = 0;
+		}
+
+		if (start + search.length > this.length) {
+			return false;
+		} else {
+			return this.indexOf(search, start) !== -1;
+		}
 	};
 }
 
@@ -4254,5 +4235,61 @@ if (!String.prototype.startsWith) {
 		return this.substr(position, searchString.length) === searchString;
 	};
 }
+
+// Element.matches polyfill
+// Reference: https://developer.mozilla.org/en-US/docs/Web/API/Element/matches
+if (!Element.prototype.matches) {
+	Element.prototype.matches = Element.prototype.matchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector || Element.prototype.webkitMatchesSelector || function (s) {
+		var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+		    i = matches.length - 1;
+		while (--i >= 0 && matches.item(i) !== this) {}
+		return i > -1;
+	};
+}
+
+// Element.closest polyfill
+// Reference: https://developer.mozilla.org/en-US/docs/Web/API/Element/closest
+if (window.Element && !Element.prototype.closest) {
+	Element.prototype.closest = function (s) {
+		var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+		    i = void 0,
+		    el = this;
+		do {
+			i = matches.length;
+			while (--i >= 0 && matches.item(i) !== el) {}
+		} while (i < 0 && (el = el.parentElement));
+		return el;
+	};
+}
+
+// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+
+// requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
+
+// MIT license
+
+(function () {
+	var lastTime = 0;
+	var vendors = ['ms', 'moz', 'webkit', 'o'];
+	for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+		window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+		window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+	}
+
+	if (!window.requestAnimationFrame) window.requestAnimationFrame = function (callback) {
+		var currTime = new Date().getTime();
+		var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+		var id = window.setTimeout(function () {
+			callback(currTime + timeToCall);
+		}, timeToCall);
+		lastTime = currTime + timeToCall;
+		return id;
+	};
+
+	if (!window.cancelAnimationFrame) window.cancelAnimationFrame = function (id) {
+		clearTimeout(id);
+	};
+})();
 
 },{"2":2}]},{},[18,5,4,8,13,10,9,11,12,14]);

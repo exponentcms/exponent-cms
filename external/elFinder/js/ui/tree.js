@@ -75,6 +75,13 @@ $.fn.elfindertree = function(fm, opts) {
 			loaded    = 'elfinder-subtree-loaded',
 			
 			/**
+			 * Class name to mark need subdirs request
+			 *
+			 * @type String
+			 */
+			chksubdir = 'elfinder-subtree-chksubdir',
+			
+			/**
 			 * Arraw class name
 			 *
 			 * @type String
@@ -144,10 +151,118 @@ $.fn.elfindertree = function(fm, opts) {
 			 */
 			uploadable = 'elfinder-navbar-wrapper-uploadable',
 			
+			/**
+			 * Is position x inside Navbar
+			 * 
+			 * @param x Numbar
+			 * 
+			 * @return
+			 */
 			insideNavbar = function(x) {
 				var left = navbar.offset().left;
 					
 				return left <= x && x <= left + navbar.width();
+			},
+			
+			/**
+			 * To call subdirs elements queue
+			 * 
+			 * @type Object
+			 */
+			subdirsQue = {},
+			
+			/**
+			 * To exec subdirs elements ids
+			 * 
+			 */
+			subdirsExecQue = [],
+			
+			/**
+			 * Request subdirs to backend
+			 * 
+			 * @param id String
+			 * 
+			 * @return Deferred
+			 */
+			subdirs = function(ids) {
+				var targets = [];
+				$.each(ids, function(i, id) {
+					subdirsQue[id] && targets.push(fm.navId2Hash(id));
+					delete subdirsQue[id];
+				});
+				if (targets.length) {
+					return fm.request({
+						data: {
+							cmd: 'subdirs',
+							targets: targets,
+							preventDefault : true
+						}
+					}).done(function(res) {
+						if (res && res.subdirs) {
+							$.each(res.subdirs, function(hash, subdirs) {
+								var elm = $('#'+fm.navHash2Id(hash));
+								elm.removeClass(chksubdir);
+								elm[subdirs? 'addClass' : 'removeClass'](collapsed);
+							});
+						}
+					});
+				}
+			},
+			
+			subdirsJobRes = null,
+			
+			/**
+			 * To check target element is in window of subdirs
+			 * 
+			 * @return void
+			 */
+			checkSubdirs = function() {
+				var ids = Object.keys(subdirsQue);
+				if (ids.length) {
+					subdirsJobRes && subdirsJobRes._abort();
+					execSubdirsTm && clearTimeout(execSubdirsTm);
+					subdirsExecQue = [];
+					subdirsJobRes = fm.asyncJob(function(id) {
+						return fm.isInWindow($('#'+id))? id : null;
+					}, ids, { numPerOnce: 200 })
+					.done(function(arr) {
+						if (arr.length) {
+							subdirsExecQue = arr;
+							execSubdirs();
+						}
+					});
+				}
+			},
+			
+			subdirsPending = 0,
+			execSubdirsTm,
+			
+			/**
+			 * Exec subdirs as batch request
+			 * 
+			 * @return void
+			 */
+			execSubdirs = function() {
+				var cnt = opts.subdirsMaxConn - subdirsPending,
+					i, ids;
+				execSubdirsTm && clearTimeout(execSubdirsTm);
+				if (subdirsExecQue.length) {
+					if (cnt > 0) {
+						for (i = 0; i < cnt; i++) {
+							if (subdirsExecQue.length) {
+								subdirsPending++;
+								subdirs(subdirsExecQue.splice(0, opts.subdirsAtOnce)).always(function() {
+									subdirsPending--;
+									execSubdirs();
+								});
+							}
+						}
+					} else {
+						execSubdirsTm = setTimeout(function() {
+							subdirsExecQue.length && execSubdirs();
+						}, 50);
+					}
+				}
 			},
 			
 			drop = fm.droppable.drop,
@@ -259,14 +374,33 @@ $.fn.elfindertree = function(fm, opts) {
 				id          : function(dir) { return fm.navHash2Id(dir.hash) },
 				cssclass    : function(dir) {
 					var cname = (dir.phash && ! dir.isroot ? '' : root)+' '+navdir+' '+fm.perms2class(dir);
-					dir.dirs && !dir.link && (cname += ' ' + collapsed);
+					dir.dirs && !dir.link && (cname += ' ' + collapsed) && dir.dirs == -1 && (cname += ' ' + chksubdir);
 					opts.getClass && (cname += ' ' + opts.getClass(dir));
 					dir.csscls && (cname += ' ' + fm.escape(dir.csscls));
 					return cname;
 				},
+				root        : function(dir) {
+					var cls = '';
+					if (!dir.phash || dir.isroot) {
+						cls += ' '+wrapperRoot;
+						if (!dir.disabled || dir.disabled.length < 1) {
+							cls += ' '+pastable+' '+uploadable;
+						} else {
+							if ($.inArray('paste', dir.disabled) === -1) {
+								cls += ' '+pastable;
+							}
+							if ($.inArray('upload', dir.disabled) === -1) {
+								cls += ' '+uploadable;
+							}
+						}
+						return cls;
+					} else {
+						return '';
+					}
+				},
 				permissions : function(dir) { return !dir.read || !dir.write ? ptpl : ''; },
 				symlink     : function(dir) { return dir.alias ? stpl : ''; },
-				style       : function(dir) { return dir.icon ? 'style="background:url(\''+fm.escape(dir.icon)+'\') 0 0 no-repeat;background-size:contain;"' : ''; }
+				style       : function(dir) { return dir.icon ? fm.getIconStyle(dir) : ''; }
 			},
 			
 			/**
@@ -279,7 +413,11 @@ $.fn.elfindertree = function(fm, opts) {
 				dir.name = fm.escape(dir.i18 || dir.name);
 				
 				return tpl.replace(/(?:\{([a-z]+)\})/ig, function(m, key) {
-					return dir[key] || (replace[key] ? replace[key](dir) : '');
+					var res = dir[key] || (replace[key] ? replace[key](dir) : '');
+					if (key === 'id' && dir.dirs == -1) {
+						subdirsQue[res] = res;
+					}
+					return res;
 				});
 			},
 			
@@ -367,17 +505,7 @@ $.fn.elfindertree = function(fm, opts) {
 							parent[firstVol || dir.phash ? 'append' : 'prepend'](node);
 							firstVol = false;
 							if (!dir.phash || dir.isroot) {
-								base = $('#'+fm.navHash2Id(dir.hash)).parent().addClass(wrapperRoot);
-								if (!dir.disabled || dir.disabled.length < 1) {
-									base.addClass(pastable+' '+uploadable);
-								} else {
-									if ($.inArray('paste', dir.disabled) === -1) {
-										base.addClass(pastable);
-									}
-									if ($.inArray('upload', dir.disabled) === -1) {
-										base.addClass(uploadable);
-									}
-								}
+								base = $('#'+fm.navHash2Id(dir.hash)).parent();
 							}
 							! mobile && updateDroppable(null, base);
 						}
@@ -509,6 +637,7 @@ $.fn.elfindertree = function(fm, opts) {
 								if (spinner) {
 									spinner.remove();
 									link.addClass(collapsed+' '+expanded).next('.'+subtree).show();
+									checkSubdirs();
 								}
 							}));
 						}
@@ -531,7 +660,7 @@ $.fn.elfindertree = function(fm, opts) {
 						}
 					},
 					registed = {},
-					rootNode, dir, link, subs, subsLen, cnt;
+					rootNode, dir, link, sub, subs, subsLen, cnt;
 				
 				if (openRoot) {
 					rootNode = $('#'+fm.navHash2Id(fm.root()));
@@ -548,8 +677,10 @@ $.fn.elfindertree = function(fm, opts) {
 					if (current.length && (noCwd || ! init || ! cwd.isroot)) {
 						if (!noCwd || init) {
 							current.addClass(loaded);
-							if (openCwd && current.hasClass(collapsed)) {
-								current.addClass(expanded).next('.'+subtree).slideDown();
+							sub = current.next('.'+subtree);
+							if (openCwd && sub.children().length) {
+								current.addClass(collapsed+' '+expanded);
+								sub.slideDown('normal', checkSubdirs);
 							}
 						}
 						if (open || !noCwd) {
@@ -557,7 +688,11 @@ $.fn.elfindertree = function(fm, opts) {
 							subsLen = subs.length;
 							cnt = 1;
 							subs.show().prev(selNavdir).addClass(expanded, function(){
-								!noCwd && subsLen == cnt++ && autoScroll();
+								if (!noCwd && subsLen == cnt++) {
+									autoScroll().done(checkSubdirs);
+								} else {
+									checkSubdirs();
+								}
 							});
 							!subsLen && !noCwd && autoScroll();
 						}
@@ -660,24 +795,26 @@ $.fn.elfindertree = function(fm, opts) {
 						(node || tree.find('div.'+uploadable)).find(selNavdir+':not(.elfinder-ro,.elfinder-na)').addClass('native-droppable');
 					}
 					if (!node || node.closest('div.'+wrapperRoot).hasClass(pastable)) {
-						//target = (node || tree.find('div.'+pastable)).find(selNavdir+':not(.'+droppable+',.elfinder-ro,.elfinder-na)');
 						target = (node || tree.find('div.'+pastable)).find(selNavdir+':not(.'+droppable+')');
 					} else {
 						target = $();
 					}
+					if (node) {
+						// check leaf roots
+						node.children('div.'+wrapperRoot).each(function() {
+							updateDroppable(null, $(this));
+						});
+					}
 				}
 				
-				if (target.length > limit) {
-					next = target.slice(limit);
-					target = target.slice(0, limit);
-				}
-				
-				target.droppable(droppableopts);
-				
-				if (next) {
-					fm.lazy(function() {
-						updateDroppable(next);
-					}, 20);
+				// make droppable on async
+				if (target.length) {
+					fm.asyncJob(function(elm) {
+						$(elm).droppable(droppableopts);
+					}, $.makeArray(target), {
+						interval : 20,
+						numPerOnce : 100
+					});
 				}
 			},
 			
@@ -715,11 +852,17 @@ $.fn.elfindertree = function(fm, opts) {
 			tree = $(this).addClass(treeclass)
 				// make dirs draggable and toggle hover class
 				.on('mouseenter mouseleave', selNavdir, function(e) {
-					var link  = $(this), 
-						enter = e.type == 'mouseenter';
+					var enter = (e.type === 'mouseenter');
+					if (enter && scrolling) { return; }
+					var link  = $(this); 
 					
 					if (!link.hasClass(dropover+' '+disabled)) {
-						!mobile && enter && !link.hasClass(root+' '+draggable+' elfinder-na elfinder-wo') && link.draggable(fm.draggable);
+						if (!mobile && enter && !link.data('dragRegisted') && !link.hasClass(root+' '+draggable+' elfinder-na elfinder-wo')) {
+							link.data('dragRegisted', true);
+							if (fm.isCommandEnabled('copy', fm.navId2Hash(link.attr('id')))) {
+								link.draggable(fm.draggable);
+							}
+						}
 						link.toggleClass(hover, enter);
 					}
 				})
@@ -808,9 +951,11 @@ $.fn.elfindertree = function(fm, opts) {
 							if (cnt > slideTH) {
 								stree.toggle();
 								fm.draggingUiHelper && fm.draggingUiHelper.data('refreshPositions', 1);
+								checkSubdirs();
 							} else {
 								stree.stop(true, true).slideToggle('normal', function(){
 									fm.draggingUiHelper && fm.draggingUiHelper.data('refreshPositions', 1);
+									checkSubdirs();
 								});
 							}
 						}).always(function() {
@@ -829,9 +974,11 @@ $.fn.elfindertree = function(fm, opts) {
 									if (stree.children().length > slideTH) {
 										stree.show();
 										fm.draggingUiHelper && fm.draggingUiHelper.data('refreshPositions', 1);
+										checkSubdirs();
 									} else {
 										stree.stop(true, true).slideDown('normal', function(){
 											fm.draggingUiHelper && fm.draggingUiHelper.data('refreshPositions', 1);
+											checkSubdirs();
 										});
 									}
 								} 
@@ -884,8 +1031,17 @@ $.fn.elfindertree = function(fm, opts) {
 					lock && selected.length && fm.trigger('lockfiles', {files: selected});
 					pdir.prepend(dir);
 				}),
+			scrolling = false,
+			navbarScrTm,
 			// move tree into navbar
-			navbar = fm.getUI('navbar').append(tree).show(),
+			navbar = fm.getUI('navbar').append(tree).show().on('scroll', function() {
+				scrolling = true;
+				navbarScrTm && clearTimeout(navbarScrTm);
+				navbarScrTm = setTimeout(function() {
+					scrolling = false;
+					checkSubdirs();
+				}, 50);
+			}),
 			
 			prevSortTreeview = fm.sortAlsoTreeview,
 			
@@ -942,7 +1098,7 @@ $.fn.elfindertree = function(fm, opts) {
 				length = dirs.length,
 				l    = length,
 				tgts = $(),
-				dir, node, tmp, realParent, reqParent, realSibling, reqSibling, isExpanded, isLoaded, parent;
+				dir, node, tmp, realParent, reqParent, realSibling, reqSibling, isExpanded, isLoaded, parent, subdirs;
 			
 			while (l--) {
 				dir = dirs[l];
@@ -968,7 +1124,7 @@ $.fn.elfindertree = function(fm, opts) {
 					node.replaceWith(tmp.children(selNavdir));
 					! mobile && updateDroppable(null, parent);
 					
-					if (dir.dirs 
+					if (dir.dirs
 					&& (isExpanded || isLoaded) 
 					&& (node = $('#'+fm.navHash2Id(dir.hash))) 
 					&& node.next('.'+subtree).children().length) {
@@ -976,9 +1132,15 @@ $.fn.elfindertree = function(fm, opts) {
 						isLoaded && node.addClass(loaded);
 					}
 					
+					subdirs |= dir.dirs == -1;
 				}
 			}
-
+			
+			// to check subdirs
+			if (subdirs) {
+				checkSubdirs();
+			}
+			
 			// fm.cwd() became empty object when cwd removed
 			fm.cwd().hash && sync(true);
 		})

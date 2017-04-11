@@ -150,7 +150,7 @@ var twitchApi = {
 
 		var twitchId = '';
 
-		for (var i = 0, il = parameters.length; i < il; i++) {
+		for (var i = 0, total = parameters.length; i < total; i++) {
 			var paramParts = parameters[i].split('=');
 			if (paramParts[0].includes('channel=')) {
 				twitchId = paramParts[1];
@@ -229,12 +229,9 @@ var TwitchIframeRenderer = {
 		    readyState = 4,
 		    twitchId = twitchApi.getTwitchId(mediaFiles[0].src);
 
-		var i = void 0,
-		    il = void 0,
-		    twitchPlayer = null,
+		var twitchPlayer = null,
 		    paused = true,
 		    ended = false,
-		    twitchIframe = null,
 		    hasStartedPlaying = false,
 		    volume = 1,
 		    duration = Infinity,
@@ -363,7 +360,7 @@ var TwitchIframeRenderer = {
 			};
 		};
 
-		for (i = 0, il = props.length; i < il; i++) {
+		for (var i = 0, total = props.length; i < total; i++) {
 			assignGettersSetters(props[i]);
 		}
 
@@ -394,8 +391,8 @@ var TwitchIframeRenderer = {
 			};
 		};
 
-		for (i = 0, il = methods.length; i < il; i++) {
-			assignMethods(methods[i]);
+		for (var _i = 0, _total = methods.length; _i < _total; _i++) {
+			assignMethods(methods[_i]);
 		}
 
 		/**
@@ -405,8 +402,8 @@ var TwitchIframeRenderer = {
    * @param {Array} events
    */
 		function sendEvents(events) {
-			for (var _i = 0, _il = events.length; _i < _il; _i++) {
-				var event = mejs.Utils.createEvent(events[_i], twitch);
+			for (var _i2 = 0, _total2 = events.length; _i2 < _total2; _i2++) {
+				var event = mejs.Utils.createEvent(events[_i2], twitch);
 				mediaElement.dispatchEvent(event);
 			}
 		}
@@ -418,9 +415,9 @@ var TwitchIframeRenderer = {
 
 			// do call stack
 			if (apiStack.length) {
-				for (i = 0, il = apiStack.length; i < il; i++) {
+				for (var _i3 = 0, _total3 = apiStack.length; _i3 < _total3; _i3++) {
 
-					var stackItem = apiStack[i];
+					var stackItem = apiStack[_i3];
 
 					if (stackItem.type === 'set') {
 						var propName = stackItem.propName,
@@ -445,8 +442,8 @@ var TwitchIframeRenderer = {
 				mediaElement.dispatchEvent(event);
 			};
 
-			for (i = 0, il = events.length; i < il; i++) {
-				twitchIframe.addEventListener(events[i], assignEvents, false);
+			for (var _i4 = 0, _total4 = events.length; _i4 < _total4; _i4++) {
+				twitchIframe.addEventListener(events[_i4], assignEvents, false);
 			}
 
 			var timer = void 0;
@@ -456,7 +453,7 @@ var TwitchIframeRenderer = {
 				paused = false;
 				ended = false;
 				sendEvents(['rendererready', 'loadedmetadata', 'loadeddata', 'canplay']);
-			}, false);
+			});
 			twitchPlayer.addEventListener('play', function () {
 				if (!hasStartedPlaying) {
 					hasStartedPlaying = true;
@@ -470,14 +467,14 @@ var TwitchIframeRenderer = {
 					twitchPlayer.getCurrentTime();
 					sendEvents(['timeupdate']);
 				}, 250);
-			}, false);
+			});
 			twitchPlayer.addEventListener('pause', function () {
 				paused = true;
 				ended = false;
 				if (!twitchPlayer.getEnded()) {
 					sendEvents(['pause']);
 				}
-			}, false);
+			});
 			twitchPlayer.addEventListener('ended', function () {
 				paused = true;
 				ended = true;
@@ -485,7 +482,7 @@ var TwitchIframeRenderer = {
 				clearInterval(timer);
 				hasStartedPlaying = false;
 				timer = null;
-			}, false);
+			});
 		};
 
 		// CREATE Twitch
@@ -498,7 +495,7 @@ var TwitchIframeRenderer = {
 			width: width,
 			height: height,
 			playsinline: false,
-			autoplay: false
+			autoplay: mediaElement.originalNode.autoplay
 		};
 
 		twitchSettings[type] = twitchId;
@@ -508,6 +505,7 @@ var TwitchIframeRenderer = {
 
 		mediaElement.originalNode.parentNode.insertBefore(twitchContainer, mediaElement.originalNode);
 		mediaElement.originalNode.style.display = 'none';
+		mediaElement.originalNode.autoplay = false;
 
 		// send it off for async loading and creation
 		twitchApi.enqueueIframe(twitchSettings);
@@ -520,14 +518,10 @@ var TwitchIframeRenderer = {
 		};
 		twitch.hide = function () {
 			twitch.pause();
-			if (twitchIframe) {
-				twitchIframe.style.display = 'none';
-			}
+			twitchContainer.style.display = 'none';
 		};
 		twitch.show = function () {
-			if (twitchIframe) {
-				twitchIframe.style.display = '';
-			}
+			twitchContainer.style.display = '';
 		};
 		twitch.destroy = function () {};
 

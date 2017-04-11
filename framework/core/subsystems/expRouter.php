@@ -136,6 +136,9 @@ class expRouter {
                 foreach ($params as $key=>$value) {
                     if(!is_array($value) && strpos($key,'__') !== 0 && $key !== 'PHPSESSID') {
                         $value = trim($value);
+                        if (expDateTime::is_date($value)) {
+                            $value = strtotime($value);
+                        }
                         $key = trim($key);
                         if ($value != "") {
                             if ($key != 'module' && $key != 'action' && $key != 'controller') {
@@ -214,7 +217,11 @@ class expRouter {
         // do the same for the other id's
         foreach ($_REQUEST as $key=>$var) {
             if (is_string($var) && strlen($key) >= 3 && strrpos($key,'_id',-3) !== false) {
-                $_REQUEST[$key] = intval($_REQUEST[$key]);
+//                $_REQUEST[$key] = intval($_REQUEST[$key]);
+                $_REQUEST[$key] = preg_match('/^[0-9]+/', $_REQUEST[$key], $matches) ? $matches[0] : 0;
+                if ($_REQUEST[$key] < 2147483647) {
+                    $_REQUEST[$key] = intval($_REQUEST[$key]);
+                }
                 if (isset($_GET[$key]))
                     $_GET[$key] = $_REQUEST[$key];
                 if (isset($_POST[$key]))
@@ -781,7 +788,11 @@ class expRouter {
         // do the same for the other id's
         foreach ($params as $key=>$var) {
             if (is_string($var) && strlen($key) >= 3 && strrpos($key,'_id',-3) !== false) {
-                $params[$key] = intval($params[$key]);
+//                $params[$key] = intval($params[$key]);
+                $params[$key] = preg_match('/^[0-9]+/', $params[$key], $matches) ? $matches[0] : 0;
+                if ($params[$key] < 2147483647) {
+                    $params[$key] = intval($params[$key]);
+                }
             }
             if ($key == 'src') {
                 $params[$key] = preg_replace("/[^A-Za-z0-9@-]/", '', $params[$key]);
@@ -951,6 +962,7 @@ class expRouter {
         if(isset($this->ectid)) return $this->ectid;
         else return '';
     }
+
 }
 
 ?>

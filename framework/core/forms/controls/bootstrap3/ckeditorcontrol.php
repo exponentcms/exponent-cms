@@ -49,31 +49,24 @@ class ckeditorcontrol extends formcontrol {
     }
 
     function controlToHTML($name, $label) {
-//        global $db, $user;
         global $user;
 
         $contentCSS = '';
         $css        = 'themes/' . DISPLAY_THEME . '/editors/ckeditor/ckeditor.css';
-        if (THEME_STYLE != "" && is_file(BASE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/ckeditor_' . THEME_STYLE . '.css')) {
+        if (THEME_STYLE != "" && is_file(BASE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/ckeditor_' . THEME_STYLE . '.css'))
             $css    = 'themes/' . DISPLAY_THEME . '/editors/ckeditor/ckeditor_' . THEME_STYLE . '.css';
-        }
-        if (is_file(BASE . $css)) {
+        if (is_file(BASE . $css))
             $contentCSS = "contentsCss : '" . PATH_RELATIVE . $css . "',";
-        }
 
-        if (is_file(BASE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/config.js')) {
+        if (is_file(BASE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/config.js'))
             $configjs = "customConfig : '" . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/config.js' . "',";
-        } else {
+        else
             $configjs = "";
-        }
 
-        if ($this->toolbar === '') {
-//            $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
+        if ($this->toolbar === '')
             $settings = expHTMLEditorController::getActiveEditorSettings('ckeditor');
-        } elseif (intval($this->toolbar) != 0) {
-//            $settings = $db->selectObject('htmleditor_ckeditor', 'id=' . $this->toolbar);
+        elseif (intval($this->toolbar) != 0)
             $settings = expHTMLEditorController::getEditorSettings($this->toolbar, 'ckeditor');
-        }
         $plugins = '';
         if (!empty($settings)) {
             $tb         = stripSlashes($settings->data);
@@ -85,16 +78,16 @@ class ckeditorcontrol extends formcontrol {
             $formattags = stripSlashes($settings->formattags);
             $fontnames  = stripSlashes($settings->fontnames);
         }
-        if (!empty($this->additionalConfig)) {
+        if (!empty($this->additionalConfig))
             $additionalConfig = $this->additionalConfig;
-        } elseif (!empty($settings->additionalconfig)) {
+        elseif (!empty($settings->additionalconfig))
             $additionalConfig = stripSlashes($settings->additionalconfig);
-        } else {
+        else
             $additionalConfig = '';
-        }
-        if (!empty($this->plugin)) {
+        if (!empty($additionalConfig) && strpos($additionalConfig,",",-1) === false)
+            $additionalConfig .= ",";  // MUST end with comma
+        if (!empty($this->plugin))
             $plugins .= ',' . $this->plugin;
-        }
         // clean up (custom) plugins list from missing plugins
         if (!empty($plugins)) {
             $plugs = explode(',',trim($plugins));
@@ -105,7 +98,8 @@ class ckeditorcontrol extends formcontrol {
         }
         // set defaults
         // make sure the (custom) skin exists
-        if (empty($skin) || !is_dir(BASE . 'external/editors/ckeditor/skins/' . $skin)) $skin = 'kama';
+        if (empty($skin) || !is_dir(BASE . 'external/editors/ckeditor/skins/' . $skin))
+            $skin = 'kama';
         if (empty($tb)) {
             if ($this->toolbar === 'basic') {
                 $tb = "
@@ -148,6 +142,8 @@ class ckeditorcontrol extends formcontrol {
             } else {
                 $tbc = '';
             }
+            // $tb must be javascript array [..]
+            $tb = expString::check_javascript($tb);  // $styleset must be enclosed in quotes '..' or brackets [..]
             $tb = "toolbar : [".$tb.$tbc."],";
         }
         if (MOBILE) {
@@ -156,26 +152,37 @@ class ckeditorcontrol extends formcontrol {
             removePlugins : 'elementspath',
             resize_enabled : false,";
         }
-        if (!MOBILE && $this->tb_collapsed) $tb .= 'toolbarStartupExpanded : false,';
-        if (empty($paste_word)) $paste_word = 'forcePasteAsPlainText : true,';
+        if (!MOBILE && $this->tb_collapsed)
+            $tb .= 'toolbarStartupExpanded : false,';
+        if (empty($paste_word))
+            $paste_word = 'forcePasteAsPlainText : true,';
         if (!$user->globalPerm('prevent_uploads')) {
             $upload = "filebrowserUploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader.php',";
             $upload .= "uploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader_paste.php',";
-        } else {
+        } else
             $upload = '';
-        }
-        if (empty($scayt_on)) $scayt_on = 'true';
-        if (empty($stylesset)) $stylesset = "'default'";
-        if (empty($formattags)) $formattags = "'p;h1;h2;h3;h4;h5;h6;pre;address;div'";
-        if (empty($fontnames)) $fontnames = "'Arial/Arial, Helvetica, sans-serif;' +
-                                    'Comic Sans MS/Comic Sans MS, cursive;' +
-                                    'Courier New/Courier New, Courier, monospace;' +
-                                    'Georgia/Georgia, serif;' +
-                                    'Lucida Sans Unicode/Lucida Sans Unicode, Lucida Grande, sans-serif;' +
-                                    'Tahoma/Tahoma, Geneva, sans-serif;' +
-                                    'Times New Roman/Times New Roman, Times, serif;' +
-                                    'Trebuchet MS/Trebuchet MS, Helvetica, sans-serif;' +
-                                    'Verdana/Verdana, Geneva, sans-serif'";
+        if (empty($scayt_on))
+            $scayt_on = 'true';
+        if (empty($stylesset))
+            $stylesset = "'default'";
+        else
+            $stylesset = expString::check_javascript($stylesset);  // $styleset must be enclosed in quotes '..' or brackets [..]
+        if (empty($formattags))
+            $formattags = "'p;h1;h2;h3;h4;h5;h6;pre;address;div'";
+        else
+            $formattags = expString::check_javascript($formattags, true);  // $formattags must be enclosed in quotes '..'
+        if (empty($fontnames))
+            $fontnames = "'Arial/Arial, Helvetica, sans-serif;' +
+                'Comic Sans MS/Comic Sans MS, cursive;' +
+                'Courier New/Courier New, Courier, monospace;' +
+                'Georgia/Georgia, serif;' +
+                'Lucida Sans Unicode/Lucida Sans Unicode, Lucida Grande, sans-serif;' +
+                'Tahoma/Tahoma, Geneva, sans-serif;' +
+                'Times New Roman/Times New Roman, Times, serif;' +
+                'Trebuchet MS/Trebuchet MS, Helvetica, sans-serif;' +
+                'Verdana/Verdana, Geneva, sans-serif'";
+        else
+            $fontnames = expString::check_javascript($fontnames, true);  // $fontnames must be enclosed in quotes '..'
         $content = "
             $(document).ready(function(){
                 if(typeof(EXPONENT.editor" . createValidId($name) . ") !== 'undefined'){

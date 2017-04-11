@@ -59,21 +59,16 @@ class tinymcecontrol extends formcontrol
 
         $contentCSS = '';
         $css = 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce.css';
-        if (THEME_STYLE != "" && is_file(
-                BASE . 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce_' . THEME_STYLE . '.css'
-            )
-        ) {
+        if (THEME_STYLE != "" && is_file(BASE . 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce_' . THEME_STYLE . '.css'))
             $css = 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce_' . THEME_STYLE . '.css';
-        }
         if (is_file(BASE . $css)) {
             $contentCSS = "content_css : '" . PATH_RELATIVE . $css . "',
             ";
         }
-        if ($this->toolbar === '') {
+        if ($this->toolbar === '')
             $settings = expHTMLEditorController::getActiveEditorSettings('tinymce');
-        } elseif (intval($this->toolbar) != 0) {
+        elseif (intval($this->toolbar) != 0)
             $settings = expHTMLEditorController::getEditorSettings($this->toolbar, 'tinymce');
-        }
         if (!$user->globalPerm('prevent_uploads')) {
             $upload = "plupload_basepath	: './plugins/quickupload',
                 upload_url			: '" . URL_FULL . "framework/modules/file/connector/uploader_tinymce.php',
@@ -102,9 +97,8 @@ class tinymcecontrol extends formcontrol
 //            $upload .= "
 //            paste_data_images: false,
 //            images_upload_base_path: '" . UPLOAD_DIRECTORY . "',";
-        } else {
+        } else
             $upload = '';
-        }
         if (!empty($settings)) {
 //            $tb = stripSlashes($settings->data);
             $tb_raw = explode("\n", $settings->data);
@@ -119,16 +113,17 @@ class tinymcecontrol extends formcontrol
             $formattags = stripSlashes($settings->formattags);
             $fontnames = stripSlashes($settings->fontnames);
         }
-        if (!empty($this->additionalConfig)) {
+        if (!empty($this->additionalConfig))
             $additionalConfig = $this->additionalConfig;
-        } elseif (!empty($settings->additionalconfig)) {
+        elseif (!empty($settings->additionalconfig))
             $additionalConfig = stripSlashes($settings->additionalconfig);
-        } else {
+        else
             $additionalConfig = '';
-        }
-        if (!empty($this->plugin)) {
+        if (!empty($additionalConfig) && strpos($additionalConfig,",",-1) === false)
+            $additionalConfig .= ",";  // MUST end with comma
+        if (!empty($this->plugin))
             $plugins .= ',' . $this->plugin;
-        } else {
+        else {
             $plugins = "advlist,autolink,lists,link,image,imagetools,charmap,print,preview,hr,anchor,pagebreak" .
                     ",searchreplace,wordcount,visualblocks,visualchars,code,fullscreen" .
                     ",media,nonbreaking,save,table,contextmenu,directionality" .
@@ -167,12 +162,12 @@ class tinymcecontrol extends formcontrol
                    toolbar_items_size: 'small',
                    statusbar: false,";
         }
-        if (!MOBILE && $this->tb_collapsed) $tb .= "menubar: false, toolbar_items_size: 'small',";
-
-        if (empty($skin) || !is_dir(BASE . 'external/editors/tinymce/skins/' . $skin)) {
+        if (!MOBILE && $this->tb_collapsed)
+            $tb .= "menubar: false, toolbar_items_size: 'small',";
+        if (empty($skin) || !is_dir(BASE . 'external/editors/tinymce/skins/' . $skin))
             $skin = 'lightgray';
-        }
-        if (empty($sc_brw_off)) $sc_brw_off = 'true';
+        if (empty($sc_brw_off))
+            $sc_brw_off = 'true';
         if (empty($stylesset)) {
             $stylesset = "{title: 'Inline', items: [
                     {title: 'Strikethrough', inline: 'span', styles : {textDecoration : 'line-through'}, icon: 'strikethrough'},
@@ -214,11 +209,14 @@ class tinymcecontrol extends formcontrol
                     },
                 ]},
             ";
-        }
-        if (empty($formattags)) {
+        } else
+            $stylesset = expString::check_javascript($stylesset, false, true);  // $styleset must be enclosed in curly braces {..}
+
+        if (empty($formattags))
             $formattags = "'Normal=p;Heading 1=h1;Heading 2=h2;Heading 3=h3;Heading 4=h4;Heading 5=h5;Heading 6=h6;Formatted=pre;Address=address;Normal (DIV)=div'";
-        }
-        if (empty($fontnames)) {
+        else
+            $formattags = expString::check_javascript($formattags, true);  // $formattags must be enclosed in quotes '..'
+        if (empty($fontnames))
             $fontnames = "'Andale Mono=andale mono,times;'+
                     'Arial=arial,helvetica,sans-serif;'+
                     'Arial Black=arial black,avant garde;'+
@@ -237,7 +235,8 @@ class tinymcecontrol extends formcontrol
                     'Webdings=webdings;'+
                     'Wingdings=wingdings,zapf dingbats'
             ";
-        }
+        else
+            $fontnames = expString::check_javascript($fontnames, true);  // $fontnames must be enclosed in quotes '..'
         $content = "
         YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             Y.Global.on(\"lazyload:cke\", function () {

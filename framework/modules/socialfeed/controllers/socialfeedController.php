@@ -206,6 +206,9 @@ class socialfeedController extends expController
                     $graph_object = $response->getGraphObject(); //v4
                     $facebook_values = $graph_object->asArray(); //v4
                 } catch (Exception $e) {  //v4
+                    if ($user->isAdmin()) {
+                        flash('error', gt('Socialfeed - Facebook Error') . ' - ' . $e->getMessage());
+                    }
                     return array();  //v4
                 }  //v4
 
@@ -348,6 +351,9 @@ class socialfeedController extends expController
                     return null;
                 }
             } catch (Exception $e) {
+                if ($user->isAdmin()) {
+                    flash('error', gt('Socialfeed - Facebook Event Error') . ' - ' . $e->getMessage());
+                }
                 return null;
             }
 

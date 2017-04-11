@@ -115,6 +115,7 @@
                     <div id="tab7">
                         <h2>{'General Location Settings'|gettext}</h2>
                         {control type="checkbox" name="address_allow_admins_all" label="Allow admins access to the full geographical data regardless of other settings?"|gettext value=1 checked=$config.address_allow_admins_all}
+                        {control type="text" name="map_apikey" label="Google Maps API Key"|gettext value=$config.map_apikey}
                     </div>
                     <div id="tab8">
                         <h2>{"Product Feeds Settings"|gettext}</h2>
