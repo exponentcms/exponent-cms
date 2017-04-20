@@ -27,6 +27,8 @@
 class expDateTime {
 
     public static function is_date($str){
+        if ((strpos($str, '/') && strpos($str, '-')) === false)
+            return false;
         $str = str_replace('/', '-', $str);
         $stamp = strtotime($str);
         if (is_numeric($stamp)){

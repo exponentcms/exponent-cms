@@ -81,7 +81,6 @@ class vtimezone extends calendarComponent {
  * @uses vtimezone::$components
  * @uses calendarComponent::setConfig()
  */
-//  function vtimezone( $timezonetype=FALSE, $config = array()) {
   function __construct( $timezonetype=FALSE, $config = array()) {
     if( is_array( $timezonetype )) {
       $config       = $timezonetype;
@@ -91,7 +90,6 @@ class vtimezone extends calendarComponent {
       $this->timezonetype = 'VTIMEZONE';
     else
       $this->timezonetype = strtoupper( $timezonetype );
-//    $this->calendarComponent();
     parent::__construct();
     $this->comment         = '';
     $this->dtstart         = '';
