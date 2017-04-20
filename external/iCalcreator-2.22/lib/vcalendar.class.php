@@ -90,7 +90,6 @@ class vcalendar extends iCalBase {
  * @uses vcalendar::$xcaldecl
  * @uses vcalendar::$components
  */
-//  function vcalendar ( $config = array()) {
   function __construct ( $config = array()) {
     $this->_makeVersion();
     $this->calscale   = null;
@@ -631,7 +630,7 @@ class vcalendar extends iCalBase {
                     , $this->getConfig( 'filesize' ));
         break;
       case 'FILENAME':
-        if( empty( $this->filename ) ) {
+        if( empty( $this->filename ) && ( '0' != $this->filename )) {
           if( 'xcal' == $this->format )
             $this->filename = date( 'YmdHis' ).'.xml'; // recommended xcs.. .
           else

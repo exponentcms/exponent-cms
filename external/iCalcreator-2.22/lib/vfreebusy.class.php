@@ -75,9 +75,7 @@ class vfreebusy extends calendarComponent {
  * @uses vjournal::$xprop
  * @uses calendarComponent::setConfig()
  */
-//  function vfreebusy( $config = array()) {
   function __construct( $config = array()) {
-//    $this->calendarComponent();
     parent::__construct();
     $this->attendee        = '';
     $this->comment         = '';
