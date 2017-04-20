@@ -306,7 +306,7 @@ class elFinderConnector {
 			if (isset($data['debug']) && isset($data['debug']['phpErrors'])) {
 				$data['debug']['phpErrors'] = array_merge($data['debug']['phpErrors'], elFinder::$phpErrors);
 			}
-			$out = json_encode(htmlspecialchars($data));
+			$out = json_encode($data);
 		}
 
 		// clear output buffer
