@@ -52,10 +52,10 @@
    	{/if}
     {subscribe_link}
     {$myloc=serialize($__loc)}
-    <div id="file-{$id}" class="panel-group">
+    <div id="file-{$id}" class="panel-group" role="tablist">
         {foreach name=items from=$page->cats key=catid item=cat}
             <div id="item{$catid}" class="panel panel-default">
-                <div class="panel-heading">
+                <div class="panel-heading" role="tab">
                     <div class="panel-title"><a data-toggle="collapse" data-parent="#file-{$id}" href="#collapse-{$catid}" title="{'Collapse/Expand'|gettext}"><{$config.item_level|default:'h2'}>{if $cat->name ==""}{if $config.uncat == ""}{'The List'|gettext}{else}{$config.uncat}{/if}{else}{$cat->name}{/if}</{$config.item_level|default:'h2'}></a></div>
                 </div>
                 <div id="collapse-{$catid}" class="panel-collapse collapse{if ($smarty.foreach.items.iteration==1 && $config.initial_view == '3') || $config.initial_view == '2'} in{/if}">

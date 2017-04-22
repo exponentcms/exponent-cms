@@ -122,6 +122,7 @@
             $('.forms.design-form .formmoduleedit.item').toggleClass('clean');
             $('.forms.design-form .form-wrapper').toggleClass('clean');
             $('#toggle_grid').toggleClass('active');
+            $('#toggle_grid').blur();
         });
 
         // toggle form style

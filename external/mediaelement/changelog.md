@@ -1,5 +1,11 @@
 ### Version History
 
+*4.0.6 (2017/04/20)*
+
+* Remove loading overlay only if it exists instead of failing (https://github.com/mediaelement/mediaelement/pull/2167) @kozze89
+* Fixed issue with `replay` icon's CSS position @rafa8626
+* Added workaround to avoid Firefox's `getComputedStyle` iframe bug @rafa8626
+
 *4.0.5 (2017/04/14)*
 
 * Fixed typo to allow `None` caption to be unchecked @rafa8626

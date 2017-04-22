@@ -54,7 +54,7 @@
             {/if}
             {foreach name=items from=$cat->records item=item}
                 <div class="item">
-                    <h3 class="link-title"><a class="{$cat->color}"{if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></h3>
+                    <h3 class="link-title"><a class="{$cat->color}"{if $item->new_window} target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></h3>
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}

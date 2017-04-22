@@ -948,7 +948,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mejs = {};
 
 // version number
-mejs.version = '4.0.5';
+mejs.version = '4.0.6';
 
 // Basic HTML5 settings
 mejs.html5media = {
@@ -4602,7 +4602,10 @@ var MediaElementPlayer = function () {
 								// Fixing an Android stock browser bug, where "seeked" isn't fired correctly after
 								// ending the video and jumping to the beginning
 								setTimeout(function () {
-									t.container.querySelector('.' + t.options.classPrefix + 'overlay-loading').parentNode.style.display = 'none';
+									var loadingElement = t.container.querySelector('.' + t.options.classPrefix + 'overlay-loading');
+									if (loadingElement && loadingElement.parentNode) {
+										loadingElement.parentNode.style.display = 'none';
+									}
 								}, 20);
 							} catch (exp) {
 								
@@ -8966,6 +8969,16 @@ if (window.Element && !Element.prototype.closest) {
 		clearTimeout(id);
 	};
 })();
+
+// Javascript workaround for FF iframe `getComputedStyle` bug
+// Reference: https://stackoverflow.com/questions/32659801/javascript-workaround-for-firefox-iframe-getcomputedstyle-bug/32660009#32660009
+if (/firefox/i.test(navigator.userAgent)) {
+	window.oldGetComputedStyle = window.getComputedStyle;
+	window.getComputedStyle = function (el, pseudoEl) {
+		var t = window.oldGetComputedStyle(el, pseudoEl);
+		return t === null ? { getPropertyValue: function getPropertyValue() {} } : t;
+	};
+}
 
 },{"2":2}],28:[function(_dereq_,module,exports){
 'use strict';
