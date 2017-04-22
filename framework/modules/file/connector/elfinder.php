@@ -509,5 +509,5 @@ $opts = array(
 );
 
 //header('Access-Control-Allow-Origin: *');
-$connector = new elFinderConnector(new elFinderExponent($opts), true);
+$connector = new elFinderConnector(new elFinderExponent($opts));
 $connector->run();
