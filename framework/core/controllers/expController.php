@@ -94,6 +94,7 @@ abstract class expController {
 //        $this->viewpath = BASE.'framework/modules/'.$this->relative_viewpath;
         //FIXME this requires we move the 'core' controllers into the modules folder or use this hack
         $depth = array_search('core', $controllerpath);
+        if (DEVELOPMENT && !$depth) $depth = array_search('themes', $controllerpath);  // account for modified controller within theme
         if ($depth) {
             $this->viewpath = BASE . 'framework/modules/' . $this->relative_viewpath;
         } else {
@@ -106,7 +107,7 @@ abstract class expController {
 //        $this->asset_path = PATH_RELATIVE.'framework/'.implode('/', array_slice($controllerpath, -3, 3))."/";
         $depth = array_search('framework', $controllerpath);  // is this a system file (or theme)?
         if (!$depth) $depth = array_search('themes', $controllerpath);
-        $this->asset_path = PATH_RELATIVE . implode('/', array_slice($controllerpath, $depth)) . "/";
+        $this->asset_path = PATH_RELATIVE . implode('/', array_slice($controllerpath, $depth)) . "/";  // assumes all assets are in same folder as controller
 
         // figure out which model we're using and setup some info about it
         if (empty($this->basemodel_name)) $this->basemodel_name = get_model_for_controller($this->classname);
