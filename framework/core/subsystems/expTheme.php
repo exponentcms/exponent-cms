@@ -28,7 +28,7 @@ class expTheme
 
     public static function initialize()
     {
-        global $auto_dirs2;
+        global $auto_dirs, $auto_dirs2;
 
         // Initialize the theme subsystem 1.0 compatibility layer if requested
 		if (defined('OLD_THEME_COMPATIBLE') && OLD_THEME_COMPATIBLE)
