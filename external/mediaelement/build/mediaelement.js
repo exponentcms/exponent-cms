@@ -948,7 +948,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mejs = {};
 
 // version number
-mejs.version = '4.0.5';
+mejs.version = '4.0.6';
 
 // Basic HTML5 settings
 mejs.html5media = {
@@ -4291,5 +4291,15 @@ if (window.Element && !Element.prototype.closest) {
 		clearTimeout(id);
 	};
 })();
+
+// Javascript workaround for FF iframe `getComputedStyle` bug
+// Reference: https://stackoverflow.com/questions/32659801/javascript-workaround-for-firefox-iframe-getcomputedstyle-bug/32660009#32660009
+if (/firefox/i.test(navigator.userAgent)) {
+	window.oldGetComputedStyle = window.getComputedStyle;
+	window.getComputedStyle = function (el, pseudoEl) {
+		var t = window.oldGetComputedStyle(el, pseudoEl);
+		return t === null ? { getPropertyValue: function getPropertyValue() {} } : t;
+	};
+}
 
 },{"2":2}]},{},[18,5,4,8,13,10,9,11,12,14]);
