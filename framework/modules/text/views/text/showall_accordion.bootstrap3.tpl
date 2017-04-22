@@ -35,10 +35,10 @@
         {$config.moduledescription}
     {/if}
     {$myloc=serialize($__loc)}
-    <div id="text-{$id}" class="panel-group">
+    <div id="text-{$id}" class="panel-group" role="tablist">
         {foreach from=$items item=item key=textid name=items}
             <div id="item{$item->id}" class="panel panel-default item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
-                <div class="panel-heading">
+                <div class="panel-heading" role="tab">
                     <div class="panel-title"><a data-toggle="collapse" data-parent="#text-{$id}" href="#collapse-{$textid}" title="{'Collapse/Expand'|gettext}"><{$config.item_level|default:'h2'}>{if $item->title ==""}&#160;{else}{$item->title}{/if}</{$config.item_level|default:'h2'}></a></div>
                 </div>
                 <div id="collapse-{$textid}" class="panel-collapse collapse{if ($smarty.foreach.items.iteration==1 && $config.initial_view == '3') || $config.initial_view == '2'} in{/if}">
