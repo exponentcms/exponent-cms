@@ -132,6 +132,26 @@ class eventController extends expController {
                 if (!empty($view_params[2])) $viewrange = $view_params[2];
         }  // end switch $view
 
+        /*
+         * $viewtype(s)
+         * - default
+         * - administration
+         * - minical
+         * - byday
+         * - monthly
+         */
+        /*
+         * $viewrange(s)
+         * - all (default viewtype)
+         * - past (default viewtype)
+         * - month (byday viewtype) (default viewtype)
+         * - twoweek * (byday viewtype)
+         * - week (byday viewtype)
+         * - day (byday viewtype) (default viewtype)
+         * - next * (default viewtype)
+         * - today * (default viewtype)
+         * - upcoming (default viewtype)
+         */
         switch ($viewtype) {
             case "minical":
                 $monthly = expDateTime::monthlyDaysTimestamp($time);
@@ -977,8 +997,8 @@ class eventController extends expController {
                 $view = "send_reminders"; // default reminder view
             }
 
-//            $template = expTemplate::get_template_for_action($this, $view, $this->loc);
             global $template;
+            $template = expTemplate::get_template_for_action($this, $view, $this->loc);
 
             $title = $this->config['feed_title'];
             $template->assign('moduletitle', $title);
@@ -1049,9 +1069,11 @@ class eventController extends expController {
             $template->assign("showdetail", !empty($this->config['email_showdetail']));
             $htmlmsg = $template->render();
 
-            // now the same thing for the text message
-//            $msg = preg_replace('/(<script[^>]*>.+?<\/script>|<style[^>]*>.+?<\/style>)/s', '', $htmlmsg); // remove any script or style blocks
-//            $msg = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $msg)));
+            if (expString::html2text($htmlmsg) == "") {
+                flash('error',gt('No Information to Send!'));
+                echo show_msg_queue('error');
+                return;
+            }
 
             // Saved.  do notifs
             $emails = array();
