@@ -1093,6 +1093,9 @@ function eDebug($var, $halt=false, $disable_log=false){
             if (file_exists(BASE . 'external/kint/Kint.class.php')) {
                 require_once BASE . 'external/kint/Kint.class.php';
                 d($var);  // kint
+            } elseif (file_exists(BASE . 'external/kint/build/kint.php')) {
+                require_once BASE . 'external/kint/build/kint.php';
+                d($var);  // kint
             } else {
                 echo "<pre>";
                 print_r($var);
