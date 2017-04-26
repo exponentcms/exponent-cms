@@ -948,7 +948,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mejs = {};
 
 // version number
-mejs.version = '4.0.6';
+mejs.version = '4.0.7';
 
 // Basic HTML5 settings
 mejs.html5media = {
@@ -1224,7 +1224,7 @@ Object.assign(_player2.default.prototype, {
   * @param {$} layers
   * @param {HTMLElement} media
   */
-	buildfullscreen: function buildfullscreen(player, controls, layers, media) {
+	buildfullscreen: function buildfullscreen(player) {
 
 		if (!player.isVideo) {
 			return;
@@ -1232,10 +1232,7 @@ Object.assign(_player2.default.prototype, {
 
 		player.isInIframe = _window2.default.location !== _window2.default.parent.location;
 
-		// detect on start
-		media.addEventListener('loadstart', function () {
-			player.detectFullscreenMode();
-		});
+		player.detectFullscreenMode();
 
 		var t = this,
 		    fullscreenTitle = (0, _general.isString)(t.options.fullscreenText) ? t.options.fullscreenText : _i18n2.default.t('mejs.fullscreen'),
@@ -1345,8 +1342,12 @@ Object.assign(_player2.default.prototype, {
 		    isNative = t.media.rendererName !== null && t.media.rendererName.match(/(html5|native)/) !== null,
 		    containerStyles = getComputedStyle(t.container);
 
-		if (Features.IS_IOS && Features.HAS_IOS_FULLSCREEN && typeof t.media.webkitEnterFullscreen === 'function') {
-			t.media.webkitEnterFullscreen();
+		if (Features.IS_IOS && Features.HAS_IOS_FULLSCREEN) {
+			if (typeof t.media.webkitEnterFullscreen === 'function') {
+				t.media.webkitEnterFullscreen();
+			} else {
+				t.media.originalNode.webkitEnterFullscreen();
+			}
 			return;
 		}
 
@@ -4001,7 +4002,8 @@ var MediaElementPlayer = function () {
 
 		// try to get options from data-mejsoptions
 		if (o === undefined) {
-			o = t.node.getAttribute('data-mejsoptions');
+			var options = t.node.getAttribute('data-mejsoptions');
+			o = options ? JSON.parse(options) : {};
 		}
 
 		// extend default options
@@ -4825,7 +4827,20 @@ var MediaElementPlayer = function () {
 
 				// traverse parents to find the closest visible one
 				while (el) {
-					parentEl = el.parentElement;
+					try {
+						if (_window2.default.self !== _window2.default.top) {
+							if (_window2.default.frameElement !== null) {
+								return _window2.default.frameElement;
+							} else {
+								parentEl = _window2.default.frameElement.parentNode;
+							}
+						} else {
+							parentEl = el.parentElement;
+						}
+					} catch (e) {
+						parentEl = el.parentElement;
+					}
+
 					if (parentEl && dom.visible(parentEl)) {
 						return parentEl;
 					}
@@ -4834,7 +4849,7 @@ var MediaElementPlayer = function () {
 
 				return null;
 			}(),
-			    parentStyles = getComputedStyle(parent, null),
+			    parentStyles = parent ? getComputedStyle(parent, null) : getComputedStyle(_document2.default.body, null),
 			    nativeWidth = function () {
 				if (t.isVideo) {
 					if (t.media.videoWidth && t.media.videoWidth > 0) {
@@ -4931,8 +4946,19 @@ var MediaElementPlayer = function () {
 	}, {
 		key: 'setFillMode',
 		value: function setFillMode() {
-			var t = this,
-			    parent = t.outerContainer;
+			var t = this;
+
+			var parent = void 0;
+
+			try {
+				if (_window2.default.self !== _window2.default.top) {
+					parent = _window2.default.frameElement.parentNode;
+				} else {
+					parent = t.outerContainer;
+				}
+			} catch (e) {
+				parent = t.outerContainer;
+			}
 
 			var parentStyles = getComputedStyle(parent);
 
