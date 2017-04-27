@@ -78,7 +78,7 @@
                     {/group}
                     {group label='Custom View Configuration'|gettext}
                     {control type=editor name='report_def' label='Custom E-Mail, Single and Portfolio View Template'|gettext value=$config.report_def rows=10 cols=60
-                        plugin="fieldinsert" additionalConfig="fieldinsert_list : `$fieldlist`,"
+                        plugin="fieldinsert" additionalConfig="fieldinsert_list : `$fieldlist`"
                         description='Leave blank to display all fields.  Use \'Fields\' dropdown to insert fields'}
                     {/group}
                 </div>

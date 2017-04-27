@@ -30,7 +30,7 @@
 {/group}
 {group label='Custom View Configuration'|gettext}
     {control type=editor name='report_def' label='Custom E-Mail and Single Item View Template'|gettext value=$config.report_def rows=10 cols=60
-        plugin="fieldinsert" additionalConfig="fieldinsert_list : `$fieldlist`,"
+        plugin="fieldinsert" additionalConfig="fieldinsert_list : `$fieldlist`"
         description='Leave blank to display all fields.  Use \'Fields\' dropdown to insert fields'}
     {control type="dropdown" name="order" label="Sort records by"|gettext items=$fields value=$config.order|default:'id'}
     {control type=radiogroup name='dir' label='Sorting Direction'|gettext default=$config.dir|default:'ASC' items='Ascending, Descending'|gettxtlist values='ASC,DESC'}
