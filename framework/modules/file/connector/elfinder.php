@@ -385,6 +385,7 @@ $opts = array(
             'accessControl'   => 'access',
             // 'accessControl' => array($acl, 'fsAccess'),
             // 'accessControlData' => array('uid' => 1),
+            'uploadDeny'  => array('all'),                // All Mimetypes NOT allowed to upload
             'uploadAllow'     => array(
                 'application/arj',
                 'application/excel',
@@ -472,10 +473,11 @@ $opts = array(
                 'video',
                 'text/csv'
             ),
-            'uploadDeny'      => array(
-                'application/x-shockwave-flash'
-            ),
-            'uploadOrder'     => 'allow,deny',
+//            'uploadDeny'      => array(
+//                'application/x-shockwave-flash'
+//            ),
+//            'uploadOrder'     => 'allow,deny',
+            'uploadOrder'     => 'deny,allow',
             'uploadOverwrite' => true,
 //            'uploadMaxSize'   => '128m',
             // 'copyOverwrite' => false,
