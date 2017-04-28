@@ -14,7 +14,7 @@
  *}
 
 <div class="module notfound search-results">
-    <h1>{$smarty.const.SITE_404_TITLE}</h1>
+    <h1><span class="fa fa-warning text-warning"></span>{$smarty.const.SITE_404_TITLE}</h1>
     {$smarty.const.SITE_404_HTML}
 
     {if $page->records|@count > 0}
@@ -22,13 +22,13 @@
         <span class="searched_for">
         {'We found the following pages which are similar to the page'|gettext} <span class="terms">"{$terms}"</span> {'you were looking for'|gettext}
 	    </span>
-		{foreach from=$page->records item=result}
+		{foreach $page->records as $result}
 			<div class="item {cycle values="odd,even"}">
 				<a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}">{$result->title|highlight:$terms}</a>
 				{if $result->body != ""}{br}<span class="summary">{$result->body|strip_tags|truncate:240|highlight:$terms}</span>{/if}
 				{clear}
 			</div>
-		{/foreach}
+        {/foreach}
     {else}
         {showmodule controller=search action=show}
 	{/if}
