@@ -369,8 +369,8 @@ class expTheme
 //            $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/excanvas.js"></script><![endif]-->' . "\n";
 
             //Win 8/IE 10 work around
-            $str .= "\t" . '<!--[if IE 10]><link rel="stylesheet" href="' . PATH_RELATIVE . 'external/ie10-viewport-bug-workaround.css" type="text/css"' . XHTML_CLOSING . '><![endif]-->' . "\n";
-            $str .= "\t" . '<!--[if IE 10]><script src="' . PATH_RELATIVE . 'external/ie10-viewport-bug-workaround.js"></script><![endif]-->' . "\n";
+            $str .= "\t" . '<link rel="stylesheet" href="' . PATH_RELATIVE . 'external/ie10-viewport-bug-workaround.css" type="text/css"' . XHTML_CLOSING . '>' . "\n";
+            $str .= "\t" . '<script src="' . PATH_RELATIVE . 'external/ie10-viewport-bug-workaround.js"></script>' . "\n";
         }
 
         return $str;
