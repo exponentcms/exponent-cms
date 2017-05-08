@@ -93,12 +93,15 @@ class ealertController extends expController {
         $obj->created_at = time();
         $id = $db->insertObject($obj, 'expeAlerts_temp');
 
-        $bot = new expBot(array(
-            'url'=>PATH_RELATIVE."index.php?controller=ealert&action=send&id=".$id.'&ealert_id='.$this->params['id'],
-            'method'=>'POST',
-        ));
+//        $bot = new expBot(array(
+//            'url'=>PATH_RELATIVE."index.php?controller=ealert&action=send&id=".$id.'&ealert_id='.$this->params['id'],
+//            'method'=>'POST',
+//        ));
+//        $bot->fire();
 
-        $bot->fire();
+        //fixme since bots aren't working
+        redirect_to(array('controller'=>'ealert','action'=>'send','id'=>$id, 'ealert_id'=>$this->params['id']));
+
         flash('message', gt("E-Alerts are being sent to subscribers."));
         expHistory::back();
     }
@@ -126,12 +129,15 @@ class ealertController extends expController {
         $obj->created_at = time();
         $id = $db->insertObject($obj, 'expeAlerts_temp');
 
-        $bot = new expBot(array(
-            'url'=>PATH_RELATIVE."index.php?controller=ealert&action=send&id=".$id.'&ealert_id='.$ealert->id,
-            'method'=>'POST',
-        ));
+//        $bot = new expBot(array(
+//            'url'=>PATH_RELATIVE."index.php?controller=ealert&action=send&id=".$id.'&ealert_id='.$ealert->id,
+//            'method'=>'POST',
+//        ));
+//        $bot->fire();
 
-        $bot->fire();
+        //fixme since bots aren't working
+        redirect_to(array('controller'=>'ealert','action'=>'send','id'=>$id, 'ealert_id'=>$this->params['id']));
+
         flash('message', gt("E-Alerts are being sent to subscribers."));
         expHistory::back();
     }
@@ -142,34 +148,40 @@ class ealertController extends expController {
         // get the message body we saved in the temp table
         $message = $db->selectObject('expeAlerts_temp', 'id='.$this->params['id']);
 
-        // look up the subscribers
-        $sql  = 'SELECT s.* FROM '.$db->prefix.'user_subscriptions es ';
-        $sql .= 'LEFT JOIN '.$db->prefix.'user s ON s.id=es.user_id WHERE es.expeAlerts_id='.$this->params['ealert_id'];
-        $subscribers = $db->selectObjectsBySql($sql);
+        if (!empty($message)) {
+            // look up the subscribers
+            $sql = 'SELECT s.* FROM ' . $db->prefix . 'user_subscriptions es ';
+            $sql .= 'LEFT JOIN ' . $db->prefix . 'user s ON s.id=es.user_id WHERE es.expeAlerts_id=' . $this->params['ealert_id'];
+            $subscribers = $db->selectObjectsBySql($sql);
 
-        $count = 1;
-        $total = count($subscribers);
-        foreach($subscribers as $subscriber) {
+            $count = 1;
+            $total = count($subscribers);
+            foreach ($subscribers as $subscriber) {
 //            $link = $router->makelink(array('controller'=>'ealert', 'action'=>'subscriptions', 'id'=>$subscriber->id, 'key'=>$subscriber->hash));
 //            $body  = $message->body;
 //            $body .= '<br><a href="'.$link.'">'.gt('Click here to change your E-Alert subscription settings').'.</a>';
 
-            $mail = new expMail();
-            $mail->quickSend(array(
-                'html_message'=>$message->body,
-                'text_message'=>expString::html2text($message->body),
-		        'to'=>array(trim($subscriber->email) => trim(user::getUserAttribution($subscriber->id))),
-                'from'=>array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
-		        'subject'=>$message->subject,
-            ));
+                $mail = new expMail();
+                $mail->quickSend(array(
+                    'html_message' => $message->body,
+                    'text_message' => expString::html2text($message->body),
+                    'to' => array(trim($subscriber->email) => trim(user::getUserAttribution($subscriber->id))),
+                    'from' => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
+                    'subject' => $message->subject,
+                ));
 
-            $message->edited_at = time();
-            $message->status = 'Sent message '.$count.' of '.$total;
-            $db->updateObject($message, 'expeAlerts_temp');
-            $count++;
+                $message->edited_at = time();
+                $message->status = 'Sent message ' . $count . ' of ' . $total;
+                $db->updateObject($message, 'expeAlerts_temp');
+                $count++;
+            }
+
+            $db->delete('expeAlerts_temp', 'id=' . $message->id);
+
+            //fixme since bots aren't working
+            flash('message', gt("E-Alerts sent to subscribers."));
         }
-
-        $db->delete('expeAlerts_temp', 'id='.$message->id);
+        expHistory::back();
     }
 
     public function subscribe() {
