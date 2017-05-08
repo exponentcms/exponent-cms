@@ -183,23 +183,57 @@ class usersController extends expController {
 
         // get the id of user we are editing, if there is one
         $id = !empty($this->params['id']) ? $this->params['id'] : null;
-        if ((($user->id == $id) || $user->isAdmin()) && $this->params['userkey'] != expSession::get("userkey")) expHistory::back();
+
+        if ($this->params['userkey'] != expSession::get("userkey"))
+            expHistory::back(); // this didn't come from the edit user action/view
 
         // make sure this user should be updating user accounts
         if (!$user->isLoggedIn() && SITE_ALLOW_REGISTRATION == 0) {
             flash('error', gt('This site does not allow user registrations'));
             expHistory::back();
-        } elseif (!$user->isAdmin() && ($user->isLoggedIn() && $user->id != $id) && !$user->globalPerm('prevent_profile_change')) {
+        }
+
+        $exit = false;
+
+        // ensure user has basic permission to edit this account
+        // 1 - user is an admin (or)
+        // 2 - user is not admin, is logged on, and id is equal to user id (or)
+        // 3 - user is not admin, is not logged on, and id is empty (creating new account (or)
+        // 4 - user is not admin and is member of group not preventing profile changes
+        // otherwise, exit
+        if (!$user->isAdmin() && (($user->isLoggedIn() && $user->id != $id) || (!$user->isLoggedIn() && $id !== null) || !$user->globalPerm('prevent_profile_change'))) {
+            $exit = true;
+        }
+
+        // ensure correct admin level for changing admin levels
+        if (!$user->isSystemAdmin()) {
+            if (!$user->isSuperAdmin()) {
+                if (!$user->isActingAdmin()) {
+                    if ($user->is_acting_admin != $this->params['is_acting_admin']) {
+                        $exit = true;  // only admins can change 'is_acting_admin' status
+                    }
+                }
+                if ($user->is_admin != $this->params['is_admin']) {
+                    $exit = true;  // only super admins can change 'is_admin' status
+                }
+            }
+        }
+        if ($user->is_system_user != $this->params['is_system_user']) {
+            $exit = true;  // NO one is allowed to change 'is_system_user' status
+        }
+
+        if ($exit) {
             flash('error', gt('You do not have permission to edit this user account'));
             expHistory::back();
         }
 
         // if this is a new user account we need to check the password.
-        // the password fields wont come thru on an edit. Otherwise we will
+        // the password fields won't come thru on an edit. Otherwise we will
         // just update the existing account.
         if (!empty($id)) {
             $u = new user($id);
             $u->update($this->params);
+
             if ($user->isAdmin() && $user->id != $id) {
                 flash('message', gt('Account information for') . ' ' . $u->username . ' ' . gt('has been updated.'));
             } else {
@@ -211,8 +245,10 @@ class usersController extends expController {
             }
         } else {
             $u = new user($this->params);
+
             $ret = $u->setPassword($this->params['pass1'], $this->params['pass2']);
-            if ($ret != true) expValidator::failAndReturnToForm($ret, $this->params);
+            if ($ret != true)
+                expValidator::failAndReturnToForm($ret, $this->params);
             $u->save();
             if ($user->isAdmin()) {
                 flash('message', gt('Created new user account for') . ' ' . $u->username);
