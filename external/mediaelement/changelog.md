@@ -1,5 +1,15 @@
 ### Version History
 
+*4.1.0 (2017/05/04)*
+
+* Added `grunt watch` and tasks depending on files modified @rafa8626
+* Fixed typo for documentation about `features` configuration element (https://github.com/mediaelement/mediaelement/pull/2189) @abumalick
+* Fixed issue related to time tooltip appearing on all player instances when hovering over one player's progress bar @rafa8626
+* Improved workflow to store all `source` attributes for `mediaFiles` list @rafa8626 
+* Added improvements and hover behavior to player slider (https://github.com/mediaelement/mediaelement/pull/2191) @ricking06 and @rafa8626
+* Added `babel-preset-env` to optimize bundles based on supported browsers @rafa8626
+* Fixed typos in `Vimeo` and `Twitch` renderers @rafa8626
+
 *4.0.7 (2017/04/25)*
 
 * Fixed issues when using `MediaElement` inside an iframe (cross and non cross-domain) @rafa8626
