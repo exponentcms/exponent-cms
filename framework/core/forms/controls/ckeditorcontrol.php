@@ -171,7 +171,7 @@ class ckeditorcontrol extends formcontrol {
             $formattags = "'p;h1;h2;h3;h4;h5;h6;pre;address;div'";
         else
             $formattags = expString::check_javascript($formattags, true);  // $formattags must be enclosed in quotes '..'
-        if (empty($fontnames))
+        if (empty($fontnames)) {
             $fontnames = "'Arial/Arial, Helvetica, sans-serif;' +
                 'Comic Sans MS/Comic Sans MS, cursive;' +
                 'Courier New/Courier New, Courier, monospace;' +
@@ -181,8 +181,9 @@ class ckeditorcontrol extends formcontrol {
                 'Times New Roman/Times New Roman, Times, serif;' +
                 'Trebuchet MS/Trebuchet MS, Helvetica, sans-serif;' +
                 'Verdana/Verdana, Geneva, sans-serif'";
-        else
+        } else {
             $fontnames = expString::check_javascript($fontnames, true);  // $fontnames must be enclosed in quotes '..'
+        }
         $content = "
         YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             Y.Global.on(\"lazyload:cke\", function () {

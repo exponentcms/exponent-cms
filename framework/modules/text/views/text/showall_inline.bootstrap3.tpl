@@ -270,7 +270,7 @@
             } else {
                 mytoolbar = fullToolbar;
                 tinymenu = true;
-                tinyplugins = ['image,imagetools,searchreplace,contextmenu,paste,link,textcolor,visualblocks,code,localautosave'];
+                tinyplugins = ['image,imagetools,searchreplace,contextmenu,paste,link,textcolor,visualblocks,code,localautosave,help'];
             }
 
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
