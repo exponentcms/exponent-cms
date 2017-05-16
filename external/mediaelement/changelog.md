@@ -1,5 +1,21 @@
 ### Version History
 
+*4.1.1 (2017/05/16)*
+
+* Added missing conditional to reuse `exitFullscreen` method @rafa8626
+* Added new code snippet to use player with `AudioContext.decodeAudioData()` @rafa8626
+* Added missing conditional for bug with hidden iframes in Firefox @rafa8626
+* Fixed typo in `Vimeo` renderer @rafa8626
+* Added workflow to solve issue with iOS and HTTPS playing media @rafa8626
+* Changed `match` to `test` and `includes` to `indexOf` to improve performance @rafa8626
+* Fixed `responsive` mode within iframe (https://github.com/mediaelement/mediaelement/pull/2207) @lucash
+* Updated German translation (https://github.com/mediaelement/mediaelement/pull/2210) @SoftCreatR 
+* Enforced https protocol on external libraries (https://github.com/mediaelement/mediaelement/pull/2212) @jimmywarting
+* Fixed issue when using YouTube in audio tag triggering double buffering/play events when starting media @rafa8626
+* Fixed `fill` mode within iframe @rafa8626
+* Fixed player accessibility using Tab key and avoid hidding controls on audio element @rafa8626 
+* Fix usage for iOS with native controls (https://github.com/mediaelement/mediaelement/pull/2215) @lucash
+
 *4.1.0 (2017/05/04)*
 
 * Added `grunt watch` and tasks depending on files modified @rafa8626

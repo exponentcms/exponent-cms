@@ -66,11 +66,11 @@ var vimeoApi = {
 
 			var done = false;
 
-			script.src = '//player.vimeo.com/api/player.js';
+			script.src = 'https://player.vimeo.com/api/player.js';
 
 			// Attach handlers for all browsers
 			script.onload = script.onreadystatechange = function () {
-				if (!done && (!undefined.readyState || undefined.readyState === undefined || undefined.readyState === 'loaded' || undefined.readyState === 'complete')) {
+				if (!done && (!this.readyState || this.readyState === undefined || this.readyState === 'loaded' || this.readyState === 'complete')) {
 					done = true;
 					vimeoApi.iFrameReady();
 					script.onload = script.onreadystatechange = null;
@@ -142,7 +142,7 @@ var vimeoIframeRenderer = {
   * @return {Boolean}
   */
 	canPlayType: function canPlayType(type) {
-		return ['video/vimeo', 'video/x-vimeo'].includes(type);
+		return ~['video/vimeo', 'video/x-vimeo'].indexOf(type.toLowerCase());
 	},
 
 	/**
@@ -474,7 +474,7 @@ var vimeoIframeRenderer = {
 		    width = mediaElement.originalNode.width,
 		    vimeoContainer = document.createElement('iframe'),
 		    standardUrl = '//player.vimeo.com/video/' + vimeoApi.getVimeoId(mediaFiles[0].src),
-		    queryArgs = mediaFiles[0].src.includes('?') ? '?' + mediaFiles[0].src.slice(mediaFiles[0].src.indexOf('?') + 1) : '';
+		    queryArgs = ~mediaFiles[0].src.indexOf('?') ? '?' + mediaFiles[0].src.slice(mediaFiles[0].src.indexOf('?') + 1) : '';
 
 		// Create Vimeo <iframe> markup
 		vimeoContainer.setAttribute('id', vimeo.id);
@@ -520,8 +520,8 @@ var vimeoIframeRenderer = {
  *
  */
 mejs.Utils.typeChecks.push(function (url) {
-	url = url.toLowerCase();
-	return url.includes('//player.vimeo') || url.includes('vimeo.com') ? 'video/x-vimeo' : null;
+	return (/(\/\/player\.vimeo|vimeo\.com)/i.test(url) ? 'video/x-vimeo' : null
+	);
 });
 
 mejs.Renderers.add(vimeoIframeRenderer);

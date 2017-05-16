@@ -46,8 +46,8 @@ Object.assign(MediaElementPlayer.prototype, {
   *
   * Always has to be prefixed with `build` and the name that will be used in MepDefaults.features list
   * @param {MediaElementPlayer} player
-  * @param {$} controls
-  * @param {$} layers
+  * @param {HTMLElement} controls
+  * @param {HTMLElement} layers
   * @param {HTMLElement} media
   */
 	buildvast: function buildvast(player, controls, layers, media) {
@@ -331,17 +331,28 @@ Object.assign(MediaElementPlayer.prototype, {
 				var mediaFile = mediaFiles[_j2],
 				    type = mediaFile.getAttribute('type');
 
-				if (t.media.canPlayType(type) !== '' || t.media.canPlayType(type).match(/(no|false)/) === null) {
+				if (t.media.canPlayType(type) !== '' || /(no|false)/i.test(t.media.canPlayType(type))) {
 
-					adTag.mediaFiles.push({
-						id: mediaFile.getAttribute('id'),
-						delivery: mediaFile.getAttribute('delivery'),
-						type: mediaFile.getAttribute('type'),
-						bitrate: mediaFile.getAttribute('bitrate'),
-						width: mediaFile.getAttribute('width'),
-						height: mediaFile.getAttribute('height'),
-						url: mediaFile.textContent.trim()
-					});
+					// Execute JS files if found
+					if (mediaFile.getAttribute('type') === 'application/javascript') {
+						var script = document.createElement('script'),
+						    firstScriptTag = document.getElementsByTagName('script')[0];
+
+						script.src = mediaFile.textContent.trim();
+						firstScriptTag.parentNode.insertBefore(script, firstScriptTag);
+					}
+					// Avoid Flash
+					else if (mediaFile.getAttribute('delivery') !== 'application/x-shockwave-flash') {
+							adTag.mediaFiles.push({
+								id: mediaFile.getAttribute('id'),
+								delivery: mediaFile.getAttribute('delivery'),
+								type: mediaFile.getAttribute('type'),
+								bitrate: mediaFile.getAttribute('bitrate'),
+								width: mediaFile.getAttribute('width'),
+								height: mediaFile.getAttribute('height'),
+								url: mediaFile.textContent.trim()
+							});
+						}
 				}
 			}
 		}
@@ -385,7 +396,7 @@ Object.assign(MediaElementPlayer.prototype, {
 			for (var i = 0, total = adData.media.tracking.beacon.length; i < total; i++) {
 				var trackingEvent = adData.media.tracking.beacon[i];
 
-				if (trackingPoints.includes(trackingEvent.type)) {
+				if (~trackingPoints.indexOf(trackingEvent.type)) {
 					if (adTag.trackingEvents[trackingEvent.type] === undefined) {
 						adTag.trackingEvents[trackingEvent.type] = [];
 					}
@@ -401,7 +412,7 @@ Object.assign(MediaElementPlayer.prototype, {
 				var mediaFile = adData.media.video[property],
 				    type = mediaFile.mime_type.trim();
 
-				if (t.media.canPlayType(type) !== '' || t.media.canPlayType(type).match(/(no|false)/) === null) {
+				if (t.media.canPlayType(type) !== '' || /(no|false)/i.test(t.media.canPlayType(type))) {
 
 					adTag.mediaFiles.push({
 						id: mediaFile.media_id,
@@ -446,8 +457,12 @@ Object.assign(MediaElementPlayer.prototype, {
 		// Note: multiple preroll ads are supported.
 		var i = 0;
 		while (i < t.vastAdTags.length) {
-			t.options.adsPrerollMediaUrl[i] = t.vastAdTags[i].mediaFiles[0].url;
-			t.options.adsPrerollAdUrl[i] = t.vastAdTags[i].clickThrough;
+			if (typeof t.vastAdTags[i].mediaFiles !== 'undefined' && t.vastAdTags[i].mediaFiles.length) {
+				t.options.adsPrerollMediaUrl[i] = t.vastAdTags[i].mediaFiles[0].url;
+			}
+			if (typeof t.vastAdTags[i].clickThrough !== 'undefined') {
+				t.options.adsPrerollAdUrl[i] = t.vastAdTags[i].clickThrough;
+			}
 			i++;
 		}
 		t.adsStartPreroll();

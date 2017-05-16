@@ -56,7 +56,7 @@ var DailyMotionApi = {
 		if (!DailyMotionApi.isSDKStarted) {
 			var e = document.createElement('script');
 			e.async = true;
-			e.src = '//api.dmcdn.net/all.js';
+			e.src = 'https://api.dmcdn.net/all.js';
 			var s = document.getElementsByTagName('script')[0];
 			s.parentNode.insertBefore(e, s);
 			DailyMotionApi.isSDKStarted = true;
@@ -142,7 +142,7 @@ var DailyMotionIframeRenderer = {
   * @return {Boolean}
   */
 	canPlayType: function canPlayType(type) {
-		return ['video/dailymotion', 'video/x-dailymotion'].includes(type);
+		return ~['video/dailymotion', 'video/x-dailymotion'].indexOf(type.toLowerCase());
 	},
 
 	/**
@@ -476,8 +476,8 @@ var DailyMotionIframeRenderer = {
  *
  */
 mejs.Utils.typeChecks.push(function (url) {
-	url = url.toLowerCase();
-	return url.includes('//dailymotion.com') || url.includes('www.dailymotion.com') || url.includes('//dai.ly') ? 'video/x-dailymotion' : null;
+	return (/\/\/((www\.)?dailymotion\.com|dai\.ly)/i.test(url) ? 'video/x-dailymotion' : null
+	);
 });
 
 window.dmAsyncInit = function () {
