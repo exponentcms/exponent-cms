@@ -49,7 +49,8 @@
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     //alert("HERE");
-    Y.one('#submit-verify').on('click',function(e){
+    // Y.one('#submit-verify').on('click',function(e){
+    Y.one('#Submit').on('click',function(e){
     //alert("Here");
         e.halt();
         var frm = Y.one('#verifyAndRestoreCartForm');
@@ -57,17 +58,17 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var em = Y.one('#email');
         var zc = Y.one('#zip_code');
 
-        if(ln.get('value) == '')
+        if(ln.get('value') == '')
         {
             alert("{/literal}{"Please verify your Last Name to continue."|gettext}{literal}");
             return false;
         }
-        if(em.get('value) == '')
+        if(em.get('value') == '')
         {
             alert("{/literal}{"Please verify your Email to continue."|gettext}{literal}");
             return false;
         }
-        if(zc.get('value) == '')
+        if(zc.get('value') == '')
         {
             alert("{/literal}{"Please verify your Zip Code to continue."|gettext}{literal}");
             return false;
