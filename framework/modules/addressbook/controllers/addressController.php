@@ -65,6 +65,11 @@ class addressController extends expController {
         return false;
     }
 
+    public function __construct($src=null, $params=array()) {
+        parent::__construct($src, $params);
+        unset ($this->m_permissions['activate']);
+    }
+
     function showall() {
 //        redirect_to(array("controller"=>'address',"action"=>'myaddressbook'));
         $this->myaddressbook();
@@ -78,7 +83,7 @@ class addressController extends expController {
         $record = new address($id);
 
         // check to see if we should be editing.  You either need to be an admin, or editing own account.
-        if (!($user->isAdmin() || ($user->id == $record->user_id))) {
+        if (!($user->isAdmin() || $user->id == $record->user_id || $record->user_id === null)) {
             flash('error', gt('You do not have the proper permissions to edit this address'));
             expHistory::back();
         }
@@ -191,8 +196,12 @@ class addressController extends expController {
 
         $object = new stdClass();
         $object->id = $this->params['id'];
-        $db->setUniqueFlag($object, 'addresses', expString::escape($this->params['is_what']), "user_id=" . $user->id);
-        flash("message", gt("Successfully updated address."));
+        if (!($user->isAdmin() || $user->id !== $object->id)) {
+            flash("error", gt("You do not have permission to update this address."));
+        } else {
+            $db->setUniqueFlag($object, 'addresses', expString::escape($this->params['is_what']), "user_id=" . $user->id);
+            flash("message", gt("Successfully updated address."));
+        }
         expHistory::back();
     }
 
