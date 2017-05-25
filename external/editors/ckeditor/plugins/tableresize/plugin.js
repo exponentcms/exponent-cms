@@ -60,51 +60,64 @@
 		// Get the tbody element and position, which will be used to set the
 		// top and bottom boundaries.
 		var tbody = new CKEDITOR.dom.element( table.$.tBodies[ 0 ] ),
-			tbodyPosition = tbody.getDocumentPosition();
+			pillarPosition = tbody.getDocumentPosition(),
+			pillarHeight = tbody.$.offsetHeight;
 
-		// Loop thorugh all cells, building pillars after each one of them.
-		for ( var i = 0, len = $tr.cells.length; i < len; i++ ) {
-			// Both the current cell and the successive one will be used in the
-			// pillar size calculation.
-			var td = new CKEDITOR.dom.element( $tr.cells[ i ] ),
-				nextTd = $tr.cells[ i + 1 ] && new CKEDITOR.dom.element( $tr.cells[ i + 1 ] );
+		if ( table.$.tHead ) {
+			var tHead = new CKEDITOR.dom.element( table.$.tHead );
+			pillarPosition = tHead.getDocumentPosition();
+			pillarHeight += tHead.$.offsetHeight;
+		}
 
-			pillarIndex += td.$.colSpan || 1;
+		if ( table.$.tFoot ) {
+			pillarHeight += table.$.tFoot.offsetHeight;
+		}
 
-			// Calculate the pillar boundary positions.
-			var pillarLeft, pillarRight, pillarWidth;
+		if ( $tr ) {
+			// Loop thorugh all cells, building pillars after each one of them.
+			for ( var i = 0, len = $tr.cells.length; i < len; i++ ) {
+				// Both the current cell and the successive one will be used in the
+				// pillar size calculation.
+				var td = new CKEDITOR.dom.element( $tr.cells[ i ] ),
+					nextTd = $tr.cells[ i + 1 ] && new CKEDITOR.dom.element( $tr.cells[ i + 1 ] );
 
-			var x = td.getDocumentPosition().x;
+				pillarIndex += td.$.colSpan || 1;
 
-			// Calculate positions based on the current cell.
-			rtl ? pillarRight = x + getBorderWidth( td, 'left' ) : pillarLeft = x + td.$.offsetWidth - getBorderWidth( td, 'right' );
+				// Calculate the pillar boundary positions.
+				var pillarLeft, pillarRight, pillarWidth;
 
-			// Calculate positions based on the next cell, if available.
-			if ( nextTd ) {
-				x = nextTd.getDocumentPosition().x;
+				var x = td.getDocumentPosition().x;
 
-				rtl ? pillarLeft = x + nextTd.$.offsetWidth - getBorderWidth( nextTd, 'right' ) : pillarRight = x + getBorderWidth( nextTd, 'left' );
+				// Calculate positions based on the current cell.
+				rtl ? pillarRight = x + getBorderWidth( td, 'left' ) : pillarLeft = x + td.$.offsetWidth - getBorderWidth( td, 'right' );
+
+				// Calculate positions based on the next cell, if available.
+				if ( nextTd ) {
+					x = nextTd.getDocumentPosition().x;
+
+					rtl ? pillarLeft = x + nextTd.$.offsetWidth - getBorderWidth( nextTd, 'right' ) : pillarRight = x + getBorderWidth( nextTd, 'left' );
+				}
+				// Otherwise calculate positions based on the table (for last cell).
+				else {
+					x = table.getDocumentPosition().x;
+
+					rtl ? pillarLeft = x : pillarRight = x + table.$.offsetWidth;
+				}
+
+				pillarWidth = Math.max( pillarRight - pillarLeft, 3 );
+
+				// The pillar should reflects exactly the shape of the hovered
+				// column border line.
+				pillars.push( {
+					table: table,
+					index: pillarIndex,
+					x: pillarLeft,
+					y: pillarPosition.y,
+					width: pillarWidth,
+					height: pillarHeight,
+					rtl: rtl
+				} );
 			}
-			// Otherwise calculate positions based on the table (for last cell).
-			else {
-				x = table.getDocumentPosition().x;
-
-				rtl ? pillarLeft = x : pillarRight = x + table.$.offsetWidth;
-			}
-
-			pillarWidth = Math.max( pillarRight - pillarLeft, 3 );
-
-			// The pillar should reflects exactly the shape of the hovered
-			// column border line.
-			pillars.push( {
-				table: table,
-				index: pillarIndex,
-				x: pillarLeft,
-				y: tbodyPosition.y,
-				width: pillarWidth,
-				height: tbody.$.offsetHeight,
-				rtl: rtl
-			} );
 		}
 
 		return pillars;
@@ -126,7 +139,7 @@
 	}
 
 	function columnResizer( editor ) {
-		var pillar, document, resizer, isResizing, startOffset, currentShift;
+		var pillar, document, resizer, isResizing, startOffset, currentShift, move;
 
 		var leftSideCells, rightSideCells, leftShiftBoundary, rightShiftBoundary;
 
@@ -313,7 +326,7 @@
 			resizer.show();
 		};
 
-		var move = this.move = function( posX ) {
+		move = this.move = function( posX ) {
 				if ( !pillar )
 					return 0;
 
@@ -388,11 +401,12 @@
 						return;
 					}
 
-					// Considering table, tr, td, tbody but nothing else.
+					// Considering table, tr, td, tbody, thead, tfoot but nothing else.
 					var table, pillars;
 
-					if ( !target.is( 'table' ) && !target.getAscendant( 'tbody', 1 ) )
+					if ( !target.is( 'table' ) && !target.getAscendant( { thead: 1, tbody: 1, tfoot: 1 }, 1 ) ) {
 						return;
+					}
 
 					table = target.getAscendant( 'table', 1 );
 

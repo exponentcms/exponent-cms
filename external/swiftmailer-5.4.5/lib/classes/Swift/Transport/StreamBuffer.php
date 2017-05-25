@@ -257,7 +257,7 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
             $timeout = $this->_params['timeout'];
         }
         $options = array();
-        if (version_compare(PHP_VERSION, '5.6.0') >= 0) {
+        if (version_compare(PHP_VERSION, '5.6.0') >= 0) {  //exp
             $options['ssl']['verify_peer'] = FALSE;
             $options['ssl']['verify_peer_name'] = FALSE;
         }
