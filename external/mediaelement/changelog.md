@@ -1,5 +1,26 @@
 ### Version History
 
+*4.1.2 (2017/05/25)*
+
+* Fixed issues with Accessibility in Chapters/Captions and Volume slider @rafa8626 
+* Added new resources to documentation @rafa8626
+* Fixed MD broken link (https://github.com/mediaelement/mediaelement/pull/2223) @Mackiovello
+* Changed calculation to avoid higher dimensions than expected using `parseFloat` on `responsive` mode @rafa8626 
+* Updated `installation.md` file for WordPress upgrades, and fixed README file @rafa8626 
+* Fixed `hasFluidMode()` method to return proper result (https://github.com/mediaelement/mediaelement/pull/2224) @lucash
+* Fixed issue with logical operators and `~` symbol @rafa8626
+* Integrated `loadScript()` method to optimize way to load external libraries (https://github.com/mediaelement/mediaelement/pull/2226) @jimmywarting
+* Removed unnecessary whitespaces, upgraded packages and removed comments on bundles @rafa8626
+* Fixed issue with `startVolume` not being picked by non-native renderers @rafa8626
+* Added `getDuration()` and used methods vs property access to allow `MediaElementPlayer` to be extended (https://github.com/mediaelement/mediaelement/pull/2228) @jhutchins
+* Added player min-width based on elements visible on control bar @rafa8626
+* Added missing events to set `startVolume` properly when loading new data @rafa8626
+* Fixed issue related to controlbar not reflecting loading progress @rafa8626
+* Fixed issues with native FLV renderer related to load new sources and having multiple players rendering FLV media @rafa8626
+* Enabled DRM support for M(PEG)-DASH via `setSrc()` and `dash.drm` configuration @rafa8626
+* Added support to pass a single object in `setSrc()` @rafa8626
+* Added Persian translation (https://github.com/mediaelement/mediaelement/pull/2238) @wmateam
+
 *4.1.1 (2017/05/16)*
 
 * Added missing conditional to reuse `exitFullscreen` method @rafa8626
