@@ -116,6 +116,7 @@
 
 /* root icon of each volume */
 .elfinder-tree .elfinder-navbar-root-local   .elfinder-navbar-icon { background-image:url("../img/volume_icon_local.png"); background-position:0 0; }
+.elfinder-tree .elfinder-navbar-root-trash   .elfinder-navbar-icon { background-image:url("../img/volume_icon_trash.png"); background-position:0 0; }
 .elfinder-tree .elfinder-navbar-root-ftp     .elfinder-navbar-icon { background-image:url("../img/volume_icon_ftp.png"); background-position:0 0; }
 .elfinder-tree .elfinder-navbar-root-sql     .elfinder-navbar-icon { background-image:url("../img/volume_icon_sql.png"); background-position:0 0; }
 .elfinder-tree .elfinder-navbar-root-dropbox .elfinder-navbar-icon { background-image:url("../img/volume_icon_dropbox.png"); background-position:0 0; }
@@ -177,6 +178,18 @@
 	top:50%;
 	margin:-8px 2px 0 2px;
 	opacity: .5; filter:Alpha(Opacity=50);
+}
+
+/* pager button */
+.elfinder-navbar-pager {
+	width: 100%;
+	box-sizing: border-box;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+.elfinder-touch .elfinder-navbar-pager {
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 .elfinder-places {

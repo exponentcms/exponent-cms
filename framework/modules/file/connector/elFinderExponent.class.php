@@ -26,7 +26,7 @@
 class elFinderExponent extends elFinder
 {
 
-    function __construct($opts)
+    public function __construct($opts)
     {
         parent::__construct($opts);
         /* Adding new commands */

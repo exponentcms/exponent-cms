@@ -13,9 +13,7 @@
  *
  *}
 
-{*
- * The main 'html' file to instantiate elFinder
-*}
+{* The main 'html' file to instantiate elFinder *}
 
 <!DOCTYPE html>
 <html>
@@ -102,6 +100,7 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/getfile.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/help.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/help.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/hidden.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/home.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/info.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/info.js"></script>
@@ -123,6 +122,7 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/rename.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/resize.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/resize.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/restore.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/rm.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/search.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/sort.js"></script>
@@ -443,17 +443,17 @@
                         ['view', 'sort'],
                         ['links', 'places'],   // links added
                         ['help'],
-                        ['fullscreen'],
-                        // extra options
-                        {
-                            // also displays the text label on the button (true / false)
-                            displayTextLabel: false,
-                            // Exclude `displayTextLabel` setting UA type
-                            labelExcludeUA: ['Mobile'],
-                            // auto hide on initial open
-                            autoHideUA: ['Mobile']
-                        }
+                        ['fullscreen']
                     ],
+                    // toolbar extra options
+                    toolbarExtra : {
+                        // also displays the text label on the button (true / false)
+                        displayTextLabel: false,
+                        // Exclude `displayTextLabel` setting UA type
+                        labelExcludeUA: ['Mobile'],
+                        // auto hide on initial open
+                        autoHideUA: ['Mobile']
+                    },
                     // directories tree options
                     tree : {
                         // expand current root on init
@@ -461,7 +461,14 @@
                         // expand current work directory on open
                         openCwdOnOpen  : true,
                         // auto load current dir parents
-                        syncTree : true
+                        syncTree : true,
+                        // Maximum number of display of each child trees
+                        // The tree of directories with children exceeding this number will be split
+                        subTreeMax : 100,
+                        // Numbar of max connctions of subdirs request
+                        subdirsMaxConn : 3,
+                        // Number of max simultaneous processing directory of subdirs
+                        subdirsAtOnce : 5
                     },
                     // navbar options
                     navbar : {

@@ -1,8 +1,8 @@
 /**
  * Czech translation
  * @author Jay Gridley <gridley.jay@hotmail.com>
- * @author RobiNN <admin@robonetwork.cf>
- * @version 2017-1-16
+ * @author RobiNN <kelcakrobo@gmail.com>
+ * @version 2017-04-21
  */
 (function(root, factory) {
 	if (typeof define === 'function' && define.amd) {
@@ -14,11 +14,12 @@
 	}
 }(this, function(elFinder) {
 	elFinder.prototype.i18.cs = {
-		translator : 'Jay Gridley &lt;gridley.jay@hotmail.com&gt;, RobiNN &lt;admin@robonetwork.cf&gt;',
+		translator : 'Jay Gridley &lt;gridley.jay@hotmail.com&gt;, RobiNN &lt;kelcakrobo@gmail.com&gt;',
 		language   : 'čeština',
 		direction  : 'ltr',
 		dateFormat : 'd. m. Y H:i', // Mar 13, 2012 05:27 PM
 		fancyDateFormat : '$1 H:i', // will produce smth like: Today 12:25 PM
+		nonameDateFormat : 'ymd-His', // to apply if upload file is noname: 120513172700
 		messages   : {
 
 			/********************************** errors **********************************/
@@ -50,6 +51,7 @@
 			'errLocked'            : '"$1" je uzamčený a nemůže být přejmenován, přesunut nebo smazán.',
 			'errExists'            : 'Soubor s názvem "$1" již existuje.',
 			'errInvName'           : 'Nesprávný název souboru.',
+			'errInvDirname'        : 'Neplatný název adresáře.',  // from v2.1.24 added 12.4.2017
 			'errFolderNotFound'    : 'Složka nenalezena.',
 			'errFileNotFound'      : 'Soubor nenalezen.',
 			'errTrgFolderNotFound' : 'Cílová složka "$1" nenalezena.',
@@ -68,7 +70,7 @@
 			'errUploadMime'        : 'Nepovolený typ souboru.',
 			'errUploadTransfer'    : '"$1" chyba přenosu.',
 			'errUploadTemp'        : 'Nelze vytvořit dočasný soubor pro upload.', // from v2.1 added 26.09.2015
-			'errNotReplace'        : 'Objekt "$1" v tomto umístění již existuje a nelze jej nahradit s jiným typem objektu.',
+			'errNotReplace'        : 'Objekt "$1" v tomto umístění již existuje a nelze jej nahradit s jiným typem objektu.', // new
 			'errReplace'           : 'Nelze nahradit "$1".',
 			'errSave'              : '"$1" nelze uložit.',
 			'errCopy'              : '"$1" nelze zkopírovat.',
@@ -82,7 +84,7 @@
 			'errNoArchive'         : 'Soubor není archív nebo má nepodporovaný formát.',
 			'errCmdNoSupport'      : 'Backend tento příkaz nepodporuje.',
 			'errReplByChild'       : 'Složka "$1" nemůže být nahrazena souborem, který sama obsahuje.',
-			'errArcSymlinks'       : 'Z bezpečnostních důvodů je zakázáno rozbalit archívy obsahující symlinky.',
+			'errArcSymlinks'       : 'Z bezpečnostních důvodů je zakázáno rozbalit archívy obsahující symlinky.', // edited 24.06.2012
 			'errArcMaxSize'        : 'Soubory archívu překračují maximální povolenou velikost.',
 			'errResize'            : 'Nepodařilo se změnit velikost obrázku "$1".',
 			'errResizeDegree'      : 'Neplatný stupeň rotace.', // added 7.3.2013
@@ -106,9 +108,9 @@
 			'errConvUTF8'          : 'Nelze převést na UTF-8', // from v2.1 added 08.04.2014
 			'errFolderUpload'      : 'Pokud chcete nahrát do složky, zkuste použít prohlížeč Google Chrome.', // from v2.1 added 26.6.2015
 			'errSearchTimeout'     : 'Vypršení časového limitu při hledání "$1". Je částečně výsledkem hledání.', // from v2.1 added 12.1.2016
-			'errReauthRequire'     : 'Opětovné povolení je nutné.', // from v2.1.10 added 3.24.2016
+			'errReauthRequire'     : 'Opětovné povolení je nutné.', // from v2.1.10 added 24.3.2016
 			'errMaxTargets'        : 'Maximální počet volitelných předmětů je $1.', // from v2.1.17 added 17.10.2016
-          'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
+            'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
 
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'Vytvořit archív',
@@ -169,6 +171,8 @@
 			'btnFileName':'Název souboru', // from v2.1 added 22.5.2015
 			'btnSaveClose': 'Uložit & zavřít', // from v2.1 added 12.6.2015
 			'btnBackup' : 'Zálohovat', // from v2.1 added 28.11.2015
+			'btnRename'    : 'Přejmenovat',      // from v2.1.24 added 6.4.2017
+			'btnRenameAll' : 'Přejmenovat vše', // from v2.1.24 added 6.4.2017
 
 			/******************************** notifications ********************************/
 			'ntfopen'     : 'Otevírání složky',
@@ -376,8 +380,8 @@
 			'reinstate'       : 'Obnovit', // from v2.1.15 added 3.8.2016
 			'complete'        : '$1 kompletní', // from v2.1.15 added 21.8.2016
 			'contextmenu'     : 'Kontextové menu', // from v2.1.15 added 9.9.2016
-			'pageTurning'     : 'Otáčení stránky', // from v2.1.15 added 9.10.2016
-			'volumeRoots'     : 'Kořeny média', // from v2.1.16 added 16.10.2016
+			'pageTurning'     : 'Otáčení stránky', // from v2.1.15 added 10.9.2016
+			'volumeRoots'     : 'Kořeny média', // from v2.1.16 added 16.9.2016
 			'reset'           : 'Reset', // from v2.1.16 added 1.10.2016
 			'bgcolor'         : 'Barva pozadí', // from v2.1.16 added 1.10.2016
 			'colorPicker'     : 'Výběr barvy', // from v2.1.16 added 1.10.2016
@@ -385,11 +389,13 @@
 			'enabled'         : 'Povoleno', // from v2.1.16 added 4.10.2016
 			'disabled'        : 'Zakázáno', // from v2.1.16 added 4.10.2016
 			'emptyIncSearch'  : 'Výsledky hledání jsou prázdné v aktuálním zobrazení.\\Stisknutím tlačítka [Enter] rozšíříte vyhledávání cíle.', // from v2.1.16 added 5.10.2016
+			'emptyLetSearch'  : 'Výsledky vyhledávání prvního listu jsou v aktuálním zobrazení prázdné.', // from v2.1.23 added 24.3.2017
 			'textLabel'       : 'Nápis textu', // from v2.1.17 added 13.10.2016
 			'minsLeft'        : '$1 minut zůstává', // from v2.1.17 added 13.11.2016
 			'openAsEncoding'  : 'Otevřít pomocí zvoleného kódování', // from v2.1.19 added 2.12.2016
 			'saveAsEncoding'  : 'Uložit s vybraným kódováním', // from v2.1.19 added 2.12.2016
 			'selectFolder'    : 'Vyberte složku', // from v2.1.20 added 13.12.2016
+			'firstLetterSearch': 'Hledání prvního listu', // from v2.1.23 added 24.3.2017
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Neznámý',

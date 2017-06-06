@@ -143,7 +143,7 @@
 				debugUL.after(target);
 				
 				debugDIV.tabs('refresh');
-				debugUL.find('a:first').click();
+				debugUL.find('a:first').trigger('click');
 			}
 		},
 		content = '',
@@ -214,7 +214,7 @@
 				// CAUTION: DO NOT TOUCH `e.data`
 				if (e.data && e.data.debug) {
 					tabDebug.show();
-					self.debug = { options : e.data.options, debug : $.extend({ cmd : fm.currentReqCmd }, e.data.debug) };
+					self.debug = { options : e.data.options, debug : Object.assign({ cmd : fm.currentReqCmd }, e.data.debug) };
 					if (self.dialog/* && self.dialog.is(':visible')*/) {
 						debugRender();
 					}
@@ -223,7 +223,11 @@
 		}
 
 		content.find('#'+fm.namespace+'-help-about').find('.apiver').text(fm.api);
-		self.dialog = fm.dialog(content, {title : self.title, width : 530, autoOpen : false, destroyOnClose : false});
+		self.dialog = fm.dialog(content, {title : self.title, width : 530, autoOpen : false, destroyOnClose : false})
+			.on('click', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+			});
 		
 		self.state = 0;
 	});

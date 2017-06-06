@@ -17,7 +17,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 			filter   = function(opts) {
 				return $.map(opts, function(v) {
 					if ($.isPlainObject(v)) {
-						options = $.extend(options, v);
+						options = Object.assign(options, v);
 						return null;
 					}
 					return [v];
@@ -127,11 +127,11 @@ $.fn.elfindertoolbar = function(fm, opts) {
 		
 		render();
 		
-		fm.bind('open sync select', function(e) {
+		fm.bind('open sync select', function() {
 			var disabled = fm.option('disabled'),
 				doRender, sel;
 			
-			if (e.type === 'select') {
+			if (this.type === 'select') {
 				if (fm.searchStatus.state < 2) {
 					return;
 				}
@@ -139,6 +139,14 @@ $.fn.elfindertoolbar = function(fm, opts) {
 				if (sel.length) {
 					disabled = fm.getDisabledCmds(sel);
 				}
+			}
+			
+			if (Object.keys(fm.commandMap).length) {
+				$.each(fm.commandMap, function(from, to){
+					if (to === 'hidden') {
+						disabled.push(from);
+					}
+				});
 			}
 			
 			if (!dispre || dispre.toString() !== disabled.sort().toString()) {
@@ -214,7 +222,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 					h     = self.height(),
 					tbh   = self.outerHeight(true),
 					delta = tbh - h,
-					opt   = $.extend({
+					opt   = Object.assign({
 						step: function(now) {
 							wz.height(wzh + (toshow? (now + delta) * -1 : h - now));
 							fm.trigger('resize');
@@ -235,7 +243,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 					}, data);
 				self.data('swipeClose', ! toshow).stop(true, true).animate({height : 'toggle'}, opt);
 				autoHide.toolbar = !toshow;
-				fm.storage('autoHide', $.extend(fm.storage('autoHide'), {toolbar: autoHide.toolbar}));
+				fm.storage('autoHide', Object.assign(fm.storage('autoHide'), {toolbar: autoHide.toolbar}));
 			});
 		}
 	});
