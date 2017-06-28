@@ -6,6 +6,7 @@
  * using a variety of technologies (pure JavaScript, Flash, iframe)
  *
  * Copyright 2010-2017, John Dyer (http://j.hn/)
+ * Maintained by, Rafael Miranda (rafa8626@gmail.com)
  * License: MIT
  *
  */(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
@@ -16,15 +17,20 @@ var TwitchApi = {
 	promise: null,
 
 	load: function load(settings) {
-
 		if (typeof Twitch !== 'undefined') {
-			TwitchApi._createPlayer(settings);
-		} else {
+			TwitchApi.promise = new Promise(function (resolve) {
+				resolve();
+			}).then(function () {
+				TwitchApi._createPlayer(settings);
+			});
+		} else if (!TwitchApi.promise) {
 			TwitchApi.promise = TwitchApi.promise || mejs.Utils.loadScript('https://player.twitch.tv/js/embed/v1.js');
 			TwitchApi.promise.then(function () {
 				TwitchApi._createPlayer(settings);
 			});
 		}
+
+		return TwitchApi.promise;
 	},
 
 	_createPlayer: function _createPlayer(settings) {
@@ -33,7 +39,6 @@ var TwitchApi = {
 	},
 
 	getTwitchId: function getTwitchId(url) {
-
 		var twitchId = '';
 
 		if (url.indexOf('?') > 0) {
@@ -49,7 +54,6 @@ var TwitchApi = {
 	},
 
 	getTwitchIdFromParam: function getTwitchIdFromParam(url) {
-
 		if (url === undefined || url === null || !url.trim().length) {
 			return null;
 		}
@@ -74,7 +78,6 @@ var TwitchApi = {
 	},
 
 	getTwitchIdFromUrl: function getTwitchIdFromUrl(url) {
-
 		if (url === undefined || url === null || !url.trim().length) {
 			return null;
 		}
@@ -94,7 +97,6 @@ var TwitchApi = {
 
 var TwitchIframeRenderer = {
 	name: 'twitch_iframe',
-
 	options: {
 		prefix: 'twitch_iframe'
 	},
@@ -123,7 +125,6 @@ var TwitchIframeRenderer = {
 
 		var props = mejs.html5media.properties,
 		    assignGettersSetters = function assignGettersSetters(propName) {
-
 			var capName = '' + propName.substring(0, 1).toUpperCase() + propName.substring(1);
 
 			twitch['get' + capName] = function () {
@@ -134,26 +135,20 @@ var TwitchIframeRenderer = {
 						case 'currentTime':
 							time = twitchPlayer.getCurrentTime();
 							return time;
-
 						case 'duration':
 							duration = twitchPlayer.getDuration();
 							return duration;
-
 						case 'volume':
 							volume = twitchPlayer.getVolume();
 							return volume;
-
 						case 'paused':
 							paused = twitchPlayer.isPaused();
 							return paused;
-
 						case 'ended':
 							ended = twitchPlayer.getEnded();
 							return ended;
-
 						case 'muted':
 							return twitchPlayer.getMuted();
-
 						case 'buffered':
 							return {
 								start: function start() {
@@ -165,9 +160,7 @@ var TwitchIframeRenderer = {
 								length: 1
 							};
 						case 'src':
-
 							return TwitchApi.getTwitchType(twitchId) === 'channel' ? twitchPlayer.getChannel() : twitchPlayer.getVideo();
-
 						case 'readyState':
 							return readyState;
 					}
@@ -179,10 +172,8 @@ var TwitchIframeRenderer = {
 			};
 
 			twitch['set' + capName] = function (value) {
-
 				if (twitchPlayer !== null) {
 					switch (propName) {
-
 						case 'src':
 							var url = typeof value === 'string' ? value : value[0].src,
 							    videoId = TwitchApi.getTwitchId(url);
@@ -193,7 +184,6 @@ var TwitchIframeRenderer = {
 								twitchPlayer.setVideo(videoId);
 							}
 							break;
-
 						case 'currentTime':
 							twitchPlayer.seek(value);
 							setTimeout(function () {
@@ -201,7 +191,6 @@ var TwitchIframeRenderer = {
 								mediaElement.dispatchEvent(event);
 							}, 50);
 							break;
-
 						case 'muted':
 							twitchPlayer.setMuted(value);
 							setTimeout(function () {
@@ -209,7 +198,6 @@ var TwitchIframeRenderer = {
 								mediaElement.dispatchEvent(event);
 							}, 50);
 							break;
-
 						case 'volume':
 							volume = value;
 							twitchPlayer.setVolume(value);
@@ -222,7 +210,6 @@ var TwitchIframeRenderer = {
 							var event = mejs.Utils.createEvent('canplay', twitch);
 							mediaElement.dispatchEvent(event);
 							break;
-
 						default:
 							
 							break;
@@ -240,7 +227,6 @@ var TwitchIframeRenderer = {
 		var methods = mejs.html5media.methods,
 		    assignMethods = function assignMethods(methodName) {
 			twitch[methodName] = function () {
-
 				if (twitchPlayer !== null) {
 					switch (methodName) {
 						case 'play':
@@ -251,7 +237,6 @@ var TwitchIframeRenderer = {
 							return twitchPlayer.pause();
 						case 'load':
 							return null;
-
 					}
 				} else {
 					apiStack.push({ type: 'call', methodName: methodName });
@@ -271,12 +256,10 @@ var TwitchIframeRenderer = {
 		}
 
 		window['__ready__' + twitch.id] = function (_twitchPlayer) {
-
 			mediaElement.twitchPlayer = twitchPlayer = _twitchPlayer;
 
 			if (apiStack.length) {
 				for (var _i3 = 0, _total3 = apiStack.length; _i3 < _total3; _i3++) {
-
 					var stackItem = apiStack[_i3];
 
 					if (stackItem.type === 'set') {
@@ -294,9 +277,8 @@ var TwitchIframeRenderer = {
 			twitchIframe.style.width = '100%';
 			twitchIframe.style.height = '100%';
 
-			var events = ['mouseover', 'mouseout'];
-
-			var assignEvents = function assignEvents(e) {
+			var events = ['mouseover', 'mouseout'],
+			    assignEvents = function assignEvents(e) {
 				var event = createEvent(e.type, twitch);
 				mediaElement.dispatchEvent(event);
 			};
@@ -351,7 +333,8 @@ var TwitchIframeRenderer = {
 			width: width,
 			height: height,
 			playsinline: false,
-			autoplay: mediaElement.originalNode.autoplay
+			autoplay: mediaElement.originalNode.autoplay,
+			muted: mediaElement.originalNode.muted
 		};
 
 		twitchSettings[type] = twitchId;
@@ -362,8 +345,6 @@ var TwitchIframeRenderer = {
 		mediaElement.originalNode.parentNode.insertBefore(twitchContainer, mediaElement.originalNode);
 		mediaElement.originalNode.style.display = 'none';
 		mediaElement.originalNode.autoplay = false;
-
-		TwitchApi.load(twitchSettings);
 
 		twitch.setSize = function (width, height) {
 			if (TwitchApi !== null && !isNaN(width) && !isNaN(height)) {
@@ -379,6 +360,8 @@ var TwitchIframeRenderer = {
 			twitchContainer.style.display = '';
 		};
 		twitch.destroy = function () {};
+
+		mediaElement.promises.push(TwitchApi.load(twitchSettings));
 
 		return twitch;
 	}
