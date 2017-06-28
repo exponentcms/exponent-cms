@@ -137,7 +137,7 @@ class tinymcecontrol extends formcontrol
         if (empty($tb)) {
             if ($this->toolbar === 'basic') {
                 $tb = "
-                toolbar: 'bold italic underline removeformat | bullist numlist | link unlink localautosave',";
+                toolbar: 'bold italic underline removeformat | bullist numlist | link unlink localautosave help',";
             } else {
                 $tb = "
                 toolbar1: 'undo redo localautosave | styleselect formatselect fontselect fontsizeselect | cut copy paste | bold italic underline removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
