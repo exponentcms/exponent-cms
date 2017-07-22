@@ -577,7 +577,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 				if ($dirItr->hasChildren()) {
 					$dirs = true;
 					$name = $dirItr->getSubPathName();
-					while($name) {
+					while($dirItr->valid()) {
 						if (!$this->attr($path . DIRECTORY_SEPARATOR . $name, 'read', null, true)) {
 							$dirs = false;
 							$dirItr->next();
@@ -644,6 +644,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _scandir($path) {
+		elFinder::extendTimeLimit();
 		$files = array();
 		$cache = array();
 		$dirWritable = is_writable($path);
@@ -1005,7 +1006,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 		if ($this->quarantine) {
 
 			$dir     = $this->quarantine.DIRECTORY_SEPARATOR.md5(basename($path).mt_rand());
-			$archive = $dir.DIRECTORY_SEPARATOR.basename($path);
+			$archive = (isset($arc['toSpec']) || $arc['cmd'] === 'phpfunction')? '' : $dir.DIRECTORY_SEPARATOR.basename($path);
 			
 			if (!mkdir($dir)) {
 				return false;
@@ -1017,12 +1018,12 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 			chmod($dir, 0777);
 			
 			// copy in quarantine
-			if (!copy($path, $archive)) {
+			if (!is_readable($path) || ($archive && !copy($path, $archive))) {
 				return false;
 			}
 			
 			// extract in quarantine
-			$this->unpackArchive($archive, $arc);
+			$this->unpackArchive($path, $arc, $archive? true : $dir);
 			
 			// get files list
 			$ls = self::localScandir($dir);

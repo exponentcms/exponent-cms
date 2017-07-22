@@ -370,6 +370,7 @@ $opts = array(
             'path'            => BASE . 'files/',
             'URL'             => URL_FULL . 'files/',
 //            'trashHash'       => 'tt1_XA',                     // elFinder's hash of trash folder
+            'winHashFix' => DIRECTORY_SEPARATOR !== '/', // to make hash same to Linux one on windows too
             'dirMode'         => octdec(DIR_DEFAULT_MODE_STR + 0),    // new dirs mode (default 0755)
             'fileMode'        => octdec(FILE_DEFAULT_MODE_STR + 0),   // new files mode (default 0644)
             'detectDirIcon'   => '.foldericon.png',       // File to be detected as a folder icon image (elFinder >= 2.1.10) e.g. '.favicon.png'
@@ -511,6 +512,7 @@ $opts = array(
 //            'URL'             => URL_FULL . 'files/.trash/',
 //            'tmbPath'         => BASE . 'tmp' . DIRECTORY_SEPARATOR . 'elfinder',
 //            'tmbURL'          => URL_FULL . 'tmp/elfinder/',
+//            'winHashFix'    => DIRECTORY_SEPARATOR !== '/', // to make hash same to Linux one on windows too
 //            'uploadDeny'      => array('all'),                // Recommend the same settings as the original volume that uses the trash
 //            'uploadAllow'     => array(
 //                'application/arj',

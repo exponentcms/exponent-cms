@@ -2,7 +2,7 @@
  * Japanese translation
  * @author Tomoaki Yoshida <info@yoshida-studio.jp>
  * @author Naoki Sawada <hypweb@gmail.com>
- * @version 2017-05-11
+ * @version 2017-06-28
  */
 (function(root, factory) {
 	if (typeof define === 'function' && define.amd) {
@@ -112,7 +112,10 @@
 			'errReauthRequire'     : '再認可が必要です。', // from v2.1.10 added 24.3.2016
 			'errMaxTargets'        : '選択可能な最大アイテム数は $1 個です。', // from v2.1.17 added 17.10.2016
 			'errRestore'           : '宛先の特定ができないため、ごみ箱から戻せません。', // from v2.1.24 added 3.5.2017
-
+			'errEditorNotFound'    : 'このファイルタイプのエディターがありません。', // from v2.1.25 added 23.5.2017
+			'errServerError'       : 'サーバー側でエラーが発生しました。', // from v2.1.25 added 16.6.2017
+			'errEmpty'             : 'フォルダー"$1"を空にすることができません。', // from v2.1.25 added 22.6.2017
+			
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'アーカイブ作成',
 			'cmdback'      : '戻る',
@@ -152,8 +155,7 @@
 			'cmdcolwidth'  : '列幅リセット', // from v2.1.13 added 12.06.2016
 			'cmdfullscreen': 'フルスクリーン', // from v2.1.15 added 03.08.2016
 			'cmdmove'      : '移動', // from v2.1.15 added 21.08.2016
-			
-			'cmdpixlr'     : 'Pixlr で編集',
+			'cmdempty'     : 'フォルダーを空に', // from v2.1.25 added 22.06.2017
 
 			/*********************************** buttons ***********************************/
 			'btnClose'  : '閉じる',
@@ -178,6 +180,7 @@
 			'btnRenameAll' : 'リネーム(全て)', // from v2.1.24 added 6.4.2017
 			'btnPrevious' : '前へ ($1/$2)', // from v2.1.24 added 11.5.2017
 			'btnNext'     : '次へ ($1/$2)', // from v2.1.24 added 11.5.2017
+			'btnSaveAs'   : '別名保存', // from v2.1.25 added 24.5.2017
 
 			/******************************** notifications ********************************/
 			'ntfopen'     : 'フォルダーを開いています',
@@ -410,6 +413,14 @@
 			'saveAsEncoding'  : '選択したエンコーディングで保存', // from v2.1.19 added 2.12.2016
 			'selectFolder'    : 'フォルダーを選択', // from v2.1.20 added 13.12.2016
 			'firstLetterSearch': '一文字目で検索', // from v2.1.23 added 24.3.2017
+			'presets'         : 'プリセット', // from v2.1.25 added 26.5.2017
+			'tooManyToTrash'  : 'アイテム数が多すぎるのでごみ箱に入れられません。', // from v2.1.25 added 9.6.2017
+			'TextArea'        : 'テキストエリア', // from v2.1.25 added 14.6.2017
+			'folderToEmpty'   : 'フォルダー"$1"を空にします。', // from v2.1.25 added 22.6.2017
+			'filderIsEmpty'   : 'フォルダー"$1"にアイテムはありません。', // from v2.1.25 added 22.6.2017
+			'preference'      : '環境設定', // from v2.1.26 added 28.6.2017
+			'language'        : '言語設定', // from v2.1.26 added 28.6.2017
+			'clearBrowserData': 'ブラウザに保存された設定を初期化する', // from v2.1.26 added 28.6.2017
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : '不明',

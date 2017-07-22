@@ -11,11 +11,16 @@ $.fn.elfinderworkzone = function(fm) {
 			wdelta = wz.outerHeight(true) - wz.height(),
 			prevH  = Math.round(wz.height()),
 			parent = wz.parent(),
-			fitsize = function() {
+			fitsize = function(e) {
 				var height = parent.height() - wdelta,
 					style  = parent.attr('style'),
 					curH   = Math.round(wz.height());
 	
+				if (e) {
+					e.preventDefault();
+					e.stopPropagation();
+				}
+				
 				parent.css('overflow', 'hidden')
 					.children(':visible:not(.'+cl+')').each(function() {
 						var ch = $(this);
@@ -32,13 +37,19 @@ $.fn.elfinderworkzone = function(fm) {
 					wz.height(height);
 					fm.trigger('wzresize');
 				}
+			},
+			cssloaded = function() {
+				wdelta = wz.outerHeight(true) - wz.height();
+				fitsize();
 			};
 			
 		parent.add(window).on('resize.' + fm.namespace, fitsize);
-		fm.one('cssloaded', function() {
-			wdelta = wz.outerHeight(true) - wz.height();
-			fitsize();
-		}).bind('uiresize', fitsize);
+		if (fm.cssloaded) {
+			cssloaded();
+		} else {
+			fm.one('cssloaded', cssloaded);
+		}
+		fm.bind('uiresize', fitsize);
 	});
 	return this;
 };
