@@ -1,5 +1,23 @@
 ### Version History
 
+*4.2.3 (2017/07/22)*
+
+* Fixed issue with setting default player causing some sources to autoplay @rafa8626
+* Added new `useFakeFullscreen` configuration element to bypass conditional when entering fullscreen and added CSS to hide native controls @rafa8626
+* Fixed issue with sequence of files when creating bundle @rafa8626
+* Updated FLV and HLS libraries @rafa8626
+* Cleaned stylesheet and fixed minor issues on demo file @rafa8626
+* Fixed issues when using `setPoster` method after player was initialized @rafa8626
+* Fixed issues with `setSrc` method duplicating events on the native renderers @rafa8626
+* Removed code to load media when playing considered unnecessary @rafa8626
+* Added mechanism in `YouTube` renderer to add YouTube's thumbnail as a poster using `youtube`'s `imageQuality` parameter @rafa8626
+* Fixed typo on `setFill` mode and fixed issue with poster when using iOS @rafa8626
+* Fixed issue with `M(PEG)-DASH` renderer related to `dash.js` not picking settings from the renderer @rafa8626 
+* Added missing dependency to `player/library.js` file (https://github.com/mediaelement/mediaelement/pull/2318) @JulianKniephoff
+* Added missing code to explain how to use `MediaElement` with `RequireJS` @rafa8626
+* Integrated Flashls events to be processed by the player @rafa8626
+* Fixed test file when using JSDom and Mocha Chai @rafa8626
+
 *4.2.1/4.2.2 (2017/06/28)*
 
 * Added conditional to avoid AJAX request on non-SSL media on iOS @rafa8626
