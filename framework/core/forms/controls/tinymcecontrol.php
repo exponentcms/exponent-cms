@@ -94,6 +94,7 @@ class tinymcecontrol extends formcontrol
                 paste_data_images: true,";
         } else
             $upload = '';
+        $plugins = '';
         if (!empty($settings)) {
 //            $tb = stripSlashes($settings->data);
             $tb_raw = explode("\n", $settings->data);
@@ -118,7 +119,7 @@ class tinymcecontrol extends formcontrol
             $additionalConfig .= ",";  // MUST end with comma
         if (!empty($this->plugin))
             $plugins .= ',' . $this->plugin;
-        else {
+        elseif (empty($plugins)) {
             $plugins = "advlist,autolink,lists,link,image,imagetools,charmap,print,preview,hr,anchor,pagebreak" .
                     ",searchreplace,wordcount,visualblocks,visualchars,code,fullscreen" .
                     ",media,nonbreaking,save,table,contextmenu,directionality" .
