@@ -573,7 +573,7 @@ class usersController extends expController {
         $tok = new stdClass();
         $tok->uid = $u->id;
         $tok->expires = time() + 2 * 3600;
-        $tok->token = md5(time()) . uniqid('');
+        $tok->token = md5(time()) . uniqid('',true);
 
         $email = $template = expTemplate::get_template_for_action($this, 'email/password_reset_email', $this->loc);
         $email->assign('token', $tok);
@@ -607,12 +607,13 @@ class usersController extends expController {
         }
 
         // create the password
-        $newpass = '';
-        for ($i = 0, $iMax = mt_rand(12, 20); $i < $iMax; $i++) {
-            $num = mt_rand(48, 122);
-            if (($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num > 48 && $num < 57)) $newpass .= chr($num);
-            else $i--;
-        }
+//        $newpass = '';
+//        for ($i = 0, $iMax = mt_rand(12, 20); $i < $iMax; $i++) {
+//            $num = mt_rand(48, 122);
+//            if (($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num > 48 && $num < 57)) $newpass .= chr($num);
+//            else $i--;
+//        }
+        $newpass = expValidator::generatePassword();
 
         // look up the user
         $u = new user($tok->uid);
@@ -1650,12 +1651,13 @@ class usersController extends expController {
                 if ((!isset($userinfo['changed'])) || ($userinfo['changed'] != "skipped")) {
                     switch ($this->params["pwordOptions"]) {
                         case "RAND":
-                            $newpass = "";
-                            for ($i = 0, $iMax = mt_rand(12, 20); $i < $iMax; $i++) {
-                                $num = mt_rand(48, 122);
-                                if (($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num > 48 && $num < 57)) $newpass .= chr($num);
-                                else $i--;
-                            }
+//                            $newpass = "";
+//                            for ($i = 0, $iMax = mt_rand(12, 20); $i < $iMax; $i++) {
+//                                $num = mt_rand(48, 122);
+//                                if (($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num > 48 && $num < 57)) $newpass .= chr($num);
+//                                else $i--;
+//                            }
+                            $newpass = expValidator::generatePassword();
                             $userinfo['clearpassword'] = $newpass;
                             break;
                         case "DEFPASS":

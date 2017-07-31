@@ -596,6 +596,85 @@ class expValidator {
 	}
 
     /**
+     * Generate a random secure password
+     *
+     * @param int $len
+     * @param int $caps
+     * @param int $nums
+     * @param int $spec
+     * @return string
+     */
+    public static function generatePassword($len = MIN_PWD_LEN, $cap = MIN_UPPER, $num = MIN_DIGITS, $sym = MIN_SYMBOL)
+    {
+        // get count of all required minimum special chars
+        $count = $cap + $num + $sym;
+
+        // sanitize inputs; should be self-explanatory
+        if (!is_numeric($len) || !is_numeric($cap) || !is_numeric($num) || !is_numeric($sym)) {
+            trigger_error('Argument(s) not an integer', E_USER_WARNING);
+            return false;
+        } elseif ($len < MIN_PWD_LEN || $len > 20 || $cap < MIN_UPPER || $num < MIN_DIGITS || $sym < MIN_SYMBOL) {
+            trigger_error('Argument(s) out of range', E_USER_WARNING);
+            return false;
+        } elseif ($cap > $len) {
+            trigger_error('Number of password capitals required exceeds password length', E_USER_WARNING);
+            return false;
+        } elseif ($num > $len) {
+            trigger_error('Number of password numerals exceeds password length', E_USER_WARNING);
+            return false;
+        } elseif ($sym > $len) {
+            trigger_error('Number of password capitals exceeds password length', E_USER_WARNING);
+            return false;
+        } elseif ($count > $len) {
+            trigger_error('Number of password special characters exceeds specified password length', E_USER_WARNING);
+            return false;
+        }
+
+        // all inputs clean, proceed to build password
+
+        // change these strings if you want to include or exclude possible password characters
+        $chars = "abcdefghijklmnopqrstuvwxyz";
+        $caps = strtoupper($chars);
+        $nums = "0123456789";
+        $syms = "!@#$%^&*()-+?";
+
+        // build the base password of all lower-case letters
+        $out = '';
+        for ($i = 0; $i < $len; $i++) {
+            $out .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+        }
+
+        // create arrays if special character(s) required
+        if ($count) {
+            // split base password to array; create special chars array
+            $tmp1 = str_split($out);
+            $tmp2 = array();
+
+            // add required special character(s) to second array
+            for ($i = 0; $i < $cap; $i++) {
+                array_push($tmp2, substr($caps, mt_rand(0, strlen($caps) - 1), 1));
+            }
+            for ($i = 0; $i < $num; $i++) {
+                array_push($tmp2, substr($nums, mt_rand(0, strlen($nums) - 1), 1));
+            }
+            for ($i = 0; $i < $sym; $i++) {
+                array_push($tmp2, substr($syms, mt_rand(0, strlen($syms) - 1), 1));
+            }
+
+            // hack off a chunk of the base password array that's as big as the special chars array
+            $tmp1 = array_slice($tmp1, 0, $len - $count);
+            // merge special character(s) array with base password array
+            $tmp1 = array_merge($tmp1, $tmp2);
+            // mix the characters up
+            shuffle($tmp1);
+            // convert to string for output
+            $out = implode('', $tmp1);
+        }
+
+        return $out;
+    }
+
+    /**
      * Routine to check that username is valid (longer than 3 characters)
      *
      * @param $username
