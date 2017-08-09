@@ -1,5 +1,24 @@
 ### Version History
 
+*4.2.4 (2017/08/08)*
+
+* Added missing conditional to set current time properly for live streams (especially YouTube ones) @rafa8626
+* Fixed issues with Flash fallback for FLV and RTMP in regards of setting current time and other events @rafa8626
+* Fixed typos when setting poster for iOS and when destroying player @rafa8626
+* Fixed typo when setting default player caused issues on Firefox when extending `MediaElementPlayer` object @rafa8626
+* Fixed issue related to iframe renderers not resizing properly after using fullscreen @rafa8626
+* Updated RTMP and Dailymotion sources @rafa8626
+* Added `useDefaultControls` configuration to simplify list of `features` (https://github.com/mediaelement/mediaelement-plugins/issues/74) @rafa8626
+* Removed `build/mediaelement.js` in `package.js` to avoid duplication issues in Meteor and added missing languages @rafa8626
+* Removed unnecessary event un-bindings that caused errors on Edge @rafa8626
+* Added missing layer to display errors correctly on native renderers and added missing styles for errors; `customError` accepts a callback as well @rafa8626
+* Added missing translations; removed Brazilian Portuguese and added Catalan in demo file @rafa8626
+* Added `forceLive` configuration to hide progress bar and display `Live Broadcast` even when `duration` is a valid number @rafa8626
+* Fixed issues with Flash HLS renderer related to restarting video once ended @rafa8626
+* Added missing translations @rafa8626
+* Fixed issue with native M(PEG)-DASH assigned to MediaElement shim related to `The play() request was interrupted` error @rafa8626
+* Created workflow to remove/restore `poster` when using FB and iPhone and updated SDK version @rafa8626
+
 *4.2.3 (2017/07/22)*
 
 * Fixed issue with setting default player causing some sources to autoplay @rafa8626
