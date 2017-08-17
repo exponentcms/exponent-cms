@@ -851,6 +851,9 @@ class mysqli_database extends database {
             $sql .= $this->injectProof($where);
         else
             $sql .= "`" . $identifier . "`=" . $object->$identifier;
+        if (isset($object->revision_id)) {
+            $sql .= ' AND revision_id=' . $object->revision_id;
+        }
         //if ($table == 'text') eDebug($sql,true);
         $res = (@mysqli_query($this->connection, $sql) != false);
         return $res;
