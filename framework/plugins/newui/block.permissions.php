@@ -40,13 +40,11 @@ if (!function_exists('smarty_block_permissions')) {
         if ($content) {
             global $user, $css_core;
             if (empty($_GET['recymod'])) {
-                $uilevel = 99;
-                if (expSession::exists("uilevel")) $uilevel = expSession::get("uilevel");
-                if ((isset($uilevel) && $uilevel == UILEVEL_PREVIEW) || !$user->isLoggedIn()) {
+                if (expTheme::inPreview() || !$user->isLoggedIn()) {
                     $cntnt = "";
                 } else {
                      if (empty($css_core['admin-global'])) expCSS::pushToHead(array("corecss"=>"admin-global"));
-                    $cntnt = ((isset($uilevel) && $uilevel == UILEVEL_PREVIEW) || !$user->isLoggedIn()) ? "" : $content;
+                    $cntnt = (expTheme::inPreview() || !$user->isLoggedIn()) ? "" : $content;
                 }
                 return $cntnt;
             }

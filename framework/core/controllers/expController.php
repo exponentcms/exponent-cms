@@ -126,11 +126,9 @@ abstract class expController {
 
         // flag for needing approval check
         if (ENABLE_WORKFLOW && $this->$modelname->supports_revisions) {
-            $uilevel = 99;
-            if (expSession::exists("uilevel")) $uilevel = expSession::get("uilevel");
             if (!expPermissions::check('approve', $this->loc)) {
                 $this->$modelname->needs_approval = true;
-            } elseif ($uilevel == UILEVEL_PREVIEW && isset($uilevel)) {
+            } elseif (expTheme::inPreview()) {
                 $this->$modelname->needs_approval = true;  // 'preview' should provide a true preview
             }
         }
@@ -1528,7 +1526,7 @@ abstract class expController {
         }
         $model = $this->basemodel_name;
         if (ENABLE_WORKFLOW && $this->$model->needs_approval) {
-            if ($user->id) {
+            if ($user->id && !expTheme::inPreview()) {
                 $sql .= ' AND (approved=1 OR poster=' . $user->id . ' OR editor=' . $user->id . ')';
             } else {
                 $sql .= ' AND approved=1';
