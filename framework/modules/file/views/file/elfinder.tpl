@@ -127,6 +127,7 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/rm.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/search.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/sort.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/undo.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/up.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/upload.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/view.js"></script>
@@ -283,17 +284,15 @@
                 uiOptions : {
                     // toolbar configuration
                     toolbar : [
-                        ['back', 'forward'],
+                        ['back', 'forward', 'up'], // added up
                         //['netmount'],       // removed
-                        ['reload'],           // added
-                        ['home', 'up'],       // added
+                        ['reload', 'home'],           // added home
                         ['mkdir', 'mkfile', 'upload'],
                         ['open', 'download', 'getfile'],
-                        ['info', 'chmod'],
-                        ['quicklook'],
-                        ['copy', 'cut', 'paste'],
-                        ['rm', 'empty'],
-                        ['duplicate', 'rename', 'edit', 'resize'],
+                        ['undo', 'redo'],
+                        ['copy', 'cut', 'paste', 'rm', 'empty'],
+                        ['duplicate', 'rename', 'edit', 'resize', 'chmod'],
+                        ['quicklook', 'info'],
                         ['extract', 'archive'],
                         ['search'],
                         ['view', 'sort'],
@@ -302,39 +301,39 @@
                         ['fullscreen']
                     ],
                     // toolbar extra options
-                    toolbarExtra : {
-                        // also displays the text label on the button (true / false)
-                        displayTextLabel: false,
-                        // Exclude `displayTextLabel` setting UA type
-                        labelExcludeUA: ['Mobile'],
-                        // auto hide on initial open
-                        autoHideUA: ['Mobile']
-                    },
+//                    toolbarExtra : {
+//                        // also displays the text label on the button (true / false)
+//                        displayTextLabel: false,
+//                        // Exclude `displayTextLabel` setting UA type
+//                        labelExcludeUA: ['Mobile'],
+//                        // auto hide on initial open
+//                        autoHideUA: ['Mobile']
+//                    },
                     // directories tree options
                     tree : {
                         // expand current root on init
-                        openRootOnLoad : true,
+//                        openRootOnLoad : true,
                         // expand current work directory on open
-                        openCwdOnOpen  : true,
+//                        openCwdOnOpen  : true,
                         // auto load current dir parents
-                        syncTree : true,
+//                        syncTree : true,
                         // Maximum number of display of each child trees
                         // The tree of directories with children exceeding this number will be split
-                        subTreeMax : 100,
+//                        subTreeMax : 100,
                         // Numbar of max connctions of subdirs request
                         subdirsMaxConn : 3,
                         // Number of max simultaneous processing directory of subdirs
-                        subdirsAtOnce : 5
+//                        subdirsAtOnce : 5
                     },
                     // navbar options
                     navbar : {
-                        minWidth : 150,
-                        maxWidth : 500,
+//                        minWidth : 150,
+//                        maxWidth : 500,
                         autoHideUA: ['Mobile']
                     },
                     cwd : {
                         // display parent folder with ".." name :)
-                        oldSchool : false,
+//                        oldSchool : false,
                         listView : {
                             // columns to be displayed
                             // default settings are:

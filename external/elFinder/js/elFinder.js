@@ -1115,13 +1115,13 @@ var elFinder = function(node, opts, bootCallback) {
 			
 			if (dups.length) {
 				ui.helper.hide();
-				self.exec('duplicate', dups);
+				self.exec('duplicate', dups, {_userAction: true});
 			}
 			
 			if (result.length) {
 				ui.helper.hide();
 				self.clipboard(result, !isCopy);
-				self.exec('paste', hash, void 0, hash).always(function(){
+				self.exec('paste', hash, {_userAction: true}, hash).always(function(){
 					self.clipboard([]);
 					self.trigger('unlockfiles', {files : targets});
 				});
@@ -1896,7 +1896,7 @@ var elFinder = function(node, opts, bootCallback) {
 														$(this).toggleClass('ui-state-hover', e.type == 'mouseenter');
 													})
 													.on('click', function() {
-														self.exec(cmd, data || hashes, { _currentType: 'toast', _currentNode: $(this) });
+														self.exec(cmd, data || hashes, {_userAction: true, _currentType: 'toast', _currentNode: $(this) });
 														if (done) {
 															self.one(cmd+'done', function() {
 																if (typeof done === 'function') {
@@ -2626,15 +2626,29 @@ var elFinder = function(node, opts, bootCallback) {
 	 * @return $.Deferred
 	 */		
 	this.exec = function(cmd, files, opts, dstHash) {
+		var dfrd;
+		
 		if (cmd === 'open') {
 			if (this.searchStatus.state || this.searchStatus.ininc) {
 				this.trigger('searchend', { noupdate: true });
 			}
 			this.autoSync('stop');
 		}
-		return this._commands[cmd] && this.isCommandEnabled(cmd, dstHash) 
+		if (!dstHash && files) {
+			if ($.isArray(files)) {
+				if (files.length) {
+					dstHash = files[0];
+				}
+			} else {
+				dstHash = files;
+			}
+		}
+		dfrd = this._commands[cmd] && this.isCommandEnabled(cmd, dstHash) 
 			? this._commands[cmd].exec(files, opts) 
 			: $.Deferred().reject('No such command');
+		
+		this.trigger('exec', { dfrd : dfrd, cmd : cmd, files : files, opts : opts, dstHash : dstHash });
+		return dfrd;
 	};
 	
 	/**
@@ -2902,7 +2916,7 @@ var elFinder = function(node, opts, bootCallback) {
 					syncInterval && clearTimeout(syncInterval);
 					syncInterval = setTimeout(function() {
 						var dosync = true, hash = cwd, cts;
-						if (cwdOptions.syncChkAsTs && (cts = files[hash].ts)) {
+						if (cwdOptions.syncChkAsTs && files[hash] && (cts = files[hash].ts)) {
 							self.request({
 								data           : {cmd : 'info', targets : [hash], compare : cts, reload : 1},
 								preventDefault : true
@@ -3005,7 +3019,9 @@ var elFinder = function(node, opts, bootCallback) {
 			left    : 0,
 			display : 'block',
 			position: 'fixed',
-			zIndex  : Math.max(self.zIndex? (self.zIndex + 1) : 0 , 1000)
+			zIndex  : Math.max(self.zIndex? (self.zIndex + 1) : 0 , 1000),
+			maxWidth : '',
+			maxHeight: ''
 		};
 	};
 	
@@ -7747,68 +7763,75 @@ elFinder.prototype = {
 			},
 			success = null,
 			cnt, scripts = {};
-		if ($.isFunction(callback)) {
-			success = function(d, status) {
-				if (!status || status === 'success' || status === 'notmodified') {
-					if (check) {
-						if (typeof check.obj[check.name] === 'undefined') {
-							var cnt = check.timeout? (check.timeout / 10) : 1;
-							var fi = setInterval(function() {
-								if (--cnt < 0 || typeof check.obj[check.name] !== 'undefined') {
-									clearInterval(fi);
-									callback();
-								}
-							}, 10);
+		
+		opts = opts || {};
+		if (opts.tryRequire && typeof define === 'function' && define.amd) {
+			require(urls, callback, opts.error);
+		} else {
+			if ($.isFunction(callback)) {
+				success = function(d, status) {
+					if (!status || status === 'success' || status === 'notmodified') {
+						if (check) {
+							if (typeof check.obj[check.name] === 'undefined') {
+								var cnt = check.timeout? (check.timeout / 10) : 1;
+								var fi = setInterval(function() {
+									if (--cnt < 0 || typeof check.obj[check.name] !== 'undefined') {
+										clearInterval(fi);
+										callback();
+									}
+								}, 10);
+							} else {
+								callback();
+							}
 						} else {
 							callback();
 						}
 					} else {
-						callback();
-					}
-				} else {
-					if (opts && opts.error && $.isFunction(opts.error)) {
-						opts.error();
+						if (opts.error && $.isFunction(opts.error)) {
+							opts.error();
+						}
 					}
 				}
 			}
-		}
-		if (opts && opts.loadType === 'tag') {
-			$('head > script').each(function() {
-				scripts[this.src] = this;
-			});
-			cnt = urls.length;
-			$.each(urls, function(i, url) {
-				var done = false,
-					script;
-				
-				if (scripts[url]) {
-					(--cnt < 1) && success(void(0), scripts[url]._error);
-				} else {
-					script = document.createElement('script');
-					script.charset = opts.charset || 'UTF-8';
-					$('head').append(script);
-					script.onload = script.onreadystatechange = function() {
-						if ( !done && (!this.readyState ||
-								this.readyState === 'loaded' || this.readyState === 'complete') ) {
-							done = true;
-							(--cnt < 1) && success();
+
+			if (opts.loadType === 'tag') {
+				$('head > script').each(function() {
+					scripts[this.src] = this;
+				});
+				cnt = urls.length;
+				$.each(urls, function(i, url) {
+					var done = false,
+						script;
+					
+					if (scripts[url]) {
+						(--cnt < 1) && success(void(0), scripts[url]._error);
+					} else {
+						script = document.createElement('script');
+						script.charset = opts.charset || 'UTF-8';
+						$('head').append(script);
+						script.onload = script.onreadystatechange = function() {
+							if ( !done && (!this.readyState ||
+									this.readyState === 'loaded' || this.readyState === 'complete') ) {
+								done = true;
+								(--cnt < 1) && success();
+							}
+						};
+						script.onerror = function(err) {
+							script._error = (err && err.type)? err.type : 'error';
+							(--cnt < 1) && success(void(0), script._error);
 						}
-					};
-					script.onerror = function(err) {
-						script._error = (err && err.type)? err.type : 'error';
-						(--cnt < 1) && success(void(0), script._error);
+						script.src = url;
 					}
-					script.src = url;
-				}
-			});
-		} else {
-			opts = $.isPlainObject(opts)? Object.assign(defOpts, opts) : defOpts;
-			(function appendScript() {
-				$.ajax(Object.assign(opts, {
-					url: urls.shift(),
-					success: urls.length? appendScript : success
-				}));
-			})();
+				});
+			} else {
+				opts = $.isPlainObject(opts)? Object.assign(defOpts, opts) : defOpts;
+				(function appendScript() {
+					$.ajax(Object.assign(opts, {
+						url: urls.shift(),
+						success: urls.length? appendScript : success
+					}));
+				})();
+			}
 		}
 		return this;
 	},

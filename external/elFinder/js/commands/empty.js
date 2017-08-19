@@ -7,19 +7,28 @@
  * @author  Naoki Sawada
  */
 elFinder.prototype.commands.empty = function() {
-	var fm = this.fm;
+	var fm = this.fm,
+		self = this,
+		selFiles = function(sel) {
+			var sel = self.files(sel);
+			if (!sel.length) {
+				sel = [ fm.cwd() ];
+			}
+			return sel;
+		};
 	
 	this.linkedCmds = ['rm'];
 	
 	this.getstate = function(sel) {
-		var sel = this.files(sel),
-			cnt = sel.length;
+		var sel = selFiles(sel),
+			cnt;
 		
-		return cnt && $.map(sel, function(f) { return f.write && f.mime === 'directory' ? f : null  }).length == cnt ? 0 : -1;
+		cnt = sel.length;
+		return $.map(sel, function(f) { return f.write && f.mime === 'directory' ? f : null  }).length == cnt ? 0 : -1;
 	}
 	
 	this.exec = function(hashes) {
-		var dirs = this.files(hashes),
+		var dirs = selFiles(hashes),
 			cnt  = dirs.length,
 			dfrd = $.Deferred()
 				.done(function() {
@@ -82,7 +91,7 @@ elFinder.prototype.commands.empty = function() {
 							targets.push(f.hash);
 						});
 						if (targets.length) {
-							fm.exec('rm', targets, { addTexts : [ fm.i18n('folderToEmpty', dir.name) ] })
+							fm.exec('rm', targets, { _userAction : true, addTexts : [ fm.i18n('folderToEmpty', dir.name) ] })
 							.fail(function(error) {
 								fm.trigger('unselectfiles', {files: fm.selected()});
 								done(error || '');

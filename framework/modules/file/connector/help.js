@@ -186,49 +186,78 @@
 					optTags = [],
 					langs = self.options.langs || {
 						ar: 'اللغة العربية',
-						bg: 'български език',
+						bg: 'Български',
 						ca: 'Català',
-						cs: 'čeština',
-						da: 'dansk',
+						cs: 'Čeština',
+						da: 'Dansk',
 						de: 'Deutsch',
 						el: 'Ελληνικά',
 						en: 'English',
-						es: 'español',
+						es: 'Español',
 						fa: 'فارسی‌‎, پارسی‌',
 						fo: 'Føroyskt',
 						fr: 'Français',
 						he: 'עברית‎',
 						hr: 'Hrvatski',
-						hu: 'magyar',
+						hu: 'Magyar',
 						id: 'Bahasa Indonesia',
 						it: 'Italiano',
 						jp: '日本語',
 						ko: '한국어',
 						nl: 'Nederlands',
-						no: 'norsk',
-						pl: 'język polski',
+						no: 'Norsk',
+						pl: 'Polski',
 						pt_BR: 'Português',
 						ro: 'Română',
-						ru: 'русский язык',
+						ru: 'Pусский',
 						si: 'සිංහල',
-						sk: 'slovenský jazyk',
-						sl: 'slovenščina',
-						sr: 'српски језик',
-						sv: 'svenska',
+						sk: 'Slovenský',
+						sl: 'Slovenščina',
+						sr: 'Srpski',
+						sv: 'Svenska',
 						tr: 'Türkçe',
 						ug_CN: 'ئۇيغۇرچە',
-						uk: 'Українська мова',
+						uk: 'Український',
 						vi: 'Tiếng Việt',
 						zh_CN: '简体中文',
 						zh_TW: '正體中文'
 					},
-					forms = { language: '', clearBrowserData: '' },
+					forms = { language: '', toolbarPref: '', clearBrowserData: '' },
 					dls = $();
 
 				$.each(langs, function(lang, name) {
 					optTags.push('<option value="'+lang+'">'+name+'</option>');
 				});
 				forms.language = langSel.append(optTags.join(''));
+
+				forms.toolbarPref = (function() {
+					var pnls = $.map(fm.options.uiOptions.toolbar, function(v) {
+							return $.isArray(v)? v : null
+						}),
+						tags = [],
+						hides = fm.storage('toolbarhides') || {},
+						node;
+					$.each(pnls, function() {
+						var cmd = this,
+							name = fm.i18n('cmd'+cmd);
+						if (name === 'cmd'+cmd) {
+							name = cmd;
+						}
+						tags.push('<span class="elfinder-help-toolbar-item"><label><input type="checkbox" value="'+cmd+'" '+(hides[cmd]? '' : 'checked')+'/>'+name+'</label></span>');
+					});
+					node = $(tags.join(' ')).on('change', 'input', function() {
+						var v = $(this).val(),
+							o = $(this).is(':checked');
+						if (!o && !hides[v]) {
+							hides[v] = true;
+						} else if (o && hides[v]) {
+							delete hides[v];
+						}
+						fm.storage('toolbarhides', hides);
+						fm.trigger('toolbarpref');
+					});
+					return node;
+				})();
 
 				forms.clearBrowserData = $('<button/>').text(fm.i18n('reset')).button().on('click', function(e) {
 					e.preventDefault();
@@ -237,7 +266,7 @@
 				});
 
 				$.each(forms, function(n, f) {
-					dls = dls.add($('<dt>'+fm.i18n(n)+'</dt>')).add($('<dd/>').append(f));
+					dls = dls.add($('<dt>'+fm.i18n(n)+'</dt>')).add($('<dd class="elfinder-help-'+n+'"/>').append(f));
 				});
 
 				tab.append($('<dl/>').append(dls));
@@ -245,6 +274,11 @@
 			},
 			parts = self.options.view || ['about', 'shortcuts', 'help', 'preference', 'debug'],
 			tabDebug, i, helpSource, tabBase, tabNav, tabs, delta;
+
+		// force enable 'preference' tab
+		if ($.inArray('preference', parts) === -1) {
+			parts.push('preference');
+		}
 
 		// debug tab require jQueryUI Tabs Widget
 		if (! $.fn.tabs) {
@@ -262,7 +296,7 @@
 		$.inArray('about', parts) !== -1 && about();
 		$.inArray('shortcuts', parts) !== -1 && shortcuts();
 		if ($.inArray('help', parts) !== -1) {
-			helpSource = fm.baseUrl+'js/i18n/help/%s.html';
+			helpSource = fm.baseUrl+'js/i18n/help/%s.html.js';
 			help();
 		}
 		$.inArray('preference', parts) !== -1 && preference();
@@ -362,8 +396,23 @@
 		return 0;
 	};
 
-	this.exec = function() {
-		this.dialog.trigger('initContents').elfinderdialog('open').find('.ui-tabs-nav li a:first').click();
+	this.exec = function(sel, opts) {
+		var tab = opts? opts.tab : void(0);
+		this.dialog.trigger('initContents').elfinderdialog('open').find((tab? '.elfinder-help-tab-'+tab : '.ui-tabs-nav li') + ' a:first').click();
 	};
 
 }).prototype = { forceLoad : true }; // this is required command
+
+elFinder.prototype.commands.preference = function() {
+
+	this.linkedCmds = ['help'];
+	this.alwaysEnabled  = true;
+
+	this.getstate = function() {
+		return 0;
+	};
+
+	this.exec = function() {
+		this.fm.exec('help', void(0), {tab: 'preference'});
+	};};
+

@@ -2,7 +2,7 @@
  * Japanese translation
  * @author Tomoaki Yoshida <info@yoshida-studio.jp>
  * @author Naoki Sawada <hypweb@gmail.com>
- * @version 2017-06-28
+ * @version 2017-08-03
  */
 (function(root, factory) {
 	if (typeof define === 'function' && define.amd) {
@@ -140,7 +140,7 @@
 			'cmdrename'    : 'リネーム',
 			'cmdrm'        : '削除',
 			'cmdtrash'     : 'ごみ箱へ', //from v2.1.24 added 29.4.2017
-			'cmdrestore'   : '元に戻す', //from v2.1.24 added 3.5.2017
+			'cmdrestore'   : '復元', //from v2.1.24 added 3.5.2017
 			'cmdsearch'    : 'ファイルを探す',
 			'cmdup'        : '親ディレクトリーへ移動',
 			'cmdupload'    : 'ファイルアップロード',
@@ -156,6 +156,9 @@
 			'cmdfullscreen': 'フルスクリーン', // from v2.1.15 added 03.08.2016
 			'cmdmove'      : '移動', // from v2.1.15 added 21.08.2016
 			'cmdempty'     : 'フォルダーを空に', // from v2.1.25 added 22.06.2017
+			'cmdundo'      : '元に戻す', // from v2.1.27 added 31.07.2017
+			'cmdredo'      : 'やり直し', // from v2.1.27 added 31.07.2017
+			'cmdpreference': '環境設定', // from v2.1.27 added 03.08.2017
 
 			/*********************************** buttons ***********************************/
 			'btnClose'  : '閉じる',
@@ -215,6 +218,8 @@
 			'ntftrash'    : 'ごみ箱に入れています', // from v2.1.24 added 2.5.2017
 			'ntfrestore'  : 'ごみ箱から元に戻しています', // from v2.1.24 added 2.5.2017
 			'ntfchkdir'   : '宛先ホルダーを確認しています', // from v2.1.24 added 3.5.2017
+			'ntfundo'     : '前の操作を取り消して元に戻しています', // from v2.1.27 added 31.07.2017
+			'ntfredo'     : '元に戻した操作をやり直しています', // from v2.1.27 added 31.07.2017
 
 			/*********************************** volumes *********************************/
 			'volume_Trash' : 'ごみ箱', //from v2.1.24 added 29.4.2017
@@ -421,6 +426,7 @@
 			'preference'      : '環境設定', // from v2.1.26 added 28.6.2017
 			'language'        : '言語設定', // from v2.1.26 added 28.6.2017
 			'clearBrowserData': 'ブラウザに保存された設定を初期化する', // from v2.1.26 added 28.6.2017
+			'toolbarPref'     : 'ツールバー設定', // from v2.1.27 added 2.8.2017
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : '不明',

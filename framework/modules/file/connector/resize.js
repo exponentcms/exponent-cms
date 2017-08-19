@@ -609,10 +609,11 @@ elFinder.prototype.commands.resize = function() {
 							uitype[ctrgrup]('enable');
 							inputFirst = control.find('input,select').prop('disabled', false)
 								.filter(':text').on('keydown', function(e) {
+									var cOpts;
 									if (e.keyCode == $.ui.keyCode.ENTER) {
 										e.stopPropagation();
 										e.preventDefault();
-										fm.confirm({
+										cOpts = {
 											title  : $('input:checked', uitype).val(),
 											text   : 'confirmReq',
 											accept : {
@@ -626,14 +627,18 @@ elFinder.prototype.commands.resize = function() {
 												callback : function(){
 													$(this).focus();
 												}
-											},
-											buttons : [{
+											}
+										};
+
+										if (useSaveAs) {
+											cOpts['buttons'] = [{
 												label    : 'btnSaveAs',
 												callback : function() {
 													setTimeout(saveAs, 10);
 											}
-											}]
-										});
+											}];
+										}
+										fm.confirm(cOpts);
 										return;
 									}
 								})
@@ -1139,6 +1144,7 @@ elFinder.prototype.commands.resize = function() {
 						}
 					})(),
 					presetc = preset.clone(true),
+					useSaveAs = fm.uploadMimeCheck(file.mime, file.phash),
 					dMinBtn, base;
 
 				if (fm.isCORS) {
@@ -1240,7 +1246,9 @@ elFinder.prototype.commands.resize = function() {
 				dialog.append(preview, control);
 
 				buttons[fm.i18n('btnApply')] = save;
+				if (useSaveAs) {
 				buttons[fm.i18n('btnSaveAs')] = function() { setTimeout(saveAs, 10); };
+				}
 				buttons[fm.i18n('btnCancel')] = function() { dialog.elfinderdialog('close'); };
 
 				dialog.find('input,button').addClass('elfinder-tabstop');
