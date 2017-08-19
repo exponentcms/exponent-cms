@@ -6,7 +6,6 @@
  * using a variety of technologies (pure JavaScript, Flash, iframe)
  *
  * Copyright 2010-2017, John Dyer (http://j.hn/)
- * Maintained by, Rafael Miranda (rafa8626@gmail.com)
  * License: MIT
  *
  */(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
@@ -39,10 +38,6 @@ Object.assign(MediaElementPlayer.prototype, {
 		var t = this,
 		    button = document.createElement('div'),
 		    castTitle = mejs.Utils.isString(t.options.castTitle) ? t.options.castTitle : 'Chromecast';
-
-		if (!player.isVideo) {
-			return;
-		}
 
 		player.chromecastLayer = document.createElement('div');
 		player.chromecastLayer.className = t.options.classPrefix + 'chromecast-layer ' + t.options.classPrefix + 'layer';
@@ -81,7 +76,7 @@ Object.assign(MediaElementPlayer.prototype, {
 
 		window.__onGCastApiAvailable = function (isAvailable) {
 			var mediaType = mejs.Utils.getTypeFromFile(media.originalNode.src).toLowerCase(),
-			    canPlay = mediaType && ['application/x-mpegurl', 'vnd.apple.mpegurl', 'application/dash+xml', 'video/mp4'].indexOf(mediaType) > -1;
+			    canPlay = mediaType && ['application/x-mpegurl', 'application/vnd.apple.mpegurl', 'application/dash+xml', 'video/mp4', 'audio/mp3', 'audio/mp4'].indexOf(mediaType) > -1;
 
 			if (isAvailable && canPlay) {
 				t._initializeCastPlayer();
@@ -429,8 +424,9 @@ var ChromecastPlayer = function () {
 				mediaInfo.metadata.subtitle = t.media.originalNode.getAttribute('data-cast-description');
 			}
 
-			if (t.media.originalNode.getAttribute('poster')) {
-				mediaInfo.metadata.images = [{ 'url': mejs.Utils.absolutizeUrl(t.media.originalNode.getAttribute('poster')) }];
+			if (t.media.originalNode.getAttribute('poster') || t.media.originalNode.getAttribute('data-cast-poster')) {
+				var poster = t.media.originalNode.getAttribute('poster') || t.media.originalNode.getAttribute('data-cast-poster');
+				mediaInfo.metadata.images = [{ 'url': mejs.Utils.absolutizeUrl(poster) }];
 			}
 
 			var request = new chrome.cast.media.LoadRequest(mediaInfo);

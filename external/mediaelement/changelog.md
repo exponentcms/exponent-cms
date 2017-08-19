@@ -1,5 +1,10 @@
 ### Version History
 
+*4.2.5 (2017/08/09)*
+
+* Removed workflow that ignored MIME type to get a better media match @rafa8626
+* Fixed typos related to HLS MIME type and library version @rafa8626
+
 *4.2.4 (2017/08/08)*
 
 * Added missing conditional to set current time properly for live streams (especially YouTube ones) @rafa8626
