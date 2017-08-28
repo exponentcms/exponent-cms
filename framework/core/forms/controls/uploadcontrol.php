@@ -158,7 +158,9 @@ class uploadcontrol extends formcontrol {
      * @return string   The full directory and filename of the uploaded file
      */
     static function parseData($name,$values, $for_db = false) {
-        if (is_array($values[$name])) {
+        if (!isset($values[$name])) {
+            return null;
+        } elseif (is_array($values[$name])) {
             $file = $values[$name]['name'];
 //            return '<a href="'.URL_FULL.$file.'">'.basename($file).'</a>';  //FIXME this shouldn't be a link
         } else {
