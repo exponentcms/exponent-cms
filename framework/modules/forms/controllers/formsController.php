@@ -101,6 +101,7 @@ class formsController extends expController {
                 }
                 $fc = new forms_control();
                 if (empty($this->config['column_names_list'])) {
+                    $this->config['column_names_list'] = array();
                     //define some default columns...
                     $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
                     if (!empty($this->params['view']) && $this->params['view'] == 'showall_portfolio') {
