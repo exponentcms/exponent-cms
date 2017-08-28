@@ -164,7 +164,18 @@
 			}
 		},
 		content = '',
-		debugDIV, debugUL;
+		initCallbacks = [],
+		init = function(fn) {
+			if (fn && typeof fn === 'function') {
+				initCallbacks.push(fn);
+			} else if (initCallbacks.length) {
+				$.each(initCallbacks, function() {
+					this.call(self);
+				});
+				initCallbacks = [];
+			}
+		},
+		loaded, debugDIV, debugUL;
 
 	this.alwaysEnabled  = true;
 	this.updateOnSelect = false;
@@ -175,10 +186,16 @@
 		description : this.title
 	}];
 
-	fm.one('load', function() {
+	fm.bind('load', function() {
 		var setupPref = function() {
 				var tab = content.find('.elfinder-help-preference'),
-					langSel = $('<select/>').on('change', function() {
+					forms = { language: '', toolbarPref: '', clearBrowserData: '' },
+					dls = $();
+
+				forms.language = (function() {
+					var node = $('<div/>');
+					init(function() {
+						var langSel = $('<select/>').on('change', function() {
 						var lang = $(this).val();
 						fm.storage('lang', lang);
 						$('#'+fm.id).elfinder('reload');
@@ -221,22 +238,23 @@
 						vi: 'Tiếng Việt',
 						zh_CN: '简体中文',
 						zh_TW: '正體中文'
-					},
-					forms = { language: '', toolbarPref: '', clearBrowserData: '' },
-					dls = $();
-
+							};
 				$.each(langs, function(lang, name) {
 					optTags.push('<option value="'+lang+'">'+name+'</option>');
 				});
-				forms.language = langSel.append(optTags.join(''));
+						node.replaceWith(langSel.append(optTags.join('')).val(fm.lang));
+					});
+					return node;
+				})();
 
 				forms.toolbarPref = (function() {
+					var node = $('<div/>');
+					init(function() {
 					var pnls = $.map(fm.options.uiOptions.toolbar, function(v) {
 							return $.isArray(v)? v : null
 						}),
 						tags = [],
-						hides = fm.storage('toolbarhides') || {},
-						node;
+							hides = fm.storage('toolbarhides') || {};
 					$.each(pnls, function() {
 						var cmd = this,
 							name = fm.i18n('cmd'+cmd);
@@ -245,7 +263,7 @@
 						}
 						tags.push('<span class="elfinder-help-toolbar-item"><label><input type="checkbox" value="'+cmd+'" '+(hides[cmd]? '' : 'checked')+'/>'+name+'</label></span>');
 					});
-					node = $(tags.join(' ')).on('change', 'input', function() {
+						node.replaceWith($(tags.join(' ')).on('change', 'input', function() {
 						var v = $(this).val(),
 							o = $(this).is(':checked');
 						if (!o && !hides[v]) {
@@ -255,6 +273,7 @@
 						}
 						fm.storage('toolbarhides', hides);
 						fm.trigger('toolbarpref');
+						}));
 					});
 					return node;
 				})();
@@ -270,7 +289,6 @@
 				});
 
 				tab.append($('<dl/>').append(dls));
-				langSel.val(fm.lang);
 			},
 			parts = self.options.view || ['about', 'shortcuts', 'help', 'preference', 'debug'],
 			tabDebug, i, helpSource, tabBase, tabNav, tabs, delta;
@@ -382,7 +400,10 @@
 				}).done(function(source) {
 					$('#'+fm.namespace+'-help-help').html(source);
 				}).fail(function() {
-					$.get(helpSource.replace('%s', 'en'), function(source) {
+					$.ajax({
+						url: helpSource.replace('%s', 'en'),
+						dataType: 'html'
+					}).done(function(source) {
 						$('#'+fm.namespace+'-help-help').html(source);
 					});
 				});
@@ -398,6 +419,10 @@
 
 	this.exec = function(sel, opts) {
 		var tab = opts? opts.tab : void(0);
+		if (! loaded) {
+			loaded = true;
+			fm.lazy(init);
+		}
 		this.dialog.trigger('initContents').elfinderdialog('open').find((tab? '.elfinder-help-tab-'+tab : '.ui-tabs-nav li') + ' a:first').click();
 	};
 

@@ -284,14 +284,14 @@
                 uiOptions : {
                     // toolbar configuration
                     toolbar : [
-                        ['back', 'forward', 'up'], // added up
+                        ['home', 'back', 'forward', 'up', 'reload'],
                         //['netmount'],       // removed
-                        ['reload', 'home'],           // added home
                         ['mkdir', 'mkfile', 'upload'],
                         ['open', 'download', 'getfile'],
                         ['undo', 'redo'],
                         ['copy', 'cut', 'paste', 'rm', 'empty'],
                         ['duplicate', 'rename', 'edit', 'resize', 'chmod'],
+                        ['selectall', 'selectnone', 'selectinvert'],
                         ['quicklook', 'info'],
                         ['extract', 'archive'],
                         ['search'],

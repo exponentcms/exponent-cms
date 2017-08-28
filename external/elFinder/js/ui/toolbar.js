@@ -42,7 +42,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 									buttons[name] = $('<div/>')[button](cmd);
 								}
 								if (buttons[name]) {
-									textLabel && buttons[name].find('.elfinder-button-text').show();
+									buttons[name].children('.elfinder-button-text')[textLabel? 'show' : 'hide']();
 									panel.prepend(buttons[name]);
 								}
 							}
@@ -62,7 +62,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 						name = 'preference';
 						button = 'elfinder'+cmd.options.ui;
 						buttons[name] = $('<div/>')[button](cmdPref);
-						textLabel && buttons[name].find('.elfinder-button-text').show();
+						buttons[name].children('.elfinder-button-text')[textLabel? 'show' : 'hide']();
 						panel.prepend(buttons[name]);
 						self.append(panel);
 					}
@@ -153,9 +153,16 @@ $.fn.elfindertoolbar = function(fm, opts) {
 		
 		fm.bind('open sync select toolbarpref', function() {
 			var disabled = Object.assign([], fm.option('disabled')),
-				userHides = fm.storage('toolbarhides') || {},
+				userHides = fm.storage('toolbarhides'),
 				doRender, sel;
 			
+			if (! userHides && Array.isArray(options.defaultHides)) {
+				userHides = {};
+				$.each(options.defaultHides, function() {
+					userHides[this] = true;
+				});
+				fm.storage('toolbarhides', userHides);
+			}
 			if (this.type === 'select') {
 				if (fm.searchStatus.state < 2) {
 					return;
@@ -208,7 +215,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 								if (! buttons[to] && $.fn[button]) {
 									buttons[to] = $('<div/>')[button](fm._commands[to]);
 									if (buttons[to]) {
-										textLabel && buttons[to].find('.elfinder-button-text').show();
+										buttons[to].children('.elfinder-button-text')[textLabel? 'show' : 'hide']();
 										if (cmd.extendsCmd) {
 											buttons[to].children('span.elfinder-button-icon').addClass('elfinder-button-icon-' + cmd.extendsCmd)
 										};
