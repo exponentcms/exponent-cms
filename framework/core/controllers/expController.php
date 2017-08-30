@@ -1228,7 +1228,9 @@ abstract class expController {
         $count = 0;
         $model = new $this->basemodel_name(null, false, false);
         $where = (!empty($this->params['id'])) ? 'id=' . $this->params['id'] : null;
-        $content = $db->selectArrays($model->tablename, $where);
+        $supports_revisions = $model->supports_revisions && ENABLE_WORKFLOW;
+        $needs_approval = true;
+        $content = $db->selectArrays($model->tablename, $where, null, $supports_revisions, $needs_approval);
         foreach ($content as $cnt) {
             $origid = $cnt['id'];
             unset($cnt['id']);

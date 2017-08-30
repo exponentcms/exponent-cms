@@ -580,7 +580,7 @@ abstract class database {
 	* @param null $orderby
 	* @return array
 	*/
-	abstract function selectObjects($table, $where = null, $orderby = null);
+	abstract function selectObjects($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false, $user=null);
 
 	/**
 	 * @param  $terms
@@ -708,7 +708,7 @@ abstract class database {
      *
      * @return int
      */
-	abstract function countObjects($table, $where = null, $is_revisioned=false, $needs_approval=false);
+	abstract function countObjects($table, $where = null, $is_revisioned=false, $needs_approval=false, $user=null);
 
 	/**
 	* Count Objects matching a given criteria using raw sql
@@ -1146,7 +1146,7 @@ abstract class database {
 	* @param string $orderby
 	* @return array
 	*/
-	abstract function selectArrays($table, $where = null, $orderby = null);
+	abstract function selectArrays($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false, $user=null);
 
 	/**
 	* Select an array of arrays
@@ -1178,7 +1178,7 @@ abstract class database {
      *
      * @return array|void
      */
-	abstract function selectArray($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false);
+	abstract function selectArray($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false, $user=null);
 
     /**
 	 * Instantiate objects from selected records from the database
@@ -1199,7 +1199,7 @@ abstract class database {
      *
      * @return array
      */
-	abstract function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false);
+	abstract function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false, $user=null);
 
 	/**
 	 * Instantiate objects from selected records from the database

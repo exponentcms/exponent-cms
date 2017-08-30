@@ -452,7 +452,7 @@ class navigationController extends expController {
             if ($link . '/' == URL_FULL) $link = '';
             $search_record->view_link = $link;
             $search_record->body      = $section->description;
-            $search_record->keywords  = $section->keywords;
+//            $search_record->keywords  = $section->keywords;  // fixme - we do NOT use this in a search
             // now we're going to grab all the textmodules on this page and build the body for the page based off the content
             // of all the text module added together.
             $loc = expCore::makeLocation('text');
@@ -461,11 +461,13 @@ class navigationController extends expController {
                 $loc->src   = $module->source;
 //                $controller = new $controllername();
                 $controller = expModules::getController($controllername);
-                $textitems  = $db->selectObjects($controller->model_table, "location_data='" . serialize($loc) . "'");
+                $supports_revisions = $controller->text->supports_revisions && ENABLE_WORKFLOW;
+                $needs_approval = true;  // note we ONLY want approved content in the search index!
+                $textitems  = $db->selectObjects($controller->model_table, "location_data='" . serialize($loc) . "'", null, $supports_revisions, $needs_approval);
                 foreach ($textitems as $textitem) {
                     if (!empty($textitem)) {
-                        $search_record->body .= ' ' . search::removeHTML($textitem->body) . ' ';
-                        $search_record->keywords .= " " . $textitem->title;
+                        $search_record->body .= " " . $textitem->title . ' - ' . search::removeHTML($textitem->body) . ' ';
+//                        $search_record->keywords .= " " . $textitem->title;  // fixme - we do NOT use this in a search
                     }
                 }
             }

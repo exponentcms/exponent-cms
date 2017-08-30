@@ -130,6 +130,8 @@ class searchController extends expController {
         // 2.0 modules
 //	    foreach (expModules::listControllers() as $ctlname=>$ctl) {
         foreach (expModules::getActiveControllersList() as $ctl) {
+            if ($ctl == "text")
+                $ctl = "navigation";
             $ctlname = expModules::getModuleClassName($ctl);
 		    $controller = new $ctlname();
 		    if (method_exists($controller,'isSearchable') && $controller->isSearchable()) {
