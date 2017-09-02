@@ -644,7 +644,7 @@ class expTheme
         }
         if (!is_readable($theme)) {
             if (is_readable(BASE . 'framework/core/index.php')) {
-                $theme = BASE . 'framework/core/index.php';  // use the fallback bare essentials theme
+                $theme = BASE . 'framework/core/index.php';  // use the fallback bare essentials system theme
             }
         }
         return $theme;
@@ -732,6 +732,12 @@ class expTheme
         return ($level == UILEVEL_PREVIEW);
     }
 
+    /**
+     * Checks to see if we are in an action or calling a page
+     *
+     * @param null $action
+     * @return bool
+     */
     public static function inAction($action=null)
     {
         return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])) && (!isset($action) || ($action == $_REQUEST['action'])));
