@@ -143,7 +143,7 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'cmdsort'      : 'Sort',
 			'cmdnetmount'  : 'Mount network volume', // added 18.04.2012
 			'cmdnetunmount': 'Unmount', // from v2.1 added 30.04.2012
-			'cmdplaces'    : 'To Places', // added 28.12.2014
+			'cmdplaces'    : 'Add To Quick Access', // added 28.12.2014
 			'cmdchmod'     : 'Change mode', // from v2.1 added 20.6.2015
 			'cmdopendir'   : 'Open a folder', // from v2.1 added 13.1.2016
 			'cmdcolwidth'  : 'Reset column width', // from v2.1.13 added 12.06.2016
