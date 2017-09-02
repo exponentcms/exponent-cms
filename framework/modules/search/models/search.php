@@ -56,6 +56,7 @@ class search extends expRecord {
         SELECT *, MATCH (s.title,s.body) AGAINST ('army combat uniform') as score from exponent_search as s
         LEFT OUTER JOIN exponent_product p ON s.original_id = p.id WHERE MATCH(s.title,s.body) against ('army combat uniform' IN BOOLEAN MODE)*/
 
+        //fixme we do NOT use the keywords field, just title & body
         $sql = "SELECT *, MATCH (s.title, s.body) AGAINST ('" . $terms . "*') as score from " . $db->prefix . "search as s ";
         $sql .= "WHERE ";
         if (ECOM) {

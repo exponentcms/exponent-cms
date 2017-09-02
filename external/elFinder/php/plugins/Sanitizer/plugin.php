@@ -58,7 +58,8 @@ class elFinderPluginSanitizer extends elFinderPlugin
 		$defaults = array(
 			'enable'   => true,  // For control by volume driver
 			'targets'  => array('\\','/',':','*','?','"','<','>','|'), // target chars
-			'replace'  => '_'    // replace to this
+			'replace'  => '_',   // replace to this
+			'pathAllows' => array('/') // Characters allowed in path name of characters in `targets` array
 		);
 	
 		$this->opts = array_merge($defaults, $opts);
@@ -101,15 +102,13 @@ class elFinderPluginSanitizer extends elFinderPlugin
 		}
 	}
 	
-	public function onUpLoadPreSave(&$path, &$name, $src, $elfinder, $volume) {
+	// NOTE: $thash is directory hash so it unneed to process at here
+	public function onUpLoadPreSave(&$thash, &$name, $src, $elfinder, $volume) {
 		$opts = $this->getCurrentOpts($volume);
 		if (! $opts['enable']) {
 			return false;
 		}
 	
-		if ($path) {
-			$path = $this->sanitizeFileName($path, $opts, array('/'));
-		}
 		$name = $this->sanitizeFileName($name, $opts);
 		return true;
 	}

@@ -1649,6 +1649,14 @@ class storeController extends expController {
     }
 
     function searchByModelForm() {
+        global $router;
+
+        // use get method on search form to avoid resubmission of data when refresh or when hitting browsers back button
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            // populate missing params that expPaginator use to create links
+            $router->params = $this->params;
+        }
+
         // get the search terms
         $terms = expString::escape($this->params['search_string']);
 

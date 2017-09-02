@@ -16,7 +16,7 @@ function elFinderAutoloader($name) {
 		'elFinderSession' => ELFINDER_PHP_ROOT_PATH . '/elFinderSession.php',
 		'elFinderSessionInterface' => ELFINDER_PHP_ROOT_PATH . '/elFinderSessionInterface.php',
 		'elFinderVolumeDriver' => ELFINDER_PHP_ROOT_PATH . '/elFinderVolumeDriver.class.php',
-		'elFinderVolumeDropbox' => ELFINDER_PHP_ROOT_PATH . '/elFinderVolumeDropbox.class.php',
+		'elFinderVolumeDropbox2' => ELFINDER_PHP_ROOT_PATH . '/elFinderVolumeDropbox2.class.php',
 		'elFinderVolumeFTP' => ELFINDER_PHP_ROOT_PATH . '/elFinderVolumeFTP.class.php',
 		'elFinderVolumeFlysystemGoogleDriveCache' => ELFINDER_PHP_ROOT_PATH . '/elFinderFlysystemGoogleDriveNetmount.php',
 		'elFinderVolumeFlysystemGoogleDriveNetmount' => ELFINDER_PHP_ROOT_PATH . '/elFinderFlysystemGoogleDriveNetmount.php',
@@ -24,6 +24,7 @@ function elFinderAutoloader($name) {
 		'elFinderVolumeGroup' => ELFINDER_PHP_ROOT_PATH . '/elFinderVolumeGroup.class.php',
 		'elFinderVolumeLocalFileSystem' => ELFINDER_PHP_ROOT_PATH . '/elFinderVolumeLocalFileSystem.class.php',
 		'elFinderVolumeMySQL' => ELFINDER_PHP_ROOT_PATH . '/elFinderVolumeMySQL.class.php',
+		'elFinderVolumeTrash' => ELFINDER_PHP_ROOT_PATH . '/elFinderVolumeTrash.class.php',
 	);
 	if (isset($map[$name])) {
 		return include_once($map[$name]);

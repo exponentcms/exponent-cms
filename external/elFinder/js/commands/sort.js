@@ -17,7 +17,8 @@ elFinder.prototype.commands.sort = function() {
 					};
 				if ($.inArray(name, fm.sorters) !== -1) {
 					var arr = name == fm.sortType ? (sort.order == 'asc'? 's' : 'n') : '';
-					self.variants.push([sort, (arr? '<span class="ui-icon ui-icon-arrowthick-1-'+arr+'"></span>' : '') + '&nbsp;' + fm.i18n('sort'+name)]);			}
+					self.variants.push([sort, (arr? '<span class="ui-icon ui-icon-arrowthick-1-'+arr+'"></span>' : '') + '&nbsp;' + fm.i18n('sort'+name)]);
+				}
 			});
 			self.variants.push('|');
 			self.variants.push([
@@ -100,7 +101,7 @@ elFinder.prototype.commands.sort = function() {
 	
 	this.exec = function(hashes, sortopt) {
 		var fm = this.fm,
-			sort = $.extend({
+			sort = Object.assign({
 				type  : fm.sortType,
 				order : fm.sortOrder,
 				stick : fm.sortStickFolders,

@@ -25,14 +25,14 @@ if (!(defined('USE_XMLRPC') && USE_XMLRPC == 1)) {
 }
 
 // These three files are from the PHP-XMLRPC library v3.0.1
-//require_once('external/xmlrpc/xmlrpc.php');
-//require_once('external/xmlrpc/xmlrpcs.php');
-//require_once('external/xmlrpc/xmlrpc_wrappers.php');
+//require_once(BASE . 'external/xmlrpc/xmlrpc.php');
+//require_once(BASE . 'external/xmlrpc/xmlrpcs.php');
+//require_once(BASE . 'external/xmlrpc/xmlrpc_wrappers.php');
 
 // These three files are the v3 campatibility layer from the PHP-XMLRPC library v4.0.0
-require_once('external/xmlrpc/lib/xmlrpc.inc');
-require_once('external/xmlrpc/lib/xmlrpcs.inc');
-require_once('external/xmlrpc/lib/xmlrpc_wrappers.inc');
+require_once(BASE . 'external/xmlrpc/lib/xmlrpc.inc');
+require_once(BASE . 'external/xmlrpc/lib/xmlrpcs.inc');
+require_once(BASE . 'external/xmlrpc/lib/xmlrpc_wrappers.inc');
 
 /**
  * Used to test usage of object methods in dispatch maps

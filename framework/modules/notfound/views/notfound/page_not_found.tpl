@@ -29,5 +29,7 @@
 				{clear}
 			</div>
 		{/foreach}
+    {else}
+        {showmodule controller=search action=show}
 	{/if}
 </div>

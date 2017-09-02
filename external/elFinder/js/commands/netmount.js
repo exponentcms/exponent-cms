@@ -33,7 +33,16 @@ elFinder.prototype.commands.netmount = function() {
 						inputs.protocol.trigger('change', 'winfocus');
 					},
 					inputs = {
-						protocol : $('<select/>').on('change', function(e, data){
+						protocol : $('<select/>')
+						.on('click',function() {
+							var $this = $(this);
+							if ($this.data('keepFocus')) {
+								$this.removeData('keepFocus');
+							} else {
+								$this.data('keepFocus', true);
+							}
+						})
+						.on('change', function(e, data){
 							var protocol = this.value;
 							content.find('.elfinder-netmount-tr').hide();
 							content.find('.elfinder-netmount-tr-'+protocol).show();
@@ -108,7 +117,7 @@ elFinder.prototype.commands.netmount = function() {
 					});
 
 					if (!data.host) {
-						return fm.trigger('error', {error : 'errNetMountHostReq'});
+						return fm.trigger('error', {error : 'errNetMountHostReq', opts : {modal: true}});
 					}
 
 					fm.request({data : data, notify : {type : 'netmount', cnt : 1, hideCnt : true}})
@@ -235,13 +244,13 @@ elFinder.prototype.commands.netunmount = function() {
 								if (navTo.length) {
 									open = fm.navId2Hash(navTo[0].id);
 								} else {
-									var files = fm.files();
-									for (var i in files) {
-										if (fm.file(i).mime == 'directory') {
-											open = i;
-											break;
+									// fallback
+									$.each(fm.files(), function(h, f) {
+										if (f.mime == 'directory') {
+											open = h;
+											return null;
 										}
-									}
+									});
 								}
 								fm.exec('open', open);
 							}

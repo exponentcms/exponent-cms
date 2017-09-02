@@ -39,7 +39,7 @@ include BASE . 'external/elFinder/php/elFinder.class.php';
 
 include BASE . 'external/elFinder/php/elFinderPlugin.php';
 //include BASE . 'external/elFinder/php/libs/GdBmp.php';  // will also autoload if needed
-//include BASE . 'external/elFinder/php/plugins/AutoResize/plugin.php'; // will also autoload if needed
+//include BASE . 'external/elFinder/php/plugins/AutoResize/plugin.php'; // plugins will autoload if needed
 //include BASE . 'external/elFinder/php/plugins/AutoRotate/plugin.php';
 //include BASE . 'external/elFinder/php/plugins/Normalizer/plugin.php';
 //include BASE . 'external/elFinder/php/plugins/Sanitizer/plugin.php';
@@ -51,27 +51,10 @@ include BASE . 'framework/modules/file/connector/elFinderExponent.class.php'; //
 
 include BASE . 'external/elFinder/php/elFinderVolumeDriver.class.php';
 include BASE . 'external/elFinder/php/elFinderVolumeLocalFileSystem.class.php';
-//include BASE . 'external/elFinder/php/elFinderVolumeMySQL.class.php';
-//include BASE . 'external/elFinder/php/elFinderVolumeFTP.class.php';
-//include BASE . 'external/elFinder/php/elFinderVolumeS3.class.php';
+include BASE . 'external/elFinder/php/elFinderVolumeTrash.class.php';
 include BASE . 'framework/modules/file/connector/elFinderVolumeExponent.class.php'; // our custom elFinder volume driver
 
 define('ELFINDER_IMG_PARENT_URL', PATH_RELATIVE . 'external/elFinder/');
-
-/**
- * # Dropbox volume driver need "dropbox-php's Dropbox" and "PHP OAuth extension" or "PEAR's HTTP_OAUTH package"
- * * dropbox-php: http://www.dropbox-php.com/
- * * PHP OAuth extension: http://pecl.php.net/package/oauth
- * * PEAR's HTTP_OAUTH package: http://pear.php.net/package/http_oauth
- *  * HTTP_OAUTH package require HTTP_Request2 and Net_URL2
- */
-// Required for Dropbox.com connector support
-//include BASE . 'external/elFinder/php/elFinderVolumeDropbox.class.php';
-
-// Dropbox driver need next two settings. You can get at https://www.dropbox.com/developers
-// define('ELFINDER_DROPBOX_CONSUMERKEY',    '');
-// define('ELFINDER_DROPBOX_CONSUMERSECRET', '');
-// define('ELFINDER_DROPBOX_META_CACHE_PATH',''); // optional for `options['metaCachePath']`
 
 function debug($o)
 {
@@ -244,22 +227,23 @@ class elFinderSimpleLogger
 //$logger = new elFinderSimpleLogger(BASE.'tmp/elfinder.log');
 
 /**
- * example accessControl function
- * to demonstrate how to control file access using "accessControl" callback.
- * This method will disable accessing files/folders starting from  '.' (dot)
+ * Simple function to demonstrate how to control file access using "accessControl" callback.
+ * This method will disable accessing files/folders starting from '.' (dot)
  *
- * @param  string    $attr   attribute name (read|write|locked|hidden)
- * @param  string    $path   file path relative to volume root directory started with directory separator
- * @param            $data
- * @param  object    $volume elFinder volume driver object
- * @param  bool|null $isDir  path is directory (true: directory, false: file, null: unknown)
- *
+ * @param  string    $attr    attribute name (read|write|locked|hidden)
+ * @param  string    $path    absolute file path
+ * @param  string    $data    value of volume option `accessControlData`
+ * @param  object    $volume  elFinder volume driver object
+ * @param  bool|null $isDir   path is directory (true: directory, false: file, null: unknown)
+ * @param  string    $relpath file path relative to volume root directory started with directory separator
  * @return bool|null
  */
-function access($attr, $path, $data, $volume, $isDir) {
-	return strpos(basename($path), '.') === 0       // if file/folder begins with '.' (dot)
-		? !($attr == 'read' || $attr == 'write')    // set read+write to false, other (locked+hidden) set to true
-		:  null;                                    // else elFinder decide it itself
+function access($attr, $path, $data, $volume, $isDir, $relpath) {
+    $basename = basename($path);
+   	return $basename[0] === '.'                  // if file/folder begins with '.' (dot)
+   			 && strlen($relpath) !== 1           // but with out volume root
+   		? !($attr == 'read' || $attr == 'write') // set read+write to false, other (locked+hidden) set to true
+   		:  null;                                  // else elFinder decide it itself
 }
 
 /**
@@ -320,23 +304,47 @@ $opts = array(
 //        ),
         'upload.presave'                                => array(
             'Plugin.AutoResize.onUpLoadPreSave',
-//            'Plugin.Watermark.onUpLoadPreSave',
+//            'Plugin.AutoRotate.onUpLoadPreSave',
 //            'Plugin.Normalizer.onUpLoadPreSave',
 //            'Plugin.Sanitizer.onUpLoadPreSave',
-//            'Plugin.AutoRotate.onUpLoadPreSave',
+//            'Plugin.Watermark.onUpLoadPreSave',
         ),
     ),
     // global plugin configure (optional)
     'plugin' => array(
         'AutoResize' => array(
-            'enable'     => UPLOAD_WIDTH, // For control by volume driver
+            'enable'     => UPLOAD_WIDTH,     // For control by volume driver
             'maxWidth'   => UPLOAD_WIDTH,
             'maxHeight'  => UPLOAD_WIDTH,
-            'quality'    => THUMB_QUALITY, // JPEG image save quality
-            'targetType' => IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP, // Target image formats ( bit-field )
-//            'forceEffect'    => false,      // For change quality of small images
+            'quality'    => THUMB_QUALITY,    // JPEG image save quality
 //            'preserveExif'   => false,      // Preserve EXIF data (Imagick only)
+//            'forceEffect'    => false,      // For change quality of small images
+            'targetType' => IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP, // Target image formats ( bit-field )
+//            'offDropWith'    => null        // To disable it if it is dropped with pressing the meta key
+        			                          // Alt: 8, Ctrl: 4, Meta: 2, Shift: 1 - sum of each value
+        			                          // In case of using any key, specify it as an array
         ),
+//        'AutoRotate' => array(
+//            'enable'         => true,       // For control by volume driver
+//            'quality'        => 95          // JPEG image save quality
+//            'offDropWith'    => null        // To disable it if it is dropped with pressing the meta key
+     			                              // Alt: 8, Ctrl: 4, Meta: 2, Shift: 1 - sum of each value
+     			                              // In case of using any key, specify it as an array
+//        )
+//        'Normalizer' => array(
+//            'enable' => true,
+//            'nfc'    => true,
+//            'nfkc'   => true,
+//			  'umlauts'   => false,
+//            'lowercase' => false,
+//            'convmap'   => array()
+//        ),
+//       'Sanitizer' => array(
+//           'enable' => true,
+//           'targets'  => array('\\','/',':','*','?','"','<','>','|'), // target chars
+//           'replace'  => '_'    // replace to this
+//           'pathAllows' => array('/') // Characters allowed in path name of characters in `targets` array
+//        ),
 //        'Watermark' => array(
 //            'enable'         => true,       // For control by volume driver
 //            'source'         => 'logo.png', // Path to Water mark image
@@ -346,23 +354,10 @@ $opts = array(
 //            'transparency'   => 70,         // Water mark image transparency ( other than PNG )
 //            'targetType'     => IMG_GIF|IMG_JPG|IMG_PNG|IMG_WBMP, // Target image formats ( bit-field )
 //            'targetMinPixel' => 200         // Target image minimum pixel size
+//            'offDropWith'    => null        // To disable it if it is dropped with pressing the meta key
+     			                              // Alt: 8, Ctrl: 4, Meta: 2, Shift: 1 - sum of each value
+     			                              // In case of using any key, specify it as an array
 //        ),
-//        'Normalizer' => array(
-//            'enable' => true,
-//            'nfc'    => true,
-//            'nfkc'   => true,
-//            'lowercase' => false,
-//            'convmap'   => array()
-//        ),
-//       'Sanitizer' => array(
-//           'enable' => true,
-//           'targets'  => array('\\','/',':','*','?','"','<','>','|'), // target chars
-//           'replace'  => '_'    // replace to this
-//        ),
-//        'AutoRotate' => array(
-//            'enable'         => true,       // For control by volume driver
-//            'quality'        => 95          // JPEG image save quality
-//        )
     ),
     'debug'  => DEVELOPMENT,
 //	'netVolumesSessionKey' => 'netVolumes',
@@ -370,10 +365,12 @@ $opts = array(
 
     'roots'  => array(
         array(
-            // 'id' => 'x5',
+            'id'              => 'exp2',
             'driver'          => 'Exponent',
             'path'            => BASE . 'files/',
             'URL'             => URL_FULL . 'files/',
+//            'trashHash'       => 'tt1_XA',                     // elFinder's hash of trash folder
+            'winHashFix' => DIRECTORY_SEPARATOR !== '/', // to make hash same to Linux one on windows too
             'dirMode'         => octdec(DIR_DEFAULT_MODE_STR + 0),    // new dirs mode (default 0755)
             'fileMode'        => octdec(FILE_DEFAULT_MODE_STR + 0),   // new files mode (default 0644)
             'detectDirIcon'   => '.foldericon.png',       // File to be detected as a folder icon image (elFinder >= 2.1.10) e.g. '.favicon.png'
@@ -385,6 +382,7 @@ $opts = array(
             'accessControl'   => 'access',
             // 'accessControl' => array($acl, 'fsAccess'),
             // 'accessControlData' => array('uid' => 1),
+            'uploadDeny'  => array('all'),                // NO Mimetype allowed to upload
             'uploadAllow'     => array(
                 'application/arj',
                 'application/excel',
@@ -472,10 +470,11 @@ $opts = array(
                 'video',
                 'text/csv'
             ),
-            'uploadDeny'      => array(
-                'application/x-shockwave-flash'
-            ),
-            'uploadOrder'     => 'allow,deny',
+//            'uploadDeny'      => array(
+//                'application/x-shockwave-flash'
+//            ),
+//            'uploadOrder'     => 'allow,deny',
+            'uploadOrder'     => 'deny,allow',
             'uploadOverwrite' => true,
 //            'uploadMaxSize'   => '128m',
             // 'copyOverwrite' => false,
@@ -504,8 +503,109 @@ $opts = array(
                     'locked'  => true
                 )
             )
-        )
-    )
+        ),
+        // Trash volume
+//        array(
+//            'id'              => 't1',
+//            'driver'          => 'Trash',
+//            'path'            => BASE . 'files/.trash/',
+//            'URL'             => URL_FULL . 'files/.trash/',
+//            'tmbPath'         => BASE . 'tmp' . DIRECTORY_SEPARATOR . 'elfinder',
+//            'tmbURL'          => URL_FULL . 'tmp/elfinder/',
+//            'winHashFix'    => DIRECTORY_SEPARATOR !== '/', // to make hash same to Linux one on windows too
+//            'uploadDeny'      => array('all'),                // Recommend the same settings as the original volume that uses the trash
+//            'uploadAllow'     => array(
+//                'application/arj',
+//                'application/excel',
+//                'application/gnutar',
+//                'application/mspowerpoint',
+//                'application/msword',
+//                'application/octet-stream',
+//                'application/onenote',
+//                'application/pdf',
+//                'application/plain',
+//                'application/postscript',
+//                'application/powerpoint',
+//                'application/rar',
+//                'application/rtf',
+//                'application/vnd.ms-excel',
+//                'application/vnd.ms-excel.addin.macroEnabled.12',
+//                'application/vnd.ms-excel.sheet.binary.macroEnabled.12',
+//                'application/vnd.ms-excel.sheet.macroEnabled.12',
+//                'application/vnd.ms-excel.template.macroEnabled.12',
+//                'application/vnd.ms-office',
+//                'application/vnd.ms-officetheme',
+//                'application/vnd.ms-powerpoint',
+//                'application/vnd.ms-powerpoint.addin.macroEnabled.12',
+//                'application/vnd.ms-powerpoint.presentation.macroEnabled.12',
+//                'application/vnd.ms-powerpoint.slide.macroEnabled.12',
+//                'application/vnd.ms-powerpoint.slideshow.macroEnabled.12',
+//                'application/vnd.ms-powerpoint.template.macroEnabled.12',
+//                'application/vnd.ms-word',
+//                'application/vnd.ms-word.document.macroEnabled.12',
+//                'application/vnd.ms-word.template.macroEnabled.12',
+//                'application/vnd.oasis.opendocument.chart',
+//                'application/vnd.oasis.opendocument.database',
+//                'application/vnd.oasis.opendocument.formula',
+//                'application/vnd.oasis.opendocument.graphics',
+//                'application/vnd.oasis.opendocument.graphics-template',
+//                'application/vnd.oasis.opendocument.image',
+//                'application/vnd.oasis.opendocument.presentation',
+//                'application/vnd.oasis.opendocument.presentation-template',
+//                'application/vnd.oasis.opendocument.spreadsheet',
+//                'application/vnd.oasis.opendocument.spreadsheet-template',
+//                'application/vnd.oasis.opendocument.text',
+//                'application/vnd.oasis.opendocument.text-master',
+//                'application/vnd.oasis.opendocument.text-template',
+//                'application/vnd.oasis.opendocument.text-web',
+//                'application/vnd.openofficeorg.extension',
+//                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+//                'application/vnd.openxmlformats-officedocument.presentationml.slide',
+//                'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
+//                'application/vnd.openxmlformats-officedocument.presentationml.template',
+//                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+//                'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
+//                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+//                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+//                'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
+//                'application/vocaltec-media-file',
+//                'application/wordperfect',
+//                'application/x-bittorrent',
+//                'application/x-bzip',
+//                'application/x-bzip2',
+//                'application/x-compressed',
+//                'application/x-excel',
+//                'application/x-gzip',
+//                'application/x-latex',
+//                'application/x-midi',
+//                'application/xml',
+//                'application/x-msexcel',
+//                'application/x-rar',
+//                'application/x-rar-compressed',
+//                'application/x-rtf',
+//                'application/x-shockwave-flash',
+//                'application/x-sit',
+//                'application/x-stuffit',
+//                'application/x-troff-msvideo',
+//                'application/x-zip',
+//                'application/x-zip-compressed',
+//                'application/zip',
+//                'audio',
+//                'image',
+//                'multipart/x-gzip',
+//                'multipart/x-zip',
+//                'text/plain',
+//                'text/rtf',
+//                'text/richtext',
+//                'text/xml',
+//                'video',
+//                'text/csv'
+//            ),
+//            'uploadOrder'   => array('deny', 'allow'),      // Same as above
+//            'accessControl' => 'access',
+//        ),
+
+    ),
 );
 
 //header('Access-Control-Allow-Origin: *');

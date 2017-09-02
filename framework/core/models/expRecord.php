@@ -187,7 +187,7 @@ class expRecord {
             $limitstart = intval($limitstart);
         $supports_revisions = $this->supports_revisions && ENABLE_WORKFLOW;
         if (ENABLE_WORKFLOW && $this->needs_approval) {
-            $needs_approval = $user->id;
+            $needs_approval = true;
         } else {
             $needs_approval = false;
         }
@@ -195,7 +195,7 @@ class expRecord {
         if (strcasecmp($range, 'all') == 0) {  // return all items matching request, most current revision
 //            $sql .= empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
             $limitsql = empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
-            return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $supports_revisions, $needs_approval);
+            return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $supports_revisions, $needs_approval, $user->id);
         } elseif (strcasecmp($range, 'revisions') == 0) {  // return all items matching request, all revisions
 //            $sql .= empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
             $limitsql = empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
@@ -203,14 +203,14 @@ class expRecord {
         } elseif (strcasecmp($range, 'first') == 0) {  // return the first item matching request
 //            $sql .= ' LIMIT 0,1';
             $limitsql = ' LIMIT 0,1';
-            $records = $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $supports_revisions, $needs_approval);
+            $records = $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $supports_revisions, $needs_approval, $user->id);
             return empty($records) ? null : $records[0];
         } elseif (strcasecmp($range, 'bytitle') == 0) {  // return items requested by title/sef_url (will there be more than one?)
             $limitsql = ' LIMIT 0,1';
-            $records = $db->selectExpObjects($this->tablename, "title='" . $where . "' OR sef_url='" . $where . "'", $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $supports_revisions, $needs_approval);
+            $records = $db->selectExpObjects($this->tablename, "title='" . $where . "' OR sef_url='" . $where . "'", $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $supports_revisions, $needs_approval, $user->id);
             return empty($records) ? null : $records[0];
         } elseif (strcasecmp($range, 'count') == 0) {  // return count of items
-            return $db->countObjects($this->tablename, $sql, $supports_revisions, $needs_approval);
+            return $db->countObjects($this->tablename, $sql, $supports_revisions, $needs_approval, $user->id);
         } elseif (strcasecmp($range, 'in') == 0) {  // return items requested by array of id#
             if (!is_array($where)) return array();
             foreach ($where as $id)

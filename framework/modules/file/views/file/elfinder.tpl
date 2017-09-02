@@ -13,9 +13,7 @@
  *
  *}
 
-{*
- * The main 'html' file to instantiate elFinder
-*}
+{* The main 'html' file to instantiate elFinder *}
 
 <!DOCTYPE html>
 <html>
@@ -96,12 +94,14 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/download.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/duplicate.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/edit.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/empty.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/extract.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/forward.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/fullscreen.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/getfile.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/help.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/help.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/hidden.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/home.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/info.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/info.js"></script>
@@ -114,7 +114,7 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/opendir.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/paste.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/pixlr.js"></script>*}
-    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/pixlr.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/pixlr.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/places.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/quicklook.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/quicklook.plugins.js"></script>*}
@@ -123,9 +123,11 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/rename.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/resize.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/resize.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/restore.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/rm.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/search.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/sort.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/undo.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/up.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/upload.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/view.js"></script>
@@ -133,6 +135,9 @@
     <!-- elfinder languages -->
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/i18n/elfinder.{substr($smarty.const.LOCALE,0,2)}.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/i18n/elfinder.{substr($smarty.const.LOCALE,0,2)}.js"></script>
+
+    <!-- Extra contents editors (OPTIONAL) -->
+   	<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/extras/editors.default.js"></script>
 
     <!-- elfinder custom extenstions -->
     <!--<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/extensions/jplayer/elfinder.quicklook.jplayer.js"></script>-->
@@ -174,6 +179,7 @@
             var funcNum = getUrlParam('CKEditorFuncNum');
 
             var elf = $('#elfinder').elfinder({
+                baseUrl: EXPONENT.PATH_RELATIVE + 'external/elFinder/',  // main URL
                 url: EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/elfinder.php',  // connector URL
                 urlUpload: EXPONENT.URL_FULL + 'framework/modules/file/connector/elfinder.php',  // connector full URL
                 cssAutoLoad: false,
@@ -185,6 +191,7 @@
                 //     'resize', 'sort', 'netmount', 'netunmount', 'places', 'chmod', 'links'
                 // ],
                 commandsOptions : {
+                    {/literal}{if $smarty.const.FM_EDITORS=="old"}{literal}  //fixme commandsOptions/edit replaced by extras/editors.default.js v 2.1.25+
                     edit : {
                     {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR=="ckeditor"}{literal}
                         editors : [
@@ -212,160 +219,9 @@
                                 focus : function(textarea, instance) {
                                     instance && instance.focus();
                                 }
-                            } {/literal}{*,
-                            {
-                                // Ace editor for other text files
-                                // `mimes` is not set for support everything kind of text file
-                                load : function(textarea) {
-                                    if (typeof ace !== 'object') {
-                                        {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/'}{literal}
-                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ace.js'));
-                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ext-modelist.js'));
-                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ext-settings_menu.js'));
-                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ext-language_tools.js'));
-                                        $('head').append($('<script>').attr('src', '{/literal}{$cdn}{literal}ext-searchbox.js'));
-                                    }
-                                    var self = this, editor, editorBase, mode,
-                                    ta = $(textarea),
-                                    taBase = ta.parent(),
-                                    dialog = taBase.parent(),
-                                    id = textarea.id + '_ace',
-                                    ext = this.file.name.replace(/^.+\.([^.]+)|(.+)$/, '$1$2').toLowerCase(),
-                                    mimeMode = {
-                                        'text/x-php'              : 'php',
-                                        'application/x-php'       : 'php',
-                                        'text/html'               : 'html',
-                                        'application/xhtml+xml'   : 'html',
-                                        'text/javascript'         : 'javascript',
-                                        'application/javascript'  : 'javascript',
-                                        'text/css'                : 'css',
-                                        'text/x-c'                : 'c_cpp',
-                                        'text/x-csrc'             : 'c_cpp',
-                                        'text/x-chdr'             : 'c_cpp',
-                                        'text/x-c++'              : 'c_cpp',
-                                        'text/x-c++src'           : 'c_cpp',
-                                        'text/x-c++hdr'           : 'c_cpp',
-                                        'text/x-shellscript'      : 'sh',
-                                        'application/x-csh'       : 'sh',
-                                        'text/x-python'           : 'python',
-                                        'text/x-java'             : 'java',
-                                        'text/x-java-source'      : 'java',
-                                        'text/x-ruby'             : 'ruby',
-                                        'text/x-perl'             : 'perl',
-                                        'application/x-perl'      : 'perl',
-                                        'text/x-sql'              : 'sql',
-                                        'text/xml'                : 'xml',
-                                        'application/docbook+xml' : 'xml',
-                                        'application/xml'         : 'xml'
-                                    },
-                                    resize = function(){
-                                        dialog.height($(window).height() * 0.9).trigger('posinit');
-                                        taBase.height(dialog.height() - taBase.prev().outerHeight(true) - taBase.next().outerHeight(true) - 8);
-                                    };
-
-                                    mode = ace.require('ace/ext/modelist').getModeForPath('/' + self.file.name).name;
-                                    if (mode === 'text') {
-                                        if (mimeMode[self.file.mime]) {
-                                            mode = mimeMode[self.file.mime];
-                                        }
-                                    }
-
-                                    taBase.prev().append(' (' + self.file.mime + ' : ' + mode.split(/[\/\\]/).pop() + ')');
-
-                                    $('<div class="ui-dialog-buttonset"/>').css('float', 'left')
-                                    .append(
-                                        $('<button>TextArea</button>')
-                                        .button()
-                                        .on('click', function(){
-                                            if (ta.data('ace')) {
-                                                ta.data('ace', false);
-                                                editorBase.hide();
-                                                ta.val(editor.session.getValue()).show().focus();
-                                                $(this).find('span').text('AceEditor');
-                                            } else {
-                                                ta.data('ace', true);
-                                                editor.setValue(ta.hide().val(), -1);
-                                                editorBase.show();
-                                                editor.focus();
-                                                $(this).find('span').text('TextArea');
-                                            }
-                                        })
-                                    )
-                                    .append(
-                                        $('<button>Ace editor setting</button>')
-                                        .button({
-                                            icons: {
-                                                primary: 'ui-icon-gear',
-                                                secondary: 'ui-icon-triangle-1-e'
-                                            },
-                                            text: false
-                                        })
-                                        .on('click', function(){
-                                            editor.showSettingsMenu();
-                                        })
-                                    )
-                                    .prependTo(taBase.next());
-
-                                    editorBase = $('<div id="'+id+'" style="width:100%; height:100%;"/>').text(ta.val()).insertBefore(ta.hide());
-
-                                    ta.data('ace', true);
-                                    editor = ace.edit(id);
-                                    ace.require('ace/ext/settings_menu').init(editor);
-                                    editor.$blockScrolling = Infinity;
-                                    editor.setOptions({
-                                        theme: 'ace/theme/twilight',
-                                        mode: 'ace/mode/' + mode,
-                                        wrap: true,
-                                        enableBasicAutocompletion: true,
-                                        enableSnippets: true,
-                                        enableLiveAutocompletion: false,
-                                    });
-                                    editor.commands.addCommand({
-                                        name : "saveFile",
-                                        bindKey: {
-                                            win : 'Ctrl-s',
-                                            mac : 'Command-s'
-                                        },
-                                        exec: function(editor) {
-                                            self.doSave();
-                                        }
-                                    });
-                                    editor.commands.addCommand({
-                                        name : "closeEditor",
-                                        bindKey: {
-                                            win : 'Ctrl-w|Ctrl-q',
-                                            mac : 'Command-w|Command-q'
-                                        },
-                                        exec: function(editor) {
-                                            self.doCancel();
-                                        }
-                                    });
-                                    dialog.on('resize', function(){ editor.resize(); });
-                                    $(window).on('resize', function(e){
-                                        if (e.target !== this) return;
-                                        dialog.data('resizeTimer') && clearTimeout(dialog.data('resizeTimer'));
-                                        dialog.data('resizeTimer', setTimeout(function(){ resize(); }, 300));
-                                    });
-                                    resize();
-                                    editor.resize();
-
-                                    return editor;
-                                },
-                                close : function(textarea, instance) {
-                                    instance.destroy();
-                                    $(textarea).show();
-                                },
-                                save : function(textarea, instance) {
-                                    if ($(textarea).data('ace')) {
-                                        $(textarea).val(instance.session.getValue());
-                                    }
-                                },
-                                focus : function(textarea, instance) {
-                                    instance.focus();
-                                }
-                            } *}{literal}
+                            }
                         ]
-                        {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR=="tinymce"}{literal}
+                    {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR=="tinymce"}{literal}
                         mimes : ['text/plain', 'text/html', 'text/javascript', 'text/csv', 'text/x-comma-separated-values'],
                         editors : [
                             {
@@ -386,6 +242,7 @@
                         ]
                     {/literal}{/if}{literal}
                     },
+                    {/literal}{/if}{literal}  // fixme editors.default.js
                     getfile : {
                         // allow to return multiple files info
                         multiple : {/literal}{if $smarty.get.update!='noupdate' && $smarty.get.update!='ck' && $smarty.get.update!='tiny'}true{else}false{/if}{literal},
@@ -398,9 +255,9 @@
                     // help dialog tabs
                     help : {
                         {/literal}{if $smarty.const.DEVELOPMENT}
-                        view : ['about', 'shortcuts', 'help', 'debug'],
+                        view : ['about', 'shortcuts', 'help', 'preference', 'debug'],
                         {else}
-                        view : ['about', 'shortcuts', 'help', ''],
+                        view : ['about', 'shortcuts', 'help', 'preference'],
                         {/if}{literal}
                     }
                 },
@@ -427,51 +284,56 @@
                 uiOptions : {
                     // toolbar configuration
                     toolbar : [
-                        ['back', 'forward'],
+                        ['home', 'back', 'forward', 'up', 'reload'],
                         //['netmount'],       // removed
-                        ['reload'],           // added
-                        ['home', 'up'],       // added
                         ['mkdir', 'mkfile', 'upload'],
                         ['open', 'download', 'getfile'],
-                        ['info', 'chmod'],
-                        ['quicklook'],
-                        ['copy', 'cut', 'paste'],
-                        ['rm'],
-                        ['duplicate', 'rename', 'edit', 'resize', 'pixlr'],
+                        ['undo', 'redo'],
+                        ['copy', 'cut', 'paste', 'rm', 'empty'],
+                        ['duplicate', 'rename', 'edit', 'resize', 'chmod'],
+                        ['selectall', 'selectnone', 'selectinvert'],
+                        ['quicklook', 'info'],
                         ['extract', 'archive'],
                         ['search'],
                         ['view', 'sort'],
                         ['links', 'places'],   // links added
                         ['help'],
-                        ['fullscreen'],
-                        // extra options
-                        {
-                            // also displays the text label on the button (true / false)
-                            displayTextLabel: false,
-                            // Exclude `displayTextLabel` setting UA type
-                            labelExcludeUA: ['Mobile'],
-                            // auto hide on initial open
-                            autoHideUA: ['Mobile']
-                        }
+                        ['fullscreen']
                     ],
+                    // toolbar extra options
+//                    toolbarExtra : {
+//                        // also displays the text label on the button (true / false)
+//                        displayTextLabel: false,
+//                        // Exclude `displayTextLabel` setting UA type
+//                        labelExcludeUA: ['Mobile'],
+//                        // auto hide on initial open
+//                        autoHideUA: ['Mobile']
+//                    },
                     // directories tree options
                     tree : {
                         // expand current root on init
-                        openRootOnLoad : true,
+//                        openRootOnLoad : true,
                         // expand current work directory on open
-                        openCwdOnOpen  : true,
+//                        openCwdOnOpen  : true,
                         // auto load current dir parents
-                        syncTree : true
+//                        syncTree : true,
+                        // Maximum number of display of each child trees
+                        // The tree of directories with children exceeding this number will be split
+//                        subTreeMax : 100,
+                        // Numbar of max connctions of subdirs request
+                        subdirsMaxConn : 3,
+                        // Number of max simultaneous processing directory of subdirs
+//                        subdirsAtOnce : 5
                     },
                     // navbar options
                     navbar : {
-                        minWidth : 150,
-                        maxWidth : 500,
+//                        minWidth : 150,
+//                        maxWidth : 500,
                         autoHideUA: ['Mobile']
                     },
                     cwd : {
                         // display parent folder with ".." name :)
-                        oldSchool : false,
+//                        oldSchool : false,
                         listView : {
                             // columns to be displayed
                             // default settings are:

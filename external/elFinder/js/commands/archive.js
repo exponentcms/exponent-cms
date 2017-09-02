@@ -15,6 +15,8 @@ elFinder.prototype.commands.archive = function() {
 	
 	this.disableOnSearch = false;
 	
+	this.nextAction = {};
+	
 	/**
 	 * Update mimes on open/reload
 	 *
@@ -23,7 +25,7 @@ elFinder.prototype.commands.archive = function() {
 	fm.bind('open reload', function() {
 		self.variants = [];
 		$.each((mimes = fm.option('archivers')['create'] || []), function(i, mime) {
-			self.variants.push([mime, fm.mime2kind(mime)])
+			self.variants.push([mime, fm.mime2kind(mime)]);
 		});
 		self.change();
 	});

@@ -235,6 +235,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      * @param         $src
      * @param  string $dst    destination dir hash
      * @param  bool   $rmSrc  remove source after copy?
+     * @param  array  $hashes
      *
      * @return array|false
      * @author Dave Leffler
@@ -264,7 +265,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      * @param $npath
      * @param $opath
      */
-    function scan_folder($npath, $opath) {
+    protected function scan_folder($npath, $opath) {
         if (is_dir($npath)) {
             $dir = opendir($npath);
             while(false !== ( $file = readdir($dir)) ) {

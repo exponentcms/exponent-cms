@@ -133,8 +133,8 @@
         var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
         var fullToolbar = {/literal}{if empty($editor->data)}'formatselect fontselect fontsizeselect forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent '+
-            'link unlink image | visualblocks localautosave'{else}[{stripSlashes($editor->data)}]{/if}{literal};
-        var titleToolbar = 'cut copy paste pastetext | undo redo localautosave | searchreplace selectall';
+            'link unlink image | visualblocks localautosave help'{else}[{expString::check_javascript(stripSlashes($editor->data),true)}]{/if}{literal};
+        var titleToolbar = 'cut copy paste pastetext | undo redo localautosave | searchreplace selectall help';
         {/literal}{/if}{literal}
 
         var setContent = function(item, data) {
@@ -248,11 +248,11 @@
             if ($(node).attr('id').substr(0,5) == 'title') {
                 mytoolbar = titleToolbar;
                 tinymenu = false;
-                tinyplugins = ['searchreplace,contextmenu,paste,link,localautosave'];
+                tinyplugins = ['searchreplace,contextmenu,paste,link,localautosave,help'];
             } else {
                 mytoolbar = fullToolbar;
                 tinymenu = true;
-                tinyplugins = ['image,imagetools,searchreplace,contextmenu,paste,link,textcolor,visualblocks,code,localautosave'];
+                tinyplugins = ['image,imagetools,searchreplace,contextmenu,paste,link,textcolor,visualblocks,code,localautosave,help'];
             }
 
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}

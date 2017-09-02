@@ -506,27 +506,56 @@ class expString {
     }
 
     /**
-     * check a javascript value to ensure it is a string or array
-     *  attempt to prevent javascript crashes when passed incorrect values
+     * ensure a javascript value is enclosed properly
+     *
+     * @param $val
+     * @param $closure
+     * @return boolean
+     */
+    public static function balance_closure($val, $closure="'") {
+        // attempt to match opening/closing enclosure character if missing
+        if ((($val[0] === "'") || ($val[0] === "[") || ($val[0] === "{")) && $val[0] != substr($val,-1)) {
+            $val .= $val[0];
+        } elseif (((substr($val,-1) === "'") || (substr($val,-1) === "[") || (substr($val,-1) === "{")) && $val[0] != substr($val,-1)) {
+            $val = substr($val,-1) . $val;
+        }
+        if ((($val[0] === "'") || ($val[0] === "[") || ($val[0] === "{")) && $val[0] === substr($val,-1)) {
+            return $val; // properly enclosed
+        }
+        // properly enclose value
+        return $val = $closure . $val . $closure;
+    }
+
+    /**
+     * check a javascript value to ensure it is a string or array or object
+     *  attempt to prevent javascript crashes by outputting incorrect code values
      *
      * @param $val
      * @param $string_only
+     * @param $object_only
      * @return string
      */
     public static function check_javascript($val, $string_only=false, $object_only=false) {
-        if (strpos($val,"'",0) === false || strpos($val,"'",-1) === false) {
+//        if (strpos($val,"'",0) === false || strpos($val,"'",-1) === false) {
+        if (!(($val[0] === "'") && (substr($val,-1) === "'")) || substr_count($val, "'") % 2) {
             if (!$string_only) {
                 if (!$object_only) {
-                    if (strpos($val, "[", 0) === false || strpos($val, "]", -1) === false) {
+                    // javascript object
+//                    if (strpos($val, "[", 0) === false || strpos($val, "]", -1) === false) {
+                    if (!(($val[0] === "[") && (substr($val,-1) === "]"))) {
                         $val = "[" . $val . "]";
                     }
                 } else {
-                    if ($object_only && (strpos($val, "{", 0) === false || strpos($val, "}", -1) === false)) {
+                    // javascript array
+//                    if ($object_only && (strpos($val, "{", 0) === false || strpos($val, "}", -1) === false)) {
+                    if (!(($val[0] === "{") && (substr($val,-1) === "}"))) {
                         $val = "{" . $val . "}";
                     }
                 }
             } else {
-                $val = "'" . $val . "'";
+                // javascript string
+                //fixme do we need to escape single quote??
+                $val = self::balance_closure($val);
             }
         }
         return $val;

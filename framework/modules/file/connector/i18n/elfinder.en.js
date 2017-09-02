@@ -1,16 +1,18 @@
 /**
  * English translation
  * @author Troex Nevelin <troex@fury.scancode.ru>
- * @version 2016-12-13
+ * @author Naoki Sawada <hypweb@gmail.com>
+ * @version 2017-08-15
  */
 // elfinder.en.js is integrated into elfinder.(full|min).js by jake build
 if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 	elFinder.prototype.i18.en = {
-		translator : 'Troex Nevelin &lt;troex@fury.scancode.ru&gt;',
+		translator : 'Troex Nevelin &lt;troex@fury.scancode.ru&gt;, Naoki Sawada &lt;hypweb@gmail.com&gt;',
 		language   : 'English',
 		direction  : 'ltr',
 		dateFormat : 'M d, Y h:i A', // Mar 13, 2012 05:27 PM
-		fancyDateFormat : '$1 h:i A', // will produce smth like: Today 12:25 PM
+		fancyDateFormat : '$1 h:i A', // will produce smth like: Today 12:25 PM,
+		nonameDateFormat : 'ymd-His', // to apply if upload file is noname: 120513172700
 		messages   : {
 
 			/********************************** errors **********************************/
@@ -42,6 +44,7 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'errLocked'            : '"$1" is locked and can not be renamed, moved or removed.',
 			'errExists'            : 'File named "$1" already exists.',
 			'errInvName'           : 'Invalid file name.',
+			'errInvDirname'        : 'Invalid folder name.',  // from v2.1.24 added 12.4.2017
 			'errFolderNotFound'    : 'Folder not found.',
 			'errFileNotFound'      : 'File not found.',
 			'errTrgFolderNotFound' : 'Target folder "$1" not found.',
@@ -67,6 +70,7 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'errMove'              : 'Unable to move "$1".',
 			'errCopyInItself'      : 'Unable to copy "$1" into itself.',
 			'errRm'                : 'Unable to remove "$1".',
+			'errTrash'             : 'Unable into trash.', // from v2.1.24 added 30.4.2017
 			'errRmSrc'             : 'Unable remove source file(s).',
 			'errExtract'           : 'Unable to extract files from "$1".',
 			'errArchive'           : 'Unable to create archive.',
@@ -94,12 +98,16 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'errFtpMkdir'          : 'Unable to create remote directory on FTP: "$1"',
 			'errArchiveExec'       : 'Error while archiving files: "$1"',
 			'errExtractExec'       : 'Error while extracting files: "$1"',
-			'errNetUnMount'        : 'Unable to unmount', // from v2.1 added 30.04.2012
+			'errNetUnMount'        : 'Unable to unmount.', // from v2.1 added 30.04.2012
 			'errConvUTF8'          : 'Not convertible to UTF-8', // from v2.1 added 08.04.2014
 			'errFolderUpload'      : 'Try the modern browser, If you\'d like to upload the folder.', // from v2.1 added 26.6.2015
 			'errSearchTimeout'     : 'Timed out while searching "$1". Search result is partial.', // from v2.1 added 12.1.2016
 			'errReauthRequire'     : 'Re-authorization is required.', // from v2.1.10 added 24.3.2016
 			'errMaxTargets'        : 'Max number of selectable items is $1.', // from v2.1.17 added 17.10.2016
+			'errRestore'           : 'Unable to restore from the trash. Can\'t identify the restore destination.', // from v2.1.24 added 3.5.2017
+			'errEditorNotFound'    : 'Editor not found to this file type.', // from v2.1.25 added 23.5.2017
+			'errServerError'       : 'Error occurred on the server side.', // from v2.1.25 added 16.6.2017
+			'errEmpty'             : 'Unable to empty folder "$1".', // from v2.1.25 added 22.6.2017
             'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
 
 			/******************************* commands names ********************************/
@@ -114,7 +122,7 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'cmdforward'   : 'Forward',
 			'cmdgetfile'   : 'Select files',
 			'cmdhelp'      : 'About this software',
-			'cmdhome'      : 'Home',
+			'cmdhome'      : 'Root',
 			'cmdinfo'      : 'Get info',
 			'cmdmkdir'     : 'New folder',
 			'cmdmkdirin'   : 'Into New Folder', // from v2.1.7 added 19.2.2016
@@ -125,6 +133,8 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'cmdreload'    : 'Reload',
 			'cmdrename'    : 'Rename',
 			'cmdrm'        : 'Delete',
+			'cmdtrash'     : 'Into trash', //from v2.1.24 added 29.4.2017
+			'cmdrestore'   : 'Restore', //from v2.1.24 added 3.5.2017
 			'cmdsearch'    : 'Find files',
 			'cmdup'        : 'Go to parent directory',
 			'cmdupload'    : 'Upload files',
@@ -133,14 +143,20 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'cmdsort'      : 'Sort',
 			'cmdnetmount'  : 'Mount network volume', // added 18.04.2012
 			'cmdnetunmount': 'Unmount', // from v2.1 added 30.04.2012
-			'cmdplaces'    : 'To Places', // added 28.12.2014
+			'cmdplaces'    : 'Add To Quick Access', // added 28.12.2014
 			'cmdchmod'     : 'Change mode', // from v2.1 added 20.6.2015
 			'cmdopendir'   : 'Open a folder', // from v2.1 added 13.1.2016
 			'cmdcolwidth'  : 'Reset column width', // from v2.1.13 added 12.06.2016
 			'cmdfullscreen': 'Full Screen', // from v2.1.15 added 03.08.2016
 			'cmdmove'      : 'Move', // from v2.1.15 added 21.08.2016
-
-			'cmdpixlr'     : 'Edit on Pixlr',
+			'cmdempty'     : 'Empty the folder', // from v2.1.25 added 22.06.2017
+			'cmdundo'      : 'Undo', // from v2.1.27 added 31.07.2017
+			'cmdredo'      : 'Redo', // from v2.1.27 added 31.07.2017
+			'cmdpreference': 'Preferences', // from v2.1.27 added 03.08.2017
+			'cmdselectall' : 'Select all', // from v2.1.28 added 15.08.2017
+			'cmdselectnone': 'Select none', // from v2.1.28 added 15.08.2017
+			'cmdselectinvert': 'Invert selection', // from v2.1.28 added 15.08.2017
+            'cmdpixlr'     : 'Edit on Pixlr',
             'cmdlinks'     : 'Switch to Page/Module Selector',
 
 			/*********************************** buttons ***********************************/
@@ -162,17 +178,22 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'btnFileName':'Filename',  // from v2.1 added 22.5.2015
 			'btnSaveClose': 'Save & Close', // from v2.1 added 12.6.2015
 			'btnBackup' : 'Backup', // fromv2.1 added 28.11.2015
+			'btnRename'    : 'Rename',      // from v2.1.24 added 6.4.2017
+			'btnRenameAll' : 'Rename(All)', // from v2.1.24 added 6.4.2017
+			'btnPrevious' : 'Prev ($1/$2)', // from v2.1.24 added 11.5.2017
+			'btnNext'     : 'Next ($1/$2)', // from v2.1.24 added 11.5.2017
+			'btnSaveAs'   : 'Save As', // from v2.1.25 added 24.5.2017
 
 			/******************************** notifications ********************************/
 			'ntfopen'     : 'Open folder',
 			'ntffile'     : 'Open file',
 			'ntfreload'   : 'Reload folder content',
-			'ntfmkdir'    : 'Creating directory',
+			'ntfmkdir'    : 'Creating folder',
 			'ntfmkfile'   : 'Creating files',
 			'ntfrm'       : 'Delete files',
 			'ntfcopy'     : 'Copy files',
 			'ntfmove'     : 'Move files',
-			'ntfprepare'  : 'Prepare to copy files',
+			'ntfprepare'  : 'Checking existing items',
 			'ntfrename'   : 'Rename files',
 			'ntfupload'   : 'Uploading files',
 			'ntfdownload' : 'Downloading files',
@@ -193,6 +214,14 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'ntfzipdl'    : 'Creating a file for download', // from v2.1.7 added 23.1.2016
 			'ntfparents'  : 'Getting path infomation', // from v2.1.17 added 2.11.2016
 			'ntfchunkmerge': 'Processing the uploaded file', // from v2.1.17 added 2.11.2016
+			'ntftrash'    : 'Doing throw in the trash', // from v2.1.24 added 2.5.2017
+			'ntfrestore'  : 'Doing restore from tha trash', // from v2.1.24 added 3.5.2017
+			'ntfchkdir'   : 'Checking destination folder', // from v2.1.24 added 3.5.2017
+			'ntfundo'     : 'Undoing previous operation', // from v2.1.27 added 31.07.2017
+			'ntfredo'     : 'Redoing previous undone', // from v2.1.27 added 31.07.2017
+
+			/*********************************** volumes *********************************/
+			'volume_Trash' : 'Trash', //from v2.1.24 added 29.4.2017
 
 			/************************************ dates **********************************/
 			'dateUnknown' : 'unknown',
@@ -256,11 +285,13 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 
 			/********************************** messages **********************************/
 			'confirmReq'      : 'Confirmation required',
-			'confirmRm'       : 'Are you sure you want to remove files?<br/>This cannot be undone!',
-			'confirmRepl'     : 'Replace old file with new one?',
+			'confirmRm'       : 'Are you sure you want to permanently remove items?<br/>This cannot be undone!',
+			'confirmRepl'     : 'Replace old item with new one?',
+			'confirmRest'     : 'Replace existing item with the item in trash?', // fromv2.1.24 added 5.5.2017
 			'confirmConvUTF8' : 'Not in UTF-8<br/>Convert to UTF-8?<br/>Contents become UTF-8 by saving after conversion.', // from v2.1 added 08.04.2014
 			'confirmNonUTF8'  : 'Character encoding of this file couldn\'t be detected. It need to temporarily convert to UTF-8 for editting.<br/>Please select character encoding of this file.', // from v2.1.19 added 28.11.2016
 			'confirmNotSave'  : 'It has been modified.<br/>Losing work if you do not save changes.', // from v2.1 added 15.7.2015
+			'confirmTrash'    : 'Are you sure you want to move items to trash bin?', //from v2.1.24 added 29.4.2017
 			'apllyAll'        : 'Apply to all',
 			'name'            : 'Name',
 			'size'            : 'Size',
@@ -278,7 +309,7 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'selectlfile'     : 'Select last file',
 			'viewlist'        : 'List view',
 			'viewicons'       : 'Icons view',
-			'places'          : 'Places',
+			'places'          : 'Quick Access',
 			'calc'            : 'Calculate',
 			'path'            : 'Path',
 			'aliasfor'        : 'Alias for',
@@ -315,9 +346,10 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'dropFiles'       : 'Drop files here',
 			'or'              : 'or',
 			'selectForUpload' : 'Select files',
-			'moveFiles'       : 'Move files',
-			'copyFiles'       : 'Copy files',
-			'rmFromPlaces'    : 'Remove from places',
+			'moveFiles'       : 'Move items',
+			'copyFiles'       : 'Copy items',
+			'restoreFiles'    : 'Restore items', // from v2.1.24 added 5.5.2017
+			'rmFromPlaces'    : 'Remove from Quick Access',
 			'aspectRatio'     : 'Aspect ratio',
 			'scale'           : 'Scale',
 			'width'           : 'Width',
@@ -385,6 +417,15 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'saveAsEncoding'  : 'Save with the selected encoding', // from v2.1.19 added 2.12.2016
 			'selectFolder'    : 'Select folder', // from v2.1.20 added 13.12.2016
 			'firstLetterSearch': 'First letter search', // from v2.1.23 added 24.3.2017
+			'presets'         : 'Presets', // from v2.1.25 added 26.5.2017
+			'tooManyToTrash'  : 'It\'s too many items so it can\'t into trash.', // from v2.1.25 added 9.6.2017
+			'TextArea'        : 'TextArea', // from v2.1.25 added 14.6.2017
+			'folderToEmpty'   : 'Empty the folder "$1".', // from v2.1.25 added 22.6.2017
+			'filderIsEmpty'   : 'There are no items in a folder "$1".', // from v2.1.25 added 22.6.2017
+			'preference'      : 'Preference', // from v2.1.26 added 28.6.2017
+			'language'        : 'Language setting', // from v2.1.26 added 28.6.2017
+			'clearBrowserData': 'Initialize the settings saved in this browser', // from v2.1.26 added 28.6.2017
+			'toolbarPref'     : 'Toolbar setting', // from v2.1.27 added 2.8.2017
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Unknown',

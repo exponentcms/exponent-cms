@@ -41,15 +41,21 @@
 		/**
 		 * navbar icon class
 		 *
-		 * @type Number
+		 * @type String
 		 **/
 		navicon    = 'elfinder-quicklook-navbar-icon',
 		/**
 		 * navbar "fullscreen" icon class
 		 *
-		 * @type Number
+		 * @type String
 		 **/
-		fullscreen  = 'elfinder-quicklook-fullscreen',
+		fullscreen = 'elfinder-quicklook-fullscreen',
+		/**
+		 * info wrapper class
+		 * 
+		 * @type String
+		 */
+		infocls    = 'elfinder-quicklook-info-wrapper',
 		/**
 		 * Triger keydown/keypress event with left/right arrow key code
 		 *
@@ -96,8 +102,8 @@
 			}
 		},
 		
-		support = function(codec) {
-			var media = document.createElement(codec.substr(0, codec.indexOf('/'))),
+		support = function(codec, name) {
+			var media = document.createElement(name || codec.substr(0, codec.indexOf('/'))),
 				value = false;
 			
 			try {
@@ -106,8 +112,10 @@
 				
 			}
 			
-			return value && value !== '' && value != 'no';
+			return (value && value !== '' && value != 'no')? true : false;
 		},
+		
+		platformWin = (window.navigator.platform.indexOf('Win') != -1),
 		
 		/**
 		 * Opened window width (from config)
@@ -272,7 +280,7 @@
 
 	(this.navbar = navbar)._show = navShow;
 	this.resize = 'resize.'+fm.namespace;
-	this.info = $('<div class="elfinder-quicklook-info-wrapper"/>')
+	this.info = $('<div/>').addClass(infocls)
 		.append(icon)
 		.append(info);
 		
@@ -321,6 +329,11 @@
 				if (file.icon) {
 					icon.css(fm.getIconStyle(file, true));
 				}
+				
+				self.info.attr('class', infocls);
+				if (file.csscls) {
+					self.info.addClass(file.csscls);
+				}
 
 				if (file.read && (tmb = fm.tmb(file))) {
 					$('<img/>')
@@ -352,7 +365,7 @@
 			$('<div class="elfinder-quicklook-titlebar"/>')
 			.append(
 				title,
-				$('<span class="ui-icon ui-icon-circle-close"/>').mousedown(function(e) {
+				$('<span class="ui-icon ui-icon-circle-close'+(platformWin? ' elfinder-platformWin' : '')+'"/>').mousedown(function(e) {
 					e.stopPropagation();
 					self.window.trigger('close');
 				})),
@@ -386,20 +399,21 @@
 			var win     = self.window,
 				preview = self.preview.trigger('change'),
 				file    = self.value,
-				node    = cwd.find('#'+fm.cwdHash2Id(win.data('hash'))),
+				hash    = win.data('hash'),
 				close   = function() {
 					state = closed;
 					win.hide();
 					preview.children().remove();
 					self.update(0, self.value);
 					
-				};
+				},
+				node;
 				
 			win.data('hash', '');
 			if (self.opened()) {
 				state = animated;
 				win.hasClass(fullscreen) && fsicon.click();
-				node.length
+				(hash && (node = cwd.find('#'+hash)).length)
 					? win.animate(closedCss(node), 500, close)
 					: close();
 			}
@@ -432,15 +446,18 @@
 	
 	this.support = {
 		audio : {
-			ogg : support('audio/ogg; codecs="vorbis"'),
+			ogg : support('audio/ogg; codecs="vorbis"') || support('audio/ogg; codecs="flac"'),
 			mp3 : support('audio/mpeg;'),
 			wav : support('audio/wav; codecs="1"'),
-			m4a : support('audio/mp4;') || support('audio/x-m4a;') || support('audio/aac;')
+			m4a : support('audio/mp4;') || support('audio/x-m4a;') || support('audio/aac;'),
+			flac: support('audio/flac;')
 		},
 		video : {
 			ogg  : support('video/ogg; codecs="theora"'),
-			webm : support('video/webm; codecs="vp8, vorbis"'),
-			mp4  : support('video/mp4; codecs="avc1.42E01E"') || support('video/mp4; codecs="avc1.42E01E, mp4a.40.2"') 
+			webm : support('video/webm; codecs="vp8, vorbis"') || support('video/webm; codecs="vp9"'),
+			mp4  : support('video/mp4; codecs="avc1.42E01E"') || support('video/mp4; codecs="avc1.42E01E, mp4a.40.2"'),
+			m3u8 : support('application/x-mpegURL', 'video') || support('application/vnd.apple.mpegURL', 'video'),
+			mpd  : support('application/dash+xml', 'video')
 		}
 	};
 	
@@ -472,7 +489,7 @@
 		var o       = this.options, 
 			win     = this.window,
 			preview = this.preview,
-			i, p, curCwd;
+			i, p, curCwd, cwdDispInlineRegex;
 		
 		width  = o.width  > 0 ? parseInt(o.width)  : 450;	
 		height = o.height > 0 ? parseInt(o.height) : 300;
@@ -488,7 +505,7 @@
 			win.appendTo(parent);
 			
 			// close window on escape
-			$(document).keydown(function(e) {
+			$(document).on('keydown.'+fm.namespace, function(e) {
 				e.keyCode == $.ui.keyCode.ESCAPE && self.opened() && win.trigger('close')
 			})
 			
@@ -520,15 +537,32 @@
 				}
 			});
 			
-			preview.on('update', function(data) {
-				if (fm.searchStatus.mixed && fm.searchStatus.state > 1) {
-					// set current volume dispInlineRegex
-					try {
-						self.dispInlineRegex = new RegExp(fm.option('dispInlineRegex', data.file.hash));
-					} catch(e) {
-						self.dispInlineRegex = /.*/;
+			preview.on('update', function(e) {
+				var file = e.file,
+					hash = file.hash,
+					serach = (fm.searchStatus.mixed && fm.searchStatus.state > 1);
+				
+				if (file.mime !== 'directory') {
+					if (parseInt(file.size)) {
+						// set current dispInlineRegex
+						self.dispInlineRegex = cwdDispInlineRegex;
+						if (serach || fm.optionsByHashes[hash]) {
+							try {
+								self.dispInlineRegex = new RegExp(fm.option('dispInlineRegex', hash), 'i');
+							} catch(e) {
+								try {
+									self.dispInlineRegex = new RegExp(!fm.isRoot(file)? fm.option('dispInlineRegex', file.phash) : fm.options.dispInlineRegex, 'i');
+								} catch(e) {
+									self.dispInlineRegex = /^$/;
+								}
+							}
+						}
+					} else {
+						//  do not preview of file that size = 0
+						e.stopImmediatePropagation();
 					}
 				}
+				
 				self.info.show();
 			});
 
@@ -550,9 +584,9 @@
 			
 			// set current volume dispInlineRegex
 			try {
-				self.dispInlineRegex = new RegExp(fm.option('dispInlineRegex'));
+				cwdDispInlineRegex = new RegExp(fm.option('dispInlineRegex'), 'i');
 			} catch(e) {
-				self.dispInlineRegex = /.*/;
+				cwdDispInlineRegex = /^$/;
 			}
 		});
 		

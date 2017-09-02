@@ -7,12 +7,10 @@
  **/
 (elFinder.prototype.commands.open = function () {
     this.alwaysEnabled = true;
+	this.noChangeDirOnRemovedCwd = true;
 
     this._handlers = {
-        dblclick: function (e) {
-            e.preventDefault();
-            this.exec()
-        },
+		dblclick : function(e) { e.preventDefault(); this.exec(e.data && e.data.file? [ e.data.file ]: void(0)) },
         'select enable disable reload': function (e) {
             this.update(e.type == 'disable' ? -1 : void(0));
         }
@@ -76,7 +74,7 @@
             var wnd, target;
 
             try {
-                reg = new RegExp(fm.option('dispInlineRegex'));
+				reg = new RegExp(fm.option('dispInlineRegex'), 'i');
             } catch (e) {
                 reg = false;
             }
@@ -153,7 +151,7 @@
                         form.method = typeof opts.method === 'string' && opts.method.toLowerCase() === 'get' ? 'GET' : 'POST';
                         form.target = target;
                         form.style.display = 'none';
-                        var params = $.extend({}, fm.options.customData, {
+						var params = Object.assign({}, fm.options.customData, {
                             cmd: 'file',
                             target: file.hash
                         });

@@ -26,7 +26,7 @@ elFinder.prototype.commands.resize = function() {
 
 		if (enabled && (! file || (file && file.read && file.write && file.mime.indexOf('image/') !== -1 ))) {
 			return fm.request({
-				data : $.extend(data, {
+				data : Object.assign(data, {
 					cmd : 'resize'
 				}),
 				notify : {type : 'resize', cnt : 1},
@@ -108,7 +108,9 @@ elFinder.prototype.commands.resize = function() {
 			fmnode = fm.getUI(),
 			ctrgrup = $().controlgroup? 'controlgroup' : 'buttonset',
 			grid8Def = typeof this.options.grid8px === 'undefind' || this.options.grid8px !== 'disable'? true : false,
-
+			presetSize = Array.isArray(this.options.presetSize)? this.options.presetSize : [],
+			dlcls = 'elfinder-dialog-resize',
+			clactive = 'elfinder-dialog-active',
 			open = function(file, id) {
 				var isJpeg   = (file.mime === 'image/jpeg'),
 					dialog   = $('<div class="elfinder-dialog-resize '+fm.res('class', 'editing')+'"/>'),
@@ -510,10 +512,72 @@ elFinder.prototype.commands.resize = function() {
 							pallet.hide();
 						}
 					},
+					setupPreset = function() {
+						preset.on('click', 'span.elfinder-resize-preset', function() {
+							var btn = $(this),
+								w = btn.data('s')[0],
+								h = btn.data('s')[1],
+								r = owidth / oheight;
+							if (owidth > w || oheight > h) {
+								if (owidth <= w) {
+									w = round(h * r);
+								} else if (oheight <= h) {
+									h = round(w / r);
+								} else {
+									if (owidth - w > oheight - h) {
+										h = round(w / r);
+									} else {
+										w = round(h * r);
+									}
+								}
+							} else {
+								w = owidth;
+								h = oheight;
+							}
+							width.val(w);
+							height.val(h);
+							resize.updateView(w, h);
+						});
+						presetc.on('click', 'span.elfinder-resize-preset', function() {
+							var btn = $(this),
+								w = btn.data('s')[0],
+								h = btn.data('s')[1],
+								x = pointX.val(),
+								y = pointY.val();
+
+							if (owidth >= w && oheight >= h) {
+								if (owidth - w - x < 0) {
+									x = owidth - w;
+								}
+								if (oheight - h - y < 0) {
+									y = oheight - h;
+								}
+								pointX.val(x);
+								pointY.val(y);
+								offsetX.val(w);
+								offsetY.val(h);
+								crop.updateView();
+							}
+						});
+						presetc.children('span.elfinder-resize-preset').each(function() {
+							var btn = $(this),
+								w = btn.data('s')[0],
+								h = btn.data('s')[1];
+
+							btn[(owidth >= w && oheight >= h)? 'show' : 'hide']();
+						});
+					},
 					img     = $('<img/>')
 						.on('load', function() {
-							owidth  = img.get(0).width || img.width();
-							oheight = img.get(0).height || img.height();
+							var elm = img.get(0),
+								memSize = elm.naturalWidth? null : {w: img.width(), h: img.height()};
+
+							memSize && img.removeAttr('width').removeAttr('height');
+
+							owidth  = elm.naturalWidth || elm.width || img.width();
+							oheight = elm.naturalHeight || elm.height || img.height();
+
+							memSize && img.width(memSize.w).height(memSize.h);
 
 							dMinBtn.show();
 
@@ -539,15 +603,17 @@ elFinder.prototype.commands.resize = function() {
 							height.val(oheight);
 
 							setupPicker();
+							setupPreset();
 							setupimg();
 
 							uitype[ctrgrup]('enable');
 							inputFirst = control.find('input,select').prop('disabled', false)
 								.filter(':text').on('keydown', function(e) {
+									var cOpts;
 									if (e.keyCode == $.ui.keyCode.ENTER) {
 										e.stopPropagation();
 										e.preventDefault();
-										fm.confirm({
+										cOpts = {
 											title  : $('input:checked', uitype).val(),
 											text   : 'confirmReq',
 											accept : {
@@ -562,7 +628,17 @@ elFinder.prototype.commands.resize = function() {
 													$(this).focus();
 												}
 											}
-										});
+										};
+
+										if (useSaveAs) {
+											cOpts['buttons'] = [{
+												label    : 'btnSaveAs',
+												callback : function() {
+													setTimeout(saveAs, 10);
+											}
+											}];
+										}
+										fm.confirm(cOpts);
 										return;
 									}
 								})
@@ -846,7 +922,7 @@ elFinder.prototype.commands.resize = function() {
 							}
 						}
 					},
-					save = function() {
+					checkVals = function() {
 						var w, h, x, y, d, q, b = '';
 
 						if (mode == 'resize') {
@@ -862,10 +938,12 @@ elFinder.prototype.commands.resize = function() {
 							h = oheight;
 							d = parseInt(degree.val()) || 0;
 							if (d < 0 || d > 360) {
-								return fm.error('Invalid rotate degree');
+								fm.error('Invalid rotate degree');
+								return false;
 							}
 							if (d == 0 || d == 360) {
-								return fm.error('errResizeNoChange');
+								fm.error('errResizeNoChange');
+								return false;
 							}
 							b = bg.val();
 						}
@@ -874,28 +952,106 @@ elFinder.prototype.commands.resize = function() {
 						if (mode != 'rotate') {
 
 							if (w <= 0 || h <= 0) {
-								return fm.error('Invalid image size');
+								fm.error('Invalid image size');
+								return false;
 							}
 
 							if (w == owidth && h == oheight) {
-								return fm.error('errResizeNoChange');
+								fm.error('errResizeNoChange');
+								return false;
 							}
 
 						}
 
+						return {w: w, h: h, x: x, y: y, d: d, q: q, b: b};
+					},
+					save = function() {
+						var vals;
+
+						if (vals = checkVals()) {
 						dialog.elfinderdialog('close');
 
 						self.resizeRequest({
 							target : file.hash,
-							width  : w,
-							height : h,
-							x      : x,
-							y      : y,
-							degree : d,
-							quality: q,
-							bg     : b,
+								width  : vals.w,
+								height : vals.h,
+								x      : vals.x,
+								y      : vals.y,
+								degree : vals.d,
+								quality: vals.q,
+								bg     : vals.b,
 							mode   : mode
 						}, file, dfrd);
+						}
+					},
+					saveAs = function() {
+						var fail = function() {
+								dialogs.fadeIn(function() {
+									base.addClass(clactive);
+								});
+							},
+							make = function() {
+								self.mime = file.mime;
+								self.prefix = file.name.replace(/ \d+(\.[^.]+)?$/, '$1');
+								self.requestCmd = 'mkfile';
+								self.nextAction = {};
+								self.data = {target : file.phash};
+								$.proxy(fm.res('mixin', 'make'), self)()
+									.done(function(data) {
+										var hash;
+										if (data.added && data.added.length) {
+											hash = data.added[0].hash;
+											fm.url(file.hash, { async: true, temporary: true }).done(function(url) {
+												fm.request({
+													options : {type : 'post'},
+													data : {
+														cmd     : 'put',
+														target  : hash,
+														encoding: 'scheme',
+														content : fm.convAbsUrl(url)
+													},
+													notify : {type : 'save', cnt : 1},
+													syncOnFail : true
+												})
+												.fail(fail)
+												.done(function(data) {
+													data = fm.normalize(data);
+													fm.updateCache(data);
+													file = fm.file(hash);
+													data.changed && data.changed.length && fm.change(data);
+													base.show().find('.elfinder-dialog-title').html(fm.escape(file.name));
+													save();
+													dialogs.fadeIn();
+												});
+											}).fail(fail);
+										} else {
+											fail();
+										}
+									})
+									.fail(fail)
+									.always(function() {
+										delete self.mime;
+										delete self.prefix;
+										delete self.nextAction;
+										delete self.data;
+									});
+								fm.trigger('unselectfiles', { files: [ file.hash ] });
+							},
+							reqOpen = null,
+							dialogs;
+
+						if (checkVals()) {
+							dialogs = fm.getUI().children('.'+dlcls).fadeOut();
+							base.removeClass(clactive);
+
+							if (fm.searchStatus.state < 2 && file.phash !== fm.cwd().hash) {
+								reqOpen = fm.exec('open', [file.phash], {thash: file.phash});
+							}
+
+							$.when([reqOpen]).done(function() {
+								reqOpen? fm.one('cwdrender', make) : make();
+							}).fail(fail);
+						}
 					},
 					buttons = {},
 					hline   = 'elfinder-resize-handle-hline',
@@ -906,12 +1062,17 @@ elFinder.prototype.commands.resize = function() {
 						if (base.hasClass('elfinder-dialog-minimized')) {
 							return;
 						}
+
+						preset.hide();
+						presetc.hide();
+
 						var dw,
 							winH  = $(window).height(),
 							winW  = $(window).width(),
 							ctrW  = dialog.find('div.elfinder-resize-control').width(),
 							prvW  = preview.width(),
-							baseW = base.width();
+							baseW = base.width(),
+							presW = 'auto';
 
 						base.width(Math.min(dialogWidth, winW - 30));
 						preview.attr('style', '');
@@ -924,13 +1085,17 @@ elFinder.prototype.commands.resize = function() {
 
 						dw = dialog.width() - 20;
 						if (prvW > dw) {
+							//presW = 'auto';
 							preview.width(dw);
 						} else if ((dw - prvW) < ctrW) {
+							//presW = 'auto';
 							if (winW > winH) {
 								preview.width(dw - ctrW - 20);
 							} else {
 								preview.css({ float: 'none', marginLeft: 'auto', marginRight: 'auto'});
 							}
+						} else {
+							presW = ctrW;
 						}
 						pwidth  = preview.width()  - (rhandle.outerWidth()  - rhandle.width());
 						if (fmnode.hasClass('elfinder-fullscreen')) {
@@ -952,7 +1117,34 @@ elFinder.prototype.commands.resize = function() {
 							pheight = preview.height() - (rhandle.outerHeight() - rhandle.height());
 							setuprimg();
 						}
+
+						preset.css('width', presW).show();
+						presetc.css('width', presW).show();
+						if (!presetc.children('span.elfinder-resize-preset:visible').length) {
+							presetc.hide();
+						}
 					},
+					preset = (function() {
+						var sets = $('<fieldset class="elfinder-resize-preset-container">').append($('<legend>').html(fm.i18n('presets'))).hide(),
+							hasC;
+						$.each(presetSize, function(i, s) {
+							if (s.length === 2) {
+								hasC = true;
+								sets.append($('<span class="elfinder-resize-preset"/>')
+									.data('s', s)
+									.text(s[0]+'x'+s[1])
+									.button()
+								);
+							}
+						});
+						if (!hasC) {
+							return $();
+						} else {
+							return sets;
+						}
+					})(),
+					presetc = preset.clone(true),
+					useSaveAs = fm.uploadMimeCheck(file.mime, file.phash),
 					dMinBtn, base;
 
 				if (fm.isCORS) {
@@ -968,7 +1160,8 @@ elFinder.prototype.commands.resize = function() {
 					$(row).append($(label).text(fm.i18n('height')), height, $('<div class="elfinder-resize-whctrls">').append(constr, reset)),
 					(quality? $(row).append($(label).text(fm.i18n('quality')), quality, $('<span/>').text(' (1-100)')) : $()),
 					(isJpeg? $(row).append($(label).text(fm.i18n('8pxgrid')).addClass('elfinder-resize-grid8'), grid8px) : $()),
-					$(row).append($(label).text(fm.i18n('scale')), uiprop)
+					$(row).append($(label).text(fm.i18n('scale')), uiprop),
+					$(row).append(preset)
 				);
 
 				if (api2) {
@@ -978,7 +1171,8 @@ elFinder.prototype.commands.resize = function() {
 						$(row).append($(label).text(fm.i18n('width')), offsetX),
 						$(row).append($(label).text(fm.i18n('height')), offsetY, $('<div class="elfinder-resize-whctrls">').append(constrc, reset.clone(true))),
 						(quality? $(row).append($(label).text(fm.i18n('quality')), quality.clone(true), $('<span/>').text(' (1-100)')) : $()),
-						(isJpeg? $(row).append($(label).text(fm.i18n('8pxgrid')).addClass('elfinder-resize-grid8')) : $())
+						(isJpeg? $(row).append($(label).text(fm.i18n('8pxgrid')).addClass('elfinder-resize-grid8')) : $()),
+						$(row).append(presetc)
 					);
 
 					uirotate.append(
@@ -1052,6 +1246,9 @@ elFinder.prototype.commands.resize = function() {
 				dialog.append(preview, control);
 
 				buttons[fm.i18n('btnApply')] = save;
+				if (useSaveAs) {
+				buttons[fm.i18n('btnSaveAs')] = function() { setTimeout(saveAs, 10); };
+				}
 				buttons[fm.i18n('btnCancel')] = function() { dialog.elfinderdialog('close'); };
 
 				dialog.find('input,button').addClass('elfinder-tabstop');
@@ -1077,7 +1274,7 @@ elFinder.prototype.commands.resize = function() {
 							dinit();
 						}
 					}
-				}).attr('id', id).parent();
+				}).attr('id', id).closest('.ui-dialog').addClass(dlcls);
 
 				// for IE < 9 dialog mising at open second+ time.
 				if (fm.UA.ltIE8) {

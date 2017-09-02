@@ -10,6 +10,8 @@ elFinder.prototype.commands.fullscreen = function() {
 	var self   = this,
 		fm     = this.fm,
 		update = function(e, data) {
+			e.preventDefault();
+			e.stopPropagation();
 			if (data && data.fullscreen) {
 				self.update(void(0), (data.fullscreen === 'on'));
 			}
@@ -17,6 +19,7 @@ elFinder.prototype.commands.fullscreen = function() {
 
 	this.alwaysEnabled  = true;
 	this.updateOnSelect = false;
+	this.syncTitleOnChange = true;
 	this.value = false;
 
 	this.options = {
@@ -29,8 +32,9 @@ elFinder.prototype.commands.fullscreen = function() {
 	
 	this.exec = function() {
 		var node = fm.getUI().get(0),
-			fullNode = fm.toggleFullscreen(node);
-		self.update(void(0), (fullNode === node));
+			full = (node === fm.toggleFullscreen(node));
+		self.title = fm.i18n(full ? 'reinstate' : 'cmdfullscreen');
+		self.update(void(0), full);
 	};
 	
 	fm.bind('init', function() {

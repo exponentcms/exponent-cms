@@ -12,14 +12,14 @@ class elFinderConnector {
 	 * @var elFinder
 	 **/
 	protected $elFinder;
-
+	
 	/**
 	 * Options
 	 *
 	 * @var aray
 	 **/
 	protected $options = array();
-
+	
 	/**
 	 * Must be use output($data) $data['header']
 	 *
@@ -30,18 +30,18 @@ class elFinderConnector {
 
 	/**
 	 * HTTP request method
-	 *
+	 * 
 	 * @var string
 	 */
 	protected $reqMethod = '';
-
+	
 	/**
 	 * Content type of output JSON
-	 *
+	 * 
 	 * @var string
 	 */
 	protected static $contentType = 'Content-Type: application/json';
-
+	
 	/**
 	 * Constructor
 	 *
@@ -50,14 +50,14 @@ class elFinderConnector {
 	 * @author Dmitry (dio) Levashov
 	 */
 	public function __construct($elFinder, $debug=false) {
-
+		
 		$this->elFinder = $elFinder;
 		$this->reqMethod = strtoupper($_SERVER["REQUEST_METHOD"]);
 		if ($debug) {
-			self::$contentType = 'Content-Type: text/html; charset=utf-8';
+			self::$contentType = 'Content-Type: text/plain; charset=utf-8';
 		}
 	}
-
+	
 	/**
 	 * Execute elFinder command and output result
 	 *
@@ -95,34 +95,34 @@ class elFinderConnector {
 				$_REQUEST = $this->input_filter(array_merge_recursive($src, $_REQUEST));
 			}
 		}
-
+		
 		if (isset($src['targets']) && $this->elFinder->maxTargets && count($src['targets']) > $this->elFinder->maxTargets) {
 			$error = $this->elFinder->error(elFinder::ERROR_MAX_TARGTES);
 			$this->output(array('error' => $this->elFinder->error(elFinder::ERROR_MAX_TARGTES)));
 		}
-
+		
 		$cmd    = isset($src['cmd']) ? $src['cmd'] : '';
 		$args   = array();
-
+		
 		if (!function_exists('json_encode')) {
 			$error = $this->elFinder->error(elFinder::ERROR_CONF, elFinder::ERROR_CONF_NO_JSON);
 			$this->output(array('error' => '{"error":["'.implode('","', $error).'"]}', 'raw' => true));
 		}
-
+		
 		if (!$this->elFinder->loaded()) {
 			$this->output(array('error' => $this->elFinder->error(elFinder::ERROR_CONF, elFinder::ERROR_CONF_NO_VOL), 'debug' => $this->elFinder->mountErrors));
 		}
-
+		
 		// telepat_mode: on
 		if (!$cmd && $isPost) {
 			$this->output(array('error' => $this->elFinder->error(elFinder::ERROR_UPLOAD, elFinder::ERROR_UPLOAD_TOTAL_SIZE), 'header' => 'Content-Type: text/html'));
 		}
 		// telepat_mode: off
-
+		
 		if (!$this->elFinder->commandExists($cmd)) {
 			$this->output(array('error' => $this->elFinder->error(elFinder::ERROR_UNKNOWN_CMD)));
 		}
-
+		
 		// collect required arguments to exec command
 		$hasFiles = false;
 		foreach ($this->elFinder->commandArgsList($cmd) as $name => $req) {
@@ -134,7 +134,7 @@ class elFinderConnector {
 				}
 			} else {
 				$arg = isset($src[$name])? $src[$name] : '';
-
+			
 				if (!is_array($arg) && $req !== '') {
 					$arg = trim($arg);
 				}
@@ -144,17 +144,17 @@ class elFinderConnector {
 				$args[$name] = $arg;
 			}
 		}
-
+		
 		$args['debug'] = isset($src['debug']) ? !!$src['debug'] : false;
-
+		
 		$args = $this->input_filter($args);
 		if ($hasFiles) {
 			$args['FILES'] = $_FILES;
 		}
-
+		
 		$this->output($this->elFinder->exec($cmd, $args));
 	}
-
+	
 	/**
 	 * Output json
 	 *
@@ -167,23 +167,27 @@ class elFinderConnector {
 		$this->elFinder->getSession()->close();
 		// client disconnect should abort
 		ignore_user_abort(false);
-
+		
 		if ($this->header) {
 			self::sendHeader($this->header);
 		}
-
+		
 		if (isset($data['pointer'])) {
+			// set time limit to 0
+			elFinder::extendTimeLimit(0);
+			
 			// send optional header
 			if (!empty($data['header'])) {
 				self::sendHeader($data['header']);
 			}
-
+			
 			// clear output buffer
 			while(ob_get_level() && ob_end_clean()){}
-
+			
 			$toEnd = true;
 			$fp = $data['pointer'];
-			if (($this->reqMethod === 'GET' || $this->reqMethod === 'HEAD')
+			$sendData = !($this->reqMethod === 'HEAD' || !empty($data['info']['xsendfile']));
+			if (($this->reqMethod === 'GET' || !$sendData)
 					&& elFinder::isSeekableStream($fp)
 					&& (array_search('Accept-Ranges: none', headers_list()) === false)) {
 				header('Accept-Ranges: bytes');
@@ -207,16 +211,29 @@ class elFinderConnector {
 								}
 							}
 							$psize = $end - $start + 1;
-
+							
 							header('HTTP/1.1 206 Partial Content');
 							header('Content-Length: ' . $psize);
 							header('Content-Range: bytes ' . $start . '-' . $end . '/' . $size);
-
-							fseek($fp, $start);
+							
+							// Apache mod_xsendfile dose not support range request
+							if (isset($data['info']['xsendfile']) && strtolower($data['info']['xsendfile']) === 'x-sendfile') {
+								if (function_exists('header_remove')) {
+									header_remove($data['info']['xsendfile']);
+								} else {
+									header($data['info']['xsendfile'] . ':');
+								}
+								unset($data['info']['xsendfile']);
+								if ($this->reqMethod !== 'HEAD') {
+									$sendData = true;
+								}
+							}
+							
+							$sendData && fseek($fp, $start);
 						}
 					}
 				}
-				if (is_null($psize)){
+				if ($sendData && is_null($psize)){
 					elFinder::rewind($fp);
 				}
 			} else {
@@ -230,7 +247,7 @@ class elFinderConnector {
 				}
 			}
 
-			if ($reqMethod !== 'HEAD') {
+			if ($sendData) {
 				if ($toEnd) {
 					fpassthru($fp);
 				} else {
@@ -239,7 +256,7 @@ class elFinderConnector {
 					fclose($out);
 				}
 			}
-
+			
 			if (!empty($data['volume'])) {
 				$data['volume']->close($data['pointer'], $data['info']['hash']);
 			}
@@ -249,20 +266,20 @@ class elFinderConnector {
 			exit(0);
 		}
 	}
-
+	
 	/**
 	 * Remove null & stripslashes applies on "magic_quotes_gpc"
-	 *
+	 * 
 	 * @param  mixed  $args
 	 * @return mixed
 	 * @author Naoki Sawada
 	 */
 	protected function input_filter($args) {
 		static $magic_quotes_gpc = NULL;
-
+		
 		if ($magic_quotes_gpc === NULL)
 			$magic_quotes_gpc = (version_compare(PHP_VERSION, '5.4', '<') && get_magic_quotes_gpc());
-
+		
 		if (is_array($args)) {
 			return array_map(array(& $this, 'input_filter'), $args);
 		}
@@ -270,10 +287,10 @@ class elFinderConnector {
 		$magic_quotes_gpc && ($res = stripslashes($res));
 		return $res;
 	}
-
+	
 	/**
 	 * Send HTTP header
-	 *
+	 * 
 	 * @param string|array $header optional header
 	 */
 	protected static function sendHeader($header = null) {
@@ -287,19 +304,19 @@ class elFinderConnector {
 			}
 		}
 	}
-
+	
 	/**
 	 * Output JSON
-	 *
+	 * 
 	 * @param array $data
 	 */
 	public static function outputJson($data) {
 		// send header
 		$header = isset($data['header']) ? $data['header'] : self::$contentType;
 		self::sendHeader($header);
-
+		
 		unset($data['header']);
-
+		
 		if (!empty($data['raw']) && !empty($data['error'])) {
 			$out = $data['error'];
 		} else {
@@ -308,14 +325,14 @@ class elFinderConnector {
 			}
 			$out = json_encode($data);
 		}
-
+		
 		// clear output buffer
 		while(ob_get_level() && ob_end_clean()){}
-
+		
 		header('Content-Length: ' . strlen($out));
-
+		
 		echo $out;
-
+		
 		flush();
 	}
-}// END class
+}// END class 

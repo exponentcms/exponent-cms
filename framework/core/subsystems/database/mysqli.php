@@ -377,17 +377,31 @@ class mysqli_database extends database {
      * @param null $orderby
      * @return array
      */
-    function selectObjects($table, $where = null, $orderby = null) {
+    function selectObjects($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false, $user=null) {
         if ($where == null)
             $where = "1";
         else
             $where = $this->injectProof($where);
+        $as = '';
+        if ($is_revisioned) {
+   //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
+            $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
+            if ($needs_approval) {
+                if (!empty($user)) {
+                    $where .= ' AND (approved=1 AND ((poster!=0 AND poster=' . $user . ') OR (editor!=0 AND editor=' . $user . ')))';
+                } else {
+                    $where .= ' AND (approved=1)';
+                }
+            }
+            $where .= ")";
+            $as = ' AS rev';
+        }
         if ($orderby == null)
             $orderby = '';
         else
             $orderby = "ORDER BY " . $orderby;
 
-        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where $orderby");
+        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table`" . $as . " WHERE $where $orderby");
         if ($res == null)
             return array();
         $objects = array();
@@ -669,14 +683,20 @@ class mysqli_database extends database {
      *
      * @return int
      */
-    function countObjects($table, $where = null, $is_revisioned=false, $needs_approval=false) {
+    function countObjects($table, $where = null, $is_revisioned=false, $needs_approval=false, $user=null) {
         if ($where == null)
             $where = "1";
         $as = '';
         if ($is_revisioned) {
    //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
             $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
-            if ($needs_approval) $where .= ' AND (approved=1 OR poster=' . $needs_approval . ' OR editor=' . $needs_approval . ')';
+            if ($needs_approval) {
+                if (!empty($user)) {
+                    $where .= ' AND (approved=1 AND ((poster!=0 AND poster=' . $user . ') OR (editor!=0 AND editor=' . $user . ')))';
+                } else {
+                    $where .= ' AND (approved=1)';
+                }
+            }
             $where .= ")";
             $as = ' AS rev';
         }
@@ -851,6 +871,9 @@ class mysqli_database extends database {
             $sql .= $this->injectProof($where);
         else
             $sql .= "`" . $identifier . "`=" . $object->$identifier;
+        if (isset($object->revision_id)) {
+            $sql .= ' AND revision_id=' . $object->revision_id;
+        }
         //if ($table == 'text') eDebug($sql,true);
         $res = (@mysqli_query($this->connection, $sql) != false);
         return $res;
@@ -1133,17 +1156,31 @@ class mysqli_database extends database {
      * @param string $orderby
      * @return array
      */
-    function selectArrays($table, $where = null, $orderby = null) {
+    function selectArrays($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false, $user=null) {
         if ($where == null)
             $where = "1";
         else
             $where = $this->injectProof($where);
+        $as = '';
+        if ($is_revisioned) {
+   //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
+            $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
+            if ($needs_approval) {
+                if (!empty($user)) {
+                    $where .= ' AND (approved=1 AND ((poster!=0 AND poster=' . $user . ') OR (editor!=0 AND editor=' . $user . ')))';
+                } else {
+                    $where .= ' AND (approved=1)';
+                }
+            }
+            $where .= ")";
+            $as = ' AS rev';
+        }
         if ($orderby == null)
             $orderby = '';
         else
             $orderby = "ORDER BY " . $orderby;
 
-        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where $orderby");
+        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table`" . $as . " WHERE $where $orderby");
         if ($res == null)
             return array();
         $arrays = array();
@@ -1190,7 +1227,7 @@ class mysqli_database extends database {
      *
      * @return array|void
      */
-    function selectArray($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false) {
+    function selectArray($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false, $user=null) {
         if ($where == null)
             $where = "1";
         else
@@ -1199,7 +1236,13 @@ class mysqli_database extends database {
         if ($is_revisioned) {
    //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
             $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
-            if ($needs_approval) $where .= ' AND (approved=1 OR poster=' . $needs_approval . ' OR editor=' . $needs_approval . ')';
+            if ($needs_approval) {
+                if (!empty($user)) {
+                    $where .= ' AND (approved=1 AND ((poster!=0 AND poster=' . $user . ') OR (editor!=0 AND editor=' . $user . ')))';
+                } else {
+                    $where .= ' AND (approved=1)';
+                }
+            }
             $where .= ")";
             $as = ' AS rev';
         }
@@ -1230,7 +1273,7 @@ class mysqli_database extends database {
      *
      * @return array
      */
-    function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false) {
+    function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false, $user=null) {
         if ($where == null)
             $where = "1";
         else
@@ -1239,7 +1282,13 @@ class mysqli_database extends database {
         if ($is_revisioned) {
    //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
             $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
-            if ($needs_approval) $where .= ' AND (approved=1 OR poster=' . $needs_approval . ' OR editor=' . $needs_approval . ')';
+            if ($needs_approval) {
+                if (!empty($user)) {
+                    $where .= ' AND (approved=1 AND ((poster!=0 AND poster=' . $user . ') OR (editor!=0 AND editor=' . $user . ')))';
+                } else {
+                    $where .= ' AND (approved=1)';
+                }
+            }
             $where .= ")";
             $as = ' AS rev';
         }

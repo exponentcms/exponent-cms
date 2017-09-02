@@ -1,55 +1,31 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+/*!
+ * MediaElement.js
+ * http://www.mediaelementjs.com/
+ *
+ * Wrapper that mimics native HTML5 MediaElement (audio and video)
+ * using a variety of technologies (pure JavaScript, Flash, iframe)
+ *
+ * Copyright 2010-2017, John Dyer (http://j.hn/)
+ * License: MIT
+ *
+ */(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 'use strict';
 
-/**
- * VAST Ads Plugin
- *
- */
-
-// Feature configuration
-
 Object.assign(mejs.MepDefaults, {
-	/**
-  * URL to vast data (http://minotovideo.com/sites/minotovideo.com/files/upload/eday_vast_tag.xml)
-  * @type {String}
-  */
 	vastAdTagUrl: '',
 
-	/**
-  * Whether Ads is VAST or VPAID
-  * @type {String}
-  */
 	vastAdsType: 'vast'
 });
 
 Object.assign(MediaElementPlayer.prototype, {
-
-	/**
-  * @type {Boolean}
-  */
 	vastAdTagIsLoading: false,
-	/**
-  * @type {Boolean}
-  */
+
 	vastAdTagIsLoaded: false,
-	/**
-  * @type {Boolean}
-  */
+
 	vastStartedPlaying: false,
-	/**
-  * @type {Array}
-  */
+
 	vastAdTags: [],
 
-	/**
-  * Feature constructor.
-  *
-  * Always has to be prefixed with `build` and the name that will be used in MepDefaults.features list
-  * @param {MediaElementPlayer} player
-  * @param {$} controls
-  * @param {$} layers
-  * @param {HTMLElement} media
-  */
 	buildvast: function buildvast(player, controls, layers, media) {
 
 		var t = this;
@@ -58,12 +34,10 @@ Object.assign(MediaElementPlayer.prototype, {
 			return;
 		}
 
-		// begin loading
 		if (t.options.vastAdTagUrl !== '') {
 			t.vastLoadAdTagInfo();
 		}
 
-		// make sure the preroll ad system is ready (it will ensure it can't be called twice)
 		t.buildads(player, controls, layers, media);
 
 		t.vastSetupEvents();
@@ -76,7 +50,6 @@ Object.assign(MediaElementPlayer.prototype, {
 		    secondQuartExecuted = false,
 		    thirdQuartExecuted = false;
 
-		// LOAD: preroll
 		t.container.addEventListener('mejsprerollinitialized', function () {
 			if (t.vastAdTags.length > 0) {
 
@@ -90,21 +63,18 @@ Object.assign(MediaElementPlayer.prototype, {
 			}
 		});
 
-		// START: preroll
 		t.container.addEventListener('mejsprerollstarted', function () {
 
 			if (t.vastAdTags.length > 0) {
 
 				var adTag = t.vastAdTags[0];
 
-				// always fire this event
 				if (adTag.trackingEvents.start) {
 					for (var i = 0, total = adTag.trackingEvents.start.length; i < total; i++) {
 						t.adsLoadUrl(adTag.trackingEvents.start[i]);
 					}
 				}
 
-				// only do impressions once
 				if (!adTag.shown && adTag.impressions.length > 0) {
 					for (var _i = 0, _total = adTag.impressions.length; _i < _total; _i++) {
 						t.adsLoadUrl(adTag.impressions[_i]);
@@ -115,7 +85,6 @@ Object.assign(MediaElementPlayer.prototype, {
 			}
 		});
 
-		// VOLUMECHANGE: preroll
 		t.container.addEventListener('mejsprerollvolumechanged', function () {
 
 			if (t.vastAdTags.length > 0 && t.options.indexPreroll < t.vastAdTags.length) {
@@ -135,7 +104,6 @@ Object.assign(MediaElementPlayer.prototype, {
 			}
 		});
 
-		// UPDATE: preroll
 		t.container.addEventListener('mejsprerolltimeupdate', function (e) {
 
 			if (t.vastAdTags.length > 0 && t.options.indexPreroll < t.vastAdTags.length) {
@@ -147,7 +115,6 @@ Object.assign(MediaElementPlayer.prototype, {
 				    isMidPoint = percentage >= 50 && percentage < 75,
 				    isThirdQuart = percentage >= 75 && percentage < 100;
 
-				// Check which track is going to be fired
 				if (adTag.trackingEvents.firstQuartile && !firstQuartExecuted && isFirsQuart) {
 					for (var i = 0, total = adTag.trackingEvents.firstQuartile.length; i < total; i++) {
 						t.adsLoadUrl(adTag.trackingEvents.firstQuartile[i]);
@@ -167,7 +134,6 @@ Object.assign(MediaElementPlayer.prototype, {
 			}
 		});
 
-		// END: preroll
 		t.container.addEventListener('mejsprerollended', function () {
 
 			var adTag = t.vastAdTags[t.options.indexPreroll];
@@ -183,7 +149,6 @@ Object.assign(MediaElementPlayer.prototype, {
 			thirdQuartExecuted = false;
 		});
 
-		// ADCLICKED: preroll
 		t.container.addEventListener('mejsprerolladsclicked', function () {
 			var adTag = t.vastAdTags[t.options.indexPreroll];
 
@@ -192,7 +157,6 @@ Object.assign(MediaElementPlayer.prototype, {
 			}
 		});
 
-		// ADSKIPPED: preroll
 		t.container.addEventListener('mejsprerollskipclicked', function () {
 
 			var adTag = t.vastAdTags[t.options.indexPreroll];
@@ -204,39 +168,23 @@ Object.assign(MediaElementPlayer.prototype, {
 			}
 		});
 	},
-
-	/**
-  *
-  * @param {String} url
-  */
 	vastSetAdTagUrl: function vastSetAdTagUrl(url) {
 
 		var t = this;
 
-		// set and reset
 		t.options.vastAdTagUrl = url;
 		t.options.indexPreroll = 0;
 		t.vastAdTagIsLoaded = false;
 		t.vastAdTags = [];
 	},
-
-	/**
-  *
-  */
 	vastLoadAdTagInfo: function vastLoadAdTagInfo() {
 		var t = this;
 
-		// set this to stop playback
 		t.adsDataIsLoading = true;
 		t.vastAdTagIsLoading = true;
 
-		// try straight load first
 		t.loadAdTagInfoDirect();
 	},
-
-	/**
-  *
-  */
 	loadAdTagInfoDirect: function loadAdTagInfoDirect() {
 		var t = this;
 
@@ -249,14 +197,9 @@ Object.assign(MediaElementPlayer.prototype, {
 		}, function (err) {
 			console.error('vast3:direct:error', err);
 
-			// fallback to Yahoo proxy
 			t.loadAdTagInfoProxy();
 		});
 	},
-
-	/**
-  *
-  */
 	loadAdTagInfoProxy: function loadAdTagInfoProxy() {
 		var t = this,
 		    protocol = location.protocol,
@@ -273,19 +216,15 @@ Object.assign(MediaElementPlayer.prototype, {
 			console.error('vast:proxy:yahoo:error', err);
 		});
 	},
-
-	/**
-  * Parse a VAST XML source and build adTags entities.
-  *
-  * This is compliant with VPAID 3.0
-  * @param {String} data
-  */
 	vastParseVastData: function vastParseVastData(data) {
 
 		var t = this,
 		    ads = data.getElementsByTagName('Ad');
 
-		// clear out data
+		if (!ads.length) {
+			return;
+		}
+
 		t.vastAdTags = [];
 		t.options.indexPreroll = 0;
 
@@ -304,7 +243,7 @@ Object.assign(MediaElementPlayer.prototype, {
 				clickTracking: clickTrack,
 				mediaFiles: [],
 				trackingEvents: {},
-				// internal tracking if it's been used
+
 				shown: false
 			},
 			    impressions = adNode.getElementsByTagName('Impression'),
@@ -331,39 +270,41 @@ Object.assign(MediaElementPlayer.prototype, {
 				var mediaFile = mediaFiles[_j2],
 				    type = mediaFile.getAttribute('type');
 
-				if (t.media.canPlayType(type) !== '' || t.media.canPlayType(type).match(/(no|false)/) === null) {
+				if (t.media.canPlayType(type) !== '' || /(no|false)/i.test(t.media.canPlayType(type))) {
+					if (mediaFile.getAttribute('type') === 'application/javascript') {
+						var script = document.createElement('script'),
+						    firstScriptTag = document.getElementsByTagName('script')[0];
 
-					adTag.mediaFiles.push({
-						id: mediaFile.getAttribute('id'),
-						delivery: mediaFile.getAttribute('delivery'),
-						type: mediaFile.getAttribute('type'),
-						bitrate: mediaFile.getAttribute('bitrate'),
-						width: mediaFile.getAttribute('width'),
-						height: mediaFile.getAttribute('height'),
-						url: mediaFile.textContent.trim()
-					});
+						script.src = mediaFile.textContent.trim();
+						firstScriptTag.parentNode.insertBefore(script, firstScriptTag);
+					} else if (mediaFile.getAttribute('delivery') !== 'application/x-shockwave-flash') {
+							adTag.mediaFiles.push({
+								id: mediaFile.getAttribute('id'),
+								delivery: mediaFile.getAttribute('delivery'),
+								type: mediaFile.getAttribute('type'),
+								bitrate: mediaFile.getAttribute('bitrate'),
+								width: mediaFile.getAttribute('width'),
+								height: mediaFile.getAttribute('height'),
+								url: mediaFile.textContent.trim()
+							});
+						}
 				}
 			}
 		}
 
-		// DONE
 		t.vastLoaded();
 	},
-
-	/**
-  * Parse a VPAID XML source and build adTags entities.
-  *
-  * This is compliant with VPAID 2.0
-  * @param {String} data
-  */
 	vpaidParseVpaidData: function vpaidParseVpaidData(data) {
 
 		var t = this,
 		    ads = data.getElementsByTagName('AdParameters');
 
-		// clear out data
 		t.vpaidAdTags = [];
 		t.options.indexPreroll = 0;
+
+		if (typeof ads[0] === 'undefined') {
+			return;
+		}
 
 		var adData = JSON.parse(ads[0].textContent.trim()),
 		    duration = data.getElementsByTagName('Duration'),
@@ -374,7 +315,7 @@ Object.assign(MediaElementPlayer.prototype, {
 			impressions: [],
 			mediaFiles: [],
 			trackingEvents: {},
-			// internal tracking if it's been used
+
 			shown: false
 		};
 
@@ -385,7 +326,7 @@ Object.assign(MediaElementPlayer.prototype, {
 			for (var i = 0, total = adData.media.tracking.beacon.length; i < total; i++) {
 				var trackingEvent = adData.media.tracking.beacon[i];
 
-				if (trackingPoints.includes(trackingEvent.type)) {
+				if (~trackingPoints.indexOf(trackingEvent.type)) {
 					if (adTag.trackingEvents[trackingEvent.type] === undefined) {
 						adTag.trackingEvents[trackingEvent.type] = [];
 					}
@@ -401,7 +342,7 @@ Object.assign(MediaElementPlayer.prototype, {
 				var mediaFile = adData.media.video[property],
 				    type = mediaFile.mime_type.trim();
 
-				if (t.media.canPlayType(type) !== '' || t.media.canPlayType(type).match(/(no|false)/) === null) {
+				if (t.media.canPlayType(type) !== '' || /(no|false)/i.test(t.media.canPlayType(type))) {
 
 					adTag.mediaFiles.push({
 						id: mediaFile.media_id,
@@ -419,13 +360,8 @@ Object.assign(MediaElementPlayer.prototype, {
 
 		t.vastAdTags.push(adTag);
 
-		// DONE
 		t.vastLoaded();
 	},
-
-	/**
-  *
-  */
 	vastLoaded: function vastLoaded() {
 		var t = this;
 
@@ -434,20 +370,17 @@ Object.assign(MediaElementPlayer.prototype, {
 		t.adsDataIsLoading = false;
 		t.vastStartPreroll();
 	},
-
-	/**
-  *
-  */
 	vastStartPreroll: function vastStartPreroll() {
 		var t = this;
 
-		// if we have a media URL, then send it up to the ads plugin as a preroll
-		// load up the vast ads to be played before the selected media.
-		// Note: multiple preroll ads are supported.
 		var i = 0;
 		while (i < t.vastAdTags.length) {
-			t.options.adsPrerollMediaUrl[i] = t.vastAdTags[i].mediaFiles[0].url;
-			t.options.adsPrerollAdUrl[i] = t.vastAdTags[i].clickThrough;
+			if (typeof t.vastAdTags[i].mediaFiles !== 'undefined' && t.vastAdTags[i].mediaFiles.length) {
+				t.options.adsPrerollMediaUrl[i] = t.vastAdTags[i].mediaFiles[0].url;
+			}
+			if (typeof t.vastAdTags[i].clickThrough !== 'undefined') {
+				t.options.adsPrerollAdUrl[i] = t.vastAdTags[i].clickThrough;
+			}
 			i++;
 		}
 		t.adsStartPreroll();

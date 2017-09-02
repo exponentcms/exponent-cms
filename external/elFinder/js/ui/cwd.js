@@ -155,6 +155,13 @@ $.fn.elfindercwd = function(fm, options) {
 			customCols = [],
 
 			/**
+			 * Current clicked element id of first time for dblclick
+			 * 
+			 * @type String
+			 */
+			curClickId = '',
+
+			/**
 			 * Custom columns builder
 			 *
 			 * @type Function
@@ -393,6 +400,8 @@ $.fn.elfindercwd = function(fm, options) {
 				$('#'+fm.cwdHash2Id(hash)).trigger(evtSelect);
 			},
 			
+			allSelected = false,
+			
 			selectAll = function() {
 				var phash = fm.cwd().hash;
 
@@ -424,12 +433,31 @@ $.fn.elfindercwd = function(fm, options) {
 					selectedFiles = [];
 					cwd.find('[id].'+clSelected).trigger(evtUnselect);
 					selectCheckbox && cwd.find('input:checkbox').prop('checked', false);
-				} else {
-					fm.select({selected: []});
 				}
 				trigger();
 				selectCheckbox && selectAllCheckbox.data('pending', false);
 				cwd.removeClass('elfinder-cwd-allselected');
+			},
+			
+			selectInvert = function() {
+				var allHashes, selHashes = {};
+				if (allSelected) {
+					unselectAll();
+				} else if (!selectedFiles.length) {
+					selectAll();
+				} else {
+					allHashes = (incHashes || cwdHashes).concat();
+					$.each(selectedFiles, function() {
+						selHashes[this] = true;
+					});
+					selectedFiles = $.map(allHashes, function(h) {
+						var itemNode = $('#'+fm.cwdHash2Id(h)),
+							sel = selHashes[h]? null : h;
+						itemNode.length && itemNode.trigger(sel? evtSelect : evtUnselect);
+						return sel;
+					});
+					trigger();
+				}
 			},
 			
 			/**
@@ -454,12 +482,19 @@ $.fn.elfindercwd = function(fm, options) {
 			 * @return void
 			 */
 			trigger = function() {
+				var opts = { selected : selectedFiles };
+				
+				allSelected = selectedFiles.length && (selectedFiles.length === (incHashes || cwdHashes).length) && (!fm.maxTargets || selectedFiles.length <= fm.maxTargets);
 				if (selectCheckbox) {
-					var all = (selectedFiles.length === cwdHashes.length);
-					selectAllCheckbox.find('input').prop('checked', all);
-					cwd[all? 'addClass' : 'removeClass']('elfinder-cwd-allselected');
+					selectAllCheckbox.find('input').prop('checked', allSelected);
+					cwd[allSelected? 'addClass' : 'removeClass']('elfinder-cwd-allselected');
 				}
-				fm.trigger('select', {selected : selectedFiles});
+				if (allSelected) {
+					opts.selectall = true;
+				} else if (! selectedFiles.length) {
+					opts.unselectall = true;
+				}
+				fm.trigger('select', opts);
 			},
 			
 			/**
@@ -563,7 +598,7 @@ $.fn.elfindercwd = function(fm, options) {
 			 * @return void
 			 */
 			wrapperRepaint = function(init) {
-				var selctable = cwd.data('selectable'),
+				var selectable = cwd.data('selectable'),
 					rec = (function() {
 						var wos = wrapper.offset(),
 							w = $(window),
@@ -587,14 +622,14 @@ $.fn.elfindercwd = function(fm, options) {
 								tmbs[hash] = bufferExt.attachTmbs[hash];
 							}
 							// for selectable
-							selctable && ids.push(id);
+							selectable && ids.push(id);
 						}
 						// next node
 						tgt = tgt.next();
 					},
 					done = function() {
 						var id;
-						if (selctable) {
+						if (cwd.data('selectable')) {
 							if (selectedFiles.length) {
 								ids = ids.concat($.map(selectedFiles, function(h) {
 									id = fm.cwdHash2Id(h);
@@ -614,7 +649,7 @@ $.fn.elfindercwd = function(fm, options) {
 					arr;
 				
 				inViewHashes = {};
-				selctable && cwd.selectable('option', 'disabled');
+				selectable && cwd.selectable('option', 'disabled');
 				
 				if (tgt.length) {
 					if (! tgt.hasClass(clFile)) {
@@ -635,7 +670,7 @@ $.fn.elfindercwd = function(fm, options) {
 							bufferExt.repaintJob = fm.asyncJob(function() {
 								chk();
 								if (! tgt.length) {
-									bufferExt.repaintJob._abort(true);
+									bufferExt.repaintJob && bufferExt.repaintJob._abort(true);
 								}
 							}, arr).done(done);
 						}
@@ -656,11 +691,11 @@ $.fn.elfindercwd = function(fm, options) {
 						if (pdir) {
 							parent = $(itemhtml($.extend(true, {}, pdir, {name : '..', mime : 'directory'})))
 								.addClass('elfinder-cwd-parent')
-								.bind('mousedown click mouseup touchstart touchmove touchend dblclick mouseenter', function(e) {
+								.on('mousedown click mouseup touchstart touchmove touchend dblclick mouseenter', function(e) {
 									e.preventDefault();
 									e.stopPropagation();
 								})
-								.dblclick(function() {
+								.on('dblclick', function() {
 									fm.exec('open', fm.cwdId2Hash(this.id));
 								}
 							);
@@ -770,7 +805,7 @@ $.fn.elfindercwd = function(fm, options) {
 						}
 						
 						if (Object.keys(atmb).length) {
-							$.extend(bufferExt.attachTmbs, atmb);
+							Object.assign(bufferExt.attachTmbs, atmb);
 						}
 						
 						if (init) {
@@ -928,7 +963,7 @@ $.fn.elfindercwd = function(fm, options) {
 			 *
 			 * @type Object
 			 */
-			droppable = $.extend({}, fm.droppable, {
+			droppable = Object.assign({}, fm.droppable, {
 				over : function(e, ui) {
 					var dst    = $(this),
 						helper = ui.helper,
@@ -1068,7 +1103,7 @@ $.fn.elfindercwd = function(fm, options) {
 							} else {
 								if (reload) {
 									loadThumbnails([hash]);
-								} else {
+								} else if (! bufferExt.tmbLoading[hash]) {
 									bufferExt.getTmbs.push(hash);
 								}
 							}
@@ -1076,9 +1111,9 @@ $.fn.elfindercwd = function(fm, options) {
 					};
 
 				if ($.isPlainObject(tmbs) && Object.keys(tmbs).length) {
-					$.extend(bufferExt.attachTmbs, tmbs);
+					Object.assign(bufferExt.attachTmbs, tmbs);
 					$.each(tmbs, chk);
-					if (! reload && bufferExt.getTmbs.length) {
+					if (! reload && bufferExt.getTmbs.length && ! Object.keys(bufferExt.tmbLoading).length) {
 						loadThumbnails();
 					}
 				}
@@ -1118,13 +1153,35 @@ $.fn.elfindercwd = function(fm, options) {
 				}
 				if (tmbs.length) {
 					if (reload || inViewHashes[tmbs[0]] || inViewHashes[tmbs[tmbs.length-1]]) {
+						$.each(tmbs, function(i, h) {
+							bufferExt.tmbLoading[h] = true;
+						});
 						fm.request({
 							data : {cmd : 'tmb', targets : tmbs},
 							preventFail : true
 						})
 						.done(function(data) {
-							if (data.images && Object.keys(data.images).length) {
-								attachThumbnails(data.images, reload);
+							var errs = [],
+								resLen;
+							if (data.images) {
+								if (resLen = Object.keys(data.images).length) {
+									if (resLen < tmbs.length) {
+										$.each(tmbs, function(i, h) {
+											if (! data.images[h]) {
+												errs.push(h);
+											}
+										});
+									}
+									attachThumbnails(data.images, reload);
+								} else {
+									errs = tmbs;
+								}
+								// unset error items from bufferExt.attachTmbs
+								if (errs.length) {
+									$.each(errs, function(i, h) {
+										delete bufferExt.attachTmbs[h];
+									});
+								}
 							}
 							if (reload) {
 								if (reloads.length) {
@@ -1133,6 +1190,7 @@ $.fn.elfindercwd = function(fm, options) {
 							}
 						})
 						.always(function() {
+							bufferExt.tmbLoading = {};
 							if (! reload && bufferExt.getTmbs.length) {
 								loadThumbnails();
 							}
@@ -1218,10 +1276,13 @@ $.fn.elfindercwd = function(fm, options) {
 						}
 					}
 	
-					setColwidth();
+					if (list) {
+						setColwidth();
+						fixTableHeader({fitWidth: ! colWidth});
+					}
 					bottomMarkerShow(place);
 					if (Object.keys(atmb).length) {
-						$.extend(bufferExt.attachTmbs, atmb);
+						Object.assign(bufferExt.attachTmbs, atmb);
 					}
 				}
 			},
@@ -1233,13 +1294,17 @@ $.fn.elfindercwd = function(fm, options) {
 			 * @return void
 			 */
 			remove = function(files) {
-				var l = files.length, hash, n, ndx;
+				var l = files.length,
+					inSearch = fm.searchStatus.state > 1,
+					curCmd = fm.getCommand(fm.currentReqCmd) || {},
+					hash, n, ndx, allItems;
 
 				// removed cwd
-				if (!fm.cwd().hash && fm.currentReqCmd !== 'open') {
+				if (!fm.cwd().hash && !curCmd.noChangeDirOnRemovedCwd) {
+					allItems = fm.files();
 					$.each(cwdParents.reverse(), function(i, h) {
-						if (fm.files()[h]) {
-							fm.one(fm.currentReqCmd + 'done', function(e, fm) {
+						if (allItems[h]) {
+							fm.one(fm.currentReqCmd + 'done', function() {
 								!fm.cwd().hash && fm.exec('open', h);
 							});
 							return false;
@@ -1257,12 +1322,22 @@ $.fn.elfindercwd = function(fm, options) {
 						} catch(e) {
 							fm.debug('error', e);
 						}
-					} else if ((ndx = index(hash)) != -1) {
+					} else if ((ndx = index(hash)) !== -1) {
 						buffer.splice(ndx, 1);
+					}
+					if (inSearch) {
+						if ((ndx = $.inArray(hash, cwdHashes)) !== -1) {
+							cwdHashes.splice(ndx, 1);
+						}
 					}
 				}
 				
-				setColwidth();
+				inSearch && fm.trigger('cwdhasheschange', cwdHashes);
+				
+				if (list) {
+					setColwidth();
+					fixTableHeader({fitWidth: ! colWidth});
+				}
 			},
 			
 			msg = {
@@ -1279,7 +1354,7 @@ $.fn.elfindercwd = function(fm, options) {
 			customColsNameBuild = function() {
 				var name = '',
 				customColsName = '',
-				names = $.extend({}, msg, options.listView.columnsCustomName);
+				names = Object.assign({}, msg, options.listView.columnsCustomName);
 				for (var i = 0; i < customCols.length; i++) {
 					if (typeof names[customCols[i]] !== 'undefined') {
 						name = names[customCols[i]];
@@ -1374,7 +1449,7 @@ $.fn.elfindercwd = function(fm, options) {
 				bufferExt.attachThumbJob && bufferExt.attachThumbJob._abort();
 				
 				// destroy selectable for GC
-				cwd.data('selectable') && cwd.selectable('destroy').data('selectable', false);
+				cwd.data('selectable') && cwd.selectable('disable').selectable('destroy').removeData('selectable');
 				
 				// notify cwd init
 				fm.trigger('cwdinit');
@@ -1508,6 +1583,7 @@ $.fn.elfindercwd = function(fm, options) {
 						renderd: 0,
 						attachTmbs: {},
 						getTmbs: [],
+						tmbLoading: {},
 						lazyOpts: { tm : 0 }
 					};
 					
@@ -1521,7 +1597,7 @@ $.fn.elfindercwd = function(fm, options) {
 						       .removeClass('ui-state-disabled'); // for old jQueryUI see https://bugs.jqueryui.com/ticket/5974
 					} else {
 						wrapper[fm.isCommandEnabled('upload')? 'addClass' : 'removeClass']('native-droppable');
-						wrapper.droppable('enable');
+						wrapper.droppable(fm.isCommandEnabled('paste')? 'enable' : 'disable');
 					}
 				});
 			},
@@ -1563,6 +1639,13 @@ $.fn.elfindercwd = function(fm, options) {
 						return;
 					}
 
+					if (!curClickId) {
+						curClickId = p.attr('id');
+						setTimeout(function() {
+							curClickId = '';
+						}, 500);
+					}
+					
 					if (e.shiftKey) {
 						prev = p.prevAll(lastSelect || '.'+clSelected+':first');
 						next = p.nextAll(lastSelect || '.'+clSelected+':first');
@@ -1589,7 +1672,16 @@ $.fn.elfindercwd = function(fm, options) {
 				})
 				// call fm.open()
 				.on('dblclick.'+fm.namespace, fileSelector, function(e) {
-					fm.dblclick({file : fm.cwdId2Hash(this.id)});
+					if (curClickId) {
+						var hash = fm.cwdId2Hash(curClickId);
+						e.stopPropagation();
+						if (this.id !== curClickId) {
+							$(this).trigger(evtUnselect);
+							$('#'+curClickId).trigger(evtSelect);
+							trigger();
+						}
+						fm.dblclick({file : hash});
+					}
 				})
 				// for touch device
 				.on('touchstart.'+fm.namespace, fileSelector, function(e) {
@@ -1666,7 +1758,7 @@ $.fn.elfindercwd = function(fm, options) {
 							var metaKey = e.shiftKey || e.altKey;
 							if (metaKey && !fm.UA.IE && cwd.data('selectable')) {
 								// destroy jQuery-ui selectable while trigger native drag
-								cwd.selectable('destroy').data('selectable', false);
+								cwd.selectable('disable').selectable('destroy').removeData('selectable');
 								setTimeout(function(){
 									cwd.selectable(selectableOption).selectable('option', {disabled: false}).selectable('refresh').data('selectable', true);
 								}, 10);
@@ -1819,8 +1911,8 @@ $.fn.elfindercwd = function(fm, options) {
 					$this.hasClass(clDroppable) && $this.droppable('enable');	
 					target.hasClass(clDraggable) && target.draggable('enable');
 				})
-				.on('scrolltoview', fileSelector, function() {
-					scrollToView($(this), true);
+				.on('scrolltoview', fileSelector, function(e, data) {
+					scrollToView($(this), (data && typeof data.blink !== 'undefined')? data.blink : true);
 				})
 				.on('mouseenter.'+fm.namespace+' mouseleave.'+fm.namespace, fileSelector, function(e) {
 					var enter = (e.type === 'mouseenter');
@@ -1896,7 +1988,7 @@ $.fn.elfindercwd = function(fm, options) {
 				}),
 			wrapper = $('<div class="elfinder-cwd-wrapper"/>')
 				// make cwd itself droppable for folders from nav panel
-				.droppable($.extend({}, droppable, {autoDisable: false}))
+				.droppable(Object.assign({}, droppable, {autoDisable: false}))
 				.on('contextmenu.'+fm.namespace, wrapperContextMenu.contextmenu)
 				.on('touchstart.'+fm.namespace, wrapperContextMenu.touchstart)
 				.on('touchmove.'+fm.namespace+' touchend.'+fm.namespace, wrapperContextMenu.touchend)
@@ -1984,7 +2076,7 @@ $.fn.elfindercwd = function(fm, options) {
 			winScrTm;
 
 		// setup by options
-		replacement = $.extend(replacement, options.replacement || {});
+		replacement = Object.assign(replacement, options.replacement || {});
 		
 		try {
 			colWidth = fm.storage('cwdColWidth')? fm.storage('cwdColWidth') : null;
@@ -2034,20 +2126,27 @@ $.fn.elfindercwd = function(fm, options) {
 		fm
 			.one('init', function(){
 				var style = document.createElement('style'),
-				sheet, node, base, resizeTm;
-				document.head.appendChild(style);
-				sheet = style.sheet;
-				sheet.insertRule('.elfinder-cwd-wrapper-empty .elfinder-cwd:after{ content:"'+fm.i18n('emptyFolder')+'" }', 0);
-				sheet.insertRule('.elfinder-cwd-wrapper-empty .ui-droppable .elfinder-cwd:after{ content:"'+fm.i18n('emptyFolder'+(mobile? 'LTap' : 'Drop'))+'" }', 1);
-				sheet.insertRule('.elfinder-cwd-wrapper-empty .ui-droppable-disabled .elfinder-cwd:after{ content:"'+fm.i18n('emptyFolder')+'" }', 2);
-				sheet.insertRule('.elfinder-cwd-wrapper-empty.elfinder-search-result .elfinder-cwd:after{ content:"'+fm.i18n('emptySearch')+'" }', 3);
-				sheet.insertRule('.elfinder-cwd-wrapper-empty.elfinder-search-result.elfinder-incsearch-result .elfinder-cwd:after{ content:"'+fm.i18n('emptyIncSearch')+'" }', 4);
-				sheet.insertRule('.elfinder-cwd-wrapper-empty.elfinder-search-result.elfinder-letsearch-result .elfinder-cwd:after{ content:"'+fm.i18n('emptyLetSearch')+'" }', 5);
+				sheet, node, base, resizeTm, i = 0;
+				if (document.head) {
+					document.head.appendChild(style);
+					sheet = style.sheet;
+					sheet.insertRule('.elfinder-cwd-wrapper-empty .elfinder-cwd:after{ content:"'+fm.i18n('emptyFolder')+'" }', i++);
+					sheet.insertRule('.elfinder-cwd-wrapper-empty .ui-droppable .elfinder-cwd:after{ content:"'+fm.i18n('emptyFolder'+(mobile? 'LTap' : 'Drop'))+'" }', i++);
+					sheet.insertRule('.elfinder-cwd-wrapper-empty .ui-droppable-disabled .elfinder-cwd:after{ content:"'+fm.i18n('emptyFolder')+'" }', i++);
+					sheet.insertRule('.elfinder-cwd-wrapper-empty.elfinder-search-result .elfinder-cwd:after{ content:"'+fm.i18n('emptySearch')+'" }', i++);
+					sheet.insertRule('.elfinder-cwd-wrapper-empty.elfinder-search-result.elfinder-incsearch-result .elfinder-cwd:after{ content:"'+fm.i18n('emptyIncSearch')+'" }', i++);
+					sheet.insertRule('.elfinder-cwd-wrapper-empty.elfinder-search-result.elfinder-letsearch-result .elfinder-cwd:after{ content:"'+fm.i18n('emptyLetSearch')+'" }', i++);
+				}
 				if (! mobile) {
+					fm.one('open', function() {
+						sheet && fm.zIndex && sheet.insertRule('.ui-selectable-helper{z-index:'+fm.zIndex+';}', i++);
+					});
 					base = $('<div style="position:absolute"/>');
 					node = fm.getUI();
 					node.on('resize', function(e, data) {
 						var offset;
+						e.preventDefault();
+						e.stopPropagation();
 						if (data && data.fullscreen) {
 							offset = node.offset();
 							if (data.fullscreen === 'on') {
@@ -2062,19 +2161,41 @@ $.fn.elfindercwd = function(fm, options) {
 					});
 				}
 			})
-			.bind('open add remove searchend', function() {
-				var phash = fm.cwd().hash;
-				cwdHashes = $.map(fm.files(), function(f) { return f.phash == phash ? f.hash : null ;});
-			})
-			.bind('open', function() {
-				cwdParents = fm.parents(fm.cwd().hash);
-				incHashes = void 0;
-				unselectAll();
-				content();
+			.bind('enable', function() {
 				resize();
+			})
+			.bind('request.open', function() {
+				bufferExt.getTmbs = [];
+			})
+			.bind('open add remove searchend', function() {
+				var phash = fm.cwd().hash,
+					type = this.type;
+				if (type === 'open' || type === 'searchend' || fm.searchStatus.state < 2) {
+					cwdHashes = $.map(fm.files(phash), function(f) { return f.hash; });
+					fm.trigger('cwdhasheschange', cwdHashes);
+				}
+				if (type === 'open') {
+					var inTrash = function() {
+						var isIn = false;
+						$.each(cwdParents, function(i, h) {
+							if (fm.trashes[h]) {
+								isIn = true;
+								return false;
+							}
+						});
+						return isIn;
+					};
+					cwdParents = fm.parents(fm.cwd().hash);
+					wrapper[inTrash()? 'addClass':'removeClass']('elfinder-cwd-wrapper-trash');
+					incHashes = void 0;
+					unselectAll();
+					content();
+					resize();
+				}
 			})
 			.bind('search', function(e) {
 				cwdHashes = $.map(e.data.files, function(f) { return f.hash; });
+				fm.trigger('cwdhasheschange', cwdHashes);
 				incHashes = void 0;
 				fm.searchStatus.ininc = false;
 				content();
@@ -2170,7 +2291,7 @@ $.fn.elfindercwd = function(fm, options) {
 				}
 				
 				cwdOffset = cwd.offset();
-				wz.data('rectangle', $.extend(
+				wz.data('rectangle', Object.assign(
 					{
 						width: wz.width(),
 						height: wz.height(),
@@ -2208,13 +2329,40 @@ $.fn.elfindercwd = function(fm, options) {
 				}
 			})
 			.add(function(e) {
-				var phash = fm.cwd().hash,
-					regex = query? new RegExp(query.replace(/([\\*\;\.\?\[\]\{\}\(\)\^\$\-\|])/g, '\\$1'), 'i') : null,
-					files = regex
-						? $.map(e.data.added || [], function(f) { return (! fm.searchStatus.ininc || f.phash == phash) && (f.name.match(regex) || (f.i18 && f.i18.match(regex)))? f : null ;})
-						: $.map(e.data.added || [], function(f) { return f.phash == phash ? f : null; })
-						;
+				var regex = query? new RegExp(query.replace(/([\\*\;\.\?\[\]\{\}\(\)\^\$\-\|])/g, '\\$1'), 'i') : null,
+					mime  = fm.searchStatus.mime,
+					inSearch = fm.searchStatus.state > 1,
+					phash = inSearch && fm.searchStatus.target? fm.searchStatus.target : fm.cwd().hash,
+					curPath = fm.path(phash),
+					inTarget = function(f) {
+						var res, parents, path;
+						res = (f.phash === phash);
+						if (!res && inSearch) {
+							path = f.path || fm.path(f.hash);
+							res = (curPath && path.indexOf(curPath) === 0);
+							if (! res && fm.searchStatus.mixed) {
+								res = $.map(fm.searchStatus.mixed, function(vid) { return f.hash.indexOf(vid) === 0? true : null; }).length? true : false;
+							}
+						}
+						if (res && inSearch) {
+							if (mime) {
+								res = (f.mime.indexOf(mime) === 0);
+							} else {
+								res = (f.name.match(regex) || (f.i18 && f.i18.match(regex)))? true : false;
+							}
+						}
+						return res;
+					},
+					files = $.map(e.data.added || [], function(f) { return inTarget(f)? f : null ;});
 				add(files);
+				if (fm.searchStatus.state === 2) {
+					$.each(files, function(i, f) {
+						if ($.inArray(f.hash, cwdHashes) === -1) {
+							cwdHashes.push(f.hash);
+						}
+					});
+					fm.trigger('cwdhasheschange', cwdHashes);
+				}
 				list && resize();
 				wrapper.trigger(scrollEvent);
 			})
@@ -2242,6 +2390,7 @@ $.fn.elfindercwd = function(fm, options) {
 				}
 				
 				if (added) {
+					fm.trigger('cwdhasheschange', cwdHashes);
 					list && resize();
 					wrapper.trigger(scrollEvent);
 				}
@@ -2320,7 +2469,9 @@ $.fn.elfindercwd = function(fm, options) {
 				}
 				if (!helper.data('locked')) {
 					while (l--) {
-						$('#'+fm.cwdHash2Id(files[l])).trigger(event);
+						try {
+							$('#'+fm.cwdHash2Id(files[l])).trigger(event);
+						} catch(e) {}
 					}
 					! e.data.inselect && trigger();
 				}
@@ -2346,6 +2497,11 @@ $.fn.elfindercwd = function(fm, options) {
 				pattern     :'ctrl+a', 
 				description : 'selectall',
 				callback    : selectAll
+			})
+			.shortcut({
+				pattern     :'ctrl+shift+i', 
+				description : 'selectinvert',
+				callback    : selectInvert
 			})
 			.shortcut({
 				pattern     : 'left right up down shift+left shift+right shift+up shift+down',

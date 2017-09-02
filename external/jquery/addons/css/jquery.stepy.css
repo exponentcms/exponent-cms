@@ -14,7 +14,7 @@
 }
 
 .stepy-header li.stepy-error {
-	background : url('images/error.png') no-repeat right top
+	background : url('images/error.png') no-repeat left top
 }
 
 .stepy-header li div {

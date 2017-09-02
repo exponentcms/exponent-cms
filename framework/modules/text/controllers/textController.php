@@ -49,10 +49,6 @@ class textController extends expController {
 		$items = $this->text->find('all', $where, $order);
 
         // now the stuff for the inline editing w/ ckeditor v4
-        $level = 99;
-        if (expSession::is_set('uilevel')) {
-        	$level = expSession::get('uilevel');
-        }
         $settings = expHTMLEditorController::getActiveEditorSettings(SITE_WYSIWYG_EDITOR);
         if (empty($settings->name)) $settings = new stdClass();
         if (SITE_WYSIWYG_EDITOR == 'ckeditor') {
@@ -223,7 +219,7 @@ class textController extends expController {
         //fixme we do NOT pass toolbars, nor custom plugins in toolbar
 		assign_to_template(array(
             'items'=>$items,
-            'preview'=>($level == UILEVEL_PREVIEW),  // needed for inline edit to work
+            'preview'=>(expTheme::inPreview()),  // needed for inline edit to work
             'editor'=>$settings,
         ));
 	}

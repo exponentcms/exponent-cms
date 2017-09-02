@@ -55,7 +55,7 @@
             <div class="slideshow-frame-ex owl-carousel owl-theme">
             {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
             {foreach key=key from=$slides item=slide name=slides}
-                <li class="slide"{if !$config.hidetext} data-plugin-slide-caption='<{$config.item_level|default:'h2'}>{$slide->title|escape}</{$config.item_level|default:'h2'}> {$slide->body|escape}'{/if}>
+                <li class="slide">
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit || ($permissions.create && $slide->poster == $user->id)}
@@ -76,6 +76,12 @@
                             {/if}
                         </div>
                     {/permissions}
+                    {if !$config.hidetext}
+                        <div class="owl-text-overlay hidden-xs">
+                            <{$config.item_level|default:'h2'} class="owl-title">{$slide->title}</{$config.item_level|default:'h2'}>
+                            {$slide->body}
+                        </div>
+                    {/if}
                     {if $slide->link}
                         <a href="{$slide->link}">
                     {/if}

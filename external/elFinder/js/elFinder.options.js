@@ -19,6 +19,14 @@ elFinder.prototype._options = {
 	 * @default "get"
 	 */
 	requestType : 'get',
+	
+	/**
+	 * Maximum number of concurrent connections on request
+	 * 
+	 * @type Number
+	 * @default 3
+	 */
+	requestMaxConn : 3,
 
 	/**
 	 * Transport to send request to backend.
@@ -139,6 +147,15 @@ elFinder.prototype._options = {
 	lang : 'en',
 
 	/**
+	 * Base URL of elfFinder library starting from Manager HTML
+	 * Auto detect when empty value`
+	 * 
+	 * @type String
+	 * @default ""
+	 */
+	baseUrl : '',
+	
+	/**
 	 * Auto load required CSS
 	 * `false` to disable this function or
 	 * CSS URL Array to load additional CSS files
@@ -164,11 +181,10 @@ elFinder.prototype._options = {
 	commands : ['*'],
 	// Available commands list
 	//commands : [
-	//	'pixlr',
-	//	'archive', 'back', 'chmod', 'colwidth', 'copy', 'cut', 'download', 'duplicate',
-	//	'edit', 'extract', 'forward', 'fullscreen', 'getfile', 'help', 'home', 'info',
-	//	'mkdir', 'mkfile', 'netmount', 'netunmount', 'open', 'opendir', 'paste', 'places',
-	//	'quicklook', 'reload', 'rename', 'resize', 'rm', 'search', 'sort', 'up', 'upload', 'view'
+	//	'archive', 'back', 'chmod', 'colwidth', 'copy', 'cut', 'download', 'duplicate', 'edit', 'extract',
+	//	'forward', 'fullscreen', 'getfile', 'help', 'home', 'info', 'mkdir', 'mkfile', 'netmount', 'netunmount',
+	//	'open', 'opendir', 'paste', 'places', 'quicklook', 'reload', 'rename', 'resize', 'restore', 'rm',
+	//	'search', 'sort', 'up', 'upload', 'view', 'zipdl'
 	//],
 	
 	/**
@@ -226,7 +242,10 @@ elFinder.prototype._options = {
 		},
 		// "download" command options.
 		download : {
-			maxRequests : 10
+			// max request to download files when zipdl disabled
+			maxRequests : 10,
+			// minimum count of files to use zipdl
+			minFilesZipdl : 2
 		},
 		// "quicklook" command options.
 		quicklook : {
@@ -235,21 +254,56 @@ elFinder.prototype._options = {
 			height   : 300,
 			// MIME types to use Google Docs online viewer
 			// Example ['application/pdf', 'image/tiff', 'application/vnd.ms-office', 'application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
-			googleDocsMimes : []
+			googleDocsMimes : [],
+			// URL of hls.js
+			hlsJsUrl : '//cdnjs.cloudflare.com/ajax/libs/hls.js/0.7.11/hls.min.js',
+			// URL of dash.all.js
+			dashJsUrl : '//cdnjs.cloudflare.com/ajax/libs/dashjs/2.5.0/dash.all.min.js'
 		},
 		// "quicklook" command options.
 		edit : {
-			// list of allowed mimetypes to edit
+			// dialog width, integer(px) or integer+'%' (example: 650, '80%' ...)
+			dialogWidth : void(0),
+			// list of allowed mimetypes to edit of text files
 			// if empty - any text files can be edited
 			mimes : [],
 			// edit files in wysisyg's
 			editors : [
 				// {
 				// 	/**
+				// 	 * editor info
+				// 	 * @type  Object
+				// 	 */
+				// 	info : { name: 'Editor Name' },
+				// 	/**
 				// 	 * files mimetypes allowed to edit in current wysisyg
 				// 	 * @type  Array
 				// 	 */
 				// 	mimes : ['text/html'], 
+				// 	/**
+				// 	 * HTML element for editing area (optional for text editor)
+				// 	 * @type  String
+				// 	 */
+				// 	html : '<textarea></textarea>', 
+				// 	/**
+				// 	 * Initialize editing area node (optional for text editor)
+				// 	 * 
+				// 	 * @param  String  dialog DOM id
+				// 	 * @param  Object  target file object
+				// 	 * @param  String  target file content (text or Data URI Scheme(binary file))
+				// 	 * @param  Object  elFinder instance
+				// 	 * @type  Function
+				// 	 */
+				// 	init : function(id, file, content, fm) {
+				// 		$(this).attr('id', id + '-text').val(content);
+				// 	},
+				// 	/**
+				// 	 * Get edited contents (optional for text editor)
+				// 	 * @type  Function
+				// 	 */
+				// 	getContent : function() {
+				// 		return $(this).val();
+				// 	},
 				// 	/**
 				// 	 * Called when "edit" dialog loaded.
 				// 	 * Place to init wysisyg.
@@ -304,7 +358,16 @@ elFinder.prototype._options = {
 				'Cp862', 'Cp866', 'Cp874', 'EUC-CN', 'EUC-JP', 'EUC-KR', 'ISO-2022-CN', 'ISO-2022-JP', 'ISO-2022-KR', 
 				'ISO-8859-1', 'ISO-8859-2', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5', 'ISO-8859-6', 'ISO-8859-7', 
 				'ISO-8859-8', 'ISO-8859-9', 'ISO-8859-13', 'ISO-8859-15', 'KOI8-R', 'KOI8-U', 'Shift-JIS', 
-				'Windows-1250', 'Windows-1251', 'Windows-1252', 'Windows-1253', 'Windows-1254', 'Windows-1257']
+				'Windows-1250', 'Windows-1251', 'Windows-1252', 'Windows-1253', 'Windows-1254', 'Windows-1257'],
+			// options for extra editors
+			extraOptions : {
+				// Specify the Creative Cloud API key when using Creative SDK image editor of Creative Cloud.
+				// You can get the API key at https://console.adobe.io/.
+				//creativeCloudApiKey : '',
+				// Browsing manager URL for CKEditor, TinyMCE
+				// Uses self location with the empty value or not defined.
+				//managerUrl : 'elfinder.html'
+			}
 		},
 		search : {
 			// Incremental search from the current view
@@ -379,10 +442,39 @@ elFinder.prototype._options = {
 		},
 		resize: {
 			// defalt status of snap to 8px grid of the jpeg image ("enable" or "disable")
-			grid8px : 'enable'
+			grid8px : 'enable',
+			// Preset size array [width, height]
+			presetSize : [[320, 240], [400, 400], [640, 480], [800,600]]
 		},
-		help : {view : ['about', 'shortcuts', 'help', 'debug']}
+		rm: {
+			// If trash is valid, items moves immediately to the trash holder without confirm.
+			quickTrash : true,
+			// Maximum wait seconds when checking the number of items to into the trash
+			infoCheckWait : 10,
+			// Maximum number of items that can be placed into the Trash at one time
+			toTrashMaxItems : 1000
+		},
+		help : {
+			// Tabs to show
+			view : ['about', 'shortcuts', 'help', 'preference', 'debug'],
+			// HTML source URL of the heip tab
+			helpSource : ''
+		}
 	},
+	
+	/**
+	 * Callback for prepare boot up
+	 * 
+	 * - The this object in the function is an elFinder node
+	 * - The first parameter is elFinder Instance
+	 * - The second parameter is an object of other parameters
+	 *   For now it can use `dfrdsBeforeBootup` Array
+	 * 
+	 * @type Function
+	 * @default null
+	 * @return void
+	 */
+	bootCallback : null,
 	
 	/**
 	 * Callback for "getfile" commands.
@@ -403,6 +495,8 @@ elFinder.prototype._options = {
 	
 	/**
 	 * Hash of default directory path to open
+	 * 
+	 * NOTE: This setting will be disabled if the target folder is specified in location.hash.
 	 * 
 	 * If you want to find the hash in Javascript
 	 * can be obtained with the following code. (In the case of a standard hashing method)
@@ -444,42 +538,48 @@ elFinder.prototype._options = {
 	uiOptions : {
 		// toolbar configuration
 		toolbar : [
-			['back', 'forward'],
+			['home', 'back', 'forward', 'up', 'reload'],
 			['netmount'],
-			// ['reload'],
-			// ['home', 'up'],
 			['mkdir', 'mkfile', 'upload'],
 			['open', 'download', 'getfile'],
-			['info', 'chmod'],
-			['quicklook'],
-			['copy', 'cut', 'paste'],
-			['rm'],
-			['duplicate', 'rename', 'edit', 'resize', 'pixlr'],
+			['undo', 'redo'],
+			['copy', 'cut', 'paste', 'rm', 'empty'],
+			['duplicate', 'rename', 'edit', 'resize', 'chmod'],
+			['selectall', 'selectnone', 'selectinvert'],
+			['quicklook', 'info'],
 			['extract', 'archive'],
 			['search'],
 			['view', 'sort'],
 			['help'],
-			['fullscreen'],
-			// extra options
-			{
-				// also displays the text label on the button (true / false)
-				displayTextLabel: false,
-				// Exclude `displayTextLabel` setting UA type
-				labelExcludeUA: ['Mobile'],
-				// auto hide on initial open
-				autoHideUA: ['Mobile']
-			}
+			['fullscreen']
 		],
+		// toolbar extra options
+		toolbarExtra : {
+			// also displays the text label on the button (true / false)
+			displayTextLabel: false,
+			// Exclude `displayTextLabel` setting UA type
+			labelExcludeUA: ['Mobile'],
+			// auto hide on initial open
+			autoHideUA: ['Mobile'],
+			// Initial setting value of hide button in toolbar setting
+			defaultHides: ['home', 'reload'],
+			// show Preference button ('none', 'auto', 'always')
+			// If you do not include 'preference' in the context menu you should specify 'auto' or 'always'
+			showPreferenceButton: 'none'
+		},
 		// directories tree options
 		tree : {
 			// expand current root on init
 			openRootOnLoad : true,
 			// expand current work directory on open
 			openCwdOnOpen  : true,
-			// auto load current dir parents
+			// auto loading current directory parents and do expand their node.
 			syncTree : true,
+			// Maximum number of display of each child trees
+			// The tree of directories with children exceeding this number will be split
+			subTreeMax : 100,
 			// Numbar of max connctions of subdirs request
-			subdirsMaxConn : 3,
+			subdirsMaxConn : 2,
 			// Number of max simultaneous processing directory of subdirs
 			subdirsAtOnce : 5
 			// ,
@@ -562,6 +662,18 @@ elFinder.prototype._options = {
 			//}
 		}
 	},
+
+	/**
+	 * MIME regex of send HTTP header "Content-Disposition: inline" or allow preview in quicklook
+	 * This option will overwrite by connector configuration
+	 * 
+	 * @type String
+	 * @default '^(?:(?:image|video|audio)|text/plain|application/pdf$)'
+	 * @example
+	 *  dispInlineRegex : '.',  // is allow inline of all of MIME types
+	 *  dispInlineRegex : '$^', // is not allow inline of all of MIME types
+	 */
+	dispInlineRegex : '^(?:(?:image|video|audio)|application/(?:x-mpegURL|dash\+xml)|(?:text/plain|application/pdf)$)',
 
 	/**
 	 * Display only required files by types
@@ -673,12 +785,22 @@ elFinder.prototype._options = {
 	width : 'auto',
 	
 	/**
-	 * elFinder height
+	 * elFinder node height
+	 * Number: pixcel or String: Number + "%"
 	 *
-	 * @type Number
+	 * @type Number | String
 	 * @default  400
 	 */
 	height : 400,
+	
+	/**
+	 * Base node object or selector
+	 * Element which is the reference of the height percentage
+	 *
+	 * @type Object|String
+	 * @default null | $(window) (if height is percentage)
+	 **/
+	heightBase : null,
 	
 	/**
 	 * Make elFinder resizable if jquery ui resizable available
@@ -820,11 +942,11 @@ elFinder.prototype._options = {
 	 */
 	contextmenu : {
 		// navbarfolder menu
-		navbar : ['open', 'download', '|', 'upload', 'mkdir', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'rename', '|', 'archive', '|', 'places', 'info', 'chmod', 'netunmount'],
+		navbar : ['open', 'download', '|', 'upload', 'mkdir', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', 'empty', '|', 'rename', '|', 'archive', '|', 'places', 'info', 'chmod', 'netunmount'],
 		// current directory menu
-		cwd    : ['reload', 'back', '|', 'upload', 'mkdir', 'mkfile', 'paste', '|', 'view', 'sort', 'colwidth', '|', 'info', '|', 'fullscreen'],
+		cwd    : ['undo', 'redo', '|', 'back', 'up', 'reload', '|', 'upload', 'mkdir', 'mkfile', 'paste', '|', 'empty', '|', 'view', 'sort', 'selectall', 'colwidth', '|', 'info', '|', 'fullscreen', '|', 'preference'],
 		// current directory file menu
-		files  : ['getfile', '|' ,'open', 'download', 'opendir', 'quicklook', '|', 'upload', 'mkdir', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'edit', 'rename', 'resize', 'pixlr', '|', 'archive', 'extract', '|', 'places', 'info', 'chmod', 'netunmount']
+		files  : ['getfile', '|' ,'open', 'download', 'opendir', 'quicklook', '|', 'upload', 'mkdir', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', 'empty', '|', 'rename', 'edit', 'resize', '|', 'archive', 'extract', '|', 'selectall', 'selectinvert', '|', 'places', 'info', 'chmod', 'netunmount']
 	},
 
 	/**
@@ -870,7 +992,7 @@ elFinder.prototype._options = {
 	/**
 	 * Debug config
 	 *
-	 * @type Array|Boolean
+	 * @type Array|String('auto')|Boolean(true|false)
 	 */
 	// debug : true
 	debug : ['error', 'warning', 'event-destroy']

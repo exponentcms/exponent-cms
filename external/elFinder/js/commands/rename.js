@@ -6,6 +6,7 @@
  * @author Dmitry (dio) Levashov, dio@std42.ru
  **/
 elFinder.prototype.commands.rename = function() {
+	this.noChangeDirOnRemovedCwd = true;
 	
 	this.shortcuts = [{
 		pattern     : 'f2'+(this.fm.OS == 'mac' ? ' enter' : '')
@@ -45,16 +46,13 @@ elFinder.prototype.commands.rename = function() {
 					.css('position', '')
 					.off('unselect.'+fm.namespace, unselect);
 				if (tarea) {
-					node.css('max-height', '');
+					node && node.css('max-height', '');
 				} else if (!navbar) {
 					pnode.css('width', '')
 						.parent('td').css('overflow', '');
 				}
 			}, colwidth,
 			dfrd     = $.Deferred()
-				.done(function(data){
-					incwd && fm.exec('open', data.added[0].hash);
-				})
 				.fail(function(error) {
 					var parent = input.parent(),
 						name   = fm.escape(file.i18 || file.name);
@@ -106,9 +104,9 @@ elFinder.prototype.commands.rename = function() {
 							valid = false;
 						}
 					}
-					if (!name || name === '..' || !valid) {
+					if (!name || name === '.' || name === '..' || !valid) {
 						inError = true;
-						fm.error('errInvName', {modal: true, close: select});
+						fm.error(file.mime === 'directory'? 'errInvDirname' : 'errInvName', {modal: true, close: select});
 						return false;
 					}
 					if (fm.fileByName(name, file.phash)) {
@@ -123,7 +121,8 @@ elFinder.prototype.commands.rename = function() {
 					fm.lockfiles({files : [file.hash]});
 					fm.request({
 							data   : {cmd : 'rename', target : file.hash, name : name},
-							notify : {type : 'rename', cnt : 1}
+							notify : {type : 'rename', cnt : 1},
+							navigate : {}
 						})
 						.fail(function(error) {
 							dfrd.reject();
@@ -132,12 +131,29 @@ elFinder.prototype.commands.rename = function() {
 							}
 						})
 						.done(function(data) {
+							if (data.added && data.added.length) {
+								data.undo = {
+									cmd : 'rename',
+									callback : function() {
+										return fm.request({
+											data   : {cmd : 'rename', target : data.added[0].hash, name : file.name},
+											notify : {type : 'undo', cnt : 1}
+										});
+									}
+								};
+								data.redo = {
+									cmd : 'rename',
+									callback : function() {
+										return fm.request({
+											data   : {cmd : 'rename', target : file.hash, name : name},
+											notify : {type : 'rename', cnt : 1}
+										});
+									}
+								};
+							}
 							dfrd.resolve(data);
-							if (!navbar && data && data.added && data.added[0]) {
-								var newItem = fm.findCwdNodes(data.added);
-								if (newItem.length) {
-									newItem.trigger('scrolltoview');
-								}
+							if (incwd) {
+								fm.exec('open', data.added[0].hash);
 							}
 						})
 						.always(function() {
@@ -167,7 +183,6 @@ elFinder.prototype.commands.rename = function() {
 					}
 				})
 				.on('mousedown click dblclick', function(e) {
-					// click for touch device
 					e.stopPropagation();
 					if (e.type === 'dblclick') {
 						e.preventDefault();
@@ -176,13 +191,13 @@ elFinder.prototype.commands.rename = function() {
 				.on('blur', blur),
 			select = function() {
 				var name = input.val().replace(/\.((tar\.(gz|bz|bz2|z|lzo))|cpio\.gz|ps\.gz|xcf\.(gz|bz2)|[a-z0-9]{1,4})$/ig, '');
+				if (!inError && fm.UA.Mobile) {
+					overlay.on('click', cancel)
+						.removeClass('ui-front').elfinderoverlay('show');
+				}
 				if (inError) {
 					inError = false;
 					input.on('blur', blur);
-				}
-				if (fm.UA.Mobile) {
-					overlay.on('click', cancel)
-						.removeClass('ui-front').elfinderoverlay('show');
 				}
 				input.select().focus();
 				input[0].setSelectionRange && input[0].setSelectionRange(0, name.length);

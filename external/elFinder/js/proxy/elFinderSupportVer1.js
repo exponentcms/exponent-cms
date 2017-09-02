@@ -90,8 +90,8 @@ window.elFinderSupportVer1 = function(upload) {
 				_opts = $.extend(true, {}, opts);
 
 				$.each(opts.data.targets, function(i, hash) {
-					$.ajax($.extend(_opts, {data : {cmd : 'duplicate', target : hash, current : fm.file(hash).phash}}))
-						.error(function(error) {
+					$.ajax(Object.assign(_opts, {data : {cmd : 'duplicate', target : hash, current : fm.file(hash).phash}}))
+						.fail(function(error) {
 							fm.error(fm.res('error', 'connect'));
 						})
 						.done(function(data) {
@@ -210,7 +210,7 @@ window.elFinderSupportVer1 = function(upload) {
 		// }
 		
 		if (cmd == 'upload' && data.error && data.cwd) {
-			data.warning = $.extend({}, data.error);
+			data.warning = Object.assign({}, data.error);
 			data.error = false;
 		}
 		
@@ -289,7 +289,7 @@ window.elFinderSupportVer1 = function(upload) {
 			}
 		}
 		
-		return $.extend({
+		return Object.assign({
 			current : data.cwd.hash,
 			error   : data.error,
 			warning : data.warning,

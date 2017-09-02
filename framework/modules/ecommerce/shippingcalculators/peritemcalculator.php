@@ -52,7 +52,7 @@ class peritemcalculator extends shippingcalculator {
             if (!$item->product->no_shipping)
                 $count += $item->quantity;
         }
-        $total = $count * $rate + $handling;
+        $total = $count * $rate + (int)$handling;
 	    $rates = array(
             '01'=>array(
                 'id'=>'01',

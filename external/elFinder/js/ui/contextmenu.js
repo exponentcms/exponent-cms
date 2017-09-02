@@ -51,7 +51,12 @@ $.fn.elfindercontextmenu = function(fm) {
 						});
 					};
 					if (e.originalEvent) {
-						var target = $(this);
+						var target = $(this),
+							unHover = function() {
+								if (selected && !selected.children('div.elfinder-contextmenu-sub:visible').length) {
+									selected.removeClass('ui-state-hover');
+								}
+							};
 						if (e.type === 'mouseenter') {
 							// mouseenter
 							if (target.hasClass(smItem)) {
@@ -63,9 +68,7 @@ $.fn.elfindercontextmenu = function(fm) {
 								setIndex(target, true);
 							} else {
 								// menu
-								if (selected) {
-									selected.removeClass('ui-state-hover');
-								}
+								unHover();
 								setIndex(target);
 							}
 						} else {
@@ -76,9 +79,7 @@ $.fn.elfindercontextmenu = function(fm) {
 								subnodes = null;
 							} else {
 								// menu
-								if (selected) {
-									selected.removeClass('ui-state-hover');
-								}
+								unHover();
 								(function(sel) {
 									setTimeout(function() {
 										if (sel === selected) {
@@ -98,7 +99,7 @@ $.fn.elfindercontextmenu = function(fm) {
 				})
 				.draggable(dragOpt),
 			subpos  = fm.direction == 'ltr' ? 'left' : 'right',
-			types = $.extend({}, fm.options.contextmenu),
+			types = Object.assign({}, fm.options.contextmenu),
 			tpl     = '<div class="'+cmItem+'{className}"><span class="elfinder-button-icon {icon} elfinder-contextmenu-icon"{style}/><span>{label}</span></div>',
 			item = function(label, icon, callback, opts) {
 				var className = '',
@@ -126,8 +127,15 @@ $.fn.elfindercontextmenu = function(fm) {
 						callback();
 					});
 			},
+			urlIcon = function(iconUrl) {
+				return {
+					backgroundImage: 'url("'+iconUrl+'")',
+					backgroundRepeat: 'no-repeat',
+					backgroundSize: 'contain'
+				};
+			},
 			base, cwd,
-			nodes, selected, subnodes, subselected, autoSyncStop,
+			nodes, selected, subnodes, subselected, autoSyncStop, subHoverTm,
 
 			autoToggle = function() {
 				var evTouchStart = 'touchstart.contextmenuAutoToggle';
@@ -242,7 +250,7 @@ $.fn.elfindercontextmenu = function(fm) {
 					mh         = fm.UA.Mobile? 20 : 2,
 					x          = x - (bpos? bpos.left : 0),
 					y          = y - (bpos? bpos.top : 0),
-					css        = $.extend(css || {}, {
+					css        = Object.assign(css || {}, {
 						top  : Math.max(0, y + mh + height < bheight ? y + mh : y - (y + height - bheight)),
 						left : Math.max(0, (x < width + mw || x + mw + width < bwidth)? x + mw : x - mw - width),
 						opacity : '1'
@@ -272,9 +280,14 @@ $.fn.elfindercontextmenu = function(fm) {
 				}
 				
 				fm.UA.Mobile && autoToggle();
+				
+				setTimeout(function() {
+					fm.getUI().one('click.' + fm.namespace, close);
+				}, 0);
 			},
 			
 			close = function() {
+				fm.getUI().off('click.' + fm.namespace, close);
 				$(document).off('keydown.' + fm.namespace, keyEvts);
 				currentType = null;
 				
@@ -306,20 +319,18 @@ $.fn.elfindercontextmenu = function(fm) {
 			create = function(type, targets) {
 				var sep    = false,
 					insSep = false,
-					cmdMap = {},
 					disabled = [],
 					isCwd = type === 'cwd',
-					selcnt = 0;
+					selcnt = 0,
+					cmdMap;
 
 				currentType = type;
-				if (menu.data('cmdMaps')) {
-					$.each(menu.data('cmdMaps'), function(i, v){
-						if (targets[0].indexOf(i, 0) == 0) {
-							cmdMap = v;
-							return false;
-						}
-					});
+				
+				// get current uiCmdMap option
+				if (!(cmdMap = fm.option('uiCmdMap', isCwd? void(0) : targets[0]))) {
+					cmdMap = {};
 				}
+				
 				if (!isCwd) {
 					disabled = fm.getDisabledCmds(targets);
 				}
@@ -403,7 +414,7 @@ $.fn.elfindercontextmenu = function(fm) {
 									over = (nodetop + 5 + height) - wheight;
 									y = (over > 0 && nodetop < wheight)? 5 - over : (over > 0? 30 - height : 5);
 	
-									menu.find('.elfinder-contextmenu-sub:visible').hide().parent().removeClass('ui-state-hover');
+									menu.find('.elfinder-contextmenu-sub:visible').hide();
 									submenu.css({ top : y }).css(subpos, x).show();
 									base.attr('style', bstyle);
 								}
@@ -419,22 +430,33 @@ $.fn.elfindercontextmenu = function(fm) {
 									}
 								})
 								.on('click', '.'+smItem, function(e){
-									var opts;
+									var opts, $this;
 									e.stopPropagation();
 									if (! menu.data('draged')) {
 										menu.hide();
-										opts = $(this).data('exec');
-										if ($.isPlainObject(opts)) {
+										$this = $(this);
+										opts = $this.data('exec');
+										if (typeof opts === 'undefined') {
+											opts = {};
+										}
+										if (typeof opts === 'object') {
+											opts._userAction = true;
 											opts._currentType = type;
+											opts._currentNode = $this;
 										}
 										close();
-										cmd.exec(targets, opts);
+										//cmd.exec(targets, opts);
+										fm.exec(cmd.name, targets, opts);
 									}
 								})
 								.on('touchend', function(e) {
 									menu.data('submenuKeep', true);
 								})
 								.on('mouseenter mouseleave', function(e){
+									if (node.data('timer')) {
+										clearTimeout(node.data('timer'));
+										node.removeData('timer');
+									}
 									if (e.type === 'mouseleave') {
 										if (! menu.data('submenuKeep')) {
 											node.data('timer', setTimeout(function() {
@@ -443,29 +465,38 @@ $.fn.elfindercontextmenu = function(fm) {
 											}, 250));
 										}
 									} else {
-										if (node.data('timer')) {
-											clearTimeout(node.data('timer'));
-											node.removeData('timer');
-										}
 										if (! node.data('touching')) {
-											hover(true);
+											node.data('timer', setTimeout(function() {
+												node.removeData('timer');
+												hover(true);
+											}, nodes.find('div.elfinder-contextmenu-sub:visible').length? 250 : 0));
 										}
 									}
 									node.removeData('touching');
 								});
 							
 							$.each(cmd.variants, function(i, variant) {
-								submenu.append(
-									variant === '|' ? '<div class="elfinder-contextmenu-separator"/>' :
-									$('<div class="'+cmItem+' '+smItem+'"><span>'+variant[1]+'</span></div>').data('exec', variant[0])
-								);
+								var item = variant === '|' ? '<div class="elfinder-contextmenu-separator"/>' :
+									$('<div class="'+cmItem+' '+smItem+'"><span>'+variant[1]+'</span></div>').data('exec', variant[0]),
+									iconClass, icon;
+								if (typeof variant[2] !== 'undefined') {
+									icon = $('<span/>').addClass('elfinder-button-icon elfinder-contextmenu-icon');
+									if (! /\//.test(variant[2])) {
+										icon.addClass('elfinder-button-icon-'+variant[2]);
+									} else {
+										icon.css(urlIcon(variant[2]));
+									}
+									item.prepend(icon).addClass(smItem+'-icon');
+								}
+								submenu.append(item);
 							});
 								
 						} else {
 							node = item(cmd.title, cmd.className? cmd.className : cmd.name, function() {
 								if (! menu.data('draged')) {
 									close();
-									cmd.exec(targets, {_currentType: type});
+									//cmd.exec(targets, {_currentType: type, _currentNode: node});
+									fm.exec(cmd.name, targets, {_userAction: true, _currentType: type, _currentNode: node});
 								}
 							});
 							if (cmd.extra && cmd.extra.node) {
@@ -534,7 +565,7 @@ $.fn.elfindercontextmenu = function(fm) {
 					css = {},
 					prevNode;
 
-				if (!data.type || data.type !== 'files') {
+				if (data.type && data.type !== 'files') {
 					cwd.trigger('unselectall');
 				}
 				close();
@@ -556,14 +587,17 @@ $.fn.elfindercontextmenu = function(fm) {
 						menu.draggable('destroy').removeClass('ui-draggable');
 					}
 					open(data.x, data.y, css);
+					// call opened callback function
+					if (data.opened && typeof data.opened === 'function') {
+						data.opened.call(menu);
+					}
 				}
 			})
 			.one('destroy', function() { menu.remove(); })
 			.bind('disable', close)
 			.bind('select', function(){
 				(currentType === 'files') && close();
-			})
-			.getUI().click(close);
+			});
 		})
 		.shortcut({
 			pattern     : fm.OS === 'mac' ? 'ctrl+m' : 'contextmenu shift+f10',

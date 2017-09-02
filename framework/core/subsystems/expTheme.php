@@ -369,8 +369,8 @@ class expTheme
 //            $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/excanvas.js"></script><![endif]-->' . "\n";
 
             //Win 8/IE 10 work around
-            $str .= "\t" . '<!--[if IE 10]><link rel="stylesheet" href="' . PATH_RELATIVE . 'external/ie10-viewport-bug-workaround.css" type="text/css"' . XHTML_CLOSING . '><![endif]-->' . "\n";
-            $str .= "\t" . '<!--[if IE 10]><script src="' . PATH_RELATIVE . 'external/ie10-viewport-bug-workaround.js"></script><![endif]-->' . "\n";
+            $str .= "\t" . '<link rel="stylesheet" href="' . PATH_RELATIVE . 'external/ie10-viewport-bug-workaround.css" type="text/css"' . XHTML_CLOSING . '>' . "\n";
+            $str .= "\t" . '<script src="' . PATH_RELATIVE . 'external/ie10-viewport-bug-workaround.js"></script>' . "\n";
         }
 
         return $str;
@@ -644,7 +644,7 @@ class expTheme
         }
         if (!is_readable($theme)) {
             if (is_readable(BASE . 'framework/core/index.php')) {
-                $theme = BASE . 'framework/core/index.php';  // use the fallback bare essentials theme
+                $theme = BASE . 'framework/core/index.php';  // use the fallback bare essentials system theme
             }
         }
         return $theme;
@@ -732,6 +732,12 @@ class expTheme
         return ($level == UILEVEL_PREVIEW);
     }
 
+    /**
+     * Checks to see if we are in an action or calling a page
+     *
+     * @param null $action
+     * @return bool
+     */
     public static function inAction($action=null)
     {
         return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])) && (!isset($action) || ($action == $_REQUEST['action'])));

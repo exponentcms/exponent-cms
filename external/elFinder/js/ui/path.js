@@ -146,17 +146,15 @@ $.fn.elfinderpath = function(fm) {
 				fit();
 			})
 			// on swipe to navbar show/hide
-			.bind('navbarshow navbarhide', function(e) {
+			.bind('navbarshow navbarhide', function() {
 				var wz = fm.getUI('workzone');
-				if (e.type === 'navbarshow') {
-					wz.height(wz.height() + wzbase.outerHeight());
+				if (this.type === 'navbarshow') {
+					fm.unbind('open', toWorkzone);
 					path.prependTo(fm.getUI('statusbar'));
 					wzbase.detach();
 					place = 'statusbar';
-					fm.unbind('open', toWorkzone);
 				} else {
 					wzbase.append(path).insertBefore(wz);
-					wz.height(wz.height() - wzbase.outerHeight());
 					place = 'workzone';
 					toWorkzone();
 					fm.bind('open', toWorkzone);

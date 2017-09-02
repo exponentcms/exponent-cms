@@ -20,12 +20,12 @@
 	};
 	
 	this.init = function() {
-		this.fm.bind('search searchend', function(e) {
-			search = e.type == 'search';
+		this.fm.bind('search searchend', function() {
+			search = this.type == 'search';
 		});
 	};
 	
-	this.fm.bind('contextmenu', function(e){
+	this.fm.bind('contextmenu', function(){
 		var fm = self.fm;
 		if (fm.options.sync >= 1000) {
 			self.extra = {
@@ -43,7 +43,7 @@
 							.parent().removeClass('ui-state-hover');
 						fm.options.syncStart = !fm.options.syncStart;
 						fm.autoSync(fm.options.syncStart? null : 'stop');
-					}).ready(function(){
+					}).on('ready', function(){
 						$(this).parent().toggleClass('ui-state-disabled', !fm.options.syncStart).css('pointer-events', 'auto');
 					})
 			};

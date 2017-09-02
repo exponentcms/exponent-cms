@@ -298,11 +298,9 @@ function renderAction(array $parms=array()) {
         $controller->$model = new $model(null,false,false);   //added null,false,false to reduce unnecessary queries. FJD
         // flag for needing approval check
         if ($controller->$model->supports_revisions && ENABLE_WORKFLOW) {
-            $uilevel = 99;
-            if (expSession::exists("uilevel")) $uilevel = expSession::get("uilevel");
             if (!expPermissions::check('approve', $controller->loc)) {
                 $controller->$model->needs_approval = true;
-            } elseif (isset($uilevel) && $uilevel == UILEVEL_PREVIEW) {
+            } elseif (expTheme::inPreview()) {
                 $controller->$model->needs_approval = true;
             }
         }
@@ -1093,6 +1091,9 @@ function eDebug($var, $halt=false, $disable_log=false){
             if (file_exists(BASE . 'external/kint/Kint.class.php')) {
                 require_once BASE . 'external/kint/Kint.class.php';
                 d($var);  // kint
+            } elseif (file_exists(BASE . 'external/kint/build/kint.php')) {
+                require_once BASE . 'external/kint/build/kint.php';
+                d($var);  // kint
             } else {
                 echo "<pre>";
                 print_r($var);
@@ -1136,6 +1137,19 @@ function eLog($var, $type='', $path='', $minlevel='0') {
 			eDebug(gt("Log file"." (".$path)." ".gt("not writable."), false, true);
 		}
 	}
+}
+
+/**
+ * Shortcut function to get a phpThumb thumbnail
+ *
+ * @param $src
+ * @return string
+ */
+function get_thumbnail($src) {
+    global $PHPTHUMB_CONFIG;
+    require_once(BASE . "external/phpThumb/phpThumb.config.php");
+
+    return phpThumbURL($src, URL_FULL . "external/phpThumb/phpThumb.php");
 }
 
 ?>

@@ -33,7 +33,7 @@ class expBot {
     }
 
     public function fire() {
-        $convo  = $this->method." ".$this->url."&ajax_action=1 HTTP/1.1\r\n";
+        $convo  = $this->method . " " . $this->url . "&ajax_action=1 HTTP/1.1\r\n";
         if ($this->method == 'POST') $convo .= "Content-Type: multipart/form-data\r\n";
         $convo .= "Host: " . HOSTNAME . "\r\n";
         $convo .= "User-Agent:  ExponentCMS/".EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR.".".EXPONENT_VERSION_REVISION."  Build/".EXPONENT_VERSION_ITERATION." PHP/".phpversion()."\r\n";

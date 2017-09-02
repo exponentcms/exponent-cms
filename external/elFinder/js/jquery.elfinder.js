@@ -148,7 +148,7 @@ if ($.ui) {
 	var x = event.originalEvent.changedTouches[0].screenX.toFixed(0);
 	var y = event.originalEvent.changedTouches[0].screenY.toFixed(0);
 	// Ignore if it's a "false" move (position not changed)
-	if (Math.abs(posX - x) <= 2 && Math.abs(posY - y) <= 2) {
+	if (Math.abs(posX - x) <= 4 && Math.abs(posY - y) <= 4) {
 		return;
 	}
 
@@ -200,7 +200,7 @@ if ($.ui) {
 
 	if (self.element.hasClass('touch-punch')) {
 		// Delegate the touch handlers to the widget's element
-		self.element.bind({
+		self.element.on({
 		  touchstart: $.proxy(self, '_touchStart'),
 		  touchmove: $.proxy(self, '_touchMove'),
 		  touchend: $.proxy(self, '_touchEnd')
@@ -220,7 +220,7 @@ if ($.ui) {
 
 	if (self.element.hasClass('touch-punch')) {
 		// Delegate the touch handlers to the widget's element
-		self.element.unbind({
+		self.element.off({
 		  touchstart: $.proxy(self, '_touchStart'),
 		  touchmove: $.proxy(self, '_touchMove'),
 		  touchend: $.proxy(self, '_touchEnd')
@@ -233,36 +233,50 @@ if ($.ui) {
 
 })(jQuery);
 
-$.fn.elfinder = function(o) {
+$.fn.elfinder = function(o, o2) {
 	
-	if (o == 'instance') {
+	if (o === 'instance') {
 		return this.getElFinder();
 	}
 	
 	return this.each(function() {
 		
-		var cmd = typeof(o) == 'string' ? o : '';
+		var cmd          = typeof o  === 'string'  ? o  : '',
+			bootCallback = typeof o2 === 'function'? o2 : void(0),
+			opts;
+		
 		if (!this.elfinder) {
-			new elFinder(this, typeof(o) == 'object' ? o : {});
-		}
-		
-		switch(cmd) {
-			case 'close':
-			case 'hide':
-				this.elfinder.hide();
-				break;
+			if ($.isPlainObject(o)) {
+				new elFinder(this, o, bootCallback);
+			}
+		} else {
+			switch(cmd) {
+				case 'close':
+				case 'hide':
+					this.elfinder.hide();
+					break;
+					
+				case 'open':
+				case 'show':
+					this.elfinder.show();
+					break;
+					
+				case 'destroy':
+					this.elfinder.destroy();
+					break;
 				
-			case 'open':
-			case 'show':
-				this.elfinder.show();
-				break;
-				
-			case'destroy':
-				this.elfinder.destroy();
-				break;
+				case 'reload':
+				case 'restart':
+					if (this.elfinder) {
+						opts = this.elfinder.options;
+						bootCallback = this.elfinder.bootCallback;
+						this.elfinder.destroy();
+						new elFinder(this, $.extend(true, opts, $.isPlainObject(o2)? o2 : {}), bootCallback);
+					}
+					break;
+			}
 		}
-		
-	})
+	});
 };
 
 $.fn.getElFinder = function() {

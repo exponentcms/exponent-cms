@@ -92,13 +92,9 @@ class tinymcecontrol extends formcontrol
                                     },
                 images_upload_url: '" . URL_FULL . "framework/modules/file/connector/uploader_paste_tinymce.php',
                 paste_data_images: true,";
-//            $upload .= "
-//            images_upload_url: '" . URL_FULL . "framework/modules/file/connector/uploader_tinymce.php',";
-//            $upload .= "
-//            paste_data_images: false,
-//            images_upload_base_path: '" . UPLOAD_DIRECTORY . "',";
         } else
             $upload = '';
+        $plugins = '';
         if (!empty($settings)) {
 //            $tb = stripSlashes($settings->data);
             $tb_raw = explode("\n", $settings->data);
@@ -123,11 +119,11 @@ class tinymcecontrol extends formcontrol
             $additionalConfig .= ",";  // MUST end with comma
         if (!empty($this->plugin))
             $plugins .= ',' . $this->plugin;
-        else {
+        elseif (empty($plugins)) {
             $plugins = "advlist,autolink,lists,link,image,imagetools,charmap,print,preview,hr,anchor,pagebreak" .
                     ",searchreplace,wordcount,visualblocks,visualchars,code,fullscreen" .
                     ",media,nonbreaking,save,table,contextmenu,directionality" .
-                    ",emoticons,paste,textcolor,quickupload,localautosave";
+                    ",emoticons,paste,textcolor,quickupload,localautosave,help";
         }
         // clean up (custom) plugins list from missing plugins
         if (!empty($plugins)) {
@@ -142,11 +138,11 @@ class tinymcecontrol extends formcontrol
         if (empty($tb)) {
             if ($this->toolbar === 'basic') {
                 $tb = "
-                toolbar: 'bold italic underline removeformat | bullist numlist | link unlink localautosave',";
+                toolbar: 'bold italic underline removeformat | bullist numlist | link unlink localautosave help',";
             } else {
                 $tb = "
                 toolbar1: 'undo redo localautosave | styleselect formatselect fontselect fontsizeselect | cut copy paste | bold italic underline removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
-                toolbar2: 'link unlink image quickupload | print preview visualblocks fullscreen code media | forecolor backcolor emoticons";
+                toolbar2: 'link unlink image quickupload | print preview visualblocks fullscreen code media | forecolor backcolor emoticons help";
                 if (!empty($this->plugin)) {
                     $plugs = explode(',',trim($this->plugin));
                     $tb .= ' |';
@@ -209,14 +205,14 @@ class tinymcecontrol extends formcontrol
                     },
                 ]},
             ";
-        } else
+        } else {
             $stylesset = expString::check_javascript($stylesset, false, true);  // $styleset must be enclosed in curly braces {..}
-
+        }
         if (empty($formattags))
             $formattags = "'Normal=p;Heading 1=h1;Heading 2=h2;Heading 3=h3;Heading 4=h4;Heading 5=h5;Heading 6=h6;Formatted=pre;Address=address;Normal (DIV)=div'";
         else
             $formattags = expString::check_javascript($formattags, true);  // $formattags must be enclosed in quotes '..'
-        if (empty($fontnames))
+        if (empty($fontnames)) {
             $fontnames = "'Andale Mono=andale mono,times;'+
                     'Arial=arial,helvetica,sans-serif;'+
                     'Arial Black=arial black,avant garde;'+
@@ -235,8 +231,9 @@ class tinymcecontrol extends formcontrol
                     'Webdings=webdings;'+
                     'Wingdings=wingdings,zapf dingbats'
             ";
-        else
+        } else {
             $fontnames = expString::check_javascript($fontnames, true);  // $fontnames must be enclosed in quotes '..'
+        }
         $content = "
         YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             Y.Global.on(\"lazyload:cke\", function () {

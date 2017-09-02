@@ -126,11 +126,9 @@ abstract class expController {
 
         // flag for needing approval check
         if (ENABLE_WORKFLOW && $this->$modelname->supports_revisions) {
-            $uilevel = 99;
-            if (expSession::exists("uilevel")) $uilevel = expSession::get("uilevel");
             if (!expPermissions::check('approve', $this->loc)) {
                 $this->$modelname->needs_approval = true;
-            } elseif ($uilevel == UILEVEL_PREVIEW && isset($uilevel)) {
+            } elseif (expTheme::inPreview()) {
                 $this->$modelname->needs_approval = true;  // 'preview' should provide a true preview
             }
         }
@@ -1230,7 +1228,9 @@ abstract class expController {
         $count = 0;
         $model = new $this->basemodel_name(null, false, false);
         $where = (!empty($this->params['id'])) ? 'id=' . $this->params['id'] : null;
-        $content = $db->selectArrays($model->tablename, $where);
+        $supports_revisions = $model->supports_revisions && ENABLE_WORKFLOW;
+        $needs_approval = true;
+        $content = $db->selectArrays($model->tablename, $where, null, $supports_revisions, $needs_approval);
         foreach ($content as $cnt) {
             $origid = $cnt['id'];
             unset($cnt['id']);
@@ -1528,7 +1528,7 @@ abstract class expController {
         }
         $model = $this->basemodel_name;
         if (ENABLE_WORKFLOW && $this->$model->needs_approval) {
-            if ($user->id) {
+            if ($user->id && !expTheme::inPreview()) {
                 $sql .= ' AND (approved=1 OR poster=' . $user->id . ' OR editor=' . $user->id . ')';
             } else {
                 $sql .= ' AND approved=1';

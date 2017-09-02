@@ -12,17 +12,25 @@ $.fn.elfindernavbar = function(fm, opts) {
 			delta  = nav.outerHeight() - nav.height(),
 			ltr    = fm.direction == 'ltr',
 			handle, swipeHandle, autoHide, setWidth,
+			cssloaded = function() {
+				delta = nav.outerHeight() - nav.height();
+			},
+			cssloadedMobile,
 			setWzRect = function() {
 				var cwd = fm.getUI('cwd'),
 					wz  = fm.getUI('workzone'),
 					wzRect = wz.data('rectangle'),
 					cwdOffset = cwd.offset();
-				wz.data('rectangle', $.extend(wzRect, { cwdEdge: (fm.direction === 'ltr')? cwdOffset.left : cwdOffset.left + cwd.width() }));
+				wz.data('rectangle', Object.assign(wzRect, { cwdEdge: (fm.direction === 'ltr')? cwdOffset.left : cwdOffset.left + cwd.width() }));
 			};
 
-			fm.one('cssloaded', function() {
-				delta = nav.outerHeight() - nav.height();
-			}).bind('wzresize', function() {
+			if (fm.cssloaded) {
+				cssloaded();
+			} else {
+				fm.one('cssloaded', cssloaded);
+			}
+			
+			fm.bind('wzresize', function() {
 				nav.height(wz.height() - delta);
 			});
 		
@@ -60,12 +68,12 @@ $.fn.elfindernavbar = function(fm, opts) {
 							fm.resources.blink(swipeHandle, 'slowonce');
 						}
 					}
-					fm.trigger('navbar'+ mode).getUI('cwd').trigger('resize');
+					fm.trigger('navbar'+ mode);
 					data.init && fm.trigger('uiautohide');
 					setWzRect();
 				});
 				autoHide.navbar = (mode !== 'show');
-				fm.storage('autoHide', $.extend(fm.storage('autoHide'), {navbar: autoHide.navbar}));
+				fm.storage('autoHide', Object.assign(fm.storage('autoHide'), {navbar: autoHide.navbar}));
 			});
 		}
 		
@@ -80,6 +88,8 @@ $.fn.elfindernavbar = function(fm, opts) {
 					}
 				})
 				.on('resize scroll', function(e) {
+					e.preventDefault();
+					e.stopPropagation();
 					if (! ltr && e.type === 'resize') {
 						nav.css('left', 0);
 					}
@@ -109,9 +119,8 @@ $.fn.elfindernavbar = function(fm, opts) {
 			nav.width(setWidth);
 		} else {
 			if (fm.UA.Mobile) {
-				fm.one('cssloaded', function() {
-					nav.data('defWidth', nav.width());
-					$(window).on('resize.' + fm.namespace, function(e){
+				cssloadedMobile = function() {
+					var set = function() {
 						setWidth = nav.parent().width() / 2;
 						if (nav.data('defWidth') > setWidth) {
 							nav.width(setWidth);
@@ -119,8 +128,16 @@ $.fn.elfindernavbar = function(fm, opts) {
 							nav.width(nav.data('defWidth'));
 						}
 						nav.data('width', nav.width());
-					});
-				});
+					}
+					nav.data('defWidth', nav.width());
+					$(window).on('resize.' + fm.namespace, set);
+					set();
+				};
+				if (fm.cssloaded) {
+					cssloadedMobile();
+				} else {
+					fm.one('cssloaded', cssloadedMobile);
+				}
 			}
 		}
 
