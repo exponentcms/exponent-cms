@@ -11,7 +11,7 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Version 2.4.2
 -------------
 ### Address issues in v2.4.1
-    - compatible with PHP v5.3.x, 5.4.x, 5.5.x, 5.6.x, 7.0.x and 7.1.x
+    - compatible with PHP v5.3.x, 5.4.x, 5.5.x, 5.6.x, 7.0.x, 7.1.x, and 7.2.x
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/is not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation

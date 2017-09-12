@@ -227,13 +227,22 @@ class AdminerSerializedPreview
     {
         if ($serial_str === 'Array') return null;  // empty array string??
         if (is_array($serial_str) || is_object($serial_str)) return $serial_str;  // already unserialized
+//        $out1 = preg_replace_callback(
+//            '!s:(\d+):"(.*?)";!s',
+//            create_function ('$m',
+//                '$m_new = str_replace(\'"\',\'\"\',$m[2]);
+//                return "s:".strlen($m_new).\':"\'.$m_new.\'";\';'
+//            ),
+//            $serial_str );
         $out = preg_replace_callback(
             '!s:(\d+):"(.*?)";!s',
-            create_function('$m',
-                '$m_new = str_replace(\'"\',\'\"\',$m[2]);
-              return "s:".strlen($m_new).\':"\'.$m_new.\'";\';'
-            ),
-            $serial_str);
+            function ($m) {
+                $m_new = str_replace('"','\"',$m[2]);
+                return "s:".strlen($m_new).':"'.$m_new.'";';
+            }, $serial_str );
+//        if ($out1 !== $out) {
+//            eDebug('problem:<br>'.$out.'<br>'.$out1);
+//        }
         $out2 = unserialize($out);
         if (is_array($out2)) {
             if (!empty($out2['moduledescription'])) {  // work-around for links in module descriptions

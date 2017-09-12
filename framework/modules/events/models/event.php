@@ -114,7 +114,11 @@ class event extends expRecord {
                 if ($condense) {
                     //fixme we're leaving events which ended earlier in the day which won't be displayed, which therefore cancels out tomorrow's event
                     $eventid = $event->id;
-                    $multiday_event = array_filter($events, create_function('$event', 'global $eventid; return $event->id === $eventid;'));
+//                    $multiday_event = array_filter($events, create_function('$event', 'global $eventid; return $event->id === $eventid;'));
+                    $multiday_event = array_filter($events, function($event) {
+                        global $eventid;
+                        return $event->id === $eventid;
+                    });
                     if (!empty($multiday_event)) {
                         unset($evs[$key]);
                         continue;

@@ -1140,7 +1140,11 @@ class eventController extends expController {
             foreach ($evs as $key=>$event) {
                 if ($condense) {
                     $eventid = $event->id;
-                    $multiday_event = array_filter($events, create_function('$event', 'global $eventid; return $event->id === $eventid;'));
+//                    $multiday_event = array_filter($events, create_function('$event', 'global $eventid; return $event->id === $eventid;'));
+                    $multiday_event = array_filter($events, function($event) {
+                        global $eventid;
+                        return $event->id === $eventid;
+                    });
                     if (!empty($multiday_event)) {
                         unset($evs[$key]);
                         continue;
