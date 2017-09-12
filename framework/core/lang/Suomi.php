@@ -4839,7 +4839,6 @@ return array(
 	"This store is not yet fully configured with a store address."=>"Tämä kauppa ei ole vielä täysin määritetty myymälän osoitetta.",
 	"This user is a Super Administrator?"=>"Tämän käyttäjän on Super-järjestelmänvalvoja?",
 	"This user is an Administrator?"=>"Tämä käyttäjä on järjestelmänvalvoja?",
-	"This version of ExponentCMS requires PHP 5.2.1 or higher. You are running PHP"=>"Tämä ExponentCMS-versio edellyttää PHP 5.2.1 tai suurempi. Käytössäsi on PHP",
 	"This version of ExponentCMS requires PHP 5.3.1 or higher. You are running PHP"=>"Tämä ExponentCMS-versio edellyttää PHP 5.3.1 tai uudempi. Te aari jatkuva PHP",
 	"This will be displayed at the top of your shopping cart."=>"Tämä näkyy Ostoskorisi yläosassa.",
 	"This will be displayed in various places on your site."=>"Tämä näkyy sivuston eri paikoissa.",

@@ -4841,7 +4841,6 @@ return array(
 	"This store is not yet fully configured with a store address."=>"Ce magasin n\'est pas encore entièrement configuré avec une adresse de magasin.",
 	"This user is a Super Administrator?"=>"Cet utilisateur est un administrateur de Super ?",
 	"This user is an Administrator?"=>"Cet utilisateur est un administrateur ?",
-	"This version of ExponentCMS requires PHP 5.2.1 or higher. You are running PHP"=>"Cette version de ExponentCMS nécessite PHP 5.2.1 ou supérieur. Vous exécutez PHP",
 	"This version of ExponentCMS requires PHP 5.3.1 or higher. You are running PHP"=>"Cette version de ExponentCMS nécessite PHP 5.3.1 ou supérieur. Vous exécutez PHP",
 	"This will be displayed at the top of your shopping cart."=>"Cela s\'affichera en haut de votre panier d\'achat.",
 	"This will be displayed in various places on your site."=>"Cela apparaît dans divers endroits sur votre site.",

@@ -4839,7 +4839,6 @@ return array(
 	"This store is not yet fully configured with a store address."=>"Denne butikken er ennå ikke fullt konfigurert med store adresse.",
 	"This user is a Super Administrator?"=>"Denne brukeren er en Super Administrator?",
 	"This user is an Administrator?"=>"Denne brukeren er en Administrator?",
-	"This version of ExponentCMS requires PHP 5.2.1 or higher. You are running PHP"=>"Denne versjonen av ExponentCMS krever PHP 5.2.1 eller høyere. Du kjører PHP",
 	"This version of ExponentCMS requires PHP 5.3.1 or higher. You are running PHP"=>"Denne versjonen av ExponentCMS krever PHP 5.3.1 eller høyere. Du kjører PHP",
 	"This will be displayed at the top of your shopping cart."=>"Dette vil vises øverst i handlekurven.",
 	"This will be displayed in various places on your site."=>"Dette vises på forskjellige steder på nettstedet.",
