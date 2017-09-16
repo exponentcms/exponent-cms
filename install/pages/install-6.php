@@ -72,7 +72,12 @@ if (!defined('EXPONENT')) {
     </div>
     <button class="awesome large green"><?php echo gt('Create Administrator'); ?></button>
 </form>
-<script type="text/javascript" src="<?php echo JQUERY2_SCRIPT; ?>"></script>
+<!--[if lt IE 9]>
+    <script src="{$smarty.const.JQUERY_SCRIPT}" charset="utf-8"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+    <script src="{$smarty.const.JQUERY2_SCRIPT}" charset="utf-8"></script>
+<!--<![endif]-->
 <script type="text/javascript" src="<?php echo PATH_RELATIVE; ?>external/jquery/addons/js/strength-meter.js"></script>
 <!--<script type="text/javascript" src="--><?php //echo PATH_RELATIVE; ?><!--external/jquery/addons/js/locales/strength-meter---><?php //echo LOCALE; ?><!--.js"></script>-->
 <script>
