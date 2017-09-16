@@ -72,6 +72,11 @@ class expMail {
 	 * @todo add further documentation for using settings other than the system default
 	 */
 	function __construct($params = array()) {
+        if (version_compare(PHP_VERSION, '7.0.0', 'ge')) {
+            require_once(SWIFT_LEXER_PATH . 'AbstractLexer.php');
+            require_once(SWIFT_EMAIL_PATH . 'EmailValidator.php');
+            Egulias\EmailValidator\EmailValidator::registerAutoload();
+        }
 		require_once(SWIFT_PATH . 'swift_required.php');
 
 		if (array_key_exists('method', $params)) {
@@ -82,12 +87,15 @@ class expMail {
 					if (array_key_exists('connections', $params)) {
 						if (is_array($params['connections'])) {
 							//$this->transport = new Swift_Connection_SMTP($params['connections']['host'], $params['connections']['port'], $params['connections']['option']);
-							$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
+//							$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
+                            $this->transport = new Swift_SmtpTransport($params['connections']['host'], $params['connections']['port']);
 						} else {
-							$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
+//							$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
+                            $this->transport = new Swift_SmtpTransport($params['connections']['host'], $params['connections']['port']);
 						}
 					} else {
-						$this->transport = Swift_SmtpTransport::newInstance(SMTP_SERVER, SMTP_PORT, SMTP_PROTOCOL)
+//						$this->transport = Swift_SmtpTransport::newInstance(SMTP_SERVER, SMTP_PORT, SMTP_PROTOCOL)
+                        $this->transport = (new Swift_SmtpTransport(SMTP_SERVER, SMTP_PORT, SMTP_PROTOCOL))
 								->setUsername(SMTP_USERNAME)
 								->setPassword(SMTP_PASSWORD);
 					}
@@ -96,16 +104,20 @@ class expMail {
 
 					if (isset($params['connections']) && !is_array($params['connections']) && $params['connections'] != '') {
 						// Allow custom mail parameters.
-						$this->transport = Swift_MailTransport::newInstance($params['connections']);
+//						$this->transport = Swift_MailTransport::newInstance($params['connections']);
+                        $this->transport = new Swift_MailTransport($params['connections']);
 					} else {
-						$this->transport = Swift_MailTransport::newInstance();
+//						$this->transport = Swift_MailTransport::newInstance();
+                        $this->transport = new Swift_MailTransport();
 					}
 					break;
 				case "exim":
-					$this->transport = Swift_SendmailTransport::newInstance('/usr/sbin/exim -bs');
+//					$this->transport = Swift_SendmailTransport::newInstance('/usr/sbin/exim -bs');
+                    $this->transport = new Swift_SendmailTransport('/usr/sbin/exim -bs');
 					break;
 				case "sendmail":
-					$this->transport = Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -bs');
+//					$this->transport = Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -bs');
+                    $this->transport = new Swift_SendmailTransport('/usr/sbin/sendmail -bs');
 					break;
 //				case "rotator":
 //					if (is_array($params['connections'])) {
@@ -120,10 +132,12 @@ class expMail {
 		} else if (SMTP_USE_PHP_MAIL) {
 			if (isset($params['connections']) && !is_array($params['connections']) && $params['connections'] != '') {
 				// Allow custom mail parameters.
-				$this->transport = Swift_MailTransport::newInstance($params['connections']);
+//				$this->transport = Swift_MailTransport::newInstance($params['connections']);
+                $this->transport = new Swift_MailTransport($params['connections']);
 			} else {
 				// Use default Mail parameters.
-				$this->transport = Swift_MailTransport::newInstance();
+//				$this->transport = Swift_MailTransport::newInstance();
+                $this->transport = new Swift_MailTransport();
 			}
 		} else {
 			/*
@@ -133,19 +147,23 @@ class expMail {
 			if (array_key_exists('connections', $params)) {
 				if (is_array($params['connections'])) {
 					//$conn = new Swift_Connection_SMTP($params['connections']['host'], $params['connections']['port'], $params['connections']['option']);
-					$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
+//					$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
+                    $this->transport = new Swift_SmtpTransport($params['connections']['host'], $params['connections']['port']);
 				} else {
-					$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);  //FIXME won't work since $params['connections'] is NOT array
+//					$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);  //FIXME won't work since $params['connections'] is NOT array
+                    $this->transport = new Swift_SmtpTransport($params['connections']['host'], $params['connections']['port']);  //FIXME won't work since $params['connections'] is NOT array
 				}
 			} else {
-				$this->transport = Swift_SmtpTransport::newInstance(SMTP_SERVER, SMTP_PORT, SMTP_PROTOCOL)
+//				$this->transport = Swift_SmtpTransport::newInstance(SMTP_SERVER, SMTP_PORT, SMTP_PROTOCOL)
+                $this->transport = (new Swift_SmtpTransport(SMTP_SERVER, SMTP_PORT, SMTP_PROTOCOL))
 						->setUsername(SMTP_USERNAME)
 						->setPassword(SMTP_PASSWORD);
 			}
 		}
 
 		//setup the transport authority for sending the email, whether it is SMTP, exim, sendmail, PHP, whatever....
-		$this->mailer = Swift_Mailer::newInstance($this->transport);
+//		$this->mailer = Swift_Mailer::newInstance($this->transport);
+        $this->mailer = new Swift_Mailer($this->transport);
 		$this->message = new Swift_Message();
 
         // Bad recipient reporter
