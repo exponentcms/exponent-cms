@@ -92,22 +92,22 @@ class expJavascript {
                 if (OLD_BROWSER_SUPPORT) {
                     if (isset($browser['firefox']) && $browser['firefox'] < 5.0) {
                         $scripts .= '
-    <script src="' . JQUERY_RELATIVE . 'js/jquery-' . '1.11.3' . '.min.js' . '"></script>' . "\r\n";
+    <script type="text/javascript" src="' . JQUERY_RELATIVE . 'js/jquery-' . '1.11.3' . '.min.js' . '"></script>' . "\r\n";
                     } else {
                         $scripts .= "\r\n" . '
     <!--[if lt IE 9]>
-        <script src="' . JQUERY_SCRIPT . '"></script>
+        <script type="text/javascript" src="' . JQUERY_SCRIPT . '"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
-        <script src="' . JQUERY2_SCRIPT . '"></script>
+        <script type="text/javascript" src="' . JQUERY2_SCRIPT . '"></script>
     <!--<![endif]-->';
                     }
                 } else {
 //                    $scripts .= "\r\n" . '
 //        <script src="' . JQUERY2_SCRIPT . '"></script>';
-                    $scripts .= "\r\n" . '
-        <script src="' . JQUERY3_SCRIPT . '"></script>
-        <script src="' . JQUERY3_MIGRATE_SCRIPT . '"></script>';
+                    $scripts .= '
+    <script type="text/javascript" src="' . JQUERY3_SCRIPT . '"></script>
+    <script type="text/javascript" src="' . JQUERY3_MIGRATE_SCRIPT . '"></script>' . "\r\n";
                 }
                 if (bs()) {
 //                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (newui()?'':$theme_variables) . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
@@ -252,20 +252,20 @@ class expJavascript {
                 if (OLD_BROWSER_SUPPORT) {
                     if (isset($browser['firefox']) && $browser['firefox'] < 5.0) {
                         $scripts .= '
-    <script src="' . JQUERY_RELATIVE . 'js/jquery-' . '1.11.3' . '.min.js' . '"></script>' . "\r\n";
+    <script type="text/javascript" src="' . JQUERY_RELATIVE . 'js/jquery-' . '1.11.3' . '.min.js' . '"></script>' . "\r\n";
                     } else {
                         $scripts .= '
     <!--[if lt IE 9]>
-        <script src="' . JQUERY_SCRIPT . '"></script>
+        <script type="text/javascript" src="' . JQUERY_SCRIPT . '"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
-        <script src="' . JQUERY2_SCRIPT . '"></script>
+        <script type="text/javascript" src="' . JQUERY2_SCRIPT . '"></script>
     <!--<![endif]-->' . "\r\n";
                     }
                 } else {
-                    $scripts .= "\r\n" . '
-        <script src="' . JQUERY3_SCRIPT . '"></script>
-        <script src="' . JQUERY3_MIGRATE_SCRIPT . '"></script>';
+                    $scripts .= '
+    <script type="text/javascript" src="' . JQUERY3_SCRIPT . '"></script>
+    <script type="text/javascript" src="' . JQUERY3_MIGRATE_SCRIPT . '"></script>' . "\r\n";
                 }
                 if (bs()) {
 //                    $lessvars = array_merge(
