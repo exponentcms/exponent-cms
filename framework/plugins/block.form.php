@@ -90,17 +90,19 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
         } else {
             $newui_class = '';
         }
-        if (expJavascript::inAjaxAction()) {
-            $ws_load = "webshim.setOptions({loadStyles:false,canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
-        } else {
-            $ws_load = "webshim.setOptions({canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
+        if (OLD_BROWSER_SUPPORT) {
+            if (expJavascript::inAjaxAction()) {
+                $ws_load = "webshim.setOptions({loadStyles:false,canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
+            } else {
+                $ws_load = "webshim.setOptions({canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
+            }
+            expJavascript::pushToFoot(array(
+                "unique" => 'html5forms',
+                "jquery" => 1,
+                "src" => PATH_RELATIVE . 'external/webshim-1.16.0/js-webshim/dev/polyfiller.js',
+                "content" => $ws_load,
+            ));
         }
-        expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms',
-            "jquery"  => 1,
-            "src"     => PATH_RELATIVE . 'external/webshim-1.16.0/js-webshim/dev/polyfiller.js',
-            "content" => $ws_load,
-        ));
         if (!empty($params['paged'])) {
             if (empty($params['name']) && empty($params['id'])) die("<strong style='color:red'>" . gt(
                     "The 'name' or 'id parameter is required for the paged {form} plugin."

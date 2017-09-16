@@ -352,7 +352,7 @@ class expTheme
         // when minification is used, the comment below gets replaced when the buffer is dumped
         $str .= '<!-- MINIFY REPLACE -->';
 
-        if ($config['meta']['ie_compat']) {
+        if ($config['meta']['ie_compat'] && OLD_BROWSER_SUPPORT) {
             // some IE 6 support
             $str .= "\t" . '<!--[if IE 6]><style type="text/css">  body { behavior: url(' . PATH_RELATIVE . 'external/csshover.htc); }</style><![endif]-->' . "\n";
 

@@ -275,17 +275,19 @@ class form extends baseform {
             $back = '&lt; ' . gt('Back');
             $next = gt('Next') . ' &gt;';
         };
-		if (expJavascript::inAjaxAction()) {
-			$ws_load = "webshim.setOptions({loadStyles:false,canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
-		} else {
-			$ws_load = "webshim.setOptions({canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
-		}
-		expJavascript::pushToFoot(array(
-			"unique"  => 'html5forms',
-	 	    "jquery"  => 1,
-		    "src"     => PATH_RELATIVE . 'external/webshim-1.16.0/js-webshim/dev/polyfiller.js',
-			"content" => $ws_load,
-	    ));
+        if (OLD_BROWSER_SUPPORT) {
+            if (expJavascript::inAjaxAction()) {
+                $ws_load = "webshim.setOptions({loadStyles:false,canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
+            } else {
+                $ws_load = "webshim.setOptions({canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
+            }
+            expJavascript::pushToFoot(array(
+                "unique" => 'html5forms',
+                "jquery" => 1,
+                "src" => PATH_RELATIVE . 'external/webshim-1.16.0/js-webshim/dev/polyfiller.js',
+                "content" => $ws_load,
+            ));
+        }
 		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"".$script."\"></script>\r\n";
 		$html .= '<div class="error">'.$formError.'</div>';
         $class = '';
