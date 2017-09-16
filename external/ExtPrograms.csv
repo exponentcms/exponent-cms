@@ -1,5 +1,7 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-Swiftmailer,5.4.8,swiftmailer.org,6.0.1,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
+Swiftmailer,5.4.8/6.0.1,swiftmailer.org,6.0.1,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
+Doctrine Lexer,1.0.1,github.com/doctrine/lexer,1.0.1,needed by swiftmailer v6
+EmailValidator,2.1.2,github.com/egulias/EmailValidator,2.1.2,needed by swiftmailer v6; add autoloader and move within folders
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc… to work"
 fedex-php,16.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,16.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.27,smarty.net,3.1.31,
@@ -46,6 +48,8 @@ elFinder,2.1.28,elfinder.org,2.1.28,customized in /framework with Exponent php c
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
 jQuery,2.2.4,jquery.com,2.2.4,
 jQuery Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon
+jQuery3,3.2.1,jquery.com,3.2.1,
+jQuery3 Migrate,3.0.0,jquery.com,3.0.0,
 jQueryUI,1.12.1,jqueryui.com,1.12.1,
 stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
 validate,1.17.0exp,jqueryvalidation.org/,1.17.0,edit for 'undefined' in 'min' & 'max'
@@ -88,11 +92,9 @@ dompdf,0.8.0exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,0.8.0,"optional, patc
 mPDF,6.1.4/6.0.0/5.7.4a,github.com/mpdf/mpdf,6.1.4,optional
 HTML2PDF,4.6.1,github.com/spipu/html2pdf,5.0.1,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.2.13,sourceforge.net/projects/tcpdf,6.2.13,"optional, used by HTML2PDF"
-Kint,2.1.2,github.com/kint-php/kint,2.1.2,"optional, for formatted edebug output"
+Kint,2.2.0,github.com/kint-php/kint,2.2.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
-jQuery3,,jquery.com,3.2.1,
-jQuery3 Migrate,,jquery.com,3.0.0,renamed to migrate.js for easy loading
 ,,,,
 No longer included,,,,
 pwstrength-bootstrap,2.0.0,github.com/ablanco/jquery.pwstrength.bootstrap,2.0.0,
