@@ -168,7 +168,10 @@ class expJavascript {
                 }
 
                 if (!empty($jqueryjs)) foreach ($jqueryjs as $mod) {
-                    if ($mod == 'jqueryui') {
+                    if ($mod == 'migrate' && !OLD_BROWSER_SUPPORT) {
+                        if (DEVELOPMENT)
+                            flash('warning', 'jQuery Migrate v1 load prevented while using jQuery v3');
+                    } elseif ($mod == 'jqueryui') {
                         if (strlen($srt[$i])+strlen(JQUERYUI_SCRIPT) <= $strlen && $i <= MINIFY_MAX_FILES) {
                             $srt[$i] .= JQUERYUI_SCRIPT.",";
                         } else {
@@ -330,7 +333,10 @@ class expJavascript {
                 if (!empty($jqueryjs)) {
                     $scripts .= "\t" . "<!-- jQuery Addon Scripts -->" . "\r\n";
                     foreach ($jqueryjs as $mod) {
-                        if ($mod == 'jqueryui') {
+                        if ($mod == 'migrate' && !OLD_BROWSER_SUPPORT) {
+                            if (DEVELOPMENT)
+                                flash('warning', 'jQuery Migrate v1 load prevented while using jQuery v3');
+                        } elseif ($mod == 'jqueryui') {
                             $scripts .= "\t" . '<script type="text/javascript" src="' . JQUERYUI_SCRIPT . '"></script>' . "\r\n";
                             expCSS::pushToHead(
                                 array(
