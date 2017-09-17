@@ -6,8 +6,6 @@
  * @package Minify
  */
 
-//Initialize exponent Framework
-include_once(dirname(__FILE__) .'/../../../exponent_bootstrap.php');
 
 /**
  * Allow use of the Minify URI Builder app. Only set this to true while you need it.
@@ -36,8 +34,7 @@ $min_builderPassword = 'admin';
  * If you want to use a custom error logger, set this to your logger
  * instance. Your object should have a method log(string $message).
  */
-//$min_errorLogger = false;
-$min_errorLogger = MINIFY_ERROR_LOGGER == 1;
+$min_errorLogger = false;
 
 
 /**
@@ -52,8 +49,7 @@ $min_errorLogger = MINIFY_ERROR_LOGGER == 1;
  * In 'debug' mode, Minify combines files with no minification and adds comments
  * to indicate line #s of the original files.
  */
-//$min_allowDebugFlag = false;
-$min_allowDebugFlag = MINIFY_ERROR_LOGGER == 1;
+$min_allowDebugFlag = false;
 
 
 /**
@@ -64,13 +60,20 @@ $min_allowDebugFlag = MINIFY_ERROR_LOGGER == 1;
 //$min_cachePath = '/tmp';
 //$min_cachePath = preg_replace('/^\\d+;/', '', session_save_path());
 
+
+/**
+ * Path to Minify's lib folder. If you happen to move it, change 
+ * this accordingly.
+ */
+$min_libPath = dirname(__FILE__) . '/lib';
+
+
 /**
  * To use APC/Memcache/ZendPlatform for cache storage, require the class and
  * set $min_cachePath to an instance. Example below:
  */
-//require dirname(__FILE__) . '/lib/Minify/Cache/APC.php';
+//require "$min_libPath/Minify/Cache/APC.php";
 //$min_cachePath = new Minify_Cache_APC();
-$min_cachePath = BASE.'tmp/minify';
 
 
 /**
@@ -115,10 +118,7 @@ $min_serveOptions['bubbleCssImports'] = false;
  * Note: Despite this setting, if you include a number at the end of the
  * querystring, maxAge will be set to one year. E.g. /min/f=hello.css&123456
  */
-//$min_serveOptions['maxAge'] = 1800;
-$ma = MINIFY_MAXAGE;
-$ma = empty($ma)?0:$ma;
-$min_serveOptions['maxAge'] = $ma;
+$min_serveOptions['maxAge'] = 1800;
 
 
 /**
@@ -159,7 +159,6 @@ $min_serveOptions['minApp']['groupsOnly'] = false;
  * own pattern that is matched against the filename.
  */
 //$min_serveOptions['minApp']['noMinPattern'] = '@[-\\.]min\\.(?:js|css)$@i';
-$min_serveOptions['minApp']['maxFiles'] = MINIFY_MAX_FILES;
 
 
 /**
@@ -194,13 +193,6 @@ $min_symlinks = array();
  * @link http://winscp.net/eng/docs/ui_login_environment#daylight_saving_time
  */
 $min_uploaderHoursBehind = 0;
-
-
-/**
- * Path to Minify's lib folder. If you happen to move it, change 
- * this accordingly.
- */
-$min_libPath = dirname(__FILE__) . '/lib';
 
 
 // try to disable output_compression (may not have an effect)
