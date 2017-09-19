@@ -1,5 +1,38 @@
 ### Version History
 
+*4.2.6 (2017/09/19)*
+
+* Fixed positioning of progress bar tooltip @rafa8626
+* Added style to avoid flickering when using volume on Chrome @rafa8626
+* Fixed broken UUT @rafa8626
+* Added `configs` parameter for native FLV according to documentation for flv.js (https://github.com/mediaelement/mediaelement/pull/2344) @xiaosongxiaosong
+* Added missing call to avoid further calls to attempt set the player's dimensions once removed @rafa8626
+* Fixed typo when checking error event and fixed workflow to loop multiple sources until valid one is found for `html5` and `native_hls` renderers @rafa8626
+* Fixed workflow to enable/disable controls once error occurs and once user recovers from error @rafa8626
+* Fixed issue when no `height` attribute but style is set to create proper player dimensions @rafa8626
+* Use local variable for `getComputedStyle` polyfill to avoid recursion on Firefox (https://github.com/mediaelement/mediaelement/pull/2351) @synthecypher
+* Fixed accessibility issues when using keyboard on focused progress bar and moved `keyActions` to their individual components @rafa8626
+* Fixed issues with progress bar tooltip when media duration is too long @rafa8626
+* Added new `mejs` variables needed for WordPress @rafa8626
+* Fixed issues with events fired in incorrect time for `flash_video` renderer @milax
+* Set specific settings for embedding flash object in Edge browser (https://github.com/mediaelement/mediaelement/pull/2364) @milax 
+* Added new constant to detect `passive events` and added conditional for `touchstart` events @rafa8626
+* Removed width and height from `embed` object to ensure Flash audio will play on Chrome (https://github.com/mediaelement/mediaelement/pull/2367) @milax
+* Fixed issue with Caption/Chapters menus not selecting options properly when using mouse @rafa8626 and @Instagit
+* Removed black area when Flash player is used in audio player (https://github.com/mediaelement/mediaelement/pull/2370) @milax
+* Fixed issue with `poster` option not being set if `poster` attribute is absent @rafa8626
+* Moved code inside `player.js` to corresponding features to restore original order or operations when creating layers @rafa8626
+* Added `unmute` command for Facebook renderer @rafa8626
+* Fixed events emitting and run handlers of active renderer only for Flash and HTML5 renderer (https://github.com/mediaelement/mediaelement/pull/2368) @milax
+* Fixed issues when setting sources for Flash HLS renderer and added missing events @rafa8626
+* Upgraded `hls.js` to 0.8.2 version and `flv.js` to 1.3.3 version @rafa8626
+* Refactor `Facebook` renderer to solve issues when instantiating multiple videos and added new `lang` parameter to load language on SDK @rafa8626
+* Fixed typos in `Twitch` renderer that caused channels not to play properly @rafa8626
+* Fixed typos in `Flash` renderer to avoid issues with `embed` dimensions @rafa8626
+* Reintegrated old workflow to deal only with `dash.js` play errors @rafa8626 
+* Updated documentation @rafa8626
+* Added documentation about MEJS installation through Bower (https://github.com/mediaelement/mediaelement/pull/2399) @thompsonemerson
+
 *4.2.5 (2017/08/09)*
 
 * Removed workflow that ignored MIME type to get a better media match @rafa8626
