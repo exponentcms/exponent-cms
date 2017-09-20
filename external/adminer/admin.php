@@ -149,6 +149,7 @@ function adminer_object() {
 
 // include original Adminer or Adminer Editor
 include "./adminer-4.3.1-mysql.php";
+//include "./editor-4.3.1-mysql.php";
 
 if (SITE_WYSIWYG_EDITOR != 'tinymce') {
 ?>
