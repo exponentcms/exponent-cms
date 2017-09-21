@@ -69,7 +69,7 @@ class update_shipping_billing_calcs extends upgradescript {
                     $classname = substr($file, 0, -4);
                     $id = $db->selectValue('billingcalculator', 'id', 'calculator_name="'.$classname.'"');
                     $calcobj = new $classname($id);
-                    if ($calcobj->isSelectable() == true) {
+                    if ((method_exists($calcobj,'isSelectable')) && $calcobj->isSelectable() == true) {
                         $calcobj->update(
                             array(
                                 'title'=>$calcobj->name(),
