@@ -34,7 +34,7 @@
  *
  * @return array
  */
-function smarty_modifier_urlencode($string,$ignore_whitespace) {
+function smarty_modifier_urlencode($string,$ignore_whitespace=false) {
 	if ($ignore_whitespace) $string = trim($string);
 	return urlencode($string);
 }
