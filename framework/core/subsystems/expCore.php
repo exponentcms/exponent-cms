@@ -481,6 +481,99 @@ class expCore
         }
         return !isset($difference) ? 0 : $difference;
     }
+
+    public static function save_csv($data, $rpt_columns=array(), $filename='report.csv') {
+        if (LANG_CHARSET == 'UTF-8') {
+            $out = chr(0xEF).chr(0xBB).chr(0xBF);  // add utf-8 signature to file to open appropriately in Excel, etc...
+        } else {
+            $out = "";
+        }
+        $out .= self::array2csv($data, $rpt_columns);
+
+		// CREATE A TEMP FILE
+		$tmpfname = tempnam(getcwd(), "rep"); // Rig
+
+		$handle = fopen($tmpfname, "w");
+		fwrite($handle,$out);
+		fclose($handle);
+
+		if(file_exists($tmpfname)) {
+            // NO buffering from here on out or things break unexpectedly. - RAM
+            ob_end_clean();
+
+            // This code was lifted from phpMyAdmin, but this is Open Source, right?
+            // 'application/octet-stream' is the registered IANA type but
+            // MSIE and Opera seems to prefer 'application/octetstream'
+            // It seems that other headers I've added make IE prefer octet-stream again. - RAM
+            $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values;';
+            header('Content-Type: ' . $mime_type . ' charset=' . LANG_CHARSET. "'");
+            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+            header('Content-length: '.filesize($tmpfname));
+            header('Content-Transfer-Encoding: binary');
+            header('Content-Encoding:');
+            header('Content-Disposition: attachment; filename="' . $filename . '";');
+            // IE need specific headers
+            if (EXPONENT_USER_BROWSER == 'IE') {
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Pragma: public');
+                header('Vary: User-Agent');
+            } else {
+                header('Pragma: no-cache');
+            }
+            //Read the file out directly
+            readfile($tmpfname);
+
+//            if (DEVELOPMENT == 0) exit();
+            unlink($tmpfname);
+            exit();
+        }
+    }
+
+    /**
+     * This converts the data array into a nice CSV.
+     * We grab the items array which is stored funkily in the DB in an associative array when we pull it.
+     * So basically our aray looks like this:
+     *
+     * ITEMS
+     * {[id]=>myID, [Name]=>name, [Address]=>myaddr}
+     * {[id]=>myID1, [Name]=>name1, [Address]=>myaddr1}
+     * {[id]=>myID2, [Name]=>name2, [Address]=>myaddr2}
+     * {[id]=>myID3, [Name]=>name3, [Address]=>myaddr3}
+     * {[id]=>myID4, [Name]=>name4, [Address]=>myaddr4}
+     * {[id]=>myID5, [Name]=>name5, [Address]=>myaddr5}
+     *
+     * So by nature of the array, the keys are repeated in each line (id, name, etc)
+     * So if we want to make a header row, we just run through once at the beginning and
+     * use the array_keys function to strip out a functional header
+     *
+     * @param      $items
+     *
+     * @param array|null $rptcols
+     *
+     * @return string
+     */
+    public static function array2csv($items, $rptcols = array()) {
+        $str = "";
+        // create header row
+        foreach ($rptcols as $individual_Header) {
+            if (!is_array($rptcols) || in_array($individual_Header, $rptcols)) $str .= $individual_Header . ",";  //FIXME $individual_Header is ALWAYS in $rptcols?
+        }
+        $str = substr($str, 0, strlen($str) - 1);  // remove trailing commma
+        $str .= "\r\n";
+        // create item rows
+        foreach ($items as $item) {
+            foreach ($rptcols as $key => $rowitem) {
+                if (!is_array($rptcols) || property_exists($item, $key)) {
+                    $rowitem = str_replace(",", " ", $item->$key);
+                    $str .= $rowitem . ",";
+                }
+            } //foreach rowitem
+            $str = substr($str, 0, strlen($str) - 1);  // remove trailing commma
+            $str .= "\r\n";
+        } //end of foreach loop
+        return $str;
+    }
+
 }
 
 ?>

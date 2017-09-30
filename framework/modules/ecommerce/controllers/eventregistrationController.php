@@ -1039,6 +1039,10 @@ class eventregistrationController extends expController {
 //            }
 //        }
 
+        $fn = str_replace(' ', '_', $event->title) . '_' . gt('Roster') . '.csv';
+
+        expCore::save_csv($registrants, $rpt_columns, $fn);
+
         if (LANG_CHARSET == 'UTF-8') {
             $out = chr(0xEF).chr(0xBB).chr(0xBF);  // add utf-8 signature to file to open appropriately in Excel, etc...
         } else {
@@ -1076,9 +1080,10 @@ class eventregistrationController extends expController {
 //            $body = substr($body, 0, -1) . "\n";
 //        }
 //        $out .= $body;
-        $out .= formsController::sql2csv($registrants, $rpt_columns);
 
-        $fn = str_replace(' ', '_', $event->title) . '_' . gt('Roster') . '.csv';
+        //fixme old routine
+
+        $out .= formsController::sql2csv($registrants, $rpt_columns);
 
 		// CREATE A TEMP FILE
 		$tmpfname = tempnam(getcwd(), "rep"); // Rig

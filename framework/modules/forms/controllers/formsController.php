@@ -1361,12 +1361,12 @@ class formsController extends expController {
             $items = $f->getRecords();
 
             $fc = new forms_control();
-            //FIXME should we default to only 5 columns or all columns? and should we pick up modules columns ($this->config) or just form defaults ($f->)
             //$f->column_names_list is a serialized array
             //$this->config['column_names_list'] is an array
             if ($this->config['column_names_list'] == '') {
                 //define some default columns...
                 $controls = $fc->find('all', "forms_id=" . $f->id . " AND is_readonly = 0 AND is_static = 0", "rank");
+                //FIXME should we default to only 5 columns or all columns? and should we pick up modules columns ($this->config) or just form defaults ($f->)
 //                foreach (array_slice($controls, 0, 5) as $control) {
                 foreach ($controls as $control) {
 //                    if ($this->config['column_names_list'] != '')
@@ -1442,6 +1442,10 @@ class formsController extends expController {
                 }
             }
 
+            expCore::save_csv($items, $rpt_columns, "report.csv");
+
+            //fixme old routine
+
             if (LANG_CHARSET == 'UTF-8') {
                 $file = chr(0xEF) . chr(0xBB) . chr(0xBF); // add utf-8 signature to file to open appropriately in Excel, etc...
             } else {
@@ -1509,7 +1513,7 @@ class formsController extends expController {
      * {[id]=>myID4, [Name]=>name4, [Address]=>myaddr4}
      * {[id]=>myID5, [Name]=>name5, [Address]=>myaddr5}
      *
-     * So by nature of the array, the keys are repetated in each line (id, name, etc)
+     * So by nature of the array, the keys are repeated in each line (id, name, etc)
      * So if we want to make a header row, we just run through once at the beginning and
      * use the array_keys function to strip out a functional header
      *
@@ -1521,10 +1525,12 @@ class formsController extends expController {
      */
     public static function sql2csv($items, $rptcols = null) {
         $str = "";
+        // create header row
         foreach ($rptcols as $individual_Header) {
             if (!is_array($rptcols) || in_array($individual_Header, $rptcols)) $str .= $individual_Header . ",";  //FIXME $individual_Header is ALWAYS in $rptcols?
         }
         $str .= "\r\n";
+        // create item rows
         foreach ($items as $item) {
             foreach ($rptcols as $key => $rowitem) {
                 if (!is_array($rptcols) || property_exists($item, $key)) {
@@ -1749,9 +1755,12 @@ class formsController extends expController {
                 $form->meta("filename", $directory . "/" . $file->filename);
                 $form->meta("use_header", $this->params["use_header"]);
                 $form->meta("rowstart", $this->params["rowstart"]);
-                for ($i = 0, $iMax = count($lineInfo); $i < $iMax; $i++) {
+                for ($i = 0, $iMax = count($headerinfo); $i < $iMax; $i++) {
                     if ($headerinfo != null) {
-                        $title = $headerinfo[$i] . ' (' . $lineInfo[$i] .')';
+                        $title = $headerinfo[$i];
+                        if (!empty($lineInfo[$i])) {
+                            $title .=  ' (' . $lineInfo[$i] .')';
+                        }
     //                    $label = str_replace('&', 'and', $headerinfo[$i]);
     //                    $label = preg_replace("/(-)$/", "", preg_replace('/(-){2,}/', '-', strtolower(preg_replace("/([^0-9a-z-_\+])/i", '-', $label))));
     //                    $form->register("name[$i]", null, new genericcontrol('hidden',$label));
@@ -1760,7 +1769,11 @@ class formsController extends expController {
                         $form->register("name[$i]", null, new genericcontrol('hidden','Field'.$i));
                         $title = $lineInfo[$i];
                     }
-                    $form->register("data[$i]", null, new genericcontrol('hidden',$lineInfo[$i]));
+                    if (!empty($lineInfo[$i])) {
+                        $form->register("data[$i]", null, new genericcontrol('hidden', $lineInfo[$i]));
+                    } else {
+                        $form->register("data[$i]", null, new genericcontrol('hidden', gt('empty record')));
+                    }
                     $form->register("control[$i]", $title, new dropdowncontrol("none", $types));
                 }
                 $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
@@ -2053,6 +2066,7 @@ class formsController extends expController {
             foreach ($multi_item_control_ids as $key=>$control_id) {
                 $fc = new forms_control($control_id);
                 $ctl = expUnserialize($fc->data);
+                sort($multi_item_control_items[$key]);
                 $ctl->items = $multi_item_control_items[$key];
                 $fc->data = serialize($ctl);
                 $fc->update();
