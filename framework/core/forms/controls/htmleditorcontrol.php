@@ -27,58 +27,68 @@ if (!defined('EXPONENT')) exit('');
  */
 if (SITE_WYSIWYG_EDITOR == "ckeditor") {
 
-class htmleditorcontrol extends ckeditorcontrol {
-}
+    class htmleditor extends ckeditorcontrol
+    {
+
+    }
 
 } elseif (SITE_WYSIWYG_EDITOR == "tinymce") {
-class htmleditorcontrol extends tinymcecontrol {
-}
+
+    class htmleditor extends tinymcecontrol
+    {
+
+    }
 
 } else {
 
-class htmleditorcontrol extends formcontrol {
+    class htmleditor extends texteditorcontrol
+    {
+        var $module = "";
+        var $toolbar = "";
 
-	var $module = "";
-	var $toolbar = "";
+        static function name()
+        {
+            return "WYSIWYG Editor";
+        }
 
-	static function name() {return "WYSIWYG Editor";}
+        function __construct($default = "", $module = "", $rows = 20, $cols = 60, $toolbar = "", $height = 300)
+        {
+            $this->default = $default;
+            $this->module = $module; // For looking up templates.
+            $this->toolbar = $toolbar;
+            $this->height = $height;
+        }
 
-	function __construct($default="",$module = "",$rows = 20,$cols = 60, $toolbar = "", $height=300) {
-		$this->default = $default;
-		$this->module = $module; // For looking up templates.
-		$this->toolbar = $toolbar;
-		$this->height = $height;
-	}
+        function controlToHTML($name, $label)
+        {
+            global $db;
 
-	function controlToHTML($name,$label) {
-			global $db;
+            if ($this->toolbar == "") {
+                $config = $db->selectObject("toolbar_" . SITE_WYSIWYG_EDITOR, "active=1");
+            } else {
+                $config = $db->selectObject("toolbar_" . SITE_WYSIWYG_EDITOR, "name='" . $this->toolbar . "'");
+            }
 
-			if($this->toolbar == "") {
-				$config = $db->selectObject("toolbar_" . SITE_WYSIWYG_EDITOR, "active=1");
-			}else{
-				$config = $db->selectObject("toolbar_" . SITE_WYSIWYG_EDITOR, "name='" . $this->toolbar . "'");
-			}
+            //as long as we don't have proper datamodels, emulate them
+            //there are at least two sets of data: view data and content data
+            $view = new StdClass();
+            $content = new StdClass();
 
-			//as long as we don't have proper datamodels, emulate them
-			//there are at least two sets of data: view data and content data
-			$view = new StdClass();
-			$content = new StdClass();
+            if (isset($config->data)) {
+                $view->toolbar = $config->data;
+            } else {
+                $view->toolbar = null;
+            }
+            $view->path_to_editor = PATH_RELATIVE . "external/editors/" . SITE_WYSIWYG_EDITOR . "/";
 
-			if (isset($config->data)) {
-				$view->toolbar = $config->data;
-			} else {
-				$view->toolbar = null;
-			}
-			$view->path_to_editor = PATH_RELATIVE . "external/editors/" . SITE_WYSIWYG_EDITOR . "/";
+            $content->name = $name;
 
-			$content->name = $name;
+            $content->value = $this->default;
 
-			$content->value = $this->default;
-
-			//create new view object
-			//WARNING: automatic fallback to Default.tpl will not work
-			//until expCore::resolveFilePaths() gets an update
-			//waiting for switch to PHP5: strrpos() will take strings as needle
+            //create new view object
+            //WARNING: automatic fallback to Default.tpl will not work
+            //until expCore::resolveFilePaths() gets an update
+            //waiting for switch to PHP5: strrpos() will take strings as needle
 //			$viewObj = new controltemplate("EditorControl", SITE_WYSIWYG_EDITOR);
 //
 //			//assign the data models to the view object
@@ -89,22 +99,102 @@ class htmleditorcontrol extends formcontrol {
 //			//return the processed template to the caller for display
 //			$html = $viewObj->render();
 
-			//spares us to send the js editor init code more than once
-			//TODO: Convert to OO API and use eXp->EditorControl->doneInit instead
-			if(!defined('SITE_WYSIWYG_INIT')) {
-				define('SITE_WYSIWYG_INIT', 1);
-			}
+            //spares us to send the js editor init code more than once
+            //TODO: Convert to OO API and use eXp->EditorControl->doneInit instead
+            if (!defined('SITE_WYSIWYG_INIT')) {
+                define('SITE_WYSIWYG_INIT', 1);
+            }
 
 //			return $html;
 
-	}
+        }
 
-	static function parseData($name, $values, $for_db = false) {
-		$html = $values[$name];
-		if (trim($html) == "<br />") $html = "";
-		return $html;
-	}
+        static function parseData($name, $values, $for_db = false)
+        {
+            $html = $values[$name];
+            if (trim($html) == "<br />") $html = "";
+            return $html;
+        }
+    }
+
 }
+
+class htmleditorcontrol extends htmleditor
+{
+    static function isSimpleControl()
+    {
+        return true;
+    }
+
+    static function getFieldDefinition()
+    {
+        return array(
+            DB_FIELD_TYPE => DB_DEF_STRING,
+            DB_FIELD_LEN => 10000);
+    }
+
+    static function form($object)
+    {
+        $form = new form();
+        if (empty($object)) $object = new stdClass();
+        if (!isset($object->identifier)) {
+            $object->identifier = "";
+            $object->caption = "";
+            $object->description = "";
+            $object->default = "";
+            $object->placeholder = "";
+            $object->rows = 5;
+            $object->cols = 38;
+            $object->maxchars = 0;
+            $object->maxlength = 0;
+            $object->is_hidden = false;
+        }
+        if (empty($object->description)) $object->description = "";
+        $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
+        $form->register("caption", gt('Caption'), new textcontrol($object->caption));
+        $form->register("description", gt('Control Description'), new textcontrol($object->description));
+        $form->register("default", gt('Default value'), new texteditorcontrol($object->default));
+        $form->register("placeholder", gt('Placeholder'), new textcontrol($object->placeholder));
+        $form->register("rows", gt('Rows'), new textcontrol($object->rows, 4, false, 3, "integer"));
+        $form->register("cols", gt('Columns'), new textcontrol($object->cols, 4, false, 3, "integer"));
+        $form->register("maxlength", gt('Maximum Length'), new textcontrol((($object->maxlength == 0) ? "" : $object->maxlength), 4, false, 3, "integer"));
+        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden), false));
+        if (!expJavascript::inAjaxAction())
+            $form->register("submit", "", new buttongroupcontrol(gt('Save'), '', gt('Cancel'), "", 'editable'));
+        return $form;
+    }
+
+    static function update($values, $object)
+    {
+        if ($object == null) $object = new texteditorcontrol();
+        if ($values['identifier'] == "") {
+            $post = expString::sanitize($_POST);
+            $post['_formError'] = gt('Identifier is required.');
+            expSession::set("last_POST", $post);
+            return null;
+        }
+        $object->identifier = $values['identifier'];
+        $object->caption = $values['caption'];
+        $object->description = $values['description'];
+        if (isset($values['default'])) $object->default = $values['default'];
+        if (isset($values['placeholder'])) $object->placeholder = $values['placeholder'];
+        if (isset($values['rows'])) $object->rows = intval($values['rows']);
+        if (isset($values['cols'])) $object->cols = intval($values['cols']);
+        if (isset($values['maxchars'])) $object->maxchars = intval($values['maxchars']);
+        if (isset($values['maxlength'])) $object->maxlength = intval($values['maxlength']);
+        $object->required = !empty($values['required']);
+        $object->is_hidden = !empty($values['is_hidden']);
+        return $object;
+    }
+
+    //    static function parseData($original_name,$values,$for_db = false) {
+    //   		return str_replace(array("\r\n","\n","\r"),'<br />', htmlspecialchars($values[$original_name]));
+    //   	}
+
+    static function templateFormat($db_data, $ctl)
+    {
+        return str_replace(array("\r\n", "\n", "\r", '\r\n', '\n', '\r'), '<br />', htmlspecialchars($db_data));
+    }
 }
 
 ?>
