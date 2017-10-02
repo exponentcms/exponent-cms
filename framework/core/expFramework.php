@@ -868,6 +868,9 @@ function expUnserialize($serial_str) {
         if (!empty($out2['report_desc'])) {  // work-around for links in forms report descriptions
             $out2['report_desc'] = stripslashes($out2['report_desc']);
         }
+        if (!empty($out2['report_def_showall'])) {  // work-around for links in forms report descriptions
+            $out2['report_def_showall'] = stripslashes($out2['report_def_showall']);
+        }
         if (!empty($out2['response'])) {  // work-around for links in forms response
             $out2['response'] = stripslashes($out2['response']);
         }

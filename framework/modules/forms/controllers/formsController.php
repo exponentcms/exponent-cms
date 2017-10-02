@@ -166,19 +166,34 @@ class formsController extends expController {
                         }
                     }
                 }
+                foreach ($items as $key => $item) {
+                    //We have to create a show link
+                    $items[$key]['link'] = makeLink(array(
+                        'controller'=>'forms',
+                        'action'=>'show',
+                        'forms_id'=>$f->id,
+                        'id'=>$items[$key]['id'],
+                        'src'=>$this->loc->src
+                    ));
+                }
+
+                $limit = (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10;
+                if ($this->params['view'] !== 'showall_portfolio')
+                    $limit = 0;
 
                 $page = new expPaginator(
                     array(
                         'records' => $items,
                         'where' => 1,
-//                'limit'   => (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
+                        'limit'   => $limit,
                         'order' => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : (!empty($this->config['order']) ? $this->config['order'] : 'id'),
                         'dir' => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : (!empty($this->config['dir']) ? $this->config['dir'] : 'ASC'),
                         'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
                         'controller' => $this->baseclassname,
                         'action' => $this->params['action'],
                         'src' => $this->loc->src,
-                        'columns' => $columns
+                        'columns' => $columns,
+                        'view' => $this->params['view']
                     )
                 );
 
