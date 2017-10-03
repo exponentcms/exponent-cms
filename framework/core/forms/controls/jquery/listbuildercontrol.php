@@ -188,7 +188,6 @@ class listbuildercontrol extends formcontrol {
         }
 	}
 
-//	static function parseData($values, $name, $forceindex = false) { //FIXME params reversed!!! 3rd param normally $for_db
     static function parseData($name, $values, $forceindex = false) { // 3rd param normally $for_db
 		$retvalues = array();
 		if ($values[$name] == "")

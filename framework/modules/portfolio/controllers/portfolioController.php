@@ -123,12 +123,12 @@ class portfolioController extends expController {
         }
 
         $rpt_columns = array();
-        $rpt_columns['title'] = gt('Title (text box)');
-        $rpt_columns['body'] = gt('Body (text area)');
+        $rpt_columns['title'] = gt('Title - text box');
+        $rpt_columns['body'] = gt('Body - text area');
         if ($cats)
-            $rpt_columns['category'] = gt('Category (drop down list)');
+            $rpt_columns['category'] = gt('Category - drop down list');
         if ($files)
-            $rpt_columns['file'] = gt('File (file upload)');
+            $rpt_columns['file'] = gt('File - file upload');
 
         expCore::save_csv($items, $rpt_columns, "portfolio.csv");
     }

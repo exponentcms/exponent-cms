@@ -121,6 +121,8 @@ if (SITE_WYSIWYG_EDITOR == "ckeditor") {
 
 class htmleditorcontrol extends htmleditor
 {
+    static function name() { return "Text Area - WYSIWYG"; }
+
     static function isSimpleControl()
     {
         return true;
@@ -153,7 +155,8 @@ class htmleditorcontrol extends htmleditor
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
-        $form->register("default", gt('Default value'), new texteditorcontrol($object->default));
+//        $form->register("default", gt('Default value'), new texteditorcontrol($object->default));
+        $form->register("default", gt('Default value'), new htmleditorcontrol($object->default));
         $form->register("placeholder", gt('Placeholder'), new textcontrol($object->placeholder));
         $form->register("rows", gt('Rows'), new textcontrol($object->rows, 4, false, 3, "integer"));
         $form->register("cols", gt('Columns'), new textcontrol($object->cols, 4, false, 3, "integer"));
@@ -166,7 +169,7 @@ class htmleditorcontrol extends htmleditor
 
     static function update($values, $object)
     {
-        if ($object == null) $object = new texteditorcontrol();
+        if ($object == null) $object = new htmleditorcontrol();
         if ($values['identifier'] == "") {
             $post = expString::sanitize($_POST);
             $post['_formError'] = gt('Identifier is required.');

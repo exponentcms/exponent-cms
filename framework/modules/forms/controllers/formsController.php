@@ -2061,8 +2061,8 @@ class formsController extends expController {
                         if (!empty($def)) {
                             $db_data->$colname = call_user_func(array($control_type, 'convertData'), $colname, $params);
                         }
-                        if (!empty($db_data->$colname) && array_key_exists($colname,$multi_item_control_items) && !in_array($db_data->$colname,$multi_item_control_items[$colname])) {
-                            $multi_item_control_items[$colname][] = $db_data->$colname;
+                        if (!empty($db_data->$colname) && array_key_exists($colname, $multi_item_control_items) && !in_array($db_data->$colname, $multi_item_control_items[$colname])) {
+                            $multi_item_control_items[$colname][$db_data->$colname] = $db_data->$colname;
                         }
                     }
                     $i++;
@@ -2081,7 +2081,7 @@ class formsController extends expController {
             foreach ($multi_item_control_ids as $key=>$control_id) {
                 $fc = new forms_control($control_id);
                 $ctl = expUnserialize($fc->data);
-                sort($multi_item_control_items[$key]);
+                ksort($multi_item_control_items[$key]);
                 $ctl->items = $multi_item_control_items[$key];
                 $fc->data = serialize($ctl);
                 $fc->update();
