@@ -569,7 +569,7 @@ if (!defined('SWIFT_PATH')) {
     if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
         define('SWIFT_VERSION', '5.4.8');
     } else {
-        define('SWIFT_VERSION', '6.0.1');
+        define('SWIFT_VERSION', '6.0.2');
     }
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
     define('LEXER_VERSION', '1.0.1');
