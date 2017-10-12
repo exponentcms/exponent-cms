@@ -34,6 +34,8 @@ ini_set('max_file_uploads', FM_SIMLIMIT); // allow uploading up to FM_SIMLIMIT f
 //ini_set('mbstring.internal_encoding', 'UTF-8');
 //ini_set('mbstring.func_overload', 2);
 
+// elFinder autoload
+//require './autoload.php'; //note in Exp we load manually
 include BASE . 'external/elFinder/php/elFinderConnector.class.php';
 include BASE . 'external/elFinder/php/elFinder.class.php';
 

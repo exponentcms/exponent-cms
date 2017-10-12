@@ -39,11 +39,13 @@ elFinder.prototype.resources = {
 		placedir   : '<div class="elfinder-navbar-wrapper"><span id="{id}" class="ui-corner-all elfinder-navbar-dir {cssclass}" title="{title}"><span class="elfinder-navbar-arrow"/><span class="elfinder-navbar-icon" {style}/>{symlink}{permissions}{name}</span><div class="elfinder-navbar-subtree" style="display:none"/></div>'
 		
 	},
-	
+	// mimes.text will be overwritten with connector config if `textMimes` is included in initial response
+	// @see php/elFInder.class.php `public static $textMimes`
 	mimes : {
 		text : [
 			'application/x-empty',
 			'application/javascript', 
+			'application/json',
 			'application/xhtml+xml', 
 			'audio/x-mp3-playlist', 
 			'application/x-web-config',
@@ -53,7 +55,8 @@ elFinder.prototype.resources = {
 			'application/x-awk',
 			'application/x-config',
 			'application/x-csh',
-			'application/xml'
+			'application/xml',
+			'application/sql'
 		]
 	},
 	
@@ -100,8 +103,7 @@ elFinder.prototype.resources = {
 					.always(function() {
 						rest();
 						cleanup();
-						fm.enable();
-						fm.trigger('resMixinMake');
+						fm.enable().unbind('open', openCallback).trigger('resMixinMake');
 					}),
 				id    = 'tmp_'+parseInt(Math.random()*100000),
 				phash = this.data && this.data.target? this.data.target : (tree? fm.file(sel[0]).hash : fm.cwd().hash),
@@ -126,7 +128,7 @@ elFinder.prototype.resources = {
 				nnode, pnode,
 				overlay = fm.getUI('overlay'),
 				cleanup = function() {
-					fm.unbind('resize', resize);
+					fm.unselectfiles({files : [id]}).unbind('resize', resize);
 					input.remove();
 					if (tree) {
 						node.closest('.elfinder-navbar-wrapper').remove();
@@ -263,6 +265,9 @@ elFinder.prototype.resources = {
 				resize = function() {
 					node.trigger('scrolltoview');
 				},
+				openCallback = function() {
+					dfrd && (dfrd.state() === 'pending') && dfrd.reject();
+				},
 				inError = false,
 				nextAction,
 				// for tree
@@ -312,7 +317,7 @@ elFinder.prototype.resources = {
 				nnode.empty('').append(input.val(file.name));
 			}
 			
-			fm.bind('resize', resize);
+			fm.bind('resize', resize).one('open', openCallback);
 			
 			input.trigger('keyup');
 			select();

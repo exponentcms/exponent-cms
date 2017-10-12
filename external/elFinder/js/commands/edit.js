@@ -9,7 +9,7 @@ elFinder.prototype.commands.edit = function() {
 	var self  = this,
 		fm    = this.fm,
 		dlcls = 'elfinder-dialog-edit',
-		texts = fm.res('mimes', 'text') || [],
+		texts = [],
 		mimesSingle = [],
 		mimes = [],
 		rtrim = function(str){
@@ -49,7 +49,7 @@ elFinder.prototype.commands.edit = function() {
 				if (skip) {
 					return null;
 				}
-				res = (file.mime.indexOf('text/') === 0 || $.inArray(file.mime, texts) !== -1 || $.inArray(file.mime, cnt === 1? mimesSingle : mimes) !== -1) 
+				res = (fm.textMimes[file.mime] || file.mime.indexOf('text/') === 0 || $.inArray(file.mime, cnt === 1? mimesSingle : mimes) !== -1) 
 					&& file.mime.indexOf('text/rtf')
 					&& (!self.onlyMimes.length || $.inArray(file.mime, self.onlyMimes) !== -1)
 					&& file.read && file.write
@@ -76,6 +76,12 @@ elFinder.prototype.commands.edit = function() {
 				save = function() {
 					var encord = selEncoding? selEncoding.val():void(0),
 						conf;
+					ta.one('_savefail', function() {
+						ta.off('_savedone');
+						dialogNode.show().find('button.elfinder-btncnt-0,button.elfinder-btncnt-1').hide();
+					}).one('_savedone', function() {
+						ta.off('_savefail');
+					});
 					if (ta.editor) {
 						ta.editor.save(ta[0], ta.editor.instance);
 						conf = ta.editor.confObj;
@@ -90,12 +96,18 @@ elFinder.prototype.commands.edit = function() {
 					ta.elfinderdialog('close');
 				},
 				savecl = function() {
+					ta.one('_savedone', function() {
+						dialogNode.show();
+						cancel();
+					});
 					save();
-					cancel();
+					dialogNode.hide();
 				},
 				saveAs = function() {
 					var prevOld = old,
+						phash = fm.file(file.phash)? file.phash : fm.cwd().hash,
 						fail = function() {
+							dialogs.fadeIn();
 							old = prevOld;
 							fm.disable();
 							ta.addClass(clsEditing);
@@ -105,7 +117,7 @@ elFinder.prototype.commands.edit = function() {
 							self.prefix = file.name.replace(/ \d+(\.[^.]+)?$/, '$1');
 							self.requestCmd = 'mkfile';
 							self.nextAction = { cmd: 'edit', msg: 'cmdedit' };
-							self.data = {target : file.phash};
+							self.data = {target : phash};
 							$.proxy(fm.res('mixin', 'make'), self)()
 								.done(function(data) {
 									if (data.added && data.added.length) {
@@ -116,6 +128,7 @@ elFinder.prototype.commands.edit = function() {
 									} else {
 										fail();
 									}
+									dialogs.fadeIn();
 								})
 								.fail(fail)
 								.always(function() {
@@ -123,7 +136,6 @@ elFinder.prototype.commands.edit = function() {
 									delete self.prefix;
 									delete self.nextAction;
 									delete self.data;
-									dialogs.fadeIn();
 								});
 							fm.trigger('unselectfiles', { files: [ file.hash ] });
 						},
@@ -133,8 +145,8 @@ elFinder.prototype.commands.edit = function() {
 					ta.removeClass(clsEditing);
 					fm.enable();
 					
-					if (fm.searchStatus.state < 2 && file.phash !== fm.cwd().hash) {
-						reqOpen = fm.exec('open', [file.phash], {thash: file.phash});
+					if (fm.searchStatus.state < 2 && phash !== fm.cwd().hash) {
+						reqOpen = fm.exec('open', [phash], {thash: phash});
 					}
 					
 					$.when([reqOpen]).done(function() {
@@ -249,7 +261,7 @@ elFinder.prototype.commands.edit = function() {
 			}
 			
 			if (!ta) {
-				if (file.mime.indexOf('text/') !== 0 && $.inArray(file.mime, texts) === -1) {
+				if (file.mime.indexOf('text/') !== 0 && !fm.textMimes[file.mime]) {
 					return dfrd.reject('errEditorNotFound');
 				}
 				(function() {
@@ -376,7 +388,6 @@ elFinder.prototype.commands.edit = function() {
 			var hash   = file.hash,
 				opts   = fm.options,
 				dfrd   = $.Deferred(), 
-				data   = {cmd : 'file', target : hash},
 				id     = 'edit-'+fm.namespace+'-'+file.hash,
 				d      = fm.getUI().find('#'+id),
 				conv   = !conv? 0 : conv,
@@ -401,14 +412,15 @@ elFinder.prototype.commands.edit = function() {
 				});
 			} else {
 				req = fm.request({
-					data   : {cmd : 'get', target  : hash, conv : conv},
-					notify : {type : 'file', cnt : 1},
+					data           : {cmd : 'get', target : hash, conv : conv, _t : file.ts},
+					options        : {type: 'get', cache : true},
+					notify         : {type : 'file', cnt : 1},
 					preventDefault : true
 				});
 			}
 			
 			req.done(function(data) {
-				var selEncoding;
+				var selEncoding, reg, m;
 				if (data.doconv) {
 					fm.confirm({
 						title  : self.title,
@@ -439,6 +451,12 @@ elFinder.prototype.commands.edit = function() {
 						}
 					});
 				} else {
+					if (fm.textMimes[file.mime] || file.mime.indexOf('text/') === 0) {
+						reg = new RegExp('^(data:'+file.mime.replace(/([.+])/g, '\\$1')+';base64,)', 'i');
+						if (window.atob && (m = data.content.match(reg))) {
+							data.content = atob(data.content.substr(m[1].length));
+						}
+					}
 					dialog(id, file, data.content, data.encoding, editor)
 						.done(function(data) {
 							dfrd.resolve(data);
@@ -458,6 +476,7 @@ elFinder.prototype.commands.edit = function() {
 								},
 								notify : {type : 'save', cnt : 1},
 								syncOnFail : true,
+								preventFail : true,
 								navigate : {
 									target : 'changed',
 									toast : {
@@ -467,12 +486,14 @@ elFinder.prototype.commands.edit = function() {
 							})
 							.fail(function(error) {
 								dfrd.reject(error);
+								ta.trigger('_savefail');
 							})
 							.done(function(data) {
 								setTimeout(function(){
 									ta.focus();
 									ta.editor && ta.editor.focus(ta[0], ta.editor.instance);
 								}, 50);
+								ta.trigger('_savedone');
 							});
 						})
 						.fail(function(error) {
@@ -584,7 +605,10 @@ elFinder.prototype.commands.edit = function() {
 			});
 		}
 		
-		fm.bind('select', function() {
+		fm.one('open', function() {
+			texts = fm.res('mimes', 'text') || [];
+		})
+		.bind('select', function() {
 			if (self.enabled()) {
 				setEditors(fm.file(fm.selected()[0]), fm.selected().length);
 				if (Object.keys(editors).length > 1) {

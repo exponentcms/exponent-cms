@@ -20,7 +20,6 @@ elFinder.prototype.commands.resize = function() {
 	this.resizeRequest = function(data, file, dfrd) {
 		var fm   = this.fm,
 			file = file || fm.file(data.target),
-			src  = file? fm.openUrl(file.hash) : null,
 			tmb  = file? file.tmb : null,
 			enabled = fm.isCommandEnabled('resize', data.target);
 		
@@ -29,26 +28,7 @@ elFinder.prototype.commands.resize = function() {
 				data : Object.assign(data, {
 					cmd : 'resize'
 				}),
-				notify : {type : 'resize', cnt : 1},
-				prepare : function(data) {
-					var newfile;
-					if (data) {
-						if (data.added && data.added.length && data.added[0].tmb) {
-							newfile = data.added[0];
-						} else if (data.changed && data.changed.length && data.changed[0].tmb) {
-							newfile = data.changed[0];
-						}
-						if (newfile) {
-							file = newfile;
-							src = fm.openUrl(file.hash);
-							if (file.tmb && file.tmb != '1' && (file.tmb === tmb)) {
-								file.tmb = '';
-								return;
-							}
-						}
-					}
-					tmb = '';
-				}
+				notify : {type : 'resize', cnt : 1}
 			})
 			.fail(function(error) {
 				if (dfrd) {
@@ -56,22 +36,7 @@ elFinder.prototype.commands.resize = function() {
 				}
 			})
 			.done(function() {
-				var url = (file.url != '1')? fm.url(file.hash) : '';
-				
-				// need tmb reload
-				if (tmb) {
-					fm.one('resizedone', function() {
-						fm.reloadContents(fm.tmb(file).url).done(function() {
-							fm.trigger('tmbreload', {files: [ {hash: file.hash, tmb: tmb} ]});
-						});
-					});
-				}
-				
-				fm.reloadContents(src);
-				if (url && url !== src) {
-					fm.reloadContents(url);
-				}
-				
+				fm.storage('jpgQuality', data.quality === fm.option('jpgQuality')? null : data.quality);
 				dfrd && dfrd.resolve();
 			});
 		} else {
@@ -202,7 +167,7 @@ elFinder.prototype.commands.resize = function() {
 					offsetX = $(input).change(function(){crop.updateView('w');}),
 					offsetY = $(input).change(function(){crop.updateView('h');}),
 					quality = isJpeg && api2?
-						$(input).val(fm.option('jpgQuality'))
+						$(input).val(fm.storage('jpgQuality') || fm.option('jpgQuality'))
 							.addClass('quality')
 							.on('blur', function(){
 								var q = Math.min(100, Math.max(1, parseInt(this.value)));
@@ -238,6 +203,7 @@ elFinder.prototype.commands.resize = function() {
 								}
 							})
 						.end(),
+					pickimg,
 					pickcanv,
 					pickctx,
 					pickc = {},
@@ -370,7 +336,11 @@ elFinder.prototype.commands.resize = function() {
 						})
 						.button(),
 					setuprimg = function() {
-						var r_scale;
+						var r_scale,
+							fail = function() {
+								bg.parent().hide();
+								pallet.hide();
+							};
 						r_scale = Math.min(pwidth, pheight) / Math.sqrt(Math.pow(owidth, 2) + Math.pow(oheight, 2));
 						rwidth = Math.ceil(owidth * r_scale);
 						rheight = Math.ceil(oheight * r_scale);
@@ -381,14 +351,19 @@ elFinder.prototype.commands.resize = function() {
 						if (imgr.is(':visible') && bg.is(':visible')) {
 							if (file.mime !== 'image/png') {
 								preview.css('backgroundColor', bg.val());
-								setTimeout(function() {
+								pickimg = $('<img>');
+								if (fm.isCORS) {
+									pickimg.attr('crossorigin', 'use-credentials');
+								}
+								pickimg.on('load', function() {
 									if (pickcanv && pickcanv.width !== rwidth) {
 										setColorData();
 									}
-								}, 0);
+								})
+								.on('error', fail)
+								.attr('src', fm.openUrl(file.hash, fm.isCORS? true : false));
 							} else {
-								bg.parent().hide();
-								pallet.hide()
+								fail();
 							}
 						}
 					},
@@ -439,7 +414,7 @@ elFinder.prototype.commands.resize = function() {
 								h = pickcanv.height = imgr.height();
 								scale = w / owidth;
 								pickctx.scale(scale, scale);
-								pickctx.drawImage(imgr.get(0), 0, 0);
+								pickctx.drawImage(pickimg.get(0), 0, 0);
 			
 								data = pickctx.getImageData(0, 0, w, h).data;
 			
@@ -862,62 +837,55 @@ elFinder.prototype.commands.resize = function() {
 						}
 					},
 					resizable = function(destroy) {
-						if ($.fn.resizable) {
-							if (destroy) {
-								rhandle.filter(':ui-resizable').resizable('destroy');
-								rhandle.hide();
-							}
-							else {
-								rhandle.show();
-								rhandle.resizable({
-									alsoResize  : img,
-									aspectRatio : cratio,
-									resize      : resize.update,
-									stop        : resize.fixHeight
-								});
-								dinit();
-							}
+						if (destroy) {
+							rhandle.filter(':ui-resizable').resizable('destroy');
+							rhandle.hide();
+						}
+						else {
+							rhandle.show();
+							rhandle.resizable({
+								alsoResize  : img,
+								aspectRatio : cratio,
+								resize      : resize.update,
+								stop        : resize.fixHeight
+							});
+							dinit();
 						}
 					},
 					croppable = function(destroy) {
-						if ($.fn.draggable && $.fn.resizable) {
-							if (destroy) {
-								rhandlec.filter(':ui-resizable').resizable('destroy')
-									.filter(':ui-draggable').draggable('destroy');
-								basec.hide();
-							}
-							else {
-								basec.show();
-								
-								rhandlec
-									.resizable({
-										containment : basec,
-										aspectRatio : cratioc,
-										resize      : crop.resize_update,
-										handles     : 'all'
-									})
-									.draggable({
-										handle      : coverc,
-										containment : imgc,
-										drag        : crop.drag_update,
-										stop        : function() { crop.updateView('xy'); }
-									});
-								
-								dinit();
-								crop.update();
-							}
+						if (destroy) {
+							rhandlec.filter(':ui-resizable').resizable('destroy')
+								.filter(':ui-draggable').draggable('destroy');
+							basec.hide();
+						}
+						else {
+							basec.show();
+							
+							rhandlec
+								.resizable({
+									containment : basec,
+									aspectRatio : cratioc,
+									resize      : crop.resize_update,
+									handles     : 'all'
+								})
+								.draggable({
+									handle      : coverc,
+									containment : imgc,
+									drag        : crop.drag_update,
+									stop        : function() { crop.updateView('xy'); }
+								});
+							
+							dinit();
+							crop.update();
 						}
 					},
 					rotateable = function(destroy) {
-						if ($.fn.draggable && $.fn.resizable) {
-							if (destroy) {
-								imgr.hide();
-							}
-							else {
-								imgr.show();
-								dinit();
-
-							}
+						if (destroy) {
+							imgr.hide();
+						}
+						else {
+							imgr.show();
+							dinit();
 						}
 					},
 					checkVals = function() {
@@ -1035,7 +1003,7 @@ elFinder.prototype.commands.resize = function() {
 							dialogs;
 						
 						if (checkVals()) {
-							dialogs = fm.getUI().children('.'+dlcls).fadeOut();
+							dialogs = fmnode.children('.'+dlcls).fadeOut();
 							base.removeClass(clactive);
 								
 							if (fm.searchStatus.state < 2 && file.phash !== fm.cwd().hash) {
@@ -1051,7 +1019,7 @@ elFinder.prototype.commands.resize = function() {
 					hline   = 'elfinder-resize-handle-hline',
 					vline   = 'elfinder-resize-handle-vline',
 					rpoint  = 'elfinder-resize-handle-point',
-					src     = fm.openUrl(file.hash, fm.isCORS? true : false),
+					src     = fm.openUrl(file.hash),
 					dinit   = function() {
 						if (base.hasClass('elfinder-dialog-minimized')) {
 							return;
@@ -1061,8 +1029,9 @@ elFinder.prototype.commands.resize = function() {
 						presetc.hide();
 						
 						var dw,
-							winH  = $(window).height(),
-							winW  = $(window).width(),
+							win   = fm.options.dialogContained? fmnode : $(window),
+							winH  = win.height(),
+							winW  = win.width(),
 							ctrW  = dialog.find('div.elfinder-resize-control').width(),
 							prvW  = preview.width(),
 							baseW = base.width(),
@@ -1079,10 +1048,8 @@ elFinder.prototype.commands.resize = function() {
 						
 						dw = dialog.width() - 20;
 						if (prvW > dw) {
-							//presW = 'auto';
 							preview.width(dw);
 						} else if ((dw - prvW) < ctrW) {
-							//presW = 'auto';
 							if (winW > winH) {
 								preview.width(dw - ctrW - 20);
 							} else {
@@ -1141,11 +1108,6 @@ elFinder.prototype.commands.resize = function() {
 					useSaveAs = fm.uploadMimeCheck(file.mime, file.phash),
 					dMinBtn, base;
 				
-				if (fm.isCORS) {
-					img.attr('crossorigin', 'use-credentials');
-					imgc.attr('crossorigin', 'use-credentials');
-					imgr.attr('crossorigin', 'use-credentials');
-				}
 				imgr.mousedown( rotate.start );
 				$(document).mouseup( rotate.stop );
 					
@@ -1255,9 +1217,9 @@ elFinder.prototype.commands.resize = function() {
 					open           : function() {
 						dMinBtn = base.find('.ui-dialog-titlebar .elfinder-titlebar-minimize').hide();
 						fm.bind('resize', dinit);
-						img.attr('src', src + (src.indexOf('?') === -1 ? '?' : '&')+'_='+Math.random());
-						imgc.attr('src', img.attr('src'));
-						imgr.attr('src', img.attr('src'));
+						img.attr('src', src);
+						imgc.attr('src', src);
+						imgr.attr('src', src);
 					},
 					close          : function() {
 						fm.unbind('resize', dinit);
@@ -1300,7 +1262,7 @@ elFinder.prototype.commands.resize = function() {
 		}
 		
 		id = 'resize-'+fm.namespace+'-'+files[0].hash;
-		dialog = fm.getUI().find('#'+id);
+		dialog = fmnode.find('#'+id);
 		
 		if (dialog.length) {
 			dialog.elfinderdialog('toTop');

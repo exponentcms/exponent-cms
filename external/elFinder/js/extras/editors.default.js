@@ -10,21 +10,13 @@
 }(function(elFinder) {
 	var // get query of getfile
 		getfile = window.location.search.match(/getfile=([a-z]+)/),
-		// cdns location
-		cdns = {
-			ace        : '//cdnjs.cloudflare.com/ajax/libs/ace/1.2.8',
-			codemirror : '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.28.0',
-			ckeditor   : '//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.7.1',
-			tinymce    : '//cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.5',
-			simplemde  : '//cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2'
-		},
 		useRequire = (typeof define === 'function' && define.amd),
 		hasFlash = (function() {
 			var hasFlash;
 			try {
 				hasFlash = !!(new ActiveXObject('ShockwaveFlash.ShockwaveFlash'));
 			} catch (e) {
-				hasFlash = !!(navigator && navigator.mimeTypes["application/x-shockwave-flash"]);
+				hasFlash = !!(typeof window.orientation === 'undefined' || (navigator && navigator.mimeTypes["application/x-shockwave-flash"]));
 			}
 			return hasFlash;
 		})(),
@@ -97,7 +89,6 @@
 							node.data('loading')(true);
 						})
 						.attr('src', url)
-						.data('type', type)
 						.data('loading')();
 				} else {
 					node.data('loading')(true);
@@ -106,7 +97,7 @@
 			}
 		},
 		pixlrSetup = function(opts, fm) {
-			if (!hasFlash) {
+			if (!hasFlash || fm.UA.ltIE8) {
 				this.disabled = true;
 			}
 		},
@@ -383,6 +374,12 @@
 		},
 		{
 			// ACE Editor
+			// called on initialization of elFinder cmd edit (this: this editor's config object)
+			setup : function(opts, fm) {
+				if (fm.UA.ltIE8) {
+					this.disabled = true;
+				}
+			},
 			// `mimes` is not set for support everything kind of text file
 			info : {
 				name : 'ACE Editor',
@@ -391,7 +388,7 @@
 			load : function(textarea) {
 				var self = this,
 					dfrd = $.Deferred(),
-					cdn  = cdns.ace,
+					cdn  = this.fm.options.cdns.ace,
 					start = function() {
 						var editor, editorBase, mode,
 						ta = $(textarea),
@@ -568,13 +565,19 @@
 		},
 		{
 			// CodeMirror
+			// called on initialization of elFinder cmd edit (this: this editor's config object)
+			setup : function(opts, fm) {
+				if (fm.UA.ltIE10) {
+					this.disabled = true;
+				}
+			},
 			// `mimes` is not set for support everything kind of text file
 			info : {
 				name : 'CodeMirror',
 				iconImg : 'img/edit_codemirror.png'
 			},
 			load : function(textarea) {
-				var cmUrl = cdns.codemirror,
+				var cmUrl = this.fm.options.cdns.codemirror,
 					dfrd = $.Deferred(),
 					self = this,
 					start = function(CodeMirror) {
@@ -706,6 +709,12 @@
 		},
 		{
 			// SimpleMDE
+			// called on initialization of elFinder cmd edit (this: this editor's config object)
+			setup : function(opts, fm) {
+				if (fm.UA.ltIE10) {
+					this.disabled = true;
+				}
+			},
 			info : {
 				name : 'SimpleMDE',
 				iconImg : 'img/edit_simplemde.png'
@@ -715,6 +724,7 @@
 				var self = this,
 					base = $(textarea).parent(),
 					dfrd = $.Deferred(),
+					cdn  = this.fm.options.cdns.simplemde,
 					start = function(SimpleMDE) {
 						var h     = base.height(),
 							delta = base.outerHeight(true) - h + 14,
@@ -756,15 +766,15 @@
 				// check SimpleMDE & start
 				if (!self.confObj.loader) {
 					self.confObj.loader = $.Deferred();
-					self.fm.loadCss(cdns.simplemde+'/simplemde.min.css');
+					self.fm.loadCss(cdn+'/simplemde.min.css');
 					if (useRequire) {
 						require([
-							cdns.simplemde+'/simplemde.min.js'
+							cdn+'/simplemde.min.js'
 						], function(SimpleMDE) {
 							self.confObj.loader.resolve(SimpleMDE);
 						});
 					} else {
-						self.fm.loadScript([cdns.simplemde+'/simplemde.min.js'], function() {
+						self.fm.loadScript([cdn+'/simplemde.min.js'], function() {
 							self.confObj.loader.resolve(SimpleMDE);
 						}, {loadType: 'tag'});
 					}
@@ -856,7 +866,7 @@
 
 				if (!self.confObj.loader) {
 					self.confObj.loader = $.Deferred();
-					$.getScript(cdns.ckeditor + '/ckeditor.js', function() {
+					$.getScript(fm.options.cdns.ckeditor + '/ckeditor.js', function() {
 						self.confObj.loader.resolve();
 					});
 				}
@@ -994,7 +1004,7 @@
 				
 				if (!self.confObj.loader) {
 					self.confObj.loader = $.Deferred();
-					$.getScript(cdns.tinymce + '/tinymce.min.js', function() {
+					$.getScript(fm.options.cdns.tinymce + '/tinymce.min.js', function() {
 						setTimeout(function() {
 							self.confObj.loader.resolve();
 						}, 0);

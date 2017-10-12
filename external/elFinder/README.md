@@ -1,7 +1,7 @@
 elFinder
 ========
 
-**WARNING: IF YOU HAVE OLDER VERSIONS OF ELFINDER ON PUBLIC SERVERS, IT MAY CAUSE SERIOUS DAMAGE TO YOUR SERVER AND VISITED USER. YOU SHOULD UPDATE TO THE LATEST VERSION OR REMOVE IT FROM THE SERVER.**
+**WARNING: IF YOU HAVE OLDER (IN PARTICULAR 2.1.20 OR EARLIER) VERSIONS OF ELFINDER ON PUBLIC SERVERS, IT MAY CAUSE SERIOUS DAMAGE TO YOUR SERVER AND VISITED USER. YOU SHOULD UPDATE TO THE LATEST VERSION OR REMOVE IT FROM THE SERVER.**
 
 <pre>
       _ ______ _           _           
@@ -53,7 +53,7 @@ Features
  * High performance server backend and light client UI
  * Multi-root support
  * Local file system, MySQL, FTP volume storage drivers
- * Cloud strage (Box, Dropbox, GoogleDrive and OneDrive) drivers
+ * Cloud storage (Box, Dropbox, GoogleDrive and OneDrive) drivers
  * Background file/folder upload with Drag & Drop HTML5 support
  * Chunked file upload for large file
  * Upload directly to the folder
@@ -90,7 +90,7 @@ Requirements
 ------------
 ### jQuery / jQuery UI
  * jQuery 1.8.0+
- * jQuery UI 1.9.0+
+ * jQuery UI 1.9.0+ (require selectable, draggable, droppable and resizable)
 
 **However, we recommend newest version.**
 
@@ -125,7 +125,7 @@ Installation
 Downloads
 ------------
 **Stable releases** ([Changelog](https://github.com/Studio-42/elFinder/blob/master/Changelog))
- + [elFinder 2.1.28](https://github.com/Studio-42/elFinder/archive/2.1.28.zip)
+ + [elFinder 2.1.29](https://github.com/Studio-42/elFinder/archive/2.1.29.zip)
  + [elFinder 2.0.9](https://github.com/Studio-42/elFinder/archive/2.0.9.zip) (deprecated)
 
 **Nightly builds**

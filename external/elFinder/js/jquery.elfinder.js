@@ -304,3 +304,15 @@ $.fn.elfUiWidgetInstance = function(name) {
 		return null;
 	}
 };
+
+// function scrollRight
+if (! $.fn.scrollRight) {
+	$.fn.extend({
+		scrollRight: function (val) {
+			if (val === undefined) {
+				return Math.max(0, this[0].scrollWidth - (this[0].scrollLeft + this[0].clientWidth));
+			}
+			return this.scrollLeft(this[0].scrollWidth - this[0].clientWidth - val);
+		}
+	});
+}
