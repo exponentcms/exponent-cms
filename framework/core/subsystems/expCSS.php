@@ -344,6 +344,8 @@ class expCSS {
         if (DEVELOPMENT || !file_exists(BASE . $css_fname) || expSession::get('force_less_compile') == 1) {
             if (defined('LESS_COMPILER')) {
                 $less_compiler = strtolower(LESS_COMPILER);
+                if (bs3() && $less_compiler === "lessphp")
+                    $less_compiler = 'less.php'; //note lessphp will NOT compile bootstrap v3
             } else {
                 $less_compiler = 'less.php';
             }
