@@ -14,7 +14,11 @@
  *}
 
 {css unique="showorder" link="`$asset_path`css/ecom-bs3.css" corecss="tables"}
-
+{literal}
+    .order-items .yui3-aclist-content pre {
+        margin: 0;
+    }
+{/literal}
 {/css}
 
 <div class="row order-status">

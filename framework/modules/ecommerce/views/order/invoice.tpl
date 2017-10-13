@@ -24,6 +24,11 @@
     </style>
 {else}
     {css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/invoice.css"}
+    {literal}
+        .order-items .yui3-aclist-content pre {
+            margin: 0;
+        }
+    {/literal}
     {/css}
 {/if}
 

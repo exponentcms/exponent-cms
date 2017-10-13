@@ -46,6 +46,14 @@
 {/literal}
 {/capture}
 
+{css unique="ecomSearch"}
+{literal}
+    .ecom-search .yui3-aclist-content pre {
+        margin: 0;
+    }
+{/literal}
+{/css}
+
 <div class="module ecommerce ecom-search">
     {form id="autocompsearch" controller=search action=search}
         {control type="autocomplete" controller="store" action="search" name="search_string" label=$moduletitle placeholder="Search title or SKU to locate item" schema="title,id,sef_url,expFile,model" searchmodel="product" searchoncol="title,model" maxresults=30 width="80%" jsinject=$callbacks}
