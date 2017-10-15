@@ -106,10 +106,11 @@ class tagpickercontrol extends formcontrol {
             });
             exptags.initialize();
 
-            $('#" . $this->id . "').tagsinput({
+            $('#" . $this->id . "').attr('data-role', 'tagsinput').tagsinput({
                 typeaheadjs: {
                     name: 'exptags',
                     displayKey: 'value',
+                    valueKey: 'value',
                     source: exptags.ttAdapter()
                 }
             });
