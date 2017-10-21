@@ -14,7 +14,7 @@
  *}
 
 {if !$smarty.const.ECOM_LARGE_DB}
-{css unique="yadcf" corecss="datatables-tools"}
+{css unique="yadcf" link="`$smarty.const.JQUERY_RELATIVE`addons/css/select2-bootstrap.css" corecss="datatables-tools"}
     table.dataTable thead > tr {
         font-size-adjust: 0.4;
     }

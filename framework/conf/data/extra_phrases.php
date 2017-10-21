@@ -239,5 +239,6 @@
     gt("Do Not Index?");
     gt("You don\'t have permission to");
     gt("(read more)");
+    gt("Default time zone for this site CAUTION: Changes may affect calendars and other features using date functions.");
 
 ?>
