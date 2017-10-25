@@ -245,21 +245,24 @@ class expCSS {
     public static function themeCSS() {
         global $css_theme, $head_config, $less_vars;
 
+        // compiler will crash without expected variables assigned
         if (!isset($less_vars['menu_width']))
-            $less_vars['menu_width'] = 769;  // compiler will crash without expected variables assigned
+            $less_vars['menu_width'] = 769;
         if (!isset($less_vars['swatch']))
-            $less_vars['swatch'] = '';  // compiler will crash without expected variables assigned
-//        // code for testing scss compiler
+            $less_vars['swatch'] = '';
+        if (!isset($less_vars['themepath']))
+            $less_vars['themepath'] = '';
+
+        // code for testing scss compiler
 //        self::auto_compile_scss('external/bootstrap3/scss/test_2.scss', 'tmp/css/test.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap3/scss/bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap3/scss/newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap3/scss/newui_1.scss', 'tmp/css/testbs3_newui_1.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
+
 //        if (($less_vars['swatch'] == 'custom'))
 //            $less_vars['swatch'] = '';  // there is no 'custom' swatch for bootstrap 4 (yet?)
 //        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap4/scss/newui_1.scss', 'tmp/css/testbs4_newui_1.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
