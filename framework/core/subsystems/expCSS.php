@@ -56,6 +56,27 @@ class expCSS {
             }
         }
 
+        // primer scss to compile to css
+        if (!empty($params['scssprimer'])) {
+            $scss_array = $params['scssprimer'];
+            if (!empty($scss_array) && !is_array($scss_array)) $scss_array = array($scss_array);
+            foreach ($scss_array as $scss_path) {
+                if (strlen(PATH_RELATIVE) != 1) {
+                    $scss_path = str_replace(PATH_RELATIVE, '', $scss_path);  // strip relative path for links coming from templates
+                    $path_rel = PATH_RELATIVE;
+                } else {
+                    $path_rel = '/';
+                }
+                $scss_path = ltrim($scss_path, '/');
+                $css_path = str_replace("/scss/", "/css/", $scss_path);
+                $css_path = substr($css_path, 0, strlen($css_path)-4)."css";
+                //indexing the array by the filename
+                if (!isset($css_primer[$path_rel.$css_path]))
+                    if (self::auto_compile_scss($scss_path, $css_path, $lless_vars))
+                        $css_primer[$path_rel.$css_path] = $path_rel.$css_path;
+            }
+        }
+
         // primer css
         if (!empty($params['css_primer'])){
             $primer_array = $params['css_primer'];
@@ -83,6 +104,27 @@ class expCSS {
                 //indexing the array by the filename
                 if (!isset($css_links[$path_rel.$css_path]))
                     if (self::auto_compile_less($less_path, $css_path, $lless_vars))
+                        $css_links[$path_rel.$css_path] = $path_rel.$css_path;
+            }
+        }
+
+        // scss files to compile to css
+        if (!empty($params['scsscss'])) {
+            $scss_array = $params['scsscss'];
+            if (!empty($scss_array) && !is_array($scss_array)) $scss_array = array($scss_array);
+            foreach ($scss_array as $scss_path) {
+                if (strlen(PATH_RELATIVE) != 1) {
+                    $scss_path = str_replace(PATH_RELATIVE, '', $scss_path);  // strip relative path for links coming from templates
+                    $path_rel = PATH_RELATIVE;
+                } else {
+                    $path_rel = '/';
+                }
+                $scss_path = ltrim($scss_path, '/');
+                $css_path = str_replace("/scss/", "/css/", $scss_path);
+                $css_path = substr($css_path, 0, strlen($css_path)-4)."css";
+                //indexing the array by the filename
+                if (!isset($css_links[$path_rel.$css_path]))
+                    if (self::auto_compile_scss($scss_path, $css_path, $lless_vars))
                         $css_links[$path_rel.$css_path] = $path_rel.$css_path;
             }
         }
@@ -164,7 +206,9 @@ class expCSS {
         unset(
             $head_config['xhtml'],
             $head_config['lessprimer'],
+            $head_config['scssprimer'],
             $head_config['lesscss'],
+            $head_config['scsscss'],
             $head_config['link'],
             $head_config['lessvars'],
             $head_config['normalize'],
@@ -291,6 +335,38 @@ class expCSS {
                             $css_dir = str_replace("/less/","/css/",$lessdir);
                             $css_file = substr($lessfile,0,strlen($lessfile)-4)."css";
                             self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
+                        }
+                    }
+                }
+            }
+        }
+
+        // compile any theme .scss files to css
+        $scssdirs[] = 'themes/'.DISPLAY_THEME.'/scss/';
+        if (THEME_STYLE!="") {
+            $scssdirs[] = 'themes/'.DISPLAY_THEME.'/scss_'.THEME_STYLE.'/';
+        }
+        foreach($scssdirs as $scssdir){
+            if (is_dir($scssdir) && is_readable($scssdir)) {
+                if (is_array($head_config['css_theme'])) {
+                    foreach($head_config['css_theme'] as $scssfile){
+                        $filename = $scssdir.$scssfile;
+                        if (is_file($filename) && substr($filename,-5,5) == ".scss") {
+                            $css_dir = str_replace("/scss/","/css/",$scssdir);
+                            $css_file = substr($scssfile,0,strlen($scssfile)-4)."css";
+                            self::auto_compile_scss($scssdir.$scssfile,$css_dir.$css_file,$less_vars);
+                        }
+                    }
+                } elseif (empty($head_config['css_theme'])) {
+                    # do nothing. We're not including CSS from the theme
+                } else {
+                    $dh = opendir($scssdir);
+                    while (($scssfile = readdir($dh)) !== false) {
+                        $filename = $scssdir.$scssfile;
+                        if (is_file($filename) && substr($filename,-5,5) == ".scss" && basename($filename) != 'variables.scss') {
+                            $css_dir = str_replace("/scss/","/css/",$scssdir);
+                            $css_file = substr($scssfile,0,strlen($scssfile)-4)."css";
+                            self::auto_compile_scss($scssdir.$scssfile,$css_dir.$css_file,$less_vars);
                         }
                     }
                 }
@@ -516,7 +592,7 @@ class expCSS {
                                     file_put_contents($cache_fname, serialize($new_cache));
                                 }
                             }
-                            if ($file_updated || !file_exists(BASE . $css_fname)) {
+                            if ($file_updated || (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n" && !file_exists(BASE . $css_fname))) {
                                 // write compiled css file
                                 $css_loc = pathinfo(BASE . $css_fname);
                                 if (!is_dir($css_loc['dirname'])) {
@@ -624,7 +700,7 @@ class expCSS {
                                     file_put_contents($cache_fname, serialize($new_cache));
                                 }
                             }
-                            if ($file_updated || !file_exists(BASE . $css_fname)) {
+                            if ($file_updated || (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n" && !file_exists(BASE . $css_fname))) {
                                 // write compiled css file
                                 $css_loc = pathinfo(BASE . $css_fname);
                                 if (!is_dir($css_loc['dirname'])) {

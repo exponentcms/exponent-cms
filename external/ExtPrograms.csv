@@ -20,10 +20,9 @@ SimplePie,1.3.1,simplepie.org,1.3.1,compiled version placed in News module
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,0.33,github.com/verot/class.upload.php,0.33,Correct flip operation where flip vertical & horizontal were inverted/swapped 
 iCalCreator,2.22.5,github.com/iCalcreator/iCalcreator,2.24.0,php7 fixes & vcalendar $this->filename fix
-scssphp,0.3.1exp,github.com/leafo/scssphp,0.6.7,added Server\cachedCompile()
+scssphp,0.7.1exp,github.com/leafo/scssphp,0.7.1,"added Server\cachedCompile(), hacked to compile newui"
 lessphp,0.5.0,github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
 less.php,1.7.0.14,github.com/oyejorge/less.php,1.7.0.14,
-iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap,3.3.7,twitter.github.com/bootstrap,3.3.7,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
@@ -91,6 +90,7 @@ dompdf,0.8.0exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,0.8.1,"optional, patc
 mPDF,6.1.4/6.0.0/5.7.4a,github.com/mpdf/mpdf,6.1.4,optional
 HTML2PDF,4.6.1,github.com/spipu/html2pdf,5.0.1,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.2.13,sourceforge.net/projects/tcpdf,6.2.13,"optional, used by HTML2PDF"
+iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
 Kint,2.2.0,github.com/kint-php/kint,2.2.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,

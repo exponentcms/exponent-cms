@@ -45,7 +45,9 @@ function smarty_block_css($params,$content,&$smarty, &$repeat) {
 		    "corecss"=>!empty($params['corecss']) ? $params['corecss'] : '',
             "css_primer"=>!empty($params['css_primer']) ? $params['css_primer'] : '',
             "lessprimer"=>!empty($params['lessprimer']) ? $params['lessprimer'] : '',
+            "scssprimer"=>!empty($params['scssprimer']) ? $params['scssprimer'] : '',
             "lesscss"=>!empty($params['lesscss']) ? $params['lesscss'] : '',
+            "scsscss"=>!empty($params['scsscss']) ? $params['scsscss'] : '',
             "lessvars"=>!empty($params['lessvars']) ? $params['lessvars'] : '',
 		    )
 		);
