@@ -68,7 +68,7 @@
     <div class='input-group module-actions' id='j_input{$__loc->src|replace:'@':'_'}' style="left:40%">
         <input type='hidden' class="form-control" />
         <span class="input-group-addon" style="border-radius:4px;border-left:1px solid #ccc;cursor:pointer;width:auto">
-            <span class="glyphicon glyphicon-calendar"></span>
+            <span class="fa fa-calendar"></span>
             {'Go to Date'|gettext}
         </span>
         <span class="loader"></span>
@@ -105,7 +105,18 @@
 //            viewMode: 'months',
             showClose: true,
             defaultDate: '{/literal}{$time|format_date:"%Y%m%d"}{literal}',
-//            allowInputToggle: true
+//            allowInputToggle: true,
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar',
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down',
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-crosshairs',
+                clear: 'fa fa-trash',
+                close: 'fa fa-times'
+            },
         }).on('dp.hide',function(e){
             if (!moment($('#day{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.date, 'day') || !moment($('#day{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.date, 'month') || !moment($('#day{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.date, 'year')) {
                 var unixtime = e.date.unix();
