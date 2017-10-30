@@ -178,6 +178,8 @@ class formsController extends expController {
                 }
 
                 $limit = (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10;
+                if (empty($this->params['view']))
+                    $this->params['view'] = null;
                 if ($this->params['view'] !== 'showall_portfolio')
                     $limit = 0;
 
