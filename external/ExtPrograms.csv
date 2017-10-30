@@ -13,7 +13,7 @@ yui2in3,,github.com/yui/2in3,,
 recaptchalib,1.1.3,github.com/google/ReCAPTCHA,1.1.3,
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
 feedcreator.class.php,1.80exp,sourceforge.net/projects/feedcreator,1.80dev,"blog.pothoven.net/2006/01/changing-feedcreatorclassphp-for.html, also merged 1.7.3 from Drupal"
-xmlrpc.php,4.2.1,github.com/gggeek/phpxmlrpc,4.2.1,
+xmlrpc.php,4.2.2,github.com/gggeek/phpxmlrpc,4.2.2,
 Twitter model,2.3.1,github.com/tijsverkoyen/TwitterOAuth,2.3.1,placed in Twitter module with _construct tweaked & namespace deleted
 Twitter API,1.0.6,github.com/J7mbo/twitter-api-php,1.0.6,used by socialmedia module
 SimplePie,1.3.1,simplepie.org,1.3.1,compiled version placed in News module
@@ -24,9 +24,9 @@ scssphp,0.7.1exp,github.com/leafo/scssphp,0.7.1,"added Server\cachedCompile(), h
 lessphp,0.5.0,github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
 less.php,1.7.0.14,github.com/oyejorge/less.php,1.7.0.14,
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
-Twitter-Bootstrap,3.3.7,twitter.github.com/bootstrap,3.3.7,patched bootstrap.less includes swatches & exp variables
+Twitter-Bootstrap3,3.3.7,twitter.github.com/bootstrap,3.3.7,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.3.7,bootswatch.com/,3.3.7,change 1st line variables.less comment to output to .css file
+Bootswatch3,3.3.7,bootswatch.com/,3.3.7,change 1st line variables.less comment to output to .css file
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.7.0,fortawesome.github.com/Font-Awesome,4.7.0,
 Adminer,4.3.1,www.adminer.org,4.3.1,"customized plugins: tinymce, edit-textarea & edit-calendar"
@@ -94,6 +94,8 @@ iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v
 Kint,2.2.0,github.com/kint-php/kint,2.2.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
+Twitter-Bootstrap,,twitter.github.com/bootstrap,4.0.0,patched bootstrap.scss includes swatches & exp variables
+Bootswatch,,bootswatch.com/,4.0.0,change 1st line variables.scss comment to output to .css file
 ,,,,
 No longer included,,,,
 pwstrength-bootstrap,2.0.0,github.com/ablanco/jquery.pwstrength.bootstrap,2.0.0,
