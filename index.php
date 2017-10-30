@@ -107,9 +107,10 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
             if (empty($framework)) {
                 $framework = expSession::get('framework');
             }
-            if ($framework == 'jquery' || $framework == 'bootstrap' || $framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
-            if ($framework == 'bootstrap' || $framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
-            if ($framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
+            if ($framework == 'jquery' || $framework == 'bootstrap' || $framework == 'bootstrap3' || $framework == 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
+            if ($framework == 'bootstrap' || $framework == 'bootstrap3' || $framework == 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
+            if ($framework == 'bootstrap3' || $framework == 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
+            if ($framework == 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap4');
             if (newui()) array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
             array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
 
