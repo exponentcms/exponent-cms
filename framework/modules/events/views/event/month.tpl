@@ -188,10 +188,10 @@
             html: '<h2>' + target.text + '</h2><p>' + target.rel +  '</p><p>'  + Linkify(target.title.replace(/\n/g,'<br />')) + '</p>',
             title: target.text + ' - ' + '{/literal}{'Event'|gettext}{literal}',
             maxWidth: "100%",
-            close:'<i class="fa fa-close" aria-label="close modal"></i>',
-            previous:'<i class="fa fa-chevron-left" aria-label="previous photo"></i>',
-            next:'<i class="fa fa-chevron-right" aria-label="next photo"></i>',
-            slideshow:'<i class="fa fa-picture-o" aria-label="slideshow"></i>',
+            close:'<i class="fa fa-fw fa-close" aria-label="close modal"></i>',
+            previous:'<i class="fa fa-fw fa-chevron-left" aria-label="previous photo"></i>',
+            next:'<i class="fa fa-fw fa-chevron-right" aria-label="next photo"></i>',
+            slideshow:'<i class="fa fa-fw fa-picture-o" aria-label="slideshow"></i>',
         });
         e.preventDefault();
     });

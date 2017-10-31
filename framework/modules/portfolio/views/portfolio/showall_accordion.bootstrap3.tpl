@@ -17,7 +17,13 @@
 
 {/css}
 {css unique="accordion" corecss="accordion"}
-
+{literal}
+    .showall-accordion .piece ul {
+        list-style-type: none;
+        padding-left: 0;
+        margin-right: 25px;
+    }
+{/literal}
 {/css}
 
 {uniqueid assign="id"}
