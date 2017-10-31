@@ -31,7 +31,7 @@
         {if empty($container->hasParent) && ($permissions.configure || $container->permissions.configure)}
         {** top level container module **}
             <div class="">
-            <div class="dropdown exp-container-chrome exp-container-chrome-container">
+            <div class="exp-skin dropdown exp-container-chrome exp-container-chrome-container">
                 <a id="dropdownMenu{$top->id}" class="exp-trigger" data-toggle="dropdown" href="#">{'Container'|gettext}<i class="fa fa-caret-down fa-fw"></i></a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu{$top->id}">
                     <li role="presentation" class="dropdown-header">({$top->scope|gettext|ucwords})</li>
@@ -86,7 +86,7 @@
                         {$last=false}
                     {/if}
                     <div class="">
-                        <div class="dropdown exp-container-chrome exp-container-chrome-module">
+                        <div class="exp-skin dropdown exp-container-chrome exp-container-chrome-module">
                             <a id="dropdownMenu{$container->id}" class="exp-trigger" data-toggle="dropdown" href="#">{$container->info.module|gettext} <i class="fa fa-caret-down fa-fw"></i></a>
                             {nocache}{getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last}{/nocache}
                         </div>
