@@ -30,30 +30,30 @@
         {*if $hasParent == 0 && ($permissions.edit || $permissions.create || $permissions.delete || $permissions.order_module || $permissions.manage)*}
         {if empty($container->hasParent) && ($permissions.configure || $container->permissions.configure)}
         {** top level container module **}
-            <div class="">
-            <div class="exp-skin dropdown exp-container-chrome exp-container-chrome-container">
-                <a id="dropdownMenu{$top->id}" class="exp-trigger" data-toggle="dropdown" href="#">{'Container'|gettext}<i class="fa fa-caret-down fa-fw"></i></a>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu{$top->id}">
-                    <li role="presentation" class="dropdown-header">({$top->scope|gettext|ucwords})</li>
-                    <li class="divider"></li>
-                    {if $user->isAdmin()}
-                        <li role="menuitem"><a href="{link controller=users action=userperms mod=container}"><i class="fa fa-user fa-fw"></i> {"User Permissions"|gettext}</a></li>
-                        <li role="menuitem"><a href="{link controller=users action=groupperms mod=container}"><i class="fa fa-group fa-fw"></i> {"Group Permissions"|gettext}</a></li>
-                    {/if}
-                    {foreach $containers as $container}
-                        {if !empty($container->external)}
-                            {$external = $container->external}
-                            {break}
+            <div class="exp-skin">
+                <div class="dropdown exp-container-chrome exp-container-chrome-container">
+                    <a id="dropdownMenu{$top->id}" class="exp-trigger" data-toggle="dropdown" href="#">{'Container'|gettext}<i class="fa fa-caret-down fa-fw"></i></a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu{$top->id}">
+                        <li role="presentation" class="dropdown-header">({$top->scope|gettext|ucwords})</li>
+                        <li class="divider"></li>
+                        {if $user->isAdmin()}
+                            <li role="menuitem"><a href="{link controller=users action=userperms mod=container}"><i class="fa fa-user fa-fw"></i> {"User Permissions"|gettext}</a></li>
+                            <li role="menuitem"><a href="{link controller=users action=groupperms mod=container}"><i class="fa fa-group fa-fw"></i> {"Group Permissions"|gettext}</a></li>
                         {/if}
-                    {/foreach}
-                    {capture name=rerank}{ddrerank module=container model=container where="external='`$top->internal`'" label="Modules"|gettext}{/capture}
-                    {if $smarty.capture.rerank != ""}<li role="menuitem">{$smarty.capture.rerank}</li>{/if}
-                    {if ($permissions.configure || $container->permissions.configure)}
-                   		<li role="menuitem"><a href="{link module=container src=$module->info['source'] action='configure' hcview=$top->view}" class="config-mod"><i class="fa fa-gears fa-fw"></i> {"Configure Settings"|gettext}</a></li>
-                   	{/if}
-                    {if $smarty.const.HELP_ACTIVE}<li role="menuitem"><a href="{help::makeHelpLink('container')}" target="_blank"><i class="fa fa-question fa-fw"></i> {'Get Help'|gettext}</a></li>{/if}
-                </ul>
-            </div>
+                        {foreach $containers as $container}
+                            {if !empty($container->external)}
+                                {$external = $container->external}
+                                {break}
+                            {/if}
+                        {/foreach}
+                        {capture name=rerank}{ddrerank module=container model=container where="external='`$top->internal`'" label="Modules"|gettext}{/capture}
+                        {if $smarty.capture.rerank != ""}<li role="menuitem">{$smarty.capture.rerank}</li>{/if}
+                        {if ($permissions.configure || $container->permissions.configure)}
+                            <li role="menuitem"><a href="{link module=container src=$module->info['source'] action='configure' hcview=$top->view}" class="config-mod"><i class="fa fa-gears fa-fw"></i> {"Configure Settings"|gettext}</a></li>
+                        {/if}
+                        {if $smarty.const.HELP_ACTIVE}<li role="menuitem"><a href="{help::makeHelpLink('container')}" target="_blank"><i class="fa fa-question fa-fw"></i> {'Get Help'|gettext}</a></li>{/if}
+                    </ul>
+                </div>
             </div>
         {/if}
     {/if}
@@ -85,8 +85,8 @@
                     {else}
                         {$last=false}
                     {/if}
-                    <div class="">
-                        <div class="exp-skin dropdown exp-container-chrome exp-container-chrome-module">
+                    <div class="exp-skin">
+                        <div class="dropdown exp-container-chrome exp-container-chrome-module">
                             <a id="dropdownMenu{$container->id}" class="exp-trigger" data-toggle="dropdown" href="#">{$container->info.module|gettext} <i class="fa fa-caret-down fa-fw"></i></a>
                             {nocache}{getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last}{/nocache}
                         </div>
