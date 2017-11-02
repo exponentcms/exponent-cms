@@ -166,7 +166,7 @@ class ckeditorcontrol extends formcontrol {
         if (empty($stylesset))
             $stylesset = "'default'";
         else
-            $formattags = expString::check_javascript($formattags);  // $styleset must be enclosed in quotes '..' or brackets [..]
+            $stylesset = expString::check_javascript($stylesset);  // $styleset must be enclosed in quotes '..' or brackets [..]
         if (empty($formattags))
             $formattags = "'p;h1;h2;h3;h4;h5;h6;pre;address;div'";
         else
