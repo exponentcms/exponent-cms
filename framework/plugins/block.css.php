@@ -49,8 +49,7 @@ function smarty_block_css($params,$content,&$smarty, &$repeat) {
             "lesscss"=>!empty($params['lesscss']) ? $params['lesscss'] : '',
             "scsscss"=>!empty($params['scsscss']) ? $params['scsscss'] : '',
             "lessvars"=>!empty($params['lessvars']) ? $params['lessvars'] : '',
-		    )
-		);
+        ));
 	}
 }
 

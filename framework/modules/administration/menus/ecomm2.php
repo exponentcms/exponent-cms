@@ -105,7 +105,7 @@ foreach ($events as $event) {
     }
 }
 
-if (bs3()) {
+if (bs3() || bs4()) {
     $items = array_merge($items1, $items2);
 } else {
     $items = array($items1, $items2);

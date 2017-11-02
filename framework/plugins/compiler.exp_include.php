@@ -125,13 +125,15 @@ function smarty_compiler_exp_include($_params, &$compiler)
                             $include_file = BASE . $path . $include_file . '.bootstrap.' . $type;  // bootstrap3 falls back to bootstrap
                             $bs_file_found = true;
                         }
-                        if (bs3(true) && file_exists(
-                                BASE . $path . $tmp_include . '.bootstrap3.' . $type
-                            )
-                        ) {
+                        if ((bs3(true) || bs4()) && file_exists(BASE . $path . $tmp_include . '.bootstrap3.' . $type)) {
                             $include_file = BASE . $path . $tmp_include . '.bootstrap3.' . $type;
                             $bs_file_found = true;
-                        } elseif (!$bs_file_found) {
+                        }
+                        if (bs4() && file_exists(BASE . $path . $tmp_include . '.bootstrap4.' . $type)) {
+                            $include_file = BASE . $path . $tmp_include . '.bootstrap4.' . $type;
+                            $bs_file_found = true;
+                        }
+                        if (!$bs_file_found) {
                             $include_file = BASE . $path . $include_file . '.' . $type;  // fall back to plain
                         }
                     } else {

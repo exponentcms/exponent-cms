@@ -127,8 +127,8 @@ class expTheme
             define('XHTML_CLOSING', "");
         }
 
-        // load primer, lessprimer, link (css) and lesscss & normalize CSS files
-        if (!empty($config['css_primer']) || !empty($config['lessprimer']) || !empty($config['link']) || !empty($config['lesscss']) || !empty($config['normalize'])) {
+        // load primer, lessprimer, scssprimer, link (css), lesscss and scsscss & normalize CSS files
+        if (!empty($config['css_primer']) || !empty($config['lessprimer']) || !empty($config['scssprimer']) || !empty($config['link']) || !empty($config['lesscss']) || !empty($config['scsscss']) || !empty($config['normalize'])) {
             expCSS::pushToHead($config);
         };
 
@@ -181,10 +181,16 @@ class expTheme
                 BASE . 'framework/core/forms/controls/bootstrap'
             );
         }
-        if (bs3(true)) {
+        if (bs3(true) || bs4()) {
             array_unshift(
                 $auto_dirs,
                 BASE . 'framework/core/forms/controls/bootstrap3'
+            );
+        }
+        if (bs4()) {
+            array_unshift(
+                $auto_dirs,
+                BASE . 'framework/core/forms/controls/bootstrap4'
             );
         }
         if (newui()) {
@@ -384,9 +390,71 @@ class expTheme
     public static function footerInfo($params = array())
     {
         // checks to see if the theme is calling footerInfo.
-        global $validateTheme, $user, $jsForHead;
+        global $validateTheme, $user, $jsForHead, $less_vars;
 
         $validateTheme['footerinfo'] = true;
+
+        if (THEME_STYLE != '' && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/less_' . THEME_STYLE)) {
+            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less_' . THEME_STYLE;
+        } else {
+            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less';
+        }
+
+        if (bs()) {
+//                    $lessvars = array_merge(
+//                        array('swatch' => SWATCH),
+//                        array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
+//                        !empty($head_config['lessvars']) ? $head_config['lessvars'] : array()
+//                    );
+            $less_vars = array_merge(
+                array('swatch' => SWATCH),
+                array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
+                $less_vars
+            );
+            if (bs2()) {
+                expCSS::pushToHead(
+                    array(
+                        "lessprimer" => "external/bootstrap/less/bootstrap.less",
+                        "lessvars" => $less_vars,
+                    )
+                );
+                expCSS::pushToHead(
+                    array(
+                        "lessprimer" => "external/bootstrap/less/responsive.less",
+                        "lessvars" => $less_vars,
+                    )
+                );
+            } elseif (bs3(true)) {
+                expCSS::pushToHead(
+                    array(
+                        "lessprimer" => "external/bootstrap3/less/bootstrap.less",
+                        "lessvars" => $less_vars,
+                    )
+                );
+                expCSS::pushToHead(
+                    array(
+                        "lessprimer" => "external/font-awesome4/less/font-awesome.less",
+                        "lessvars" => $less_vars,
+                    )
+                );
+            } elseif (bs4(true)) {
+                expCSS::pushToHead(array(
+           		    "scssprimer"=>"external/bootstrap4/scss/bootstrap.scss",
+                    "lessvars"=>$less_vars,
+                ));
+                expCSS::pushToHead(array(
+                    "scssprimer"=>"external/font-awesome4/scss/font-awesome.scss",
+                    "lessvars"=>$less_vars,
+                ));
+            } elseif (newui()) {
+                expCSS::pushToHead(
+                    array(
+                        "lessprimer" => "external/font-awesome4/less/font-awesome.less",
+                        "lessvars" => $less_vars,
+                    )
+                );
+            }
+        }
 
         if (!empty($user->getsToolbar) && PRINTER_FRIENDLY != 1 && EXPORT_AS_PDF != 1 && !defined(
                 'SOURCE_SELECTOR'
@@ -405,6 +473,7 @@ class expTheme
         if (!empty($params['src']) || !empty($params['content']) || !empty($params['yui3mods']) || !empty($params['jquery']) || !empty($params['bootstrap'])) {
             expJavascript::pushToFoot($params);
         }
+
         self::processCSSandJS();
         echo expJavascript::footJavascriptOutput();
 
@@ -1480,9 +1549,9 @@ class expTheme
             'magenta' => 'btn-danger',
             'orange'  => 'btn-warning',
             'yellow'  => 'btn-warning',
-            'grey'    => 'btn-default',
+            'grey'    => 'btn-default',  //fixme bs4 btn-secondary
             'purple'  => 'btn-info',
-            'black'   => 'btn-inverse',
+            'black'   => 'btn-inverse',  //fixme bs4 btn-dark
             'pink'    => 'btn-danger',
         );
         if (bs()) {
@@ -1498,6 +1567,9 @@ class expTheme
             } else {
                 $found = BTN_COLOR;
             }
+        }
+        if (bs4() && $found == 'btn-default') {
+            $found = 'btn-secondary';
         }
         return $found;
     }
@@ -1520,7 +1592,7 @@ class expTheme
                 $btn_size = 'btn-small';
             }
             return $btn_size;
-        } elseif (bs3()) {
+        } elseif (bs3() || bs4()) {
             if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
                 $btn_size = 'btn-lg';
             } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
@@ -1654,7 +1726,7 @@ class expTheme
             $found->size = self::iconSize($size);
             $found->prefix = 'icon-';
             return $found;
-        } elseif (bs3()) {
+        } elseif (bs3() || bs4()) {
             switch ($class) {
                 case 'delete' :
                 case 'delete-title' :
@@ -1785,7 +1857,7 @@ class expTheme
                 $icon_size = 'icon-large';
             }
             return $icon_size;
-        } elseif (bs3()) {
+        } elseif (bs3() || bs4()) {
             if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
                 $icon_size = 'fa-lg';
             } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {

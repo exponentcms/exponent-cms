@@ -53,7 +53,7 @@ class texteditorcontrol extends formcontrol {
         $idname  = (!empty($this->id)) ? $this->id : $this->name;
         if (empty($idname))
             $idname = $name;
-		$html .= "<textarea class=\"textarea" . (bs3() ? " form-control" : "") . "\" id=\"$idname\" name=\"$name\"";
+		$html .= "<textarea class=\"textarea" . (bs3()|bs4() ? " form-control" : "") . "\" id=\"$idname\" name=\"$name\"";
         if ($this->focus) $html .= " autofocus";
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
         $html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");

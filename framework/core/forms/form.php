@@ -250,7 +250,7 @@ class form extends baseform {
             $btn_class .= ' ' . $btn_size;
             $back = '<i class="icon icon-step-backward"></i> ' . gt('Back');
             $next = gt('Next') . ' <i class="icon icon-step-forward"></i>';
-        } elseif (bs3()) {
+        } elseif (bs3() || bs4()) {
             expCSS::pushToHead(array(
                 "corecss"=>"forms-bootstrap3"
             ));
@@ -340,7 +340,7 @@ class form extends baseform {
                     backLabel: '" . $back . "',
                     nextLabel: '" . $next . "',
                     titleClick: true,";
-            if (bs3()) {
+            if (bs3() || bs4()) {
                 $content .= "
                     validateOptions: {
 						rules: {
@@ -371,7 +371,7 @@ class form extends baseform {
 //                           $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');  // requires a feedback <span> and has-feedback class to control
                         },
                         errorElement: 'span',
-                        errorClass: '".(bs3()?"help-block":"control-desc")."',
+                        errorClass: '".(bs3() || bs4()?"help-block":"control-desc")."',
                         errorPlacement: function(error, element) {
                             if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
                                 error.appendTo(element.parent().parent());
@@ -394,7 +394,7 @@ class form extends baseform {
                 )
             );
         } else {
-            if (bs3()) {
+            if (bs3() || bs4()) {
                 $content = "
                     $('#" . $this->id . "').validate({
 						rules: {
@@ -423,7 +423,7 @@ class form extends baseform {
 //                            $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');  // requires a feedback <span> and has-feedback class to control
                         },
                         errorElement: 'span',
-                        errorClass: '".(bs3()?"help-block":"control-desc")."',
+                        errorClass: '".(bs3() || bs4()?"help-block":"control-desc")."',
                         errorPlacement: function(error, element) {
                             if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
                                 error.appendTo(element.parent().parent());

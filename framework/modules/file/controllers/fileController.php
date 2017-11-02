@@ -147,8 +147,14 @@ class fileController extends expController {
                         $view = $bstrapview;
                     }
                 }
-                if (bs3(true)) {
+                if (bs3(true) || bs4()) {
                     $bstrapview = $path.'/'.$this->params['view'].'.bootstrap3.tpl';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
+                if (bs4()) {
+                    $bstrapview = $path.'/'.$this->params['view'].'.bootstrap.tpl';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
@@ -191,8 +197,14 @@ class fileController extends expController {
                         $view = $bstrapview;
                     }
                 }
-                if (bs3(true)) {
+                if (bs3(true) || bs4()) {
                     $bstrapview = $path.'/'.$this->params['view'].'.bootstrap3.config';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
+                if (bs4()) {
+                    $bstrapview = $path.'/'.$this->params['view'].'.bootstrap4.config';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
@@ -212,8 +224,14 @@ class fileController extends expController {
                             $actview = $bstrapview;
                         }
                     }
-                    if (bs3(true)) {
+                    if (bs3(true) || bs4()) {
                         $bstrapview = $path . '/' . $actview . '.bootstrap3.config';
+                        if (file_exists($bstrapview)) {
+                            $actview = $bstrapview;
+                        }
+                    }
+                    if (bs4()) {
+                        $bstrapview = $path . '/' . $actview . '.bootstrap4.config';
                         if (file_exists($bstrapview)) {
                             $actview = $bstrapview;
                         }

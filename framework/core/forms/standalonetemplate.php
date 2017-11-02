@@ -39,12 +39,19 @@ class standalonetemplate extends basetemplate {
                 $this->viewfile = $bstrpview;
                 $this->view = substr(basename($this->viewfile), 0, -4);
             }
-        }
-        if (bs3(true)) {
-            $bstrpview = substr($this->viewfile, 0, -4) . '.bootstrap3.tpl';
-            if (file_exists($bstrpview) && !strpos($this->viewfile, THEME_ABSOLUTE)) {
-                $this->viewfile = $bstrpview;
-                $this->view = substr(basename($this->viewfile), 0, -4);
+            if (bs3(true) || bs4()) {
+                $bstrpview = substr($this->viewfile, 0, -4) . '.bootstrap3.tpl';
+                if (file_exists($bstrpview) && !strpos($this->viewfile, THEME_ABSOLUTE)) {
+                    $this->viewfile = $bstrpview;
+                    $this->view = substr(basename($this->viewfile), 0, -4);
+                }
+                if (bs4()) {
+                   $bstrpview = substr($this->viewfile, 0, -4) . '.bootstrap4.tpl';
+                   if (file_exists($bstrpview) && !strpos($this->viewfile, THEME_ABSOLUTE)) {
+                       $this->viewfile = $bstrpview;
+                       $this->view = substr(basename($this->viewfile), 0, -4);
+                   }
+               }
             }
         } elseif (newui()) {
             $bstrpview = substr($this->viewfile, 0, -4) . '.newui.tpl';

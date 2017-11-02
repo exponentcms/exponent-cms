@@ -989,15 +989,31 @@ function bs3($strict = false) {
 }
 
 /**
+ * Is the current framework Bootstrap v4 based?
+ *
+ * @param bool $strict must be bootstrap4
+ * @return bool
+ */
+function bs4($strict = false) {
+    global $framework;
+
+    if ($framework == 'bootstrap4') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
  * Is the current framework Bootstrap based?
  *
- * @param bool $strict must be bootstrap 2 or 3 and NOT newui
+ * @param bool $strict must be bootstrap 2 or 3 or 4 and NOT newui
  * @return bool
  */
 function bs($strict = false) {
     global $framework;
 
-    if ($framework == 'bootstrap3' || $framework == 'bootstrap') {
+    if ($framework == 'bootstrap4' || $framework == 'bootstrap3' || $framework == 'bootstrap') {
         return true;
     } elseif ($framework == 'newui' && !$strict) {
         return true;

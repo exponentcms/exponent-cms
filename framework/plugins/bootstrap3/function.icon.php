@@ -144,7 +144,12 @@ if (!function_exists('smarty_function_icon')) {
         if (!empty($params['style']) ) $icon->type = $params['style'];
         if (!empty($params['icon']) ) $icon->class = $params['icon'];
         if (!empty($params['color']) ) $icon->type = expTheme::buttonColor($params['color']);  // color was specifically set
-        if (empty($icon->type)) $icon->type = 'btn-default';
+        if (empty($icon->type)) {
+            $icon->type = 'btn-default';
+            if (bs4()) {
+                $icon->type = 'btn-secondary';
+            }
+        }
         if (strpos($icon->class, ' ') !== false) {
             $icon->type .= ' ' . $icon->class;
         }

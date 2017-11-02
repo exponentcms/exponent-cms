@@ -32,7 +32,7 @@ if (EXPONENT_VERSION_TYPE != '') {
 }
 $my_releasedate = gt("Release date") . " : " . date("F-d-Y", EXPONENT_VERSION_BUILDDATE);
 
-if (bs3()) {
+if (bs3() || bs4()) {
     $admin_text = 'Admin';
     $admin_icon = 'fa-star';
 } else {

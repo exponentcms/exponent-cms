@@ -234,7 +234,7 @@ class expCSS {
             };
         };
 
-        if (MINIFY==1&&MINIFY_LINKED_CSS==1) {
+        if (MINIFY == 1 && MINIFY_LINKED_CSS == 1) {
             // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through
             // browser string limits
             $strlen = (ini_get("suhosin.get.max_value_length")==0) ? MINIFY_URL_LENGTH : ini_get("suhosin.get.max_value_length");
@@ -255,12 +255,12 @@ class expCSS {
             if ($srt[0] == "") array_shift($srt);
             foreach ($srt as $link) {
                 $link = rtrim($link,",");
-                $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.PATH_RELATIVE.'external/minify/min/index.php?f=' . $link . '"' . XHTML_CLOSING.'>'."\r\n";
+                $html .= "\t" . '<link rel="stylesheet" type="text/css" href="' . PATH_RELATIVE . 'external/minify/min/index.php?f=' . $link . '"' . XHTML_CLOSING . '>' . "\r\n";
             }
         } else {
             //eDebug($css_files);
             foreach ($css_files as $file) {
-                $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.$file.'" '.XHTML_CLOSING.'>'."\r\n";
+                $html .= "\t" . '<link rel="stylesheet" type="text/css" href="' . $file . '" ' . XHTML_CLOSING . '>' . "\r\n";
             }
         }
 
@@ -272,13 +272,13 @@ class expCSS {
             }
             trim($styles);
             if (!empty($styles)) {
-                $htmlcss .= "\t".'<style type="text/css">'."\n";
-                $htmlcss .= "\t".$styles."\n";
-                $htmlcss .= "\t".'</style>'."\n";
+                $htmlcss .= "\t" . '<style type="text/css">' . "\r\n";
+                $htmlcss .= "\t" . $styles . "\r\n";
+                $htmlcss .= "\t" . '</style>' . "\r\n";
             }
-            if (MINIFY==1&&MINIFY_INLINE_CSS==1) {
-                include_once(BASE.'external/minify/min/lib/JSMin.php');
-                $htmlcss = JSMin::minify($htmlcss);
+            if (MINIFY == 1 && MINIFY_INLINE_CSS == 1) {
+                include_once(BASE . 'external/minify/min/lib/JSMin.php');
+                $htmlcss = JSMin::minify($htmlcss) . "\r\n";
             }
             $html .= $htmlcss;
         }
