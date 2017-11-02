@@ -24,7 +24,15 @@ class bootstraptheme extends theme {
 
 	function name() { return "Twitter Bootstrap 2 Theme"; }
 	function author() { return "David Leffler"; }
-	function description() { return "An HTML5 responsive grids theme based on <a href=\"http://getbootstrap.com/2.3.2/\" target=\"_blank\">Twitter Bootstrap v 2</a>"; }
+	function description() {
+        $settings = expSettings::parseFile(__DIR__ . "/config.php");
+        if (empty($settings['SWATCH']))
+            $settings['SWATCH'] = 'default';
+        $ret = "An HTML5 responsive grids theme based on <a href=\"https://getbootstrap.com/2.3.2/\" target=\"_blank\">Twitter Bootstrap v 2</a>";
+        if ($settings['SWATCH'] != 'default')
+            $ret .= " using the <strong>" . ucfirst($settings['SWATCH']) . "</strong> Swatch.";
+        return $ret;
+    }
 
     function configureTheme() {
    		//BOOTSTRAP SWATCHES
