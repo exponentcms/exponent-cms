@@ -45,12 +45,13 @@ class uploadcontrol extends formcontrol {
 		$form->enctype = "multipart/form-data";
 	}
 
-	function controlToHTML($name,$label) {
+	function controlToHTML($name,$label)
+    {
         $html = ($this->horizontal && bs3()) ? '<div class="col-sm-10">' : '';
 
         if (!empty($this->default)) {
             $html .= '<div class="fileinput fileinput-exists input-group" data-provides="fileinput">';
-            $html .= '<input type="hidden"  name="'.$name.'" value="'.$this->default.'" />';
+            $html .= '<input type="hidden"  name="' . $name . '" value="' . $this->default . '" />';
             $fi_name = '';
             $fi_file = $this->default;
         } else {
@@ -62,17 +63,17 @@ class uploadcontrol extends formcontrol {
         $html .= '<span class="fileinput-filename">' . $fi_file . '</span></div>';
         $html .= '  <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"';
         if (!empty($this->accept))
-            $html .= ' accept="'.$this->accept.'"';
+            $html .= ' accept="' . $this->accept . '"';
         $html .= '></span>';
         $html .= '  <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</a>';
         $html .= '</div>';
 
-        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"" . (bs3() ? "help-block" : "control-desc") . "\">" . $this->description . "</div>";
         $html .= ($this->horizontal && bs3()) ? '</div>' : '';
 
         expCSS::pushToHead(array(
-    	    "unique" => 'fileupload-' . $name,
-    	    "css"    => "
+            "unique" => 'fileupload-' . $name,
+            "css" => "
                 .fileinput-filename {
                     display: inline-block;
                     overflow: hidden;
@@ -87,6 +88,17 @@ class uploadcontrol extends formcontrol {
                 }
     	    "
         ));
+        if (bs4()) {
+            expCSS::pushToHead(array(
+                "unique" => 'fileupload-bs4-' . $name,
+                "css" => "
+                    .fileinput.input-group,
+                    .file-input {
+                        display: flex;
+                    }
+        	    "
+            ));
+        }
 
         expJavascript::pushToFoot(array(
             "unique" => 'fileupload-' . $name,
