@@ -30,7 +30,7 @@ class bootstraptheme extends theme {
             $settings['SWATCH'] = 'default';
         $ret = "An HTML5 responsive grids theme based on <a href=\"https://getbootstrap.com/2.3.2/\" target=\"_blank\">Twitter Bootstrap v 2</a>";
         if ($settings['SWATCH'] != 'default')
-            $ret .= " using the <strong>" . ucfirst($settings['SWATCH']) . "</strong> Swatch.";
+            $ret .= " using the <strong>" . ucfirst($settings['SWATCH']) . "</strong> Swatch";
         return $ret;
     }
 
