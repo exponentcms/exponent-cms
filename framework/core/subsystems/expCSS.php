@@ -528,7 +528,10 @@ class expCSS {
                             return true;
                         } catch(Exception $e) {
                             flash('error', gt('Less compiler') . ': ' . $less_pname . ': ' . $e->getMessage());
-                            return false;
+                            if (file_exists(BASE . $css_fname))
+                                return true; // old file exists so use it
+                            else
+                                return false;
                         }
                     } else {
                         flash('notice', $less_pname. ' ' . gt('does not exist!'));
@@ -612,7 +615,10 @@ class expCSS {
                             return true;
                         } catch(Exception $e) {
                             flash('error', gt('Less compiler') . ': ' . $less_pname . ': ' . $e->getMessage());
-                            return false;
+                            if (file_exists(BASE . $css_fname))
+                                return true; // old file exists so use it
+                            else
+                                return false;
                         }
                     } else {
                         flash('notice', $less_pname . ' ' . gt('does not exist!'));
@@ -720,7 +726,10 @@ class expCSS {
                             return true;
                         } catch(Exception $e) {
                             flash('error', gt('SCSS compiler') . ': ' . $scss_pname . ': ' . $e->getMessage());
-                            return false;
+                            if (file_exists(BASE . $css_fname))
+                                return true; // old file exists so use it
+                            else
+                                return false;
                         }
                     } else {
                         flash('notice', $scss_pname . ' ' . gt('does not exist!'));
