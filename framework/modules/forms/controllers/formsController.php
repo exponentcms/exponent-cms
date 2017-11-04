@@ -612,7 +612,7 @@ class formsController extends expController {
                 $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $this->params, true));
 //                if ($emailValue !== $this->params[$c->name])  //fixme should this be done, isn't data already parsed? only when editing an existing record
 //                    eLog($emailValue.' : '.$this->params[$c->name], 'Mismatch');
-                if (get_class($ctl) == 'texteditorcontrol') {
+                if (get_class($ctl) == 'texteditorcontrol' || get_class($ctl) == 'htmleditorcontrol') {
                     $value = expString::escape($emailValue); //fixme does this need to occur later?
                     $value = str_replace(array('\r\n','\n','\r'),array("\r\n","\n","\r"),$value);
                 } else {
@@ -1014,7 +1014,7 @@ class formsController extends expController {
             $form = new fakeform();
             $form->horizontal = !empty($this->config['style']) ? $this->config['style'] : false;
             if (isset($this->params['style']))
-                $form->horizontal = $this->params['style'];
+                $form->horizontal = !empty($this->params['style']);
             foreach ($controls as $c) {
                 $ctl = expUnserialize($c->data);
                 $ctl->_id = $c->id;
@@ -1027,7 +1027,7 @@ class formsController extends expController {
             $types[".break"] = gt('Static - Spacer');
             $types[".line"] = gt('Static - Horizontal Line');
             uasort($types, "strnatcmp");
-            if (!bs3())
+            if (!bs3() && !bs4())
                 array_unshift($types, '[' . gt('Please Select' . ']'));
 
             $forms_list = array();
