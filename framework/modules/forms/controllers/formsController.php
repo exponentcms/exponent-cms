@@ -612,9 +612,13 @@ class formsController extends expController {
                 $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $this->params, true));
 //                if ($emailValue !== $this->params[$c->name])  //fixme should this be done, isn't data already parsed? only when editing an existing record
 //                    eLog($emailValue.' : '.$this->params[$c->name], 'Mismatch');
-                if (get_class($ctl) == 'texteditorcontrol' || get_class($ctl) == 'htmleditorcontrol') {
-                    $value = expString::escape($emailValue); //fixme does this need to occur later?
-                    $value = str_replace(array('\r\n','\n','\r'),array("\r\n","\n","\r"),$value);
+                if (get_class($ctl) == 'texteditorcontrol') {
+//                    $value = expString::escape($emailValue); //fixme does this need to occur later?
+//                    $value = str_replace(array('\r\n', '\n', '\r'), array("\r\n", "\n", "\r"), $value);
+                    $value = stripslashes($emailValue);  //fixme does this need to occur later?
+                } elseif (get_class($ctl) == 'htmleditorcontrol') {
+                    $value = stripslashes($emailValue);  //fixme does this need to occur later?
+                    $value = str_replace(array("\r\n", "\n", "\r"), '',  $value);
                 } else {
                     $value = stripslashes(expString::escape($emailValue));  //fixme does this need to occur later?
                 }
