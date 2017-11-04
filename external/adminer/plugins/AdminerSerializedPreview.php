@@ -220,7 +220,13 @@ class AdminerSerializedPreview
 
     public function is_serialized($data)
     {
-        return (@unserialize($data) !== false);
+        $out = preg_replace_callback(
+            '!s:(\d+):"(.*?)";!s',
+            function ($m) {
+                $m_new = str_replace('"','\"',$m[2]);
+                return "s:".strlen($m_new).':"'.$m_new.'";';
+            }, $data );
+        return (@unserialize($out) !== false);
     }
 
     public function expUnserialize($serial_str)
