@@ -33,6 +33,13 @@
             "css_theme"=>true
         ));
         ?>
+        <!-- Chrome, Firefox OS, Opera and Vivaldi -->
+        <meta name="theme-color" content="<?php echo (THEME_COLOR) ?>">
+        <!-- Windows Phone -->
+        <meta name="msapplication-navbutton-color" content="<?php echo (THEME_COLOR) ?>">
+        <!-- iOS Safari -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="<?php echo (THEME_COLOR) ?>">
     </head>
     <body>
         <!-- navigation bar/menu -->

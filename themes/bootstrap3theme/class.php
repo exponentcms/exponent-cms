@@ -84,6 +84,7 @@ class bootstrap3theme extends theme {
         $form->meta('BTN_COLOR','btn');
    		$form->register('swatch',gt('Theme Style').': ',new dropdowncontrol($settings['SWATCH'],$swatches));
         $form->register('enhanced_style',gt('Add Bootstrap v2 Style Effects'),new checkboxcontrol((!empty($settings['ENHANCED_STYLE'])?$settings['ENHANCED_STYLE']:0)));
+        $form->register('theme_color',gt('Browser Theme Color').': ',new colorcontrol($settings['THEME_COLOR'],'000000'));
         $form->register('style_width',gt('Style Width Type').': ',new dropdowncontrol($settings['STYLE_WIDTH'],$style_widths));
         $form->register('btn_size',gt('Button Size').': ',new dropdowncontrol($settings['BTN_SIZE'],$icon_sizes));
         $form->register('menu_location',gt('Menu Location').': ',new dropdowncontrol($settings['MENU_LOCATION'],$menu_locations));
@@ -105,6 +106,7 @@ class bootstrap3theme extends theme {
     function saveThemeConfig ($params) {
         if (empty($params['swatch'])) $params['swatch'] = "custom";
         if (empty($params['enhanced_style'])) $params['enhanced_style'] = '0';
+        if (empty($params['theme_color'])) $params['theme_color'] = '000000';
         if (empty($params['style_width'])) $params['style_width'] = "";
         if (empty($params['btn_size'])) $params['btn_size'] = "";
         if (empty($params['menu_height'])) $params['menu_height'] = "1";
