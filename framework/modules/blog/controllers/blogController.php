@@ -140,7 +140,7 @@ class blogController extends expController {
     public function showall_by_date() {
 	    expHistory::set('viewable', $this->params);
 	    $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
-	    $end_date = expDateTime::endOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
+	    $end_date = expDateTime::endOfMonthTimestamp(mktime(23, 59, 59, $this->params['month'], 1, $this->params['year']));
 
 		$page = new expPaginator(array(
             'model'=>$this->basemodel_name,

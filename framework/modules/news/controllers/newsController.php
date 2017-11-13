@@ -98,7 +98,7 @@ class newsController extends expController {
             $format_date = DISPLAY_DATE_FORMAT;
         } elseif (!empty($this->params['month'])) {
             $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
-            $end_date = expDateTime::endOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
+            $end_date = expDateTime::endOfMonthTimestamp(mktime(23, 59, 59, $this->params['month'], 1, $this->params['year']));
             $format_date = "%B %Y";
         } elseif (!empty($this->params['year'])) {
             $start_date = expDateTime::startOfYearTimestamp(mktime(0, 0, 0, 1, 1, $this->params['year']));
