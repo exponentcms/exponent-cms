@@ -92,11 +92,11 @@ class newsController extends expController {
 
     public function showall_by_date() {
 	    expHistory::set('viewable', $this->params);
-        if (!empty($this->params['day'])) {
+        if (!empty($this->params['day']) && !empty($this->params['month']) && !empty($this->params['year'])) {
             $start_date = expDateTime::startOfDayTimestamp(mktime(0, 0, 0, $this->params['month'], $this->params['day'], $this->params['year']));
             $end_date = expDateTime::endOfDayTimestamp(mktime(23, 59, 59, $this->params['month'], $this->params['day'], $this->params['year']));
             $format_date = DISPLAY_DATE_FORMAT;
-        } elseif (!empty($this->params['month'])) {
+        } elseif (!empty($this->params['month']) && !empty($this->params['year'])) {
             $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
             $end_date = expDateTime::endOfMonthTimestamp(mktime(23, 59, 59, $this->params['month'], 1, $this->params['year']));
             $format_date = "%B %Y";

@@ -153,6 +153,79 @@ class eventController extends expController {
          * - upcoming (default viewtype)
          */
         switch ($viewtype) {
+            case "year":
+                if (isset($this->config['type']) && $this->config['type'] === 'period') {
+                    $beginyear = expDateTime::startOfMonthTimestamp($time); // get beginning of start at month for 12 months
+                } else {
+                    $beginyear = expDateTime::startOfYearTimestamp($time); // get beginning of year
+                }
+                $date = expDateTime::startOfMonthTimestamp($beginyear); // get the first month
+                $annual = array();
+                for ($i = 1; $i <= 12; $i++) {
+                    $month = expDateTime::startOfMonthTimestamp($date); // reset to first of month for loop
+
+                    $annual[$i] = expDateTime::monthlyDaysTimestamp($month);
+                    $info = getdate($month);
+                    $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
+                    $now = getdate(time());
+                    $endofmonth = date('t', $month);
+                    foreach ($annual[$i] as $weekNum => $week) {
+                        foreach ($week as $dayNum => $day) {
+                            if ($dayNum == $now['mday']) {
+                                $annual[$i]['currentweek'] = $weekNum;
+                            }
+                            if ($dayNum <= $endofmonth) {
+                                $annual[$i][$weekNum][$dayNum]['number'] = ($annual[$i][$weekNum][$dayNum]['ts'] != -1) ? $ed->find("count", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp($day['ts']) . " AND date <= " . expDateTime::endOfDayTimestamp($day['ts'])) : -1;
+                            }
+                        }
+                    }
+                    $annual[$i]['timefirst'] = $timefirst;
+                    $annual[$i]['currentday'] = $now['mday'];
+//                    $annual[$i]['prevmonth'] = mktime(0, 0, 0, date("m", $timefirst) - 1, date("d", $timefirst) + 10, date("Y", $timefirst));
+//                    $annual[$i]['nextmonth'] = mktime(0, 0, 0, date("m", $timefirst) + 1, date("d", $timefirst) + 10, date("Y", $timefirst));
+
+                    $date = strtotime('+1 month', $date); // advance to next month
+                }
+
+                $nextyear = strtotime('+1 year', $time);
+                $begin = expDateTime::startOfMonthTimestamp($time);
+                $end = expDateTime::endOfMonthTimestamp($nextyear);
+                $dates = $ed->find("all", $locsql . " AND (date >= " . $begin . " AND date <= " . $end . ")");
+                $items = $this->event->getEventsForDates($dates, true, isset($this->config['only_featured']) ? true : false, true);
+
+                $extitems = $this->getExternalEvents($begin, $end);
+                // we need to flatten these down to simple array of events
+                $extitem = array();
+                foreach ($extitems as $days) {
+                    foreach ($days as $event) {
+                        if (empty($event->eventdate->date))
+                            break;
+                        if (empty($event->eventstart))
+                            $event->eventstart = $event->eventdate->date;
+                        $extitem[] = $event;
+                    }
+                }
+                $items = array_merge($items, $extitem);
+
+                if (!empty($this->config['aggregate_registrations']))
+                    $regitems = eventregistrationController::getRegEventsForDates($begin, $end, $regcolor);
+                // we need to flatten these down to simple array of events
+                $regitem = array();
+                if (!empty($regitems)) foreach ($regitems as $days) {
+                    foreach ($days as $value) {
+                        $regitem[] = $value;
+                    }
+                }
+                $items = array_merge($items, $regitem);
+                $items = expSorter::sort(array('array' => $items, 'sortby' => 'eventstart', 'order' => 'ASC'));
+                assign_to_template(array(
+                    "year"     => $annual,
+                    "items"   => $items,
+                    "now"      => $time,
+                    "prevyear" => strtotime('-1 year', $time),
+                    "nextyear" => $nextyear,
+                ));
+                break;  // end switch $viewtype minicalendar
             case "minical":
                 $monthly = expDateTime::monthlyDaysTimestamp($time);
                 $info = getdate($time);
@@ -166,7 +239,6 @@ class eventController extends expController {
                             $currentweek = $weekNum;
                         }
                         if ($dayNum <= $endofmonth) {
-//                            $monthly[$weekNum][$dayNum]['number'] = ($monthly[$weekNum][$dayNum]['ts'] != -1) ? $db->countObjects("eventdate", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp($day['ts']) . " AND date <= " . expDateTime::endOfDayTimestamp($day['ts'])) : -1;
                             $monthly[$weekNum][$dayNum]['number'] = ($monthly[$weekNum][$dayNum]['ts'] != -1) ? $ed->find("count", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp($day['ts']) . " AND date <= " . expDateTime::endOfDayTimestamp($day['ts'])) : -1;
                         }
                     }
@@ -275,7 +347,7 @@ class eventController extends expController {
                     //                            $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
                     //                    }
                     $start = expDateTime::startOfDayTimestamp($startperiod + ($i * 86400) - 86400);
-                    $edates = $ed->find("all", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start));
+                    $edates = $ed->find("all", $locsql . " AND date >= " . $start . " AND date <= " . expDateTime::endOfDayTimestamp($start));
 //                    $days[$start] = $this->getEventsForDates($edates, true, isset($this->config['only_featured']) ? true : false);
                     $days[$start] = $this->event->getEventsForDates($edates, true, isset($this->config['only_featured']) ? true : false);
                     //                    for ($j = 0; $j < count($days[$start]); $j++) {
@@ -335,7 +407,7 @@ class eventController extends expController {
                 for ($i = 1; $i <= $endofmonth; $i++) {
                     $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
                     if ($i == $nowinfo['mday']) $currentweek = $week;
-                    $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
+                    $dates = $ed->find("all", $locsql . " AND (date >= " . $start . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
 //                    $monthly[$week][$i] = $this->getEventsForDates($dates, true, isset($this->config['only_featured']) ? true : false);
                     $monthly[$week][$i] = $this->event->getEventsForDates($dates, true, isset($this->config['only_featured']) ? true : false);
                     if (!empty($extitems[$start]))
@@ -436,14 +508,14 @@ class eventController extends expController {
                         $end = $day;
                         break;
                     case "today":  // events occuring today
-                        $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($day) . " AND date <= " . expDateTime::endOfDayTimestamp($day) . ")");
                         $begin = $day;
                         $end = expDateTime::endOfDayTimestamp($day);
+                        $dates = $ed->find("all", $locsql . " AND (date >= " .$day . " AND date <= " . $end . ")");
                         break;
                     case "day":  // events for a specific day (same as byday day?)
-                        $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($time) . " AND date <= " . expDateTime::endOfDayTimestamp($time) . ")");
                         $begin = expDateTime::startOfDayTimestamp($time);
                         $end = expDateTime::endOfDayTimestamp($time);
+                        $dates = $ed->find("all", $locsql . " AND (date >= " . $begin . " AND date <= " . $end . ")");
                         break;
                     case "next":  // future events
                         $dates = array($ed->find("all", $locsql . " AND date >= $time"));
@@ -451,10 +523,9 @@ class eventController extends expController {
                         $end = null;
                         break;
                     case "month": // events for a specific month (same as monthly?)
-//                        $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time()) . ")");
-                        $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfMonthTimestamp($time) . " AND date <= " . expDateTime::endOfMonthTimestamp($time) . ")");
                         $begin = expDateTime::startOfMonthTimestamp($time);
                         $end = expDateTime::endOfMonthTimestamp($time);
+                        $dates = $ed->find("all", $locsql . " AND (date >= " . $begin . " AND date <= " . $end . ")");
                         break;
                     case "all":  // all events
                     default;
@@ -527,7 +598,82 @@ class eventController extends expController {
                     'items' => $items,
                     "now"   => $day,
                 ));
+            break;  // end switch $viewtype default
         }
+    }
+
+    public function showall_by_date() {
+	    expHistory::set('viewable', $this->params);
+
+	    // get the dates
+        if (!empty($this->params['day']) && !empty($this->params['month']) && !empty($this->params['year'])) {
+            $start_date = expDateTime::startOfDayTimestamp(mktime(0, 0, 0, $this->params['month'], $this->params['day'], $this->params['year']));
+            $end_date = expDateTime::endOfDayTimestamp(mktime(23, 59, 59, $this->params['month'], $this->params['day'], $this->params['year']));
+            $format_date = DISPLAY_DATE_FORMAT;
+        } elseif (!empty($this->params['month']) && !empty($this->params['year'])) {
+            $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
+            $end_date = expDateTime::endOfMonthTimestamp(mktime(23, 59, 59, $this->params['month'], 1, $this->params['year']));
+            $format_date = "%B %Y";
+        } elseif (!empty($this->params['year'])) {
+            $start_date = expDateTime::startOfYearTimestamp(mktime(0, 0, 0, 1, 1, $this->params['year']));
+            $end_date = expDateTime::endOfYearTimestamp(mktime(23, 59, 59, 12, 31, $this->params['year']));
+            $format_date = "%Y";
+        } else {
+            exit();  // this only works if we're given at least a year to look up
+        }
+
+        // get the calendar by title or src
+        $cfg = new expConfig();
+        $configs = $cfg->find('all', "location_data LIKE '%event%'"); // get all event module configs
+        foreach ($configs as $config) {
+            $loc = expUnserialize($config->location_data);
+            if (!empty($this->params['calendar'])) {
+                if ($this->params['calendar'] == $config->config['feed_sef_url']) {
+                    $this->config = $config->config;
+                    break;
+                }
+            } elseif (!empty($this->params['src'])) {
+                if ($this->params['src'] == $loc->src) {
+                    $this->config = $config->config;
+                    break;
+                }
+            }
+        }
+        $locsql = $this->aggregateWhereClause();
+
+        // pull events
+        $ed = new eventdate();
+        $edates = $ed->find("all", $locsql . " AND date >= " . $start_date . " AND date <= " . $end_date);
+        $records = $this->event->getEventsForDates($edates, true, isset($this->config['only_featured']) ? true : false);
+
+		$page = new expPaginator(array(
+            'records'=>$records,
+            'order'=>'eventstart',
+            'dir'=>'asc',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
+
+		assign_to_template(array(
+            'page'=>$page,
+            'time'=>$start_date,
+            'moduletitle'=>gt('Events for')." '".expDateTime::format_date($start_date,$format_date)."'")
+        );
+	}
+
+    /**
+     * Convert an event link into a showall_by_date type link
+     *
+     * @param $event_id
+     * @param $date_id
+     */
+	function make_event_link($event_id, $date_id) {
+
     }
 
     /**
@@ -1053,6 +1199,10 @@ class eventController extends expController {
                 $css = file_get_contents(BASE . "external/bootstrap/css/bootstrap.css");
             else
                 $css = file_get_contents(BASE . "framework/modules/events/assets/css/calendar.css");
+            if (MINIFY==1&&MINIFY_INLINE_CSS==1) {
+                include_once(BASE . 'external/minify/min/lib/JSMin.php');
+                $css = JSMin::minify($css);
+            }
             $template->assign("css", $css);
             $template->assign("config", $this->config);
             $template->assign("src", $loc->src);
@@ -1344,8 +1494,8 @@ class eventController extends expController {
 
     public function get_ical_events($exticalurl, $startdate=null, $enddate=null, &$dy=0, $key=0, $multiday=false) {
         $extevents = array();
-        require_once BASE . 'external/iCalcreator-2.22/iCalcreator.php';
-        $v = new vcalendar(); // initiate new CALENDAR
+        require_once BASE . 'external/iCalcreator-2.24/autoload.php';
+        $v = new kigkonsult\iCalcreator\vcalendar(); // initiate new CALENDAR
         if (stripos($exticalurl, 'http') === 0) {
             $v->setConfig('url', $exticalurl);
         } else {
@@ -1381,7 +1531,7 @@ class eventController extends expController {
 
         // Set the timezone to GMT
         @date_default_timezone_set('GMT');
-        $tzarray = getTimezonesAsDateArrays($v);
+        $tzarray = kigkonsult\iCalcreator\getTimezonesAsDateArrays($v);
         // Set the default timezone
         @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
         if (!empty($eventArray)) foreach ($eventArray as $year => $yearArray) {
@@ -1405,8 +1555,8 @@ class eventController extends expController {
                         $tzoffsets = array();
                         $date_tzoffset = 0;
                         if (!empty($tzarray)) {
-//                                $ourtzoffsets = -(iCalUtilityFunctions::_tz2offset(date('O',time())));
-                            $ourtzoffsets = -(iCalUtilityFunctions::_tz2offset(date('O',self::_date2timestamp($dtstart['value']))));
+//                                $ourtzoffsets = -(kigkonsult\iCalcreator\util\util::tz2offset(date('O',time())));
+                            $ourtzoffsets = -(kigkonsult\iCalcreator\util\util::tz2offset(date('O',self::_date2timestamp($dtstart['value']))));
                             // Set the timezone to GMT
                             @date_default_timezone_set('GMT');
                             if (!empty($dtstart['params']['TZID'])) $tzoffsets = getTzOffsetForDate($tzarray, $dtstart['params']['TZID'], $dtstart['value']);
@@ -1415,7 +1565,7 @@ class eventController extends expController {
                             if (isset($tzoffsets['offsetSec'])) $date_tzoffset = $ourtzoffsets + $tzoffsets['offsetSec'];
                         }
                         if (empty($tzoffsets)) {
-                            $date_tzoffset = -(iCalUtilityFunctions::_tz2offset(date('O',self::_date2timestamp($dtstart['value']))));
+                            $date_tzoffset = -(kigkonsult\iCalcreator\util\util::tz2offset(date('O',self::_date2timestamp($dtstart['value']))));
                         }
                         //FIXME we must have the real timezone offset for the date by this point
 
@@ -1425,13 +1575,13 @@ class eventController extends expController {
                                 && (int)$dtend['value']['hour'] == 0 && (int)$dtend['value']['min'] == 0  && (int)$dtend['value']['sec'] == 0
                                 && ((((int)$dtstart['value']['day'] - (int)$dtend['value']['day']) == -1) || (((int)$dtstart['value']['month'] - (int)$dtend['value']['month']) == -1) || (((int)$dtstart['value']['month'] - (int)$dtend['value']['month']) == -11)))) {
                             $dtst = strtotime($currdate[1]);
-                            $dtst1 = iCalUtilityFunctions::_timestamp2date($dtst);
+                            $dtst1 = kigkonsult\iCalcreator\util\util::timestamp2date($dtst);
                             $dtstart['value']['year'] = $dtst1['year'];
                             $dtstart['value']['month'] = $dtst1['month'];
                             $dtstart['value']['day'] = $dtst1['day'];
                             $currenddate = $vevent->getProperty('x-current-dtend');
                             $dtet = strtotime($currenddate[1]);
-                            $dtet1 = iCalUtilityFunctions::_timestamp2date($dtet);
+                            $dtet1 = kigkonsult\iCalcreator\util\util::timestamp2date($dtet);
                             $dtend['value']['year'] = $dtet1['year'];
                             $dtend['value']['month'] = $dtet1['month'];
                             $dtend['value']['day'] = $dtet1['day'];
@@ -1522,6 +1672,13 @@ class eventController extends expController {
         return $extevents;
     }
 
+    /**
+     * iCalCreator Function no longer included in iCalCreator
+     *
+     * @param $datetime
+     * @param null $wtz
+     * @return false|int|string
+     */
     public static function _date2timestamp( $datetime, $wtz=null ) {
       if( !isset( $datetime['hour'] )) $datetime['hour'] = 0;
       if( !isset( $datetime['min'] ))  $datetime['min']  = 0;
@@ -1530,8 +1687,8 @@ class eventController extends expController {
         return mktime( $datetime['hour'], $datetime['min'], $datetime['sec'], $datetime['month'], $datetime['day'], $datetime['year'] );
       $output = $offset = 0;
       if( empty( $wtz )) {
-        if( iCalUtilityFunctions::_isOffset( $datetime['tz'] )) {
-          $offset = iCalUtilityFunctions::_tz2offset( $datetime['tz'] ) * -1;
+        if( kigkonsult\iCalcreator\util\util::isOffset( $datetime['tz'] )) {
+          $offset = kigkonsult\iCalcreator\util\util::tz2offset( $datetime['tz'] ) * -1;
           $wtz    = 'UTC';
         }
         else
