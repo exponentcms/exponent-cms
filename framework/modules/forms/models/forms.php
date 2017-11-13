@@ -51,6 +51,9 @@ class forms extends expRecord {
                     DB_FIELD_TYPE => DB_DEF_ID,
                     DB_PRIMARY    => true,
                     DB_INCREMENT  => true),
+                'sef_url'           => array(
+                    DB_FIELD_TYPE => DB_DEF_STRING,
+                    DB_FIELD_LEN  => 200),
                 'ip'            => array(
                     DB_FIELD_TYPE => DB_DEF_STRING,
                     DB_FIELD_LEN  => 25),
@@ -166,7 +169,7 @@ class forms extends expRecord {
         global $db;
 
         if ($id == null) {
-            $record = $db->selectObject('forms_' . $this->table_name, "1 LIMIT 0,1");  // get first record
+            $record = $db->selectObject('forms_' . $this->table_name, "1");  // get first record
         } elseif (is_numeric($id)) {
             $record =  $db->selectObject('forms_' . $this->table_name, "id ='{$id}'");
         } else {
@@ -198,7 +201,11 @@ class forms extends expRecord {
     public function insertRecord($record=null) {
         global $db;
 
-        if ($record == null) return null;
+        if ($record == null)
+            return null;
+        //fixme do makesefurl here?
+        $record = (object) $record;
+        $record->sef_url = $this->getRecordSefURL($record);
         $db->insertObject($record, 'forms_' . $this->table_name);
     }
 
@@ -212,7 +219,11 @@ class forms extends expRecord {
     public function updateRecord($record=null) {
         global $db;
 
-        if ($record == null) return null;
+        if ($record == null)
+            return null;
+        //fixme do makesefurl here?
+        $record = (object) $record;
+        $record->sef_url = $this->getRecordSefURL($record);
         $db->updateObject($record, 'forms_' . $this->table_name);
     }
 
@@ -244,6 +255,45 @@ class forms extends expRecord {
         // delete the table for this form
         if (!empty($this->is_saved)) {
             $db->dropTable("forms_" . $this->table_name);
+        }
+    }
+
+    private function getRecordSefURL($record = array()) {
+        // first make sure we have an sef url
+        if (empty($record->sef_url)) {
+            // create an sef url from existing field
+            $needles = array(
+                'name',
+                'title',
+                'last',
+                'first',
+                'email'
+            );
+            $field = 'sef_url';
+            foreach ($needles as $needle) {
+                foreach ($record as $key => $value) {
+                    if (false !== stripos($key, $needle)) {
+                        if (empty($value))
+                            continue;
+                        $field = $key;
+                        break;
+                    }
+                }
+                if ($field !== 'sef_url')
+                    break;
+            }
+            $record->sef_url = expCore::makeSefUrl($record->$field, "forms_" . $this->table_name);
+        }
+
+        // next check to see that it's unique
+        $record->tablename = "forms_" . $this->table_name;
+        $record->sef_url = expRouter::encode($record->sef_url);  // clean up any bad characters
+        if (!is_bool(expValidator::uniqueness_of('sef_url', $record, array()))) {
+            unset($record->tablename);
+            return expCore::makeSefUrl($record->sef_url, "forms_" . $this->table_name);
+        } else {
+            unset($record->tablename);
+            return $record->sef_url;
         }
     }
 

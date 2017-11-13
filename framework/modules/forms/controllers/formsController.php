@@ -85,10 +85,12 @@ class formsController extends expController {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['title'])) {
                 $f = $this->forms->find('first', 'sef_url="' . expString::escape($this->params['title']) . '"');
-                $this->get_defaults($f);
+                if (!empty($f))
+                    $this->get_defaults($f);
             } elseif (!empty($this->params['id'])) {
                 $f = $this->forms->find('first', 'id=' . $this->params['id']);
-                $this->get_defaults($f);
+                if (!empty($f))
+                    $this->get_defaults($f);
             }
 
             if (!empty($f)) {
@@ -122,6 +124,9 @@ class formsController extends expController {
                     if ($column_name == "ip") {
 //                        $columns[gt('IP Address')] = 'ip';
                         $columns['ip'] = gt('IP Address');
+                    } elseif ($column_name == "sef_url") {
+//                        $columns[gt('Referrer')] = 'referrer';
+                        $columns['sef_url'] = gt('SEF URL');
                     } elseif ($column_name == "referrer") {
 //                        $columns[gt('Referrer')] = 'referrer';
                         $columns['referrer'] = gt('Referrer');
@@ -209,6 +214,7 @@ class formsController extends expController {
                         "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
                         "filtered" => !empty($this->config['report_filter']) ? $this->config['report_filter'] : '',
                         "count" => $f->countRecords(),
+                        "config" => $this->config,
                     )
                 );
             }
@@ -227,15 +233,20 @@ class formsController extends expController {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['forms_id'])) {
                 $f = $this->forms->find('first', 'id=' . $this->params['forms_id']);
+                $this->get_defaults($f);
             } elseif (!empty($this->params['title'])) {
                 $f = $this->forms->find('first', 'sef_url="' . expString::escape($this->params['title']) . '"');
-                redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
+                $this->get_defaults($f);
+//                if (!empty($f))
+//                    redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
             }
 
             if (!empty($f)) {
                 $fc = new forms_control();
                 $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
                 $id = !empty($this->params['id']) ? $this->params['id'] : null;
+                if (!empty($this->params['item']))
+                    $id = 'sef_url="' . expString::escape($this->params['item']) . '"';
                 $data = $f->getRecord($id);
 
                 $fields = array();
@@ -251,9 +262,11 @@ class formsController extends expController {
 
                     // system added fields
                     $captions['ip'] = gt('IP Address');
+                    $captions['sef_url'] = gt('SEF URL');
                     $captions['timestamp'] = gt('Timestamp');
                     $captions['user_id'] = gt('Posted by');
                     $fields['ip'] = $data->ip;
+                    $fields['sef_url'] = $data->sef_url;
                     $fields['timestamp'] = strftime(DISPLAY_DATETIME_FORMAT, $data->timestamp);
                     $locUser = user::getUserById($data->user_id);
                     $fields['user_id'] = !empty($locUser->username) ? $locUser->username : '';
@@ -295,6 +308,7 @@ class formsController extends expController {
                         "count"       => $f->countRecords(),
                         'is_email' => 0,
                         "css" => file_get_contents(BASE . "framework/core/assets/css/tables.css"),
+                        "config" => $this->config,
                     )
                 );
             }
@@ -397,6 +411,8 @@ class formsController extends expController {
                     $form->register($c->name, $c->caption, $ctl);
 //                    if (get_class($ctl) == 'pagecontrol') $paged = true;
                 }
+                if (!empty($data->sef_url))
+                    $form->register("sef_url", gt('SEF URL'), new textcontrol($data->sef_url));
 
                 // if we are editing an existing record we'll need to do recaptcha here since we won't call confirm_data
                 if (!empty($this->params['id'])) {
@@ -647,13 +663,14 @@ class formsController extends expController {
             if (!empty($f->is_saved)) {
                 if (isset($this->params['data_id'])) {
                     //if this is an edit we remove the record and insert a new one, keeping some original data
-                    $olddata = $f->getRecord($this->params['data_id']);
-                    $db_data->ip = $olddata->ip;
-                    $db_data->user_id = $olddata->user_id;
-                    $db_data->timestamp = $olddata->timestamp;
-                    $db_data->referrer = $olddata->referrer;
-                    $db_data->location_data = $olddata->location_data;
-                    $f->deleteRecord($this->params['data_id']);
+//                    $olddata = $f->getRecord($this->params['data_id']);
+//                    $db_data->ip = $olddata->ip;
+//                    $db_data->user_id = $olddata->user_id;
+//                    $db_data->timestamp = $olddata->timestamp;
+//                    $db_data->referrer = $olddata->referrer;
+//                    $db_data->location_data = $olddata->location_data;
+//                    $f->deleteRecord($this->params['data_id']);  //fixme we delete old record/id to make this easier??
+                    $f->updateRecord($this->params);
                 } else {
                     $db_data->ip = $_SERVER['REMOTE_ADDR'];
                     if (expSession::loggedIn()) {
@@ -672,8 +689,31 @@ class formsController extends expController {
                         expCore::makeLocation($mod,$this->params['src'],$this->params['int']);
                     }
                     $db_data->location_data = $location_data;
+                    $f->insertRecord($db_data);
                 }
-                $f->insertRecord($db_data);
+
+//                if (empty($db_data->sef_url)) {
+//                    $needles = array(
+//                        'name',
+//                        'title',
+//                        'last',
+//                        'first',
+//                        'email'
+//                    );
+//                    $field = 'sef_url';
+//                    foreach ($needles as $needle) {
+//                        foreach ($this->params as $key => $value) {
+//                            if (false !== stripos($key, $needle)) {
+//                                $field = $key;
+//                                break;
+//                            }
+//                        }
+//                        if ($field !== 'sef_url')
+//                            break;
+//                    }
+//                }
+//                $db_data->sef_url = expCore::makeSefUrl($db_data->$field, $f->table_name);
+//                $f->insertRecord($db_data);
             } else {
                 $referrer = $db->selectValue("sessionticket", "referrer", "ticket = '" . expSession::getTicketString() . "'");
             }
@@ -922,6 +962,8 @@ class formsController extends expController {
         }
         $fields['ip'] = gt('IP Address');
         if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
+        $fields['sef_url'] = gt('SEF URL');
+        if (in_array('sef_url', $cols)) $column_names['sef_url'] = gt('SEF URL');
         $fields['user_id'] = gt('Posted by');
         if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
         $fields['timestamp'] = gt('Timestamp');
@@ -1059,7 +1101,7 @@ class formsController extends expController {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap"
                 ));
-            } elseif (bs3()) {
+            } elseif (bs3() || bs4()) {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap3"
                 ));
@@ -1192,7 +1234,7 @@ class formsController extends expController {
                 if (!isset($this->params['id']) && $control->countControls("name='" . $name . "' AND forms_id=" . $this->params['forms_id']) > 0) {
                     $this->params['_formError'] = gt('Identifier must be unique.');
                     expSession::set('last_POST', $this->params);
-                } elseif ($name == 'id' || $name == 'ip' || $name == 'user_id' || $name == 'timestamp' || $name == 'location_data') {
+                } elseif ($name == 'id' || $name == 'ip' || $name == 'sef_url' || $name == 'user_id' || $name == 'timestamp' || $name == 'location_data') {
                     $this->params['_formError'] = sprintf(gt("Identifier cannot be '%s'."), $name);
                     expSession::set('last_POST', $this->params);
                 } else {
@@ -1306,6 +1348,8 @@ class formsController extends expController {
             }
             $fields['ip'] = gt('IP Address');
             if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
+            $fields['sef_url'] = gt('SEF URL');
+            if (in_array('sef_url', $cols)) $column_names['sef_url'] = gt('SEF URL');
             $fields['user_id'] = gt('Posted by');
             if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
             $fields['timestamp'] = gt('Timestamp');
@@ -1410,6 +1454,9 @@ class formsController extends expController {
                         case 'ip':
                             $rpt_columns[$column] = gt('IP Address');
                             break;
+                        case 'sef_url':
+                            $rpt_columns[$column] = gt('SEF URL');
+                            break;
                         case 'referrer':
                             $rpt_columns[$column] = gt('Event ID');
                             break;
@@ -1425,7 +1472,7 @@ class formsController extends expController {
 
             // populate field data
             foreach ($rpt_columns as $column_name=>$column_caption) {
-                if ($column_name == "ip" || $column_name == "referrer" || $column_name == "location_data") {
+                if ($column_name == "ip" || $column_name == "sef_url" || $column_name == "referrer" || $column_name == "location_data") {
                 } elseif ($column_name == "user_id") {
                     foreach ($items as $key => $item) {
                         if ($item->$column_name != 0) {
@@ -2054,6 +2101,7 @@ class formsController extends expController {
                 $i = 0;
                 $db_data = new stdClass();
                 $db_data->ip = '';
+                $db_data->sef_url = '';
                 $db_data->user_id = $user->id;
                 $db_data->timestamp = time();
                 $db_data->referrer = '';
