@@ -11,6 +11,7 @@ if (! class_exists('Leafo\ScssPhp\Version', false)) {
     include_once __DIR__ . '/src/Compiler/Environment.php';
     include_once __DIR__ . '/src/Exception/CompilerException.php';
     include_once __DIR__ . '/src/Exception/ParserException.php';
+    include_once __DIR__ . '/src/Exception/RangeException.php';  //exp
     include_once __DIR__ . '/src/Exception/ServerException.php';
     include_once __DIR__ . '/src/Formatter.php';
     include_once __DIR__ . '/src/Formatter/Compact.php';
@@ -23,8 +24,10 @@ if (! class_exists('Leafo\ScssPhp\Version', false)) {
     include_once __DIR__ . '/src/Node.php';
     include_once __DIR__ . '/src/Node/Number.php';
     include_once __DIR__ . '/src/Parser.php';
+    include_once __DIR__ . '/src/Server.php';  //exp
+    include_once __DIR__ . '/src/SourceMap/Base64VLQEncoder.php';  //exp
+    include_once __DIR__ . '/src/SourceMap/SourceMapGenerator.php';  //exp
     include_once __DIR__ . '/src/Type.php';
     include_once __DIR__ . '/src/Util.php';
     include_once __DIR__ . '/src/Version.php';
-    include_once __DIR__ . '/src/Server.php';  //exp
 }

@@ -447,6 +447,11 @@ class expCSS {
                         ));
                         if (DEVELOPMENT && LESS_COMPILER_MAP) {
                             $less_cname = str_replace("/", "_", $less_pname);
+                            if ((int)LESS_COMPILER_MAP === 1) {
+                                $map_write_to = null;  // inline map
+                            } else {
+                                $map_write_to = BASE . 'tmp/css/' . $less_cname . ".map";
+                            }
                             $less->setEnvironment(array(
                                 'sourceMap'         => true,  // output .map file?
                                 'sourceMapOptions' => array(
@@ -456,7 +461,7 @@ class expCSS {
                                     // url of the map
                                     'url' => PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map",
                                     // absolute path to a file to write the map to
-                                    'write_to' =>  BASE . 'tmp/css/' . $less_cname . ".map",
+                                    'write_to' =>  $map_write_to,
                                     // output source contents?
                                     'source_contents' => false,
                                     // base path for filename normalization
@@ -559,14 +564,23 @@ class expCSS {
                         }
 
                         if (DEVELOPMENT && LESS_COMPILER_MAP && $less_compiler == 'less.php') {
+                            if ((int)LESS_COMPILER_MAP === 1) {
+                                $map_write_to = null;  // inline map
+                                $map_url = null;
+                                $map_filename = null;
+                            } else {
+                                $map_write_to = BASE . 'tmp/css/' . $less_cname . ".map";
+                                $map_url = PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map";
+                                $map_filename = PATH_RELATIVE . $css_fname;
+                            }
                             $less->setOptions(array(
 //                                'outputSourceFiles' => true,  // include css source in .map file?
                                 'sourceMap'         => true,  // output .map file?
-                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $less_cname . ".map",
-                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map",
+                                'sourceMapWriteTo'  => $map_write_to,
+                                'sourceMapURL'      => $map_url,
 //                                'sourceMapWriteTo'  => dirname(BASE . $less_pname) . '/' . $less_cname . ".map",  // file location of .map file
 //                                'sourceMapURL'      => dirname(PATH_RELATIVE . $less_pname) . '/' . $less_cname . ".map",  // url location of .map file
-                                'sourceMapFilename' => PATH_RELATIVE . $css_fname,  // url location of .css file
+                                'sourceMapFilename' => $map_filename,  // url location of .css file
                                 'sourceMapBasepath' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
 //                                'sourceRoot'        => str_replace(PATH_RELATIVE, '', BASE),
                                 'sourceRoot'        => '/',
@@ -669,21 +683,21 @@ class expCSS {
                             }
                         }
 
-//                        if (DEVELOPMENT && LESS_COMPILER_MAP && $scss_compiler == 'scssphp') {
-//                            $scss->setOptions(array(
-////                                'outputSourceFiles' => true,  // include css source in .map file?
-//                                'sourceMap'         => true,  // output .map file?
-//                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $scss_cname . ".map",
-//                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $scss_cname . ".map",
-////                                'sourceMapWriteTo'  => dirname(BASE . $scss_pname) . '/' . $scss_cname . ".map",  // file location of .map file
-////                                'sourceMapURL'      => dirname(PATH_RELATIVE . $scss_pname) . '/' . $scss_cname . ".map",  // url location of .map file
-//                                'sourceMapFilename' => PATH_RELATIVE . $css_fname,  // url location of .css file
-//                                'sourceMapBasepath' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
-////                                'sourceRoot'        => str_replace(PATH_RELATIVE, '', BASE),
-//                                'sourceRoot'        => '/',
-////                                'sourceMapRootpath' => PATH_RELATIVE . $scss_pname,  // tacked onto ALL source files in .map
-//                            ));
-//                        }
+                        if (DEVELOPMENT && LESS_COMPILER_MAP && $scss_compiler == 'scssphp') {
+                            $scss->setSourceMap((int)LESS_COMPILER_MAP);  // output .map file?
+                            $scss->setSourceMapOptions(array(
+//                                'outputSourceFiles' => true,  // include css source in .map file?
+                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $scss_cname . ".map",
+                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $scss_cname . ".map",
+//                                'sourceMapWriteTo'  => dirname(BASE . $scss_pname) . '/' . $scss_cname . ".map",  // file location of .map file
+//                                'sourceMapURL'      => dirname(PATH_RELATIVE . $scss_pname) . '/' . $scss_cname . ".map",  // url location of .map file
+                                'sourceMapFilename' => PATH_RELATIVE . $css_fname,  // url location of .css file
+                                'sourceMapBasepath' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
+//                                'sourceRoot'        => str_replace(PATH_RELATIVE, '', BASE),
+                                'sourceRoot'        => '/',
+//                                'sourceMapRootpath' => PATH_RELATIVE . $scss_pname,  // tacked onto ALL source files in .map
+                            ));
+                        }
 
                         if (MINIFY==1 && MINIFY_LESS==1 && $scss_compiler == 'scssphp') {
                             $scss->setFormatter('Leafo\ScssPhp\Formatter\Compressed');
