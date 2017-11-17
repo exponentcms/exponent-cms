@@ -20,7 +20,7 @@ SimplePie,1.3.1,simplepie.org,1.3.1,compiled version placed in News module
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,0.33,github.com/verot/class.upload.php,0.33,Correct flip operation where flip vertical & horizontal were inverted/swapped 
 iCalCreator,2.24.0,github.com/iCalcreator/iCalcreator,2.24.0,php7 fixes & vcalendar $this->filename fix
-scssphp,0.7.1exp,github.com/leafo/scssphp,0.7.1,"added Server\cachedCompile(), hacked to compile newui"
+scssphp,0.7.1exp,github.com/leafo/scssphp,0.7.1,"added Server\cachedCompile(), hacked to compile newui; add sourcemapping"
 lessphp,0.5.0,github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
 less.php,1.7.0.14,github.com/oyejorge/less.php,1.7.0.14,
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
@@ -32,8 +32,8 @@ Font-Awesome,4.7.0,fortawesome.github.com/Font-Awesome,4.7.0,
 Adminer,4.3.1,www.adminer.org,4.3.1,"customized plugins: tinymce, edit-textarea & edit-calendar"
 SimpleAjaxUploader,2.6.2,github.com/LPology/Simple-Ajax-Uploader,2.6.2,also converted to yui module 2.5.3
 normalize.css,7.0.0,necolas.github.com/normalize.css/,7.0.0,auto included in bootstrap 3
-MediaElement.js,4.2.6,mediaelementjs.com/,4.2.6,
-MediaElement plugins,2.4.0,github.com/johndyer/mediaelement-plugins,2.4.0,
+MediaElement.js,4.2.7,mediaelementjs.com/,4.2.7,
+MediaElement plugins,2.5.0,github.com/johndyer/mediaelement-plugins,2.5.0,
 Facebook PHP SDK3,3.2.3,github.com/facebook/facebook-php-sdk,5.6.1,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.6.1,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim

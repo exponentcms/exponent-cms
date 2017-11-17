@@ -52,10 +52,12 @@ Object.assign(MediaElementPlayer.prototype, {
 		controls.style.zIndex = 5;
 
 		player.endedCallback = function () {
-			if (player.currentPlaylistItem < player.totalItems) {
+			if (player.currentPlaylistItem < player.listItems.length) {
 				player.setSrc(player.playlist[++player.currentPlaylistItem]);
 				player.load();
-				player.play();
+				setTimeout(function () {
+					player.play();
+				}, 200);
 			}
 		};
 
@@ -116,6 +118,7 @@ Object.assign(MediaElementPlayer.prototype, {
 			    inputs = player.playlistLayer.querySelectorAll('input[type=radio]');
 
 			for (var _i2 = 0, _total2 = inputs.length; _i2 < _total2; _i2++) {
+				inputs[_i2].disabled = false;
 				inputs[_i2].addEventListener('click', function () {
 					var radios = player.playlistLayer.querySelectorAll('input[type="radio"]'),
 					    selected = player.playlistLayer.querySelectorAll('.' + player.options.classPrefix + 'playlist-selected');
@@ -334,7 +337,7 @@ Object.assign(MediaElementPlayer.prototype, {
 			    thumbnail = element['data-playlist-thumbnail'] ? '<div class="' + t.options.classPrefix + 'playlist-item-thumbnail"><img tabindex="-1" src="' + element['data-playlist-thumbnail'] + '"></div>' : '',
 			    description = element['data-playlist-description'] ? '<div class="' + t.options.classPrefix + 'playlist-item-description">' + element['data-playlist-description'] + '</div>' : '';
 			item.tabIndex = 0;
-			item.classList = t.options.classPrefix + 'playlist-selector-list-item' + (_i4 === 0 ? ' ' + t.options.classPrefix + 'playlist-selected' : '');
+			item.className = t.options.classPrefix + 'playlist-selector-list-item' + (_i4 === 0 ? ' ' + t.options.classPrefix + 'playlist-selected' : '');
 			item.innerHTML = '<div class="' + t.options.classPrefix + 'playlist-item-inner">' + ('' + thumbnail) + ('<div class="' + t.options.classPrefix + 'playlist-item-content">') + ('<div><input type="radio" class="' + t.options.classPrefix + 'playlist-selector-input" ') + ('name="' + t.id + '_playlist" id="' + id + '" data-playlist-index="' + _i4 + '" value="' + element.src + '" disabled>') + ('<label class="' + t.options.classPrefix + 'playlist-selector-label" ') + ('for="' + id + '">' + (_i4 === 0 ? '<span>\u25B6</span> ' : '') + (element.title || _i4) + '</label></div>' + description + '</div></div>');
 
 			t.listItems.push(item.outerHTML);
