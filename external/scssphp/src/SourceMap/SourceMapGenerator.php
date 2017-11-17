@@ -115,7 +115,7 @@ class SourceMapGenerator {
    		if(file_put_contents($file, $content) === false){
    			throw new CompilerException(sprintf('Cannot save the source map to "%s"', $file));
    		}
-   		return $file;
+   		return $this->options['sourceMapURL'];
    	}
 
     /**
