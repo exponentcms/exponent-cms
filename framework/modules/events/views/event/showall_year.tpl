@@ -50,7 +50,7 @@
     </div>
 {if !$config.list}
     <div class="row">
-        {foreach from=$year item=$monthly key=monthid}
+        {foreach $year as $monthid=>$monthly key}
             {$now = $monthly.timefirst}
             <div id="mini-{$name}" class="col-xs-6 col-sm-4 col-md-3">
                 {exp_include file='minical.tpl'}
@@ -60,7 +60,7 @@
 {else}
     <div class="row">
         <div class="col-sm-3">
-            {foreach from=$year item=$monthly key=monthid}
+            {foreach $year as $monthid=>$monthly key}
                 {if $monthid <= 6}
                     <div class="row">
                  {$now = $monthly.timefirst}
@@ -78,7 +78,7 @@
                 {$header_printed = false}
                 {$curmonth = ''}
                 {$num_month=0}
-                {foreach from=$items item=item}
+                {foreach $items as $item}
                     {if (!$config.headcount || $item_number < $config.headcount) }
                         {$newmonth = $item->eventstart|format_date:'%B'}
                         {if $newmonth != $curmonth}
@@ -158,7 +158,7 @@
             </ul>
         </div>
         <div class="col-sm-3">
-            {foreach from=$year item=$monthly key=monthid}
+            {foreach $year as $monthid=>$monthly key}
                 {if $monthid > 6}
                 <div class="row">
                  {$now = $monthly.timefirst}
