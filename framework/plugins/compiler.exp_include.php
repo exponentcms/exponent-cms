@@ -187,18 +187,25 @@ function smarty_compiler_exp_include($_params, &$compiler)
     $output .= "\$_smarty_tpl_vars = \$_smarty_tpl->tpl_vars;\n";
 
     if ($include_file_else) {
-        $output .= "echo \$_smarty_tpl->getSubTemplate(\$_include_file, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
-//        $output .= "echo \$_smarty_tpl->_subTemplateRender(\$_include_file, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode( //fixme for v3.1.28+
-                ',',
-                (array)$arg_list
-            ) . "), 0);\n";
+        if (version_compare(SMARTY_VERSION, '3.1.28', 'lt')) {
+            //3.1.27  getSubTemplate($template, $cache_id, $compile_id, $caching, $cache_lifetime, $data, $parent_scope)
+            $output .= "echo \$_smarty_tpl->getSubTemplate(\$_include_file, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
+                    ',', (array)$arg_list) . "), 0);\n"; // for v3.1.27
+        } else {
+            //3.1.31  _subTemplateRender($template, $cache_id, $compile_id, $caching, $cache_lifetime, $data, $scope, $forceTplCache, $uid = null, $content_func = null)
+            $output .= "echo \$_smarty_tpl->_subTemplateRender(\$_include_file, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
+                    ',', (array)$arg_list) . "), 0, false);\n"; // for v3.1.28+
+        }
     } else {
-        $output .= "echo \$_smarty_tpl->getSubTemplate({$include_file}, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
-//        $output .= "echo \$_smarty_tpl->_subTemplateRender({$include_file}, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode( //fixme for v3.1.28+
-                ',',
-                (array)$arg_list
-            ) . "), 0);\n";
+        if (version_compare(SMARTY_VERSION, '3.1.28', 'lt')) {
+            $output .= "echo \$_smarty_tpl->getSubTemplate({$include_file}, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
+                    ',', (array)$arg_list) . "), 0);\n"; // for v3.1.27
+        } else {
+            $output .= "echo \$_smarty_tpl->_subTemplateRender({$include_file}, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
+                    ',', (array)$arg_list) . "), 0, false);\n"; // for v3.1.28+
+        }
     }
+
     $output .= "\$_smarty_tpl->tpl_vars = \$_smarty_tpl_vars;\n" .
         "unset(\$_smarty_tpl_vars);\n";
 
