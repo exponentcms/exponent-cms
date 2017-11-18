@@ -431,20 +431,10 @@ class expCSS {
             switch ($less_compiler) {
                 case 'iless':
                     if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
-//                        require_once(BASE.'external/iless1/lib/ILess/Autoloader.php');  //iless 1.7.0
                         require_once(BASE.'external/iless/lib/ILess/Autoloader.php');
-//                        ILess_Autoloader::register();  //iless 1.7.0
                         ILess\Autoloader::register();  //iLess2
 
-//                        $less = new ILess_Parser(  //iless 1.7.0
-                        $less = new ILess\Parser(  //iLess2
-                            array(),  // option
-                            // cache implementation
-//                            new ILess_Cache_FileSystem(array(  //iless 1.7.0
-                            new ILess\Cache\FileSystemCache(array(  //iLess2
-                                'cache_dir' => BASE . 'tmp/css/',
-                            )
-                        ));
+                        $iless_options = array();
                         if (DEVELOPMENT && LESS_COMPILER_MAP) {
                             $less_cname = str_replace("/", "_", $less_pname);
                             if ((int)LESS_COMPILER_MAP === 1) {
@@ -452,7 +442,7 @@ class expCSS {
                             } else {
                                 $map_write_to = BASE . 'tmp/css/' . $less_cname . ".map";
                             }
-                            $less->setEnvironment(array(
+                            $iless_options = array(
                                 'sourceMap'         => true,  // output .map file?
                                 'sourceMapOptions' => array(
                                     'sourceRoot' => '/',
@@ -467,13 +457,18 @@ class expCSS {
                                     // base path for filename normalization
                                     'base_path' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
                                 ),
-                            ));
+                            );
                         }
                         if (MINIFY==1 && MINIFY_LESS==1) {
-                            $less->setEnvironment(array(
-                                'compress'         => true,  // compress output file?
-                            ));
+                            $iless_options['compress'] = true;  // compress output file?
                         }
+                        $less = new ILess\Parser(  //iLess2
+                            $iless_options,  // options
+                            // cache implementation
+                            new ILess\Cache\FileSystemCache(array(  //iLess2
+                                'cache_dir' => BASE . 'tmp/css/',
+                            )
+                        ));
                         $less->setVariables($vars);
 
                         try {
@@ -581,7 +576,7 @@ class expCSS {
 //                                'sourceMapWriteTo'  => dirname(BASE . $less_pname) . '/' . $less_cname . ".map",  // file location of .map file
 //                                'sourceMapURL'      => dirname(PATH_RELATIVE . $less_pname) . '/' . $less_cname . ".map",  // url location of .map file
                                 'sourceMapFilename' => $map_filename,  // url location of .css file
-                                'sourceMapBasepath' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
+                                'sourceMapBasepath' => rtrim(realpath(str_replace(PATH_RELATIVE, '', BASE)), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
 //                                'sourceRoot'        => str_replace(PATH_RELATIVE, '', BASE),
                                 'sourceRoot'        => '/',
 //                                'sourceMapRootpath' => PATH_RELATIVE . $less_pname,  // tacked onto ALL source files in .map
