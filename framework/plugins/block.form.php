@@ -63,7 +63,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                     $btn_size = 'btn-small';
                 }
                 $btn_class .= ' ' . $btn_size;
-            } elseif (bs3()) {
+            } elseif (bs3() || bs4()) {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap3"
                 ));
@@ -116,7 +116,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 //    legend: false,
                     btnClass: '" . $btn_class . "',
                     titleClick: true,";
-            if (bs3()) {
+            if (bs4()) {
                 $content .= "
                     validateOptions: {
 						rules: {
@@ -130,25 +130,71 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 								}
 							}
 						},
-                        highlight: function(element) {
-//                            $('.stepy-header .stepy-active').addClass('stepy-error');
-                            $(element).closest('.control').removeClass('has-success').addClass('has-error');
-   //                         var id_attr = '#' + $( element ).attr('id') + '1';
-   //                         $(id_attr).removeClass('glyphicon-ok').addClass('glyphicon-remove');  // requires a feedback <span> and has-feedback class to control
+                        highlight: function(element, errorClass, validClass) {
+                            // mark form as validated
+                            $(element).closest('form').addClass('was-validated');
+                            // move backward to label and set to invalid
+                            $(element).parent().find('label').removeClass('valid-feedback').addClass('invalid-feedback');
+	 						$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
+	 						$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
+							$(element).closest('.form-group').append('<i class=\"fa fa-exclamation fa-lg invalid-feedback\"></i>');
                         },
-                        unhighlight: function(element) {
-//                            $('.stepy-header .stepy-error').removeClass('stepy-error');
-                            $(element).closest('.control').removeClass('has-error').addClass('has-success');
-   //                         var id_attr = '#' + $( element ).attr('id') + '1';
-   //                         $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');  // requires a feedback <span> and has-feedback class to control
+                        unhighlight: function(element, errorClass, validClass) {
+                            // mark form as validated
+                            $(element).closest('form').addClass('was-validated');
+                            // move backward to label and set to valid
+                            $(element).parent().find('label').removeClass('invalid-feedback').addClass('valid-feedback');
+							$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
+							$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
+							$(element).closest('.form-group').append('<i class=\"fa fa-check fa-lg valid-feedback\"></i>');
+                        },
+                        errorElement: 'small',
+                        errorClass: 'form-text invalid-feedback',
+                        errorPlacement: function(error, element) {
+                            if (element.parent('.input-group').length) {
+                                error.insertAfter(element.parent());
+                            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                                error.insertAfter(element.parent().parent());
+                            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                                error.appendTo(element.parent().parent());
+                            } else {
+                                error.insertAfter(element);
+                            }
+                        }
+                    }";
+            } elseif (bs3()) {
+                $content .= "
+                    validateOptions: {
+						rules: {
+							'hiddenRecaptcha': {
+								required: function() {
+									if(grecaptcha.getResponse() == '') {
+										return true;
+									} else {
+										return false;
+									}
+								}
+							}
+						},
+                        highlight: function(element, errorClass, validClass) {
+                            $(element).closest('.form-group').removeClass('has-success').addClass('has-error').addClass('has-feedback');
+                            $(element).closest('.form-group').find('i.fa.form-control-feedback').remove();
+                            $(element).closest('.form-group').append('<i class=\"fa fa-exclamation fa-lg form-control-feedback\"></i>');
+                        },
+                        unhighlight: function(element, errorClass, validClass) {
+                            $(element).closest('.form-group').removeClass('has-error').addClass('has-success').addClass('has-feedback');
+                            $(element).closest('.form-group').find('i.fa.form-control-feedback').remove();
+                            $(element).closest('.form-group').append('<i class=\"fa fa-check fa-lg form-control-feedback\"></i>');
                         },
                         errorElement: 'span',
-                        errorClass: '".(bs3()?"help-block":"control-desc")."',
+                        errorClass: 'help-block',
                         errorPlacement: function(error, element) {
-                            if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                                error.appendTo(element.parent().parent());
-                            } else if(element.parent('.input-group').length) {
+                            if (element.parent('.input-group').length) {
                                 error.insertAfter(element.parent());
+                            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                                error.insertAfter(element.parent().parent());
+                            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                                error.appendTo(element.parent().parent());
                             } else {
                                 error.insertAfter(element);
                             }
@@ -166,7 +212,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 )
             );
         } else {
-            if (bs3()) {
+            if (bs4()) {
                 $content = "
                     $('#" . $id . "').validate({
 						rules: {
@@ -180,23 +226,72 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 								}
 							}
 						},
-                        highlight: function(element) {
-                            $(element).closest('.control').removeClass('has-success').addClass('has-error');
-    //                        var id_attr = '#' + $( element ).attr('id') + '1';
-    //                        $(id_attr).removeClass('glyphicon-ok').addClass('glyphicon-remove');  // requires a feedback <span> and has-feedback class to control
+                        highlight: function(element, errorClass, validClass) {
+                            // mark form as validated
+                            $(element).closest('form').addClass('was-validated');
+                            // move backward to label and set to invalid
+                            $(element).parent().find('label').removeClass('valid-feedback').addClass('invalid-feedback');
+	 						$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
+	 						$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
+							$(element).closest('.form-group').append('<i class=\"fa fa-exclamation fa-lg invalid-feedback\"></i>');
                         },
-                        unhighlight: function(element) {
-                            $(element).closest('.control').removeClass('has-error').addClass('has-success');
-    //                        var id_attr = '#' + $( element ).attr('id') + '1';
-    //                        $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');  // requires a feedback <span> and has-feedback class to control
+                        unhighlight: function(element, errorClass, validClass) {
+                            // mark form as validated
+                            $(element).closest('form').addClass('was-validated');
+                            // move backward to label and set to valid
+                            $(element).parent().find('label').removeClass('invalid-feedback').addClass('valid-feedback');
+							$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
+							$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
+							$(element).closest('.form-group').append('<i class=\"fa fa-check fa-lg valid-feedback\"></i>');
+                        },
+                        errorElement: 'small',
+                        errorClass: 'form-text invalid-feedback',
+                        errorPlacement: function(error, element) {
+                            if (element.parent('.input-group').length) {
+                                error.insertAfter(element.parent());
+                            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                                error.insertAfter(element.parent().parent());
+                            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                                error.appendTo(element.parent().parent());
+                            } else {
+                                error.insertAfter(element);
+                            }
+                        }
+                     });
+                ";
+            } elseif (bs3()) {
+                $content = "
+                    $('#" . $id . "').validate({
+                        rules: {
+                            'hiddenRecaptcha': {
+                                required: function() {
+                                    if(grecaptcha.getResponse() == '') {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            }
+                        },
+                        highlight: function(element, errorClass, validClass) {
+                            $(element).closest('.form-group').removeClass('has-success').addClass('has-error').addClass('has-feedback');
+                            $(element).closest('.form-group').find('i.fa.form-control-feedback').remove();
+                            $(element).closest('.form-group').append('<i class=\"fa fa-exclamation fa-lg form-control-feedback\"></i>');
+                        },
+                        unhighlight: function(element, errorClass, validClass) {
+                            $(element).closest('.form-group').removeClass('has-error').addClass('has-success').addClass('has-feedback');
+                            $(element).closest('.form-group').find('i.fa.form-control-feedback').remove();
+                            $(element).closest('.form-group').append('<i class=\"fa fa-check fa-lg form-control-feedback\"></i>');
                         },
                         errorElement: 'span',
-                        errorClass: '".(bs3()?"help-block":"control-desc")."',
+                        errorClass: 'help-block',
                         errorPlacement: function(error, element) {
-                            if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                                error.appendTo(element.parent().parent());
-                            } else if(element.parent('.input-group').length) {
+                            if (element.parent('.input-group').length) {
                                 error.insertAfter(element.parent());
+                            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                                error.insertAfter(element.parent().parent());
+                            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                                error.appendTo(element.parent().parent());
                             } else {
                                 error.insertAfter(element);
                             }
