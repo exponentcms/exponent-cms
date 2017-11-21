@@ -118,7 +118,12 @@ class forms_control extends expRecord {
     public function rerank_control($newrank) {
         global $db;
 
-        $db->switchValues($this->tablename, 'rank', $newrank, $this->rank, "forms_id='" . $this->forms_id . "'");
+        // first backfill the hole of old position
+        $db->decrement($this->tablename, 'rank', 1, 'rank>=' . $this->rank . $this->grouping_sql);
+        // next create new hole for new position
+        $db->increment($this->tablename, 'rank', 1, 'rank>=' . $newrank . $this->grouping_sql);
+        // now save the control with the new position
+        $this->update(array('rank'=>$newrank));
     }
 
 }

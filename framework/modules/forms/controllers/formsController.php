@@ -233,10 +233,12 @@ class formsController extends expController {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['forms_id'])) {
                 $f = $this->forms->find('first', 'id=' . $this->params['forms_id']);
-                $this->get_defaults($f);
+                if (!empty($f))
+                    $this->get_defaults($f);
             } elseif (!empty($this->params['title'])) {
                 $f = $this->forms->find('first', 'sef_url="' . expString::escape($this->params['title']) . '"');
-                $this->get_defaults($f);
+                if (!empty($f))
+                    $this->get_defaults($f);
 //                if (!empty($f))
 //                    redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
             }
@@ -334,7 +336,8 @@ class formsController extends expController {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['forms_id'])) {
                 $f = $this->forms->find('first', 'id=' . $this->params['forms_id']);
-                $this->get_defaults($f);
+                if (!empty($f))
+                    $this->get_defaults($f);
             }
 
             if (!empty($f)) {
@@ -1290,8 +1293,6 @@ class formsController extends expController {
         if (!empty($this->params['id'])) {
             $fc = new forms_control($this->params['id']);
             $fc->rerank_control($this->params['rank']);
-            // if we reranked a pagecontrol, we need to check/auto-correct the rank if needed
-            $fc->update(array('rank'=>$this->params['rank']));  // force auto-validation of ranks
         }
     }
 
