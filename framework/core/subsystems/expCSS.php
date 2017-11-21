@@ -28,7 +28,7 @@ class expCSS {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $less_vars;
 
         // normalize.css is always at the top
-        if (!empty($params['normalize']) && !bs3()){
+        if (!empty($params['normalize']) && !bs3() && !bs4()){
             $css_primer[PATH_RELATIVE."external/normalize/normalize.css"] = PATH_RELATIVE."external/normalize/normalize.css";
         }
 

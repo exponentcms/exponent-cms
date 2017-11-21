@@ -960,14 +960,13 @@ function framework() {
  *
  * @return bool
  */
-function bs2() {
+function bs2($strict = false) {
     global $framework;
 
-    if ($framework == 'bootstrap') {
+    if ($framework === 'bootstrap') {
         return true;
-    } else {
-        return false;
     }
+    return false;
 }
 
 /**
@@ -979,13 +978,13 @@ function bs2() {
 function bs3($strict = false) {
     global $framework;
 
-    if ($framework == 'bootstrap3') {
+    if ($framework === 'bootstrap3') {
         return true;
-    } elseif ($framework == 'newui' && !$strict) {
-        return true;
-    } else {
-        return false;
     }
+    if ($framework === 'newui' && !$strict) {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -997,11 +996,10 @@ function bs3($strict = false) {
 function bs4($strict = false) {
     global $framework;
 
-    if ($framework == 'bootstrap4') {
+    if ($framework === 'bootstrap4') {
         return true;
-    } else {
-        return false;
     }
+    return false;
 }
 
 /**
@@ -1013,13 +1011,13 @@ function bs4($strict = false) {
 function bs($strict = false) {
     global $framework;
 
-    if ($framework == 'bootstrap4' || $framework == 'bootstrap3' || $framework == 'bootstrap') {
+    if ($framework === 'bootstrap4' || $framework === 'bootstrap3' || $framework === 'bootstrap') {
         return true;
-    } elseif ($framework == 'newui' && !$strict) {
-        return true;
-    } else {
-        return false;
     }
+    if ($framework === 'newui' && !$strict) {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -1030,11 +1028,10 @@ function bs($strict = false) {
 function newui() {
     global $framework;
 
-    if ($framework == 'newui') {
+    if ($framework === 'newui') {
         return true;
-    } else {
-        return false;
     }
+    return false;
 }
 
 function gt($s){

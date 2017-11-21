@@ -54,8 +54,20 @@ input[type="file"] {
 	width: 80px;
 }
 
+.has-feedback .datetime.date .form-control {
+    padding-right: 0;
+}
+
+.color-control.has-feedback .form-control {
+    padding-right: 12px;
+}
+
 .control.calendar-control input.text {
 	width: 120px;
+}
+
+label.form-check-inline {
+    display: block;
 }
 
 //.control.calendar-control input.timebox,
@@ -152,6 +164,14 @@ select:focus:invalid:focus {
 .control span.required,
 .control.required span.required {
 	color : #ff0000;
+}
+
+.has-feedback i.form-control-feedback {
+    top: 36px;
+}
+
+.checkbox.has-feedback i.form-control-feedback {
+    top: 4px;
 }
 
 /* buttons */
