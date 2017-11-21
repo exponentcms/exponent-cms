@@ -50,7 +50,7 @@ class add_blog_published extends upgradescript {
 
 	/**
 	 * converts all blog items to populate 'publish' field
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

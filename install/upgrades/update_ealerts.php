@@ -52,7 +52,7 @@ class update_ealerts extends upgradescript {
 
 	/**
 	 * converts the old ealert subscriber table to the new format
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

@@ -52,7 +52,7 @@ class fix_photo_module extends upgradescript {
 
 	/**
 	 * converts the photoController to the new naming scheme
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

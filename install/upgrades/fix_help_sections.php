@@ -62,7 +62,7 @@ class fix_help_sections extends upgradescript
     /**
      * Updates help doc section based on location_data entry
      *
-     * @return bool
+     * @return string
      */
     function upgrade()
     {

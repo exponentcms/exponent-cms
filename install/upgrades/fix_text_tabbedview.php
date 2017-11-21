@@ -51,7 +51,7 @@ class fix_text_tabbedview extends upgradescript {
 
 	/**
 	 * converts all text modules with tabview to tabbed
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

@@ -93,7 +93,7 @@ abstract class upgradescript {
     /**
      * The main routine of upgrade script which is run to upgrade Exponent
      *
-     * @return bool
+     * @return string
      */
     function upgrade() {
     }

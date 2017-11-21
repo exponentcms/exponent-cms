@@ -54,7 +54,7 @@ class fix_sef_urls extends upgradescript {
 	/**
 	 * Searches for and corrects duplicate sef urls within a model
      *
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
         global $db;

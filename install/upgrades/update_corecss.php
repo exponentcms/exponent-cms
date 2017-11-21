@@ -53,7 +53,7 @@ class update_corecss extends upgradescript {
 
 	/**
 	 * updates all the core css files
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
         expCSS::updateCoreCss();

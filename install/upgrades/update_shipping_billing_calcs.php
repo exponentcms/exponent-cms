@@ -55,7 +55,7 @@ class update_shipping_billing_calcs extends upgradescript {
 
 	/**
 	 * updates stored ecom calculator fields
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
         global $db;

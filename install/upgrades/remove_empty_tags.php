@@ -52,7 +52,7 @@ class remove_empty_tags extends upgradescript {
 
 	/**
 	 * removes all empty tags and references to them
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

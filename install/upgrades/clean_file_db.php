@@ -50,7 +50,7 @@ class clean_file_db extends upgradescript {
 
 	/**
 	 * updates all expFiles to remove bad records, missing files, and adds all /files into db table
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

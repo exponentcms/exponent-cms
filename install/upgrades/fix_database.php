@@ -50,7 +50,7 @@ class fix_database extends upgradescript {
 
 	/**
 	 * searches the database for possible problems and attempts to fix them
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

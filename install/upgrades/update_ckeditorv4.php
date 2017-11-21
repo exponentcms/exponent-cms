@@ -55,7 +55,7 @@ class update_ckeditorv4 extends upgradescript {
 
    	/**
    	 * updates invalid ckeditor configuration settings
-   	 * @return bool
+   	 * @return string
    	 */
    	function upgrade() {
            global $db;

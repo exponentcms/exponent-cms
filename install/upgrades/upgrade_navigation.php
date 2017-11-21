@@ -55,7 +55,7 @@ class upgrade_navigation extends upgradescript {
 
 	/**
 	 * converts all navigationmodule modules/items into navigation (controller) modules/items and deletes navigationmodule files
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

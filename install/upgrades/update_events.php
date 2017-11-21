@@ -53,7 +53,7 @@ class update_events extends upgradescript {
 
 	/**
 	 * prunes orphan records from event table
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

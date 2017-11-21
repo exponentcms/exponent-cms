@@ -50,7 +50,7 @@ class fix_sectionref extends upgradescript {
 
 	/**
 	 * attempts to rebuild the sectionref table
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
         $ret = sectionref::rebuild_sectionrefs();

@@ -52,7 +52,7 @@ class upgrade_calendar extends upgradescript {
 
 	/**
 	 * converts all calendarmodule modules/items into event (controller) modules/items and deletes calendarmodule files
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

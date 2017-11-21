@@ -52,7 +52,7 @@ class remove_global_categories extends upgradescript {
 
 	/**
 	 * converts all global categories to a module specific category if used, then delete the global category
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

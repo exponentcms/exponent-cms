@@ -52,7 +52,7 @@ class update_root_user extends upgradescript {
 
 	/**
 	 * converts the main/root super-admin to be marked as such
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

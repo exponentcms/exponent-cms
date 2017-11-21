@@ -52,7 +52,7 @@ class convert_permissions extends upgradescript {
 
 	/**
 	 * converts all permission names into the new standardized ones
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

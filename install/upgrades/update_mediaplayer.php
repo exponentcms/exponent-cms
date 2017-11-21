@@ -59,7 +59,7 @@ class update_mediaplayer extends upgradescript {
 	/**
 	 * Update all Media Player items to set media type
      *
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

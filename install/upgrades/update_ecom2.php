@@ -55,7 +55,7 @@ class update_ecom2 extends upgradescript {
 
 	/**
 	 * updates new ecom header/footer properties/fields
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 //        global $db;

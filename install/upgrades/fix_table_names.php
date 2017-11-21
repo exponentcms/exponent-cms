@@ -50,7 +50,7 @@ class fix_table_names extends upgradescript {
 
 	/**
 	 * attempts to rename the mixed case tables
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
         $renamed = count(expDatabase::fix_table_names());

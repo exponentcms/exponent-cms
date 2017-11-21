@@ -51,7 +51,7 @@ class old_browser_support extends upgradescript {
 
 	/**
 	 * Activates Obsolete Browser Support
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
         expSettings::change('OLD_BROWSER_SUPPORT', true);

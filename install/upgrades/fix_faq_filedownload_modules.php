@@ -52,7 +52,7 @@ class fix_faq_filedownload_modules extends upgradescript {
 
 	/**
 	 * converts the faq & filedownload tables to the new naming scheme
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

@@ -63,7 +63,7 @@ class upgrade_mediaplayer extends upgradescript {
 	 * Converts all Flowplayer and YouTube modules/items into Media Player modules/items and deletes Flowplayer and YouTube files
      * based on script priority, the permissions, container references, etc... should've already been upgraded to v2.2
      *
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

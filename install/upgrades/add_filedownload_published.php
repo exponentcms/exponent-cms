@@ -50,7 +50,7 @@ class add_filedownload_published extends upgradescript {
 
 	/**
 	 * converts all filedownloads to populate 'publish' field
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

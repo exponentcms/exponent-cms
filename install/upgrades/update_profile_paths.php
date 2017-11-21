@@ -51,7 +51,7 @@ class update_profile_paths extends upgradescript {
 
 	/**
 	 * converts avatar paths that were stored incorrectly
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

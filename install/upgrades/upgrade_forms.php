@@ -52,7 +52,7 @@ class upgrade_forms extends upgradescript {
 
 	/**
 	 * converts all formmodule modules/items into forms (controller) modules/items and deletes formmodule/formbuilder files
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

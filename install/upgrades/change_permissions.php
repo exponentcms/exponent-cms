@@ -78,7 +78,7 @@ class change_permissions extends upgradescript {
 	/**
      * Searches for and updates file/folder permissions globally
      *
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
         self::chmod_recursive(BASE);

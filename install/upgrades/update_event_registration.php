@@ -54,7 +54,7 @@ class update_event_registration extends upgradescript {
 	/**
 	 * Create a generic form, assign to existing events, and move data to form data table
      *
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

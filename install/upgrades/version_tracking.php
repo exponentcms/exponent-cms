@@ -52,7 +52,7 @@ class version_tracking extends upgradescript {
 
 	/**
 	 * adds or updates version tracking information in database
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

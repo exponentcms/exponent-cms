@@ -51,7 +51,7 @@ class invert_news_items_rank extends upgradescript {
 
 	/**
 	 * inverts the rank order of all news items
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

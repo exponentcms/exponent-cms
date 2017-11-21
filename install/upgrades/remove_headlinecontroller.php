@@ -53,7 +53,7 @@ class remove_headlinecontroller extends upgradescript {
 
 	/**
 	 * converts all headline modules/items into text modules/items and deletes headline controller files
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

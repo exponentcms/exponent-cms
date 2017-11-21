@@ -53,7 +53,7 @@ class update_ecom3 extends upgradescript {
 
 	/**
 	 * prunes orphan records from orders and orderitems tables
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

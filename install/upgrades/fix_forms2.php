@@ -60,7 +60,7 @@ class fix_forms2 extends upgradescript {
 
 	/**
 	 * fixes existing form data tables
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

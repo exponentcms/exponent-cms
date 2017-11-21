@@ -51,7 +51,7 @@ class remove_oldfiles extends upgradescript {
 
 	/**
 	 * removes old files from a previous installation that now in a new location
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 

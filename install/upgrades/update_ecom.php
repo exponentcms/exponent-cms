@@ -53,7 +53,7 @@ class update_ecom extends upgradescript {
 
 	/**
 	 * updates new ecom header/footer properties/fields
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
         $fixed = 0;

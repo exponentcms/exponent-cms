@@ -54,7 +54,7 @@ class upgrade_simplepoll extends upgradescript {
 
 	/**
 	 * converts all simplepollmodule modules/items into simplePoll (controller) modules/items and deletes simplepollmodule files
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

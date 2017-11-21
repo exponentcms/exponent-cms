@@ -50,7 +50,7 @@ class add_file_posted extends upgradescript {
 
 	/**
 	 * updates all expFiles to populate 'posted' field
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

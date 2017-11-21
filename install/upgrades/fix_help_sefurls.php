@@ -62,7 +62,7 @@ class fix_help_sefurls extends upgradescript
     /**
      * Attempts to correct help doc sef_url's which have been given microtime suffix
      *
-     * @return bool
+     * @return string
      */
     function upgrade()
     {

@@ -50,7 +50,7 @@ class update_rssfeeds extends upgradescript {
 
 	/**
 	 * updates new title and sef_url properties/fields
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

@@ -65,7 +65,7 @@ class update_page_ranks extends upgradescript
     /**
      * Reranks pages/form controls with index start of 1
      *
-     * @return bool
+     * @return string
      */
     function upgrade()
     {
