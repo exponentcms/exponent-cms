@@ -76,11 +76,12 @@ class fix_form_control_ranks extends upgradescript
             // Fix control ranks to be sequential beginning at 1
             $rank = 1;
             foreach ($controls as $control) {
-                if ($control->rank !== $rank) {
+                if ($control->rank != $rank) {
                     $fixed++;
-                    $control->rank = $rank++;
+                    $control->rank = $rank;
                     $control->update();
                 }
+                $rank++;
             }
         }
 
