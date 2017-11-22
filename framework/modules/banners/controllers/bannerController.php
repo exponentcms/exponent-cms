@@ -100,7 +100,8 @@ class bannerController extends expController {
 		$page = new expPaginator(array(
 			'model'=>'banner',
 			'sql'=>$sql,
-			'order'=>'title',
+            'order'      => (isset($this->params['order']) ? $this->params['order'] : 'title'),
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : ''),
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],

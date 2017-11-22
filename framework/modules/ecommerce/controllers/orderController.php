@@ -130,8 +130,8 @@ class orderController extends expController {
         $page = new expPaginator(array(
             //'model'=>'order',
             'sql'       => $sql,
-            'order'     => 'purchased',
-            'dir'       => 'DESC',
+            'order'      => (isset($this->params['order']) ? $this->params['order'] : 'purchased'),
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
             'limit'     => $limit,
             'page'      => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=> $this->params['controller'],
@@ -908,8 +908,8 @@ exit();
             'model'     => 'order',  //FIXME we should also be getting the order status name
             'where'     => 'purchased > 0 AND user_id=' . $user->id,
             'limit'     => 10,
-            'order'     => 'purchased',
-            'dir'       => 'DESC',
+            'order'      => (isset($this->params['order']) ? $this->params['order'] : 'purchased'),
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
             'page'      => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=> $this->params['controller'],
             'action'    => $this->params['action'],

@@ -400,7 +400,8 @@ class eventregistrationController extends expController {
         $page = new expPaginator(array(
             'records'=>$pass_events,
             'limit'=>$limit,
-            'order'=>"eventdate ASC",
+            'order'      => (isset($this->params['order']) ? $this->params['order'] : 'eventdate'),
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
