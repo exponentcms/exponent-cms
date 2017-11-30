@@ -1,6 +1,16 @@
+XML-RPC for PHP version 4.3.0 - 2017/11/6
+
+* fixed: compatibility with Basic/Digest/NTLM auth when using client in cURL mode (issue #55)
+
+* improved: added unit tests for Basic and Digest http auth. Also improved tests suite
+
+* new: allow to force usage of curl for http &.0 calls, as well as plain socket for https calls, via the method
+    `Client::setUseCurl()`
+
+
 XML-RPC for PHP version 4.2.2 - 2017/10/15
 
-* fixed: compatibility with Nginx target servers when using client in cURL mode and request body size > 1024 bytes (issue #56)
+* fixed: compatibility with Lighttpd target servers when using client in cURL mode and request body size > 1024 bytes (issue #56)
 
 
 XML-RPC for PHP version 4.2.1 - 2017/9/3
