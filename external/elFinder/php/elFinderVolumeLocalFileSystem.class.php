@@ -59,6 +59,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 		$this->options['followSymLinks'] = true;
 		$this->options['detectDirIcon'] = '';         // file name that is detected as a folder icon e.g. '.diricon.png'
 		$this->options['keepTimestamp'] = array('copy', 'move'); // keep timestamp at inner filesystem allowed 'copy', 'move' and 'upload'
+		$this->options['substituteImg'] = true;       // support substitute image with dim command
 	}
 	
 	/*********************************************************************/
@@ -569,6 +570,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 				$dirItr = new ParentIterator(
 					new RecursiveDirectoryIterator($path,
 						FilesystemIterator::SKIP_DOTS |
+						FilesystemIterator::CURRENT_AS_SELF |
 						(defined('RecursiveDirectoryIterator::FOLLOW_SYMLINKS')?
 							RecursiveDirectoryIterator::FOLLOW_SYMLINKS : 0)
 					)
@@ -644,7 +646,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _scandir($path) {
-		elFinder::extendTimeLimit();
+		elFinder::checkAborted();
 		$files = array();
 		$cache = array();
 		$dirWritable = is_writable($path);
@@ -1119,6 +1121,21 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 */
 	protected function delTree($localpath) {
 		return $this->rmdirRecursive($localpath);
+	}
+
+	/**
+	 * Return fileinfo based on filename
+	 * For item ID based path file system
+	 * Please override if needed on each drivers
+	 *
+	 * @param  string  $path  file cache
+	 * @return array
+	 */
+	protected function isNameExists($path) {
+		$res = file_exists($this->convEncIn($path));
+		// restore locale
+		$this->convEncOut();
+		return $res;
 	}
 
 	/******************** Over write (Optimized) functions *************************/

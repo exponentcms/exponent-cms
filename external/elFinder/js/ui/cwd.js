@@ -301,7 +301,7 @@ $.fn.elfindercwd = function(fm, options) {
 			 */
 			addBadgeStyle = function(mime, name) {
 				var sel, ext, type;
-				if (! addedBadges[mime]) {
+				if (mime && ! addedBadges[mime]) {
 					if (typeof addBadgeStyleSheet === 'undefined') {
 						if ($('#elfinderAddBadgeStyle'+fm.namespace).length) {
 							$('#elfinderAddBadgeStyle'+fm.namespace).remove();
@@ -680,11 +680,12 @@ $.fn.elfindercwd = function(fm, options) {
 						tgt = tgt.next();
 					},
 					done = function() {
+						var idsArr;
 						if (cwd.data('selectable')) {
 							Object.assign(ids, selectedFiles);
-							ids = Object.keys(ids);
-							if (ids.length) {
-								selectableOption.filter = '#'+ids.join(', #');
+							idsArr = Object.keys(ids);
+							if (idsArr.length) {
+								selectableOption.filter = '#'+idsArr.join(', #');
 								cwd.selectable('enable').selectable('option', {filter : selectableOption.filter}).selectable('refresh');
 							}
 						}
@@ -1281,7 +1282,7 @@ $.fn.elfindercwd = function(fm, options) {
 				if (l > showFiles) {
 					// re-render for performance tune
 					content();
-					selectedFiles = fm.arrayFlip(files, true);
+					selectedFiles = fm.arrayFlip($.map(files, function(f) { return f.hash; }), true);
 					trigger();
 				} else {
 					// add the item immediately
@@ -1957,7 +1958,7 @@ $.fn.elfindercwd = function(fm, options) {
 					$(this).toggleClass(clHover, (e.type == 'mouseenter'));
 				})
 				.on('contextmenu.'+fm.namespace, function(e) {
-					var file = $(e.target).closest('.'+clFile);
+					var file = $(e.target).closest(fileSelector);
 					
 					if (file.length && (e.target.nodeName != 'TD' || $.inArray(fm.cwdId2Hash(file.get(0).id), fm.selected()) > -1)) {
 						e.stopPropagation();

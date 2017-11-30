@@ -7,7 +7,8 @@
 $.fn.elfindercontextmenu = function(fm) {
 	
 	return this.each(function() {
-		var cmItem = 'elfinder-contextmenu-item',
+		var self   = $(this),
+			cmItem = 'elfinder-contextmenu-item',
 			smItem = 'elfinder-contextsubmenu-item',
 			exIcon = 'elfinder-contextmenu-extra-icon',
 			dragOpt = {
@@ -261,9 +262,10 @@ $.fn.elfindercontextmenu = function(fm) {
 
 				autoSyncStop = true;
 				fm.autoSync('stop');
-				fm.toFront(menu);
 				base.width(bwidth);
-				menu.stop().removeAttr('style').css(css).show();
+				menu.stop().removeAttr('style').css(css);
+				fm.toFront(menu);
+				menu.show();
 				base.attr('style', bstyle);
 				
 				css[subpos] = parseInt(menu.width());
@@ -291,6 +293,10 @@ $.fn.elfindercontextmenu = function(fm) {
 			close = function() {
 				fm.getUI().off('click.' + fm.namespace, close);
 				$(document).off('keydown.' + fm.namespace, keyEvts);
+				if (prevSelected) {
+					fm.select({selected: prevSelected});
+					prevSelected = null;
+				}
 				currentType = currentTargets = null;
 				
 				if (menu.is(':visible') || menu.children().length) {
@@ -339,6 +345,7 @@ $.fn.elfindercontextmenu = function(fm) {
 				}
 				
 				if (type === 'navbar') {
+					prevSelected = fm.selected();
 					fm.select({selected: targets, origin: 'navbar'});
 				}
 
@@ -496,7 +503,6 @@ $.fn.elfindercontextmenu = function(fm) {
 							node = item(cmd.title, cmd.className? cmd.className : cmd.name, function() {
 								if (! menu.data('draged')) {
 									close();
-									//cmd.exec(targets, {_currentType: type, _currentNode: node});
 									fm.exec(cmd.name, targets, {_userAction: true, _currentType: type, _currentNode: node});
 								}
 							});
@@ -557,7 +563,8 @@ $.fn.elfindercontextmenu = function(fm) {
 			},
 			
 			currentType = null,
-			currentTargets = null;
+			currentTargets = null,
+			prevSelected = null;
 		
 		fm.one('load', function() {
 			base = fm.getUI();
@@ -573,7 +580,9 @@ $.fn.elfindercontextmenu = function(fm) {
 				close();
 
 				if (data.type && data.targets) {
+					fm.trigger('contextmenucreate', data);
 					create(data.type, data.targets);
+					fm.trigger('contextmenucreatedone', data);
 				} else if (data.raw) {
 					createFromRaw(data.raw);
 				}

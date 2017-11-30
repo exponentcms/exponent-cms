@@ -9,7 +9,6 @@ elFinder.prototype.commands.edit = function() {
 	var self  = this,
 		fm    = this.fm,
 		dlcls = 'elfinder-dialog-edit',
-		texts = [],
 		mimesSingle = [],
 		mimes = [],
 		rtrim = function(str){
@@ -49,8 +48,7 @@ elFinder.prototype.commands.edit = function() {
 				if (skip) {
 					return null;
 				}
-				res = (fm.textMimes[file.mime] || file.mime.indexOf('text/') === 0 || $.inArray(file.mime, cnt === 1? mimesSingle : mimes) !== -1) 
-					&& file.mime.indexOf('text/rtf')
+				res = (fm.mimeIsText(file.mime) || $.inArray(file.mime, cnt === 1? mimesSingle : mimes) !== -1) 
 					&& (!self.onlyMimes.length || $.inArray(file.mime, self.onlyMimes) !== -1)
 					&& file.read && file.write
 					&& (cnt === 1 || (file.mime === mime && file.name.substr(ext.length * -1) === ext))
@@ -159,7 +157,7 @@ elFinder.prototype.commands.edit = function() {
 				},
 				opts = {
 					title   : fm.escape(file.name),
-					width   : self.options.dialogWidth || (Math.min(650, $(window).width() * .9)),
+					width   : Math.min((self.options.dialogWidth || 650), $(window).width()),
 					buttons : {},
 					maxWidth  : 'window',
 					maxHeight : 'window',
@@ -204,7 +202,6 @@ elFinder.prototype.commands.edit = function() {
 						var loadRes;
 						ta.initEditArea.call(ta, id, file, content, fm);
 						old = getContent();
-						fm.disable();
 						if (ta.editor) {
 							loadRes = ta.editor.load(ta[0]) || null;
 							if (loadRes && loadRes.done) {
@@ -236,7 +233,7 @@ elFinder.prototype.commands.edit = function() {
 					return ta.getContent.call(ta, ta[0]);
 				},
 				clsEditing = fm.res('class', 'editing'),
-				ta, old, dialogNode, selEncoding, extEditor;
+				ta, old, dialogNode, selEncoding, extEditor, maxW;
 				
 			if (editor) {
 				if (editor.html) {
@@ -247,6 +244,7 @@ elFinder.prototype.commands.edit = function() {
 					load     : editor.load,
 					getContent : editor.getContent || null,
 					save     : editor.save,
+					beforeclose : typeof editor.beforeclose == 'function' ? editor.beforeclose : void 0,
 					close    : typeof editor.close == 'function' ? editor.close : function() {},
 					focus    : typeof editor.focus == 'function' ? editor.focus : function() {},
 					resize   : typeof editor.resize == 'function' ? editor.resize : function() {},
@@ -261,7 +259,7 @@ elFinder.prototype.commands.edit = function() {
 			}
 			
 			if (!ta) {
-				if (file.mime.indexOf('text/') !== 0 && !fm.textMimes[file.mime]) {
+				if (!fm.mimeIsText(file.mime)) {
 					return dfrd.reject('errEditorNotFound');
 				}
 				(function() {
@@ -331,9 +329,10 @@ elFinder.prototype.commands.edit = function() {
 						ta.parent().prev().find('.elfinder-titlebar-button:last')
 							.after($('<span class="elfinder-titlebar-button-right"/>').append(selEncoding));
 						
-						//fm.disable();
-						ta.focus(); 
-						ta[0].setSelectionRange && ta[0].setSelectionRange(0, 0);
+						setTimeout(function() {
+							ta[0].setSelectionRange && ta[0].setSelectionRange(0, 0);
+							ta.focus();
+						}, 10);
 					};
 				})();
 			}
@@ -342,6 +341,13 @@ elFinder.prototype.commands.edit = function() {
 			
 			if (extEditor) {
 				ta.editor = extEditor;
+				
+				if (typeof extEditor.beforeclose === 'function') {
+					opts.beforeclose = function() {
+						return extEditor.beforeclose(ta[0], extEditor.instance);
+					};
+				}
+				
 				if (typeof extEditor.init === 'function') {
 					ta.initEditArea = extEditor.init;
 				}
@@ -361,10 +367,16 @@ elFinder.prototype.commands.edit = function() {
 				};
 			}
 			
-			opts.buttons[fm.i18n('btnSave')]      = save;
-			opts.buttons[fm.i18n('btnSaveClose')] = savecl;
-			opts.buttons[fm.i18n('btnSaveAs')]    = saveAs;
-			opts.buttons[fm.i18n('btnCancel')]    = cancel;
+			if (!editor || !editor.info || !editor.info.preventGet) {
+				opts.buttons[fm.i18n('btnSave')]      = save;
+				opts.buttons[fm.i18n('btnSaveClose')] = savecl;
+				opts.buttons[fm.i18n('btnSaveAs')]    = saveAs;
+				opts.buttons[fm.i18n('btnCancel')]    = cancel;
+			}
+			
+			if (editor && typeof editor.prepare === 'function') {
+				editor.prepare(ta, opts, file);
+			}
 			
 			dialogNode = fm.dialog(ta, opts)
 				.attr('id', id)
@@ -373,6 +385,10 @@ elFinder.prototype.commands.edit = function() {
 				})
 				.css({ overflow: 'hidden', minHeight: '7em' })
 				.closest('.ui-dialog').addClass(dlcls);
+			
+			// care to viewport scale change with mobile devices
+			maxW = (fm.options.dialogContained? elfNode : $(window)).width();
+			(dialogNode.width() > maxW) && dialogNode.width(maxW);
 			
 			return dfrd.promise();
 		},
@@ -405,11 +421,15 @@ elFinder.prototype.commands.edit = function() {
 				return dfrd.reject(error);
 			}
 			
-			if (editor && editor.info && editor.info.urlAsContent) {
+			if (editor && editor.info && (editor.info.urlAsContent || editor.info.preventGet)) {
 				req = $.Deferred();
-				fm.url(hash, { async: true, temporary: true }).done(function(url) {
-					req.resolve({content: url});
-				});
+				if (! editor.info.preventGet) {
+					fm.url(hash, { async: true, temporary: true }).done(function(url) {
+						req.resolve({content: url});
+					});
+				} else {
+					req.resolve({});
+				}
 			} else {
 				req = fm.request({
 					data           : {cmd : 'get', target : hash, conv : conv, _t : file.ts},
@@ -451,7 +471,7 @@ elFinder.prototype.commands.edit = function() {
 						}
 					});
 				} else {
-					if (fm.textMimes[file.mime] || file.mime.indexOf('text/') === 0) {
+					if ((!editor || !editor.info || !editor.info.preventGet) && fm.mimeIsText(file.mime)) {
 						reg = new RegExp('^(data:'+file.mime.replace(/([.+])/g, '\\$1')+';base64,)', 'i');
 						if (window.atob && (m = data.content.match(reg))) {
 							data.content = atob(data.content.substr(m[1].length));
@@ -526,18 +546,21 @@ elFinder.prototype.commands.edit = function() {
 		 */
 		setEditors = function(file, cnt) {
 			var mimeMatch = function(fileMime, editorMimes){
-					editorMimes = editorMimes || texts.concat('text/');
-					if ($.inArray(fileMime, editorMimes) !== -1 ) {
-						return true;
-					}
-					var i, l;
-					l = editorMimes.length;
-					for (i = 0; i < l; i++) {
-						if (fileMime.indexOf(editorMimes[i]) === 0) {
+					if (!editorMimes) {
+						return fm.mimeIsText(fileMime);
+					} else {
+						if ($.inArray(fileMime, editorMimes) !== -1 ) {
 							return true;
 						}
+						var i, l;
+						l = editorMimes.length;
+						for (i = 0; i < l; i++) {
+							if (fileMime.indexOf(editorMimes[i]) === 0) {
+								return true;
+							}
+						}
+						return false;
 					}
-					return false;
 				},
 				extMatch = function(fileName, editorExts){
 					if (!editorExts || !editorExts.length) {
@@ -554,6 +577,7 @@ elFinder.prototype.commands.edit = function() {
 					return false;
 				};
 			
+			stored = fm.storage('storedEditors') || {};
 			editors = {};
 			$.each(self.options.editors || [], function(i, editor) {
 				var name;
@@ -564,10 +588,43 @@ elFinder.prototype.commands.edit = function() {
 						&& typeof editor.save == 'function') {
 					
 					name = editor.info && editor.info.name? editor.info.name : ('Editor ' + i);
+					editor.name = name;
 					editors[name] = editor;
 				}
 			});
-		};
+		},
+		store = function(mime, editor) {
+			if (mime && editor) {
+				if (!$.isPlainObject(stored)) {
+					stored = {};
+				}
+				stored[mime] = editor.name;
+				fm.storage('storedEditors', stored);
+				fm.trigger('selectfiles', {files : fm.selected()});
+			}
+		},
+		useStoredEditor = function() {
+			var d = fm.storage('useStoredEditor');
+			return d? (d > 0) : self.options.useStoredEditor;
+		},
+		getSubMenuRaw = function(files, callback) {
+			var subMenuRaw = [];
+			$.each(editors, function(name, ed) {
+				subMenuRaw.push(
+					{
+						label    : fm.escape(name),
+						icon     : ed.info && ed.info.icon? ed.info.icon : 'edit',
+						options  : { iconImg: ed.info && ed.info.iconImg? fm.baseUrl + ed.info.iconImg : void(0) },
+						callback : function() {
+							store(files[0].mime, ed);
+							callback && callback.call(ed);
+						}
+					}		
+				);
+			});
+			return subMenuRaw;
+		},
+		stored;
 	
 	
 	this.shortcuts = [{
@@ -577,47 +634,127 @@ elFinder.prototype.commands.edit = function() {
 	this.init = function() {
 		var self = this,
 			fm   = this.fm,
-			opts = this.options;
+			opts = this.options,
+			cmdChecks = [],
+			ccData, dfd;
 		
 		this.onlyMimes = this.options.mimes || [];
 		
-		// editors setup
-		if (opts.editors && Array.isArray(opts.editors)) {
-			$.each(opts.editors, function(i, editor) {
-				if (editor.setup && typeof editor.setup === 'function') {
-					editor.setup.call(editor, opts, fm);
-				}
-				if (!editor.disabled) {
-					if (editor.mimes && Array.isArray(editor.mimes)) {
-						mimesSingle = mimesSingle.concat(editor.mimes);
-						if (!editor.info || !editor.info.single) {
-							mimes = mimes.concat(editor.mimes);
-						}
-					}
-				}
-			});
-			
-			mimesSingle = ($.uniqueSort || $.unique)(mimesSingle);
-			mimes = ($.uniqueSort || $.unique)(mimes);
-			
-			opts.editors = $.map(opts.editors, function(e) {
-				return e.disabled? null : e;
-			});
-		}
-		
 		fm.one('open', function() {
-			texts = fm.res('mimes', 'text') || [];
+			// editors setup
+			if (opts.editors && Array.isArray(opts.editors)) {
+				$.each(opts.editors, function(i, editor) {
+					if (editor.info && editor.info.cmdCheck) {
+						cmdChecks.push(editor.info.cmdCheck);
+					}
+				});
+				if (cmdChecks.length) {
+					if (fm.api >= 2.1030) {
+						dfd = fm.request({
+							data : {
+								cmd: 'editor',
+								name: cmdChecks,
+								method: 'enabled'
+							},
+							preventDefault : true
+						}).done(function(d) {
+							ccData = d;
+						}).fail(function() {
+							ccData = {};
+						});
+					} else {
+						ccData = {};
+						dfd = $.Deferred().resolve();
+					}
+				} else {
+					dfd = $.Deferred().resolve();
+				}
+				
+				dfd.always(function() {
+					if (ccData) {
+						opts.editors = $.map(opts.editors, function(e) {
+							if (e.info && e.info.cmdCheck) {
+								return ccData[e.info.cmdCheck]? e : null;
+							} else {
+								return e;
+							}
+						});
+					}
+					$.each(opts.editors, function(i, editor) {
+						if (editor.setup && typeof editor.setup === 'function') {
+							editor.setup.call(editor, opts, fm);
+						}
+						if (!editor.disabled) {
+							if (editor.mimes && Array.isArray(editor.mimes)) {
+								mimesSingle = mimesSingle.concat(editor.mimes);
+								if (!editor.info || !editor.info.single) {
+									mimes = mimes.concat(editor.mimes);
+								}
+							}
+						}
+					});
+					
+					mimesSingle = ($.uniqueSort || $.unique)(mimesSingle);
+					mimes = ($.uniqueSort || $.unique)(mimes);
+					
+					opts.editors = $.map(opts.editors, function(e) {
+						return e.disabled? null : e;
+					});
+				});
+			}
 		})
 		.bind('select', function() {
-			if (self.enabled()) {
-				setEditors(fm.file(fm.selected()[0]), fm.selected().length);
-				if (Object.keys(editors).length > 1) {
-					self.variants = [];
-					$.each(editors, function(name, editor) {
-						self.variants.push([{ editor: editor }, fm.i18n(name), editor.info && editor.info.iconImg? fm.baseUrl + editor.info.iconImg : 'edit']);
+			editors = null;
+		})
+		.bind('contextmenucreate', function(e) {
+			var file,
+				single = function(editor) {
+					var title = self.title;
+					fm.one('contextmenucreatedone', function() {
+						self.title = title;
 					});
-				} else {
+					self.title = fm.escape(editor.name);
 					delete self.variants;
+				};
+			
+			if (e.data.type === 'files' && self.enabled()) {
+				file = fm.file(e.data.targets[0]);
+				setEditors(file, e.data.targets.length);
+				if (Object.keys(editors).length > 1) {
+					if (!useStoredEditor() || !stored[file.mime]) {
+						delete self.extra;
+						self.variants = [];
+						$.each(editors, function(name, editor) {
+							self.variants.push([{ editor: editor }, fm.i18n(name), editor.info && editor.info.iconImg? fm.baseUrl + editor.info.iconImg : 'edit']);
+						});
+					} else {
+						single(editors[stored[file.mime]]);
+						self.extra = {
+							icon: 'menu',
+							node: $('<span/>')
+								.attr({title: fm.i18n('select')})
+								.on('click touchstart', function(e){
+									if (e.type === 'touchstart' && e.originalEvent.touches.length > 1) {
+										return;
+									}
+									var node = $(this);
+									e.stopPropagation();
+									e.preventDefault();
+									fm.trigger('contextmenu', {
+										raw: getSubMenuRaw(fm.selectedFiles(), function() {
+											var hashes = fm.selected();
+											self.exec(hashes, {editor: this});
+											fm.trigger('selectfiles', {files : hashes});
+										}),
+										x: node.offset().left,
+										y: node.offset().top
+									});
+								})
+						};
+					}
+				} else {
+					single(editors[Object.keys(editors)[0]]);
+					delete self.extra;
 				}
 			}
 		});
@@ -639,24 +776,16 @@ elFinder.prototype.commands.edit = function() {
 			node = $(opts && opts._currentNode? opts._currentNode : $('#'+ fm.cwdHash2Id(hashes[0]))),
 			getEditor = function() {
 				var dfd = $.Deferred(),
-					subMenuRaw;
+					storedName;
 				
 				if (!editor && Object.keys(editors).length > 1) {
-					subMenuRaw = [];
-					$.each(editors, function(name, ed) {
-						subMenuRaw.push(
-							{
-								label    : fm.escape(name),
-								icon     : ed.info && ed.info.icon? ed.info.icon : 'edit',
-								options  : { iconImg: ed.info && ed.info.iconImg? fm.baseUrl + ed.info.iconImg : void(0) },
-								callback : function() {
-									dfd.resolve(ed);
-								}
-							}		
-						);
-					});
+					if (useStoredEditor() && (storedName = stored[files[0].mime]) && editors[storedName]) {
+						return dfd.resolve(editors[storedName]);
+					}
 					fm.trigger('contextmenu', {
-						raw: subMenuRaw,
+						raw: getSubMenuRaw(files, function() {
+							dfd.resolve(this);
+						}),
 						x: node.offset().left,
 						y: node.offset().top,
 						opened: function() {
@@ -674,12 +803,17 @@ elFinder.prototype.commands.edit = function() {
 					
 					return dfd;
 				} else {
+					Object.keys(editors).length > 1 && editor && store(files[0].mime, editor);
 					return dfd.resolve(editor? editor : (Object.keys(editors).length? editors[Object.keys(editors)[0]] : null));
 				}
 			},
 			dfrd = $.Deferred(),
 			file;
 
+		if (editors === null) {
+			setEditors(files[0], hashes.length);
+		}
+		
 		if (!node.length) {
 			node = fm.getUI('cwd');
 		}

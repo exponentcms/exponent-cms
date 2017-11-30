@@ -9,7 +9,17 @@ elFinder.prototype.commands.quicklook.plugins = [
 	 **/
 	function(ql) {
 		var mimes   = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml', 'image/x-ms-bmp'],
-			preview = ql.preview;
+			preview = ql.preview,
+			WebP;
+		
+		// webp support
+		WebP = new Image();
+		WebP.onload = WebP.onerror = function() {
+			if (WebP.height == 2) {
+				mimes.push('image/webp');
+			}
+		};
+		WebP.src='data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
 		
 		// what kind of images we can display
 		$.each(navigator.mimeTypes, function(i, o) {
@@ -23,6 +33,59 @@ elFinder.prototype.commands.quicklook.plugins = [
 		preview.on('update', function(e) {
 			var fm   = ql.fm,
 				file = e.file,
+				showed = false,
+				dimreq = null,
+				setdim  = function(dim) {
+					var rfile = fm.file(file.hash);
+					rfile.width = dim[0];
+					rfile.height = dim[1];
+				},
+				show = function() {
+					var elm, varelm, memSize, width, height, prop;
+					
+					dimreq && dimreq.state && dimreq.state() === 'pending' && dimreq.reject();
+					if (showed) {
+						return;
+					}
+					showed = true;
+					
+					elm = img.get(0);
+					memSize = file.width && file.height? {w: file.width, h: file.height} : (elm.naturalWidth? null : {w: img.width(), h: img.height()});
+				
+					memSize && img.removeAttr('width').removeAttr('height');
+					
+					width  = file.width || elm.naturalWidth || elm.width || img.width();
+					height = file.height || elm.naturalHeight || elm.height || img.height();
+					if (!file.width || !file.height) {
+						setdim([width, height]);
+					}
+					
+					memSize && img.width(memSize.w).height(memSize.h);
+
+					prop = (width/height).toFixed(2);
+					preview.on('changesize', function() {
+						var pw = parseInt(preview.width()),
+							ph = parseInt(preview.height()),
+							w, h;
+					
+						if (prop < (pw/ph).toFixed(2)) {
+							h = ph;
+							w = Math.floor(h * prop);
+						} else {
+							w = pw;
+							h = Math.floor(w/prop);
+						}
+						img.width(w).height(h).css('margin-top', h < ph ? Math.floor((ph - h)/2) : 0);
+					
+					})
+					.trigger('changesize');
+					
+					loading.remove();
+					// hide info/icon
+					ql.hideinfo();
+					//show image
+					img.fadeIn(100);
+				},
 				url, img, loading, m;
 
 			if (ql.dispInlineRegex.test(file.mime) && $.inArray(file.mime, mimes) !== -1) {
@@ -36,39 +99,29 @@ elFinder.prototype.commands.quicklook.plugins = [
 				img = $('<img/>')
 					.hide()
 					.appendTo(preview)
-					.on('load', function() {
-						// timeout - because of strange safari bug - 
-						// sometimes cant get image height 0_o
-						setTimeout(function() {
-							var prop = (img.width()/img.height()).toFixed(2);
-							preview.on('changesize', function() {
-								var pw = parseInt(preview.width()),
-									ph = parseInt(preview.height()),
-									w, h;
-							
-								if (prop < (pw/ph).toFixed(2)) {
-									h = ph;
-									w = Math.floor(h * prop);
-								} else {
-									w = pw;
-									h = Math.floor(w/prop);
-								}
-								img.width(w).height(h).css('margin-top', h < ph ? Math.floor((ph - h)/2) : 0);
-							
-							})
-							.trigger('changesize');
-							
-							loading.remove();
-							// hide info/icon
-							ql.hideinfo();
-							//show image
-							img.fadeIn(100);
-						}, 1)
-					})
+					.on('load', show)
 					.on('error', function() {
 						loading.remove();
 					})
 					.attr('src', url);
+				
+				if (file.width && file.height) {
+					show();
+				} else if (file.size > (ql.options.getDimThreshold || 0)) {
+					dimreq = fm.request({
+						data : {cmd : 'dim', target : file.hash},
+						preventDefault : true
+					})
+					.done(function(data) {
+						if (data.dim) {
+							var dim = data.dim.split('x');
+							file.width = dim[0];
+							file.height = dim[1];
+							setdim(dim);
+							show();
+						}
+					})
+				}
 			}
 			
 		});
@@ -135,7 +188,10 @@ elFinder.prototype.commands.quicklook.plugins = [
 				e.stopImmediatePropagation();
 
 				loading = $('<div class="elfinder-quicklook-info-data"> '+fm.i18n('nowLoading')+'<span class="elfinder-info-spinner"></div>').appendTo(ql.info.find('.elfinder-quicklook-info'));
-				url = fm.openUrl(file.hash, fm.isCORS);
+				url = fm.openUrl(file.hash);
+				if (!fm.isSameOrigin(url)) {
+					url = fm.openUrl(file.hash, true);
+				}
 				img = $('<img/>').hide().appendTo(preview);
 				
 				if (PSD) {
@@ -221,11 +277,15 @@ elFinder.prototype.commands.quicklook.plugins = [
 			},
 			PRcheck = function(node, cnt) {
 				if (prettify()) {
-					if (typeof PR === 'undefined' && cnt--) {
+					if (typeof window.PR === 'undefined' && cnt--) {
 						setTimeout(function() { PRcheck(node, cnt); }, 100);
 					} else {
-						if (typeof PR === 'object') {
-							PR.prettyPrint && PR.prettyPrint(null, node.get(0));
+						if (typeof window.PR === 'object') {
+							node.css('cursor', 'wait');
+							setTimeout(function() {
+								PR.prettyPrint && PR.prettyPrint(null, node.get(0));
+								node.css('cursor', '');
+							}, 0);
 						} else {
 							prettify = function() { return false; };
 						}
@@ -238,10 +298,10 @@ elFinder.prototype.commands.quicklook.plugins = [
 				mime = file.mime,
 				jqxhr, loading;
 			
-			if (mime.indexOf('text/') === 0 || $.inArray(mime, mimes) !== -1) {
+			if (fm.mimeIsText(mime) || $.inArray(mime, mimes) !== -1) {
 				e.stopImmediatePropagation();
 				
-				(typeof PR === 'undefined') && prettify();
+				(typeof window.PR === 'undefined') && prettify();
 				
 				loading = $('<div class="elfinder-quicklook-info-data"> '+fm.i18n('nowLoading')+'<span class="elfinder-info-spinner"></div>').appendTo(ql.info.find('.elfinder-quicklook-info'));
 
@@ -258,7 +318,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 				.done(function(data) {
 					var reg = new RegExp('^(data:'+file.mime.replace(/([.+])/g, '\\$1')+';base64,)', 'i'),
 						text = data.content,
-						more, node, m;
+						part, more, node, m;
 					ql.hideinfo();
 					if (window.atob && (m = text.match(reg))) {
 						text = atob(text.substr(m[1].length));
@@ -266,16 +326,24 @@ elFinder.prototype.commands.quicklook.plugins = [
 					
 					more = text.length - textMaxlen;
 					if (more > 100) {
-						text = text.substr(0, textMaxlen) + '...';
+						part = text.substr(0, textMaxlen) + '...';
 					} else {
 						more = 0;
 					}
 					
-					node = $('<div class="elfinder-quicklook-preview-text-wrapper"><pre class="elfinder-quicklook-preview-text prettyprint">'+fm.escape(text)+'</pre></div>');
+					node = $('<div class="elfinder-quicklook-preview-text-wrapper"><pre class="elfinder-quicklook-preview-text prettyprint"></pre></div>');
 					
 					if (more) {
-						node.append('<div class="elfinder-quicklook-preview-charsleft"><hr/><span>' + fm.i18n('charsLeft', fm.toLocaleString(more)) + '</span></div>');
+						node.append($('<div class="elfinder-quicklook-preview-charsleft"><hr/><span>' + fm.i18n('charsLeft', fm.toLocaleString(more)) + '</span></div>')
+							.on('click', function() {
+								var top = node.scrollTop();
+								$(this).remove();
+								node.children('pre').removeClass('prettyprinted').text(text).scrollTop(top);
+								PRcheck(node, 100);
+							})
+						);
 					}
+					node.children('pre').text(part || text);
 					
 					node.on('touchstart', function(e) {
 						if ($(this)['scroll' + (fm.direction === 'ltr'? 'Right' : 'Left')]() > 5) {
@@ -613,7 +681,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 		if (typeof Uint8Array !== 'undefined' && elFinder.Zlib) {
 			preview.on('update', function(e) {
 				var file = e.file,
-					doc, xhr, loading;
+					doc, xhr, loading, url;
 
 				if ($.inArray(file.mime, mimes) !== -1) {
 					// this is our file - stop event propagation
@@ -688,7 +756,11 @@ elFinder.prototype.commands.quicklook.plugins = [
 							loading.remove();
 						}
 					}
-					xhr.open('GET', fm.openUrl(file.hash, fm.isCORS), true);
+					url = fm.openUrl(file.hash);
+					if (!fm.isSameOrigin(url)) {
+						url = fm.openUrl(file.hash, true);
+					}
+					xhr.open('GET', url, true);
 					xhr.responseType = 'arraybuffer';
 					fm.replaceXhrSend();
 					xhr.send();
@@ -721,6 +793,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 			
 			if ($.inArray(file.mime, mimes) !== -1) {
 				if (file.url == '1') {
+					preview.hide();
 					$('<div class="elfinder-quicklook-info-data"><button class="elfinder-info-button">'+fm.i18n('getLink')+'</button></div>').appendTo(ql.info.find('.elfinder-quicklook-info'))
 					.on('click', function() {
 						var self = $(this);

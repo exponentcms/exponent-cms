@@ -2,7 +2,7 @@
  * English translation
  * @author Troex Nevelin <troex@fury.scancode.ru>
  * @author Naoki Sawada <hypweb@gmail.com>
- * @version 2017-09-28
+ * @version 2017-11-23
  */
 // elfinder.en.js is integrated into elfinder.(full|min).js by jake build
 if (typeof elFinder === 'function' && elFinder.prototype.i18) {
@@ -187,9 +187,9 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'ntfreload'   : 'Reload folder content',
 			'ntfmkdir'    : 'Creating folder',
 			'ntfmkfile'   : 'Creating files',
-			'ntfrm'       : 'Delete files',
-			'ntfcopy'     : 'Copy files',
-			'ntfmove'     : 'Move files',
+			'ntfrm'       : 'Delete items',
+			'ntfcopy'     : 'Copy items',
+			'ntfmove'     : 'Move items',
 			'ntfprepare'  : 'Checking existing items',
 			'ntfrename'   : 'Rename files',
 			'ntfupload'   : 'Uploading files',
@@ -300,10 +300,10 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'noaccess'        : 'no access',
 			'and'             : 'and',
 			'unknown'         : 'unknown',
-			'selectall'       : 'Select all files',
-			'selectfiles'     : 'Select file(s)',
-			'selectffile'     : 'Select first file',
-			'selectlfile'     : 'Select last file',
+			'selectall'       : 'Select all items',
+			'selectfiles'     : 'Select item(s)',
+			'selectffile'     : 'Select first item',
+			'selectlfile'     : 'Select last item',
 			'viewlist'        : 'List view',
 			'viewicons'       : 'Icons view',
 			'places'          : 'Places',
@@ -425,7 +425,13 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'toolbarPref'     : 'Toolbar setting', // from v2.1.27 added 2.8.2017
 			'charsLeft'       : '... $1 chars left.',  // from v2.1.29 added 30.8.2017
 			'sum'             : 'Sum', // from v2.1.29 added 28.9.2017
-			
+			'roughFileSize'   : 'Rough file size', // from v2.1.30 added 2.11.2017
+			'autoFocusDialog' : 'Focus on the element of dialog with mouseover',  // from v2.1.30 added 2.11.2017
+			'select'          : 'Select', // from v2.1.30 added 23.11.2017
+			'selectAction'    : 'Action when select file', // from v2.1.30 added 23.11.2017
+			'useStoredEditor' : 'Open with the editor used last time', // from v2.1.30 added 23.11.2017
+			'selectinvert'    : 'Invert selection', // from v2.1.30 added 25.11.2017
+
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Unknown',
 			'kindRoot'        : 'Volume Root', // from v2.1.16 added 16.10.2016

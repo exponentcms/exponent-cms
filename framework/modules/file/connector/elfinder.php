@@ -38,6 +38,7 @@ ini_set('max_file_uploads', FM_SIMLIMIT); // allow uploading up to FM_SIMLIMIT f
 //require './autoload.php'; //note in Exp we load manually
 include BASE . 'external/elFinder/php/elFinderConnector.class.php';
 include BASE . 'external/elFinder/php/elFinder.class.php';
+include BASE . 'external/elFinder/php/editors/editor.php';
 
 include BASE . 'external/elFinder/php/elFinderPlugin.php';
 //include BASE . 'external/elFinder/php/libs/GdBmp.php';  // will also autoload if needed
@@ -320,7 +321,7 @@ $opts = array(
             'maxHeight'  => UPLOAD_WIDTH,
             'quality'    => THUMB_QUALITY,    // JPEG image save quality
 //            'preserveExif'   => false,      // Preserve EXIF data (Imagick only)
-//            'forceEffect'    => false,      // For change quality of small images
+//            'forceEffect'    => false,      // For change quality or make progressive JPEG of small images
             'targetType' => IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP, // Target image formats ( bit-field )
 //            'offDropWith'    => null        // To disable it if it is dropped with pressing the meta key
         			                          // Alt: 8, Ctrl: 4, Meta: 2, Shift: 1 - sum of each value
@@ -356,6 +357,7 @@ $opts = array(
 //            'transparency'   => 70,         // Water mark image transparency ( other than PNG )
 //            'targetType'     => IMG_GIF|IMG_JPG|IMG_PNG|IMG_WBMP, // Target image formats ( bit-field )
 //            'targetMinPixel' => 200         // Target image minimum pixel size
+//			  'interlace'      => IMG_GIF|IMG_JPG, // Set interlacebit image formats ( bit-field )
 //            'offDropWith'    => null        // To disable it if it is dropped with pressing the meta key
      			                              // Alt: 8, Ctrl: 4, Meta: 2, Shift: 1 - sum of each value
      			                              // In case of using any key, specify it as an array

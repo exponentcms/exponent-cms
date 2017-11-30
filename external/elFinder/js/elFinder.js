@@ -88,7 +88,7 @@ var elFinder = function(node, opts, bootCallback) {
 		enabled = true,
 		
 		/**
-		 * Store enabled value before ajax requiest
+		 * Store enabled value before ajax request
 		 *
 		 * @type Boolean
 		 **/
@@ -654,7 +654,24 @@ var elFinder = function(node, opts, bootCallback) {
 		 * @type Function
 		 */
 		savedXhrSend;
-
+	
+	// opts must be an object
+	if (!opts) {
+		opts = {};
+	}
+	
+	// set UA.Angle, UA.Rotated for mobile devices
+	if (self.UA.Mobile) {
+		$(window).on('orientationchange.'+namespace, function() {
+			var a = ((screen && screen.orientation && screen.orientation.angle) || window.orientation || 0) + 0;
+			if (a === -90) {
+				a = 270;
+			}
+			self.UA.Angle = a;
+			self.UA.Rotated = a % 180 === 0? false : true;
+		}).trigger('orientationchange.'+namespace);
+	}
+	
 	// check opt.bootCallback
 	if (opts.bootCallback && typeof opts.bootCallback === 'function') {
 		(function() {
@@ -722,7 +739,40 @@ var elFinder = function(node, opts, bootCallback) {
 	 *
 	 * @type Object
 	 **/
-	this.options = $.extend(true, {}, this._options, opts||{});
+	//this.options = $.extend(true, {}, this._options, opts);
+	this.options = Object.assign({}, this._options);
+	
+	// for old type configuration
+	if (opts.uiOptions) {
+		if (opts.uiOptions.toolbar && Array.isArray(opts.uiOptions.toolbar)) {
+			if ($.isPlainObject(opts.uiOptions.toolbar[opts.uiOptions.toolbar.length - 1])) {
+				self.options.uiOptions.toolbarExtra = Object.assign(self.options.uiOptions.toolbarExtra || {}, opts.uiOptions.toolbar.pop());
+			}
+		}
+	}
+	
+	// Overwrite if opts value is an array
+	(function() {
+		var arrOv = function(obj, base) {
+			if ($.isPlainObject(obj)) {
+				$.each(obj, function(k, v) {
+					if ($.isPlainObject(v)) {
+						if (!base[k]) {
+							base[k] = {};
+						}
+						arrOv(v, base[k])
+					} else {
+						base[k] = v;
+					}
+				});
+			}
+		}
+		arrOv(opts, self.options);
+	})();
+	
+	// join toolbarExtra to toolbar
+	this.options.uiOptions.toolbar.push(this.options.uiOptions.toolbarExtra);
+	delete this.options.uiOptions.toolbarExtra;
 	
 	// set fm.baseUrl
 	this.baseUrl = (function() {
@@ -797,42 +847,6 @@ var elFinder = function(node, opts, bootCallback) {
 		netkey: void(0),
 		disabled: []
 	};
-	
-	if (opts.ui) {
-		this.options.ui = opts.ui;
-	}
-	
-	if (opts.commands) {
-		this.options.commands = opts.commands;
-	}
-	
-	if (opts.uiOptions) {
-		if (opts.uiOptions.toolbar && Array.isArray(opts.uiOptions.toolbar)) {
-			if ($.isPlainObject(opts.uiOptions.toolbar[opts.uiOptions.toolbar.length - 1])) {
-				Object.assign(this.options.uiOptions.toolbarExtra, opts.uiOptions.toolbar.pop());
-			}
-			this.options.uiOptions.toolbar = opts.uiOptions.toolbar;
-		}
-		if (opts.uiOptions.toolbarExtra && $.isPlainObject(opts.uiOptions.toolbarExtra)) {
-			Object.assign(this.options.uiOptions.toolbarExtra, opts.uiOptions.toolbarExtra);
-		}
-	
-		if (opts.uiOptions.cwd && opts.uiOptions.cwd.listView) {
-			if (opts.uiOptions.cwd.listView.columns) {
-				this.options.uiOptions.cwd.listView.columns = opts.uiOptions.cwd.listView.columns;
-			}
-			if (opts.uiOptions.cwd.listView.columnsCustomName) {
-				this.options.uiOptions.cwd.listView.columnsCustomName = opts.uiOptions.cwd.listView.columnsCustomName;
-			}
-		}
-	}
-	// join toolbarExtra to toolbar
-	this.options.uiOptions.toolbar.push(this.options.uiOptions.toolbarExtra);
-	delete this.options.uiOptions.toolbarExtra;
-	
-	if (opts.contextmenu) {
-		Object.assign(this.options.contextmenu, opts.contextmenu);
-	}
 	
 	if (! inFrame && ! this.options.enableAlways && $('body').children().length === 2) { // only node and beeper
 		this.options.enableAlways = true;
@@ -1640,7 +1654,9 @@ var elFinder = function(node, opts, bootCallback) {
 				cls += ' elfinder-cwd-bgself';
 			} else if ((self.oldAPI || tmbUrl) && file && file.tmb && file.tmb != 1) {
 				url = tmbUrl + file.tmb;
-			}
+			} else if (self.newAPI && file && file.tmb && file.tmb != 1) {
+                url = file.tmb;
+            }
 			if (url) {
 				if (file.ts) {
 					url += (url.match(/\?/)? '&' : '?') + '_t=' + file.ts;
@@ -1732,7 +1748,7 @@ var elFinder = function(node, opts, bootCallback) {
 	};
 	
 	/**
-	 * Proccess ajax request.
+	 * Process ajax request.
 	 * Fired events :
 	 * @todo
 	 * @example
@@ -1771,6 +1787,8 @@ var elFinder = function(node, opts, bootCallback) {
 			navigate = opts.navigate,
 			// open notify dialog timeout
 			timeout,
+			// use browser cache
+			useCache = (opts.options || {}).cache,
 			// request options
 			options = Object.assign({
 				url      : o.url,
@@ -2151,7 +2169,16 @@ var elFinder = function(node, opts, bootCallback) {
 				delete options.preventFail
 
 				if (self.api >= 2.1029) {
-					Object.assign(options.data, { reqid : reqId });
+					if (useCache) {
+						options.headers['X-elFinderReqid'] = reqId;
+					} else {
+						Object.assign(options.data, { reqid : reqId });
+					}
+				}
+				
+				// function for set value of this syncOnFail
+				dfrd.syncOnFail = function(state) {
+					syncOnFail = !!state;
 				}
 				
 				dfrd.xhr = xhr = self.transport.send(options).always(function() {
@@ -2165,11 +2192,6 @@ var elFinder = function(node, opts, bootCallback) {
 				
 				if (self.api >= 2.1029) {
 					xhr._requestId = reqId;
-				}
-				
-				// function for set value of this syncOnFail
-				dfrd.syncOnFail = function(state) {
-					syncOnFail = !!state;
 				}
 				
 				if (isOpen || (data.compare && cmd === 'info')) {
@@ -2208,6 +2230,7 @@ var elFinder = function(node, opts, bootCallback) {
 				if (notify.type && notify.cnt) {
 					if (cancel) {
 						notify.cancel = dfrd;
+						opts.eachCancel && (notify.id = +new Date());
 					}
 					timeout = setTimeout(function() {
 						self.notify(notify);
@@ -2912,7 +2935,6 @@ var elFinder = function(node, opts, bootCallback) {
 
 		if (heightBase && heightBase.data('resizeTm')) {
 			clearTimeout(heightBase.data('resizeTm'));
-		//	heightBase.off('resize.' + self.namespace, fitToBase);
 		}
 		
 		if (typeof h === 'string') {
@@ -2930,12 +2952,16 @@ var elFinder = function(node, opts, bootCallback) {
 						e.preventDefault();
 						e.stopPropagation();
 						tm && clearTimeout(tm);
-						if (! node.hasClass('elfinder-fullscreen')) {
+						if (! node.hasClass('elfinder-fullscreen') && (!self.UA.Mobile || heightBase.data('rotated') !== self.UA.Rotated)) {
+							heightBase.data('rotated', self.UA.Rotated);
 							heightBase.data('resizeTm', setTimeout(function() {
 								self.restoreSize();
 							}, 50));
 						}
 					});
+				}
+				if (typeof heightBase.data('rotated') === 'undefined') {
+					heightBase.data('rotated', self.UA.Rotated);
 				}
 				h = heightBase.height() * (mt[1] / 100) - heightBase.data('marginToMyNode');
 				
@@ -3176,13 +3202,15 @@ var elFinder = function(node, opts, bootCallback) {
 	 * @param  Object  target    Target jQuery node object
 	 */
 	this.toFront = function(target) {
-		var lastnode = node.children(':last');
+		var lastnode = node.children('.ui-front:last');
 		target = $(target);
-		if (lastnode.get(0) !== target.get(0)) {
+		/*if (lastnode.get(0) !== target.get(0)) {
 			target.trigger('beforedommove')
 				.insertAfter(lastnode)
 				.trigger('dommove');
-		}
+		}*/
+		node.children().css('z-index', '');
+		target.css('z-index', lastnode.css('z-index') + 1);
 	};
 	
 	/**
@@ -3456,21 +3484,6 @@ var elFinder = function(node, opts, bootCallback) {
 	})();
 	
 	/*************  init stuffs  ****************/
-	
-	// check jquery ui
-	if (!($.fn.selectable && $.fn.draggable && $.fn.droppable && $.fn.resizable)) {
-		return alert(this.i18n('errJqui'));
-	}
-
-	// check node
-	if (!node.length) {
-		return alert(this.i18n('errNode'));
-	}
-	// check connector url
-	if (!this.options.url) {
-		return alert(this.i18n('errURL'));
-	}
-
 	Object.assign($.ui.keyCode, {
 		'F1' : 112,
 		'F2' : 113,
@@ -3612,7 +3625,7 @@ var elFinder = function(node, opts, bootCallback) {
 	// bind core event handlers
 	this
 		.enable(function() {
-			if (!enabled && self.visible() && self.ui.overlay.is(':hidden') && ! node.children('.elfinder-dialog').find('.'+self.res('class', 'editing')).length) {
+			if (!enabled && self.visible() && self.ui.overlay.is(':hidden') && ! node.children('.elfinder-dialog:visible').find('.'+self.res('class', 'editing')).length) {
 				enabled = true;
 				document.activeElement && document.activeElement.blur();
 				node.removeClass('elfinder-disabled');
@@ -3967,19 +3980,33 @@ var elFinder = function(node, opts, bootCallback) {
 	// elFinder boot up function
 	bootUp = function() {
 		/**
+		 * i18 messages
+		 *
+		 * @type Object
+		 **/
+		self.messages = i18n.messages;
+		
+		// check jquery ui
+		if (!($.fn.selectable && $.fn.draggable && $.fn.droppable && $.fn.resizable)) {
+			return alert(self.i18n('errJqui'));
+		}
+		
+		// check node
+		if (!node.length) {
+			return alert(self.i18n('errNode'));
+		}
+		// check connector url
+		if (!self.options.url) {
+			return alert(self.i18n('errURL'));
+		}
+		
+		/**
 		 * Interface direction
 		 *
 		 * @type String
 		 * @default "ltr"
 		 **/
 		self.direction = i18n.direction;
-		
-		/**
-		 * i18 messages
-		 *
-		 * @type Object
-		 **/
-		self.messages = i18n.messages;
 		
 		/**
 		 * Date/time format
@@ -4742,31 +4769,43 @@ elFinder.prototype = {
 	 * @type Object
 	 **/
 	UA : (function(){
-		var webkit = !document.uniqueID && !window.opera && !window.sidebar && window.localStorage && 'WebkitAppearance' in document.documentElement.style;
-		return {
-			// Browser IE <= IE 6
-			ltIE6   : typeof window.addEventListener == "undefined" && typeof document.documentElement.style.maxHeight == "undefined",
-			// Browser IE <= IE 7
-			ltIE7   : typeof window.addEventListener == "undefined" && typeof document.querySelectorAll == "undefined",
-			// Browser IE <= IE 8
-			ltIE8   : typeof window.addEventListener == "undefined" && typeof document.getElementsByClassName == "undefined",
-			// Browser IE <= IE 9
-			ltIE9  : document.uniqueID && document.documentMode <= 9,
-			// Browser IE <= IE 10
-			ltIE10  : document.uniqueID && document.documentMode <= 10,
-			// Browser IE >= IE 11
-			gtIE11  : document.uniqueID && document.documentMode >= 11,
-			IE      : document.uniqueID,
-			Firefox : window.sidebar,
-			Opera   : window.opera,
-			Webkit  : webkit,
-			Chrome  : webkit && window.chrome,
-			Safari  : webkit && !window.chrome,
-			Mobile  : typeof window.orientation != "undefined",
-			Touch   : typeof window.ontouchstart != "undefined",
-			iOS     : navigator.platform.match(/^iP(?:[ao]d|hone)/),
-			Fullscreen : (typeof (document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen) !== 'undefined')
-		};
+		var self = this,
+			webkit = !document.unqueID && !window.opera && !window.sidebar && window.localStorage && 'WebkitAppearance' in document.documentElement.style,
+			/*setRotated = function() {
+				var a = ((screen && screen.orientation && screen.orientation.angle) || window.orientation || 0) + 0;
+				if (a === -90) {
+					a = 270;
+				}
+				UA.Angle = a;
+				UA.Rotated = a % 180 === 0? false : true;
+			},*/
+			UA = {
+				// Browser IE <= IE 6
+				ltIE6   : typeof window.addEventListener == "undefined" && typeof document.documentElement.style.maxHeight == "undefined",
+				// Browser IE <= IE 7
+				ltIE7   : typeof window.addEventListener == "undefined" && typeof document.querySelectorAll == "undefined",
+				// Browser IE <= IE 8
+				ltIE8   : typeof window.addEventListener == "undefined" && typeof document.getElementsByClassName == "undefined",
+				// Browser IE <= IE 9
+				ltIE9  : document.uniqueID && document.documentMode <= 9,
+				// Browser IE <= IE 10
+				ltIE10  : document.uniqueID && document.documentMode <= 10,
+				// Browser IE >= IE 11
+				gtIE11  : document.uniqueID && document.documentMode >= 11,
+				IE      : document.uniqueID,
+				Firefox : window.sidebar,
+				Opera   : window.opera,
+				Webkit  : webkit,
+				Chrome  : webkit && window.chrome,
+				Safari  : webkit && !window.chrome,
+				Mobile  : typeof window.orientation != "undefined",
+				Touch   : typeof window.ontouchstart != "undefined",
+				iOS     : navigator.platform.match(/^iP(?:[ao]d|hone)/),
+				Fullscreen : (typeof (document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen) !== 'undefined'),
+				Angle   : 0,
+				Rotated : false
+			};
+			return UA;
 	})(),
 	
 	/**
@@ -5183,22 +5222,20 @@ elFinder.prototype = {
 				processing = 0,
 				items,
 				mkdirs = [],
-				
-				readEntries = function(dirReader) {
-					var toArray = function(list) {
-						return Array.prototype.slice.call(list || []);
-					};
+				cancel = false,
+				toArray = function(list) {
+					return Array.prototype.slice.call(list || [], 0);
 				},
-				
 				doScan = function(items) {
-					var dirReader, entry, length,
-					entries = [],
-					toArray = function(list) {
-						return Array.prototype.slice.call(list || [], 0);
-					},
-					excludes = fm.options.folderUploadExclude[fm.OS] || null;
-					length = items.length;
+					var dirReader, entry, readEntries,
+						entries = [],
+						excludes = fm.options.folderUploadExclude[fm.OS] || null,
+						length = items.length;
+					
 					for (var i = 0; i < length; i++) {
+						if (cancel) {
+							break;
+						}
 						entry = items[i];
 						if (entry) {
 							if (entry.isFile) {
@@ -5215,12 +5252,15 @@ elFinder.prototype = {
 									processing++;
 									mkdirs.push(entry.fullPath);
 									dirReader = entry.createReader();
-									var entries = [];
+									entries = [];
 									// Call the reader.readEntries() until no more results are returned.
-									var readEntries = function() {
-										 dirReader.readEntries (function(results) {
-											if (!results.length) {
+									readEntries = function() {
+										dirReader.readEntries(function(results) {
+											if (cancel || !results.length) {
 												for (var i = 0; i < entries.length; i++) {
+													if (cancel) {
+														break;
+													}
 													doScan([entries[i]]);
 												}
 												processing--;
@@ -5250,7 +5290,7 @@ elFinder.prototype = {
 				});
 				if (items.length > 0) {
 					fm.uploads.checkExists(items, target, fm, hasDirs).done(function(renames, hashes){
-						var notifyto, dfds = [];
+						var dfds = [];
 						if (fm.options.overwriteUploadConfirm && fm.option('uploadOverwrite', target)) {
 							if (renames === null) {
 								data.overwrite = 0;
@@ -5291,20 +5331,41 @@ elFinder.prototype = {
 							});
 						}
 						$.when.apply($, dfds).done(function(){
-							if (items.length > 0) {
-								notifyto = setTimeout(function() {
-									fm.notify({type : 'readdir', cnt : 1, hideCnt: true});
-								}, fm.options.notifyDelay);
-								doScan(items);
-								setTimeout(function wait() {
-									if (processing > 0) {
+							var notifyto, msg,
+								id = +new Date(),
+								wait = function() {
+									if (!cancel && processing > 0) {
 										setTimeout(wait, 10);
 									} else {
 										notifyto && clearTimeout(notifyto);
-										fm.notify({type : 'readdir', cnt : -1});
-										dfrd.resolve([files, paths, renames, hashes, mkdirs]);
+										fm.notify({type : 'readdir', id: id, cnt : -1});
+										if (cancel) {
+											dfrd.reject();
+										} else {
+											dfrd.resolve([files, paths, renames, hashes, mkdirs]);
+										}
 									}
-								}, 10);
+								};
+							
+							if (items.length > 0) {
+								msg = fm.escape(items[0].name);
+								if (items.length > 1) {
+									msg += ' ... ' + items.length + fm.i18n('items');
+								}
+								notifyto = setTimeout(function() {
+									fm.notify({
+										type : 'readdir',
+										id : id,
+										cnt : 1,
+										hideCnt: true,
+										msg : fm.i18n('ntfreaddir') + ' (' + msg + ')',
+										cancel: function() {
+											cancel = true;
+										}
+									});
+								}, fm.options.notifyDelay);
+								doScan(items);
+								setTimeout(wait, 10);
 							} else {
 								dfrd.reject();
 							}
@@ -5996,9 +6057,14 @@ elFinder.prototype = {
 								data.overwrite = 0;
 								formData.append('name[]', fm.date(fm.nonameDateFormat) + '.png');
 							}
-							if (fm.UA.iOS && file.name === 'image.jpg') {
-								data.overwrite = 0;
-								formData.append('name[]', fm.date(fm.nonameDateFormat) + '.jpg');
+							if (fm.UA.iOS) {
+								if (file.name.match(/^image\.jpe?g$/i)) {
+									data.overwrite = 0;
+									formData.append('name[]', fm.date(fm.nonameDateFormat) + '.jpg');
+								} else if (file.name.match(/^capturedvideo\.mov$/i)) {
+									data.overwrite = 0;
+									formData.append('name[]', fm.date(fm.nonameDateFormat) + '.mov');
+								}
 							}
 						}
 						if (file._chunk) {
@@ -7048,11 +7114,12 @@ elFinder.prototype = {
 	 */
 	notify : function(opts) {
 		var type     = opts.type,
+			id       = opts.id? 'elfinder-notify-'+opts.id : '',
 			msg      = this.i18n((typeof opts.msg !== 'undefined')? opts.msg : (this.messages['ntf'+type] ? 'ntf'+type : 'ntfsmth')),
 			ndialog  = this.ui.notify,
-			notify   = ndialog.children('.elfinder-notify-'+type),
+			notify   = ndialog.children('.elfinder-notify-'+type+(id? ('.'+id) : '')),
 			button   = notify.children('div.elfinder-notify-cancel').children('button'),
-			ntpl     = '<div class="elfinder-notify elfinder-notify-{type}"><span class="elfinder-dialog-icon elfinder-dialog-icon-{type}"/><span class="elfinder-notify-msg">{msg}</span> <span class="elfinder-notify-cnt"/><div class="elfinder-notify-progressbar"><div class="elfinder-notify-progress"/></div><div class="elfinder-notify-cancel"/></div>',
+			ntpl     = '<div class="elfinder-notify elfinder-notify-{type}'+(id? (' '+id) : '')+'"><span class="elfinder-dialog-icon elfinder-dialog-icon-{type}"/><span class="elfinder-notify-msg">{msg}</span> <span class="elfinder-notify-cnt"/><div class="elfinder-notify-progressbar"><div class="elfinder-notify-progress"/></div><div class="elfinder-notify-cancel"/></div>',
 			delta    = opts.cnt,
 			size     = (typeof opts.size != 'undefined')? parseInt(opts.size) : null,
 			progress = (typeof opts.progress != 'undefined' && opts.progress >= 0) ? opts.progress : null,
@@ -7115,7 +7182,7 @@ elFinder.prototype = {
 			}
 			
 			!opts.hideCnt && notify.children('.elfinder-notify-cnt').text('('+cnt+')');
-			ndialog.is(':hidden') && ndialog.elfinderdialog('open', this);
+			ndialog.is(':hidden') && ndialog.elfinderdialog('open', this).height('auto');
 			notify.data('cnt', cnt);
 			
 			if ((progress != null)
@@ -7436,6 +7503,16 @@ elFinder.prototype = {
 		}
 		
 		return this.messages['kind'+kind] ? this.i18n('kind'+kind) : mime;
+	},
+	
+	/**
+	 * Return boolean Is mime-type text file
+	 * 
+	 * @param  String  mime-type
+	 * @return Boolean
+	 */
+	mimeIsText : function(mime) {
+		return (this.textMimes[mime] || (mime.indexOf('text/') === 0 && mime.substr(5, 3) !== 'rtf'))? true : false;
 	},
 	
 	/**
@@ -8030,6 +8107,26 @@ elFinder.prototype = {
 		return ret;
 	},
 	
+	/**
+	 * Is same origin to current site
+	 * 
+	 * @param  String  check url
+	 * @return Boolean
+	 */
+	isSameOrigin : function (checkUrl) {
+		var url;
+		checkUrl = this.convAbsUrl(checkUrl);
+		if (location.origin && window.URL) {
+			try {
+				url = new URL(checkUrl);
+				return location.origin === url.origin;
+			} catch(e) {}
+		}
+		url = document.createElement('a');
+		url.href = checkUrl;
+		return location.protocol === url.protocol && location.host === url.host && location.port && url.port;
+	},
+	
 	navHash2Id : function(hash) {
 		return this.navPrefix + hash;
 	},
@@ -8341,8 +8438,8 @@ elFinder.prototype = {
 			$.each(targets, function() {
 				var root = self.root(this),
 					file = self.file(this);
-				if (file && file.sizeInfo) {
-					cache.push($.Deferred().resolve(file.sizeInfo));
+				if (file && (file.sizeInfo || file.mime !== 'directory')) {
+					cache.push($.Deferred().resolve(file.sizeInfo? file.sizeInfo : {size: file.size, dirCnt: 0, fileCnt : 1}));
 				} else {
 					if (! grps[root]) {
 						grps[root] = [ this ];
@@ -8368,7 +8465,18 @@ elFinder.prototype = {
 			$.when.apply($, dfds).fail(function() {
 				dfrd.reject();
 			}).done(function() {
-				var size = 0,
+				var cache = function(h, data) {
+						var file;
+						if (file = self.file(h)) {
+							file.sizeInfo = { isCache: true };
+							$.each(['size', 'dirCnt', 'fileCnt'], function() {
+								file.sizeInfo[this] = data[this] || 0;
+							});
+							file.size = parseInt(file.sizeInfo.size);
+							changed.push(file);
+						}
+					},
+					size = 0,
 					fileCnt = 0,
 					dirCnt = 0,
 					argLen = arguments.length,
@@ -8380,13 +8488,14 @@ elFinder.prototype = {
 				for (i = 0; i < argLen; i++) {
 					data = arguments[i];
 					file = null;
-					if (!data.isCache && singles[i] && (file = self.file(singles[i]))) {
-						file.sizeInfo = { isCache: true };
-						$.each(['size', 'dirCnt', 'fileCnt'], function() {
-							file.sizeInfo[this] = data[this];
-						});
-						file.size = parseInt(file.sizeInfo.size);
-						changed.push(file);
+					if (!data.isCache) {
+						if (singles[i] && (file = self.file(singles[i]))) {
+							cache(singles[i], data);
+						} else if (data.sizes && $.isPlainObject(data.sizes)) {
+							$.each(data.sizes, function(h, sizeInfo) {
+								cache(h, sizeInfo);
+							});
+						}
 					}
 					size += parseInt(data.size);
 					if (fileCnt !== false) {

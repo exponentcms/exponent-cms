@@ -277,6 +277,8 @@ abstract class elFinderVolumeDriver {
 			'csv:text/plain'               => 'text/csv',
 			'json:text/plain'              => 'application/json',
 			'sql:text/plain'               => 'text/x-sql',
+			'rtf:text/rtf'                 => 'application/rtf',
+			'rtfd:text/rtfd'               => 'application/rtfd',
 			'ico:image/vnd.microsoft.icon' => 'image/x-icon',
 			'm4a:video/mp4'                => 'audio/mp4',
 			'oga:application/ogg'          => 'audio/ogg',
@@ -286,7 +288,11 @@ abstract class elFinderVolumeDriver {
 			'mpd:text/plain'               => 'application/dash+xml',
 			'mpd:application/xml'          => 'application/dash+xml',
 			'xml:application/xml'          => 'text/xml',
-			'*:application/x-dosexec'      => 'application/x-executable'
+			'*:application/x-dosexec'      => 'application/x-executable',
+			'webp:application/octet-stream'=> 'image/webp',
+			'doc:application/vnd.ms-office'=> 'application/msword',
+			'xls:application/vnd.ms-office'=> 'application/vnd.ms-excel',
+			'ppt:application/vnd.ms-office'=> 'application/vnd.ms-powerpoint'
 		),
 		// An option to add MimeMap to the `mimeMap` option
 		// Array '[ext]:[detected mime type]' => '[normalized mime]'
@@ -327,6 +333,10 @@ abstract class elFinderVolumeDriver {
 		'resourcePath'    => '',
 		// Jpeg image saveing quality
 		'jpgQuality'      => 100,
+		// Save as progressive JPEG on image editing
+		'jpgProgressive'  => true,
+		// enable to get substitute image with command `dim`
+		'substituteImg'   => true,
 		// on paste file -  if true - old file will be replaced with new one, if false new file get name - original_name-number.ext
 		'copyOverwrite'   => true,
 		// if true - join new and old directories content on paste
@@ -600,8 +610,8 @@ abstract class elFinderVolumeDriver {
 		'htm'   => 'text/html',
 		'js'    => 'text/javascript',
 		'css'   => 'text/css',
-		'rtf'   => 'text/rtf',
-		'rtfd'  => 'text/rtfd',
+		'rtf'   => 'application/rtf',
+		'rtfd'  => 'application/rtfd',
 		'py'    => 'text/x-python',
 		'java'  => 'text/x-java-source',
 		'rb'    => 'text/x-ruby',
@@ -1412,11 +1422,18 @@ abstract class elFinderVolumeDriver {
 		
 		// set tmpLinkPath
 		if (elFinder::$tmpLinkPath && !$this->options['tmpLinkPath']) {
-			$this->options['tmpLinkPath'] = elFinder::$tmpLinkPath;
+			if (is_writeable(elFinder::$tmpLinkPath)) {
+				$this->options['tmpLinkPath'] = elFinder::$tmpLinkPath;
+			} else {
+				elFinder::$tmpLinkPath = '';
+			}
 		}
 		if ($this->options['tmpLinkPath'] && is_writable($this->options['tmpLinkPath'])) {
 			$this->tmpLinkPath = realpath($this->options['tmpLinkPath']);
-		} else if (!$this->options['URL'] && is_writable('../files/.tmb')) {
+		} else if (! $this->tmpLinkPath && $this->tmbURL && $this->tmbPath) {
+			$this->tmpLinkPath = $this->tmbPath;
+			$this->options['tmpLinkUrl'] = $this->tmbURL;
+ 		} else if (!$this->options['URL'] && is_writable('../files/.tmb')) {
 			$this->tmpLinkPath = realpath('../files/.tmb');
 			$this->options['tmpLinkUrl'] = '';
 			if (! elFinder::$tmpLinkPath) {
@@ -1657,7 +1674,8 @@ abstract class elFinderVolumeDriver {
 			'syncChkAsTs'     => intval($this->options['syncChkAsTs']),
 			'syncMinMs'       => intval($this->options['syncMinMs']),
 			'i18nFolderName'  => intval($this->options['i18nFolderName']),
-			'tmbCrop'         => intval($this->options['tmbCrop'])
+			'tmbCrop'         => intval($this->options['tmbCrop']),
+			'substituteImg'   => (bool)$this->options['substituteImg']
 		);
 		if (! empty($this->options['trashHash'])) {
 			$opts['trashHash'] = $this->options['trashHash'];
@@ -2005,7 +2023,7 @@ abstract class elFinderVolumeDriver {
 		$tree = array();
 		
 		while ($path && $path != $this->root) {
-			elFinder::extendTimeLimit();
+			elFinder::checkAborted();
 			$path = $this->dirnameCE($path);
 			if (!($stat = $this->stat($path)) || !empty($stat['hidden']) || !$stat['read']) {
 				return false;
@@ -2014,7 +2032,7 @@ abstract class elFinderVolumeDriver {
 			array_unshift($tree, $stat);
 			if (!$lineal) {
 				foreach ($this->gettree($path, 0) as $dir) {
-					elFinder::extendTimeLimit();
+					elFinder::checkAborted();
 					if (!isset($tree[$dir['hash']])) {
 						$tree[$dir['hash']] = $dir;
 					}
@@ -2431,11 +2449,11 @@ abstract class elFinderVolumeDriver {
 					return $this->setError(elFinder::ERROR_NOT_REPLACE, $this->path($stat['hash']));
 				}
 				// existed file is not writable
-				if (!$stat['write']) {
+				if (empty($stat['write'])) {
 					return $this->setError($err, $errpath, elFinder::ERROR_PERM_DENIED);
 				}
 				if ($this->options['copyJoin']) {
-					if ($stat['locked']) {
+					if (!empty($stat['locked'])) {
 						return $this->setError(elFinder::ERROR_LOCKED, $this->path($stat['hash']));
 					}
 				} else {
@@ -2798,6 +2816,10 @@ abstract class elFinderVolumeDriver {
 			return $this->setError(elFinder::ERROR_PERM_DENIED);
 		}
 		
+		if ($mode === 'rotate' && $degree == 0) {
+			return array('losslessRotate' => ($this->procExec(ELFINDER_EXIFTRAN_PATH . ' -h') === 0 || $this->procExec(ELFINDER_JPEGTRAN_PATH . ' -version') === 0));
+		}
+		
 		if (($file = $this->file($hash)) == false) {
 			return $this->setError(elFinder::ERROR_FILE_NOT_FOUND);
 		}
@@ -2854,18 +2876,17 @@ abstract class elFinderVolumeDriver {
 		if ($result) {
 			$this->rmTmb($file);
 			$this->clearstatcache();
-			$stat = $this->stat($path);
 			$fstat = stat($work_path);
-			$stat['size'] = $fstat['size'];
-			$stat['ts'] = $fstat['mtime'];
-			if ($imgsize = getimagesize($work_path)) {
-				$stat['width'] = $imgsize[0];
-				$stat['height'] = $imgsize[1];
-				$stat['mime'] = $imgsize['mime'];
-			}
+			$imgsize = getimagesize($work_path);
 			if ($path !== $work_path) {
+				$file['size'] = $fstat['size'];
+				$file['ts'] = $fstat['mtime'];
+				if ($imgsize) {
+					$file['width'] = $imgsize[0];
+					$file['height'] = $imgsize[1];
+				}
 				if ($fp = fopen($work_path, 'rb')) {
-					$ret = $this->saveCE($fp, $this->dirnameCE($path), $this->basenameCE($path), $stat);
+					$ret = $this->saveCE($fp, $this->dirnameCE($path), $this->basenameCE($path), $file);
 					fclose($fp);
 				}
 			} else {
@@ -2874,8 +2895,10 @@ abstract class elFinderVolumeDriver {
 			if ($ret) {
 				$this->clearcache();
 				$ret = $this->stat($path);
-				$ret['width'] = $stat['width'];
-				$ret['height'] = $stat['height'];
+				if ($imgsize) {
+					$ret['width'] = $imgsize[0];
+					$ret['height'] = $imgsize[1];
+				}
 			}
 		}
 		if ($path !== $work_path) {
@@ -2964,15 +2987,19 @@ abstract class elFinderVolumeDriver {
 	 * Return image dimensions
 	 *
 	 * @param  string  $hash  file hash
-	 * @return array
+	 * @return array|string
 	 * @author Dmitry (dio) Levashov
 	 **/
 	public function dimensions($hash) {
 		if (($file = $this->file($hash)) == false) {
 			return false;
 		}
-		
-		return $this->convEncOut($this->_dimensions($this->convEncIn($this->decode($hash)), $file['mime']));
+		if (func_num_args() > 1) {
+			$args = func_get_arg(1);
+		} else {
+			$args = array();
+		}
+		return $this->convEncOut($this->_dimensions($this->convEncIn($this->decode($hash)), $file['mime'], $args));
 	}
 	
 	/**
@@ -2999,29 +3026,107 @@ abstract class elFinderVolumeDriver {
 		if (($file = $this->file($hash)) === false) {
 			return false;
 		}
-		if (empty($file['url'])) {
-			if ($this->URL) {
-				$path = str_replace($this->separator, '/', substr($this->decode($hash), strlen($this->root) + 1));
-				if ($this->encoding) {
-					$path = $this->convEncIn($path, true);
-				}
-				$path = str_replace('%2F', '/', rawurlencode($path));
-				return $this->URL . $path;
+		if (empty($file['url']) && $this->URL) {
+			$path = str_replace($this->separator, '/', substr($this->decode($hash), strlen($this->root) + 1));
+			if ($this->encoding) {
+				$path = $this->convEncIn($path, true);
 			}
-			return false;
+			$path = str_replace('%2F', '/', rawurlencode($path));
+			return $this->URL . $path;
 		} else {
-			if  ($file['url'] != 1) {
+			$ret = false;
+			if  ($file['url'] && $file['url'] != 1) {
 				return $file['url'];
-			} else if (!empty($options['temporary']) && $this->tmpLinkPath) {
-				$name = 'temp_' . md5($hash);
-				$path = $this->tmpLinkPath . DIRECTORY_SEPARATOR . $name;
-				register_shutdown_function(array('elFinder', 'GlobGC'), $this->tmpLinkPath . DIRECTORY_SEPARATOR . 'temp_*', elFinder::$tmpLinkLifeTime);
-				if (file_put_contents($path, $this->getContents($hash))) {
-					return $this->tmpLinkUrl . '/' . $name;
+			} else if (!empty($options['temporary']) && ($tempInfo = $this->getTempLinkInfo('temp_' . md5($hash)))) {
+				if ($source = $this->open($hash)) {
+					if ($dest = fopen($tempInfo['path'], 'wb')) {
+						if (stream_copy_to_stream($source, $dest)) {
+							$ret = $tempInfo['url'];
+						}
+						fclose($dest);
+					}
+					$this->close($source, $hash);
 				}
 			}
-			return false;
+			return $ret;
 		}
+	}
+	
+	/**
+	 * Get temporary contents link infomation
+	 * 
+	 * @param string $name
+	 * @return boolean|array
+	 * @author Naoki Sawada
+	 */
+	public function getTempLinkInfo($name = null) {
+		if ($this->tmpLinkPath) {
+			if (! $name) {
+				$name = 'temp_' . md5($_SERVER['REMOTE_ADDR'] . (string)microtime(true));
+			} else if (substr($name, 0, 5) !== 'temp_') {
+				$name = 'temp_' . $name;
+			}
+			register_shutdown_function(array('elFinder', 'GlobGC'), $this->tmpLinkPath . DIRECTORY_SEPARATOR . 'temp_*', elFinder::$tmpLinkLifeTime);
+			return array(
+				'path' => $path = $this->tmpLinkPath . DIRECTORY_SEPARATOR . $name,
+				'url'  => $this->tmpLinkUrl . '/' . $name
+			);
+		}
+		return false;
+	}
+	
+	/**
+	 * Get URL of substitute image by request args `substitute` or 4th argument $maxSize
+	 * 
+	 * @param string   $target  Target hash
+	 * @param array    $srcSize Size info array [width, height]
+	 * @param resource $srcfp   Source file file pointer
+	 * @param integer  $maxSize Maximum pixel of substitute image
+	 * @return boolean
+	 */
+	public function getSubstituteImgLink($target, $srcSize, $srcfp = null, $maxSize = null) {
+		$url = false;
+		if (! $maxSize) {
+			$args = elFinder::$currentArgs;
+			if (! empty($args['substitute'])) {
+				$maxSize = $args['substitute'];
+			}
+		}
+		if ($maxSize && $srcSize[0] && $srcSize[1]) {
+			if ($this->getOption('substituteImg')) {
+				$maxSize = intval($maxSize);
+				$zoom = min(($maxSize/$srcSize[0]),($maxSize/$srcSize[1]));
+				if ($zoom < 1) {
+					$width = round($srcSize[0] * $zoom);
+					$height = round($srcSize[1] * $zoom);
+					$jpgQuality = 50;
+					$preserveExif = false;
+					$unenlarge = true;
+					$checkAnimated = true;
+					if (! $srcfp) {
+						elFinder::checkAborted();
+						$srcfp = $this->open($target);
+					}
+					if ($srcfp && ($tempLink = $this->getTempLinkInfo())) {
+						elFinder::checkAborted();
+						$dest = fopen($tempLink['path'], 'wb');
+						if ($dest && stream_copy_to_stream($srcfp, $dest)) {
+							fclose($dest);
+							if ($this->imageUtil('resize', $tempLink['path'], compact('width', 'height', 'jpgQuality', 'preserveExif', 'unenlarge', 'checkAnimated'))) {
+								$url = $tempLink['url'];
+								// set expire to 1 min left
+								touch($tempLink['path'], time() - elFinder::$tmpLinkLifeTime + 60);
+							} else {
+								unlink($tempLink['path']);
+							}
+						}
+						$this->close($srcfp, $target);
+					}
+				}
+			}
+		}
+		
+		return $url;
 	}
 	
 	/**
@@ -3554,7 +3659,13 @@ abstract class elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 */
 	public function uniqueName($dir, $name, $suffix = ' copy', $checkNum = true, $start = 1) {
-		$ext  = '';
+		static $lasts = null;
+		
+		if ($lasts === null) {
+			$lasts = array();
+		}
+		
+		$ext = '';
 
 		if (preg_match('/\.((tar\.(gz|bz|bz2|z|lzo))|cpio\.gz|ps\.gz|xcf\.(gz|bz2)|[a-z0-9]{1,4})$/i', $name, $m)) {
 			$ext  = '.'.$m[1];
@@ -3569,12 +3680,17 @@ abstract class elFinderVolumeDriver {
 			$name .= $suffix;
 		}
 		$max = $i+100000;
+		
+		if (isset($lasts[$name])) {
+			$i = max($i, $lasts[$name]);
+		}
 
 		while ($i <= $max) {
 			$n = $name.($i > 0 ? sprintf($this->options['uniqueNumFormat'], $i) : '').$ext;
 
 			if (!$this->isNameExists($this->joinPathCE($dir, $n))) {
 				$this->clearcache();
+				$lasts[$name] = ++$i;
 				return $n;
 			}
 			$i++;
@@ -3697,9 +3813,11 @@ abstract class elFinderVolumeDriver {
 				while(!feof($fp)) {
 					fwrite($wfp, fread($fp, 8192));
 				}
-				$this->_fclose($fp, $path);
+				$info = stream_get_meta_data($wfp);
 				fclose($wfp);
-				return $work;
+				if ($info && ! empty($info['uri'])) {
+					return $info['uri'];
+				}
 			}
 		}
 		return false;
@@ -3718,6 +3836,11 @@ abstract class elFinderVolumeDriver {
 			if ($work = $this->getWorkFile($path)) {
 				if ($size = getimagesize($work)) {
 					$size['dimensions'] = $size[0].'x'.$size[1];
+					$srcfp = fopen($work, 'rb');
+					$cArgs = elFinder::$currentArgs;
+					if (!empty($cArgs['target']) && $subImgLink = $this->getSubstituteImgLink($cArgs['target'], $size, $srcfp)) {
+						$size['url'] = $subImgLink;
+					}
 				}
 			}
 			is_file($work) && unlink($work);
@@ -3734,7 +3857,7 @@ abstract class elFinderVolumeDriver {
 	 */
 	protected function delTree($localpath) {
 		foreach ($this->_scandir($localpath) as $p) {
-			elFinder::extendTimeLimit();
+			elFinder::checkAborted();
 			$stat = $this->stat($this->convEncOut($p));
 			$this->convEncIn();
 			($stat['mime'] === 'directory')? $this->delTree($p) : $this->_unlink($p);
@@ -3769,7 +3892,7 @@ abstract class elFinderVolumeDriver {
 		if (is_null($canLink)) {
 			$canLink = ($this instanceof elFinderVolumeLocalFileSystem);
 		}
-		elFinder::extendTimeLimit();
+		elFinder::checkAborted();
 		$res = true;
 		$files = array();
 		foreach ($hashes as $hash) {
@@ -4288,7 +4411,7 @@ abstract class elFinderVolumeDriver {
 	 **/
 	protected function countSize($path) {
 		
-		elFinder::extendTimeLimit();
+		elFinder::checkAborted();
 		
 		$result = array('size' => 0, 'files' => 0, 'dirs' => 0);
 		$stat = $this->stat($path);
@@ -4573,7 +4696,7 @@ abstract class elFinderVolumeDriver {
 	 **/
 	protected function copy($src, $dst, $name) {
 		
-		elFinder::extendTimeLimit();
+		elFinder::checkAborted();
 		
 		$srcStat = $this->stat($src);
 		
@@ -4676,7 +4799,7 @@ abstract class elFinderVolumeDriver {
 	 **/
 	protected function copyFrom($volume, $src, $destination, $name) {
 		
-		elFinder::extendTimeLimit();
+		elFinder::checkAborted();
 		
 		if (($source = $volume->file($src)) == false) {
 			return $this->addError(elFinder::ERROR_COPY, '#'.$src, $volume->error());
@@ -4721,9 +4844,14 @@ abstract class elFinderVolumeDriver {
 			}
 			
 			if (strpos($source['mime'], 'image') === 0 && ($dim = $volume->dimensions($src))) {
-				$s = explode('x', $dim);
-				$source['width']  = $s[0];
-				$source['height'] = $s[1];
+				if (is_array($dim)) {
+					$dim = isset($dim['dim'])? $dim['dim'] : null;
+				}
+				if ($dim) {
+					$s = explode('x', $dim);
+					$source['width']  = $s[0];
+					$source['height'] = $s[1];
+				}
 			}
 			
 			if (($fp = $volume->open($src)) == false
@@ -5097,6 +5225,9 @@ abstract class elFinderVolumeDriver {
 								$img->setImageOrientation($orientation);
 							}
 						}
+						if ($this->options['jpgProgressive']) {
+							$img->setInterlaceScheme(Imagick::INTERLACE_PLANE);
+						}
 					}
 					$img->resizeImage($size_w, $size_h, $filter, true);
 					if ($destformat) {
@@ -5116,7 +5247,7 @@ abstract class elFinderVolumeDriver {
 				extract($this->imageMagickConvertPrepare($path, $destformat, $jpgQuality, $s));
 				$filter = ($destformat === 'png' /* createTmb */)? '-filter Box' : '-filter Lanczos';
 				$strip = (isset($options['preserveExif']) && ! $options['preserveExif'])? ' -strip' : '';
-				$cmd = sprintf('%s %s%s%s %s -geometry %dx%d! %s %s', ELFINDER_CONVERT_PATH, $quotedPath, $coalesce, $jpgQuality, $filter, $size_w, $size_h, $deconstruct, $quotedDstPath);
+				$cmd = sprintf('%s %s%s%s%s%s %s -geometry %dx%d! %s %s', ELFINDER_CONVERT_PATH, $quotedPath, $coalesce, $jpgQuality, $strip, $interlace, $filter, $size_w, $size_h, $deconstruct, $quotedDstPath);
 				
 				$result = false;
 				if ($this->procExec($cmd) === 0) {
@@ -5226,7 +5357,7 @@ abstract class elFinderVolumeDriver {
 
 			case 'convert':
 				extract($this->imageMagickConvertPrepare($path, $destformat, $jpgQuality, $s));
-				$cmd = sprintf('%s %s%s%s -crop %dx%d+%d+%d%s %s', ELFINDER_CONVERT_PATH, $quotedPath, $coalesce, $jpgQuality, $width, $height, $x, $y, $deconstruct, $quotedDstPath);
+				$cmd = sprintf('%s %s%s%s%s -crop %dx%d+%d+%d%s %s', ELFINDER_CONVERT_PATH, $quotedPath, $coalesce, $jpgQuality, $interlace, $width, $height, $x, $y, $deconstruct, $quotedDstPath);
 				
 				$result = false;
 				if ($this->procExec($cmd) === 0) {
@@ -5363,7 +5494,7 @@ abstract class elFinderVolumeDriver {
 				if ($bgcolor === 'transparent') {
 					$bgcolor = 'rgba(255, 255, 255, 0.0)';
 				}
-				$cmd = sprintf('%s -size %dx%d "xc:%s" png:- | convert%s%s png:-  %s -geometry +%d+%d -compose over -composite%s %s', ELFINDER_CONVERT_PATH, $width, $height, $bgcolor, $coalesce, $jpgQuality, $quotedPath, $x, $y, $deconstruct, $quotedDstPath);
+				$cmd = sprintf('%s -size %dx%d "xc:%s" png:- | convert%s%s%s png:-  %s -geometry +%d+%d -compose over -composite%s %s', ELFINDER_CONVERT_PATH, $width, $height, $bgcolor, $coalesce, $jpgQuality, $interlace, $quotedPath, $x, $y, $deconstruct, $quotedDstPath);
 				
 				$result = false;
 				if ($this->procExec($cmd) === 0) {
@@ -5489,7 +5620,7 @@ abstract class elFinderVolumeDriver {
 				if ($s[2] === IMAGETYPE_GIF || $s[2] === IMAGETYPE_PNG) {
 					$bgcolor = 'rgba(255, 255, 255, 0.0)';
 				}
-				$cmd = sprintf('%s %s%s%s -background "%s" -rotate %d%s %s', ELFINDER_CONVERT_PATH, $quotedPath, $coalesce, $jpgQuality, $bgcolor, $degree, $deconstruct, $quotedDstPath);
+				$cmd = sprintf('%s %s%s%s%s -background "%s" -rotate %d%s %s', ELFINDER_CONVERT_PATH, $quotedPath, $coalesce, $jpgQuality, $interlace, $bgcolor, $degree, $deconstruct, $quotedDstPath);
 				
 				$result = false;
 				if ($this->procExec($cmd) === 0) {
@@ -5621,16 +5752,18 @@ abstract class elFinderVolumeDriver {
 	 * @author Troex Nevelin
 	 **/
 	protected function rmTmb($stat) {
-		if ($stat['mime'] === 'directory') {
-			foreach ($this->scandirCE($this->decode($stat['hash'])) as $p) {
-				elFinder::extendTimeLimit(30);
-				$name = $this->basenameCE($p);
-				$name != '.' && $name != '..' && $this->rmTmb($this->stat($p));
+		if ($this->tmbPathWritable) {
+			if ($stat['mime'] === 'directory') {
+				foreach ($this->scandirCE($this->decode($stat['hash'])) as $p) {
+					elFinder::extendTimeLimit(30);
+					$name = $this->basenameCE($p);
+					$name != '.' && $name != '..' && $this->rmTmb($this->stat($p));
+				}
+			} else if (!empty($stat['tmb']) && $stat['tmb'] != "1") {
+				$tmb = $this->tmbPath.DIRECTORY_SEPARATOR.rawurldecode($stat['tmb']);
+				file_exists($tmb) && unlink($tmb);
+				clearstatcache();
 			}
-		} else if (!empty($stat['tmb']) && $stat['tmb'] != "1") {
-			$tmb = $this->tmbPath.DIRECTORY_SEPARATOR.$stat['tmb'];
-			file_exists($tmb) && unlink($tmb);
-			clearstatcache();
 		}
 	}
 	
@@ -5700,6 +5833,9 @@ abstract class elFinderVolumeDriver {
 			case 'image/gif':
 				return imagegif($image, $filename);
 			case 'image/jpeg':
+				if ($this->options['jpgProgressive']) {
+					imageinterlace($image, true);
+				}
 				return imagejpeg($image, $filename, $jpgQuality);
 			case 'image/wbmp':
 				return imagewbmp($image, $filename);
@@ -5737,6 +5873,9 @@ abstract class elFinderVolumeDriver {
 			if (strtoupper($img->getImageFormat()) === 'JPEG') {
 				$img->setImageCompression(imagick::COMPRESSION_JPEG);
 				$img->setImageCompressionQuality($jpgQuality);
+				if ($this->options['jpgProgressive']) {
+					$img->setInterlaceScheme(Imagick::INTERLACE_PLANE);
+				}
 				try {
 					$orientation = $img->getImageOrientation();
 				} catch (ImagickException $e) {
@@ -5798,7 +5937,7 @@ abstract class elFinderVolumeDriver {
 				$ani = false;
 			}
 		}
-		$coalesce = $index = '';
+		$coalesce = $index = $interlace = '';
 		$deconstruct = ' +repage';
 		if ($ani) {
 			if (is_null($destformat)) {
@@ -5820,12 +5959,15 @@ abstract class elFinderVolumeDriver {
 		}
 		if ($imageSize[2] === IMAGETYPE_JPEG || $imageSize[2] === IMAGETYPE_JPEG2000) {
 			$jpgQuality = ' -quality ' . $jpgQuality;
+			if ($this->options['jpgProgressive']) {
+				$interlace = ' -interlace Plane';
+			}
 		} else {
 			$jpgQuality = '';
 		}
 		$quotedPath = escapeshellarg($srcType . $path . $index);
 		$quotedDstPath = escapeshellarg(($destformat? ($destformat . ':') : $srcType) . $path);
-		return compact('ani', 'index', 'coalesce', 'deconstruct', 'jpgQuality', 'quotedPath', 'quotedDstPath');
+		return compact('ani', 'index', 'coalesce', 'deconstruct', 'jpgQuality', 'quotedPath', 'quotedDstPath', 'interlace');
 	}
 
 	/*********************** misc *************************/
@@ -6012,7 +6154,7 @@ abstract class elFinderVolumeDriver {
 			if ($arrn[0] !== '.') {
 				array_unshift($arrn, '.');
 			}
-			$arrn[0] = $base;
+			$arrn[0] = rtrim($base, $separator);
 			return join($separator, $arrn);
 		}
 		

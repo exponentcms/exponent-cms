@@ -31,7 +31,7 @@ class elFinder {
 	 * 
 	 * @var integer
 	 */
-	protected static $ApiRevision = 29;
+	protected static $ApiRevision = 30;
 	
 	/**
 	 * Storages (root dirs)
@@ -46,6 +46,13 @@ class elFinder {
 	 * @var object
 	 */
 	public static $instance = null;
+	
+	/**
+	 * Current request args
+	 *
+	 * @var array
+	 */
+	public static $currentArgs = array();
 	
 	/**
 	 * Network mount drivers
@@ -207,35 +214,36 @@ class elFinder {
 	 * @var array
 	 **/
 	protected $commands = array(
-		'open'      => array('target' => false, 'tree' => false, 'init' => false, 'mimes' => false, 'compare' => false, 'reqid' => false),
-		'ls'        => array('target' => true, 'mimes' => false, 'intersect' => false, 'reqid' => false),
-		'tree'      => array('target' => true, 'reqid' => false),
-		'parents'   => array('target' => true, 'until' => false, 'reqid' => false),
-		'tmb'       => array('targets' => true, 'reqid' => false),
-		'file'      => array('target' => true, 'download' => false, 'reqid' => false),
-		'zipdl'     => array('targets' => true, 'download' => false, 'reqid' => false),
-		'size'      => array('targets' => true, 'reqid' => false),
-		'mkdir'     => array('target' => true, 'name' => false, 'dirs' => false, 'reqid' => false),
-		'mkfile'    => array('target' => true, 'name' => true, 'mimes' => false, 'reqid' => false),
-		'rm'        => array('targets' => true, 'reqid' => false),
-		'rename'    => array('target' => true, 'name' => true, 'mimes' => false, 'reqid' => false),
-		'duplicate' => array('targets' => true, 'suffix' => false, 'reqid' => false),
-		'paste'     => array('dst' => true, 'targets' => true, 'cut' => false, 'mimes' => false, 'renames' => false, 'hashes' => false, 'suffix' => false, 'reqid' => false),
-		'upload'    => array('target' => true, 'FILES' => true, 'mimes' => false, 'html' => false, 'upload' => false, 'name' => false, 'upload_path' => false, 'chunk' => false, 'cid' => false, 'node' => false, 'renames' => false, 'hashes' => false, 'suffix' => false, 'mtime' => false, 'overwrite' => false, 'reqid' => false),
-		'get'       => array('target' => true, 'conv' => false, 'reqid' => false),
-		'put'       => array('target' => true, 'content' => '', 'mimes' => false, 'encoding' => false, 'reqid' => false),
-		'archive'   => array('targets' => true, 'type' => true, 'mimes' => false, 'name' => false, 'reqid' => false),
-		'extract'   => array('target' => true, 'mimes' => false, 'makedir' => false, 'reqid' => false),
-		'search'    => array('q' => true, 'mimes' => false, 'target' => false, 'reqid' => false),
-		'info'      => array('targets' => true, 'compare' => false, 'reqid' => false),
-		'dim'       => array('target' => true, 'reqid' => false),
-		'resize'    => array('target' => true, 'width' => false, 'height' => false, 'mode' => false, 'x' => false, 'y' => false, 'degree' => false, 'quality' => false, 'bg' => false, 'reqid' => false),
-		'netmount'  => array('protocol' => true, 'host' => true, 'path' => false, 'port' => false, 'user' => false, 'pass' => false, 'alias' => false, 'options' => false, 'reqid' => false),
-		'url'       => array('target' => true, 'options' => false, 'reqid' => false),
-		'callback'  => array('node' => true, 'json' => false, 'bind' => false, 'done' => false, 'reqid' => false),
-		'chmod'     => array('targets' => true, 'mode' => true, 'reqid' => false),
-		'subdirs'   => array('targets' => true, 'reqid' => false),
-		'abort'     => array('id' => true, 'reqid' => false)
+		'open'      => array('target' => false, 'tree' => false, 'init' => false, 'mimes' => false, 'compare' => false),
+		'ls'        => array('target' => true, 'mimes' => false, 'intersect' => false),
+		'tree'      => array('target' => true),
+		'parents'   => array('target' => true, 'until' => false),
+		'tmb'       => array('targets' => true),
+		'file'      => array('target' => true, 'download' => false),
+		'zipdl'     => array('targets' => true, 'download' => false),
+		'size'      => array('targets' => true),
+		'mkdir'     => array('target' => true, 'name' => false, 'dirs' => false),
+		'mkfile'    => array('target' => true, 'name' => true, 'mimes' => false),
+		'rm'        => array('targets' => true),
+		'rename'    => array('target' => true, 'name' => true, 'mimes' => false),
+		'duplicate' => array('targets' => true, 'suffix' => false),
+		'paste'     => array('dst' => true, 'targets' => true, 'cut' => false, 'mimes' => false, 'renames' => false, 'hashes' => false, 'suffix' => false),
+		'upload'    => array('target' => true, 'FILES' => true, 'mimes' => false, 'html' => false, 'upload' => false, 'name' => false, 'upload_path' => false, 'chunk' => false, 'cid' => false, 'node' => false, 'renames' => false, 'hashes' => false, 'suffix' => false, 'mtime' => false, 'overwrite' => false),
+		'get'       => array('target' => true, 'conv' => false),
+		'put'       => array('target' => true, 'content' => '', 'mimes' => false, 'encoding' => false),
+		'archive'   => array('targets' => true, 'type' => true, 'mimes' => false, 'name' => false),
+		'extract'   => array('target' => true, 'mimes' => false, 'makedir' => false),
+		'search'    => array('q' => true, 'mimes' => false, 'target' => false),
+		'info'      => array('targets' => true, 'compare' => false),
+		'dim'       => array('target' => true, 'substitute' => false),
+		'resize'    => array('target' => true, 'width' => false, 'height' => false, 'mode' => false, 'x' => false, 'y' => false, 'degree' => false, 'quality' => false, 'bg' => false),
+		'netmount'  => array('protocol' => true, 'host' => true, 'path' => false, 'port' => false, 'user' => false, 'pass' => false, 'alias' => false, 'options' => false),
+		'url'       => array('target' => true, 'options' => false),
+		'callback'  => array('node' => true, 'json' => false, 'bind' => false, 'done' => false),
+		'chmod'     => array('targets' => true, 'mode' => true),
+		'subdirs'   => array('targets' => true),
+		'abort'     => array('id' => true),
+		'editor'    => array('name' => true, 'method' => true, 'args' => false)
 	);
 	
 	/**
@@ -811,7 +819,13 @@ class elFinder {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	public function commandArgsList($cmd) {
-		return $this->commandExists($cmd) ? $this->commands[$cmd] : array();
+		if ($this->commandExists($cmd)) {
+			$list = $this->commands[$cmd];
+			$list['reqid'] = false;
+		} else {
+			$list = array();
+		}
+		return $list;
 	}
 
 	private function session_expires() {
@@ -841,6 +855,9 @@ class elFinder {
 		// set error handler of WARNING, NOTICE
 		set_error_handler('elFinder::phpErrorHandler', E_WARNING | E_NOTICE | E_USER_WARNING | E_USER_NOTICE);
 		
+		// set current request args
+		self::$currentArgs = $args;
+		
 		if (!$this->loaded) {
 			return array('error' => $this->error(self::ERROR_CONF, self::ERROR_CONF_NO_VOL));
 		}
@@ -853,6 +870,9 @@ class elFinder {
 			return array('error' => $this->error(self::ERROR_UNKNOWN_CMD));
 		}
 		
+		// check request id
+		$args['reqid'] = preg_replace('[^0-9a-fA-F]', '', ! empty($args['reqid'])? $args['reqid'] : (! empty($_SERVER['HTTP_X_ELFINDERREQID'])? $_SERVER['HTTP_X_ELFINDERREQID'] : ''));
+		
 		// to abort this request
 		if ($cmd === 'abort') {
 			$this->abort($args);
@@ -860,7 +880,7 @@ class elFinder {
 		}
 		
 		// make flag file and set self::$abortCheckFile
-		if (! empty($args['reqid'])) {
+		if ($args['reqid']) {
 			$this->abort(array('makeFile' => $args['reqid']));
 		}
 		
@@ -1451,7 +1471,7 @@ class elFinder {
 		$targets = $args['targets'];
 		
 		foreach ($targets as $target) {
-			elFinder::extendTimeLimit();
+			elFinder::checkAborted();
 			
 			if (($volume = $this->volume($target)) != false
 			&& (($tmb = $volume->tmb($target)) != false)) {
@@ -1671,8 +1691,10 @@ class elFinder {
 		$files = 0;
 		$dirs = 0;
 		$itemCount = true;
+		$sizes = array();
 		
 		foreach ($args['targets'] as $target) {
+			elFinder::checkAborted();
 			if (($volume = $this->volume($target)) == false
 			|| ($file = $volume->file($target)) == false
 			|| !$file['read']) {
@@ -1681,24 +1703,29 @@ class elFinder {
 			
 			$volRes = $volume->size($target);
 			if (is_array($volRes)) {
+				$sizeInfo = array('size' => 0, 'fileCnt' => 0, 'dirCnt' => 0);
 				if (! empty($volRes['size'])) {
+					$sizeInfo['size'] = $volRes['size'];
 					$size += $volRes['size'];
 				}
-				if ($itemCount) {
-					if (! empty($volRes['files'])) {
-						$files += $volRes['files'];
-					}
-					if (! empty($volRes['dirs'])) {
-						$dirs += $volRes['dirs'];
-					}
+				if (! empty($volRes['files'])) {
+					$sizeInfo['fileCnt'] = $volRes['files'];
 				}
+				if (! empty($volRes['dirs'])) {
+					$sizeInfo['dirCnt'] = $volRes['dirs'];
+				}
+				if ($itemCount) {
+					$files += $sizeInfo['fileCnt'];
+					$dirs += $sizeInfo['dirCnt'];
+				}
+				$sizes[$target] = $sizeInfo;
 			} else if (is_numeric($volRes)) {
 				$size += $volRes;
 				$files = $dirs = 'unknown';
 				$itemCount = false;
 			}
 		}
-		return array('size' => $size, 'fileCnt' => $files, 'dirCnt' => $dirs);
+		return array('size' => $size, 'fileCnt' => $files, 'dirCnt' => $dirs, 'sizes' => $sizes);
 	}
 	
 	/**
@@ -1812,7 +1839,7 @@ class elFinder {
 		$this->itemLock($targets);
 		
 		foreach ($targets as $target) {
-			elFinder::extendTimeLimit();
+			elFinder::checkAborted();
 			
 			if (($volume = $this->volume($target)) == false
 			|| ($src = $volume->file($target)) == false) {
@@ -1843,7 +1870,7 @@ class elFinder {
 		$result  = array('removed' => array());
 		
 		foreach ($targets as $target) {
-			elFinder::extendTimeLimit();
+			elFinder::checkAborted();
 			
 			if (($volume = $this->volume($target)) == false) {
 				$result['warning'] = $this->error(self::ERROR_RM, '#'.$target, self::ERROR_FILE_NOT_FOUND);
@@ -1883,6 +1910,40 @@ class elFinder {
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * Gateway for custom contents editor
+	 * 
+	 * @param  array $args command arguments
+	 * @return array
+	 * @author Naoki Sawada
+	 */
+	protected function editor($args = array()) {
+		$name = $args['name'];
+		if (is_array($name)) {
+			$res = array();
+			foreach($name as $c) {
+				$class = 'elFinderEditor' . $c;
+				if (class_exists($class)) {
+					$editor = new $class($this, $args['args']);
+					$res[$c] = $editor->enabled();
+				} else {
+					$res[$c] = 0;
+				}
+			}
+			return $res;
+		} else {
+			$class = 'elFinderEditor' . $name;
+			if (class_exists($class)) {
+				$editor = new $class($this, $args['args']);
+				$method = $args['method'];
+				if ($editor->isAllowedMethod($method) && method_exists($editor, $method)) {
+					return $editor->$method();
+				}
+			}
+			return array('error', $this->error(self::ERROR_UNKNOWN_CMD, 'editor.'.$name.'.'.$method));
+		}
 	}
 
 	/**
@@ -1974,7 +2035,6 @@ class elFinder {
 	 * @author Naoki Sawada
 	 */
 	protected function fsock_get_contents( &$url, $timeout, $redirect_max, $ua, $outfp ) {
-
 		$connect_timeout = 3;
 		$connect_try = 3;
 		$method = 'GET';
@@ -1996,9 +2056,10 @@ class elFinder {
 		// query
 		$arr['query'] = isset($arr['query']) ? '?'.$arr['query'] : '';
 		// port
-		$arr['port'] = isset($arr['port']) ? $arr['port'] : ($ssl? 443 : 80);
+		$port = isset($arr['port']) ? $arr['port'] : '';
+		$arr['port'] = $port? $port : ($ssl? 443 : 80);
 		
-		$url_base = $arr['scheme'].'://'.$arr['host'].':'.$arr['port'];
+		$url_base = $arr['scheme'].'://'.$arr['host'].($port? (':'.$port) : '');
 		$url_path = isset($arr['path']) ? $arr['path'] : '/';
 		$uri = $url_path.$arr['query'];
 		
@@ -2074,10 +2135,11 @@ class elFinder {
 						// add sheme,host
 						$url = $url_base.$url;
 					}
-					if ($_url !== $url) {
-						fclose($fp);
-						return $this->fsock_get_contents( $url, $timeout, $redirect_max, $ua, $outfp );
+					if ($_url === $url) {
+						sleep(1);
 					}
+					fclose($fp);
+					return $this->fsock_get_contents( $url, $timeout, $redirect_max, $ua, $outfp );
 				}
 				break;
 			case 200:
@@ -2281,7 +2343,7 @@ class elFinder {
 		$files = array();
 		$errors = array();
 		foreach($targets as $target) {
-			elFinder::extendTimeLimit();
+			elFinder::checkAborted();
 			
 			$file = $volume->chmod($target, $mode);
 			if ($file) {
@@ -2385,7 +2447,7 @@ class elFinder {
 				
 				try {
 					// to check connection is aborted
-					elFinder::extendTimeLimit();
+					elFinder::checkAborted();
 				} catch (elFinderAbortException $e) {
 					unlink($tmpname);
 					is_file($tmp) && unlink($tmp);
@@ -2530,7 +2592,7 @@ class elFinder {
 						$fp = fopen($tmpfname, 'wb');
 						$data = $this->get_remote_contents($url, 30, 5, 'Mozilla/5.0', $fp);
 						// to check connection is aborted
-						elFinder::extendTimeLimit();
+						elFinder::checkAborted();
 						$_name = preg_replace('~^.*?([^/#?]+)(?:\?.*)?(?:#.*)?$~', '$1', rawurldecode($url));
 						// Check `Content-Disposition` response header
 						if ($data && ($headers = get_headers($url, true)) && !empty($headers['Content-Disposition'])) {
@@ -2757,7 +2819,7 @@ class elFinder {
 		}
 		
 		foreach ($targets as $target) {
-			elFinder::extendTimeLimit();
+			elFinder::checkAborted();
 			
 			if (($srcVolume = $this->volume($target)) == false) {
 				$result['warning'] = array_merge($result['warning'], $this->error($error, '#'.$target, self::ERROR_FILE_NOT_FOUND));
@@ -3118,6 +3180,7 @@ class elFinder {
 			}
 		} else {
 			foreach ($args['targets'] as $hash) {
+				elFinder::checkAborted();
 				if (($volume = $this->volume($hash)) != false
 				&& ($info = $volume->file($hash)) != false) {
 					$info['path'] = $volume->path($hash);
@@ -3141,13 +3204,23 @@ class elFinder {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function dim($args) {
+		$res = array();
 		$target = $args['target'];
 		
 		if (($volume = $this->volume($target)) != false) {
-			$dim = $volume->dimensions($target);
-			return $dim ? array('dim' => $dim) : array();
+			if ($dim = $volume->dimensions($target, $args)) {
+				if (is_array($dim) && isset($dim['dim'])) {
+					$res = $dim;
+				} else {
+					$res = array('dim' => $dim);
+					if ($subImgLink = $volume->getSubstituteImgLink($target, explode('x', $dim))) {
+						$res['url'] = $subImgLink;
+					}
+				}
+			}
 		}
-		return array();
+		
+		return $res;
 	}
 	
 	/**
@@ -3178,7 +3251,7 @@ class elFinder {
 			return array('error' => $this->error(self::ERROR_RESIZESIZE));
 		}
 		return ($file = $volume->resize($target, $width, $height, $x, $y, $mode, $bg, $degree, $quality))
-			? array('changed' => array($file))
+			? (!empty($file['losslessRotate'])? $file : array('changed' => array($file)))
 			: array('error' => $this->error(self::ERROR_RESIZE, $volume->path($target), $volume->error()));
 	}
 	
@@ -3609,6 +3682,9 @@ class elFinder {
 			$c2 = fread($fp,2);
 			if (bin2hex($c2) == "f904") {
 				$imgcnt++;
+				if ($imgcnt === 2) {
+					break;
+				}
 			}
 	
 			if (feof($fp)) {
@@ -3765,6 +3841,16 @@ class elFinder {
 		} else {
 			throw new elFinderAbortException();
 		}
+	}
+	
+	/**
+	 * Check connection is aborted
+	 * Script stop immediately if connection aborted
+	 *
+	 * @return void
+	 */
+	public static function checkAborted() {
+		elFinder::extendTimeLimit();
 	}
 	
 	/**

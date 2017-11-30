@@ -220,6 +220,7 @@ elFinder.prototype.commands.download = function() {
 						data : {cmd : 'zipdl', targets : hashes},
 						notify : {type : 'zipdl', cnt : 1, hideCnt : true, msg : fm.i18n('ntfzipdl') + volName},
 						cancel : true,
+						eachCancel : true,
 						preventDefault : true
 					}).done(function(e) {
 						var zipdl, dialog, btn = {}, dllink, form, iframe,
@@ -234,7 +235,7 @@ elFinder.prototype.commands.download = function() {
 							} else {
 								dlName = zipdl.name;
 							}
-							if (html5dl || linkdl) {
+							if ((html5dl && (!fm.UA.Safari || fm.isSameOrigin(fm.options.url))) || linkdl) {
 								url = fm.options.url + (fm.options.url.indexOf('?') === -1 ? '?' : '&')
 								+ 'cmd=zipdl&download=1';
 								$.each([hashes[0], zipdl.file, dlName, zipdl.mime], function(key, val) {
@@ -348,7 +349,7 @@ elFinder.prototype.commands.download = function() {
 		} else {
 			for (i = 0; i < files.length; i++) {
 				url = fm.openUrl(files[i].hash, true);
-				if (html5dl) {
+				if (html5dl && (!fm.UA.Safari || fm.isSameOrigin(url))) {
 					click(link.attr('href', url)
 						.attr('download', fm.escape(files[i].name))
 						.attr('target', '_blank')
