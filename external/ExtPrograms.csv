@@ -57,7 +57,7 @@ TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
 DataTables,1.10.7,www.datatables.net,1.10.16,includes boostrap integration w/ renamed bootstrap3 versions
 DataTables Tabletools,2.2.4,www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,github.com/Comanche/datatables-responsive,0.2.0,replaced by 'Responsive' in 1.10.8
-yadcf,0.9.1,github.com/vedmack/yadcf,0.9.1,
+yadcf,0.9.2,github.com/vedmack/yadcf,0.9.2,
 tag-it,2,aehlke.github.io/tag-it/,2,renamed css file to same as js file for our loader
 multiselect,2,mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.1.0,excolo.github.io/Excolo-Slider/,1.1.0,
