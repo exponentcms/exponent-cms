@@ -1338,6 +1338,8 @@ class usersController extends expController {
             $lineInfo = fgetcsv($fh, 2000, $this->params["delimiter"]);
             if ($x == 0 && !empty($this->params["use_header"])) $headerinfo = $lineInfo;
         }
+        fclose($fh);
+        ini_set('auto_detect_line_endings',$line_end);
 
         $colNames = array(
             "none"      => gt('--Disregard this column--'),
@@ -1559,6 +1561,8 @@ class usersController extends expController {
             }
             $linenum++;
         }
+        fclose($file);
+        ini_set('auto_detect_line_endings',$line_end);
         assign_to_template(array(
             "userarray" => $userarray,
             "params" => $this->params,
