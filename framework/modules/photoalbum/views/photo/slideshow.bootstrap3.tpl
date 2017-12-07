@@ -51,8 +51,8 @@
    	{/if}
     {$myloc=serialize($__loc)}
     <div id="ss-{$name}" class="slideshow-container">
-        <ul>
-            <div class="slideshow-frame-ex owl-carousel owl-theme">
+        <ul class="slideshow-frame-ex owl-carousel owl-theme">
+            {*<div class="slideshow-frame-ex owl-carousel owl-theme">*}
             {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
             {foreach key=key from=$slides item=slide name=slides}
                 <li class="slide">
@@ -101,7 +101,7 @@
                     {/if}
                 {/permissions}
             {/foreach}
-            </div>
+            {*</div>*}
         </ul>
     </div>
 </div>
