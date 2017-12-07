@@ -20,9 +20,10 @@
 		</div>
         <h2>{"MOTD Settings"|gettext}</h2>
         <blockquote>
-            {'If no Message of the Day is found for the current day, we can pull up a random Message of the Day.'|gettext}&#160;&#160;
+            {'If no Message of the Day is found for the current day, we can optionally pull up a random Message of the Day.'|gettext}
         </blockquote>
 	</div>
 </div>
-{control type="checkbox" name="userand" label="Use Random MOTD"|gettext value=1 checked=$config.userand description='Check this box to select random messages.'|gettext focus=1}
+{control type="checkbox" name="userand" label="Use Random MOTD"|gettext value=1 checked=$config.userand description='Check this box to select random message if no message available.'|gettext focus=1}
 {control type="checkbox" name="datetag" label="Display Item Date as Badge"|gettext value=1 checked=$config.datetag}
+{control type=text name=viewall label="View Others Label"|gettext value=$config.viewall|default:'View Other Tips'|gettext}

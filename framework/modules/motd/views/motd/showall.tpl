@@ -44,7 +44,14 @@
 		<tbody>
 			{foreach from=$page->records item=listing name=listings}
                 <tr class="{cycle values="odd,even"}">
-                    <td>{$listing->month}/{$listing->day}</td>
+                    <td>
+                        {if empty($listing->month)}
+                            {'Any Month'|gettext}
+                        {else}
+                            {date('M', strtotime('2017-'|cat:$listing->month|cat:'-01'))}
+                        {/if}
+                        {$listing->day}
+                    </td>
                     <td>{$listing->body}</td>
                     <td>
                         {permissions}
@@ -80,4 +87,11 @@
 		</tbody>
     </table>
     {pagelinks paginate=$page bottom=1}
+    {permissions}
+        {if $permissions.manage}
+            <div class="module-actions">
+                {icon class=view action=showall_year text="View Tips as Calendar"|gettext}
+            </div>
+        {/if}
+    {/permissions}
 </div>

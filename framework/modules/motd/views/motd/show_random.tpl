@@ -15,7 +15,6 @@
 
 {clear}
 <div class="module motd show">
-    {if !empty($message)}
     {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle|default:"Message of the Day"|gettext}</{$config.heading_level|default:'h1'}>{/if}
     {$myloc=serialize($__loc)}
     <div class="motd-message">
@@ -53,9 +52,8 @@
             </div>
         {/permissions}
     </div>
-    {icon class=view action=showall_year text=$config.viewall|default:'View Other Tips'|gettext}
-    {/if}
     {permissions}
+        {icon class=view action=showall_year text=$config.viewall|default:'View Other Tips'|gettext}
         {if $permissions.edit || ($permissions.create && $message->poster == $user->id)}
             <div class="module-actions">
                 {icon class=add action=edit text="Add a tip"|gettext}
