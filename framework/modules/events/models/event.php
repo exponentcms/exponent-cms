@@ -46,7 +46,7 @@ class event extends expRecord {
      */
     public function find($range = 'all', $where = null, $order = null, $limit = null, $limitstart = 0, $get_assoc = true, $get_attached = true, $except = array(), $cascade_except = false)
     {
-        if (is_numeric($range) || in_array($range, array('all', 'first', 'bytitle', 'count', 'in', 'bytag', 'bycat'))) {
+        if (is_numeric($range) || in_array($range, array('all', 'revisions', 'first', 'bytitle', 'count', 'in', 'bytag', 'bycat'))) {
             return parent::find($range, $where, $order, $limit, $limitstart, $get_assoc, $get_attached, $except, $cascade_except);
         } else {  // 'upcoming', 'month', 'week', 'day', etc...
             //note $order is boolean for 'featured'
