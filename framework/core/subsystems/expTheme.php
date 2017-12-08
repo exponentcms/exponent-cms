@@ -1831,7 +1831,7 @@ class expTheme
                     break;
                 case 'copy' :
                     $class = "copy";
-                    $found->prefix = "fab fa-";
+                    $found->prefix = "far fa-";
                     break;
                 case 'downloadfile' :
                 case 'export' :
@@ -1870,11 +1870,11 @@ class expTheme
                     break;
                 case 'clean' :
                     $class = 'check-square';
-                    $found->prefix = "fab fa-";
+                    $found->prefix = "far fa-";
                     break;
                 case 'trash' :
                     $class = "trash-alt";
-                    $found->prefix = "fab fa-";
+                    $found->prefix = "far fa-";
                     break;
                 case 'userperms' :
                     $class = 'user';

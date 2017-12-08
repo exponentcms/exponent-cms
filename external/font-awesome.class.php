@@ -23,7 +23,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		 *
 		 * @param string $path font awesome css file path
 		 * @param string $class_prefix change this if the class names does not start with `fa-`
-		 * @return array
+		 * @return array|boolean
 		 */
 		public static function getArray($path, $class_prefix = 'fa-'){
 
@@ -49,7 +49,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		 * Sort array by key name
 		 *
 		 * @param array $array font awesome array. Create it using `getArray` method
-		 * @return array
+		 * @return array|boolean
 		 */
 		public function sortByName($array){
 
@@ -67,7 +67,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		 * Get only HTML class key(class) => value(class), no unicode. 'fa-calendar' => 'fa-calendar',
 		 *
 		 * @param array $array font awesome array. Create it using `getArray` method
-		 * @return array
+		 * @return array|boolean
 		 */
 		public function onlyClass($array){
 
@@ -88,7 +88,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		 * Get only the unicode key, no HTML class. '\f073' => '\f073',
 		 *
 		 * @param array $array font awesome array. Create it using `getArray` method
-		 * @return array
+		 * @return array|boolean
 		 */
 		public function onlyUnicode($array){
 
@@ -110,7 +110,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		 *
 		 * @param array $array font awesome array. Create it using `getArray` method
 		 * @param string $class_prefix change this if the class names does not start with `fa-`
-		 * @return array
+		 * @return array|boolean
 		 */
 		public function readableName($array, $class_prefix = 'fa-'){
 
@@ -130,7 +130,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		 *
 		 * @param array $array font awesome array. Create it using `getArray` method
 		 * @param string $class_prefix change this if the class names does not start with `fa-`
-		 * @return array
+		 * @return array|boolean
 		 */
 		public function nameGlyph($array, $class_prefix = 'fa-'){
 
