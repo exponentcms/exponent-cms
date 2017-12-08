@@ -79,7 +79,7 @@ class expHtmlToPDF
      */
     public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
-        if (HTMLTOPDF_ENGINE != 'none') {
+        if (HTMLTOPDF_ENGINE !== 'none') {
             $engine = HTMLTOPDF_ENGINE;
             $this->pdf = new $engine($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html, $use_file);
         }
@@ -838,7 +838,7 @@ class expDOMPDF080 extends expDOMPDF070
      */
     public static function installed()
     {
-        return file_exists(BASE . 'external/dompdf080/autoload.inc.php');
+        return file_exists(BASE . 'external/dompdf082/autoload.inc.php');
     }
 
     /**
@@ -851,10 +851,10 @@ class expDOMPDF080 extends expDOMPDF070
      */
     public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
-        if (file_exists(BASE . 'external/dompdf080/autoload.inc.php')) {
+        if (file_exists(BASE . 'external/dompdf082/autoload.inc.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata'))
                 expFile::makeDirectory('tmp/ttfontdata');
-            require_once(BASE . 'external/dompdf080/autoload.inc.php');
+            require_once(BASE . 'external/dompdf082/autoload.inc.php');
             $this->pdf = new Dompdf\Dompdf();
             $this->size = $paper_size;
             $this->orient = $orientation;
@@ -905,7 +905,7 @@ class expMPDF extends expHtmlToPDF
             ini_set('display_errors', 0);  // warnings must be turned off to work
             require_once(BASE . 'external/MPDF57/mpdf.php');
             $this->size = $paper_size;
-            $this->orient = strtoupper(substr($orientation, 0, 1));
+            $this->orient = strtoupper($orientation[0]);
             $this->pdf = new mPDF(null, $this->size, 0, 15, 15, 16, 16, 9, 9, $this->orient);
             $this->pdf->setBasePath(URL_BASE);
             $this->pdf->debug = HTMLTOPDF_DEBUG;
@@ -956,7 +956,7 @@ class expMPDF extends expHtmlToPDF
     {
         ini_set('display_errors', 0);  // warnings must be turned off to work
         $this->pdf->_setPageSize($this->size,$orientation);
-        $this->orient = strtoupper(substr($orientation, 0, 1));
+        $this->orient = strtoupper($orientation[0]);
         if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
@@ -1044,8 +1044,9 @@ class expMPDF extends expHtmlToPDF
     public function output($compress = null)
     {
         ini_set('display_errors', 0);  // warnings must be turned off to work
-        return $this->pdf->Output(null, 'S');
+        $out = $this->pdf->Output(null, 'S');
         if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
+        return $out;
     }
 
     public function set_grayscale($mode)
@@ -1077,58 +1078,6 @@ class expMPDF6 extends expMPDF
      * Return status of pdf engine being installed correctly
      */
     public static function installed() {
-        return file_exists(BASE . 'external/mpdf60/mpdf.php');
-    }
-
-    /**
-     * Constructor: initialize a pdf file file.
-     *
-     * @param string $paper_size  page size
-     * @param string $orientation page orientation
-     * @param string $html        html code for page
-     * @param bool   $use_file    a flag to show $html is an html file location to be loaded
-     */
-    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
-    {
-        if (file_exists(BASE . 'external/mpdf60/mpdf.php')) {
-            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
-            if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", BASE . 'tmp/ttfontdata/');
-            if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
-            ini_set('display_errors', 0);  // warnings must be turned off to work
-            require_once(BASE . 'external/mpdf60/mpdf.php');
-            $this->size = $paper_size;
-            $this->orient = strtoupper(substr($orientation, 0, 1));
-            $this->pdf = new mPDF(null, $this->size, 0, 15, 15, 16, 16, 9, 9, $this->orient);
-            $this->pdf->setBasePath(URL_BASE);
-            $this->pdf->debug = HTMLTOPDF_DEBUG;
-            if (!empty($html)) {
-                if ($use_file) {
-                    $this->pdf->WriteHTML(file_get_contents($html));
-                } else {
-                    $this->pdf->WriteHTML($html);
-                }
-            }
-            if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
-        }
-    }
-
-}
-
-/**
- * This is the class expMPDF61
- * a wrapper for using mPDF v6.1.2
- *
- * @package    Subsystems
- * @subpackage Subsystems
- */
-
-class expMPDF61 extends expMPDF6
-{
-
-    /**
-     * Return status of pdf engine being installed correctly
-     */
-    public static function installed() {
         return file_exists(BASE . 'external/mpdf61/mpdf.php');
     }
 
@@ -1149,7 +1098,7 @@ class expMPDF61 extends expMPDF6
             ini_set('display_errors', 0);  // warnings must be turned off to work
             require_once(BASE . 'external/mpdf61/mpdf.php');
             $this->size = $paper_size;
-            $this->orient = strtoupper(substr($orientation, 0, 1));
+            $this->orient = strtoupper($orientation[0]);
             $this->pdf = new mPDF(null, $this->size, 0, 15, 15, 16, 16, 9, 9, $this->orient);
             $this->pdf->setBasePath(URL_BASE);
             $this->pdf->debug = HTMLTOPDF_DEBUG;
@@ -1167,8 +1116,61 @@ class expMPDF61 extends expMPDF6
 }
 
 /**
+ * This is the class expMPDF7
+ * a wrapper for using mPDF v7.0.0
+ *
+ * @package    Subsystems
+ * @subpackage Subsystems
+ */
+
+class expMPDF7 extends expMPDF6
+{
+
+    /**
+     * Return status of pdf engine being installed correctly
+     */
+    public static function installed() {
+        return file_exists(BASE . 'external/mpdf-7.0.2/src/Mpdf.php');
+    }
+
+    /**
+     * Constructor: initialize a pdf file file.
+     *
+     * @param string $paper_size  page size
+     * @param string $orientation page orientation
+     * @param string $html        html code for page
+     * @param bool   $use_file    a flag to show $html is an html file location to be loaded
+     */
+    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
+    {
+        if (file_exists(BASE . 'external/mpdf-7.0.2/src/Mpdf.php')) {
+            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
+            if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", BASE . 'tmp/ttfontdata/');
+            if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
+            ini_set('display_errors', 0);  // warnings must be turned off to work
+            require_once(BASE . 'external/log-1.0.2/autoload.php');
+            require_once(BASE . 'external/mpdf-7.0.2/src/autoload.php');
+            $this->size = $paper_size;
+            $this->orient = strtoupper($orientation[0]);
+            $this->pdf = new Mpdf\Mpdf(array(null, $this->size, 0, 15, 15, 16, 16, 9, 9, $this->orient));
+            $this->pdf->setBasePath(URL_BASE);
+            $this->pdf->debug = HTMLTOPDF_DEBUG;
+            if (!empty($html)) {
+                if ($use_file) {
+                    $this->pdf->WriteHTML(file_get_contents($html));
+                } else {
+                    $this->pdf->WriteHTML($html);
+                }
+            }
+            if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
+        }
+    }
+
+}
+
+/**
  * This is the class expHTML2PDF
- * a wrapper for using html2pdf v4.6.1
+ * a wrapper for using html2pdf v4.6.x
  *
  * @package    Subsystems
  * @subpackage Subsystems
@@ -1200,7 +1202,6 @@ class expHTML2PDF extends expHtmlToPDF
             if (!file_exists(BASE . 'tmp/ttfontdata'))
                 expFile::makeDirectory('tmp/ttfontdata');
             require_once($html2pdf_loc . 'html2pdf.class.php');
-            require_once($html2pdf_loc . '_class/tcpdfConfig.php');
             require_once($tcpdf_loc . 'tcpdf.php');
             require_once($html2pdf_loc . '_class/locale.class.php');
             require_once($html2pdf_loc . '_class/myPdf.class.php');
@@ -1208,7 +1209,7 @@ class expHTML2PDF extends expHtmlToPDF
             require_once($html2pdf_loc . '_class/parsingCss.class.php');
             require_once($html2pdf_loc . '_class/parsingHtml.class.php');
             $this->size = $paper_size;
-            $this->orient = strtoupper(substr($orientation, 0, 1));
+            $this->orient = strtoupper($orientation[0]);
             $this->pdf = new HTML2PDF($this->size, $this->orient, substr(LOCALE, 0, 2));
             if (HTMLTOPDF_DEBUG)
                 $this->pdf->setModeDebug();
@@ -1259,8 +1260,8 @@ class expHTML2PDF extends expHtmlToPDF
     public function set_orientation($orientation)
     {
         ini_set('display_errors', 0);  // warnings must be turned off to work
-        $this->orient = strtoupper(substr($orientation, 0, 1));
-        $this->pdf->setDisplayMode('fullpage', $this->size, $this->orient);  //FIXME method no longer exists???
+        $this->orient = strtoupper($orientation[0]);
+        $this->pdf->pdf->setDisplayMode('fullpage', $this->size, $this->orient);  //FIXME method no longer exists???
         if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
@@ -1288,8 +1289,8 @@ class expHTML2PDF extends expHtmlToPDF
         ini_set('display_errors', 0);  // warnings must be turned off to work
         $this->pdf->_format($size);  //FIXME protected property???
         $this->size = $size;
-        $this->orient = strtoupper(substr($orientation, 0, 1));
-        $this->pdf->setDisplayMode('fullpage', $this->size, $this->orient);  //FIXME method no longer exists???
+        $this->orient = strtoupper($orientation[0]);
+        $this->pdf->pdf->setDisplayMode('fullpage', $this->size, $this->orient);  //FIXME method no longer exists???
         if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
@@ -1351,8 +1352,9 @@ class expHTML2PDF extends expHtmlToPDF
     public function output($compress = null)
     {
         ini_set('display_errors', 0);  // warnings must be turned off to work
-        return $this->pdf->Output(null, 'S');
+        $out = $this->pdf->Output(null, 'S');
         if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
+        return $out;
     }
 
     public function set_grayscale($mode)
@@ -1365,6 +1367,60 @@ class expHTML2PDF extends expHtmlToPDF
 
         }
         if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
+    }
+
+}
+
+/**
+ * This is the class expHTML2PDF5
+ * a wrapper for using html2pdf v5.0.x
+ *
+ * @package    Subsystems
+ * @subpackage Subsystems
+ */
+
+class expHTML2PDF5 extends expHTML2PDF
+{
+
+    /**
+     * Return status of pdf engine being installed correctly
+     */
+    public static function installed() {
+        return file_exists(BASE . 'external/html2pdf-5.0.1/src/Html2Pdf.php') && file_exists(BASE . 'external/TCPDF/tcpdf.php');
+    }
+
+    /**
+     * Constructor: initialize a pdf file file.
+     *
+     * @param string $paper_size  page size
+     * @param string $orientation page orientation
+     * @param string $html        html code for page
+     * @param bool   $use_file    a flag to show $html is an html file location to be loaded
+     */
+    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
+    {
+        $html2pdf_loc = BASE . 'external/html2pdf-5.0.1/src/';
+        $tcpdf_loc = BASE . 'external/TCPDF/';
+        if (file_exists($html2pdf_loc . 'Html2Pdf.php') && file_exists($tcpdf_loc . 'tcpdf.php')) {
+            if (!file_exists(BASE . 'tmp/ttfontdata'))
+                expFile::makeDirectory('tmp/ttfontdata');
+            require_once($html2pdf_loc . 'autoload.php');
+            require_once($tcpdf_loc . 'tcpdf.php');
+            $this->size = $paper_size;
+            $this->orient = strtoupper($orientation[0]);
+            $this->pdf = new \Spipu\Html2Pdf\Html2Pdf($this->size, $this->orient, substr(LOCALE, 0, 2));
+            if (HTMLTOPDF_DEBUG)
+                $this->pdf->setModeDebug();
+            $this->pdf->setDefaultFont('FreeSans');  // keep from crashing when a requested font isn't available
+            if (!empty($html)) {
+                if ($use_file) {
+                    $this->pdf->WriteHTML(file_get_contents($html));
+                } else {
+                    $this->pdf->WriteHTML($html);
+                }
+            }
+            if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
+        }
     }
 
 }
