@@ -28,7 +28,7 @@ class bootstrap3theme extends theme {
         $settings = expSettings::parseFile(__DIR__ . "/config.php");
         if (empty($settings['SWATCH']))
             $settings['SWATCH'] = 'custom';
-        $ret = "An HTML5 responsive grids theme based on <a href=\"https://getbootstrap.com/docs/3.3/\" target=\"_blank\">Twitter Bootstrap v 3</a>";
+        $ret = "An HTML5 responsive grids theme based on <a href=\"https://getbootstrap.com/docs/3.3/\" target=\"_blank\">Twitter Bootstrap v 3</a> and <a href=\"http://fontawesome.io/\" target=\"_blank\">Font Awesome v4</a>";
         if ($settings['SWATCH'] != 'custom')
             $ret .= " using the <strong>" . ucfirst($settings['SWATCH']) . "</strong> Swatch";
 	    return $ret;
