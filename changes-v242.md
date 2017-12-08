@@ -40,7 +40,7 @@ Version 2.4.2 - Specific changes from previous version
 
 #### v242 updates these 3rd party libraries in v241 previous releases:
 - CKEditor to v4.7.3
-- tinymce to v4.7.3
+- tinymce to v4.7.4
 - elFinder to v2.1.30, adds dockable previewer, icon filetype tags
 - plupload to v2.3.6 (v3.1.1 is latest)
 - mediaelement to v4.2.7 and mediaelement plugins to v2.5.0
