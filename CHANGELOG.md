@@ -10,13 +10,18 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 Version 2.4.2
 -------------
-### Address issues in v2.4.1
+### Address issues in v2.4.1 and Prepare for v3.0.0
     - compatible with PHP 5.5.x, 5.6.x, 7.0.x, 7.1.x, and 7.2.x
       -- removed compatibility with PHP 5.3.x and 5.4.x
     - optionally remove support for obsolete browsers
       -- uses jQuery v3.x
+    - adds events module showall_by_date and showall_year views
+    - adds sef url support to form module records
+    - adds form validation feedback icons to bootstrap 3
+    - adds motd module csv file import, random message display, yearly calendar display of all messages available 
     - adds portfolio module export to csv to allow conversion to froms module
     - adds wysiwyg text area control support in form design
+    - adds scss stylesheet support
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/is not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
