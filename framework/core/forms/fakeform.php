@@ -235,7 +235,7 @@ class fakeform extends form {
             $this->edit_icon_class = '<i class="icon-edit '.$icon_size.'"></i>';
             $this->delete_class = ' class="btn btn-danger '.$this->btn_size.'"';
             $this->delete_icon_class = '<i class="icon-remove-sign '.$icon_size.'"></i>';
-        } elseif (bs3() || bs4()) {
+        } elseif (bs3()) {
             expCSS::pushToHead(array(
                 "corecss"=>"forms-bootstrap3"
             ));
@@ -256,6 +256,27 @@ class fakeform extends form {
             $this->edit_icon_class = '<i class="fa fa-pencil-square-o '.$icon_size.'"></i>';
             $this->delete_class = ' class="btn btn-danger '.$this->btn_size.' delete"';
             $this->delete_icon_class = '<i class="fa fa-times-circle '.$icon_size.'"></i>';
+        } elseif (bs4()) {
+            expCSS::pushToHead(array(
+                "corecss"=>"forms-bootstrap3"
+            ));
+            if (BTN_SIZE == 'large') {
+                $this->btn_size = 'btn-lg';
+                $icon_size = 'fa-lg';
+            } elseif (BTN_SIZE == 'small') {
+                $this->btn_size = 'btn-sm';
+                $icon_size = '';
+            } elseif (BTN_SIZE == 'extrasmall') {
+                $this->btn_size = 'btn-xs';
+                $icon_size = '';
+            } else {
+                $this->btn_size = '';
+                $icon_size = 'fa-lg';
+            }
+            $this->edit_class = ' class="btn btn-default '.$this->btn_size.' edit"';
+            $this->edit_icon_class = '<i class="far fa-edit '.$icon_size.'"></i>';
+            $this->delete_class = ' class="btn btn-danger '.$this->btn_size.' delete"';
+            $this->delete_icon_class = '<i class="fas fa-times-circle '.$icon_size.'"></i>';
         } else {
             $this->edit_class = ' class="edit"';
             $this->delete_class = ' class="delete"';

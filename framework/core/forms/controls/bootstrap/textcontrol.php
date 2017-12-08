@@ -67,7 +67,7 @@ class textcontrol extends formcontrol {
             if (bs2()) {
                 $html .= '<div class="input-prepend">';
                 $html .= '<span class="add-on"><i class="icon-'.$this->prepend.'"></i></span>';
-            } elseif (bs3() || bs4()) {
+            } elseif (bs3()) {
                 $html .= '<div class="input-group">';
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
             }
@@ -105,8 +105,10 @@ class textcontrol extends formcontrol {
         if (!empty($this->append) && bs()) {
             if (bs2()) {
                 $html .= '<span class="add-on"><i class="icon-'.$this->append.'"></i></span>';
-            } elseif (bs3() || bs4()) {
+            } elseif (bs3()) {
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->append.'"></i></span>';
+            } elseif (bs4()) {
+                $html .= '<span class="input-group-addon"><i class="fas fa-'.$this->append.'"></i></span>';
             }
             $html .= '</div>';
         }

@@ -443,7 +443,8 @@ class expTheme
                     "lessvars"=>$less_vars,
                 ));
                 expCSS::pushToHead(array(
-                    "scssprimer"=>"external/font-awesome4/scss/font-awesome.scss",
+//                    "scssprimer"=>"external/font-awesome4/scss/font-awesome.scss",
+                    "scssprimer"=>"external/font-awesome5/web-fonts-with-css/scss/fontawesome.scss",
                     "lessvars"=>$less_vars,
                 ));
             } elseif (newui()) {
@@ -1641,6 +1642,7 @@ class expTheme
     public static function buttonIcon($class, $size=null)
     {
         $btn_type = '';
+        $found = new stdClass();
         if (bs2()) {
             switch ($class) {
                 case 'delete' :
@@ -1720,13 +1722,12 @@ class expTheme
                     $class = "spinner icon-spin";
                     break;
             }
-            $found = new stdClass();
             $found->type = $btn_type;
             $found->class = $class;
             $found->size = self::iconSize($size);
             $found->prefix = 'icon-';
             return $found;
-        } elseif (bs3() || bs4()) {
+        } elseif (bs3()) {
             switch ($class) {
                 case 'delete' :
                 case 'delete-title' :
@@ -1808,11 +1809,100 @@ class expTheme
                     $class = "spinner fa-spin";
                     break;
             }
-            $found = new stdClass();
             $found->type = $btn_type;
             $found->class = $class;
             $found->size = self::iconSize($size);
             $found->prefix = 'fa fa-';
+            return $found;
+        } elseif (bs4()) {
+            $found->prefix = 'fas fa-';
+            switch ($class) {
+                case 'delete' :
+                case 'delete-title' :
+                    $class = "times-circle";
+                    $btn_type = "btn-danger";  // red
+                    break;
+                case 'add' :
+                case 'add-title' :
+                case 'add-body' :
+                case 'switchtheme add' :
+                    $class = "plus-circle";
+                    $btn_type = "btn-success";  // green
+                    break;
+                case 'copy' :
+                    $class = "copy";
+                    $found->prefix = "fab fa-";
+                    break;
+                case 'downloadfile' :
+                case 'export' :
+                    $class = "download";
+                    break;
+                case 'uploadfile' :
+                case 'import' :
+                    $class = "upload";
+                    break;
+                case 'manage' :
+                    $class = "briefcase";
+                    break;
+                case 'merge' :
+                case 'arrow_merge' :
+                    $class = "sign-in-alt";
+                    break;
+                case 'reranklink' :
+                case 'alphasort' :
+                    $class = "sort";
+                    break;
+                case 'configure' :
+                    $class = "wrench";
+                    break;
+                case 'view' :
+                    $class = "search";
+                    break;
+                case 'page_next' :
+                    $class ='angle-double-right';
+                    break;
+                case 'page_prev' :
+                    $class = 'angle-double-left';
+                    break;
+                case 'password' :
+                case 'change_password' :
+                    $class = 'key';
+                    break;
+                case 'clean' :
+                    $class = 'check-square';
+                    $found->prefix = "fab fa-";
+                    break;
+                case 'trash' :
+                    $class = "trash-alt";
+                    $found->prefix = "fab fa-";
+                    break;
+                case 'userperms' :
+                    $class = 'user';
+                    break;
+                case 'groupperms' :
+                    $class = 'users';
+                    break;
+                case 'monthviewlink' :
+                case 'weekviewlink' :
+                    $class = 'calendar';
+                    break;
+                case 'listviewlink' :
+                    $class = 'list';
+                    break;
+                case 'adminviewlink' :
+                    $class = 'cogs';
+                    break;
+                case 'approve' :
+                    $class = "check";
+                    $btn_type = "btn-success"; // green
+                    break;
+                case 'ajax' :
+                    $class = "spinner fa-spin";
+                    break;
+            }
+            $found->type = $btn_type;
+            $found->class = $class;
+            $found->size = self::iconSize($size);
             return $found;
         } else {
             return $class;

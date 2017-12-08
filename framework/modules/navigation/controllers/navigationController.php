@@ -1140,7 +1140,11 @@ class navigationController extends expController {
         if (bs()) {
             require_once(BASE . 'external/font-awesome.class.php');
             $fa = new Smk_FontAwesome;
-            if (bs3()) {
+            if (bs4()) {
+                $icons = $fa->getArray(BASE . 'external/font-awesome5/web-fonts-with-css/css/font-awesome.css');
+                $icons = $fa->sortByName($icons);
+                return $fa->nameGlyph($icons);
+            } elseif (bs32()) {
                 $icons = $fa->getArray(BASE . 'external/font-awesome4/css/font-awesome.css');
                 $icons = $fa->sortByName($icons);
                 return $fa->nameGlyph($icons);
@@ -1149,7 +1153,7 @@ class navigationController extends expController {
                     'external/font-awesome/less/font-awesome.less',
                     'external/font-awesome/css/font-awesome.css'
                 ); // font-awesome is included within bootstrap2, but not as a separate .css file
-                $icons = $fa->getArray(BASE . 'external/font-awesome/css/font-awesome.css', 'icon-');
+                $icons = $fa->getArray(BASE . 'external/font-awesome/css/font-awesome-all.css', 'icon-');
                 return $fa->nameGlyph($icons, 'icon-');
             }
         } else {

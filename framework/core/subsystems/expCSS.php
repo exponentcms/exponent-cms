@@ -302,6 +302,7 @@ class expCSS {
 //        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap3/scss/newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/font-awesome5/web-fonts-with-css/scss/fontawesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
 
 //        if (($less_vars['swatch'] == 'custom'))
 //            $less_vars['swatch'] = '';  // there is no 'custom' swatch for bootstrap 4 (yet?)

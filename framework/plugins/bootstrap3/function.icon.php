@@ -189,7 +189,7 @@ if (!function_exists('smarty_function_icon')) {
             echo '<a',$name,' href="#" title="', $title, '" class="btn ',$icon->type,' ',$btn_size,'"';
             if (!empty($onclick))
                 echo ' onclick="', $onclick, '"';
-            echo '><i class="fa fa-',$icon->class,' ',$icon_size,'" aria-hidden="true"></i> ', $linktext, '</a>';
+            echo '><i class="',$icon->prefix,$icon->class,' ',$icon_size,'" aria-hidden="true"></i> ', $linktext, '</a>';
         } elseif ((!empty($params['action']) && $params['action'] != 'scriptaction') || $button) {
             if ($params['action'] == 'copy') {
                 $params['copy'] = true;
@@ -207,9 +207,9 @@ if (!function_exists('smarty_function_icon')) {
 //                echo ' onclick="return confirm(\'' . gt('Are you sure you want to merge this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') . '?\');"';
             if (!empty($onclick))
                 echo ' onclick="', $onclick . '"';
-            echo '><i class="fa fa-',$icon->class,' ',$icon_size,'" aria-hidden="true"></i> ',$linktext,'</a>';
+            echo '><i class="',$icon->prefix,$icon->class,' ',$icon_size,'" aria-hidden="true"></i> ',$linktext,'</a>';
         } else {
-            echo '<div',$name,' class="btn',(empty($params['live'])?' disabled ':' '),$icon->type,' ',$btn_size,'"><i class="fa fa-',$icon->class,' ',$icon_size,'" aria-hidden="true"></i> ',$linktext,'</div>';
+            echo '<div',$name,' class="btn',(empty($params['live'])?' disabled ':' '),$icon->type,' ',$btn_size,'"><i class="',$icon->prefix,$icon->class,' ',$icon_size,'" aria-hidden="true"></i> ',$linktext,'</div>';
         }
     }
 }

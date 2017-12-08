@@ -56,6 +56,7 @@ $items1 = array(
     array(
         'text'      => gt('Manage Event Registrations'),
         'icon'      => 'fa-calendar-o',
+        'icon5'      => 'far fa-calendar',
         'classname' => 'events',
         'url'       => makeLink(
             array(
@@ -67,6 +68,7 @@ $items1 = array(
     array(
         'text'      => gt('Add an event'),
         'icon'      => 'fa-plus-circle',
+        'icon5'      => 'fas fa-plus-circle',
         'classname' => 'add',
         'url'       => makeLink(
             array(
@@ -101,6 +103,7 @@ foreach ($events as $event) {
         );
         $thisitem['classname'] = 'event';
         $thisitem['icon'] = 'fa-info';
+        $thisitem['icon5'] = 'fas fa-info';
         $items2[] = $thisitem;
     }
 }
@@ -113,6 +116,7 @@ if (bs3() || bs4()) {
 return array(
     'text'      => ' <span class="event label label-default">' . count($events) . '</span>',
     'icon'      => 'fa-calendar',
+    'icon5'      => 'fas fa-calendar',
     'classname' => 'events',
     'submenu'   => array(
         'id'       => 'event2',

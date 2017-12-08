@@ -250,7 +250,7 @@ class form extends baseform {
             $btn_class .= ' ' . $btn_size;
             $back = '<i class="icon icon-step-backward"></i> ' . gt('Back');
             $next = gt('Next') . ' <i class="icon icon-step-forward"></i>';
-        } elseif (bs3() || bs4()) {
+        } elseif (bs3()) {
             expCSS::pushToHead(array(
                 "corecss"=>"forms-bootstrap3"
             ));
@@ -267,6 +267,23 @@ class form extends baseform {
             $btn_class .= ' ' . $btn_size;
             $back = '<i class="fa fa-step-backward"></i> ' . gt('Back');
             $next = gt('Next') . ' <i class="fa fa-step-forward"></i>';
+        } elseif (bs4()) {
+            expCSS::pushToHead(array(
+                "corecss"=>"forms-bootstrap3"
+            ));
+            $btn_class = 'btn btn-default btn-primary';
+            if (BTN_SIZE == 'large') {
+                $btn_size = 'btn-lg';
+            } elseif (BTN_SIZE == 'small') {
+                $btn_size = 'btn-sm';
+			} elseif (BTN_SIZE == 'extrasmall') {
+		       $btn_size = 'btn-xs';
+            } else { // medium
+                $btn_size = '';
+            }
+            $btn_class .= ' ' . $btn_size;
+            $back = '<i class="fas fa-step-backward"></i> ' . gt('Back');
+            $next = gt('Next') . ' <i class="fas fa-step-forward"></i>';
         } else {
             expCSS::pushToHead(array(
                 "corecss"=>"forms"
