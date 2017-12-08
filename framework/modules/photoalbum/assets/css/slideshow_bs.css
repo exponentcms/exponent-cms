@@ -89,6 +89,13 @@ h2.owl-title {
     margin-bottom: 12px;
 }
 
+@media (max-width: 767px) {
+    h2.owl-title {
+        font-size: 90%;
+        margin-bottom: 0;
+    }
+}
+
 .owl-text-overlay p {
     /*font-size:18px;*/
     /*line-height:24px;*/
