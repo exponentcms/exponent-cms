@@ -37,6 +37,7 @@ Version 2.4.2 - Specific changes from previous version
 - regression fix less compiler sourcemap issues with less.php (241p3 bad path) & iLess (crash)
 - regression fix (v239) bootstrap 3 wysiwyg form designer drag/drop form control reranking logic was flawed
 - regression fix (v2.0) MOTD module flawed logic
+- fix mediaplayer displays to be responsive
 
 #### v242 updates these 3rd party libraries in v241 previous releases:
 - CKEditor to v4.7.3
