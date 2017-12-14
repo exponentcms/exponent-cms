@@ -20,6 +20,7 @@ Version 2.4.2 - Specific changes from previous version
 - inline css compiler mapping output to iLess, less.php and scssphp
 - add form validation feedback icons
 - add motd csv file import, random message display, yearly calendar display of all messages available
+- update social feed to better display facebook videos by an image rather than a simple link
 
 #### v242 fixes these issues in v241 previous releases:
 - fix elFinder upload fails without having php fileinfo module loaded
@@ -38,9 +39,11 @@ Version 2.4.2 - Specific changes from previous version
 - regression fix (v239) bootstrap 3 wysiwyg form designer drag/drop form control reranking logic was flawed
 - regression fix (v2.0) MOTD module flawed logic
 - fix mediaplayer displays to be responsive
+- fix toggle objects might crash with languages using accents
+- fix text module inline edit view would crash when reverting and no item title existed
 
 #### v242 updates these 3rd party libraries in v241 previous releases:
-- CKEditor to v4.7.3
+- CKEditor to v4.8.0
 - tinymce to v4.7.4
 - elFinder to v2.1.30, adds dockable previewer, icon filetype tags
 - plupload to v2.3.6 (v3.1.1 is latest)
@@ -51,10 +54,10 @@ Version 2.4.2 - Specific changes from previous version
 - twitter-api-php to v1.0.6
 - xmlrpc.php to v4.3.0 (removed old v3 files)
 - select2 to v4.0.5
-- moment.js to v2.19.3
+- moment.js to v2.19.4
 - strength-meter to v1.1.4
 - datetimepicker to v2.5.14
- - yadcf to v0.9.2
+- yadcf to v0.9.2
 - scssphp to v0.7.1 (with hack to compile newui)
 - EasyPost library to v3.4.0
 - iCalCreator library to v2.24.0
