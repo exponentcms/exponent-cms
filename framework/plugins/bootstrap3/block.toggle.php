@@ -86,9 +86,9 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
                 $(\'#a-' . $params['unique'] . '\').toggleClass(\'collapsed\');
             
                 if ($(\'#' . $params['unique'] . '-body\').hasClass(\'hide\')) {
-                    $(\'#' . $params['unique'] . '-head\').prop(\'title\',\'' . gt('Click to Expand') . '\');
+                    $(\'#' . $params['unique'] . '-head\').prop(\'title\',"' . gt('Click to Expand') . '");
                 } else {
-                    $(\'#' . $params['unique'] . '-head\').prop(\'title\',\'' . gt('Click to Collapse') . '\');
+                    $(\'#' . $params['unique'] . '-head\').prop(\'title\',"' . gt('Click to Collapse') . '");
                 }
             }
             
