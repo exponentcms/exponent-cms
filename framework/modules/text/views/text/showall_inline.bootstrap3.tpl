@@ -152,9 +152,11 @@
 
         var setContent = function(item, data) {
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
-            CKEDITOR.instances[item].setData(data);
+            if (typeof CKEDITOR.instances[item] != 'undefined')
+                CKEDITOR.instances[item].setData(data);
             {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
-            tinymce.get(item).setContent(data);
+            if (tinymce.get(item) != null)
+                tinymce.get(item).setContent(data);
             {/literal}{/if}{literal}
         };
 
