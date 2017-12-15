@@ -20,7 +20,7 @@ SimplePie,1.3.1,simplepie.org,1.3.1,compiled version placed in News module
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,0.33,github.com/verot/class.upload.php,0.33,Correct flip operation where flip vertical & horizontal were inverted/swapped 
 iCalCreator,2.24.0,github.com/iCalcreator/iCalcreator,2.24.0,php7 fixes & vcalendar $this->filename fix
-scssphp,0.7.1exp,github.com/leafo/scssphp,0.7.1,"added Server\cachedCompile(), hacked to compile newui; add sourcemapping"
+scssphp,0.7.2exp,github.com/leafo/scssphp,0.7.2,"added Server\cachedCompile(), hacked to compile newui; add sourcemapping"
 lessphp,0.5.0,github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
 less.php,1.7.0.14,github.com/oyejorge/less.php,1.7.0.14,
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
@@ -39,10 +39,10 @@ Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.6.1,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
-CKEditor,4.7.3,ckeditor.com,4.7.3,"add fieldinsert (exp), tableresize, sourcedialog, image2 fileupload & imageupload widgets & kama skin"
+CKEditor,4.8.0,ckeditor.com,4.8.0,"add fieldinsert (exp), tableresize, sourcedialog, image2 fileupload & imageupload widgets & kama skin"
 TinyMCE,4.7.4,tinymce.com,4.7.4,"add fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 PLUpload,2.3.6,github.com/moxiecode/plupload,2.3.6/3.1.1,"needed for TinyMCE Quick Upload, placed in that plugin folder"
-elFinder,2.1.29,elfinder.org,2.1.29,customized in /framework with Exponent php classes and .js files
+elFinder,2.1.30,elfinder.org,2.1.30,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
 jQuery,2.2.4,jquery.com,2.2.4,
 jQuery Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon
@@ -66,7 +66,7 @@ colorbox,1.6.4,www.jacklmoore.com/colorbox,1.6.4,using style #5 renamed to jquer
 Searcher,0.3.0,github.com/lloiser/jquery-searcher/,0.3.0,
 DateTimePicker,2.5.14exp,xdsoft.net/jqplugins/datetimepicker/,2.5.14,rename .full version; we add .js auto-close on inline date select and extra 'reset' work & remove .css z-index issue
 Bootstrap DateTimePicker,4.17.47,github.com/Eonasdan/bootstrap-datetimepicker,4.17.47,patch for 'today' button in side-by-side view
-moment.js,2.19.3,github.com/moment/moment,2.19.3,needed for Bootstrap DateTimePicker
+moment.js,2.19.4,github.com/moment/moment,2.19.4,needed for Bootstrap DateTimePicker
 strength-meter,1.1.4,github.com/kartik-v/strength-meter,1.1.4,
 Sortable,1.6.0,github.com/RubaXa/Sortable,1.6.0,
 jstree,3.3.4,github.com/vakata/jstree,3.3.4,added nav menu icons to stylesheet

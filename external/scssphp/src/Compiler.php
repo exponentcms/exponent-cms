@@ -216,6 +216,7 @@ class Compiler
             } elseif ($this->sourceMap == self::SOURCE_MAP_FILE) {
                 $sourceMapUrl = $sourceMapGenerator->saveMap($sourceMap);
             }
+
             $out .= sprintf('/*# sourceMappingURL=%s */', $sourceMapUrl);
         }
         return $out;
