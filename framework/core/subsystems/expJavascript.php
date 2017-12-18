@@ -155,16 +155,22 @@ class expJavascript {
                                 $i++;
                                 $srt[$i] = PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js' . ",";
                             }
-                            if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.less')) {
+                            if (bs4() && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.scss')) {
                                 expCSS::pushToHead(array(
 //                           		    "unique"=>$mod,
-                           		    "lesscss"=>PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.less',
+                                        "scssprimer" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.scss',
+                                    )
+                                );
+                            } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.less')) {
+                                expCSS::pushToHead(array(
+//                           		    "unique"=>$mod,
+                           		    "lessprimer"=>PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.less',
                            		    )
                            		);
                             } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.css')) {
                                 expCSS::pushToHead(array(
 //                           		    "unique"=>$mod,
-                           		    "link"=>PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.css',
+                           		    "css_primer"=>PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.css',
                            		    )
                            		);
                             }
@@ -175,7 +181,12 @@ class expJavascript {
                                 $i++;
                                 $srt[$i] = JQUERY_RELATIVE . 'addons/js/'.$mod.'.js' . ",";
                             }
-                            if (file_exists(JQUERY_PATH . 'addons/less/' . $mod . '.less')) {
+                            if (bs4() && file_exists(JQUERY_PATH . 'addons/scss/' . $mod . '.scss')) {
+                                expCSS::pushToHead(array(
+                                        "scssprimer" => JQUERY_RELATIVE . 'addons/scss/' . $mod . '.scss',
+                                    )
+                                );
+                            } elseif (file_exists(JQUERY_PATH . 'addons/less/' . $mod . '.less')) {
                                 expCSS::pushToHead(array(
                            		    "lessprimer"=>JQUERY_RELATIVE . 'addons/less/' . $mod . '.less',
                            		    )
@@ -271,24 +282,37 @@ class expJavascript {
                         } else {
                             if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
                                 $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
-                                if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/less/' . $mod . '.less')) {
+                                if (bs4() && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.scss')) {
                                     expCSS::pushToHead(
                                         array(
 //                           		    "unique"=>$mod,
-                                            "lesscss" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/less/' . $mod . '.less',
+                                            "scssprimer" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.scss',
                                         )
                                     );
-                                } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/css/' . $mod . '.css')) {
+                                } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.less')) {
                                     expCSS::pushToHead(
                                         array(
 //                           		    "unique"=>$mod,
-                                            "link" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/css/' . $mod . '.css',
+                                            "lessprimer" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.less',
+                                        )
+                                    );
+                                } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.css')) {
+                                    expCSS::pushToHead(
+                                        array(
+//                           		    "unique"=>$mod,
+                                            "css_primer" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.css',
                                         )
                                     );
                                 }
                             } elseif (file_exists(JQUERY_PATH . 'addons/js/' . $mod . '.js')) {
                                 $scripts .= "\t" . '<script type="text/javascript" src="' . JQUERY_RELATIVE . 'addons/js/' . $mod . '.js"></script>' . "\r\n";
-                                if (file_exists(JQUERY_PATH . 'addons/less/' . $mod . '.less')) {
+                                if (file_exists(JQUERY_PATH . 'addons/scss/' . $mod . '.scss')) {
+                                    expCSS::pushToHead(
+                                        array(
+                                            "scssprimer" => JQUERY_RELATIVE . 'addons/scss/' . $mod . '.scss',
+                                        )
+                                    );
+                                } elseif (file_exists(JQUERY_PATH . 'addons/less/' . $mod . '.less')) {
                                     expCSS::pushToHead(
                                         array(
                                             "lessprimer" => JQUERY_RELATIVE . 'addons/less/' . $mod . '.less',
@@ -471,24 +495,37 @@ class expJavascript {
                     } else {
                         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
                             $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
-                            if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/less/' . $mod . '.less')) {
+                            if (bs4() && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.scss')) {
                                 expCSS::pushToHead(
                                     array(
 //                           		    "unique"=>$mod,
-                                        "lesscss" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/less/' . $mod . '.less',
+                                        "scssprimer" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.scss',
                                     )
                                 );
-                            } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/css/' . $mod . '.css')) {
+                            } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.less')) {
                                 expCSS::pushToHead(
                                     array(
 //                           		    "unique"=>$mod,
-                                        "link" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/css/' . $mod . '.css',
+                                        "lessprimer" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.less',
+                                    )
+                                );
+                            } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.css')) {
+                                expCSS::pushToHead(
+                                    array(
+//                           		    "unique"=>$mod,
+                                        "css_primer" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.css',
                                     )
                                 );
                             }
                         } elseif (file_exists(JQUERY_PATH . 'addons/js/' . $mod . '.js')) {
                             $scripts .= '<script type="text/javascript" src="' . JQUERY_RELATIVE . 'addons/js/' . $mod . '.js"></script>' . "\r\n";
-                            if (file_exists(JQUERY_PATH . 'addons/less/' . $mod . '.less')) {
+                                if (file_exists(JQUERY_PATH . 'addons/scss/' . $mod . '.scss')) {
+                                    expCSS::pushToHead(
+                                        array(
+                                            "scssprimer" => JQUERY_RELATIVE . 'addons/scss/' . $mod . '.scss',
+                                        )
+                                    );
+                                } elseif (file_exists(JQUERY_PATH . 'addons/less/' . $mod . '.less')) {
                                 expCSS::pushToHead(
                                     array(
                                         "lessprimer" => JQUERY_RELATIVE . 'addons/less/' . $mod . '.less',

@@ -144,6 +144,7 @@ class expCSS {
                 }
             }
         }
+        //note we don't use scss files for core stylesheets at this time
 
         // css stylesheets linked in through the css plugin
         if (!empty($params['link'])){
@@ -302,27 +303,30 @@ class expCSS {
 //        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap3/scss/newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/font-awesome5/web-fonts-with-css/scss/fontawesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
 
 //        if (($less_vars['swatch'] == 'custom'))
 //            $less_vars['swatch'] = '';  // there is no 'custom' swatch for bootstrap 4 (yet?)
+//        self::auto_compile_scss('external/font-awesome5/web-fonts-with-css/scss/fontawesome.scss', 'tmp/css/testfa5.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
-        $lessdirs[] = 'themes/'.DISPLAY_THEME.'/less/';
-        if (THEME_STYLE!="") {
-            $lessdirs[] = 'themes/'.DISPLAY_THEME.'/less_'.THEME_STYLE.'/';
+        $lessdirs[] = 'themes/' . DISPLAY_THEME . '/less/';
+        if (THEME_STYLE != "") {
+            $lessdirs[] = 'themes/' . DISPLAY_THEME . '/less_' . THEME_STYLE . '/';
         }
         foreach($lessdirs as $lessdir){
             if (is_dir($lessdir) && is_readable($lessdir)) {
                 if (is_array($head_config['css_theme'])) {
                     foreach($head_config['css_theme'] as $lessfile){
-                        $filename = $lessdir.$lessfile;
-                        if (is_file($filename) && substr($filename,-5,5) == ".less") {
-                            $css_dir = str_replace("/less/","/css/",$lessdir);
-                            $css_file = substr($lessfile,0,strlen($lessfile)-4)."css";
+                        $filename = $lessdir . $lessfile;
+                        if (substr($filename,-5,5) !== ".less") {
+                            $filename .= ".less";
+                        }
+                        if (is_file($filename)) {
+                            $css_dir = str_replace("/less/","/css/", $lessdir);
+                            $css_file = substr($lessfile,0,strlen($lessfile) - 4) . "css";
                             self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
                         }
                     }
@@ -331,11 +335,11 @@ class expCSS {
                 } else {
                     $dh = opendir($lessdir);
                     while (($lessfile = readdir($dh)) !== false) {
-                        $filename = $lessdir.$lessfile;
+                        $filename = $lessdir . $lessfile;
                         if (is_file($filename) && substr($filename,-5,5) == ".less" && basename($filename) != 'variables.less') {
-                            $css_dir = str_replace("/less/","/css/",$lessdir);
-                            $css_file = substr($lessfile,0,strlen($lessfile)-4)."css";
-                            self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
+                            $css_dir = str_replace("/less/","/css/", $lessdir);
+                            $css_file = substr($lessfile,0,strlen($lessfile) - 4)."css";
+                            self::auto_compile_less($lessdir . $lessfile,$css_dir . $css_file, $less_vars);
                         }
                     }
                 }
@@ -343,19 +347,22 @@ class expCSS {
         }
 
         // compile any theme .scss files to css
-        $scssdirs[] = 'themes/'.DISPLAY_THEME.'/scss/';
-        if (THEME_STYLE!="") {
-            $scssdirs[] = 'themes/'.DISPLAY_THEME.'/scss_'.THEME_STYLE.'/';
+        $scssdirs[] = 'themes/' . DISPLAY_THEME . '/scss/';
+        if (THEME_STYLE != "") {
+            $scssdirs[] = 'themes/' . DISPLAY_THEME . '/scss_' . THEME_STYLE . '/';
         }
         foreach($scssdirs as $scssdir){
             if (is_dir($scssdir) && is_readable($scssdir)) {
                 if (is_array($head_config['css_theme'])) {
                     foreach($head_config['css_theme'] as $scssfile){
-                        $filename = $scssdir.$scssfile;
-                        if (is_file($filename) && substr($filename,-5,5) == ".scss") {
-                            $css_dir = str_replace("/scss/","/css/",$scssdir);
-                            $css_file = substr($scssfile,0,strlen($scssfile)-4)."css";
-                            self::auto_compile_scss($scssdir.$scssfile,$css_dir.$css_file,$less_vars);
+                        $filename = $scssdir . $scssfile;
+                        if (substr($filename,-5,5) !== ".scss") {
+                            $filename .= ".scss";
+                        }
+                        if (is_file($filename) || is_file("_" . $filename)) {
+                            $css_dir = str_replace("/scss/","/css/", $scssdir);
+                            $css_file = substr($scssfile,0,strlen($scssfile) - 4) . "css";
+                            self::auto_compile_scss($scssdir . $scssfile,$css_dir . $css_file, $less_vars);
                         }
                     }
                 } elseif (empty($head_config['css_theme'])) {
@@ -363,20 +370,20 @@ class expCSS {
                 } else {
                     $dh = opendir($scssdir);
                     while (($scssfile = readdir($dh)) !== false) {
-                        $filename = $scssdir.$scssfile;
-                        if (is_file($filename) && substr($filename,-5,5) == ".scss" && basename($filename) != 'variables.scss') {
+                        $filename = $scssdir . $scssfile;
+                        if (is_file($filename) && substr($filename,-5,5) == ".scss" && basename($filename) != '_variables.scss') {
                             $css_dir = str_replace("/scss/","/css/",$scssdir);
-                            $css_file = substr($scssfile,0,strlen($scssfile)-4)."css";
-                            self::auto_compile_scss($scssdir.$scssfile,$css_dir.$css_file,$less_vars);
+                            $css_file = substr($scssfile,0,strlen($scssfile) - 4) . "css";
+                            self::auto_compile_scss($scssdir . $scssfile,$css_dir.$css_file, $less_vars);
                         }
                     }
                 }
             }
         }
 
-        // collect all the theme css files (less files have been compiled already)
+        // collect all the theme css files (less and scss files have been compiled already)
         $cssdirs[] = BASE.'themes/'.DISPLAY_THEME.'/css/';
-        if (THEME_STYLE!="") {
+        if (THEME_STYLE != "") {
             $cssdirs[] = BASE.'themes/'.DISPLAY_THEME.'/css_'.THEME_STYLE.'/';
         }
         foreach($cssdirs as $key=>$cssdir){
@@ -429,9 +436,12 @@ class expCSS {
             } else {
                 $less_compiler = 'less.php';
             }
+            if (substr($less_pname,-5,5) !== ".less") {
+                $less_pname .= ".less";
+            }
             switch ($less_compiler) {
                 case 'iless':
-                    if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
+                    if (is_file(BASE.$less_pname)) {
                         require_once(BASE.'external/iless/lib/ILess/Autoloader.php');
                         ILess\Autoloader::register();  //iLess2
 
@@ -542,7 +552,7 @@ class expCSS {
                 case 'less.php':
                 case 'lessphp':
                 default :
-                    if (is_file(BASE . $less_pname) && substr($less_pname, -5, 5) == ".less") {
+                    if (is_file(BASE . $less_pname)) {
 //                        if (!is_file(BASE . 'external/' . $less_compiler . '/lessc.inc.php'))
 //                            $less_compiler = 'less.php';
                         include_once(BASE . 'external/' . $less_compiler . '/lessc.inc.php');
@@ -663,7 +673,11 @@ class expCSS {
                 case 'scssphp':
                 default :
                     //FIXME we need to account for leading _ with filename and missing filetype suffix
-                    if (is_file(BASE . $scss_pname) && substr($scss_pname, -5, 5) == ".scss") {
+                    if (substr($scss_pname,-5,5) !== ".scss") {
+                        $filename .= ".scss";
+                    }
+
+                    if (is_file(BASE . $scss_pname) || is_file(BASE . "_" . $scss_pname)) {
                         include_once(BASE . 'external/' . $scss_compiler . '/scss.inc.php');
                         $scss = new \Leafo\ScssPhp\Compiler();
                         $scss_server = new \Leafo\ScssPhp\Server(BASE . 'tmp/css/', BASE . 'tmp/css/', $scss);
