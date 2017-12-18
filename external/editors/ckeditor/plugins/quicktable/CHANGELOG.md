@@ -1,4 +1,4 @@
-﻿Quicktable plugin for ckeditor 4.x
+Quicktable plugin for ckeditor 4.x
 ==========
 ###Version 1.0.5
 - If the border gets disabled (`config.qtBorder = 0`) it isn't necessary to set the qtClass to `cke_show_border` anymore
@@ -14,7 +14,7 @@
 	Cannot read property 'setText' of undefined
 	```
 	```javascript
-	Cannot read property '$' of undefined 
+	Cannot read property '$' of undefined
 	```
 
 ###Version 1.0.3
