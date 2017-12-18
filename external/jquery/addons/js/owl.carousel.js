@@ -2624,7 +2624,8 @@
 			window.clearTimeout(this._timeout);
 		}
 		return window.setTimeout($.proxy(function() {
-			if (this._paused || this._core.is('busy') || this._core.is('interacting') || document.hidden) {
+			// if (this._paused || this._core.is('busy') || this._core.is('interacting') || document.hidden) {
+            if (this._paused || this._core.is('interacting') || document.hidden) {
 				return;
 			}
 			this._core.next(speed || this._core.settings.autoplaySpeed);
