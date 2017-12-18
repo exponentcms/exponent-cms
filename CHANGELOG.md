@@ -24,7 +24,6 @@ Version 2.4.2
     - adds scss stylesheet support
     - fixes and tweaks many issues in previous versions
 ### Known Issues
-  - eCommerce purchase-order functionality has not been tested/is not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
@@ -38,7 +37,6 @@ Version 2.4.1
   - adds optional syntax highlighting editor support for code snippet module (CodeMirror or Ace editors)
   - updates most 3rd party libraries
 ### Known Issues
-  - eCommerce purchase-order functionality has not been tested/is not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
@@ -59,7 +57,6 @@ Version 2.4.0
     - security fix for rce issue, thanks to xiojunjie, CVE-ID 2016-7565
   - other minor fixes and tweaks
 ### Known Issues
-  - eCommerce purchase-order functionality has not been tested/is not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 

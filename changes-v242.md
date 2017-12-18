@@ -21,6 +21,7 @@ Version 2.4.2 - Specific changes from previous version
 - add form validation feedback icons
 - add motd csv file import, random message display, yearly calendar display of all messages available
 - update social feed to better display facebook videos by an image rather than a simple link
+- allow jquery addons to have scss stylesheets if in bs4 theme
 
 #### v242 fixes these issues in v241 previous releases:
 - fix elFinder upload fails without having php fileinfo module loaded

@@ -1,5 +1,5 @@
 version 2.4.2
-### Address issues in v2.4.1
+### Address issues in v2.4.1 and Prepare for v3.0.0
     - compatible with PHP 5.5.x, 5.6.x, 7.0.x, 7.1.x, and 7.2.x
       -- removed compatibility with PHP 5.3.x and 5.4.x
     - optionally removes support for obsolete browsers
@@ -13,6 +13,5 @@ version 2.4.2
     - adds scss stylesheet support
     - fixes and tweaks many issues in previous versions
 Known Issues
-  - eCommerce purchase-order functionality has not been tested/is not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
