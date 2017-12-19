@@ -27,7 +27,7 @@
       		{/if}
             <div id="childtabs" class="">
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="selected"><a href="#general" role="tab" data-toggle="tab"><em>{"General"|gettext}</em></a></li>
+                    <li role="presentation" class="active"><a href="#general" role="tab" data-toggle="tab"><em>{"General"|gettext}</em></a></li>
                     <li role="presentation"><a href="#pricing" role="tab" data-toggle="tab"><em>{"Pricing, Tax & Discounts"|gettext}</em></a></li>
                     <li role="presentation"><a href="#images" role="tab" data-toggle="tab"><em>{"Images & Files"|gettext}</em></a></li>
                     <li role="presentation"><a href="#quantity" role="tab" data-toggle="tab"><em>{"Quantity"|gettext}</em></a></li>
