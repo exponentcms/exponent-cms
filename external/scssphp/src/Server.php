@@ -294,10 +294,12 @@ class Server
     /**
      * Check if file need compiling
      *
-     * @param string $in  Input file (.scss)
+     * @param string $in Input file (.scss)
      * @param string $out Output file (.css)
      *
      * @return bool
+     *
+     * @throws ServerException
      */
     public function checkedCompile($in, $out)
     {
@@ -417,25 +419,28 @@ class Server
     }
 
     /**
-   	 * Execute scssphp on a .scss file or a scssphp cache structure
-   	 *
-   	 * The scssphp cache structure contains information about a specific
-   	 * scss file having been parsed. It can be used as a hint for future
-   	 * calls to determine whether or not a rebuild is required.
-   	 *
-   	 * The cache structure contains two important keys that may be used
-   	 * externally:
-   	 *
-   	 * compiled: The final compiled CSS
-   	 * updated: The time (in seconds) the CSS was last compiled
-   	 *
-   	 * The cache structure is a plain-ol' PHP associative array and can
-   	 * be serialized and unserialized without a hitch.
-   	 *
-   	 * @param mixed $in Input
-   	 * @param bool $force Force rebuild?
-   	 * @return array scssphp cache structure
-   	 */
+     * Execute scssphp on a .scss file or a scssphp cache structure
+     *
+     * The scssphp cache structure contains information about a specific
+     * scss file having been parsed. It can be used as a hint for future
+     * calls to determine whether or not a rebuild is required.
+     *
+     * The cache structure contains two important keys that may be used
+     * externally:
+     *
+     * compiled: The final compiled CSS
+     * updated: The time (in seconds) the CSS was last compiled
+     *
+     * The cache structure is a plain-ol' PHP associative array and can
+     * be serialized and unserialized without a hitch.
+     *
+     * @param mixed $in Input
+     * @param bool $force Force rebuild?
+     *
+     * @return array scssphp cache structure
+     *
+     * @throws ServerException
+     */
    	public function cachedCompile($in, $force = false) {
    		// assume no root
    		$root = null;
@@ -460,7 +465,7 @@ class Server
    			}
    		} else {
    			// TODO: Throw an exception? We got neither a string nor something
-   			// that looks like a compatible lessphp cache structure.
+   			// that looks like a compatible scssphp cache structure.
    			return null;
    		}
 
@@ -482,9 +487,11 @@ class Server
     /**
      * Constructor
      *
-     * @param string                       $dir      Root directory to .scss files
-     * @param string                       $cacheDir Cache directory
-     * @param \Leafo\ScssPhp\Compiler|null $scss     SCSS compiler instance
+     * @param string $dir Root directory to .scss files
+     * @param string $cacheDir Cache directory
+     * @param \Leafo\ScssPhp\Compiler|null $scss SCSS compiler instance
+     *
+     * @throws ServerException
      */
     public function __construct($dir, $cacheDir = null, $scss = null)
     {

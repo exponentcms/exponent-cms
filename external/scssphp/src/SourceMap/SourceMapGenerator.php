@@ -97,12 +97,15 @@ class SourceMapGenerator {
     }
 
     /**
-   	 * Saves the source map to a file
-   	 *
-   	 * @param string $file The absolute path to a file
-   	 * @param string $content The content to write
-   	 * @throws Exception If the file could not be saved
-   	 */
+     * Saves the source map to a file
+     *
+     * @param string $file The absolute path to a file
+     * @param string $content The content to write
+     *
+     * @return mixed
+     *
+     * @throws CompilerException If the file could not be saved
+     */
    	public function saveMap($content){
    	    $file = $this->options['sourceMapWriteTo'];
    		$dir = dirname($file);
