@@ -35,6 +35,10 @@ class customcontrol extends formcontrol {
 		$this->html = $html;
 	}
 
+	function toHTML($label,$name) {
+        return $this->controlToHTML($name, $label);
+	}
+
 	function controlToHTML($name,$label) {
 		return $this->html;
 	}

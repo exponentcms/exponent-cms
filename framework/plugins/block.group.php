@@ -49,7 +49,7 @@ function smarty_block_group($params,$content,&$smarty, &$repeat) {
             if (bs3()) {
                 echo "<div class=\"control\"><p class=\"help-block\">", $params['description'], "</p></div>";
             } elseif (bs4()) {
-                echo "<div class=\"control\"><p class=\"form-text\">",$params['description'],"</p></div>";
+                echo "<div class=\"control\"><small class=\"form-text text-muted\">",$params['description'],"</small></div>";
             } else {
                 echo "<div class=\"control\"><div class=\"control-desc\">",$params['description'],"</div></div>";
             }
