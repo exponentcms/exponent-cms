@@ -682,11 +682,11 @@ class expCSS {
             switch ($scss_compiler) {
                 case 'scssphp':
                 default :
-                    //FIXME we need to account for leading _ with filename and missing filetype suffix
                     if (substr($scss_pname,-5,5) !== ".scss") {
-                        $filename .= ".scss";
+                        $scss_pname .= ".scss";
                     }
 
+                    // we need to account for leading _ with filename and missing filetype suffix
                     if (is_file(BASE . $scss_pname) || is_file(BASE . "_" . $scss_pname)) {
                         include_once(BASE . 'external/' . $scss_compiler . '/scss.inc.php');
                         $scss = new \Leafo\ScssPhp\Compiler();

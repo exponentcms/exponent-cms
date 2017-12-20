@@ -306,7 +306,7 @@ class expJavascript {
                                 }
                             } elseif (file_exists(JQUERY_PATH . 'addons/js/' . $mod . '.js')) {
                                 $scripts .= "\t" . '<script type="text/javascript" src="' . JQUERY_RELATIVE . 'addons/js/' . $mod . '.js"></script>' . "\r\n";
-                                if (file_exists(JQUERY_PATH . 'addons/scss/' . $mod . '.scss')) {
+                                if (bs4() && file_exists(JQUERY_PATH . 'addons/scss/' . $mod . '.scss')) {
                                     expCSS::pushToHead(
                                         array(
                                             "scssprimer" => JQUERY_RELATIVE . 'addons/scss/' . $mod . '.scss',
