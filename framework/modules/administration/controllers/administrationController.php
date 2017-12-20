@@ -1023,6 +1023,8 @@ class administrationController extends expController {
     			if ($file != '.' && $file != '..' && is_dir(BASE."themes/$file") && is_readable(BASE."themes/$file/class.php")) {
     				include_once(BASE."themes/$file/class.php");
     				$theme = new $file();
+    				if (method_exists($theme, 'supported') && !$theme->supported())
+                        continue;
     				$t = new stdClass();
 				    $t->user_configured = isset($theme->user_configured) ? $theme->user_configured : '';
                     $t->stock_theme = isset($theme->stock_theme) ? $theme->stock_theme : '';
@@ -1433,6 +1435,13 @@ class theme {
      */
     function __construct($params = array()) {
         $this->params = $params;
+    }
+
+    /**
+     * are all prerequisites available?
+     */
+    function supported() {
+        return true;
     }
 
 	/**
