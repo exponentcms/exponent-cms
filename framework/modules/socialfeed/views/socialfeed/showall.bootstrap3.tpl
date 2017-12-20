@@ -152,8 +152,11 @@
                                     {$message['message']}
                                 </a>
                                 {if {$message['likes']}}
-                                    <span class="btn btn-xs btn-default">
-                                        <strong><i class="fa fa-thumbs-o-up pull-right"></i> {$message['likes']}</strong>
+                                    <span class="btn btn-xs btn-default pull-right">
+                                        <strong>
+                                            <i class="{if bs4()}far fa-thumbs-up{else}fa fa-thumbs-o-up{/if}"></i>
+                                            {$message['likes']}
+                                        </strong>
                                     </span>
                                 {/if}
                             </div>
