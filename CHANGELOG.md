@@ -21,7 +21,7 @@ Version 2.4.2
     - adds portfolio module export to csv to allow conversion to forms module
     - adds motd module csv file import, random message display, yearly calendar display of all messages available
     - adds wysiwyg text area control support in form design
-    - adds scss stylesheet support
+    - adds preliminary scss stylesheet support for future bootstrap 4 support
     - fixes and tweaks many issues in previous versions
 ### Known Issues
   - Item re-ranking (ddrerank) doesn't account for aggregation

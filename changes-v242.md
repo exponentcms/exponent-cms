@@ -59,7 +59,7 @@ Version 2.4.2 - Specific changes from previous version
 - strength-meter to v1.1.4
 - datetimepicker to v2.5.14
 - yadcf to v0.9.2
-- scssphp to v0.7.3 (with hack to compile newui; adds sourcemap support)
+- scssphp to v0.7.3 (with hack to compile bs4 newui; also adds sourcemap support)
 - EasyPost library to v3.4.0
 - iCalCreator library to v2.24.0
 
