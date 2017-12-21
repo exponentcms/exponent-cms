@@ -2,7 +2,7 @@
 
 ----------
 
-Copyright (c) 2004-2017 OIC Group, Inc.
+Copyright (c) 2004-2018 OIC Group, Inc.
 
 This file contains details about optional features which are activated
 by the installation of 3rd party libraries which are not shipped with Exponent CMS.
