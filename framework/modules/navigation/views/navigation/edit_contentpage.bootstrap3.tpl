@@ -13,25 +13,21 @@
  *
  *}
 
-{css unique="newpage"}
-{if bs4()}
+{$name = glyph}
+{capture assign="callback"}
 {literal}
-    select#glyph,
-    select#glyph label,
-    select#glyph option {
-        font-family: 'Font Awesome 5 Free', Helvetica;
-        font-weight: 900;
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-font-smoothing: antialiased;
-        display: inline-block;
-        font-style: normal;
-        font-variant: normal;
-        text-rendering: auto;
-        line-height: 1;
+    function format{/literal}{$name}{literal}(icon, container) {
+        if (!icon.id) { return icon.text; }
+        var originalOption = icon.element;
+        return $('<span><i class="fa fa-fw ' + $(originalOption).data('icon') + '"></i> ' + icon.text + '</span>');
     }
+    $('#{/literal}{$name}{literal}').select2({
+//        width: "100%",
+        templateResult: format{/literal}{$name}{literal},
+        templateSelection: format{/literal}{$name}{literal}
+    });
 {/literal}
-{/if}
-{/css}
+{/capture}
 
 <div class="module navigation edit_contentpage">
     <div class="info-header">
@@ -70,9 +66,9 @@
                     {group label='Menu Item Icon'|gettext}
                         {control type="files" name="files" label="Graphic Icon"|gettext accept="image/*" value=$section->expFile limit=1 description='Select an icon to use with this menu item'|gettext}
                         {if bs3()}
-                        {control type="dropdown" name="glyph" label="Font Icon"|gettext items=$glyphs includeblank='No Font Icon'|gettext style="font-family: 'FontAwesome', Helvetica;" value=$section->glyph description='or Select a font icon to use with this menu item'|gettext}
+                        {control type="dropdown" name="glyph" select2=$callback label="Font Icon"|gettext items=$glyphs includeblank='No Font Icon'|gettext style="font-family: 'FontAwesome', Helvetica;" value=$section->glyph description='or Select a font icon to use with this menu item'|gettext}
                         {elseif bs4()}
-                        {control type="dropdown" name="glyph" label="Font Icon"|gettext items=$glyphs includeblank='No Font Icon'|gettext style="font-family: 'Font Awesome 5 Free', Helvetica;" value=$section->glyph description='or Select a font icon to use with this menu item'|gettext}
+                        {control type="dropdown" name="glyph" select2=$callback label="Font Icon"|gettext items=$glyphs includeblank='No Font Icon'|gettext style="font-family: 'Font Awesome 5 Free', Helvetica;" value=$section->glyph description='or Select a font icon to use with this menu item'|gettext}
                         {/if}
                         {control type="checkbox" name="glyph_only" label="Display Icon Alone"|gettext checked=$section->glyph_only value=1 description='Should the menu only display the icon without the page name?'|gettext}
                     {/group}

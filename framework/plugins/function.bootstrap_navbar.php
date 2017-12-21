@@ -75,6 +75,8 @@ function build_menu($page,$params) {
         $img = smarty_function_img($img_parm,$smarty);
     } elseif (bs3() && !empty($page->glyph)) {
         $img = '<i class="fa fa-fw ' . $page->glyph . '" aria-hidden="true"></i> ';
+    } elseif (bs2() && !empty($page->glyph)) {
+        $img = '<i class="' . $page->glyph . '" aria-hidden="true"></i> ';
     } else {
         $img = '';
     }

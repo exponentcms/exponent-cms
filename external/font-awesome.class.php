@@ -28,22 +28,78 @@ if( ! class_exists('Smk_FontAwesome') ){
 		public static function getArray($path, $class_prefix = 'fa-'){
 
 			if( ! file_exists($path) )
-				return false;//if path is incorect or file does not exist, stop.
+				return false;//if path is incorrect or file does not exist, stop.
 
-			$css = file_get_contents($path);
-			$pattern = '/\.('. $class_prefix .'(?:\w+(?:-)?)+):before\s+{\s*content:\s*"(.+)";\s+}/';
+			$file = file_get_contents($path);
+            $fileinfo = pathinfo($path);
 
-			preg_match_all($pattern, $css, $matches, PREG_SET_ORDER);
+            $icons = array();
+			switch ($fileinfo['extension']) {
+                case 'css':
+                    $pattern = '/\.('. $class_prefix .'(?:\w+(?:-)?)+):before\s+{\s*content:\s*"(.+)";\s+}/';
 
-			$icons = array();
-			foreach ($matches as $match) {
-				$icons[$match[1]] = $match[2];
-			}
+                    preg_match_all($pattern, $file, $matches, PREG_SET_ORDER);
+
+                    foreach ($matches as $match) {
+                        $icons[$match[1]] = $match[2];
+                    }
+                    break;
+                case 'json':
+                    $matches = json_decode($file);
+                    foreach ($matches as $name=>$match) {
+                        if (bs4()) {
+                            foreach ($match->styles as $style) {
+                                $icons['fa' . $style[0] . ' ' . $class_prefix . $name] = "\\" . $match->unicode;
+//                                break;  // same icon only different font weight
+                            }
+                        } else {
+                            $icons[$name] = "\\" . $match->unicode;
+                        }
+                    }
+                    break;
+                case 'yml':
+                    require_once(BASE . 'external/spyc-0.6.2/Spyc.php');
+                    $matches = spyc_load($file);
+                    foreach ($matches as $name=>$match) {
+                        if (bs4()) {
+                            foreach ($match['styles'] as $style) {
+                                $icons['fa' . $style[0] . ' ' . $name] = "\\" . $match['unicode'];
+                            }
+                        } else {
+                            $icons[$name] = "\\" . $match['unicode'];
+                        }
+                    }
+                    break;
+                default:
+                    return false;
+
+            }
+
 			return $icons;
-
 		}
 
 		//------------------------------------//--------------------------------------//
+
+        /**
+         * Sort without class prefix, but take it into account
+         *
+         * @param $a
+         * @param $b
+         * @return int
+         */
+        private function cmp($a, $b)
+        {
+            $a1 = substr($a, 6);
+            $a2 = substr($a, 0, 3);
+            $b1 = substr($b, 6);
+            $b2 = substr($b, 0, 3);
+            if ($a1 == $b1) {
+                if ($a2 == $b2)
+                    return 0;
+                return ($a2 < $b2) ? -1 : 1;
+            }
+            return ($a1 < $b1) ? -1 : 1;
+        }
 
 		/**
 		 * Sort array by key name
@@ -56,7 +112,11 @@ if( ! class_exists('Smk_FontAwesome') ){
 			if( ! is_array($array) )
 				return false;//Do not proceed if is not array
 
-			ksort( $array );
+            if (bs4()) {
+                uksort($array, array($this, "cmp"));
+            } else {
+                ksort( $array );
+            }
 			return $array;
 
 		}
@@ -119,14 +179,18 @@ if( ! class_exists('Smk_FontAwesome') ){
 
 			$temp = array();
 			foreach ($array as $class => $unicode) {
-				$temp[$class] = ucfirst( str_ireplace(array($class_prefix, '-'), array('', ' '), $class) );
+			    if (bs4()) {
+                    $temp[$class] = ucwords( str_ireplace(array('fas fa-', 'far fa-', 'fab fa-' , '-'), array('', '', '', ' '), $class) );
+                } else {
+                    $temp[$class] = ucwords( str_ireplace(array($class_prefix, '-'), array('', ' '), $class) );
+                }
 			}
 			return $temp;
 
 		}
 
 		/**
-		 * Readable class name with glyph as prefix. Ex: fa-video-camera => '<i class="fa fa-video-camera">Video Camera</a>'
+		 * Readable class name with glyph as prefix. Ex: fa-video => '&#xf03d; Video'
 		 *
 		 * @param array $array font awesome array. Create it using `getArray` method
 		 * @param string $class_prefix change this if the class names does not start with `fa-`
@@ -139,7 +203,11 @@ if( ! class_exists('Smk_FontAwesome') ){
 
 			$temp = array();
 			foreach ($array as $class => $unicode) {
-				$temp[$class] = '&#x' . substr($unicode, 1) . '; ' . ucfirst(str_ireplace(array($class_prefix, '-'), array('', ' '), $class));
+                if (bs4()) {
+                    $temp[$class] = '&#x' . substr($unicode, 1) . '; ' . ucwords(str_ireplace(array('fas fa-', 'far fa-', 'fab fa-' , '-'), array('', '', '', ' '), $class));
+                } else {
+                    $temp[$class] = '&#x' . substr($unicode, 1) . '; ' . ucwords(str_ireplace(array($class_prefix, '-'), array('', ' '), $class));
+                }
 			}
 			return $temp;
 
