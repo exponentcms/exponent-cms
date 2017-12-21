@@ -42,6 +42,7 @@ Version 2.4.2 - Specific changes from previous version
 - fix mediaplayer displays to be responsive
 - fix toggle objects might crash with languages using accents
 - fix text module inline edit view would crash when reverting and no item title existed
+- regression fix font icons in bootstrap 2 flydown menu
 
 #### v242 updates these 3rd party libraries in v241 previous releases:
 - CKEditor to v4.8.0
@@ -55,11 +56,11 @@ Version 2.4.2 - Specific changes from previous version
 - twitter-api-php to v1.0.6
 - xmlrpc.php to v4.3.0 (removed old v3 files)
 - select2 to v4.0.5
-- moment.js to v2.19.4
+- moment.js to v2.20.1
 - strength-meter to v1.1.4
 - datetimepicker to v2.5.14
 - yadcf to v0.9.2
-- scssphp to v0.7.3 (with hack to compile bs4 newui; also adds sourcemap support)
+- scssphp to v0.7.4 (with hack to compile bs4 newui; also adds sourcemap support)
 - EasyPost library to v3.4.0
 - iCalCreator library to v2.24.0
 
