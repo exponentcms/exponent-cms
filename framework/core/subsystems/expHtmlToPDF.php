@@ -1130,7 +1130,7 @@ class expMPDF7 extends expMPDF6
      * Return status of pdf engine being installed correctly
      */
     public static function installed() {
-        return file_exists(BASE . 'external/mpdf-7.0.2/src/Mpdf.php');
+        return (file_exists(BASE . 'external/mpdf-7.0.2/src/Mpdf.php') && file_exists(BASE . 'external/log-1.0.2/autoload.php'));
     }
 
     /**
@@ -1143,7 +1143,7 @@ class expMPDF7 extends expMPDF6
      */
     public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
-        if (file_exists(BASE . 'external/mpdf-7.0.2/src/Mpdf.php')) {
+        if (file_exists(BASE . 'external/mpdf-7.0.2/src/Mpdf.php') && file_exists(BASE . 'external/log-1.0.2/autoload.php')) {
             if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
             if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", BASE . 'tmp/ttfontdata/');
             if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
