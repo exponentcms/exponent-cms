@@ -31,6 +31,7 @@ class dropdowncontrol extends formcontrol {
     var $size = 1;
     var $include_blank = false;
     var $type = 'select';
+    var $select2 = false;
 
     static function name() { return "Drop Down List"; }
     static function isSimpleControl() { return true; }
@@ -90,6 +91,22 @@ class dropdowncontrol extends formcontrol {
         }
         $html .= '</select>';
         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+
+        if ($this->select2) {
+            $content = "
+        $('#" . $name . "').select2({
+            width: \"100%\",
+        });";
+
+            expJavascript::pushToFoot(
+                array(
+                    "unique" => 'select2-' . $name,
+                    "jquery" => "select2",
+                    "content" => $content,
+                )
+            );
+        }
+
         return $html;
     }
 

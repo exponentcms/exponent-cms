@@ -31,6 +31,7 @@ class dropdowncontrol extends formcontrol {
     var $size = 1;
     var $include_blank = false;
     var $type = 'select';
+    var $select2 = false;
 
     static function name() { return "Drop Down List"; }
     static function isSimpleControl() { return true; }
@@ -87,10 +88,37 @@ class dropdowncontrol extends formcontrol {
             } else {
                 if ($value == $this->default && !empty($this->default)) $html .= " selected";
             }
+            if ($this->select2) {
+                $html .= ' data-icon="' . $value . '"';
+            }
             $html .= '>' . $caption . '</option>';
         }
         $html .= '</select>';
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
+
+        if ($this->select2) {
+            $content = "
+        function format" . $name . "(icon, container) {
+            if (!icon.id) { return icon.text; }
+            var originalOption = icon.element;
+            return $('<span><i class=\"' + $(originalOption).data('icon') + '\"></i> ' + icon.text + '</span>');
+        }
+        $('#" . $name . "').select2({
+//            width: \"100%\",
+            templateResult: format" . $name . ",
+            templateSelection: format" . $name . "
+        });
+        ";
+
+            expJavascript::pushToFoot(
+                array(
+                    "unique" => 'select2-' . $name,
+                    "jquery" => "select2",
+                    "content" => $content,
+                )
+            );
+        }
+
         return $html;
     }
 

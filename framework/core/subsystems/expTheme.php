@@ -117,6 +117,16 @@ class expTheme
         } else {
             $less_vars = array();
         }
+        if (THEME_STYLE != '' && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/less_' . THEME_STYLE)) {
+            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less_' . THEME_STYLE;
+        } else {
+            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less';
+        }
+        $less_vars = array_merge(
+            array('swatch' => SWATCH),
+            array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
+            $less_vars
+        );
 
         // check to see if we're in XHTML or HTML mode
         if (isset($config['xhtml']) && $config['xhtml'] == true) {
@@ -394,11 +404,11 @@ class expTheme
 
         $validateTheme['footerinfo'] = true;
 
-        if (THEME_STYLE != '' && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/less_' . THEME_STYLE)) {
-            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less_' . THEME_STYLE;
-        } else {
-            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less';
-        }
+//        if (THEME_STYLE != '' && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/less_' . THEME_STYLE)) {
+//            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less_' . THEME_STYLE;
+//        } else {
+//            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less';
+//        }
 
         if (bs()) {
 //                    $lessvars = array_merge(
@@ -406,11 +416,11 @@ class expTheme
 //                        array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
 //                        !empty($head_config['lessvars']) ? $head_config['lessvars'] : array()
 //                    );
-            $less_vars = array_merge(
-                array('swatch' => SWATCH),
-                array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
-                $less_vars
-            );
+//            $less_vars = array_merge(
+//                array('swatch' => SWATCH),
+//                array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
+//                $less_vars
+//            );
             if (bs2()) {
                 expCSS::pushToHead(
                     array(
