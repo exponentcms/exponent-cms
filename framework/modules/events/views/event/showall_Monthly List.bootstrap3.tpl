@@ -69,7 +69,7 @@
 	{/permissions}
     <div class='input-group module-actions' id='j_input{$__loc->src|replace:'@':'_'}' style="left:40%">
         <input type='hidden' class="form-control" />
-        <span class="input-group-addon" style="border-radius:4px;border-left:1px solid #ccc;cursor:pointer;width:auto">
+        <span class="input-group-addon" style="display:inherit;border-radius:4px;border-left:1px solid #ccc;cursor:pointer;width:auto">
             <span class="fa fa-calendar"></span>
             {'Go to Date'|gettext}
         </span>
