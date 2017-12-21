@@ -47,7 +47,7 @@ jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
 jQuery,2.2.4,jquery.com,2.2.4,
 jQuery Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon
 jQuery3,3.2.1,jquery.com,3.2.1,
-jQuery3 Migrate,3.0.0,jquery.com,3.0.0,
+jQuery3 Migrate,3.0.1,jquery.com,3.0.1,
 jQueryUI,1.12.1,jqueryui.com,1.12.1,
 stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
 validate,1.17.0exp,jqueryvalidation.org/,1.17.0,edit for 'undefined' in 'min' & 'max'

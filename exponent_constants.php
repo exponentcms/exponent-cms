@@ -524,7 +524,7 @@ if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
     define('JQUERY3_VERSION', '3.2.1');
-    define('JQUERY3_MIGRATE_VERSION', '3.0.0');
+    define('JQUERY3_MIGRATE_VERSION', '3.0.1');
     define('JQUERYUI_VERSION', '1.12.1');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');

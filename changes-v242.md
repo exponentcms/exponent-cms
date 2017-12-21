@@ -50,7 +50,7 @@ Version 2.4.2 - Specific changes from previous version
 - elFinder to v2.1.30, adds dockable previewer, icon filetype tags
 - plupload to v2.3.6 (v3.1.1 is latest)
 - mediaelement to v4.2.7 and mediaelement plugins to v2.5.0
-- jQuery to v3.2.1 (if old browser support turned off), also loads jQuery migrate v3.0.0
+- jQuery to v3.2.1 (if old browser support turned off), also loads jQuery migrate v3.0.1
 - swiftmailer to v6.0.2 (v5.4.8 remains for older php version 5.x support)
 - minify to v2.3.3 (v3.0.2 is latest)
 - twitter-api-php to v1.0.6
