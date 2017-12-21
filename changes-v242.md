@@ -63,6 +63,7 @@ Version 2.4.2 - Specific changes from previous version
 - scssphp to v0.7.4 (with hack to compile bs4 newui; also adds sourcemap support)
 - EasyPost library to v3.4.0
 - iCalCreator library to v2.24.0
+- SimplePie rss library to v1.5.1
 
 
 #### v241patch6 adds these features to v241:

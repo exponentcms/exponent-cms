@@ -544,11 +544,12 @@ class administrationController extends expController {
 			'mods'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-mods'
 		);
 
+        require_once(BASE . 'external/simplepie-1.5.1/autoloader.php');
 		$RSS = new SimplePie();
 		$RSS->set_cache_location(BASE.'tmp/rsscache');  // default is ./cache
-//	        $RSS->set_cache_duration(3600);  // default if 3600
+//	    $RSS->set_cache_duration(3600);  // default if 3600
 		$RSS->set_timeout(20);  // default is 10
-//	        $RSS->set_output_encoding('UTF-8');  // which is the default
+//	    $RSS->set_output_encoding('UTF-8');  // which is the default
 		$items['themes'] = array();
 		$items['fixes'] = array();
 		$items['mods'] = array();

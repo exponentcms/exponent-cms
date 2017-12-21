@@ -134,7 +134,6 @@ class remove_oldfiles extends upgradescript {
             'external/editors/connector/popup.js',
             'external/editors/connector/section_linked.php',
             'external/font-awesome4/less/spinning.less',
-//            'external/html5forms/modernizr-262.js',
 			'external/iCalcreator.class.php',
             'external/jquery/js/jquery-1.8.3.js',
             'external/jquery/js/jquery-1.8.3.min.js',
@@ -233,6 +232,7 @@ class remove_oldfiles extends upgradescript {
             'external/png-opacity.htc',
             'external/recaptchalib.php',
             'external/SimpleAjaxUploader.js',
+            'framework/modules/news/models/SimplePie.php',
             // obsolete misc files
             'cron/send_reminders.php',
             'framework/conf/extensions/ldap.defaults.php',
