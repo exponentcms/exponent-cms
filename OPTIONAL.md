@@ -26,7 +26,7 @@ simply require the user to locally create a PDF file on their end from printable
 **mPDF is the preferred library.** We currently support three (3) versions:
 
 v7.0.2 is the newest version
-- [mpdf61.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf7.zip/download)
+- [mpdf7.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf7.zip/download)
 This uses the mPDF v7.0.2 library which has been customized for Exponent.
 This requires Exponent CMS v2.4.2 or later.
 
@@ -42,7 +42,7 @@ package requires Exponent CMS v2.2.3 or later.
 
 #### domPDF
 
-domPDF was the first supported PHP based library. We currently support two (3) versions:
+domPDF was the first supported PHP based library. We currently support three (3) versions:
 
 v0.8.2 is the newest version
 - [dompdf082.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf082.zip/download)
@@ -89,6 +89,8 @@ v0.12.4 is the newest version which can be downloaded from [wkhtmltopdf.org](htt
 
 ## Enhanced Debugging Output
 
+#### Kint
+
 Exponent CMS includes built-in Developer Debugging support, but this feature can be extended by
 installing the [Kint](https://github.com/raveren/kint) PHP library. Simply extract a release into
 the /external folder which creates an subfolder named 'kint'. The feature is auto-activated
@@ -97,8 +99,10 @@ by this installation.
 
 ## Alternate .less Compiler
 
+#### iLess
+
 Exponent CMS includes built-in .less stylesheet compiling support. We include the older lessphp compiler 
-which works well for Bootstrap v2, but also added less.php for Bootstrap v3 support which still works well.
+which worked well for Bootstrap v2, but also added less.php for Bootstrap v3 support which still works well.
 There is another PHP based .less compiler called iLess which can be used. This option can be extended by
 installing the [iLess](https://github.com/mishal/iless) PHP library. In most instances, this compiler is much
 slower than less.php, though it will compile Bootstrap v3. Simply extract a release into
