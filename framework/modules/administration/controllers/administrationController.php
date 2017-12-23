@@ -566,6 +566,7 @@ class administrationController extends expController {
 		        $rssObject->title = $rssItem->get_title();
 		        $rssObject->body = $rssItem->get_description();
 		        $rssObject->rss_link = $rssItem->get_permalink();
+                $rssObject->name = basename($rssObject->rss_link);
 		        $rssObject->publish = $rssItem->get_date('U');
 		        $rssObject->publish_date = $rssItem->get_date('U');
 				foreach ($rssItem->get_enclosures() as $enclosure) {
@@ -719,7 +720,7 @@ class administrationController extends expController {
                         }
 						$files[] = array(
 							'absolute' => $file,
-							'relative' => $f,
+//							'relative' => $f,
 							'canCreate' => expFile::canCreate(BASE . $file),
 //							'ext'=>substr($f,-3,3)
 						);
