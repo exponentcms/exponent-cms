@@ -43,6 +43,7 @@ Version 2.4.2 - Specific changes from previous version
 - fix toggle objects might crash with languages using accents
 - fix text module inline edit view would crash when reverting and no item title existed
 - regression fix font icons in bootstrap 2 flydown menu
+- regression (v237p3) fix install extension command
 
 #### v242 updates these 3rd party libraries in v241 previous releases:
 - CKEditor to v4.8.0

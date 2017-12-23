@@ -1052,8 +1052,8 @@ class administrationController extends expController {
     			}
     		}
     	}
-
-        assign_to_template(array(
+        array_multisort(array_keys($themes), SORT_NATURAL, $themes);
+    	assign_to_template(array(
             'themes'=>$themes
         ));
     }
