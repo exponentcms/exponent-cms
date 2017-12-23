@@ -648,7 +648,7 @@ class administrationController extends expController {
 
 				// Look for stale sessid directories:
 				$sessid = session_id();
-				if (file_exists(BASE."tmp/extensionuploads/$sessid") && is_dir(BASE."tmp/extensionuploads/$sessid")) expFile::removeDirectory("tmp/extensionuploads/$sessid");
+				if (file_exists(BASE . "tmp/extensionuploads/$sessid") && is_dir(BASE . "tmp/extensionuploads/$sessid")) expFile::removeDirectory("tmp/extensionuploads/$sessid");
 				$return = expFile::makeDirectory("tmp/extensionuploads/$sessid");
 				if ($return != SYS_FILES_SUCCESS) {
 					switch ($return) {
@@ -665,7 +665,7 @@ class administrationController extends expController {
 					}
 				}
 
-				$dest = BASE."tmp/extensionuploads/$sessid/archive$ext";
+				$dest = BASE . "tmp/extensionuploads/$sessid/archive$ext";
                 if (is_uploaded_file($_FILES['mod_archive']['tmp_name'])) {
 				    move_uploaded_file($_FILES['mod_archive']['tmp_name'],$dest);
                 } else {
@@ -673,7 +673,7 @@ class administrationController extends expController {
                 }
 
 				if ($compression != 'zip') {// If not zip, must be tar
-					include_once(BASE.'external/Tar.php');
+					include_once(BASE . 'external/Tar.php');
 
 					$tar = new Archive_Tar($dest,$compression);
 
@@ -681,20 +681,20 @@ class administrationController extends expController {
                     $tar->setErrorHandling(PEAR_ERROR_PRINT);
 					$return = $tar->extract(dirname($dest));
 					if (!$return) {
-						flash('error',gt('Error extracting TAR archive'));
+						flash('error', gt('Error extracting TAR archive'));
 					} else {
 //						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=tar');
 //						self::verify_extension('tar');
 					}
 				} else { // must be zip
-					include_once(BASE.'external/Zip.php');
+					include_once(BASE . 'external/Zip.php');
 
 					$zip = new Archive_Zip($dest);
 
 //					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
                     $zip->setErrorHandling(PEAR_ERROR_PRINT);
 					if ($zip->extract(array('add_path'=>dirname($dest))) == 0) {
-						flash('error',gt('Error extracting ZIP archive').': '.$zip->_error_code . ' : ' . $zip->_error_string . '<br />');
+						flash('error',gt('Error extracting ZIP archive') . ': '.$zip->_error_code . ' : ' . $zip->_error_string . '<br />');
 					} else {
 //						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=zip');
 //						self::verify_extension('zip');
@@ -702,81 +702,81 @@ class administrationController extends expController {
 				}
 				$sessid = session_id();
 				$files = array();
-				foreach (expFile::listFlat(BASE.'tmp/extensionuploads/'.$sessid,true,null,array(),BASE.'tmp/extensionuploads/'.$sessid) as $key=>$f) {
+				foreach (expFile::listFlat(BASE . 'tmp/extensionuploads/' . $sessid,true,null,array(),BASE . 'tmp/extensionuploads/' . $sessid) as $key=>$f) {
 					if ($key != '/archive.tar' && $key != '/archive.tar.gz' && $key != '/archive.tar.bz2' && $key != '/archive.zip') {
-                        if (empty($this->params['patch']) || !$this->params['patch']) {
-                            $key = substr($key,1);
-                            if (substr($key,0,7)=='themes/') {
-                                $parts = explode('/',$key);
-                                $parts[1] = DISPLAY_THEME_REAL;
-                                $file = implode('/',$parts);
-                            } else {
-                                $file = 'themes/'.DISPLAY_THEME_REAL.'/'.str_replace("framework/", "", $key);
+                        if (!empty($this->params['patch']) || $this->params['patch']) {  // this is a patch/fix for root folder
+                            $file = substr($key,1);
+                        } else {
+                            $file = substr($key,1);  // remove leading slash
+                            if (substr($file,0,7) == 'themes/') {  // this is a theme
+//                                $parts = explode('/',$file);
+//                                $parts[1] = DISPLAY_THEME_REAL;  // place it in our theme instead of theirs?
+//                                $file = implode('/',$parts);
+                            } else {  // this is a custom mod to place within current theme
+                                $file = 'themes/' . DISPLAY_THEME_REAL . '/' . str_replace("framework/", "", $key);
                             }
                             $file = str_replace("modules-1", "modules", $file);
-                        } else {
-                            $file = substr($key,1);
                         }
 						$files[] = array(
-							'absolute'=>$file,
-							'relative'=>$f,
-							'canCreate'=>expFile::canCreate(BASE.$file),
-							'ext'=>substr($f,-3,3)
+							'absolute' => $file,
+							'relative' => $f,
+							'canCreate' => expFile::canCreate(BASE . $file),
+//							'ext'=>substr($f,-3,3)
 						);
 					}
 				}
 				assign_to_template(array(
-                    'relative'=>'tmp/extensionuploads/'.$sessid,
-                    'files'=>$files,
-                    'patch'=>empty($this->params['patch'])?0:$this->params['patch']
+//                    'relative'=>'tmp/extensionuploads/'.$sessid,
+                    'files' => $files,
+                    'patch' => empty($this->params['patch']) ? 0 : $this->params['patch']
                 ));
 			}
 		}
 	}
 
 	public function install_extension_finish() {
-        $patch =$this->params['patch']==1;
 		$sessid = session_id();
         $success = array();
-		if (!file_exists(BASE."tmp/extensionuploads/$sessid") || !is_dir(BASE."tmp/extensionuploads/$sessid")) {
+		if (!file_exists(BASE . "tmp/extensionuploads/$sessid") || !is_dir(BASE . "tmp/extensionuploads/$sessid")) {
 			$nofiles = 1;
 		} else {
-			foreach (array_keys(expFile::listFlat(BASE."tmp/extensionuploads/$sessid",true,null,array(),BASE."tmp/extensionuploads/$sessid")) as $file) {
+			foreach (array_keys(expFile::listFlat(BASE . "tmp/extensionuploads/$sessid",true,null, array(),BASE . "tmp/extensionuploads/$sessid")) as $file) {
 				if ($file != '/archive.tar' && $file != '/archive.tar.gz' && $file != 'archive.tar.bz2' && $file != '/archive.zip') {
-                    if ($patch) {  // this is a patch/fix extension
+                    if (!empty($this->params['patch']) && $this->params['patch'] == 1) {  // this is a patch/fix for root folder
                         expFile::makeDirectory(dirname($file));
-                        $success[$file] = copy(BASE."tmp/extensionuploads/$sessid".$file,BASE.substr($file,1));
-                        if (basename($file) == 'views_c') chmod(BASE.substr($file,1),0777);
+                        $success[$file] = copy(BASE . "tmp/extensionuploads/$sessid" . $file,BASE . substr($file,1));
+                        if (basename($file) == 'views_c')
+                            chmod(BASE . substr($file,1),0777);
                     } else {
-                        $newfile = substr($file,1);
-                        if (substr($newfile,0,7)=='themes/') {  // this is a theme extension
-                            $parts = explode('/',$newfile);
-                            $parts[1] = DISPLAY_THEME_REAL;
-                            $newfile = implode('/',$parts);
-                        } else {  // this is a mod extension
+                        $newfile = substr($file,1);  // remove leading slash
+                        if (substr($newfile,0,7) == 'themes/') {  // this is a theme
+//                            $parts = explode('/',$newfile);
+//                            $parts[1] = DISPLAY_THEME_REAL;  // place it in our theme instead of theirs?
+//                            $newfile = implode('/',$parts);
+                        } else {  // this is a custom mod to place within current theme
                             $newfile = str_replace("framework/", "", $newfile);
-                            $newfile = 'themes/'.DISPLAY_THEME_REAL.'/'.str_replace("modules-1", "modules", $newfile);
+                            $newfile = 'themes/' . DISPLAY_THEME_REAL . '/' . str_replace("modules-1", "modules", $newfile);
                         }
                         expFile::makeDirectory(dirname($newfile));
-                        $success[$newfile] = copy(BASE."tmp/extensionuploads/$sessid".$file,BASE.$newfile);
+                        $success[$newfile] = copy(BASE . "tmp/extensionuploads/$sessid" . $file,BASE.$newfile);
                     }
 				}
 			}
 
-			$del_return = expFile::removeDirectory(BASE."tmp/extensionuploads/$sessid");  //FIXME shouldn't use echo
+			$del_return = expFile::removeDirectory(BASE . "tmp/extensionuploads/$sessid");  //FIXME shouldn't use echo
 //			echo $del_return;
             $tables = expDatabase::install_dbtables();
             ksort($tables);
             assign_to_template(array(
-                'tables'=>$tables
+                'tables' => $tables
             ));
 			$nofiles = 0;
 		}
 
 		assign_to_template(array(
-            'nofiles'=>$nofiles,
-            'success'=>$success,
-            'redirect'=>expHistory::getLastNotEditable()
+            'nofiles' => $nofiles,
+            'success' => $success,
+            'redirect' => expHistory::getLastNotEditable()
         ));
 	}
 

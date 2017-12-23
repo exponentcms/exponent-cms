@@ -33,7 +33,7 @@
                 {form action=install_extension_confirm}
                     {foreach from=$themes item=theme name=themes}
                         <div class="item" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 1px; border-bottom-color: black; border-bottom-style: dashed;">
-                            <div style="float: left;">{control type="checkbox" name="files['`$theme->title`']" label=" " value="`$theme->enclosure`"}</div>
+                            <div style="float: left;">{control type="checkbox" name="files[`$theme->title`]" label=" " value="`$theme->enclosure`"}</div>
                             <a href="{$theme->rss_link}" title="More Information"|gettext target="_blank"><h4>{$theme->title}</h4></a>
                             <em class="date">
                                 {'Dated'|gettext}: {$theme->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
@@ -60,7 +60,7 @@
                     {control type=hidden name=patch value=1}
                     {foreach from=$fixes item=fix name=fixes}
                         <div class="item" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 1px; border-bottom-color: black; border-bottom-style: dashed;">
-                            <div style="float: left;">{control type="checkbox" name="files['`$fix->title`']" label=" " value="`$fix->enclosure`"}</div>
+                            <div style="float: left;">{control type="checkbox" name="files[`$fix->title`]" label=" " value="`$fix->enclosure`"}</div>
                             <a href="{$fix->rss_link}" title="More Information"|gettext target="_blank"><h4>{$fix->title}</h4></a>
                             <em class="date">
                                 {'Dated'|gettext}: {$fix->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
@@ -86,7 +86,7 @@
                 {form action=install_extension_confirm}
                     {foreach from=$mods item=mod name=mods}
                         <div class="item" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 1px; border-bottom-color: black; border-bottom-style: dashed;">
-                            <div style="float: left;">{control type="checkbox" name="files['`$mod->title`']" label=" " value="`$mod->enclosure`"}</div>
+                            <div style="float: left;">{control type="checkbox" name="files[`$mod->title`]" label=" " value="`$mod->enclosure`"}</div>
                             <a href="{$mod->rss_link}" title="More Information"|gettext target="_blank"><h4>{$mod->title}</h4></a>
                             <em class="date">
                                 {'Dated'|gettext}: {$mod->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
