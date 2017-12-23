@@ -14,7 +14,14 @@
  *}
 
 {css unique="themes" corecss="tables" link="`$asset_path`css/managethemes.css"}
-
+    {if bs()}
+    {literal}
+    span.switchtheme.current {
+        background:none;
+    	padding:5px 5px 0
+    }
+    {/literal}
+    {/if}
 {/css}
 
 {messagequeue}
@@ -68,7 +75,7 @@
                                         {icon class="view" action=theme_preview theme=$class sv=$sv title="Preview this Theme Style"|gettext text="Preview"|gettext}
                                     {/if}
                                     {if $smarty.const.DISPLAY_THEME_REAL == $class && ($smarty.const.THEME_STYLE_REAL == $sv || ($smarty.const.THEME_STYLE_REAL == "" && $sv == "Default"))}
-                                        <span class="switchtheme current"> ({"Current"|gettext})</span>
+                                        <span class="switchtheme current"><i class="{expTheme::iconStyle('approve')} text-success"></i> ({"Current"|gettext})</span>
                                     {else}
                                         {icon class="switchtheme add" action=theme_switch theme=$class sv=$sv title='Select this Theme Style'|gettext text='Use'|gettext}
                                     {/if}
@@ -82,7 +89,7 @@
                                 {/group}
 							{/foreach}
 						{else}
-                            {group label='Default Style'|gettext}
+                            {group label=''}
                                 {if $smarty.const.DISPLAY_THEME != $class}
                                     {icon class="view" action=theme_preview theme=$class title="Preview this Theme"|gettext text="Preview"|gettext}
                                 {elseif $smarty.const.DISPLAY_THEME_REAL != $smarty.const.DISPLAY_THEME}
@@ -91,7 +98,7 @@
                                 {if $smarty.const.DISPLAY_THEME_REAL != $class}
                                     {icon class="switchtheme add" action=theme_switch theme=$class title='Select this Theme'|gettext text="Use"|gettext}
                                 {else}
-                                    <span class="switchtheme current">({"Current"|gettext})</span>
+                                    <span class="switchtheme current"><i class="{expTheme::iconStyle('approve')} text-success"></i> ({"Current"|gettext})</span>
                                 {/if}
                                 {if ($theme->user_configured)}
                                     {icon class=configure action=configure_theme theme=$class title="Configure this Theme"|gettext}
