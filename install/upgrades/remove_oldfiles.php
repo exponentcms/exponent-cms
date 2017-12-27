@@ -229,10 +229,13 @@ class remove_oldfiles extends upgradescript {
             'external/bingapi.php',
             'external/BingTranslate.class.php',
             'external/gcalendar.class.php',
+            'external/PEAR.php',
             'external/png-opacity.htc',
             'external/recaptchalib.php',
             'external/SimpleAjaxUploader.js',
+            'external/Tar.php',
             'framework/modules/news/models/SimplePie.php',
+            'external/Zip.php',
             // obsolete misc files
             'cron/send_reminders.php',
             'framework/conf/extensions/ldap.defaults.php',
