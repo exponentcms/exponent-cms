@@ -113,9 +113,15 @@ if (isset($_REQUEST['install_sample'])) {
             $files = BASE . "install/samples/" . $_REQUEST['install_sample'] . ".tar.gz";
         }
         if (file_exists($files)) { // only install if there was an archive
-            include_once(BASE . 'external/Tar.php');
-            $tar = new Archive_Tar($files);
-            $return = $tar->extract(BASE);
+//            include_once(BASE . 'external/Tar.php');  // fixme change to PharData
+//            $tar = new Archive_Tar($files);
+//            $return = $tar->extract(BASE);
+            $tar = new PharData($files);
+            $tar->decompress();  // creates .tar file
+            $tar = new PharData(substr($files, 0, -3));
+            $return = $tar->extractTo(BASE);
+            unset($tar);
+            unlink(substr($files, 0, -3)); // remove intermediary .tar file
         }
     }
     //FIXME we need to output this into an element and not simply out on the page

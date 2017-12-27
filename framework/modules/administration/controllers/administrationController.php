@@ -546,7 +546,7 @@ class administrationController extends expController {
 
         require_once(BASE . 'external/simplepie-1.5.1/autoloader.php');
 		$RSS = new SimplePie();
-		$RSS->set_cache_location(BASE.'tmp/rsscache');  // default is ./cache
+		$RSS->set_cache_location(BASE . 'tmp/rsscache');  // default is ./cache
 //	    $RSS->set_cache_duration(3600);  // default if 3600
 		$RSS->set_timeout(20);  // default is 10
 //	    $RSS->set_output_encoding('UTF-8');  // which is the default
@@ -646,7 +646,6 @@ class administrationController extends expController {
 			if ($ext == '') {
 				flash('error', gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.'));
 			} else {
-
 				// Look for stale sessid directories:
 				$sessid = session_id();
 				if (file_exists(BASE . "tmp/extensionuploads/$sessid") && is_dir(BASE . "tmp/extensionuploads/$sessid")) expFile::removeDirectory("tmp/extensionuploads/$sessid");
@@ -668,48 +667,122 @@ class administrationController extends expController {
 
 				$dest = BASE . "tmp/extensionuploads/$sessid/archive$ext";
                 if (is_uploaded_file($_FILES['mod_archive']['tmp_name'])) {
-				    move_uploaded_file($_FILES['mod_archive']['tmp_name'],$dest);
+				    move_uploaded_file($_FILES['mod_archive']['tmp_name'], $dest);
                 } else {
-                    rename($_FILES['mod_archive']['tmp_name'],$dest);
+                    rename($_FILES['mod_archive']['tmp_name'], $dest);
                 }
 
 				if ($compression != 'zip') {// If not zip, must be tar
-					include_once(BASE . 'external/Tar.php');
-
-					$tar = new Archive_Tar($dest,$compression);
-
-//					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
-                    $tar->setErrorHandling(PEAR_ERROR_PRINT);
-					$return = $tar->extract(dirname($dest));
+                    $tar = new PharData($dest);
+                    if ($compression) {
+                        $tar->decompress();  // creates .tar file
+                        $tar = new PharData(BASE . "tmp/extensionuploads/$sessid/archive.tar");
+                    }
+					$return = $tar->extractTo(dirname($dest));
 					if (!$return) {
 						flash('error', gt('Error extracting TAR archive'));
 					} else {
 //						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=tar');
 //						self::verify_extension('tar');
 					}
-				} else { // must be zip
-					include_once(BASE . 'external/Zip.php');
+				} else { // must be a zip
+					$unzip = new ZipArchive();
 
-					$zip = new Archive_Zip($dest);
-
-//					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
-                    $zip->setErrorHandling(PEAR_ERROR_PRINT);
-					if ($zip->extract(array('add_path'=>dirname($dest))) == 0) {
-						flash('error',gt('Error extracting ZIP archive') . ': '.$zip->_error_code . ' : ' . $zip->_error_string . '<br />');
+                    $unzip_error_no = $unzip->open($dest);
+                    if ($unzip_error_no !== true) {
+                        switch ($unzip_error_no) {
+                            case 0:
+                                $unzip_error = 'No error';
+                                break;
+                            case 1:
+                                $unzip_error = 'Multi-disk zip archives not supported';
+                                break;
+                            case 2:
+                                $unzip_error = 'Renaming temporary file failed';
+                                break;
+                            case 3:
+                                $unzip_error = 'Closing zip archive failed';
+                                break;
+                            case 4:
+                                $unzip_error = 'Seek error';
+                                break;
+                            case 5:
+                                $unzip_error = 'Read error';
+                                break;
+                            case 6:
+                                $unzip_error = 'Write error';
+                                break;
+                            case 7:
+                                $unzip_error = 'CRC error';
+                                break;
+                            case 8:
+                                $unzip_error = 'Containing zip archive was closed';
+                                break;
+                            case 9:
+                                $unzip_error = 'No such file';
+                                break;
+                            case 10:
+                                $unzip_error = 'File already exists';
+                                break;
+                            case 11:
+                                $unzip_error = 'Can\'t open file';
+                                break;
+                            case 12:
+                                $unzip_error = 'Failure to create temporary file';
+                                break;
+                            case 13:
+                                $unzip_error = 'Zlib error';
+                                break;
+                            case 14:
+                                $unzip_error = 'Malloc failure';
+                                break;
+                            case 15:
+                                $unzip_error = 'Entry has been changed';
+                                break;
+                            case 16:
+                                $unzip_error = 'Compression method not supported';
+                                break;
+                            case 17:
+                                $unzip_error = 'Premature EOF';
+                                break;
+                            case 18:
+                                $unzip_error = 'Invalid argument';
+                                break;
+                            case 19:
+                                $unzip_error = 'Not a zip archive';
+                                break;
+                            case 20:
+                                $unzip_error = 'Internal error';
+                                break;
+                            case 21:
+                                $unzip_error = 'Zip archive inconsistent';
+                                break;
+                            case 22:
+                                $unzip_error = 'Can\'t remove file';
+                                break;
+                            case 23:
+                                $unzip_error = 'Entry has been deleted';
+                                break;
+                            default:
+                                $unzip_error = 'An unknown error has occurred (' . intval($unzip_error_no) . ')';
+                        }
+                        flash('error',gt('Error extracting ZIP archive') . ': ' . ' : ' . $unzip_error . '<br />');
 					} else {
 //						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=zip');
 //						self::verify_extension('zip');
+                        $unzip->extractTo(dirname($dest));
+                        $unzip->close();
 					}
 				}
 				$sessid = session_id();
 				$files = array();
 				foreach (expFile::listFlat(BASE . 'tmp/extensionuploads/' . $sessid,true,null,array(),BASE . 'tmp/extensionuploads/' . $sessid) as $key=>$f) {
-					if ($key != '/archive.tar' && $key != '/archive.tar.gz' && $key != '/archive.tar.bz2' && $key != '/archive.zip') {
-                        if (!empty($this->params['patch']) || $this->params['patch']) {  // this is a patch/fix for root folder
+                    if (!in_array($key, array('/archive.tar', '/archive.tar.gz', '/archive.tgz', 'archive.tar.bz2', '/archive.zip'))) {
+                        if (!empty($this->params['patch']) ) {  // this is a patch/fix for root folder
                             $file = substr($key,1);
                         } else {
                             $file = substr($key,1);  // remove leading slash
-                            if (substr($file,0,7) == 'themes/') {  // this is a theme
+                            if (substr($file,0,7) === 'themes/') {  // this is a theme
 //                                $parts = explode('/',$file);
 //                                $parts[1] = DISPLAY_THEME_REAL;  // place it in our theme instead of theirs?
 //                                $file = implode('/',$parts);
@@ -729,7 +802,7 @@ class administrationController extends expController {
 				assign_to_template(array(
 //                    'relative'=>'tmp/extensionuploads/'.$sessid,
                     'files' => $files,
-                    'patch' => empty($this->params['patch']) ? 0 : $this->params['patch']
+                    'patch' => !empty($this->params['patch'])
                 ));
 			}
 		}
@@ -742,15 +815,15 @@ class administrationController extends expController {
 			$nofiles = 1;
 		} else {
 			foreach (array_keys(expFile::listFlat(BASE . "tmp/extensionuploads/$sessid",true,null, array(),BASE . "tmp/extensionuploads/$sessid")) as $file) {
-				if ($file != '/archive.tar' && $file != '/archive.tar.gz' && $file != 'archive.tar.bz2' && $file != '/archive.zip') {
-                    if (!empty($this->params['patch']) && $this->params['patch'] == 1) {  // this is a patch/fix for root folder
+                if (!in_array($file, array('/archive.tar', '/archive.tar.gz', '/archive.tgz', 'archive.tar.bz2', '/archive.zip'))) {
+                    if (!empty($this->params['patch'])) {  // this is a patch/fix for root folder
                         expFile::makeDirectory(dirname($file));
                         $success[$file] = copy(BASE . "tmp/extensionuploads/$sessid" . $file,BASE . substr($file,1));
-                        if (basename($file) == 'views_c')
+                        if (basename($file) === 'views_c')
                             chmod(BASE . substr($file,1),0777);
                     } else {
                         $newfile = substr($file,1);  // remove leading slash
-                        if (substr($newfile,0,7) == 'themes/') {  // this is a theme
+                        if (substr($newfile,0,7) === 'themes/') {  // this is a theme
 //                            $parts = explode('/',$newfile);
 //                            $parts[1] = DISPLAY_THEME_REAL;  // place it in our theme instead of theirs?
 //                            $newfile = implode('/',$parts);
