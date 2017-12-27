@@ -1,4 +1,3 @@
-"use strict";
 /**
  * @class elFinder command "edit". 
  * Edit text file in dialog window
@@ -6,6 +5,7 @@
  * @author Dmitry (dio) Levashov, dio@std42.ru
  **/
 elFinder.prototype.commands.edit = function() {
+	"use strict";
 	var self  = this,
 		fm    = this.fm,
 		dlcls = 'elfinder-dialog-edit',
@@ -43,16 +43,16 @@ elFinder.prototype.commands.edit = function() {
 				mime = files[0].mime;
 				ext = files[0].name.replace(/^.*(\.[^.]+)$/, '$1');
 			}
-			return $.map(files, function(file) {
+			return $.grep(files, function(file) {
 				var res;
 				if (skip) {
-					return null;
+					return false;
 				}
 				res = (fm.mimeIsText(file.mime) || $.inArray(file.mime, cnt === 1? mimesSingle : mimes) !== -1) 
 					&& (!self.onlyMimes.length || $.inArray(file.mime, self.onlyMimes) !== -1)
 					&& file.read && file.write
 					&& (cnt === 1 || (file.mime === mime && file.name.substr(ext.length * -1) === ext))
-					&& fm.uploadMimeCheck(file.mime, file.phash)? file : null;
+					&& fm.uploadMimeCheck(file.mime, file.phash)? true : false;
 				if (!res) {
 					skip = true;
 				}
@@ -105,10 +105,9 @@ elFinder.prototype.commands.edit = function() {
 					var prevOld = old,
 						phash = fm.file(file.phash)? file.phash : fm.cwd().hash,
 						fail = function() {
-							dialogs.fadeIn();
+							dialogs.addClass(clsEditing).fadeIn();
 							old = prevOld;
 							fm.disable();
-							ta.addClass(clsEditing);
 						},
 						make = function() {
 							self.mime = file.mime;
@@ -138,9 +137,8 @@ elFinder.prototype.commands.edit = function() {
 							fm.trigger('unselectfiles', { files: [ file.hash ] });
 						},
 						reqOpen = null,
-						dialogs = fm.getUI().children('.'+dlcls).fadeOut();
+						dialogs = fm.getUI().children('.' + dlcls + ':visible').removeClass(clsEditing).fadeOut();
 					
-					ta.removeClass(clsEditing);
 					fm.enable();
 					
 					if (fm.searchStatus.state < 2 && phash !== fm.cwd().hash) {
@@ -337,7 +335,7 @@ elFinder.prototype.commands.edit = function() {
 				})();
 			}
 			
-			ta.addClass(clsEditing).data('hash', file.hash);
+			ta.data('hash', file.hash);
 			
 			if (extEditor) {
 				ta.editor = extEditor;
@@ -384,7 +382,7 @@ elFinder.prototype.commands.edit = function() {
 					e.stopPropagation();
 				})
 				.css({ overflow: 'hidden', minHeight: '7em' })
-				.closest('.ui-dialog').addClass(dlcls);
+				.closest('.ui-dialog').addClass(dlcls  + ' ' + clsEditing);
 			
 			// care to viewport scale change with mobile devices
 			maxW = (fm.options.dialogContained? elfNode : $(window)).width();
@@ -400,13 +398,13 @@ elFinder.prototype.commands.edit = function() {
 		 * @param  String  file hash
 		 * @return jQuery.Deferred
 		 **/
-		edit = function(file, conv, editor) {
+		edit = function(file, convert, editor) {
 			var hash   = file.hash,
 				opts   = fm.options,
 				dfrd   = $.Deferred(), 
 				id     = 'edit-'+fm.namespace+'-'+file.hash,
 				d      = fm.getUI().find('#'+id),
-				conv   = !conv? 0 : conv,
+				conv   = !convert? 0 : convert,
 				req, error;
 			
 			
@@ -467,7 +465,7 @@ elFinder.prototype.commands.edit = function() {
 								selEncoding = getEncSelect([head]);
 								$(this).next().find('.ui-dialog-buttonset')
 									.prepend(base.append($('<label>'+fm.i18n('encoding')+' </label>').append(selEncoding)));
-							}
+							};
 						}
 					});
 				} else {
@@ -672,11 +670,11 @@ elFinder.prototype.commands.edit = function() {
 				
 				dfd.always(function() {
 					if (ccData) {
-						opts.editors = $.map(opts.editors, function(e) {
+						opts.editors = $.grep(opts.editors, function(e) {
 							if (e.info && e.info.cmdCheck) {
-								return ccData[e.info.cmdCheck]? e : null;
+								return ccData[e.info.cmdCheck]? true : false;
 							} else {
-								return e;
+								return true;
 							}
 						});
 					}
@@ -697,8 +695,8 @@ elFinder.prototype.commands.edit = function() {
 					mimesSingle = ($.uniqueSort || $.unique)(mimesSingle);
 					mimes = ($.uniqueSort || $.unique)(mimes);
 					
-					opts.editors = $.map(opts.editors, function(e) {
-						return e.disabled? null : e;
+					opts.editors = $.grep(opts.editors, function(e) {
+						return e.disabled? false : true;
 					});
 				});
 			}
@@ -760,16 +758,16 @@ elFinder.prototype.commands.edit = function() {
 		});
 	};
 	
-	this.getstate = function(sel) {
-		var sel = this.files(sel),
+	this.getstate = function(select) {
+		var sel = this.files(select),
 			cnt = sel.length;
 
 		return cnt && filter(sel).length == cnt ? 0 : -1;
 	};
 	
-	this.exec = function(hashes, opts) {
+	this.exec = function(select, opts) {
 		var fm    = this.fm, 
-			files = filter(this.files(hashes)),
+			files = filter(this.files(select)),
 			hashes = $.map(files, function(f) { return f.hash; }),
 			list  = [],
 			editor = opts && opts.editor? opts.editor : null,

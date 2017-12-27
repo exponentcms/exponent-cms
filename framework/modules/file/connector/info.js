@@ -1,11 +1,11 @@
-"use strict";
 /**
- * @class elFinder command "info" updated for Exponent CMS
+ * @class elFinder command "info".
  * Display dialog with file properties.
  *
  * @author Dmitry (dio) Levashov, dio@std42.ru
  **/
 (elFinder.prototype.commands.info = function() {
+	"use strict";
     var m = 'msg',
         fm = this.fm,
         spclass = 'elfinder-info-spinner',
@@ -198,7 +198,7 @@
 			if (o.custom) {
 				$.each(o.custom, function(name, details) {
 					if (
-					  (!details.mimes || $.map(details.mimes, function(m){return (file.mime === m || file.mime.indexOf(m+'/') === 0)? true : null;}).length)
+					  (!details.mimes || $.grep(details.mimes, function(m){return (file.mime === m || file.mime.indexOf(m+'/') === 0)? true : false;}).length)
 					    &&
 					  (!details.hashRegex || file.hash.match(details.hashRegex))
 					) {
@@ -239,9 +239,7 @@
         } else {
             view = view.replace('{class}' , 'elfinder-cwd-icon-group');
             title = tpl.groupTitle.replace('{items}' , msg.items).replace('{num}' , cnt);
-            dcnt = $.map(files ,function (f) {
-                return f.mime == 'directory' ? 1 : null;
-            }).length;
+			dcnt  = $.grep(files, function(f) { return f.mime == 'directory' ? true : false ; }).length;
             if (!dcnt) {
                 size = 0;
                 $.each(files , function (h , f) {
@@ -256,9 +254,9 @@
                 content.push(row.replace(l , msg.kind).replace(v , msg.files));
                 content.push(row.replace(l , msg.size).replace(v , fm.formatSize(size)));
             } else {
-				rdcnt = $.map(files, function(f) { return f.mime === 'directory' && (! f.phash || f.isroot)? 1 : null ; }).length;
+				rdcnt = $.grep(files, function(f) { return f.mime === 'directory' && (! f.phash || f.isroot)? true : false ; }).length;
 				dcnt -= rdcnt;
-				content.push(row.replace(l, msg.kind).replace(v, (rdcnt === cnt || dcnt === cnt)? msg[rdcnt? 'roots' : 'folders'] : $.map({roots: rdcnt, folders: dcnt, files: cnt - rdcnt - dcnt}, function(c, t) { return c? msg[t]+' '+c : null}).join(', ')));
+				content.push(row.replace(l, msg.kind).replace(v, (rdcnt === cnt || dcnt === cnt)? msg[rdcnt? 'roots' : 'folders'] : $.map({roots: rdcnt, folders: dcnt, files: cnt - rdcnt - dcnt}, function(c, t) { return c? msg[t]+' '+c : null; }).join(', ')));
 				content.push(row.replace(l, msg.size).replace(v, tpl.spinner.replace('{text}', msg.calc).replace('{name}', 'size')));
 				count = $.map(files, function(f) { return f.hash; });
 

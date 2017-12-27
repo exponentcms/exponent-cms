@@ -1132,13 +1132,6 @@ abstract class elFinderVolumeDriver {
 		}
 		$this->systemRoot = isset($this->options['systemRoot']) ? $this->options['systemRoot'] : $this->separator;
 		
-		// set server encoding
-		if (!empty($this->options['encoding']) && strtoupper($this->options['encoding']) !== 'UTF-8') {
-			$this->encoding = $this->options['encoding'];
-		} else {
-			$this->encoding = null;
-		}
-		
 		// set ARGS
 		$this->ARGS = $_SERVER['REQUEST_METHOD'] === 'POST'? $_POST : $_GET;
 		
@@ -1184,6 +1177,13 @@ abstract class elFinderVolumeDriver {
 		
 		if (!$this->init()) {
 			return false;
+		}
+		
+		// set server encoding
+		if (!empty($this->options['encoding']) && strtoupper($this->options['encoding']) !== 'UTF-8') {
+			$this->encoding = $this->options['encoding'];
+		} else {
+			$this->encoding = null;
 		}
 		
 		// check some options is arrays
@@ -3667,9 +3667,10 @@ abstract class elFinderVolumeDriver {
 		
 		$ext = '';
 
-		if (preg_match('/\.((tar\.(gz|bz|bz2|z|lzo))|cpio\.gz|ps\.gz|xcf\.(gz|bz2)|[a-z0-9]{1,4})$/i', $name, $m)) {
-			$ext  = '.'.$m[1];
-			$name = substr($name, 0,  strlen($name)-strlen($m[0]));
+		$splits = elFinder::splitFileExtention($name);
+		if ($splits[1]) {
+			$ext  = '.'.$splits[1];
+			$name = $splits[0];
 		} 
 		
 		if ($checkNum && preg_match('/('.preg_quote($suffix, '/').')(\d*)$/i', $name, $m)) {
@@ -6054,7 +6055,7 @@ abstract class elFinderVolumeDriver {
 				}
 			}
 			unset($o);
-			$this->procExec(ELFINDER_ZIP_PATH . ' -v', $o, $c);
+			$this->procExec(ELFINDER_ZIP_PATH . ' -h', $o, $c);
 			if ($c == 0) {
 				$arcs['create']['application/zip']  = array('cmd' => ELFINDER_ZIP_PATH, 'argc' => '-r9', 'ext' => 'zip');
 			}
@@ -6126,6 +6127,9 @@ abstract class elFinderVolumeDriver {
 		if ($base[0] === $separator && strpos($base, 0, strlen($systemroot)) !== $systemroot) {
 			$base = $systemroot . substr($base, 1);
 		}
+		if ($base !== $systemroot) {
+			$base = rtrim($base, $separator);
+		}
 		
 		// 'Here'
 		if ($path === '' || $path === '.' . $separator) return $base;
@@ -6140,7 +6144,10 @@ abstract class elFinderVolumeDriver {
 		while(preg_match($normreg, $path)) {
 			$path = preg_replace($normreg, '$1', $path, 1);
 		}
-		
+		if ($path !== $systemroot) {
+			$path = rtrim($path, $separator);
+		}
+
 		// Absolute path
 		if ($path[0] === $separator || strpos($path, $systemroot) === 0) {
 			return $path;

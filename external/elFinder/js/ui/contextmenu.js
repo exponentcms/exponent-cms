@@ -1,11 +1,10 @@
-"use strict";
 /**
  * @class  elFinder contextmenu
  *
  * @author Dmitry (dio) Levashov
  **/
 $.fn.elfindercontextmenu = function(fm) {
-	
+	"use strict";
 	return this.each(function() {
 		var self   = $(this),
 			cmItem = 'elfinder-contextmenu-item',
@@ -152,28 +151,30 @@ $.fn.elfindercontextmenu = function(fm) {
 						menu.data('hideTm') && clearTimeout(menu.data('hideTm'));
 					})
 					.data('hideTm', setTimeout(function() {
-						cwd.find('.elfinder-cwd-file').off(evTouchStart);
-						cwd.find('.elfinder-cwd-file.ui-selected')
-						.one(evTouchStart, function(e) {
-							if (e.originalEvent.touches.length > 1) {
-								return;
-							}
-							var tgt = $(e.target);
-							if (menu.first().length && !tgt.is('input:checkbox') && !tgt.hasClass('elfinder-cwd-select')) {
-								open(e.originalEvent.touches[0].pageX, e.originalEvent.touches[0].pageY);
-								return false;
-							}
+						if (menu.is(':visible')) {
 							cwd.find('.elfinder-cwd-file').off(evTouchStart);
-						})
-						.one('unselect.'+fm.namespace, function() {
-							cwd.find('.elfinder-cwd-file').off(evTouchStart);
-						});
-						menu.fadeOut({
-							duration: 300,
-							fail: function() {
-								menu.css('opacity', '1').show();
-							}
-						});
+							cwd.find('.elfinder-cwd-file.ui-selected')
+							.one(evTouchStart, function(e) {
+								if (e.originalEvent.touches.length > 1) {
+									return;
+								}
+								var tgt = $(e.target);
+								if (menu.first().length && !tgt.is('input:checkbox') && !tgt.hasClass('elfinder-cwd-select')) {
+									open(e.originalEvent.touches[0].pageX, e.originalEvent.touches[0].pageY);
+									return false;
+								}
+								cwd.find('.elfinder-cwd-file').off(evTouchStart);
+							})
+							.one('unselect.'+fm.namespace, function() {
+								cwd.find('.elfinder-cwd-file').off(evTouchStart);
+							});
+							menu.fadeOut({
+								duration: 300,
+								fail: function() {
+									menu.css('opacity', '1').show();
+								}
+							});
+						}
 					}, 4500));
 				}
 			},
@@ -507,11 +508,11 @@ $.fn.elfindercontextmenu = function(fm) {
 								}
 							});
 							if (cmd.extra && cmd.extra.node) {
-								$('<span class="elfinder-button-icon elfinder-button-icon-'+(cmd.extra.icon || '')+' elfinder-contextmenu-extra-icon"/>')
+								$('<span class="elfinder-button-icon elfinder-button-icon-'+(cmd.extra.icon || '')+' '+exIcon+'"/>')
 									.append(cmd.extra.node).appendTo(node);
-								$(cmd.extra.node).trigger('ready');
+								$(cmd.extra.node).trigger('ready', {targets: targets});
 							} else {
-								node.remove('.elfinder-contextmenu-extra-icon');
+								node.remove('.'+exIcon);
 							}
 						}
 						

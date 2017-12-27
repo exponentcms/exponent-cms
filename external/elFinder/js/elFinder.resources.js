@@ -1,4 +1,3 @@
-"use strict";
 /**
  * elFinder resources registry.
  * Store shared data
@@ -62,6 +61,7 @@ elFinder.prototype.resources = {
 	
 	mixin : {
 		make : function() {
+			"use strict";
 			var self = this,
 				fm   = this.fm,
 				cmd  = this.name,
@@ -77,9 +77,7 @@ elFinder.prototype.resources = {
 				empty= wz.hasClass('elfinder-cwd-wrapper-empty'),
 				rest = function(){
 					if (!overlay.is(':hidden')) {
-						overlay.addClass('ui-front')
-							.elfinderoverlay('hide')
-							.off('click', cancel);
+						overlay.elfinderoverlay('hide').off('click', cancel);
 					}
 					node.removeClass('ui-front').css('position', '');
 					if (tarea) {
@@ -96,7 +94,7 @@ elFinder.prototype.resources = {
 						if (sel) {
 							move && fm.trigger('unlockfiles', {files: sel});
 							fm.clipboard([]);
-							fm.trigger('selectfiles', { files: sel })
+							fm.trigger('selectfiles', { files: sel });
 						}
 						error && fm.error(error);
 					})
@@ -142,6 +140,9 @@ elFinder.prototype.resources = {
 					}
 				},
 				cancel = function(e) { 
+					if (!overlay.is(':hidden')) {
+						pnode.css('z-index', '');
+					}
 					if (! inError) {
 						cleanup();
 						dfrd.reject();
@@ -183,6 +184,9 @@ elFinder.prototype.resources = {
 							valid  = true,
 							cut;
 
+						if (!overlay.is(':hidden')) {
+							pnode.css('z-index', '');
+						}
 						if (name === '') {
 							return cancel();
 						}
@@ -197,12 +201,12 @@ elFinder.prototype.resources = {
 							}
 							if (!name || name === '.' || name === '..' || !valid) {
 								inError = true;
-								fm.error(file.mime === 'directory'? 'errInvDirname' : 'errInvName', {modal: true, close: select});
+								fm.error(file.mime === 'directory'? 'errInvDirname' : 'errInvName', {modal: true, close: function(){setTimeout(select, 120);}});
 								return false;
 							}
 							if (fm.fileByName(name, phash)) {
 								inError = true;
-								fm.error(['errExists', name], {modal: true, close: select});
+								fm.error(['errExists', name], {modal: true, close: function(){setTimeout(select, 120);}});
 								return false;
 							}
 
@@ -229,7 +233,7 @@ elFinder.prototype.resources = {
 										fm.unlockfiles({files : [id]});
 										inError = true;
 										input.show().prev().remove();
-										fm.error(error, {modal: true, close: select});
+										fm.error(error, {modal: true, close: function(){setTimeout(select, 120);}});
 									})
 									.done(function(data) {
 										if (data && data.added && data.added[0]) {
@@ -265,17 +269,18 @@ elFinder.prototype.resources = {
 						}
 					}),
 				select = function() {
-					var name = input.val().replace(/\.((tar\.(gz|bz|bz2|z|lzo))|cpio\.gz|ps\.gz|xcf\.(gz|bz2)|[a-z0-9]{1,4})$/ig, '');
-					if (!inError && fm.UA.Mobile && !fm.UA.iOS) { // since iOS has a bug? so disable it
-						overlay.on('click', cancel)
-							.removeClass('ui-front').elfinderoverlay('show');
+					var name = fm.splitFileExtention(input.val())[0];
+					if (!inError && fm.UA.Mobile && !fm.UA.iOS) { // since iOS has a bug? (z-index not effect) so disable it
+						overlay.on('click', cancel).elfinderoverlay('show');
+						pnode.css('z-index', overlay.css('z-index') + 1);
 					}
 					inError = false;
-					input.css('z-index', overlay.css('z-index')).focus().select();
+					! fm.enabled() && fm.enable();
+					input.focus().select();
 					input[0].setSelectionRange && input[0].setSelectionRange(0, name.length);
 				},
 				resize = function() {
-					node.trigger('scrolltoview');
+					node.trigger('scrolltoview', {blink : false});
 				},
 				openCallback = function() {
 					dfrd && (dfrd.state() === 'pending') && dfrd.reject();
@@ -344,6 +349,7 @@ elFinder.prototype.resources = {
 		}
 	},
 	blink: function(elm, mode) {
+		"use strict";
 		var acts = {
 			slowonce : function(){elm.hide().delay(250).fadeIn(750).delay(500).fadeOut(3500);},
 			lookme   : function(){elm.show().fadeOut(500).fadeIn(750);}

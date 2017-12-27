@@ -1,4 +1,3 @@
-"use strict";
 /**
  * @class  elFinder command "netmount"
  * Mount network volume with user credentials.
@@ -6,6 +5,7 @@
  * @author Dmitry (dio) Levashov
  **/
 elFinder.prototype.commands.netmount = function() {
+	"use strict";
 	var self = this,
 		content;
 
@@ -18,11 +18,11 @@ elFinder.prototype.commands.netmount = function() {
 		load : function() {
 			this.drivers = this.fm.netDrivers;
 		}
-	}
+	};
 
 	this.getstate = function() {
 		return this.drivers.length ? 0 : -1;
-	}
+	};
 	
 	this.exec = function() {
 		var fm = self.fm,
@@ -34,14 +34,6 @@ elFinder.prototype.commands.netmount = function() {
 					},
 					inputs = {
 						protocol : $('<select/>')
-						.on('click',function() {
-							var $this = $(this);
-							if ($this.data('keepFocus')) {
-								$this.removeData('keepFocus');
-							} else {
-								$this.data('keepFocus', true);
-							}
-						})
 						.on('change', function(e, data){
 							var protocol = this.value;
 							content.find('.elfinder-netmount-tr').hide();
@@ -60,13 +52,12 @@ elFinder.prototype.commands.netmount = function() {
 						title          : fm.i18n('netMountDialogTitle'),
 						resizable      : false,
 						modal          : true,
-						destroyOnClose : true,
+						destroyOnClose : false,
 						open           : function() {
 							$(window).on('focus.'+fm.namespace, winFocus);
 							inputs.protocol.change();
 						},
 						close          : function() { 
-							//delete self.dialog; 
 							dfrd.state() == 'pending' && dfrd.reject();
 							$(window).off('focus.'+fm.namespace, winFocus);
 						},
@@ -192,7 +183,7 @@ elFinder.prototype.commands.netmount = function() {
 		}
 
 		return dfrd.promise();
-	}
+	};
 
 	self.fm.bind('netmount', function(e) {
 		var d = e.data || null,
@@ -206,7 +197,7 @@ elFinder.prototype.commands.netmount = function() {
 		}
 	});
 
-}
+};
 
 elFinder.prototype.commands.netunmount = function() {
 	var self = this;
@@ -223,8 +214,9 @@ elFinder.prototype.commands.netunmount = function() {
 	};
 
 	this.getstate = function(sel) {
-		var fm = this.fm;
-		return !!sel && this.drivers.length && !this._disabled && fm.file(sel[0]).netkey ? 0 : -1;
+		var fm = this.fm,
+			file;
+		return !!sel && this.drivers.length && !this._disabled && (file = fm.file(sel[0])) && file.netkey ? 0 : -1;
 	};
 	
 	this.exec = function(hashes) {

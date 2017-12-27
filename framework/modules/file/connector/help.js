@@ -1,4 +1,3 @@
-"use strict";
 /**
  * @class  elFinder command "help"
  * "About" dialog
@@ -6,6 +5,7 @@
  * @author Dmitry (dio) Levashov
  **/
 (elFinder.prototype.commands.help = function() {
+	"use strict";
 	var fm   = this.fm,
 		self = this,
 		linktpl = '<div class="elfinder-help-link"> <a href="{url}">{link}</a></div>',
@@ -233,7 +233,7 @@
 						hu: 'Magyar',
 						id: 'Bahasa Indonesia',
 						it: 'Italiano',
-						jp: '日本語',
+                        ja: '日本語',
 						ko: '한국어',
 						nl: 'Nederlands',
 						no: 'Norsk',
@@ -265,7 +265,7 @@
 					var node = $('<div/>');
 					init(function() {
 					var pnls = $.map(fm.options.uiOptions.toolbar, function(v) {
-							return $.isArray(v)? v : null
+								return $.isArray(v)? v : false;
 						}),
 						tags = [],
 							hides = fm.storage('toolbarhides') || {};

@@ -1,10 +1,10 @@
-"use strict";
 /**
  * @class  elFinder dialog
  *
  * @author Dmitry (dio) Levashov
  **/
 $.fn.elfinderdialog = function(opts, fm) {
+	"use strict";
 	var platformWin = (window.navigator.platform.indexOf('Win') != -1),
 		delta       = {},
 		syncSize    = { enabled: false, width: false, height: false, defaultSize: null },
@@ -34,8 +34,8 @@ $.fn.elfinderdialog = function(opts, fm) {
 		},
 		checkEditing = function() {
 			var cldialog = 'elfinder-dialog',
-				dialogs = elfNode.children('.'+cldialog+':visible');
-			fm[dialogs.find('.'+fm.res('class', 'editing')).length? 'disable' : 'enable']();
+				dialogs = elfNode.children('.' + cldialog + '.' + fm.res('class', 'editing') + ':visible');
+			fm[dialogs.length? 'disable' : 'enable']();
 		},
 		syncTm, dialog, elfNode;
 	
@@ -163,7 +163,7 @@ $.fn.elfinderdialog = function(opts, fm) {
 			makeHeaderBtn = function() {
 				$.each(opts.headerBtnOrder.split(':').reverse(), function(i, v) {
 					headerBtns[v] && headerBtns[v]();
-				})
+				});
 				if (platformWin) {
 					titlebar.children('.elfinder-titlebar-button').addClass('elfinder-titlebar-button-right');
 				}
@@ -268,7 +268,7 @@ $.fn.elfinderdialog = function(opts, fm) {
 								} else {
 									//restore
 									dialog.removeData('minimized').before(mnode.css(Object.assign({'position': 'absolute'}, mnode.offset())));
-									fm.toFront(mnode)
+									fm.toFront(mnode);
 									mnode.animate(Object.assign({ width: dialog.width(), height: dialog.height() }, doffset), function() {
 										dialog.show();
 										fm.toFront(dialog);
@@ -379,7 +379,7 @@ $.fn.elfinderdialog = function(opts, fm) {
 							}
 						});
 					}
-					checkEditing();
+					dialog.hasClass(fm.res('class', 'editing')) && checkEditing();
 				})
 				.on('close', function(e) {
 					var dialogs, dfd;
@@ -410,7 +410,8 @@ $.fn.elfinderdialog = function(opts, fm) {
 	
 						if (typeof(opts.close) == 'function') {
 							$.proxy(opts.close, self[0])();
-						} else if (opts.destroyOnClose) {
+						}
+						if (opts.destroyOnClose && dialog.parent().length) {
 							dialog.hide().remove();
 						}
 						
@@ -472,7 +473,7 @@ $.fn.elfinderdialog = function(opts, fm) {
 							scrTop : win.scrollTop(),
 							width  : win.width(),
 							height : win.height()
-						}
+						};
 						winSize.right = winSize.scrLeft + winSize.width;
 						winSize.bottom = winSize.scrTop + winSize.height;
 						
@@ -530,6 +531,10 @@ $.fn.elfinderdialog = function(opts, fm) {
 				.on('focus', '.'+cltabstop, function() {
 					$(this).addClass(clhover).parent('label').addClass(clhover);
 					this.id && $(this).parent().find('label[for='+this.id+']').addClass(clhover);
+				})
+				.on('click', 'select.'+cltabstop, function() {
+					var node = $(this);
+					node.data('keepFocus')? node.removeData('keepFocus') : node.data('keepFocus', true);
 				})
 				.on('blur', '.'+cltabstop, function() {
 					$(this).removeClass(clhover).removeData('keepFocus').parent('label').removeClass(clhover);
@@ -601,6 +606,9 @@ $.fn.elfinderdialog = function(opts, fm) {
 					+cltabstop
 					+'"><span class="ui-button-text">'+name+'</span></button>')
 				.on('click', $.proxy(cb, self[0]));
+			if (cb._cssClass) {
+				button.addClass(cb._cssClass);
+			}
 			if (platformWin) {
 				buttonset.append(button);
 			} else {

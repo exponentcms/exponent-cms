@@ -1,4 +1,3 @@
-"use strict";
 /**
  * @class elFinder command "download". 
  * Download selected files.
@@ -8,6 +7,7 @@
  **/
 elFinder.prototype.commands.zipdl = function() {};
 elFinder.prototype.commands.download = function() {
+	"use strict";
 	var self   = this,
 		fm     = this.fm,
 		czipdl = null,
@@ -33,9 +33,9 @@ elFinder.prototype.commands.download = function() {
 
 			if (mixed) {
 				mixedCmd = czipdl? 'zipdl' : 'download';
-				hashes = $.map(hashes, function(h) {
+				hashes = $.grep(hashes, function(h) {
 					var f = fm.file(h),
-						res = (! f || (! czipdl && f.mime === 'directory') || ! fm.isCommandEnabled(mixedCmd, h))? null : h;
+						res = (! f || (! czipdl && f.mime === 'directory') || ! fm.isCommandEnabled(mixedCmd, h))? false : true;
 					if (f && inExec && ! res) {
 						$('#' + fm.cwdHash2Id(f.hash)).trigger('unselect');
 					}
@@ -50,8 +50,8 @@ elFinder.prototype.commands.download = function() {
 				}
 			}
 			
-			return $.map(self.files(hashes), function(f) { 
-				var res = (! f.read || (! zipOn && f.mime == 'directory')) ? null : f;
+			return $.grep(self.files(hashes), function(f) { 
+				var res = (! f.read || (! zipOn && f.mime == 'directory')) ? false : true;
 				if (inExec && ! res) {
 					$('#' + fm.cwdHash2Id(f.hash)).trigger('unselect');
 				}
@@ -65,8 +65,8 @@ elFinder.prototype.commands.download = function() {
 		pattern     : 'shift+enter'
 	}];
 	
-	this.getstate = function(sel) {
-		var sel    = this.hashes(sel),
+	this.getstate = function(select) {
+		var sel    = this.hashes(select),
 			cnt    = sel.length,
 			maxReq = this.options.maxRequests || 10,
 			mixed  = false,
@@ -176,8 +176,8 @@ elFinder.prototype.commands.download = function() {
 		}
 	});
 	
-	this.exec = function(hashes) {
-		var hashes  = this.hashes(hashes),
+	this.exec = function(select) {
+		var hashes  = this.hashes(select),
 			fm      = this.fm,
 			base    = fm.options.url,
 			files   = filter(hashes, true),
@@ -317,7 +317,7 @@ elFinder.prototype.commands.download = function() {
 			return dfrd.reject();
 		}
 		
-		fileCnt = $.map(files, function(f) { return f.mime === 'directory'? null : true; }).length;
+		fileCnt = $.grep(files, function(f) { return f.mime === 'directory'? false : true; }).length;
 		link = $('<a>').hide().appendTo('body');
 		html5dl = (typeof link.get(0).download === 'string');
 		

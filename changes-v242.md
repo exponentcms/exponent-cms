@@ -2,7 +2,7 @@ Version 2.4.2 - Specific changes from previous version
 ------------------------------------------------------
 
 #### v242 adds these features to v241 previous releases:
-- implement php v7.2 compatibility, removes create_function() calls
+- partially implement php v7.2 compatibility, removes create_function() calls (lacking new Smarty)
 - remove support for php v5.3 and v5.4 
 - remove support for obsolete browsers, optionally can be turned back on
 - implement support for SwiftMailer v6.x if php version 7.0+; v5.4.8 used if older php version
@@ -48,12 +48,12 @@ Version 2.4.2 - Specific changes from previous version
 #### v242 updates these 3rd party libraries in v241 previous releases:
 - CKEditor to v4.8.0
 - tinymce to v4.7.4
-- elFinder to v2.1.30, adds dockable previewer, icon filetype tags
+- elFinder to v2.1.31, adds dockable previewer, icon filetype tags
 - plupload to v2.3.6 (v3.1.1 is latest)
-- mediaelement to v4.2.7 and mediaelement plugins to v2.5.0
+- mediaelement to v4.2.7; mediaelement plugins to v2.5.0
 - jQuery to v3.2.1 (if old browser support turned off), also loads jQuery migrate v3.0.1
 - swiftmailer to v6.0.2 (v5.4.8 remains for older php version 5.x support)
-- minify to v2.3.3 (v3.0.2 is latest)
+- minify to v2.3.3 (v3.0.3 is latest)
 - twitter-api-php to v1.0.6
 - xmlrpc.php to v4.3.0 (removed old v3 files)
 - select2 to v4.0.5
