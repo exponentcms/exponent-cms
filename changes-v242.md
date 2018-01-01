@@ -2,7 +2,7 @@ Version 2.4.2 - Specific changes from previous version
 ------------------------------------------------------
 
 #### v242 adds these features to v241 previous releases:
-- partially implement php v7.2 compatibility, removes create_function() calls (lacking new Smarty)
+- implement php v7.2 compatibility, removes create_function() calls
 - remove support for php v5.3 and v5.4 
 - remove support for obsolete browsers, optionally can be turned back on
 - implement support for SwiftMailer v6.x if php version 7.0+; v5.4.8 used if older php version

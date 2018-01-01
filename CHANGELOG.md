@@ -11,7 +11,7 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Version 2.4.2
 -------------
 ### Address issues in v2.4.1 and Prepare for v3.0.0
- - compatible with PHP 5.5.x, 5.6.x, 7.0.x, and 7.1.x
+  - compatible with PHP 5.5.x, 5.6.x, 7.0.x, 7.1.x, and 7.2.x
    -- removed compatibility with PHP 5.3.x and 5.4.x
  - optionally removes support for obsolete browsers
    -- uses jQuery v3.x and doesn't load browser shims

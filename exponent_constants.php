@@ -556,7 +556,11 @@ if (!defined('JQUERY_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    define('SMARTY_VERSION', '3.1.27');
+//    if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
+        define('SMARTY_VERSION', '3.1.27');
+//    } else {
+//        define('SMARTY_VERSION', '3.1.31');  //note smarty v3.1.28+ won't work with php < v7.1.x
+//    }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
 }
@@ -569,7 +573,7 @@ if (!defined('SWIFT_PATH')) {
     if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
         define('SWIFT_VERSION', '5.4.8');
     } else {
-        define('SWIFT_VERSION', '6.0.2');
+        define('SWIFT_VERSION', '6.0.2');  //note v6.x requires php v7.x
     }
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
     define('LEXER_VERSION', '1.0.1');
