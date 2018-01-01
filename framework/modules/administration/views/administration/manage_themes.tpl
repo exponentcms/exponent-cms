@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,14 @@
  *}
 
 {css unique="themes" corecss="tables" link="`$asset_path`css/managethemes.css"}
-
+    {if bs()}
+    {literal}
+    span.switchtheme.current {
+        background:none;
+    	padding:5px 5px 0
+    }
+    {/literal}
+    {/if}
 {/css}
 
 {messagequeue}
@@ -58,7 +65,6 @@
 					</td>
 					<td class="actions module-actions">
 						{if $theme->style_variations|@count>0}
-							{*<h6>{"Style Variations"|gettext}</h6>*}
 							{foreach from=$theme->style_variations item=sv key=svkey name=styles}
                                 {group label=$sv|ucfirst|cat:' '|cat:'Style'|gettext}
                                     {if $smarty.const.DISPLAY_THEME == $class && $smarty.const.DISPLAY_THEME == $smarty.const.DISPLAY_THEME_REAL && $smarty.const.THEME_STYLE == $smarty.const.THEME_STYLE_REAL &&
@@ -66,13 +72,11 @@
                                     {elseif $smarty.const.DISPLAY_THEME == $class && ($smarty.const.THEME_STYLE == $sv || ($smarty.const.THEME_STYLE == "" && $sv == "Default"))}
                                         (<em>{"Previewing"|gettext}</em>)
                                     {else}
-                                        {*{icon img="view.png" action=theme_preview theme=$class sv=$sv title="Preview this Theme"|gettext}*}
                                         {icon class="view" action=theme_preview theme=$class sv=$sv title="Preview this Theme Style"|gettext text="Preview"|gettext}
                                     {/if}
                                     {if $smarty.const.DISPLAY_THEME_REAL == $class && ($smarty.const.THEME_STYLE_REAL == $sv || ($smarty.const.THEME_STYLE_REAL == "" && $sv == "Default"))}
-                                        <span class="switchtheme current"> ({"Current"|gettext})</span>
+                                        <span class="switchtheme current"><i class="{expTheme::iconStyle('approve')} text-success"></i> ({"Current"|gettext})</span>
                                     {else}
-                                        {*<a class="switchtheme add" href="{link action=theme_switch theme=$class sv=$sv}" title="{'Select this Style'|gettext}">{$sv}</a>*}
                                         {icon class="switchtheme add" action=theme_switch theme=$class sv=$sv title='Select this Theme Style'|gettext text='Use'|gettext}
                                     {/if}
                                     {if ($theme->user_configured)}
@@ -85,27 +89,25 @@
                                 {/group}
 							{/foreach}
 						{else}
-                            {group label='Default Style'|gettext}
+                            {group label=''}
                                 {if $smarty.const.DISPLAY_THEME != $class}
-                                    {*{icon img="view.png" action=theme_preview theme=$class title="Preview this Theme"|gettext}*}
                                     {icon class="view" action=theme_preview theme=$class title="Preview this Theme"|gettext text="Preview"|gettext}
                                 {elseif $smarty.const.DISPLAY_THEME_REAL != $smarty.const.DISPLAY_THEME}
                                     (<em>{"Previewing"|gettext}</em>)
                                 {/if}
                                 {if $smarty.const.DISPLAY_THEME_REAL != $class}
-                                    {*<a class="switchtheme add" href="{link action=theme_switch theme=$class}" title="{'Select this Theme'|gettext}">{"Use"|gettext}</a>*}
                                     {icon class="switchtheme add" action=theme_switch theme=$class title='Select this Theme'|gettext text="Use"|gettext}
                                 {else}
-                                    <span class="switchtheme current">({"Current"|gettext})</span>
+                                    <span class="switchtheme current"><i class="{expTheme::iconStyle('approve')} text-success"></i> ({"Current"|gettext})</span>
                                 {/if}
                                 {if ($theme->user_configured)}
                                     {icon class=configure action=configure_theme theme=$class title="Configure this Theme"|gettext}
         						{/if}
                             {/group}
 						{/if}
-                        {if (!$theme->stock_theme)}
+                        {*{if (!$theme->stock_theme)}*}
                             {icon class=export action=export_theme theme=$class title="Export this Theme"|gettext}
-                        {/if}
+                        {*{/if}*}
 					</td>
 				</tr>
         	{/foreach}

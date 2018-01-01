@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,7 +17,7 @@
 
 {/css}
 
-{if $style && !bs3()}
+{if $style && !bs3() && !bs4()}
     {css unique="formmod2" corecss="forms2col"}
 
     {/css}
@@ -183,6 +183,9 @@
                                     success:function(msg) {
                                         // get the (fake) control html and display it to the page
                                         $(ctl).closest('.item').replaceWith(msg);  //  update control in the displayed form
+                                        // if ($('#toggle_grid').hasClass('active')) {
+                                        //     $(ctl).closest('.item').addClass('clean');
+                                        // }
                                         // we need to run javascript and push the css to head
                                         $(ctl).closest('.item').find('script').each(function(k, n){
                                             if(!$(n).attr('src')){

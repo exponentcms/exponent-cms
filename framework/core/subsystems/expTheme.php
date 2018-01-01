@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -117,6 +117,16 @@ class expTheme
         } else {
             $less_vars = array();
         }
+        if (THEME_STYLE != '' && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/less_' . THEME_STYLE)) {
+            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less_' . THEME_STYLE;
+        } else {
+            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less';
+        }
+        $less_vars = array_merge(
+            array('swatch' => SWATCH),
+            array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
+            $less_vars
+        );
 
         // check to see if we're in XHTML or HTML mode
         if (isset($config['xhtml']) && $config['xhtml'] == true) {
@@ -127,8 +137,8 @@ class expTheme
             define('XHTML_CLOSING', "");
         }
 
-        // load primer, lessprimer, link (css) and lesscss & normalize CSS files
-        if (!empty($config['css_primer']) || !empty($config['lessprimer']) || !empty($config['link']) || !empty($config['lesscss']) || !empty($config['normalize'])) {
+        // load primer, lessprimer, scssprimer, link (css), lesscss and scsscss & normalize CSS files
+        if (!empty($config['css_primer']) || !empty($config['lessprimer']) || !empty($config['scssprimer']) || !empty($config['link']) || !empty($config['lesscss']) || !empty($config['scsscss']) || !empty($config['normalize'])) {
             expCSS::pushToHead($config);
         };
 
@@ -181,10 +191,16 @@ class expTheme
                 BASE . 'framework/core/forms/controls/bootstrap'
             );
         }
-        if (bs3(true)) {
+        if (bs3(true) || bs4()) {
             array_unshift(
                 $auto_dirs,
                 BASE . 'framework/core/forms/controls/bootstrap3'
+            );
+        }
+        if (bs4()) {
+            array_unshift(
+                $auto_dirs,
+                BASE . 'framework/core/forms/controls/bootstrap4'
             );
         }
         if (newui()) {
@@ -352,7 +368,7 @@ class expTheme
         // when minification is used, the comment below gets replaced when the buffer is dumped
         $str .= '<!-- MINIFY REPLACE -->';
 
-        if ($config['meta']['ie_compat']) {
+        if ($config['meta']['ie_compat'] && OLD_BROWSER_SUPPORT) {
             // some IE 6 support
             $str .= "\t" . '<!--[if IE 6]><style type="text/css">  body { behavior: url(' . PATH_RELATIVE . 'external/csshover.htc); }</style><![endif]-->' . "\n";
 
@@ -384,9 +400,72 @@ class expTheme
     public static function footerInfo($params = array())
     {
         // checks to see if the theme is calling footerInfo.
-        global $validateTheme, $user, $jsForHead;
+        global $validateTheme, $user, $jsForHead, $less_vars;
 
         $validateTheme['footerinfo'] = true;
+
+//        if (THEME_STYLE != '' && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/less_' . THEME_STYLE)) {
+//            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less_' . THEME_STYLE;
+//        } else {
+//            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less';
+//        }
+
+        if (bs()) {
+//                    $lessvars = array_merge(
+//                        array('swatch' => SWATCH),
+//                        array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
+//                        !empty($head_config['lessvars']) ? $head_config['lessvars'] : array()
+//                    );
+//            $less_vars = array_merge(
+//                array('swatch' => SWATCH),
+//                array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
+//                $less_vars
+//            );
+            if (bs2()) {
+                expCSS::pushToHead(
+                    array(
+                        "lessprimer" => "external/bootstrap/less/bootstrap.less",
+                        "lessvars" => $less_vars,
+                    )
+                );
+                expCSS::pushToHead(
+                    array(
+                        "lessprimer" => "external/bootstrap/less/responsive.less",
+                        "lessvars" => $less_vars,
+                    )
+                );
+            } elseif (bs3(true)) {
+                expCSS::pushToHead(
+                    array(
+                        "lessprimer" => "external/bootstrap3/less/bootstrap.less",
+                        "lessvars" => $less_vars,
+                    )
+                );
+                expCSS::pushToHead(
+                    array(
+                        "lessprimer" => "external/font-awesome4/less/font-awesome.less",
+                        "lessvars" => $less_vars,
+                    )
+                );
+            } elseif (bs4(true)) {
+                expCSS::pushToHead(array(
+           		    "scssprimer"=>"external/bootstrap4/scss/bootstrap.scss",
+                    "lessvars"=>$less_vars,
+                ));
+                expCSS::pushToHead(array(
+//                    "scssprimer"=>"external/font-awesome4/scss/font-awesome.scss",
+                    "scssprimer"=>"external/font-awesome5/web-fonts-with-css/scss/fontawesome.scss",
+                    "lessvars"=>$less_vars,
+                ));
+            } elseif (newui()) {
+                expCSS::pushToHead(
+                    array(
+                        "lessprimer" => "external/font-awesome4/less/font-awesome.less",
+                        "lessvars" => $less_vars,
+                    )
+                );
+            }
+        }
 
         if (!empty($user->getsToolbar) && PRINTER_FRIENDLY != 1 && EXPORT_AS_PDF != 1 && !defined(
                 'SOURCE_SELECTOR'
@@ -405,6 +484,7 @@ class expTheme
         if (!empty($params['src']) || !empty($params['content']) || !empty($params['yui3mods']) || !empty($params['jquery']) || !empty($params['bootstrap'])) {
             expJavascript::pushToFoot($params);
         }
+
         self::processCSSandJS();
         echo expJavascript::footJavascriptOutput();
 
@@ -1480,9 +1560,9 @@ class expTheme
             'magenta' => 'btn-danger',
             'orange'  => 'btn-warning',
             'yellow'  => 'btn-warning',
-            'grey'    => 'btn-default',
+            'grey'    => 'btn-default',  //fixme bs4 btn-secondary
             'purple'  => 'btn-info',
-            'black'   => 'btn-inverse',
+            'black'   => 'btn-inverse',  //fixme bs4 btn-dark
             'pink'    => 'btn-danger',
         );
         if (bs()) {
@@ -1498,6 +1578,9 @@ class expTheme
             } else {
                 $found = BTN_COLOR;
             }
+        }
+        if (bs4() && $found == 'btn-default') {
+            $found = 'btn-secondary';
         }
         return $found;
     }
@@ -1520,7 +1603,7 @@ class expTheme
                 $btn_size = 'btn-small';
             }
             return $btn_size;
-        } elseif (bs3()) {
+        } elseif (bs3() || bs4()) {
             if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
                 $btn_size = 'btn-lg';
             } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
@@ -1569,6 +1652,7 @@ class expTheme
     public static function buttonIcon($class, $size=null)
     {
         $btn_type = '';
+        $found = new stdClass();
         if (bs2()) {
             switch ($class) {
                 case 'delete' :
@@ -1648,7 +1732,6 @@ class expTheme
                     $class = "spinner icon-spin";
                     break;
             }
-            $found = new stdClass();
             $found->type = $btn_type;
             $found->class = $class;
             $found->size = self::iconSize($size);
@@ -1736,11 +1819,100 @@ class expTheme
                     $class = "spinner fa-spin";
                     break;
             }
-            $found = new stdClass();
             $found->type = $btn_type;
             $found->class = $class;
             $found->size = self::iconSize($size);
             $found->prefix = 'fa fa-';
+            return $found;
+        } elseif (bs4()) {
+            $found->prefix = 'fas fa-';
+            switch ($class) {
+                case 'delete' :
+                case 'delete-title' :
+                    $class = "times-circle";
+                    $btn_type = "btn-danger";  // red
+                    break;
+                case 'add' :
+                case 'add-title' :
+                case 'add-body' :
+                case 'switchtheme add' :
+                    $class = "plus-circle";
+                    $btn_type = "btn-success";  // green
+                    break;
+                case 'copy' :
+                    $class = "copy";
+                    $found->prefix = "far fa-";
+                    break;
+                case 'downloadfile' :
+                case 'export' :
+                    $class = "download";
+                    break;
+                case 'uploadfile' :
+                case 'import' :
+                    $class = "upload";
+                    break;
+                case 'manage' :
+                    $class = "briefcase";
+                    break;
+                case 'merge' :
+                case 'arrow_merge' :
+                    $class = "sign-in-alt";
+                    break;
+                case 'reranklink' :
+                case 'alphasort' :
+                    $class = "sort";
+                    break;
+                case 'configure' :
+                    $class = "wrench";
+                    break;
+                case 'view' :
+                    $class = "search";
+                    break;
+                case 'page_next' :
+                    $class ='angle-double-right';
+                    break;
+                case 'page_prev' :
+                    $class = 'angle-double-left';
+                    break;
+                case 'password' :
+                case 'change_password' :
+                    $class = 'key';
+                    break;
+                case 'clean' :
+                    $class = 'check-square';
+                    $found->prefix = "far fa-";
+                    break;
+                case 'trash' :
+                    $class = "trash-alt";
+                    $found->prefix = "far fa-";
+                    break;
+                case 'userperms' :
+                    $class = 'user';
+                    break;
+                case 'groupperms' :
+                    $class = 'users';
+                    break;
+                case 'monthviewlink' :
+                case 'weekviewlink' :
+                    $class = 'calendar';
+                    break;
+                case 'listviewlink' :
+                    $class = 'list';
+                    break;
+                case 'adminviewlink' :
+                    $class = 'cogs';
+                    break;
+                case 'approve' :
+                    $class = "check";
+                    $btn_type = "btn-success"; // green
+                    break;
+                case 'ajax' :
+                    $class = "spinner fa-spin";
+                    break;
+            }
+            $found->type = $btn_type;
+            $found->class = $class;
+            $found->size = self::iconSize($size);
             return $found;
         } else {
             return $class;
@@ -1785,7 +1957,7 @@ class expTheme
                 $icon_size = 'icon-large';
             }
             return $icon_size;
-        } elseif (bs3()) {
+        } elseif (bs3() || bs4()) {
             if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
                 $icon_size = 'fa-lg';
             } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {

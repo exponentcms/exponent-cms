@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -51,8 +51,8 @@
    	{/if}
     {$myloc=serialize($__loc)}
     <div id="ss-{$name}" class="slideshow-container">
-        <ul>
-            <div class="slideshow-frame-ex owl-carousel owl-theme">
+        <ul class="slideshow-frame-ex owl-carousel owl-theme">
+            {*<div class="slideshow-frame-ex owl-carousel owl-theme">*}
             {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
             {foreach key=key from=$slides item=slide name=slides}
                 <li class="slide">
@@ -77,9 +77,11 @@
                         </div>
                     {/permissions}
                     {if !$config.hidetext}
-                        <div class="owl-text-overlay hidden-xs">
+                        <div class="owl-text-overlay">
                             <{$config.item_level|default:'h2'} class="owl-title">{$slide->title}</{$config.item_level|default:'h2'}>
-                            {$slide->body}
+                            <div class="hidden-xs">
+                                {$slide->body}
+                            </div>
                         </div>
                     {/if}
                     {if $slide->link}
@@ -101,7 +103,7 @@
                     {/if}
                 {/permissions}
             {/foreach}
-            </div>
+            {*</div>*}
         </ul>
     </div>
 </div>

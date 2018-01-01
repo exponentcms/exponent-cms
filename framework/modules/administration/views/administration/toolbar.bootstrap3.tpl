@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -234,14 +234,14 @@
     $(document).ready(function(){
         if ({/literal}{$top}{literal}) {  // fixed top slingbar menu
             if ({/literal}{($smarty.const.MENU_LOCATION == 'fixed-top') + 0}{literal}) {  // fixed top main menu
-                $(document.body).css('margin-top', $('#admin-toolbar').height() + $('#topnavbar').height() + 15);
+                $(document.body).css('margin-top', $('#admin-toolbar').outerHeight() + $('#topnavbar').outerHeight() + 15);
             } else if ({/literal}{($smarty.const.MENU_LOCATION == 'fixed-bottom') + 0}{literal}) {  // fixed bottom main menu
                 $(document.body).css('margin-top', 15);
             }
             $(document.body).css('margin-bottom', 0);
         } else {  // fixed bottom slingbar menu
-            $(document.body).css('margin-top', $('#topnavbar').height());
-            $(document.body).css('margin-bottom', $('#admin-toolbar').height() + 10);
+            $(document.body).css('margin-top', $('#topnavbar').outerHeight());
+            $(document.body).css('margin-bottom', $('#admin-toolbar').outerHeight() + 10);
         }
     });
 {/literal}

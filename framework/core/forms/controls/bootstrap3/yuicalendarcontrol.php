@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,7 +22,7 @@ if (!defined('EXPONENT')) {
 }
 
 /**
- * Date Picker Control using jQuery datetimepicker
+ * Date Picker Control using Bootstrap datetimepicker
  * standard calendar control
  * places an update calendar field/button
  *
@@ -125,6 +125,17 @@ class yuicalendarcontrol extends formcontrol
                     showTodayButton: true,
                     inline: true,
                     sideBySide: true,
+                    icons: {
+                        time: 'fa fa-clock-o',
+                        date: 'fa fa-calendar',
+                        up: 'fa fa-chevron-up',
+                        down: 'fa fa-chevron-down',
+                        previous: 'fa fa-chevron-left',
+                        next: 'fa fa-chevron-right',
+                        today: 'fa fa-crosshairs',
+                        clear: 'fa fa-trash',
+                        close: 'fa fa-times'
+                    },
                 });
             });
         ";

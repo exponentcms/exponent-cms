@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -27,15 +27,15 @@
         {/if}
         {if $permissions.manage}
             {if !$config.disabletags}
-            |  {icon controller=expTag class="manage" action=manage_module model='news' text="Manage Tags"|gettext}
+            {icon controller=expTag class="manage" action=manage_module model='news' text="Manage Tags"|gettext}
             {/if}
             {*{if $rank == 1}*}
             {if $config.order == 'rank'}
-            |  {ddrerank items=$page->records model="news" label="News Items"|gettext}
+            {ddrerank items=$page->records model="news" label="News Items"|gettext}
             {/if}
         {/if}
         {if $permissions.showUnpublished}
-             |  {icon class="view" action=showUnpublished text="View Expired/Unpublished News"|gettext}
+             {icon class="view" action=showUnpublished text="View Expired/Unpublished News"|gettext}
         {/if}
     </div>
     {/permissions}

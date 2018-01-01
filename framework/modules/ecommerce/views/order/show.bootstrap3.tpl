@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,11 @@
  *}
 
 {css unique="showorder" link="`$asset_path`css/ecom-bs3.css" corecss="tables"}
-
+{literal}
+    .order-items .yui3-aclist-content pre {
+        margin: 0;
+    }
+{/literal}
 {/css}
 
 <div class="row order-status">

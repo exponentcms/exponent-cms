@@ -1,11 +1,11 @@
-"use strict";
 /**
- * @class elFinder command "info" updated for Exponent CMS
+ * @class elFinder command "info".
  * Display dialog with file properties.
  *
  * @author Dmitry (dio) Levashov, dio@std42.ru
  **/
 (elFinder.prototype.commands.info = function() {
+	"use strict";
     var m = 'msg',
         fm = this.fm,
         spclass = 'elfinder-info-spinner',
@@ -79,19 +79,16 @@
             l = '{label}',
             v = '{value}',
 			reqs    = [],
+			reqDfrd = null,
             opts = {
                 title : this.title ,
                 width : 'auto' ,
                 modal : true ,  //exp
 				close : function() {
 					$(this).elfinderdialog('destroy');
-					$.each(reqs, function(i, req) {
-						var xhr = (req && req.xhr)? req.xhr : null;
-						if (xhr && xhr.state() == 'pending') {
-							xhr.quiet = true;
-							xhr.abort();
-						}
-					});
+					if (reqDfrd && reqDfrd.state() === 'pending') {
+						reqDfrd.reject();
+                    }
 				}
             },
             count = [],
@@ -99,137 +96,6 @@
 			id = fm.namespace+'-info-'+$.map(files, function(f) { return f.hash; }).join('-'),
             dialog = fm.getUI().find('#' + id),
 			customActions = [],
-			getSize = function(targets) {
-				var getLeafRoots = function(file) {
-						var targets = [];
-						if (file.mime === 'directory') {
-							$.each(fm.leafRoots, function(hash, roots) {
-								var phash;
-								if (hash === file.hash) {
-									targets.push.apply(targets, roots);
-								} else {
-									phash = (fm.file(hash) || {}).phash;
-									while(phash) {
-										if (phash === file.hash) {
-											targets.push.apply(targets, roots);
-										}
-										phash = (fm.file(phash) || {}).phash;
-									}
-								}
-							});
-						}
-						return targets;
-					},
-					checkPhash = function(hash) {
-						var dfd = $.Deferred(),
-							dir = fm.file(hash),
-							target = dir? dir.phash : hash;
-						if (target && ! fm.file(target)) {
-							fm.request({
-								data : {
-									cmd    : 'parents',
-									target : target
-								},
-								preventFail : true
-							}).done(function() {
-								fm.one('parentsdone', function() {
-									dfd.resolve();
-								});
-							}).fail(function() {
-								dfd.resolve();
-							});
-						} else {
-							dfd.resolve();
-						}
-						return dfd;
-					},
-					cache = function() {
-						var dfd = $.Deferred(),
-							cnt = Object.keys(fm.leafRoots).length;
-
-						if (cnt > 0) {
-							$.each(fm.leafRoots, function(hash) {
-								checkPhash(hash).done(function() {
-									--cnt;
-									if (cnt < 1) {
-										dfd.resolve();
-									}
-								});
-							});
-						} else {
-							dfd.resolve();
-						}
-						return dfd;
-					};
-
-				fm.autoSync('stop');
-				cache().done(function() {
-					var files = [], grps = {}, dfds = [];
-
-					$.each(targets, function() {
-						files.push.apply(files, getLeafRoots(fm.file(this)));
-					});
-					targets.push.apply(targets, files);
-
-					$.each(targets, function() {
-						var root = fm.root(this);
-						if (! grps[root]) {
-							grps[root] = [ this ];
-						} else {
-							grps[root].push(this);
-						}
-					});
-
-					$.each(grps, function() {
-						dfds.push(fm.request({
-							data : {cmd : 'size', targets : this},
-							preventDefault : true
-						}));
-					});
-					reqs.push.apply(reqs, dfds);
-
-					$.when.apply($, dfds).fail(function() {
-						replSpinner(msg.unknown, 'size');
-					}).done(function() {
-						var size = 0,
-							fileCnt = 0,
-							dirCnt = 0,
-							argLen = arguments.length,
-							cnts = [],
-							cntsTxt= '',
-							i;
-
-						for (i = 0; i < argLen; i++) {
-							size += parseInt(arguments[i].size);
-							if (fileCnt !== false) {
-								if (typeof arguments[i].fileCnt === 'undefined') {
-									fileCnt = false;
-						}
-								fileCnt += parseInt(arguments[i].fileCnt || 0);
-							}
-							if (dirCnt !== false) {
-								if (typeof arguments[i].dirCnt === 'undefined') {
-									dirCnt = false;
-								}
-								dirCnt += parseInt(arguments[i].dirCnt || 0);
-							}
-						}
-						if (dirCnt !== false){
-							cnts.push(msg.folders + ': ' + dirCnt);
-						}
-						if (fileCnt !== false){
-							cnts.push(msg.files + ': ' + fileCnt);
-						}
-						if (cnts.length) {
-							cntsTxt = '<br>' + cnts.join(', ');
-						}
-
-						replSpinner((size >= 0 ? fm.formatSize(size) : msg.unknown) + cntsTxt, 'size');
-					});
-
-					fm.autoSync();
-				});
-			},
 			style = '',
             size, tmb, file, title, dcnt, rdcnt, path;
 
@@ -332,7 +198,7 @@
 			if (o.custom) {
 				$.each(o.custom, function(name, details) {
 					if (
-					  (!details.mimes || $.map(details.mimes, function(m){return (file.mime === m || file.mime.indexOf(m+'/') === 0)? true : null;}).length)
+					  (!details.mimes || $.grep(details.mimes, function(m){return (file.mime === m || file.mime.indexOf(m+'/') === 0)? true : false;}).length)
 					    &&
 					  (!details.hashRegex || file.hash.match(details.hashRegex))
 					) {
@@ -373,9 +239,7 @@
         } else {
             view = view.replace('{class}' , 'elfinder-cwd-icon-group');
             title = tpl.groupTitle.replace('{items}' , msg.items).replace('{num}' , cnt);
-            dcnt = $.map(files ,function (f) {
-                return f.mime == 'directory' ? 1 : null;
-            }).length;
+			dcnt  = $.grep(files, function(f) { return f.mime == 'directory' ? true : false ; }).length;
             if (!dcnt) {
                 size = 0;
                 $.each(files , function (h , f) {
@@ -390,9 +254,9 @@
                 content.push(row.replace(l , msg.kind).replace(v , msg.files));
                 content.push(row.replace(l , msg.size).replace(v , fm.formatSize(size)));
             } else {
-				rdcnt = $.map(files, function(f) { return f.mime === 'directory' && (! f.phash || f.isroot)? 1 : null ; }).length;
+				rdcnt = $.grep(files, function(f) { return f.mime === 'directory' && (! f.phash || f.isroot)? true : false ; }).length;
 				dcnt -= rdcnt;
-				content.push(row.replace(l, msg.kind).replace(v, (rdcnt === cnt || dcnt === cnt)? msg[rdcnt? 'roots' : 'folders'] : $.map({roots: rdcnt, folders: dcnt, files: cnt - rdcnt - dcnt}, function(c, t) { return c? msg[t]+' '+c : null}).join(', ')));
+				content.push(row.replace(l, msg.kind).replace(v, (rdcnt === cnt || dcnt === cnt)? msg[rdcnt? 'roots' : 'folders'] : $.map({roots: rdcnt, folders: dcnt, files: cnt - rdcnt - dcnt}, function(c, t) { return c? msg[t]+' '+c : null; }).join(', ')));
 				content.push(row.replace(l, msg.size).replace(v, tpl.spinner.replace('{text}', msg.calc).replace('{name}', 'size')));
 				count = $.map(files, function(f) { return f.hash; });
 
@@ -502,7 +366,11 @@
 
         // send request to count total size
         if (count.length) {
-			getSize(count);
+			reqDfrd = fm.getSize(count).done(function(data) {
+				replSpinner(data.formated, 'size');
+			}).fail(function() {
+				replSpinner(msg.unknown, 'size');
+			});
         }
 
 		// call custom actions
@@ -516,6 +384,7 @@
 			});
 		}
 
+		return $.Deferred().resolve();
     };
 
 }).prototype = { forceLoad : true }; // this is required command

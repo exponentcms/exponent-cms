@@ -1,6 +1,26 @@
+XML-RPC for PHP version 4.3.0 - 2017/11/6
+
+* fixed: compatibility with Basic/Digest/NTLM auth when using client in cURL mode (issue #55)
+
+* improved: added unit tests for Basic and Digest http auth. Also improved tests suite
+
+* new: allow to force usage of curl for http &.0 calls, as well as plain socket for https calls, via the method
+    `Client::setUseCurl()`
+
+
+XML-RPC for PHP version 4.2.2 - 2017/10/15
+
+* fixed: compatibility with Lighttpd target servers when using client in cURL mode and request body size > 1024 bytes (issue #56)
+
+
+XML-RPC for PHP version 4.2.1 - 2017/9/3
+
+* fixed: compatibility with php 7.2 (issue #55)
+
+
 XML-RPC for PHP version 4.2.0 - 2017/6/30
 
-* improved: allow a DateTimeImmutable object also be detected as a date when encoding
+* improved: allow also DateTimeImmutable objects to be detected as a date when encoding
 
 
 XML-RPC for PHP version 4.1.1 - 2016/10/1
@@ -74,7 +94,7 @@ PLEASE READ CAREFULLY THE NOTES BELOW to insure a smooth upgrade.
 * improved: debug messages are not html-escaped any more when executing from the command line
 
 * improved: the library is now tested using Travis ( https://travis-ci.org/ ).
-  Tests are executed using all php versions from 5.3 to 7.0 nightly, plus HHVM; code-coverage information
+  Tests are executed using all php versions from 5.3 to 7.2; code-coverage information
   is generated using php 5.6 and uploaded to both Code Coverage and Scrutinizer online services
 
 * improved: phpunit is now installed via composer, not bundled anymore
@@ -606,7 +626,7 @@ New features include:
    xmlrpc_client::setCredentials method.
 
  * Added test script and method for verifying correct passing of
-	 booleans
+   booleans
 
 The changelog is available at: http://xmlrpc.usefulinc.com/ChangeLog.txt
 

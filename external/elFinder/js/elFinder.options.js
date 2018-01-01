@@ -6,6 +6,28 @@
  */
 elFinder.prototype._options = {
 	/**
+	 * URLs of 3rd party libraries CDN
+	 * 
+	 * @type Object
+	 */
+	cdns : {
+		// for editor etc.
+		ace        : '//cdnjs.cloudflare.com/ajax/libs/ace/1.2.9',
+		codemirror : '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0',
+		ckeditor   : '//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.8.0',
+		tinymce    : '//cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.4',
+		simplemde  : '//cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2',
+		// for quicklook etc.
+		hls        : '//cdnjs.cloudflare.com/ajax/libs/hls.js/0.8.9/hls.min.js',
+		dash       : '//cdnjs.cloudflare.com/ajax/libs/dashjs/2.6.4/dash.all.min.js',
+		prettify   : '//cdn.rawgit.com/google/code-prettify/05ad1b76f8af1232da963c17bad144107b07e59a/loader/run_prettify.js',
+		psd        : '//cdnjs.cloudflare.com/ajax/libs/psd.js/3.2.0/psd.min.js',
+		rar        : '//cdn.rawgit.com/nao-pon/rar.js/6cef13ec66dd67992fc7f3ea22f132d770ebaf8b/rar.min.js',
+		zlibUnzip  : '//cdn.rawgit.com/imaya/zlib.js/0.3.1/bin/unzip.min.js', // need check unzipFiles() in quicklook.plugins.js when update
+		zlibGunzip : '//cdn.rawgit.com/imaya/zlib.js/0.3.1/bin/gunzip.min.js'
+	},
+	
+	/**
 	 * Connector url. Required!
 	 *
 	 * @type String
@@ -20,6 +42,13 @@ elFinder.prototype._options = {
 	 */
 	requestType : 'get',
 	
+	/**
+	 * Use CORS to connector url
+	 * 
+	 * @type Boolean|null  true|false|null(Auto detect)
+	 */
+	cors : null,
+
 	/**
 	 * Maximum number of concurrent connections on request
 	 * 
@@ -252,13 +281,23 @@ elFinder.prototype._options = {
 			autoplay : true,
 			width    : 450,
 			height   : 300,
+			// Maximum characters length to preview
+			textMaxlen : 2000,
+			// quicklook window must be contained in elFinder node on window open (true|false)
+			contain : false,
+			// preview window into NavDock (0 : undocked | 1 : docked(show) | 2 : docked(hide))
+			docked   : 0,
+			// Docked preview height ('auto' or Number of pixel) 'auto' is setted to the Navbar width
+			dockHeight : 'auto',
+			// media auto play when docked
+			dockAutoplay : false,
 			// MIME types to use Google Docs online viewer
 			// Example ['application/pdf', 'image/tiff', 'application/vnd.ms-office', 'application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
 			googleDocsMimes : [],
-			// URL of hls.js
-			hlsJsUrl : '//cdnjs.cloudflare.com/ajax/libs/hls.js/0.7.11/hls.min.js',
-			// URL of dash.all.js
-			dashJsUrl : '//cdnjs.cloudflare.com/ajax/libs/dashjs/2.5.0/dash.all.min.js'
+			// File size (byte) threshold when using the dim command for obtain the image size necessary to image preview
+			getDimThreshold : 200000,
+			// MIME-Type regular expression that does not check empty files
+			mimeRegexNotEmptyCheck : /^application\/vnd\.google-apps\./
 		},
 		// "quicklook" command options.
 		edit : {
@@ -267,6 +306,9 @@ elFinder.prototype._options = {
 			// list of allowed mimetypes to edit of text files
 			// if empty - any text files can be edited
 			mimes : [],
+			// Use the editor stored in the browser (do not display the choices)
+			// This value allowd overwrite with user preferences
+			useStoredEditor : false,
 			// edit files in wysisyg's
 			editors : [
 				// {
@@ -355,7 +397,7 @@ elFinder.prototype._options = {
 			],
 			// Character encodings of select box
 			encodings : ['Big5', 'Big5-HKSCS', 'Cp437', 'Cp737', 'Cp775', 'Cp850', 'Cp852', 'Cp855', 'Cp857', 'Cp858', 
-				'Cp862', 'Cp866', 'Cp874', 'EUC-CN', 'EUC-JP', 'EUC-KR', 'ISO-2022-CN', 'ISO-2022-JP', 'ISO-2022-KR', 
+				'Cp862', 'Cp866', 'Cp874', 'EUC-CN', 'EUC-JP', 'EUC-KR', 'GB18030', 'ISO-2022-CN', 'ISO-2022-JP', 'ISO-2022-KR', 
 				'ISO-8859-1', 'ISO-8859-2', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5', 'ISO-8859-6', 'ISO-8859-7', 
 				'ISO-8859-8', 'ISO-8859-9', 'ISO-8859-13', 'ISO-8859-15', 'KOI8-R', 'KOI8-U', 'Shift-JIS', 
 				'Windows-1250', 'Windows-1251', 'Windows-1252', 'Windows-1253', 'Windows-1254', 'Windows-1257'],
@@ -363,10 +405,11 @@ elFinder.prototype._options = {
 			extraOptions : {
 				// Specify the Creative Cloud API key when using Creative SDK image editor of Creative Cloud.
 				// You can get the API key at https://console.adobe.io/.
-				//creativeCloudApiKey : '',
+				creativeCloudApiKey : '',
 				// Browsing manager URL for CKEditor, TinyMCE
 				// Uses self location with the empty value or not defined.
 				//managerUrl : 'elfinder.html'
+				managerUrl : null
 			}
 		},
 		search : {
@@ -442,9 +485,13 @@ elFinder.prototype._options = {
 		},
 		resize: {
 			// defalt status of snap to 8px grid of the jpeg image ("enable" or "disable")
-			grid8px : 'enable',
+			grid8px : 'disable',
 			// Preset size array [width, height]
-			presetSize : [[320, 240], [400, 400], [640, 480], [800,600]]
+			presetSize : [[320, 240], [400, 400], [640, 480], [800,600]],
+			// File size (bytes) threshold when using the `dim` command for obtain the image size necessary to start editing
+			getDimThreshold : 204800,
+			// File size (bytes) to request to get substitute image (400px) with the `dim` command
+			dimSubImgSize : 307200
 		},
 		rm: {
 			// If trash is valid, items moves immediately to the trash holder without confirm.
@@ -458,7 +505,10 @@ elFinder.prototype._options = {
 			// Tabs to show
 			view : ['about', 'shortcuts', 'help', 'preference', 'debug'],
 			// HTML source URL of the heip tab
-			helpSource : ''
+			helpSource : '',
+			// Command list of action when select file
+			// Array value are 'Command Name' or 'Command Name1/CommandName2...'
+			selectActions : ['open', 'edit/download', 'resize/edit/download', 'download', 'quicklook']
 		}
 	},
 	
@@ -602,6 +652,14 @@ elFinder.prototype._options = {
 			// auto hide on initial open
 			autoHideUA: [] // e.g. ['Mobile']
 		},
+		navdock : {
+			// disabled navdock ui
+			disabled : false,
+			// percentage of initial maximum height to work zone
+			initMaxHeight : '50%',
+			// percentage of maximum height to work zone by user resize action
+			maxHeight : '90%'
+		},
 		cwd : {
 			// display parent folder with ".." name :)
 			oldSchool : false,
@@ -660,6 +718,14 @@ elFinder.prototype._options = {
 			//		return info? info + '&#13;' + title : title;
 			//	}
 			//}
+		},
+		path : {
+			// Move to head of work zone without UI navbar
+			toWorkzoneWithoutNavbar : true
+		},
+		dialog : {
+			// Enable to auto focusing on mouse over in the target form element
+			focusOnMouseOver : true
 		}
 	},
 
@@ -828,6 +894,14 @@ elFinder.prototype._options = {
 	notifyDialog : {position: {top : '12px', right : '12px'}, width : 280},
 	
 	/**
+	 * Dialog contained in the elFinder node
+	 * 
+	 * @type Boolean
+	 * @default false
+	 */
+	dialogContained : false,
+	
+	/**
 	 * Allow shortcuts
 	 *
 	 * @type Boolean
@@ -890,6 +964,23 @@ elFinder.prototype._options = {
 	 *  validName : /^[^\s]+$/,
 	 */
 	validName : false,
+	
+	/**
+	 * Additional rule to filtering for browsing.
+	 * This setting does not have a sense of security.
+	 * 
+	 * The object `this` is elFinder instance object in this function
+	 *
+	 * @type false|RegExp|function
+	 * @default  false
+	 * @example
+	 *  show only png and jpg files:
+	 *  fileFilter : /.*\.(png|jpg)$/i,
+	 *  
+	 *  show only image type files:
+	 *  fileFilter : function(file) { return file.mime && file.mime.match(/^image\//i); },
+	 */
+	fileFilter : false,
 	
 	/**
 	 * Backup name suffix.

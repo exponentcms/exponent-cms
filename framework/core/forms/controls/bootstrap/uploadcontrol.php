@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -131,8 +131,10 @@ class uploadcontrol extends formcontrol {
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
         $object->description = $values['description'];
-        $object->default = $values['default'];
-        $object->accept = $values['accept'];
+        if (!empty($values['default']))
+            $object->default = $values['default'];
+        if (!empty($values['accept']))
+            $object->accept = $values['accept'];
         return $object;
     }
 

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -841,13 +841,19 @@ function expUnserialize($serial_str) {
     if ($serial_str === 'Array') return null;  // empty array string??
     if (is_array($serial_str) || is_object($serial_str)) return $serial_str;  // already unserialized
 //    $out1 = @preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $serial_str );
+//    $out1 = preg_replace_callback(
+//        '!s:(\d+):"(.*?)";!s',
+//        create_function ('$m',
+//            '$m_new = str_replace(\'"\',\'\"\',$m[2]);
+//            return "s:".strlen($m_new).\':"\'.$m_new.\'";\';'
+//        ),
+//        $serial_str );
     $out = preg_replace_callback(
         '!s:(\d+):"(.*?)";!s',
-        create_function ('$m',
-            '$m_new = str_replace(\'"\',\'\"\',$m[2]);
-            return "s:".strlen($m_new).\':"\'.$m_new.\'";\';'
-        ),
-        $serial_str );
+        function ($m) {
+            $m_new = str_replace('"','\"',$m[2]);
+            return "s:".strlen($m_new).':"'.$m_new.'";';
+        }, $serial_str );
 //    if ($out1 !== $out) {
 //        eDebug('problem:<br>'.$out.'<br>'.$out1);
 //    }
@@ -861,6 +867,9 @@ function expUnserialize($serial_str) {
         }
         if (!empty($out2['report_desc'])) {  // work-around for links in forms report descriptions
             $out2['report_desc'] = stripslashes($out2['report_desc']);
+        }
+        if (!empty($out2['report_def_showall'])) {  // work-around for links in forms report descriptions
+            $out2['report_def_showall'] = stripslashes($out2['report_def_showall']);
         }
         if (!empty($out2['response'])) {  // work-around for links in forms response
             $out2['response'] = stripslashes($out2['response']);
@@ -951,14 +960,13 @@ function framework() {
  *
  * @return bool
  */
-function bs2() {
+function bs2($strict = false) {
     global $framework;
 
-    if ($framework == 'bootstrap') {
+    if ($framework === 'bootstrap') {
         return true;
-    } else {
-        return false;
     }
+    return false;
 }
 
 /**
@@ -970,31 +978,46 @@ function bs2() {
 function bs3($strict = false) {
     global $framework;
 
-    if ($framework == 'bootstrap3') {
+    if ($framework === 'bootstrap3') {
         return true;
-    } elseif ($framework == 'newui' && !$strict) {
-        return true;
-    } else {
-        return false;
     }
+    if ($framework === 'newui' && !$strict) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Is the current framework Bootstrap v4 based?
+ *
+ * @param bool $strict must be bootstrap4
+ * @return bool
+ */
+function bs4($strict = false) {
+    global $framework;
+
+    if ($framework === 'bootstrap4') {
+        return true;
+    }
+    return false;
 }
 
 /**
  * Is the current framework Bootstrap based?
  *
- * @param bool $strict must be bootstrap 2 or 3 and NOT newui
+ * @param bool $strict must be bootstrap 2 or 3 or 4 and NOT newui
  * @return bool
  */
 function bs($strict = false) {
     global $framework;
 
-    if ($framework == 'bootstrap3' || $framework == 'bootstrap') {
+    if ($framework === 'bootstrap4' || $framework === 'bootstrap3' || $framework === 'bootstrap') {
         return true;
-    } elseif ($framework == 'newui' && !$strict) {
-        return true;
-    } else {
-        return false;
     }
+    if ($framework === 'newui' && !$strict) {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -1005,11 +1028,10 @@ function bs($strict = false) {
 function newui() {
     global $framework;
 
-    if ($framework == 'newui') {
+    if ($framework === 'newui') {
         return true;
-    } else {
-        return false;
     }
+    return false;
 }
 
 function gt($s){

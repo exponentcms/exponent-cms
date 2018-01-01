@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,7 +24,7 @@
 /** @define "BASE" "../../../.." */
 class easypostcalculator extends shippingcalculator
 {
-    private static $version = '3.3.5';  // library version
+    private static $version = '3.4.0';  // library version
     /*
      * Returns the name of the shipping calculator, for use in the Shipping Administration Module
      */

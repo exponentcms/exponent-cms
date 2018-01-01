@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -50,7 +50,7 @@ class fix_table_names extends upgradescript {
 
 	/**
 	 * attempts to rename the mixed case tables
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
         $renamed = count(expDatabase::fix_table_names());

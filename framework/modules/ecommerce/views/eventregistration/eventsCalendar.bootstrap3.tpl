@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -44,8 +44,8 @@
     {/if}
     <div class='input-group module-actions' id='j_input{$__loc->src|replace:'@':'_'}' style="left:40%">
         <input type='hidden' class="form-control" />
-        <span class="input-group-addon" style="border-radius:4px;border-left:1px solid #ccc;cursor:pointer;width:auto">
-            <span class="glyphicon glyphicon-calendar"></span>
+        <span class="input-group-addon" style="display:inherit;border-radius:4px;border-left:1px solid #ccc;cursor:pointer;width:auto">
+            <span class="fa fa-calendar"></span>
             {'Go to Date'|gettext}
         </span>
         <span class="loader"></span>
@@ -80,7 +80,18 @@
 //            showTodayButton: true,
             viewMode: 'months',
             showClose: true,
-//            allowInputToggle: true
+//            allowInputToggle: true,
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar',
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down',
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-crosshairs',
+                clear: 'fa fa-trash',
+                close: 'fa fa-times'
+            },
         }).on('dp.hide',function(e){
             if (!moment().isSame(e.date, 'month') || !moment().isSame(e.date, 'year')) {
                 var unixtime = e.date.unix();

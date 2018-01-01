@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -125,13 +125,15 @@ function smarty_compiler_exp_include($_params, &$compiler)
                             $include_file = BASE . $path . $include_file . '.bootstrap.' . $type;  // bootstrap3 falls back to bootstrap
                             $bs_file_found = true;
                         }
-                        if (bs3(true) && file_exists(
-                                BASE . $path . $tmp_include . '.bootstrap3.' . $type
-                            )
-                        ) {
+                        if ((bs3(true) || bs4()) && file_exists(BASE . $path . $tmp_include . '.bootstrap3.' . $type)) {
                             $include_file = BASE . $path . $tmp_include . '.bootstrap3.' . $type;
                             $bs_file_found = true;
-                        } elseif (!$bs_file_found) {
+                        }
+                        if (bs4() && file_exists(BASE . $path . $tmp_include . '.bootstrap4.' . $type)) {
+                            $include_file = BASE . $path . $tmp_include . '.bootstrap4.' . $type;
+                            $bs_file_found = true;
+                        }
+                        if (!$bs_file_found) {
                             $include_file = BASE . $path . $include_file . '.' . $type;  // fall back to plain
                         }
                     } else {
@@ -185,18 +187,25 @@ function smarty_compiler_exp_include($_params, &$compiler)
     $output .= "\$_smarty_tpl_vars = \$_smarty_tpl->tpl_vars;\n";
 
     if ($include_file_else) {
-        $output .= "echo \$_smarty_tpl->getSubTemplate(\$_include_file, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
-//        $output .= "echo \$_smarty_tpl->_subTemplateRender(\$_include_file, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode( //fixme for v3.1.28+
-                ',',
-                (array)$arg_list
-            ) . "), 0);\n";
+        if (version_compare(SMARTY_VERSION, '3.1.28', 'lt')) {
+            //3.1.27  getSubTemplate($template, $cache_id, $compile_id, $caching, $cache_lifetime, $data, $parent_scope)
+            $output .= "echo \$_smarty_tpl->getSubTemplate(\$_include_file, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
+                    ',', (array)$arg_list) . "), 0);\n"; // for v3.1.27
+        } else {
+            //3.1.31  _subTemplateRender($template, $cache_id, $compile_id, $caching, $cache_lifetime, $data, $scope, $forceTplCache, $uid = null, $content_func = null)
+            $output .= "echo \$_smarty_tpl->_subTemplateRender(\$_include_file, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
+                    ',', (array)$arg_list) . "), 0, false);\n"; // for v3.1.28+
+        }
     } else {
-        $output .= "echo \$_smarty_tpl->getSubTemplate({$include_file}, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
-//        $output .= "echo \$_smarty_tpl->_subTemplateRender({$include_file}, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode( //fixme for v3.1.28+
-                ',',
-                (array)$arg_list
-            ) . "), 0);\n";
+        if (version_compare(SMARTY_VERSION, '3.1.28', 'lt')) {
+            $output .= "echo \$_smarty_tpl->getSubTemplate({$include_file}, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
+                    ',', (array)$arg_list) . "), 0);\n"; // for v3.1.27
+        } else {
+            $output .= "echo \$_smarty_tpl->_subTemplateRender({$include_file}, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
+                    ',', (array)$arg_list) . "), 0, false);\n"; // for v3.1.28+
+        }
     }
+
     $output .= "\$_smarty_tpl->tpl_vars = \$_smarty_tpl_vars;\n" .
         "unset(\$_smarty_tpl_vars);\n";
 

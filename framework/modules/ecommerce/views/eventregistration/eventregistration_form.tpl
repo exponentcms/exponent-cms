@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2015 OIC Group, Inc.
+ * Copyright (c) 2007-2018 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -30,14 +30,14 @@
 				{control type="text" name="address[firstname]" value="`$record.address.firstname`" required=1}
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td>&#160;&#160;{'Middle Name'|gettext}</td>
 			<td>
 				{control type="text" name="address[middlename]" value="`$record.address.middlename`"}
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td>* {'Last Name'|gettext}</td>
 			<td>
@@ -62,27 +62,27 @@
 				{control type="text" name="address[address2]" value="`$record.address.address2`"}
 			</td>
 		</tr>
-	
+
 		<tr>
 			<td>* {'City'|gettext}</td>
 			<td>
 				{control type="text" name="address[city]" value="`$record.address.city`" required=1}
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td>* {'State'|gettext}</td>
-			<td class="state_field"> 
+			<td class="state_field">
 				{control type=state name="address[state]" includeblank="-- Choose a State -- " default="`$record.address.state`" label="" required=1}
 			</td>
 		</tr>
 		<tr>
 			<td>* {'Country/State'|gettext}:</td>
-			<td class="state_field">       
+			<td class="state_field">
 				{control type=country name="address[country]" default="`$record.address.country`"}
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td>* {'Zip Code'|gettext}</td>
 			<td>
@@ -95,14 +95,14 @@
                 {control type=tel name="address[phone]" value="`$record.address.phone`" required=1}
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td>* {'Address Type'|gettext}</td>
 			<td class="state_field">
 				{control type="dropdown" name="address[address_type]" items="Business,Military,Residential"|gettxtlist default=$record->address_type|default:"Residential"|gettext value="`$record.address.address_type`"}
 			</td>
 		</tr>
-	
+
 		<tr>
 			<td>* {'Email Address'|gettext}</td>
 			<td>
@@ -150,8 +150,8 @@
 				<input type="submit" class="{button_style color=yellow size=medium}" value="Next Page"/>
 			</td>
 		</tr>
-			
+
 	</table>
-       
+
 	{/form}
 </div>

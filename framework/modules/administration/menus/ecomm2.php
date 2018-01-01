@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,10 +52,20 @@ if (!$user->isAdmin()) {
 if ($db->countObjects('product', 'product_type="eventregistration"') == 0)
     return false;
 
+$ev = new eventregistration();
+$allevents = $ev->find('all', 'product_type="eventregistration" && active_type=0');
+$events = array();
+foreach ($allevents as $event) {
+    if ($event->eventenddate > time()) {
+        $events[] = $event;
+    }
+}
+
 $items1 = array(
     array(
         'text'      => gt('Manage Event Registrations'),
         'icon'      => 'fa-calendar-o',
+        'icon5'      => 'far fa-calendar',
         'classname' => 'events',
         'url'       => makeLink(
             array(
@@ -67,6 +77,7 @@ $items1 = array(
     array(
         'text'      => gt('Add an event'),
         'icon'      => 'fa-plus-circle',
+        'icon5'      => 'fas fa-plus-circle',
         'classname' => 'add',
         'url'       => makeLink(
             array(
@@ -75,17 +86,9 @@ $items1 = array(
                 'product_type' => 'eventregistration'
             )
         ),
-        'divider' => true,
+        'divider' => count($events),
     )
 );
-$ev = new eventregistration();
-$allevents = $ev->find('all', 'product_type="eventregistration" && active_type=0');
-$events = array();
-foreach ($allevents as $event) {
-    if ($event->eventenddate > time()) {
-        $events[] = $event;
-    }
-}
 $events = expSorter::sort(array('array' => $events, 'sortby' => 'eventdate', 'order' => 'ASC'));
 $items2 = array();
 foreach ($events as $event) {
@@ -101,11 +104,12 @@ foreach ($events as $event) {
         );
         $thisitem['classname'] = 'event';
         $thisitem['icon'] = 'fa-info';
+        $thisitem['icon5'] = 'fas fa-info';
         $items2[] = $thisitem;
     }
 }
 
-if (bs3()) {
+if (bs3() || bs4()) {
     $items = array_merge($items1, $items2);
 } else {
     $items = array($items1, $items2);
@@ -113,6 +117,7 @@ if (bs3()) {
 return array(
     'text'      => ' <span class="event label label-default">' . count($events) . '</span>',
     'icon'      => 'fa-calendar',
+    'icon5'      => 'fas fa-calendar',
     'classname' => 'events',
     'submenu'   => array(
         'id'       => 'event2',

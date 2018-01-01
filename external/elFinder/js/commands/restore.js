@@ -1,4 +1,3 @@
-"use strict";
 /**
  * @class  elFinder command "restore"
  * Restore items from the trash
@@ -6,6 +5,7 @@
  * @author Naoki Sawada
  **/
 (elFinder.prototype.commands.restore = function() {
+	"use strict";
 	var self = this,
 		fm = this.fm,
 		fakeCnt = 0,
@@ -14,7 +14,15 @@
 				dirs = [],
 				results = [],
 				reqs = [],
-				phashes = [];
+				phashes = [],
+				getFile;
+			
+			dfd._xhrReject = function() {
+				$.each(reqs, function() {
+					this && this.reject && this.reject();
+				});
+				getFile && getFile._xhrReject();
+			};
 			
 			$.each(files, function(i, f) {
 				f.mime === 'directory'? dirs.push(f) : results.push(f);
@@ -50,7 +58,7 @@
 						}
 					});
 					fm.cache(items);
-					getFilesRecursively(items).done(function(res) {
+					getFile = getFilesRecursively(items).done(function(res) {
 						results = results.concat(res);
 						dfd.resolve(results);
 					});
@@ -59,15 +67,16 @@
 				dfd.resolve(results);
 			}
 			
-			return dfd.promise();
+			return dfd;
 		},
-		restore = function(dfrd, files, targets, opts) {
+		restore = function(dfrd, files, targets, ops) {
 			var rHashes = {},
 				others = [],
 				found = false,
 				dirs = [],
-				opts = opts || {},
-				tm;
+				opts = ops || {},
+				id = +new Date(),
+				tm, getFile;
 			
 			fm.lockfiles({files : targets});
 			
@@ -82,13 +91,16 @@
 			});
 			
 			tm = setTimeout(function() {
-				fm.notify({type : 'search', cnt : 1, hideCnt : true});
+				fm.notify({type : 'search', id : id, cnt : 1, hideCnt : true, cancel : function() {
+					getFile && getFile._xhrReject();
+					dfrd.reject();
+				}});
 			}, fm.notifyDelay);
-			
+
 			fakeCnt = 0;
-			getFilesRecursively(files).always(function() {
+			getFile = getFilesRecursively(files).always(function() {
 				tm && clearTimeout(tm);
-				fm.notify({type : 'search', cnt : -1, hideCnt : true});
+				fm.notify({type : 'search', id: id, cnt : -1, hideCnt : true});
 			}).fail(function() {
 				dfrd.reject('errRestore', 'errFileNotFound');
 			}).done(function(res) {
@@ -234,9 +246,9 @@
 	
 	this.getstate = function(sel, e) {
 		sel = sel || fm.selected();
-		return sel.length && $.map(sel, function(h) {var f = fm.file(h); return f && ! f.locked && ! fm.isRoot(f)? h : null }).length == sel.length
+		return sel.length && $.grep(sel, function(h) {var f = fm.file(h); return f && ! f.locked && ! fm.isRoot(f)? true : false; }).length == sel.length
 			? 0 : -1;
-	}
+	};
 	
 	this.exec = function(hashes, opts) {
 		var dfrd   = $.Deferred()
@@ -263,6 +275,6 @@
 		}
 			
 		return dfrd;
-	}
+	};
 
 }).prototype = { forceLoad : true }; // this is required command

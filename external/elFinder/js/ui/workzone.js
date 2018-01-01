@@ -1,9 +1,9 @@
-"use strict";
 /**
  * @class elfinderworkzone - elFinder container for nav and current directory
  * @author Dmitry (dio) Levashov
  **/
 $.fn.elfinderworkzone = function(fm) {
+	"use strict";
 	var cl = 'elfinder-workzone';
 	
 	this.not('.'+cl).each(function() {
@@ -44,12 +44,7 @@ $.fn.elfinderworkzone = function(fm) {
 			};
 			
 		parent.on('resize.' + fm.namespace, fitsize);
-		if (fm.cssloaded) {
-			cssloaded();
-		} else {
-			fm.one('cssloaded', cssloaded);
-		}
-		fm.bind('uiresize', fitsize);
+		fm.one('cssloaded', cssloaded).bind('uiresize', fitsize);
 	});
 	return this;
 };

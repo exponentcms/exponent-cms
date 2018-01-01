@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -166,7 +166,7 @@ class expRecord {
      * @param array  $except
      * @param bool   $cascade_except
      *
-     * @return array
+     * @return array|integer
      */
     public function find($range = 'all', $where = null, $order = null, $limit = null, $limitstart = 0, $get_assoc = true, $get_attached = true, $except = array(), $cascade_except = false) {
         global $db, $user;

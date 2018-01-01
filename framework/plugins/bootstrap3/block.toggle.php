@@ -16,7 +16,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -86,9 +86,9 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
                 $(\'#a-' . $params['unique'] . '\').toggleClass(\'collapsed\');
             
                 if ($(\'#' . $params['unique'] . '-body\').hasClass(\'hide\')) {
-                    $(\'#' . $params['unique'] . '-head\').prop(\'title\',\'' . gt('Click to Expand') . '\');
+                    $(\'#' . $params['unique'] . '-head\').prop(\'title\',"' . gt('Click to Expand') . '");
                 } else {
-                    $(\'#' . $params['unique'] . '-head\').prop(\'title\',\'' . gt('Click to Collapse') . '\');
+                    $(\'#' . $params['unique'] . '-head\').prop(\'title\',"' . gt('Click to Collapse') . '");
                 }
             }
             

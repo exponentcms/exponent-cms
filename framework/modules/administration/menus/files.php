@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -32,6 +32,7 @@ $items = array(
     array(
         'text'      => gt("File Manager"),
         'icon'      => 'fa-archive',
+        'icon5'      => 'fas fa-archive',
         'classname' => 'filemanager',
         'url'       => '#',
         'id'        => 'filemanager-toolbar',
@@ -41,6 +42,7 @@ if (!$user->globalPerm('prevent_uploads') && SITE_FILE_MANAGER != 'elfinder') {
     $items[] = array(
         'text'      => gt("Upload Files"),
         'icon'      => 'fa-upload',
+        'icon5'      => 'fas fa-upload',
         'classname' => 'fileuploader',
         'url'       => '#',
         'id'        => 'fileuploader-toolbar',
@@ -50,6 +52,7 @@ if ($user->isSuperAdmin()) {
     $items[] = array(
         'text'      => gt('Import Files'),
         'icon'      => 'fa-sign-in',
+        'icon5'      => 'fas fa-sign-in-alt',
         'classname' => 'import',
         'url'       => makeLink(
             array(
@@ -61,6 +64,7 @@ if ($user->isSuperAdmin()) {
     $items[] = array(
         'text'      => gt('Export Files'),
         'icon'      => 'fa-sign-out',
+        'icon5'      => 'fas fa-sign-out-alt',
         'classname' => 'export',
         'url'       => makeLink(
             array(
@@ -74,6 +78,7 @@ if ($user->isSuperAdmin()) {
 return array(
     'text'      => gt('Files'),
     'icon' => 'fa-camera-retro',
+    'icon5' => 'fas fa-camera-retro',
     'classname' => 'files',
     'submenu'   => array(
         'id'       => 'events',

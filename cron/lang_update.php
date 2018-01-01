@@ -2,7 +2,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,9 +24,12 @@
 output("Updating the Exponent Language System!\n");
 
 $trans_only = false;
+$extract_only = false;
 for ($ac=1; $ac < $_SERVER['argc']; $ac++) {
-	if ($_SERVER['argv'][$ac] == '-t'){
+	if ($_SERVER['argv'][$ac] == '-t') {
         $trans_only = true;  // only do translation, NO phrase extraction
+    } elseif ($_SERVER['argv'][$ac] == '-e'){
+               $extract_only = true;  // only do phrase extraction, NO translation
 	} else { // set translation type
         if (!defined('TRANSLATE')) {
             define('TRANSLATE', $_SERVER['argv'][$ac]);
@@ -47,6 +50,11 @@ if (!$trans_only) {
     exec('php ./lang_extract.php ../cron ../framework ../install', $output);
     output($output);
     unset ($output);
+}
+
+if ($extract_only) {
+    print "\nCompleted Updating the English Phrase Library!\n";
+    exit();
 }
 
 //Update each language file based on default language and then attempt to translate

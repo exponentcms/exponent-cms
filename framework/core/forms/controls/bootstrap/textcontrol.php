@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -75,7 +75,7 @@ class textcontrol extends formcontrol {
         if (!empty($this->append) && bs()) {
             if (bs2()) {
                 $html .= '<div class="input-append">';
-            } elseif (bs3()) {
+            } elseif (bs3() || bs4()) {
                 $html .= '<div class="input-group">';
             }
         }
@@ -107,10 +107,12 @@ class textcontrol extends formcontrol {
                 $html .= '<span class="add-on"><i class="icon-'.$this->append.'"></i></span>';
             } elseif (bs3()) {
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->append.'"></i></span>';
+            } elseif (bs4()) {
+                $html .= '<span class="input-group-addon"><i class="fas fa-'.$this->append.'"></i></span>';
             }
             $html .= '</div>';
         }
-        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"".(bs3() || bs4()?"help-block":"control-desc")."\">".$this->description."</div>";
         $html .= ($this->horizontal) ? '</div>' : '';
         return $html;
     }

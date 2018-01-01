@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -19,9 +19,9 @@
 /**
  * Minimum PHP version check
  */
-if (version_compare(PHP_VERSION, '5.3.1', 'lt')) {
+if (version_compare(PHP_VERSION, '5.5.0', 'lt')) {
     echo "<h1 style='padding:10px;border:5px solid #992222;color:red;background:white;position:absolute;top:100px;left:300px;width:400px;z-index:999'>
-        PHP 5.3.1+ is required!  Please refer to the Exponent documentation for details:<br />
+        PHP 5.5.0+ is required!  Please refer to the Exponent documentation for details:<br />
         <a href=\"http://docs.exponentcms.org/docs/current/requirements-running-exponent-cms\" target=\"_blank\">http://docs.exponentcms.org/</a>
         </h1>";
     die();
@@ -113,9 +113,15 @@ if (isset($_REQUEST['install_sample'])) {
             $files = BASE . "install/samples/" . $_REQUEST['install_sample'] . ".tar.gz";
         }
         if (file_exists($files)) { // only install if there was an archive
-            include_once(BASE . 'external/Tar.php');
-            $tar = new Archive_Tar($files);
-            $return = $tar->extract(BASE);
+//            include_once(BASE . 'external/Tar.php');  // fixme change to PharData
+//            $tar = new Archive_Tar($files);
+//            $return = $tar->extract(BASE);
+            $tar = new PharData($files);
+            $tar->decompress();  // creates .tar file
+            $tar = new PharData(substr($files, 0, -3));
+            $return = $tar->extractTo(BASE);
+            unset($tar);
+            unlink(substr($files, 0, -3)); // remove intermediary .tar file
         }
     }
     //FIXME we need to output this into an element and not simply out on the page

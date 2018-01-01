@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -37,6 +37,7 @@ if (!$user->globalPerm('prevent_profile_change')) {
     $items[] = array(
         'text'      => gt("Edit My Profile"),
         'icon'      => 'fa-edit',
+        'icon5'      => 'fas fa-edit',
         'classname' => 'edit',
         'url'       => makeLink(
             array(
@@ -51,6 +52,7 @@ if ((!USER_NO_PASSWORD_CHANGE || $user->isAdmin()) && !$user->is_ldap) {
     $items[] = array(
         'text'      => gt("Change My Password"),
         'icon'      => 'fa-lock',
+        'icon5'      => 'fas fa-lock',
         'classname' => 'password',
         'url'       => makeLink(
             array(
@@ -64,6 +66,7 @@ if ((!USER_NO_PASSWORD_CHANGE || $user->isAdmin()) && !$user->is_ldap) {
 $items[] = array(
     'text'      => gt("Log Out"),
     'icon'      => 'fa-sign-out',
+    'icon5'      => 'fas fa-sign-out-alt',
     'classname' => 'logout',
     'url'       => makeLink(
         array(
@@ -101,6 +104,7 @@ if ($previewperms) { // must be an admin user to use toggle_preview method
     $items[] = array(
         'text'      => ($level == UILEVEL_PREVIEW) ? gt('Turn Preview Mode off') : gt('Turn Preview Mode on'),
         'icon'      => ($level == UILEVEL_PREVIEW) ? 'fa-eye-slash text-success' : 'fa-eye',
+        'icon5'      => ($level == UILEVEL_PREVIEW) ? 'fas fa-eye-slash text-success' : 'fas fa-eye',
         'classname' => ($level == UILEVEL_PREVIEW) ? 'preview_on' : 'preview_off',
         'url'       => makeLink(
             array(
@@ -114,6 +118,7 @@ if ($previewperms) { // must be an admin user to use toggle_preview method
 return array(
     'text'       => $user->firstname . ' ' . $user->lastname,
     'icon'       => 'fa-user',
+    'icon5'       => 'fas fa-user',
     'classname'  => 'quicklink user',
     'alignright' => 1,
     'submenu'    => array(

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -53,6 +53,7 @@ $items1[] = array(
             "Open Orders"
         ) . ")</em>",
     'icon' => 'fa-search',
+    'icon5' => 'fas fa-search',
     'classname' => 'search',
     'url' => makeLink(
         array(
@@ -64,6 +65,7 @@ $items1[] = array(
 $items1[] = array(
     'text' => gt("Create an Order"),
     'icon' => 'fa-plus-circle',
+    'icon5' => 'fas fa-plus-circle',
     'classname' => 'add',
     'url' => makeLink(
         array(
@@ -71,7 +73,7 @@ $items1[] = array(
             'action' => 'create_new_order'
         )
     ),
-    'divider' => true,
+    'divider' => count($recent_orders),
 );
 
 $items2 = array();
@@ -81,6 +83,7 @@ foreach ($recent_orders as $ord) {
             ' <span class="badge ' . ((strtolower($ord->billingmethod[0]->transaction_state) == 'complete' ||
             strtolower($ord->billingmethod[0]->transaction_state) == 'paid') ? 'alert-success">' : '">') . expCore::getCurrency($ord->grand_total) . '</span>',
         'icon' => 'fa-file text-success',
+        'icon5' => 'fas fa-file text-success',
         'classname' => 'search',
         'url' => makeLink(
             array(
@@ -92,7 +95,7 @@ foreach ($recent_orders as $ord) {
     );
 }
 
-if (bs3()) {
+if (bs3() || bs4()) {
     $items = array_merge($items1, $items2);
 } else {
     $items = array($items1, $items2);
@@ -100,6 +103,7 @@ if (bs3()) {
 return array(
     'text' => ' <span class="orders label label-success">' . $new_orders . '</span>',
     'icon' => 'fa-list-ul',
+    'icon5' => 'fas fa-list-ul',
     'classname' => 'order',
     'submenu' => array(
         'id' => 'orders2',

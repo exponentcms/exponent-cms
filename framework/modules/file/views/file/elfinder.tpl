@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -48,7 +48,8 @@
         <script src="{$smarty.const.JQUERY_SCRIPT}" charset="utf-8"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
-        <script src="{$smarty.const.JQUERY2_SCRIPT}" charset="utf-8"></script>
+        {*<script src="{$smarty.const.JQUERY2_SCRIPT}" charset="utf-8"></script>*}
+        <script src="{$smarty.const.JQUERY3_SCRIPT}" charset="utf-8"></script>
     <!--<![endif]-->
     <script src="{$smarty.const.JQUERYUI_SCRIPT}" type="text/javascript" charset="utf-8"></script>
 
@@ -56,6 +57,7 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.version.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/jquery.elfinder.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.mimetypes.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.options.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.options.netmount.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.history.js"></script>
@@ -68,8 +70,9 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/cwd.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/dialog.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/fullscreenbutton.js"></script>
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/mkdirbutton.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/mkdirbutton.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/navbar.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/navdock.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/overlay.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/panel.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/path.js"></script>
@@ -126,6 +129,9 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/restore.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/rm.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/search.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/selectall.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/selectinvert.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/selectnone.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/sort.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/undo.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/up.js"></script>

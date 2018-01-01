@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -512,7 +512,7 @@ class expString {
      * @param $closure
      * @return boolean
      */
-    public static function balance_closure($val, $closure="'") {
+    private static function balance_closure($val, $closure="'") {
         // attempt to match opening/closing enclosure character if missing
         if ((($val[0] === "'") || ($val[0] === "[") || ($val[0] === "{")) && $val[0] != substr($val,-1)) {
             $val .= $val[0];
@@ -692,14 +692,14 @@ class expString {
    	 * @param 	bool		$is_image	Whether the input is an image
    	 * @return	string
    	 */
-   	public static function xss_clean($str, $is_image = FALSE)
+   	private static function xss_clean($str, $is_image = FALSE)
    	{
    		// Is the string an array?
    		if (is_array($str))
    		{
    			while (list($key) = each($str))
    			{
-                if (preg_match('/^[a-zA-Z0-9_\x7f-\xff]*$/', $key)) {  // check for valid array name
+                if (preg_match('/^[a-zA-Z0-9_\-\.\/\\@\x7f-\xff]*$/', $key)) {  // check for valid array name
                     $str[$key] = self::xss_clean($str[$key]);
                 } else {
                     return null;
@@ -912,7 +912,7 @@ class expString {
    	 * @param 	string
    	 * @return 	string
    	 */
-   	protected static function _do_never_allowed($str)
+    private static function _do_never_allowed($str)
    	{
    		$str = str_replace(array_keys(self::$_never_allowed_str), self::$_never_allowed_str, $str);
 
@@ -934,7 +934,7 @@ class expString {
 	 * @param	bool
 	 * @return	string
 	 */
-	public static function remove_invisible_characters($str, $url_encoded = TRUE)
+    private static function remove_invisible_characters($str, $url_encoded = TRUE)
 	{
 		$non_displayables = array();
 
@@ -986,7 +986,7 @@ class expString {
    	 * @see		CI_Security::$_xss_hash
    	 * @return	string	XSS hash
    	 */
-   	public static function xss_hash()
+    private static function xss_hash()
    	{
    		if (self::$_xss_hash === NULL)
    		{
@@ -1016,7 +1016,7 @@ class expString {
    	 * @param	string	$charset	Character set
    	 * @return	string
    	 */
-   	public static function entity_decode($str, $charset = NULL)
+    private static function entity_decode($str, $charset = NULL)
    	{
    		if (strpos($str, '&') === FALSE)
    		{
@@ -1088,7 +1088,7 @@ class expString {
    	 * @param	int	$length	Output length
    	 * @return	string
    	 */
-   	public static function get_random_bytes($length)
+    private static function get_random_bytes($length)
    	{
    		if (empty($length) OR ! ctype_digit((string) $length))
    		{

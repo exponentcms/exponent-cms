@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -50,7 +50,7 @@ class add_file_posted extends upgradescript {
 
 	/**
 	 * updates all expFiles to populate 'posted' field
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

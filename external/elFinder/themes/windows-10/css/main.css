@@ -22,3 +22,42 @@
 .elfinder-dialog .ui-icon-gripsmall-diagonal-se {
   /* */
 }
+
+/* type badge in "icons" view */
+.elfinder-cwd-icon:before {
+	color: white;
+	background-color: #798da7;
+}
+
+.elfinder-cwd-icon-text:before {
+    background-color: #6f99e6
+}
+
+.elfinder-cwd-icon-image:before {
+    background-color: #2ea26c
+}
+
+.elfinder-cwd-icon-audio:before {
+    background-color: #7bad2a
+}
+
+.elfinder-cwd-icon-video:before {
+    background-color: #322aad
+}
+
+.ui-front.ui-icon.elfinder-icon-close.ui-icon-closethick
+{
+    background-image: url(../../../../jquery/css/smoothness/images/ui-icons_222222_256x240.png);
+    background-position: -96px -128px;
+}
+.ui-front.ui-icon.elfinder-icon-minimize.ui-icon-minusthick
+{
+    background-image: url(../../../../jquery/css/smoothness/images/ui-icons_222222_256x240.png);
+    background-position: -64px -128px;
+}
+
+.ui-front.ui-icon.ui-icon-plusthick.elfinder-icon-full
+{
+    background-image: url(../../../../jquery/css/smoothness/images/ui-icons_222222_256x240.png);
+    background-position: -32px -128px;
+}

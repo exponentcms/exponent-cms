@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -46,7 +46,7 @@ class event extends expRecord {
      */
     public function find($range = 'all', $where = null, $order = null, $limit = null, $limitstart = 0, $get_assoc = true, $get_attached = true, $except = array(), $cascade_except = false)
     {
-        if (is_numeric($range) || in_array($range, array('all', 'first', 'bytitle', 'count', 'in', 'bytag', 'bycat'))) {
+        if (is_numeric($range) || in_array($range, array('all', 'revisions', 'first', 'bytitle', 'count', 'in', 'bytag', 'bycat'))) {
             return parent::find($range, $where, $order, $limit, $limitstart, $get_assoc, $get_attached, $except, $cascade_except);
         } else {  // 'upcoming', 'month', 'week', 'day', etc...
             //note $order is boolean for 'featured'
@@ -114,7 +114,11 @@ class event extends expRecord {
                 if ($condense) {
                     //fixme we're leaving events which ended earlier in the day which won't be displayed, which therefore cancels out tomorrow's event
                     $eventid = $event->id;
-                    $multiday_event = array_filter($events, create_function('$event', 'global $eventid; return $event->id === $eventid;'));
+//                    $multiday_event = array_filter($events, create_function('$event', 'global $eventid; return $event->id === $eventid;'));
+                    $multiday_event = array_filter($events, function($event) {
+                        global $eventid;
+                        return $event->id === $eventid;
+                    });
                     if (!empty($multiday_event)) {
                         unset($evs[$key]);
                         continue;

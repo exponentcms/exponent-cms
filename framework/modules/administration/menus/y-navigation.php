@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -51,6 +51,7 @@ $info = array(
         array(
             'text'      => gt('Information'),
             'icon' => 'fa-info-circle',
+            'icon5' => 'fas fa-info-circle',
             'classname' => 'info',
             "submenu"   => array(
                 'id'       => 'pginfo',
@@ -71,6 +72,7 @@ if (expPermissions::check('manage', expCore::makeLocation('navigation', '', $sec
         'text' => gt('Edit this page'),
         'classname' => 'edit',
         'icon' => 'fa-edit',
+        'icon5' => 'fas fa-edit',
         'url' => makeLink(
             array(
                 'module' => 'navigation',
@@ -86,6 +88,7 @@ if ($user->isAdmin()) {
         'text' => gt('Manage User Permissions'),
         'classname' => 'user',
         'icon' => 'fa-user',
+        'icon5' => 'fas fa-user',
         'url' => makeLink(
             array(
                 'controller' => 'users',
@@ -99,6 +102,7 @@ if ($user->isAdmin()) {
         'text' => gt('Manage Group Permissions'),
         'classname' => 'group',
         'icon' => 'fa-group',
+        'icon5' => 'fas fa-users',
         'url' => makeLink(
             array(
                 'controller' => 'users',
@@ -132,6 +136,7 @@ if ($manageperms) {
     $info['itemdata'][] = array(
         'text' => gt('Manage all pages'),
         'icon' => 'fa-leaf',
+        'icon5' => 'fas fa-leaf',
         'classname' => 'sitetree',
         'url' => makeLink(
             array(
@@ -145,6 +150,7 @@ if ($manageperms) {
 return array(
     'text'      => gt('Pages'),
     'icon' => 'fa-file-text-o',
+    'icon5' => 'far fa-file-alt',
     'classname' => 'thispage',
     'submenu'   => $info
 );

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -140,11 +140,11 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
             ";
         $script .= "
             if (module.hasClass('yui3-closed'))  {
-                Y.one('#h4-".$params['unique']."').set('title','".gt('Click to Expand')."');
-                Y.one('#a-".$params['unique']."').set('title','".gt('Click to Expand')."');
+                Y.one('#h4-".$params['unique']."').set('title',\"".gt('Click to Expand')."\");
+                Y.one('#a-".$params['unique']."').set('title',\"".gt('Click to Expand')."\");
             } else {
-                Y.one('#h4-".$params['unique']."').set('title','".gt('Click to Collapse')."');
-                Y.one('#a-".$params['unique']."').set('title','".gt('Click to Collapse')."');
+                Y.one('#h4-".$params['unique']."').set('title',\"".gt('Click to Collapse')."\");
+                Y.one('#a-".$params['unique']."').set('title',\"".gt('Click to Collapse')."\");
             }
         };
 

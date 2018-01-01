@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -58,7 +58,7 @@ class upgrade_mediaplayer2 extends upgradescript {
 	/**
 	 * Converts all EAAS items to use Media Player module instead of deprecated YouTube module
      *
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

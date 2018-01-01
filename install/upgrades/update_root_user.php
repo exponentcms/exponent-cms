@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,7 +52,7 @@ class update_root_user extends upgradescript {
 
 	/**
 	 * converts the main/root super-admin to be marked as such
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

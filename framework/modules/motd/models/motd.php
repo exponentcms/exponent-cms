@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -31,7 +31,7 @@ class motd extends expRecord {
         ));
 
     public $months = array(
-        0=>"Every Month",
+        0=>"Any Month",
 		1=>"January",
 		2=>"February",
 		3=>"March",

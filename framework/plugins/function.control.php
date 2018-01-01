@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -123,6 +123,7 @@ function smarty_function_control($params, &$smarty) {
                 if (isset($params['style'])) $control->style = $params['style'];
                 $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
                 $control->multiple      = isset($params['multiple']) ? true : false;
+                $control->select2      = isset($params['select2']) ? $params['select2'] : false;
                 if (isset($params['from']) && isset($params['to'])) {
                     for ($i = $params['from']; $i <= $params['to']; $i++) {
                         $control->items[$i] = isset($params['zeropad']) ? sprintf("%02d", $i) : $i;

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -51,7 +51,7 @@ class upgrade_container2 extends upgradescript {
 
 	/**
 	 * converts references to the containermodule and all old school type references to the new naming scheme (sans Controller)
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

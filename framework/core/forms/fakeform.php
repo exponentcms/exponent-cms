@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -69,17 +69,19 @@ class fakeform extends form {
 
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
-        if (expJavascript::inAjaxAction()) {
-            $ws_load = "webshim.setOptions({loadStyles:false,canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
-        } else {
-            $ws_load = "webshim.setOptions({canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
+		if (OLD_BROWSER_SUPPORT) {
+            if (expJavascript::inAjaxAction()) {
+               $ws_load = "webshim.setOptions({loadStyles:false,canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
+           } else {
+               $ws_load = "webshim.setOptions({canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
+           }
+           expJavascript::pushToFoot(array(
+               "unique"  => 'html5forms',
+               "jquery"  => 1,
+               "src"     => PATH_RELATIVE . 'external/webshim-1.16.0/js-webshim/dev/polyfiller.js',
+               "content" => $ws_load,
+           ));
         }
-        expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms',
-            "jquery"  => 1,
-            "src"     => PATH_RELATIVE . 'external/webshim-1.16.0/js-webshim/dev/polyfiller.js',
-            "content" => $ws_load,
-        ));
 		foreach ($this->scripts as $script)
             $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
 		$html .= $formError;
@@ -164,22 +166,27 @@ class fakeform extends form {
         }
         $for   = ' for="' . $name . '"';
         if (!bs3() && (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {  // not flipped checkbox
-            $html .= "<label ".$for." class=\"".(bs3()||bs2()?"control-label":"label").($this->horizontal&&bs3()?' col-sm-2':'')."\" style=\"width:auto; display:inline;\">";
+            $html .= "<label ".$for." class=\"".(bs3()||bs2()?"control-label":"label form-check-label").($this->horizontal&&bs3()?' col-sm-2':'')."\" style=\"width:auto; display:inline;\">";
             if($this->controls[$name]->required)
                 $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
             $html .= $this->controlLbl[$name];
             $html .= "</label>";
-            if (!empty($this->controls[$name]->description))
-                $html .= "<br><div class=\"".(bs3()?"help-block":"control-desc")."\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</div>";
+            if (!empty($this->controls[$name]->description)) {
+                if (bs4()) {
+                    $html .= "<br><small class=\""."form-text text-muted"."\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</small>";
+                } else {
+                    $html .= "<br><div class=\"".(bs3()?"help-block":"control-desc")."\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</div>";
+                }
+            }
         }
 
         if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol') || $this->controls[$name]->_controltype == 'pagecontrol') {
         } elseif (!empty($this->controlLbl[$name])) {  // flipped non-checkbox or page control
             if ($this->controls[$name]->_controltype == 'checkboxcontrol') {
-                $html .= "<label ".$for." class=\"".(bs3()||bs2()?"control-label":"label").($this->horizontal&&bs3()?' col-sm-2':'')."\" style=\"display:inline;\">";
+                $html .= "<label ".$for." class=\"".(bs3()||bs2()?"control-label":"label form-check-label").($this->horizontal&&bs3()?' col-sm-2':'')."\" style=\"font-weight: normal;display:inline;\">";
             } else {
                 $break = $this->controls[$name]->_controltype == 'radiogroupcontrol' && $this->controls[$name]->cols != 1 ? true : false;
-                $html .= "<label class=\"".(bs3()||bs2()?"control-label":"label").($this->horizontal&&bs3()?' col-sm-2':'').($break?" show":"")."\">";
+                $html .= "<label class=\"".(bs3()||bs2()?"control-label":"label").($this->horizontal&&bs3()?' col-sm-2':'').($break?" form-check-inline":"")."\">";
             }
             if($this->controls[$name]->required)
                 $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
@@ -189,8 +196,13 @@ class fakeform extends form {
 //           $html .= "&#160;&#160;";
         if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {  // flipped checkbox
             $html .= "<span style=\"display:inline-block\">".$this->controls[$name]->controlToHTML_newschool($name, $this->controlLbl[$name]) . "</span>\r\n";
-            if (!empty($this->controls[$name]->description))
-                $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">" . $this->controls[$name]->description . "</div>";
+            if (!empty($this->controls[$name]->description)) {
+                if (bs4()) {
+                    $html .= "<small class=\""."form-text text-muted"."\">" . $this->controls[$name]->description . "</small>";
+                } else {
+                    $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">" . $this->controls[$name]->description . "</div>";
+                }
+            }
         }
         if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'checkboxcontrol')  // not fipped non-checkbox control
               || $this->controls[$name]->_controltype == 'radiogroupcontrol') {  // flipped/not flipped radio group
@@ -244,6 +256,27 @@ class fakeform extends form {
             $this->edit_icon_class = '<i class="fa fa-pencil-square-o '.$icon_size.'"></i>';
             $this->delete_class = ' class="btn btn-danger '.$this->btn_size.' delete"';
             $this->delete_icon_class = '<i class="fa fa-times-circle '.$icon_size.'"></i>';
+        } elseif (bs4()) {
+            expCSS::pushToHead(array(
+                "corecss"=>"forms-bootstrap3"
+            ));
+            if (BTN_SIZE == 'large') {
+                $this->btn_size = 'btn-lg';
+                $icon_size = 'fa-lg';
+            } elseif (BTN_SIZE == 'small') {
+                $this->btn_size = 'btn-sm';
+                $icon_size = '';
+            } elseif (BTN_SIZE == 'extrasmall') {
+                $this->btn_size = 'btn-xs';
+                $icon_size = '';
+            } else {
+                $this->btn_size = '';
+                $icon_size = 'fa-lg';
+            }
+            $this->edit_class = ' class="btn btn-default '.$this->btn_size.' edit"';
+            $this->edit_icon_class = '<i class="far fa-edit '.$icon_size.'"></i>';
+            $this->delete_class = ' class="btn btn-danger '.$this->btn_size.' delete"';
+            $this->delete_icon_class = '<i class="fas fa-times-circle '.$icon_size.'"></i>';
         } else {
             $this->edit_class = ' class="edit"';
             $this->delete_class = ' class="delete"';

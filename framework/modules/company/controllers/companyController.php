@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -48,6 +48,7 @@ class companyController extends expController {
             'where'=>1,
             'limit'=>(isset($this->params['limit']) && $this->config['limit'] != '') ? $this->params['limit'] : 10,
             'order'=>isset($this->params['order']) ? $this->params['order'] : 'rank',
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : ''),
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],

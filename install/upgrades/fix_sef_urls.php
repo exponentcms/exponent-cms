@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -54,7 +54,7 @@ class fix_sef_urls extends upgradescript {
 	/**
 	 * Searches for and corrects duplicate sef urls within a model
      *
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
         global $db;

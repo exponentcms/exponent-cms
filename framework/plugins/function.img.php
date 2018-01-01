@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -61,7 +61,7 @@ function smarty_function_img($params,&$smarty) {
 
 	if (!isset($params['q']) && defined('THUMB_QUALITY')) $params['q'] = THUMB_QUALITY;
 
-	if (empty($params['fulllink'])) {
+	if (empty($params['fulllink']) && !EXPORT_AS_PDF === 1) {
 		$src = PATH_RELATIVE.'thumb.php?';
 	} else {
 		$src = URL_FULL.'thumb.php?';
@@ -433,6 +433,7 @@ function smarty_function_img($params,&$smarty) {
 //	} else {
 //         $src .= '&amp;err=showerror';
 //     }
+    $src = str_replace('?&amp;', '?', $src);
 	$source = ' src="'.$src.'"';
 
     $itemprop = '';

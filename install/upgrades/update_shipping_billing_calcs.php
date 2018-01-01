@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -55,7 +55,7 @@ class update_shipping_billing_calcs extends upgradescript {
 
 	/**
 	 * updates stored ecom calculator fields
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
         global $db;
@@ -69,7 +69,7 @@ class update_shipping_billing_calcs extends upgradescript {
                     $classname = substr($file, 0, -4);
                     $id = $db->selectValue('billingcalculator', 'id', 'calculator_name="'.$classname.'"');
                     $calcobj = new $classname($id);
-                    if ($calcobj->isSelectable() == true) {
+                    if ((method_exists($calcobj,'isSelectable')) && $calcobj->isSelectable() == true) {
                         $calcobj->update(
                             array(
                                 'title'=>$calcobj->name(),

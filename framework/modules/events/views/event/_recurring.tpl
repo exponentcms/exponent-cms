@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,7 +13,12 @@
  *
  *}
 
-<label class="label" for="recur">{'Recurrence'|gettext}:</label>
+{if (bs3() || bs4())}
+    {$label_class = "control-label"}
+{else}
+    {$label_class = "label"}
+{/if}
+<label class="{$label_class}" for="recur">{'Recurrence'|gettext}:</label>
 <select class="form-control" id="recur" name="recur" onchange="showSubform(this)">
 	<option value="recur_none">{'None'|gettext}</option>
 	<option value="recur_daily">{'Daily'|gettext}</option>

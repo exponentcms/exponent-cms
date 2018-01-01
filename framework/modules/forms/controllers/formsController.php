@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -85,10 +85,12 @@ class formsController extends expController {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['title'])) {
                 $f = $this->forms->find('first', 'sef_url="' . expString::escape($this->params['title']) . '"');
-                $this->get_defaults($f);
+                if (!empty($f))
+                    $this->get_defaults($f);
             } elseif (!empty($this->params['id'])) {
                 $f = $this->forms->find('first', 'id=' . $this->params['id']);
-                $this->get_defaults($f);
+                if (!empty($f))
+                    $this->get_defaults($f);
             }
 
             if (!empty($f)) {
@@ -122,6 +124,9 @@ class formsController extends expController {
                     if ($column_name == "ip") {
 //                        $columns[gt('IP Address')] = 'ip';
                         $columns['ip'] = gt('IP Address');
+                    } elseif ($column_name == "sef_url") {
+//                        $columns[gt('Referrer')] = 'referrer';
+                        $columns['sef_url'] = gt('SEF URL');
                     } elseif ($column_name == "referrer") {
 //                        $columns[gt('Referrer')] = 'referrer';
                         $columns['referrer'] = gt('Referrer');
@@ -166,19 +171,36 @@ class formsController extends expController {
                         }
                     }
                 }
+                foreach ($items as $key => $item) {
+                    //We have to create a show link
+                    $items[$key]['link'] = makeLink(array(
+                        'controller'=>'forms',
+                        'action'=>'show',
+                        'forms_id'=>$f->id,
+                        'id'=>$items[$key]['id'],
+                        'src'=>$this->loc->src
+                    ));
+                }
+
+                $limit = (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10;
+                if (empty($this->params['view']))
+                    $this->params['view'] = null;
+                if ($this->params['view'] !== 'showall_portfolio')
+                    $limit = 0;
 
                 $page = new expPaginator(
                     array(
                         'records' => $items,
                         'where' => 1,
-//                'limit'   => (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
+                        'limit'   => $limit,
                         'order' => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : (!empty($this->config['order']) ? $this->config['order'] : 'id'),
                         'dir' => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : (!empty($this->config['dir']) ? $this->config['dir'] : 'ASC'),
                         'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
                         'controller' => $this->baseclassname,
                         'action' => $this->params['action'],
                         'src' => $this->loc->src,
-                        'columns' => $columns
+                        'columns' => $columns,
+                        'view' => $this->params['view']
                     )
                 );
 
@@ -192,6 +214,7 @@ class formsController extends expController {
                         "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
                         "filtered" => !empty($this->config['report_filter']) ? $this->config['report_filter'] : '',
                         "count" => $f->countRecords(),
+                        "config" => $this->config,
                     )
                 );
             }
@@ -210,15 +233,22 @@ class formsController extends expController {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['forms_id'])) {
                 $f = $this->forms->find('first', 'id=' . $this->params['forms_id']);
+                if (!empty($f))
+                    $this->get_defaults($f);
             } elseif (!empty($this->params['title'])) {
                 $f = $this->forms->find('first', 'sef_url="' . expString::escape($this->params['title']) . '"');
-                redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
+                if (!empty($f))
+                    $this->get_defaults($f);
+//                if (!empty($f))
+//                    redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
             }
 
             if (!empty($f)) {
                 $fc = new forms_control();
                 $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
                 $id = !empty($this->params['id']) ? $this->params['id'] : null;
+                if (!empty($this->params['item']))
+                    $id = 'sef_url="' . expString::escape($this->params['item']) . '"';
                 $data = $f->getRecord($id);
 
                 $fields = array();
@@ -234,9 +264,11 @@ class formsController extends expController {
 
                     // system added fields
                     $captions['ip'] = gt('IP Address');
+                    $captions['sef_url'] = gt('SEF URL');
                     $captions['timestamp'] = gt('Timestamp');
                     $captions['user_id'] = gt('Posted by');
                     $fields['ip'] = $data->ip;
+                    $fields['sef_url'] = $data->sef_url;
                     $fields['timestamp'] = strftime(DISPLAY_DATETIME_FORMAT, $data->timestamp);
                     $locUser = user::getUserById($data->user_id);
                     $fields['user_id'] = !empty($locUser->username) ? $locUser->username : '';
@@ -278,6 +310,7 @@ class formsController extends expController {
                         "count"       => $f->countRecords(),
                         'is_email' => 0,
                         "css" => file_get_contents(BASE . "framework/core/assets/css/tables.css"),
+                        "config" => $this->config,
                     )
                 );
             }
@@ -303,7 +336,8 @@ class formsController extends expController {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['forms_id'])) {
                 $f = $this->forms->find('first', 'id=' . $this->params['forms_id']);
-                $this->get_defaults($f);
+                if (!empty($f))
+                    $this->get_defaults($f);
             }
 
             if (!empty($f)) {
@@ -380,6 +414,8 @@ class formsController extends expController {
                     $form->register($c->name, $c->caption, $ctl);
 //                    if (get_class($ctl) == 'pagecontrol') $paged = true;
                 }
+                if (!empty($data->sef_url))
+                    $form->register("sef_url", gt('SEF URL'), new textcontrol($data->sef_url));
 
                 // if we are editing an existing record we'll need to do recaptcha here since we won't call confirm_data
                 if (!empty($this->params['id'])) {
@@ -596,8 +632,12 @@ class formsController extends expController {
 //                if ($emailValue !== $this->params[$c->name])  //fixme should this be done, isn't data already parsed? only when editing an existing record
 //                    eLog($emailValue.' : '.$this->params[$c->name], 'Mismatch');
                 if (get_class($ctl) == 'texteditorcontrol') {
-                    $value = expString::escape($emailValue); //fixme does this need to occur later?
-                    $value = str_replace(array('\r\n','\n','\r'),array("\r\n","\n","\r"),$value);
+//                    $value = expString::escape($emailValue); //fixme does this need to occur later?
+//                    $value = str_replace(array('\r\n', '\n', '\r'), array("\r\n", "\n", "\r"), $value);
+                    $value = stripslashes($emailValue);  //fixme does this need to occur later?
+                } elseif (get_class($ctl) == 'htmleditorcontrol') {
+                    $value = stripslashes($emailValue);  //fixme does this need to occur later?
+                    $value = str_replace(array("\r\n", "\n", "\r"), '',  $value);
                 } else {
                     $value = stripslashes(expString::escape($emailValue));  //fixme does this need to occur later?
                 }
@@ -626,13 +666,14 @@ class formsController extends expController {
             if (!empty($f->is_saved)) {
                 if (isset($this->params['data_id'])) {
                     //if this is an edit we remove the record and insert a new one, keeping some original data
-                    $olddata = $f->getRecord($this->params['data_id']);
-                    $db_data->ip = $olddata->ip;
-                    $db_data->user_id = $olddata->user_id;
-                    $db_data->timestamp = $olddata->timestamp;
-                    $db_data->referrer = $olddata->referrer;
-                    $db_data->location_data = $olddata->location_data;
-                    $f->deleteRecord($this->params['data_id']);
+//                    $olddata = $f->getRecord($this->params['data_id']);
+//                    $db_data->ip = $olddata->ip;
+//                    $db_data->user_id = $olddata->user_id;
+//                    $db_data->timestamp = $olddata->timestamp;
+//                    $db_data->referrer = $olddata->referrer;
+//                    $db_data->location_data = $olddata->location_data;
+//                    $f->deleteRecord($this->params['data_id']);  //fixme we delete old record/id to make this easier??
+                    $f->updateRecord($this->params);
                 } else {
                     $db_data->ip = $_SERVER['REMOTE_ADDR'];
                     if (expSession::loggedIn()) {
@@ -651,8 +692,31 @@ class formsController extends expController {
                         expCore::makeLocation($mod,$this->params['src'],$this->params['int']);
                     }
                     $db_data->location_data = $location_data;
+                    $f->insertRecord($db_data);
                 }
-                $f->insertRecord($db_data);
+
+//                if (empty($db_data->sef_url)) {
+//                    $needles = array(
+//                        'name',
+//                        'title',
+//                        'last',
+//                        'first',
+//                        'email'
+//                    );
+//                    $field = 'sef_url';
+//                    foreach ($needles as $needle) {
+//                        foreach ($this->params as $key => $value) {
+//                            if (false !== stripos($key, $needle)) {
+//                                $field = $key;
+//                                break;
+//                            }
+//                        }
+//                        if ($field !== 'sef_url')
+//                            break;
+//                    }
+//                }
+//                $db_data->sef_url = expCore::makeSefUrl($db_data->$field, $f->table_name);
+//                $f->insertRecord($db_data);
             } else {
                 $referrer = $db->selectValue("sessionticket", "referrer", "ticket = '" . expSession::getTicketString() . "'");
             }
@@ -901,6 +965,8 @@ class formsController extends expController {
         }
         $fields['ip'] = gt('IP Address');
         if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
+        $fields['sef_url'] = gt('SEF URL');
+        if (in_array('sef_url', $cols)) $column_names['sef_url'] = gt('SEF URL');
         $fields['user_id'] = gt('Posted by');
         if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
         $fields['timestamp'] = gt('Timestamp');
@@ -997,7 +1063,7 @@ class formsController extends expController {
             $form = new fakeform();
             $form->horizontal = !empty($this->config['style']) ? $this->config['style'] : false;
             if (isset($this->params['style']))
-                $form->horizontal = $this->params['style'];
+                $form->horizontal = !empty($this->params['style']);
             foreach ($controls as $c) {
                 $ctl = expUnserialize($c->data);
                 $ctl->_id = $c->id;
@@ -1010,7 +1076,7 @@ class formsController extends expController {
             $types[".break"] = gt('Static - Spacer');
             $types[".line"] = gt('Static - Horizontal Line');
             uasort($types, "strnatcmp");
-            if (!bs3())
+            if (!bs3() && !bs4())
                 array_unshift($types, '[' . gt('Please Select' . ']'));
 
             $forms_list = array();
@@ -1038,7 +1104,7 @@ class formsController extends expController {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap"
                 ));
-            } elseif (bs3()) {
+            } elseif (bs3() || bs4()) {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap3"
                 ));
@@ -1171,7 +1237,7 @@ class formsController extends expController {
                 if (!isset($this->params['id']) && $control->countControls("name='" . $name . "' AND forms_id=" . $this->params['forms_id']) > 0) {
                     $this->params['_formError'] = gt('Identifier must be unique.');
                     expSession::set('last_POST', $this->params);
-                } elseif ($name == 'id' || $name == 'ip' || $name == 'user_id' || $name == 'timestamp' || $name == 'location_data') {
+                } elseif ($name == 'id' || $name == 'ip' || $name == 'sef_url' || $name == 'user_id' || $name == 'timestamp' || $name == 'location_data') {
                     $this->params['_formError'] = sprintf(gt("Identifier cannot be '%s'."), $name);
                     expSession::set('last_POST', $this->params);
                 } else {
@@ -1227,8 +1293,6 @@ class formsController extends expController {
         if (!empty($this->params['id'])) {
             $fc = new forms_control($this->params['id']);
             $fc->rerank_control($this->params['rank']);
-            // if we reranked a pagecontrol, we need to check/auto-correct the rank if needed
-            $fc->update(array('rank'=>$this->params['rank']));  // force auto-validation of ranks
         }
     }
 
@@ -1285,6 +1349,8 @@ class formsController extends expController {
             }
             $fields['ip'] = gt('IP Address');
             if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
+            $fields['sef_url'] = gt('SEF URL');
+            if (in_array('sef_url', $cols)) $column_names['sef_url'] = gt('SEF URL');
             $fields['user_id'] = gt('Posted by');
             if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
             $fields['timestamp'] = gt('Timestamp');
@@ -1361,12 +1427,12 @@ class formsController extends expController {
             $items = $f->getRecords();
 
             $fc = new forms_control();
-            //FIXME should we default to only 5 columns or all columns? and should we pick up modules columns ($this->config) or just form defaults ($f->)
             //$f->column_names_list is a serialized array
             //$this->config['column_names_list'] is an array
             if ($this->config['column_names_list'] == '') {
                 //define some default columns...
                 $controls = $fc->find('all', "forms_id=" . $f->id . " AND is_readonly = 0 AND is_static = 0", "rank");
+                //FIXME should we default to only 5 columns or all columns? and should we pick up modules columns ($this->config) or just form defaults ($f->)
 //                foreach (array_slice($controls, 0, 5) as $control) {
                 foreach ($controls as $control) {
 //                    if ($this->config['column_names_list'] != '')
@@ -1389,6 +1455,9 @@ class formsController extends expController {
                         case 'ip':
                             $rpt_columns[$column] = gt('IP Address');
                             break;
+                        case 'sef_url':
+                            $rpt_columns[$column] = gt('SEF URL');
+                            break;
                         case 'referrer':
                             $rpt_columns[$column] = gt('Event ID');
                             break;
@@ -1404,7 +1473,7 @@ class formsController extends expController {
 
             // populate field data
             foreach ($rpt_columns as $column_name=>$column_caption) {
-                if ($column_name == "ip" || $column_name == "referrer" || $column_name == "location_data") {
+                if ($column_name == "ip" || $column_name == "sef_url" || $column_name == "referrer" || $column_name == "location_data") {
                 } elseif ($column_name == "user_id") {
                     foreach ($items as $key => $item) {
                         if ($item->$column_name != 0) {
@@ -1441,6 +1510,10 @@ class formsController extends expController {
                     }
                 }
             }
+
+            expCore::save_csv($items, $rpt_columns, "report.csv");
+
+            //fixme old routine
 
             if (LANG_CHARSET == 'UTF-8') {
                 $file = chr(0xEF) . chr(0xBB) . chr(0xBF); // add utf-8 signature to file to open appropriately in Excel, etc...
@@ -1509,7 +1582,7 @@ class formsController extends expController {
      * {[id]=>myID4, [Name]=>name4, [Address]=>myaddr4}
      * {[id]=>myID5, [Name]=>name5, [Address]=>myaddr5}
      *
-     * So by nature of the array, the keys are repetated in each line (id, name, etc)
+     * So by nature of the array, the keys are repeated in each line (id, name, etc)
      * So if we want to make a header row, we just run through once at the beginning and
      * use the array_keys function to strip out a functional header
      *
@@ -1521,10 +1594,12 @@ class formsController extends expController {
      */
     public static function sql2csv($items, $rptcols = null) {
         $str = "";
+        // create header row
         foreach ($rptcols as $individual_Header) {
             if (!is_array($rptcols) || in_array($individual_Header, $rptcols)) $str .= $individual_Header . ",";  //FIXME $individual_Header is ALWAYS in $rptcols?
         }
         $str .= "\r\n";
+        // create item rows
         foreach ($items as $item) {
             foreach ($rptcols as $key => $rowitem) {
                 if (!is_array($rptcols) || property_exists($item, $key)) {
@@ -1749,9 +1824,12 @@ class formsController extends expController {
                 $form->meta("filename", $directory . "/" . $file->filename);
                 $form->meta("use_header", $this->params["use_header"]);
                 $form->meta("rowstart", $this->params["rowstart"]);
-                for ($i = 0, $iMax = count($lineInfo); $i < $iMax; $i++) {
+                for ($i = 0, $iMax = count($headerinfo); $i < $iMax; $i++) {
                     if ($headerinfo != null) {
-                        $title = $headerinfo[$i] . ' (' . $lineInfo[$i] .')';
+                        $title = $headerinfo[$i];
+                        if (!empty($lineInfo[$i])) {
+                            $title .=  ' (' . $lineInfo[$i] .')';
+                        }
     //                    $label = str_replace('&', 'and', $headerinfo[$i]);
     //                    $label = preg_replace("/(-)$/", "", preg_replace('/(-){2,}/', '-', strtolower(preg_replace("/([^0-9a-z-_\+])/i", '-', $label))));
     //                    $form->register("name[$i]", null, new genericcontrol('hidden',$label));
@@ -1760,7 +1838,11 @@ class formsController extends expController {
                         $form->register("name[$i]", null, new genericcontrol('hidden','Field'.$i));
                         $title = $lineInfo[$i];
                     }
-                    $form->register("data[$i]", null, new genericcontrol('hidden',$lineInfo[$i]));
+                    if (!empty($lineInfo[$i])) {
+                        $form->register("data[$i]", null, new genericcontrol('hidden', $lineInfo[$i]));
+                    } else {
+                        $form->register("data[$i]", null, new genericcontrol('hidden', gt('empty record')));
+                    }
                     $form->register("control[$i]", $title, new dropdowncontrol("none", $types));
                 }
                 $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
@@ -2020,6 +2102,7 @@ class formsController extends expController {
                 $i = 0;
                 $db_data = new stdClass();
                 $db_data->ip = '';
+                $db_data->sef_url = '';
                 $db_data->user_id = $user->id;
                 $db_data->timestamp = time();
                 $db_data->referrer = '';
@@ -2033,8 +2116,8 @@ class formsController extends expController {
                         if (!empty($def)) {
                             $db_data->$colname = call_user_func(array($control_type, 'convertData'), $colname, $params);
                         }
-                        if (!empty($db_data->$colname) && array_key_exists($colname,$multi_item_control_items) && !in_array($db_data->$colname,$multi_item_control_items[$colname])) {
-                            $multi_item_control_items[$colname][] = $db_data->$colname;
+                        if (!empty($db_data->$colname) && array_key_exists($colname, $multi_item_control_items) && !in_array($db_data->$colname, $multi_item_control_items[$colname])) {
+                            $multi_item_control_items[$colname][$db_data->$colname] = $db_data->$colname;
                         }
                     }
                     $i++;
@@ -2053,6 +2136,7 @@ class formsController extends expController {
             foreach ($multi_item_control_ids as $key=>$control_id) {
                 $fc = new forms_control($control_id);
                 $ctl = expUnserialize($fc->data);
+                ksort($multi_item_control_items[$key]);
                 $ctl->items = $multi_item_control_items[$key];
                 $fc->data = serialize($ctl);
                 $fc->update();

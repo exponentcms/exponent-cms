@@ -8,7 +8,10 @@
 .elfinder .elfinder-toolbar .elfinder-buttonset {
   /* */
 }
-
+/* Buttonset wrapper for search field */
+.elfinder .elfinder-button-search .elfinder-button-menu {
+  background: #fff !important;
+}
 /* Buttons */
 .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button {
   border: 1px solid transparent;
@@ -20,6 +23,12 @@
 .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button:hover {
   background: #cce8ff;
   border: 1px solid #99d1ff;
+}
+
+/* Hovered buttons in search field */
+.elfinder .elfinder-button-search .elfinder-button-menu .ui-button:hover {
+  background: #cce8ff;
+  border: 0px solid #99d1ff;
 }
 
 /* Disabled buttons */
@@ -40,6 +49,9 @@
 /* Searchbar */
 .elfinder-toolbar .elfinder-button-search {
   /* */
+  border: 1px solid #ccc;
+  margin-right: 5px;
+  border-radius: 0;
 }
 
 /* Searchbar icons (search and close) */
@@ -49,6 +61,7 @@
 
 .elfinder-toolbar .elfinder-button-search .ui-icon-search {
   /* */
+   background-image: url('../images/16px/search.png');
 }
 
 
@@ -178,34 +191,53 @@
   .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-sort {
     background-image: url('../images/16px/sort.png');
   }
-
-  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-pixlr {
-    background-image: url('../images/16px/pen.png');
+  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-undo {
+    background-image: url('../images/16px/undo.png');
+  }
+  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-redo {
+    background-image: url('../images/16px/redo.png');
+  }
+  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-selectall {
+    background-image: url('../images/16px/select_all.png');
+  }
+  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-selectnone {
+    background-image: url('../images/16px/deselect_all.png');
+  }
+  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-selectinvert {
+    background-image: url('../images/16px/invert_selection.png');
+  }
+  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-empty {
+    background-image: url('../images/16px/clear_folder.png');
   }
 
-  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-places {
-    background-image: url('../images/16px/bookmark.png');
-  }
 
-  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-reload {
-    background-image: url('../images/16px/reload.png');
-  }
+.elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-pixlr {
+  background-image: url('../images/16px/pen.png');
+}
 
-  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-fullscreen {
-    background-image: url('../images/16px/view-fullscreen.png');
-  }
+.elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-places {
+  background-image: url('../images/16px/bookmark.png');
+}
 
-  .elfinder .elfinder-toolbar .elfinder-button-search .ui-icon-search {
-    background-image: url('../images/16px/search.png');
-  }
+.elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-reload {
+  background-image: url('../images/16px/reload.png');
+}
 
-  .elfinder .elfinder-toolbar .elfinder-button-search .ui-icon-close {
-    background-image: url('../images/16px/cancel.png');
-  }
+.elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-fullscreen {
+  background-image: url('../images/16px/view-fullscreen.png');
+}
 
-  .elfinder .elfinder-toolbar .elfinder-button-search input {
-    border: 1px solid #69bcee;
-  }
+.elfinder .elfinder-toolbar .elfinder-button-search .ui-icon-search {
+  background-image: url('../images/16px/search.png');
+}
+
+.elfinder .elfinder-toolbar .elfinder-button-search .ui-icon-close {
+  background-image: url('../images/16px/cancel.png');
+}
+
+.elfinder .elfinder-toolbar .elfinder-button-search input {
+  border: 1px solid #69bcee;
+}
 
   /* Menus (e.g. for sorting) */
   .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-menu {

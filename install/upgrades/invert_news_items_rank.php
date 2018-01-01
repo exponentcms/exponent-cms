@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -51,7 +51,7 @@ class invert_news_items_rank extends upgradescript {
 
 	/**
 	 * inverts the rank order of all news items
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

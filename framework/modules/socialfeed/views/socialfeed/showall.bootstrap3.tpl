@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -130,8 +130,15 @@
             {elseif $message.sftype == 'facebook'}
                 <div class="item facebook{if $config.socialfeed_display_type == 'fluid'} col-lg-3 col-md-4 col-sm-6 col-xs-12{/if}{$pb_style}">
                     <div class="item-box">
+                        <!-- Video -->
+                        {if (isset($message['video']) && !empty($message['video']))}
+                            <div class="fb-video">
+                                <a href="{$message['video']}" target="_blank" title="{'View Video'|gettext}">
+                                    <img class="img-responsive" src="{$message['picture']}" alt="{'Facebook video'|gettext}" alt="{'Facebook Video'|gettext}">
+                                </a>
+                            </div>
                         <!-- Picture -->
-                        {if (isset($message['picture']) && !empty($message['picture']))}
+                        {elseif (isset($message['picture']) && !empty($message['picture']))}
                             <div class="fb-pic">
                                 <a href="{$message['photo_link']}" target="_blank" title="{'View Photos'|gettext}">
                                     <img class="img-responsive" src="{$message['picture']}" alt="{'Facebook photo'|gettext}" alt="{'Facebook Image'|gettext}">
@@ -145,8 +152,11 @@
                                     {$message['message']}
                                 </a>
                                 {if {$message['likes']}}
-                                    <span class="btn btn-xs btn-default">
-                                        <strong><i class="fa fa-thumbs-o-up pull-right"></i> {$message['likes']}</strong>
+                                    <span class="btn btn-xs btn-default pull-right">
+                                        <strong>
+                                            <i class="{if bs4()}far fa-thumbs-up{else}fa fa-thumbs-o-up{/if}"></i>
+                                            {$message['likes']}
+                                        </strong>
                                     </span>
                                 {/if}
                             </div>
@@ -168,12 +178,6 @@
                                 </span>
                             {/if}
                         </div>
-                        <!-- Video -->
-                        {if (isset($message['video']) && !empty($message['video']))}
-                            <div class="fb-video">
-                                <a href="{$message['video']}" target="_blank" title="{'View Video'|gettext}">{'See Video'|gettext}</a>
-                            </div>
-                        {/if}
                     </div>
                 </div>
             {elseif $message.sftype == 'pinterest'}

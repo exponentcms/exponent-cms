@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -86,7 +86,9 @@
                     {/if}
                     <div class="container-chrome module-chrome">
                         <a href="#" class="trigger" title="{$container->info.module|gettext}">{$container->info.module|gettext}</a>
-                        {nocache}{getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last}{/nocache}
+                        {nocache}
+                            {getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last}
+                        {/nocache}
                     </div>
             {/if}
         {/permissions}

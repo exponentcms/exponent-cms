@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -239,5 +239,6 @@
     gt("Do Not Index?");
     gt("You don\'t have permission to");
     gt("(read more)");
+    gt("Default time zone for this site CAUTION: Changes may affect calendars and other features using date functions.");
 
 ?>

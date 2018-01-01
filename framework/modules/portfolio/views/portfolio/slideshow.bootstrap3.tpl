@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -34,6 +34,7 @@
                     {icon class=add action=edit rank=1 text="Add a Portfolio Slide"|gettext}
                 {/if}
                 {if $permissions.manage}
+                    {icon class="downloadfile" action=export_csv text="Export as CSV"|gettext}
                     {if !$config.disabletags}
                         {icon controller=expTag class="manage" action=manage_module model='portfolio' text="Manage Tags"|gettext}
                     {/if}
@@ -62,8 +63,8 @@
             <!-- begin Controls -->
             <div class="row cu-controls">
                 <div class="col-sm-12">
-                    <a href="#ss-{$name}" data-slide="prev" class="sercacontrol"><i class="glyphicon glyphicon-chevron-left"></i></a>
-                    <a href="#ss-{$name}" data-slide="next" class="sercacontrol next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                    <a href="#ss-{$name}" data-slide="prev" class="sercacontrol"><i class="fa fa-fw fa-chevron-left"></i></a>
+                    <a href="#ss-{$name}" data-slide="next" class="sercacontrol next"><i class="fa fa-fw fa-chevron-right"></i></a>
                     <ol class="carousel-indicators">
                         {foreach key=key from=$slides item=slide name=slides}
                             <li data-target="#ss-{$name}" class="middle{if $smarty.foreach.slides.first} active{/if}" data-slide-to="{$smarty.foreach.slides.iteration - 1}">{if !empty($slide->expCat[0]->title)}{$slide->expCat[0]->title}{else}{$slide->title}{/if}</li>
@@ -131,8 +132,8 @@
             <!-- begin Controls -->
             <div class="row cu-controls">
                 <div class="col-sm-12">
-                    <a href="#ss-{$name}" data-slide="prev" class="sercacontrol"><i class="glyphicon glyphicon-chevron-left"></i></a>
-                    <a href="#ss-{$name}" data-slide="next" class="sercacontrol next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                    <a href="#ss-{$name}" data-slide="prev" class="sercacontrol"><i class="fa fa-fw fa-chevron-left"></i></a>
+                    <a href="#ss-{$name}" data-slide="next" class="sercacontrol next"><i class="fa fa-fw fa-chevron-right"></i></a>
                     <ol class="carousel-indicators">
                         {foreach key=key from=$slides item=slide name=slides}
                             <li data-target="#ss-{$name}" class="middle{if $smarty.foreach.slides.first} active{/if}" data-slide-to="{$smarty.foreach.slides.iteration - 1}">{if !empty($slide->expCat[0]->title)}{$slide->expCat[0]->title}{else}{$slide->title}{/if}</li>

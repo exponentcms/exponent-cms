@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -27,6 +27,7 @@
 				{icon class=add action=edit rank=1 text="Add a Portfolio Piece"|gettext}
 			{/if}
 			{if $permissions.manage}
+                {icon class="downloadfile" action=export_csv text="Export as CSV"|gettext}
                 {if !$config.disabletags}
                     {icon controller=expTag class="manage" action=manage_module model='portfolio' text="Manage Tags"|gettext}
                 {/if}

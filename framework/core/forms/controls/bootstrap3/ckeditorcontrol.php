@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -260,10 +260,14 @@ class ckeditorcontrol extends formcontrol {
         if ($this->accesskey != "") $html .= " accesskey=\"" . $this->accesskey . "\"";
         if (!empty($this->class)) $html .= " class=\"" . $this->class . "\"";
         if ($this->tabindex >= 0) $html .= " tabindex=\"" . $this->tabindex . "\"";
-
         $html .= ">";
         $html .= htmlentities($this->default, ENT_COMPAT, LANG_CHARSET);
         $html .= "</textarea>";
+
+        if ($this->horizontal) {
+            $html = '<div class="col-sm-10">' . $html . '</div>';
+        }
+
         if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
         return $html;
     }

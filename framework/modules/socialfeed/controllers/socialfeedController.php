@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -326,6 +326,7 @@ class socialfeedController extends expController
         if ($facebook_entry->type == 'video') {
             if ($this->display_video == 1) {
                 $message_feed['video'] = $facebook_entry->source;
+                $message_feed['picture'] = 'https://graph.facebook.com/'.$facebook_entry->object_id.'/picture?type=normal';
             }
         }
         if (isset($facebook_entry->message) && !empty($facebook_entry->message)) {

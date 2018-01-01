@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -108,7 +108,8 @@ class faqController extends expController {
 //            'where' => "location_data='".serialize($this->loc)."'",
             'where' => $this->aggregateWhereClause(),
 		    'limit'=>25,
-            'order'=>'rank',
+            'order'      => (isset($this->params['order']) ? $this->params['order'] : 'rank'),
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : ''),
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],

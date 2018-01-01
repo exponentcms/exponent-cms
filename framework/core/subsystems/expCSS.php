@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,7 +28,7 @@ class expCSS {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $less_vars;
 
         // normalize.css is always at the top
-        if (!empty($params['normalize']) && !bs3()){
+        if (!empty($params['normalize']) && !bs3() && !bs4()){
             $css_primer[PATH_RELATIVE."external/normalize/normalize.css"] = PATH_RELATIVE."external/normalize/normalize.css";
         }
 
@@ -52,6 +52,27 @@ class expCSS {
                 //indexing the array by the filename
                 if (!isset($css_primer[$path_rel.$css_path]))
                     if (self::auto_compile_less($less_path, $css_path, $lless_vars))
+                        $css_primer[$path_rel.$css_path] = $path_rel.$css_path;
+            }
+        }
+
+        // primer scss to compile to css
+        if (!empty($params['scssprimer'])) {
+            $scss_array = $params['scssprimer'];
+            if (!empty($scss_array) && !is_array($scss_array)) $scss_array = array($scss_array);
+            foreach ($scss_array as $scss_path) {
+                if (strlen(PATH_RELATIVE) != 1) {
+                    $scss_path = str_replace(PATH_RELATIVE, '', $scss_path);  // strip relative path for links coming from templates
+                    $path_rel = PATH_RELATIVE;
+                } else {
+                    $path_rel = '/';
+                }
+                $scss_path = ltrim($scss_path, '/');
+                $css_path = str_replace("/scss/", "/css/", $scss_path);
+                $css_path = substr($css_path, 0, strlen($css_path)-4)."css";
+                //indexing the array by the filename
+                if (!isset($css_primer[$path_rel.$css_path]))
+                    if (self::auto_compile_scss($scss_path, $css_path, $lless_vars))
                         $css_primer[$path_rel.$css_path] = $path_rel.$css_path;
             }
         }
@@ -87,6 +108,27 @@ class expCSS {
             }
         }
 
+        // scss files to compile to css
+        if (!empty($params['scsscss'])) {
+            $scss_array = $params['scsscss'];
+            if (!empty($scss_array) && !is_array($scss_array)) $scss_array = array($scss_array);
+            foreach ($scss_array as $scss_path) {
+                if (strlen(PATH_RELATIVE) != 1) {
+                    $scss_path = str_replace(PATH_RELATIVE, '', $scss_path);  // strip relative path for links coming from templates
+                    $path_rel = PATH_RELATIVE;
+                } else {
+                    $path_rel = '/';
+                }
+                $scss_path = ltrim($scss_path, '/');
+                $css_path = str_replace("/scss/", "/css/", $scss_path);
+                $css_path = substr($css_path, 0, strlen($css_path)-4)."css";
+                //indexing the array by the filename
+                if (!isset($css_links[$path_rel.$css_path]))
+                    if (self::auto_compile_scss($scss_path, $css_path, $lless_vars))
+                        $css_links[$path_rel.$css_path] = $path_rel.$css_path;
+            }
+        }
+
         // files in framework/core/assets/less that are general to many views and the system overall
         if (!empty($params['corecss'])){
             $core_array = explode(",",$params['corecss']);
@@ -102,6 +144,7 @@ class expCSS {
                 }
             }
         }
+        //note we don't use scss files for core stylesheets at this time
 
         // css stylesheets linked in through the css plugin
         if (!empty($params['link'])){
@@ -164,7 +207,9 @@ class expCSS {
         unset(
             $head_config['xhtml'],
             $head_config['lessprimer'],
+            $head_config['scssprimer'],
             $head_config['lesscss'],
+            $head_config['scsscss'],
             $head_config['link'],
             $head_config['lessvars'],
             $head_config['normalize'],
@@ -190,7 +235,7 @@ class expCSS {
             };
         };
 
-        if (MINIFY==1&&MINIFY_LINKED_CSS==1) {
+        if (MINIFY == 1 && MINIFY_LINKED_CSS == 1) {
             // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through
             // browser string limits
             $strlen = (ini_get("suhosin.get.max_value_length")==0) ? MINIFY_URL_LENGTH : ini_get("suhosin.get.max_value_length");
@@ -211,12 +256,12 @@ class expCSS {
             if ($srt[0] == "") array_shift($srt);
             foreach ($srt as $link) {
                 $link = rtrim($link,",");
-                $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.PATH_RELATIVE.'external/minify/min/index.php?f=' . $link . '"' . XHTML_CLOSING.'>'."\r\n";
+                $html .= "\t" . '<link rel="stylesheet" type="text/css" href="' . PATH_RELATIVE . 'external/minify/min/index.php?f=' . $link . '"' . XHTML_CLOSING . '>' . "\r\n";
             }
         } else {
             //eDebug($css_files);
             foreach ($css_files as $file) {
-                $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.$file.'" '.XHTML_CLOSING.'>'."\r\n";
+                $html .= "\t" . '<link rel="stylesheet" type="text/css" href="' . $file . '" ' . XHTML_CLOSING . '>' . "\r\n";
             }
         }
 
@@ -228,13 +273,13 @@ class expCSS {
             }
             trim($styles);
             if (!empty($styles)) {
-                $htmlcss .= "\t".'<style type="text/css">'."\n";
-                $htmlcss .= "\t".$styles."\n";
-                $htmlcss .= "\t".'</style>'."\n";
+                $htmlcss .= "\t" . '<style type="text/css">' . "\r\n";
+                $htmlcss .= "\t" . $styles . "\r\n";
+                $htmlcss .= "\t" . '</style>' . "\r\n";
             }
-            if (MINIFY==1&&MINIFY_INLINE_CSS==1) {
-                include_once(BASE.'external/minify/min/lib/JSMin.php');
-                $htmlcss = JSMin::minify($htmlcss);
+            if (MINIFY == 1 && MINIFY_INLINE_CSS == 1) {
+                include_once(BASE . 'external/minify/min/lib/JSMin.php');
+                $htmlcss = JSMin::minify($htmlcss) . "\r\n";
             }
             $html .= $htmlcss;
         }
@@ -245,36 +290,43 @@ class expCSS {
     public static function themeCSS() {
         global $css_theme, $head_config, $less_vars;
 
+        // compiler will crash without expected variables assigned
         if (!isset($less_vars['menu_width']))
-            $less_vars['menu_width'] = 769;  // compiler will crash without expected variables assigned
+            $less_vars['menu_width'] = 769;
         if (!isset($less_vars['swatch']))
-            $less_vars['swatch'] = '';  // compiler will crash without expected variables assigned
-//        // code for testing scss compiler
+            $less_vars['swatch'] = '';
+        if (!isset($less_vars['themepath']))
+            $less_vars['themepath'] = '';
+
+        // code for testing scss compiler
 //        self::auto_compile_scss('external/bootstrap3/scss/test_2.scss', 'tmp/css/test.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap3/scss/bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap3/scss/newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap3/scss/newui_1.scss', 'tmp/css/testbs3_newui_1.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
+
 //        if (($less_vars['swatch'] == 'custom'))
 //            $less_vars['swatch'] = '';  // there is no 'custom' swatch for bootstrap 4 (yet?)
+//        self::auto_compile_scss('external/font-awesome5/web-fonts-with-css/scss/fontawesome.scss', 'tmp/css/testfa5.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap4/scss/newui_1.scss', 'tmp/css/testbs4_newui_1.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
-        $lessdirs[] = 'themes/'.DISPLAY_THEME.'/less/';
-        if (THEME_STYLE!="") {
-            $lessdirs[] = 'themes/'.DISPLAY_THEME.'/less_'.THEME_STYLE.'/';
+        $lessdirs[] = 'themes/' . DISPLAY_THEME . '/less/';
+        if (THEME_STYLE != "") {
+            $lessdirs[] = 'themes/' . DISPLAY_THEME . '/less_' . THEME_STYLE . '/';
         }
         foreach($lessdirs as $lessdir){
             if (is_dir($lessdir) && is_readable($lessdir)) {
                 if (is_array($head_config['css_theme'])) {
                     foreach($head_config['css_theme'] as $lessfile){
-                        $filename = $lessdir.$lessfile;
-                        if (is_file($filename) && substr($filename,-5,5) == ".less") {
-                            $css_dir = str_replace("/less/","/css/",$lessdir);
-                            $css_file = substr($lessfile,0,strlen($lessfile)-4)."css";
+                        $filename = $lessdir . $lessfile;
+                        if (substr($filename,-5,5) !== ".less") {
+                            $filename .= ".less";
+                        }
+                        if (is_file($filename)) {
+                            $css_dir = str_replace("/less/","/css/", $lessdir);
+                            $css_file = substr($lessfile,0,strlen($lessfile) - 4) . "css";
                             self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
                         }
                     }
@@ -283,20 +335,55 @@ class expCSS {
                 } else {
                     $dh = opendir($lessdir);
                     while (($lessfile = readdir($dh)) !== false) {
-                        $filename = $lessdir.$lessfile;
+                        $filename = $lessdir . $lessfile;
                         if (is_file($filename) && substr($filename,-5,5) == ".less" && basename($filename) != 'variables.less') {
-                            $css_dir = str_replace("/less/","/css/",$lessdir);
-                            $css_file = substr($lessfile,0,strlen($lessfile)-4)."css";
-                            self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
+                            $css_dir = str_replace("/less/","/css/", $lessdir);
+                            $css_file = substr($lessfile,0,strlen($lessfile) - 4)."css";
+                            self::auto_compile_less($lessdir . $lessfile,$css_dir . $css_file, $less_vars);
                         }
                     }
                 }
             }
         }
 
-        // collect all the theme css files (less files have been compiled already)
+        // compile any theme .scss files to css
+        $scssdirs[] = 'themes/' . DISPLAY_THEME . '/scss/';
+        if (THEME_STYLE != "") {
+            $scssdirs[] = 'themes/' . DISPLAY_THEME . '/scss_' . THEME_STYLE . '/';
+        }
+        foreach($scssdirs as $scssdir){
+            if (is_dir($scssdir) && is_readable($scssdir)) {
+                if (is_array($head_config['css_theme'])) {
+                    foreach($head_config['css_theme'] as $scssfile){
+                        $filename = $scssdir . $scssfile;
+                        if (substr($filename,-5,5) !== ".scss") {
+                            $filename .= ".scss";
+                        }
+                        if (is_file($filename) || is_file("_" . $filename)) {
+                            $css_dir = str_replace("/scss/","/css/", $scssdir);
+                            $css_file = substr($scssfile,0,strlen($scssfile) - 4) . "css";
+                            self::auto_compile_scss($scssdir . $scssfile,$css_dir . $css_file, $less_vars);
+                        }
+                    }
+                } elseif (empty($head_config['css_theme'])) {
+                    # do nothing. We're not including CSS from the theme
+                } else {
+                    $dh = opendir($scssdir);
+                    while (($scssfile = readdir($dh)) !== false) {
+                        $filename = $scssdir . $scssfile;
+                        if (is_file($filename) && substr($filename,-5,5) == ".scss" && basename($filename) != '_variables.scss') {
+                            $css_dir = str_replace("/scss/","/css/",$scssdir);
+                            $css_file = substr($scssfile,0,strlen($scssfile) - 4) . "css";
+                            self::auto_compile_scss($scssdir . $scssfile,$css_dir.$css_file, $less_vars);
+                        }
+                    }
+                }
+            }
+        }
+
+        // collect all the theme css files (less and scss files have been compiled already)
         $cssdirs[] = BASE.'themes/'.DISPLAY_THEME.'/css/';
-        if (THEME_STYLE!="") {
+        if (THEME_STYLE != "") {
             $cssdirs[] = BASE.'themes/'.DISPLAY_THEME.'/css_'.THEME_STYLE.'/';
         }
         foreach($cssdirs as $key=>$cssdir){
@@ -344,29 +431,29 @@ class expCSS {
         if (DEVELOPMENT || !file_exists(BASE . $css_fname) || expSession::get('force_less_compile') == 1) {
             if (defined('LESS_COMPILER')) {
                 $less_compiler = strtolower(LESS_COMPILER);
+                if (bs3() && $less_compiler === "lessphp")
+                    $less_compiler = 'less.php'; //note lessphp will NOT compile bootstrap v3
             } else {
                 $less_compiler = 'less.php';
             }
+            if (substr($less_pname,-5,5) !== ".less") {
+                $less_pname .= ".less";
+            }
             switch ($less_compiler) {
                 case 'iless':
-                    if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
-//                        require_once(BASE.'external/iless1/lib/ILess/Autoloader.php');  //iless 1.7.0
+                    if (is_file(BASE.$less_pname)) {
                         require_once(BASE.'external/iless/lib/ILess/Autoloader.php');
-//                        ILess_Autoloader::register();  //iless 1.7.0
                         ILess\Autoloader::register();  //iLess2
 
-//                        $less = new ILess_Parser(  //iless 1.7.0
-                        $less = new ILess\Parser(  //iLess2
-                            array(),  // option
-                            // cache implementation
-//                            new ILess_Cache_FileSystem(array(  //iless 1.7.0
-                            new ILess\Cache\FileSystemCache(array(  //iLess2
-                                'cache_dir' => BASE . 'tmp/css/',
-                            )
-                        ));
+                        $iless_options = array();
                         if (DEVELOPMENT && LESS_COMPILER_MAP) {
                             $less_cname = str_replace("/", "_", $less_pname);
-                            $less->setEnvironment(array(
+                            if ((int)LESS_COMPILER_MAP === 1) {
+                                $map_write_to = null;  // inline map
+                            } else {
+                                $map_write_to = BASE . 'tmp/css/' . $less_cname . ".map";
+                            }
+                            $iless_options = array(
                                 'sourceMap'         => true,  // output .map file?
                                 'sourceMapOptions' => array(
                                     'sourceRoot' => '/',
@@ -375,19 +462,24 @@ class expCSS {
                                     // url of the map
                                     'url' => PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map",
                                     // absolute path to a file to write the map to
-                                    'write_to' =>  BASE . 'tmp/css/' . $less_cname . ".map",
+                                    'write_to' =>  $map_write_to,
                                     // output source contents?
                                     'source_contents' => false,
                                     // base path for filename normalization
                                     'base_path' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
                                 ),
-                            ));
+                            );
                         }
                         if (MINIFY==1 && MINIFY_LESS==1) {
-                            $less->setEnvironment(array(
-                                'compress'         => true,  // compress output file?
-                            ));
+                            $iless_options['compress'] = true;  // compress output file?
                         }
+                        $less = new ILess\Parser(  //iLess2
+                            $iless_options,  // options
+                            // cache implementation
+                            new ILess\Cache\FileSystemCache(array(  //iLess2
+                                'cache_dir' => BASE . 'tmp/css/',
+                            )
+                        ));
                         $less->setVariables($vars);
 
                         try {
@@ -447,7 +539,10 @@ class expCSS {
                             return true;
                         } catch(Exception $e) {
                             flash('error', gt('Less compiler') . ': ' . $less_pname . ': ' . $e->getMessage());
-                            return false;
+                            if (file_exists(BASE . $css_fname))
+                                return true; // old file exists so use it
+                            else
+                                return false;
                         }
                     } else {
                         flash('notice', $less_pname. ' ' . gt('does not exist!'));
@@ -457,7 +552,7 @@ class expCSS {
                 case 'less.php':
                 case 'lessphp':
                 default :
-                    if (is_file(BASE . $less_pname) && substr($less_pname, -5, 5) == ".less") {
+                    if (is_file(BASE . $less_pname)) {
 //                        if (!is_file(BASE . 'external/' . $less_compiler . '/lessc.inc.php'))
 //                            $less_compiler = 'less.php';
                         include_once(BASE . 'external/' . $less_compiler . '/lessc.inc.php');
@@ -475,16 +570,22 @@ class expCSS {
                         }
 
                         if (DEVELOPMENT && LESS_COMPILER_MAP && $less_compiler == 'less.php') {
+                            if ((int)LESS_COMPILER_MAP === 1) {
+                                $map_write_to = null;  // inline map
+                                $map_url = null;
+                                $map_filename = null;
+                            } else {
+                                $map_write_to = BASE . 'tmp/css/' . $less_cname . ".map";
+                                $map_url = PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map";
+                                $map_filename = PATH_RELATIVE . $css_fname;
+                            }
                             $less->setOptions(array(
 //                                'outputSourceFiles' => true,  // include css source in .map file?
                                 'sourceMap'         => true,  // output .map file?
-                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $less_cname . ".map",
-                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map",
-//                                'sourceMapWriteTo'  => dirname(BASE . $less_pname) . '/' . $less_cname . ".map",  // file location of .map file
-//                                'sourceMapURL'      => dirname(PATH_RELATIVE . $less_pname) . '/' . $less_cname . ".map",  // url location of .map file
-                                'sourceMapFilename' => PATH_RELATIVE . $css_fname,  // url location of .css file
-                                'sourceMapBasepath' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
-//                                'sourceRoot'        => str_replace(PATH_RELATIVE, '', BASE),
+                                'sourceMapWriteTo'  => $map_write_to,
+                                'sourceMapURL'      => $map_url,
+                                'sourceMapFilename' => $map_filename,  // url location of .css file
+                                'sourceMapBasepath' => rtrim(realpath(str_replace(PATH_RELATIVE, '', BASE)), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
                                 'sourceRoot'        => '/',
 //                                'sourceMapRootpath' => PATH_RELATIVE . $less_pname,  // tacked onto ALL source files in .map
                             ));
@@ -511,7 +612,7 @@ class expCSS {
                                     file_put_contents($cache_fname, serialize($new_cache));
                                 }
                             }
-                            if ($file_updated || !file_exists(BASE . $css_fname)) {
+                            if ($file_updated || (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n" && !file_exists(BASE . $css_fname))) {
                                 // write compiled css file
                                 $css_loc = pathinfo(BASE . $css_fname);
                                 if (!is_dir($css_loc['dirname'])) {
@@ -531,7 +632,10 @@ class expCSS {
                             return true;
                         } catch(Exception $e) {
                             flash('error', gt('Less compiler') . ': ' . $less_pname . ': ' . $e->getMessage());
-                            return false;
+                            if (file_exists(BASE . $css_fname))
+                                return true; // old file exists so use it
+                            else
+                                return false;
                         }
                     } else {
                         flash('notice', $less_pname . ' ' . gt('does not exist!'));
@@ -565,8 +669,12 @@ class expCSS {
             switch ($scss_compiler) {
                 case 'scssphp':
                 default :
-                    //FIXME we need to account for leading _ with filename and missing filetype suffix
-                    if (is_file(BASE . $scss_pname) && substr($scss_pname, -5, 5) == ".scss") {
+                    if (substr($scss_pname,-5,5) !== ".scss") {
+                        $scss_pname .= ".scss";
+                    }
+
+                    // we need to account for leading _ with filename and missing filetype suffix
+                    if (is_file(BASE . $scss_pname) || is_file(BASE . "_" . $scss_pname)) {
                         include_once(BASE . 'external/' . $scss_compiler . '/scss.inc.php');
                         $scss = new \Leafo\ScssPhp\Compiler();
                         $scss_server = new \Leafo\ScssPhp\Server(BASE . 'tmp/css/', BASE . 'tmp/css/', $scss);
@@ -582,21 +690,18 @@ class expCSS {
                             }
                         }
 
-//                        if (DEVELOPMENT && LESS_COMPILER_MAP && $scss_compiler == 'scssphp') {
-//                            $scss->setOptions(array(
-////                                'outputSourceFiles' => true,  // include css source in .map file?
-//                                'sourceMap'         => true,  // output .map file?
-//                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $scss_cname . ".map",
-//                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $scss_cname . ".map",
-////                                'sourceMapWriteTo'  => dirname(BASE . $scss_pname) . '/' . $scss_cname . ".map",  // file location of .map file
-////                                'sourceMapURL'      => dirname(PATH_RELATIVE . $scss_pname) . '/' . $scss_cname . ".map",  // url location of .map file
-//                                'sourceMapFilename' => PATH_RELATIVE . $css_fname,  // url location of .css file
-//                                'sourceMapBasepath' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
-////                                'sourceRoot'        => str_replace(PATH_RELATIVE, '', BASE),
-//                                'sourceRoot'        => '/',
-////                                'sourceMapRootpath' => PATH_RELATIVE . $scss_pname,  // tacked onto ALL source files in .map
-//                            ));
-//                        }
+                        if (DEVELOPMENT && LESS_COMPILER_MAP && $scss_compiler == 'scssphp') {
+                            $scss->setSourceMap((int)LESS_COMPILER_MAP);  // output .map file?
+                            $scss->setSourceMapOptions(array(
+//                                'outputSourceFiles' => true,  // include css source in .map file?
+                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $scss_cname . ".map",
+                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $scss_cname . ".map",
+                                'sourceMapFilename' => PATH_RELATIVE . $css_fname,  // url location of .css file
+                                'sourceMapBasepath' => rtrim((str_replace(PATH_RELATIVE, '', BASE)), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
+                                'sourceRoot'        => '/',
+//                                'sourceMapRootpath' => PATH_RELATIVE . $scss_pname,  // tacked onto ALL source files in .map
+                            ));
+                        }
 
                         if (MINIFY==1 && MINIFY_LESS==1 && $scss_compiler == 'scssphp') {
                             $scss->setFormatter('Leafo\ScssPhp\Formatter\Compressed');
@@ -619,7 +724,7 @@ class expCSS {
                                     file_put_contents($cache_fname, serialize($new_cache));
                                 }
                             }
-                            if ($file_updated || !file_exists(BASE . $css_fname)) {
+                            if ($file_updated || (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n" && !file_exists(BASE . $css_fname))) {
                                 // write compiled css file
                                 $css_loc = pathinfo(BASE . $css_fname);
                                 if (!is_dir($css_loc['dirname'])) {
@@ -639,7 +744,10 @@ class expCSS {
                             return true;
                         } catch(Exception $e) {
                             flash('error', gt('SCSS compiler') . ': ' . $scss_pname . ': ' . $e->getMessage());
-                            return false;
+                            if (file_exists(BASE . $css_fname))
+                                return true; // old file exists so use it
+                            else
+                                return false;
                         }
                     } else {
                         flash('notice', $scss_pname . ' ' . gt('does not exist!'));

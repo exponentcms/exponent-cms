@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -21,7 +21,6 @@ if (!defined('EXPONENT')) {
     exit('');
 }
 
-//FIXME this is NOT a bootstrap control, but jQuery
 /**
  * Date/Time Control
  * uses/combines yuicalendarcontrol & datetimecontrol (w/o date)

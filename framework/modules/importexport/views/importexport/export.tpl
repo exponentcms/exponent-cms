@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -50,7 +50,7 @@
             </tbody>
         </table>
         {if count($modules->records)}
-            {control type="checkbox" name="export_attached" label="Export item attachments?"|gettext checked=true value="1" description='Will also export any category, comments, or tags attached to item'|gettext}
+            {control type="checkbox" name="export_attached" label="Export item attachments?"|gettext checked=true value="1" description='Will also export any files, categories, comments, or tags attached to item'|gettext}
             {control type="buttongroup" submit='Export the Selected Module\'s Items'|gettext cancel="Cancel"|gettext}
         {/if}
     {/form}

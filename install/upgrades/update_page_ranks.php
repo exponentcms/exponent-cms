@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -65,7 +65,7 @@ class update_page_ranks extends upgradescript
     /**
      * Reranks pages/form controls with index start of 1
      *
-     * @return bool
+     * @return string
      */
     function upgrade()
     {

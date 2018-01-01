@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,7 +52,7 @@ class remove_global_categories extends upgradescript {
 
 	/**
 	 * converts all global categories to a module specific category if used, then delete the global category
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,7 +52,7 @@ class upgrade_calendar extends upgradescript {
 
 	/**
 	 * converts all calendarmodule modules/items into event (controller) modules/items and deletes calendarmodule files
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

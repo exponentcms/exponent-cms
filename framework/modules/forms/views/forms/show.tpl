@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -26,7 +26,7 @@
     {/if}
     <div class="module forms show">
         <div class="item-actions">
-        {if !$is_email && ($prev || $next) && ($config.pagelinks == "Top and Bottom" || $config.pagelinks == "Top Only")}
+        {if !$is_email && ($prev || $next) && (empty($config.pagelinks) || $config.pagelinks == "Top and Bottom" || $config.pagelinks == "Top Only")}
             {clear}
             <span style="float:left">
                 {if $prev}
@@ -50,7 +50,7 @@
                 {icon class="view" action=showall id=$form->id text='View Records'|gettext|cat:" (`$count`)" title='View all records'|gettext}
             {/if}
         {/permissions}
-        {if !$is_email && ($prev || $next) && ($config.pagelinks == "Top and Bottom" || $config.pagelinks == "Top Only")}
+        {if !$is_email && ($prev || $next) && (empty($config.pagelinks) || $config.pagelinks == "Top and Bottom" || $config.pagelinks == "Top Only")}
             <span style="float:right">
                 {if $next}
                     {icon img='page_next.png' action=show forms_id=$f->id id=$next->id title='Next Record'|gettext}
@@ -98,7 +98,7 @@
                             </td>
                         </tr>
                     {foreachelse}
-                        <tr><td colspan="4"><p>{message text='You don\'t have any records yet'|gettext}</p></td></tr>
+                        <tr><td colspan="4"><p>{message text=$config.no_records_msg|default:"Record Not Found"|gettext}</p></td></tr>
                     {/foreach}
                 </tbody>
             </table>
@@ -106,7 +106,7 @@
         {if !empty($referrer)}
             <p>{'Referrer'|gettext}: {$referrer}</p>
         {/if}
-        {if !$is_email && ($prev || $next) && ($config.pagelinks == "Top and Bottom" || $config.pagelinks == "Bottom Only")}
+        {if !$is_email && ($prev || $next) && (empty($config.pagelinks) || $config.pagelinks == "Top and Bottom" || $config.pagelinks == "Bottom Only")}
             <div class="module-actions">
                 {clear}
                 <span style="float:left">

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -78,7 +78,7 @@ class change_permissions2 extends upgradescript {
 	/**
 	 * Searches for and updates file/folder permissions globally
      *
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
         self::chmod_recursive(BASE, 0775, 0664);

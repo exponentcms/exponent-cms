@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,10 +14,15 @@
  *}
 
 <table class="mini-cal">
-    <a class="evnav module-actions" href="{link action=showall view='showall_Mini-Calendar' time=$prevmonth}" rel={$prevmonth} title="{'Prev Month'|gettext}">&laquo;</a>
-    &#160;&#160;{$now|format_date:"%B"}&#160;&#160;
-    <a class="evnav module-actions" href="{link action=showall view='showall_Mini-Calendar' time=$nextmonth}" rel={$nextmonth} title="{'Next Month'|gettext}">&raquo;</a>
-
+    <tr><th colspan="7">
+        {if empty($year)}
+            <a class="evnav module-actions" href="{link action=showall view='showall_Mini-Calendar' time=$prevmonth}" rel={$prevmonth} title="{'Prev Month'|gettext}">&laquo;</a>
+            &#160;&#160;{$now|format_date:"%B"}&#160;&#160;
+            <a class="evnav module-actions" href="{link action=showall view='showall_Mini-Calendar' time=$nextmonth}" rel={$nextmonth} title="{'Next Month'|gettext}">&raquo;</a>
+        {else}
+            <a class="evnav module-actions" href="{link action=showall time=$now}" title="{'View Calendar'|gettext}">{$now|format_date:"%B %Y"}</a>
+        {/if}
+    </th></tr>
     <tr class="daysoftheweek">
         {if $smarty.const.DISPLAY_START_OF_WEEK == 0}
         <th scope="col" abbr="{$daynames.med.0}" title="{$daynames.long.0}">{$daynames.short.0}</th>
@@ -34,6 +39,7 @@
     </tr>
     {foreach from=$monthly item=week key=weekid}
         <tr class="{if $currentweek == $weekid}calendar_currentweek{/if}">
+            {if is_array($week)}
             {foreach from=$week key=day item=dayinfo}
                 <td>
                     {if $dayinfo.number > -1}
@@ -47,6 +53,7 @@
                     {/if}
                 </td>
             {/foreach}
+            {/if}
         </tr>
     {/foreach}
 </table>

@@ -1,4 +1,3 @@
-"use strict";
 /**
  * @class  elFinder command "fullscreen"
  * elFinder node to full scrren mode
@@ -7,6 +6,7 @@
  **/
 
 elFinder.prototype.commands.fullscreen = function() {
+	"use strict";
 	var self   = this,
 		fm     = this.fm,
 		update = function(e, data) {
@@ -28,13 +28,14 @@ elFinder.prototype.commands.fullscreen = function() {
 
 	this.getstate = function() {
 		return 0;
-	}
+	};
 	
 	this.exec = function() {
 		var node = fm.getUI().get(0),
 			full = (node === fm.toggleFullscreen(node));
 		self.title = fm.i18n(full ? 'reinstate' : 'cmdfullscreen');
 		self.update(void(0), full);
+		return $.Deferred().resolve();
 	};
 	
 	fm.bind('init', function() {

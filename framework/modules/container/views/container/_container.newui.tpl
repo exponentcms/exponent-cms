@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,7 +20,9 @@
 			<div id="module{$container->id}" class="exp-container-module-wrapper exp-skin">
 				<div class="exp-container-chrome exp-container-chrome-module">
                     <a id="dropdownMenu{$container->id}" class="exp-trigger" data-toggle="dropdown" href="#">{$container->info.module|gettext} <i class="fa fa-caret-down fa-fw"></i></a>
-                    {nocache}{getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last}{/nocache}
+                    {nocache}
+                        {getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last}
+                    {/nocache}
 				</div>
 		{/if}
 	{/permissions}

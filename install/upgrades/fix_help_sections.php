@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -62,7 +62,7 @@ class fix_help_sections extends upgradescript
     /**
      * Updates help doc section based on location_data entry
      *
-     * @return bool
+     * @return string
      */
     function upgrade()
     {

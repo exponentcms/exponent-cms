@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,7 +52,7 @@ class upgrade_forms extends upgradescript {
 
 	/**
 	 * converts all formmodule modules/items into forms (controller) modules/items and deletes formmodule/formbuilder files
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

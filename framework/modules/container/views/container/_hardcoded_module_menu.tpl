@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,7 +17,9 @@
 	<div class="exp-container-module-wrapper">
 		<div class="container-chrome module-chrome hardcoded-chrome">
 			<a href="#" class="trigger" title="{$container->info.module|gettext}">{$container->info.module|gettext} ({if $container->info.scope == 'top-sectional'}{'Top'|gettext}{else}{$container->info.scope|gettext}{/if})</a>
-            {nocache}{getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last hcview=1}{/nocache}
+            {nocache}
+                {getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last hcview=1}
+            {/nocache}
 		</div>
 	</div>
 {/permissions}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -47,7 +47,9 @@ function smarty_block_group($params,$content,&$smarty, &$repeat) {
 		echo '</div>';
         if (!empty($params['description'])) {
             if (bs3()) {
-                echo "<div class=\"control\"><p class=\"help-block\">",$params['description'],"</p></div>";
+                echo "<div class=\"control\"><p class=\"help-block\">", $params['description'], "</p></div>";
+            } elseif (bs4()) {
+                echo "<div class=\"control\"><small class=\"form-text text-muted\">",$params['description'],"</small></div>";
             } else {
                 echo "<div class=\"control\"><div class=\"control-desc\">",$params['description'],"</div></div>";
             }

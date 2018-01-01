@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -55,7 +55,7 @@ foreach ($_REQUEST as $key=>$var) {
             $_POST[$key] = $_REQUEST[$key];
     }
     if ($key == 'src') {
-        $_REQUEST[$key] = preg_replace("/[^A-Za-z0-9@-]/", '', $_REQUEST[$key]);
+        $_REQUEST[$key] = preg_replace("/[^A-Za-z0-9@\-_]/", '', $_REQUEST[$key]);
         if (isset($_GET[$key]))
             $_GET[$key] = $_REQUEST[$key];
         if (isset($_POST[$key]))

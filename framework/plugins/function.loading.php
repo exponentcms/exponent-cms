@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -46,6 +46,11 @@ function smarty_function_loading($params,&$smarty) {
         ));
     } elseif (bs3()) {
         $spinner = '<i class="fa fa-lg fa-spinner fa-pulse"></i> ';
+        expCSS::pushToHead(array(
+           "corecss"=>"loading",
+        ));
+    } elseif (bs4()) {
+        $spinner = '<i class="fas fa-lg fa-spinner fa-pulse"></i> ';
         expCSS::pushToHead(array(
            "corecss"=>"loading",
         ));

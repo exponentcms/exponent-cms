@@ -1,10 +1,10 @@
-"use strict";
 /**
  * @class  elFinder toolbar
  *
  * @author Dmitry (dio) Levashov
  **/
 $.fn.elfindertoolbar = function(fm, opts) {
+	"use strict";
 	this.not('.elfinder-toolbar').each(function() {
 		var commands = fm._commands,
 			self     = $(this).addClass('ui-helper-clearfix ui-widget-header ui-corner-top elfinder-toolbar'),
@@ -16,12 +16,12 @@ $.fn.elfindertoolbar = function(fm, opts) {
 				showPreferenceButton: 'none'
 			},
 			filter   = function(opts) {
-				return $.map(opts, function(v) {
+				return $.grep(opts, function(v) {
 					if ($.isPlainObject(v)) {
 						options = Object.assign(options, v);
-						return null;
+						return false;
 					}
-					return [v];
+					return true;
 				});
 			},
 			render = function(disabled){
@@ -83,7 +83,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 		// correction of options.displayTextLabel
 		textLabel = fm.storage('toolbarTextLabel');
 		if (textLabel === null) {
-			textLabel = (options.displayTextLabel && (! options.labelExcludeUA || ! options.labelExcludeUA.length || ! $.map(options.labelExcludeUA, function(v){ return fm.UA[v]? true : null; }).length));
+			textLabel = (options.displayTextLabel && (! options.labelExcludeUA || ! options.labelExcludeUA.length || ! $.grep(options.labelExcludeUA, function(v){ return fm.UA[v]? true : false; }).length));
 		} else {
 			textLabel = (textLabel == 1);
 		}
@@ -217,8 +217,8 @@ $.fn.elfindertoolbar = function(fm, opts) {
 									if (buttons[to]) {
 										buttons[to].children('.elfinder-button-text')[textLabel? 'show' : 'hide']();
 										if (cmd.extendsCmd) {
-											buttons[to].children('span.elfinder-button-icon').addClass('elfinder-button-icon-' + cmd.extendsCmd)
-										};
+											buttons[to].children('span.elfinder-button-icon').addClass('elfinder-button-icon-' + cmd.extendsCmd);
+										}
 									}
 								}
 								if (buttons[to]) {
@@ -235,7 +235,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 		if (fm.UA.Touch) {
 			autoHide = fm.storage('autoHide') || {};
 			if (typeof autoHide.toolbar === 'undefined') {
-				autoHide.toolbar = (options.autoHideUA && options.autoHideUA.length > 0 && $.map(options.autoHideUA, function(v){ return fm.UA[v]? true : null; }).length);
+				autoHide.toolbar = (options.autoHideUA && options.autoHideUA.length > 0 && $.grep(options.autoHideUA, function(v){ return fm.UA[v]? true : false; }).length);
 				fm.storage('autoHide', autoHide);
 			}
 			

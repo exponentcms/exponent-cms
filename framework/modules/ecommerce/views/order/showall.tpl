@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,7 @@
  *}
 
 {if !$smarty.const.ECOM_LARGE_DB}
-{css unique="yadcf" corecss="datatables-tools"}
+{css unique="yadcf" link="`$smarty.const.JQUERY_RELATIVE`addons/css/select2-bootstrap.css" corecss="datatables-tools"}
     table.dataTable thead > tr {
         font-size-adjust: 0.4;
     }
@@ -92,7 +92,7 @@
                     </td>
                     <td style="text-align:right;"><span style="padding:3px;border-radius:5px;background-color:{if $listing->paid|lower == 'complete' ||  $listing->paid|lower == 'paid'}darkseagreen{else}lightgray{/if};" title="{if $listing->paid|lower == 'complete' || $listing->paid|lower == 'paid'}{'Paid'|gettext}{else}{'Payment Due'|gettext}{/if}">{$listing->grand_total|currency}</span></td>
                     <td>{billingcalculator::getCalcTitle($listing->method)}</td>
-                    <td data-order="{$listing->purchased}">{$listing->purchased|format_date:"%m/%d/%Y %I:%M%p"}</td>
+                    <td data-order="{$listing->purchased}" data-search="{$listing->purchased|format_date:"%m/%d/%Y %I:%M%p"}">{$listing->purchased|format_date:"%m/%d/%Y %I:%M%p"}</td>
                     <td>{$listing->order_type}</td>
                     <td><span style="padding:3px;border-radius:5px;background-color:{if $listing->order_status_id == $new_order}darkseagreen{else}lightgray{/if};">{$listing->status}</span></td>
                     <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png" color=green}</a>{/if}</td>
@@ -184,6 +184,7 @@
         }, {
             column_number: 4,
             column_data_type: "text",
+            html5_data: "data-search",
             filter_type: "range_date",
             filter_default_label: ["From","To"]
         }, {

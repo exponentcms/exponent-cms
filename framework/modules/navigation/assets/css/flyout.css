@@ -158,9 +158,10 @@ a.active.triggerlogin, a.active.triggerlogin:visited {
 	font-weight: bold;
 }
 
-.flyout .item-actions a, .flyout .module-actions a {
-	display: inline;
-}
+/*.flyout .item-actions a,*/
+/*.flyout .module-actions a {*/
+	/*display: inline;*/
+/*}*/
 
 .flyout .item-actions, .flyout .module-actions, .flyout img {
 	clear: both;

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -147,8 +147,14 @@ class fileController extends expController {
                         $view = $bstrapview;
                     }
                 }
-                if (bs3(true)) {
+                if (bs3(true) || bs4()) {
                     $bstrapview = $path.'/'.$this->params['view'].'.bootstrap3.tpl';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
+                if (bs4()) {
+                    $bstrapview = $path.'/'.$this->params['view'].'.bootstrap.tpl';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
@@ -191,8 +197,14 @@ class fileController extends expController {
                         $view = $bstrapview;
                     }
                 }
-                if (bs3(true)) {
+                if (bs3(true) || bs4()) {
                     $bstrapview = $path.'/'.$this->params['view'].'.bootstrap3.config';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
+                if (bs4()) {
+                    $bstrapview = $path.'/'.$this->params['view'].'.bootstrap4.config';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
@@ -212,8 +224,14 @@ class fileController extends expController {
                             $actview = $bstrapview;
                         }
                     }
-                    if (bs3(true)) {
+                    if (bs3(true) || bs4()) {
                         $bstrapview = $path . '/' . $actview . '.bootstrap3.config';
+                        if (file_exists($bstrapview)) {
+                            $actview = $bstrapview;
+                        }
+                    }
+                    if (bs4()) {
+                        $bstrapview = $path . '/' . $actview . '.bootstrap4.config';
                         if (file_exists($bstrapview)) {
                             $actview = $bstrapview;
                         }
@@ -895,42 +913,47 @@ class fileController extends expController {
         	switch($_FILES['file']['error']) {
         		case UPLOAD_ERR_INI_SIZE:
         		case UPLOAD_ERR_FORM_SIZE:
-        			echo gt('The file you uploaded exceeded the size limits for the server.').'<br />';
+        			echo gt('The file you uploaded exceeded the size limits for the server.') . '<br />';
         			break;
         		case UPLOAD_ERR_PARTIAL:
-        			echo gt('The file you uploaded was only partially uploaded.').'<br />';
+        			echo gt('The file you uploaded was only partially uploaded.') . '<br />';
         			break;
         		case UPLOAD_ERR_NO_FILE:
-        			echo gt('No file was uploaded.').'<br />';
+        			echo gt('No file was uploaded.') . '<br />';
         			break;
         	}
         } else {
         	$basename = basename($_FILES['file']['name']);
 
-        	include_once(BASE.'external/Tar.php');
-        	$tar = new Archive_Tar($_FILES['file']['tmp_name'],'gz');
-
+//        	include_once(BASE.'external/Tar.php');  // fixme change to PharData
+//        	$tar = new Archive_Tar($_FILES['file']['tmp_name'],'gz');
+            $tar = new PharData($_FILES['file']['tmp_name']);
+            $tar->decompress();  // creates .tar file
         	$dest_dir = BASE.'tmp/extensionuploads/'.uniqid('');
         	@mkdir($dest_dir, octdec(DIR_DEFAULT_MODE_STR + 0));
         	if (!file_exists($dest_dir)) {
         		echo gt('Unable to create temporary directory to extract files archive.');
         	} else {
-        		$return = $tar->extract($dest_dir);
+//        		$return = $tar->extract($dest_dir);
+                $tar = new PharData(substr($_FILES['file']['tmp_name'], 0, -3) . 'tar');
+                $return = $tar->extractTo($dest_dir);
+                unset($tar);
+                unlink(substr($_FILES['file']['tmp_name'], 0, -3) . 'tar'); // remove intermediary .tar file
         		if (!$return) {
-        			echo '<br />'.gt('Error extracting TAR archive').'<br />';
-        		} else if (!file_exists($dest_dir.'/files') || !is_dir($dest_dir.'/files')) {
-        			echo '<br />'.gt('Invalid archive format, no \'/files\' folder').'<br />';
+        			echo '<br />' . gt('Error extracting TAR archive') . '<br />';
+        		} else if (!file_exists($dest_dir . '/files') || !is_dir($dest_dir . '/files')) {
+        			echo '<br />' . gt('Invalid archive format, no \'/files\' folder') . '<br />';
         		} else {
         			// Show the form for specifying which mod types to 'extract'
 
         			$mods = array(); // Stores the mod classname, the files list, and the module's real name
 
-        			$dh = opendir($dest_dir.'/files');
+        			$dh = opendir($dest_dir . '/files');
         			while (($file = readdir($dh)) !== false) {
-        				if ($file{0} != '.' && is_dir($dest_dir.'/files/'.$file)) {
+        				if ($file{0} != '.' && is_dir($dest_dir . '/files/' . $file)) {
         					$mods[$file] = array(
         						'',
-        						array_keys(expFile::listFlat($dest_dir.'/files/'.$file,1,null,array(),$dest_dir.'/files/'))
+        						array_keys(expFile::listFlat($dest_dir . '/files/' . $file,1,null, array(),$dest_dir . '/files/'))
         					);
         //					if (class_exists($file)) {
         //						$mods[$file][0] = call_user_func(array($file,'name')); // $file is the class name of the module
@@ -956,7 +979,7 @@ class fileController extends expController {
         $dest_dir = $this->params['dest_dir'];
         $files = array();
         foreach (array_keys($this->params['mods']) as $file) {
-        	$files[$file] = expFile::canCreate(BASE.'files/'.$file);
+        	$files[$file] = expFile::canCreate(BASE.'files/' . $file);
         //	if (class_exists($mod)) {
         //		$files[$mod][0] = call_user_func(array($mod,'name'));
         //	}
@@ -965,8 +988,8 @@ class fileController extends expController {
         //	}
         }
 
-        expSession::set('dest_dir',$dest_dir);
-        expSession::set('files_data',$files);
+        expSession::set('dest_dir', $dest_dir);
+        expSession::set('files_data', $files);
 
         assign_to_template(array(
             'files_data' => $files,
@@ -1023,8 +1046,6 @@ class fileController extends expController {
         //	return;
         //}
 
-        include_once(BASE.'external/Tar.php');
-
         $files = array();
         //foreach (array_keys($this->params['mods']) as $mod) {
         //	foreach ($db->selectObjects('file',"directory LIKE 'files/".$mod."%'") as $file) {
@@ -1035,8 +1056,17 @@ class fileController extends expController {
         //}
 
         $fname = tempnam(BASE.'/tmp','exporter_files_');
-        $tar = new Archive_Tar($fname,'gz');
-        $tar->createModify($files,'',BASE);
+
+//        include_once(BASE.'external/Tar.php');  // change to PharData
+//        $tar = new Archive_Tar($fname,'gz');
+//        $tar->createModify($files,'',BASE);
+        $tar = new PharData($fname . '.tar');
+        foreach($files as $file) {
+            $tar->addFile($file, str_replace(BASE, "", $file));
+        }
+        $tar->compress(Phar::GZ);
+        unset($tar);
+        unlink($fname . '.tar');  // remove intermediary .tar file
 
         $filename = str_replace(
             array('__DOMAIN__','__DB__'),
@@ -1045,8 +1075,8 @@ class fileController extends expController {
         $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',strftime($filename,time()).'.tar.gz');
 
         if (isset($this->params['save_sample'])) { // Save as a theme sample is checked off
-            copy($fname,BASE . "themes/".DISPLAY_THEME_REAL."/sample.tar.gz");
-            unlink($fname);
+            copy($fname . '.tar.gz',BASE . "themes/".DISPLAY_THEME_REAL."/sample.tar.gz");
+            unlink($fname . '.tar.gz');
             flash('message',gt("Sample uploaded files archive saved to")." '".DISPLAY_THEME_REAL."' ".gt("theme"));
             expHistory::back();
         } else {
@@ -1069,12 +1099,12 @@ class fileController extends expController {
                 header('Pragma: no-cache');
             }
 
-            $fh = fopen($fname,'rb');
+            $fh = fopen($fname . '.tar.gz','rb');
             while (!feof($fh)) {
                 echo fread($fh,8192);
             }
             fclose($fh);
-            unlink($fname);
+            unlink($fname . '.tar.gz');
         }
 
         exit(''); // Exit, since we are exporting.

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,6 +16,20 @@
 {if !$error}
     {css unique="data-view" corecss="button, tables"}
 
+    {/css}
+    {css unique="portfolio"}
+    {literal}
+        .forms.showall .item {
+            margin-left: 10px;
+            padding-left: 10px;
+        }
+        .forms.showall .category {
+        	border-top: 1px black solid;
+        	border-bottom: 1px black solid;
+        	background-color: #fcf4ce;
+        	padding-left: 4px;
+        }
+    {/literal}
     {/css}
     <div class="module forms showall">
         {if !empty($title)}
@@ -61,53 +75,61 @@
         {/permissions}
         {pagelinks paginate=$page top=1}
         <div style="overflow: auto; overflow-y: hidden;">
+            {$cat="bad"}
+            {$sort=$config.order}
             {foreach from=$page->records item=fields key=key name=fields}
-                <div class="item-actions">
-                    {if $permissions.edit}
-                        {icon class=edit action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
-                    {/if}
-                    {if $permissions.delete}
-                        {icon class=delete action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
-                    {/if}
-                </div>
-                {if !empty($config.report_def_showall)}
-                    {eval var=$config.report_def_showall}
-                    {clear}
-                {elseif !empty($config.report_def)}
-                    {eval var=$config.report_def}
-                    {clear}
-                {else}
-                    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
-                        <tbody>
-                            {foreach from=$fields key=fieldname item=value}
-                                <tr class="{cycle values="even,odd"}">
-                                    <td>
-                                        {$captions.$fieldname}
-                                    </td>
-                                    <td>
-                                        {if $fieldname|lower == 'email' && stripos($value, '<a ') === false}
-                                            <a href="mailto:{$value}">{$value}</a>
-                                        {elseif $fieldname|lower == 'image'}
-                                            {$matches = array()}
-                                            {$tmp = preg_match_all('~<a(.*?)href="([^"]+)"(.*?)>~', $value, $matches)}
-                                            {$filename1 = $matches.2.0}
-                                            {$filename2 = str_replace(URL_BASE, '/', $filename1)}
-                                            {$base = str_replace(PATH_RELATIVE, '', BASE)}
-                                            {$fileinfo = expFile::getImageInfo($base|cat:$filename2)}
-                                            {if $fileinfo.is_image == 1}
-                                                {img src=$filename1 w=64}
+                {if $cat !== $fields.$sort && $config.usecategories}
+                    <h2 class="category">{if $fields.$sort!= ""}{$fields.$sort}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
+                {/if}
+                <div class="item">
+                    <div class="item-actions">
+                        {if $permissions.edit}
+                            {icon class=edit action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
+                        {/if}
+                        {if $permissions.delete}
+                            {icon class=delete action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
+                        {/if}
+                    </div>
+                    {if !empty($config.report_def_showall)}
+                        {eval var=$config.report_def_showall}
+                        {clear}
+                    {elseif !empty($config.report_def)}
+                        {eval var=$config.report_def}
+                        {clear}
+                    {else}
+                        <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                            <tbody>
+                                {foreach from=$fields key=fieldname item=value}
+                                    <tr class="{cycle values="even,odd"}">
+                                        <td>
+                                            {$captions.$fieldname}
+                                        </td>
+                                        <td>
+                                            {if $fieldname|lower == 'email' && stripos($value, '<a ') === false}
+                                                <a href="mailto:{$value}">{$value}</a>
+                                            {elseif $fieldname|lower == 'image'}
+                                                {$matches = array()}
+                                                {$tmp = preg_match_all('~<a(.*?)href="([^"]+)"(.*?)>~', $value, $matches)}
+                                                {$filename1 = $matches.2.0}
+                                                {$filename2 = str_replace(URL_BASE, '/', $filename1)}
+                                                {$base = str_replace(PATH_RELATIVE, '', BASE)}
+                                                {$fileinfo = expFile::getImageInfo($base|cat:$filename2)}
+                                                {if $fileinfo.is_image == 1}
+                                                    {img src=$filename1 w=64}
+                                                {else}
+                                                    {$value}
+                                                {/if}
                                             {else}
                                                 {$value}
                                             {/if}
-                                        {else}
-                                            {$value}
-                                        {/if}
-                                    </td>
-                                </tr>
-                            {/foreach}
-                        </tbody>
-                    </table>
-                {/if}
+                                        </td>
+                                    </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    {/if}
+                    {$cat=$fields.$sort}
+                </div>
             {foreachelse}
                 <h4>{$config.no_records_msg|default:"No Records Found"|gettext}</h4>
             {/foreach}

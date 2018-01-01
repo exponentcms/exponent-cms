@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -31,6 +31,7 @@ class dropdowncontrol extends formcontrol {
     var $size = 1;
     var $include_blank = false;
     var $type = 'select';
+    var $select2 = false;
 
     static function name() { return "Drop Down List"; }
     static function isSimpleControl() { return true; }
@@ -90,6 +91,22 @@ class dropdowncontrol extends formcontrol {
         }
         $html .= '</select>';
         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+
+        if ($this->select2) {
+            $content = "
+        $('#" . $name . "').select2({
+            width: \"100%\",
+        });";
+
+            expJavascript::pushToFoot(
+                array(
+                    "unique" => 'select2-' . $name,
+                    "jquery" => "select2",
+                    "content" => $content,
+                )
+            );
+        }
+
         return $html;
     }
 
@@ -130,7 +147,6 @@ class dropdowncontrol extends formcontrol {
         $object->caption = $values['caption'];
         $object->description = $values['description'];
         $object->default = $values['default'];
-//        $object->items = listbuildercontrol::parseData($values,'items',true);
         $object->items = listbuildercontrol::parseData('items', $values, true);
         if (isset($values['size'])) $object->size = (intval($values['size']) <= 0)?1:intval($values['size']);
         $object->required = !empty($values['required']);

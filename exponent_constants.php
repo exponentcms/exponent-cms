@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -523,7 +523,8 @@ if (!defined('YUI2_RELATIVE')) {
 if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
-//    define('JQUERY3_VERSION', '3.2.1');
+    define('JQUERY3_VERSION', '3.2.1');
+    define('JQUERY3_MIGRATE_VERSION', '3.0.1');
     define('JQUERYUI_VERSION', '1.12.1');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
@@ -534,9 +535,10 @@ if (!defined('JQUERY_RELATIVE')) {
     if (!defined('JQUERY2_SCRIPT')) {
         define('JQUERY2_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY2_VERSION . '.min.js');
     } // local jQuery v2.x script
-//    if (!defined('JQUERY3_SCRIPT')) {
-//        define('JQUERY3_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY3_VERSION . '.min.js');
-//    } // local jQuery v3.x script
+    if (!defined('JQUERY3_SCRIPT')) {
+        define('JQUERY3_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY3_VERSION . '.min.js');
+        define('JQUERY3_MIGRATE_SCRIPT', JQUERY_RELATIVE . 'js/jquery-migrate-' . JQUERY3_MIGRATE_VERSION . '.min.js');
+    } // local jQuery v3.x script
     if (!defined('JQUERYUI_SCRIPT')) {
 //        define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
         define('JQUERYUI_SCRIPT', JQUERY_RELATIVE . 'js/jquery-ui.min.js');
@@ -554,7 +556,11 @@ if (!defined('JQUERY_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    define('SMARTY_VERSION', '3.1.27');
+//    if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
+        define('SMARTY_VERSION', '3.1.27');
+//    } else {
+//        define('SMARTY_VERSION', '3.1.31');  //note smarty v3.1.28+ won't work with php < v7.1.x
+//    }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
 }
@@ -564,8 +570,16 @@ if (!defined('SMARTY_PATH')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SWIFT_PATH')) {
-    define('SWIFT_VERSION', '5.4.8');
+    if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
+        define('SWIFT_VERSION', '5.4.8');
+    } else {
+        define('SWIFT_VERSION', '6.0.2');  //note v6.x requires php v7.x
+    }
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
+    define('LEXER_VERSION', '1.0.1');
+    define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
+    define('EMAIL_VERSION', '2.1.2');
+    define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VERSION . '/EmailValidator/');
 }
 
 ?>

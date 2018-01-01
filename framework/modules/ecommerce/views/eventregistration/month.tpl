@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -130,9 +130,9 @@
             href: EXPONENT.PATH_RELATIVE+"index.php?controller=eventregistration&action=show&ajax_action=1&title="+target.id,
             title: target.text + ' - ' + '{/literal}{'Event'|gettext}{literal}',
             maxWidth: "100%",
-            close:'<i class="fa fa-close" aria-label="close modal"></i>',
-            previous:'<i class="fa fa-chevron-left" aria-label="previous photo"></i>',
-            next:'<i class="fa fa-chevron-right" aria-label="next photo"></i>',
+            close:'<i class="fa fa-fw fa-close" aria-label="close modal"></i>',
+            previous:'<i class="fa fa-fw fa-chevron-left" aria-label="previous photo"></i>',
+            next:'<i class="fa fa-fw fa-chevron-right" aria-label="next photo"></i>',
         });
         e.preventDefault();
     });

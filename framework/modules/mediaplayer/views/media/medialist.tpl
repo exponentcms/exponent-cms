@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -41,13 +41,13 @@
                 {if $config.use_lightbox}
                     {img file_id=$item->expFile.splash[0]->id class="openColorbox" h=$config.thumb_width|default:"64" w=$config.thumb_height|default:"64" title='Click to view video'|gettext}
                 {/if}
-                <div class="video media"{if $config.use_lightbox} style='display:none'{/if}>
+                <div class="video media"{if $config.use_lightbox} style='display:none'{else} style="width:80%;max-width:960px;margin:0 auto;"{/if}>
                     {if $filetype == "mp3"}
                         <audio class="{$config.video_style}" id="{$item->expFile.media[0]->filename}" controls="controls" preload="none"
                             src="{$smarty.const.PATH_RELATIVE}{$item->expFile.media[0]->directory}{$item->expFile.media[0]->filename}" type="audio/mp3"{if $config.autoplay} autoplay="true" {/if}>
                         </audio>
                     {elseif $filetype == "mp4" || $filetype == "m4v" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v" || $item->url != ""}
-                        <video class="{$config.video_style}" width="{$item->width|default:$config.video_width}" height="{$item->height|default:$config.video_height}"
+                        <video class="{$config.video_style}"  style="width:100%;height:100%;" width="{$item->width|default:$config.video_width}" height="{$item->height|default:$config.video_height}"
                             id="player{$item->expFile.media[0]->id}"
                             {if $config.autoplay}
                                 autoplay="true"

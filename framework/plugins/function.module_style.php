@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -61,6 +61,9 @@ function smarty_function_module_style($params,&$smarty) {
 				switch ($style) {
 					case 'well':
 						$class .= 'well';
+						if (bs4()) {
+                            $class .= 'card card-body bg-faded';
+                        }
 						break;
 					case 'light':
 						$class .= 'light-background';
@@ -75,6 +78,10 @@ function smarty_function_module_style($params,&$smarty) {
 				break;
 			case 'styled':
 				$class .= 'well';
+                if (bs4()) {
+                    $class .= 'card card-body bg-faded';
+                }
+                break;
 				break;
 			case 'hiddenxs':
 				if (bs3())

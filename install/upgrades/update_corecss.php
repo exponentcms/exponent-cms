@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -53,7 +53,7 @@ class update_corecss extends upgradescript {
 
 	/**
 	 * updates all the core css files
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
         expCSS::updateCoreCss();

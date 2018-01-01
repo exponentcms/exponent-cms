@@ -7,8 +7,8 @@
   font-size: 16px;
   font-family: 'Open Sans', sans-serif;
   background: #fff!important;
-  border: 1px solid #b5b5b5;
-  box-shadow: 0 0 5px #cdcdcd;
+  border: 1px solid #b5b5b5!important;
+  box-shadow: 0 0 5px #cdcdcd!important;
   border-radius: 0;
   padding: 3px 3px 0 3px;
 }
@@ -26,7 +26,7 @@
   color: #000;
 }
 
-/* Item icons */
+/* Item icon */
 .elfinder-contextmenu .elfinder-contextmenu-item .elfinder-contextmenu-icon {
   /* */
 }
@@ -154,6 +154,22 @@
 
 .elfinder-button-icon-places {
   background-image: url('../images/16px/bookmark.png');
+}
+
+.elfinder-button-icon-selectall {
+  background-image: url('../images/16px/select_all.png');
+}
+
+.elfinder-button-icon-selectinvert {
+  background-image: url('../images/16px/invert_selection.png');
+}
+
+.elfinder-button-icon-selectnone {
+  background-image: url('../images/16px/deselect_all.png');
+}
+
+.elfinder-button-icon-empty {
+  background-image: url('../images/16px/clear_folder.png');
 }
 
 /* Separator */

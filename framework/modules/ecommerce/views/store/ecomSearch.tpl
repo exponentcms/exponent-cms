@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2017 OIC Group, Inc.
+ * Copyright (c) 2004-2018 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -45,6 +45,14 @@
     });
 {/literal}
 {/capture}
+
+{css unique="ecomSearch"}
+{literal}
+    .ecom-search .yui3-aclist-content pre {
+        margin: 0;
+    }
+{/literal}
+{/css}
 
 <div class="module ecommerce ecom-search">
     {form id="autocompsearch" controller=search action=search}

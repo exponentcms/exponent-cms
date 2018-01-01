@@ -1,4 +1,3 @@
-"use strict";
 /**
  * @class  elFinder command "help"
  * "About" dialog
@@ -6,6 +5,7 @@
  * @author Dmitry (dio) Levashov
  **/
 (elFinder.prototype.commands.help = function() {
+	"use strict";
 	var fm   = this.fm,
 		self = this,
 		linktpl = '<div class="elfinder-help-link"> <a href="{url}">{link}</a></div>',
@@ -145,21 +145,29 @@
 				
 				tabId = fm.namespace + '-help-debug-' + (+new Date());
 				targetL = $('<li/>').html('<a href="'+selfUrl+'#'+tabId+'">'+self.debug.debug.cmd+'</a>').prependTo(debugUL);
-				target = $('<div id="'+tabId+'"/>');
+				target = $('<div id="'+tabId+'"/>').data('debug', self.debug);
 				
-				if (self.debug.debug) {
-					info = $('<fieldset>').append($('<legend/>').text('debug'), render($('<dl/>'), self.debug.debug));
-					target.append(info);
-				}
-				if (self.debug.options) {
-					info = $('<fieldset>').append($('<legend/>').text('options'), render($('<dl/>'), self.debug.options));
-					target.append(info);
-				}
+				targetL.on('click.debugrender', function() {
+					var debug = target.data('debug');
+					target.removeData('debug');
+					if (debug) {
+						target.hide();
+						if (debug.debug) {
+							info = $('<fieldset>').append($('<legend/>').text('debug'), render($('<dl/>'), debug.debug));
+							target.append(info);
+						}
+						if (debug.options) {
+							info = $('<fieldset>').append($('<legend/>').text('options'), render($('<dl/>'), debug.options));
+							target.append(info);
+						}
+						target.show();
+					}
+					targetL.off('click.debugrender');
+				});
 				
 				debugUL.after(target);
 				
-				debugDIV.tabs('refresh');
-				$('#'+fm.namespace+'-help-debug').is(':hidden') && debugUL.find('a:first').trigger('click');
+				opened && debugDIV.tabs('refresh');
 			}
 		},
 		content = '',
@@ -174,7 +182,7 @@
 				initCallbacks = [];
 			}
 		},
-		loaded, debugDIV, debugUL;
+		loaded, opened, tabDebug, debugDIV, debugUL;
 	
 	this.alwaysEnabled  = true;
 	this.updateOnSelect = false;
@@ -188,10 +196,16 @@
 	fm.bind('load', function() {
 		var setupPref = function() {
 				var tab = content.find('.elfinder-help-preference'),
-					forms = { language: '', toolbarPref: '', clearBrowserData: '' },
+					forms = self.options.prefs || ['language', 'toolbarPref', 'selectAction', 'useStoredEditor', 'autoFocusDialog', 'clearBrowserData'],
 					dls = $();
 				
-				forms.language = (function() {
+				forms = fm.arrayFlip(forms, true);
+				
+				if (fm.options.getFileCallback) {
+					delete forms.selectAction;
+				}
+				
+				forms.language && (forms.language = (function() {
 					var node = $('<div/>');
 					init(function() {
 						var langSel = $('<select/>').on('change', function() {
@@ -218,7 +232,7 @@
 								hu: 'Magyar',
 								id: 'Bahasa Indonesia',
 								it: 'Italiano',
-								jp: '日本語',
+								ja: '日本語',
 								ko: '한국어',
 								nl: 'Nederlands',
 								no: 'Norsk',
@@ -227,7 +241,7 @@
 								ro: 'Română',
 								ru: 'Pусский',
 								si: 'සිංහල',
-								sk: 'Slovenský',
+								sk: 'Slovenčina',
 								sl: 'Slovenščina',
 								sr: 'Srpski',
 								sv: 'Svenska',
@@ -244,13 +258,13 @@
 						node.replaceWith(langSel.append(optTags.join('')).val(fm.lang));
 					});
 					return node;
-				})();
+				})());
 				
-				forms.toolbarPref = (function() {
+				forms.toolbarPref && (forms.toolbarPref = (function() {
 					var node = $('<div/>');
 					init(function() {
 						var pnls = $.map(fm.options.uiOptions.toolbar, function(v) {
-								return $.isArray(v)? v : null
+								return $.isArray(v)? v : false;
 							}),
 							tags = [],
 							hides = fm.storage('toolbarhides') || {};
@@ -258,7 +272,7 @@
 							var cmd = this,
 								name = fm.i18n('cmd'+cmd);
 							if (name === 'cmd'+cmd) {
-								name = cmd;
+								name = fm.i18n(cmd);
 							}
 							tags.push('<span class="elfinder-help-toolbar-item"><label><input type="checkbox" value="'+cmd+'" '+(hides[cmd]? '' : 'checked')+'/>'+name+'</label></span>');
 						});
@@ -275,22 +289,69 @@
 						}));
 					});
 					return node;
-				})();
+				})());
 				
-				forms.clearBrowserData = $('<button/>').text(fm.i18n('reset')).button().on('click', function(e) {
+				forms.selectAction && (forms.selectAction = (function() {
+					var node = $('<div/>');
+					init(function() {
+						var actSel = $('<select/>').on('change', function() {
+								var act = $(this).val();
+								fm.storage('selectAction', act === 'default'? null : act);
+							}),
+							optTags = [],
+							acts = self.options.selectActions;
+						
+						if (acts.indexOf('open') === -1) {
+							acts.unshift('open');
+						}
+						$.each(acts, function(i, act) {
+							var names = $.map(act.split('/'), function(cmd) {
+								var name = fm.i18n('cmd'+cmd);
+								if (name === 'cmd'+cmd) {
+									name = fm.i18n(cmd);
+								}
+								return name;
+							});
+							optTags.push('<option value="'+act+'">'+names.join('/')+'</option>');
+						});
+						node.replaceWith(actSel.append(optTags.join('')).val(fm.storage('selectAction') || 'open'));
+					});
+					return node;
+				})());
+				
+				forms.useStoredEditor && (forms.useStoredEditor = $('<input type="checkbox"/>').prop('checked', (function() {
+					var s = fm.storage('useStoredEditor');
+					return s? (s > 0) : fm.options.commandsOptions.edit.useStoredEditor;
+				})()).on('change', function(e) {
+					e.preventDefault();
+					fm.storage('useStoredEditor', $(this).is(':checked')? 1 : -1);
+					fm.trigger('selectfiles', {files : fm.selected()});
+				}));
+				
+				forms.autoFocusDialog && (forms.autoFocusDialog = $('<input type="checkbox"/>').prop('checked', (function() {
+					var s = fm.storage('autoFocusDialog');
+					return s? (s > 0) : fm.options.uiOptions.dialog.focusOnMouseOver;
+				})()).on('change', function(e) {
+					e.preventDefault();
+					fm.storage('autoFocusDialog', $(this).is(':checked')? 1 : -1);
+				}));
+				
+				forms.clearBrowserData && (forms.clearBrowserData = $('<button/>').text(fm.i18n('reset')).button().on('click', function(e) {
 					e.preventDefault();
 					fm.storage();
 					$('#'+fm.id).elfinder('reload');
-				});
+				}));
 				
 				$.each(forms, function(n, f) {
-					dls = dls.add($('<dt>'+fm.i18n(n)+'</dt>')).add($('<dd class="elfinder-help-'+n+'"/>').append(f));
+					if (f && f !== true) {
+						dls = dls.add($('<dt>'+fm.i18n(n)+'</dt>')).add($('<dd class="elfinder-help-'+n+'"/>').append(f));
+					}
 				});
 				
 				tab.append($('<dl/>').append(dls));
 			},
 			parts = self.options.view || ['about', 'shortcuts', 'help', 'preference', 'debug'],
-			tabDebug, i, helpSource, tabBase, tabNav, tabs, delta;
+			i, helpSource, tabBase, tabNav, tabs, delta;
 		
 		// force enable 'preference' tab
 		if ($.inArray('preference', parts) === -1) {
@@ -347,7 +408,7 @@
 		// debug
 		if (useDebug) {
 			tabDebug = content.find('.elfinder-help-tab-debug').hide();
-			debugDIV = content.find('#'+fm.namespace+'-help-debug').children('div:first').tabs();
+			debugDIV = content.find('#'+fm.namespace+'-help-debug').children('div:first');
 			debugUL = debugDIV.children('ul:first').on('click', function(e) {
 				e.preventDefault();
 				e.stopPropagation();
@@ -357,10 +418,9 @@
 	
 			fm.bind('backenddebug', function(e) {
 				// CAUTION: DO NOT TOUCH `e.data`
-				if (e.data && e.data.debug) {
-					tabDebug.show();
+				if (useDebug && e.data && e.data.debug) {
 					self.debug = { options : e.data.options, debug : Object.assign({ cmd : fm.currentReqCmd }, e.data.debug) };
-					if (self.dialog/* && self.dialog.is(':visible')*/) {
+					if (self.dialog) {
 						debugRender();
 					}
 				}
@@ -374,7 +434,14 @@
 				maxWidth: 'window',
 				maxHeight: 'window',
 				autoOpen : false,
-				destroyOnClose : false
+				destroyOnClose : false,
+				close : function() {
+					if (useDebug) {
+						tabDebug.hide();
+						debugDIV.tabs('destroy');
+					}
+					opened = false;
+				}
 			})
 			.on('click', function(e) {
 				e.stopPropagation();
@@ -410,6 +477,20 @@
 		}
 		
 		self.state = 0;
+	}).one('open', function() {
+		var debug = false;
+		fm.one('backenddebug', function() {
+			debug =true;
+		}).one('opendone', function() {
+			setTimeout(function() {
+				if (! debug && useDebug) {
+					useDebug = false;
+					tabDebug.hide();
+					debugDIV.hide();
+					debugUL.hide();
+				}
+			}, 0);
+		});
 	});
 	
 	this.getstate = function() {
@@ -417,12 +498,23 @@
 	};
 	
 	this.exec = function(sel, opts) {
-		var tab = opts? opts.tab : void(0);
+		var tab = opts? opts.tab : void(0),
+			debugShow = function() {
+				if (useDebug) {
+					debugDIV.tabs();
+					debugUL.find('a:first').trigger('click');
+					tabDebug.show();
+					opened = true;
+				}
+			};
 		if (! loaded) {
 			loaded = true;
-			fm.lazy(init);
+			fm.lazy(init).done(debugShow);
+		} else {
+			debugShow();
 		}
 		this.dialog.trigger('initContents').elfinderdialog('open').find((tab? '.elfinder-help-tab-'+tab : '.ui-tabs-nav li') + ' a:first').click();
+		return $.Deferred().resolve();
 	};
 
 }).prototype = { forceLoad : true }; // this is required command
@@ -437,6 +529,6 @@ elFinder.prototype.commands.preference = function() {
 	};
 	
 	this.exec = function() {
-		this.fm.exec('help', void(0), {tab: 'preference'});
-	};};
-
+		return this.fm.exec('help', void(0), {tab: 'preference'});
+	};
+};

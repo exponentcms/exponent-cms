@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -155,7 +155,6 @@ class listbuildercontrol extends formcontrol {
 		$form->addScript("listbuilder",PATH_RELATIVE."framework/core/forms/controls/listbuildercontrol.js");
 	}
 
-//	static function parseData($values, $name, $forceindex = false) { //FIXME params reversed!!! 3rd param normally $for_db
     static function parseData($name, $values, $forceindex = false) { // 3rd param normally $for_db
 		$retvalues = array();
 		if ($values[$name] == "")

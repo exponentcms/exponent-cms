@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -94,6 +94,43 @@ class portfolioController extends expController {
             'slides'=>$slides,
             'rank'=>($order==='rank')?1:0
         ));
+    }
+
+    /**
+     * Export a Portfolio module as CSV for import as a form with data
+     *
+     */
+    public function export_csv() {
+        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
+        $s = new portfolio();
+        $pieces = $s->find('all', $this->aggregateWhereClause(), $order);
+
+        $items = array();
+        $cats = false;
+        $files = false;
+        foreach ($pieces as $key => $piece) {
+            $items[$key] = new stdClass();
+            $items[$key]->title = $piece->title;
+            $items[$key]->body = str_replace( array("\n","\r"), '', $piece->body);
+            if (!empty($piece->expCat)) {
+                $cats = true;
+                $items[$key]->category = $piece->expCat[0]->title;
+            }
+            if (!empty($piece->expFile)) {
+                $files = true;
+                $items[$key]->file = PATH_RELATIVE . $piece->expFile[0]->directory . $piece->expFile[0]->filename;
+            }
+        }
+
+        $rpt_columns = array();
+        $rpt_columns['title'] = gt('Title - text box');
+        $rpt_columns['body'] = gt('Body - text area');
+        if ($cats)
+            $rpt_columns['category'] = gt('Category - drop down list');
+        if ($files)
+            $rpt_columns['file'] = gt('File - file upload');
+
+        expCore::save_csv($items, $rpt_columns, "portfolio.csv");
     }
 
     /**

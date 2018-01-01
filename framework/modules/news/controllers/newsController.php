@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -92,13 +92,13 @@ class newsController extends expController {
 
     public function showall_by_date() {
 	    expHistory::set('viewable', $this->params);
-        if (!empty($this->params['day'])) {
+        if (!empty($this->params['day']) && !empty($this->params['month']) && !empty($this->params['year'])) {
             $start_date = expDateTime::startOfDayTimestamp(mktime(0, 0, 0, $this->params['month'], $this->params['day'], $this->params['year']));
             $end_date = expDateTime::endOfDayTimestamp(mktime(23, 59, 59, $this->params['month'], $this->params['day'], $this->params['year']));
             $format_date = DISPLAY_DATE_FORMAT;
-        } elseif (!empty($this->params['month'])) {
+        } elseif (!empty($this->params['month']) && !empty($this->params['year'])) {
             $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
-            $end_date = expDateTime::endOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
+            $end_date = expDateTime::endOfMonthTimestamp(mktime(23, 59, 59, $this->params['month'], 1, $this->params['year']));
             $format_date = "%B %Y";
         } elseif (!empty($this->params['year'])) {
             $start_date = expDateTime::startOfYearTimestamp(mktime(0, 0, 0, 1, 1, $this->params['year']));
@@ -189,7 +189,8 @@ class newsController extends expController {
             'model'=>'news',
             'where'=>$where,
             'limit'=>25,
-            'order'=>'unpublish',
+            'order'   => isset($this->params['order']) ? $this->params['order'] : 'unpublish',
+            'dir'     => isset($this->params['dir']) ? $this->params['dir'] : 'DESC',
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
@@ -269,6 +270,7 @@ class newsController extends expController {
      */
     private function mergeRssData($items) {
         if (!empty($this->config['pull_rss'])) {
+            require_once(BASE . 'external/simplepie-1.5.1/autoloader.php');
             $RSS = new SimplePie();
 	        $RSS->set_cache_location(BASE.'tmp/rsscache');  // default is ./cache
 //	        $RSS->set_cache_duration(3600);  // default is 3600

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -50,7 +50,7 @@ class fix_forms extends upgradescript {
 
 	/**
 	 * fixes existing forms modules and form data table names
-	 * @return bool
+	 * @return string
 	 */
 	function upgrade() {
 	    global $db;

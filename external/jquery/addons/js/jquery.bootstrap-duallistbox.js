@@ -485,16 +485,16 @@
         this.container.find('.clear1, .clear2').removeClass('btn-default btn-xs').addClass('btn-mini');
         this.container.find('input, select').removeClass('form-control');
         this.container.find('.btn').removeClass('btn-default');
-        this.container.find('.moveall > i, .move > i').removeClass('glyphicon glyphicon-arrow-right').addClass('icon-arrow-right');
-        this.container.find('.removeall > i, .remove > i').removeClass('glyphicon glyphicon-arrow-left').addClass('icon-arrow-left');
+        this.container.find('.moveall > i, .move > i').removeClass('fa fa-arrow-right').addClass('icon-arrow-right');
+        this.container.find('.removeall > i, .remove > i').removeClass('fa fa-arrow-left').addClass('icon-arrow-left');
       } else {
         this.container.removeClass('row-fluid bs2compatible').addClass('row');
         this.container.find('.box1, .box2').removeClass('span6').addClass('col-md-6');
         this.container.find('.clear1, .clear2').removeClass('btn-mini').addClass('btn-default btn-xs');
         this.container.find('input, select').addClass('form-control');
         this.container.find('.btn').addClass('btn-default');
-        this.container.find('.moveall > i, .move > i').removeClass('icon-arrow-right').addClass('glyphicon glyphicon-arrow-right');
-        this.container.find('.removeall > i, .remove > i').removeClass('icon-arrow-left').addClass('glyphicon glyphicon-arrow-left');
+        this.container.find('.moveall > i, .move > i').removeClass('icon-arrow-right').addClass('fa fa-arrow-right');
+        this.container.find('.removeall > i, .remove > i').removeClass('icon-arrow-left').addClass('fa fa-arrow-left');
       }
       if (refresh) {
         refreshSelects(this);

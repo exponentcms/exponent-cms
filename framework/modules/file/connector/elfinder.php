@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2017 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -34,8 +34,11 @@ ini_set('max_file_uploads', FM_SIMLIMIT); // allow uploading up to FM_SIMLIMIT f
 //ini_set('mbstring.internal_encoding', 'UTF-8');
 //ini_set('mbstring.func_overload', 2);
 
+// elFinder autoload
+//require './autoload.php'; //note in Exp we load manually
 include BASE . 'external/elFinder/php/elFinderConnector.class.php';
 include BASE . 'external/elFinder/php/elFinder.class.php';
+include BASE . 'external/elFinder/php/editors/editor.php';
 
 include BASE . 'external/elFinder/php/elFinderPlugin.php';
 //include BASE . 'external/elFinder/php/libs/GdBmp.php';  // will also autoload if needed
@@ -318,7 +321,7 @@ $opts = array(
             'maxHeight'  => UPLOAD_WIDTH,
             'quality'    => THUMB_QUALITY,    // JPEG image save quality
 //            'preserveExif'   => false,      // Preserve EXIF data (Imagick only)
-//            'forceEffect'    => false,      // For change quality of small images
+//            'forceEffect'    => false,      // For change quality or make progressive JPEG of small images
             'targetType' => IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP, // Target image formats ( bit-field )
 //            'offDropWith'    => null        // To disable it if it is dropped with pressing the meta key
         			                          // Alt: 8, Ctrl: 4, Meta: 2, Shift: 1 - sum of each value
@@ -354,6 +357,7 @@ $opts = array(
 //            'transparency'   => 70,         // Water mark image transparency ( other than PNG )
 //            'targetType'     => IMG_GIF|IMG_JPG|IMG_PNG|IMG_WBMP, // Target image formats ( bit-field )
 //            'targetMinPixel' => 200         // Target image minimum pixel size
+//			  'interlace'      => IMG_GIF|IMG_JPG, // Set interlacebit image formats ( bit-field )
 //            'offDropWith'    => null        // To disable it if it is dropped with pressing the meta key
      			                              // Alt: 8, Ctrl: 4, Meta: 2, Shift: 1 - sum of each value
      			                              // In case of using any key, specify it as an array
@@ -376,6 +380,7 @@ $opts = array(
             'detectDirIcon'   => '.foldericon.png',       // File to be detected as a folder icon image (elFinder >= 2.1.10) e.g. '.favicon.png'
             'keepTimestamp'   => array('copy', 'move'),   // Keep timestamp at inner filesystem (elFinder >= 2.1.12) It allowed 'copy', 'move' and 'upload'.
             // 'treeDeep'        => 3,
+            'checkSubfolders' => -1,
             'alias'           => 'files',
             'disabled'        => array('netmount'),
 //            'maxArcFilesSize' => 100,
