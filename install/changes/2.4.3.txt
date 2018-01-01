@@ -1,0 +1,6 @@
+version 2.4.3
+### Address issues in v2.4.2 and Prepare for v3.0.0
+  - fixes and tweaks many issues in previous versions
+Known Issues
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing

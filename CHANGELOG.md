@@ -8,6 +8,11 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ----------
 
+Version 2.4.3
+-------------
+### Address issues in v2.4.2 and Prepare for v3.0.0
+  - fixes and tweaks many issues in previous versions
+
 Version 2.4.2
 -------------
 ### Address issues in v2.4.1 and Prepare for v3.0.0
