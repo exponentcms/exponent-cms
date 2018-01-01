@@ -22,7 +22,7 @@ if (!defined('EXPONENT')) {
 }
 
 /**
- * Date Picker Control using jQuery datetimepicker
+ * Date Picker Control using Bootstrap datetimepicker
  * standard calendar control
  * places an update calendar field/button
  *

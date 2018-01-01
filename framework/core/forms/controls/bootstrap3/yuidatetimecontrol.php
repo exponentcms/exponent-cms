@@ -21,7 +21,6 @@ if (!defined('EXPONENT')) {
     exit('');
 }
 
-//FIXME this is NOT a bootstrap control, but jQuery
 /**
  * Date/Time Control
  * uses/combines yuicalendarcontrol & datetimecontrol (w/o date)

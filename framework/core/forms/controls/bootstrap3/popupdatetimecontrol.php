@@ -22,7 +22,7 @@ if (!defined('EXPONENT')) {
 }
 
 /**
- * Popup Date/Time Picker Control
+ * Popup Date/Time Picker Control using Bootstrap datetimepicker
  *
  * @package    Subsystems-Forms
  * @subpackage Control

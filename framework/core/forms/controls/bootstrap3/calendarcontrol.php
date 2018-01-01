@@ -22,7 +22,7 @@ if (!defined('EXPONENT')) {
 }
 
 /**
- * Date/Time Control w/ Popup Date/Time Picker using jQuery datetimepicker
+ * Date/Time Control w/ Popup Date/Time Picker using Bootstrap datetimepicker
  * text entry date and/or time w/ pop-up date/time selector
  *
  * @package    Subsystems-Forms
