@@ -73,7 +73,7 @@ $items1[] = array(
             'action' => 'create_new_order'
         )
     ),
-    'divider' => true,
+    'divider' => count($recent_orders),
 );
 
 $items2 = array();

@@ -52,6 +52,15 @@ if (!$user->isAdmin()) {
 if ($db->countObjects('product', 'product_type="eventregistration"') == 0)
     return false;
 
+$ev = new eventregistration();
+$allevents = $ev->find('all', 'product_type="eventregistration" && active_type=0');
+$events = array();
+foreach ($allevents as $event) {
+    if ($event->eventenddate > time()) {
+        $events[] = $event;
+    }
+}
+
 $items1 = array(
     array(
         'text'      => gt('Manage Event Registrations'),
@@ -77,17 +86,9 @@ $items1 = array(
                 'product_type' => 'eventregistration'
             )
         ),
-        'divider' => true,
+        'divider' => count($events),
     )
 );
-$ev = new eventregistration();
-$allevents = $ev->find('all', 'product_type="eventregistration" && active_type=0');
-$events = array();
-foreach ($allevents as $event) {
-    if ($event->eventenddate > time()) {
-        $events[] = $event;
-    }
-}
 $events = expSorter::sort(array('array' => $events, 'sortby' => 'eventdate', 'order' => 'ASC'));
 $items2 = array();
 foreach ($events as $event) {
