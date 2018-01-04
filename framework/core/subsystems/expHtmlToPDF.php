@@ -1130,7 +1130,7 @@ class expMPDF7 extends expMPDF6
      * Return status of pdf engine being installed correctly
      */
     public static function installed() {
-        return (file_exists(BASE . 'external/mpdf-7.0.2/src/Mpdf.php') && file_exists(BASE . 'external/log-1.0.2/autoload.php'));
+        return (file_exists(BASE . 'external/mpdf-' . MPDF7_VERSION . '/src/Mpdf.php') && file_exists(BASE . 'external/log-1.0.2/autoload.php'));
     }
 
     /**
@@ -1143,13 +1143,13 @@ class expMPDF7 extends expMPDF6
      */
     public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
-        if (file_exists(BASE . 'external/mpdf-7.0.2/src/Mpdf.php') && file_exists(BASE . 'external/log-1.0.2/autoload.php')) {
+        if (file_exists(BASE . 'external/mpdf-' . MPDF7_VERSION . '/src/Mpdf.php') && file_exists(BASE . 'external/log-1.0.2/autoload.php')) {
             if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
             if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", BASE . 'tmp/ttfontdata/');
             if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
             ini_set('display_errors', 0);  // warnings must be turned off to work
             require_once(BASE . 'external/log-1.0.2/autoload.php');
-            require_once(BASE . 'external/mpdf-7.0.2/src/autoload.php');
+            require_once(BASE . 'external/mpdf-' . MPDF7_VERSION . '/src/autoload.php');
             $this->size = $paper_size;
             $this->orient = strtoupper($orientation[0]);
             $this->pdf = new Mpdf\Mpdf(array(null, $this->size, 0, 15, 15, 16, 16, 9, 9, $this->orient));
@@ -1386,7 +1386,7 @@ class expHTML2PDF5 extends expHTML2PDF
      * Return status of pdf engine being installed correctly
      */
     public static function installed() {
-        return file_exists(BASE . 'external/html2pdf-5.0.1/src/Html2Pdf.php') && file_exists(BASE . 'external/TCPDF/tcpdf.php');
+        return file_exists(BASE . 'external/html2pdf-' . HTML2PDF5_VERSION . '/src/Html2Pdf.php') && file_exists(BASE . 'external/TCPDF/tcpdf.php');
     }
 
     /**
@@ -1399,7 +1399,7 @@ class expHTML2PDF5 extends expHTML2PDF
      */
     public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
-        $html2pdf_loc = BASE . 'external/html2pdf-5.0.1/src/';
+        $html2pdf_loc = BASE . 'external/html2pdf-' . HTML2PDF5_VERSION . '/src/';
         $tcpdf_loc = BASE . 'external/TCPDF/';
         if (file_exists($html2pdf_loc . 'Html2Pdf.php') && file_exists($tcpdf_loc . 'tcpdf.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata'))

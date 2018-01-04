@@ -167,7 +167,7 @@ define('SYS_FILES_NOTWRITABLE', 3);
  */
 define('SYS_FILES_NOTREADABLE', 4);
 
-/* exdoc
+/** exdoc
  * Filesystem Error Response: Destination not deletable
  * @node Subsystems:Files
  */
@@ -580,6 +580,17 @@ if (!defined('SWIFT_PATH')) {
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
     define('EMAIL_VERSION', '2.1.2');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VERSION . '/EmailValidator/');
+}
+
+/**
+ * Optional HTMLTOPDF Version Constants
+ * Changing the versions here lets Exponent adjust where to look
+ */
+if (!defined('MPDF7_VERSION')) {
+    define('MPDF7_VERSION', '7.0.3');
+}
+if (!defined('HTML2PDF5_VERSION')) {
+    define('HTML2PDF5_VERSION', '5.0.1');
 }
 
 ?>

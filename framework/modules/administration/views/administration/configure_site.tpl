@@ -371,7 +371,7 @@
                                 </blockquote>
                             </div>
                             <div id="expMPDF7-div" class="alt-item" style="display:none;">
-                                {if !file_exists("`$smarty.const.BASE`external/mpdf-7.0.2/src/Mpdf.php")}
+                                {if !file_exists("`$smarty.const.BASE`external/mpdf-`$smarty.const.MPDF7_VERSION`/src/Mpdf.php")}
                                     <div style="color:#ff0000;font-weight:bold;">
                                         {'mPDF v7 is NOT installed!'|gettext}
                                     </div>
@@ -446,7 +446,7 @@
                                 </blockquote>
                             </div>
                             <div id="expHTML2PDF5-div" class="alt-item" style="display:none;">
-                                {if !file_exists("`$smarty.const.BASE`external/html2pdf-5.0.1/src/Html2Pdf.php") || !file_exists("`$smarty.const.BASE`external/TCPDF/tcpdf.php")}
+                                {if !file_exists("`$smarty.const.BASE`external/html2pdf-`$smarty.const.HTML2PDF5_VERSION`/src/Html2Pdf.php") || !file_exists("`$smarty.const.BASE`external/TCPDF/tcpdf.php")}
                                     <div style="color:#ff0000;font-weight:bold;">
                                         {'HTML2PDF v5/TCPDF is NOT installed!'|gettext}
                                     </div>
