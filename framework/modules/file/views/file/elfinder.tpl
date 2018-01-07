@@ -365,6 +365,7 @@
                 width : 'auto',
                 height : {/literal}{$smarty.const.FM_HEIGHT - $h}{literal},
                 resizable: false,
+                soundPath: '{/literal}{$smarty.const.PATH_RELATIVE}external/elFinder/sounds{literal}',
                 showFiles: {/literal}{$smarty.const.FM_LIMIT}{literal},
                 {/literal}{if $update!='noupdate'}{literal}
                 getFileCallback : function(file) {
