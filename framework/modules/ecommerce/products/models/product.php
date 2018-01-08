@@ -552,6 +552,13 @@ class product extends expRecord {
                 '.bootstrap',
                 '',
             );
+        } elseif (bs4(true)) {
+            $vars = array(
+                '.bootstrap4',
+                '.bootstrap3',
+                '.bootstrap',
+                '',
+            );
         } else {
             $vars = array(
                 '',
