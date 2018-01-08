@@ -161,7 +161,7 @@ class order extends expRecord {
 
             //check to see if the user is logged in, and if so grab their existing cart
             $usercart = null;
-            if (!empty($user) && $user->isLoggedIn()) {
+            if (!empty($user->id) && $user->isLoggedIn()) {
                 $usercart = $order->find('first', "invoice_id='' AND user_id=" . $user->id);
             }
 
