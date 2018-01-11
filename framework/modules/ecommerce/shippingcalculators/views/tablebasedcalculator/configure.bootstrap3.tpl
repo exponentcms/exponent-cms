@@ -25,7 +25,9 @@
 .amount .form-control{
     display: inherit;
 }
-
+input.form-control {
+    display: inline-block;
+}
 {/literal}
 {/css}
 
@@ -140,9 +142,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var odev = "odd";
 
     var rowTemplate = function (i){
-    return '<tr class="row row-'+i+' '+odev+'">'+
+    return '<tr class="row-'+i+' '+odev+'">'+
             '<td class="from">'+
-                '<a class="delete" href="#">remove</a>'+
+                '<a class="delete" href="#">{/literal}{'Remove'|gettext}{literal}</a>'+
             '</td>'+
             '<td class="from">'+
                 '<label for="from-'+i+'">{/literal}{currency_symbol}{literal}</label>'+
@@ -156,8 +158,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 			{/literal}
 			{foreach from=$calculator->shippingspeeds item=calc}
 				{literal}
-					'<td><label for="{/literal}{$calc->speed}{literal}-1">{/literal}{currency_symbol}{literal}</label>'+
-					'<input class="form-control" type="text" name="{/literal}{$calc->speed|remove_space}[]{literal}" value="" id="{$calc->speed}-' + i + '" size="10">' +
+					'<td><label for="{/literal}{$calc->speed}{literal}-' + i + '">{/literal}{currency_symbol}{literal}</label>'+
+					'<input class="form-control" type="text" name="{/literal}{$calc->speed|remove_space}[]{literal}" value="" id="{/literal}{$calc->speed}{literal}-' + i + '" size="10">' +
 					'</td>'+
 				{/literal}
 			{/foreach}
