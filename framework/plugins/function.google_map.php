@@ -94,7 +94,7 @@ function smarty_function_google_map($params,&$smarty) {
     expJavascript::pushToFoot(array(
         "unique"=>'0-gmaps',
         "jquery"=>1,
-        "src"=>'http://maps.google.com/maps/api/js?key=' . ecomconfig::getConfig('map_apikey')
+        "src"=>'//maps.google.com/maps/api/js?key=' . ecomconfig::getConfig('map_apikey')
      ));
     expJavascript::pushToFoot(array(
         "unique"=>'gmap-' . $params['unique'],

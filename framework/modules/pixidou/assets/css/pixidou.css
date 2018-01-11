@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 
 *html .yui-picker-bg {
-	/*filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://yui.yahooapis.com/2.6.0/build/assets/skins/sam/picker_mask.png', sizingMethod='scale');*/
+	/*filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//yui.yahooapis.com/2.6.0/build/assets/skins/sam/picker_mask.png', sizingMethod='scale');*/
 	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../../../../external/yui/2in3/dist/2.9.0/build/assets/skins/sam/picker_mask.png', sizingMethod='scale');
 }
 a:link, a:active, a:visited{
@@ -15,7 +15,7 @@ a:hover{
 }
 
 #bd{
-	font-size: 11px;	
+	font-size: 11px;
 }
 
 #imageContainer{
@@ -37,7 +37,7 @@ a:hover{
 	background:transparent url(../../../../../external/yui/2in3/dist/2.9.0/build/assets/skins/sam/sprite.png) repeat-x scroll 0pt 0px;
 }
 
-.yui-skin-sam .yui-layout { 
+.yui-skin-sam .yui-layout {
 	background-color: #fff;
 }
 

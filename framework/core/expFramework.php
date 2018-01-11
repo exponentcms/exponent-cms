@@ -1174,4 +1174,12 @@ function get_thumbnail($src) {
     return phpThumbURL($src, URL_FULL . "external/phpThumb/phpThumb.php");
 }
 
+/**
+ * Determine whether
+ * @return bool
+ */
+function isSSL() {
+    return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+}
+
 ?>
