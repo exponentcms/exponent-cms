@@ -111,6 +111,9 @@ class tagtreecontrol extends formcontrol {
         foreach ($this->tags as $i=> $val) {
             if (!empty($this->values) && in_array($val->id, $this->values)) {
                 $this->tags[$i]->value = true;
+                if ($this->checkable && isset($this->tags[$i]->subcount) && $this->tags[$i]->subcount) {
+                    $this->tags[$i]->title = '<span style="color:red;" class="context"><strong class="context">' . $this->tags[$i]->text . '&nbsp;(<em class="context">' . gt('Improper Category, please deselect') . '</em>)</strong></span>';
+                }
             } else {
                 $this->tags[$i]->value = false;
             }

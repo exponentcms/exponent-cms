@@ -116,7 +116,7 @@ class tagtreecontrol extends formcontrol {
         foreach ($icon as $key=>$icn) {
             $text = expTheme::buttonIcon($key, 'large');
             $icon[$key] = $text->prefix . $text->class . ' ' . $text->size;
-            if (bs3())
+            if (bs3() || bs4())
                 $icon[$key] .= ' fa-fw';
             elseif (bs2())
                 $icon[$key] .= ' icon-fixed-width';
@@ -133,6 +133,13 @@ class tagtreecontrol extends formcontrol {
             } else {
                 $this->tags[$i]->value = false;
                 $this->tags[$i]->state->selected = false;
+            }
+            if ($this->checkable && isset($this->tags[$i]->subcount) && $this->tags[$i]->subcount) {
+                if (!$this->tags[$i]->value) {
+                    $this->tags[$i]->state->disabled = true;
+                } else {
+                    $this->tags[$i]->text = '<span style="color:red;"><strong>' . $this->tags[$i]->text . '&nbsp;(<em>' . gt('Improper Category, please deselect') . '</em>)</strong></span>';
+                }
             }
             $this->tags[$i]->draggable = $this->draggable;
             $this->tags[$i]->checkable = $this->checkable;
@@ -224,7 +231,7 @@ class tagtreecontrol extends formcontrol {
                 'keep_selected_style' : false,
                 'three_state' : false,
 //                'whole_node' : false,
-                'cascade' : 'undetermined'
+                'cascade' : 'false'
             },
             'plugins' : [" . ($this->draggable?"'dnd'":"") . "," . ($this->menu?"'contextmenu'":"") . "," . ($this->checkable?"'checkbox'":"") . "]
         }).on('move_node.jstree', function (e, data) {
