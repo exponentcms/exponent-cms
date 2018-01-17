@@ -27,7 +27,7 @@ if (!defined('EXPONENT')) exit('');
 class tagtreecontrol extends formcontrol {
 
     var $values = array();
-    var $menu = true;
+//    var $menu = true;
     var $addable = true;
     var $draggable = true;
     var $checkable = true;
@@ -41,10 +41,6 @@ class tagtreecontrol extends formcontrol {
     static function name() {
         return "Nested Node Checkbox Dragdrop Tree";
     }
-
-//    static function getFieldDefinition() {
-//        return array();
-//    }
 
     function __construct($params) {
 //        global $db;
@@ -134,6 +130,11 @@ class tagtreecontrol extends formcontrol {
                 $this->tags[$i]->value = false;
                 $this->tags[$i]->state->selected = false;
             }
+            if (!$this->tags[$i]->active) {
+                $attr = new stdClass();
+                $attr->class = 'inactive';
+                $this->tags[$i]->a_attr = $attr;
+            }
             if ($this->checkable && isset($this->tags[$i]->subcount) && $this->tags[$i]->subcount) {
                 if (!$this->tags[$i]->value) {
                     $this->tags[$i]->state->disabled = true;
@@ -141,16 +142,16 @@ class tagtreecontrol extends formcontrol {
                     $this->tags[$i]->text = '<span style="color:red;"><strong>' . $this->tags[$i]->text . '&nbsp;(<em>' . gt('Improper Category, please deselect') . '</em>)</strong></span>';
                 }
             }
-            $this->tags[$i]->draggable = $this->draggable;
-            $this->tags[$i]->checkable = $this->checkable;
+            $this->tags[$i]->draggable = $this->draggable;  //fixme leftover from yui2 treeview?
+            $this->tags[$i]->checkable = $this->checkable;  //fixme leftover from yui2 treeview?
         }
 
         $obj    = json_encode($this->tags);
-        if ($this->menu) {
-            $menu = "
-
-        ";
-        }
+//        if ($this->menu) {
+//            $menu = "
+//
+//        ";
+//        }
         $script = "
     $(document).ready(function(){
         var obj2json = " . $obj . ";

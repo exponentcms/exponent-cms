@@ -219,44 +219,65 @@ class storeController extends expController {
         if (empty($router->params['title']))  // we need to pass on the category for proper paging
             $router->params['title'] = $this->category->sef_url;
         $limit = !empty($this->config['limit']) ? $this->config['limit'] : (!empty($this->config['pagination_default']) ? $this->config['pagination_default'] : 10);
-        if ($this->category->find('count') > 0) { // there are categories
+
+        $categories = ($this->parent == 0) ? $this->category->getTopLevel(null, false, true) : $this->category->getChildren(null, false, true);
+        if (count($categories)) { // there are categories
+            // do we want to get products?
+            if (!empty($this->config['show_products'])) {
+                $page = new expPaginator(array(
+                    'model_field' => 'product_type',
+                    'sql' => $sql,
+                    'count_sql' => $count_sql,
+                    'limit' => $limit,
+                    'order' => $order,
+                    'dir' => $dir,
+                    'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
+                    'controller' => $this->params['controller'],
+                    'action' => $this->params['action'],
+                    'columns' => array(
+                        gt('Model #') => 'model',
+                        gt('Product Name') => 'title',
+                        gt('Price') => 'price'
+                    ),
+                ));
+            } else {
+                $page = null;
+            }
+        } else { // there are no categories defined
+//            $page = new expPaginator(array(
+//                'model_field' => 'product_type',
+//                'sql'         => 'SELECT * FROM ' . $db->prefix . 'product WHERE 1',
+//                'limit'       => $limit,
+//                'order'       => $order,
+//                'dir'         => $dir,
+//                'page'        => (isset($this->params['page']) ? $this->params['page'] : 1),
+//                'controller'  => $this->params['controller'],
+//                'action'      => $this->params['action'],
+//                'columns'     => array(
+//                    gt('Model #')      => 'model',
+//                    gt('Product Name') => 'title',
+//                    gt('Price')        => 'price'
+//                ),
+//            ));
             $page = new expPaginator(array(
                 'model_field' => 'product_type',
-                'sql'         => $sql,
-                'count_sql'   => $count_sql,
-                'limit'       => $limit,
-                'order'       => $order,
-                'dir'         => $dir,
-                'page'        => (isset($this->params['page']) ? $this->params['page'] : 1),
-                'controller'  => $this->params['controller'],
-                'action'      => $this->params['action'],
-                'columns'     => array(
-                    gt('Model #')      => 'model',
+                'sql' => $sql,
+                'count_sql' => $count_sql,
+                'limit' => $limit,
+                'order' => $order,
+                'dir' => $dir,
+                'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
+                'controller' => $this->params['controller'],
+                'action' => $this->params['action'],
+                'columns' => array(
+                    gt('Model #') => 'model',
                     gt('Product Name') => 'title',
-                    gt('Price')        => 'price'
-                ),
-            ));
-        } else { // there are no categories
-            $page = new expPaginator(array(
-                'model_field' => 'product_type',
-                'sql'         => 'SELECT * FROM ' . $db->prefix . 'product WHERE 1',
-                'limit'       => $limit,
-                'order'       => $order,
-                'dir'         => $dir,
-                'page'        => (isset($this->params['page']) ? $this->params['page'] : 1),
-                'controller'  => $this->params['controller'],
-                'action'      => $this->params['action'],
-                'columns'     => array(
-                    gt('Model #')      => 'model',
-                    gt('Product Name') => 'title',
-                    gt('Price')        => 'price'
+                    gt('Price') => 'price'
                 ),
             ));
         }
 
-        $ancestors = $this->category->pathToNode();
-        $categories = ($this->parent == 0) ? $this->category->getTopLevel(null, false, true) : $this->category->getChildren(null, false, true);
-
+//        $ancestors = $this->category->pathToNode();
         $rerankSQL = "SELECT DISTINCT p.* FROM " . $db->prefix . "product p JOIN " . $db->prefix . "product_storeCategories sc ON p.id = sc.product_id WHERE sc.storecategories_id=" . $this->category->id . " ORDER BY rank ASC";
         //eDebug($router);
         $defaultSort = $router->current_url;
@@ -264,7 +285,7 @@ class storeController extends expController {
         assign_to_template(array(
             'page'             => $page,
             'defaultSort'      => $defaultSort,
-            'ancestors'        => $ancestors,
+//            'ancestors'        => $ancestors,
             'categories'       => $categories,
             'current_category' => $this->category,
             'rerankSQL'        => $rerankSQL
@@ -533,6 +554,7 @@ class storeController extends expController {
     function showallUncategorized() {
         expHistory::set('viewable', $this->params);
 
+        set_time_limit(0);
 //        $sql = 'SELECT p.* FROM ' . DB_TABLE_PREFIX . '_product p JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories ';
 //        $sql .= 'sc ON p.id = sc.product_id WHERE sc.storecategories_id = 0 AND parent_id=0';
         $sql = 'SELECT p.* FROM ' . DB_TABLE_PREFIX . '_product p LEFT OUTER JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories ';
@@ -595,6 +617,7 @@ class storeController extends expController {
      *   therefore they can't really be displayed
      */
     function showallImpropercategorized() {
+        set_time_limit(0);
         expHistory::set('viewable', $this->params);
 
         $sql = 'SELECT DISTINCT(p.id),p.product_type FROM ' . DB_TABLE_PREFIX . '_product p ';
@@ -978,7 +1001,7 @@ class storeController extends expController {
         $catid = expSession::get('catid');
         $parent = !empty($catid) ? $catid : (!empty($this->params['cat']) ? intval($this->params['cat']) : 0);
         $category = new storeCategory($parent);
-        $categories = $category->getEcomSubcategories();
+        $categories = $category->getSubCats();
         $ancestors = $category->pathToNode();
         assign_to_template(array(
             'categories' => $categories,
@@ -1049,7 +1072,7 @@ class storeController extends expController {
     function showTopLevel() {
         expHistory::set('viewable', $this->params);
         $category = new storeCategory(null, false, false);
-        //$categories = $category->getEcomSubcategories();
+        //$categories = $category->getSubCats();
         $categories = $category->getTopLevel(null, false, true);
         $ancestors = $this->category->pathToNode();
         $curcat = $this->category;
@@ -1098,7 +1121,7 @@ class storeController extends expController {
         ));
 
         $category = new storeCategory(null, false, false);
-        //$categories = $category->getEcomSubcategories();
+        //$categories = $category->getSubCats();
         $categories = $category->getTopLevel(null, false, true);
         $ancestors = $this->category->pathToNode();
         $curcat = $this->category;
@@ -1112,7 +1135,7 @@ class storeController extends expController {
     function showFullTree() {  //FIXME we also need a showFullTree_images method like above
         expHistory::set('viewable', $this->params);
         $category = new storeCategory(null, false, false);
-        //$categories = $category->getEcomSubcategories();
+        //$categories = $category->getSubCats();
         $categories = $category->getFullTree();
         $ancestors = $this->category->pathToNode();
         $curcat = $this->category;
@@ -2384,6 +2407,7 @@ class storeController extends expController {
     function nonUnicodeProducts() {
         global $db, $user;
 
+        set_time_limit(0);
         $products = $db->selectObjectsIndexedArray('product');
         $affected_fields = array();
         $listings = array();

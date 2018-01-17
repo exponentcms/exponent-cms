@@ -45,20 +45,13 @@ class storeCategory extends expNestedNode {
     /**
      * Get count of sub-categories in this category
      *
-     * @param null $id
      * @return int
      */
-    public function getSubCatCount($id = null) {
+    public function getSubCatsCount() {
         global $db;
 
-        if ($id === null)
-            $id = $this->id;
-        if (empty($id)) {
-            return 0;
-        } else {
-//            $children = $db->selectNestedNodeChildren($this->table, $id);
-            return  $db->countObjects($this->table,'parent_id=' . $id);
-        }
+//        $children = $db->selectNestedNodeChildren($this->table, $this->id);
+        return  $db->countObjects($this->table,'parent_id=' . $this->id);
     }
 
     /**
@@ -66,7 +59,7 @@ class storeCategory extends expNestedNode {
      *
      * @return array
      */
-	public function getEcomSubcategories() {
+	public function getSubCats() {
 		global $db;
 
 //		$subcats = array();
@@ -91,14 +84,11 @@ class storeCategory extends expNestedNode {
     /**
      * Return all products assigned to this category
      *
-     * @param null $id
      * @return array
      */
-    public function getAllProductsInThisCategory($id = null) {
+    public function getCatProducts() {
         global $user, $db;
 
-        if ($id === null)
-            $id = $this->id;
         //if(!empty($order)) $order = " ORDER BY " . $order;
         $order = " ORDER BY p.title ASC";
 
@@ -107,7 +97,7 @@ class storeCategory extends expNestedNode {
         $sql .= 'WHERE ';
         if (!($user->is_admin || $user->is_acting_admin))
             $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
-        $sql .= 'sc.storecategories_id = ' . $id;
+        $sql .= 'sc.storecategories_id = ' . $this->id;
         $sql  = $sql_start . $sql . $order;
         //echo $sql;
         return $db->selectObjectsBySql($sql);
@@ -119,11 +109,9 @@ class storeCategory extends expNestedNode {
      * @param null $id
      * @return int
      */
-    public function countProductsInThisCategory($id = null) {
+    public function getCatProductsCount() {
         global $user, $db;
 
-        if ($id === null)
-            $id = $this->id;
         //if(!empty($order)) $order = " ORDER BY " . $order;
         $order = " ORDER BY p.title ASC";
 
@@ -132,7 +120,7 @@ class storeCategory extends expNestedNode {
         $sql .= 'WHERE ';
         if (!($user->is_admin || $user->is_acting_admin))
             $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
-        $sql .= 'sc.storecategories_id = ' . $id;
+        $sql .= 'sc.storecategories_id = ' . $this->id;
         $sql  = $sql_start . $sql . $order;
         //echo $sql;
         return $db->countObjectsBySql($sql);
@@ -191,14 +179,15 @@ class storeCategory extends expNestedNode {
 			$tree_copy[$key] = new stdClass();
 			$tree_copy[$key]->id = $node->id;
 			$tree_copy[$key]->depth = $node->depth;
+            $tree_copy[$key]->active = $node->is_active;
 			$tree_copy[$key]->href = makeLink(array('controller'=>'store','action'=>'showall','title'=>$node->sef_url));
 			$tree_copy[$key]->parent = $node->parent_id ? $node->parent_id : '#';
 			$tree_copy[$key]->parent_id = $node->parent_id;
 			$tree_copy[$key]->rgt = $node->rgt;
 			$tree_copy[$key]->lft = $node->lft;
 
-            $tree_copy[$key]->count = $this->countProductsInThisCategory($node->id);  // number of products in category
-            $tree_copy[$key]->subcount = $this->getSubCatCount($node->id); // determine is this is a usable category
+            $tree_copy[$key]->count = $node->getCatProductsCount();  // number of products in category
+            $tree_copy[$key]->subcount = $node->getSubCatsCount(); // determine is this is a usable category
 
 			if (!empty($node->expFile[0]->id)) {  // add thumbnail
 				$tree_copy[$key]->text = '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $node->expFile[0]->id . '&amp;w=18&amp;h=18&amp;zc=1" height="18" width="18">&#160;' . $node->title . ' (' . $tree_copy[$key]->count . ')';
