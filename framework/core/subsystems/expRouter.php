@@ -837,8 +837,8 @@ class expRouter {
      * if we got an old school url, it will only contain the 'index.php'
      */
     private function buildSEFPath () {
-        // Apache
-        if (strpos($_SERVER['SERVER_SOFTWARE'],'Apache') !== false || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') !== false) {
+        // Apache or Microsoft-IIS -- Microsoft-IIS added by Todd Giardina, Todd's IT 12-17-2017
+        if (strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !== false || strpos($_SERVER['SERVER_SOFTWARE'],'Apache') !== false || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') !== false) {
             switch(php_sapi_name()) {
                 case "cgi":
                     $this->sefPath = !empty($_SERVER['REQUEST_URI']) ? urldecode($_SERVER['REQUEST_URI']): null;
@@ -846,6 +846,9 @@ class expRouter {
                 case "cgi-fcgi":
                     if (isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != PATH_RELATIVE.'index.php') {
                         $this->sefPath = urldecode($_SERVER['REDIRECT_URL']);
+                    } elseif (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != PATH_RELATIVE.'index.php') {
+                       $url = explode('?', $_SERVER['REQUEST_URI']);  // note the 'query' should already be in $_GET?? so remove it
+                       $this->sefPath = urldecode($url[0]);
                     } elseif (!empty($_ENV['REQUEST_URI'])) {
                         $this->sefPath = urldecode($_ENV['REQUEST_URI']);
                     } else {
