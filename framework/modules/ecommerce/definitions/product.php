@@ -71,7 +71,7 @@ return array(
 	'sef_url'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>150,
-//		DB_INDEX=>10,
+		DB_INDEX=>10,
 //		DB_FULLTEXT=>true
 	),
     'canonical'=>array(
