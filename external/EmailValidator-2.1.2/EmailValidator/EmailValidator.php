@@ -94,7 +94,8 @@ class EmailValidator
             return;
         }
 
-        $path = __DIR__.'/'.str_replace('_', '/', $class).'.php';
+        $file = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+        $path = __DIR__.'/'.str_replace('_', '/', $file).'.php';
 
         if (!file_exists($path)) {
             return;
