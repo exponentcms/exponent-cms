@@ -1,0 +1,24 @@
+@a: #ffffff;
+
+body {
+  color: @a;
+  border: (@base + 1px) solid red;
+  background-image: url(@myurl);
+}
+
+@nice-blue: #5B83AD;
+@light-blue: (@nice-blue + #111);
+
+#header { color: @light-blue; }
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('@{fontdir}/fontawesome-webfont.eot?v=3.0.1');
+  src: url('@{fontdir}/fontawesome-webfont.eot?#iefix&v=3.0.1') format('embedded-opentype'),
+    url('@{fontdir}/fontawesome-webfont.woff?v=3.0.1') format('woff'),
+    url('@{fontdir}/fontawesome-webfont.ttf?v=3.0.1') format('truetype'),
+    url('@{fontdir}/fontawesome-webfont.svg#fontawesomeregular?v=3.0.1') format('svg');
+  src: url('@{fontdir}/FontAwesome.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}

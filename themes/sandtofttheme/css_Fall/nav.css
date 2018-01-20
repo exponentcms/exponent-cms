@@ -1,0 +1,105 @@
+/****************  nav  ***********************/
+
+/* first element inside .top-nav. #yuimenubar will ALWAYS be the ID, since we'll 
+never have more than one menubar on a single page */
+#yuimenubar {
+    padding-left:10px;
+    background:#1e4a01;
+       -moz-border-radius: 5px; 
+    -webkit-border-radius: 5px; 
+            border-radius: 5px; 
+}
+
+/* strip the padding placed by yui's style sheet*/
+#yuimenubar,
+#yuimenubar * {
+    border-width:0;
+    margin:0;
+}
+
+/* the menu bar's <li> list item*/
+#yuimenubar .yuimenubaritem {
+
+}
+
+#yuimenubar .yuimenubaritem-hassubmenu {
+
+}
+
+/* the hover state of the menu bar's <li>*/
+#yuimenubar .yuimenubaritem-selected {
+    background:#808f5d;
+}
+
+#yuimenubar .yuimenubaritemlabel-hassubmenu {
+    background-image:url(../images/menubaritem_submenuindicator.png);
+    background-position: 100% 50%;
+    background-repeat:no-repeat;
+}
+
+/* the <a> inside the <li>*/
+#yuimenubar .yuimenubaritemlabel {
+    color:#ffffff;
+    font-size:14px;
+    font-weight:bold;
+    padding:5px 20px 4px 10px;
+    cursor:pointer;
+    text-transform:uppercase;
+}
+
+#yuimenubar .yuimenubaritemlabel-hassubmenu {
+    background-image:url(../images/menubaritem_submenuindicator.png);
+    background-position: 100% 50%;
+    background-repeat:no-repeat;
+}
+
+#yuimenubar .yuimenubaritemlabel-hassubmenu-selected {
+    background-image:url(../images/menubaritem_submenuindicator_selected.png);
+}
+
+/* the hover state of the menu bar's <li>'s <a>*/
+#yuimenubar .yuimenubaritemlabel-selected {
+    color:#302f30;
+}
+
+/*** the drop down menus ***/
+
+/* the drop down menu's sytlable wrapper*/
+#yuimenubar .yuimenu .bd {
+    border:1px solid #576157;
+    background:#98aa6f;
+    
+}
+
+/* The drop menu's <li> (and all under it as well) */
+#yuimenubar .yuimenuitem {
+    background:none;
+}
+
+/* The hover state of the drop menu's <li> (and all under it as well) */
+#yuimenubar .yuimenuitem-selected {
+    background-color:#ffffff;
+}
+
+/* The drop menu's <li>'s <a> (and all under it as well) */
+#yuimenubar .yuimenuitemlabel {
+    padding-top:5px;
+    padding-bottom:5px;
+    text-transform:uppercase;
+    color:#ffffff;
+}
+
+/* The hover state of the drop menu's <li>'s <a> (and all under it as well) */
+#yuimenubar .yuimenuitemlabel-selected {
+    color:#302f30;
+}
+
+#yuimenubar .yuimenuitemlabel-hassubmenu {
+    background-image:url(../images/menuitem_submenuindicator.png);
+    background-position: 100% 50%;
+    background-repeat:no-repeat;
+}
+
+#yuimenubar .yuimenuitemlabel-hassubmenu-selected {
+    background-image:url(../images/menuitem_submenuindicator_selected.png);
+}
