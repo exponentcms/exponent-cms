@@ -116,6 +116,7 @@ class remove_oldfiles extends upgradescript {
 			'external/adminer/adminer-4.2.4-mysql.php',
             'external/adminer/adminer-4.2.5-mysql.php',
             'external/adminer/adminer-4.3.0-mysql.php',
+            'external/adminer/adminer-4.3.1-mysql.php',
             'external/bootstrap/js/.jshintrc',
             'external/editors/_header.tpl',
             'external/editors/Default.tpl',
