@@ -239,13 +239,13 @@
                             {if $child_price > $chiprod->special_price}{$child_price = $chiprod->special_price}{/if}
                         {/if}
                     {/foreach}
-                    <span class="regular-price">{'Starting at'|gettext} <span itemprop="price">{$child_price|currency}</span></span>
+                    <span class="regular-price">{'Starting at'|gettext} <span itemprop="price" content="{$child_price|number_format:2}">{$child_price|currency}</span></span>
                 {else}
                     {if $product->use_special_price}
                         <span class="regular-price on-sale">{$product->base_price|currency}</span>
-                        <span class="sale-price"><span id="item-price" itemprop="price">{$product->special_price|currency}</span>&#160;<sup>{"SALE!"|gettext}</sup></span>
+                        <span class="sale-price"><span id="item-price" itemprop="price" content="{$product->special_price|number_format:2}">{$product->special_price|currency}</span>&#160;<sup>{"SALE!"|gettext}</sup></span>
                     {else}
-                        <span class="regular-price"><span id="item-price" itemprop="price">{$product->base_price|currency}</span></span>
+                        <span class="regular-price"><span id="item-price" itemprop="price" content="{$product->base_price|number_format:2}">{$product->base_price|currency}</span></span>
                     {/if}
                 {/if}
                 </span>
