@@ -284,7 +284,7 @@ define('DB_UNIQUE', 5);
  * @see DB_DEF_ID
  * @see DB_INCREMENT
  */
-define('DB_INDEX', 6);
+define('DB_INDEX', 6);  // note will hold index prefix length for string type fields
 
 /**
  * Database 'Full Text' Index Field specifier

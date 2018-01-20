@@ -319,7 +319,7 @@ abstract class database {
 	           else if ($len < 16777216)
 	               $sql .= " MEDIUMTEXT";
 	           else
-	               $sql .= "LONGTEXT";
+	               $sql .= " LONGTEXT";
 	       } else {  // default size of 'TEXT'instead of error
                $sql .= " TEXT";
 	       }
