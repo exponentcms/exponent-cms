@@ -26,7 +26,8 @@ return array(
 		DB_PRIMARY=>true,
 		DB_INCREMENT=>true),
 	'original_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
+		DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_INDEX=>10),
 	'title'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>300,
@@ -39,7 +40,8 @@ return array(
 		DB_FULLTEXT=>true),
 	'keywords'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>300),
+		DB_FIELD_LEN=>300,
+        DB_FULLTEXT=>true),
 	'view_link'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>512),

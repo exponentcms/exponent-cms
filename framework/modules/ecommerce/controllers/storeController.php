@@ -910,6 +910,7 @@ class storeController extends expController {
             $product_type->company = new company($product_type->companies_id);
         }
 
+        // if there are related products build that object tree (instead of only id's
         if (!empty($product_type->crosssellItem)) foreach ($product_type->crosssellItem as &$csi) {
             $csi->getAttachableItems();
         }
@@ -1482,6 +1483,7 @@ class storeController extends expController {
 
         $record->update($this->params);
 
+        //FIXME shouldn't the product added to search index here by calling $this->addContentToSearch();?
         if ($product_type == "childProduct" || $product_type == "product") {
             $record->addContentToSearch();
             //Create a flash message and redirect to the page accordingly
@@ -1500,6 +1502,8 @@ class storeController extends expController {
             }
             redirect_to(array('controller' => 'store', 'action' => 'show', 'title' => $record->sef_url));
         } elseif ($product_type == "giftcard") {
+            //FIXME shouldn't giftcard be added to search index?
+//            $record->addContentToSearch();  //FIXME there is NO giftcard::addContentToSearch() method
             flash("message", gt("Giftcard saved."));
             redirect_to(array('controller' => 'store', 'action' => 'manage'));
         } elseif ($product_type == "eventregistration") {
@@ -1508,6 +1512,8 @@ class storeController extends expController {
             flash("message", gt("Event saved."));
             redirect_to(array('controller' => 'store', 'action' => 'manage'));
         } elseif ($product_type == "donation") {
+            //FIXME shouldn't donation be added to search index?
+//            $record->addContentToSearch();  //FIXME there is NO donation::addContentToSearch() method
             flash("message", gt("Donation saved."));
             redirect_to(array('controller' => 'store', 'action' => 'manage'));
         }

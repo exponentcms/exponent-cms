@@ -667,7 +667,7 @@ abstract class expController {
         $this->$modelname->update($this->params);
 
         if ($this->isSearchable()) {
-            $this->addContentToSearch($this->params);
+            $this->addContentToSearch();
         }
 
         // check for auto send facebook status
@@ -1217,20 +1217,21 @@ abstract class expController {
     }
 
     /**
-     * add module items to search index
+     * add module item or all items to search index
      *
-     * @return int
+     * @return int number of items added to search index
      */
     public function addContentToSearch() {
-//        global $db, $router;
         global $db;
 
         $count = 0;
-        $model = new $this->basemodel_name(null, false, false);
-        $where = (!empty($this->params['id'])) ? 'id=' . $this->params['id'] : null;
-        $supports_revisions = $model->supports_revisions && ENABLE_WORKFLOW;
+//        $model = new $this->basemodel_name(null, false, false);
+//        $where = (!empty($this->params['id'])) ? 'id=' . $this->params['id'] : null;
+        $modelname = $this->basemodel_name;
+        $where = (!empty($this->$modelname->id)) ? 'id=' . $this->$modelname->id : null;
+        $supports_revisions = $this->$modelname->supports_revisions && ENABLE_WORKFLOW;
         $needs_approval = true;
-        $content = $db->selectArrays($model->tablename, $where, null, $supports_revisions, $needs_approval);
+        $content = $db->selectArrays($this->$modelname->tablename, $where, null, $supports_revisions, $needs_approval);
         foreach ($content as $cnt) {
             $origid = $cnt['id'];
             unset($cnt['id']);
