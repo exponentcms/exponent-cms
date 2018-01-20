@@ -760,7 +760,8 @@ class product extends expRecord {
 
         //eDebug($exists);
         //eDebug($search,true);
-        if (empty($exists)) $db->insertObject($search, 'search');
+        if (empty($exists))
+            $db->insertObject($search, 'search');
         else {
             $search->id = $exists->id;
             $db->updateObject($search, 'search');

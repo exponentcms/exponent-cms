@@ -37,7 +37,8 @@ return array(
 	'created_at'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	'orders_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+		DB_FIELD_TYPE=>DB_DEF_INTEGER,
+        DB_INDEX=>10),
 );
 
 ?>

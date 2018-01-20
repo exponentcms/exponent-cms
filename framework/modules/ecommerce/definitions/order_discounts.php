@@ -26,7 +26,8 @@ return array(
         DB_PRIMARY=>true,
         DB_INCREMENT=>true),
     "orders_id"=>array(
-        DB_FIELD_TYPE=>DB_DEF_ID),
+        DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_INDEX=>10),
     "discounts_id"=>array(
         DB_FIELD_TYPE=>DB_DEF_ID,
         DB_INDEX=>10),

@@ -28,7 +28,8 @@ return array(
 	'option_master_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID),
 	'product_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
+		DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_INDEX=>10),
 	'optiongroup_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID),
 	'title'=>array(
