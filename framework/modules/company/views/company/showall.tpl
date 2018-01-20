@@ -22,6 +22,7 @@
     {if $permissions.create}
         {icon class=add controller=$controller action=edit text="Add a new"|gettext|cat:" `$model_name`"}
     {/if}
+    {pagelinks paginate=$page top=1}
     <table class="exp-skin-table">
         <thead>
             {$page->header_columns}
@@ -56,4 +57,5 @@
             {/foreach}
         </tbody>
     </table>
+    {pagelinks paginate=$page bottom=1}
 </div>
