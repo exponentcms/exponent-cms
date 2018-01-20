@@ -32,7 +32,7 @@ class AdminerTheme
         ?>
 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, target-densitydpi=medium-dpi"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
 
         <link rel="icon" type="image/ico" href="images/favicon.png">
 
@@ -57,7 +57,7 @@ class AdminerTheme
 
         <link rel="stylesheet" type="text/css" href="css/<?php echo htmlspecialchars($this->themeName) ?>.css?3">
 
-        <script>
+        <script <?php echo nonce(); ?>>
             (function(window) {
                 "use strict";
 

@@ -16,11 +16,11 @@
 ##################################################
 
 /** Edit all fields containing "_html" by HTML editor TinyMCE and display the HTML in select
-* @link http://www.adminer.org/plugins/#use
+* @link https://www.adminer.org/plugins/#use
 * @uses TinyMCE, http://tinymce.moxiecode.com/
-* @author Jakub Vrana, http://www.vrana.cz/
-* @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
-* @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2 (one or other)
+* @author Jakub Vrana, https://www.vrana.cz/
+* @license https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+* @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2 (one or other)
 */
 class AdminerTinymce {
 	/** @access protected */
@@ -42,9 +42,10 @@ class AdminerTinymce {
 				$lang = "en";
 			}
 		}
+        echo script_src($this->path);
 		?>
-<script type="text/javascript" src="<?php echo h($this->path); ?>"></script>
-<script type="text/javascript">
+<!--<script type="text/javascript" src="--><?php //echo h($this->path); ?><!--"></script>-->
+<script type="text/javascript" <?php echo nonce(); ?>>
 tinyMCE.init({
 	mode: 'none',
 	plugins: "advlist,autolink,lists,link,charmap,print,preview,hr,anchor,pagebreak" +
@@ -109,7 +110,7 @@ tinyMCE.init({
 
 	function editInput($table, $field, $attrs, $value) {
         if (preg_match("~text~", $field["type"]) && preg_match("~body~", $field["field"])) {
-			return "<textarea$attrs id='fields-" . h($field["field"]) . "' rows='6' cols='50'>" . h($value) . "</textarea><script type='text/javascript'>
+			return "<textarea$attrs id='fields-" . h($field["field"]) . "' rows='6' cols='50'>" . h($value) . "</textarea><script type='text/javascript' <?php echo nonce(); ?>>
 tinyMCE.remove(tinyMCE.get('fields-" . js_escape($field["field"]) . "') || { });
 tinyMCE.execCommand('mceAddEditor', true, 'fields-" . js_escape($field["field"]) . "');
 document.getElementById('form').onsubmit = function () {

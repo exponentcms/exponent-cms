@@ -123,7 +123,7 @@ class AdminerJsonPreview
 			}
 		</style>
 
-		<script>
+		<script <?php echo nonce(); ?>>
 			function toggleJson(button, counter) {
 				var obj = document.getElementById("json-code-" + counter);
 				if (!obj)
