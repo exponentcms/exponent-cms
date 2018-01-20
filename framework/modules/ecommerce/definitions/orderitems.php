@@ -29,7 +29,8 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
 		DB_INDEX=>10),
     'shippingmethods_id'=>array(
-   		DB_FIELD_TYPE=>DB_DEF_ID),
+   		DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_INDEX=>10),
 	'user_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID),
 

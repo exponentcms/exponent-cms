@@ -27,7 +27,8 @@ return array(
 		DB_INCREMENT=>true),
 	'module'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
+		DB_FIELD_LEN=>100,
+        DB_INDEX=>10),
 	'source'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),

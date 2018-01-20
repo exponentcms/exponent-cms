@@ -66,7 +66,8 @@ return array(
    	'edited_at'=>array(
    		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
     'publish'=>array(
-   		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+   		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP,
+        DB_INDEX=>10),
     'location_data'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,
    		DB_FIELD_LEN=>250,

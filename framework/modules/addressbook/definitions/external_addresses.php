@@ -28,7 +28,8 @@ return array(
     'source'       => array(
         DB_FIELD_TYPE => DB_DEF_ID),
     'user_id'      => array(
-        DB_FIELD_TYPE => DB_DEF_ID),
+        DB_FIELD_TYPE => DB_DEF_ID,
+        DB_INDEX=>10),
     'is_default'   => array(
         DB_FIELD_TYPE => DB_DEF_BOOLEAN),
     'is_shipping'  => array(

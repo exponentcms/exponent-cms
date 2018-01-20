@@ -36,7 +36,8 @@ return array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER),
     'module'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,
-   		DB_FIELD_LEN=>100),
+   		DB_FIELD_LEN=>100,
+        DB_INDEX=>10),
    	'color'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,
    		DB_FIELD_LEN=>100),

@@ -43,7 +43,8 @@ return array(
         DB_FIELD_TYPE => DB_DEF_TIMESTAMP
     ),
     'purchased' => array(
-        DB_FIELD_TYPE => DB_DEF_TIMESTAMP
+        DB_FIELD_TYPE => DB_DEF_TIMESTAMP,
+        DB_INDEX => 10
     ),
     //FIXME we may need to move this to the shippingmethod
     'shipped' => array(
@@ -63,7 +64,8 @@ return array(
 //        DB_FIELD_TYPE => DB_DEF_ID
 //    ),
     'order_status_id' => array(
-        DB_FIELD_TYPE => DB_DEF_INTEGER
+        DB_FIELD_TYPE => DB_DEF_INTEGER,
+        DB_INDEX => 10
     ),
     'order_type_id' => array(
         DB_FIELD_TYPE => DB_DEF_INTEGER

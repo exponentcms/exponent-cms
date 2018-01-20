@@ -35,7 +35,8 @@ return array(
         DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
     'coupon_code'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>50),
+        DB_FIELD_LEN=>50,
+        DB_INDEX=>10),
     'startdate'=>array(
         DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
     'startdate_time'=>array(
