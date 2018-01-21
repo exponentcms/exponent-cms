@@ -9,15 +9,17 @@ Installation of Exponent CMS 2.0
 
 Requirements
 - Linux-based web host (recommended)
-- Apache 2.0 or greater
+  - or Windows-based web host
+- Apache 2.0 or greater (recommended)
+  - or Microsoft IIS, or nginx, or lighttpd
 - PHP 5.5.x or greater (v7.0.x or greater recommended)
-- MySQL database
+- MySQL or MariaDB database
 
 ---------------------
 
 Upgrading / Migrating
 If you are upgrading, it is HIGHLY RECOMMENDED that you export your database and back up your files.
-Upgrading from 1.0 (0.98 currently) to 2.0 isn't an upgrade, but a migration. Refer to to documentation on migrating
+Upgrading from 1.0 (0.9x) to 2.0 isn't an upgrade, but a migration. Refer to to documentation on migrating
 content from 1.0 to 2.0.
 
 ---------------------

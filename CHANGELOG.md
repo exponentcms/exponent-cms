@@ -4,6 +4,8 @@
 
 Copyright (c) 2004-2018 OIC Group, Inc.
 
+## Changes
+
 For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms/commits/master](https://github.com/exponentcms/exponent-cms/commits/master)
 
 ----------

@@ -4,7 +4,7 @@
 
 Copyright (c) 2004-2018 OIC Group, Inc.
 
-Exponent CMS, Credits
+## Exponent CMS, Credits
 
 The Exponent team wants to recognize the following people for their contribution(s) to and support of the Exponent project.
 If you don't see your name in this list, but it should be here, please don't be shy - let us know and we will add you.
