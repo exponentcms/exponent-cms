@@ -5,7 +5,7 @@
  *
  * Based on AdminerJsonPreview
  * @author Peter Knut
- * @copyright 2014-2015 Pematon, s.r.o. (http://www.pematon.com/)
+ * @copyright 2014-2018 Pematon, s.r.o. (http://www.pematon.com/)
  */
 class AdminerSerializedPreview
 {
@@ -47,6 +47,7 @@ class AdminerSerializedPreview
 				border-spacing: 0;
 				margin: 4px 0;
 				border: 1px solid #999;
+                font-size: 110%;
 			}
 
 			.json tr {
@@ -91,7 +92,7 @@ class AdminerSerializedPreview
 				display: inline-block;
 				padding: 0;
 				overflow: hidden;
-				background-image: url("index.php?file=down.gif");
+                background-image: url("<?php echo ME; ?>file=down.gif");
 				background-position: center center;
 				background-repeat: no-repeat;
 				text-indent: -50px;
@@ -111,7 +112,7 @@ class AdminerSerializedPreview
 			}
 
 			a.json-icon.json-up {
-				background-image: url("index.php?file=up.gif");
+                background-image: url("<?php echo ME; ?>file=up.gif");
 			}
 
 			/* No javascript support */
@@ -125,8 +126,26 @@ class AdminerSerializedPreview
 		</style>
 
 		<script <?php echo nonce(); ?>>
-			function toggleJson(button, counter) {
-				var obj = document.getElementById("json-code-" + counter);
+            (function(document) {
+                "use strict";
+
+                document.addEventListener("DOMContentLoaded", init, false);
+
+                function init() {
+                    var links = document.querySelectorAll('a.json-icon');
+
+                    for (var i = 0; i < links.length; i++) {
+                        links[i].addEventListener("click", function(event) {
+                            event.preventDefault();
+                            toggleJson(this);
+                        }, false);
+                    }
+                }
+
+                function toggleJson(button) {
+                    var index = button.dataset.index;
+
+                    var obj = document.getElementById("json-code-" + index);
 				if (!obj)
 					return;
 
@@ -138,6 +157,7 @@ class AdminerSerializedPreview
 					obj.style.display = "none";
 				}
 			}
+            })(document);
 		</script>
 
 		<?php
@@ -152,7 +172,7 @@ class AdminerSerializedPreview
 		}
 
 		if (is_string($original) && $this->is_serialized($original)) {
-			$val = "<a class='icon json-icon' href='#' onclick='toggleJson(this, $counter);return false;' title='Serialized Data'>Serialized</a> " . $val;
+			$val = "<a class='icon json-icon' href='#' title='Serialized Data' data-index='$counter'>Serialized</a> " . $val;
 			$val .= $this->convertSerialized($this->expUnserialize($original), 1, $counter++);
 		}
 	}
@@ -166,8 +186,8 @@ class AdminerSerializedPreview
 		}
 
 		if (is_string($value) && $this->is_serialized($value)) {
-			echo "<a class='icon json-icon json-link' href='#' onclick='toggleJson(this, $counter);return false;' title='Serialized Data'><span>Serialized</span></a><br/>";
-			echo $this->convertSerialized($this->expUnserialize($value), 1, $counter);
+			echo "<a class='icon json-icon json-link' href='#' title='Serialized Data' data-index='$counter'><span>Serialized</span></a><br/>";
+			echo $this->convertSerialized($this->expUnserialize($value), 1, $counter++);
 		}
 	}
 
@@ -191,12 +211,14 @@ class AdminerSerializedPreview
 				$value .= "<code class='jush-js'>" . h(preg_replace('/([,:])([^\s])/', '$1 $2', json_encode($val))) . "</code>";
 			} elseif (is_string($val)) {
 				// Shorten string to max. length.
-				if (mb_strlen($val, "UTF-8") > self::MAX_TEXT_LENGTH)
-					$val = mb_substr($val, 0, self::MAX_TEXT_LENGTH - 3, "UTF-8") . "...";
+                if (mb_strlen($val, "UTF-8") > self::MAX_TEXT_LENGTH) {
+                    $val = mb_substr($val, 0, self::MAX_TEXT_LENGTH - 3, "UTF-8") . "...";
+                }
 
 				// Add extra new line to make it visible in HTML output.
-				if (preg_match("@\n$@", $val))
-					$val .= "\n";
+				if (preg_match("@\n$@", $val)) {
+                    $val .= "\n";
+                }
 
 				$value .= "<code>" . nl2br(h($val)) . "</code>";
 			} elseif (is_bool($val)) {

@@ -53,9 +53,9 @@ class AdminerEditCalendar {
 			$lang = get_lang();
 			$lang = ($lang == "zh" ? "zh-CN" : ($lang == "zh-tw" ? "zh-TW" : $lang));
 			if ($lang != "en" && file_exists(sprintf($this->langPath, $lang))) {
-				printf("<script type='text/javascript' src='$this->langPath' ", $lang) . nonce() .  "></script>\n";
-				echo "<script type='text/javascript' " . nonce() . ">jQuery(function () { jQuery.timepicker.setDefaults(jQuery.datepicker.regional['$lang']); });</script>\n";
-			}
+                echo script_src(sprintf($this->langPath, $lang));
+                echo script("jQuery(function () { jQuery.timepicker.setDefaults(jQuery.datepicker.regional['$lang']); });");
+            }
 		}
 	}
 
@@ -96,7 +96,7 @@ class AdminerEditCalendar {
                     jQuery('#fields-" . js_escape($field['field']) . "').val(dt);
                 }";
 			return "<input id='fields-" . h($field["field"]) . "' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
-                "<input type=hidden id='fields-" . h($field["field"]) . "c' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
+                "<input type=text id='fields-" . h($field["field"]) . "c' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . ">".
                 "<script type='text/javascript' " . nonce() . ">jQuery('#fields-" . js_escape($field["field"]) . "c')."
                     . ((preg_match("~eventstart|eventend~", $field["field"])) ? "timepicker({ $timeFormat })" : "datetimepicker({ $datetimeFormat })"
 //                    : (preg_match("~_at|publish|_accessed|posted|time~", $field["field"]) ? "datetimepicker({ $datetimeFormat })"
