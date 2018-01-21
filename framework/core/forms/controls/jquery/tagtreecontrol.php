@@ -134,6 +134,11 @@ class tagtreecontrol extends formcontrol {
                 $attr = new stdClass();
                 $attr->class = 'inactive';
                 $this->tags[$i]->a_attr = $attr;
+                if ($this->checkable) {
+                    $state = new stdClass();
+                    $state->disabled = true;
+                    $this->tags[$i]->state = $state;
+                }
             }
             if ($this->checkable && isset($this->tags[$i]->subcount) && $this->tags[$i]->subcount) {
                 if (!$this->tags[$i]->value) {
