@@ -34,7 +34,12 @@ function adminer_object() {
 //        new AdminerDumpDate,
         new AdminerDumpZip,  // adds zip option to export
         new AdminerEditCalendar(
-            "<script type='text/javascript' src='".JQUERY_SCRIPT."'></script>\n<script type='text/javascript' src='".JQUERYUI_SCRIPT."'></script>\n<script type='text/javascript' src='".JQUERY_RELATIVE."addons/js/jquery-ui-timepicker-addon.js'></script>\n<link rel='stylesheet' type='text/css' href='".JQUERYUI_CSS."'>\n<link rel='stylesheet' type='text/css' href='".JQUERY_RELATIVE."addons/css/jquery-ui-timepicker-addon.css'>\n",
+//            "<script type='text/javascript' src='".JQUERY_SCRIPT."'></script>\n<script type='text/javascript' src='".JQUERYUI_SCRIPT."'></script>\n<script type='text/javascript' src='".JQUERY_RELATIVE."addons/js/jquery-ui-timepicker-addon.js'></script>\n<link rel='stylesheet' type='text/css' href='".JQUERYUI_CSS."'>\n<link rel='stylesheet' type='text/css' href='".JQUERY_RELATIVE."addons/css/jquery-ui-timepicker-addon.css'>\n",
+            "<link rel='stylesheet' type='text/css' href='".JQUERYUI_CSS."'>\n"
+            . "<link rel='stylesheet' type='text/css' href='".JQUERY_RELATIVE."addons/css/jquery-ui-timepicker-addon.css'>\n"
+            . script_src(JQUERY_SCRIPT)
+            . script_src(JQUERYUI_SCRIPT)
+            . script_src(JQUERY_RELATIVE."addons/js/jquery-ui-timepicker-addon.js"),
             JQUERY_RELATIVE."js/ui/i18n/datepicker-%s.js"
         ),  // add calendar popup for date/time fileds
         new AdminerEnumOption,  // turns enum fields into select input
@@ -148,12 +153,12 @@ function adminer_object() {
 }
 
 // include original Adminer or Adminer Editor
-include "./adminer-4.3.1-mysql.php";
+include "./adminer-4.4.0-mysql.php";
 //include "./editor-4.3.1-mysql.php";
 
 if (SITE_WYSIWYG_EDITOR != 'tinymce') {
 ?>
-    <script type='text/javascript'>
+    <script type='text/javascript'  <?php echo nonce(); ?>>
         CKEDITOR.disableAutoInline = true;
     </script>
 <?php

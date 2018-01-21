@@ -76,7 +76,7 @@ a.quickcart {
 	left: 0;
 	z-index: 10;
 	border: 1px solid #717171;
-	border-width: 0px 2px 2px 1px;
+	border-width: 1px 2px 2px 1px;
 }
 
 .quick-links:hover .details {

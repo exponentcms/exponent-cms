@@ -30,7 +30,8 @@ return array(
         DB_FIELD_LEN=>200),
     'sef_url'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>200),
+        DB_FIELD_LEN=>200,
+        DB_INDEX=>10),
     'canonical'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,
    		DB_FIELD_LEN=>800),

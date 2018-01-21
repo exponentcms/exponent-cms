@@ -204,9 +204,7 @@ class faqController extends expController {
         $faq = new faq();
         $faq->update($this->params);
         if (!empty($this->params['include_in_faq'])) {
-            $this->params['title'] = $this->params['question'];
-            $this->params['body'] = $this->params['answer'];
-            $this->addContentToSearch($this->params);
+            $this->addContentToSearch();
         }
 
         if (!empty($this->params['send_email'])) {
@@ -275,14 +273,20 @@ class faqController extends expController {
         expHistory::back();
     }
 
+    /**
+     * add module item or all items to search index
+     *
+     * @return int number of items added to search index
+     */
     function addContentToSearch() {
-//        global $db, $router;
         global $db;
 
         $count = 0;
-        $model = new $this->basemodel_name(null, false, false);
-        $where = (!empty($this->params['id'])) ? 'id='.$this->params['id'] : null;
-        $content = $db->selectArrays($model->tablename,$where);
+//        $model = new $this->basemodel_name(null, false, false);
+//        $where = (!empty($this->params['id'])) ? 'id='.$this->params['id'] : null;
+        $modelname = $this->basemodel_name;
+        $where = (!empty($this->$modelname->id)) ? 'id=' . $this->$modelname->id : null;
+        $content = $db->selectArrays($this->$modelname->tablename,$where);
         foreach ($content as $cnt) {
             if (!empty($cnt['include_in_faq'])) {
                 $cnt['title'] = $cnt['question'];

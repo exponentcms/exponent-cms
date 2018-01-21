@@ -14,7 +14,7 @@
  *}
 
 <div class="module notfound search-results">
-    <h1><span class="fa fa-warning text-warning"></span>{$smarty.const.SITE_404_TITLE}</h1>
+    <h1><span class="fa fa-warning text-warning">&nbsp;</span>{$smarty.const.SITE_404_TITLE}</h1>
     {$smarty.const.SITE_404_HTML}
 
     {if $page->records|@count > 0}

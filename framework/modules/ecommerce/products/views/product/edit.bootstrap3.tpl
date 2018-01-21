@@ -14,7 +14,19 @@
  *}
 
 {css unique="product-edit" link="`$asset_path`css/product_edit.css" corecss="admin-global,tree,panels"}
-
+{literal}
+    a.inactive {
+        display: inline-block;
+        padding-top: inherit;
+        background: none;
+        width: inherit;
+    }
+    blockquote {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        padding-top: 0;
+    }
+{/literal}
 {/css}
 
 {if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}

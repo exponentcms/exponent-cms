@@ -37,6 +37,8 @@ return array(
     'created_at'=>array(
         DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
     'edited_at'=>array(
-        DB_FIELD_TYPE=>DB_DEF_TIMESTAMP)
+        DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+    'rank'=>array(
+        DB_FIELD_TYPE=>DB_DEF_INTEGER),
 );
 ?>

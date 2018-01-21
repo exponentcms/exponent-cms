@@ -73,13 +73,13 @@ class order_discounts extends expRecord {
 
     public function isCartDiscount()
     {
-        if ($this->discounts->action_type < 5) return true;
+        if ($this->discounts->action_type < 5 || $this->discounts->action_type == 7) return true;
         else return false;
     }
 
     public function isShippingDiscount()
     {
-        if ($this->discounts->action_type >= 5) return true;
+        if ($this->discounts->action_type >= 5 && $this->discounts->action_type != 7) return true;
         else return false;
     }
 

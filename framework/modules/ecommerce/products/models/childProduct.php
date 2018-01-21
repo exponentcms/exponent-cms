@@ -28,6 +28,7 @@ class childProduct extends product {
 //    public $has_and_belongs_to_many = array();
 //    public $has_and_belongs_to_self = array();
     public $has_many_self_id = 'parent_id';
+    public $default_sort_field = 'child_rank';
 
     public $product_name = 'Child Product';
 

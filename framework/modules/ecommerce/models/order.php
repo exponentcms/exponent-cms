@@ -161,7 +161,7 @@ class order extends expRecord {
 
             //check to see if the user is logged in, and if so grab their existing cart
             $usercart = null;
-            if (!empty($user) && $user->isLoggedIn()) {
+            if (!empty($user->id) && $user->isLoggedIn()) {
                 $usercart = $order->find('first', "invoice_id='' AND user_id=" . $user->id);
             }
 
@@ -609,7 +609,8 @@ class order extends expRecord {
         //eDebug($this->surcharge_total);
         //hate doing double loops, but we need to have the subtotal figured out already for
         //doing the straight dollar disoount calculations below
-        for ($i = 0, $iMax = count($this->orderitem); $i < $iMax; $i++) {
+        $coi = count($this->orderitem);
+        for ($i = 0, $iMax = $coi; $i < $iMax; $i++) {
             // figure out the amount of the discount
             /*if (!empty($this->product_discounts)) {
                 $discount_amount = ($this->orderitem[$i]->products_price * ($this->product_discounts * .01));
@@ -629,7 +630,31 @@ class order extends expRecord {
 
         }
 
-        for ($i = 0, $iMax = count($this->orderitem); $i < $iMax; $i++) {
+        // sort order items to set up for possible 2nd item of equal or lessor value discount
+        //eDebug($this->orderitem);
+        $sortedItems = array();
+        for ($j = 0; $j < $coi; $j++) {
+            //echo "J: " . $j . "<br>";
+            for ($k = 1; $k <= $this->orderitem[$j]->quantity; $k++) {
+              //  echo "J2: " . $j . "<br>";
+                $doi = new stdClass();
+                $doi->product_id = $this->orderitem[$j]->product_id;
+                $doi->products_price = $this->orderitem[$j]->products_price;
+                $doi->quantity_slot = $k;
+                $sortedItems[] =  $doi;
+            }
+        }
+        //eDebug($sortedItems);
+        usort($sortedItems, function ($a, $b) {
+            if ($a->products_price == $b->products_price) {
+                return 0;
+            }
+            return ($a->products_price > $b->products_price) ? -1 : 1;
+        });
+        //eDebug($sortedItems);
+        //eDebug($this);
+
+        for ($i = 0, $iMax = $coi; $i < $iMax; $i++) {
             //only allowing one discount for now, but in future we'll need to process
             //multiple and accomdate the "weight" and 'allow other discounts' type settings
             //this foreach will only fire once as of now, and will only hit on one or the other
@@ -668,6 +693,17 @@ class order extends expRecord {
                     $this->orderitem[$i]->products_price_adjusted = $this->orderitem[$i]->products_price - $discountAmountPerItem;
                     // keep a tally  of the total amount being subtracted by this discount.
                     //$this->total_discounts += $discountAmountPerItem * $this->orderitem[$i]->quantity;                    //eDebug($discountAmountPerItem);
+                }
+
+                //% off 2nd item of equal or lesser value
+                if ($discount->action_type == 7) {
+                    if($this->orderitem[$i]->products_price == $sortedItems[1]->products_price && $this->orderitem[$i]->product_id == $sortedItems[1]->product_id) {
+                        $discount_amount = round($this->orderitem[$i]->products_price * ($discount->discount_percent / 100), 2);
+                        // change the price of the orderitem..this is needed for when we calculate tax below.
+                        $this->orderitem[$i]->products_price_adjusted = $this->orderitem[$i]->products_price - ($discount_amount / $this->orderitem[$i]->quantity);
+                        // keep a tally  of the total amount being subtracted by this discount.
+                        $this->total_discounts = $discount_amount;
+                    }
                 }
             }
 

@@ -4,6 +4,8 @@
 
 Copyright (c) 2004-2018 OIC Group, Inc.
 
+## Optional Features
+
 This file contains details about optional features which are activated
 by the installation of 3rd party libraries which are not shipped with Exponent CMS.
 These optional features include:
@@ -12,7 +14,7 @@ These optional features include:
 - Enhanced Debugging Output
 - Alternate .less Compiler
 
-## PDF Export
+### PDF Export
 
 Exponent CMS doesn't include a built-in PDF Exporter, but this feature can be activated by
 installing one or more of several PDF Output libraries. The package(s) can be downloaded
@@ -87,7 +89,7 @@ it can be both the fastest and most accurate, yet the most difficult to install 
 
 v0.12.4 is the newest version which can be downloaded from [wkhtmltopdf.org](http://wkhtmltopdf.org/downloads.html)
 
-## Enhanced Debugging Output
+### Enhanced Debugging Output
 
 #### Kint
 
@@ -97,7 +99,7 @@ the /external folder which creates an subfolder named 'kint'. The feature is aut
 by this installation.
 - v2.2 is the newest version, but v1.1 is also supported
 
-## Alternate .less Compiler
+### Alternate .less Compiler
 
 #### iLess
 

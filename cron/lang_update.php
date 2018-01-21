@@ -62,7 +62,7 @@ if ($extract_only) {
 // Initialize the exponent environment
 include_once('../exponent_bootstrap.php');
 if (!defined('DISPLAY_THEME')) {
-	/* exdoc
+	/** exdoc
 	 * The directory and class name of the current active theme.  This may be different
 	 * than the configured theme (DISPLAY_THEME_REAL) due to previewing.
 	 */
@@ -70,7 +70,7 @@ if (!defined('DISPLAY_THEME')) {
 }
 
 if (!defined('THEME_ABSOLUTE')) {
-	/* exdoc
+	/** exdoc
 	 * The absolute path to the current active theme's files.  This is similar to the BASE constant
 	 */
 	define('THEME_ABSOLUTE',BASE.'themes/'.DISPLAY_THEME.'/'); // This is the recommended way

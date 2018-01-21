@@ -198,6 +198,7 @@ class expPaginator {
         else
             $limit = $this->limit;
 
+        // we either get records, a model/class, or a sql statement
 		if (!empty($this->records)) { // if we pass $params['records'], we WANT to hit this
 		    // sort the records that were passed in to us
             if (!empty($sort))

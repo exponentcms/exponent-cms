@@ -423,7 +423,7 @@ class navigationController extends expController {
     }
 
     /**
-     * add all module items to search index
+     * add all navigation/sections and their assoc. text items to search index
      *
      * @return int
      */

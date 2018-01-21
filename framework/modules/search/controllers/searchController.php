@@ -114,6 +114,7 @@ class searchController extends expController {
     public static function spider() {
         global $db;
 
+        set_time_limit(0);
         // reinitialize search index
 	    $db->delete('search');
 
@@ -236,6 +237,7 @@ class searchController extends expController {
 	public function searchQueryReport() {  //fixme this will typically create a 500 error due to number of search query records
 		global $db;
 
+		set_time_limit(0);
 		//Instantiate the search model
 		$search = new search();
 

@@ -27,7 +27,7 @@ if (!defined('EXPONENT')) exit('');
 class tagtreecontrol extends formcontrol {
 
     var $values = array();
-    var $menu = true;
+//    var $menu = true;
     var $addable = true;
     var $draggable = true;
     var $checkable = true;
@@ -41,10 +41,6 @@ class tagtreecontrol extends formcontrol {
     static function name() {
         return "Nested Node Checkbox Dragdrop Tree";
     }
-
-//    static function getFieldDefinition() {
-//        return array();
-//    }
 
     function __construct($params) {
 //        global $db;
@@ -111,8 +107,14 @@ class tagtreecontrol extends formcontrol {
         foreach ($this->tags as $i=> $val) {
             if (!empty($this->values) && in_array($val->id, $this->values)) {
                 $this->tags[$i]->value = true;
+                if ($this->checkable && isset($this->tags[$i]->subcount) && $this->tags[$i]->subcount) {
+                    $this->tags[$i]->title = '<span style="color:red;" class="context"><strong class="context">' . $this->tags[$i]->text . '&nbsp;(<em class="context">' . gt('Improper Category, please deselect') . '</em>)</strong></span>';
+                }
             } else {
                 $this->tags[$i]->value = false;
+            }
+            if (!$this->tags[$i]->active) {
+                $this->tags[$i]->title = '<em class="context">' . $this->tags[$i]->title . '</em>';
             }
             $this->tags[$i]->draggable = $this->draggable;
             $this->tags[$i]->checkable = $this->checkable;

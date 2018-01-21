@@ -35,7 +35,7 @@ class expTheme
             require_once(BASE.'framework/core/compat/theme.php');
 
         if (!defined('DISPLAY_THEME')) {
-            /* exdoc
+            /** exdoc
              * The directory and class name of the current active theme.  This may be different
              * than the configured theme (DISPLAY_THEME_REAL) due to previewing.
              */
@@ -43,20 +43,20 @@ class expTheme
         }
 
         if (!defined('THEME_ABSOLUTE')) {
-            /* exdoc
+            /** exdoc
              * The absolute path to the current active theme's files.  This is similar to the BASE constant
              */
             define('THEME_ABSOLUTE', BASE . 'themes/' . DISPLAY_THEME . '/'); // This is the recommended way
         }
 
         if (!defined('THEME_RELATIVE')) {
-            /* exdoc
+            /** exdoc
              * The relative web path to the current active theme.  This is similar to the PATH_RELATIVE constant.
              */
             define('THEME_RELATIVE', PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/');
         }
         if (!defined('THEME_STYLE')) {
-            /* exdoc
+            /** exdoc
              * The name of the current active theme style.
              */
             define('THEME_STYLE', THEME_STYLE_REAL);

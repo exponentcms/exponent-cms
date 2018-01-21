@@ -37,7 +37,8 @@ class AdminerCKeditor {
 
 	function head() {
 		foreach ($this->scripts as $script) {
-			echo "<script type='text/javascript' src='" . h($script) . "'></script>\n";
+//			echo "<script type='text/javascript' src='" . h($script) . "'></script>\n";
+            echo script_src($script);
 		}
 	}
 
@@ -70,7 +71,7 @@ class AdminerCKeditor {
 				$lang = get_lang();
 				$lang = ($lang == "zh" || $lang == "zh-tw" ? "zh_cn" : $lang);
 			}
-			return "<textarea$attrs id='fields-" . h($field["field"]) . "' rows='6' cols='50'>" . h($value) . "</textarea><script type='text/javascript'>
+			return "<textarea$attrs id='fields-" . h($field["field"]) . "' rows='6' cols='50'>" . h($value) . "</textarea><script type='text/javascript' " . nonce() . ">
 CKEDITOR.replace('fields-" . js_escape($field["field"]) . "',{
         height : '80',
         toolbarCanCollapse : true,

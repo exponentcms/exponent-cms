@@ -269,7 +269,7 @@ class expSession {
 		unset($_SESSION[SYS_SESSION_KEY]['vars'][$var]);
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Creates and stores a session ticket for the given user,
 	 * so that sessions can be tracked and permissions can be
 	 * refreshed as needed.

@@ -465,17 +465,20 @@ class helpController extends expController {
 
     /**
    	 * add only current version of docs to search index
+     *
    	 * @return int
    	 */
    	function addContentToSearch() {
         global $db;
 
-       $count = 0;
-       $help = new help();
-       $where = 'help_version_id="'.help_version::getCurrentHelpVersionId().'"';
-       $where .= (!empty($this->params['id'])) ? ' AND id='.$this->params['id'] : null;
-       $content = $db->selectArrays($help->tablename,$where);
-       foreach ($content as $cnt) {
+        $count = 0;
+//        $help = new help();
+        $where = 'help_version_id="'.help_version::getCurrentHelpVersionId().'"';
+//        $where .= (!empty($this->params['id'])) ? ' AND id='.$this->params['id'] : null;
+        $modelname = $this->basemodel_name;
+        $where .= (!empty($this->$modelname->id)) ? ' AND id=' . $this->$modelname->id : null;
+        $content = $db->selectArrays($this->$modelname->tablename,$where);
+        foreach ($content as $cnt) {
            $origid = $cnt['id'];
            unset($cnt['id']);
 

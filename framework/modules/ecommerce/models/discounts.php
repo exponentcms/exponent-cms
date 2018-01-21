@@ -50,7 +50,8 @@ class discounts extends expRecord {
         3 => 'Pecentage off entire cart',
         4 => 'Fixed amount off entire cart',
         5 => 'Free shipping',
-        6 => 'Fixed amount off shipping'
+        6 => 'Fixed amount off shipping',
+        7 => 'Buy one, get one at a discount'
     );
 
     //public $discount_types = array(1=>'%', 2=>'$');

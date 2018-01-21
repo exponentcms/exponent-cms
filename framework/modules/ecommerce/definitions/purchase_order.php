@@ -29,7 +29,8 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>200),
 	"vendor_id"=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
+		DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_INDEX=>10),
 	'created_at'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	'edited_at'=>array(

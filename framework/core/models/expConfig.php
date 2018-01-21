@@ -71,9 +71,27 @@ class expConfig extends expRecord {
 //            if (substr($key,-5) == '_list') $params['config'][$key] = listbuildercontrol::parseData($params['config'],$key,true);
             if (substr($key,-5) == '_list') $params['config'][$key] = listbuildercontrol::parseData($key, $params['config'], true);
         }
+
+        unset(
+            $params['config']['PHPSESSID'],
+            $params['config']['_ga'],
+            $params['config']['_gat'],
+            $params['config']['_gaq'],
+            $params['config']['__utma'],
+            $params['config']['__utmb'],
+            $params['config']['__utmc'],
+            $params['config']['__utmt'],
+            $params['config']['__utmv'],
+            $params['config']['__utmli'],
+            $params['config']['__utmz'],
+            $params['config']['__zlcmid'],
+            $params['config']['__cfduid']
+        );
+
         if(is_array($params['config'])) {
             $params['config'] = serialize($params['config']);
         }
+
         parent::update($params);
     }
 

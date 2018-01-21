@@ -63,16 +63,19 @@
                         <h2>{"Actions and Amounts"|gettext}</h2>
                         {control type="dropdown" name="action_type" id="action_type" label="Discount Action"|gettext items=$discount->actions default=$discount->action_type}
                         <div id="aa-3" class="actions">
-                            {control type="text" name="discount_percent" label="Discount Percent"|gettext filter=percent value=$discount->discount_percent description='Enter the percentage would like discounted off the total order.'|gettext}
+                            {control type="text" name="discount_percent" label="Discount Percent"|gettext filter=percent value=$discount->discount_percent description='Enter the percentage to discount the total order.'|gettext}
                         </div>
                         <div id="aa-4" class="actions">
-                            {control type="text" name="discount_amount" label="Discount Amount"|gettext filter=money value=$discount->discount_amount description='Enter dollar amount would like discounted off the total order.'|gettext}
+                            {control type="text" name="discount_amount" label="Discount Amount"|gettext filter=money value=$discount->discount_amount description='Enter the dollar amount to discount the total order.'|gettext}
                         </div>
                         <div id="aa-5" class="actions">
                             <label>{'Free shipping will be used for the order.'|gettext}</label>
                         </div>
                         <div id="aa-6" class="actions">
-                            {control type="text" name="shipping_discount_amount" label="Shipping Discount Amount"|gettext filter=money value=$discount->shipping_discount_amount description='Enter dollar amount you would like discounted off the shipping cost.'|gettext}
+                            {control type="text" name="shipping_discount_amount" label="Shipping Discount Amount"|gettext filter=money value=$discount->shipping_discount_amount description='Enter the dollar amount to discount the shipping cost.'|gettext}
+                        </div>
+                        <div id="aa-7" class="actions">
+                            {control type="text" name="discount_percent" label="Discount Percent off 2nd Item"|gettext filter=percent value=$discount->discount_percent description='Enter the percentage to discount the 2nd item of equal or lessor value.'|gettext}
                         </div>
                     </div>
                 </div>

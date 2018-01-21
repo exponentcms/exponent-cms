@@ -13,6 +13,10 @@
  *
  *}
 
+{css unique="container-newui" lesscss="`$asset_path`less/container-newui.less"}
+
+{/css}
+
 {permissions}
     <div class="exp-container-module-wrapper">
         <div class="exp-skin">

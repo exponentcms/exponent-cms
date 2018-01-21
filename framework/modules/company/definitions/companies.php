@@ -27,7 +27,8 @@ return array(
 		DB_INCREMENT=>true),
 	'title'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>200),
+		DB_FIELD_LEN=>200,
+        DB_INDEX=>10),
 	'body'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100000),
@@ -47,7 +48,11 @@ return array(
 	'location_data'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>250,
-		DB_INDEX=>10)
+		DB_INDEX=>10),
+    'sef_url'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>200,
+        DB_INDEX=>10),
 );
 
 ?>

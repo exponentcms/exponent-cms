@@ -39,7 +39,7 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100,
 //		DB_INDEX=>10,
-		DB_FULLTEXT=>true),
+		DB_FULLTEXT=>true),  //fixme is this needed?
     "feed_title"=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100,
@@ -71,7 +71,7 @@ return array(
 	'sef_url'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>150,
-//		DB_INDEX=>10,
+		DB_INDEX=>10,
 //		DB_FULLTEXT=>true
 	),
     'canonical'=>array(
@@ -100,7 +100,7 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>10000,
 //		DB_INDEX=>10,
-		DB_FULLTEXT=>true),
+		DB_FULLTEXT=>true),  //fixme is this needed?
     "feed_body"=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>10000),
@@ -113,8 +113,8 @@ return array(
 	"model"=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100,
-//		DB_INDEX=>10,
-		DB_FULLTEXT=>true),
+		DB_INDEX=>10,
+		DB_FULLTEXT=>true),  //fixme is this needed?
     "product_status_id"=>array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER),
     "active_type"=>array(
@@ -200,7 +200,8 @@ return array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>10000),
     "parent_id"=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+        DB_FIELD_TYPE=>DB_DEF_INTEGER,
+        DB_INDEX=>10),
     "child_rank"=>array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER),
     "warehouse_location"=>array(

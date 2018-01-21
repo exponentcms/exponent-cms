@@ -25,6 +25,7 @@ class product_notes extends expRecord
 {
     public $table = 'product_notes';
     public $has_one = array('product');
+    public $default_sort_field = 'rank';
 
 //    public function __construct($params=array(), $get_assoc=true, $get_attached=true)
 //    {
