@@ -30,23 +30,39 @@
 </div>
 
 {if $smarty.const.SITE_CODE_EDITOR == 'ace'}
+{script unique='aceeditor' jquery=1 src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js'}
 {literal}
-    {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/'}{literal}
-    <script src="{/literal}{$cdn}{literal}ace.js" type="text/javascript" charset="utf-8"></script>
-    <script>
-        var editor = ace.edit("body");
-        editor.setTheme("ace/theme/{/literal}{$smarty.const.SITE_CODE_EDITOR_THEME}{literal}");
-        editor.getSession().setMode("ace/mode/javascript");
-//        editor.getSession().setUseWrapMode(true);
-        editor.setOptions({
-            maxLines: 20,
-            minLines: 20,
-            autoScrollEditorIntoView: true,
-            useWorker: false
+    // Hook up ACE editor to all textareas with data-editor attribute
+    $(function () {
+        $('textarea').each(function () {
+            var textarea = $(this);
+            var editDiv = $('<div>', {
+                position: 'absolute',
+                width: textarea.width(),
+                height: textarea.height(),
+                'class': textarea.attr('class')
+            }).insertBefore(textarea);
+            textarea.css('display', 'none');
+            var editor = ace.edit(editDiv[0]);
+            editor.getSession().setValue(textarea.val());
+            editor.setTheme("ace/theme/{/literal}{$smarty.const.SITE_CODE_EDITOR_THEME}{literal}");
+            editor.getSession().setMode("ace/mode/javascript");
+            editor.setOptions({
+                maxLines: 20,
+                minLines: 20,
+                autoScrollEditorIntoView: true,
+                useWorker: false
+            });
+            editor.setFontSize(14);
+
+            // copy back to textarea on form submit...
+            textarea.closest('form').submit(function () {
+                textarea.val(editor.getSession().getValue());
+            })
         });
-        editor.setFontSize(14);
-    </script>
+    });
 {/literal}
+{/script}
 {elseif $smarty.const.SITE_CODE_EDITOR == 'codemirror'}
 {css unique="snippet-codemirror"}
     .CodeMirror {
@@ -55,7 +71,7 @@
     }
 {/css}
 {literal}
-    {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.0/'}{literal}
+    {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/'}{literal}
     <script src="{/literal}{$cdn}{literal}codemirror.js"></script>
     <link rel="stylesheet" href="{/literal}{$cdn}{literal}codemirror.css">
     <link rel="stylesheet" href="{/literal}{$cdn}{literal}addon/fold/foldgutter.css">
