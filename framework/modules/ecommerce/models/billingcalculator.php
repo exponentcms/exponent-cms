@@ -95,7 +95,14 @@ class billingcalculator extends expRecord {
     }
 
     function userForm($config_object = null, $user_data = null) {
-        return '';
+        $form = '<h3>' . gt('Additional Order Information') . '</h3>';
+        $form .= ecomconfig::getConfig('additional_info');
+        $comments = new texteditorcontrol("", 5, 60);
+        $comments->id = "comments";
+        $comments->horizontal = true;
+        $form .= $comments->toHTML(gt(""), "comments");
+        $form .= "<div style=\"clear:both\"></div>";
+        return $form;
     }
 
     /**

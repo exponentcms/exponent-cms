@@ -256,6 +256,15 @@
                         <td class="right">{'Final Total'|gettext}:</td>
                         <td class="totals total">{$order->grand_total|currency}</td>
                     </tr>
+                    <tr>
+                        <td colspan="2" style="word-wrap:break-word; white-space: normal;">
+                            {if $order->comments != ""}
+                                <strong>{'Order Comments'|gettext}:</strong> {$order->comments}
+                            {else}
+                                <strong>{'Order Comments'|gettext}:</strong> {'NONE supplied'|gettext}.
+                            {/if}
+                        </td>
+                    </tr>
                     {*</tr>*}
                 </tbody>
             </table>

@@ -515,6 +515,11 @@ class cartController extends expController {
             expHistory::redirecto_login(makeLink(array('module'=> 'cart', 'action'=> 'checkout'), true));
         }
 
+        if (!empty($this->params['comments'])) {
+            $order->comments = expString::sanitize($this->params['comments']);
+            $order->update();
+        }
+
         // Make sure all the pertinent data is there...otherwise flash an error and redirect to the checkout form.
         if (empty($order->orderitem)) {
             flash('error', gt('There are no items in your cart.'));
@@ -585,7 +590,7 @@ class cartController extends expController {
         //eDebug($o,true);
         //eDebug($this->params,true);
 
-        // once in a while it appears the payment processor will return a nullo value in the errorCode field
+        // once in a while it appears the payment processor will return a null value in the errorCode field
         // which the previous check takes as a TRUE, as 0, null, and empty will all equate out the same using the ==
         // adding the === will specifically test for a 0 and only a 0, which is what we want
 
