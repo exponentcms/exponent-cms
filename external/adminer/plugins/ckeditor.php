@@ -37,7 +37,6 @@ class AdminerCKeditor {
 
 	function head() {
 		foreach ($this->scripts as $script) {
-//			echo "<script type='text/javascript' src='" . h($script) . "'></script>\n";
             echo script_src($script);
 		}
 	}
@@ -77,7 +76,6 @@ CKEDITOR.replace('fields-" . js_escape($field["field"]) . "',{
         toolbarCanCollapse : true,
         toolbarStartupExpanded : false,
         scayt_autoStartup : true,
-        removePlugins : 'elementspath',
         resize_enabled : false,
 		filebrowserBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "update"=> "ck")) . "',
 		filebrowserImageBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "update"=> "ck", "filter"=> 'image')) . "',
@@ -91,7 +89,7 @@ CKEDITOR.replace('fields-" . js_escape($field["field"]) . "',{
 		filebrowserLinkWindowWidth : 320,
 		filebrowserLinkWindowHeight : 600,
 		extraPlugins : 'autosave,tableresize,image2,uploadimage,uploadfile,quicktable,showborders',
-		removePlugins: 'image,forms,flash',
+		removePlugins: 'elementspath,image,forms,flash',
     });
 </script>";
 		}
