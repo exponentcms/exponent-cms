@@ -557,8 +557,9 @@ class storeController extends expController {
         set_time_limit(0);
 //        $sql = 'SELECT p.* FROM ' . DB_TABLE_PREFIX . '_product p JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories ';
 //        $sql .= 'sc ON p.id = sc.product_id WHERE sc.storecategories_id = 0 AND parent_id=0';
-        $sql = 'SELECT p.* FROM ' . DB_TABLE_PREFIX . '_product p LEFT OUTER JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories ';
-        $sql .= 'sc ON p.id = sc.product_id WHERE sc.product_id is null AND p.parent_id=0';
+//        $sql = 'SELECT p.* FROM ' . DB_TABLE_PREFIX . '_product p LEFT OUTER JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories ';
+//        $sql .= 'sc ON p.id = sc.product_id WHERE sc.product_id is null AND p.parent_id=0';
+        $sql = 'SELECT * FROM ' . DB_TABLE_PREFIX . '_product WHERE parent_id = 0 AND id NOT IN (SELECT product_id FROM ' . DB_TABLE_PREFIX . '_product_storeCategories)';
 
         expSession::set('product_export_query', $sql);
 
@@ -620,9 +621,9 @@ class storeController extends expController {
         set_time_limit(0);
         expHistory::set('viewable', $this->params);
 
-        $sql = 'SELECT DISTINCT(p.id),p.product_type FROM ' . DB_TABLE_PREFIX . '_product p ';
+        $sql = 'SELECT DISTINCT(p.id), p.product_type FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories psc ON p.id = psc.product_id ';
-        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_storeCategories sc ON psc.storecategories_id = sc.parent_id ';
+        $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_storeCategories sc ON psc.storecategories_id = sc.parent_id ';
         $sql .= 'WHERE p.parent_id=0 AND sc.parent_id != 0';
 
         expSession::set('product_export_query', $sql);
@@ -2414,39 +2415,44 @@ class storeController extends expController {
         global $db, $user;
 
         set_time_limit(0);
-        $products = $db->selectObjectsIndexedArray('product');
         $affected_fields = array();
         $listings = array();
         $listedProducts = array();
         $count = 0;
-        //Get all the columns of the product table
+        $total = $db->countObjects('product');
+        //Get all the the text column names of the product table
         $columns = $db->getTextColumns('product');
-        foreach ($products as $item) {
 
-            foreach ($columns as $column) {
-                if ($column != 'body' && $column != 'summary' && $column != 'featured_body') {
-                    if (!expString::validUTF($item->$column) || strrpos($item->$column, '?')) {
-                        $affected_fields[] = $column;
-                    }
-                } else {
-                    if (!expString::validUTF($item->$column)) {
-                        $affected_fields[] = $column;
+        for ($i = 0; $i < $total; $i += 100) {
+            $orderby = 'id LIMIT ' . ($i) . ', 100';
+            $products = $db->selectObjectsIndexedArray('product', null, $orderby);
+            foreach ($products as $item) {
+
+                foreach ($columns as $column) {
+                    if ($column != 'body' && $column != 'summary' && $column != 'featured_body') {
+                        if (!expString::validUTF($item->$column) || strrpos($item->$column, '?')) {
+                            $affected_fields[] = $column;
+                        }
+                    } else {
+                        if (!expString::validUTF($item->$column)) {
+                            $affected_fields[] = $column;
+                        }
                     }
                 }
-            }
 
-            if (isset($affected_fields)) {
-                if (count($affected_fields) > 0) {
-                    //Hard coded fields since this is only for displaying
-                    $listedProducts[$count]['id'] = $item->id;
-                    $listedProducts[$count]['title'] = $item->title;
-                    $listedProducts[$count]['model'] = $item->model;
-                    $listedProducts[$count]['sef_url'] = $item->sef_url;
-                    $listedProducts[$count]['nonunicode'] = implode(', ', $affected_fields);
-                    $count++;
+                if (isset($affected_fields)) {
+                    if (count($affected_fields) > 0) {
+                        //Hard coded fields since this is only for displaying
+                        $listedProducts[$count]['id'] = $item->id;
+                        $listedProducts[$count]['title'] = $item->title;
+                        $listedProducts[$count]['model'] = $item->model;
+                        $listedProducts[$count]['sef_url'] = $item->sef_url;
+                        $listedProducts[$count]['nonunicode'] = implode(', ', $affected_fields);
+                        $count++;
+                    }
                 }
+                unset($affected_fields);
             }
-            unset($affected_fields);
         }
 
         assign_to_template(array(
@@ -2458,29 +2464,34 @@ class storeController extends expController {
     function cleanNonUnicodeProducts() {
         global $db, $user;
 
-        $products = $db->selectObjectsIndexedArray('product');
-        //Get all the columns of the product table
+        set_time_limit(0);
+        $total = $db->countObjects('product');
+        //Get all the text column names of the product table
         $columns = $db->getTextColumns('product');
-        foreach ($products as $item) {
-            //Since body, summary, featured_body can have a ? intentionally such as a link with get parameter.
-            //TO Improved
-            foreach ($columns as $column) {
-                if ($column != 'body' && $column != 'summary' && $column != 'featured_body') {
-                    if (!expString::validUTF($item->$column) || strrpos($item->$column, '?')) {
-                        $item->$column = expString::convertUTF($item->$column);
-                    }
-                } else {
-                    if (!expString::validUTF($item->$column)) {
-                        $item->$column = expString::convertUTF($item->$column);
+
+        for ($i = 0; $i < $total; $i += 100) {
+            $orderby = 'id LIMIT ' . ($i) . ', 100';
+            $products = $db->selectObjectsIndexedArray('product', null, $orderby);
+            foreach ($products as $item) {
+                //Since body, summary, featured_body can have a ? intentionally such as a link with get parameter.
+                //TO Improved
+                foreach ($columns as $column) {
+                    if ($column != 'body' && $column != 'summary' && $column != 'featured_body') {
+                        if (!expString::validUTF($item->$column) || strrpos($item->$column, '?')) {
+                            $item->$column = expString::convertUTF($item->$column);
+                        }
+                    } else {
+                        if (!expString::validUTF($item->$column)) {
+                            $item->$column = expString::convertUTF($item->$column);
+                        }
                     }
                 }
-            }
 
-            $db->updateObject($item, 'product');
+                $db->updateObject($item, 'product');
+            }
         }
 
         redirect_to(array('controller' => 'store', 'action' => 'nonUnicodeProducts'));
-//        $this->nonUnicodeProducts();
     }
 
     //This function is being used in the uploadModelaliases page for showing the form upload
