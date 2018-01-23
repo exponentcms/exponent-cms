@@ -35,7 +35,7 @@ DirectoryIndex index.php
     # RewriteRule ^login.php$ login/showlogin
 
     # Kludge out certain file types that we don't want to try to route thru the eXp router.
-    RewriteCond %{REQUEST_URI} !\.(css|js|pdf|shtml|htc)$ [NC]
+    RewriteCond %{REQUEST_URI} !\.(css|js|pdf|shtml|htc|map)$ [NC]
     # Kludge out image files that we don't want to try to route thru the eXp router.
     RewriteCond %{REQUEST_URI} !\.(jp?g|gif|png|tiff)$ [NC]
     # Kludge out media files that we don't want to try to route thru the eXp router.
