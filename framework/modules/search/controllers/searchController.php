@@ -111,6 +111,24 @@ class searchController extends expController {
         ));
     }
 
+    /**
+     * action specific metainfo
+     *
+     * @param $request
+     * @return array
+     */
+    public function search_meta($request) {
+        if (isset($request['search_string'])) {
+            $terms = $request['search_string'];
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => true, 'nofollow' => true);
+            $metainfo['title'] = gt('Searching') . ' ' . ORGANIZATION_NAME . ' ' . gt('for') . " - " . $terms;
+            $metainfo['keywords'] = $terms;
+            $metainfo['description'] = SITE_DESCRIPTION;
+            return $metainfo;
+        }
+        return null;
+    }
+
     public static function spider() {
         global $db;
 

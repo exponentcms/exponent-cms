@@ -501,13 +501,17 @@ class expTheme
         global $sectionObj, $router;
 
         $metainfo = array();
-        if (self::inAction() && (!empty($router->url_parts[0]) && expModules::controllerExists(
-                    $router->url_parts[0]
-                ))
-        ) {
+        if ($router->url_type === 'post') {
+            $cont = $router->params['controller'];
+        } elseif ($router->url_type === 'action' && !empty($router->url_parts[0])) {
+            $cont = $router->url_parts[0];
+        }
+//        if (self::inAction() && (!empty($router->url_parts[0]) && expModules::controllerExists($router->url_parts[0]))) {
+        if (self::inAction() && expModules::controllerExists($cont)) {
 //            $classname = expModules::getControllerClassName($router->url_parts[0]);
 //            $controller = new $classname();
-            $controller = expModules::getController($router->url_parts[0]);
+//            $controller = expModules::getController($router->url_parts[0]);
+            $controller = expModules::getController($cont);
             $metainfo = $controller->metainfo();
         }
         if (empty($metainfo)) {
