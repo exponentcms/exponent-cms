@@ -23,7 +23,7 @@
 */
 class AdminerEditTextSerializedarea {
 
-	function selectVal(&$val, $link, $field) {
+    public function selectVal(&$val, $link, $field, $original) {
 		if (preg_match("~location_data|internal|external|config|billing_options|extra_fields|user_input_fields|options|meta_fb|data~", $field["field"])) {
 			$val = '<div title="'.htmlentities(print_r(self::expUnserialize(html_entity_decode($val)),true)).'">'.$val.'</div>';
 		}

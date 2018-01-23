@@ -41,7 +41,7 @@ class AdminerCKeditor {
 		}
 	}
 
-	function selectVal(&$val, $link, $field) {
+    public function selectVal(&$val, $link, $field, $original) {
 		// copied from tinymce.php
         if (preg_match("~body~", $field["field"]) && $val != '&nbsp;') {
 			$shortened = (substr($val, -10) == "<i>...</i>");

@@ -88,7 +88,7 @@ tinyMCE.init({
 <?php
 	}
 
-	function selectVal(&$val, $link, $field) {
+    public function selectVal(&$val, $link, $field, $original) {
         if (preg_match("~body~", $field["field"]) && $val != '&nbsp;') {
 			$shortened = (substr($val, -10) == "<i>...</i>");
 			if ($shortened) {
