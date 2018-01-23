@@ -172,7 +172,7 @@
 </div>
 
 {if $table_filled}
-{script unique="view-registrants" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
+{script unique="view-registrants" jquery='jquery.dataTables2,dataTables.tableTools2,dataTables.bootstrap2,datatables.responsive2'}
 {literal}
     $(document).ready(function() {
         var responsiveHelper;

@@ -114,7 +114,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 {/literal}
 {/script}
 
-{script unique="permissions" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
+{script unique="permissions" jquery='jquery.dataTables2,dataTables.tableTools2,dataTables.bootstrap2,datatables.responsive2'}
 {literal}
     $(document).ready(function() {
         var checkSubs = function(row) {

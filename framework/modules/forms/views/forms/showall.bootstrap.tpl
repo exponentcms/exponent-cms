@@ -142,7 +142,7 @@
     </div>
 {/if}
 
-{script unique="form-showall" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
+{script unique="form-showall" jquery='jquery.dataTables2,dataTables.tableTools2,dataTables.bootstrap2,datatables.responsive2'}
 {literal}
     $(document).ready(function() {
         var responsiveHelper;
