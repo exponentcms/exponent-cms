@@ -209,16 +209,16 @@ class usersController extends expController {
         if (!$user->isSystemAdmin()) {
             if (!$user->isSuperAdmin()) {
                 if (!$user->isActingAdmin()) {
-                    if ($user->is_acting_admin != $this->params['is_acting_admin']) {
+                    if (isset($this->params['is_acting_admin']) && $user->is_acting_admin != $this->params['is_acting_admin']) {
                         $exit = true;  // only admins can change 'is_acting_admin' status
                     }
                 }
-                if ($user->is_admin != $this->params['is_admin']) {
+                if (isset($this->params['is_admin']) && $user->is_admin != $this->params['is_admin']) {
                     $exit = true;  // only super admins can change 'is_admin' status
                 }
             }
         }
-        if ($user->is_system_user != $this->params['is_system_user']) {
+        if (isset($this->params['is_system_user']) && $user->is_system_user != $this->params['is_system_user']) {
             $exit = true;  // NO one is allowed to change 'is_system_user' status
         }
 
