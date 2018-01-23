@@ -18,48 +18,60 @@
 //Initialize the exponent system
 require_once('../exponent.php');
 
+//frequency
+$freq = "weekly";
+//priority
+$priority = "0.5";
+
+$include_mobile = false;
+$include_images = false;
+$include_videos = false;
+$include_products = false;
+
 //processing flags
-if (php_sapi_name() == 'cli') {
+if (php_sapi_name() === 'cli') {
     $nl = "\n";
-    $include_mobile = false;
-    $include_images = false;
-    $include_videos = false;
-    $include_products = false;
     if (!empty($_SERVER['argc'])) for ($ac = 1; $ac < $_SERVER['argc']; $ac++) {
-        if ($_SERVER['argv'][$ac] == '-mobile') {
+        if ($_SERVER['argv'][$ac] === '-mobile') {
             $include_mobile = true;
         }
-        if ($_SERVER['argv'][$ac] == '-images') {
+        if ($_SERVER['argv'][$ac] === '-images') {
             $include_images = true;
         }
-        if ($_SERVER['argv'][$ac] == '-videos') {
+        if ($_SERVER['argv'][$ac] === '-videos') {
             $include_videos = true;
         }
-        if ($_SERVER['argv'][$ac] == '-products') {
+        if ($_SERVER['argv'][$ac] === '-products') {
             $include_products = true;
+        }
+        if ($_SERVER['argv'][$ac] === '-frequency') {
+            $freq = $_SERVER['argv'][++$ac];
+        }
+        if ($_SERVER['argv'][$ac] === '-priority') {
+            $priority = $_SERVER['argv'][++$ac];
         }
     }
 } else {
+//    global $router;
+
     $nl = '<br>';
     if (!empty($_GET['mobile'])) {
         $include_mobile = true;
-    } else {
-        $include_mobile = false;
     }
     if (!empty($_GET['images'])) {
         $include_images = true;
-    } else {
-        $include_images = false;
     }
     if (!empty($_GET['videos'])) {
         $include_videos = true;
-    } else {
-        $include_videos = false;
     }
     if (!empty($_GET['products'])) {
         $include_products = true;
-    } else {
-        $include_products = false;
+    }
+    if (!empty($_GET['frequency'])) {
+        $freq = $_GET['frequency'];
+    }
+    if (!empty($_GET['priority'])) {
+        $priority = $_GET['priority'];
     }
 }
 
@@ -67,9 +79,6 @@ if (php_sapi_name() == 'cli') {
 $filename = BASE . 'sitemap.xml';
 //standard mobile tag
 $mobile_tag = '    <mobile:mobile/>' . chr(13) . chr(10);
-//frequency
-$freq = "weekly";
-$priority = "0.5";
 
 //Header of the xml file
 $content = "<?xml version='1.0' encoding='UTF-8'?>" . chr(13) . chr(10);
@@ -119,7 +128,8 @@ if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php')) {
     include(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php');
     if (count($maps)) {
         foreach ($maps as $map) { // $maps is set by included $mapfile
-            $sections[] = $map['url_parts']['controller'];
+            if (isset($map['url_parts']['controller']))
+                $sections[] = $map['url_parts']['controller'];
         }
         $sections = array_unique($sections);
     }
@@ -226,6 +236,8 @@ foreach ($sections as $item) {
 }
 
 if ($include_products) {
+    set_time_limit(0);
+
     //Get all the active product categories
     $categories = $db->selectColumn('storeCategories', 'sef_url', 'is_active = 1');
     foreach ($categories as $item) {
@@ -233,7 +245,13 @@ if ($include_products) {
         $columns = '<url>' . chr(13) . chr(10);
 
         $columns .= '    <loc>';
-        $columns .= URL_FULL . 'store/showall/title/' . $item;
+        $columns .= URL_FULL . $item; // we check for store category sef_url's if a similar page sef_url doesn't exist
+//        if (php_sapi_name() === 'cli')  {
+//            $columns .= URL_FULL . 'store/showall/title/' . $item;
+//        } else {
+////            $columns .= URL_FULL . 'store/showall/title/' . $item;
+//            $columns .= $router->makeLink(array('controller'=>'store','action'=>'showall','title'=>$item));
+//        }
         $columns .= '</loc>' . chr(13) . chr(10);
 
         if ($include_mobile) $columns .= $mobile_tag;
@@ -260,35 +278,46 @@ if ($include_products) {
     }
 
     //Get all the active products
-    $products = $db->selectColumn('product', 'sef_url', '(active_type = 0 or active_type = 1) and parent_id = 0');
-    foreach ($products as $item) {
+    $total = $db->countObjects('product', '(active_type = 0 or active_type = 1) and parent_id = 0');
+    for ($i = 0; $i < $total; $i += 100) {
+        $orderby = 'id LIMIT ' . ($i) . ', 100';
 
-        $columns = '<url>' . chr(13) . chr(10);
+        $products = $db->selectColumn('product', 'sef_url', '(active_type = 0 or active_type = 1) and parent_id = 0', $orderby);
+        foreach ($products as $item) {
 
-        $columns .= '    <loc>';
-        $columns .= URL_FULL . 'store/show/title/' . $item;
-        $columns .= '</loc>' . chr(13) . chr(10);
+            $columns = '<url>' . chr(13) . chr(10);
 
-        if ($include_mobile) $columns .= $mobile_tag;
+            $columns .= '    <loc>';
+            $columns .= URL_FULL . $item; // we check for product sef_url's if a similar page or store category sef_url doesn't exist
+//            if (php_sapi_name() === 'cli') {
+//                $columns .= URL_FULL . 'store/show/title/' . $item;
+//            } else {
+////                $columns .= URL_FULL . 'store/show/title/' . $item;
+//                $columns .= $router->makeLink(array('controller'=>'store','action'=>'show','title'=>$item));
+//            }
+            $columns .= '</loc>' . chr(13) . chr(10);
 
-        $columns .= '    <lastmod>';
-        $columns .= date('Y-m-d');
-        $columns .= '</lastmod>' . chr(13) . chr(10);
+            if ($include_mobile) $columns .= $mobile_tag;
 
-        $columns .= '    <changefreq>';
-        $columns .= $freq;
-        $columns .= '</changefreq>' . chr(13) . chr(10);
+            $columns .= '    <lastmod>';
+            $columns .= date('Y-m-d');
+            $columns .= '</lastmod>' . chr(13) . chr(10);
 
-        $columns .= '    <priority>';
-        $columns .= $priority;
-        $columns .= '</priority>' . chr(13) . chr(10);
+            $columns .= '    <changefreq>';
+            $columns .= $freq;
+            $columns .= '</changefreq>' . chr(13) . chr(10);
 
-        $columns .= '</url>';
-        $num_products++;
+            $columns .= '    <priority>';
+            $columns .= $priority;
+            $columns .= '</priority>' . chr(13) . chr(10);
 
-        // Write all the active products to our opened file.
-        if (fwrite($handle, $columns . chr(13) . chr(10)) == FALSE) {
-            $action_msg = "ER";
+            $columns .= '</url>';
+            $num_products++;
+
+            // Write all the active products to our opened file.
+            if (fwrite($handle, $columns . chr(13) . chr(10)) == FALSE) {
+                $action_msg = "ER";
+            }
         }
     }
 }
@@ -304,7 +333,7 @@ fclose($handle);
 echo "Generated $count link(s)";
 if ($include_images) echo ", $num_images image(s)";
 if ($include_videos) echo ", $num_videos video(s)";
-if ($include_products) echo ", $num_cats product category(s), $num_products product(s)";
+if ($include_products) echo ", $num_cats product category(s), with $num_products product(s)";
 echo " in the sitemap.";
 
 ?>
