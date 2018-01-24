@@ -366,3 +366,7 @@ div.table-responsive > table > thead > tr,
 div.table-responsive > table {
 	border: solid #cacaca 1px;
 }
+
+#child-products input[type=text] {
+    width: 50px;
+}

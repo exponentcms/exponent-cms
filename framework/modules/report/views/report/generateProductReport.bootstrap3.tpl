@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css" corecss="button,tables"}
+{css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom-bs3.css" corecss="button,tables"}
 
 {/css}
 {css unique="ecom-report2" link="`$asset_path`css/generate-report-bs3.css"}

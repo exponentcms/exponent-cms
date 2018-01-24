@@ -17,7 +17,7 @@
 
 {/css}
 
-{css unique="ecom" link="`$asset_path`css/ecom.css"}
+{css unique="ecom" link="`$asset_path`css/ecom-bs3.css"}
 
 {/css}
 
