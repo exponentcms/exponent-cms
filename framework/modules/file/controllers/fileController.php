@@ -154,7 +154,7 @@ class fileController extends expController {
                     }
                 }
                 if (bs4()) {
-                    $bstrapview = $path.'/'.$this->params['view'].'.bootstrap.tpl';
+                    $bstrapview = $path.'/'.$this->params['view'].'.bootstrap4.tpl';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }

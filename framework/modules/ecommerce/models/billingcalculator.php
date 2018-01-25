@@ -142,7 +142,7 @@ class billingcalculator extends expRecord {
     }
 
     function configForm() {
-        if (bs3(true)) {
+        if (bs3(true) || bs4()) {
             $tpl = 'configure.bootstrap3.tpl';
             if (!file_exists(BASE . 'framework/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/' . $tpl)) {
                 $tpl = 'configure.tpl';
