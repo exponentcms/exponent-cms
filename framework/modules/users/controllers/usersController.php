@@ -209,16 +209,16 @@ class usersController extends expController {
         if (!$user->isSystemAdmin()) {
             if (!$user->isSuperAdmin()) {
                 if (!$user->isActingAdmin()) {
-                    if ($user->is_acting_admin != $this->params['is_acting_admin']) {
+                    if (isset($this->params['is_acting_admin']) && $user->is_acting_admin != $this->params['is_acting_admin']) {
                         $exit = true;  // only admins can change 'is_acting_admin' status
                     }
                 }
-                if ($user->is_admin != $this->params['is_admin']) {
+                if (isset($this->params['is_admin']) && $user->is_admin != $this->params['is_admin']) {
                     $exit = true;  // only super admins can change 'is_admin' status
                 }
             }
         }
-        if ($user->is_system_user != $this->params['is_system_user']) {
+        if (isset($this->params['is_system_user']) && $user->is_system_user != $this->params['is_system_user']) {
             $exit = true;  // NO one is allowed to change 'is_system_user' status
         }
 
@@ -1064,8 +1064,9 @@ class usersController extends expController {
         if (!empty($this->params['mod']) && $user->isAdmin()) {
             $loc = expCore::makeLocation($this->params['mod'], isset($this->params['src']) ? $this->params['src'] : null, isset($this->params['int']) ? $this->params['int'] : null);
             $users = array();
-            $modclass = expModules::getModuleClassName(($loc->mod));
-            $mod = new $modclass();
+//            $modclass = expModules::getModuleClassName($loc->mod);
+//            $mod = new $modclass();
+            $mod = expModules::getController($loc->mod);
             $perms = $mod->permissions($loc->int);
             $have_users = 0;
             foreach (user::getAllUsers(false) as $u) {
@@ -1163,8 +1164,9 @@ class usersController extends expController {
         if (!empty($this->params['mod']) && $user->isAdmin()) {
             $loc = expCore::makeLocation($this->params['mod'], isset($this->params['src']) ? $this->params['src'] : null, isset($this->params['int']) ? $this->params['int'] : null);
             $users = array(); // users = groups
-            $modclass = expModules::getModuleClassName($loc->mod);
-            $mod = new $modclass();
+//            $modclass = expModules::getModuleClassName($loc->mod);
+//            $mod = new $modclass();
+            $mod = expModules::getController($loc->mod);
             $perms = $mod->permissions($loc->int);
 
             foreach (group::getAllGroups() as $g) {

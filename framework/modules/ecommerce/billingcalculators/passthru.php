@@ -74,11 +74,14 @@ class passthru extends billingcalculator {
 
     //Form for user input
     function userForm($config_object = null, $user_data = null) {
-        $form = new form();
+        $form = parent::userForm();
+
+        $frm = new form();
         $htmlinfo = gt("You may place your order and pay with a check or money order.  If paying by check, your order will be held util we receive the check and it clears our bank account.  Money order orders will be processed upon our receipt of the money order.") . "<br/><br/>";
-        $form->register(uniqid(""), "", new htmlcontrol($htmlinfo));
-        $form->register("cash_amount", gt("Cash Amount:"), new textcontrol());
-        return $form->toHTML();
+        $frm->register(uniqid(""), "", new htmlcontrol($htmlinfo));
+        $frm->register("cash_amount", gt("Cash Amount:"), new textcontrol());
+        $form .= $frm->toHTML();
+        return $form;
     }
 
     //process user input. This function should return an object of the user input.  //FIXME never used

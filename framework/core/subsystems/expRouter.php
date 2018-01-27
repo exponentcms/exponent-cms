@@ -245,8 +245,8 @@ class expRouter {
                 $ret = $this->routePageRequest();               // if we hit this the formatting of the URL looks like the user is trying to go to a page.
                 if (!$ret) $this->url_type = 'malformed';
             } elseif ($this->url_type == 'action') {
-                $this->isMappedURL();                       //check for a router map
-                $ret = $this->routeActionRequest();         // we didn't have a map for this URL.  Try to route it with this function.
+                $this->isMappedURL();                       // check for a router map and reparse params if found
+                $ret = $this->routeActionRequest();         // Try to route call with this function
 
                 // if this url wasn't a valid section, or action then kill it.  It might not actually be a "bad" url,
                 // but this is a precautionary measure against bad paths on images, css & js file, etc...with the new
@@ -593,6 +593,34 @@ class expRouter {
 //            $requestType = 'module';
         } else {
             return false;  //this is an invalid url return an let the calling function deal with it.
+            //fixme deal with store category hierarchy
+//            $c = new storeCategory();
+//            $cat = $c->findBy('sef_url', $return_params['controller']);
+//            if (empty($cat)) {
+//                return false;  //this is an invalid url return an let the calling function deal with it.
+//            } else {
+//                $requestType = 'controller';
+//                // check if last param is a product
+//                $last_param = end($this->url_parts);
+//                $p = new product();
+//                $prod = $p->findBy('sef_url', $last_param);
+//                if(!empty($prod)) {
+//                    //fake parts and route to action
+//                    $this->url_type = 'action';
+//                    $this->url_parts[0] = 'store'; //controller
+//                    $this->url_parts[1] = 'show'; //action
+//                    $this->url_parts[2] = 'title'; //param name
+//                    $this->url_parts[3] = $last_param; //param
+//                } else {
+//                    // otherwise it's a store category
+//                    $this->url_type = 'action';
+//                    $this->url_parts[0] = 'store'; //controller
+//                    $this->url_parts[1] = 'showall'; //action
+//                    $this->url_parts[2] = 'title'; //param name
+//                    $this->url_parts[3] = $last_param; //param
+//                }
+//                $this->params = $this->convertPartsToParams();
+//            }
         }
 
         // now figure out the name<=>value pairs

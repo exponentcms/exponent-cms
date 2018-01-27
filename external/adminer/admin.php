@@ -55,18 +55,18 @@ function adminer_object() {
         new AdminerTableIndexesStructure,
         new AdminerTableStructure
     );
-    if (SITE_WYSIWYG_EDITOR == 'tinymce') {
+//    if (SITE_WYSIWYG_EDITOR == 'tinymce') {
         $plugins[] = new AdminerTinymce(
             PATH_RELATIVE."external/editors/tinymce/tinymce.min.js"
         );  // inserts wysiwyg editor for 'body' fields
-    } else {
-        $plugins[] = new AdminerCKeditor(
-            array(
-                PATH_RELATIVE."external/editors/ckeditor/ckeditor.js"
-            ),
-            "options"
-        );  // inserts wysiwyg editor for 'body' fields
-    }
+//    } else {
+//        $plugins[] = new AdminerCKeditor(
+//            array(
+//                PATH_RELATIVE."external/editors/ckeditor/ckeditor.js"
+//            ),
+//            "options"
+//        );  // inserts wysiwyg editor for 'body' fields
+//    }
     $plugins[] = new AdminerEditTextarea;  // adjusts box size smaller, MUST be last in chain for textarea widgets
     $plugins[] = new AdminerTheme('default-blue');  // sets responsive theme color and other details
 
@@ -132,7 +132,7 @@ function adminer_object() {
            <h3><?php echo gt('You must already be logged into Exponent!'); ?></h3>
             <?php
             global $user;
-            if (!$user->isSuperAdmin()) {
+            if (!empty($user->id) && !$user->isSuperAdmin()) {
                 return false;
             }
             ?>
@@ -147,20 +147,37 @@ function adminer_object() {
        		return true;
        	}
 
+        /** Get Content Security Policy headers
+        * @return array of arrays with directive name in key, allowed sources in value
+        */
+        function csp() {
+        	return array(
+        		array(
+        			"script-src" => "'self' 'unsafe-inline' 'nonce-" . get_nonce() . "' 'strict-dynamic'", // 'self' is a fallback for browsers not supporting 'strict-dynamic', 'unsafe-inline' is a fallback for browsers not supporting 'nonce-'
+        			"style-src" => "'self' 'unsafe-inline'",
+        			"connect-src" => "'self'",
+        			"frame-src" => "https://www.adminer.org",
+                    "object-src" => "'none'",
+//                    "base-uri" => "'none'",
+                    "form-action" => "'self'",
+                ),
+        	);
+        }
+
 	}
 
     return new AdminerCustomization($plugins);
 }
 
 // include original Adminer or Adminer Editor
-include "./adminer-4.4.0-mysql.php";
-//include "./editor-4.3.1-mysql.php";
+include "./adminer-4.5.0-mysql.php";
+//include "./editor-4.5.0-mysql.php";
 
-if (SITE_WYSIWYG_EDITOR != 'tinymce') {
-?>
-    <script type='text/javascript'  <?php echo nonce(); ?>>
-        CKEDITOR.disableAutoInline = true;
-    </script>
+//if (SITE_WYSIWYG_EDITOR != 'tinymce') {
+//?>
+<!--    <script type='text/javascript'  --><?php //echo nonce(); ?><!-->-->
+<!--        CKEDITOR.disableAutoInline = true;-->
+<!--    </script>-->
 <?php
-}
-?>
+//}
+//?>

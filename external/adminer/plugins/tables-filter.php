@@ -9,55 +9,58 @@
 class AdminerTablesFilter {
 	function tablesPrint($tables) { ?>
 <script<?php echo nonce(); ?>>
-var tablesFilterTimeout = null;
-var tablesFilterValue = '';
+$(document).ready(function(){
+    var tablesFilterTimeout = null;
+    var tablesFilterValue = '';
 
-function tablesFilter(){
-	var value = qs('#filter-field').value;
-	if (value == tablesFilterValue) {
-		return;
-	}
-	tablesFilterValue = value;
-	if (value != '') {
-		var reg = (value + '').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, '\\$1');
-		reg = new RegExp('('+ reg + ')', 'gi');
-	}
-	if (sessionStorage) {
-		sessionStorage.setItem('adminer_tables_filter', value);
-	}
-	var tables = qsa('li', qs('#tables'));
-	for (var i = 0; i < tables.length; i++) {
-		var a = qsa('a', tables[i])[1];
-		var text = tables[i].getAttribute('data-table-name');
-		// remove DB_TABLE_PREFIX_ and underscores from table name
-		text = text.replace('<?php echo DB_TABLE_PREFIX . '_'; ?>','');
-		text = text.replace('_', ' ');
-		if (value == '') {
-			tables[i].className = '';
-			a.innerHTML = text;
-		} else {
-			tables[i].className = (text.toLowerCase().indexOf(value.toLowerCase()) == -1 ? 'hidden' : '');
-			a.innerHTML = text.replace(reg, '<strong>$1</strong>');
-		}
-	}
-}
+    function tablesFilter(){
+        var value = qs('#filter-field').value;
+        if (value == tablesFilterValue) {
+            return;
+        }
+        tablesFilterValue = value;
+        if (value != '') {
+            var reg = (value + '').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, '\\$1');
+            reg = new RegExp('('+ reg + ')', 'gi');
+        }
+        if (sessionStorage) {
+            sessionStorage.setItem('adminer_tables_filter', value);
+        }
+        var tables = qsa('li', qs('#tables'));
+        for (var i = 0; i < tables.length; i++) {
+            var a = qsa('a', tables[i])[1];
+            var text = tables[i].getAttribute('data-table-name');
+            // remove DB_TABLE_PREFIX_ and underscores from table name
+            text = text.replace('<?php echo DB_TABLE_PREFIX . '_'; ?>','');
+            text = text.replace('_', ' ');
+            if (value == '') {
+                tables[i].className = '';
+                a.innerHTML = text;
+            } else {
+                tables[i].className = (text.toLowerCase().indexOf(value.toLowerCase()) == -1 ? 'hidden' : '');
+                a.innerHTML = text.replace(reg, '<strong>$1</strong>');
+            }
+        }
+    }
 
-function tablesFilterInput() {
-	window.clearTimeout(tablesFilterTimeout);
-	tablesFilterTimeout = window.setTimeout(tablesFilter, 200);
-}
+    function tablesFilterInput() {
+        window.clearTimeout(tablesFilterTimeout);
+        tablesFilterTimeout = window.setTimeout(tablesFilter, 200);
+    }
 
-if (sessionStorage){
-	var db = qs('#dbs').querySelector('select');
-	db = db.options[db.selectedIndex].text;
-	if (db == sessionStorage.getItem('adminer_tables_filter_db') && sessionStorage.getItem('adminer_tables_filter')){
-		qs('#filter-field').value = sessionStorage.getItem('adminer_tables_filter');
-		tablesFilter();
-	}
-	sessionStorage.setItem('adminer_tables_filter_db', db);
-}
+    if (sessionStorage){
+        var db = qs('#dbs').querySelector('select');
+        db = db.options[db.selectedIndex].text;
+        if (db == sessionStorage.getItem('adminer_tables_filter_db') && sessionStorage.getItem('adminer_tables_filter')){
+            qs('#filter-field').value = sessionStorage.getItem('adminer_tables_filter');
+            tablesFilter();
+        }
+        sessionStorage.setItem('adminer_tables_filter_db', db);
+    }
+    qs('#filter-field').oninput = tablesFilterInput;
+}); // document.ready
 </script>
-<p class="jsonly"><input id="filter-field" autocomplete="off"><?php echo script("qs('#filter-field').oninput = tablesFilterInput;"); ?>
+<p class="jsonly"><input id="filter-field" autocomplete="off">
 <ul id='tables'>
 <?php
 echo script("mixin(qs('#tables'), {onmouseover: menuOver, onmouseout: menuOut});");

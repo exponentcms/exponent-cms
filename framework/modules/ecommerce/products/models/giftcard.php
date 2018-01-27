@@ -47,6 +47,42 @@ class giftcard extends expRecord {
         $this->price = '';
     }
 
+    /**
+     * Called when updating product
+     * @return bool
+     */
+    public function addContentToSearch() {
+        global $db;
+
+        // unlike controller->addContentToSearch() we only handle a single item;
+        $exists = $db->selectObject('search', "original_id = " . $this->id . " AND ref_module='" . $this->classname . "' AND ref_type='" . $this->product_type . "'");
+
+        $search = new stdClass();
+        $search->ref_module  = $this->classname;
+        $search->ref_type = $this->product_type;
+        $search->category = $this->product_name;
+        $search->posted = empty($this->created_at) ? null : $this->created_at;
+
+        $search->original_id = $this->id;
+        $search->title = $this->title;
+        if (ecomconfig::getConfig('ecom_search_results') != '') {
+            // we only want a picture if we are an ecom only type search since we don't include search images in other modules
+            $search->title = (isset($this->expFile['mainimage'][0]) ? '<img src="' . PATH_RELATIVE . 'thumb.php?id=' . $this->expFile['mainimage'][0]->id . '&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />' : '') . $search->title;
+        }
+        $search->view_link = str_replace(URL_FULL, '', makeLink(array('controller' => 'store', 'action' => 'showGiftCards')));
+        $search->body = $this->body;
+//        $search->keywords = $this->keywords;  //fixme there is no keywords field!!!
+
+        if (empty($exists))
+            $db->insertObject($search, 'search');
+        else {
+            $search->id = $exists->id;
+            $db->updateObject($search, 'search');
+        }
+
+        return true;
+    }
+
     public function cartSummary($item) {
         $view = new controllertemplate($this, $this->getForm('cartSummary'));
         $view->assign('product', $this);
@@ -182,6 +218,13 @@ class giftcard extends expRecord {
             );
         } elseif (bs3(true)) {
             $vars = array(
+                '.bootstrap3',
+                '.bootstrap',
+                '',
+            );
+        } elseif (bs4(true)) {
+            $vars = array(
+                '.bootstrap4',
                 '.bootstrap3',
                 '.bootstrap',
                 '',

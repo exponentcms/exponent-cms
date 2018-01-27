@@ -281,13 +281,18 @@ class faqController extends expController {
     function addContentToSearch() {
         global $db;
 
-        $count = 0;
-//        $model = new $this->basemodel_name(null, false, false);
-//        $where = (!empty($this->params['id'])) ? 'id='.$this->params['id'] : null;
         $modelname = $this->basemodel_name;
         $where = (!empty($this->$modelname->id)) ? 'id=' . $this->$modelname->id : null;
         $content = $db->selectArrays($this->$modelname->tablename,$where);
+        $count = 0;
         foreach ($content as $cnt) {
+            // get the location data for this content
+            if (isset($cnt['location_data'])) $loc = expUnserialize($cnt['location_data']);
+            $src = isset($loc->src) ? $loc->src : null;
+            if (!$db->selectObjects('sectionref', "module='" . $loc->mod . "' AND source=" . $loc->src . " AND refcount!=0")) {
+                continue; // this item is in the recycle bin
+            }
+
             if (!empty($cnt['include_in_faq'])) {
                 $cnt['title'] = $cnt['question'];
                 $cnt['body'] = $cnt['answer'];
@@ -296,7 +301,7 @@ class faqController extends expController {
                 unset($cnt['id']);
                 //build the search record and save it.
 //                $sql = "original_id=".$origid." AND ref_module='".$this->classname."'";
-                $sql = "original_id=".$origid." AND ref_module='".$this->baseclassname."'";
+                $sql = "original_id=" . $origid . " AND ref_module='" . $this->baseclassname . "'";
                 $oldindex = $db->selectObject('search',$sql);
                 if (!empty($oldindex)) {
                     $search_record = new search($oldindex->id, false, false);
@@ -308,9 +313,6 @@ class faqController extends expController {
                 //build the search record and save it.
                 $search_record->original_id = $origid;
                 $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
-                // get the location data for this content
-                if (isset($cnt['location_data'])) $loc = expUnserialize($cnt['location_data']);
-                $src = isset($loc->src) ? $loc->src : null;
                 $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'showall', 'src'=>$src)));
     //	        if (empty($search_record->title)) $search_record->title = 'Untitled';
                 $search_record->view_link = $link;

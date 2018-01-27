@@ -352,7 +352,15 @@
                     <td style="text-align:right;border:1px solid #DEDEDE;  border-left:0px;">{$order->grand_total|number_format:2}
                     </td>
                 </tr>
-
+                <tr class="{cycle values="odd, even"}">
+                    <td colspan="3" style="word-wrap:break-word; white-space: normal; border:1px solid #DEDEDE;">
+                        {if $order->comments != ""}
+                            <strong>{'Order Comments'|gettext}:</strong> {$order->comments}
+                        {else}
+                            <strong>{'Order Comments'|gettext}:</strong> {'NONE supplied'|gettext}.
+                        {/if}
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

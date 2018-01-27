@@ -27,14 +27,10 @@ class AdminerEditCalendar {
 	/** @access protected */
 	var $prepend, $langPath;
 
-//	/**
-//	* @param string text to append before first calendar usage
-//	* @param string path to language file, %s stands for language code
-//	*/
-//    function __construct($prepend = "<script type='text/javascript' src='jquery-ui/jquery.js'></script>\n<script type='text/javascript' src='jquery-ui/jquery-ui.js'></script>\n<script type='text/javascript' src='jquery-ui/jquery-ui-timepicker-addon.js'></script>\n<link rel='stylesheet' type='text/css' href='jquery-ui/jquery-ui.css'>\n", $langPath = "jquery-ui/i18n/jquery.ui.datepicker-%s.js") {
-//		$this->prepend = $prepend;
-//		$this->langPath = $langPath;
-//	}
+	/**
+	* @param string text to append before first calendar usage
+	* @param string path to language file, %s stands for language code
+	*/
     function __construct($prepend = null, $langPath = "jquery-ui/i18n/jquery.ui.datepicker-%s.js") {
   		if ($prepend === null) {
   			$prepend = "<link rel='stylesheet' type='text/css' href='jquery-ui/jquery-ui.css'>\n"
@@ -59,8 +55,9 @@ class AdminerEditCalendar {
 		}
 	}
 
-	function selectVal(&$val, $link, $field) {
-		if (preg_match("~date|time|_at|publish|_accessed|posted|created_on|last_|expires|shipped|purchased|updated|signup_cutoff|event~", $field["field"])) {
+    public function selectVal(&$val, $link, $field, $original) {
+		if (preg_match("~date|time|_at|publish|_accessed|posted|created_on|last_|expires|shipped|purchased|updated|signup_cutoff|event~", $field["field"]) ||
+            (is_numeric($original) && strlen((string)$original) === 10)) {
 			$val = '<div title="'.htmlentities(html_entity_decode(strftime('%m/%d/%y %I:%M%p',$val)),true).'">'.$val.'</div>';
 		}
 	}
@@ -96,7 +93,7 @@ class AdminerEditCalendar {
                     jQuery('#fields-" . js_escape($field['field']) . "').val(dt);
                 }";
 			return "<input id='fields-" . h($field["field"]) . "' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
-                "<input type=text id='fields-" . h($field["field"]) . "c' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . ">".
+                "<input type=hidden id='fields-" . h($field["field"]) . "c' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . ">".
                 "<script type='text/javascript' " . nonce() . ">jQuery('#fields-" . js_escape($field["field"]) . "c')."
                     . ((preg_match("~eventstart|eventend~", $field["field"])) ? "timepicker({ $timeFormat })" : "datetimepicker({ $datetimeFormat })"
 //                    : (preg_match("~_at|publish|_accessed|posted|time~", $field["field"]) ? "datetimepicker({ $datetimeFormat })"

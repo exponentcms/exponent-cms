@@ -95,6 +95,19 @@ $config = array(
             <br/><br/>
             <?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
         </div>
+        <span class="label"><?php echo gt('Database Engine'); ?>: </span>
+        <select class="form-control" name="sc[DB_ENGINE]" value="<?php echo $config['DB_ENGINE']; ?>">
+            <?PHP
+            foreach (expSettings::dropdownData("DB_ENGINE") as $key => $value) {
+                echo '<option value="' . $key . '">' . $value . '</option>';
+            }
+            ?>
+        </select>
+        <div class="control_help">
+            <?php echo gt('Don\'t change that unless you know what you are doing.'); ?>
+            <br/><br/>
+            <?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
+        </div>
         <div class="control">
             <span class="label"><?php echo gt('Address'); ?>: </span>
             <input class="text form-control" type="text" name="sc[db_host]" value="<?php echo $config['db_host']; ?>"

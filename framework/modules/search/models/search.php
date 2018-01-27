@@ -60,9 +60,9 @@ class search extends expRecord {
         $sql .= "WHERE ";
         if (ECOM) {
             $search_type = ecomconfig::getConfig('ecom_search_results');
-            if ($search_type == 'ecom') {
+            if ($search_type === 'ecom') {
                 $sql .= "ref_module = 'store' AND ";
-            } elseif ($search_type == 'products') {
+            } elseif ($search_type === 'products') {
                 $sql .= "ref_type = 'product' AND ";
             }
         }

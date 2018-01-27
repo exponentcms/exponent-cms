@@ -23,10 +23,15 @@
     {form name="passthruform" controller=cart action=preprocess}
         {*{control type="hidden" name="billingcalculator_id" value=6}*}
         {control type="hidden" name="billingcalculator_id" value=$calcid}
+        <div class="">
+            <h3>{'Additional Order Information'|gettext}</h3>
+            {ecomconfig var='additional_info' default="Please enter any additional information or instructions concerning this order"|gettext}
+            {control type=textarea name=comments rows=5 cols=60 value=$order->comments}
+        </div>
         <blockquote>
             {"You may place your order and pay with a check or money order.  If paying by check, your order will be held util we receive the check and it clears our bank account.  Money order orders will be processed upon our receipt of the money order."|gettext}
         </blockquote>
-        {control type=text name="cash_amount" label="Cash Amount"|gettext filter=money}
+        {control type=text name="cash_amount" label="Cash Amount"|gettext filter=money required=1}
         <table>
             <tr>
                 <td width="150" style="vertical-align:top;">

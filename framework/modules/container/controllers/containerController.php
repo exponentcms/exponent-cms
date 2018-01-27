@@ -260,8 +260,9 @@ class containerController extends expController {
         $js_init = '<script type="text/javascript">';
 
         foreach ($modules_list as $moduleclass) {
-            $modclass = expModules::getModuleClassName($moduleclass);
-            $module = new $modclass();
+//            $modclass = expModules::getModuleClassName($moduleclass);
+//            $module = new $modclass();
+            $module = expModules::getController($moduleclass);
 
             // Get basic module meta info
             $mod = new stdClass();

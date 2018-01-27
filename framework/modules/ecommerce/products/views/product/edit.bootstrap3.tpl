@@ -26,6 +26,11 @@
         padding-bottom: 0;
         padding-top: 0;
     }
+    h2.panel-title {
+        color: black!important;
+        font-size: inherit!important;
+        font-weight: bold;
+    }
 {/literal}
 {/css}
 
@@ -51,12 +56,13 @@
         {if $record->parent_id == 0}
             {if $record->childProduct|count}
                 <blockquote>
-                    <strong>{'Child Products:'|gettext}</strong>
+                    {toggle unique='child-products' label='Child Products'|gettext|cat:' ('|cat:($record->childProduct|count)|cat:'):' collapsed=true}
                     <ul>
                     {foreach from=$record->childProduct item=child}
                         <li><a href="{link controller='store' action='edit' id=$child->id}" title="{$child->model}">{$child->title}</a></li>
                     {/foreach}
                     </ul>
+                    {/toggle}
                 </blockquote>
             {/if}
         {else}

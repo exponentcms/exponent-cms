@@ -111,6 +111,24 @@ class searchController extends expController {
         ));
     }
 
+    /**
+     * action specific metainfo
+     *
+     * @param $request
+     * @return array
+     */
+    public function search_meta($request) {
+        if (isset($request['search_string'])) {
+            $terms = $request['search_string'];
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => true, 'nofollow' => true);
+            $metainfo['title'] = gt('Searching') . ' ' . ORGANIZATION_NAME . ' ' . gt('for') . " - " . $terms;
+            $metainfo['keywords'] = $terms;
+            $metainfo['description'] = SITE_DESCRIPTION;
+            return $metainfo;
+        }
+        return null;
+    }
+
     public static function spider() {
         global $db;
 
@@ -119,24 +137,19 @@ class searchController extends expController {
 	    $db->delete('search');
 
         $mods = array();
-        // old school modules
-//	    foreach (expModules::modules_list() as $mod) {
-////		    $name = @call_user_func(array($mod,'name'));
-//            $name = @call_user_func(array($mod,'searchName'));
-//		    if (class_exists($mod) && is_callable(array($mod,'spiderContent'))) {
-//                $mods[$name] = call_user_func(array($mod,'spiderContent'));
-//		    }
-//	    }
-
-        // 2.0 modules
-//	    foreach (expModules::listControllers() as $ctlname=>$ctl) {
-        foreach (expModules::getActiveControllersList() as $ctl) {
-            if ($ctl == "text")
-                $ctl = "navigation";
-            $ctlname = expModules::getModuleClassName($ctl);
-		    $controller = new $ctlname();
+        $navmodrun = 0;
+	    foreach (expModules::listControllers() as $ctl=>$ctlname) {
+//        foreach (expModules::getActiveControllersList() as $ctl=>$ctlname) {
+            if ($ctl === "textController") {
+                $ctl = "navigationController";
+            }
+            if ($ctl === "navigationController") {
+                $navmodrun++;
+                if ($navmodrun > 1)
+                    continue;  // we only need to spider the navigation/text module once
+            }
+		    $controller = expModules::getController($ctl);
 		    if (method_exists($controller,'isSearchable') && $controller->isSearchable()) {
-//			    $mods[$controller->name()] = $controller->addContentToSearch();
                 $mods[$controller->searchName()] = $controller->addContentToSearch();
 		    }
 	    }

@@ -47,7 +47,7 @@ class AdminerTinymce {
 <!--<script type="text/javascript" src="--><?php //echo h($this->path); ?><!--"></script>-->
 <script type="text/javascript" <?php echo nonce(); ?>>
 tinyMCE.init({
-	mode: 'none',
+//	mode: 'none',
 	plugins: "advlist,autolink,lists,link,charmap,print,preview,hr,anchor,pagebreak" +
              ",searchreplace,wordcount,visualblocks,visualchars,code,fullscreen" +
              ",nonbreaking,save,table,contextmenu,directionality" +
@@ -55,6 +55,7 @@ tinyMCE.init({
 	browser_spellcheck: true,
 	entity_encoding: 'raw',
 	relative_urls : false,
+    convert_urls: false,
 	remove_script_host : true,
 	document_base_url : '<?php echo PATH_RELATIVE; ?>',
 //	image_advtab: true,
@@ -88,7 +89,7 @@ tinyMCE.init({
 <?php
 	}
 
-	function selectVal(&$val, $link, $field) {
+    public function selectVal(&$val, $link, $field, $original) {
         if (preg_match("~body~", $field["field"]) && $val != '&nbsp;') {
 			$shortened = (substr($val, -10) == "<i>...</i>");
 			if ($shortened) {
@@ -110,7 +111,7 @@ tinyMCE.init({
 
 	function editInput($table, $field, $attrs, $value) {
         if (preg_match("~text~", $field["type"]) && preg_match("~body~", $field["field"])) {
-			return "<textarea$attrs id='fields-" . h($field["field"]) . "' rows='6' cols='50'>" . h($value) . "</textarea><script type='text/javascript' <?php echo nonce(); ?>>
+			return "<textarea$attrs id='fields-" . h($field["field"]) . "' rows='6' cols='50'>" . h($value) . "</textarea><script type='text/javascript' " . nonce() . ">
 tinyMCE.remove(tinyMCE.get('fields-" . js_escape($field["field"]) . "') || { });
 tinyMCE.execCommand('mceAddEditor', true, 'fields-" . js_escape($field["field"]) . "');
 document.getElementById('form').onsubmit = function () {

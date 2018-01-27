@@ -53,9 +53,12 @@
                         {group label="Cart"|gettext}
                             {control type="text" name="cart_title_text" label="Shopping Cart Title"|gettext value=$config.cart_title_text description='The title that appears at the top of your shopping cart.'|gettext}
                             {control type="html" name="cart_description_text" label="Shopping Cart Description Text"|gettext value=$config.cart_description_text description='This will be displayed at the top of your shopping cart.'|gettext}
-                            {control type="html" name="policy" label="Store Policy"|gettext value=$config.policy description='Policy will be available in checkout view'|gettext}
                         {/group}
                         {group label="Checkout"|gettext}
+                            {control type="html" name="policy" label="Store Policy"|gettext value=$config.policy description='Store Policy will be available at checkout'|gettext}
+                            {control type="html" name="additional_info" label="Additional Order Information"|gettext value=$config.additional_info description='Details concerning additional order information comments at checkout'|gettext}
+                        {/group}
+                        {group label="Checkout Confirmation"|gettext}
                             {control type="text" name="checkout_title_top" label="Checkout Title"|gettext value=$config.checkout_title_top description='The title that appears at the top of your final confirmation checkout page.'|gettext}
                             {control type="html" name="checkout_message_top" label='Checkout Message - Top'|gettext rows=6 cols=60 value=$config.checkout_message_top description='This will be displayed on the top of your final confirmation checkout page.'|gettext}
                             {control type="html" name="checkout_message_bottom" label='Checkout Message - Bottom'|gettext rows=6 cols=60 value=$config.checkout_message_bottom description='This will be displayed on the bottom of your final confirmation checkout page.'|gettext}

@@ -22,11 +22,13 @@
         {if !$calc->configdata.incontext}
             {form controller=cart action=preprocess id=paypalexpress}
                 {control type="hidden" name="billingcalculator_id" value=$calcid}
+                {$billing->form.$calcid}{br}
                 <input id="continue-checkout" type="image" name="submit" value="1" src="https://fpdbs.paypal.com/dynamicimageweb?cmd=_dynamic-image&locale={$smarty.const.LOCALE}">
             {/form}
         {else}
             {form controller=cart action=preprocess id=paypalexpressinc}
                 {control type="hidden" name="billingcalculator_id" value=$calcid}
+                {$billing->form.$calcid}{br}
                 {control type="hidden" name="in_context" value=1}
             {/form}
             {literal}

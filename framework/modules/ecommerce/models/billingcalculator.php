@@ -95,7 +95,14 @@ class billingcalculator extends expRecord {
     }
 
     function userForm($config_object = null, $user_data = null) {
-        return '';
+        $form = '<h3>' . gt('Additional Order Information') . '</h3>';
+        $form .= ecomconfig::getConfig('additional_info');
+        $comments = new texteditorcontrol("", 5, 60);
+        $comments->id = "comments";
+        $comments->horizontal = true;
+        $form .= $comments->toHTML(gt(""), "comments");
+        $form .= "<div style=\"clear:both\"></div>";
+        return $form;
     }
 
     /**
@@ -135,7 +142,7 @@ class billingcalculator extends expRecord {
     }
 
     function configForm() {
-        if (bs3(true)) {
+        if (bs3(true) || bs4()) {
             $tpl = 'configure.bootstrap3.tpl';
             if (!file_exists(BASE . 'framework/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/' . $tpl)) {
                 $tpl = 'configure.tpl';

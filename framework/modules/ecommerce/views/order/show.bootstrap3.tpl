@@ -565,6 +565,13 @@
                         </table>
                     </div>
                 </div>
+                <div class="panel">
+                    <!-- user comments  -->
+                    <div class="panel-heading">
+                        {'Customer Order Comments'|gettext}
+                    </div>
+                    <div>{$order->comments}</div>
+                </div>
             </div>
 
             <!-- 2nd column -->

@@ -59,12 +59,12 @@ class cash extends billingcalculator {
     }
 
     function userForm($config_object = null, $user_data = null) {
-        $form = '';
+        $form = parent::userForm();
 
-        $cash_amount = new textcontrol(0, 20, false, 20, "money", true);
-        $cash_amount->filter = 'money';
-        $cash_amount->id = "cash_amount";
-        $form .= $cash_amount->toHTML(gt("Cash Amount"), "cash_amount");
+//        $cash_amount = new textcontrol(0, 20, false, 20, "money", true);
+//        $cash_amount->filter = 'money';
+//        $cash_amount->id = "cash_amount";
+//        $form .= $cash_amount->toHTML(gt("Cash Amount"), "cash_amount");
 
         return $form;
     }

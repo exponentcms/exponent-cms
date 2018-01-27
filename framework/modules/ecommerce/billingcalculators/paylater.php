@@ -69,7 +69,9 @@ class paylater extends billingcalculator {
     }
 
     function userForm($config_object = null, $user_data = null) {
-        $form = '<h4>' . gt('Pay for this purchase later.') . '</h4>';
+        $form = parent::userForm();
+
+        $form .= '<h4>' . gt('Pay for this purchase later.') . '</h4>';
 
         $cash_amount = new hiddenfieldcontrol(0, 20, false, 20, "money", true);
         $cash_amount->filter = 'money';

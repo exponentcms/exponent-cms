@@ -69,7 +69,7 @@ class creditcard extends billingcalculator {
         $opts->exp_year = isset($this->opts->exp_year) ? $this->opts->exp_year : null;
         $opts->cvv = isset($this->opts->cvv) ? $this->opts->cvv : null;
 
-        $form = '';
+        $form = parent::userForm();
         /* FIXME: hard coded options!!
           if ($config_object->accept_amex) $cards["AmExCard"] = "American Express";
         if ($config_object->accept_discover) $cards["DiscoverCard"] = "Discover";

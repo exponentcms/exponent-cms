@@ -29,7 +29,7 @@ Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
 Bootswatch3,3.3.7,bootswatch.com/,3.3.7,change 1st line variables.less comment to output to .css file
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome4,4.7.0,fortawesome.github.com/Font-Awesome,4.7.0,
-Adminer,4.4.0exp,www.adminer.org,4.4.0,"customized plugins: tinymce, edit-textarea & edit-calendar; pre 4.4.1 tweaks"
+Adminer,4.5.0exp,www.adminer.org,4.5.0,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.2,github.com/LPology/Simple-Ajax-Uploader,2.6.2,also converted to yui module 2.5.3
 normalize.css,7.0.0,necolas.github.com/normalize.css/,7.0.0,auto included in bootstrap 3
 MediaElement.js,4.2.8,mediaelementjs.com/,4.2.8,
@@ -40,7 +40,7 @@ Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 CKEditor,4.8.0,ckeditor.com,4.8.0,"add fieldinsert (exp), tableresize, sourcedialog, image2 fileupload & imageupload widgets & kama skin"
-TinyMCE,4.7.4,tinymce.com,4.7.4,"add fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
+TinyMCE,4.7.5,tinymce.com,4.7.5,"add fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 PLUpload,2.3.6,github.com/moxiecode/plupload,2.3.6/3.1.1,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 elFinder,2.1.31,elfinder.org,2.1.31,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox

@@ -14,9 +14,10 @@
  *}
 
 <h1>{'Products with Data Issues'|gettext}</h1>
-<blockquote>{'There are'|gettext} {$count} {'products that have non-unicode characters in it.'|gettext}</blockquote>
+<blockquote>{'There are'|gettext} {$count} {'products that have non-unicode characters.'|gettext}</blockquote>
 
  <div id="products">
+     {if $count}
 	<table id="prods" class="exp-skin-table" style="width:95%">
         <thead>
             <tr>
@@ -45,6 +46,7 @@
             {/foreach}
         </tbody>
 	</table>
-	{br}
-	<a href="{link controller=store action=cleanNonUnicodeProducts}" onclick="return confirm('{"Are you sure you want to clean all of the products shown above?"|gettext}');">{'Clean Data'|gettext}</a>
+     {br}
+     {/if}
+	<a href="{link controller=store action=cleanNonUnicodeProducts}" class="{button_style size=large color=blue} exp-ecom-link" onclick="return confirm('{"Are you sure you want to clean all of the products shown above?"|gettext}');">{'Clean Data Issues'|gettext}</a>
 </div>
