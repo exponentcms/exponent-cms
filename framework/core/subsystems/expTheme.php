@@ -501,19 +501,19 @@ class expTheme
         global $sectionObj, $router;
 
         $metainfo = array();
-        if ($router->url_type === 'post') {
+        // get meta info based on the action
+        if ($router->url_type === 'post' && !empty($router->params['controller'])) {
             $cont = $router->params['controller'];
         } elseif ($router->url_type === 'action' && !empty($router->url_parts[0])) {
             $cont = $router->url_parts[0];
         }
 //        if (self::inAction() && (!empty($router->url_parts[0]) && expModules::controllerExists($router->url_parts[0]))) {
-        if (self::inAction() && expModules::controllerExists($cont)) {
-//            $classname = expModules::getControllerClassName($router->url_parts[0]);
-//            $controller = new $classname();
+        if (self::inAction() && !empty($cont) && expModules::controllerExists($cont)) {
 //            $controller = expModules::getController($router->url_parts[0]);
             $controller = expModules::getController($cont);
             $metainfo = $controller->metainfo();
         }
+        // otherwise get metainfo based on the page
         if (empty($metainfo)) {
             $metainfo['title'] = empty($sectionObj->page_title) ? SITE_TITLE : $sectionObj->page_title;
             $metainfo['keywords'] = empty($sectionObj->keywords) ? SITE_KEYWORDS : $sectionObj->keywords;
