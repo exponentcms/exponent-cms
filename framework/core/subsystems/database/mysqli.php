@@ -128,14 +128,22 @@ class mysqli_database extends database {
             $sql .= ", INDEX (`" . $key . "`" . (($value > 0) ? "(" . $value . ")" : "") . ")";
         }
         $sql .= ")";
-        if (defined(DB_ENCODING)) {
-            $sql .= " ENGINE = MYISAM CHARACTER SET " . DB_ENCODING;
+        if (isset($info[DB_TABLE_ENGINE])) {
+            $db_engine = $info[DB_TABLE_ENGINE];
+        } elseif (defined(DB_ENGINE)) {
+            $db_engine = DB_ENGINE;
         } else {
-            $sql .= " ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci";
+            $db_engine = 'MYISAM';
         }
+        if (defined(DB_ENCODING)) {
+            $db_encoding = DB_ENCODING;
+        } else {
+            $db_encoding = 'utf8 COLLATE utf8_unicode_ci';
+        }
+        $sql .= ", ENGINE = " . $db_engine . " CHARACTER SET " . $db_encoding;
 
         if (isset($info[DB_TABLE_COMMENT])) {
-            $sql .= " COMMENT = '" . $info[DB_TABLE_COMMENT] . "'";
+            $sql .= ", COMMENT = '" . $info[DB_TABLE_COMMENT] . "'";
         }
 
         @mysqli_query($this->connection, $sql);
@@ -212,6 +220,7 @@ class mysqli_database extends database {
                     }
                     $sql = substr($sql, 0, -1);
                     @mysqli_query($this->connection, $sql);
+                    $modified = true;
                 }
             }
         }
@@ -227,6 +236,7 @@ class mysqli_database extends database {
                 }
                 $sql = substr($sql, 0, -1);
                 @mysqli_query($this->connection, $sql);
+                $modified = true;
             }
 
             // alter any existing columns here
@@ -297,6 +307,16 @@ class mysqli_database extends database {
             $sql .= " ADD INDEX (`" . $key . "`" . (($value > 0) ? "(" . $value . ")" : "") . ")";
             $sep = true;
         }
+
+        // alter table engine
+        if (isset($info[DB_TABLE_ENGINE])) {
+            $sql .= ", ENGINE = " . $info[DB_TABLE_ENGINE];
+        }
+        // alter table comment
+        if (isset($info[DB_TABLE_COMMENT])) {
+            $sql .= ", COMMENT = '" . $info[DB_TABLE_COMMENT] . "'";
+        }
+
         @mysqli_query($this->connection, $sql);
 
         //Get the return code

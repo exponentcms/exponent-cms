@@ -90,6 +90,9 @@ $warning = array();
             if (!defined('DB_ENCODING')) {
                 define('DB_ENCODING', $config["DB_ENCODING"]);
             }
+            if (!defined('DB_ENGINE')) {
+                define('DB_ENGINE', $config["DB_ENGINE"]);
+            }
         }
         $db = expDatabase::connect(
             $config['db_user'],

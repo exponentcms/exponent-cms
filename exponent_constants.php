@@ -393,6 +393,11 @@ define('TABLE_ALTER_FAILED', 202);
  * for the table (if the database engine in use supports table comments)
  */
 define('DB_TABLE_COMMENT', 301);
+/**
+ * Table Meta Info : Table Engine
+ * If specified in a table will be created or altered to this db engine
+ */
+define('DB_TABLE_ENGINE', 302);
 
 /**
  * Form Meta Info : Form Field Type

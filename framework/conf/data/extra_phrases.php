@@ -240,5 +240,7 @@
     gt("You don\'t have permission to");
     gt("(read more)");
     gt("Default time zone for this site CAUTION: Changes may affect calendars and other features using date functions.");
+    gt("Exponent CMS Database");
+    gt("You must already be logged into Exponent!");
 
 ?>
