@@ -127,7 +127,17 @@ class AdminerPlugin extends Adminer {
 		return $this->_applyPlugin(__FUNCTION__, $args);
 	}
 
+	function csp() {
+		$args = func_get_args();
+		return $this->_applyPlugin(__FUNCTION__, $args);
+	}
+
 	function head() {
+		$args = func_get_args();
+		return $this->_applyPlugin(__FUNCTION__, $args);
+	}
+
+	function css() {
 		$args = func_get_args();
 		return $this->_applyPlugin(__FUNCTION__, $args);
 	}
@@ -307,6 +317,11 @@ class AdminerPlugin extends Adminer {
 		return $this->_applyPlugin(__FUNCTION__, $args);
 	}
 
+	function editHint($table, $field, $value) {
+		$args = func_get_args();
+		return $this->_applyPlugin(__FUNCTION__, $args);
+	}
+
 	function processInput($field, $value, $function = "") {
 		$args = func_get_args();
 		return $this->_applyPlugin(__FUNCTION__, $args);
@@ -333,6 +348,11 @@ class AdminerPlugin extends Adminer {
 	}
 
 	function dumpHeaders($identifier, $multi_table = false) {
+		$args = func_get_args();
+		return $this->_applyPlugin(__FUNCTION__, $args);
+	}
+
+	function importServerPath() {
 		$args = func_get_args();
 		return $this->_applyPlugin(__FUNCTION__, $args);
 	}

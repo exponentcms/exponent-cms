@@ -47,7 +47,7 @@ class AdminerTinymce {
 <!--<script type="text/javascript" src="--><?php //echo h($this->path); ?><!--"></script>-->
 <script type="text/javascript" <?php echo nonce(); ?>>
 tinyMCE.init({
-	mode: 'none',
+//	mode: 'none',
 	plugins: "advlist,autolink,lists,link,charmap,print,preview,hr,anchor,pagebreak" +
              ",searchreplace,wordcount,visualblocks,visualchars,code,fullscreen" +
              ",nonbreaking,save,table,contextmenu,directionality" +
@@ -55,6 +55,7 @@ tinyMCE.init({
 	browser_spellcheck: true,
 	entity_encoding: 'raw',
 	relative_urls : false,
+    convert_urls: false,
 	remove_script_host : true,
 	document_base_url : '<?php echo PATH_RELATIVE; ?>',
 //	image_advtab: true,

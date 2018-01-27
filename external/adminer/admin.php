@@ -132,7 +132,7 @@ function adminer_object() {
            <h3><?php echo gt('You must already be logged into Exponent!'); ?></h3>
             <?php
             global $user;
-            if (!$user->isSuperAdmin()) {
+            if (!empty($user->id) && !$user->isSuperAdmin()) {
                 return false;
             }
             ?>
@@ -170,8 +170,8 @@ function adminer_object() {
 }
 
 // include original Adminer or Adminer Editor
-include "./adminer-4.4.0-mysql.php";
-//include "./editor-4.3.1-mysql.php";
+include "./adminer-4.5.0-mysql.php";
+//include "./editor-4.5.0-mysql.php";
 
 //if (SITE_WYSIWYG_EDITOR != 'tinymce') {
 //?>
