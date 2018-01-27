@@ -1110,6 +1110,37 @@ class fileController extends expController {
         exit(''); // Exit, since we are exporting.
     }
 
+    public function list_bad_files() {
+    global $db;
+
+        // missing files in db
+        $missing = array();
+        foreach (expFile::selectAllFiles() as $file) {
+            if (!is_file(BASE . $file->directory . $file->filename)) {
+                $delfile = new expFile($file->id);
+                $missing[] = $delfile->path_relative;
+            }
+        }
+
+        // finally add existing files not in db and update existing files
+        $orphan = array();
+        foreach (expFile::listFlat(BASE . 'files', true, null, array(), BASE) as $path => $file) {
+            if ($file[0] !== '.') {
+                $nfile = str_replace(array('(', ')'), array('\(', '\)'), $file);
+                $npath = preg_replace('/' . $nfile . '/', '', $path, 1);  //fixme doesn't account for regex characters like (1)
+                $dbfile = $db->selectObject('expFiles', "filename='" . $nfile . "' AND directory='" . $npath . "'");
+                if (empty($dbfile)) {
+                    $orphan[] = $npath . $nfile;
+                }
+            }
+        }
+
+        assign_to_template(array(
+            'missing' => $missing,
+            'orphan'  => $orphan,
+        ));
+    }
+
 }
 
 ?>

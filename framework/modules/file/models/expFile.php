@@ -280,13 +280,13 @@ class expFile extends expRecord {
         // or derived, filename can be added to pathing settings
         //if ( $this->directory == UPLOAD_DIRECTORY_RELATIVE ) {
         if (!stristr($this->directory, BASE)) {
-            // Place system level web root
+            // Place url
             $this->url = URL_FULL . $this->directory . $this->filename;
 
             // Place system level OS root
             $this->path = BASE . $this->directory . $this->filename;
 
-            // Place system OS relative path
+            // Place web server relative path
             $this->path_relative = PATH_RELATIVE . $this->directory . $this->filename;
         } else {
             // Otherwise, the URL is not set since we can't use it, nether is
