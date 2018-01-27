@@ -27,7 +27,7 @@
 class update_events extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
 //	protected $to_version = '2.3.2';  // orders table grows extremely large with every user visit to an ecommerce site
-    public $optional = true;
+//    public $optional = true;
 
 	/**
 	 * name/title of upgrade script
@@ -61,7 +61,13 @@ class update_events extends upgradescript {
 		$events_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."event` WHERE `id` NOT IN (SELECT `event_id` FROM `".$db->prefix."eventdate`)");
 		$db->delete("event","`id` NOT IN (SELECT `event_id` FROM `".$db->prefix."eventdate`)");
 		// let's update the search index to reflect the current events
-		searchController::spider();
+        if ($events_count) {
+            $ec = new eventController();
+            $db->delete('search', "ref_module='" . $ec->baseclassname . "' AND ref_type='" . $ec->searchCategory() . "'");
+            $ec->addContentToSearch();
+
+        }
+
 		return ($events_count?$events_count:gt('No'))." ".gt("orphaned Events")." ".gt("were found and removed from the database.");
 	}
 }
