@@ -1064,8 +1064,9 @@ class usersController extends expController {
         if (!empty($this->params['mod']) && $user->isAdmin()) {
             $loc = expCore::makeLocation($this->params['mod'], isset($this->params['src']) ? $this->params['src'] : null, isset($this->params['int']) ? $this->params['int'] : null);
             $users = array();
-            $modclass = expModules::getModuleClassName(($loc->mod));
-            $mod = new $modclass();
+//            $modclass = expModules::getModuleClassName($loc->mod);
+//            $mod = new $modclass();
+            $mod = expModules::getController($loc->mod);
             $perms = $mod->permissions($loc->int);
             $have_users = 0;
             foreach (user::getAllUsers(false) as $u) {
@@ -1163,8 +1164,9 @@ class usersController extends expController {
         if (!empty($this->params['mod']) && $user->isAdmin()) {
             $loc = expCore::makeLocation($this->params['mod'], isset($this->params['src']) ? $this->params['src'] : null, isset($this->params['int']) ? $this->params['int'] : null);
             $users = array(); // users = groups
-            $modclass = expModules::getModuleClassName($loc->mod);
-            $mod = new $modclass();
+//            $modclass = expModules::getModuleClassName($loc->mod);
+//            $mod = new $modclass();
+            $mod = expModules::getController($loc->mod);
             $perms = $mod->permissions($loc->int);
 
             foreach (group::getAllGroups() as $g) {

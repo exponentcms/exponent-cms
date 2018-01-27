@@ -386,7 +386,7 @@ class expModules {
    //	            $controller = new $state->module();
                    $controller = self::getController($state->module);
    	            if (!empty($controller->useractions)) {
-   		            $ctls[] = $state->module;
+   		            $ctls[expModules::getModuleClassName($state->module)] = $state->module;
    	            }
    	        }
    	    }
