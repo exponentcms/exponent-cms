@@ -584,23 +584,6 @@ class product extends expRecord {
         return true;
     }
 
-    public function beforeDelete() {
-        $this->deleteOptions();
-        $this->deleteCrosssellItems();
-        $this->deleteContentFromSearch();
-    }
-
-    private function deleteOptions() {
-        global $db;
-        $db->delete('option', 'product_id=' . $this->id);
-        $db->delete('optiongroup', 'product_id=' . $this->id);
-    }
-
-    private function deleteCrosssellItems() {
-        global $db;
-        $db->delete('crosssellItem_product', 'product_type="' . $this->product_type . '" AND (product_id=' . $this->id . ' OR crosssellItem_id=' . $this->id . ')');
-    }
-
     protected function getAttachableItems() {
         if ($this->classname != $this->product_type) $this->classname = $this->product_type;
         parent::getAttachableItems();
@@ -734,32 +717,59 @@ class product extends expRecord {
      * @return bool
      */
     public function addContentToSearch() {
-        global $db, $router;
+        global $db;
 
-        //only add top level products, not children
-        if ($this->parent_id != 0) return true;
+        // unlike controller->addContentToSearch() we only handle a single item;
+        // only add top level products, not children
+        if ($this->parent_id != 0)
+            $product = new product($this->parent_id);
+        else
+            $product = $this;
 
-        $exists = $db->selectObject('search', "category='Products' AND ref_module='store' AND original_id = " . $this->id);
+        $exists = $db->selectObject('search', "original_id = " . $product->id . " AND ref_module='" . $product->classname . "' AND ref_type='" . $product->product_type . "'");
 
         $search = new stdClass();
-//        $search->category = 'Products';
-//        $search->ref_module = 'store';
-//        $search->ref_type = 'product';
-        $search->ref_module  = $this->classname;
-        $search->ref_type = $this->product_type;
-        $prod = new $search->ref_type();
-        $search->category = $prod->product_name;
+        $search->category = $product->product_name;
+        $search->ref_module  = $product->classname;
+        $search->ref_type = $product->product_type;
+        $search->posted = empty($product->created_at) ? null : $product->created_at;
 
-        $search->original_id = $this->id;
-        $search->title = $this->title . " SKU: " . $this->model;
-        //$search->view_link = $router->buildUrlByPageId($section->id);
-        $link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => 'store', 'action' => 'show', 'title' => $this->sef_url)));
-        $search->view_link = $link;
-        $search->body = $this->body;
-        $search->keywords = $this->keywords;
+        $search->original_id = $product->id;
+        $search->title = $product->title;
+        if (ecomconfig::getConfig('ecom_search_results') != '') {
+            // we only want a picture if we are an ecom only type search since we don't include search images in other modules
+            $search->title = (isset($product->expFile['mainimage'][0]) ? '<img src="' . PATH_RELATIVE . 'thumb.php?id=' . $product->expFile['mainimage'][0]->id . '&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />' : '') . $search->title;
+        }
+        $search->view_link = str_replace(URL_FULL, '', makeLink(array('controller' => 'store', 'action' => 'show', 'title' => $product->sef_url)));
 
-        //eDebug($exists);
-        //eDebug($search,true);
+        $search->body = $product->body;
+        $children_titles = $db->selectColumn('product','title','parent_id=' . $product->id);
+        $cnt = count($children_titles);
+        if ($cnt) {
+            $search->body .= " - ";
+            $loopcnt = 1;
+            foreach ($children_titles as $child) {
+                $search->body .= $child;
+                if ($loopcnt < $cnt)
+                    $search->body .= " - ";
+                $loopcnt++;
+            }
+        }
+
+        $search->keywords = $product->model;
+        $children_models = $db->selectColumn('product','model','parent_id=' . $product->id);
+        $cnt = count($children_models);
+        if ($cnt) {
+            $search->keywords .= ", ";
+            $loopcnt = 1;
+            foreach ($children_models as $model) {
+                $search->keywords .= $model;
+                if ($loopcnt < $cnt)
+                    $search->keywords .= ", ";
+                $loopcnt++;
+            }
+        }
+
         if (empty($exists))
             $db->insertObject($search, 'search');
         else {
@@ -770,21 +780,17 @@ class product extends expRecord {
         return true;
     }
 
-    private function deleteContentFromSearch() {
-        global $db;
-        $db->delete('search', "category='Products' AND ref_module='store' AND original_id = " . $this->id);
-    }
 
     static public function canView($id) {
         global $db;
+
         if ($db->selectValue('product', 'active_type', 'id=' . $id) == 2) return false;
 
         return true;
         //check if category is
     }
 
-    public function paginationCallback(&$item)
-    {
+    public function paginationCallback(&$item) {
         // add passed properties to the object and pass back an instantiated object
         $item = (object) array_merge((array) $this, (array) $item);
         $item = expCore::cast($item, 'product');

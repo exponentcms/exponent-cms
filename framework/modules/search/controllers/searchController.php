@@ -137,24 +137,19 @@ class searchController extends expController {
 	    $db->delete('search');
 
         $mods = array();
-        // old school modules
-//	    foreach (expModules::modules_list() as $mod) {
-////		    $name = @call_user_func(array($mod,'name'));
-//            $name = @call_user_func(array($mod,'searchName'));
-//		    if (class_exists($mod) && is_callable(array($mod,'spiderContent'))) {
-//                $mods[$name] = call_user_func(array($mod,'spiderContent'));
-//		    }
-//	    }
-
-        // 2.0 modules
-//	    foreach (expModules::listControllers() as $ctlname=>$ctl) {
-        foreach (expModules::getActiveControllersList() as $ctl) {
-            if ($ctl == "text")
-                $ctl = "navigation";
-            $ctlname = expModules::getModuleClassName($ctl);
-		    $controller = new $ctlname();
+        $navmodrun = 0;
+	    foreach (expModules::listControllers() as $ctl=>$ctlname) {
+//        foreach (expModules::getActiveControllersList() as $ctl=>$ctlname) {
+            if ($ctl === "textController") {
+                $ctl = "navigationController";
+            }
+            if ($ctl === "navigationController") {
+                $navmodrun++;
+                if ($navmodrun > 1)
+                    continue;  // we only need to spider the navigation/text module once
+            }
+		    $controller = expModules::getController($ctl);
 		    if (method_exists($controller,'isSearchable') && $controller->isSearchable()) {
-//			    $mods[$controller->name()] = $controller->addContentToSearch();
                 $mods[$controller->searchName()] = $controller->addContentToSearch();
 		    }
 	    }

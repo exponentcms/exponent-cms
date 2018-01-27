@@ -430,12 +430,10 @@ class navigationController extends expController {
     function addContentToSearch() {
         global $db;
 
-        //global $sections;
-        //		global $router;
-//        $db->delete('search', "ref_module='navigation' AND ref_type='section'");
+        // let's rebuild this search index from scratch
         $db->delete('search', "ref_module='".$this->baseclassname."' AND ref_type='section'");
         // this now ensures we get internal pages, instead of relying on the global $sections, which does not.
-        $sections = $db->selectObjects('section', 'active=1');
+        $sections = $db->selectObjects('section', 'active=1 AND (alias_type = 0 OR alias_type = 3)');
         foreach ($sections as $section) {
             $search_record = new stdClass();
 //            $search_record->category = 'Webpages';
@@ -452,12 +450,12 @@ class navigationController extends expController {
             if ($link . '/' == URL_FULL) $link = '';
             $search_record->view_link = $link;
             $search_record->body      = $section->description;
-//            $search_record->keywords  = $section->keywords;  // fixme - we do NOT use this in a search
+            $search_record->keywords  = $section->keywords;
             // now we're going to grab all the textmodules on this page and build the body for the page based off the content
             // of all the text module added together.
             $loc = expCore::makeLocation('text');
             $controllername = 'text';
-            foreach ($db->selectObjects('sectionref', "module='" . $controllername . "' AND section=" . $section->id) as $module) {
+            foreach ($db->selectObjects('sectionref', "module='" . $controllername . "' AND section=" . $section->id . " AND refcount!=0") as $module) {
                 $loc->src   = $module->source;
 //                $controller = new $controllername();
                 $controller = expModules::getController($controllername);
@@ -467,7 +465,7 @@ class navigationController extends expController {
                 foreach ($textitems as $textitem) {
                     if (!empty($textitem)) {
                         $search_record->body .= " " . $textitem->title . ' - ' . search::removeHTML($textitem->body) . ' ';
-//                        $search_record->keywords .= " " . $textitem->title;  // fixme - we do NOT use this in a search
+//                        $search_record->keywords .= " " . $textitem->title;  // fixme - we do NOT have these
                     }
                 }
             }

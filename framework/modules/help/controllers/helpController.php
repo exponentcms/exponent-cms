@@ -410,8 +410,8 @@ class helpController extends expController {
 	    if (empty($id)) {
 	        self::copydocs($current_version->id, $version->id);
 	    }
-        // let's update the search index to reflect the current help version
-        searchController::spider();
+        // let's update the help search index to reflect the current help version
+	    $this->addContentToSearch();
 
 	    flash('message', gt('Saved help version').' '.$version->version);
 	    expHistory::back();
@@ -429,9 +429,8 @@ class helpController extends expController {
 	    $version = new help_version($id);
 	    $this->params['is_current'] = 1;
 	    $version->update($this->params);
-        // let's update the search index to reflect the current help version
-        searchController::spider();
-
+        // let's update the help search index to reflect the current help version
+        $this->addContentToSearch();
 	    flash('message', gt('Changed active help version to').' '.$version->version);
 	    expHistory::back();
 	}
@@ -471,43 +470,46 @@ class helpController extends expController {
    	function addContentToSearch() {
         global $db;
 
-        $count = 0;
-//        $help = new help();
+        // we only want the current version of help docs
         $where = 'help_version_id="'.help_version::getCurrentHelpVersionId().'"';
-//        $where .= (!empty($this->params['id'])) ? ' AND id='.$this->params['id'] : null;
         $modelname = $this->basemodel_name;
         $where .= (!empty($this->$modelname->id)) ? ' AND id=' . $this->$modelname->id : null;
-        $content = $db->selectArrays($this->$modelname->tablename,$where);
-        foreach ($content as $cnt) {
-           $origid = $cnt['id'];
-           unset($cnt['id']);
+        $total = $db->countObjects($this->$modelname->tablename, $where);
+        $count = 0;
+        for ($i = 0; $i < $total; $i += 100) {
+            $orderby = 'id LIMIT ' . ($i) . ', 100';
+            $content = $db->selectArrays($this->$modelname->tablename, $where, $orderby);
+            foreach ($content as $cnt) {
+                $origid = $cnt['id'];
+                unset($cnt['id']);
 
-           // get the location data for this content
-//           if (isset($cnt['location_data'])) $loc = expUnserialize($cnt['location_data']);
-//           $src = isset($loc->src) ? $loc->src : null;
-//           $search_record = new search($cnt, false, false);
-           //build the search record and save it.
-           $sql = "original_id=" . $origid . " AND ref_module='" . $this->baseclassname . "'";
-           $oldindex = $db->selectObject('search', $sql);
-           if (!empty($oldindex)) {
-               $search_record = new search($oldindex->id, false, false);
-               $search_record->update($cnt);
-           } else {
-               $search_record = new search($cnt, false, false);
-           }
+                // get the location data for this content
+//                if (isset($cnt['location_data'])) $loc = expUnserialize($cnt['location_data']);
+//                $src = isset($loc->src) ? $loc->src : null;
+//                $search_record = new search($cnt, false, false);
+                //build the search record and save it.
+                $sql = "original_id=" . $origid . " AND ref_module='" . $this->baseclassname . "'";
+                $oldindex = $db->selectObject('search', $sql);
+                if (!empty($oldindex)) {
+                    $search_record = new search($oldindex->id, false, false);
+                    $search_record->update($cnt);
+                } else {
+                    $search_record = new search($cnt, false, false);
+                }
 
-           $search_record->original_id = $origid;
-           $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
-//           $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$cnt['sef_url'])));
-           $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$cnt['sef_url'])));
-//	        if (empty($search_record->title)) $search_record->title = 'Untitled';
-           $search_record->view_link = $link;
-//           $search_record->ref_module = $this->classname;
-           $search_record->ref_module = $this->baseclassname;
-           $search_record->category = $this->searchName();
-           $search_record->ref_type = $this->searchCategory();
-           $search_record->save();
-           $count++;
+                $search_record->original_id = $origid;
+                $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
+//                $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$cnt['sef_url'])));
+                $link = str_replace(URL_FULL, '', makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
+//	              if (empty($search_record->title)) $search_record->title = 'Untitled';
+                $search_record->view_link = $link;
+//                $search_record->ref_module = $this->classname;
+                $search_record->ref_module = $this->baseclassname;
+                $search_record->category = $this->searchName();
+                $search_record->ref_type = $this->searchCategory();
+                $search_record->save();
+                $count++;
+            }
         }
 
         return $count;

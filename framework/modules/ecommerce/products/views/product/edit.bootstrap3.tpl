@@ -26,6 +26,11 @@
         padding-bottom: 0;
         padding-top: 0;
     }
+    h2.panel-title {
+        color: black!important;
+        font-size: inherit!important;
+        font-weight: bold;
+    }
 {/literal}
 {/css}
 

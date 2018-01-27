@@ -720,9 +720,9 @@ abstract class expController {
         // if this module is searchable lets delete spidered content
         if ($this->isSearchable()) {
             $search = new search();
-//            $content = $search->find('first', 'original_id=' . $this->params['id'] . " AND ref_module='" . $this->classname . "'");
             $content = $search->find('first', 'original_id=' . $this->params['id'] . " AND ref_module='" . $this->baseclassname . "'");
-            if (!empty($content->id)) $content->delete();
+            if (!empty($content->id))
+                $content->delete();
         }
 
         expHistory::back();
@@ -1216,7 +1216,6 @@ abstract class expController {
     public function addContentToSearch() {
         global $db;
 
-        $count = 0;
 //        $model = new $this->basemodel_name(null, false, false);
 //        $where = (!empty($this->params['id'])) ? 'id=' . $this->params['id'] : null;
         $modelname = $this->basemodel_name;
@@ -1224,7 +1223,17 @@ abstract class expController {
         $supports_revisions = $this->$modelname->supports_revisions && ENABLE_WORKFLOW;
         $needs_approval = true;
         $content = $db->selectArrays($this->$modelname->tablename, $where, null, $supports_revisions, $needs_approval);
+        $count = 0;
         foreach ($content as $cnt) {
+            // get the location data for this content
+            if (isset($cnt['location_data']))
+                $loc = expUnserialize($cnt['location_data']);
+            $src = isset($loc->src) ? $loc->src : null;
+            // we don't want stuff in the recycle bin
+            if ($this::hasSources() && !$db->selectObjects('sectionref', "module='" . $loc->mod . "' AND source=" . $loc->src . " AND refcount!=0")) {
+                continue; // this item is in the recycle bin
+            }
+
             $origid = $cnt['id'];
             unset($cnt['id']);
            //build the search record and save it.
@@ -1241,10 +1250,6 @@ abstract class expController {
             //build the search record and save it.
             $search_record->original_id = $origid;
             $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
-            // get the location data for this content
-            if (isset($cnt['location_data']))
-                $loc = expUnserialize($cnt['location_data']);
-            $src = isset($loc->src) ? $loc->src : null;
             if (!empty($cnt['sef_url'])) {
                 $link = str_replace(URL_FULL, '', makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
             } else {
@@ -1306,7 +1311,7 @@ abstract class expController {
         $where = 1;
         if ($loc || static::hasSources())
             $where = "location_data='" . serialize($this->loc) . "'";
-        $items = $model->find('all',$where);
+        $items = $model->find('all', $where);
         foreach ($items as $item) {
             $item->delete();  // model should delete attachments and other associated objects
         }

@@ -1163,58 +1163,20 @@ class storeController extends expController {
      * @return int
      */
     function addContentToSearch() {
-        global $db, $router;
+        global $db;
 
+        set_time_limit(0);
         $model = new $this->basemodel_name();
-
-        $total = $db->countObjects($model->table);
-
+        $total = $db->countObjects($model->table, 'parent_id=0');
         $count = 0;
         for ($i = 0; $i < $total; $i += 100) {
             $orderby = 'id LIMIT ' . ($i) . ', 100';
             $content = $db->selectArrays($model->table, 'parent_id=0', $orderby);
-
             foreach ($content as $cnt) {
-                $origid = $cnt['id'];
-                $prod = new product($cnt['id']);
-                unset($cnt['id']);
-                if (ecomconfig::getConfig('ecom_search_results') == '') {
-                    $cnt['title'] = (isset($prod->expFile['mainimage'][0]) ? '<img src="' . PATH_RELATIVE . 'thumb.php?id=' . $prod->expFile['mainimage'][0]->id . '&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />' : '') . $cnt['title'] . (!empty($cnt['model']) ? ' - SKU#: ' . $cnt['model'] : '');
-                }
-
-//                $search_record = new search($cnt, false, false);
-               //build the search record and save it.
-                $sql = "original_id=" . $origid . " AND ref_module='" . $this->baseclassname . "'";
-                $oldindex = $db->selectObject('search', $sql);
-                if (!empty($oldindex)) {
-                    $search_record = new search($oldindex->id, false, false);
-                    $search_record->update($cnt);
-                } else {
-                    $search_record = new search($cnt, false, false);
-                }
-
-                $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
-                if ($cnt['product_type'] == 'giftcard') {
-                    $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => 'store', 'action' => 'showGiftCards')));
-                } else {
-//                    $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
-                    $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $cnt['product_type'], 'action' => 'show', 'title' => $cnt['sef_url'])));
-                }
-//                $search_record->ref_module = 'store';
-                $search_record->ref_module  = $this->baseclassname;
-//                $search_record->ref_type = $this->basemodel_name;
-                $search_record->ref_type = $cnt['product_type'];
-//                $search_record->category = 'Products';
-                $prod = new $search_record->ref_type($origid);
-                $search_record->category = $prod->product_name;
-                if ($search_record->ref_type == 'eventregistration') {
-                    $search_record->title .= ' - ' . expDateTime::format_date($prod->eventdate);
-                }
-
-                $search_record->original_id = $origid;
-                //$search_record->location_data = serialize($this->loc);
-                $search_record->save();
-                $count++;
+                // unlike other controller->addContentToSearch() methods, we pass off to our model;
+                $record = new $cnt['product_type']($cnt['id']);
+                if ($record->addContentToSearch())
+                    $count++;
             }
         }
         return $count;
@@ -1476,7 +1438,6 @@ class storeController extends expController {
     }
 
     function update() {
-//        global $db;
         //Get the product type
         $product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
 
@@ -1484,10 +1445,10 @@ class storeController extends expController {
 
         $record->update($this->params);
 
-        //FIXME shouldn't the product added to search index here by calling $this->addContentToSearch();?
-        if ($product_type == "childProduct" || $product_type == "product") {
-            $record->addContentToSearch();
-            //Create a flash message and redirect to the page accordingly
+        // unlike other controller->update() methods, we pass off to product->addContentToSearch();
+        $record->addContentToSearch();
+
+        if ($product_type === "childProduct" || $product_type === "product") {
             if ($record->parent_id != 0) {
                 $parent = new $product_type($record->parent_id, false, false);
                 if (isset($this->params['original_id'])) {
@@ -1502,22 +1463,17 @@ class storeController extends expController {
                 flash("message", gt("Product saved."));
             }
             redirect_to(array('controller' => 'store', 'action' => 'show', 'title' => $record->sef_url));
-        } elseif ($product_type == "giftcard") {
-            //FIXME shouldn't giftcard be added to search index?
-//            $record->addContentToSearch();  //FIXME there is NO giftcard::addContentToSearch() method
+        } elseif ($product_type === "giftcard") {
             flash("message", gt("Giftcard saved."));
             redirect_to(array('controller' => 'store', 'action' => 'manage'));
-        } elseif ($product_type == "eventregistration") {
-            //FIXME shouldn't event registrations be added to search index?
-//            $record->addContentToSearch();  //FIXME there is NO eventregistration::addContentToSearch() method
+        } elseif ($product_type === "eventregistration") {
             flash("message", gt("Event saved."));
             redirect_to(array('controller' => 'store', 'action' => 'manage'));
-        } elseif ($product_type == "donation") {
-            //FIXME shouldn't donation be added to search index?
-//            $record->addContentToSearch();  //FIXME there is NO donation::addContentToSearch() method
+        } elseif ($product_type === "donation") {
             flash("message", gt("Donation saved."));
             redirect_to(array('controller' => 'store', 'action' => 'manage'));
         }
+        //fixme shouldn't we simply expHistory::back(); as with other update()?
     }
 
     function delete() {
@@ -1526,24 +1482,25 @@ class storeController extends expController {
         if (empty($this->params['id'])) return false;
         $product_type = $db->selectValue('product', 'product_type', 'id=' . $this->params['id']);
         $product = new $product_type($this->params['id'], true, false);
-        //eDebug($product_type);
-        //eDebug($product, true);
-        //if (!empty($product->product_type_id)) {
-        //$db->delete($product_type, 'id='.$product->product_id);
-        //}
 
+        // remove any associated records
         $db->delete('option', 'product_id=' . $product->id . " AND optiongroup_id IN (SELECT id from " . $db->prefix . "optiongroup WHERE product_id=" . $product->id . ")");
         $db->delete('optiongroup', 'product_id=' . $product->id);
-        //die();
         $db->delete('product_storeCategories', 'product_id=' . $product->id . ' AND product_type="' . $product_type . '"');
+        $db->delete('crosssellItem_product', 'product_type="' . $this->product_type . '" AND (product_id=' . $this->id . ' OR crosssellItem_id=' . $this->id . ')');
 
-        if ($product->product_type == "product") {
+        // remove any childen products
+        if ($product->product_type === "product") {
             if ($product->hasChildren()) {
                 $this->deleteChildren();
             }
         }
 
+        // remove the product
         $product->delete();
+
+        // remove search index entry
+        $db->delete('search', "category='Products' AND ref_module='store' AND original_id = " . $product->id);
 
         flash('message', gt('Product deleted successfully.'));
         expHistory::back();
