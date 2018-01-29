@@ -96,9 +96,9 @@ $config = array(
             <?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
         </div>
         <span class="label"><?php echo gt('Database Engine'); ?>: </span>
-        <select class="form-control" name="sc[DB_ENGINE]" value="<?php echo $config['DB_ENGINE']; ?>">
+        <select class="form-control" name="sc[DB_STORAGE_ENGINE]" value="<?php echo $config['DB_STORAGE_ENGINE']; ?>">
             <?PHP
-            foreach (expSettings::dropdownData("DB_ENGINE") as $key => $value) {
+            foreach (expSettings::dropdownData("DB_STORAGE_ENGINE") as $key => $value) {
                 echo '<option value="' . $key . '">' . $value . '</option>';
             }
             ?>

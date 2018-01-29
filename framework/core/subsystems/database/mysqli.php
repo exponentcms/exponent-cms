@@ -130,8 +130,8 @@ class mysqli_database extends database {
         $sql .= ")";
         if (isset($info[DB_TABLE_ENGINE])) {
             $db_engine = $info[DB_TABLE_ENGINE];
-        } elseif (defined(DB_ENGINE)) {
-            $db_engine = DB_ENGINE;
+        } elseif (defined(DB_STORAGE_ENGINE)) {
+            $db_engine = DB_STORAGE_ENGINE;
         } else {
             $db_engine = 'MYISAM';
         }
