@@ -130,20 +130,20 @@ class mysqli_database extends database {
         $sql .= ")";
         if (isset($info[DB_TABLE_ENGINE])) {
             $db_engine = $info[DB_TABLE_ENGINE];
-        } elseif (defined(DB_STORAGE_ENGINE)) {
+        } elseif (defined('DB_STORAGE_ENGINE')) {
             $db_engine = DB_STORAGE_ENGINE;
         } else {
             $db_engine = 'MYISAM';
         }
-        if (defined(DB_ENCODING)) {
+        if (defined('DB_ENCODING')) {
             $db_encoding = DB_ENCODING;
         } else {
             $db_encoding = 'utf8 COLLATE utf8_unicode_ci';
         }
-        $sql .= ", ENGINE = " . $db_engine . " CHARACTER SET " . $db_encoding;
+        $sql .= " ENGINE = " . $db_engine . " CHARACTER SET " . $db_encoding;
 
         if (isset($info[DB_TABLE_COMMENT])) {
-            $sql .= ", COMMENT = '" . $info[DB_TABLE_COMMENT] . "'";
+            $sql .= " COMMENT = '" . $info[DB_TABLE_COMMENT] . "'";
         }
 
         @mysqli_query($this->connection, $sql);
