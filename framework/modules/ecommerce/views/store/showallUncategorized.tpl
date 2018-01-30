@@ -18,6 +18,7 @@
 {/css}
 
 <div class="module store showall-uncategorized">
+    <div style="float:right; margin-top:15px;"><a href="{link controller=report action=batch_export applytoall=true}">{'Export This Data'|gettext}</a></div>
     <h1>{'Uncategorized Products'|gettext}</h1>
     {permissions}
     <div class="module-actions">
@@ -30,10 +31,6 @@
         {/if}
     </div>
     {/permissions}
-    {if $config.moduledescription != ""}
-        {$config.moduledescription}
-    {/if}
-    {$myloc=serialize($__loc)}
     <div id="products">
 		{pagelinks paginate=$page top=1}
         <table id="prods" class="exp-skin-table" style="width:95%">

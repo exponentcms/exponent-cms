@@ -74,8 +74,13 @@ if (!defined('EXPONENT')) {
 </form>
 <script src="<?php echo JQUERY2_SCRIPT; ?>" charset="utf-8"></script>
 <script type="text/javascript" src="<?php echo PATH_RELATIVE; ?>external/jquery/addons/js/strength-meter.js"></script>
-<!--<script type="text/javascript" src="--><?php //echo PATH_RELATIVE; ?><!--external/jquery/addons/js/locales/strength-meter---><?php //echo LOCALE; ?><!--.js"></script>-->
-<script>
+<?php
+if (LOCALE !== "en_US") {
+?>
+<script type="text/javascript" src="<?php echo PATH_RELATIVE; ?>external/jquery/addons/js/locales/strength-meter-<?php echo LOCALE; ?>.js"></script>
+<?php
+}
+?><script>
     function strcasecmp(f_string1, f_string2) {
         //  discuss at: http://phpjs.org/functions/strcasecmp/
         // original by: Martijn Wieringa

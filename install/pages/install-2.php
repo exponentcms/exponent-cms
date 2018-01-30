@@ -95,10 +95,12 @@ $config = array(
             <br/><br/>
             <?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
         </div>
-        <span class="label"><?php echo gt('Database Engine'); ?>: </span>
-        <select class="form-control" name="sc[DB_ENGINE]" value="<?php echo $config['DB_ENGINE']; ?>">
+    </div>
+    <div class="control">
+        <span class="label"><?php echo gt('Database Storage Engine'); ?>: </span>
+        <select class="form-control" name="sc[DB_STORAGE_ENGINE]" value="<?php echo $config['DB_STORAGE_ENGINE']; ?>">
             <?PHP
-            foreach (expSettings::dropdownData("DB_ENGINE") as $key => $value) {
+            foreach (expSettings::dropdownData("DB_STORAGE_ENGINE") as $key => $value) {
                 echo '<option value="' . $key . '">' . $value . '</option>';
             }
             ?>
@@ -108,86 +110,86 @@ $config = array(
             <br/><br/>
             <?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
         </div>
-        <div class="control">
-            <span class="label"><?php echo gt('Address'); ?>: </span>
-            <input class="text form-control" type="text" name="sc[db_host]" value="<?php echo $config['db_host']; ?>"
-                   required=1/>
-            <div class="control_help">
-                <?php echo gt(
-                        'If your database server software runs on a different physical machine than the web server, enter the address of the database server machine.'
-                    ) .
-                    gt(
-                        'Either an IP address (like 1.2.3.4) or an internet domain name (such as example.com) will work.'
-                    ) . '<br /><br />' .
-                    gt(
-                        'If your database server software runs on the same machine as the web server, use the default setting, \'localhost\'.'
-                    ); ?>
-                <br/><br/>
-                <?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
-            </div>
-        </div>
-        <div class="control">
-            <span class="label"><?php echo gt('Port'); ?>: </span>
-            <input class="text form-control" type="text" name="sc[db_port]" value="<?php echo $config['db_port']; ?>"
-                   size="5" required=1/>
-            <div class="control_help">
-                <?php echo gt(
-                        'If you are using a database server that supports TCP or other network connection protocols, and that database software runs on a different physical machine than the web server,'
-                    ) .
-                    gt('enter the connection port.') . '<br /><br />' . gt(
-                        'If you entered \'localhost\' in the Address field, you should leave this as the default setting.'
-                    ); ?>
-                <br/><br/>
-                <?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
-            </div>
-        </div>
-        <div class="control">
-            <span class="label"><?php echo gt('Database Name'); ?>: </span>
-            <input class="text form-control" type="text" name="sc[db_name]" value="<?php echo $config['db_name']; ?>"
-                   required=1/>
-        </div>
-        <div class="control">
-            <span class="label"><?php echo gt('Username'); ?>: </span>
-            <input class="text form-control" type="text" name="sc[db_user]" value="<?php echo $config['db_user']; ?>"
-                   required=1/>
-
-            <div class="control_help">
-                <?php echo gt(
-                    'All database server software supported by Exponent require some sort of authentication.  Enter the name of the user account to use for logging into the database server.'
+    </div>
+    <div class="control">
+        <span class="label"><?php echo gt('Address'); ?>: </span>
+        <input class="text form-control" type="text" name="sc[db_host]" value="<?php echo $config['db_host']; ?>"
+               required=1/>
+        <div class="control_help">
+            <?php echo gt(
+                    'If your database server software runs on a different physical machine than the web server, enter the address of the database server machine.'
+                ) .
+                gt(
+                    'Either an IP address (like 1.2.3.4) or an internet domain name (such as example.com) will work.'
+                ) . '<br /><br />' .
+                gt(
+                    'If your database server software runs on the same machine as the web server, use the default setting, \'localhost\'.'
                 ); ?>
-                <br/><br/>
-                <?php echo gt('Make sure that this user has the proper database user privileges.'); ?>  (<a href=""
-                                                                                                            onclick="return pop('db_priv');"><?php echo gt(
-                        'More Information'
-                    ); ?></a>)
-            </div>
+            <br/><br/>
+            <?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
         </div>
-        <div class="control">
-            <span class="label"><?php echo gt('Password'); ?>: </span>
-            <input class="text form-control" type="password" name="sc[db_pass]"
-                   value="<?php echo $config['db_pass']; ?>" required=1/>
-            <div class="control_help">
-                <?php echo gt(
-                        'Enter the password for the username you entered above.  The password will'
-                    ) . '<strong>' . gt('not') . '</strong>' . gt(
-                        'be obscured, because it cannot be obscured in the configuration file.  The Exponent developers urge you to use a completely new password, unlike any of your others, for security reasons.'
-                    ); ?>
-            </div>
-        </div>
-        <div class="control">
-            <span class="label"><?php echo gt('Table Prefix'); ?>: </span>
-            <input class="text form-control" type="text" name="sc[db_table_prefix]"
-                   value="<?php echo $config['db_table_prefix']; ?>"/>
-
-            <div class="control_help">
-                <?php echo gt(
-                    'A table prefix helps Exponent differentiate tables for this site from other tables that may already exist (or eventually be created by other scripts).  If you are using an existing database, you may want to change this.'
+    </div>
+    <div class="control">
+        <span class="label"><?php echo gt('Port'); ?>: </span>
+        <input class="text form-control" type="text" name="sc[db_port]" value="<?php echo $config['db_port']; ?>"
+               size="5" required=1/>
+        <div class="control_help">
+            <?php echo gt(
+                    'If you are using a database server that supports TCP or other network connection protocols, and that database software runs on a different physical machine than the web server,'
+                ) .
+                gt('enter the connection port.') . '<br /><br />' . gt(
+                    'If you entered \'localhost\' in the Address field, you should leave this as the default setting.'
                 ); ?>
-                <br/><br/>
-                <?php echo '<strong>' . gt('Note') . ':</strong>' . gt(
-                        'A table prefix may only contain numbers and letters.  Spaces and symbols (including \'_\') are not allowed.  An underscore will be added for you, by Exponent.'
-                    ); ?>
-            </div>
+            <br/><br/>
+            <?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
+        </div>
+    </div>
+    <div class="control">
+        <span class="label"><?php echo gt('Database Name'); ?>: </span>
+        <input class="text form-control" type="text" name="sc[db_name]" value="<?php echo $config['db_name']; ?>"
+               required=1/>
+    </div>
+    <div class="control">
+        <span class="label"><?php echo gt('Username'); ?>: </span>
+        <input class="text form-control" type="text" name="sc[db_user]" value="<?php echo $config['db_user']; ?>"
+               required=1/>
+
+        <div class="control_help">
+            <?php echo gt(
+                'All database server software supported by Exponent require some sort of authentication.  Enter the name of the user account to use for logging into the database server.'
+            ); ?>
+            <br/><br/>
+            <?php echo gt('Make sure that this user has the proper database user privileges.'); ?>  (<a href=""
+                                                                                                        onclick="return pop('db_priv');"><?php echo gt(
+                    'More Information'
+                ); ?></a>)
+        </div>
+    </div>
+    <div class="control">
+        <span class="label"><?php echo gt('Password'); ?>: </span>
+        <input class="text form-control" type="password" name="sc[db_pass]"
+               value="<?php echo $config['db_pass']; ?>" required=1/>
+        <div class="control_help">
+            <?php echo gt(
+                    'Enter the password for the username you entered above.  The password will'
+                ) . '<strong>' . gt('not') . '</strong>' . gt(
+                    'be obscured, because it cannot be obscured in the configuration file.  The Exponent developers urge you to use a completely new password, unlike any of your others, for security reasons.'
+                ); ?>
+        </div>
+    </div>
+    <div class="control">
+        <span class="label"><?php echo gt('Table Prefix'); ?>: </span>
+        <input class="text form-control" type="text" name="sc[db_table_prefix]"
+               value="<?php echo $config['db_table_prefix']; ?>"/>
+
+        <div class="control_help">
+            <?php echo gt(
+                'A table prefix helps Exponent differentiate tables for this site from other tables that may already exist (or eventually be created by other scripts).  If you are using an existing database, you may want to change this.'
+            ); ?>
+            <br/><br/>
+            <?php echo '<strong>' . gt('Note') . ':</strong>' . gt(
+                    'A table prefix may only contain numbers and letters.  Spaces and symbols (including \'_\') are not allowed.  An underscore will be added for you, by Exponent.'
+                ); ?>
         </div>
     </div>
     <button class="awesome large green"><?php echo gt('Install Database'); ?></button>

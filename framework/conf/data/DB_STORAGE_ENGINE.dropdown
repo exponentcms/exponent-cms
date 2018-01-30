@@ -1,6 +1,6 @@
 # GPL applies
 # (c) 2018 Dave Leffler
-MyISAM
-	MYISAM
-InnoDB
-	INNODB
+MYISAM
+	MyISAM
+INNODB
+	InnoDB

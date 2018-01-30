@@ -23,6 +23,6 @@ if (!defined('DB_NAME')) define('DB_NAME','not_configured');
 if (!defined('DB_HOST')) define('DB_HOST','localhost');
 if (!defined('DB_PORT')) define('DB_PORT','3306');
 if (!defined('DB_ENCODING')) define('DB_ENCODING','utf8');
-if (!defined('DB_ENGINE')) define('DB_ENGINE','MYISAM');
+if (!defined('DB_STORAGE_ENGINE')) define('DB_STORAGE_ENGINE','MYISAM');
 
 ?>
