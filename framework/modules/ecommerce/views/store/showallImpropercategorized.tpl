@@ -13,9 +13,24 @@
  *
  *}
 
-<div style="float:right; margin-top:15px;"><a href="{link controller=report action=batch_export applytoall=true}">{'Export This Data'|gettext}</a></div>
+{css unique="showallbadcategorized" corecss="tables"}
+
+{/css}
+
 <div class="module store showall-uncategorized">
+    <div style="float:right; margin-top:15px;"><a href="{link controller=report action=batch_export applytoall=true}">{'Export This Data'|gettext}</a></div>
     <h1>{'Improperly Categorized Products'|gettext}</h1>
+    {permissions}
+    <div class="module-actions">
+        {if $permissions.create}
+            {icon class="add" action=create text="Add a Product"|gettext}
+        {/if}
+        {if $permissions.manage}
+            {icon action=manage text="Manage Products"|gettext}
+            {icon controller=storeCategory action=manage text="Manage Store Categories"|gettext}
+        {/if}
+    </div>
+    {/permissions}
     <div id="products">
         {$page->links}
         <table id="prods" class="exp-skin-table" style="width:95%">
