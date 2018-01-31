@@ -24,11 +24,11 @@
 
 class usersController extends expController {
     public $basemodel_name = 'user';
-//    protected $remove_permissions = array(
-//        'create',
-//        'edit'
-//    );
+    protected $remove_permissions = array(
+        'create',
+    );
     protected $manage_permissions = array(
+        'edit'             => 'Edit Users',
         'toggle_extension' => 'Activate Extensions',
         'kill_session'     => 'End Sessions',
         'boot_user'        => 'Boot Users',
