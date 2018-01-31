@@ -334,8 +334,8 @@
                     {/if}
                     {* end split shipping *}
                 </div>
-            {/if} {* end shipping required check *}
-        </div>
+            </div>
+        {/if} {* end shipping required check *}
         <div class="billingdetails separate">
             <h2>{"Your Billing Information"|gettext}</h2>
             <h3>{"Billing Address"|gettext}</h3>
