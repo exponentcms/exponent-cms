@@ -434,7 +434,7 @@ class expRecord {
         global $db;
 
         // make sure we have the info we need..otherwise return
-        if (empty($item->id) && empty($this->id)) return false;
+        if (empty($item->id) || empty($this->id)) return false;
         // save the attachable items
 //        $refname = strtolower($item->classname).'s_id';  //FIXME plural vs single?
 //        $refname = strtolower($item->classname) . '_id'; //FIXME plural vs single?
