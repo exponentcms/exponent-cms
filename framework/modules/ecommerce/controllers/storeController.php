@@ -1727,13 +1727,13 @@ class storeController extends expController {
         $search_type = ecomconfig::getConfig('ecom_search_results');
 
         // look for term in full text search
-        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid, match (p.title,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) as score ";
+        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid, match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) as score ";
         $sql .= "  from " . $db->prefix . "product as p LEFT JOIN " .
             $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         if ($search_type == 'products') $sql .= 'product_type = "product" AND ';
-        $sql .= " match (p.title,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id ";
+        $sql .= " match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id ";
         $sql .= "order by score desc LIMIT 10";
 
         $firstObs = $db->selectObjectsBySql($sql);

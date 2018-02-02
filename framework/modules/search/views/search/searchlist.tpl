@@ -30,11 +30,11 @@
 			{else}
 				<div class="searchwrapper">
 					<div class="prod-img search-img img-responsive">
-						<a href="{link controller=store action=show title=$result->sef_url}">{img file_id=$result->expFile.mainimage[0]->id w=64}</a>
+						<a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}">{img file_id=$result->expFile.mainimage[0]->id w=64}</a>
 					</div>
 					<div class="item {cycle values="odd,even"} searchbody">
 					   <span class="searchtitle">
-						   <a href="{link controller=store action=show title=$result->sef_url}">{$result->title|highlight:$terms}{if $result->model}{br}SKU: {$result->model}{/if}</a>{if $user->isAdmin()} <span class="attribution">({$result->category}, {'Score'|gettext}:{$result->score|number_format:"2"})</span>{/if}
+						   <a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}">{$result->title|highlight:$terms}{if $result->model}{br}SKU: {$result->model}{/if}</a>{if $user->isAdmin()} <span class="attribution">({$result->category}, {'Score'|gettext}:{$result->score|number_format:"2"})</span>{/if}
 					   </span>
 					   {if $result->body != ""}
 						   {br}<span class="summary">{$result->body|strip_tags|truncate:240|highlight:$terms}</span>
@@ -58,7 +58,7 @@
 						{/if}
 						</div>
 						<div style="text-align: right;">
-							<a href="{link controller=store action=show title=$result->sef_url}" class="exp-ecom-link {button_style color=blue}" rel="nofollow"><strong><em>{'View Item'|gettext}</em></strong></a>
+							<a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}" class="exp-ecom-link {button_style color=blue}" rel="nofollow"><strong><em>{'View Item'|gettext}</em></strong></a>
 						</div>
 					</div>
 					{clear}

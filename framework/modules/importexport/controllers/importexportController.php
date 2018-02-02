@@ -76,7 +76,7 @@ class importexportController extends expController {
                 if ($c::canExportData()) $exportDD[$key] = $c->name();
             }
         }
-        //fixme allow for custom import/export methods here
+        // allow for custom import/export methods here
         if (class_exists('importexportCustom')) {
             $sp = new importexportCustom();
             if ($sp::canImportData()) {

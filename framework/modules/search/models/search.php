@@ -61,7 +61,7 @@ class search extends expRecord {
         if (ECOM) {
             $search_type = ecomconfig::getConfig('ecom_search_results');
             if ($search_type === 'ecom') {
-                $sql .= "ref_module = 'store' AND ";
+                $sql .= "ref_module = 'product' AND ";
             } elseif ($search_type === 'products') {
                 $sql .= "ref_type = 'product' AND ";
             }
@@ -79,7 +79,7 @@ class search extends expRecord {
             if ($only_best && $records[$i]->score == 0) {
                 unset($recs[$i]); // page is not available for viewing
 //            } elseif ($records[$i]->ref_type == 'product') {
-            } elseif ($records[$i]->ref_module == 'store') {
+            } elseif ($records[$i]->ref_module == 'product') {
 //                $score = $records[$i]->score;
                 if (!product::canView($records[$i]->original_id)) {
                     unset($recs[$i]); // product is not available for viewing
