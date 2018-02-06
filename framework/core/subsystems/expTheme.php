@@ -1933,7 +1933,7 @@ class expTheme
     public static function iconStyle($class, $text = null) {
         $style = self::buttonIcon($class);
         if (!empty($style->prefix)) {
-            if ($text) {
+            if ($text !== null) {
                 return '<i class="' .$style->prefix . $style->class . '"></i> '. $text;
             } else {
                 return $style->prefix . $style->class;
