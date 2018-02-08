@@ -576,7 +576,7 @@ if (!defined('SMARTY_PATH')) {
  */
 if (!defined('SWIFT_PATH')) {
     if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
-        define('SWIFT_VERSION', '5.4.8');
+        define('SWIFT_VERSION', '5.4.9');
     } else {
         define('SWIFT_VERSION', '6.0.2');  //note v6.x requires php v7.x
     }

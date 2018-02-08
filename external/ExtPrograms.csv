@@ -87,7 +87,7 @@ Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
 dompdf,0.8.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,0.8.2,"optional, patched to display our images and not break on bad tables"
-mPDF,7.0.2/6.1.4/5.7.4a,github.com/mpdf/mpdf,7.0.3,optional
+mPDF,7.0.3/6.1.4/5.7.4a,github.com/mpdf/mpdf,7.0.3,optional
 log,1.0.2,github.com/php-fig/log,1.0.2,"optional, required by mPDF v7"
 HTML2PDF,5.0.1/4.6.1,github.com/spipu/html2pdf,5.1.0,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.2.13,sourceforge.net/projects/tcpdf,6.2.13,"optional, used by HTML2PDF"
