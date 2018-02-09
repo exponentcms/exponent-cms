@@ -876,6 +876,7 @@
 
 				if (!self.confObj.loader) {
 					self.confObj.loader = $.Deferred();
+					window.CKEDITOR_BASEPATH = fm.options.cdns.ckeditor + '/';
 					$.getScript(fm.options.cdns.ckeditor + '/ckeditor.js', function() {
 						self.confObj.loader.resolve();
 					});
@@ -1079,7 +1080,7 @@
 			prepare : function(base, dialogOpts, file) {
 				var elfNode = base.editor.fm.getUI();
 				$(base).height(elfNode.height());
-				dialogOpts.width = Math.max(dialogOpts.width, elfNode.width() * 0.8);
+				dialogOpts.width = Math.max(dialogOpts.width || 0, elfNode.width() * 0.8);
 			},
 			// Initialization of editing node (this: this editors HTML node)
 			init : function(id, file, dum, fm) {
@@ -1097,7 +1098,7 @@
 						.appendTo(ifm.parent()),
 					cdata = function() {
 						var data = '';
-						$.each(fm.options.customData, function(key, val) {
+						$.each(fm.customData, function(key, val) {
 							data += '&' + encodeURIComponent(key) + '=' + encodeURIComponent(val);
 						});
 						return data;
