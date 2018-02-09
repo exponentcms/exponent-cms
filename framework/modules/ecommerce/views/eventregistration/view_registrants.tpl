@@ -172,16 +172,18 @@
 </div>
 
 {if $table_filled}
-{script unique="view-registrants" jquery='jquery.dataTables,dataTables.tableTools'}
+{script unique="view-registrants" jquery='jquery.dataTables'}
 {literal}
     $(document).ready(function() {
-        $('#view-registrants').DataTable({
+        var tableContainer = $('#view-registrants');
+
+        var table = tableContainer.DataTable({
             pagingType: "full_numbers",
 //            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            dom: 'T<"clear">lfrtip',
-            tableTools: {
-                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            },
+//             dom: 'T<"clear">lfrtip',
+            // tableTools: {
+            //     sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            // },
             scrollX: true,
             columnDefs: [
                 { searchable: false, targets: [ -1 ] },
@@ -190,13 +192,35 @@
         });
 
         // restore all rows so we get all form input instead of only those displayed
-        $('#email-registrants').on('submit', function (e) {
-            // Force all the rows back onto the DOM for postback
-            table.rows().nodes().page.len(-1).draw(false);  // This is needed
-            if ($(this).valid()) {
-                return true;
-            }
-            e.preventDefault();
+        // $('#email-registrants').on('submit', function (e) {
+        //     // Force all the rows back onto the DOM for postback
+        //     table.rows().nodes().page.len(-1).draw(false);  // This is needed
+        //     if ($(this).valid()) {
+        //         return true;
+        //     }
+        //     e.preventDefault();
+        // });
+
+        // Handle form submission event
+        $('#manage-groups').on('submit', function(e){
+           var form = this;
+
+           // Iterate over all checkboxes in the table
+           table.$('input[type="checkbox"]').each(function(){
+              // If checkbox doesn't exist in DOM
+              if(!$.contains(document, this)){
+                 // If checkbox is checked
+                 if(this.checked){
+                    // Create a hidden element
+                    $(form).append(
+                       $('<input>')
+                          .attr('type', 'hidden')
+                          .attr('name', this.name)
+                          .val(this.value)
+                    );
+                 }
+              }
+           });
         });
     });
 {/literal}

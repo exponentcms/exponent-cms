@@ -40,6 +40,7 @@ class usersController extends expController {
         'show'             => 'Show User',
         'showall'          => 'Show Users',
         'getUsersByJSON'   => 'Get Users',
+        'getUsersByJSON2'   => 'Get Users',
     );
 
     static function displayname() {
@@ -85,38 +86,44 @@ class usersController extends expController {
         global $user;
 
         expHistory::set('manageable', $this->params);
-//        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-//        $order = empty($this->config['order']) ? 'username' : $this->config['order'];
-        if ($user->is_system_user == 1) {
-//            $filter = 1; //'1';
-            $where = '';
-        } elseif ($user->isSuperAdmin()) {
-//            $filter = 2; //"is_system_user != 1";
-            $where = "is_system_user != 1";
+        if (!ECOM_LARGE_DB) {
+    //        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
+//            $limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
+            $limit = 0;  // we'll paginate on the page
+    //        $order = empty($this->config['order']) ? 'username' : $this->config['order'];
+            if ($user->is_system_user == 1) {
+    //            $filter = 1; //'1';
+                $where = '';
+            } elseif ($user->isSuperAdmin()) {
+    //            $filter = 2; //"is_system_user != 1";
+                $where = "is_system_user != 1";
+            } else {
+    //            $filter = 3; //"is_admin != 1";
+                $where = "is_admin != 1";
+            }
+            $page = new expPaginator(array(
+                'model'=>'user',
+                'where'=>$where,
+                'limit'=>$limit,
+    //                    'order'=>$order,
+                'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+                'controller'=>$this->baseclassname,
+                'action'=>$this->params['action'],
+                'columns'=>array(
+                    gt('Username')=>'username',
+                    gt('First Name')=>'firstname',
+                    gt('Last Name')=>'lastname',
+                    gt('Is Admin')=>'is_acting_admin',
+                )
+            ));
         } else {
-//            $filter = 3; //"is_admin != 1";
-            $where = "is_admin != 1";
+            $page = array();
         }
-        $page = new expPaginator(array(
-                    'model'=>'user',
-                    'where'=>$where,
-//                    'limit'=>$limit,
-//                    'order'=>$order,
-                    'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'columns'=>array(
-                        gt('Username')=>'username',
-                        gt('First Name')=>'firstname',
-                        gt('Last Name')=>'lastname',
-                        gt('Is Admin')=>'is_acting_admin',
-                    )
-                ));
 
-        assign_to_template(array('page'=>$page));
-//        assign_to_template(array(
+        assign_to_template(array(
+            'page'=>$page,
 //            'filter' => $filter
-//        ));
+        ));
     }
 
     public function create() {
@@ -879,14 +886,14 @@ class usersController extends expController {
         //$memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
         $group = $db->selectObject('group', 'id=' . $this->params['id']);
 
-        $db->delete('groupmembership', 'group_id=' . $group->id);
+//        $db->delete('groupmembership', 'group_id=' . $group->id);
         $memb = new stdClass();
         $memb->group_id = $group->id;
         if ($this->params['memdata'] != "") {
             foreach ($this->params['memdata'] as $u => $str) {
                 $memb->member_id = $u;
                 $memb->is_admin = $str['is_admin'];
-                $db->insertObject($memb, 'groupmembership');
+//                $db->insertObject($memb, 'groupmembership');
             }
         }
         expSession::triggerRefresh();
@@ -1004,6 +1011,90 @@ class usersController extends expController {
         echo json_encode($returnValue);
     }
 
+    /**
+     * For server-side population of DataTables
+     */
+    public function getUsersByJSON2() {
+        global $db;
+
+        // Array of database columns which should be read and sent back to DataTables.
+        // The `db` parameter represents the column name in the database, while the `dt`
+        // parameter represents the DataTables column identifier. In this case simple
+        // indexes
+
+        $columns = array(
+        	array(
+        	    'db' => 'username',
+                'dt' => 'username',
+            ),
+        	array(
+        	    'db' => 'firstname',
+                'dt' => 'firstname',
+            ),
+        	array(
+        	    'db' => 'lastname',
+                'dt' => 'lastname'
+            ),
+        	array(
+        	    'db' => 'is_acting_admin',
+                'dt' => 'is_acting_admin',
+                'formatter' => function( $d, $row ) {
+                    if ($d == 1) {
+                        return '<img src="'.ICON_RELATIVE.'toggle_on.png">';
+                    }
+          		}
+            ),
+            array(
+           		'db' => 'id',
+           		'dt' => 'id',
+                'formatter' => function( $d, $row ) {
+                    if (bs()) {
+                        $vclass = exptheme::buttonStyle();
+                        $vicon = exptheme::iconStyle('view','');
+                        $eclass = exptheme::buttonStyle();
+                        $eicon = exptheme::iconStyle('edit','');
+                        $cclass = exptheme::buttonStyle();
+                        $cicon = exptheme::iconStyle('password','');
+                        $dclass = exptheme::buttonStyle('red');
+                        $dicon = exptheme::iconStyle('delete','');
+                    } else {
+                        $vclass = 'view" style="display:inline;"';
+                        $eclass = 'edit" style="display:inline;"';
+                        $cclass = 'copy" style="display:inline;"';
+                        $dclass = 'delete" style="display:inline;"';
+                        $vicon = $eicon = $cicon = $dicon = ' ';
+                    }
+           		    $return = '<div class="item-actions">';
+           		    if (ECOM) {
+           		        $return .= '
+                        <a class="'.$vclass.'" href="' . makeLink(array('controller'=>'users', 'action'=>'viewuser', 'id'=>$d)) . '" title="'.gt('View Customer').'">' .
+                            $vicon.'</a>'.'
+           		        ';
+                    }
+           		    $return .= '
+                    <a class="'.$eclass.'" href="' . makeLink(array('controller'=>'user', 'action'=>'edituser', 'id'=>$d)) . '" title="'.gt('Edit User').'">' .
+                        $eicon.'</a>'.'
+                    <a class="'.$cclass.'" href="' . makeLink(array('controller'=>'users', 'action'=>'change_password', 'id'=>$d)) . '" title="'.gt('Change User Password').'">' .
+                        $cicon.'</a>'.'
+                    <a class="'.$dclass.'" href="' . makeLink(array('controller'=>'users', 'action'=>'delete', 'id'=>$d)) . '" onclick="return confirm(\'Are you sure you want to delete this user?\');" title="'.gt('Delete User').'">' .
+                        $dicon.'</a>'.'
+                </div>';
+                    return $return;
+                }
+           	)
+        );
+
+        // DB table to use
+        $table = $db->prefix . $this->model_table;
+
+        // Table's primary key
+        $primaryKey = 'id';
+
+        echo json_encode(
+            expDatabase::complex( $this->params, $table, $primaryKey, $columns )
+        );
+    }
+
     public function viewuser() {
         global $user;
 
@@ -1021,7 +1112,7 @@ class usersController extends expController {
         $shippings = $address->find('all', 'user_id=' . $u->id . ' AND is_shipping = 1');
 
         // build out a SQL query that gets all the data we need and is sortable.
-        $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as total, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
+        $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as gtotal, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
         $sql .= 'FROM ' . DB_TABLE_PREFIX . '_orders o, ' . DB_TABLE_PREFIX . '_billingmethods b, ';
         $sql .= DB_TABLE_PREFIX . '_order_status os, ';
         $sql .= DB_TABLE_PREFIX . '_order_type ot ';

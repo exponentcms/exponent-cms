@@ -13,8 +13,8 @@
  *
  *}
 
-{if !$smarty.const.ECOM_LARGE_DB}
-{css unique="yadcf" link="`$smarty.const.JQUERY_RELATIVE`addons/css/select2-bootstrap.css" corecss="datatables-tools"}
+{css unique="yadcf"}
+{literal}
     table.dataTable thead > tr {
         font-size-adjust: 0.4;
     }
@@ -44,12 +44,11 @@
     table.dataTable thead .sorting_desc  {
         background-image: none;
     }
+    .text-right {
+        text-align: right;
+    }
+{/literal}
 {/css}
-{else}
-{css unique="showallorders" corecss="tables"}
-
-{/css}
-{/if}
 
 <div class="modules order showall">
 	<h1>{$moduletitle|default:"Store Order Administration"|gettext}</h1>
@@ -59,16 +58,9 @@
     {else}
         {br}<a href="{link action=showall showclosed=0}">{'Hide closed orders'|gettext}</a>{br}
     {/if}
-    {if $smarty.const.ECOM_LARGE_DB}
-    {pagelinks paginate=$page top=1}
-    {/if}
     <table id="orders"{if $smarty.const.ECOM_LARGE_DB} class="exp-skin-table"{/if}>
         <thead>
             <tr>
-                <!--th><span>Purchased By</span></th-->
-                {if $smarty.const.ECOM_LARGE_DB}
-                {$page->header_columns}
-                {else}
                 <th>{'Customer'|gettext}</th>
                 <th>{'Inv #'|gettext}</th>
                 <th>{'Total'|gettext}</th>
@@ -77,9 +69,9 @@
                 <th>{'Type'|gettext}</th>
                 <th>{'Status'|gettext}</th>
                 <th>{'Ref'|gettext}</th>
-                {/if}
             </tr>
         </thead>
+        {if !$smarty.const.ECOM_LARGE_DB}
         <tbody>
             {foreach from=$page->records item=listing name=listings}
                 <tr class="{cycle values="odd,even"}">
@@ -97,45 +89,47 @@
                     <td><span style="padding:3px;border-radius:5px;background-color:{if $listing->order_status_id == $new_order}darkseagreen{else}lightgray{/if};">{$listing->status}</span></td>
                     <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png" color=green}</a>{/if}</td>
                 </tr>
-            {foreachelse}
-                <tr class="{cycle values="odd,even"}">
-                    <td colspan="4">{message text='No orders have been placed yet'|gettext}</td>
-                </tr>
             {/foreach}
         </tbody>
+        {/if}
     </table>
-    {if $smarty.const.ECOM_LARGE_DB}
-    {pagelinks paginate=$page bottom=1}
-    {/if}
 </div>
 
-{if !$smarty.const.ECOM_LARGE_DB}
-{script unique="manage-orders" jquery='jqueryui,select2,jquery.dataTables,dataTables.tableTools,dataTables.jqueryui,jquery.dataTables.yadcf'}
+{script unique="manage-orders" jquery='jqueryui,select2,jquery.dataTables,dataTables.jqueryui,jquery.dataTables.yadcf'}
 {literal}
     $(document).ready(function() {
         var tableContainer = $('#orders');
 
         var table = tableContainer.DataTable({
+    {/literal}
+    {if $smarty.const.ECOM_LARGE_DB}
+    {literal}
+            processing: true,
+            serverSide: true,
+            ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=order&action=getOrdersByJSON&json=1{/literal}{if $closed_count == -1}&showclosed=1{/if}{literal}",
+    {/literal}
+    {/if}
+    {literal}
             pagingType: "full_numbers",
 //            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            dom: 'T<"clear">lfrtip',
-            tableTools: {
-                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            },
+//             dom: 'T<"clear">lfrtip',
+            // tableTools: {
+            //     sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            // },
             jQueryUI: true,
             scrollX: true,
             stateSave: true,
             columns: [
-                { type: 'html' },
-                { type: 'html' },
-                { type: 'html-num-fmt' },
-                null,
-                null,
-                null,
-                { type: 'html' },
-                { searchable: false, orderable: false },
+                { data: 'name', type: 'html' },
+                { data: 'invoice_id', type: 'html' },
+                { data: 'grand_total', type: 'html-num-fmt', className: "text-right" },
+                { data: 'calc' },
+                { data: 'purchased' },
+                { data: 'order_type' },
+                { data: 'status', type: 'html' },
+                { data: 'orig_referrer', searchable: false, orderable: false }
             ],
-            order: [4, 'desc']
+            order: [[4, 'desc']]
         });
 
         (function () {
@@ -154,9 +148,10 @@
             column_number: 0,
             column_data_type: "html",
             html_data_type: "text",
-            filter_type: "multi_select",
+            // filter_type: "multi_select",
+            filter_type: "text",
             filter_default_label: "",
-            select_type: 'select2'
+            // select_type: 'select2'
         }, {
             column_number: 1,
             column_data_type: "html",
@@ -184,7 +179,8 @@
         }, {
             column_number: 4,
             column_data_type: "text",
-            html5_data: "data-search",
+            // html5_data: "data-search",
+            date_format: 'MM/DD/YYYY hh:mmA',
             filter_type: "range_date",
             filter_default_label: ["From","To"]
         }, {
@@ -204,4 +200,3 @@
     } );
 {/literal}
 {/script}
-{/if}

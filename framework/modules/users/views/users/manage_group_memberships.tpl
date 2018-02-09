@@ -13,13 +13,6 @@
  *
  *}
 
-{*{css unique="group" corecss="tables"}*}
-
-{*{/css}*}
-{css unique="manage-groups" corecss="datatables-tools"}
-
-{/css}
-
 <div class="module users manage-group-memberships">
     <div class="info-header">
         <div class="related-actions">
@@ -28,7 +21,7 @@
 		<h2>{"Manage Group Memberships"|gettext} - {$group->name}</h2>
     </div>
 
-    {form action="update_memberships"}
+    {form id="myform" action="update_memberships"}
         {*<input type="hidden" name="id" value="{$group->id}"/>*}
         {control type="hidden" name="id" value=$group->id}
         {*{pagelinks paginate=$page top=1}*}
@@ -51,10 +44,10 @@
                         <td>{$grp_user->firstname}</td>
                         <td>{$grp_user->lastname}</td>
                         <td>
-                            {control type=checkbox name="memdata[`$grp_user->id`][is_member]" value=1 checked=$grp_user->is_member}
+                            {$grp_user->id}{*{control type=checkbox name="memdata[`$grp_user->id`][is_member]" value=1 checked=$grp_user->is_member}*}
                         </td>
                         <td>
-                            {control type=checkbox name="memdata[`$grp_user->id`][is_admin]" value=1 checked=$grp_user->is_admin}
+                            {$grp_user->id}{*{control type=checkbox name="memdata[`$grp_user->id`][is_admin]" value=1 checked=$grp_user->is_admin}*}
                         </td>
                     </tr>
                 {foreachelse}
@@ -69,23 +62,60 @@
 </div>
 
 {if $table_filled}
-{script unique="groups-showall" jquery='jquery.dataTables,dataTables.tableTools'}
+{script unique="groups-showall" jquery='jquery.dataTables,dataTables.checkboxes'}
 {literal}
     $(document).ready(function() {
-        $('#groups-manage').DataTable({
+        var tableContainer = $('#groups-manage');
+
+        var table = tableContainer.DataTable({
             pagingType: "full_numbers",
 //            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            dom: 'T<"clear">lfrtip',
-            tableTools: {
-                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            },
+//             dom: 'T<"clear">lfrtip',
+            // tableTools: {
+            //     sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            // },
             columns: [
                 null,
                 null,
                 null,
-                { searchable: false, orderable: false },
-                { searchable: false, orderable: false },
-            ]
+                { data: 3, searchable: false, orderable: false },
+                { data: 4, searchable: false, orderable: false },
+            ],
+            columnDefs: [
+               {
+                  'targets': [3,4],
+                  'data': [3,4],
+                  'checkboxes': { 'selectAll': false }
+               }
+            ],
+        });
+
+        // Handle form submission event
+        $('#myform').on('submit', function(e){
+           var form = this;
+
+           var rows_selected = table.column(3).checkboxes.selected();
+           // Iterate over all selected checkboxes
+           $.each(rows_selected, function(index, rowId){
+              // Create a hidden element
+              $(form).append(
+                  $('<input>')
+                     .attr('type', 'hidden')
+                     .attr('name', 'memdata['+rowId+'][is_member]')
+                     .val(rowId)
+              );
+           });
+            var rows_selected = table.column(4).checkboxes.selected();
+            // Iterate over all selected checkboxes
+            $.each(rows_selected, function(index, rowId){
+               // Create a hidden element
+               $(form).append(
+                   $('<input>')
+                      .attr('type', 'hidden')
+                      .attr('name', 'memdata['+rowId+'][is_admin]')
+                      .val(rowId)
+               );
+            });
         });
     } );
 {/literal}

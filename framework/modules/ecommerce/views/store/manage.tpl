@@ -13,8 +13,8 @@
  *
  *}
 
-{if !$smarty.const.ECOM_LARGE_DB}
-{css unique="yadcf" link="`$smarty.const.JQUERY_RELATIVE`addons/css/select2-bootstrap.css" corecss="datatables-tools"}
+{css unique="yadcf"}
+{literal}
     table.dataTable thead > tr {
         font-size-adjust: 0.4;
     }
@@ -44,12 +44,8 @@
     table.dataTable thead .sorting_desc  {
         background-image: none;
     }
+    {/literal}
 {/css}
-{else}
-{css unique="managestore" corecss="tables"}
-
-{/css}
-{/if}
 
 <div class="module store showall-uncategorized">
     <h1>{'Manage Products'|gettext}</h1>
@@ -67,24 +63,18 @@
 		</div>
     {/permissions}
     <div id="products">
-        {if $smarty.const.ECOM_LARGE_DB}
-		{pagelinks paginate=$page top=1}
-        {/if}
         <table id="prods" style="width:95%;"{if $smarty.const.ECOM_LARGE_DB} class="exp-skin-table"{/if}>
             <thead>
                 <tr>
-                    {*<th></th>*}
-                    {if $smarty.const.ECOM_LARGE_DB}
-                    {$page->header_columns}
-                    {else}
                     <th>{'Type'|gettext}</th>
                     <th>{'Product Name'|gettext}</th>
                     <th>{'Model #'|gettext}</th>
+                    <th>{'Children'|gettext}</th>
                     <th>{'Price'|gettext}</th>
-                    {/if}
                     <th>{'Action'|gettext}</th>
                 </tr>
             </thead>
+            {if !$smarty.const.ECOM_LARGE_DB}
             <tbody>
                 {foreach from=$page->records item=listing name=listings}
                     <tr class="{cycle values="odd,even"}">
@@ -103,6 +93,7 @@
                             {/if}
                         </td>
                         <td>{$listing->model|default:"N/A"}</td>
+                        <td>{$listing->children|regex_replace:'/^0$/':''}</td>
                         {*<td>*}
                             {*{if $listing->product_type == "product"}*}
                                 {*<a href={link controller=store action=show title=$listing->sef_url}>{$listing->title}</a>*}
@@ -121,11 +112,11 @@
                                     {if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
                                         {icon action=edit record=$listing title="Edit `$listing->title`"}
                                     {/if}
-                                    {if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
-                                        {icon action=delete record=$listing title="Delete `$listing->title`"}
-                                    {/if}
                                     {if $permissions.edit && ($listing->product_type == "product" || $listing->product_type == "eventregistration")}
                                         {icon class=copy action=copyProduct title="Copy `$listing->title` " record=$listing}
+                                    {/if}
+                                    {if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
+                                        {icon action=delete record=$listing title="Delete `$listing->title`"}
                                     {/if}
                                 </div>
                             {/permissions}
@@ -133,40 +124,47 @@
                     </tr>
                 {/foreach}
             </tbody>
+            {/if}
         </table>
-        {if $smarty.const.ECOM_LARGE_DB}
-		{pagelinks paginate=$page bottom=1}
-        {/if}
     </div>
 </div>
 
-{if !$smarty.const.ECOM_LARGE_DB}
-{script unique="manage-products" jquery='jqueryui,select2,jquery.dataTables,dataTables.tableTools,dataTables.jqueryui,jquery.dataTables.yadcf'}
+{script unique="manage-products" jquery='jqueryui,select2,jquery.dataTables,dataTables.jqueryui,jquery.dataTables.yadcf'}
 {literal}
     $(document).ready(function() {
         var tableContainer = $('#prods');
 
         var table = tableContainer.DataTable({
+    {/literal}
+    {if $smarty.const.ECOM_LARGE_DB}
+    {literal}
+            processing: true,
+            serverSide: true,
+            ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=store&action=getProductsByJSON&json=1",
+    {/literal}
+    {/if}
+    {literal}
             pagingType: "full_numbers",
 //            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            dom: 'T<"clear">lfrtip',
-            tableTools: {
-                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            },
-            //jQueryUI: true,
+//             dom: 'T<"clear">lfrtip',
+            // tableTools: {
+            //     sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            // },
+            jQueryUI: true,
             //renderer: {
             //    "header": "bootstrap"
             //},
             scrollX: true,
             stateSave: true,
             columns: [
-                { type: 'text' },
-                { type: 'html' },
-                { type: 'text' },
-                { type: 'num-fmt' },
-                { searchable: false, orderable: false },
+                { data: 'product_type', type: 'text' },
+                { data: 'title', type: 'html' },
+                { data: 'model', type: 'text' },
+                { data: 'children', type: 'text' },
+                { data: 'base_price', type: 'num-fmt' },
+                { data: 'id', searchable: false, orderable: false },
             ],
-            //order: [1, 'asc'],
+            order: [[5, 'asc']],
         });
 
         (function () {
@@ -183,11 +181,15 @@
 
         yadcf.init(table, [{
             column_number: 0,
-            //column_data_type: "text",
-            //html_data_type: "text",
-            filter_type: "multi_select",
-            //filter_default_label: "",
-            select_type: 'select2'
+            column_data_type: "text",
+            html_data_type: "text",
+            // filter_type: "multi_select",
+            filter_type: "text",
+            filter_default_label: "",
+            // select_type: 'select2',
+            select_type_options: {
+                width: '30px'
+            }
         }, {
             column_number: 1,
             column_data_type: "html",
@@ -204,7 +206,7 @@
             filter_type: "text",
             filter_default_label: "",
             select_type_options: {
-                width: '70px'
+                width: '30px'
             }
         }, {
             column_number: 3,
@@ -213,10 +215,18 @@
             filter_type: "text",
             filter_default_label: "",
             select_type_options: {
-                width: '70px'
+                width: '30px'
+            }
+        }, {
+            column_number: 4,
+            column_data_type: "text",
+            html_data_type: "text",
+            filter_type: "text",
+            filter_default_label: "",
+            select_type_options: {
+                width: '30px'
             }
         }]);
     } );
 {/literal}
 {/script}
-{/if}

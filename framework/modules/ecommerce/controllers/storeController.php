@@ -46,6 +46,7 @@ class storeController extends expController {
 //        'delete_children'             => "Delete Children",
         'reimport'                    => 'ReImport Products',
         'findDupes'                   => 'Fix Duplicate SEF Names',
+        'getProductsByJSON'           => 'Get Products',
 //        'manage_sales_reps'           => 'Manage Sales Reps',
 //        'import_external_addresses'   => 'Import addresses from other sources',
         'showallImpropercategorized'  => 'View products in top level categories that should not be',
@@ -585,29 +586,36 @@ class storeController extends expController {
     }
 
     function manage() {
+        global $db;
+
         expHistory::set('manageable', $this->params);
 
-        if (ECOM_LARGE_DB) {
-            $limit = !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : 10;
-        } else {
+        if (!ECOM_LARGE_DB) {
+//            $limit = empty($this->config['pagination_default']) ? 50: $this->config['pagination_default'];
             $limit = 0;  // we'll paginate on the page
+            $sql = 'SELECT p.product_type, p.title, p.model, COUNT(c.id) as children, p.base_price, p.id FROM ' . $db->prefix . 'product p ';
+            $sql .= 'LEFT JOIN ' . $db->prefix . 'product c ON c.parent_id = p.id ';
+            $sql .= 'WHERE p.parent_id = 0 GROUP BY p.id';
+            $page = new expPaginator(array(
+//                'model'      => 'product',
+//                'where'      => 'parent_id=0',
+                'sql'        => $sql,
+                'limit'      => $limit,
+                'order'      => (isset($this->params['order']) ? $this->params['order'] : 'title'),
+                'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
+                'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
+                'controller' => $this->params['controller'],
+                'action'     => $this->params['action'],
+                'columns'    => array(
+                    gt('Type')         => 'product_type',
+                    gt('Product Name') => 'title',
+                    gt('Model #')      => 'model',
+                    gt('Price')        => 'base_price'
+                )
+            ));
+        } else {
+            $page = array();
         }
-        $page = new expPaginator(array(
-            'model'      => 'product',
-            'where'      => 'parent_id=0',
-            'limit'      => $limit,
-            'order'      => (isset($this->params['order']) ? $this->params['order'] : 'title'),
-            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
-            'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
-            'controller' => $this->params['controller'],
-            'action'     => $this->params['action'],
-            'columns'    => array(
-                gt('Type')         => 'product_type',
-                gt('Product Name') => 'title',
-                gt('Model #')      => 'model',
-                gt('Price')        => 'base_price'
-            )
-        ));
         assign_to_template(array(
             'page' => $page
         ));
@@ -3117,6 +3125,111 @@ class storeController extends expController {
 
         // update search index
         $this->addContentToSearch();
+    }
+
+    /**
+     * For server-side population of DataTables
+     */
+    public function getProductsByJSON() {
+        global $db;
+
+        // Array of database columns which should be read and sent back to DataTables.
+        // The `db` parameter represents the column name in the database, while the `dt`
+        // parameter represents the DataTables column identifier. In this case simple
+        // indexes
+
+        $columns = array(
+        	array(
+        	    'db' => 'product_type',
+                'dt' => 'product_type',
+                'formatter' => function( $d, $row ) {
+                    return ucwords($d);
+          		}
+            ),
+        	array(
+        	    'db' => 'title',
+                'dt' => 'title',
+                'formatter' => function( $d, $row ) {
+        	        $item = new product($row['id']);
+                    if ($row['product_type'] === "eventregistration") {
+                        $link = makeLink(array('controller'=>'eventregistration', 'action'=>'show', 'title'=>$item->sef_url));
+                    } elseif ($row['product_type'] === "donation") {
+                        $link = makeLink(array('controller'=>'donation', 'action'=>'show', 'title'=>$item->sef_url));
+                    } elseif ($row['product_type'] === "giftcard") {
+                        $link = makeLink(array('controller'=>'store', 'action'=>'showGiftCards', 'title'=>$item->sef_url));
+                    } else {
+                        $link = makeLink(array('controller'=>'store', 'action'=>'show', 'title'=>$item->sef_url));
+                    }
+                    return '<a href="' . $link . '">' .
+                        '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile[0]->id . '&w=16&h=16&zc=1" alt="item'.$item->id.'">' .
+                        '<br>' . $d . '</a>';
+          		}
+            ),
+        	array(
+        	    'db' => 'model',
+                'dt' => 'model'
+            ),
+            array(
+           	    'db' => 'children',
+                'dt' => 'children',
+                'formatter' => function( $d, $row ) {
+                    return preg_replace('/^0$/','', $d);
+                }
+               ),
+        	array(
+        	    'db' => 'base_price',
+                'dt' => 'base_price',
+                'formatter' => function( $d, $row ) {
+                    return expCore::getCurrencySymbol() . number_format($d,2,".",",");
+                }
+            ),
+            array(
+           		'db' => 'id',
+           		'dt' => 'id',
+                'formatter' => function( $d, $row ) {
+           		    if (bs()) {
+           		        $eclass = exptheme::buttonStyle();
+                        $cclass = exptheme::buttonStyle();
+                        $dclass = exptheme::buttonStyle('red');
+                    } else {
+           		        $eclass = 'edit';
+                        $cclass = 'copy';
+                        $dclass = 'delete';
+                    }
+           		    $return = '<div class="item-actions">
+                    <a class="'.$eclass.'" href="' . makeLink(array('controller'=>'store', 'action'=>'edit', 'id'=>$d)) . '" title="'.gt('Edit Product').'">' .
+                        exptheme::iconStyle('edit','').'</a>';
+           		    if ($row['product_type'] === "product" || $row['product_type'] === "eventregistration") {
+                        $return .= '
+                    <a class="' . $cclass . '" href="' . makeLink(array('controller' => 'store', 'action' => 'copyProduct', 'id' => $d)) . '" title="' . gt('Copy Product') . '">' .
+                            exptheme::iconStyle('copy', '') . '</a>';
+                    }
+           		    $return .= '
+                    <a class="'.$dclass.'" href="' . makeLink(array('controller'=>'store', 'action'=>'delete', 'id'=>$d)) . '" onclick="return confirm(\'Are you sure you want to delete this product?\');" title="'.gt('Delete Product').'">' .
+                        exptheme::iconStyle('delete','').'</a>'.'
+                </div>';
+                    return $return;
+                }
+           	)
+        );
+
+        // DB table to use
+        // build out a SQL query that gets all the data we need and is sortable.
+        $sql = 'SELECT p.product_type, p.title, p.model, COUNT(c.id) as children, p.base_price, p.id FROM ' . $db->prefix . 'product p ';
+        $sql .= 'LEFT JOIN ' . $db->prefix . 'product c ON c.parent_id = p.id ';
+        $sql .= 'WHERE p.parent_id = 0 GROUP BY p.id';
+//        $table = $db->prefix . $this->model_table;
+        $table = '(' . $sql . ') temp';  // note: for passing complex joins
+
+        // build out a SQL query that gets all the data we need and is sortable.
+//        $sql =  'parent_id = 0';
+
+        // Table's primary key
+        $primaryKey = 'id';
+
+        echo json_encode(
+        	expDatabase::complex( $this->params, $table, $primaryKey, $columns )
+        );
     }
 
 }

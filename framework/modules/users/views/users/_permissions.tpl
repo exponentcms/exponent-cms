@@ -13,12 +13,8 @@
  *
  *}
 
-{css unique="manage-perms" corecss="datatables-tools"}
-
-{/css}
-
 {if $user_form == 1}{$action = 'userperms_save'}{else}{$action = 'groupperms_save'}{/if}
-{form action=$action module=$page->controller}
+{form action=$action module=$page->controller id="manage-groups"}
     {control type="hidden" name="mod" value=$loc->mod}
     {control type="hidden" name="src" value=$loc->src}
     {control type="hidden" name="int" value=$loc->int}
@@ -66,48 +62,7 @@
     {control type="buttongroup" submit="Save Permissions"|gettext cancel="Cancel"|gettext}
 {/form}
 
-{script unique="permission-checking" yui3mods="node"}
-{literal}
-YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-    var manage = Y.all('input.manage');
-
-    var checkSubs = function(row) {
-        row.each(function(n, k){
-            if (!n.hasClass('manage')) {
-                n.insertBefore('<input type="hidden" name="' + n.get("name") + '" value="1">',n);
-                n.setAttrs({'checked':1, 'disabled':1});
-            };
-        });
-    };
-    var unCheckSubs = function(row) {
-        row.each(function(n, k){
-            if (!n.hasClass('manage')) {
-                n.get('previousSibling').remove();
-                n.setAttrs({'checked':0, 'disabled':0});
-            };
-        });
-    };
-    var toggleChecks = function(target, start) {
-        var row = target.ancestor('tr').all('input[type=checkbox]');
-        if(target.get('checked') && !target.get('disabled')){
-            checkSubs(row);
-        } else {
-            if (!start) {
-                unCheckSubs(row);
-            }
-        }
-    };
-    Y.one('#permissions').delegate('click', function(e){
-//        toggleChecks(e.target);
-    }, 'input.manage');
-    Y.all('#permissions input.manage').each(function(n){
-//        toggleChecks(n, 1);
-    });
-});
-{/literal}
-{/script}
-
-{script unique="permissions" jquery='jquery.dataTables,dataTables.tableTools'}
+{script unique="permissions" jquery='jquery.dataTables,dataTables.checkboxes'}
 {literal}
     $(document).ready(function() {
         var checkSubs = function(row) {
@@ -151,13 +106,15 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             toggleChecks(e, 1);
         });
 
-        $('#permissions').DataTable({
+        var tableContainer = $('#permissions');
+
+        var table = tableContainer.DataTable({
             pagingType: "full_numbers",
 //            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            dom: 'T<"clear">lfrtip',
-            tableTools: {
-                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            },
+//             dom: 'T<"clear">lfrtip',
+            // tableTools: {
+            //     sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            // },
             scrollX: true,
             columnDefs: [
 //                { searchable: true, targets: [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
@@ -170,13 +127,35 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         });
 
         // restore all rows so we get all form input instead of only those displayed
-        $('#manage-groups').on('submit', function (e) {
-            // Force all the rows back onto the DOM for postback
-            table.rows().nodes().page.len(-1).draw(false);  // This is needed
-            if ($(this).valid()) {
-                return true;
-            }
-            e.preventDefault();
+        // $('#manage-groups').on('submit', function (e) {
+        //     // Force all the rows back onto the DOM for postback
+        //     table.rows().nodes().page.len(-1).draw(false);  // This is needed
+        //     if ($(this).valid()) {
+        //         return true;
+        //     }
+        //     e.preventDefault();
+        // });
+
+        // Handle form submission event
+        $('#manage-groups').on('submit', function(e){
+           var form = this;
+
+           // Iterate over all checkboxes in the table
+           table.$('input[type="checkbox"]').each(function(){
+              // If checkbox doesn't exist in DOM
+              if(!$.contains(document, this)){
+                 // If checkbox is checked
+                 if(this.checked){
+                    // Create a hidden element
+                    $(form).append(
+                       $('<input>')
+                          .attr('type', 'hidden')
+                          .attr('name', this.name)
+                          .val(this.value)
+                    );
+                 }
+              }
+           });
         });
     });
 {/literal}

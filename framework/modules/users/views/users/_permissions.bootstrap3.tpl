@@ -13,8 +13,14 @@
  *
  *}
 
-{css unique="manage-groups" corecss="datatables-tools"}
-
+{css unique="datatables"}
+{literal}
+    table.dataTable thead .sorting,
+    table.dataTable thead .sorting_asc,
+    table.dataTable thead .sorting_desc  {
+        background-image: none;
+    }
+{/literal}
 {/css}
 
 {if $user_form == 1}{$action = 'userperms_save'}{else}{$action = 'groupperms_save'}{/if}
@@ -67,7 +73,7 @@
     {control type="buttongroup" submit="Save Permissions"|gettext cancel="Cancel"|gettext}
 {/form}
 
-{script unique="permissions" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap3,datatables.responsive'}
+{script unique="permissions" jquery='jquery.dataTables,dataTables.bootstrap,dataTables.checkboxes'}
 {literal}
     $(document).ready(function() {
         var checkSubs = function(row) {
@@ -111,11 +117,11 @@
             toggleChecks(e, 1);
         });
 
-        var responsiveHelper;
-        var breakpointDefinition = {
-            tablet: 1024,
-            phone : 480
-        };
+        // var responsiveHelper;
+        // var breakpointDefinition = {
+        //     tablet: 1024,
+        //     phone : 480
+        // };
         var tableContainer = $('#permissions');
 
         var table = tableContainer.DataTable({
@@ -129,30 +135,52 @@
             ],
             autoWidth: false,
             //scrollX: true,
-            preDrawCallback: function () {
-                // Initialize the responsive datatables helper once.
-                if (!responsiveHelper) {
-                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
-                }
-            },
-            rowCallback: function (nRow) {
-                responsiveHelper.createExpandIcon(nRow);
-            },
-            drawCallback: function (oSettings) {
-                responsiveHelper.respond();
-            }
+            // preDrawCallback: function () {
+            //     // Initialize the responsive datatables helper once.
+            //     if (!responsiveHelper) {
+            //         responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+            //     }
+            // },
+            // rowCallback: function (nRow) {
+            //     responsiveHelper.createExpandIcon(nRow);
+            // },
+            // drawCallback: function (oSettings) {
+            //     responsiveHelper.respond();
+            // }
         });
-        var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
-        $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+        // var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
+        // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
 
         // restore all rows so we get all form input instead of only those displayed
-        $('#manage-groups').on('submit', function (e) {
-            // Force all the rows back onto the DOM for postback
-            table.rows().nodes().page.len(-1).draw(false);  // This is needed
-            if ($(this).valid()) {
-                return true;
-            }
-            e.preventDefault();
+        // $('#manage-groups').on('submit', function (e) {
+        //     // Force all the rows back onto the DOM for postback
+        //     table.rows().nodes().page.len(-1).draw(false);  // This is needed
+        //     if ($(this).valid()) {
+        //         return true;
+        //     }
+        //     e.preventDefault();
+        // });
+
+        // Handle form submission event
+        $('#manage-groups').on('submit', function(e){
+           var form = this;
+
+           // Iterate over all checkboxes in the table
+           table.$('input[type="checkbox"]').each(function(){
+              // If checkbox doesn't exist in DOM
+              if(!$.contains(document, this)){
+                 // If checkbox is checked
+                 if(this.checked){
+                    // Create a hidden element
+                    $(form).append(
+                       $('<input>')
+                          .attr('type', 'hidden')
+                          .attr('name', this.name)
+                          .val(this.value)
+                    );
+                 }
+              }
+           });
         });
     });
 {/literal}

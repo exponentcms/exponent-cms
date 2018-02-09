@@ -13,13 +13,6 @@
  *
  *}
 
-{*{css unique="group" corecss="tables"}*}
-
-{*{/css}*}
-{css unique="manage-groups" corecss="datatables-tools"}
-
-{/css}
-
 <div class="module users manage-group-memberships">
     <div class="info-header">
         <div class="related-actions">
@@ -69,14 +62,14 @@
 </div>
 
 {if $table_filled}
-{script unique="manage-groups" jquery='jquery.dataTables2,dataTables.tableTools2,dataTables.bootstrap2,datatables.responsive2'}
+{script unique="manage-groups" jquery='jquery.dataTables2,dataTables.bootstrap2,dataTables.checkboxes'}
 {literal}
     $(document).ready(function() {
-        var responsiveHelper;
-        var breakpointDefinition = {
-            tablet: 1024,
-            phone : 480
-        };
+        // var responsiveHelper;
+        // var breakpointDefinition = {
+        //     tablet: 1024,
+        //     phone : 480
+        // };
         var tableContainer = $('#groups-manage');
 
         var table = tableContainer.DataTable({
@@ -87,22 +80,29 @@
                 { searchable: false, orderable: false },
                 { searchable: false, orderable: false },
             ],
+            columnDefs: [
+               {
+                  'targets': [3,4],
+                  'data': 0,
+                  'checkboxes': true
+               }
+            ],
             autoWidth: false,
-            preDrawCallback: function () {
-                // Initialize the responsive datatables helper once.
-                if (!responsiveHelper) {
-                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
-                }
-            },
-            rowCallback: function (nRow) {
-                responsiveHelper.createExpandIcon(nRow);
-            },
-            drawCallback: function (oSettings) {
-                responsiveHelper.respond();
-            }
+            // preDrawCallback: function () {
+            //     // Initialize the responsive datatables helper once.
+            //     if (!responsiveHelper) {
+            //         responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+            //     }
+            // },
+            // rowCallback: function (nRow) {
+            //     responsiveHelper.createExpandIcon(nRow);
+            // },
+            // drawCallback: function (oSettings) {
+            //     responsiveHelper.respond();
+            // }
         });
-        var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
-        $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+        // var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
+        // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}
 {/script}

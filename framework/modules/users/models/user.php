@@ -340,7 +340,7 @@ class user extends expRecord {
         global $db;
 
         // build out a SQL query that gets all the data we need and is sortable.
-        $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as total, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
+        $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as gtotal, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
         $sql .= 'FROM ' . $db->prefix . 'orders o, ' . $db->prefix . 'billingmethods b, ';
         $sql .= $db->prefix . 'order_status os, ';
         $sql .= $db->prefix . 'order_type ot ';
