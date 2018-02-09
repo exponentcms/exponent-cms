@@ -101,7 +101,7 @@ if (bs3() || bs4()) {
     $items = array($items1, $items2);
 }
 return array(
-    'text' => ' <span class="orders label label-success">' . $new_orders . '</span>',
+    'text' => ' <span class="orders '.(bs4()?'badge badge':'label label').'-success">' . $new_orders . '</span>',
     'icon' => 'fa-list-ul',
     'icon5' => 'fas fa-list-ul',
     'classname' => 'order',

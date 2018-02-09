@@ -115,7 +115,7 @@ if (bs3() || bs4()) {
     $items = array($items1, $items2);
 }
 return array(
-    'text'      => ' <span class="event label label-default">' . count($events) . '</span>',
+    'text'      => ' <span class="event '.(bs4()?'badge badge-secondary':'label label-default').'">' . count($events) . '</span>',
     'icon'      => 'fa-calendar',
     'icon5'      => 'fas fa-calendar',
     'classname' => 'events',
