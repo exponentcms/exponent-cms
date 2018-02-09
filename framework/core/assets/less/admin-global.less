@@ -52,27 +52,6 @@ a.selectnone {
 	background : url(../images/exp-admin-sprite.png) no-repeat 3px -445px;
 }
 
-a.copy {
-	display    : inline-block;
-	zoom       : 1;
-	padding    : 4px 5px 4px 25px;
-	background : url(../images/copy.png) no-repeat 3px 5px;
-}
-
-a.export {
-	display    : inline-block;
-	zoom       : 1;
-	padding    : 4px 5px 4px 25px;
-	background : url(../images/download.png) no-repeat 3px 5px;
-}
-
-a.import {
-	display    : inline-block;
-	zoom       : 1;
-	padding    : 4px 5px 4px 25px;
-	background : url(../images/upload.png) no-repeat 3px 5px;
-}
-
 span.workflow {
 	display    : inline-block;
 	zoom       : 1;
@@ -111,6 +90,7 @@ a.edit,
 a.configure,
 a.delete,
 a.deletetitle,
+a.copy,
 a.export,
 a.import,
 a.manage,
@@ -120,13 +100,13 @@ a.revisions,
 a.approve {
 	padding        : 3px 3px 3px 20px;
 	display        : inline-block;
-	*display       : inline;
 	zoom           : 1;
 	text-transform : capitalize;
 	background     : url(../images/add.png) no-repeat 0 50%;
 }
 
-a.add, a.addtitle {
+a.add,
+a.addtitle {
 	background : url(../images/add.png) no-repeat 0 50%;
 }
 
@@ -142,16 +122,30 @@ a.configure {
 	background : url(../images/configure.png) no-repeat 0 50%;
 }
 
-a.delete, a.deletetitle {
+a.delete,
+a.deletetitle {
 	background : url(../images/delete.png) no-repeat 0 50%;
 }
 
+a.copy {
+	//zoom       : 1;
+	//padding    : 4px 5px 4px 25px;
+	//background : url(../images/copy.png) no-repeat 3px 5px;
+    background : url(../images/copy.png) no-repeat 0 50%;
+}
+
 a.export {
-	background : url(../images/download.png) no-repeat 0 50%;
+	//zoom       : 1;
+	//padding    : 4px 5px 4px 25px;
+	//background : url(../images/download.png) no-repeat 3px 5px;
+    background : url(../images/download.png) no-repeat 0 50%;
 }
 
 a.import {
-	background : url(../images/upload.png) no-repeat 0 50%;
+	//zoom       : 1;
+	//padding    : 4px 5px 4px 25px;
+	//background : url(../images/upload.png) no-repeat 3px 5px;
+    background : url(../images/upload.png) no-repeat 0 50%;
 }
 
 a.manage {
