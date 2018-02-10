@@ -63,7 +63,7 @@
                 <div class="exp-skin-table exp-ecom-table">
                     <div id="empty-carts" class="panel">
                         <div class="hd">
-                            <h2>{"Active Carts w/out Products and User Information"|gettext}</h2>
+                            <h2>{"Active Carts w/out Products and User Information"|gettext} ({$cartsWithoutItems|count})</h2>
                             <a href="#" class="expand" title="{'Collapse/Expand'|gettext}">{'The List'|gettext}</a>
                         </div>
                         <div class="bd" id="yuievtautoid-0" style="height: 0px;">
@@ -97,7 +97,7 @@
                 <div class="exp-skin-table exp-ecom-table">
                     <div id="full-carts" class="panel">
                         <div class="hd">
-                            <h2>{"Active Carts w/ Products"|gettext}</h2>
+                            <h2>{"Active Carts w/ Products"|gettext} ({$cartsWithItems|count})</h2>
                             <a href="#" class="expand" title="{'Collapse/Expand'|gettext}">{'The List'|gettext}</a>
                         </div>
                         <div class="bd" id="yuievtautoid-0" style="height: 0px;">
@@ -159,7 +159,7 @@
                 <div class="exp-skin-table exp-ecom-table">
                     <div id="active-carts" class="panel">
                         <div class="hd">
-                            <h2>{"Active Carts w/ Products and User Information"|gettext}</h2>
+                            <h2>{"Active Carts w/ Products and User Information"|gettext} ({$cartsWithItemsAndInfo|count})</h2>
                             <a href="#" class="expand" title="{'Collapse/Expand'|gettext}">{'The List'|gettext}</a>
                         </div>
                         <div class="bd" id="yuievtautoid-0" style="height: 0px;">
