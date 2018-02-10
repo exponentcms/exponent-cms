@@ -65,7 +65,7 @@ $items1 = array(
     array(
         'text'      => gt('Manage Event Registrations'),
         'icon'      => 'fa-calendar-o',
-        'icon5'      => 'far fa-calendar',
+        'icon5'      => 'far fa-calendar-alt',
         'classname' => 'events',
         'url'       => makeLink(
             array(
@@ -117,7 +117,7 @@ if (bs3() || bs4()) {
 return array(
     'text'      => ' <span class="event '.(bs4()?'badge badge-secondary':'label label-default').'">' . count($events) . '</span>',
     'icon'      => 'fa-calendar',
-    'icon5'      => 'fas fa-calendar',
+    'icon5'      => 'far fa-calendar-alt',
     'classname' => 'events',
     'submenu'   => array(
         'id'       => 'event2',

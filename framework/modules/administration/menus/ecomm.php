@@ -270,7 +270,7 @@ $ecom = array(
             array(
                 'text'    => gt("Events"),
                 'icon'      => 'fa-calendar',
-                'icon5'      => 'fas fa-calendar',
+                'icon5'      => 'far fa-calendar-alt',
                 'classname' => 'events',
                 'submenu' => array(
                     'id'       => 'purchase-order',
@@ -278,7 +278,7 @@ $ecom = array(
                         array(
                             'text'      => gt('Manage Event Registrations'),
                             'icon'      => 'fa-calendar-o',
-                            'icon5'      => 'far fa-calendar',
+                            'icon5'      => 'far fa-calendar-alt',
                             'classname' => 'events',
                             'url'       => makeLink(
                                 array(
