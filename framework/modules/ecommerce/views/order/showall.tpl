@@ -121,7 +121,7 @@
             stateSave: true,
             columns: [
                 { data: 'name', type: 'html' },
-                { data: 'invoice_id', type: 'html' },
+                { data: 'invoice_id', type: 'html-num-fmt' },
                 { data: 'grand_total', type: 'html-num-fmt', className: "text-right" },
                 { data: 'calc' },
                 { data: 'purchased' },
