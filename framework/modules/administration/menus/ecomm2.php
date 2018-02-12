@@ -49,7 +49,7 @@ if (!$user->isAdmin()) {
         return false;
 }
 
-if ($db->countObjects('product', 'product_type="eventregistration"') == 0)
+if (!$db->selectValue('modstate', 'active', 'module="eventregistration"'))
     return false;
 
 $ev = new eventregistration();
