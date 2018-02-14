@@ -666,124 +666,133 @@ class storeController extends expController {
 
         $this->params['applytoall'] = 1;  //FIXME we simply do all now
 
-        //eDebug($this->params);
-        //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
-//        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
-        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","height","length","image1","image2","image3","image4","image5","companies_id"' . chr(13) . chr(10);
-        if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
-            $sql = expSession::get('product_export_query');
-            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (product_type="product")';
-            //eDebug($sql);
-            //expSession::set('product_export_query','');
-            $prods = $db->selectArraysBySql($sql);
-            //eDebug($prods);
-        } else {
-            foreach ($this->params['act-upon'] as $prod) {
-                $prods[] = array('id' => $prod);
-            }
+		// CREATE A TEMP FILE
+		$tmpfname = tempnam(BASE.'/tmp', "rep"); // Rig
+		$handle = fopen($tmpfname, "w");
+
+        if (LANG_CHARSET === 'UTF-8') {
+            fwrite($handle, chr(0xEF).chr(0xBB).chr(0xBF));  // add utf-8 signature to file to open appropriately in Excel, etc...
         }
-        set_time_limit(0);
-        $baseProd = new product();
+        fwrite($handle,  '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","height","length","image1","image2","image3","image4","image5","companies_id"' . chr(13) . chr(10));
 
-        //$p = new product($pid['id'], false, false);
-        foreach ($prods as $pid) {
-            $except = array('company', 'crosssellItem', 'optiongroup');
-            $p = $baseProd->find('first', 'id=' . $pid['id'], null, null, 0, true, true, $except, true);
-
-            //eDebug($p,true);
-            $out .= expString::outputField($p->id);
-            $out .= expString::outputField($p->parent_id);
-            $out .= expString::outputField($p->child_rank);
-            $out .= expString::outputField($p->title);
-            $out .= expString::outputField(expString::stripLineEndings($p->body), ",", true);
-            $out .= expString::outputField($p->model);
-            $out .= expString::outputField($p->warehouse_location);
-            $out .= expString::outputField($p->sef_url);
-//            $out .= expString::outputField($p->canonical);  FIXME this is NOT in the import sequence
-            $out .= expString::outputField($p->meta_title);
-            $out .= expString::outputField($p->meta_keywords);
-            $out .= expString::outputField($p->meta_description);
-            $out .= expString::outputField($p->tax_class_id);
-            $out .= expString::outputField($p->quantity);
-            $out .= expString::outputField($p->availability_type);
-            $out .= expString::outputField($p->base_price);
-            $out .= expString::outputField($p->special_price);
-            $out .= expString::outputField($p->use_special_price);
-            $out .= expString::outputField($p->active_type);
-            $out .= expString::outputField($p->product_status_id);
-
-            $rank = 0;
-            //eDebug($p);
-            for ($x = 0; $x < 12; $x++) {
-                $this->catstring = '';
-                if (isset($p->storeCategory[$x])) {
-                    $out .= expString::outputField(storeCategory::buildCategoryString($p->storeCategory[$x]->id, true));
-                    $rank = $db->selectValue('product_storeCategories', 'rank', 'product_id=' . $p->id . ' AND storecategories_id=' . $p->storeCategory[$x]->id);
-                } else $out .= ',';
+        $total = $db->countObjects($this->model_table);
+        for ($i = 0; $i < $total; $i += 100) {
+            //eDebug($this->params);
+            //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
+            if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
+                $sql = expSession::get('product_export_query');
+                if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (product_type="product")';
+                $sql .= ' LIMIT ' . ($i) . ', 100';
+                //eDebug($sql);
+                //expSession::set('product_export_query','');
+                $prods = $db->selectArraysBySql($sql);
+                //eDebug($prods);
+            } else {
+                foreach ($this->params['act-upon'] as $prod) {
+                    $prods[] = array('id' => $prod);
+                }
             }
-            $out .= expString::outputField($p->surcharge);
-            $out .= expString::outputField($rank);  // no longer used
-            $out .= expString::outputField($p->feed_title);
-            $out .= expString::outputField($p->feed_body);
-            $out .= expString::outputField($p->weight);
-            $out .= expString::outputField($p->height);
-            $out .= expString::outputField($p->width);
-            $out .= expString::outputField($p->length);
-            //output images
-            if (isset($p->expFile['mainimage'][0])) {
-                $out .= expString::outputField($p->expFile['mainimage'][0]->id);
-            } else $out .= ',';
-            for ($x = 0; $x < 3; $x++) {
-                if (isset($p->expFile['images'][$x])) {
-                    $out .= expString::outputField($p->expFile['images'][$x]->id);
-                } else $out .= ',';
-            }
-            $out .= expString::outputField($p->companies_id, chr(13) . chr(10)); //Removed the extra "," in the last element
+            set_time_limit(0);
+            $baseProd = new product();
+            $out = '';
 
-            foreach ($p->childProduct as $cp) {
-                //$p = new product($pid['id'], true, false);
+            //$p = new product($pid['id'], false, false);
+            foreach ($prods as $pid) {
+                $except = array('company', 'crosssellItem', 'optiongroup');
+                $p = $baseProd->find('first', 'id=' . $pid['id'], null, null, 0, true, true, $except, true);
+
                 //eDebug($p,true);
-                $out .= expString::outputField($cp->id);
-                $out .= expString::outputField($cp->parent_id);
-                $out .= expString::outputField($cp->child_rank);
-                $out .= expString::outputField($cp->title);
-                $out .= expString::outputField(expString::stripLineEndings($cp->body));
-                $out .= expString::outputField($cp->model);
-                $out .= expString::outputField($cp->warehouse_location);
-                $out .= expString::outputField($cp->sef_url);
-//                $out .= expString::outputField($cp->canonical);  FIXME this is NOT in the import sequence
-                $out .= expString::outputField($cp->meta_title);
-                $out .= expString::outputField($cp->meta_keywords);
-                $out .= expString::outputField($cp->meta_description);
-                $out .= expString::outputField($cp->tax_class_id);
-                $out .= expString::outputField($cp->quantity);
-                $out .= expString::outputField($cp->availability_type);
-                $out .= expString::outputField($cp->base_price);
-                $out .= expString::outputField($cp->special_price);
-                $out .= expString::outputField($cp->use_special_price);
-                $out .= expString::outputField($cp->active_type);
-                $out .= expString::outputField($cp->product_status_id);
-                $out .= ',,,,,,,,,,,,';  // for categories
-                $out .= expString::outputField($cp->surcharge);
-                $out .= ',,,'; //for rank, feed title, feed body
-                $out .= expString::outputField($cp->weight);
-                $out .= expString::outputField($cp->height);
-                $out .= expString::outputField($cp->width);
-                $out .= expString::outputField($cp->length);
-                $out .= ',,,,,';  // for images
-                $out .= expString::outputField($cp->companies_id, chr(13) . chr(10));
+                $out .= expString::outputField($p->id);
+                $out .= expString::outputField($p->parent_id);
+                $out .= expString::outputField($p->child_rank);
+                $out .= expString::outputField($p->title);
+                $out .= expString::outputField(expString::stripLineEndings($p->body), ",", true);
+                $out .= expString::outputField($p->model);
+                $out .= expString::outputField($p->warehouse_location);
+                $out .= expString::outputField($p->sef_url);
+//            $out .= expString::outputField($p->canonical);  FIXME this is NOT in the import sequence
+                $out .= expString::outputField($p->meta_title);
+                $out .= expString::outputField($p->meta_keywords);
+                $out .= expString::outputField($p->meta_description);
+                $out .= expString::outputField($p->tax_class_id);
+                $out .= expString::outputField($p->quantity);
+                $out .= expString::outputField($p->availability_type);
+                $out .= expString::outputField($p->base_price);
+                $out .= expString::outputField($p->special_price);
+                $out .= expString::outputField($p->use_special_price);
+                $out .= expString::outputField($p->active_type);
+                $out .= expString::outputField($p->product_status_id);
 
-                //echo($out);
+                $rank = 0;
+                //eDebug($p);
+                for ($x = 0; $x < 12; $x++) {
+                    $this->catstring = '';
+                    if (isset($p->storeCategory[$x])) {
+                        $out .= expString::outputField(storeCategory::buildCategoryString($p->storeCategory[$x]->id, true));
+                        $rank = $db->selectValue('product_storeCategories', 'rank', 'product_id=' . $p->id . ' AND storecategories_id=' . $p->storeCategory[$x]->id);
+                    } else $out .= ',';
+                }
+                $out .= expString::outputField($p->surcharge);
+                $out .= expString::outputField($rank);  // no longer used
+                $out .= expString::outputField($p->feed_title);
+                $out .= expString::outputField($p->feed_body);
+                $out .= expString::outputField($p->weight);
+                $out .= expString::outputField($p->height);
+                $out .= expString::outputField($p->width);
+                $out .= expString::outputField($p->length);
+                //output images
+                if (isset($p->expFile['mainimage'][0])) {
+                    $out .= expString::outputField($p->expFile['mainimage'][0]->id);
+                } else $out .= ',';
+                for ($x = 0; $x < 3; $x++) {
+                    if (isset($p->expFile['images'][$x])) {
+                        $out .= expString::outputField($p->expFile['images'][$x]->id);
+                    } else $out .= ',';
+                }
+                $out .= expString::outputField($p->companies_id, chr(13) . chr(10)); //Removed the extra "," in the last element
+
+                foreach ($p->childProduct as $cp) {
+                    //$p = new product($pid['id'], true, false);
+                    //eDebug($p,true);
+                    $out .= expString::outputField($cp->id);
+                    $out .= expString::outputField($cp->parent_id);
+                    $out .= expString::outputField($cp->child_rank);
+                    $out .= expString::outputField($cp->title);
+                    $out .= expString::outputField(expString::stripLineEndings($cp->body));
+                    $out .= expString::outputField($cp->model);
+                    $out .= expString::outputField($cp->warehouse_location);
+                    $out .= expString::outputField($cp->sef_url);
+//                $out .= expString::outputField($cp->canonical);  FIXME this is NOT in the import sequence
+                    $out .= expString::outputField($cp->meta_title);
+                    $out .= expString::outputField($cp->meta_keywords);
+                    $out .= expString::outputField($cp->meta_description);
+                    $out .= expString::outputField($cp->tax_class_id);
+                    $out .= expString::outputField($cp->quantity);
+                    $out .= expString::outputField($cp->availability_type);
+                    $out .= expString::outputField($cp->base_price);
+                    $out .= expString::outputField($cp->special_price);
+                    $out .= expString::outputField($cp->use_special_price);
+                    $out .= expString::outputField($cp->active_type);
+                    $out .= expString::outputField($cp->product_status_id);
+                    $out .= ',,,,,,,,,,,,';  // for categories
+                    $out .= expString::outputField($cp->surcharge);
+                    $out .= ',,,'; //for rank, feed title, feed body
+                    $out .= expString::outputField($cp->weight);
+                    $out .= expString::outputField($cp->height);
+                    $out .= expString::outputField($cp->width);
+                    $out .= expString::outputField($cp->length);
+                    $out .= ',,,,,';  // for images
+                    $out .= expString::outputField($cp->companies_id, chr(13) . chr(10));
+
+                    //echo($out);
+                }
+
             }
 
-        }
+            fwrite($handle, $out);
 
-//        $outFile = 'tmp/product_export_' . time() . '.csv';
-//        $outHandle = fopen(BASE . $outFile, 'w');
-//        fwrite($outHandle, $out);
-//        fclose($outHandle);
-//
-//        echo "<br/><br/>Download the file here: <a href='" . PATH_RELATIVE . $outFile . "'>Product Export</a>";
+        }
+        fclose($handle);
 
         $filename = 'product_export_' . time() . '.csv';
 
@@ -805,16 +814,9 @@ class storeController extends expController {
             header('Content-Disposition: attachment; filename="' . $filename . '"');
             header('Pragma: no-cache');
         }
-        echo $out;
+        readfile($tmpfname);
+        unlink($tmpfname);
         exit; // Exit, since we are exporting
-
-        /*eDebug(BASE . "tmp/export.csv");
-        $db->sql($sql);
-        eDebug($db->error());*/
-        /*OPTIONALLY ENCLOSED BY '" . '"' .
-        "' ESCAPED BY '\\'
-        LINES TERMINATED BY '" . '\\n' .
-        "' */
     }
 
     /**
