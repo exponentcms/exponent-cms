@@ -157,7 +157,8 @@ class storeController extends expController {
             $default_id = null;
         }
 //        if (empty($default_id)) $default_id = 0;
-        if (!is_null($default_id)) expSession::set('catid', $default_id);
+        if (!is_null($default_id))
+            expSession::set('catid', $default_id);
 
         // figure out if we need to show all categories and products or default to showing the first category.
         // elseif (!empty($this->config['category'])) {
@@ -681,7 +682,8 @@ class storeController extends expController {
             //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
             if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
                 $sql = expSession::get('product_export_query');
-                if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (product_type="product")';
+                if (empty($sql))
+                    $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (parent_id=0 AND product_type="product")';
                 $sql .= ' LIMIT ' . ($i) . ', 100';
                 //eDebug($sql);
                 //expSession::set('product_export_query','');
@@ -698,7 +700,7 @@ class storeController extends expController {
 
             //$p = new product($pid['id'], false, false);
             foreach ($prods as $pid) {
-                $except = array('company', 'crosssellItem', 'optiongroup');
+                $except = array('company', 'crosssellItem', 'optiongroup', 'product_notes', 'product_status');
                 $p = $baseProd->find('first', 'id=' . $pid['id'], null, null, 0, true, true, $except, true);
 
                 //eDebug($p,true);

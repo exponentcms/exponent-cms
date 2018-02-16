@@ -843,9 +843,13 @@ class reportController extends expController {
         ));
     }
 
+    /**
+     * An Order Report
+     */
     function show_payment_summary() {
         global $db;
 
+        set_time_limit(0);
         $payments = billingmethod::$payment_types;
 
         $order_ids = array();
@@ -900,7 +904,7 @@ class reportController extends expController {
 //        $tax_type_formatted = $tax_types[0]->zonename . ' - ' . $tax_types[0]->classname . ' - ' . $tax_types[0]->rate . '%';
 
         $ord = new order();
-        $tax_res2 = $ord->find('all',"id IN (" . $orders_string . ")");
+        $tax_res2 = $ord->find('all',"id IN (" . $orders_string . ")", null, null, 0, true, true, array('orderitem', 'order_discounts', 'billingmethod', 'order_status_changes', 'order_status', 'order_type', 'shippingmethod', 'user'));
 
         $taxes = array();
         foreach ($tax_res2 as $tt) {
@@ -909,7 +913,7 @@ class reportController extends expController {
                 $tname = $tt->taxzones[$key]->name;
                 if (!isset($taxes[$key]['format'])) {
                     $taxes[$key] = array();
-                    $taxes[$key]['total'] =0;
+                    $taxes[$key]['total'] = 0;
                 }
                 $taxes[$key]['format'] = $tname . ' - ' . $tt->taxzones[$key]->rate . '%';
                 $taxes[$key]['total'] += $tt->tax;
@@ -926,6 +930,9 @@ class reportController extends expController {
         ));
     }
 
+    /**
+     * An Order Report
+     */
     function export_user_input_report() {
         $order = new order();
         $out = '"ITEM_NAME","QUANTITY","PERSONALIZATION"' . chr(13) . chr(10);
@@ -985,6 +992,9 @@ class reportController extends expController {
         // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95
     }
 
+    /**
+     * An Order Report
+     */
     function export_inventory() {
         $order = new order();
         $out = '"BADDR_LAST_NM","ITEM_NAME","ITEM_DESC","ITEM_QUANTITY"' . chr(13) . chr(10);
@@ -1358,6 +1368,9 @@ class reportController extends expController {
         else return $eof;
     }
 
+    /**
+     * An Order Report
+     */
     function print_orders() {
 //        global $db, $timer;
         //eDebug($this->params,true);
@@ -1393,6 +1406,9 @@ class reportController extends expController {
         else if ($a->invoice_id == $b->invoice_id) return 0;
     }
 
+    /**
+     * An Order Report
+     */
     function export_odbc() {
         $order = new order();
         $out = '"order_id","shipping_method_id","shipping_option","shipping_cost","firstname","middlename","lastname","organization","address1","address2","city","state","zip","country","phone"' . chr(13) . chr(10);
@@ -1443,6 +1459,9 @@ class reportController extends expController {
 
     }
 
+    /**
+     * An Order Report
+     */
     function export_order_items() {
         $order = new order();
         $out = '"order_id","quantity","SKU","product_title","firstname","middlename","lastname","organization","address1","address2","city","state","zip"' . chr(13) . chr(10);
@@ -1489,6 +1508,9 @@ class reportController extends expController {
 
     }
 
+    /**
+     * An Order Report
+     */
     function export_status_report() {
         $order = new order();
         $out = '"ITEM_NAME","ITEM_DESC","ITEM_QUANTITY","ITEM_STATUS"' . chr(13) . chr(10);
@@ -1797,6 +1819,9 @@ class reportController extends expController {
         */
     }
 
+    /**
+     * A Product Report
+     */
     function batch_export() {
         global $db;
         //eDebug($this->params);
@@ -1805,7 +1830,8 @@ class reportController extends expController {
         $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","height","length","companies_id"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
-            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (1=1 )';
+            if (empty($sql))
+                $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (parent_id=0)';
             //eDebug($sql);
             //expSession::set('product_export_query','');
             $prods = $db->selectArraysBySql($sql);
@@ -1820,7 +1846,7 @@ class reportController extends expController {
 
         //$p = new product($pid['id'], false, false);
         foreach ($prods as $pid) {
-            $except = array('company', 'crosssellItem', 'optiongroup');
+            $except = array('company', 'crosssellItem', 'optiongroup', 'product_notes', 'product_status');
             $p = $baseProd->find('first', 'id=' . $pid['id'], null, null, 0, true, false, $except, true);
 
             //eDebug($p,true);
@@ -1948,6 +1974,9 @@ class reportController extends expController {
 
     }
 
+    /**
+     * A Product Report
+     */
     function status_export() {
         global $db;
         //eDebug($this->params);
@@ -1958,7 +1987,8 @@ class reportController extends expController {
         $out = '"id","parent_id","model","warehouse_location","title","vendor","product_status","notes"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
-            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (1=1 )';
+            if (empty($sql))
+                $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (parent_id=0)';
             //eDebug($sql);
             //expSession::set('product_export_query','');
             $prods = $db->selectArraysBySql($sql);

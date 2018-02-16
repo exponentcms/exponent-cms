@@ -228,13 +228,14 @@ class expDatabase {
 //}
 //
 //class SSP {  //note tacked into expDatabase for standardization and customized for Exponent
-//	/**
-//	 * Create the data output array for the DataTables rows
-//	 *
-//	 *  @param  array $columns Column information array
-//	 *  @param  array $data    Data from the SQL get
-//	 *  @return array          Formatted data in a row based format
-//	 */
+
+	/**
+	 * Create the data output array for the DataTables rows
+	 *
+	 *  @param  array $columns Column information array
+	 *  @param  array $data    Data from the SQL get
+	 *  @return array          Formatted data in a row based format
+	 */
 	static function data_output ( $columns, $data )
 	{
 		$out = array();
@@ -258,19 +259,6 @@ class expDatabase {
 		}
 
 		return $out;
-	}
-
-
-	/**
-	 * Database connection
-	 *
-	 * Obtain an PHP PDO connection from a connection details array
-	 *
-	 *  @return PDO PDO connection
-	 */
-	static function db ()
-	{
-        return self::sql_connect();
 	}
 
 
@@ -459,7 +447,7 @@ class expDatabase {
 	static function simple ( $request, $table, $primaryKey, $columns )
 	{
 		$bindings = array();
-		$db = self::db();
+		$dbpdo = self::sql_connect();
 
 		// Build the SQL query string from the request
 		$limit = self::limit( $request, $columns );
@@ -467,7 +455,7 @@ class expDatabase {
 		$where = self::filter( $request, $columns, $bindings );
 
 		// Main query to actually get the data
-		$data = self::sql_exec( $db, $bindings,
+		$data = self::sql_exec( $dbpdo, $bindings,
 			"SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
 			 FROM $table
 			 $where
@@ -476,7 +464,7 @@ class expDatabase {
 		);
 
 		// Data set length after filtering
-		$resFilterLength = self::sql_exec( $db, $bindings,
+		$resFilterLength = self::sql_exec( $dbpdo, $bindings,
 			"SELECT COUNT(`{$primaryKey}`)
 			 FROM   $table
 			 $where"
@@ -484,7 +472,7 @@ class expDatabase {
 		$recordsFiltered = $resFilterLength[0][0];
 
 		// Total data set length
-		$resTotalLength = self::sql_exec( $db,
+		$resTotalLength = self::sql_exec( $dbpdo,
 			"SELECT COUNT(`{$primaryKey}`)
 			 FROM   $table"
 		);
@@ -530,7 +518,7 @@ class expDatabase {
     static function complex ( $request, $table, $primaryKey, $columns, $whereResult=null, $whereAll=null )
    	{
    		$bindings = array();
-   		$db = self::db();
+        $dbpdo = self::sql_connect();
    		$whereAllSql = '';
 
    		// Build the SQL query string from the request
@@ -556,7 +544,7 @@ class expDatabase {
    		}
 
    		// Main query to actually get the data
-   		$data = self::sql_exec( $db, $bindings,
+   		$data = self::sql_exec( $dbpdo, $bindings,
    			"SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
    			 FROM $table
    			 $where
@@ -565,7 +553,7 @@ class expDatabase {
    		);
 
    		// Data set length after filtering
-   		$resFilterLength = self::sql_exec( $db, $bindings,
+   		$resFilterLength = self::sql_exec( $dbpdo, $bindings,
    			"SELECT COUNT(`{$primaryKey}`)
    			 FROM   $table
    			 $where"
@@ -573,7 +561,7 @@ class expDatabase {
    		$recordsFiltered = $resFilterLength[0][0];
 
    		// Total data set length
-   		$resTotalLength = self::sql_exec( $db, $bindings,
+   		$resTotalLength = self::sql_exec( $dbpdo, $bindings,
    			"SELECT COUNT(`{$primaryKey}`)
    			 FROM   $table ".
    			$whereAllSql
@@ -603,16 +591,14 @@ class expDatabase {
 	 *     * db   - database name
 	 *     * user - user name
 	 *     * pass - user password
+     *
 	 * @return PDO Database connection handle
 	 */
 	static function sql_connect ()
 	{
 		try {
-			$db = @new PDO(
-//				"mysql:host={$sql_details['host']};dbname={$sql_details['db']}",
-//				$sql_details['user'],
-//				$sql_details['pass'],
-                "mysql:host=".DB_HOST . ";dbname=" . DB_NAME . "",
+            $dbpdo = @new PDO(
+                "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "",
             				DB_USER,
             				DB_PASS,
 				array( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION )
@@ -625,28 +611,28 @@ class expDatabase {
 			);
 		}
 
-		return $db;
+		return $dbpdo;
 	}
 
 
 	/**
 	 * Execute an SQL query on the database
 	 *
-	 * @param  resource $db  Database handler
+	 * @param  resource $dbpdo  Database handler
 	 * @param  array    $bindings Array of PDO binding values from bind() to be
 	 *   used for safely escaping strings. Note that this can be given as the
 	 *   SQL query string if no bindings are required.
 	 * @param  string   $sql SQL query to execute.
 	 * @return array         Result from the query (all rows)
 	 */
-	static function sql_exec ( $db, $bindings, $sql=null )
+	static function sql_exec ( $dbpdo, $bindings, $sql=null )
 	{
 		// Argument shifting
 		if ( $sql === null ) {
 			$sql = $bindings;
 		}
 
-		$stmt = $db->prepare( $sql );
+		$stmt = $dbpdo->prepare( $sql );
 		//echo $sql;
 
 		// Bind parameters
@@ -755,7 +741,7 @@ class expDatabase {
 }
 
 /**
-* This is the class database
+* This is the abstract class database
 *
 * This is the generic implementation of the database class.
 * @subpackage Database
@@ -1805,7 +1791,6 @@ abstract class database {
 	       return array();
 
 	   $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
-//	   global $db;
 	   $sql = 'SELECT node.*,
 	           (COUNT(parent.title) - (sub_tree.depth + 1)) AS depth
 	           FROM `' . $this->prefix . $table . '` AS node,
