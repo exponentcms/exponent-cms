@@ -168,19 +168,19 @@ class expRecord {
 //    public function  __isset($property) {
 //        return isset($this->$property);
 //    }
-//
+
 //    public function __unset($property) {
 //        unset($this->$property);
 //    }
 
-//    /**
-//     * name of module for backwards compat with old modules
-//     *
-//     * @return string
-//     */
-//    public function name() {
-//        return static::displayname();
-//    }
+    /**
+     * name of module for backwards compat with old modules
+     *
+     * @return string
+     */
+    public function name() {
+        return static::displayname();
+    }
 
     /**
      * find an item or items
