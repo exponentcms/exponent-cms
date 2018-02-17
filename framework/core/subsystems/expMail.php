@@ -691,7 +691,7 @@ class expMail {
         // attempt to fix a bad to address
         if (is_array($email)) {
             foreach ($email as $address=>$name) {
-                if (is_integer($address)) {
+                if (is_int($address)) {
                     if (strstr($name,'.') === false) {
                         $email[$address] .= $name.'.net';
                     }
@@ -742,7 +742,7 @@ class expMail {
         // attempt to fix a bad to address
         if (is_array($email)) {
             foreach ($email as $address=>$name) {
-                if (is_integer($address)) {
+                if (is_int($address)) {
                     if (strstr($name,'.') === false) {
                         $email[$address] .= $name.'.net';
                     }
@@ -792,7 +792,7 @@ class expMail {
         // attempt to fix a bad to address
         if (is_array($email)) {
             foreach ($email as $address=>$name) {
-                if (is_integer($address)) {
+                if (is_int($address)) {
                     if (strstr($name,'.') === false) {
                         $email[$address] .= $name.'.net';
                     }

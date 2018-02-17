@@ -54,9 +54,9 @@ class event extends expRecord {
             //note $limitstart is a unixtimestamp in this instance
             $order = expString::escape($order);
             if ($limit !== null)
-                $limit = intval($limit);
+                $limit = (int)($limit);
             if ($limitstart !== null)
-                $limitstart = intval($limitstart);
+                $limitstart = (int)($limitstart);
             $ed = new eventdate();
             $day = expDateTime::startOfDayTimestamp(time());
             $sort_asc = true; // For the getEventsForDates call
@@ -181,8 +181,8 @@ class event extends expRecord {
                         $eventdate->update($params);
        				}
        			} else { // all existing event occurrences have changed
-//        			  $eventdate = $db->selectObject('eventdate','id='.intval($params['date_id']));
-                    $eventdate = $calevent->find('first','id='.intval($params['date_id']));
+//        			  $eventdate = $db->selectObject('eventdate','id='.(int)($params['date_id']));
+                    $eventdate = $calevent->find('first','id='.(int)($params['date_id']));
                     $eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$params));
                     $eventdate->update();
                 }

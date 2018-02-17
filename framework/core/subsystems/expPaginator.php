@@ -112,8 +112,8 @@ class expPaginator {
 		$this->where = empty($params['where']) ? null : $params['where'];
 		$this->records = empty($params['records']) ? array() : $params['records'];
 //		$this->limit = empty($params['limit']) ? 10 : $params['limit'];
-        $this->limit = empty($params['limit']) ? 0 : intval($params['limit']);
-        $this->page = empty($params['page']) ? 1 : intval($params['page']);
+        $this->limit = empty($params['limit']) ? 0 : (int)($params['limit']);
+        $this->page = empty($params['page']) ? 1 : (int)($params['page']);
 		$this->action = empty($params['action']) ? '' : $params['action'];
 		$this->controller = empty($params['controller']) ? '' : $params['controller'];
 		$this->sql = empty($params['sql']) ? '' : $params['sql'];

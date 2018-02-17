@@ -39,7 +39,7 @@ foreach ($_GET as $key=>$var) {
 //fixme only old school url and forms have these variables here
 // conventional method to ensure the 'id' is only an id
 if (isset($_REQUEST['id'])) {
-    $_REQUEST['id'] = intval($_REQUEST['id']);
+    $_REQUEST['id'] = (int)($_REQUEST['id']);
     if (isset($_GET['id']))
         $_GET['id'] = $_REQUEST['id'];
     if (isset($_POST['id']))
@@ -48,7 +48,7 @@ if (isset($_REQUEST['id'])) {
 // do the same for the other id's
 foreach ($_REQUEST as $key=>$var) {
     if (is_string($var) && strlen($key) >= 3 && strrpos($key,'_id',-3) !== false) {
-        $_REQUEST[$key] = intval($_REQUEST[$key]);
+        $_REQUEST[$key] = (int)($_REQUEST[$key]);
         if (isset($_GET[$key]))
             $_GET[$key] = $_REQUEST[$key];
         if (isset($_POST[$key]))

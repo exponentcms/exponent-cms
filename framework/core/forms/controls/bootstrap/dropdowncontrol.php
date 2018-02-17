@@ -160,7 +160,7 @@ class dropdowncontrol extends formcontrol {
         $object->description = $values['description'];
         $object->default = $values['default'];
         $object->items = listbuildercontrol::parseData('items', $values, true);
-        if (isset($values['size'])) $object->size = (intval($values['size']) <= 0)?1:intval($values['size']);
+        if (isset($values['size'])) $object->size = ((int)($values['size']) <= 0)?1:(int)($values['size']);
         $object->required = !empty($values['required']);
         return $object;
     }

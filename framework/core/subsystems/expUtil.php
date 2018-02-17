@@ -51,8 +51,8 @@ class expUtil {
     static function isNumberEqualTo($firstnumber,$secondnumber,$precision = 10) // are 2 floats equal
     {
         $e = pow(10,$precision);
-        $i1 = intval($firstnumber * $e);
-        $i2 = intval($secondnumber * $e);
+        $i1 = (int)($firstnumber * $e);
+        $i2 = (int)($secondnumber * $e);
         $i1 = (float)(string)$firstnumber;
         $i2 = (float)(string)$secondnumber;
         return ($i1 == $i2);
@@ -70,8 +70,8 @@ class expUtil {
     static function isNumberGreaterThan($firstnumber,$secondnumber,$precision = 10) // is one float bigger than another
     {
         $e = pow(10,$precision);
-        $ibig = intval($firstnumber * $e);
-        $ismall = intval($secondnumber * $e);
+        $ibig = (int)($firstnumber * $e);
+        $ismall = (int)($secondnumber * $e);
         $ibig = (float)(string)$firstnumber;
         $ismall = (float)(string)$secondnumber;
         return ($ibig > $ismall);
@@ -89,8 +89,8 @@ class expUtil {
     static function isNumberGreaterThanOrEqualTo($firstnumber,$secondnumber,$precision = 10) // is on float bigger or equal to another
     {
         $e = pow(10,$precision);
-        $ibig = intval($firstnumber * $e);
-        $ismall = intval($secondnumber * $e);
+        $ibig = (int)($firstnumber * $e);
+        $ismall = (int)($secondnumber * $e);
         $ibig = (float)(string)$firstnumber;
         $ismall = (float)(string)$secondnumber;
         return ($ibig >= $ismall);
@@ -108,8 +108,8 @@ class expUtil {
     static function isNumberLessThan($firstnumber,$secondnumber,$precision = 10) // is one float bigger than another
     {
         $e = pow(10,$precision);
-        $ibig = intval($firstnumber * $e);
-        $ismall = intval($secondnumber * $e);
+        $ibig = (int)($firstnumber * $e);
+        $ismall = (int)($secondnumber * $e);
         $ibig = (float)(string)$firstnumber;
         $ismall = (float)(string)$secondnumber;
         return ($ibig < $ismall);
@@ -127,8 +127,8 @@ class expUtil {
     static function isNumberLessThanOrEqualTo($firstnumber,$secondnumber,$precision = 10) // is on float bigger or equal to another
     {
         $e = pow(10,$precision);
-        $ibig = intval($firstnumber * $e);
-        $ismall = intval($secondnumber * $e);
+        $ibig = (int)($firstnumber * $e);
+        $ismall = (int)($secondnumber * $e);
         $ibig = (float)(string)$firstnumber;
         $ismall = (float)(string)$secondnumber;
         return ($ibig <= $ismall);

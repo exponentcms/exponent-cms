@@ -37,7 +37,7 @@ function smarty_function_stars($params,&$smarty) {
 $rating = $params['rating'];
 $star_percent = $params['starcount'] / 100;
 $number_of_stars = $rating->rating * $star_percent;
-$whole_stars = intval($number_of_stars);
+$whole_stars = (int)($number_of_stars);
 $half_stars = ($number_of_stars - $whole_stars) >= .5 ? 1 : 0;
 
 echo '<div class="stars">';

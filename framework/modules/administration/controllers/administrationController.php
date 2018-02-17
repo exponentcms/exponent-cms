@@ -764,7 +764,7 @@ class administrationController extends expController {
                                 $unzip_error = 'Entry has been deleted';
                                 break;
                             default:
-                                $unzip_error = 'An unknown error has occurred (' . intval($unzip_error_no) . ')';
+                                $unzip_error = 'An unknown error has occurred (' . (int)($unzip_error_no) . ')';
                         }
                         flash('error',gt('Error extracting ZIP archive') . ': ' . ' : ' . $unzip_error . '<br />');
 					} else {

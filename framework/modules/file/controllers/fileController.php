@@ -101,7 +101,7 @@ class fileController extends expController {
         global $user;
         //expHistory::set('manageable', $this->params);
         flash('message',gt('Upload size limit').': '.ini_get('upload_max_filesize'));
-        if(intval(ini_get('upload_max_filesize'))!=intval(ini_get('post_max_size')) && $user->isAdmin()){
+        if((int)(ini_get('upload_max_filesize'))!=(int)(ini_get('post_max_size')) && $user->isAdmin()){
             flash('error',gt('In order for the uploader to work correctly, \'"post_max_size\' and \'upload_max_filesize\' within your php.ini file must match one another'));
         }
 
@@ -116,7 +116,7 @@ class fileController extends expController {
             'update'=>$this->params['update'],
             "upload_size"=>ini_get('upload_max_filesize'),
             "post_size"=>ini_get('post_max_size'),
-            "bmax"=>intval(ini_get('upload_max_filesize')/1024*1000000000),
+            "bmax"=>(int)(ini_get('upload_max_filesize')/1024*1000000000),
             'cats'=>$catarray,
         ));
     }
@@ -279,12 +279,12 @@ class fileController extends expController {
 
         // How many records to get?
         if(strlen($this->params['results']) > 0) {
-            $results = intval($this->params['results']);
+            $results = (int)($this->params['results']);
         }
 
         // Start at which record?
         if(strlen($this->params['startIndex']) > 0) {
-            $startIndex = intval($this->params['startIndex']);
+            $startIndex = (int)($this->params['startIndex']);
         }
 
         // Sorted?
@@ -626,7 +626,7 @@ class fileController extends expController {
 
         //extensive suitability check before doing anything with the file...
         if (isset($_SERVER['HTTP_X_FILE_NAME'])) {  //HTML5 XHR upload
-            $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME'],false,false,null,$destDir,intval(QUICK_UPLOAD_WIDTH));
+            $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME'],false,false,null,$destDir,(int)(QUICK_UPLOAD_WIDTH));
             if (is_object($file)) {
                 $file->poster = $user->id;
                 $file->posted = $file->last_accessed = time();
@@ -652,7 +652,7 @@ class fileController extends expController {
                 $message = gt("You may be attempting to hack our server.");
             } else {
                 // upload the file, but don't save the record yet...
-                $file = expFile::fileUpload('uploadfile',false,false,null,$destDir,intval(QUICK_UPLOAD_WIDTH));
+                $file = expFile::fileUpload('uploadfile',false,false,null,$destDir,(int)(QUICK_UPLOAD_WIDTH));
                 // since most likely this function will only get hit via flash in YUI Uploader
                 // and since Flash can't pass cookies, we lose the knowledge of our $user
                 // so we're passing the user's ID in as $_POST data. We then instantiate a new $user,

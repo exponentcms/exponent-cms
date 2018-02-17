@@ -191,7 +191,7 @@ class expSettings
 //                $value = str_replace(array('\r\n', '\r', '\n'), "", $value);
                 $str .= "exponent_unhtmlentities('$value')";
             } elseif (is_int($value)) {
-                $str .= "'" . intval($value) . "'";
+                $str .= "'" . (int)($value) . "'";
             } else {
                 if ($directive != 'SESSION_TIMEOUT') {
 //                    $str .= "'" . expString::escape(str_replace("'", "\'", $value)) . "'";  //FIXME is this still necessary since we stripslashes above???

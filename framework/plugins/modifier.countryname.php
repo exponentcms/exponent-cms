@@ -37,7 +37,7 @@
 function smarty_modifier_countryname($country,$col='name') {
 	global $db;
 	if ($col != 'name') $col = 'code';
-	return $db->selectValue('geo_country', $col, 'id='.intval($country));
+	return $db->selectValue('geo_country', $col, 'id='.(int)($country));
 }
 
 ?>

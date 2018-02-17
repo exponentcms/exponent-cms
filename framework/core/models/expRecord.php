@@ -201,7 +201,7 @@ class expRecord {
         global $db, $user;
 
         if (is_numeric($range)) {
-            $where = $this->identifier . '=' . intval($range); // If we hit this then we are expecting just a simple id
+            $where = $this->identifier . '=' . (int)($range); // If we hit this then we are expecting just a simple id
             $range = 'first';
         }
 
@@ -211,9 +211,9 @@ class expRecord {
 //        $sql .= empty($order) ? '' : ' ORDER BY ' . $order;
         $order = expString::escape($order);
         if ($limit !== null)
-            $limit = intval($limit);
+            $limit = (int)($limit);
         if ($limitstart !== null)
-            $limitstart = intval($limitstart);
+            $limitstart = (int)($limitstart);
         $supports_revisions = $this->supports_revisions && ENABLE_WORKFLOW;
         if (ENABLE_WORKFLOW && $this->needs_approval) {
             $needs_approval = true;
@@ -249,8 +249,8 @@ class expRecord {
             if (!is_int($where))  $where = $db->selectObject($db->prefix . 'expTags',"title='" . $where . "' OR sef_url='" . $where . "'");
             $sql = 'SELECT DISTINCT m.id FROM ' . $db->prefix . $this->tablename . ' m ';
             $sql .= 'JOIN ' . $db->prefix . 'content_expTags ct ';
-            $sql .= 'ON m.id = ct.content_id WHERE ct.exptags_id=' . intval($where) . " AND ct.content_type='" . $this->classname . "'";
-            if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE ct.exptags_id=" . intval($where) . " AND ct.content_type='" . $this->classname . "'";
+            $sql .= 'ON m.id = ct.content_id WHERE ct.exptags_id=' . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
+            if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE ct.exptags_id=" . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
             $tag_assocs = $db->selectObjectsBySql($sql);
             $records    = array();
             foreach ($tag_assocs as $assoc) {
@@ -261,8 +261,8 @@ class expRecord {
             if (!is_int($where))  $where = $db->selectObject($db->prefix . 'expCats',"title='" . $where . "' OR sef_url='" . $where . "'");
             $sql = 'SELECT DISTINCT m.id FROM ' . $db->prefix . $this->tablename . ' m ';
             $sql .= 'JOIN ' . $db->prefix . 'content_expCats ct ';
-            $sql .= 'ON m.id = ct.content_id WHERE ct.expcats_id=' . intval($where) . " AND ct.content_type='" . $this->classname . "'";
-            if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE ct.expcats_id=" . intval($where) . " AND ct.content_type='" . $this->classname . "'";
+            $sql .= 'ON m.id = ct.content_id WHERE ct.expcats_id=' . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
+            if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE ct.expcats_id=" . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
             $cat_assocs = $db->selectObjectsBySql($sql);
             $records    = array();
             foreach ($cat_assocs as $assoc) {

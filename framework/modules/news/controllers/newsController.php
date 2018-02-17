@@ -215,7 +215,7 @@ class newsController extends expController {
     public function delete_expired() {
         if (!empty($this->params['act-upon'])) {
             foreach ($this->params['act-upon'] as $item) {
-                $news = new news(intval($item));
+                $news = new news((int)($item));
                 if ($news) {
                     $news->delete();
                 }

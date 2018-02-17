@@ -44,7 +44,7 @@ class expCore
             $mod
         ) : ''; // this will remove 'Controller' or add 'module'
         $loc->src = !empty($src) ? $src : '';
-        $loc->int = !empty($int) ? strval(intval($int)) : '';
+        $loc->int = !empty($int) ? (string)((int)($int)) : '';
         return $loc;
     }
 

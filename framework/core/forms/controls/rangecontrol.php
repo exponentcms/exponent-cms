@@ -81,9 +81,9 @@ class rangecontrol extends textcontrol {
 
     static function update($values, $object) {
         $object = parent::update($values, $object);
-        if (isset($values['min'])) $object->min = intval($values['min']);
-        if (isset($values['max'])) $object->max = intval($values['max']);
-        if (isset($values['step'])) $object->step = intval($values['step']);
+        if (isset($values['min'])) $object->min = (int)($values['min']);
+        if (isset($values['max'])) $object->max = (int)($values['max']);
+        if (isset($values['step'])) $object->step = (int)($values['step']);
         return $object;
     }
 

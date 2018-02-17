@@ -430,7 +430,7 @@ class expFile extends expRecord {
         // Move the temporary uploaded file into the destination directory,
         // and change the name.
         $resized = false;
-        $maxwidth = intval($_max_width);
+        $maxwidth = (int)($_max_width);
         require_once(BASE . 'external/class.upload/class.upload.php');
         $handle = new upload($_FILES[$_postName]);
         $handle->file_new_name_body = pathinfo($_destFile, PATHINFO_FILENAME);
@@ -553,7 +553,7 @@ class expFile extends expRecord {
         // Move the temporary uploaded file into the destination directory,
         // and change the name.
         $resized = false;
-        $maxwidth = intval($_max_width);
+        $maxwidth = (int)($_max_width);
         require_once(BASE . 'external/class.upload/class.upload.php');
         $handle = new upload('php:' . $fileName);
         $handle->file_new_name_body = pathinfo($_destFile, PATHINFO_FILENAME);

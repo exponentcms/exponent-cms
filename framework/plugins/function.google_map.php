@@ -47,11 +47,11 @@ function smarty_function_google_map($params,&$smarty) {
         if ($address->state == -2) {
             $address_string .= $address->non_us_state;
         } else {
-            $state_name = $db->selectValue('geo_region', 'name', 'id='.intval($address->state));
+            $state_name = $db->selectValue('geo_region', 'name', 'id='.(int)($address->state));
             $address_string .= $state_name;
         }
         if ($address->state == -2 || empty($address->state)) {
-            $country_name = $db->selectValue('geo_country', 'name', 'id='.intval($address->country));
+            $country_name = $db->selectValue('geo_country', 'name', 'id='.(int)($address->country));
             $address_string .= ',' . $country_name;
         }
     } else if (is_string($params['address'])) {

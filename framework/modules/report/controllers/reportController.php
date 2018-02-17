@@ -254,7 +254,7 @@ class reportController extends expController {
                     $operator = '=';
                     break;
             }
-            $sqlwhere .= " AND o.invoice_id" . $operator . intval($p['order-range-num']);
+            $sqlwhere .= " AND o.invoice_id" . $operator . (int)($p['order-range-num']);
         }
 
         if (!empty($p['order-price-num'])) {
@@ -270,7 +270,7 @@ class reportController extends expController {
                     $operator = '=';
                     break;
             }
-            $sqlwhere .= " AND o.grand_total" . $operator . intval($p['order-price-num']);
+            $sqlwhere .= " AND o.grand_total" . $operator . (int)($p['order-price-num']);
         }
 
         if (!empty($p['pnam'])) {
@@ -1757,7 +1757,7 @@ class reportController extends expController {
         // eDebug($cartsWithItemsAndInfo);
 
         $summary['totalcarts'] = $allCarts['count'];
-        $summary['valueproducts'] = intval($valueproducts);
+        $summary['valueproducts'] = (int)($valueproducts);
         $summary['cartsWithoutItems'] = round(($allCarts['count'] ? $cartsWithoutItems['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
         $summary['cartsWithItems'] = round(($allCarts['count'] ? $cartsWithItems['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
         $summary['cartsWithItemsAndInfo'] = round(($allCarts['count'] ? $cartsWithItemsAndInfo['count'] / $allCarts['count'] : 0) * 100, 2) . '%';

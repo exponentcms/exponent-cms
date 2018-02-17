@@ -138,8 +138,8 @@ class pagecontrol extends formcontrol {
 //        if (isset($values['default'])) $object->default = $values['default'];
 //        if (isset($values['placeholder'])) $object->placeholder = $values['placeholder'];
 //        if (isset($values['pattern'])) $object->pattern = $values['pattern'];
-//        if (isset($values['size'])) $object->size = intval($values['size']);
-//        if (isset($values['maxlength'])) $object->maxlength = intval($values['maxlength']);
+//        if (isset($values['size'])) $object->size = (int)($values['size']);
+//        if (isset($values['maxlength'])) $object->maxlength = (int)($values['maxlength']);
 //        $object->required = isset($values['required']);
         $object->is_static = 1;
         return $object;

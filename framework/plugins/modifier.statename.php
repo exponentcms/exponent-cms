@@ -37,7 +37,7 @@
 function smarty_modifier_statename($state,$col='name') {
 	global $db;
 	if ($col != 'name') $col = 'code';
-	return $db->selectValue('geo_region', $col, 'id='.intval($state));
+	return $db->selectValue('geo_region', $col, 'id='.(int)($state));
 }
 
 ?>

@@ -855,8 +855,8 @@ class navigationController extends expController {
     public static function returnChildrenAsJSON() {
         global $db;
 
-        //$nav = section::levelTemplate(intval($_REQUEST['id'], 0));
-        $id         = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+        //$nav = section::levelTemplate((int)($_REQUEST['id'], 0));
+        $id         = isset($_REQUEST['id']) ? (int)($_REQUEST['id']) : 0;
         $nav        = $db->selectObjects('section', 'parent=' . $id, 'rank');
         //FIXME $manage_all is moot w/ cascading perms now?
         $manage_all = false;
@@ -937,8 +937,8 @@ class navigationController extends expController {
     public static function DragnDropReRank() {
         global $db, $router;
 
-        $move   = intval($router->params['move']);
-        $target = intval($router->params['target']);
+        $move   = (int)($router->params['move']);
+        $target = (int)($router->params['target']);
         $type   = $router->params['type'];
         $targSec = $db->selectObject("section","id=".$target);
 //        $targSec  = new section($target);
@@ -1063,7 +1063,7 @@ class navigationController extends expController {
         $old_rank = $page->rank;
         $old_parent = $page->parent;
         $new_rank = $router->params['position'] + 1;  // rank
-        $new_parent = intval($router->params['parent']);
+        $new_parent = (int)($router->params['parent']);
 
         $db->decrement($page->tablename, 'rank', 1, 'rank>' . $old_rank . ' AND parent=' . $old_parent);  // close in hole
         $db->increment($page->tablename, 'rank', 1, 'rank>=' . $new_rank . ' AND parent=' . $new_parent);  // make room
@@ -1286,7 +1286,7 @@ class navigationController extends expController {
     function delete_standalones() {
         if (!empty($this->params['deleteit'])) {
             foreach ($this->params['deleteit'] as $page) {
-                $section = new section(intval($page));
+                $section = new section((int)($page));
                 if ($section) {
 //                    self::deleteLevel($section->id);
                     $section->delete();
@@ -1369,7 +1369,7 @@ class navigationController extends expController {
         $hardcodedmods = $db->selectObjects('sectionref',"refcount=1000 AND source NOT LIKE '%@section%' AND source NOT LIKE '%@random%'");
         foreach ($hardcodedmods as $hardcodedmod) {
             if ($hardcodedmod->module == 'container') {
-                $page_id = intval(preg_replace('/\D/', '', $hardcodedmod->source));
+                $page_id = (int)(preg_replace('/\D/', '', $hardcodedmod->source));
                 if (empty($page_id)) {
                     $page_id = SITE_DEFAULT_SECTION;  // we'll default to the home page
                 }

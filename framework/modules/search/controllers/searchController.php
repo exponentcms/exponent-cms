@@ -352,7 +352,7 @@ class searchController extends expController {
 	public function topSearchReport() {
 		global $db;
 
-		$limit = intval(TOP_SEARCH);
+		$limit = (int)(TOP_SEARCH);
 
 		if(empty($limit)) {
 			$limit = 10;

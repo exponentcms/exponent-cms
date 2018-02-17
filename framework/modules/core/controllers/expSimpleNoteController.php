@@ -128,9 +128,9 @@ class expSimpleNoteController extends expController {
 
         /* The global constants can be overriden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-        $require_login = empty($this->params['require_login']) ? SIMPLENOTE_REQUIRE_LOGIN : intval($this->params['require_login']);
-        $require_approval = empty($this->params['require_approval']) ? SIMPLENOTE_REQUIRE_APPROVAL : intval($this->params['require_approval']);
-        $require_notification = empty($this->params['require_notification']) ? SIMPLENOTE_REQUIRE_NOTIFICATION : intval($this->params['require_notification']);
+        $require_login = empty($this->params['require_login']) ? SIMPLENOTE_REQUIRE_LOGIN : (int)($this->params['require_login']);
+        $require_approval = empty($this->params['require_approval']) ? SIMPLENOTE_REQUIRE_APPROVAL : (int)($this->params['require_approval']);
+        $require_notification = empty($this->params['require_notification']) ? SIMPLENOTE_REQUIRE_NOTIFICATION : (int)($this->params['require_notification']);
         $notification_email = empty($this->params['notification_email']) ? SIMPLENOTE_NOTIFICATION_EMAIL : expString::escape($this->params['notification_email']);
 
 
@@ -354,9 +354,9 @@ class expSimpleNoteController extends expController {
 
         /* The global constants can be overriden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-        $require_login = empty($this->params['require_login']) ? SIMPLENOTE_REQUIRE_LOGIN : intval($this->params['require_login']);
-        $require_approval = empty($this->params['require_approval']) ? SIMPLENOTE_REQUIRE_APPROVAL : intval($this->params['require_approval']);
-        $require_notification = empty($this->params['require_notification']) ? SIMPLENOTE_REQUIRE_NOTIFICATION : intval($this->params['require_notification']);
+        $require_login = empty($this->params['require_login']) ? SIMPLENOTE_REQUIRE_LOGIN : (int)($this->params['require_login']);
+        $require_approval = empty($this->params['require_approval']) ? SIMPLENOTE_REQUIRE_APPROVAL : (int)($this->params['require_approval']);
+        $require_notification = empty($this->params['require_notification']) ? SIMPLENOTE_REQUIRE_NOTIFICATION : (int)($this->params['require_notification']);
         $notification_email = empty($this->params['notification_email']) ? SIMPLENOTE_NOTIFICATION_EMAIL : expString::escape($this->params['notification_email']);
 
         // setup some email variables.

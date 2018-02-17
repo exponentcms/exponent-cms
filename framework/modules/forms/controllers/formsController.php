@@ -729,7 +729,7 @@ class formsController extends expController {
                 //Building Email List...
                 $emaillist = array();
                 if (!empty($this->config['select_email']) && !empty($this->params['email_dest'])) {
-                    if (strval(intval($this->params['email_dest'])) == strval($this->params['email_dest'])) {
+                    if ((string)((int)($this->params['email_dest'])) == (string)($this->params['email_dest'])) {
                         foreach (group::getUsersInGroup($this->params['email_dest']) as $locUser) {
                             if ($locUser->email != '') $emaillist[$locUser->email] = trim(user::getUserAttribution($locUser->id));
                         }

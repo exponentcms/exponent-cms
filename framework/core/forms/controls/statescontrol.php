@@ -130,7 +130,7 @@ class statescontrol extends dropdowncontrol {
         $object->caption = $values['caption'];
         $object->description = $values['description'];
         $object->default = $values['default'];
-        if (isset($values['size'])) $object->size = (intval($values['size']) <= 0)?1:intval($values['size']);
+        if (isset($values['size'])) $object->size = ((int)($values['size']) <= 0)?1:(int)($values['size']);
         $object->abbv = isset($values['abbv']);
         $object->add_other = isset($values['add_other']);
         $object->include_blank = isset($values['include_blank']);

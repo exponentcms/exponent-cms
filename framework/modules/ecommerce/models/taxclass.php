@@ -40,8 +40,8 @@ class taxclass extends expRecord {
             flashAndFlow('error', gt('This store is not yet fully configured with a store address.')."<br>".gt('You Must Enter a Store Address').' <a href="'.expCore::makeLink(array('controller'=>'ecomconfig','action'=>'configure')).'">'.gt('Here').'</a>');
 
         // find any zones that match the state we are shipping this item to.
-        $my_zone = $db->selectValue('tax_geo', 'zone_id', 'country_id='.intval($global_config->config['store']['country']).' AND region_id='.intval($global_config->config['store']['state']));
-        $zones = $db->selectColumn('tax_geo', 'zone_id', 'country_id='.intval($item->shippingmethod->country).' AND region_id='.intval($item->shippingmethod->state));
+        $my_zone = $db->selectValue('tax_geo', 'zone_id', 'country_id='.(int)($global_config->config['store']['country']).' AND region_id='.(int)($global_config->config['store']['state']));
+        $zones = $db->selectColumn('tax_geo', 'zone_id', 'country_id='.(int)($item->shippingmethod->country).' AND region_id='.(int)($item->shippingmethod->state));
         if (empty($my_zone) && empty($zones)) return false;
 
         // first locate any local origin tax
@@ -70,8 +70,8 @@ class taxclass extends expRecord {
             $sql .= "JOIN ".$db->prefix."tax_rate as tr ON tr.zone_id=tg.zone_id ";
             $sql .= "WHERE tr.class_id=".$item->product->tax_class_id;
             if (!empty($global_config->config['store']))
-                $sql .= " AND (tg.country_id=".intval($global_config->config['store']['country']) . " AND tg.region_id=".intval($global_config->config['store']['state']);
-            $sql .= " AND tr.origin_tax=1 AND inactive!=1) OR (tg.country_id=".intval($item->shippingmethod->country)." AND tg.region_id=".intval($item->shippingmethod->state)." AND inactive!=1) ";
+                $sql .= " AND (tg.country_id=".(int)($global_config->config['store']['country']) . " AND tg.region_id=".(int)($global_config->config['store']['state']);
+            $sql .= " AND tr.origin_tax=1 AND inactive!=1) OR (tg.country_id=".(int)($item->shippingmethod->country)." AND tg.region_id=".(int)($item->shippingmethod->state)." AND inactive!=1) ";
             $sql .= "ORDER BY origin_tax DESC";
             $zone = $db->selectObjectBySql($sql);
             if (!empty($zone)) $zones[$zone->name] = $zone;

@@ -260,7 +260,7 @@ class user extends expRecord {
             return md5($password);
         } else {
             if (empty($salt)) {
-                if (is_integer(NEW_PASSWORD) && NEW_PASSWORD > 0) {
+                if (is_int(NEW_PASSWORD) && NEW_PASSWORD > 0) {
                     $cost = NEW_PASSWORD;
                 } else {
                     $cost = 10;

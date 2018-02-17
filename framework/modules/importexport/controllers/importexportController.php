@@ -712,11 +712,11 @@ class importexportController extends expController {
                     case 'use_special_price':
                     case 'active_type':
                     case 'product_status_id':
-                        $product->$key = intval($value);
+                        $product->$key = (int)($value);
                         break;
                     case 'companies_id':
                         if (is_numeric($value)) {
-                            $product->$key = intval($value);
+                            $product->$key = (int)($value);
                         } elseif (!empty($value)) {  // it's a company name, not a company id#
                             $co = new company();
                             $company = $co->find('first', 'title=' . $value);
@@ -753,7 +753,7 @@ class importexportController extends expController {
                     case 'height':
                     case 'width':
                     case 'length':
-                        $product->$key = floatval($value);
+                        $product->$key = (float)($value);
                         break;
                     case 'image1':
                     case 'image2':
@@ -762,7 +762,7 @@ class importexportController extends expController {
                     case 'image5':
                         if (!empty($value)) {
                             $product->save(false);
-                            if (is_integer($value)) {
+                            if (is_int($value)) {
                                 $_objFile = new expFile ($value);
                             } else {
                                 // import image from url
@@ -811,7 +811,7 @@ class importexportController extends expController {
                     case 'category12':
                         if ($product->parent_id == 0) {
 //                            $rank = !empty($data['rank']) ? $data['rank'] : 1;
-                            $rank = intval(str_replace('category', '', $key));
+                            $rank = (int)(str_replace('category', '', $key));
 //                            if (!empty($value)) $result = storeCategory::parseCategory($value);
                             if (!empty($value)) $result = storeCategory::importCategoryString($value);
                             else continue;

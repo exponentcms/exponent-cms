@@ -237,7 +237,7 @@ class addressController extends expController {
         $db->columnUpdate('geo_country','is_default',0,'is_default=1');
         if(isset($this->params['country_default']))
         {
-            $gc = new geoCountry(intval($this->params['country_default']));
+            $gc = new geoCountry((int)($this->params['country_default']));
             $db->setUniqueFlag($gc,'geo_country','is_default','id=' . $gc->id);
             $gc->refresh();
         }

@@ -94,7 +94,7 @@ class expRouter {
                 if (empty($params['sef_name'])) {
                     global $db;
 
-                    $params['sef_name'] = $db->selectValue('section', 'sef_name', 'id='.intval($params['section']));
+                    $params['sef_name'] = $db->selectValue('section', 'sef_name', 'id='.(int)($params['section']));
                 }
                 return self::cleanLink($linkbase.$params['sef_name']);
             } else {
@@ -208,7 +208,7 @@ class expRouter {
         //fixme only old school url and forms have these variables here
         // conventional method to ensure the 'id' is only an id
         if (isset($_REQUEST['id'])) {
-            $_REQUEST['id'] = intval($_REQUEST['id']);
+            $_REQUEST['id'] = (int)($_REQUEST['id']);
             if (isset($_GET['id']))
                 $_GET['id'] = $_REQUEST['id'];
             if (isset($_POST['id']))
@@ -217,10 +217,10 @@ class expRouter {
         // do the same for the other id's
         foreach ($_REQUEST as $key=>$var) {
             if (is_string($var) && strlen($key) >= 3 && strrpos($key,'_id',-3) !== false) {
-//                $_REQUEST[$key] = intval($_REQUEST[$key]);
+//                $_REQUEST[$key] = (int)($_REQUEST[$key]);
                 $_REQUEST[$key] = preg_match('/^[0-9]+/', $_REQUEST[$key], $matches) ? $matches[0] : 0;
                 if ($_REQUEST[$key] < 2147483647) {
-                    $_REQUEST[$key] = intval($_REQUEST[$key]);
+                    $_REQUEST[$key] = (int)($_REQUEST[$key]);
                 }
                 if (isset($_GET[$key]))
                     $_GET[$key] = $_REQUEST[$key];
@@ -269,7 +269,7 @@ class expRouter {
             // if we hit this it's an old school url coming in and we're trying to use SEF's.
             // we will send a permanent redirect so the search engines don't freak out about 2 links pointing
             // to the same page.
-            header("Location: ".$this->makeLink(array('section'=>intval($_REQUEST['section']))),TRUE,301);
+            header("Location: ".$this->makeLink(array('section'=>(int)($_REQUEST['section']))),TRUE,301);
         }
 
         // if this is a valid URL then we build out the current_url var which is used by flow, and possibly other places too
@@ -493,8 +493,8 @@ class expRouter {
                                 $redirectObject->new_sef_name = $page_redirect->new_sef_name;
                                 $db->insertObject($redirectObject, 'redirect');
                                 $_REQUEST['section'] = $section->id;
-                                $type = !empty($page_redirect->type) ? intval($page_redirect->type) : 200;
-                                header("Location: " . $this->makeLink(array('section' => intval($_REQUEST['section']))), TRUE, $type);
+                                $type = !empty($page_redirect->type) ? (int)($page_redirect->type) : 200;
+                                header("Location: " . $this->makeLink(array('section' => (int)($_REQUEST['section']))), TRUE, $type);
                             }
                         }
                     } else {
@@ -510,7 +510,7 @@ class expRouter {
             $_REQUEST['section'] = $section->id;
         }
 
-        expHistory::set('viewable', array('section'=>intval($_REQUEST['section'])));
+        expHistory::set('viewable', array('section'=>(int)($_REQUEST['section'])));
         return true;
     }
 
@@ -626,7 +626,7 @@ class expRouter {
         // now figure out the name<=>value pairs
         if (count($this->url_parts) == 3) {
             if ( is_numeric($this->url_parts[2])) {
-                $return_params['url_parts']['id'] = intval($this->url_parts[2]);
+                $return_params['url_parts']['id'] = (int)($this->url_parts[2]);
             }
         } else {
             for ($i = 2, $iMax = count($this->url_parts); $i < $iMax; $i++) {
@@ -692,7 +692,7 @@ class expRouter {
         if (!empty($id)) {
             global $db;
 
-            $section = $db->selectObject('section', 'id='.intval($id));
+            $section = $db->selectObject('section', 'id='.(int)($id));
             $url = URL_FULL;
             $url .= !empty($section->sef_name) ? $section->sef_name : $section->name;
         }
@@ -705,7 +705,7 @@ class expRouter {
         $url = '';
         if (!empty($id)) {
             if (SEF_URLS == 1) {
-                $section = $db->selectObject('section', 'id='.intval($id));
+                $section = $db->selectObject('section', 'id='.(int)($id));
                 if ($section->id != SITE_DEFAULT_SECTION) {
                     $url .= !empty($section->sef_name) ? $section->sef_name : $section->name;
                 }
@@ -811,15 +811,15 @@ class expRouter {
 //        if (isset($params['src'])) $params['src'] = expString::sanitize(htmlspecialchars($params['src']));
         // conventional method to ensure the 'id' is only an id
         if (isset($params['id'])) {
-            $params['id'] = intval($params['id']);
+            $params['id'] = (int)($params['id']);
         }
         // do the same for the other id's
         foreach ($params as $key=>$var) {
             if (is_string($var) && strlen($key) >= 3 && strrpos($key,'_id',-3) !== false) {
-//                $params[$key] = intval($params[$key]);
+//                $params[$key] = (int)($params[$key]);
                 $params[$key] = preg_match('/^[0-9]+/', $params[$key], $matches) ? $matches[0] : 0;
                 if ($params[$key] < 2147483647) {
-                    $params[$key] = intval($params[$key]);
+                    $params[$key] = (int)($params[$key]);
                 }
             }
             if ($key == 'src') {
@@ -933,12 +933,12 @@ class expRouter {
 
         if (expTheme::inAction()) {
             if (isset($_REQUEST['section'])) {
-                $section = $this->url_style=="sef" ? $this->getPageByName(expString::escape($_REQUEST['section']))->id : intval($_REQUEST['section']) ;
+                $section = $this->url_style=="sef" ? $this->getPageByName(expString::escape($_REQUEST['section']))->id : (int)($_REQUEST['section']) ;
             } else {
                 $section = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
             }
         } else {
-            $section = (isset($_REQUEST['section']) ? intval($_REQUEST['section']) : SITE_DEFAULT_SECTION);
+            $section = (isset($_REQUEST['section']) ? (int)($_REQUEST['section']) : SITE_DEFAULT_SECTION);
         }
         $testsection = $db->selectObject('section','id='.$section);
         if (empty($testsection)) {
@@ -953,10 +953,10 @@ class expRouter {
         if ($section == "*") {
             $sectionObj = call_user_func(expModules::getModuleClassName($this->params['controller']) . "::getSection", $this->params);
         } else {
-//            $sectionObj = $db->selectObject('section','id='. intval($section));
-            $sectionObj = new section(intval($section));
+//            $sectionObj = $db->selectObject('section','id='. (int)($section));
+            $sectionObj = new section((int)($section));
         }
-//        $sectionObj = $db->selectObject('section','id='. intval($section));
+//        $sectionObj = $db->selectObject('section','id='. (int)($section));
         if (!$sectionObj->canView()) {
             define('AUTHORIZED_SECTION',0);
         } else {
@@ -969,9 +969,9 @@ class expRouter {
         }
 
         if (isset($_REQUEST['section'])) {
-            expSession::set('last_section', intval($_REQUEST['section']));
+            expSession::set('last_section', (int)($_REQUEST['section']));
         } elseif ($section == SITE_DEFAULT_SECTION) {
-            expSession::set('last_section', intval(SITE_DEFAULT_SECTION));
+            expSession::set('last_section', (int)(SITE_DEFAULT_SECTION));
         } else {
             //expSession::unset('last_section');
         }

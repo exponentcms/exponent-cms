@@ -74,7 +74,7 @@ class blog extends expRecord {
 //        global $db, $user;
 //
 //        if (is_numeric($range)) {
-//            $where = $this->identifier.'='.intval($range); // If we hit this then we are expecting just a simple id
+//            $where = $this->identifier.'='.(int)($range); // If we hit this then we are expecting just a simple id
 //            $range = 'first';
 //        }
 //

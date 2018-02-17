@@ -120,10 +120,10 @@ class texteditorcontrol extends formcontrol {
         $object->description = $values['description'];
         if (isset($values['default'])) $object->default = $values['default'];
 		if (isset($values['placeholder'])) $object->placeholder = $values['placeholder'];
-        if (isset($values['rows'])) $object->rows = intval($values['rows']);
-        if (isset($values['cols'])) $object->cols = intval($values['cols']);
-        if (isset($values['maxchars'])) $object->maxchars = intval($values['maxchars']);
-        if (isset($values['maxlength'])) $object->maxlength = intval($values['maxlength']);
+        if (isset($values['rows'])) $object->rows = (int)($values['rows']);
+        if (isset($values['cols'])) $object->cols = (int)($values['cols']);
+        if (isset($values['maxchars'])) $object->maxchars = (int)($values['maxchars']);
+        if (isset($values['maxlength'])) $object->maxlength = (int)($values['maxlength']);
 		$object->required = !empty($values['required']);
         $object->is_hidden = !empty($values['is_hidden']);
 		return $object;

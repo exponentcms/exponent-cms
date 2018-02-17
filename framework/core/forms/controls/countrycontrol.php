@@ -118,7 +118,7 @@ class countrycontrol extends dropdowncontrol {
         $object->caption = $values['caption'];
         $object->description = $values['description'];
         $object->default = $values['default'];
-        if (isset($values['size'])) $object->size = (intval($values['size']) <= 0)?1:intval($values['size']);
+        if (isset($values['size'])) $object->size = ((int)($values['size']) <= 0)?1:(int)($values['size']);
         $object->abbv = isset($values['abbv']);
         $object->show_all = !empty($values['show_all']);
         $object->required = !empty($values['required']);

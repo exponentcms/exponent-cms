@@ -75,7 +75,7 @@ class group extends expRecord {
      */
 	public static function getUsersInGroup($gid) {
 		global $db;
-		if ($gid == null || !intval($gid)) {
+		if ($gid == null || !(int)($gid)) {
 			// Don't have enough information to consult the membership tables.
 			// Return an empty array.
 			return array();

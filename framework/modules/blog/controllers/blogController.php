@@ -248,7 +248,7 @@ class blogController extends expController {
         }
 
         foreach ($tags as $tagid) {
-            $sql .= ($first) ? 'exptags_id='.intval($tagid) : ' OR exptags_id='.intval($tagid);
+            $sql .= ($first) ? 'exptags_id='.(int)($tagid) : ' OR exptags_id='.(int)($tagid);
             $first = false;
         }
         $sql .= ") AND content_type='".$model->classname."'";

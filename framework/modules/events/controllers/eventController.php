@@ -77,7 +77,7 @@ class eventController extends expController {
 
         expHistory::set('viewable', $this->params);
         $locsql = $this->aggregateWhereClause();
-        $time = (isset($this->params['time']) ? intval($this->params['time']) : time());
+        $time = (isset($this->params['time']) ? (int)($this->params['time']) : time());
         assign_to_template(array(
             'time' => $time,
             'daynames' => event::dayNames(),
@@ -902,7 +902,7 @@ class eventController extends expController {
                     }
 
                     if (isset($this->params['time'])) {
-                        $time = intval($this->params['time']); // get current month's events
+                        $time = (int)($this->params['time']); // get current month's events
 //                        $dates = $db->selectObjects("eventdate",$locsql." AND (date >= ".expDateTime::startOfMonthTimestamp($time)." AND date <= ".expDateTime::endOfMonthTimestamp($time).")");
                         $dates = $ed->find('all', $locsql . " AND (date >= " . expDateTime::startOfMonthTimestamp($time) . " AND date <= " . expDateTime::endOfMonthTimestamp($time) . ")");
                     } else {
@@ -1149,7 +1149,7 @@ class eventController extends expController {
             $title = $this->config['feed_title'];
             $template->assign('moduletitle', $title);
 
-            $time = (isset($this->params['time']) ? intval($this->params['time']) : time());
+            $time = (isset($this->params['time']) ? (int)($this->params['time']) : time());
             $time = (int)$time;
 
             $template->assign("time", $time);

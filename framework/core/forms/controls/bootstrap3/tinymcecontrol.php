@@ -67,7 +67,7 @@ class tinymcecontrol extends formcontrol
         }
         if ($this->toolbar === '')
             $settings = expHTMLEditorController::getActiveEditorSettings('tinymce');
-        elseif (intval($this->toolbar) != 0)
+        elseif ((int)($this->toolbar) != 0)
             $settings = expHTMLEditorController::getEditorSettings($this->toolbar, 'tinymce');
         if (!$user->globalPerm('prevent_uploads')) {
             $upload = "plupload_basepath	: './plugins/quickupload',

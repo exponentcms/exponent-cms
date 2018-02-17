@@ -384,7 +384,7 @@ class storeController extends expController {
         $currentweek = -1;
 
         $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
-        $week = intval(date('W', $timefirst));
+        $week = (int)(date('W', $timefirst));
         if ($week >= 52 && $info['mon'] == 1) $week = 1;
         $infofirst = getdate($timefirst);
 
@@ -492,7 +492,7 @@ class storeController extends expController {
 //                }
 //            }
 //
-//            $parent = isset($this->params['cat']) ? intval($this->params['cat']) : $default_id;
+//            $parent = isset($this->params['cat']) ? (int)($this->params['cat']) : $default_id;
 //
 //            $category = new storeCategory($parent);
 
@@ -1013,7 +1013,7 @@ class storeController extends expController {
         expHistory::set('viewable', $this->params);
 //        $parent = isset($this->params['cat']) ? $this->params['cat'] : expSession::get('catid');
         $catid = expSession::get('catid');
-        $parent = !empty($catid) ? $catid : (!empty($this->params['cat']) ? intval($this->params['cat']) : 0);
+        $parent = !empty($catid) ? $catid : (!empty($this->params['cat']) ? (int)($this->params['cat']) : 0);
         $category = new storeCategory($parent);
         $categories = $category->getSubCats();
         $ancestors = $category->pathToNode();
@@ -1572,7 +1572,7 @@ class storeController extends expController {
                 break;
             case 'show':
             case 'showByTitle':
-                $prod = new product(isset($router->params['title']) ? expString::sanitize($router->params['title']) : intval($router->params['id']));
+                $prod = new product(isset($router->params['title']) ? expString::sanitize($router->params['title']) : (int)($router->params['id']));
                 if (!empty($prod)) {
                     $metainfo['title'] = empty($prod->meta_title) ? $prod->title . " - " . $storename : $prod->meta_title;
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
@@ -1960,7 +1960,7 @@ class storeController extends expController {
         while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
             $count++;
             $originalOrderId = $data[2];
-            $data[2] = intval($data[2]);
+            $data[2] = (int)($data[2]);
             $order = new stdClass();
             $bm = new stdClass();
             $transactionState = null;
@@ -2857,11 +2857,11 @@ class storeController extends expController {
                     case 'use_special_price':
                     case 'active_type':
                     case 'product_status_id':
-                        $product->$key = intval($value);
+                        $product->$key = (int)($value);
                         break;
                     case 'companies_id':
                         if (is_numeric($value)) {
-                            $product->$key = intval($value);
+                            $product->$key = (int)($value);
                         } elseif (!empty($value)) {  // it's a company name, not a company id#
                             $co = new company();
                             $company = $co->find('first', 'title=' . $value);
@@ -2898,7 +2898,7 @@ class storeController extends expController {
                     case 'height':
                     case 'width':
                     case 'length':
-                        $product->$key = floatval($value);
+                        $product->$key = (float)($value);
                         break;
                     case 'image1':
                     case 'image2':
@@ -2907,7 +2907,7 @@ class storeController extends expController {
                     case 'image5':
                         if (!empty($value)) {
                             $product->save(false);
-                            if (is_integer($value)) {
+                            if (is_int($value)) {
                                 $_objFile = new expFile ($value);
                             } else {
                                 // import image from url
@@ -2956,7 +2956,7 @@ class storeController extends expController {
                     case 'category12':
                         if ($product->parent_id == 0) {
 //                            $rank = !empty($data['rank']) ? $data['rank'] : 1;
-                            $rank = intval(str_replace('category', '', $key));
+                            $rank = (int)(str_replace('category', '', $key));
 //                            if (!empty($value)) $result = storeCategory::parseCategory($value);
                             if (!empty($value)) $result = storeCategory::importCategoryString($value);
                             else continue;

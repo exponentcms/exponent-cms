@@ -58,7 +58,7 @@ class help_version extends expRecord {
     public static function getHelpVersion($version_id) {
         global $db;
 
-        return $db->selectValue('help_version', 'version', 'id="'.intval($version_id).'"');
+        return $db->selectValue('help_version', 'version', 'id="'.(int)($version_id).'"');
     }
 
     public static function getHelpVersionsDropdown() {
