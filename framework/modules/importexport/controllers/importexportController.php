@@ -72,8 +72,22 @@ class importexportController extends expController {
         foreach ($available_controllers as $key => $path) {
             if (strpos($key, "Controller") !== false) {
                 $c = new $key();
-                if ($c->canImportData()) $importDD[$key] = $c->name();
-                if ($c->canExportData()) $exportDD[$key] = $c->name();
+                if ($c::canImportData()) $importDD[$key] = $c->name();
+                if ($c::canExportData()) $exportDD[$key] = $c->name();
+            }
+        }
+        // allow for custom import/export methods here
+        if (class_exists('importexportCustom')) {
+            $sp = new importexportCustom();
+            if ($sp::canImportData()) {
+                foreach ($sp->getImportMethods() as $method => $name) {
+                    $importDD['importexportCustom[' . $method . ']'] = $name;
+                }
+            }
+            if ($sp::canExportData()) {
+                foreach ($sp->getExportMethods() as $method => $name) {
+                    $exportDD['importexportCustom[' . $method . ']'] = $name;
+                }
             }
         }
         assign_to_template(array(
@@ -83,9 +97,14 @@ class importexportController extends expController {
     }
 
     function import() {
-        $type = expModules::getController($this->params['import_type']);
-        if (method_exists($type, 'import')) {  // allow for controller specific method
-            redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import'));
+        if (stripos($this->params['import_type'], 'importexportCustom') !== false) {
+            $method = str_replace(array('importexportCustom[',']'), '', $this->params['import_type']);
+            redirect_to(array('controller'=>$this->baseclassname, 'action'=>'importCustom', 'import_type'=>$method));
+        } else {
+            $type = expModules::getController($this->params['import_type']);
+            if (method_exists($type, 'import')) {  // allow for controller specific method
+                redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import'));
+            }
         }
 
         $pullable_modules = expModules::listInstalledControllers($type->baseclassname);
@@ -283,10 +302,29 @@ class importexportController extends expController {
         flashAndFlow('message', count($selected) . ' ' . $type->baseclassname . ' ' . gt('items were imported.'));
     }
 
+    /**
+     * Entry point for all custom import methods, we redirect through here
+     */
+    function importCustom() {
+        // allow for custom import methods here
+        if (class_exists('importexportCustom') && method_exists('importexportCustom', $this->params['import_type'])) {
+            $sp = new importexportCustom();
+            $method = $this->params['import_type'];
+            $return = $sp->$method($this);
+        } else {
+            flashAndFlow('error', gt('Custom Import Method Not Available'));
+        }
+    }
+
     function export() {
-        $type = expModules::getController($this->params['export_type']);
-        if (method_exists($type, 'export')) {  // allow for controller specific method
-            redirect_to(array('controller'=>$type->baseclassname, 'action'=>'export'));
+        if (stripos($this->params['export_type'], 'importexportCustom') !== false) {
+            $method = str_replace(array('importexportCustom[',']'), '', $this->params['export_type']);
+            redirect_to(array('controller'=>$this->baseclassname, 'action'=>'exportCustom', 'export_type'=>$method));
+        } else {
+            $type = expModules::getController($this->params['export_type']);
+            if (method_exists($type, 'import')) {  // allow for controller specific method
+                redirect_to(array('controller'=>$type->baseclassname, 'action'=>'export'));
+            }
         }
 
         $pullable_modules = expModules::listInstalledControllers($type->baseclassname);
@@ -360,6 +398,20 @@ class importexportController extends expController {
             exit; // Exit, since we are exporting
         }
         expHistory::back();
+    }
+
+    /**
+     * Entry point for all custom export methods, we redirect through here
+     */
+    function exportCustom() {
+        // allow for custom export methods here
+        if (class_exists('importexportCustom') && method_exists('importexportCustom', $this->params['export_type'])) {
+            $sp = new importexportCustom();
+            $method = $this->params['export_type'];
+            $return = $sp->$method($this);
+        } else {
+            flashAndFlow('error', gt('Custom Export Method Not Available'));
+        }
     }
 
     function validate() {

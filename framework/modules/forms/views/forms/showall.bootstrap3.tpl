@@ -14,13 +14,6 @@
  *}
 
 {if !$error}
-    {*{css unique="data-view" corecss="button"}*}
-
-    {*{/css}*}
-    {css unique="manage-groups" corecss="datatables-tools"}
-
-    {/css}
-
     <div class="module forms showall">
         {if !empty($title)}
         <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
@@ -141,14 +134,15 @@
     </div>
 {/if}
 
-{script unique="form-showall" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap3,datatables.responsive'}
+{if $page->records|count}
+{script unique="form-showall" jquery='jquery.dataTables,dataTables.bootstrap'}
 {literal}
     $(document).ready(function() {
-        var responsiveHelper;
-        var breakpointDefinition = {
-            tablet: 1024,
-            phone : 480
-        };
+        // var responsiveHelper;
+        // var breakpointDefinition = {
+        //     tablet: 1024,
+        //     phone : 480
+        // };
         var tableContainer = $('#forms-showall');
 
         var table = tableContainer.DataTable({
@@ -158,21 +152,22 @@
             ],
             autoWidth: false,
             //scrollX: true,
-            preDrawCallback: function () {
-                // Initialize the responsive datatables helper once.
-                if (!responsiveHelper) {
-                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
-                }
-            },
-            rowCallback: function (nRow) {
-                responsiveHelper.createExpandIcon(nRow);
-            },
-            drawCallback: function (oSettings) {
-                responsiveHelper.respond();
-            }
+            // preDrawCallback: function () {
+            //     // Initialize the responsive datatables helper once.
+            //     if (!responsiveHelper) {
+            //         responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+            //     }
+            // },
+            // rowCallback: function (nRow) {
+            //     responsiveHelper.createExpandIcon(nRow);
+            // },
+            // drawCallback: function (oSettings) {
+            //     responsiveHelper.respond();
+            // }
         });
-        var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
-        $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+        // var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
+        // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}
 {/script}
+{/if}

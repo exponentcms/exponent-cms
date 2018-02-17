@@ -216,10 +216,10 @@
 
         {if $product->company->id}
             <p class="manufacturer">
-                {"Manufactured by"|gettext}:
+                {"Manufactured by"|gettext}:{br}
                 <a href="{link controller=company action=show id=$product->company->id}">
                     {if $product->company->expFile.logo[0]->id}
-                        {img file_id=$product->company->expFile.logo[0]->id w=24 alt="Image of `$product->company->title`" title="`$product->company->title`" class="large-img" id="enlarged-image"}
+                        {img file_id=$product->company->expFile.logo[0]->id h=24 alt="Image of `$product->company->title`" title="`$product->company->title`" class="large-img"}{br}
                     {/if}
                     <span itemprop="brand">{$product->company->title}</span>
                 </a>

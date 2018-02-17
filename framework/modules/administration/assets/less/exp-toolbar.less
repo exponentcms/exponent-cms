@@ -40,8 +40,10 @@
 			color: #468847;
 		}
 	}
-	.navbar .nav > li > a > .orders.label,
-	.navbar .nav > li > a > .event.label {
+    .navbar .nav > li > a > .orders.label,
+	.navbar .nav > li > a > .orders.badge,
+    .navbar .nav > li > a > .event.label,
+	.navbar .nav > li > a > .event.badge {
 		position: absolute;
 		top: 9px;
 		text-align: center;
@@ -49,6 +51,10 @@
 		padding: 2px 3px;
 		line-height: .9;
 	}
+    .navbar .nav > li > a > .orders.badge,
+   	.navbar .nav > li > a > .event.badge {
+   		top: 0;
+   	}
 }
 
 /****************  revisions/approvals  ***********************/

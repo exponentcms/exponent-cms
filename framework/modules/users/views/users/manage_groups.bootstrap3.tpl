@@ -13,11 +13,14 @@
  *
  *}
 
-{*{css unique="manage_groups" corecss="tables"}*}
-
-{*{/css}*}
-{css unique="manage-groups" corecss="datatables-tools"}
-
+{css unique="manage-groups"}
+{literal}
+    table.dataTable thead .sorting,
+    table.dataTable thead .sorting_asc,
+    table.dataTable thead .sorting_desc  {
+        background-image: none;
+    }
+{/literal}
 {/css}
 
 <div class="module users manage-group">
@@ -76,7 +79,7 @@
 </div>
 
 {if $table_filled}
-{script unique="manage-groups" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap3,datatables.responsive'}
+{script unique="manage-groups" jquery='jquery.dataTables,dataTables.bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
         var responsiveHelper;
@@ -108,8 +111,8 @@
                 responsiveHelper.respond();
             }
         });
-        var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
-        $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+        // var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
+        // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}
 {/script}

@@ -13,13 +13,6 @@
  *
  *}
 
-{*{css unique="manage_groups" corecss="tables"}*}
-
-{*{/css}*}
-{css unique="manage-groups" corecss="datatables-tools"}
-
-{/css}
-
 <div class="module users manage-group">
     <div class="info-header">
         <div class="related-actions">
@@ -37,6 +30,7 @@
 	</div>
     {br}
     {*{pagelinks paginate=$page top=1}*}
+    {$table_filled = true}
 	<table id="groups-manage">
 	    <thead>
 			<tr>
@@ -75,7 +69,7 @@
 </div>
 
 {if $table_filled}
-{script unique="manage-groups" jquery='jquery.dataTables2,dataTables.tableTools2,dataTables.bootstrap2,datatables.responsive2'}
+{script unique="manage-groups" jquery='jquery.dataTables2,dataTables.bootstrap2,datatables.responsive2'}
 {literal}
     $(document).ready(function() {
         var responsiveHelper;
@@ -107,8 +101,8 @@
                 responsiveHelper.respond();
             }
         });
-        var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
-        $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+        // var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
+        // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}
 {/script}

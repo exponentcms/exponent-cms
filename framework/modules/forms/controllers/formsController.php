@@ -1524,7 +1524,7 @@ class formsController extends expController {
             $file .= self::sql2csv($items, $rpt_columns);
 
             // CREATE A TEMP FILE
-            $tmpfname = tempnam(getcwd(), "rep"); // Rig
+            $tmpfname = tempnam(BASE.'/tmp', "rep"); // Rig
 
             $handle = fopen($tmpfname, "w");
             fwrite($handle, $file);

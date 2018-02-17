@@ -49,7 +49,7 @@ if (!$user->isAdmin()) {
         return false;
 }
 
-if ($db->countObjects('product', 'product_type="eventregistration"') == 0)
+if (!$db->selectValue('modstate', 'active', 'module="eventregistration"'))
     return false;
 
 $ev = new eventregistration();
@@ -65,7 +65,7 @@ $items1 = array(
     array(
         'text'      => gt('Manage Event Registrations'),
         'icon'      => 'fa-calendar-o',
-        'icon5'      => 'far fa-calendar',
+        'icon5'      => 'far fa-calendar-alt',
         'classname' => 'events',
         'url'       => makeLink(
             array(
@@ -115,9 +115,9 @@ if (bs3() || bs4()) {
     $items = array($items1, $items2);
 }
 return array(
-    'text'      => ' <span class="event label label-default">' . count($events) . '</span>',
+    'text'      => ' <span class="event '.(bs4()?'badge badge-secondary':'label label-default').'">' . count($events) . '</span>',
     'icon'      => 'fa-calendar',
-    'icon5'      => 'fas fa-calendar',
+    'icon5'      => 'far fa-calendar-alt',
     'classname' => 'events',
     'submenu'   => array(
         'id'       => 'event2',

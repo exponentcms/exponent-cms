@@ -491,7 +491,7 @@ class expCore
         $out .= self::array2csv($data, $rpt_columns);
 
 		// CREATE A TEMP FILE
-		$tmpfname = tempnam(getcwd(), "rep"); // Rig
+		$tmpfname = tempnam(BASE.'/tmp', "rep"); // Rig
 
 		$handle = fopen($tmpfname, "w");
 		fwrite($handle,$out);

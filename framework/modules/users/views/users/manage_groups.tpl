@@ -13,13 +13,6 @@
  *
  *}
 
-{*{css unique="manage_groups" corecss="tables"}*}
-
-{*{/css}*}
-{css unique="manage-groups" corecss="datatables-tools"}
-
-{/css}
-
 <div class="module users manage-group">
     <div class="info-header">
         <div class="related-actions">
@@ -76,16 +69,18 @@
 </div>
 
 {if $table_filled}
-{script unique="groups-showall" jquery='jquery.dataTables,dataTables.tableTools'}
+{script unique="groups-showall" jquery='jquery.dataTables'}
 {literal}
     $(document).ready(function() {
-        $('#groups-manage').DataTable({
+        var tableContainer = $('#groups-manage');
+
+        var table = tableContainer.DataTable({
             pagingType: "full_numbers",
 //            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            dom: 'T<"clear">lfrtip',
-            tableTools: {
-                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            },
+//             dom: 'T<"clear">lfrtip',
+            // tableTools: {
+            //     sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            // },
             columns: [
                 null,
                 null,

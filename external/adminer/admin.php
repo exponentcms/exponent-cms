@@ -170,8 +170,7 @@ function adminer_object() {
 }
 
 // include original Adminer or Adminer Editor
-include "./adminer-4.5.0-mysql.php";
-//include "./editor-4.5.0-mysql.php";
+include "./adminer-4.6.1-mysql.php";
 
 //if (SITE_WYSIWYG_EDITOR != 'tinymce') {
 //?>

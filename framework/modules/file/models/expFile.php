@@ -1623,6 +1623,30 @@ class expFile extends expRecord {
     }
 
     /** exdoc
+     * Checks to see if the file exists case-insensitive.  This is to circumvent
+     * the case sensitive php is_file.
+     * Returns true if the file already exists, and false if it does not.
+     *
+     * @param string $filename  The file (with path) to check.
+     *
+     * @return bool
+     * @node Model:expFile
+     */
+    public static function is_file($filename) {
+        $dir = dirname($filename);
+        $file = basename($filename);
+        if ($handle = opendir($dir)) {
+            while (false !== ($entry = readdir($handle))) {
+                if (strtolower($file) == strtolower($entry)) {
+                    return true;
+                }
+            }
+            closedir($handle);
+        }
+        return false;
+    }
+
+    /** exdoc
      * Looks at the filesystem structure surrounding the destination
      * and determines if the web server can create a new file there.
      * Returns one of the following:

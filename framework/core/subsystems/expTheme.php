@@ -673,14 +673,15 @@ class expTheme
         }
 
         // if we are in an action and have action maps to work with...
-        if (self::inAction()
-            && ((!empty($action_maps[$module]) || !empty($action_maps['*']))
+        if (self::inAction() && ((!empty($action_maps[$module]) || !empty($action_maps['*']))
                 && ((isset($action_maps[$module]) && array_key_exists($_REQUEST['action'], $action_maps[$module]))
                     || (isset($action_maps[$module]) && array_key_exists('*', $action_maps[$module]))  // wildcard action
                     || (isset($action_maps['*']) && array_key_exists($_REQUEST['action'], $action_maps['*']))  // wildcard module
                 )
             )
         ) {
+            if (!isset($action_maps[$module]))
+                $module = '*';
             $actionname = array_key_exists($_REQUEST['action'], $action_maps[$module]) ? $_REQUEST['action'] : '*';
             if (!empty($action_maps[$module][$actionname]))
                 $actiontheme = explode(":", $action_maps[$module][$actionname]);
@@ -690,10 +691,10 @@ class expTheme
             if (!empty($actiontheme[1])) {
                 $sectionObj = @$router->getSectionObj($actiontheme[1]);
             } elseif (empty($actiontheme[0]) && !empty($action_maps['*'][$_REQUEST['action']])) {
-                $actiontheme[0] = $action_maps['*'][$_REQUEST['action']];
+                $actiontheme[0] = $action_maps['*'][$_REQUEST['action']];  //note I don't think we ever get here since we now set $module above
             }
 
-            if ($actiontheme[0] == "default" || $actiontheme[0] == "Default" || $actiontheme[0] == "index") {
+            if ($actiontheme[0] === "default" || $actiontheme[0] === "Default" || $actiontheme[0] === "index") {
                 if (MOBILE && is_readable(BASE . 'themes/' . DISPLAY_THEME . '/mobile/index.php')) {
                     $theme = BASE . 'themes/' . DISPLAY_THEME . '/mobile/index.php';
                 } else {
@@ -822,7 +823,7 @@ class expTheme
      * @param null $action
      * @return bool
      */
-    public static function inAction($action=null)
+    public static function inAction($action = null)
     {
         return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])) && (!isset($action) || ($action == $_REQUEST['action'])));
     }
@@ -1933,7 +1934,7 @@ class expTheme
     public static function iconStyle($class, $text = null) {
         $style = self::buttonIcon($class);
         if (!empty($style->prefix)) {
-            if ($text) {
+            if ($text !== null) {
                 return '<i class="' .$style->prefix . $style->class . '"></i> '. $text;
             } else {
                 return $style->prefix . $style->class;

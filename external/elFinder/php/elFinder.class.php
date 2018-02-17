@@ -31,7 +31,7 @@ class elFinder {
 	 * 
 	 * @var integer
 	 */
-	protected static $ApiRevision = 31;
+	protected static $ApiRevision = 32;
 	
 	/**
 	 * Storages (root dirs)
@@ -157,6 +157,10 @@ class elFinder {
 	 * elFinder save session data as `UTF-8`
 	 * If the session storage mechanism of the system does not allow `UTF-8`
 	 * And it must be `true` option 'base64encodeSessionData' of elFinder
+	 * 
+	 * WARNING: When enabling this option, if saving the data passed from the user directly to the session variable,
+	 * it make vulnerable to the object injection attack, so use it carefully.
+	 * see https://github.com/Studio-42/elFinder/issues/2345
 	 * 
 	 * @var bool
 	 */
@@ -364,7 +368,14 @@ class elFinder {
 	 * @var integer
 	 */
 	protected $itemLockExpire = 3600;
-	
+
+	/**
+	 * Additional request querys
+	 * 
+	 * @var array|null
+	 */
+	protected $customData = null;
+
 	// Errors messages
 	const ERROR_UNKNOWN           = 'errUnknown';
 	const ERROR_UNKNOWN_CMD       = 'errUnknownCmd';
@@ -1064,6 +1075,11 @@ class elFinder {
 		// remove self::$abortCheckFile
 		$this->abort();
 		
+		// custom data
+		if ($this->customData !== null) {
+			$result['customData'] = $this->customData? json_encode($this->customData) : '';
+		}
+
 		if (!empty($result['callback'])) {
 			$result['callback']['json'] = json_encode($result);
 			$this->callback($result['callback']);
@@ -1087,6 +1103,37 @@ class elFinder {
 	}
 	
 	/**
+	 * Sets custom data(s).
+	 *
+	 * @param  string|array  $key    The key or data array
+	 * @param  mixed         $val    The value
+	 * 
+	 * @return self    ( elFinder instance )
+	 */
+	public function setCustomData($key, $val = null) {
+		if (is_array($key)) {
+			foreach($key as $k => $v) {
+				$this->customData[$k] = $v;
+			}
+		} else {
+			$this->customData[$key] = $val;
+		}
+		return $this;
+	}
+
+	/**
+	 * Removes a custom data.
+	 *
+	 * @param  string  $key    The key
+	 * 
+	 * @return self    ( elFinder instance )
+	 */
+	public function removeCustomData($key) {
+		$this->customData[$key] = null;
+		return $this;
+	}
+
+	/**
 	 * Update sesstion value of a NetVolume option
 	 * 
 	 * @param string $netKey
@@ -1097,7 +1144,6 @@ class elFinder {
 		$netVolumes = $this->getNetVolumes();
 		if (is_string($netKey) && isset($netVolumes[$netKey]) && is_string($optionKey)) {
 			$netVolumes[$netKey][$optionKey] = $val;
-			$this->saveNetVolumes($netVolumes);
 		}
 	}
 	
@@ -1898,7 +1944,8 @@ class elFinder {
 					$rname = $volume->uniqueName($volume->realpath($rm['phash']), $name, '', false);
 				} else {
 					if ($type === 'extention') {
-						$rname = elFinder::splitFileExtention($rm['name'])[0] . '.' . $name;
+						$splits = elFinder::splitFileExtention($rm['name']);
+						$rname = $splits[0] . '.' . $name;
 					} else if ($type === 'prefix') {
 						$rname = $name . $rm['name'];
 					} else if ($type === 'suffix') {
@@ -3157,6 +3204,17 @@ class elFinder {
 				$fmeta = stream_get_meta_data($fp);
 				$mime = $this->detectMimeType($fmeta['uri']);
 				$args['content'] = 'data:'.$mime.';base64,'.base64_encode(file_get_contents($fmeta['uri']));
+			}
+			$encoding = '';
+			$args['content'] = "\0" . $args['content'];
+		} else if ($encoding === 'hash') {
+			$_hash = $args['content'];
+			if ($_src = $this->getVolume($_hash)) {
+				if ($_file = $_src->file($_hash)) {
+					if ($_data = $_src->getContents($_hash)) {
+						$args['content'] = 'data:'.$file['mime'].';base64,'.base64_encode($_data);
+					}
+				}
 			}
 			$encoding = '';
 			$args['content'] = "\0" . $args['content'];

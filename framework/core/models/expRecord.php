@@ -153,6 +153,35 @@ class expRecord {
         if ($get_attached) $this->getAttachableItems();
     }
 
+//    public function __get($property) {
+//        if (property_exists($this, $property)) {
+//            return $this->$property;
+//        }
+//    }
+
+//    public function __set($property, $value) {
+//        if (property_exists($this, $property)) {
+//            $this->$property = $value;
+//        }
+//    }
+
+//    public function  __isset($property) {
+//        return isset($this->$property);
+//    }
+
+//    public function __unset($property) {
+//        unset($this->$property);
+//    }
+
+    /**
+     * name of module for backwards compat with old modules
+     *
+     * @return string
+     */
+    public function name() {
+        return static::displayname();
+    }
+
     /**
      * find an item or items
      *
@@ -434,7 +463,7 @@ class expRecord {
         global $db;
 
         // make sure we have the info we need..otherwise return
-        if (empty($item->id) && empty($this->id)) return false;
+        if (empty($item->id) || empty($this->id)) return false;
         // save the attachable items
 //        $refname = strtolower($item->classname).'s_id';  //FIXME plural vs single?
 //        $refname = strtolower($item->classname) . '_id'; //FIXME plural vs single?

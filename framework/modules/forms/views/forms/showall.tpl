@@ -14,13 +14,6 @@
  *}
 
 {if !$error}
-    {*{css unique="data-view" corecss="button"}*}
-
-    {*{/css}*}
-    {css unique="showall-forms" corecss="datatables-tools"}
-
-    {/css}
-
     <div class="module forms showall">
         {if !empty($title)}
         <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
@@ -142,6 +135,7 @@
     </div>
 {/if}
 
+{if $page->records|count}
 {if $config.pagelinks == 'Top Only'}
     {$pageit = '<"top"lfip>rt<"bottom"<"clear">'}
 {elseif $config.pagelinks == 'Top and Bottom'}
@@ -151,16 +145,18 @@
 {elseif $config.pagelinks == 'Disable page links'}
     {$pageit = '<"top"lf>rt<"bottom"<"clear">'}
 {/if}
-{script unique="form-showall" jquery='jquery.dataTables,dataTables.tableTools'}
+{script unique="form-showall" jquery='jquery.dataTables'}
 {literal}
     $(document).ready(function() {
-        $('#forms-showall').DataTable({
+        var tableContainer = $('#forms-showall');
+
+        var table = tableContainer.DataTable({
             pagingType: "full_numbers",
 //            dom: '{/literal}{$pageit}{literal}',  // pagination location
-            dom: 'T<"clear">lfrtip',
-            tableTools: {
-                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            },
+            // dom: 'T<"clear">lfrtip',
+            // tableTools: {
+            //     sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            // },
             scrollX: true,
             columnDefs: [
                 { searchable: false, targets: [ -1 ] },
@@ -170,3 +166,4 @@
     } );
 {/literal}
 {/script}
+{/if}

@@ -1031,6 +1031,7 @@ class administrationController extends expController {
      */
     public function install_upgrades_run() {
 
+        set_time_limit(0);
         $tables = expDatabase::install_dbtables();
         ksort($tables);
 

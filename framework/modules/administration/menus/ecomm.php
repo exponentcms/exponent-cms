@@ -25,14 +25,6 @@ $active = ECOM;
 if (!$user->isAdmin() || empty($active))
     return false;
 
-$new_orders = order::getOrdersCount('new');
-$open_orders = order::getOrdersCount('open');
-if ($new_orders > 0) {
-    $newo = '<em class="newalert">' . $new_orders . ' ' . gt('new order') . ($new_orders>1?'s':'') . '</em>';
-} else {
-    $newo = '';
-};
-
 $ecom = array(
     'text'      => gt('E-commerce'),
     'icon'      => 'fa-dollar',
@@ -41,13 +33,6 @@ $ecom = array(
     'submenu'   => array(
         'id'       => 'ecomm',
         'itemdata' => array(
-            array(
-                'text'      => $newo . '<form role="form" id="orderQuickfinder2" method="POST" action="' . PATH_RELATIVE . 'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input class="form-control" type="text" name="ordernum2" id="ordernum2" aria-label="'.gt('order number').'" size="25" placeholder="' . gt(
-                        "Order Quickfinder"
-                    ) . '"></form>',
-                'info'      => '1',
-                'classname' => 'order-qf',
-            ),
             array(
                 'text'      => gt("Dashboard"),
                 'icon'      => 'fa-dashboard',
@@ -68,32 +53,6 @@ $ecom = array(
                 'submenu'   => array(
                     'id'       => 'ordermenu',
                     'itemdata' => array(
-                        array(
-                            'text'      => gt("Manage Orders") . " <em>(" . $open_orders . "  " . gt(
-                                    "Open Orders"
-                                ) . ")</em>",
-                            'icon'      => 'fa-search',
-                            'icon5'      => 'fas fa-search',
-                            'classname' => 'search',
-                            'url'       => makeLink(
-                                array(
-                                    'controller' => 'order',
-                                    'action'     => 'showall'
-                                )
-                            ),
-                        ),
-                        array(
-                            'text'      => gt("Create an Order"),
-                            'icon'      => 'fa-plus-circle',
-                            'icon5'      => 'fas fa-plus-circle',
-                            'classname' => 'add',
-                            'url'       => makeLink(
-                                array(
-                                    'controller' => 'order',
-                                    'action'     => 'create_new_order'
-                                )
-                            ),
-                        ),
                         array(
                             'text'      => gt("Batch Process Orders"),
                             'icon'      => 'fa-cogs',
@@ -268,42 +227,6 @@ $ecom = array(
                 ),
             ),
             array(
-                'text'    => gt("Events"),
-                'icon'      => 'fa-calendar',
-                'icon5'      => 'fas fa-calendar',
-                'classname' => 'events',
-                'submenu' => array(
-                    'id'       => 'purchase-order',
-                    'itemdata' => array(
-                        array(
-                            'text'      => gt('Manage Event Registrations'),
-                            'icon'      => 'fa-calendar-o',
-                            'icon5'      => 'far fa-calendar',
-                            'classname' => 'events',
-                            'url'       => makeLink(
-                                array(
-                                    'controller' => 'eventregistration',
-                                    'action' => 'manage'
-                                )
-                            ),
-                        ),
-                        array(
-                            'text'      => gt('Add an event'),
-                            'icon'      => 'fa-plus-circle',
-                            'icon5'      => 'fas fa-plus-circle',
-                            'classname' => 'add',
-                            'url'       => makeLink(
-                                array(
-                                    'controller' => 'store',
-                                    'action' => 'edit',
-                                    'product_type' => 'eventregistration'
-                                )
-                            ),
-                        )
-                    ),
-                ),
-            ),
-            array(
                 'text'      => gt("Reports"),
                 'icon'      => 'fa-bar-chart-o',
                 'icon5'      => 'far fa-chart-bar',
@@ -416,11 +339,6 @@ $ecom = array(
                                 )
                             ),
                         ),
-//                        array(
-//                            'text' => gt("General Cart Settings"),
-//                            'classname' => 'configure',
-//                            'url'  => makeLink(array('controller' => 'cart', 'action' => 'configure')),
-//                        ),
                         array(
                             'text'      => gt("Manage Locations"),
                             'icon'      => 'fa-cogs',

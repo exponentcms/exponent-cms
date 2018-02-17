@@ -1087,7 +1087,7 @@ class eventregistrationController extends expController {
         $out .= formsController::sql2csv($registrants, $rpt_columns);
 
 		// CREATE A TEMP FILE
-		$tmpfname = tempnam(getcwd(), "rep"); // Rig
+		$tmpfname = tempnam(BASE.'/tmp', "rep"); // Rig
 
 		$handle = fopen($tmpfname, "w");
 		fwrite($handle,$out);

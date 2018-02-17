@@ -34,6 +34,7 @@ class orderController extends expController {
         'edit_shipping_method'=> 'Edit Shipping Method',
         'edit_totals'         => 'Edit Totals',
 //        'email'         => 'Send Email',
+        'getOrdersByJSON'   => 'Get Orders',
         'quickfinder'=> 'Do a quick order lookup',
         'save_payment_info'=> 'Save Payment Info',
         'save_address'=> 'Save Address',
@@ -110,43 +111,44 @@ class orderController extends expController {
             $closed_count = -1;
         }
 
-        // build out a SQL query that gets all the data we need and is sortable.
-        $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as total, b.transaction_state as paid, b.billingcalculator_id as method, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
-        $sql .= 'FROM ' . $db->prefix . 'orders o, ' . $db->prefix . 'billingmethods b, ';
-        $sql .= $db->prefix . 'order_status os, ';
-        $sql .= $db->prefix . 'order_type ot ';
-        $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0';
-  //FIXME this sql isn't correct???
-//        if (!empty($status_where)) {
-//            $status_where .= ')';
-            $sql .= $status_where;
-//        }
-        if (ECOM_LARGE_DB) {
-            $limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
-        } else {
+        if (!ECOM_LARGE_DB) {
+            // build out a SQL query that gets all the data we need and is sortable.
+            $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as gtotal, b.transaction_state as paid, b.billingcalculator_id as method, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
+            $sql .= 'FROM ' . $db->prefix . 'orders o, ' . $db->prefix . 'billingmethods b, ';
+            $sql .= $db->prefix . 'order_status os, ';
+            $sql .= $db->prefix . 'order_type ot ';
+            $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0';
+      //FIXME this sql isn't correct???
+    //        if (!empty($status_where)) {
+    //            $status_where .= ')';
+                $sql .= $status_where;
+    //        }
+            //eDebug($sql, true);
+//            $limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
             $limit = 0;  // we'll paginate on the page
+            $page = new expPaginator(array(
+                //'model'=>'order',
+                'sql' => $sql,
+                'order' => (isset($this->params['order']) ? $this->params['order'] : 'purchased'),
+                'dir' => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
+                'limit' => $limit,
+                'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
+                'controller' => $this->params['controller'],
+                'action' => $this->params['action'],
+                'columns' => array(
+                    gt('Customer') => 'lastname',
+                    gt('Inv #') => 'invoice_id',
+                    gt('Total') => 'total',
+                    gt('Payment') => 'method',
+                    gt('Purchased') => 'purchased',
+                    gt('Type') => 'order_type_id',
+                    gt('Status') => 'order_status_id',
+                    gt('Ref') => 'orig_referrer',
+                )
+            ));
+        } else {
+            $page = array();
         }
-        //eDebug($sql, true);
-        $page = new expPaginator(array(
-            //'model'=>'order',
-            'sql'       => $sql,
-            'order'      => (isset($this->params['order']) ? $this->params['order'] : 'purchased'),
-            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
-            'limit'     => $limit,
-            'page'      => (isset($this->params['page']) ? $this->params['page'] : 1),
-            'controller'=> $this->params['controller'],
-            'action'    => $this->params['action'],
-            'columns'   => array(
-                gt('Customer')      => 'lastname',
-                gt('Inv #')         => 'invoice_id',
-                gt('Total')         => 'total',
-                gt('Payment')       => 'method',
-                gt('Purchased')     => 'purchased',
-                gt('Type')          => 'order_type_id',
-                gt('Status')        => 'order_status_id',
-                gt('Ref')           => 'orig_referrer',
-            )
-        ));
         //eDebug($page,true);
         assign_to_template(array(
             'page'        => $page,
@@ -2171,6 +2173,170 @@ exit();
         //eDebug($sql);
         $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
+    }
+
+    /**
+     * For server-side population of DataTables
+     */
+    public function getOrdersByJSON() {
+        global $db;
+
+        // Array of database columns which should be read and sent back to DataTables.
+        // The `db` parameter represents the column name in the database, while the `dt`
+        // parameter represents the DataTables column identifier. In this case simple
+        // indexes
+        $columns = array(
+        	array(
+        	    'db' => 'name',
+                'dt' => 'name',
+                'formatter' => function( $d, $row ) {
+                    return '<a href="' . makeLink(array('controller'=>'users', 'action'=>'viewuser', 'id'=>$row['user_id'])) . '" title="'.gt('View Customer').'">' . $d . '</a>';
+          		}
+            ),
+        	array(
+        	    'db' => 'invoice_id',
+                'dt' => 'invoice_id',
+                'formatter' => function( $d, $row ) {
+                    return '<a href="' . makeLink(array('controller'=>'order', 'action'=>'show', 'id'=>$row['id'])) . '" title="'.gt('View Order').'">' . $d . '</a>';
+          		}
+            ),
+        	array(
+        	    'db' => 'grand_total',
+                'dt' => 'grand_total',
+                'formatter' => function( $d, $row ) {
+        	        $paid = strtolower($row['paid']);
+        	        if ($paid === 'complete' || $paid === 'paid') {
+        	            $class = 'badge-success';
+                        $title = gt('Paid');
+                        $color = 'darkseagreen';
+                    } else {
+        	            $class = 'badge-secondary';
+                        $title = gt('Payment Due');
+                        $color = 'lightgray';
+                    }
+                    if (bs()) {
+                        return '<span class="badge ' . $class . '" title="' . $title . '">' . expCore::getCurrencySymbol() . number_format($d,2,".",",") . '</span>';
+                    } else {
+                        return '<span style="padding:3px;border-radius:5px;background-color:' . $color . '" title="' . $title . '">' . expCore::getCurrencySymbol() . number_format($d,2,".",",") . '</span>';
+                    }
+          		},
+            ),
+        	array(
+        	    'db' => 'calc',
+                'dt' => 'calc'
+            ),
+        	array(
+        		'db' => 'purchased',
+        		'dt' => 'purchased',
+        		'formatter' => function( $d, $row ) {
+        			return expDateTime::format_date($d, "%m/%d/%Y %I:%M%p");
+        		},
+        	),
+        	array(
+        		'db' => 'order_type',
+        		'dt' => 'order_type',
+        	),
+            array(
+           		'db' => 'status',
+           		'dt' => 'status',
+                'formatter' => function( $d, $row ) {
+                    if ($row['order_status_id'] === order::getDefaultOrderStatus()) {
+                        $class = 'success';
+                        $color = 'darkseagreen';
+                    } else {
+                        if (bs4()) {
+                            $class = 'secondary';
+                        } else {
+                            $class = 'default';
+                        }
+                        $color = 'lightgray';
+                    }
+                    if (bs()) {
+                        return '<span class="badge badge-' . $class . '">' . $d . '</span>';
+                    } else {
+                        return '<span style="padding:3px;border-radius:5px;background-color:' . $color . '">' . $d . '</span>';
+                    }
+          		},
+           	),
+            array(
+           		'db'        => 'orig_referrer',
+           		'dt'        => 'orig_referrer',
+                'formatter' => function( $d, $row ) {
+                    if ($d !== '') {
+                        if (bs()) {
+                            $icon =  '<div class="' . expTheme::buttonStyle('green') . ' disabled">' . expTheme::iconStyle('clean', '') . '</div>';
+                        } else {
+                            $icon = '<img src="' . PATH_RELATIVE . 'framework/core/assets/images/clean.png">';
+                        }
+                        return '<a href="' . $d . '" title="' . $d . '">' .$icon . '</a>';
+                    }
+                    return '';
+          		}
+           	),
+            array(
+           		'db'        => 'paid',
+           		'dt'        => 'paid'
+           	),
+            array(
+           		'db'        => 'id',
+           		'dt'        => 'id'
+           	),
+            array(
+           		'db'        => 'user_id',
+           		'dt'        => 'user_id'
+           	),
+            array(
+           		'db'        => 'order_status_id',
+           		'dt'        => 'order_status_id'
+           	),
+        );
+
+        if (empty($this->params['showclosed'])) {
+            $closed_status = $db->selectColumn('order_status', 'id', 'treat_as_closed=1');
+            $closed_status = implode(',',$closed_status);
+            $status_where  = ' AND order_status_id NOT IN (' . $closed_status . ')';
+        } else {
+            $status_where = '';
+        }
+
+        // DB table to use
+        // build out a SQL query that gets all the data we need and is sortable.
+        $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as gtotal, b.transaction_state as paid, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type, bc.title as calc, CONCAT_WS(", ", b.lastname, b.firstname) AS name ';
+        $sql .= 'FROM ' . $db->prefix . 'orders o, ' . $db->prefix . 'billingmethods b, '. $db->prefix . 'order_status os, ' . $db->prefix . 'order_type ot, ' . $db->prefix . 'billingcalculator bc ';
+        $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND b.billingcalculator_id = bc.id AND o.purchased > 0';
+        $sql .= $status_where;
+//        $table = $db->prefix . $this->model_table;
+        $table = '(' . $sql . ') temp';  // note for passing complex joins
+
+        // Table's primary key
+        $primaryKey = 'id';
+
+        $data = expDatabase::complex( $this->params, $table, $primaryKey, $columns );
+
+        //for populating filter lists
+        $dbs = expDatabase::sql_connect();
+        //note for customer name list, but can take some time
+//        $stmt0 = $dbs->prepare( 'SELECT DISTINCT(user_id) FROM ' . $db->prefix . 'orders' );
+//        $stmt0->execute();
+//        $data['yadcf_data_0'] = $stmt0->fetchAll(PDO::FETCH_COLUMN, 0);
+//        foreach ($data['yadcf_data_0'] as $key=>$user) {
+//            $data['yadcf_data_0'][$key] = user::getUserAttribution($user, 'lastfirst');
+//        }
+//        $data['yadcf_data_0'] = array_keys(array_flip($data['yadcf_data_0']));
+        // for payment list
+        $stmt3 = $dbs->prepare( 'SELECT `title` FROM ' . $db->prefix . 'billingcalculator WHERE `enabled` = 1' );
+        $stmt3->execute();
+        $data['yadcf_data_3'] = $stmt3->fetchAll(PDO::FETCH_COLUMN, 0);
+        // for order type list
+        $stmt5 = $dbs->prepare( 'SELECT `title` FROM ' . $db->prefix . 'order_type' );
+        $stmt5->execute();
+        $data['yadcf_data_5'] = $stmt5->fetchAll(PDO::FETCH_COLUMN, 0);
+        // for status list
+        $stmt6 = $dbs->prepare( 'SELECT `title` FROM ' . $db->prefix . 'order_status' );
+        $stmt6->execute();
+        $data['yadcf_data_6'] = $stmt6->fetchAll(PDO::FETCH_COLUMN, 0);
+
+        echo json_encode($data);
     }
 
 }

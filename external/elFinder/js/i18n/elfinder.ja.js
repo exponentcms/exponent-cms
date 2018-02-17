@@ -1,8 +1,8 @@
 /**
  * Japanese translation
  * @author Tomoaki Yoshida <info@yoshida-studio.jp>
- * @author Naoki Sawada <hypweb@gmail.com>
- * @version 2017-12-08
+ * @author Naoki Sawada <hypweb+elfinder@gmail.com>
+ * @version 2018-02-06
  */
 (function(root, factory) {
 	if (typeof define === 'function' && define.amd) {
@@ -14,7 +14,7 @@
 	}
 }(this, function(elFinder) {
 	elFinder.prototype.i18.ja = {
-		translator : 'Tomoaki Yoshida &lt;info@yoshida-studio.jp&gt;, Naoki Sawada &lt;hypweb@gmail.com&gt;',
+		translator : 'Tomoaki Yoshida &lt;info@yoshida-studio.jp&gt;, Naoki Sawada &lt;hypweb+elfinder@gmail.com&gt;',
 		language   : 'Japanese',
 		direction  : 'ltr',
 		dateFormat : 'Y/m/d h:i A', // Mar 13, 2012 05:27 PM
@@ -149,7 +149,7 @@
 			'cmdsort'      : 'ソート',
 			'cmdnetmount'  : 'ネットワークボリュームをマウント', // added 18.04.2012
 			'cmdnetunmount': 'アンマウント', // from v2.1 added 30.04.2012
-			'cmdplaces'    : 'お気に入りへ', // added 28.12.2014
+			'cmdplaces'    : 'よく使う項目へ', // added 28.12.2014
 			'cmdchmod'     : '属性変更', // from v2.1 added 20.6.2015
 			'cmdopendir'   : 'フォルダを開く', // from v2.1 added 13.1.2016
 			'cmdcolwidth'  : '列幅リセット', // from v2.1.13 added 12.06.2016
@@ -290,7 +290,7 @@
 			/********************************** messages **********************************/
 			'confirmReq'      : '処理を実行しますか？',
 			'confirmRm'       : 'アイテムを完全に削除してもよろしいですか？<br/>この操作は取り消しできません！',
-			'confirmRepl'     : '古いアイテムを新しいアイテムで上書きしますか？',
+			'confirmRepl'     : '古いファイルを新しいファイルで上書きしますか？ (フォルダが含まれている場合は統合されます。置き換える場合は「バックアップ」選択してください。)',
 			'confirmRest'     : '既存のアイテムをごみ箱のアイテムで上書きしますか？', // fromv2.1.24 added 5.5.2017
 			'confirmConvUTF8' : 'UTF-8 以外の文字が含まれています。<br/>UTF-8  に変換しますか？<br/>変換後の保存でコンテンツは UTF-8 になります。', // from v2.1 added 08.04.2014
 			'confirmNonUTF8'  : 'このファイルの文字エンコーディングを判別できませんでした。編集するには一時的に UTF-8 に変換する必要があります。<br/>文字エンコーディングを指定してください。', // from v2.1.19 added 28.11.2016
@@ -313,7 +313,7 @@
 			'selectlfile'     : '最後のアイテムを選択',
 			'viewlist'        : 'リスト形式で表示',
 			'viewicons'       : 'アイコン形式で表示',
-			'places'          : 'お気に入り',
+			'places'          : 'よく使う項目',
 			'calc'            : '計算中',
 			'path'            : 'パス',
 			'aliasfor'        : 'エイリアス',
@@ -444,6 +444,7 @@
 			'asPrefix'        : '先頭に追加', // from v2.1.31 added 8.12.2017
 			'asSuffix'        : '末尾に追加', // from v2.1.31 added 8.12.2017
 			'changeExtention' : '拡張子変更', // from v2.1.31 added 8.12.2017
+			'columnPref'      : '列項目設定(リストビュー)', // from v2.1.32 added 6.2.2018
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : '不明',

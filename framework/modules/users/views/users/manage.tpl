@@ -13,10 +13,6 @@
  *
  *}
 
-{css unique="manage-users" corecss="datatables-tools"}
-
-{/css}
-
 <div class="module users manage">
     <div class="info-header">
         <div class="related-actions">
@@ -32,7 +28,6 @@
 		{icon class=add module=users action=create text="Create a New User"|gettext}
 	</div>
     {br}
-    {$table_filled = true}
 	<table id="users-manage">
 	    <thead>
 			<tr>
@@ -43,6 +38,7 @@
 				<th>&nbsp;</th>
 			</tr>
 		</thead>
+        {if !$smarty.const.ECOM_LARGE_DB}
 		<tbody>
 			{foreach from=$page->records item=user name=listings}
                 <tr>
@@ -57,6 +53,9 @@
                     <td>
                         {permissions}
                             <div class="item-actions">
+                                {if $smarty.const.ECOM}
+                                    {icon img="view.png" class=view action=viewuser record=$user}
+                                {/if}
                                 {icon img="edit.png" class=edit action=edituser record=$user}
                                 {icon img="change_password.png" class=password action=change_password record=$user title="Change this users password"|gettext}
                                 {icon img="delete.png" action=delete record=$user title="Delete"|gettext onclick="return confirm('Are you sure you want to delete this user?');"}
@@ -64,34 +63,44 @@
                         {/permissions}
                     </td>
                 </tr>
-			{foreachelse}
-                {$table_filled = false}
-			    <td colspan="5"><h4>{'No Users'|gettext}</h4></td>
 			{/foreach}
 		</tbody>
+        {/if}
 	</table>
 </div>
 
-{if $table_filled}
-{script unique="users-showall" jquery='jquery.dataTables,dataTables.tableTools'}
+{script unique="users-showall" jquery='jquery.dataTables'}
 {literal}
     $(document).ready(function() {
-        $('#users-manage').DataTable({
+        var tableContainer = $('#users-manage');
+
+        var table = tableContainer.DataTable({
+    {/literal}
+    {if $smarty.const.ECOM_LARGE_DB}
+    {literal}
+            processing: true,
+            serverSide: true,
+            ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=users&action=getUsersByJSON2&json=1",
+    {/literal}
+    {/if}
+    {literal}
             pagingType: "full_numbers",
 //            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            dom: 'T<"clear">lfrtip',
-            tableTools: {
-                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            },
+//             dom: 'T<"clear">lfrtip',
+            // tableTools: {
+            //     sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            // },
+            stateSave: true,
             columns: [
-                null,
-                null,
-                null,
-                { searchable: false, orderable: true },
-                { searchable: false, orderable: false },
-            ]
+                { data: 'username' },
+                { data: 'firstname' },
+                { data: 'lastname' },
+                { data: 'is_acting_admin', searchable: false, orderable: true },
+                { data: 'id', searchable: false, orderable: false },
+            ],
+            order: [[0, 'asc']],
+            autoWidth: false,
         });
     } );
 {/literal}
 {/script}
-{/if}

@@ -13,8 +13,8 @@
  *
  *}
 
-{if !$smarty.const.ECOM_LARGE_DB}
-{css unique="yadcf" link="`$smarty.const.JQUERY_RELATIVE`addons/css/select2-bootstrap.css" corecss="datatables-tools"}
+{css unique="yadcf" link="`$smarty.const.JQUERY_RELATIVE`addons/css/select2-bootstrap.css"}
+{literal}
     table.dataTable thead > tr {
         font-size-adjust: 0.4;
     }
@@ -31,7 +31,7 @@
         display: inline-flex;
     }
     input#yadcf-filter--orders-1.yadcf-filter {
-        width: 35px;
+        width: 50px;
     }
     input#yadcf-filter--orders-2.yadcf-filter {
         width: 50px;
@@ -47,12 +47,58 @@
     table.dataTable thead .sorting_desc  {
         background-image: none;
     }
+    .yadcf-filter-reset-button {
+        padding: 2px 5px;
+        height: 24px;
+        margin-top: 6px;
+        font-size: 12px;
+        line-height: 1.5;
+        border-radius: 4px;
+        color: #333333;
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        display: inline-block;
+        font-weight: normal;
+        text-align: center;
+        vertical-align: middle;
+        touch-action: manipulation;
+        cursor: pointer;
+        background-image: none;
+        white-space: nowrap;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .yadcf-filter-wrapper {
+        display: flex;
+        white-space: normal;
+        margin-top: 7px;
+    }
+    .yadcf-filter-wrapper-inner {
+        border: none;
+    }
+    .yadcf-filter-range-date-seperator,
+    .yadcf-filter-range-number-seperator {
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+    .yadcf-filter,
+    .yadcf-filter-range-date,
+    .yadcf-filter-range {
+        line-height: 1;
+        min-height: 28px;
+        font: inherit;
+        font-weight: normal;
+        font-size: 14px;
+        color: black;
+        background-color: #FFF;
+        border: 1px solid #CCC;
+        border-radius: 4px;
+        padding-left: 5px;
+    }
+{/literal}
 {/css}
-{else}
-{css unique="showallorders" corecss="tables"}
-
-{/css}
-{/if}
 
 <div class="modules order showall">
 	<h1>{$moduletitle|default:"Store Order Administration"|gettext}</h1>
@@ -62,16 +108,9 @@
     {else}
         {br}<a href="{link action=showall showclosed=0}">{'Hide closed orders'|gettext}</a>
     {/if}
-    {if $smarty.const.ECOM_LARGE_DB}
-    {pagelinks paginate=$page top=1}
-    {/if}
     <table class="responsive{if $smarty.const.ECOM_LARGE_DB} exp-skin-table{/if}" id="orders">
         <thead>
             <tr>
-                <!--th><span>Purchased By</span></th-->
-                {if $smarty.const.ECOM_LARGE_DB}
-                {$page->header_columns}
-                {else}
                 <th data-class="expand">{'Customer'|gettext}</th>
                 <th>{'Inv #'|gettext}</th>
                 <th>{'Total'|gettext}</th>
@@ -80,15 +119,15 @@
                 <th data-hide="phone,tablet">{'Type'|gettext}</th>
                 <th data-hide="phone">{'Status'|gettext}</th>
                 <th data-hide="phone,tablet">{'Ref'|gettext}</th>
-                {/if}
             </tr>
         </thead>
+        {if !$smarty.const.ECOM_LARGE_DB}
         <tbody>
             {foreach from=$page->records item=listing name=listings}
                 <tr class="{cycle values="odd,even"}">
                     <td>
                         <a href="{link action=show id=$listing->id}">{$listing->lastname}{if !empty($listing->lastname) || !empty($listing->firstname)}, {else}{$listing->user_id|username:'system'}{/if}{$listing->firstname}</a>
-                        {*{$listing->user_id|username:'system'}*}
+                        {$listing->user_id|username:'system'}
                     </td>
                     <td>
                         <a href="{link action=show id=$listing->id}">{$listing->invoice_id}</a>
@@ -97,60 +136,63 @@
                     <td>{billingcalculator::getCalcTitle($listing->method)}</td>
                     <td data-order="{$listing->purchased}" data-search="{$listing->purchased|format_date:"%m/%d/%Y %I:%M%p"}">{$listing->purchased|format_date:"%m/%d/%Y %I:%M%p"}</td>
                     <td>{$listing->order_type}</td>
-                    <td><span class="label label-{if $listing->order_status_id == $new_order}success{else}default{/if}">{$listing->status}</span></td>
+                    <td><span class="badge badge-{if $listing->order_status_id == $new_order}success{else}default{/if}">{$listing->status}</span></td>
                     <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png" color=green}</a>{/if}</td>
-                </tr>
-            {foreachelse}
-                <tr class="{cycle values="odd,even"}">
-                    <td colspan="4">{message text='No orders have been placed yet'|gettext}</td>
                 </tr>
             {/foreach}
         </tbody>
+        {/if}
     </table>
-    {if $smarty.const.ECOM_LARGE_DB}
-    {pagelinks paginate=$page bottom=1}
-    {/if}
 </div>
 
-{if !$smarty.const.ECOM_LARGE_DB}
-{script unique="manage-orders" jquery='jqueryui,select2,jquery.dataTables,dataTables.tableTools,dataTables.bootstrap3,datatables.responsive,jquery.dataTables.yadcf'}
+{script unique="manage-orders" jquery='moment,bootstrap-datetimepicker,select2,jquery.dataTables,dataTables.bootstrap,jquery.dataTables.yadcf'}
 {literal}
     $(document).ready(function() {
-        var responsiveHelper;
-        var breakpointDefinition = {
-            tablet: 1024,
-            phone : 480
-        };
+//        var responsiveHelper;
+//        var breakpointDefinition = {
+//            tablet: 1024,
+//            phone : 480
+//        };
         var tableContainer = $('#orders');
 
         var table = tableContainer.DataTable({
-            jQueryUI: true,
+    {/literal}
+    {if $smarty.const.ECOM_LARGE_DB}
+    {literal}
+            processing: true,
+            serverSide: true,
+            ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=order&action=getOrdersByJSON&json=1{/literal}{if $closed_count == -1}&showclosed=1{/if}{literal}",
+    {/literal}
+    {/if}
+    {literal}
+//            jQueryUI: true,
             stateSave: true,
             columns: [
-                { type: 'html' },
-                { type: 'html' },
-                { type: 'html-num-fmt' },
-                null,
-                null,
-                null,
-                { type: 'html' },
-                { searchable: false, orderable: false },
+                { data: 'name', type: 'html' },
+                { data: 'invoice_id', type: 'html-num-fmt' },
+                { data: 'grand_total', type: 'html-num-fmt', className: "text-right" },
+                { data: 'calc' },
+                { data: 'purchased' },
+                { data: 'order_type' },
+                { data: 'status', type: 'html' },
+                { data: 'orig_referrer', searchable: false, orderable: false }
             ],
-            order: [4, 'desc'],
+            order: [[4, 'desc']],
             //scrollX: true,
             autoWidth: false,
-            preDrawCallback: function () {
-                // Initialize the responsive datatables helper once.
-                if (!responsiveHelper) {
-                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
-                }
-            },
-            rowCallback: function (nRow) {
-                responsiveHelper.createExpandIcon(nRow);
-            },
-            drawCallback: function (oSettings) {
-                responsiveHelper.respond();
-            }
+            pageLength: {/literal}{ecomconfig var='pagination_default' default=10}{literal},
+            // preDrawCallback: function () {
+            //     // Initialize the responsive datatables helper once.
+            //     if (!responsiveHelper) {
+            //         responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+            //     }
+            // },
+            // rowCallback: function (nRow) {
+            //     responsiveHelper.createExpandIcon(nRow);
+            // },
+            // drawCallback: function (oSettings) {
+            //     responsiveHelper.respond();
+            // }
         });
 
         (function () {
@@ -165,22 +207,30 @@
             };
         })();
 
-        var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
-        $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+        // var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
+        // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+
+        var datepickerDefaults = {
+            showTodayButton: true,
+            showClear: true
+        };
 
         yadcf.init(table, [{
             column_number: 0,
             column_data_type: "html",
             html_data_type: "text",
-            filter_type: "multi_select",
+            // filter_type: "multi_select",
+            filter_type: "text",
             filter_default_label: "",
-            select_type: 'select2'
+            // select_type: 'select2'
+            style_class: 'form-control',
         }, {
             column_number: 1,
             column_data_type: "html",
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            style_class: 'form-control',
             select_type_options: {
                 width: '70px'
             }
@@ -190,6 +240,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            style_class: 'form-control',
             select_type_options: {
                 width: '70px'
             }
@@ -198,28 +249,33 @@
             column_data_type: "text",
             filter_type: "select",
             filter_default_label: "Select Type",
-            select_type: 'select2'
+            select_type: 'select2',
+            style_class: 'form-control',
         }, {
             column_number: 4,
             column_data_type: "text",
-            html5_data: "data-search",
+            // html5_data: "data-search",
+            datepicker_type: 'bootstrap-datetimepicker',
+            filter_plugin_options: datepickerDefaults,
+            date_format: 'MM/DD/YYYY hh:mmA',
             filter_type: "range_date",
-            filter_default_label: ["From","To"]
+            filter_default_label: ["From","To"],
         }, {
             column_number: 5,
             column_data_type: "text",
             filter_type: "select",
             filter_default_label: "Select Type",
-            select_type: 'select2'
+            select_type: 'select2',
+            style_class: 'form-control',
         }, {
             column_number: 6,
             column_data_type: "html",
             html_data_type: "text",
             filter_type: "select",
             filter_default_label: "Select Status",
-            select_type: 'select2'
+            select_type: 'select2',
+            style_class: 'form-control',
         }]);
     });
 {/literal}
 {/script}
-{/if}

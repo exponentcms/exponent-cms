@@ -113,7 +113,7 @@ elFinder.prototype.commands.edit = function() {
 							self.mime = file.mime;
 							self.prefix = file.name.replace(/ \d+(\.[^.]+)?$/, '$1');
 							self.requestCmd = 'mkfile';
-							self.nextAction = { cmd: 'edit', msg: 'cmdedit' };
+							self.nextAction = {};
 							self.data = {target : phash};
 							$.proxy(fm.res('mixin', 'make'), self)()
 								.done(function(data) {
@@ -169,7 +169,6 @@ elFinder.prototype.commands.edit = function() {
 							ta.editor && ta.editor.close(ta[0], ta.editor.instance);
 							ta.elfinderdialog('destroy');
 						};
-						fm.toggleMaximize($(this).closest('.ui-dialog'), false);
 						if (changed()) {
 							fm.confirm({
 								title  : self.title,
@@ -587,6 +586,7 @@ elFinder.prototype.commands.edit = function() {
 					
 					name = editor.info && editor.info.name? editor.info.name : ('Editor ' + i);
 					editor.name = name;
+					editor.i18n = fm.i18n(name);
 					editors[name] = editor;
 				}
 			});
@@ -610,7 +610,7 @@ elFinder.prototype.commands.edit = function() {
 			$.each(editors, function(name, ed) {
 				subMenuRaw.push(
 					{
-						label    : fm.escape(name),
+						label    : fm.escape(ed.i18n),
 						icon     : ed.info && ed.info.icon? ed.info.icon : 'edit',
 						options  : { iconImg: ed.info && ed.info.iconImg? fm.baseUrl + ed.info.iconImg : void(0) },
 						callback : function() {
@@ -711,7 +711,7 @@ elFinder.prototype.commands.edit = function() {
 					fm.one('contextmenucreatedone', function() {
 						self.title = title;
 					});
-					self.title = fm.escape(editor.name);
+					self.title = fm.escape(editor.i18n);
 					delete self.variants;
 				};
 			
@@ -719,7 +719,7 @@ elFinder.prototype.commands.edit = function() {
 				file = fm.file(e.data.targets[0]);
 				setEditors(file, e.data.targets.length);
 				if (Object.keys(editors).length > 1) {
-					if (!useStoredEditor() || !stored[file.mime]) {
+					if (!useStoredEditor() || !stored[file.mime] || !editors[stored[file.mime]]) {
 						delete self.extra;
 						self.variants = [];
 						$.each(editors, function(name, editor) {

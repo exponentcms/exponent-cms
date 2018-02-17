@@ -7,13 +7,37 @@
  * DataTables 1.10 or newer.
  *
  * This file sets the defaults and adds options to DataTables to style its
- * controls using Bootstrap. See http://datatables.net/manual/styling/jqueryui
+ * controls using jQuery UI. See http://datatables.net/manual/styling/jqueryui
  * for further information.
  */
-(function(window, document, undefined){
+(function( factory ){
+	if ( typeof define === 'function' && define.amd ) {
+		// AMD
+		define( ['jquery', 'datatables.net'], function ( $ ) {
+			return factory( $, window, document );
+		} );
+	}
+	else if ( typeof exports === 'object' ) {
+		// CommonJS
+		module.exports = function (root, $) {
+			if ( ! root ) {
+				root = window;
+			}
 
-var factory = function( $, DataTable ) {
-"use strict";
+			if ( ! $ || ! $.fn.dataTable ) {
+				$ = require('datatables.net')(root, $).$;
+			}
+
+			return factory( $, root, root.document );
+		};
+	}
+	else {
+		// Browser
+		factory( jQuery, window, document );
+	}
+}(function( $, window, document, undefined ) {
+'use strict';
+var DataTable = $.fn.dataTable;
 
 
 var sort_prefix = 'css_right ui-icon ui-icon-';
@@ -62,7 +86,7 @@ $.extend( DataTable.ext.classes, {
 
 DataTable.ext.renderer.header.jqueryui = function ( settings, cell, column, classes ) {
 	// Calculate what the unsorted class should be
-	var noSortAppliedClass = sort_prefix+'carat-2-n-s';
+	var noSortAppliedClass = sort_prefix+'caret-2-n-s';
 	var asc = $.inArray('asc', column.asSorting) !== -1;
 	var desc = $.inArray('desc', column.asSorting) !== -1;
 
@@ -70,10 +94,10 @@ DataTable.ext.renderer.header.jqueryui = function ( settings, cell, column, clas
 		noSortAppliedClass = '';
 	}
 	else if ( asc && !desc ) {
-		noSortAppliedClass = sort_prefix+'carat-1-n';
+		noSortAppliedClass = sort_prefix+'caret-1-n';
 	}
 	else if ( !asc && desc ) {
-		noSortAppliedClass = sort_prefix+'carat-1-s';
+		noSortAppliedClass = sort_prefix+'caret-1-s';
 	}
 
 	// Setup the DOM structure
@@ -106,9 +130,9 @@ DataTable.ext.renderer.header.jqueryui = function ( settings, cell, column, clas
 			.removeClass(
 				sort_prefix+'triangle-1-n' +" "+
 				sort_prefix+'triangle-1-s' +" "+
-				sort_prefix+'carat-2-n-s' +" "+
-				sort_prefix+'carat-1-n' +" "+
-				sort_prefix+'carat-1-s'
+				sort_prefix+'caret-2-n-s' +" "+
+				sort_prefix+'caret-1-n' +" "+
+				sort_prefix+'caret-1-s'
 			)
 			.addClass( columns[ colIdx ] == 'asc' ?
 				sort_prefix+'triangle-1-n' : columns[ colIdx ] == 'desc' ?
@@ -135,22 +159,6 @@ if ( DataTable.TableTools ) {
 	} );
 }
 
-}; // /factory
 
-
-// Define as an AMD module if possible
-if ( typeof define === 'function' && define.amd ) {
-	define( ['jquery', 'datatables'], factory );
-}
-else if ( typeof exports === 'object' ) {
-    // Node/CommonJS
-    factory( require('jquery'), require('datatables') );
-}
-else if ( jQuery ) {
-	// Otherwise simply initialise as normal, stopping multiple evaluation
-	factory( jQuery, jQuery.fn.dataTable );
-}
-
-
-})(window, document);
-
+return DataTable;
+}));

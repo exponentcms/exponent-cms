@@ -37,7 +37,8 @@
 			thash = (typeof cOpts == 'object')? cOpts.thash : false,
             opts = this.options,
             into = opts.into || 'window',
-            file, url, s, w, imgW, imgH, winW, winH, reg, link, html5dl, inline;
+			file, url, s, w, imgW, imgH, winW, winH, reg, link, html5dl, inline,
+			selAct, cmd;
 
         if (!cnt && !thash) {
             {
@@ -65,7 +66,7 @@
         }
 
         var doOpen = function () {
-            var wnd, target;
+			var wnd, target, getOnly;
 
             try {
 				reg = new RegExp(fm.option('dispInlineRegex'), 'i');
@@ -101,7 +102,15 @@
                         }
                     }
                 } else {
-                    if (url.indexOf(fm.options.url) === 0) {
+					getOnly = (typeof opts.method === 'string' && opts.method.toLowerCase() === 'get');
+					if (!getOnly
+						&& url.indexOf(fm.options.url) === 0
+						&& fm.customData
+						&& Object.keys(fm.customData).length
+						// Since playback by POST request can not be done in Chrome, media allows GET request
+						&& !file.mime.match(/^(?:video|audio)/)
+					) {
+						// Send request as 'POST' method to hide custom data at location bar
                         url = '';
                     }
                     if (into === 'window') {
@@ -127,7 +136,7 @@
                             }
                         }
                         w = 'width=' + winW + ',height=' + winH;
-                        wnd = window.open(url, target, w + ',top=50,left=50,scrollbars=yes,resizable=yes');
+						wnd = window.open(url, target, w + ',top=50,left=50,scrollbars=yes,resizable=yes,titlebar=no');
                     } else {
                         if (into === 'tabs') {
                             target = file.hash;
@@ -142,10 +151,10 @@
                     if (url === '') {
                         var form = document.createElement("form");
                         form.action = fm.options.url;
-                        form.method = typeof opts.method === 'string' && opts.method.toLowerCase() === 'get' ? 'GET' : 'POST';
+						form.method = 'POST';
                         form.target = target;
                         form.style.display = 'none';
-						var params = Object.assign({}, fm.options.customData, {
+						var params = Object.assign({}, fm.customData, {
                             cmd: 'file',
 							target: file.hash,
 							_t: file.ts || parseInt(+new Date()/1000)
@@ -197,11 +206,11 @@
                     ] : []
             });
         } else {
-			var selAct = fm.storage('selectAction');
-			var cmd;
+			selAct = fm.storage('selectAction');
 			if (selAct) {
 				$.each(selAct.split('/'), function() {
-					if ((cmd = fm.getCommand(this)) && cmd.enabled()) {
+					var cmdName = this.valueOf();
+					if (cmdName !== 'open' && (cmd = fm.getCommand(cmdName)) && cmd.enabled()) {
 						return false;
 					}
 					cmd = null;
