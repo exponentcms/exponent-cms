@@ -38,7 +38,7 @@
     <div id="alt-control-landing" class="alt-control">
         <div class="control"><label class="label">{'Display Gallery pages as:'|gettext}</label></div>
         <div class="alt-body">
-            {control type=radiogroup columns=2 name="landing" items="Gallery,Slideshow"|gettxtlist values="showall,slideshow" default=$config.landing|default:"showall"}
+            {control type=radiogroup columns=2 name="landing" items="Gallery,Slideshow"|gettxtlist values="showall,slideshow" default=$config.landing|default:$container->action}
             <div id="showall-div" class="alt-item" style="display:none;">
                 <quote>{'There are no gallery settings'|gettext}</quote>
             </div>
