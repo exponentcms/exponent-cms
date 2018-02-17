@@ -673,7 +673,9 @@ class formsController extends expController {
 //                    $db_data->referrer = $olddata->referrer;
 //                    $db_data->location_data = $olddata->location_data;
 //                    $f->deleteRecord($this->params['data_id']);  //fixme we delete old record/id to make this easier??
-                    $f->updateRecord($this->params);
+                    $db_data->id = $this->params['data_id'];
+                    $db_data->sef_url = $this->params['sef_url'];
+                    $f->updateRecord($db_data);
                 } else {
                     $db_data->ip = $_SERVER['REMOTE_ADDR'];
                     if (expSession::loggedIn()) {
@@ -689,7 +691,7 @@ class formsController extends expController {
                     $location_data = null;
                     if (!empty($this->params['src'])) {
                         $mod = !empty($this->params['module']) ? $this->params['module'] : $this->params['controller'];
-                        expCore::makeLocation($mod,$this->params['src'],$this->params['int']);
+                        $location_data = expCore::makeLocation($mod,$this->params['src'],$this->params['int']);
                     }
                     $db_data->location_data = $location_data;
                     $f->insertRecord($db_data);
