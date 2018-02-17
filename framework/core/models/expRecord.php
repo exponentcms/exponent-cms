@@ -319,7 +319,7 @@ class expRecord {
     /**
      * update item
      *
-     * @param array $params
+     * @param array|object $params
      */
     public function update($params = array()) {
         if (is_array($params) && isset($params['current_revision_id'])) {

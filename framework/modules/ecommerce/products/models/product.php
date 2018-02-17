@@ -799,25 +799,21 @@ class product extends expRecord {
     public function update($params = array()) {
         global $db;
 
-        if ($this->product_type != 'product') {
+        if ($this->product_type !== 'product') {
             parent::update($params);
             return;
         }
 
-//        if (empty($params['id'])) {
-//            eDebug($params);
-//            return;
-//        }
         //Get the product
-        if (isset($params['id']))
+        if (isset($params['id'])) {
             $product = $db->selectObject('product', 'id =' . $params['id']);
+            //Get product files
+            $product->expFile = $this->getProductFiles($params['id']);
+            // eDebug($product, true);
+        }
 
-        //Get product files
         if (empty($product))
             $product = new stdClass();
-
-        $product->expFile = $this->getProductFiles($params['id']);
-        // eDebug($product, true);
 
         $tab_loaded = !empty($params['tab_loaded']) ? $params['tab_loaded'] : array();
         //check if we're saving a newly copied product and if we create children also
@@ -905,7 +901,7 @@ class product extends expRecord {
         }
         // create/update our product
         parent::update($product);
-        // now $this is our new product
+        //note now $this is our new product
 
         if (isset($tab_loaded['options'])) {
             //Option Group Tab
