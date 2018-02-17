@@ -80,7 +80,7 @@ function smarty_function_google_map($params,&$smarty) {
                     var " . $params['unique'] . "_marker = new google.maps.Marker({
                         map: " . $params['unique'] . "_map,
                         position: results[0].geometry.location,
-                        url: 'http://maps.google.com?q=" . urlencode($address_string) . "'
+                        url: 'https://maps.google.com?q=" . urlencode($address_string) . "'
                     });
                     google.maps.event.addListener(" . $params['unique'] . "_marker, 'click', function() {
                         window.open(" . $params['unique'] . "_marker.url);
@@ -94,7 +94,7 @@ function smarty_function_google_map($params,&$smarty) {
     expJavascript::pushToFoot(array(
         "unique"=>'0-gmaps',
         "jquery"=>1,
-        "src"=>'//maps.google.com/maps/api/js?key=' . ecomconfig::getConfig('map_apikey')
+        "src"=>'https://maps.google.com/maps/api/js?key=' . ecomconfig::getConfig('map_apikey')
      ));
     expJavascript::pushToFoot(array(
         "unique"=>'gmap-' . $params['unique'],
