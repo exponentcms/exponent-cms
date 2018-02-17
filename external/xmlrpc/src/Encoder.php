@@ -6,6 +6,7 @@ use PhpXmlRpc\Helper\XMLParser;
 
 /**
  * A helper class to easily convert between Value objects and php native values
+ * @todo implement an interface
  */
 class Encoder
 {
@@ -156,7 +157,7 @@ class Encoder
             // </G_Giunta_2001-02-29>
             case 'array':
                 // PHP arrays can be encoded to either xmlrpc structs or arrays,
-                // depending on wheter they are hashes or plain 0..n integer indexed
+                // depending on whether they are hashes or plain 0..n integer indexed
                 // A shorter one-liner would be
                 // $tmp = array_diff(array_keys($phpVal), range(0, count($phpVal)-1));
                 // but execution time skyrockets!
@@ -209,6 +210,7 @@ class Encoder
                 } else {
                     $xmlrpcVal = new Value();
                 }
+                break;
             // catch "user function", "unknown type"
             default:
                 // giancarlo pinerolo <ping@alt.it>
@@ -291,7 +293,9 @@ class Encoder
             case 'methodresponse':
                 $v = &$xmlRpcParser->_xh['value'];
                 if ($xmlRpcParser->_xh['isf'] == 1) {
+                    /** @var Value $vc */
                     $vc = $v['faultCode'];
+                    /** @var Value $vs */
                     $vs = $v['faultString'];
                     $r = new Response(0, $vc->scalarval(), $vs->scalarval());
                 } else {
