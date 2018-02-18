@@ -123,7 +123,7 @@ class search extends expRecord {
                         $controller = expModules::getController($recs[$i]->ref_module);
                         if (method_exists($controller, 'searchHit')) {
     //                        if (!$controller::searchHit($recs[$i])) {
-                            if (!call_user_func(array($controller, 'searchHit'), $recs[$i])) {
+                            if (!$controller->searchHit($recs[$i])) {
                                 unset($recs[$i]); // item is not available for viewing
                             }
                         }

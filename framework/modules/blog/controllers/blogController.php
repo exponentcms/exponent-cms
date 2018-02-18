@@ -310,7 +310,7 @@ class blogController extends expController {
      */
     public static function searchHit($record) {
         $blog = new blog($record->original_id);
-        if (expPermissions::check('edit', expUnserialize($record->location_data)) || $blog->private == 0 && ($blog->publish === 0 || $blog->publish <= time())) {
+        if (expPermissions::check('edit', expUnserialize($record->location_data)) || ($blog->private == 0 && ($blog->publish === 0 || $blog->publish <= time()))) {
             return true;
         } else {
             return false;

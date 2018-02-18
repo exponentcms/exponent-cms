@@ -211,7 +211,7 @@ class expLabels
         foreach ($this->addresses as $address) {
 
             if ($num_total == $this->labels_total) {
-                array_push($table_data, $row_table_data);
+                $table_data[] = $row_table_data;
                 $CI->cezpdf->ezTable($table_data, $col_names, '', $table_options);
                 $CI->cezpdf->ezNewPage();
                 $num_x = 0;

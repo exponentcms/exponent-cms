@@ -43,9 +43,9 @@ function smarty_modifier_highlight($text='', $word='', $highlight='html5') {
        foreach ($words as $phrase) {   // highlight each word
            $phrase = str_replace(array('+','-','*'), '', $phrase);
            if ($highlight == 'html5' && $phrase != 'mark') {
-               $text = preg_replace('/('.preg_quote($phrase).')/i', '<mark>${1}</mark>', $text);
+               $text = preg_replace('/('.preg_quote($phrase, '/').')/i', '<mark>${1}</mark>', $text);
            } else {
-               $text = preg_replace('/('.preg_quote($phrase).')/i', '<span '.$highlight.'>${1}</span>', $text);
+               $text = preg_replace('/('.preg_quote($phrase, '/').')/i', '<span '.$highlight.'>${1}</span>', $text);
            }
        }
    }

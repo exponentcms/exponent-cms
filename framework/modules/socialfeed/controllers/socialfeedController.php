@@ -733,7 +733,7 @@ class socialfeedController extends expController
                     'image_url' => $mh_img_url,
                     'sftype' => 'pinterest'  // add feed type
                 );
-                array_push($pin_images, $item);
+                $pin_images[] = $item;
                 $i++;
                 if ($i == $this->config['socialfeed_feeds_count']) {
                     break;

@@ -94,6 +94,7 @@ function smarty_function_icon($params, &$smarty) {
             }
         } else $params['text'] = gt($params['text']);
     }
+    $text = (empty($params['text'])) ? '' : $params['text'];
     if (empty($params['title'])) {
         $params['title'] = (empty($text) ? gt(ucfirst($params['action'])) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') : $text);
     } else {
@@ -103,7 +104,6 @@ function smarty_function_icon($params, &$smarty) {
     // figure out whether to use the edit icon or text, alt tags, etc.
     $alt = (empty($params['alt'])) ? $params['title'] : $params['alt'];
     $class = (empty($params['class']) && empty($params['img'])) ? $params['action'] : ((!empty($params['class']) && empty($params['img'])) ? $params['class'] : '');
-    $text = (empty($params['text'])) ? '' : $params['text'];
     $title = (empty($params['title'])) ? (empty($text) ? gt(ucfirst($class)) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') : $text) : $params['title'];
     if (!empty($params['hash'])) {
 //	    $hash = $params['hash'];

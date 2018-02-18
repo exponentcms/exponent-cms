@@ -81,8 +81,8 @@ class form extends baseform {
         if ($this->horizontal)
 			$control->horizontal = true;
 		if (!empty($params)) {
-			foreach ($params as $name => $value) {
-				$control->$name = $value;
+			foreach ($params as $nname => $value) {
+				$control->$nname = $value;
 			}
 		}
 		$this->controls[$name] = $control;

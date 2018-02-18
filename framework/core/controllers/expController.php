@@ -89,7 +89,7 @@ abstract class expController {
         // set up the path to this module view files
         array_pop($controllerpath); // remove 'controllers' from array
         $controllerpath[count($controllerpath) - 1] = 'views';
-        array_push($controllerpath, $this->baseclassname);
+        $controllerpath[] = $this->baseclassname;
         $this->relative_viewpath = implode('/', array_slice($controllerpath, -3, 3));
 //        $this->viewpath = BASE.'framework/modules/'.$this->relative_viewpath;
         //FIXME this requires we move the 'core' controllers into the modules folder or use this hack

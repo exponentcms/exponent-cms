@@ -1034,7 +1034,7 @@ class reportController extends expController {
         ksort($top, SORT_STRING);
         ksort($items, SORT_STRING);
         foreach ($top as $model => $item) {
-            $line = '';
+//            $line = '';
             $line = expString::outputField("SMC Inventory - Laurie");
             $line .= expString::outputField($model);
             $line .= expString::outputField($item['name']);
@@ -1042,7 +1042,7 @@ class reportController extends expController {
             $out .= $line;
         }
         foreach ($items as $model => $item) {
-            $line = '';
+//            $line = '';
             $line = expString::outputField("SMC Inventory - Laurie");
             $line .= expString::outputField($model);
             $line .= expString::outputField($item['name']);

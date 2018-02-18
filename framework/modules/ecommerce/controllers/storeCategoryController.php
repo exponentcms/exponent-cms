@@ -332,7 +332,7 @@ class storeCategoryController extends expNestedNodeController {
             if (is_array($TheNodes)) {
                 foreach ($TheNodes as $Node) {
                     if ($Node->parent_id == $ID) {
-                        array_push($Tree, $Node);
+                        $Tree[] = $Node;
                     }
                 }
                 $depth++;

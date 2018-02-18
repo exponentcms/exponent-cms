@@ -105,7 +105,7 @@ class navigationController extends expController {
 
         expHistory::set('viewable', $this->params);
         $id      = $sectionObj->id;
-        $current = null;
+//        $current = null;
         // Show not only the location of a page in the hierarchy but also the location of a standalone page
         $current = new section($id);
         if ($current->parent == -1) {  // standalone page

@@ -41,7 +41,7 @@ function smarty_function_assign_adv($params, &$smarty)
         return;
     }
 
-    if (!in_array('value', array_keys($params))) {
+    if (!array_key_exists('value', $params)) {
         $smarty->trigger_error(gt("assign_adv: missing 'value' parameter"));
         return;
     }

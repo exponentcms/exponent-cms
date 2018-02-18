@@ -766,7 +766,7 @@ class eventController extends expController {
     function delete_all_past() {
         $locsql = $this->aggregateWhereClause();
         $ed = new eventdate();
-        $dates = $ed->find("all", $locsql . " AND date < " . strtotime('-1 months', time()));
+        $dates = $ed->find("all", $locsql . " AND date < " . strtotime('-1 months'));
         foreach ($dates as $date) {
             $date->delete(); // event automatically deleted if all assoc eventdates are deleted
         }
@@ -1167,7 +1167,7 @@ class eventController extends expController {
                 $start = mktime(0, 0, 0, $info['mon'], $info['mday'] + $i, $info['year']);
                 $ed = new eventdate();
                 $edates = $ed->find('all', $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
-                $days[$start] = array();
+//                $days[$start] = array();
 //                $days[$start] = $this->getEventsForDates($edates);
                 $days[$start] = $this->event->getEventsForDates($edates);
                 for ($j = 0, $jMax = count($days[$start]); $j < $jMax; $j++) {

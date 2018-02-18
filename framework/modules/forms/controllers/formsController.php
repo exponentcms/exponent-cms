@@ -1216,7 +1216,7 @@ class formsController extends expController {
                 $ctl1 = $ctl;
             }
             if (call_user_func(array($this->params['control_type'], 'useGeneric')) == true) {
-                $ctl1 = call_user_func(array('genericcontrol', 'update'), $this->params, $ctl1);
+                $ctl1 = genericcontrol::update($this->params, $ctl1);
             } else {
                 $ctl1 = call_user_func(array($this->params['control_type'], 'update'), $this->params, $ctl1);
             }

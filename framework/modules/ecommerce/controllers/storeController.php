@@ -2958,8 +2958,10 @@ class storeController extends expController {
 //                            $rank = !empty($data['rank']) ? $data['rank'] : 1;
                             $rank = (int)(str_replace('category', '', $key));
 //                            if (!empty($value)) $result = storeCategory::parseCategory($value);
-                            if (!empty($value)) $result = storeCategory::importCategoryString($value);
-                            else continue;
+                            if (!empty($value))
+                                $result = storeCategory::importCategoryString($value);
+                            else
+                                continue;
 
 //                            if (is_numeric($result)) {
                             if ($result) {

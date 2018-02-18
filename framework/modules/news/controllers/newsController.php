@@ -322,7 +322,7 @@ class newsController extends expController {
      */
     public static function searchHit($record) {
         $news = new news($record->original_id);
-        if (expPermissions::check('showUnpublished', expUnserialize($record->location_data)) || ($news->publish == 0 || $news->publish <= time()) && ($news->unpublish == 0 || $news->unpublish > time())) {
+        if (expPermissions::check('showUnpublished', expUnserialize($record->location_data)) || (($news->publish == 0 || $news->publish <= time()) && ($news->unpublish == 0 || $news->unpublish > time()))) {
             return true;
         } else {
             return false;

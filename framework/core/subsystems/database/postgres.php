@@ -211,7 +211,7 @@ class postgres_database extends database {
 		return $res;
 	}
 
-	function selectObjects($table,$where = null, $orderby = null, $is_revisioned=false, $needs_approval=false) {
+	function selectObjects($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false, $user=null) {
 		$sql = "SELECT * FROM " . $this->prefix.$table;
 		if ($where != null) $sql .= " WHERE $where";
 		$res = @pg_query($sql);
