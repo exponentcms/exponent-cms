@@ -32,7 +32,7 @@ $(document).ready(function(){
             var text = tables[i].getAttribute('data-table-name');
             // remove DB_TABLE_PREFIX_ and underscores from table name
             text = text.replace('<?php echo DB_TABLE_PREFIX . '_'; ?>','');
-            text = text.replace('_', ' ');
+            text = text.replace(/_/g, ' ');
             if (value == '') {
                 tables[i].className = '';
                 a.innerHTML = text;
