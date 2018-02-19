@@ -34,3 +34,7 @@
 .address span {
     display: inline;
 }
+
+.kv-password {
+    display: inline-block;
+}

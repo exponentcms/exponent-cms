@@ -36,7 +36,7 @@ class usersController extends expController {
         'groupperms'       => 'Group Permissions',
         'import'           => 'Import Users',
         'export'           => 'Export Users',
-        'update'           => 'Update Users',
+//        'update'           => 'Update Users',
         'show'             => 'Show User',
         'showall'          => 'Show Users',
         'getUsersByJSON'   => 'Get Users',
@@ -208,7 +208,7 @@ class usersController extends expController {
         // 3 - user is not admin, is not logged on, and id is empty (creating new account (or)
         // 4 - user is not admin and is member of group not preventing profile changes
         // otherwise, exit
-        if (!$user->isAdmin() && (($user->isLoggedIn() && $user->id != $id) || (!$user->isLoggedIn() && $id !== null) || !$user->globalPerm('prevent_profile_change'))) {
+        if (!$user->isAdmin() && (($user->isLoggedIn() && $user->id != $id) || (!$user->isLoggedIn() && $id !== null) || $user->globalPerm('prevent_profile_change'))) {
             $exit = true;
         }
 
