@@ -4,22 +4,31 @@
  * Adds support for Pematon's custom theme.
  * This includes meta headers, touch icons and other stuff.
  *
+ * @link https://github.com/pematon/adminer-theme
+ *
  * @author Peter Knut
- * @copyright 2014-2017 Pematon, s.r.o. (http://www.pematon.com/)
+ * @copyright 2014-2018 Pematon, s.r.o. (http://www.pematon.com/)
  */
 class AdminerTheme
 {
+    const CSS_VERSION = 5;
+    const ICONS_VERSION = 3;
+
     /** @var string */
     private $themeName;
 
     /**
-     * @param string $themeName File with this name and .css extension should be located in css folder.
+     * Default theme and/or multiple theme names for given hosts can be specified in constructor.
+     * File with theme name and .css extension should be located in css folder.
+     *
+     * @param string $defaultTheme Theme name of default theme.
+     * @param array $themes array(database-host => theme-name).
      */
-    function __construct($themeName = "default-orange")
+    public function __construct($defaultTheme = "default-orange", array $themes = [])
     {
         define("PMTN_ADMINER_THEME", true);
 
-        $this->themeName = $themeName;
+        $this->themeName = isset($_GET["username"]) && isset($themes[SERVER]) ? $themes[SERVER] : $defaultTheme;
     }
 
     /**
@@ -46,16 +55,16 @@ class AdminerTheme
             <meta name="msapplication-wide310x150logo" content="images/tileIcon-wide.png"/>
 
         <?php elseif (strpos($userAgent, "iPhone") !== false || strpos($userAgent, "iPad") !== false): ?>
-            <link rel="apple-touch-icon-precomposed" href="images/touchIcon.png"/>
+            <link rel="apple-touch-icon-precomposed" href="images/touchIcon.png?<?php echo self::ICONS_VERSION ?>"/>
 
         <?php elseif (strpos($userAgent, "Android") !== false): ?>
-            <link rel="apple-touch-icon-precomposed" href="images/touchIcon-android.png?2"/>
+            <link rel="apple-touch-icon-precomposed" href="images/touchIcon-android.png?<?php echo self::ICONS_VERSION ?>"/>
 
         <?php else: ?>
-            <link rel="apple-touch-icon" href="images/touchIcon.png"/>
+            <link rel="apple-touch-icon" href="images/touchIcon.png?<?php echo self::ICONS_VERSION ?>"/>
         <?php endif; ?>
 
-        <link rel="stylesheet" type="text/css" href="css/<?php echo htmlspecialchars($this->themeName) ?>.css?3">
+        <link rel="stylesheet" type="text/css" href="css/<?php echo htmlspecialchars($this->themeName) ?>.css?<?php echo self::CSS_VERSION ?>">
 
         <script <?php echo nonce(); ?>>
             (function(document) {
