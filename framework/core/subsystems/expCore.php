@@ -415,7 +415,13 @@ class expCore
 
     /**
      * Casts one object type to another object type
-
+     *
+     * @static
+     *
+     * @param $source
+     * @param $destinationtype
+     *
+     * @return mixed
      */
     public static function cast($source, $destinationtype)
     {

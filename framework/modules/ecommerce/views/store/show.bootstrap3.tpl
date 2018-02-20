@@ -14,7 +14,68 @@
  *}
 
 {css unique="storefront" link="`$asset_path`css/storefront.css" corecss="button,tables"}
+{literal}
+    @media only screen and (max-width: 800px) {
+        /* Force table to not be like tables anymore */
+        #child-products table,
+        #child-products thead,
+        #child-products tbody,
+        #child-products th,
+        #child-products td,
+        #child-products tr {
+            display: block;
+        }
 
+        /* Hide table headers (but not display: none;, for accessibility) */
+        #child-products thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        #child-products tr {
+            border: 1px solid #ccc;
+        }
+
+        #child-products td {
+            /* Behave like a "row" */
+            border: none;
+            /*border-bottom: 1px solid #eee;*/
+            position: relative;
+            padding-left: 25%;
+            padding-top: 0;
+            padding-bottom: 1px;
+            white-space: normal;
+            text-align:left;
+        }
+
+        /* Checkbox by itself */
+        #child-products td input[type="checkbox"]{
+            margin-left: -25%;
+        }
+
+
+        /*	Format the label	*/
+        #child-products td:before {
+            /* Now like a table header */
+            position: absolute;
+            /* Top/left values mimic padding */
+            top: 6px;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+            text-align:left;
+            font-weight: bold;
+        }
+
+        /*	Label the data	*/
+       	#child-products td:before {
+            content: attr(data-title);
+            top: -1px;
+        }
+    }
+{/literal}
 {/css}
 
 {css unique="ecom" link="`$asset_path`css/ecom-bs3.css"}
@@ -438,9 +499,9 @@
                                         *}
                                         {if  $chiprod->active_type == 0 && $product->active_type == 0 && ($chiprod->availability_type == 0 || $chiprod->availability_type == 1 || ($chiprod->availability_type == 2 && ($chiprod->quantity - $chiprod->minimum_order_quantity >= 0))) }
                                             <td>
-                                                <input name="prod-check[]" type="checkbox" value="{$chiprod->id}">
+                                                <input name="prod-check[]" type="checkbox" value="{$chiprod->id}" title="{'Include this item'|gettext}">
                                             </td>
-                                            <td>
+                                            <td data-title="{'Qty'|gettext}">
                                                 <input class="form-control" name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5>
                                             </td>
                                         {elseif ($chiprod->availability_type == 2 && $chiprod->quantity <= 0) && $chiprod->active_type == 0}
@@ -459,17 +520,17 @@
                                             </td>
                                         {/if}
 
-                                        <td>
+                                        <td data-title="{'Model'|gettext}">
                                             <span>{$chiprod->model}</span>
                                         </td>
                                         {if !empty($chiprod->extra_fields)}
                                             {foreach from=$chiprod->extra_fields item=ef}
-                                                <td>
+                                                <td data-title="{ef.name}">
                                                     <span>{$ef.value|stripslashes}</span>
                                                 </td>
                                             {/foreach}
                                         {/if}
-                                        <td style="text-align: right;">
+                                        <td data-title="{'Price'|gettext} style="text-align: right;">
                                             {if $chiprod->availability_type == 3 && $chiprod->active_type == 0}
                                                 <strong><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">{'Call for Price'|gettext}</a></strong>
                                             {else}
