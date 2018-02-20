@@ -395,7 +395,7 @@
                                 <th><strong>{"SKU"|gettext}</strong></th>
                                 {if !empty($product->extra_fields)}
                                     {foreach from=$product->extra_fields item=chiprodname}
-                                        <th><span>{$chiprodname.name}</span></th>
+                                        <th><span>{$chiprodname.name|regex_replace:'/\_/':' '|ucwords}</span></th>
                                     {/foreach}
                                 {/if}
                                 <th style="text-align: right;"><strong>{"PRICE"|gettext}</strong></th>
@@ -449,10 +449,10 @@
                                             <strong><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">{'Call for Price'|gettext}</a></strong>
                                         {else}
                                             {if $chiprod->use_special_price}
-                                                <span style="color:red; font-size: 8px; font-weight: bold;">{'SALE!'|gettext}</span>{br}
-                                                <span style="color:red; font-weight: bold;">{$chiprod->special_price|currency}</span>
+                                                <div style="color:red; font-size: 8px; font-weight: bold;">{'SALE!'|gettext}</div>
+                                                <div style="color:red; font-weight: bold;">{$chiprod->special_price|currency}</div>
                                             {else}
-                                                <span>{$chiprod->base_price|currency}</span>
+                                                <div>{$chiprod->base_price|currency}</div>
                                             {/if}
                                         {/if}
                                     </td>

@@ -481,10 +481,10 @@
                                     <th><strong>{"SKU"|gettext}</strong></th>
                                     {if !empty($product->extra_fields)}
                                         {foreach from=$product->extra_fields item=chiprodname}
-                                            <th><span>{$chiprodname.name}</span></th>
+                                            <th><span>{$chiprodname.name|regex_replace:'/\_/':' '|ucwords}</span></th>
                                         {/foreach}
                                     {/if}
-                                    <th style="text-align: right;"><strong>{"PRICE"|gettext}</strong></th>
+                                    <th class="text-right"><strong>{"PRICE"|gettext}</strong></th>
                                     <th>&#160;</th>
                                 </tr>
                             </thead>
@@ -525,20 +525,20 @@
                                         </td>
                                         {if !empty($chiprod->extra_fields)}
                                             {foreach from=$chiprod->extra_fields item=ef}
-                                                <td data-title="{ef.name}">
+                                                <td data-title="{$ef.name|regex_replace:'/\_/':' '|ucwords}">
                                                     <span>{$ef.value|stripslashes}</span>
                                                 </td>
                                             {/foreach}
                                         {/if}
-                                        <td data-title="{'Price'|gettext} style="text-align: right;">
+                                        <td data-title="{'Price'|gettext}" class="text-right">
                                             {if $chiprod->availability_type == 3 && $chiprod->active_type == 0}
                                                 <strong><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">{'Call for Price'|gettext}</a></strong>
                                             {else}
                                                 {if $chiprod->use_special_price}
-                                                    <span style="color:red; font-size: 8px; font-weight: bold;">{'SALE!'|gettext}</span>{br}
-                                                    <span style="color:red; font-weight: bold;">{$chiprod->special_price|currency}</span>
+                                                    <div style="color:red; font-size: 8px; font-weight: bold;">{'SALE!'|gettext}</div>
+                                                    <div style="color:red; font-weight: bold;">{$chiprod->special_price|currency}</div>
                                                 {else}
-                                                    <span>{$chiprod->base_price|currency}</span>
+                                                    <div>{$chiprod->base_price|currency}</div>
                                                 {/if}
                                             {/if}
                                         </td>
