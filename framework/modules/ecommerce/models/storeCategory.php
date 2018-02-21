@@ -42,6 +42,27 @@ class storeCategory extends expNestedNode {
 		}
 	}
 
+    public function beforeDelete() {
+        global $db;
+
+        // note sub categories are removed in parent nestedNode->delete()
+
+        // delete product storeCategory connections for sub categories
+        $subcats = $this->getChildren();
+        foreach ($subcats as $cat) {
+            $db->delete('product_storeCategories', 'storecategories_id=' . $cat->id);
+        }
+    }
+
+    public function afterDelete() {
+        global $db;
+
+        // note we've already deleted all sub categories in the parent nestedNode->delete() method
+
+        // delete product storeCategory connections
+        $db->delete('product_storeCategories', 'storecategories_id=' . $this->id);
+    }
+
     /**
      * Get count of sub-categories in this category
      *

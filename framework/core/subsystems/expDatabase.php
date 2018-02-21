@@ -807,47 +807,47 @@ abstract class database {
 	* @return bool|string
 	*/
 	function fieldSQL($name, $def) {
-	   $sql = "`$name`";
-	   if (!isset($def[DB_FIELD_TYPE])) {
-	       return false;
-	   }
-	   $type = $def[DB_FIELD_TYPE];
-	   if ($type == DB_DEF_ID) {
-	       $sql .= " INT(11)";
-	   } else if ($type == DB_DEF_BOOLEAN) {
-	       $sql .= " TINYINT(1)";
-	   } else if ($type == DB_DEF_TIMESTAMP) {
-	       $sql .= " INT(14)";
-       } else if ($type == DB_DEF_DATETIME) {
-   	       $sql .= " DATETIME";
-	   } else if ($type == DB_DEF_INTEGER) {
-	       $sql .= " INT(8)";
-	   } else if ($type == DB_DEF_STRING) {
-	       if (isset($def[DB_FIELD_LEN]) && is_int($def[DB_FIELD_LEN])) {
-	           $len = $def[DB_FIELD_LEN];
-	           if ($len < 256)
-	               $sql .= " VARCHAR($len)";
-	           else if ($len < 65536)
-	               $sql .= " TEXT";
-	           else if ($len < 16777216)
-	               $sql .= " MEDIUMTEXT";
-	           else
-	               $sql .= " LONGTEXT";
-	       } else {  // default size of 'TEXT'instead of error
-               $sql .= " TEXT";
-	       }
-	   } else if ($type == DB_DEF_DECIMAL) {
-	       $sql .= " DOUBLE";
-	   } else {
-	       return false; // must specify known FIELD_TYPE
-	   }
-	   $sql .= " NOT NULL";
-	   if (isset($def[DB_DEFAULT]))
-	       $sql .= " DEFAULT '" . $def[DB_DEFAULT] . "'";
+	    $sql = "`$name`";
+	    if (!isset($def[DB_FIELD_TYPE])) {
+	        return false;
+	    }
+	    $type = $def[DB_FIELD_TYPE];
+	    if ($type == DB_DEF_ID) {
+	        $sql .= " INT(11)";
+	    } else if ($type == DB_DEF_BOOLEAN) {
+	        $sql .= " TINYINT(1)";
+	    } else if ($type == DB_DEF_TIMESTAMP) {
+	        $sql .= " INT(14)";
+        } else if ($type == DB_DEF_DATETIME) {
+   	        $sql .= " DATETIME";
+	    } else if ($type == DB_DEF_INTEGER) {
+	        $sql .= " INT(8)";
+	    } else if ($type == DB_DEF_STRING) {
+	        if (isset($def[DB_FIELD_LEN]) && is_int($def[DB_FIELD_LEN])) {
+	            $len = $def[DB_FIELD_LEN];
+	            if ($len < 256)
+	                $sql .= " VARCHAR($len)";
+	            else if ($len < 65536)
+	                $sql .= " TEXT";
+	            else if ($len < 16777216)
+	                $sql .= " MEDIUMTEXT";
+	            else
+	                $sql .= " LONGTEXT";
+	        } else {  // default size of 'TEXT'instead of error
+                $sql .= " TEXT";
+	        }
+	    } else if ($type == DB_DEF_DECIMAL) {
+	        $sql .= " DOUBLE";
+	    } else {
+	        return false; // must specify known FIELD_TYPE
+	    }
+	    $sql .= " NOT NULL";
+	    if (isset($def[DB_DEFAULT]))
+	        $sql .= " DEFAULT '" . $def[DB_DEFAULT] . "'";
 
-	   if (isset($def[DB_INCREMENT]) && $def[DB_INCREMENT])
-	       $sql .= " AUTO_INCREMENT";
-	   return $sql;
+	    if (isset($def[DB_INCREMENT]) && $def[DB_INCREMENT])
+	        $sql .= " AUTO_INCREMENT";
+	    return $sql;
 	}
 
 	/**
@@ -862,26 +862,26 @@ abstract class database {
 	* @return bool
 	*/
 	function switchValues($table, $field, $a, $b, $additional_where = null) {
-	   if ($additional_where == null) {
-	       $additional_where = '1';
-	   }
-       $a = (int)($a);
-       $b = (int)($b);
-	   $object_a = $this->selectObject($table, "$field='$a' AND $additional_where");
-	   $object_b = $this->selectObject($table, "$field='$b' AND $additional_where");
+	    if ($additional_where == null) {
+	        $additional_where = '1';
+	    }
+        $a = (int)($a);
+        $b = (int)($b);
+	    $object_a = $this->selectObject($table, "$field='$a' AND $additional_where");
+	    $object_b = $this->selectObject($table, "$field='$b' AND $additional_where");
 
-	   if ($object_a && $object_b) {
-	       $tmp = $object_a->$field;
-	       $object_a->$field = $object_b->$field;
-	       $object_b->$field = $tmp;
+	    if ($object_a && $object_b) {
+	        $tmp = $object_a->$field;
+	        $object_a->$field = $object_b->$field;
+	        $object_b->$field = $tmp;
 
-	       $this->updateObject($object_a, $table);
-	       $this->updateObject($object_b, $table);
+	        $this->updateObject($object_a, $table);
+	        $this->updateObject($object_b, $table);
 
-	       return true;
-	   } else {
-	       return false;
-	   }
+	        return true;
+	    } else {
+	        return false;
+	    }
 	}
 
 	/**
@@ -889,7 +889,7 @@ abstract class database {
 	* @return bool True if the connection can be used to execute SQL queries.
 	*/
 	function isValid() {
-	   return ($this->connection != null && $this->havedb);
+	    return ($this->connection != null && $this->havedb);
 	}
 
 	/**
@@ -911,84 +911,83 @@ abstract class database {
 	* @return array
 	*/
 	function testPrivileges() {
+	    $status = array();
 
-	   $status = array();
+	    $tablename = "___testertable" . uniqid("");
+	    $dd = array(
+	        "id" => array(
+	            DB_FIELD_TYPE => DB_DEF_ID,
+	            DB_PRIMARY => true,
+	            DB_INCREMENT => true),
+	        "name" => array(
+	            DB_FIELD_TYPE => DB_DEF_STRING,
+	            DB_FIELD_LEN => 100)
+	    );
 
-	   $tablename = "___testertable" . uniqid("");
-	   $dd = array(
-	       "id" => array(
-	           DB_FIELD_TYPE => DB_DEF_ID,
-	           DB_PRIMARY => true,
-	           DB_INCREMENT => true),
-	       "name" => array(
-	           DB_FIELD_TYPE => DB_DEF_STRING,
-	           DB_FIELD_LEN => 100)
-	   );
+	    $this->createTable($tablename, $dd, array());
+	    if (!$this->tableExists($tablename)) {
+	        $status["CREATE TABLE"] = false;
+	        return $status;
+	    } else
+	        $status["CREATE TABLE"] = true;
 
-	   $this->createTable($tablename, $dd, array());
-	   if (!$this->tableExists($tablename)) {
-	       $status["CREATE TABLE"] = false;
-	       return $status;
-	   } else
-	       $status["CREATE TABLE"] = true;
+	    $o = new stdClass();
+	    $o->name = "Testing Name";
+	    $insert_id = $this->insertObject($o, $tablename);
+	    if ($insert_id == 0) {
+	        $status["INSERT"] = false;
+	        return $status;
+	    } else
+	        $status["INSERT"] = true;
 
-	   $o = new stdClass();
-	   $o->name = "Testing Name";
-	   $insert_id = $this->insertObject($o, $tablename);
-	   if ($insert_id == 0) {
-	       $status["INSERT"] = false;
-	       return $status;
-	   } else
-	       $status["INSERT"] = true;
+	    $o = $this->selectObject($tablename, "id=" . $insert_id);
+	    if ($o == null || $o->name != "Testing Name") {
+	        $status["SELECT"] = false;
+	        return $status;
+	    } else
+	        $status["SELECT"] = true;
 
-	   $o = $this->selectObject($tablename, "id=" . $insert_id);
-	   if ($o == null || $o->name != "Testing Name") {
-	       $status["SELECT"] = false;
-	       return $status;
-	   } else
-	       $status["SELECT"] = true;
+	    $o->name = "Testing 2";
+	    if (!$this->updateObject($o, $tablename)) {
+	        $status["UPDATE"] = false;
+	        return $status;
+	    } else
+	        $status["UPDATE"] = true;
 
-	   $o->name = "Testing 2";
-	   if (!$this->updateObject($o, $tablename)) {
-	       $status["UPDATE"] = false;
-	       return $status;
-	   } else
-	       $status["UPDATE"] = true;
+	    $this->delete($tablename, "id=" . $insert_id);
+	    $o = $this->selectObject($tablename, "id=" . $insert_id);
+	    if ($o != null) {
+	        $status["DELETE"] = false;
+	        return $status;
+	    } else
+	        $status["DELETE"] = true;
 
-	   $this->delete($tablename, "id=" . $insert_id);
-	   $o = $this->selectObject($tablename, "id=" . $insert_id);
-	   if ($o != null) {
-	       $status["DELETE"] = false;
-	       return $status;
-	   } else
-	       $status["DELETE"] = true;
+	    $dd["thirdcol"] = array(
+	        DB_FIELD_TYPE => DB_DEF_TIMESTAMP);
 
-	   $dd["thirdcol"] = array(
-	       DB_FIELD_TYPE => DB_DEF_TIMESTAMP);
+	    $this->alterTable($tablename, $dd, array());
+	    $o = new stdClass();
+	    $o->name = "Alter Test";
+	    $o->thirdcol = "Third Column";
+	    if (!$this->insertObject($o, $tablename)) {
+	        $status["ALTER TABLE"] = false;
+	        return $status;
+	    } else
+	        $status["ALTER TABLE"] = true;
 
-	   $this->alterTable($tablename, $dd, array());
-	   $o = new stdClass();
-	   $o->name = "Alter Test";
-	   $o->thirdcol = "Third Column";
-	   if (!$this->insertObject($o, $tablename)) {
-	       $status["ALTER TABLE"] = false;
-	       return $status;
-	   } else
-	       $status["ALTER TABLE"] = true;
+	    $this->dropTable($tablename);
+	    if ($this->tableExists($tablename)) {
+	        $status["DROP TABLE"] = false;
+	        return $status;
+	    } else
+	        $status["DROP TABLE"] = true;
 
-	   $this->dropTable($tablename);
-	   if ($this->tableExists($tablename)) {
-	       $status["DROP TABLE"] = false;
-	       return $status;
-	   } else
-	       $status["DROP TABLE"] = true;
+	    foreach ($this->getTables() as $t) {
+	        if (substr($t, 0, 14 + strlen($this->prefix)) == $this->prefix . "___testertable")
+	            $this->dropTable($t);
+	    }
 
-	   foreach ($this->getTables() as $t) {
-	       if (substr($t, 0, 14 + strlen($this->prefix)) == $this->prefix . "___testertable")
-	           $this->dropTable($t);
-	   }
-
-	   return $status;
+	    return $status;
 	}
 
 	/**
@@ -1046,9 +1045,9 @@ abstract class database {
 	 * @return void
 	 */
 	function toggle($table, $col, $where=null) {
-	   $obj = $this->selectObject($table, $where);
-	   $obj->$col = ($obj->$col == 0) ? 1 : 0;
-	   $this->updateObject($obj, $table);
+	    $obj = $this->selectObject($table, $where);
+	    $obj->$col = ($obj->$col == 0) ? 1 : 0;
+	    $this->updateObject($obj, $table);
 	}
 
 	/**
@@ -1070,12 +1069,12 @@ abstract class database {
 	 * @return bool
 	 */
 	function setUniqueFlag($object, $table, $col, $where=1) {
-	   if (isset($object->id)) {
-	       $this->sql("UPDATE " . $this->prefix . $table . " SET " . $col . "=0 WHERE " . $where);
-	       $this->sql("UPDATE " . $this->prefix . $table . " SET " . $col . "=1 WHERE id=" . $object->id);
-	       return true;
-	   }
-	   return false;
+	    if (isset($object->id)) {
+	        $this->sql("UPDATE " . $this->prefix . $table . " SET " . $col . "=0 WHERE " . $where);
+	        $this->sql("UPDATE " . $this->prefix . $table . " SET " . $col . "=1 WHERE id=" . $object->id);
+	        return true;
+	    }
+	    return false;
 	}
 
 	/**
@@ -1188,9 +1187,9 @@ abstract class database {
 	* @return array
 	*/
 	function selectObjectsInArray($table, $array=array(), $orderby=null) {
-	   $where = 'id IN ' . implode(",", $array);
-	   $res = $this->selectObjects($table, $where, $orderby);
-	   return $res;
+	    $where = 'id IN ' . implode(",", $array);
+	    $res = $this->selectObjects($table, $where, $orderby);
+	    return $res;
 	}
 
 	/**
@@ -1390,7 +1389,7 @@ abstract class database {
 	*/
 
 	function decrement($table, $field, $step, $where = null) {
-	   $this->increment($table, $field, -1 * $step, $where);
+	    $this->increment($table, $field, -1 * $step, $where);
 	}
 
 	/**
@@ -1445,7 +1444,7 @@ abstract class database {
 	* @return bool
 	*/
 	function tableIsEmpty($table) {
-	   return ($this->countObjects($table) == 0);
+	    return ($this->countObjects($table) == 0);
 	}
 
 	/**
@@ -1462,13 +1461,13 @@ abstract class database {
 	* @return null
 	*/
 	function translateTableStatus($status) {
-	   $data = new stdClass();
-	   $data->rows = $status->Rows;
-	   $data->average_row_lenth = $status->Avg_row_length;
-	   $data->data_overhead = $status->Data_free;
-	   $data->data_total = $status->Data_length;
+	    $data = new stdClass();
+	    $data->rows = $status->Rows;
+	    $data->average_row_lenth = $status->Avg_row_length;
+	    $data->data_overhead = $status->Data_free;
+	    $data->data_total = $status->Data_length;
 
-	   return $data;
+	    return $data;
 	}
 
 	/**
@@ -1495,28 +1494,28 @@ abstract class database {
 	* @return int
 	*/
 	function getDDFieldType($fieldObj) {
-	   $type = strtolower($fieldObj->Type);
+	    $type = strtolower($fieldObj->Type);
 
-	   if ($type == "int(11)")
-	       return DB_DEF_ID;
-	   if ($type == "int(8)")
-	       return DB_DEF_INTEGER;
-	   elseif ($type == "tinyint(1)")
-	       return DB_DEF_BOOLEAN;
-	   elseif ($type == "int(14)")
-	       return DB_DEF_TIMESTAMP;
-       elseif ($type == "datetime")
-  	       return DB_DEF_TIMESTAMP;
-	   //else if (substr($type,5) == "double")
-           //return DB_DEF_DECIMAL;
-	   elseif ($type == "double")
-	       return DB_DEF_DECIMAL;
-	   // Strings
-	   elseif ($type == "text" || $type == "mediumtext" || $type == "longtext" || strpos($type, "varchar(") !== false) {
-	       return DB_DEF_STRING;
-	   } else {
-           return DB_DEF_INTEGER;
-       }
+	    if ($type == "int(11)")
+	        return DB_DEF_ID;
+	    if ($type == "int(8)")
+	        return DB_DEF_INTEGER;
+	    elseif ($type == "tinyint(1)")
+	        return DB_DEF_BOOLEAN;
+	    elseif ($type == "int(14)")
+	        return DB_DEF_TIMESTAMP;
+        elseif ($type == "datetime")
+  	        return DB_DEF_TIMESTAMP;
+	    //else if (substr($type,5) == "double")
+            //return DB_DEF_DECIMAL;
+	    elseif ($type == "double")
+	        return DB_DEF_DECIMAL;
+	    // Strings
+	    elseif ($type == "text" || $type == "mediumtext" || $type == "longtext" || strpos($type, "varchar(") !== false) {
+	        return DB_DEF_STRING;
+	    } else {
+            return DB_DEF_INTEGER;
+        }
 	}
 
 	/**
@@ -1526,18 +1525,18 @@ abstract class database {
 	* @return int|mixed
 	*/
 	function getDDStringLen($fieldObj) {
-	   $type = strtolower($fieldObj->Type);
-	   if ($type == "text")
-	       return 65535;
-	   else if ($type == "mediumtext")
-	       return 16777215;
-	   else if ($type == "longtext")
-	       return 16777216;
-	   else if (strpos($type, "varchar(") !== false) {
-	       return str_replace(array("varchar(", ")"), "", $type) + 0;
-	   } else {
-           return 256;
-       }
+	    $type = strtolower($fieldObj->Type);
+	    if ($type == "text")
+	        return 65535;
+	    else if ($type == "mediumtext")
+	        return 16777215;
+	    else if ($type == "longtext")
+	        return 16777216;
+	    else if (strpos($type, "varchar(") !== false) {
+	        return str_replace(array("varchar(", ")"), "", $type) + 0;
+	    } else {
+            return 256;
+        }
 	}
 
 	/**
@@ -1547,14 +1546,14 @@ abstract class database {
 	* @return int|mixed
 	*/
 	function getDDKey($fieldObj) {
-	   $key = strtolower($fieldObj->Key);
-	   if ($key == "pri")
-	       return DB_PRIMARY;
-	   else if ($key == "uni") {
-	       return DB_UNIQUE;
-	   } else {
-           return false;
-       }
+	    $key = strtolower($fieldObj->Key);
+	    if ($key == "pri")
+	        return DB_PRIMARY;
+	    else if ($key == "uni") {
+	        return DB_UNIQUE;
+	    } else {
+            return false;
+        }
 	}
 
 	/**
@@ -1564,12 +1563,12 @@ abstract class database {
 	* @return int|mixed
 	*/
 	function getDDAutoIncrement($fieldObj) {
-	   $auto = strtolower($fieldObj->Extra);
-	   if ($auto == "auto_increment") {
-	       return true;
-	   } else {
-           return false;
-       }
+	    $auto = strtolower($fieldObj->Extra);
+	    if ($auto == "auto_increment") {
+	        return true;
+	    } else {
+            return false;
+        }
 	}
 
 	/**
@@ -1579,12 +1578,12 @@ abstract class database {
 	* @return int|mixed
 	*/
 	function getDDIsNull($fieldObj) {
-	   $null = strtolower($fieldObj->Null);
-	   if ($null == "yes") {
-	       return true;
-	   } else {
-           return false;
-       }
+	    $null = strtolower($fieldObj->Null);
+	    if ($null == "yes") {
+	        return true;
+	    } else {
+            return false;
+        }
 	}
 
 	/**
@@ -1641,7 +1640,7 @@ abstract class database {
 	 * @return string
 	 */
 	function limit($num, $offset) {
-	   return ' LIMIT ' . $offset . ',' . $num . ' ';
+	    return ' LIMIT ' . $offset . ',' . $num . ' ';
 	}
 
 	/**
@@ -1733,13 +1732,13 @@ abstract class database {
 	 * @return array
 	 */
 	function selectNestedTree($table) {
-	   $sql = 'SELECT node.*, (COUNT(parent.sef_url) - 1) AS depth
-		FROM `' . $this->prefix . $table . '` AS node,
-		`' . $this->prefix . $table . '` AS parent
-		WHERE node.lft BETWEEN parent.lft AND parent.rgt
-		GROUP BY node.sef_url
-		ORDER BY node.lft';
-	   return $this->selectObjectsBySql($sql);
+	    $sql = 'SELECT node.*, (COUNT(parent.sef_url) - 1) AS depth
+            FROM `' . $this->prefix . $table . '` AS node,
+            `' . $this->prefix . $table . '` AS parent
+            WHERE node.lft BETWEEN parent.lft AND parent.rgt
+            GROUP BY node.sef_url
+            ORDER BY node.lft';
+	    return $this->selectObjectsBySql($sql);
 	}
 
 	function selectFormattedNestedTree($table) {
@@ -1759,11 +1758,11 @@ abstract class database {
 	 * @return void
 	 */
 	function adjustNestedTreeFrom($table, $start, $width) {
-	   $table = $this->prefix . $table;
-	   $this->sql('UPDATE `' . $table . '` SET rgt = rgt + ' . $width . ' WHERE rgt >=' . $start);
-	   $this->sql('UPDATE `' . $table . '` SET lft = lft + ' . $width . ' WHERE lft >=' . $start);
-	   //eDebug('UPDATE `'.$table.'` SET rgt = rgt + '.$width.' WHERE rgt >='.$start);
-	   //eDebug('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft >='.$start);
+	    $table = $this->prefix . $table;
+	    $this->sql('UPDATE `' . $table . '` SET rgt = rgt + ' . $width . ' WHERE rgt >=' . $start);
+	    $this->sql('UPDATE `' . $table . '` SET lft = lft + ' . $width . ' WHERE lft >=' . $start);
+	    //eDebug('UPDATE `'.$table.'` SET rgt = rgt + '.$width.' WHERE rgt >='.$start);
+	    //eDebug('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft >='.$start);
 	}
 
 	/**
@@ -1774,11 +1773,11 @@ abstract class database {
 	 * @return void
 	 */
 	function adjustNestedTreeBetween($table, $lft, $rgt, $width) {
-	   $table = $this->prefix . $table;
-	   $this->sql('UPDATE `' . $table . '` SET rgt = rgt + ' . $width . ' WHERE rgt BETWEEN ' . $lft . ' AND ' . $rgt);
-	   $this->sql('UPDATE `' . $table . '` SET lft = lft + ' . $width . ' WHERE lft BETWEEN ' . $lft . ' AND ' . $rgt);
-	   //eDebug('UPDATE `'.$table.'` SET rgt = rgt + '.$width.' WHERE rgt BETWEEN '.$lft.' AND '.$rgt);
-	   //eDebug('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft BETWEEN '.$lft.' AND '.$rgt);
+	    $table = $this->prefix . $table;
+	    $this->sql('UPDATE `' . $table . '` SET rgt = rgt + ' . $width . ' WHERE rgt BETWEEN ' . $lft . ' AND ' . $rgt);
+	    $this->sql('UPDATE `' . $table . '` SET lft = lft + ' . $width . ' WHERE lft BETWEEN ' . $lft . ' AND ' . $rgt);
+	    //eDebug('UPDATE `'.$table.'` SET rgt = rgt + '.$width.' WHERE rgt BETWEEN '.$lft.' AND '.$rgt);
+	    //eDebug('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft BETWEEN '.$lft.' AND '.$rgt);
 	}
 
 	/**
@@ -1787,11 +1786,11 @@ abstract class database {
 	 * @return array
 	 */
 	function selectNestedBranch($table, $node=null) {
-	   if (empty($node))
-	       return array();
+	    if (empty($node))
+	        return array();
 
-	   $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
-	   $sql = 'SELECT node.*,
+	    $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
+	    $sql = 'SELECT node.*,
 	           (COUNT(parent.title) - (sub_tree.depth + 1)) AS depth
 	           FROM `' . $this->prefix . $table . '` AS node,
 	           `' . $this->prefix . $table . '` AS parent,
@@ -1810,7 +1809,7 @@ abstract class database {
 	           GROUP BY node.title
 	           ORDER BY node.lft;';
 
-	   return $this->selectObjectsBySql($sql);
+	    return $this->selectObjectsBySql($sql);
 	}
 
 	/**
@@ -1820,12 +1819,12 @@ abstract class database {
 	 * @return void
 	 */
 	function deleteNestedNode($table, $lft, $rgt) {
-	   $table = $this->prefix . $table;
+	    $table = $this->prefix . $table;
 
-	   $width = ($rgt - $lft) + 1;
-	   $this->sql('DELETE FROM `' . $table . '` WHERE lft BETWEEN ' . $lft . ' AND ' . $rgt);
-	   $this->sql('UPDATE `' . $table . '` SET rgt = rgt - ' . $width . ' WHERE rgt > ' . $rgt);
-	   $this->sql('UPDATE `' . $table . '` SET lft = lft - ' . $width . ' WHERE lft > ' . $rgt);
+	    $width = ($rgt - $lft) + 1;
+	    $this->sql('DELETE FROM `' . $table . '` WHERE lft BETWEEN ' . $lft . ' AND ' . $rgt);
+	    $this->sql('UPDATE `' . $table . '` SET rgt = rgt - ' . $width . ' WHERE rgt > ' . $rgt);
+	    $this->sql('UPDATE `' . $table . '` SET lft = lft - ' . $width . ' WHERE lft > ' . $rgt);
 	}
 
 	/**
@@ -1834,17 +1833,17 @@ abstract class database {
 	 * @return array
 	 */
 	function selectPathToNestedNode($table, $node=null) {
-	   if (empty($node))
-	       return array();
+	    if (empty($node))
+	        return array();
 
-	   $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
-	   $sql = 'SELECT parent.*
-		FROM `' . $this->prefix . $table . '` AS node,
-		`' . $this->prefix . $table . '` AS parent
-		WHERE node.lft BETWEEN parent.lft AND parent.rgt
-		AND node.' . $where . '
-		ORDER BY parent.lft;';
-	   return $this->selectObjectsBySql($sql);
+	    $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
+	    $sql = 'SELECT parent.*
+            FROM `' . $this->prefix . $table . '` AS node,
+            `' . $this->prefix . $table . '` AS parent
+            WHERE node.lft BETWEEN parent.lft AND parent.rgt
+            AND node.' . $where . '
+            ORDER BY parent.lft;';
+	    return $this->selectObjectsBySql($sql);
 	}
 
 	/**
@@ -1853,19 +1852,19 @@ abstract class database {
 	 * @return array
 	 */
 	function selectNestedNodeParent($table, $node=null) {
-	   if (empty($node))
-	       return array();
+	    if (empty($node))
+	        return array();
 
-	   $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
-	   $sql = 'SELECT parent.*
-		FROM `' . $this->prefix . $table . '` AS node,
-		`' . $this->prefix . $table . '` AS parent
-		WHERE node.lft BETWEEN parent.lft AND parent.rgt
-		AND node.' . $where . '
-		ORDER BY parent.lft DESC
-		LIMIT 1, 1;';
-	   $parent_array = $this->selectObjectsBySql($sql);
-	   return $parent_array[0];
+	    $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
+	    $sql = 'SELECT parent.*
+            FROM `' . $this->prefix . $table . '` AS node,
+            `' . $this->prefix . $table . '` AS parent
+            WHERE node.lft BETWEEN parent.lft AND parent.rgt
+            AND node.' . $where . '
+            ORDER BY parent.lft DESC
+            LIMIT 1, 1;';
+	    $parent_array = $this->selectObjectsBySql($sql);
+	    return $parent_array[0];
 	}
 
 	/**
@@ -1874,32 +1873,32 @@ abstract class database {
 	 * @return array
 	 */
 	function selectNestedNodeChildren($table, $node=null) {
-	   if (empty($node))
-	       return array();
+	    if (empty($node))
+	        return array();
 
-	   $where = is_numeric($node) ? 'node.id=' . $node : 'node.title="' . $node . '"';
-	   $sql = '
-		SELECT node.*, (COUNT(parent.title) - (sub_tree.depth + 1)) AS depth
-		FROM ' . $this->prefix . $table . ' AS node,
-			' . $this->prefix . $table . ' AS parent,
-			' . $this->prefix . $table . ' AS sub_parent,
-			(
-				SELECT node.*, (COUNT(parent.title) - 1) AS depth
-				FROM ' . $this->prefix . $table . ' AS node,
-				' . $this->prefix . $table . ' AS parent
-				WHERE node.lft BETWEEN parent.lft AND parent.rgt
-				AND ' . $where . '
-				GROUP BY node.title
-				ORDER BY node.lft
-			)AS sub_tree
-		WHERE node.lft BETWEEN parent.lft AND parent.rgt
-			AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
-			AND sub_parent.title = sub_tree.title
-		GROUP BY node.title
-		HAVING depth = 1
-		ORDER BY node.lft;';
-	$children = $this->selectObjectsBySql($sql);
-	   return $children;
+	    $where = is_numeric($node) ? 'node.id=' . $node : 'node.title="' . $node . '"';
+	    $sql = '
+            SELECT node.*, (COUNT(parent.title) - (sub_tree.depth + 1)) AS depth
+            FROM ' . $this->prefix . $table . ' AS node,
+                ' . $this->prefix . $table . ' AS parent,
+                ' . $this->prefix . $table . ' AS sub_parent,
+                (
+                    SELECT node.*, (COUNT(parent.title) - 1) AS depth
+                    FROM ' . $this->prefix . $table . ' AS node,
+                    ' . $this->prefix . $table . ' AS parent
+                    WHERE node.lft BETWEEN parent.lft AND parent.rgt
+                    AND ' . $where . '
+                    GROUP BY node.title
+                    ORDER BY node.lft
+                )AS sub_tree
+            WHERE node.lft BETWEEN parent.lft AND parent.rgt
+                AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
+                AND sub_parent.title = sub_tree.title
+            GROUP BY node.title
+            HAVING depth = 1
+            ORDER BY node.lft;';
+	    $children = $this->selectObjectsBySql($sql);
+	    return $children;
 	}
 
 	/**

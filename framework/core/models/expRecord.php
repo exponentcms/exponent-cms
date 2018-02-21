@@ -780,22 +780,28 @@ class expRecord {
         global $db;
 
         $id = $this->identifier;
-        if (empty($this->$id)) return false;
-        $this->beforeDelete();
-        $db->delete($this->tablename, $id . '=' . $this->$id);
-        if (!empty($where)) $where .= ' AND ';  // for help in reranking, NOT deleting object
-        if (property_exists($this, 'rank')) $db->decrement($this->tablename, 'rank', 1, $where . 'rank>=' . $this->rank . $this->grouping_sql);
+        if (empty($this->$id))
+            return false;
 
-        // delete attached items
+        $this->beforeDelete();
+
+        $db->delete($this->tablename, $id . '=' . $this->$id);
+        if (!empty($where))
+            $where .= ' AND ';  // for help in reranking, NOT deleting object
+        if (property_exists($this, 'rank'))
+            $db->decrement($this->tablename, 'rank', 1, $where . 'rank>=' . $this->rank . $this->grouping_sql);
+
+        // delete attached item connections
         foreach ($this->attachable_item_types as $content_table=> $type) {
             $db->delete($content_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->$id);
         }
+
         // leave associated items to the model afterDelete method?
         $this->afterDelete();
     }
 
     /**
-     * is run after deleting item
+     * is run after deleting item, should delete associated items here if needed
      */
     public function afterDelete() {
         $this->runCallback('afterDelete');

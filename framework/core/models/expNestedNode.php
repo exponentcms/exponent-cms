@@ -55,6 +55,7 @@ abstract class expNestedNode extends expRecord {
 
 	public function create($params) {
 		global $db;
+
 		$this->checkForAttachableItems($params);
 		$this->build($params);
 		$parent_id = isset($this->parent_id) ? $this->parent_id : 0;
@@ -108,6 +109,7 @@ abstract class expNestedNode extends expRecord {
 
 	public function move($insertpoint,$type="after") {
 		global $db;
+
 		$width = ($this->rgt - $this->lft) + 1;
         $orginal_lft = $this->lft;
         $orginal_rgt = $this->rgt;
@@ -132,6 +134,7 @@ abstract class expNestedNode extends expRecord {
         // $this->parent_id = $parent->id;
         $this->save();
 	}
+
     // public function move($insertpoint) {
     //  global $db;
     //  $width = ($this->rgt - $this->lft) + 1;
@@ -156,19 +159,23 @@ abstract class expNestedNode extends expRecord {
     //  $this->parent_id = $parent->id;
     //  $this->save();
     // }
-    //
+
 	public function delete($where = '') {
 		global $db;
+
+		// note this removes the categories only, no associated tables, handle that in beforeDelete()
 		$db->deleteNestedNode($this->table, $this->lft, $this->rgt);
 	}
 
 	public function pathToNode() {
 		global $db;
+
 		return $db->selectPathToNestedNode($this->table, $this->id);
 	}
 
 	public function getTopLevel($name = "", $get_assoc=false, $get_attached=false) {
 		global $db;
+
         $where = 'parent_id=0';
         if ($name != "") $where.=" AND title='" . $name . "'";
         $where .= ' ORDER BY lft ASC';
@@ -184,6 +191,7 @@ abstract class expNestedNode extends expRecord {
 
 	public function getParent() {
 		global $db;
+
 		return $db->selectNestedNodeParent($this->table, $this->id);
 	}
 
