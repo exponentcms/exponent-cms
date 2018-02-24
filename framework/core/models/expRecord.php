@@ -529,7 +529,7 @@ class expRecord {
      * before validating item
      */
     public function beforeValidation() {
-        $this->runCallback('beforeValidation');
+//        $this->runCallback('beforeValidation');
         if (empty($this->id)) {
             $this->beforeValidationOnCreate();
         } else {
@@ -541,14 +541,14 @@ class expRecord {
      * before validating item during creation
      */
     public function beforeValidationOnCreate() {
-        $this->runCallback('beforeValidationOnCreate');
+//        $this->runCallback('beforeValidationOnCreate');
     }
 
     /**
      * before validating item during update
      */
     public function beforeValidationOnUpdate() {
-        $this->runCallback('beforeValidationOnUpdate');
+//        $this->runCallback('beforeValidationOnUpdate');
     }
 
     /**
@@ -598,7 +598,7 @@ class expRecord {
      * after validating item
      */
     public function afterValidation() {
-        $this->runCallback('afterValidation');
+//        $this->runCallback('afterValidation');
         if (empty($this->id)) {
             $this->afterValidationOnCreate();
         } else {
@@ -610,14 +610,14 @@ class expRecord {
      * after validating item during creation
      */
     public function afterValidationOnCreate() {
-        $this->runCallback('afterValidationOnCreate');
+//        $this->runCallback('afterValidationOnCreate');
     }
 
     /**
      * after validating item during update
      */
     public function afterValidationOnUpdate() {
-        $this->runCallback('afterValidationOnUpdate');
+//        $this->runCallback('afterValidationOnUpdate');
     }
 
     /**
@@ -626,7 +626,7 @@ class expRecord {
     public function beforeSave() {
         global $user, $db;
 
-        $this->runCallback('beforeSave');
+//        $this->runCallback('beforeSave');
         // populate the magic fields
         if (empty($this->id)) {
             // timestamp the record
@@ -681,7 +681,7 @@ class expRecord {
      * before creating item
      */
     public function beforeCreate() {
-        $this->runCallback('beforeCreate');
+//        $this->runCallback('beforeCreate');
     }
 
     /**
@@ -693,21 +693,21 @@ class expRecord {
             $this->edited_at = $this->migrated_at;
             unset($this->migrated_at);
         }
-        $this->runCallback('beforeUpdate');
+//        $this->runCallback('beforeUpdate');
     }
 
     /**
      * after updating item
      */
     public function afterUpdate() {
-        $this->runCallback('afterUpdate');
+//        $this->runCallback('afterUpdate');
     }
 
     /**
      * after creating item
      */
     public function afterCreate() {
-        $this->runCallback('afterCreate');
+//        $this->runCallback('afterCreate');
     }
 
     /**
@@ -716,7 +716,7 @@ class expRecord {
     public function afterSave() {
         global $db;
 
-        $this->runCallback('afterSave');
+//        $this->runCallback('afterSave');
 
         // save all attached items
         if (!empty($this->attachable_items_to_save)) {
@@ -766,7 +766,7 @@ class expRecord {
      * is run before deleting item
      */
     public function beforeDelete() {
-        $this->runCallback('beforeDelete');
+//        $this->runCallback('beforeDelete');
     }
 
     /**
@@ -804,7 +804,7 @@ class expRecord {
      * is run after deleting item, should delete associated items here if needed
      */
     public function afterDelete() {
-        $this->runCallback('afterDelete');
+//        $this->runCallback('afterDelete');
     }
 
     /**
@@ -814,17 +814,17 @@ class expRecord {
      *
      * @return bool
      */
-    private function runCallback($type) {
-        if (empty($type)) return false;
-
-        // check for and run any callbacks listed in the $type array.
-        if ($this->classinfo->hasProperty($type)) {
-            $callbacks = $this->classinfo->getProperty($type);
-            foreach ($callbacks->getValue(new $this->classname(null, false, false)) as $func) {
-                $this->$func();
-            }
-        }
-    }
+//    private function runCallback($type) {
+//        if (empty($type)) return false;
+//
+//        // check for and run any callbacks listed in the $type array.
+//        if ($this->classinfo->hasProperty($type)) {
+//            $callbacks = $this->classinfo->getProperty($type);
+//            foreach ($callbacks->getValue(new $this->classname(null, false, false)) as $func) {
+//                $this->$func();
+//            }
+//        }
+//    }
 
     /**
      * make an sef_url for item
@@ -842,7 +842,7 @@ class expRecord {
 			list($u, $s) = explode(' ',microtime());
 			$this->sef_url .= '-'.$s.'-'.$u;
 		}
-        $this->runCallback('makeSefUrl');
+//        $this->runCallback('makeSefUrl');
     }
 
     /**

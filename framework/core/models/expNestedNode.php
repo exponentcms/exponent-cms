@@ -163,8 +163,12 @@ abstract class expNestedNode extends expRecord {
 	public function delete($where = '') {
 		global $db;
 
+        $this->beforeDelete();
+
 		// note this removes the categories only, no associated tables, handle that in beforeDelete()
 		$db->deleteNestedNode($this->table, $this->lft, $this->rgt);
+
+        $this->afterDelete();
 	}
 
 	public function pathToNode() {
