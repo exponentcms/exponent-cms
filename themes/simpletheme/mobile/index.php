@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<?php 
+	<?php
     expTheme::head(array(
     	"xhtml"=>false,
         "css_primer"=>array(
@@ -17,7 +17,7 @@
         )
     );
 	?>
-    <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 </head>
 <body>
 	<div id="doc">

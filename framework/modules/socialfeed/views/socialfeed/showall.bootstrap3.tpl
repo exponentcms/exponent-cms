@@ -21,7 +21,7 @@
 {css unique="socialfeed-notes" link="`$asset_path`css/notes.css"}
 
 {/css}
-{css unique="socialfeed-font" link="http://fonts.googleapis.com/css?family=Gloria+Hallelujah|Permanent+Marker"}
+{css unique="socialfeed-font" link="https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Permanent+Marker"}
 
 {/css}
 {/if}
