@@ -1495,24 +1495,24 @@ class storeController extends expController {
         $product_type = $db->selectValue('product', 'product_type', 'id=' . $this->params['id']);
         $product = new $product_type($this->params['id'], true, false);
 
-        // remove any associated records
-        $db->delete('option', 'product_id=' . $product->id . " AND optiongroup_id IN (SELECT id from " . $db->prefix . "optiongroup WHERE product_id=" . $product->id . ")");
-        $db->delete('optiongroup', 'product_id=' . $product->id);
-        $db->delete('product_storeCategories', 'product_id=' . $product->id . ' AND product_type="' . $product_type . '"');
-        $db->delete('crosssellItem_product', 'product_type="' . $this->product_type . '" AND (product_id=' . $this->id . ' OR crosssellItem_id=' . $this->id . ')');
+//        // remove any associated records
+//        $db->delete('option', 'product_id=' . $product->id . " AND optiongroup_id IN (SELECT id from " . $db->prefix . "optiongroup WHERE product_id=" . $product->id . ")");
+//        $db->delete('optiongroup', 'product_id=' . $product->id);
+//        $db->delete('product_storeCategories', 'product_id=' . $product->id . ' AND product_type="' . $product_type . '"');
+//        $db->delete('crosssellItem_product', 'product_type="' . $this->product_type . '" AND (product_id=' . $this->id . ' OR crosssellItem_id=' . $this->id . ')');
 
         // remove any childen products
-        if ($product->product_type === "product") {
-            if ($product->hasChildren()) {
-                $this->deleteChildren();
-            }
-        }
+//        if ($product->product_type === "product") {
+//            if ($product->hasChildren()) {
+//                $this->deleteChildren();
+//            }
+//        }
 
         // remove the product
         $product->delete();
 
         // remove search index entry
-        $db->delete('search', "category='Products' AND ref_module='store' AND original_id = " . $product->id);
+//        $db->delete('search', "category='Products' AND ref_module='store' AND original_id = " . $product->id);
 
         flash('message', gt('Product deleted successfully.'));
         expHistory::back();

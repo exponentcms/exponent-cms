@@ -588,30 +588,40 @@ class product extends expRecord {
         global $db;
 
         // delete all child products
-        if ($this->parent_id === 0) {
+        if ($this->parent_id == 0) {
             $children = $this->find('all', 'parent_id=' . $this->id);
             foreach ($children as $child) {
                 $child->delete();
             }
+
+            // delete product storeCategory connections
+            $db->delete('product_storeCategories', 'product_id=' . $this->id . ' AND product_type="' . $this->product_type . '"');
+
+            // delete product notes
+            $db->delete('product_notes', 'product_id=' . $this->id);
+
+            // delete product options
+            $db->delete('option', 'product_id=' . $this->id . " AND optiongroup_id IN (SELECT id from " . $db->prefix . "optiongroup WHERE product_id=" . $this->id . ")");
+
+            // delete product option groups
+            $db->delete('optiongroup', 'product_id=' . $this->id);
+
+            // delete model aliases
+            $db->delete('model_aliases', 'product_id=' . $this->id);
+
+            // delete related product connections
+            $db->delete('crosssellItem_product', 'product_type="' . $this->product_type . '" AND (product_id=' . $this->id . ' OR crosssellItem_id=' . $this->id . ')');
+
+            // delete search index entry
+            $db->delete('search', "ref_type='" . $this->product_type . "' AND ref_module='" . $this->classname . "' AND original_id = " . $this->id);
+        } else {
+            // if the last child product is deleted, delete the parent
+            if (!$db->countObjects($this->table, 'parent_id=' . $this->parent_id)) {
+                $parent = new product($this->parent_id);
+                $parent->delete();  // do it this way to get other tables artifacts above
+            }
         }
 
-        // delete product storeCategory connections
-        $db->delete('product_storeCategories', 'product_id=' . $this->id);
-
-        // delete product notes
-        $db->delete('product_notes', 'product_id=' . $this->id);
-
-        // delete product options
-        $db->delete('option', 'product_id=' . $this->id);
-
-        // delete product option groups
-        $db->delete('optiongroup', 'product_id=' . $this->id);
-
-        // delete model aliases
-        $db->delete('model_aliases', 'product_id=' . $this->id);
-
-        // delete related product connections
-        $db->delete('crosssellItem_product', 'product_id=' . $this->id);
     }
 
     protected function getAttachableItems() {

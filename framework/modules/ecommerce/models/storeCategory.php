@@ -48,8 +48,15 @@ class storeCategory extends expNestedNode {
         // note sub categories are removed in parent nestedNode->delete()
 
         // delete product storeCategory connections for sub categories
-        $subcats = $this->getChildren();
+        $subcats = $this->getBranch();
         foreach ($subcats as $cat) {
+            // first delete all the products assigned to this sub category
+//            $products = $db->selectObjects('product_storeCategories', 'storecategories_id=' . $cat->id);
+//            foreach($products as $product) {
+//                $product->delete();
+//            }
+
+            // delete product storeCategory connections
             $db->delete('product_storeCategories', 'storecategories_id=' . $cat->id);
         }
     }
@@ -58,6 +65,12 @@ class storeCategory extends expNestedNode {
         global $db;
 
         // note we've already deleted all sub categories in the parent nestedNode->delete() method
+
+        // first delete all the products assigned to this category
+//        $products = $db->selectObjects('product_storeCategories', 'storecategories_id=' . $this->id);
+//        foreach($products as $product) {
+//            $product->delete();
+//        }
 
         // delete product storeCategory connections
         $db->delete('product_storeCategories', 'storecategories_id=' . $this->id);
