@@ -59,7 +59,8 @@ class update_ecom4 extends upgradescript {
 	    global $db;
 
         $product_count = $db->countObjects('product', '(product_type="donation" OR product_type="eventregistration") AND no_shipping=0');
-        $db->columnUpdate('product', 'no_shipping', 1, '(product_type="donation" OR product_type="eventregistration") AND no_shipping=0');
+        if ($product_count)
+            $db->columnUpdate('product', 'no_shipping', 1, '(product_type="donation" OR product_type="eventregistration") AND no_shipping=0');
 		return ($product_count?$product_count:gt('No'))." ".gt("Donations or Event Registrations are now marked for no shipping in the database.");
 	}
 }
