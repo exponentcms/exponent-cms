@@ -621,7 +621,6 @@ class product extends expRecord {
                 $parent->delete();  // do it this way to get other tables artifacts above
             }
         }
-
     }
 
     protected function getAttachableItems() {
