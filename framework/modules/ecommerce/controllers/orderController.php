@@ -2206,11 +2206,19 @@ exit();
                 'formatter' => function( $d, $row ) {
         	        $paid = strtolower($row['paid']);
         	        if ($paid === 'complete' || $paid === 'paid') {
-        	            $class = 'badge-success';
+        	            if (bs4()) {
+                            $class = 'badge-success';
+                        } else {
+                            $class = 'alert-success';
+                        }
                         $title = gt('Paid');
                         $color = 'darkseagreen';
                     } else {
-        	            $class = 'badge-secondary';
+                        if (bs4()) {
+                            $class = 'badge-secondary';
+                        } else {
+                            $class = 'alert-secondary';
+                        }
                         $title = gt('Payment Due');
                         $color = 'lightgray';
                     }
@@ -2251,8 +2259,10 @@ exit();
                         }
                         $color = 'lightgray';
                     }
-                    if (bs()) {
+                    if (bs4()) {
                         return '<span class="badge badge-' . $class . '">' . $d . '</span>';
+                    } elseif (bs()) {
+                        return '<span class="badge alert-' . $class . '">' . $d . '</span>';
                     } else {
                         return '<span style="padding:3px;border-radius:5px;background-color:' . $color . '">' . $d . '</span>';
                     }
