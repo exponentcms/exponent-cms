@@ -38,10 +38,11 @@ function smarty_modifier_username($userid,$type=null) {
 
     if ($type == 'system') {
         return user::getUserAttribution((int)($userid), DISPLAY_ATTRIBUTION);
-   } elseif ($type) {
+    } elseif ($type) {
         $user = $db->selectObject('user', 'id='.(int)($userid));
         return $user->firstname . ' ' . $user->lastname;
-    } else return $db->selectValue('user', 'username', 'id='.(int)($userid));
+    } else
+        return $db->selectValue('user', 'username', 'id='.(int)($userid));
 }
 
 ?>

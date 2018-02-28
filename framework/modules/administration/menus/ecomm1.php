@@ -30,7 +30,7 @@ if ($new_orders > 0) {
 } else {
     $newo = '';
 };
-// get latest 5 orders
+// get latest 5 new orders
 $new_status = order::getDefaultOrderStatus();
 $order = new order();
 $recent_orders = $order->find('all', 'purchased !=0 AND order_status_id = ' . $new_status, 'purchased DESC', 5);

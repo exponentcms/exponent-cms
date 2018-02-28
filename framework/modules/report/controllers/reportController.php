@@ -90,11 +90,19 @@ class reportController extends expController {
                 $this->tstart = time() - $this->oneday * 7;
             } else if ($params['quickrange'] == 2) {
                 $this->tstart = time() - $this->oneday * 30;
+            } else if ($params['quickrange'] == 3) {
+                $this->tstart = time() - $this->oneday * 60;
+            } else if ($params['quickrange'] == 4) {
+                $this->tstart = time() - $this->oneday * 90;
+            } else if ($params['quickrange'] == 5) {
+                $this->tstart = time() - $this->oneday * 365;
+            } else if ($params['quickrange'] == 6) {
+                $this->tstart = 0;
             } else if ($params['quickrange'] == 0) {
                 $this->tstart = time() - $this->oneday;
             }
             $this->prev_month = strftime(DISPLAY_DATE_FORMAT,$this->tstart);
-        } else if (isset($params['date-starttime'])) {  //FIXME OLD calendar control format
+        } elseif (isset($params['date-starttime'])) {  //FIXME OLD calendar control format
             $formatedStart = $params['date-starttime'] . ' ' . $params['time-h-starttime'] . ":" . $params['time-m-starttime'] . ' ' . $params['ampm-starttime'];
             $this->tstart = strtotime($formatedStart);
             $this->tend = strtotime($params['date-endtime'] . ' ' . $params['time-h-endtime'] . ":" . $params['time-m-endtime'] . ' ' . $params['ampm-endtime']);
@@ -134,43 +142,62 @@ class reportController extends expController {
     function dashboard() {
         global $db;
 
-        $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'));
+        $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'), 3 => gt('Last 60 Days'), 4 => gt('Last 90 Days'), 5 => gt('Last 365 Days'), 6 => gt('Forever'));
         $this->setDateParams($this->params);
         if (!isset($this->params['quickrange'])) {
             $this->params['quickrange'] = 0;
         }
 
-        $except = array('order_discounts', 'billingmethod', 'order_status_changes', 'billingmethod', 'order_discounts');
-        $orders = $this->o->find('all', 'purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend, null, null, 0, true, false, $except, true);
-        $oar = array();
-        foreach ($orders as $order) {
-            //eDebug($order,true);
-            if (empty($oar[$order->order_type->title])) {
-                $oar[$order->order_type->title] = array();
-                $oar[$order->order_type->title]['grand_total'] = null;
-                $oar[$order->order_type->title]['num_orders'] = null;
-                $oar[$order->order_type->title]['num_items'] = null;
-            }
-            $oar[$order->order_type->title]['grand_total'] += $order->grand_total;
-            $oar[$order->order_type->title]['num_orders']++;
-            $oar[$order->order_type->title]['num_items'] += count($order->orderitem);
+        // get number of online customers in period
+        $u = new user();
+        $new_customers = $u->find('count', 'created_on >= ' . $this->tstart . ' AND created_on <= ' . $this->tend);
 
-            if (empty($oar[$order->order_type->title][$order->order_status->title])) {
-                $oar[$order->order_type->title][$order->order_status->title] = array();
-                $oar[$order->order_type->title][$order->order_status->title]['grand_total'] = null;
-                $oar[$order->order_type->title][$order->order_status->title]['num_orders'] = null;
-                $oar[$order->order_type->title][$order->order_status->title]['num_items'] = null;
+        // get order stats for period
+        $except = array('order_discounts', 'billingmethod', 'order_status_changes', 'billingmethod', 'order_discounts');
+        $total = $db->countObjects('orders', 'purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend);
+        $oar = array();
+        for ($i = 0; $i < $total; $i += 100) {
+            $orders = $this->o->find('all', 'purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend, null, 100, $i, true, false, $except, true);
+            foreach ($orders as $order) {
+                //eDebug($order,true);
+                if (empty($oar[$order->order_type->title])) {
+                    $oar[$order->order_type->title] = array();
+                    $oar[$order->order_type->title]['grand_total'] = null;
+                    $oar[$order->order_type->title]['num_orders'] = null;
+                    $oar[$order->order_type->title]['num_items'] = null;
+                }
+                $oar[$order->order_type->title]['grand_total'] += $order->grand_total;
+                $oar[$order->order_type->title]['num_orders']++;
+                $oar[$order->order_type->title]['num_items'] += count($order->orderitem);
+
+                if (empty($oar[$order->order_type->title][$order->order_status->title])) {
+                    $oar[$order->order_type->title][$order->order_status->title] = array();
+                    $oar[$order->order_type->title][$order->order_status->title]['grand_total'] = null;
+                    $oar[$order->order_type->title][$order->order_status->title]['num_orders'] = null;
+                    $oar[$order->order_type->title][$order->order_status->title]['num_items'] = null;
+                }
+                $oar[$order->order_type->title][$order->order_status->title]['grand_total'] += $order->grand_total;
+                $oar[$order->order_type->title][$order->order_status->title]['num_orders']++;
+                $oar[$order->order_type->title][$order->order_status->title]['num_items'] += count($order->orderitem);
             }
-            $oar[$order->order_type->title][$order->order_status->title]['grand_total'] += $order->grand_total;
-            $oar[$order->order_type->title][$order->order_status->title]['num_orders']++;
-            $oar[$order->order_type->title][$order->order_status->title]['num_items'] += count($order->orderitem);
         }
 
-        $sql = "SELECT COUNT(*) as c FROM " . $db->prefix . "orders, " . $db->prefix . "sessionticket WHERE ticket = sessionticket_ticket";
+        // get number of active carts
+        $sql = "SELECT COUNT(*) as c FROM " . $db->prefix . "orders, " . $db->prefix . "sessionticket WHERE ticket = sessionticket_ticket AND purchased = 0";
         $allCarts = $db->countObjectsBySql($sql);
+
+        // get latest 5 orders
+        $order = new order();
+        $recent_orders = $order->find('all', 'purchased !=0', 'purchased DESC', 5);
+
+        // get number of online customers in last 30 minutes
+        $customers_online = $db->countObjects('sessionticket', 'last_active > ' . (time() - (30 * 60 * 1000)));
 
         assign_to_template(array(
             'orders'             => $oar,
+            'recent'             => $recent_orders,
+            'online'             => $customers_online,
+            'new'                => $new_customers,
             'quickrange'         => $quickrange,
             'quickrange_default' => $this->params['quickrange'],
             'prev_month'         => $this->prev_month,
@@ -1613,7 +1640,7 @@ class reportController extends expController {
         $summary = array();
         $valueproducts = '';
 
-        $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'));
+        $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'), 3 => gt('Last 60 Days'), 4 => gt('Last 90 Days'), 5 => gt('Last 365 Days'), 6 => gt('Forever'));
         $this->setDateParams($this->params);
         if (!isset($this->params['quickrange'])) {
             $this->params['quickrange'] = 0;
@@ -1812,7 +1839,7 @@ class reportController extends expController {
 
 
 
-        $quickrange = array(0=>'Last 24 Hours',1=>'Last 7 Days',2=>'Last 30 Days');
+        $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'), 3 => gt('Last 60 Days'), 4 => gt('Last 90 Days'), 5 => gt('Last 365 Days'), 6 => gt('Forever'));
         $quickrange_default = isset($this->params['quickrange']) ? $this->params['quickrange'] : 0;
         assign_to_template(array('orders'=>$oar,'quickrange'=>$quickrange,'quickrange_default'=>$quickrange_default));
         assign_to_template(array('prev_month'=>$this->prev_month, 'now_date'=>$this->now_date, 'now_hour'=>$this->now_hour, 'now_min'=>$this->now_min, 'now_ampm'=>$this->now_ampm, 'prev_hour'=>$this->prev_hour, 'prev_min'=>$this->prev_min, 'prev_ampm'=>$this->prev_ampm));

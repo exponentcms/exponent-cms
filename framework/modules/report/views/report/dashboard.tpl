@@ -22,10 +22,10 @@
 {css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/calendar.css"}
 
 {/css}
-{css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/container.css"}
+{css unique="calendar-edit2" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/container.css"}
 
 {/css}
-{css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/button.css"}
+{css unique="calendar-edit3" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/button.css"}
 
 {/css}
 <div class="module report dashboard">
@@ -136,6 +136,35 @@
                 </td>
             </tr>
         </table>
+
+        <h3>{'Last Five Orders'|gettext}</h3>
+        <table border="0" cellspacing="0" cellpadding="0">
+            <thead>
+            <tr class="{cycle values="even,odd"}" style="font-weight:bold; font-size:120%">
+                <th>{'Customer'|gettext}</th>
+                <th>{'Status'|gettext}</th>
+                <th>{'Date'|gettext}</th>
+                <th>{'Items'|gettext}</th>
+                <th style="text-align:right;">{'Total'|gettext}</th>
+                <th>&#160;</th>
+            </tr>
+            </thead>
+            <tbody>
+                {foreach from=$recent item=order}
+                    <tr class="{cycle values="even,odd"}" style="color:grey;">
+                        <td><a href="{link controller=users action=show id=$order->user_id}" title="{'View Customer'|gettext}">{$order->user->id|username:'system'}</a></td>
+                        <td><span class="badge alert-{if $order->order_status_id == order::getDefaultOrderStatus()}success{else}default{/if}">{$order->order_status->title}</span></td>
+                        <td>{$order->purchased|format_date}</td>
+                        <td style="text-align:center;">{$order->orderitem|count}</td>
+                        <td style="text-align:right;"><span class="badge {if $order->billingmethod.0->transaction_state|lower == 'complete' || $order->billingmethod.0->transaction_state|lower == 'paid'}alert-success{/if}" title="{if $order->billingmethod.0->transaction_state|lower == 'complete' ||  $order->billingmethod.0->transaction_state|lower == 'paid'}{'Paid'|gettext}{else}{'Payment Due'|gettext}{/if}">{$order->grand_total|currency}</span></td>
+                        <td>{icon class=view controller=order action=show id=$order->id text="" title='View this order'|gettext}</td>
+                    </tr>
+                {foreachelse}
+                    <tr><td colspan=5>{message text='No Orders Found!'|gettext}</td></tr>
+                {/foreach}
+            <tbody>
+        </table>
+
     </div>
     {clear}
 </div>

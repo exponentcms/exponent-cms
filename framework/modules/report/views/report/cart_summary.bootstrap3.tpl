@@ -13,10 +13,10 @@
  *
  *}
 
-<div class="module report dashboard">
+<div class="module report dashboard row">
     {exp_include file='menu.tpl'}
 
-	<div class="rightcol">
+	<div id="right" class="rightcol col-sm-8">
 	    <div id="dashboard-tabs" class="">
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'New Orders'|gettext}</em></a></li>
