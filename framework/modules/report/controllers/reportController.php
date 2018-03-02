@@ -83,6 +83,11 @@ class reportController extends expController {
         $this->now_ampm = strftime("%p");
     }
 
+    /**
+     * Help parse quick range input
+     *
+     * @param $params
+     */
     private function setDateParams($params) {
         //eDebug($params,true);
         if (!empty($params['quickrange'])) {
@@ -139,6 +144,9 @@ class reportController extends expController {
         return;
     }
 
+    /**
+     * Current Stats
+     */
     function dashboard() {
         global $db;
 
@@ -160,6 +168,9 @@ class reportController extends expController {
         ));
     }
 
+    /**
+     * Stats for selected period
+     */
     function stats() {
         global $db;
 
@@ -219,6 +230,9 @@ class reportController extends expController {
         ));
     }
 
+    /**
+     * FIXME Function not known/incomplete
+     */
     function cart_summary() {
         global $db;
 
@@ -483,6 +497,9 @@ class reportController extends expController {
         ));
     }
 
+    /**
+     * Get parameters for an orders report
+     */
     function order_report() {
         // stub function. I'm sure eventually we can pull up existing reports to pre-populate our form.
         $os = new order_status();
@@ -547,6 +564,9 @@ class reportController extends expController {
         ));
     }
 
+    /**
+     * Generate an orders report selection view from parameters
+     */
     function generateOrderReport() {
         global $db;
 
@@ -887,7 +907,7 @@ class reportController extends expController {
     }
 
     /**
-     * An Order Report
+     * An Order Report to show breakdown of taxes and payment types
      */
     function show_payment_summary() {
         global $db;
@@ -954,7 +974,7 @@ class reportController extends expController {
         //tax
 //        $tax_sql = "SELECT SUM(tax) as tax_total FROM " . $db->prefix . "orders WHERE id IN (" . $orders_string . ")";
 //        $tax_res = $db->selectObjectBySql($tax_sql);
-        $tax_types = taxController::getTaxRates();
+//        $tax_types = taxController::getTaxRates();
 //        $tax_type_formatted = $tax_types[0]->zonename . ' - ' . $tax_types[0]->classname . ' - ' . $tax_types[0]->rate . '%';
 
         $ord = new order();
@@ -1112,6 +1132,9 @@ class reportController extends expController {
 
     }
 
+    /**
+     * Generate an products report selection view from parameters
+     */
     function generateProductReport() {
         global $db;
 
@@ -1603,6 +1626,13 @@ class reportController extends expController {
         self::download($out, 'Status_Export_' . time() . '.csv', 'application/csv');
     }
 
+    /**
+     * Output report data for download
+     *
+     * @param $file
+     * @param $name
+     * @param $type
+     */
     static function download($file, $name, $type) {
         if (!headers_sent()) {
             //echo $file;
@@ -1640,6 +1670,9 @@ class reportController extends expController {
         return preg_replace('/\r\n/', ' ', trim($val));
     }
 
+    /**
+     * FIXME Function not known/incomplete
+     */
     function productFeed() {
 //        global $db;
 
@@ -1662,6 +1695,9 @@ class reportController extends expController {
         //$prods =  $db->selectObjects('product','parent_id=0 AND');
     }
 
+    /**
+     * Report on abandoned carts
+     */
     function abandoned_carts() {
         global $db;
 
@@ -1744,6 +1780,9 @@ class reportController extends expController {
         ));
     }
 
+    /**
+     * Remove abandoned carts data
+     */
     function pruge_abandoned_carts() {
         global $db;
 
@@ -1752,6 +1791,9 @@ class reportController extends expController {
         $db->delete("shippingmethods","`id` NOT IN (SELECT `shippingmethods_id` FROM `".$db->prefix."orders`)");
     }
 
+    /**
+     * Display report of currently active carts
+     */
     function current_carts() {
         global $db;
 
@@ -2002,6 +2044,9 @@ class reportController extends expController {
         "' */
     }
 
+    /**
+     * FIXME Function not known/incomplete
+     */
     function payment_report() {
 //        global $db;
 
@@ -2155,6 +2200,9 @@ class reportController extends expController {
         return substr($cstr, 0, -2);
     }
 
+    /**
+     * Get parameters for an products report
+     */
     function product_report() {
         $pts = storeController::getProductTypes();
         $newPts = array();
