@@ -22,65 +22,64 @@
 
 <div class="module report build-report">
     <div id="report-form" class="exp-ecom-table">
-    <table border="0" width="50%" align="center" cellspacing="0" cellpadding="0">
-        <thead>
-            <tr>
-                <th colspan="2">
-                    <h1>{"Payment Report"|gettext}</h1>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="even">
-                  <td>
-                    {'Visa'|gettext}
-                </td>
-                <td>
-                    {'val'|gettext}
-                </td>
-            </tr>
-            <tr class="odd">
-                  <td>
-                    {'MasterCard'|gettext}
-                </td>
-                <td>
-                    {'val'|gettext}
-                </td>
-            </tr>
-            <tr class="even">
-                  <td>
-                    {'American Express'|gettext}
-                </td>
-                <td>
-                    {'val'|gettext}
-                </td>
-            </tr>
-            <tr class="odd">
-                  <td>
-                    {'Discover'|gettext}
-                </td>
-                <td>
-                    {'val'|gettext}
-                </td>
-            </tr>
-             <tr class="even">
-                  <td>
-                    {'PayPal'|gettext}
-                </td>
-                <td>
-                    {'val'|gettext}
-                </td>
-            </tr>
-            <tr class="odd">
-                  <td>
-                    {'Total'|gettext}
-                </td>
-                <td>
-                    {'val'|gettext}
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
+        <table border="0" width="50%" align="center" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <th colspan="2">
+                        <h1>{"Payment Report"|gettext}</h1>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="even">
+                      <td>
+                        {'Visa'|gettext}
+                    </td>
+                    <td>
+                        {'val'|gettext}
+                    </td>
+                </tr>
+                <tr class="odd">
+                      <td>
+                        {'MasterCard'|gettext}
+                    </td>
+                    <td>
+                        {'val'|gettext}
+                    </td>
+                </tr>
+                <tr class="even">
+                      <td>
+                        {'American Express'|gettext}
+                    </td>
+                    <td>
+                        {'val'|gettext}
+                    </td>
+                </tr>
+                <tr class="odd">
+                      <td>
+                        {'Discover'|gettext}
+                    </td>
+                    <td>
+                        {'val'|gettext}
+                    </td>
+                </tr>
+                 <tr class="even">
+                      <td>
+                        {'PayPal'|gettext}
+                    </td>
+                    <td>
+                        {'val'|gettext}
+                    </td>
+                </tr>
+                <tr class="odd">
+                      <td>
+                        {'Total'|gettext}
+                    </td>
+                    <td>
+                        {'val'|gettext}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

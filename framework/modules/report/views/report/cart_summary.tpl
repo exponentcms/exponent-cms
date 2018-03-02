@@ -20,13 +20,13 @@
 	    <div id="dashboard-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'New Orders'|gettext}</em></a></li>
-                <!--li><a href="#tab2"><em>Top Selling Items</em></a></li>
-                <li><a href="#tab3"><em>Most Viewed</em></a></li>
-                <li><a href="#tab4"><em>Customers</em></a></li-->
+                <li><a href="#tab2"><em>{'Top Selling Items'|gettext}</em></a></li>
+                <li><a href="#tab3"><em>{'Most Viewed'|gettext}</em></a></li>
+                <li><a href="#tab4"><em>{'Customers'|gettext}</em></a></li>
             </ul>
             <div class="yui-content">
                 <div id="tab1" class="exp-ecom-table">
-                    {control type="dropdown" name="filter" label="Range"|gettext|cat:": " items="Last 24 hours, Last 48 hours, Jurassic Period and prior"|gettxtlist values="Last 24 hours, Last 48 hours, Jurassic Period and prior"}
+                    {control type="dropdown" name="filter" label="Range"|gettext|cat:": " items=$quickrange}
                     <table border="0" cellspacing="0" cellpadding="0">
                         <tbody>
                             <tr class="even">
@@ -43,6 +43,19 @@
                     </div>
                 </div>
                 <div id="tab2">
+                    {$page->links}
+                    {form id="batch" controller=report}
+                        <div class="actions-to-apply">
+                            {control type="dropdown" name="action" label="Select Action"|gettext items=$action_items}
+                            {control type="checkbox" name="applytoall" label="Apply to all pages"|gettext class="applytoall" value=1}
+                            {*<button type="submit" class="{button_style}">{"Apply Batch Action"|gettext}</button>*}
+                            {control type="buttongroup" submit="Apply Batch Action"|gettext}
+                        </div>
+                    <div class="exp-ecom-table">
+                        {$page->table}
+                    </div>
+                    {/form}
+                	{$page->links}
                 </div>
                 <div id="tab3">
                 </div>
@@ -52,7 +65,6 @@
                 </div>
             </div>
 	    </div>
-	    {*<div class="loadingdiv">{'Loading Dashboard'|gettext}</div>*}
         {loading title='Loading Dashboard'|gettext}
     </div>
     {clear}

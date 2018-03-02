@@ -241,7 +241,7 @@ class searchController extends expController {
         //$res = $mod->find('all',$sql,'id',25);
         $sql = "select DISTINCT(p.id), p.title, model, sef_url, f.id as fileid from ".$db->prefix."product as p INNER JOIN ".$db->prefix."content_expfiles as cef ON p.id=cef.content_id INNER JOIN ".$db->prefix."expfiles as f ON cef.expfiles_id = f.id where match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') AND p.parent_id=0 order by match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') desc LIMIT 25";
         //$res = $db->selectObjectsBySql($sql);
-        //$res = $db->selectObjectBySql('SELECT * FROM `exponent_product`');
+        //$res = $db->selectObjectBySql('SELECT * FROM `" . $db->prefix . "product`');
 
         $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();

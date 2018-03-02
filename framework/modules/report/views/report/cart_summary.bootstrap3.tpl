@@ -20,13 +20,13 @@
 	    <div id="dashboard-tabs" class="">
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'New Orders'|gettext}</em></a></li>
-                <!--li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>Top Selling Items</em></a></li>
-                <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>Most Viewed</em></a></li>
-                <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>Customers</em></a></li-->
+                <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Top Selling Items'|gettext}</em></a></li>
+                <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{"Most Viewed'|gettext}</em></a></li>
+                <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{'Customers'|gettext}</em></a></li>
             </ul>
             <div class="tab-content">
                 <div id="tab1" role="tabpanel" class="exp-ecom-table tab-pane fade in active">
-                    {control type="dropdown" name="filter" label="Range"|gettext|cat:": " items="Last 24 hours, Last 48 hours, Jurassic Period and prior"|gettxtlist values="Last 24 hours, Last 48 hours, Jurassic Period and prior"}
+                    {control type="dropdown" name="filter" label="Range"|gettext|cat:": " items=$quickrange}
                     <table border="0" cellspacing="0" cellpadding="0">
                         <tbody>
                             <tr class="even">
@@ -52,7 +52,6 @@
                 </div>
             </div>
 	    </div>
-	    {*<div class="loadingdiv">{'Loading Dashboard'|gettext}</div>*}
         {loading title='Loading Dashboard'|gettext}
     </div>
     {clear}

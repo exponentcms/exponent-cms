@@ -28,7 +28,7 @@
             <div class="col-sm-offset-1 col-sm-3">{control type="checkbox" name="applytoall" label="Apply to all pages"|gettext class="applytoall" value=1}</div>
             <div class="col-sm-4">{control type="buttongroup" submit="Apply Batch Action"|gettext}</div>
         </div>
-        <div class="row exp-skin-table">
+        <div class="row exp-ecom-table">
             <div class="col-sm-12">
                 {$page->table}
             </div>

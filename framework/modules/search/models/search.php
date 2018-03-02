@@ -53,8 +53,8 @@ class search extends expRecord {
         /*$sql  = "SELECT *, MATCH (s.title,s.body) AGAINST ('".$terms."') as score from ".$db->prefix."search as s ";
 		$sql .= "LEFT OUTER JOIN ".$db->prefix."product p ON s.original_id = p.id WHERE MATCH(title,body) against ('".$terms."' IN BOOLEAN MODE)";
 
-        SELECT *, MATCH (s.title,s.body) AGAINST ('army combat uniform') as score from exponent_search as s
-        LEFT OUTER JOIN exponent_product p ON s.original_id = p.id WHERE MATCH(s.title,s.body) against ('army combat uniform' IN BOOLEAN MODE)*/
+        SELECT *, MATCH (s.title,s.body) AGAINST ('army combat uniform') as score from " . $db->prefix . "search as s
+        LEFT OUTER JOIN " . $db->prefix . "product p ON s.original_id = p.id WHERE MATCH(s.title,s.body) against ('army combat uniform' IN BOOLEAN MODE)*/
 
         $sql = "SELECT *, MATCH (s.title, s.body, s.keywords) AGAINST ('" . $terms . "*') as score from " . $db->prefix . "search as s ";
         $sql .= "WHERE ";

@@ -120,7 +120,6 @@
             </tbody>
         </table>
     </div>
-    {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
     {loading}
 </div>
 

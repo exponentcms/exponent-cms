@@ -500,7 +500,7 @@ class storeController extends expController {
 //            $sql .= 'JOIN ' . $db->prefix . 'product_storeCategories sc ON p.id = sc.product_id ';
             $sql .= 'JOIN ' . $db->prefix . 'eventregistration er ON p.product_type_id = er.id ';
             $sql .= 'WHERE 1 ';
-//            $sql .= ' AND sc.storecategories_id IN (SELECT id FROM exponent_storeCategories WHERE rgt BETWEEN ' . $category->lft . ' AND ' . $category->rgt . ')';
+//            $sql .= ' AND sc.storecategories_id IN (SELECT id FROM ' . $db->prefix . 'storeCategories WHERE rgt BETWEEN ' . $category->lft . ' AND ' . $category->rgt . ')';
 //            if ($category->hide_closed_events) {
 //                $sql .= ' AND er.signup_cutoff > ' . time();
 //            }
@@ -679,7 +679,7 @@ class storeController extends expController {
         $total = $db->countObjects($this->model_table);
         for ($i = 0; $i < $total; $i += 100) {
             //eDebug($this->params);
-            //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
+            //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM " . $db->prefix . "product WHERE 1 LIMIT 10";
             if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
                 $sql = expSession::get('product_export_query');
                 if (empty($sql))
