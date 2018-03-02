@@ -222,6 +222,12 @@ class reportController extends expController {
     function cart_summary() {
         global $db;
 
+        $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'), 3 => gt('Last 60 Days'), 4 => gt('Last 90 Days'), 5 => gt('Last 365 Days'), 6 => gt('Forever'));
+        $this->setDateParams($this->params);
+        if (!isset($this->params['quickrange'])) {
+            $this->params['quickrange'] = 0;
+        }
+
         $p = $this->params;
         $sql = "SELECT DISTINCT(o.id), o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, concat('".expCore::getCurrencySymbol()."',format(o.grand_total,2)) as grand_total, os.title as status_title from ";
         $sql .= $db->prefix . "orders as o ";
@@ -449,8 +455,8 @@ class reportController extends expController {
             // 'where'=>$where,
             'sql'             => $sql . $sqlwhere,
             'limit'           => empty($this->config['limit']) ? 25 : $this->config['limit'],
-            'order'           => 'invoice_id',
-            'order_direction' => 'DESC',
+            'order'           => (isset($this->params['order']) ? $this->params['order'] : 'invoice_id'),
+            'dir'             => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
             'page'            => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'      => $this->baseclassname,
             'action'          => $this->params['action'],
@@ -467,11 +473,13 @@ class reportController extends expController {
 
         $action_items = array(
             'print_orders' => 'Print Orders',
-            'export_odbc' => 'Export Shipping Data to CSV'
+            'export_odbc'  => 'Export Shipping Data to CSV'
         );
         assign_to_template(array(
-            'page'         => $page,
-            'action_items' => $action_items
+            'quickrange'         => $quickrange,
+            'quickrange_default' => $this->params['quickrange'],
+            'page'               => $page,
+            'action_items'       => $action_items
         ));
     }
 
@@ -914,9 +922,16 @@ class reportController extends expController {
                         if (!empty($options->cc_type)) {
                             //@$payment_summary[$payments[$options->cc_type]] += $item->billing_cost;
                             @$payment_summary[$payments[$options->cc_type]] += $options->result->amount_captured;
+                        } else {
+                            @$payment_summary[$item->title] += $options->result->amount_captured;
                         }
                     } else {
-                        @$payment_summary[$payments[$item->calculator_name]] += $item->billing_cost;
+                        if (empty($payments[$item->calculator_name])) {
+                            $type = $item->title;
+                        } else {
+                            $type = $payments[$item->calculator_name];
+                        }
+                        @$payment_summary[$type] += $item->billing_cost;
                     }
                 }
             }
@@ -938,7 +953,8 @@ class reportController extends expController {
 //        $tax_type_formatted = $tax_types[0]->zonename . ' - ' . $tax_types[0]->classname . ' - ' . $tax_types[0]->rate . '%';
 
         $ord = new order();
-        $tax_res2 = $ord->find('all',"id IN (" . $orders_string . ")", null, null, 0, true, true, array('orderitem', 'order_discounts', 'billingmethod', 'order_status_changes', 'order_status', 'order_type', 'shippingmethod', 'user'));
+        $except = array('order_discounts', 'billingmethod', 'order_status_changes', 'order_status', 'order_type', 'shippingmethod', 'user');
+        $tax_res2 = $ord->find('all',"id IN (" . $orders_string . ")", null, null, 0, true, true, $except);
 
         $taxes = array();
         foreach ($tax_res2 as $tt) {
@@ -1225,7 +1241,7 @@ class reportController extends expController {
 //        eDebug($count_sql . $sql . $sqlwhere);
 //        eDebug("Stored:" . $exportSQL);
         expSession::set('product_export_query', $exportSQL);
-        //expSession::set('product_export_query', "SELECT  DISTINCT(p.id) FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0");
+        //expSession::set('product_export_query', "SELECT  DISTINCT(p.id) FROM `" . $db->prefix . "product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0");
 
         $product = new product();
         //$items = $product->find('all', '', 'id', 25);
@@ -1236,8 +1252,8 @@ class reportController extends expController {
             //'records'=>$items,
             // 'where'=>$where,
             'sql'        => $sqlstart . $sql . $sqlwhere,
-            //'sql'=>"SELECT  DISTINCT(p.id), p.title, p.model, p.base_price FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0",
-            //'count_sql'=>"SELECT COUNT(DISTINCT(p.id)) FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0",
+            //'sql'=>"SELECT  DISTINCT(p.id), p.title, p.model, p.base_price FROM `" . $db->prefix . "product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0",
+            //'count_sql'=>"SELECT COUNT(DISTINCT(p.id)) FROM `" . $db->prefix . "product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0",
             'count_sql'  => $count_sql . $sql . $sqlwhere,
             'limit'      => empty($this->config['limit']) ? 350 : $this->config['limit'],
             'order'      => (isset($this->params['order']) ? $this->params['order'] : 'id'),
@@ -1859,7 +1875,7 @@ class reportController extends expController {
     function batch_export() {
         global $db;
         //eDebug($this->params);
-        //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
+        //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM " . $db->prefix . "product WHERE 1 LIMIT 10";
 //        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
         $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","height","length","companies_id"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
@@ -2014,7 +2030,7 @@ class reportController extends expController {
     function status_export() {
         global $db;
         //eDebug($this->params);
-        //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
+        //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM " . $db->prefix . "product WHERE 1 LIMIT 10";
 
         //is | parent_id | SKU |WAREHOUSE LOCATION | Title | Vendor/Manufacturer | Product Status | Notes
 
