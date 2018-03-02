@@ -484,7 +484,7 @@ class reportController extends expController {
     }
 
     function order_report() {
-        // stub function. I'm sure eventually we can pull up exising reports to pre-populate our form.
+        // stub function. I'm sure eventually we can pull up existing reports to pre-populate our form.
         $os = new order_status();
         $oss = $os->find('all');
         $order_status = array();
@@ -549,6 +549,7 @@ class reportController extends expController {
 
     function generateOrderReport() {
         global $db;
+
         //eDebug($this->params);
         $p = $this->params;
 
@@ -909,42 +910,46 @@ class reportController extends expController {
         $orders_string = implode(',', $order_ids);
 
         $payment_summary = array();
+        $payments_key_arr = array();
+        $payment_values_arr = array();
         // $Credit Cards
 //        $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, user_title FROM " . $db->prefix . "billingmethods, " . $db->prefix . "billingcalculator WHERE " . $db->prefix . "billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
-        $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, title FROM " . $db->prefix . "billingmethods, " . $db->prefix . "billingcalculator WHERE " . $db->prefix . "billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
-        $res = $db->selectObjectsBySql($sql);
-        if (!empty($res)) {
-            foreach ($res as $item) {
-                $options = expUnserialize($item->billing_options);
-                if (!empty($item->billing_cost)) {
+        $sql_end = "FROM " . $db->prefix . "billingmethods, " . $db->prefix . "billingcalculator WHERE " . $db->prefix . "billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
+        $total = $db->countObjectsBySql('SELECT COUNT(*) as c ' . $sql_end);
+        $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, title " . $sql_end;
+        for ($i = 0; $i < $total; $i += 100) {
+            $res = $db->selectObjectsBySql($sql . ' LIMIT ' . $i . ', 100');
+            if (!empty($res)) {
+                foreach ($res as $item) {
+                    $options = expUnserialize($item->billing_options);
+                    if (!empty($item->billing_cost)) {
 //                    if ($item->user_title == 'Credit Card') {
-                    if ($item->title == 'Credit Card') {  //FIXME there is no billingmethod->title ...this is translated??
-                        if (!empty($options->cc_type)) {
-                            //@$payment_summary[$payments[$options->cc_type]] += $item->billing_cost;
-                            @$payment_summary[$payments[$options->cc_type]] += $options->result->amount_captured;
+                        if ($item->title == 'Credit Card') {  //FIXME there is no billingmethod->title ...this is translated??
+                            if (!empty($options->cc_type)) {
+                                //@$payment_summary[$payments[$options->cc_type]] += $item->billing_cost;
+                                @$payment_summary[$payments[$options->cc_type]] += $options->result->amount_captured;
+                            } else {
+                                @$payment_summary[$item->title] += $options->result->amount_captured;
+                            }
                         } else {
-                            @$payment_summary[$item->title] += $options->result->amount_captured;
+                            if (empty($payments[$item->calculator_name])) {
+                                $type = $item->title;
+                            } else {
+                                $type = $payments[$item->calculator_name];
+                            }
+                            @$payment_summary[$type] += $item->billing_cost;
                         }
-                    } else {
-                        if (empty($payments[$item->calculator_name])) {
-                            $type = $item->title;
-                        } else {
-                            $type = $payments[$item->calculator_name];
-                        }
-                        @$payment_summary[$type] += $item->billing_cost;
                     }
                 }
             }
-        }
 
-        $payments_key_arr = array();
-        $payment_values_arr = array();
-        foreach ($payment_summary as $key => $item) {
-            $payments_key_arr[] = '"' . $key . '"';
-            $payment_values_arr[] = round($item, 2);
+            foreach ($payment_summary as $key => $item) {
+                $payments_key_arr[] = '"' . $key . '"';
+                $payment_values_arr[] = round($item, 2);
+            }
+            $payments_key = implode(",", $payments_key_arr);
+            $payment_values = implode(",", $payment_values_arr);
         }
-        $payments_key = implode(",", $payments_key_arr);
-        $payment_values = implode(",", $payment_values_arr);
 
         //tax
 //        $tax_sql = "SELECT SUM(tax) as tax_total FROM " . $db->prefix . "orders WHERE id IN (" . $orders_string . ")";
@@ -954,19 +959,21 @@ class reportController extends expController {
 
         $ord = new order();
         $except = array('order_discounts', 'billingmethod', 'order_status_changes', 'order_status', 'order_type', 'shippingmethod', 'user');
-        $tax_res2 = $ord->find('all',"id IN (" . $orders_string . ")", null, null, 0, true, true, $except);
-
         $taxes = array();
-        foreach ($tax_res2 as $tt) {
-            $key = key($tt->taxzones);
-            if (!empty($key)) {
-                $tname = $tt->taxzones[$key]->name;
-                if (!isset($taxes[$key]['format'])) {
-                    $taxes[$key] = array();
-                    $taxes[$key]['total'] = 0;
+        $total = $ord->find('count',"id IN (" . $orders_string . ")", null, null, 0, true, true, $except);
+        for ($i = 0; $i < $total; $i += 100) {
+            $tax_res2 = $ord->find('all', "id IN (" . $orders_string . ")", null, 100, $i, true, true, $except);
+            foreach ($tax_res2 as $tt) {
+                $key = key($tt->taxzones);
+                if (!empty($key)) {
+                    $tname = $tt->taxzones[$key]->name;
+                    if (!isset($taxes[$key]['format'])) {
+                        $taxes[$key] = array();
+                        $taxes[$key]['total'] = 0;
+                    }
+                    $taxes[$key]['format'] = $tname . ' - ' . $tt->taxzones[$key]->rate . '%';
+                    $taxes[$key]['total'] += $tt->tax;
                 }
-                $taxes[$key]['format'] = $tname . ' - ' . $tt->taxzones[$key]->rate . '%';
-                $taxes[$key]['total'] += $tt->tax;
             }
         }
 
@@ -1107,6 +1114,7 @@ class reportController extends expController {
 
     function generateProductReport() {
         global $db;
+
         // eDebug($this->params);
         $p = $this->params;
         $sqlids = "SELECT DISTINCT(p.id) from ";
@@ -1423,6 +1431,7 @@ class reportController extends expController {
      */
     function print_orders() {
 //        global $db, $timer;
+
         //eDebug($this->params,true);
         //eDebug($timer->mark());
         //eDebug( expSession::get('order_print_query'));
@@ -1633,6 +1642,7 @@ class reportController extends expController {
 
     function productFeed() {
 //        global $db;
+
         //check query password to avoid DDOS
         /*
             * condition  = new
@@ -1734,8 +1744,7 @@ class reportController extends expController {
         ));
     }
 
-    function pruge_abandoned_carts()
-    {
+    function pruge_abandoned_carts() {
         global $db;
 
         $db->delete("orders","`invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now()) - 2592000 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".$db->prefix."sessionticket`)");
@@ -1874,6 +1883,7 @@ class reportController extends expController {
      */
     function batch_export() {
         global $db;
+
         //eDebug($this->params);
         //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM " . $db->prefix . "product WHERE 1 LIMIT 10";
 //        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
@@ -1994,6 +2004,7 @@ class reportController extends expController {
 
     function payment_report() {
 //        global $db;
+
         $payment_methods = array('-1' => '', 'V' => 'Visa', 'MC' => 'Mastercard', 'D' => 'Discover', 'AMEX' => 'American Express', 'PP' => 'PayPal', 'GC' => 'Google Checkout', 'Other' => 'Other');
         //5 paypal
         //4 credit card - VisaCard, MasterCard, AmExCard, DiscoverCard
@@ -2029,6 +2040,7 @@ class reportController extends expController {
      */
     function status_export() {
         global $db;
+
         //eDebug($this->params);
         //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM " . $db->prefix . "product WHERE 1 LIMIT 10";
 

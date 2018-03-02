@@ -58,19 +58,27 @@
             <li><a href="#tab7">{"Pie Chart"|gettext}</a></li>
 		</ul>
 		<div class="yui-content">
-			<div id="tab1">
-                <table border="0" cellspacing="0" cellpadding="0" class="exp-ecom-table exp-skin-table">
+			<div id="tab1" class="exp-ecom-table exp-skin-table">
+                <table border="0" cellspacing="0" cellpadding="0">
                     <thead>
-                        <tr class="{cycle values='odd,even'}">
+                        <tr>
                             <th colspan="2">
                                 <h1>{"Payment Summary"|gettext}</h1>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                {"Type"|gettext}
+                            </th>
+                            <th>
+                                {"Amount"|gettext}
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         {foreach from=$payment_summary key=key item=item}
-                            <tr>
-                                <th>{$key}</th>
+                            <tr class="{cycle values='odd,even'}">
+                                <td>{$key}</td>
                                 <td>{$item|currency}</td>
                             </tr>
                         {/foreach}
@@ -104,16 +112,24 @@
     <div class="exp-ecom-table exp-skin-table">
         <table border="0" cellspacing="0" cellpadding="0">
             <thead>
-                <tr class="{cycle values='odd,even'}">
+                <tr>
                     <th colspan="2">
                         <h1>{"Tax Summary"|gettext}</h1>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        {"Tax Zone"|gettext}
+                    </th>
+                    <th>
+                        {"Amount"|gettext}
                     </th>
                 </tr>
             </thead>
             <tbody>
                 {foreach $taxes as $tax}
-                    <tr>
-                        <th>{$tax.format}</th>
+                    <tr class="{cycle values='odd,even'}">
+                        <td>{$tax.format}</td>
                         <td>{$tax.total|currency}</td>
                     </tr>
                 {/foreach}
