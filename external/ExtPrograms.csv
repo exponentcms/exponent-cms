@@ -97,7 +97,7 @@ Kint,2.2.0,github.com/kint-php/kint,2.2.0,"optional, for formatted edebug output
 Not included yet,,,,
 Twitter-Bootstrap,,twitter.github.com/bootstrap,4.0.0,patched bootstrap.scss includes swatches & exp variables
 Bootswatch,,bootswatch.com/,4.0.0,change 1st line variables.scss comment to output to .css file
-Font-Awesome,,fontawesome.com,5.0.6,add 'fonts' to main sheet
+Font-Awesome,,fontawesome.com,5.0.7,add 'fonts' to main sheet
 DataTables Buttons,,www.datatables.net,1.5.1,
 DataTables Responsive,,www.datatables.net,2.2.1,
 ,,,,
