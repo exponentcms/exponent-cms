@@ -142,6 +142,27 @@ class reportController extends expController {
     function dashboard() {
         global $db;
 
+        // get number of active carts
+        $sql = "SELECT COUNT(*) as c FROM " . $db->prefix . "orders, " . $db->prefix . "sessionticket WHERE ticket = sessionticket_ticket AND purchased = 0";
+        $allCarts = $db->countObjectsBySql($sql);
+
+        // get latest 5 orders
+        $order = new order();
+        $recent_orders = $order->find('all', 'purchased !=0', 'purchased DESC', 5);
+
+        // get number of online customers in last 30 minutes
+        $customers_online = $db->countObjects('sessionticket', 'last_active > ' . (time() - (30 * 60 * 1000)));
+
+        assign_to_template(array(
+            'recent'             => $recent_orders,
+            'online'             => $customers_online,
+            'active_carts'       => $allCarts
+        ));
+    }
+
+    function stats() {
+        global $db;
+
         $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'), 3 => gt('Last 60 Days'), 4 => gt('Last 90 Days'), 5 => gt('Last 365 Days'), 6 => gt('Forever'));
         $this->setDateParams($this->params);
         if (!isset($this->params['quickrange'])) {
@@ -182,21 +203,8 @@ class reportController extends expController {
             }
         }
 
-        // get number of active carts
-        $sql = "SELECT COUNT(*) as c FROM " . $db->prefix . "orders, " . $db->prefix . "sessionticket WHERE ticket = sessionticket_ticket AND purchased = 0";
-        $allCarts = $db->countObjectsBySql($sql);
-
-        // get latest 5 orders
-        $order = new order();
-        $recent_orders = $order->find('all', 'purchased !=0', 'purchased DESC', 5);
-
-        // get number of online customers in last 30 minutes
-        $customers_online = $db->countObjects('sessionticket', 'last_active > ' . (time() - (30 * 60 * 1000)));
-
         assign_to_template(array(
             'orders'             => $oar,
-            'recent'             => $recent_orders,
-            'online'             => $customers_online,
             'new'                => $new_customers,
             'quickrange'         => $quickrange,
             'quickrange_default' => $this->params['quickrange'],
@@ -208,7 +216,6 @@ class reportController extends expController {
             'prev_hour'          => $this->prev_hour,
             'prev_min'           => $this->prev_min,
             'prev_ampm'          => $this->prev_ampm,
-            'active_carts'       => $allCarts
         ));
     }
 

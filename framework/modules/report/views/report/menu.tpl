@@ -27,25 +27,13 @@
             <div class="bd {if $smarty.cookies.quickstats=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="{link action=dashboard}">{'Recent Order Stats'|gettext}</a></strong>
+                        <strong><a href="{link action=dashboard}">{'Current Order Stats'|gettext}</a></strong>
                         {'View summary of recent orders.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="{link controller=order action=showall}">{'Manage Orders'|gettext}</a></strong>
-                        {'View and manage all new and existing orders.'|gettext}
+                        <strong><a href="{link action=stats}">{'Past Order Stats'|gettext}</a></strong>
+                        {'View summary of orders for selected periods of time.'|gettext}
                     </li>
-                    <li>
-                        <strong><a href="{link controller=store action=manage}">{'Manage Products'|gettext}</a></strong>
-                        {'List all products in your store and makes it easy to manage them.'|gettext}
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div id="cartstats" class="panel">
-            <div class="hd"><h2>{'Cart Stats'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
-            <div class="bd {if $smarty.cookies.cartstats=='collapsed'}collapsed{/if}">
-                <ul>
                     {*<li>*}
                         {*<strong><a href="{link action=cart_summary}">{'Cart Summary Stats'|gettext}</a></strong>*}
                         {*{'Quick statistics on carts vs. orders.'|gettext}*}
@@ -95,6 +83,10 @@
             <div class="bd {if $smarty.cookies.products=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
+                        <strong><a href="{link controller=store action=manage}">{'Manage Products'|gettext}</a></strong>
+                        {'List all products in your store and makes it easy to manage them.'|gettext}
+                    </li>
+                    <li>
                         <strong><a href="{link controller=store action=picktype}">{'Add a Product'|gettext}</a></strong>
                         {'Add a'|gettext} <a
                                 href="{link controller=store action=edit product_type=product}">{'Product'|gettext}</a>,
@@ -103,10 +95,6 @@
                         {'or'|gettext} <a
                                 href="{link controller=store action=edit product_type=eventregistration}">{'Event Registration'|gettext}</a>
                         {'to your store.'|gettext}
-                    </li>
-                    <li>
-                        <strong><a href="{link controller=store action=manage}">{'Manage Products'|gettext}</a></strong>
-                        {'List all products in your store and makes it easy to manage them.'|gettext}
                     </li>
                     <li>
                         <strong><a href="{link action=product_report}">{'Create a Report'|gettext}</a></strong>
