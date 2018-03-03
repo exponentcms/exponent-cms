@@ -944,12 +944,13 @@ class reportController extends expController {
                     $options = expUnserialize($item->billing_options);
                     if (!empty($item->billing_cost)) {
 //                    if ($item->user_title == 'Credit Card') {
-                        if ($item->title == 'Credit Card') {  //FIXME there is no billingmethod->title ...this is translated??
+                        if ($item->title === 'Credit Card') {  //FIXME there is no billingmethod->title ...this is translated??
                             if (!empty($options->cc_type)) {
-                                //@$payment_summary[$payments[$options->cc_type]] += $item->billing_cost;
-                                @$payment_summary[$payments[$options->cc_type]] += $options->result->amount_captured;
+                                @$payment_summary[$payments[$options->cc_type]] += $item->billing_cost;
+//                                @$payment_summary[$payments[$options->cc_type]] += $options->result->amount_captured;
                             } else {
-                                @$payment_summary[$item->title] += $options->result->amount_captured;
+                                @$payment_summary[$item->title] += $item->billing_cost;
+//                                @$payment_summary[$item->title] += $options->result->amount_captured;
                             }
                         } else {
                             if (empty($payments[$item->calculator_name])) {
