@@ -2927,9 +2927,7 @@ class storeController extends expController {
                                     umask($__oldumask);
 
                                     // Create a new expFile Object
-                                    $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-                                    $_objFile = new expFile ($_fileParams);
-                                    $_objFile->save();
+                                    $_objFile = expFile::make_expFile($_destDir . $_destFile);
                                 }
                             }
                             // attach product images expFile object
@@ -3036,9 +3034,7 @@ class storeController extends expController {
 //                    umask($__oldumask);
 //
 //                    // Create a new expFile Object
-//                    $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-//                    $_objFile = new expFile ($_fileParams);
-//                    $_objFile->save();
+//                    $_objFile = expFile::make_expFile($_destDir . $_destFile);
 //                    // attach/replace product main image with new expFile object
 //                    $product->attachItem($_objFile, 'mainimage');
 //                }
@@ -3062,9 +3058,7 @@ class storeController extends expController {
 //                        umask($__oldumask);
 //
 //                        // Create a new expFile Object
-//                        $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-//                        $_objFile = new expFile ($_fileParams);
-//                        $_objFile->save();
+//                        $_objFile = expFile::make_expFile($_destDir . $_destFile);
 //                        // attach product additional images with new expFile object
 //                        $product->attachItem($_objFile, 'images', false);
 //                    }

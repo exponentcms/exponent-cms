@@ -131,8 +131,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
     protected static function _get_expFile($path)
     {
         $efile = new expFile();
-        $path = str_replace('\\', '/', $path);
-        $path = str_replace(BASE, '', $path);
+        $path = str_replace(array('\\', BASE), array('/', ''), $path);
         $thefile = $efile->find(
             'first',
             'directory="' . dirname($path) . '/' . '" AND filename="' . basename($path) . '"'
@@ -164,15 +163,13 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         if (empty($opath)) {
             $opath = $oldpath;
         }
-        $opath = str_replace(BASE, '', $opath);
-        $opath = str_replace('\\', '/', $opath);
+        $opath = str_replace(array(BASE, '\\'), array('', '/'), $opath);
 
         $npath = $this->decode($newpath);
         if (empty($npath)) {
             $npath = $newpath;
         }
-        $npath = str_replace(BASE, '', $npath);
-        $npath = str_replace('\\', '/', $npath);
+        $npath = str_replace(array(BASE, '\\'), array('', '/'), $npath);
 
         $efile = new expFile();
         $thefile = $efile->find(
@@ -215,8 +212,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
     protected function _remove_expFile($oldpath)
     {
         $opath = $this->decode($oldpath);
-        $opath = str_replace(BASE, '', $opath);
-        $opath = str_replace('\\', '/', $opath);
+        $opath = str_replace(array(BASE, '\\'), array('', '/'), $opath);
 
         $efile = new expFile();
         $thefile = $efile->find(
@@ -247,8 +243,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $this->_remove_expFile($src); // remove the duplicate expFile record pointing to old location
 
         $opath = $this->decode($src);
-        $opath = str_replace(BASE, '', $opath);
-        $opath = str_replace('\\', '/', $opath);
+        $opath = str_replace(array(BASE, '\\'), array('', '/'), $opath);
 
         $npath = $this->decode($dst);
 //        $npath = str_replace(BASE, '', $npath);

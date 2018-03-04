@@ -782,9 +782,7 @@ class importexportController extends expController {
                                     umask($__oldumask);
 
                                     // Create a new expFile Object
-                                    $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-                                    $_objFile = new expFile ($_fileParams);
-                                    $_objFile->save();
+                                    $_objFile = expFile::make_expFile($_destDir . $_destFile);
                                 }
                             }
                             // attach product images expFile object
@@ -813,9 +811,9 @@ class importexportController extends expController {
 //                            $rank = !empty($data['rank']) ? $data['rank'] : 1;
                             $rank = (int)(str_replace('category', '', $key));
 //                            if (!empty($value)) $result = storeCategory::parseCategory($value);
-                            if (!empty($value)) 
+                            if (!empty($value))
                                 $result = storeCategory::importCategoryString($value);
-                            else 
+                            else
                                 continue;
 
 //                            if (is_numeric($result)) {
@@ -891,9 +889,7 @@ class importexportController extends expController {
 //                    umask($__oldumask);
 //
 //                    // Create a new expFile Object
-//                    $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-//                    $_objFile = new expFile ($_fileParams);
-//                    $_objFile->save();
+//                    $_objFile = expFile::make_expFile($_destDir . $_destFile);
 //                    // attach/replace product main image with new expFile object
 //                    $product->attachItem($_objFile, 'mainimage');
 //                }
@@ -917,9 +913,7 @@ class importexportController extends expController {
 //                        umask($__oldumask);
 //
 //                        // Create a new expFile Object
-//                        $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-//                        $_objFile = new expFile ($_fileParams);
-//                        $_objFile->save();
+//                        $_objFile = expFile::make_expFile($_destDir . $_destFile);
 //                        // attach product additional images with new expFile object
 //                        $product->attachItem($_objFile, 'images', false);
 //                    }
