@@ -71,7 +71,7 @@
                         <a href="{link controller=users action=showall}" title="{'View Customers'|gettext}">{$online}</a>
                     </td>
                 </tr>
-            <tbody>
+            </tbody>
         </table>
     </div>
 
@@ -102,7 +102,7 @@
                 {foreachelse}
                     <tr><td colspan=5>{message text='No Orders Found!'|gettext}</td></tr>
                 {/foreach}
-            <tbody>
+            </tbody>
         </table>
 
     </div>

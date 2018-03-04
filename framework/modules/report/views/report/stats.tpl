@@ -66,7 +66,7 @@
                 <tr style="font-weight:bold; font-size:120%">
                     <td colspan="5">{$new}</td>
                 </tr>
-            <tbody>
+            </tbody>
 
             <thead>
                 <tr>
@@ -110,7 +110,7 @@
                 {foreachelse}
                     <tr><td colspan=5>{message text='No Orders Found!'|gettext}</td></tr>
                 {/foreach}
-            <tbody>
+            </tbody>
         </table>
 
     </div>
