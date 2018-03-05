@@ -261,7 +261,6 @@ class expDatabase {
 		return $out;
 	}
 
-
 	/**
 	 * Paging
 	 *
@@ -281,7 +280,6 @@ class expDatabase {
 
 		return $limit;
 	}
-
 
 	/**
 	 * Ordering
@@ -322,7 +320,6 @@ class expDatabase {
 
 		return $order;
 	}
-
 
 	/**
 	 * Searching / Filtering
@@ -430,7 +427,6 @@ class expDatabase {
 		return $where;
 	}
 
-
 	/**
 	 * Perform the SQL queries needed for an server-side processing requested,
 	 * utilising the helper functions of this class, limit(), order() and
@@ -490,7 +486,6 @@ class expDatabase {
 			"data"            => self::data_output( $columns, $data )
 		);
 	}
-
 
 	/**
 	 * The difference between this method and the `simple` one, is that you can
@@ -581,39 +576,17 @@ class expDatabase {
    		);
    	}
 
-
 	/**
-	 * Connect to the database
+	 * Connect to the database by PDO
 	 *
-	 * @param  array $sql_details SQL server connection details array, with the
-	 *   properties:
-	 *     * host - host name
-	 *     * db   - database name
-	 *     * user - user name
-	 *     * pass - user password
-     *
 	 * @return PDO Database connection handle
 	 */
 	static function sql_connect ()
 	{
-		try {
-            $dbpdo = @new PDO(
-                "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "",
-            				DB_USER,
-            				DB_PASS,
-				array( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION )
-			);
-		}
-		catch (PDOException $e) {
-			self::fatal(
-				"An error occurred while connecting to the database. ".
-				"The error reported by the server was: ".$e->getMessage()
-			);
-		}
+	    global $db;
 
-		return $dbpdo;
+	    return $db->sql_connect_pdo();
 	}
-
 
 	/**
 	 * Execute an SQL query on the database
@@ -654,7 +627,6 @@ class expDatabase {
 		// Return all
 		return $stmt->fetchAll( PDO::FETCH_BOTH );
 	}
-
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Internal methods
@@ -782,6 +754,13 @@ abstract class database {
 
 	//	function connect ($username, $password, $hostname, $database, $new=false) {
 	abstract function __construct($username, $password, $hostname, $database, $new=false);
+
+    /**
+     * Connect to the database by PDO
+   	 *
+   	 * @return PDO Database connection handle
+   	 */
+   	abstract function sql_connect_pdo();
 
 	   /**
 	    * Create a new Table
