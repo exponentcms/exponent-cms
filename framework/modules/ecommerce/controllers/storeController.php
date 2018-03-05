@@ -594,9 +594,10 @@ class storeController extends expController {
         if (!ECOM_LARGE_DB) {
 //            $limit = empty($this->config['pagination_default']) ? 50: $this->config['pagination_default'];
             $limit = 0;  // we'll paginate on the page
-            $sql = 'SELECT p.product_type, p.title, p.model, COUNT(c.id) as children, p.base_price, p.id FROM ' . $db->prefix . 'product p ';
-            $sql .= 'LEFT JOIN ' . $db->prefix . 'product c ON c.parent_id = p.id ';
-            $sql .= 'WHERE p.parent_id = 0 GROUP BY p.id';
+            $sql = 'SELECT p.product_type, p.title, p.model, COUNT(c.id) as children, p.base_price, p.id, f.id as fileid FROM ' . $db->prefix . 'product p ';
+            $sql .= "LEFT JOIN " . $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' ";
+            $sql .= "LEFT JOIN " . $db->prefix . "expFiles as f ON cef.expFiles_id = f.id ";
+            $sql .= 'LEFT JOIN ' . $db->prefix . 'product c ON c.parent_id = p.id WHERE p.parent_id = 0 GROUP BY p.id ';
             $page = new expPaginator(array(
 //                'model'      => 'product',
 //                'where'      => 'parent_id=0',
@@ -3161,7 +3162,7 @@ class storeController extends expController {
                         $link = makeLink(array('controller'=>'store', 'action'=>'show', 'title'=>$item->sef_url));
                     }
                     return '<a href="' . $link . '">' .
-                        '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile[0]->id . '&w=16&h=16&zc=1" alt="item'.$item->id.'">' .
+                        '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile[0]->id . '&square=true&h=50" alt="item'.$item->id.'">' .
                         '<br>' . $d . '</a>';
           		}
             ),
