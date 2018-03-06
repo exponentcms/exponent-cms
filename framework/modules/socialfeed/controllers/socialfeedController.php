@@ -47,7 +47,7 @@ class socialfeedController extends expController
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags''twitter',)
 
-    public $codequality = 'beta';
+//    public $codequality = 'beta';
 
     private $session = null;
 //    private $display_all_posts = false;
