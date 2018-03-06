@@ -16,6 +16,14 @@
 {uniqueid prepend="cal" assign="name"}
 
 {css unique="cal" link="`$smarty.const.PATH_RELATIVE`framework/modules/events/assets/css/calendar.css"}
+{if !bs()}
+{literal}
+    .col-xs-6 {
+        width: 24%;
+        display: inline-flex;
+    }
+{/literal}
+{/if}
 {literal}
     .mini-cal {
         width: auto;
