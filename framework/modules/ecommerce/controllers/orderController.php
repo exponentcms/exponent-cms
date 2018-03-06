@@ -406,14 +406,14 @@ class orderController extends expController {
 
         $invoice = '<!DOCTYPE HTML><HTML><HEAD>';
         // the basic styles
-        if (!bs3())
+        if (!bs3() && !bs4())
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/normalize/normalize.css" >';
-        if (!bs())
-//            $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/normalize/normalize.css" >';
         if (bs2())
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap/css/bootstrap.css" >';
-        if (bs3())
+        elseif (bs3())
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap3/css/bootstrap.css" >';
+        elseif (bs4())
+            $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap4/css/bootstrap.css" >';
         $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'framework/modules/ecommerce/assets/css/print-invoice.css">
         <style>
             html{background:none;}

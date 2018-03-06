@@ -1,8 +1,23 @@
+/*
+ * Copyright (c) 2004-2018.  OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ */
+
 @charset "UTF-8";
 @import url("//fonts.googleapis.com/css?family=Open+Sans:300,400,700");
 @import url("//fonts.googleapis.com/css?family=Ubuntu+Condensed");
 
-.order-status .panel {
+.order-status .card {
 	position: relative;
 	padding: 20px;
 	margin-bottom: 20px;
@@ -12,10 +27,10 @@
 	box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1), 0px 0px 0px 3px #FFF inset;
 }
 
-.order-status .panel .panel-heading,
-.order-status .panel #dash_version .panel-heading,
-.order-status .panel .message-item-initial .message-item-initial-body .panel-heading,
-.order-status .panel .timeline .timeline-item .timeline-caption .timeline-panel .panel-heading {
+.order-status .card .card-header,
+.order-status .card #dash_version .card-header,
+.order-status .card .message-item-initial .message-item-initial-body .card-header,
+.order-status .card .timeline .timeline-item .timeline-caption .timeline-card .card-header {
 	font-family: "Ubuntu Condensed", Helvetica, Arial, sans-serif;
 	font-weight: 400;
 	font-size: 14px;
@@ -26,10 +41,10 @@
 	margin-bottom: 12px;
 }
 
-.order-status .panel .panel-heading,
-.order-status #dash_version .panel-heading,
-.order-status .message-item-initial .message-item-initial-body .panel-heading,
-.order-status .timeline .timeline-item .timeline-caption .timeline-panel .panel-heading {
+.order-status .card .card-header,
+.order-status #dash_version .card-header,
+.order-status .message-item-initial .message-item-initial-body .card-header,
+.order-status .timeline .timeline-item .timeline-caption .timeline-card .card-header {
 	font-family: "Ubuntu Condensed", Helvetica, Arial, sans-serif;
 	font-weight: 400;
 	font-size: 14px;
@@ -37,8 +52,8 @@
 	color: #555;
 }
 
-.order-status .panel h3:not(.modal-title),
-.order-status .panel .panel-heading {
+.order-status .card h3:not(.modal-title),
+.order-status .card .card-header {
 	border-width: medium medium 1px;
 	border-style: none none solid;
 	border-color: currentColor;
@@ -55,23 +70,23 @@
 	margin: -20px -16px 15px;
 }
 
-.order-status h3:not(.modal-title) .panel-heading-action .btn-group,
-.order-status .panel-heading .panel-heading-action .btn-group {
+.order-status h3:not(.modal-title) .card-header-action .btn-group,
+.order-status .card-header .card-header-action .btn-group {
 	position: absolute;
 	white-space: nowrap;
 	top: -2px;
 	right: 2px
 }
 
-.order-status h3:not(.modal-title) .panel-heading-action .btn-group a.btn,
-.order-status .panel-heading .panel-heading-action .btn-group a.btn {
+.order-status h3:not(.modal-title) .card-header-action .btn-group a.btn,
+.order-status .card-header .card-header-action .btn-group a.btn {
 	float: none;
 	padding: 2px 5px;
 	margin-top: 5px;
 }
 
-.order-status h3:not(.modal-title) .panel-heading-action > a.btn,
-.order-status .panel-heading .panel-heading-action > a.btn {
+.order-status h3:not(.modal-title) .card-header-action > a.btn,
+.order-status .card-header .card-header-action > a.btn {
 	position: absolute;
 	top: 0;
 	right: 2px;
@@ -169,12 +184,12 @@
 	color: #2BA8E3;
 }
 
-.order-status .panel-heading .badge,
-.order-status .panel-heading #header_notifs_icon_wrapper .notifs_badge,
-#header_notifs_icon_wrapper .order-status .panel-heading .notifs_badge,
-.order-status .panel-heading .module-badge-popular,
-.order-status .panel-heading .module-badge-partner,
-.order-status .panel-heading .module-badge-bought {
+.order-status .card-header .badge,
+.order-status .card-header #header_notifs_icon_wrapper .notifs_badge,
+#header_notifs_icon_wrapper .order-status .card-header .notifs_badge,
+.order-status .card-header .module-badge-popular,
+.order-status .card-header .module-badge-partner,
+.order-status .card-header .module-badge-bought {
 	color: #555;
 	font-size: 1.1em;
 	line-height: 1.2em;
@@ -197,7 +212,7 @@
 	color: #666;
 }
 
-.order-status .panel-heading span.badge.alert-danger {
+.order-status .card-header span.badge.alert-danger {
 	background-color: #F2DEDE;
 	border-color: #EBCCD1;
 	color: #A94442;
