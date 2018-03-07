@@ -277,7 +277,7 @@ class form extends baseform {
             } elseif (BTN_SIZE == 'small') {
                 $btn_size = 'btn-sm';
 			} elseif (BTN_SIZE == 'extrasmall') {
-		       $btn_size = 'btn-xs';
+		       $btn_size = 'btn-sm';
             } else { // medium
                 $btn_size = '';
             }

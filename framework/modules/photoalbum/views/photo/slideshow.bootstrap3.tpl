@@ -79,7 +79,7 @@
                     {if !$config.hidetext}
                         <div class="owl-text-overlay">
                             <{$config.item_level|default:'h2'} class="owl-title">{$slide->title}</{$config.item_level|default:'h2'}>
-                            <div class="hidden-xs">
+                            <div class="hidden-xs d-none">
                                 {$slide->body}
                             </div>
                         </div>

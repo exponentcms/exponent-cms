@@ -267,7 +267,7 @@ class fakeform extends form {
                 $this->btn_size = 'btn-sm';
                 $icon_size = '';
             } elseif (BTN_SIZE == 'extrasmall') {
-                $this->btn_size = 'btn-xs';
+                $this->btn_size = 'btn-sm';
                 $icon_size = '';
             } else {
                 $this->btn_size = '';

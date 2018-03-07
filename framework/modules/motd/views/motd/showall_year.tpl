@@ -57,7 +57,7 @@
     <div class="row">
         {foreach $year as $monthid=>$monthly}
             {$now = $monthly.timefirst}
-            <div id="mini-{$name}" class="col-xs-6 col-sm-4 col-md-3">
+            <div id="mini-{$name}" class="col-6 col-xs-6 col-sm-4 col-md-3">
                 {exp_include file='minical.tpl'}
             </div>
         {/foreach}
@@ -65,7 +65,7 @@
     <div class="row">
         {$monthly = $days}
         {$now = null}
-        <div id="mini-{$name}1" class="col-xs-6 col-sm-4 col-md-3">
+        <div id="mini-{$name}1" class="col-6 col-xs-6 col-sm-4 col-md-3">
             {exp_include file='minical.tpl'}
         </div>
     </div>
