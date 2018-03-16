@@ -50,7 +50,7 @@
                         <video class="{$config.video_style}"  style="width:100%;height:100%;" width="{$item->width|default:$config.video_width}" height="{$item->height|default:$config.video_height}"
                             id="player{$item->expFile.media[0]->id}"
                             {if $config.autoplay}
-                                autoplay="true"
+                                autoplay
                             {/if}
                             {if $item->expFile.splash[0]->id}
                                 poster="{$smarty.const.PATH_RELATIVE}{$item->expFile.splash[0]->directory}{$item->expFile.splash[0]->filename}"
