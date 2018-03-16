@@ -174,7 +174,7 @@
 
     {script unique="filedownload-`$id`"}
     {literal}
-        mejs.i18n.language('{substr($smarty.const.LOCALE,0,2)}'); // Setting language
+        mejs.i18n.language('{/literal}{substr($smarty.const.LOCALE,0,2)}{literal}'); // Setting language
         $('audio,video').mediaelementplayer({
             // Do not forget to put a final slash (/)
             pluginPath: 'https://cdnjs.com/libraries/mediaelement/',
