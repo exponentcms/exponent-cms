@@ -136,7 +136,7 @@
                     <td>{billingcalculator::getCalcTitle($listing->method)}</td>
                     <td data-order="{$listing->purchased}" data-search="{$listing->purchased|format_date:"%m/%d/%Y %I:%M%p"}">{$listing->purchased|format_date:"%m/%d/%Y %I:%M%p"}</td>
                     <td>{$listing->order_type}</td>
-                    <td><span class="badge badge-{if $listing->order_status_id == $new_order}success{else}default{/if}">{$listing->status}</span></td>
+                    <td><span class="badge alert-{if $listing->order_status_id == $new_order}success{else}default{/if}">{$listing->status}</span></td>
                     <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png" color=green}</a>{/if}</td>
                 </tr>
             {/foreach}

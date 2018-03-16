@@ -115,7 +115,7 @@
 
                         {if $config.show_player && !$record->ext_file}
                             {if $filetype == "mp3"}
-                                <audio id="{$record->expFile.downloadable[0]->filename}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$record->expFile.downloadable[0]->directory}{$record->expFile.downloadable[0]->filename}" type="audio/mp3">
+                                <audio id="player{$record->expFile.downloadable[0]->id}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$record->expFile.downloadable[0]->directory}{$record->expFile.downloadable[0]->filename}" type="audio/mp3">
                                 </audio>
                             {elseif $filetype == "mp4" || $filetype == "m4v" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v"}
                                 <video width="360" height="240" src="{$smarty.const.PATH_RELATIVE}{$record->expFile.downloadable[0]->directory}{$record->expFile.downloadable[0]->filename}" type="{$record->expFile.downloadable[0]->mimetype}"
@@ -173,11 +173,18 @@
     {/script}
 
     {script unique="filedownload-`$id`"}
-        mejs.i18n.language('{substr($smarty.const.LOCALE,0,2)}'); // Setting language
+    {literal}
+        mejs.i18n.language('{/literal}{substr($smarty.const.LOCALE,0,2)}{literal}'); // Setting language
         $('audio,video').mediaelementplayer({
-        	success: function(player, node) {
-        		$('#' + node.id + '-mode').html('mode: ' + player.rendererName);
-        	}
+            // Do not forget to put a final slash (/)
+            pluginPath: 'https://cdnjs.com/libraries/mediaelement/',
+            // this will allow the CDN to use Flash without restrictions
+            // (by default, this is set as `sameDomain`)
+            shimScriptAccess: 'always',
+            success: function(player, node) {
+            // $('#' + node.id + '-mode').html('mode: ' + player.rendererName);
+            },
         });
+    {/literal}
     {/script}
 {/if}

@@ -30,7 +30,7 @@
             {*<button type="submit" class="{button_style}">{"Apply Batch Action"|gettext}</button>*}
             {control type="buttongroup" submit="Apply Batch Action"|gettext}
         </div>
-        <div class="exp-skin-table">
+        <div class="exp-ecom-table">
             {$page->table}
         </div>
     {/form}

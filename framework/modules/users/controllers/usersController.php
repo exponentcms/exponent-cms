@@ -36,7 +36,7 @@ class usersController extends expController {
         'groupperms'       => 'Group Permissions',
         'import'           => 'Import Users',
         'export'           => 'Export Users',
-        'update'           => 'Update Users',
+//        'update'           => 'Update Users',
         'show'             => 'Show User',
         'showall'          => 'Show Users',
         'getUsersByJSON'   => 'Get Users',
@@ -208,7 +208,7 @@ class usersController extends expController {
         // 3 - user is not admin, is not logged on, and id is empty (creating new account (or)
         // 4 - user is not admin and is member of group not preventing profile changes
         // otherwise, exit
-        if (!$user->isAdmin() && (($user->isLoggedIn() && $user->id != $id) || (!$user->isLoggedIn() && $id !== null) || !$user->globalPerm('prevent_profile_change'))) {
+        if (!$user->isAdmin() && (($user->isLoggedIn() && $user->id != $id) || (!$user->isLoggedIn() && $id !== null) || $user->globalPerm('prevent_profile_change'))) {
             $exit = true;
         }
 
@@ -607,7 +607,7 @@ class usersController extends expController {
         global $db;
 
         $db->delete('passreset_token', 'expires < ' . time());
-        $tok = $db->selectObject('passreset_token', 'uid=' . intval($this->params['uid']) . " AND token='" . preg_replace('/[^A-Za-z0-9]/', '', expString::escape($this->params['token'])) . "'");
+        $tok = $db->selectObject('passreset_token', 'uid=' . (int)($this->params['uid']) . " AND token='" . preg_replace('/[^A-Za-z0-9]/', '', expString::escape($this->params['token'])) . "'");
         if ($tok == null) {
             flash('error', gt('Your password reset request has expired.  Please try again.'));
             expHistory::back();
@@ -687,7 +687,7 @@ class usersController extends expController {
             expHistory::returnTo('editable');
         }
         //eDebug($user);
-        $u = new user(intval($this->params['uid']));
+        $u = new user((int)($this->params['uid']));
 
         $ret = $u->setPassword($this->params['new_password1'], $this->params['new_password2']);
         //eDebug($u, true);
@@ -844,7 +844,7 @@ class usersController extends expController {
 
         $group = new group();
         if (!empty($this->params['redirect'])) {
-            $this->params['redirect'] = $db->selectValue('section', 'sef_name', 'id=' . intval($this->params['redirect']));
+            $this->params['redirect'] = $db->selectValue('section', 'sef_name', 'id=' . (int)($this->params['redirect']));
         }
         $group->update($this->params);
         expHistory::back();
@@ -910,12 +910,12 @@ class usersController extends expController {
 
         // How many records to get?
         if (strlen($this->params['results']) > 0) {
-            $results = intval($this->params['results']);
+            $results = (int)($this->params['results']);
         }
 
         // Start at which record?
         if (strlen($this->params['startIndex']) > 0) {
-            $startIndex = intval($this->params['startIndex']);
+            $startIndex = (int)($this->params['startIndex']);
         }
 
         // Sorted?

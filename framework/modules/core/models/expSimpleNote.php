@@ -66,7 +66,7 @@ class expSimpleNote extends expRecord {
         } else {
             $sql .= 'AND com.approved=0';
         }
-        return intval($db->countObjectsBySql($sql));
+        return (int)($db->countObjectsBySql($sql));
     }
 
 }

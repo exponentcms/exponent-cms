@@ -101,7 +101,7 @@ class cash extends billingcalculator {
             $params['cash_amount'] = substr($params['cash_amount'], strlen(expCore::getCurrencySymbol()));
         }
         // force full payment prior to checkout
-//        if (expUtil::isNumberGreaterThan($order->grand_total, floatval($params["cash_amount"]), 2)) {
+//        if (expUtil::isNumberGreaterThan($order->grand_total, (float)($params["cash_amount"]), 2)) {
 //            expValidator::failAndReturnToForm(gt("The total amount of your order is greater than the amount you have input.") . "<br />" . gt("Please enter exact or greater amount of your total."));
 //        }
         $this->opts = new stdClass();

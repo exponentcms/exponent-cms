@@ -406,14 +406,14 @@ class orderController extends expController {
 
         $invoice = '<!DOCTYPE HTML><HTML><HEAD>';
         // the basic styles
-        if (!bs3())
+        if (!bs3() && !bs4())
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/normalize/normalize.css" >';
-        if (!bs())
-//            $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/normalize/normalize.css" >';
         if (bs2())
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap/css/bootstrap.css" >';
-        if (bs3())
+        elseif (bs3())
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap3/css/bootstrap.css" >';
+        elseif (bs4())
+            $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap4/css/bootstrap.css" >';
         $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'framework/modules/ecommerce/assets/css/print-invoice.css">
         <style>
             html{background:none;}
@@ -663,9 +663,9 @@ exit();
             list($range) = explode(',', $range, 2);
             list($range, $range_end) = explode('-', $range);
 
-            $range = intval($range);
+            $range = (int)($range);
 
-            $range_end  = (!$range_end) ? $size - 1 : intval($range_end);
+            $range_end  = (!$range_end) ? $size - 1 : (int)($range_end);
             $new_length = $range_end - $range + 1;
 
             header('HTTP/1.1 206 Partial Content');
@@ -1969,7 +1969,7 @@ exit();
         global $db;
 
         $search    = $this->params['ordernum'];
-        $searchInv = intval($search);
+        $searchInv = (int)($search);
 
         $sql = "SELECT DISTINCT(o.id), o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, concat('".expCore::getCurrencySymbol()."',format(o.grand_total,2)) as grand_total, os.title as status_title, ot.title as order_type";
         $sql .= " from " . $db->prefix . "orders as o ";
@@ -2019,7 +2019,7 @@ exit();
         $b = new billingmethod();
         $s = new shippingmethod();
 
-        $search = intval($this->params['ordernum']);
+        $search = (int)($this->params['ordernum']);
         if (is_int($oid) && $oid > 0)
         {
             $orders = $o->find('all',"invoice_id LIKE '%".$oid."%'");
@@ -2038,7 +2038,7 @@ exit();
             $bms = $b->find('all', )
         }*/
         /*$o = new order();
-        $oid = intval($this->params['ordernum']);
+        $oid = (int)($this->params['ordernum']);
         if (is_int($oid) && $oid > 0)
         {
             $order = $o->find('first','invoice_id='.$oid);
@@ -2048,7 +2048,7 @@ exit();
             }
             else
             {
-                flashAndFlow('message',"Order #" . intval($this->params['ordernum']) . " not found.");
+                flashAndFlow('message',"Order #" . (int)($this->params['ordernum']) . " not found.");
             }
         }
         else
@@ -2206,11 +2206,19 @@ exit();
                 'formatter' => function( $d, $row ) {
         	        $paid = strtolower($row['paid']);
         	        if ($paid === 'complete' || $paid === 'paid') {
-        	            $class = 'badge-success';
+        	            if (bs4()) {
+                            $class = 'badge-success';
+                        } else {
+                            $class = 'alert-success';
+                        }
                         $title = gt('Paid');
                         $color = 'darkseagreen';
                     } else {
-        	            $class = 'badge-secondary';
+                        if (bs4()) {
+                            $class = 'badge-secondary';
+                        } else {
+                            $class = 'alert-secondary';
+                        }
                         $title = gt('Payment Due');
                         $color = 'lightgray';
                     }
@@ -2251,8 +2259,10 @@ exit();
                         }
                         $color = 'lightgray';
                     }
-                    if (bs()) {
+                    if (bs4()) {
                         return '<span class="badge badge-' . $class . '">' . $d . '</span>';
+                    } elseif (bs()) {
+                        return '<span class="badge alert-' . $class . '">' . $d . '</span>';
                     } else {
                         return '<span style="padding:3px;border-radius:5px;background-color:' . $color . '">' . $d . '</span>';
                     }

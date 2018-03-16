@@ -77,7 +77,7 @@ class eventController extends expController {
 
         expHistory::set('viewable', $this->params);
         $locsql = $this->aggregateWhereClause();
-        $time = (isset($this->params['time']) ? intval($this->params['time']) : time());
+        $time = (isset($this->params['time']) ? (int)($this->params['time']) : time());
         assign_to_template(array(
             'time' => $time,
             'daynames' => event::dayNames(),
@@ -766,7 +766,7 @@ class eventController extends expController {
     function delete_all_past() {
         $locsql = $this->aggregateWhereClause();
         $ed = new eventdate();
-        $dates = $ed->find("all", $locsql . " AND date < " . strtotime('-1 months', time()));
+        $dates = $ed->find("all", $locsql . " AND date < " . strtotime('-1 months'));
         foreach ($dates as $date) {
             $date->delete(); // event automatically deleted if all assoc eventdates are deleted
         }
@@ -902,7 +902,7 @@ class eventController extends expController {
                     }
 
                     if (isset($this->params['time'])) {
-                        $time = intval($this->params['time']); // get current month's events
+                        $time = (int)($this->params['time']); // get current month's events
 //                        $dates = $db->selectObjects("eventdate",$locsql." AND (date >= ".expDateTime::startOfMonthTimestamp($time)." AND date <= ".expDateTime::endOfMonthTimestamp($time).")");
                         $dates = $ed->find('all', $locsql . " AND (date >= " . expDateTime::startOfMonthTimestamp($time) . " AND date <= " . expDateTime::endOfMonthTimestamp($time) . ")");
                     } else {
@@ -1149,7 +1149,7 @@ class eventController extends expController {
             $title = $this->config['feed_title'];
             $template->assign('moduletitle', $title);
 
-            $time = (isset($this->params['time']) ? intval($this->params['time']) : time());
+            $time = (isset($this->params['time']) ? (int)($this->params['time']) : time());
             $time = (int)$time;
 
             $template->assign("time", $time);
@@ -1167,7 +1167,7 @@ class eventController extends expController {
                 $start = mktime(0, 0, 0, $info['mon'], $info['mday'] + $i, $info['year']);
                 $ed = new eventdate();
                 $edates = $ed->find('all', $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
-                $days[$start] = array();
+//                $days[$start] = array();
 //                $days[$start] = $this->getEventsForDates($edates);
                 $days[$start] = $this->event->getEventsForDates($edates);
                 for ($j = 0, $jMax = count($days[$start]); $j < $jMax; $j++) {

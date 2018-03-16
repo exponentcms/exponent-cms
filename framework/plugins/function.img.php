@@ -47,7 +47,7 @@ function smarty_function_img($params,&$smarty) {
     } elseif (isset($params['square']) && $params['square'] == 'true' && !isset($params['w'])) {
         $params['w'] = $params['h'];
     }
-    $dims = (isset($params['w']) && isset($params['h']) && isset($params['zc'])) ? ' height="'.$params['h'].'" width="'.$params['w'].'"' : '';
+//    $dims = (isset($params['w']) && isset($params['h']) && isset($params['zc'])) ? ' height="'.$params['h'].'" width="'.$params['w'].'"' : '';
 	$dims = '';
 	 if (isset($params['w']) && isset($params['h']) && isset($params['zc'])) {
 		 $dims = ' height="'.$params['h'].'" width="'.$params['w'].'"';

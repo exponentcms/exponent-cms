@@ -35,11 +35,11 @@
 function smarty_modifier_signature($userid) {
 	global $db;
 
-    $sig = $db->selectValue('user_signature','signature','user_id='.intval($userid));
+    $sig = $db->selectValue('user_signature','signature','user_id='.(int)($userid));
     if (!empty($sig)) {
         $sig = '<h3>'.gt('About the author').'</h3>'.$sig;
     }
-    $googleplus = $db->selectValue('user_signature','googleplus','user_id='.intval($userid));
+    $googleplus = $db->selectValue('user_signature','googleplus','user_id='.(int)($userid));
     if (!empty($googleplus)) {
         if (empty($sig)) {
             $sig = user::getUserAttribution($userid) . ' ' . gt('is on');

@@ -58,7 +58,7 @@ function smarty_function_breadcrumb($params,&$smarty) {
         if ($i != $active) {
             $title = '&#160;<span class="breadcrumb-title">' .$title . '</span>';
             if (bs3()||bs4()) {
-                $title = '&#160;<span class="hidden-xs hidden-sm">' . $title . '</span>';
+                $title = '&#160;<span class="hidden-xs hidden-sm d-none d-sm-none">' . $title . '</span>';
             }
         }
         $html .= $title . '</a>';

@@ -40,7 +40,7 @@ function smarty_function_google_maps_link($params,&$smarty) {
 	if (!empty($params['state'])) $link .= addPlus($link).urlencode(trim($params['state']));
 	if (!empty($params['zip'])) $link .= addPlus($link).urlencode(trim($params['zip']));
 
-	echo 'http://maps.google.com/maps?f=q&hl=en&geocode=&q='.$link;
+	echo 'https://maps.google.com/maps?f=q&hl=en&geocode=&q='.$link;
 
 }
 

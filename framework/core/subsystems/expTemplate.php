@@ -60,7 +60,7 @@ class expTemplate {
      */
     public static function getViewConfigForm($module,$view,$form,$values) {  //FIXME Not Used 2.2???
 		$form_file = "";
-		$resolved_path = null;
+//		$resolved_path = null;
 		$resolved_path = self::resolveFilePaths("modules", $module , "form" , $view);
 		if (isset($resolved_path) && $resolved_path != '') {
             $tmppath = self::resolveFilePaths("modules", $module , "form" , $view);

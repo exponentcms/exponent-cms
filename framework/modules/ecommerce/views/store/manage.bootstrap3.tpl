@@ -112,14 +112,13 @@
                         <td>{$listing->product_type|ucwords}</td>
                         <td>
                             {if $listing->product_type == "eventregistration"}
-                                <a href={link controller=eventregistration action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
+                                <a href={link controller=eventregistration action=show title=$listing->sef_url}>{img file_id=$listing->fileid square=true h=50}{br}{$listing->title}</a>
                             {elseif $listing->product_type == "donation"}
-                                <a href={link controller=donation action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
+                                <a href={link controller=donation action=show title=$listing->sef_url}>{img file_id=$listing->fileid square=true h=50}{br}{$listing->title}</a>
                             {elseif $listing->product_type == "giftcard"}
-                                <a href={link controller=store action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
+                                <a href={link controller=store action=show title=$listing->sef_url}>{img file_id=$listing->fileid square=true h=50}{br}{$listing->title}</a>
                             {else}
-                                <a href={link controller=store action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
-                                {img file_id=$listing->expFile.mainimage[0]->id square=true h=50}
+                                <a href={link controller=store action=show title=$listing->sef_url}>{img file_id=$listing->fileid square=true h=50}{br}{$listing->title}</a>
                             {/if}
                         </td>
                         <td>{$listing->model|default:"N/A"}</td>

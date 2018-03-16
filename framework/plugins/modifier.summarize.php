@@ -128,7 +128,7 @@ function smarty_modifier_summarize($string, $strtype, $type, $more='...') {
                                 $currentTag = substr($currentTag, 1, -1);
                             }
 
-                            array_push($tagsArray, $currentTag);
+                            $tagsArray[] = $currentTag;
 
                         } else if (strpos($currentTag, "</") !== FALSE) {
                             array_pop($tagsArray);

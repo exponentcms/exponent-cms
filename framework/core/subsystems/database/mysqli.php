@@ -72,6 +72,30 @@ class mysqli_database extends database {
 	}
 
     /**
+     * Connect to the database by PDO
+   	 *
+   	 * @return PDO Database connection handle
+   	 */
+   	public function sql_connect_pdo()	{
+   		try {
+               $dbpdo = @new PDO(
+                   "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "",
+               				DB_USER,
+               				DB_PASS,
+   				array( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION )
+   			);
+   		}
+   		catch (PDOException $e) {
+   			self::fatal(
+   				"An error occurred while connecting to the database. ".
+   				"The error reported by the server was: ".$e->getMessage()
+   			);
+   		}
+
+   		return $dbpdo;
+   	}
+
+    /**
      * Create a new Table
      *
      * Creates a new database table, according to the passed data definition.

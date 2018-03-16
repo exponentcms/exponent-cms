@@ -47,11 +47,11 @@ function smarty_function_google_map($params,&$smarty) {
         if ($address->state == -2) {
             $address_string .= $address->non_us_state;
         } else {
-            $state_name = $db->selectValue('geo_region', 'name', 'id='.intval($address->state));
+            $state_name = $db->selectValue('geo_region', 'name', 'id='.(int)($address->state));
             $address_string .= $state_name;
         }
         if ($address->state == -2 || empty($address->state)) {
-            $country_name = $db->selectValue('geo_country', 'name', 'id='.intval($address->country));
+            $country_name = $db->selectValue('geo_country', 'name', 'id='.(int)($address->country));
             $address_string .= ',' . $country_name;
         }
     } else if (is_string($params['address'])) {
@@ -80,7 +80,7 @@ function smarty_function_google_map($params,&$smarty) {
                     var " . $params['unique'] . "_marker = new google.maps.Marker({
                         map: " . $params['unique'] . "_map,
                         position: results[0].geometry.location,
-                        url: 'http://maps.google.com?q=" . urlencode($address_string) . "'
+                        url: 'https://maps.google.com?q=" . urlencode($address_string) . "'
                     });
                     google.maps.event.addListener(" . $params['unique'] . "_marker, 'click', function() {
                         window.open(" . $params['unique'] . "_marker.url);
@@ -94,7 +94,7 @@ function smarty_function_google_map($params,&$smarty) {
     expJavascript::pushToFoot(array(
         "unique"=>'0-gmaps',
         "jquery"=>1,
-        "src"=>'//maps.google.com/maps/api/js?key=' . ecomconfig::getConfig('map_apikey')
+        "src"=>'https://maps.google.com/maps/api/js?key=' . ecomconfig::getConfig('map_apikey')
      ));
     expJavascript::pushToFoot(array(
         "unique"=>'gmap-' . $params['unique'],

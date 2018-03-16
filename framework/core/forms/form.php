@@ -81,8 +81,8 @@ class form extends baseform {
         if ($this->horizontal)
 			$control->horizontal = true;
 		if (!empty($params)) {
-			foreach ($params as $name => $value) {
-				$control->$name = $value;
+			foreach ($params as $nname => $value) {
+				$control->$nname = $value;
 			}
 		}
 		$this->controls[$name] = $control;
@@ -277,7 +277,7 @@ class form extends baseform {
             } elseif (BTN_SIZE == 'small') {
                 $btn_size = 'btn-sm';
 			} elseif (BTN_SIZE == 'extrasmall') {
-		       $btn_size = 'btn-xs';
+		       $btn_size = 'btn-sm';
             } else { // medium
                 $btn_size = '';
             }

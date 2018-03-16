@@ -157,7 +157,7 @@ class eaasController extends expController {
                 $counts[$key] = count($data['records']);
             }
         }
-        $this->data = array();  // initialize
+//        $this->data = array();  // initialize
         $this->data = $counts;
         $this->data['records'] = array();
         $this->getImageBody($this->params['get']);

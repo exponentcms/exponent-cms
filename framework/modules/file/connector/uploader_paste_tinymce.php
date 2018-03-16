@@ -64,7 +64,7 @@ if ((!empty($_FILES['file']) && ($_FILES['file'] == "none")) OR (empty($_FILES['
             header("HTTP/1.0 500 Server Error");
         } else {
             // upload the file, but don't save the record yet...
-            $file = expFile::fileUpload('file', false, false, null, $destDir, intval(QUICK_UPLOAD_WIDTH));
+            $file = expFile::fileUpload('file', false, false, null, $destDir, (int)(QUICK_UPLOAD_WIDTH));
             // since most likely this function will only get hit via flash in YUI Uploader
             // and since Flash can't pass cookies, we lose the knowledge of our $user
             // so we're passing the user's ID in as $_POST data. We then instantiate a new $user,

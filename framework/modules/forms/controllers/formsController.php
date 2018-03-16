@@ -673,7 +673,9 @@ class formsController extends expController {
 //                    $db_data->referrer = $olddata->referrer;
 //                    $db_data->location_data = $olddata->location_data;
 //                    $f->deleteRecord($this->params['data_id']);  //fixme we delete old record/id to make this easier??
-                    $f->updateRecord($this->params);
+                    $db_data->id = $this->params['data_id'];
+                    $db_data->sef_url = $this->params['sef_url'];
+                    $f->updateRecord($db_data);
                 } else {
                     $db_data->ip = $_SERVER['REMOTE_ADDR'];
                     if (expSession::loggedIn()) {
@@ -689,7 +691,7 @@ class formsController extends expController {
                     $location_data = null;
                     if (!empty($this->params['src'])) {
                         $mod = !empty($this->params['module']) ? $this->params['module'] : $this->params['controller'];
-                        expCore::makeLocation($mod,$this->params['src'],$this->params['int']);
+                        $location_data = expCore::makeLocation($mod,$this->params['src'],$this->params['int']);
                     }
                     $db_data->location_data = $location_data;
                     $f->insertRecord($db_data);
@@ -727,7 +729,7 @@ class formsController extends expController {
                 //Building Email List...
                 $emaillist = array();
                 if (!empty($this->config['select_email']) && !empty($this->params['email_dest'])) {
-                    if (strval(intval($this->params['email_dest'])) == strval($this->params['email_dest'])) {
+                    if ((string)((int)($this->params['email_dest'])) == (string)($this->params['email_dest'])) {
                         foreach (group::getUsersInGroup($this->params['email_dest']) as $locUser) {
                             if ($locUser->email != '') $emaillist[$locUser->email] = trim(user::getUserAttribution($locUser->id));
                         }
@@ -1214,7 +1216,7 @@ class formsController extends expController {
                 $ctl1 = $ctl;
             }
             if (call_user_func(array($this->params['control_type'], 'useGeneric')) == true) {
-                $ctl1 = call_user_func(array('genericcontrol', 'update'), $this->params, $ctl1);
+                $ctl1 = genericcontrol::update($this->params, $ctl1);
             } else {
                 $ctl1 = call_user_func(array($this->params['control_type'], 'update'), $this->params, $ctl1);
             }

@@ -1175,7 +1175,8 @@ function get_thumbnail($src) {
 }
 
 /**
- * Determine whether
+ * Determine whether we are secure
+ *
  * @return bool
  */
 function isSSL() {

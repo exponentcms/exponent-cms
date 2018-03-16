@@ -77,7 +77,7 @@
                             <th><strong>{"QTY"|gettext}</strong></th>
                             <th><strong>{"SKU"|gettext}</strong></th>
                             {foreach from=$product->extra_fields item=chiprodname}
-                                <th><span>{$chiprodname.name}</span></th>
+                                <th><span>{$chiprodname.name|regex_replace:'/\_/':' '|ucwords}</span></th>
                             {/foreach}
                             <th style="text-align: right; padding-right: 10px"><strong>{"PRICE"|gettext}</strong></th>
                             {*<th>{'Action'|gettext}</th>*}
@@ -109,10 +109,10 @@
                                 {/if}
                                 <td style="text-align: right;">
                                     {if $chiprod->use_special_price}
-                                        <span style="color:red; font-size: 8px; font-weight: bold;">{'SALE'|gettext}</span>{br}
-                                        <span>{currency_symbol}<input class="form-control" name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->special_price|number_format:2}" size=7 maxlength=9></span>
+                                        <div style="color:red; font-size: 8px; font-weight: bold;">{'SALE'|gettext}</div>
+                                        <div>{currency_symbol}<input class="form-control" name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->special_price|number_format:2}" size=7 maxlength=9></div>
                                     {else}
-                                        <span>{currency_symbol}<input class="form-cotnrol" name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->base_price|number_format:2}" size=7 maxlength=9></span>
+                                        <div>{currency_symbol}<input class="form-cotnrol" name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->base_price|number_format:2}" size=7 maxlength=9></div>
                                     {/if}
                                 </td>
                                 {*<td>&#160;</td>*}

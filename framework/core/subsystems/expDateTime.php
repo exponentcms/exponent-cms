@@ -65,7 +65,7 @@ class expDateTime {
 			12=>gt("December")
 		);
 
-		$html = '<select ' . (bs3()||bs4() ? 'class="form-control col-xs-2" ' : '') . 'name="' . $controlName . '" aria-label="' . gt('Month') . '" size="1">';
+		$html = '<select ' . (bs3()||bs4() ? 'class="form-control col-xs-2 col-2" ' : '') . 'name="' . $controlName . '" aria-label="' . gt('Month') . '" size="1">';
 		foreach ($months as $id=>$month) {
 			$html .= '<option value="' . $id . '"';
 			if ($id == $default_month) $html .= ' selected';
@@ -590,7 +590,7 @@ class expDateTime {
 		$infofirst = getdate(mktime(0,0,0,$info['mon'],1,$info['year']));
 
 		if ($infofirst['wday'] == 0) $monthly[$week] = array(); // initialize for non days
-		for ($i = 0 - $infofirst['wday'] + intval(DISPLAY_START_OF_WEEK); $i < 0; $i++) {
+		for ($i = 0 - $infofirst['wday'] + (int)(DISPLAY_START_OF_WEEK); $i < 0; $i++) {
 //			$monthly[0][$i] = array("ts"=>-1);
             $monthly[$week][$i] = array("ts"=>-1);
 		}

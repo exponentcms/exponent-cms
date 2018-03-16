@@ -691,7 +691,7 @@ class expMail {
         // attempt to fix a bad to address
         if (is_array($email)) {
             foreach ($email as $address=>$name) {
-                if (is_integer($address)) {
+                if (is_int($address)) {
                     if (strstr($name,'.') === false) {
                         $email[$address] .= $name.'.net';
                     }
@@ -709,7 +709,7 @@ class expMail {
         }
 	}
 
-		/**
+    /**
 	 *  addCc() - This adds Carbon Copy addresses to the message one at a time, so if you want to add multiple CC's it is best to run through a loop in order to put them in.
 	 *
 	 * @author Tyler Smart <tyleresmart@gmail.com>
@@ -741,10 +741,10 @@ class expMail {
 	public function addCc($email, $name = null) {
         // attempt to fix a bad to address
         if (is_array($email)) {
-            foreach ($email as $address=>$name) {
-                if (is_integer($address)) {
-                    if (strstr($name,'.') === false) {
-                        $email[$address] .= $name.'.net';
+            foreach ($email as $address=>$nname) {
+                if (is_int($address)) {
+                    if (strstr($nname,'.') === false) {
+                        $email[$address] .= $nname.'.net';
                     }
                 }
             }
@@ -792,7 +792,7 @@ class expMail {
         // attempt to fix a bad to address
         if (is_array($email)) {
             foreach ($email as $address=>$name) {
-                if (is_integer($address)) {
+                if (is_int($address)) {
                     if (strstr($name,'.') === false) {
                         $email[$address] .= $name.'.net';
                     }

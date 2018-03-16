@@ -65,7 +65,7 @@ class ckeditorcontrol extends formcontrol {
 
         if ($this->toolbar === '')
             $settings = expHTMLEditorController::getActiveEditorSettings('ckeditor');
-        elseif (intval($this->toolbar) != 0)
+        elseif ((int)($this->toolbar) != 0)
             $settings = expHTMLEditorController::getEditorSettings($this->toolbar, 'ckeditor');
         $plugins = '';
         if (!empty($settings)) {

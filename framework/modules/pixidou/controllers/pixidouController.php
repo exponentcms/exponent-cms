@@ -58,7 +58,7 @@ class pixidouController extends expController {
 
     public function exitEditor() {
         // clean up parameters
-        $this->params['fid'] = intval($this->params['fid']);
+        $this->params['fid'] = (int)($this->params['fid']);
         if (!empty($this->params['cpi']) && strpos($this->params['cpi'], '..') !== false) {
             $this->params['exitType'] = 'error';
         }

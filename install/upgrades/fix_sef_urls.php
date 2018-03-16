@@ -109,26 +109,28 @@ class fix_sef_urls extends upgradescript {
                 } else {
                     $items = $model->find();
                     foreach ($items as $item) {
-                        if (empty($item->title)) {
-                            $item->title = 'Untitled';  // fix badly mangled database from long ago
-                        }
-                        // check for duplicate sef url
-                        if (!is_bool(expValidator::uniqueness_of('sef_url', $item, array()))) {
-                            $item->makeSefUrl();  // make a new unique sef_url from scratch
-                            $item->update();
-                            $fixed++;
-                        }
-                        // also check for valid sef url
-                        if (!is_bool(expValidator::is_valid_sef_name('sef_url', $item, array()))) {
-                            $item->sef_url = expRouter::encode($item->sef_url);
-                            // we need to test for uniqueness or update will fail
-                            $dupe = $db->selectValue($model->tablename, 'sef_url', 'sef_url="'.$item->sef_url.'"');
-                    		if (!empty($dupe)) {
-                    			list($u, $s) = explode(' ',microtime());
-                                $item->sef_url .= '-'.$s.'-'.$u;
-                    		}
-                            $item->update();
-                            $fixed_i++;
+                        if ($model !== 'product' || empty($model->parent_id)) {  // account for child products
+                            if (empty($item->title)) {
+                                $item->title = 'Untitled';  // fix badly mangled database from long ago
+                            }
+                            // check for duplicate sef url
+                            if (!is_bool(expValidator::uniqueness_of('sef_url', $item, array()))) {
+                                $item->makeSefUrl();  // make a new unique sef_url from scratch
+                                $item->update();
+                                $fixed++;
+                            }
+                            // also check for valid sef url
+                            if (!is_bool(expValidator::is_valid_sef_name('sef_url', $item, array()))) {
+                                $item->sef_url = expRouter::encode($item->sef_url);
+                                // we need to test for uniqueness or update will fail
+                                $dupe = $db->selectValue($model->tablename, 'sef_url', 'sef_url="' . $item->sef_url . '"');
+                                if (!empty($dupe)) {
+                                    list($u, $s) = explode(' ', microtime());
+                                    $item->sef_url .= '-' . $s . '-' . $u;
+                                }
+                                $item->update();
+                                $fixed_i++;
+                            }
                         }
                     }
                 }

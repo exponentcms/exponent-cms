@@ -201,7 +201,7 @@ class expRecord {
         global $db, $user;
 
         if (is_numeric($range)) {
-            $where = $this->identifier . '=' . intval($range); // If we hit this then we are expecting just a simple id
+            $where = $this->identifier . '=' . (int)($range); // If we hit this then we are expecting just a simple id
             $range = 'first';
         }
 
@@ -211,9 +211,9 @@ class expRecord {
 //        $sql .= empty($order) ? '' : ' ORDER BY ' . $order;
         $order = expString::escape($order);
         if ($limit !== null)
-            $limit = intval($limit);
+            $limit = (int)($limit);
         if ($limitstart !== null)
-            $limitstart = intval($limitstart);
+            $limitstart = (int)($limitstart);
         $supports_revisions = $this->supports_revisions && ENABLE_WORKFLOW;
         if (ENABLE_WORKFLOW && $this->needs_approval) {
             $needs_approval = true;
@@ -249,8 +249,8 @@ class expRecord {
             if (!is_int($where))  $where = $db->selectObject($db->prefix . 'expTags',"title='" . $where . "' OR sef_url='" . $where . "'");
             $sql = 'SELECT DISTINCT m.id FROM ' . $db->prefix . $this->tablename . ' m ';
             $sql .= 'JOIN ' . $db->prefix . 'content_expTags ct ';
-            $sql .= 'ON m.id = ct.content_id WHERE ct.exptags_id=' . intval($where) . " AND ct.content_type='" . $this->classname . "'";
-            if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE ct.exptags_id=" . intval($where) . " AND ct.content_type='" . $this->classname . "'";
+            $sql .= 'ON m.id = ct.content_id WHERE ct.exptags_id=' . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
+            if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE ct.exptags_id=" . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
             $tag_assocs = $db->selectObjectsBySql($sql);
             $records    = array();
             foreach ($tag_assocs as $assoc) {
@@ -261,8 +261,8 @@ class expRecord {
             if (!is_int($where))  $where = $db->selectObject($db->prefix . 'expCats',"title='" . $where . "' OR sef_url='" . $where . "'");
             $sql = 'SELECT DISTINCT m.id FROM ' . $db->prefix . $this->tablename . ' m ';
             $sql .= 'JOIN ' . $db->prefix . 'content_expCats ct ';
-            $sql .= 'ON m.id = ct.content_id WHERE ct.expcats_id=' . intval($where) . " AND ct.content_type='" . $this->classname . "'";
-            if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE ct.expcats_id=" . intval($where) . " AND ct.content_type='" . $this->classname . "'";
+            $sql .= 'ON m.id = ct.content_id WHERE ct.expcats_id=' . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
+            if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE ct.expcats_id=" . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
             $cat_assocs = $db->selectObjectsBySql($sql);
             $records    = array();
             foreach ($cat_assocs as $assoc) {
@@ -319,7 +319,7 @@ class expRecord {
     /**
      * update item
      *
-     * @param array $params
+     * @param array|object $params
      */
     public function update($params = array()) {
         if (is_array($params) && isset($params['current_revision_id'])) {
@@ -529,7 +529,7 @@ class expRecord {
      * before validating item
      */
     public function beforeValidation() {
-        $this->runCallback('beforeValidation');
+//        $this->runCallback('beforeValidation');
         if (empty($this->id)) {
             $this->beforeValidationOnCreate();
         } else {
@@ -541,14 +541,14 @@ class expRecord {
      * before validating item during creation
      */
     public function beforeValidationOnCreate() {
-        $this->runCallback('beforeValidationOnCreate');
+//        $this->runCallback('beforeValidationOnCreate');
     }
 
     /**
      * before validating item during update
      */
     public function beforeValidationOnUpdate() {
-        $this->runCallback('beforeValidationOnUpdate');
+//        $this->runCallback('beforeValidationOnUpdate');
     }
 
     /**
@@ -598,7 +598,7 @@ class expRecord {
      * after validating item
      */
     public function afterValidation() {
-        $this->runCallback('afterValidation');
+//        $this->runCallback('afterValidation');
         if (empty($this->id)) {
             $this->afterValidationOnCreate();
         } else {
@@ -610,14 +610,14 @@ class expRecord {
      * after validating item during creation
      */
     public function afterValidationOnCreate() {
-        $this->runCallback('afterValidationOnCreate');
+//        $this->runCallback('afterValidationOnCreate');
     }
 
     /**
      * after validating item during update
      */
     public function afterValidationOnUpdate() {
-        $this->runCallback('afterValidationOnUpdate');
+//        $this->runCallback('afterValidationOnUpdate');
     }
 
     /**
@@ -626,7 +626,7 @@ class expRecord {
     public function beforeSave() {
         global $user, $db;
 
-        $this->runCallback('beforeSave');
+//        $this->runCallback('beforeSave');
         // populate the magic fields
         if (empty($this->id)) {
             // timestamp the record
@@ -681,7 +681,7 @@ class expRecord {
      * before creating item
      */
     public function beforeCreate() {
-        $this->runCallback('beforeCreate');
+//        $this->runCallback('beforeCreate');
     }
 
     /**
@@ -693,21 +693,21 @@ class expRecord {
             $this->edited_at = $this->migrated_at;
             unset($this->migrated_at);
         }
-        $this->runCallback('beforeUpdate');
+//        $this->runCallback('beforeUpdate');
     }
 
     /**
      * after updating item
      */
     public function afterUpdate() {
-        $this->runCallback('afterUpdate');
+//        $this->runCallback('afterUpdate');
     }
 
     /**
      * after creating item
      */
     public function afterCreate() {
-        $this->runCallback('afterCreate');
+//        $this->runCallback('afterCreate');
     }
 
     /**
@@ -716,7 +716,7 @@ class expRecord {
     public function afterSave() {
         global $db;
 
-        $this->runCallback('afterSave');
+//        $this->runCallback('afterSave');
 
         // save all attached items
         if (!empty($this->attachable_items_to_save)) {
@@ -766,7 +766,7 @@ class expRecord {
      * is run before deleting item
      */
     public function beforeDelete() {
-        $this->runCallback('beforeDelete');
+//        $this->runCallback('beforeDelete');
     }
 
     /**
@@ -780,25 +780,31 @@ class expRecord {
         global $db;
 
         $id = $this->identifier;
-        if (empty($this->$id)) return false;
-        $this->beforeDelete();
-        $db->delete($this->tablename, $id . '=' . $this->$id);
-        if (!empty($where)) $where .= ' AND ';  // for help in reranking, NOT deleting object
-        if (property_exists($this, 'rank')) $db->decrement($this->tablename, 'rank', 1, $where . 'rank>=' . $this->rank . $this->grouping_sql);
+        if (empty($this->$id))
+            return false;
 
-        // delete attached items
+        $this->beforeDelete();
+
+        $db->delete($this->tablename, $id . '=' . $this->$id);
+        if (!empty($where))
+            $where .= ' AND ';  // for help in reranking, NOT deleting object
+        if (property_exists($this, 'rank'))
+            $db->decrement($this->tablename, 'rank', 1, $where . 'rank>=' . $this->rank . $this->grouping_sql);
+
+        // delete attached item connections
         foreach ($this->attachable_item_types as $content_table=> $type) {
             $db->delete($content_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->$id);
         }
+
         // leave associated items to the model afterDelete method?
         $this->afterDelete();
     }
 
     /**
-     * is run after deleting item
+     * is run after deleting item, should delete associated items here if needed
      */
     public function afterDelete() {
-        $this->runCallback('afterDelete');
+//        $this->runCallback('afterDelete');
     }
 
     /**
@@ -808,17 +814,17 @@ class expRecord {
      *
      * @return bool
      */
-    private function runCallback($type) {
-        if (empty($type)) return false;
-
-        // check for and run any callbacks listed in the $type array.
-        if ($this->classinfo->hasProperty($type)) {
-            $callbacks = $this->classinfo->getProperty($type);
-            foreach ($callbacks->getValue(new $this->classname(null, false, false)) as $func) {
-                $this->$func();
-            }
-        }
-    }
+//    private function runCallback($type) {
+//        if (empty($type)) return false;
+//
+//        // check for and run any callbacks listed in the $type array.
+//        if ($this->classinfo->hasProperty($type)) {
+//            $callbacks = $this->classinfo->getProperty($type);
+//            foreach ($callbacks->getValue(new $this->classname(null, false, false)) as $func) {
+//                $this->$func();
+//            }
+//        }
+//    }
 
     /**
      * make an sef_url for item
@@ -836,7 +842,7 @@ class expRecord {
 			list($u, $s) = explode(' ',microtime());
 			$this->sef_url .= '-'.$s.'-'.$u;
 		}
-        $this->runCallback('makeSefUrl');
+//        $this->runCallback('makeSefUrl');
     }
 
     /**

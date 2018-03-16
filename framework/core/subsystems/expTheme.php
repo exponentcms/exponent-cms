@@ -911,8 +911,8 @@ class expTheme
 ////				$loc = new stdClass();
 ////				$loc->mod = $module;
 ////				$loc->src = (isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : "");
-////				$loc->int = (!empty($_REQUEST['int']) ? strval(intval($_REQUEST['int'])) : "");
-//                $loc = expCore::makeLocation($module,(isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : ""),(!empty($_REQUEST['int']) ? strval(intval($_REQUEST['int'])) : ""));
+////				$loc->int = (!empty($_REQUEST['int']) ? (string)((int)($_REQUEST['int'])) : "");
+//                $loc = expCore::makeLocation($module,(isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : ""),(!empty($_REQUEST['int']) ? (string)((int)($_REQUEST['int'])) : ""));
 //				//if (isset($_REQUEST['act'])) $loc->act = $_REQUEST['act'];
 //
 //				if (isset($_REQUEST['_common'])) {
@@ -1614,7 +1614,11 @@ class expTheme
             } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
                 $btn_size = 'btn-sm';
             } elseif (BTN_SIZE == 'extrasmall' || (!empty($size) && $size == 'extrasmall')) {
-                $btn_size = 'btn-xs';
+                if (bs3()) {
+                    $btn_size = 'btn-xs';
+                } else {
+                    $btn_size = 'btn-sm';
+                }
             } else { // medium
                 $btn_size = '';
             }

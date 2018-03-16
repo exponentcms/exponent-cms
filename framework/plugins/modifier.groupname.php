@@ -34,7 +34,7 @@
  */
 function smarty_modifier_groupname($groupid) {
 	global $db;
-	return $db->selectValue('group', 'name', 'id='.intval($groupid));
+	return $db->selectValue('group', 'name', 'id='.(int)($groupid));
 }
 
 ?>

@@ -91,7 +91,7 @@ class filedownloadController extends expController {
             expHistory::back();
         }
 
-        $fd = new filedownload(intval($this->params['fileid']));
+        $fd = new filedownload((int)($this->params['fileid']));
         if (empty($this->params['filenum'])) $this->params['filenum'] = 0;
 
         if (empty($fd->expFile['downloadable'][$this->params['filenum']]->id)) {

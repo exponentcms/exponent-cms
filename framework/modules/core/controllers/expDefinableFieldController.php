@@ -94,7 +94,10 @@ class expDefinableFieldController extends expController {
 		assign_to_template(array('form_html'=>$form->toHTML(), 'types'=>$types[$control_type]));
 	}
 
-	function save() {
+    /**
+     *
+     */
+    function save() {
 		global $db;
 		$ctl = null;
 		$control = null;
@@ -107,7 +110,7 @@ class expDefinableFieldController extends expController {
 		}
 
 		if (call_user_func(array($_POST['control_type'],'useGeneric')) == true) {
-			$ctl = call_user_func(array('genericcontrol','update'),expString::sanitize($_POST),$ctl);
+			$ctl = genericcontrol::update(expString::sanitize($_POST), $ctl);
 		} else {
 			$ctl = call_user_func(array($_POST['control_type'],'update'),expString::sanitize($_POST),$ctl);
 		}

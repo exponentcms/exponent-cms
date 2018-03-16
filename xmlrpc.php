@@ -360,7 +360,7 @@ function getPost($xmlrpcmsg)
     $password = $xmlrpcmsg->getParam(2)->scalarval();
 
     //convert $postid to $src
-    $post = new blog(intval($postid));
+    $post = new blog((int)($postid));
     $loc = unserialize($post->location_data);
     if (userLogin($username, $password, $loc->src, 'edit') == true) {
         if (expPermissions::check('edit', $loc) || (expPermissions::check(

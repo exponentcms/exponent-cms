@@ -69,7 +69,7 @@ class sectionref extends expRecord {
         $hardcodedmods = $db->selectObjects('sectionref',"refcount=1000 AND source NOT LIKE '%@section%' AND source NOT LIKE '%@random%'");
         foreach ($hardcodedmods as $hardcodedmod) {
             if ($hardcodedmod->module == 'container') {
-                $page_id = intval(preg_replace('/\D/', '', $hardcodedmod->source));
+                $page_id = (int)(preg_replace('/\D/', '', $hardcodedmod->source));
                 if (empty($page_id)) {
                     $page_id = SITE_DEFAULT_SECTION;  // we'll default to the home page
                 }

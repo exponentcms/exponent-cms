@@ -222,7 +222,7 @@ class shipping extends expRecord {
     {
         $c = new shippingcalculator();
         $calc = $c->find('first',"enabled=1 AND is_default=1");
-        if (!empty($calculator)) {
+        if (!empty($calc)) {
             $calcName = $calc->calculator_name;
             $calculator = new $calcName();
             if($calculator->addressRequired()) {

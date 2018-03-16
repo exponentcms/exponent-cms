@@ -143,7 +143,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 //                                    "<td class='percentdone'>{/literal}{'Hasn\'t started yet'|gettext}{literal}</td>" +
 //                                    "<td class='serverdata'>&nbsp;</td>");
                     rowcolor = (rowcolor=='odd')?'even':'odd';
-                    if (Math.round(fileInstance.get("size")/1048576*100000)/100000 > {/literal}{intval(ini_get('upload_max_filesize'))}{literal}) {
+                    if (Math.round(fileInstance.get("size")/1048576*100000)/100000 > {/literal}{(int)(ini_get('upload_max_filesize'))}{literal}) {
                         sizeError = 'class="filesize error" title="{/literal}{'File is Too Large to Upload!'|gettext}{literal}"';
                     } else {
                         sizeError = 'class="filesize"';

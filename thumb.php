@@ -27,7 +27,7 @@ if (isset($_GET['id'])) {
     // Initialize the Database Subsystem
     $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME,'',false,BASE . 'tmp/thumb_sql.log');
 
-    $file_obj = new expFile(intval($_GET['id']));
+    $file_obj = new expFile((int)($_GET['id']));
     //$_GET['src'] = "/" . $file_obj->directory.$file_obj->filename;
 //    $_GET['src'] = $file_obj->path;
     $_GET['src'] = $file_obj->path_relative;  // fix for using v1.7.12+

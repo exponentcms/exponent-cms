@@ -384,7 +384,7 @@ class storeController extends expController {
         $currentweek = -1;
 
         $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
-        $week = intval(date('W', $timefirst));
+        $week = (int)(date('W', $timefirst));
         if ($week >= 52 && $info['mon'] == 1) $week = 1;
         $infofirst = getdate($timefirst);
 
@@ -492,7 +492,7 @@ class storeController extends expController {
 //                }
 //            }
 //
-//            $parent = isset($this->params['cat']) ? intval($this->params['cat']) : $default_id;
+//            $parent = isset($this->params['cat']) ? (int)($this->params['cat']) : $default_id;
 //
 //            $category = new storeCategory($parent);
 
@@ -500,7 +500,7 @@ class storeController extends expController {
 //            $sql .= 'JOIN ' . $db->prefix . 'product_storeCategories sc ON p.id = sc.product_id ';
             $sql .= 'JOIN ' . $db->prefix . 'eventregistration er ON p.product_type_id = er.id ';
             $sql .= 'WHERE 1 ';
-//            $sql .= ' AND sc.storecategories_id IN (SELECT id FROM exponent_storeCategories WHERE rgt BETWEEN ' . $category->lft . ' AND ' . $category->rgt . ')';
+//            $sql .= ' AND sc.storecategories_id IN (SELECT id FROM ' . $db->prefix . 'storeCategories WHERE rgt BETWEEN ' . $category->lft . ' AND ' . $category->rgt . ')';
 //            if ($category->hide_closed_events) {
 //                $sql .= ' AND er.signup_cutoff > ' . time();
 //            }
@@ -594,9 +594,10 @@ class storeController extends expController {
         if (!ECOM_LARGE_DB) {
 //            $limit = empty($this->config['pagination_default']) ? 50: $this->config['pagination_default'];
             $limit = 0;  // we'll paginate on the page
-            $sql = 'SELECT p.product_type, p.title, p.model, COUNT(c.id) as children, p.base_price, p.id FROM ' . $db->prefix . 'product p ';
-            $sql .= 'LEFT JOIN ' . $db->prefix . 'product c ON c.parent_id = p.id ';
-            $sql .= 'WHERE p.parent_id = 0 GROUP BY p.id';
+            $sql = 'SELECT p.product_type, p.title, p.model, COUNT(c.id) as children, p.base_price, p.id, f.id as fileid FROM ' . $db->prefix . 'product p ';
+            $sql .= "LEFT JOIN " . $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' ";
+            $sql .= "LEFT JOIN " . $db->prefix . "expFiles as f ON cef.expFiles_id = f.id ";
+            $sql .= 'LEFT JOIN ' . $db->prefix . 'product c ON c.parent_id = p.id WHERE p.parent_id = 0 GROUP BY p.id ';
             $page = new expPaginator(array(
 //                'model'      => 'product',
 //                'where'      => 'parent_id=0',
@@ -679,7 +680,7 @@ class storeController extends expController {
         $total = $db->countObjects($this->model_table);
         for ($i = 0; $i < $total; $i += 100) {
             //eDebug($this->params);
-            //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
+            //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM " . $db->prefix . "product WHERE 1 LIMIT 10";
             if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
                 $sql = expSession::get('product_export_query');
                 if (empty($sql))
@@ -1013,7 +1014,7 @@ class storeController extends expController {
         expHistory::set('viewable', $this->params);
 //        $parent = isset($this->params['cat']) ? $this->params['cat'] : expSession::get('catid');
         $catid = expSession::get('catid');
-        $parent = !empty($catid) ? $catid : (!empty($this->params['cat']) ? intval($this->params['cat']) : 0);
+        $parent = !empty($catid) ? $catid : (!empty($this->params['cat']) ? (int)($this->params['cat']) : 0);
         $category = new storeCategory($parent);
         $categories = $category->getSubCats();
         $ancestors = $category->pathToNode();
@@ -1495,24 +1496,24 @@ class storeController extends expController {
         $product_type = $db->selectValue('product', 'product_type', 'id=' . $this->params['id']);
         $product = new $product_type($this->params['id'], true, false);
 
-        // remove any associated records
-        $db->delete('option', 'product_id=' . $product->id . " AND optiongroup_id IN (SELECT id from " . $db->prefix . "optiongroup WHERE product_id=" . $product->id . ")");
-        $db->delete('optiongroup', 'product_id=' . $product->id);
-        $db->delete('product_storeCategories', 'product_id=' . $product->id . ' AND product_type="' . $product_type . '"');
-        $db->delete('crosssellItem_product', 'product_type="' . $this->product_type . '" AND (product_id=' . $this->id . ' OR crosssellItem_id=' . $this->id . ')');
+//        // remove any associated records
+//        $db->delete('option', 'product_id=' . $product->id . " AND optiongroup_id IN (SELECT id from " . $db->prefix . "optiongroup WHERE product_id=" . $product->id . ")");
+//        $db->delete('optiongroup', 'product_id=' . $product->id);
+//        $db->delete('product_storeCategories', 'product_id=' . $product->id . ' AND product_type="' . $product_type . '"');
+//        $db->delete('crosssellItem_product', 'product_type="' . $this->product_type . '" AND (product_id=' . $this->id . ' OR crosssellItem_id=' . $this->id . ')');
 
         // remove any childen products
-        if ($product->product_type === "product") {
-            if ($product->hasChildren()) {
-                $this->deleteChildren();
-            }
-        }
+//        if ($product->product_type === "product") {
+//            if ($product->hasChildren()) {
+//                $this->deleteChildren();
+//            }
+//        }
 
         // remove the product
         $product->delete();
 
         // remove search index entry
-        $db->delete('search', "category='Products' AND ref_module='store' AND original_id = " . $product->id);
+//        $db->delete('search', "category='Products' AND ref_module='store' AND original_id = " . $product->id);
 
         flash('message', gt('Product deleted successfully.'));
         expHistory::back();
@@ -1572,7 +1573,7 @@ class storeController extends expController {
                 break;
             case 'show':
             case 'showByTitle':
-                $prod = new product(isset($router->params['title']) ? expString::sanitize($router->params['title']) : intval($router->params['id']));
+                $prod = new product(isset($router->params['title']) ? expString::sanitize($router->params['title']) : (int)($router->params['id']));
                 if (!empty($prod)) {
                     $metainfo['title'] = empty($prod->meta_title) ? $prod->title . " - " . $storename : $prod->meta_title;
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
@@ -1960,7 +1961,7 @@ class storeController extends expController {
         while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
             $count++;
             $originalOrderId = $data[2];
-            $data[2] = intval($data[2]);
+            $data[2] = (int)($data[2]);
             $order = new stdClass();
             $bm = new stdClass();
             $transactionState = null;
@@ -2857,11 +2858,11 @@ class storeController extends expController {
                     case 'use_special_price':
                     case 'active_type':
                     case 'product_status_id':
-                        $product->$key = intval($value);
+                        $product->$key = (int)($value);
                         break;
                     case 'companies_id':
                         if (is_numeric($value)) {
-                            $product->$key = intval($value);
+                            $product->$key = (int)($value);
                         } elseif (!empty($value)) {  // it's a company name, not a company id#
                             $co = new company();
                             $company = $co->find('first', 'title=' . $value);
@@ -2898,7 +2899,7 @@ class storeController extends expController {
                     case 'height':
                     case 'width':
                     case 'length':
-                        $product->$key = floatval($value);
+                        $product->$key = (float)($value);
                         break;
                     case 'image1':
                     case 'image2':
@@ -2907,7 +2908,7 @@ class storeController extends expController {
                     case 'image5':
                         if (!empty($value)) {
                             $product->save(false);
-                            if (is_integer($value)) {
+                            if (is_int($value)) {
                                 $_objFile = new expFile ($value);
                             } else {
                                 // import image from url
@@ -2927,9 +2928,7 @@ class storeController extends expController {
                                     umask($__oldumask);
 
                                     // Create a new expFile Object
-                                    $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-                                    $_objFile = new expFile ($_fileParams);
-                                    $_objFile->save();
+                                    $_objFile = expFile::make_expFile($_destDir . $_destFile);
                                 }
                             }
                             // attach product images expFile object
@@ -2956,10 +2955,12 @@ class storeController extends expController {
                     case 'category12':
                         if ($product->parent_id == 0) {
 //                            $rank = !empty($data['rank']) ? $data['rank'] : 1;
-                            $rank = intval(str_replace('category', '', $key));
+                            $rank = (int)(str_replace('category', '', $key));
 //                            if (!empty($value)) $result = storeCategory::parseCategory($value);
-                            if (!empty($value)) $result = storeCategory::importCategoryString($value);
-                            else continue;
+                            if (!empty($value))
+                                $result = storeCategory::importCategoryString($value);
+                            else
+                                continue;
 
 //                            if (is_numeric($result)) {
                             if ($result) {
@@ -3034,9 +3035,7 @@ class storeController extends expController {
 //                    umask($__oldumask);
 //
 //                    // Create a new expFile Object
-//                    $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-//                    $_objFile = new expFile ($_fileParams);
-//                    $_objFile->save();
+//                    $_objFile = expFile::make_expFile($_destDir . $_destFile);
 //                    // attach/replace product main image with new expFile object
 //                    $product->attachItem($_objFile, 'mainimage');
 //                }
@@ -3060,9 +3059,7 @@ class storeController extends expController {
 //                        umask($__oldumask);
 //
 //                        // Create a new expFile Object
-//                        $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-//                        $_objFile = new expFile ($_fileParams);
-//                        $_objFile->save();
+//                        $_objFile = expFile::make_expFile($_destDir . $_destFile);
 //                        // attach product additional images with new expFile object
 //                        $product->attachItem($_objFile, 'images', false);
 //                    }
@@ -3165,7 +3162,7 @@ class storeController extends expController {
                         $link = makeLink(array('controller'=>'store', 'action'=>'show', 'title'=>$item->sef_url));
                     }
                     return '<a href="' . $link . '">' .
-                        '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile[0]->id . '&w=16&h=16&zc=1" alt="item'.$item->id.'">' .
+                        '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile[0]->id . '&square=true&h=50" alt="item'.$item->id.'">' .
                         '<br>' . $d . '</a>';
           		}
             ),

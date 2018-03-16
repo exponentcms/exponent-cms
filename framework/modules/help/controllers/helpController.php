@@ -81,7 +81,7 @@ class helpController extends expController {
         if (empty($this->params['parent'])) {
             $where .= ' AND (parent=0 OR parent IS NULL)';
         } else {
-            $where .= ' AND parent=' . intval($this->params['parent']);
+            $where .= ' AND parent=' . (int)($this->params['parent']);
         }
 //	    $limit = 999;
 	    $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
@@ -221,7 +221,7 @@ class helpController extends expController {
             }
         }
 
-	    $where = empty($this->params['version']) ? 1 : 'help_version_id='.intval($this->params['version']);
+	    $where = empty($this->params['version']) ? 1 : 'help_version_id='.(int)($this->params['version']);
 	    $page = new expPaginator(array(
             'model'=>'help',
             'where'=>$where,
@@ -540,8 +540,8 @@ class helpController extends expController {
         if (!expSession::get('last_section')) {
             expSession::set('last_section',$sid);
         }
-//	    $section = $db->selectObject('section','id='. intval($sid));
-        $section = new section(intval($sid));
+//	    $section = $db->selectObject('section','id='. (int)($sid));
+        $section = new section((int)($sid));
 	    return $section;
 	}
 

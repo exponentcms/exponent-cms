@@ -136,9 +136,9 @@ class radiogroupcontrol extends formcontrol {
 //		$object->items = listbuildercontrol::parseData($values,'items',true);
         $object->items = listbuildercontrol::parseData('items', $values, true);
 		$object->flip = !empty($values['flip']);
-//        if (isset($values['cols'])) $object->cols = intval($values['cols']);
+//        if (isset($values['cols'])) $object->cols = (int)($values['cols']);
         $object->cols = !empty($values['cols']) ? 1 : 0;
-//        if (isset($values['spacing'])) $object->spacing = intval($values['spacing']);
+//        if (isset($values['spacing'])) $object->spacing = (int)($values['spacing']);
 		$object->required = !empty($values['required']);
 
 		return $object;

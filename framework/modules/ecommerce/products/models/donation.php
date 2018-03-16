@@ -59,7 +59,7 @@ class donation extends product {
         global $db;
 
         if (is_numeric($range)) {
-            $where = 'id=' . intval($range); // If we hit this then we are expecting just a simple id
+            $where = 'id=' . (int)($range); // If we hit this then we are expecting just a simple id
             $range = 'first';
         }
 
@@ -68,7 +68,7 @@ class donation extends product {
         $sql .= empty($order) ? '' : ' ORDER BY ' . expString::escape($order);
 
         if (strcasecmp($range, 'all') == 0) {
-            $sql .= empty($limit) ? '' : ' LIMIT ' . intval($limitstart) . ',' . intval($limit);
+            $sql .= empty($limit) ? '' : ' LIMIT ' . (int)($limitstart) . ',' . (int)($limit);
             return $db->selectExpObjects($this->tablename, $sql, $this->classname);
         } elseif (strcasecmp($range, 'first') == 0) {
             $sql .= ' LIMIT 0,1';

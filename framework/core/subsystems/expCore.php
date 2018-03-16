@@ -44,7 +44,7 @@ class expCore
             $mod
         ) : ''; // this will remove 'Controller' or add 'module'
         $loc->src = !empty($src) ? $src : '';
-        $loc->int = !empty($int) ? strval(intval($int)) : '';
+        $loc->int = !empty($int) ? (string)((int)($int)) : '';
         return $loc;
     }
 
@@ -415,7 +415,13 @@ class expCore
 
     /**
      * Casts one object type to another object type
-
+     *
+     * @static
+     *
+     * @param $source
+     * @param $destinationtype
+     *
+     * @return mixed
      */
     public static function cast($source, $destinationtype)
     {

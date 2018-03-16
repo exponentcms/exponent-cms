@@ -397,7 +397,7 @@ class eventregistration extends expRecord {
             }
             $loc_data = new stdClass();
             $loc_data->order_id = $order->id;
-            $loc_data->orderitem_id = strval($item->id);
+            $loc_data->orderitem_id = (string)($item->id);
             $loc_data->event_id = $params['product_id'];
             $locdata = serialize($loc_data);
             if (!empty($params['orderitem_id'])) $db->delete('forms_' . $f->table_name, "location_data ='{$locdata}'");  // remove existing entries for this registration
@@ -579,7 +579,7 @@ class eventregistration extends expRecord {
 //        if ($f->is_saved == 1) {  // is there user input data
 //            $loc_data = new stdClass();
 //            $loc_data->order_id =$item->orders_id;
-//            $loc_data->orderitem_id = strval($item->id);
+//            $loc_data->orderitem_id = (string)($item->id);
 //            $loc_data->event_id = $item->product_id;
 //            $locdata = serialize($loc_data);
 //            $order_registrations = $db->selectObjects('forms_' . $f->table_name, "location_data='" . $locdata . "'");
@@ -699,7 +699,7 @@ class eventregistration extends expRecord {
         if (!empty($f->is_saved)) {  // is there user input data
             $loc_data = new stdClass();
             $loc_data->order_id =$item->orders_id;
-            $loc_data->orderitem_id = strval($item->id);
+            $loc_data->orderitem_id = (string)($item->id);
             $loc_data->event_id = $item->product_id;
             $locdata = serialize($loc_data);
             $db->delete('forms_' . $f->table_name, "location_data ='{$locdata}'");  // remove existing entries for this registration

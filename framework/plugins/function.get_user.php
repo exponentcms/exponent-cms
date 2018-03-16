@@ -35,7 +35,7 @@
 function smarty_function_get_user($params,&$smarty) {
     if (isset($params['user'])) {
         global $db;
-        $thisuser = $db->selectObject('user', 'id='.intval($params['user']));
+        $thisuser = $db->selectObject('user', 'id='.(int)($params['user']));
     } elseif (expSession::loggedIn()) {
 		global $user;
         $thisuser = $user;

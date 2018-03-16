@@ -270,9 +270,14 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             infopanel.show();
             mejs.i18n.language('{/literal}{substr($smarty.const.LOCALE,0,2)}{literal}'); // Setting language
             $('audio,video').mediaelementplayer({
+                // Do not forget to put a final slash (/)
+                pluginPath: 'https://cdnjs.com/libraries/mediaelement/',
+                // this will allow the CDN to use Flash without restrictions
+                // (by default, this is set as `sameDomain`)
+                shimScriptAccess: 'always',
                 success: function(player, node) {
-                    $('#' + node.id + '-mode').html('mode: ' + player.rendererName);
-                }
+                // $('#' + node.id + '-mode').html('mode: ' + player.rendererName);
+                },
             });
         }
 

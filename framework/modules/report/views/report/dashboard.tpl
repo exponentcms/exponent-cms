@@ -22,17 +22,17 @@
 {css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/calendar.css"}
 
 {/css}
-{css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/container.css"}
+{css unique="calendar-edit2" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/container.css"}
 
 {/css}
-{css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/button.css"}
+{css unique="calendar-edit3" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/button.css"}
 
 {/css}
 <div class="module report dashboard">
     {exp_include file='menu.tpl'}
 
     <div class="rightcol exp-ecom-table">
-        <h3>{'Current Order Stats'|gettext}</h3>
+        <h1>{'Current Order Stats'|gettext}</h1>
         <table border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
@@ -47,6 +47,9 @@
                     </th>
                     <th>
                         {"Active Carts"|gettext}
+                    </th>
+                    <th>
+                        {"Online Visitors"|gettext}
                     </th>
                 </tr>
             </thead>
@@ -64,78 +67,44 @@
                     <td style="text-align:center;">
                         <a href="{link action=current_carts}" title="{'View Carts'|gettext}">{$active_carts}</a>
                     </td>
+                    <td style="text-align:center;">
+                        <a href="{link controller=users action=showall}" title="{'View Customers'|gettext}">{$online}</a>
+                    </td>
                 </tr>
-            <tbody>
+            </tbody>
         </table>
     </div>
 
     <div class="rightcol exp-ecom-table">
-        <h3>{'Order Stats for Requested Period'|gettext}</h3>
+
+        <h3>{'Last Five Orders'|gettext}</h3>
         <table border="0" cellspacing="0" cellpadding="0">
             <thead>
-                <tr>
-                    <th>
-                        <a href="#">{"Order Type"|gettext}</a>
-                    </th>
-                    <th>
-                        <a href="#">{"Order Status"|gettext}</a>
-                    </th>
-                    <th>
-                        <a href="#">{"# of Orders"|gettext}</a>
-                    </th>
-                    <th>
-                        <a href="#">{"# of Items"|gettext}</a>
-                    </th>
-                    <th style="text-align:right;">
-                        <a href="#">{"Total"|gettext}</a>
-                    </th>
-                </tr>
+            <tr class="{cycle values="even,odd"}" style="font-weight:bold; font-size:120%">
+                <th>{'Customer'|gettext}</th>
+                <th>{'Status'|gettext}</th>
+                <th>{'Date'|gettext}</th>
+                <th>{'Items'|gettext}</th>
+                <th style="text-align:right;">{'Total'|gettext}</th>
+                <th>&#160;</th>
+            </tr>
             </thead>
             <tbody>
-                {foreach from=$orders item=order key=tkey name=typeloop}
-                    <tr class="{cycle values="even,odd"}" style="font-weight:bold; font-size:120%">
-                        <td>{$tkey}</td>
-                        <td>&#160;</td>
-                        <td>{$order.num_orders}</td>
-                        <td>{$order.num_items}</td>
-                        <td style="text-align:right;">{$order.grand_total|currency}</td>
+                {foreach from=$recent item=order}
+                    <tr class="{cycle values="even,odd"}" style="color:grey;">
+                        <td><a href="{link controller=users action=show id=$order->user_id}" title="{'View Customer'|gettext}">{$order->user->id|username:'system'}</a></td>
+                        <td><span class="badge alert-{if $order->order_status_id == order::getDefaultOrderStatus()}success{else}default{/if}">{$order->order_status->title}</span></td>
+                        <td>{$order->purchased|format_date}</td>
+                        <td style="text-align:center;">{$order->orderitem|count}</td>
+                        <td style="text-align:right;"><span class="badge {if $order->billingmethod.0->transaction_state|lower == 'complete' || $order->billingmethod.0->transaction_state|lower == 'paid'}alert-success{/if}" title="{if $order->billingmethod.0->transaction_state|lower == 'complete' ||  $order->billingmethod.0->transaction_state|lower == 'paid'}{'Paid'|gettext}{else}{'Payment Due'|gettext}{/if}">{$order->grand_total|currency}</span></td>
+                        <td>{icon class=view controller=order action=show id=$order->id text="" title='View this order'|gettext}</td>
                     </tr>
-                    {foreach from=$order item=stat key=skey name=typeloop}
-                        {if $skey != 'num_orders' && $skey!= 'num_items' && $skey != 'grand_total'}
-                            <tr class="{cycle values="even,odd"}" style="color:grey;">
-                                <td>&#160;</td>
-                                <td>{$skey}</td>
-                                <td>{$stat.num_orders}</td>
-                                <td>{$stat.num_items}</td>
-                                <td style="text-align:right;">{$stat.grand_total|currency}</td>
-                            </tr>
-                        {/if}
-                    {/foreach}
                 {foreachelse}
                     <tr><td colspan=5>{message text='No Orders Found!'|gettext}</td></tr>
                 {/foreach}
-            <tbody>
+            </tbody>
         </table>
 
-        <table>
-            <tr>
-                <td width="50%">
-                    {form controller="report" action="dashboard" name="filter_dashboard" id="filter_dashboard"}
-                        {"Quick Range Filter:"|gettext}
-                        {control type="dropdown" name="quickrange" label="" items=$quickrange default=$quickrange_default onchange="this.form.submit();"}
-                    {/form}
-                </td>
-                <td>
-                    {form action="dashboard"}
-                        {"Purchased Between"|gettext}:
-                        {control type="calendar" name="starttime" label="" default_date=$prev_month default_hour=$prev_hour default_min=$prev_min default_ampm=$prev_ampm}
-                        {"And"|gettext}
-                        {control type="calendar" name="endtime" label="" default_date=$now_date default_hour=$now_hour default_min=$now_min default_ampm=$now_ampm}
-                        {control type="buttongroup" submit="Apply Filter"|gettext}
-                    {/form}
-                </td>
-            </tr>
-        </table>
     </div>
     {clear}
 </div>

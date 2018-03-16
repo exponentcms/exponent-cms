@@ -89,7 +89,7 @@
                         </td>
                     </tr>
                     <tr class="odd">
-                        <td>{control type="checkbox" name="allproducts" flip=true label="Show All Products Types and Categories"|gettext value=1}</td>
+                        <td>{control type="checkbox" name="allproducts" flip=true label="Show All Products Types and Categories"|gettext value=1 checked=1}</td>
                     </tr>
                     <tr class="even">
                         <td>

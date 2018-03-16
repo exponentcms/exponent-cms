@@ -45,8 +45,8 @@ class perweightcalculator extends shippingcalculator {
     }
 
     public function getRates($order) {
-        $rate = !empty($this->configdata['rate']) ? $this->configdata['rate'] : '';
-        $handling = !empty($this->configdata['handling']) ? $this->configdata['handling'] : '';
+        $rate = !empty($this->configdata['rate']) ? $this->configdata['rate'] : 0;
+        $handling = !empty($this->configdata['handling']) ? $this->configdata['handling'] : 0;
         $weight = 0;
         foreach ($order->orderitem as $item) {
             if (!$item->product->no_shipping) {

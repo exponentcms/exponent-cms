@@ -50,9 +50,9 @@ class expNestedNodeController extends expController {
 		if (empty($this->params['type']))
             return false;
 
-        $this->params['move']   = intval($this->params['move']);
+        $this->params['move']   = (int)($this->params['move']);
 		$movenode = new $this->basemodel_name($this->params['move']);
-        $this->params['target'] = intval($this->params['target']);
+        $this->params['target'] = (int)($this->params['target']);
 		switch($this->params['type']) {
             case 'b':  // process jstree data
 			case 'addbefore':

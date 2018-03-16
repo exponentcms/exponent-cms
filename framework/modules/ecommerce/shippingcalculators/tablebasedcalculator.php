@@ -55,7 +55,7 @@ class tablebasedcalculator extends shippingcalculator {
 					break;
 				}
 			} else {
-                if( $a >= floatval($this->configdata['from'][$i]) ) {
+                if( $a >= (float)($this->configdata['from'][$i]) ) {
 					foreach($this->shippingspeeds as $item) {
 						$c[] = @$this->configdata[str_replace(' ', '_', $item->speed)][$i];
 					}

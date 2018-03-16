@@ -277,7 +277,7 @@ class Twitter
         $options[CURLOPT_URL] = self::SECURE_API_URL . '/oauth/' . $method;
         $options[CURLOPT_PORT] = self::SECURE_API_PORT;
         $options[CURLOPT_USERAGENT] = $this->getUserAgent();
-        if (ini_get('open_basedir') == '' && ini_get('safe_mode' == 'Off')) {
+        if (ini_get('open_basedir') == '' && ini_get('safe_mode') == 'Off') {
             $options[CURLOPT_FOLLOWLOCATION] = true;
         }
         $options[CURLOPT_RETURNTRANSFER] = true;

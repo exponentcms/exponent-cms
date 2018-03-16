@@ -25,7 +25,7 @@
         </blockquote>
 	</div>
 </div>
-{*{control type="checkbox" name="autoplay" label="Automatically Play Media Files"|gettext value=1 checked=$config.autoplay}*}
+{control type="checkbox" name="autoplay" label="Automatically Play First Media File"|gettext value=1 checked=$config.autoplay}
 {control type=dropdown name="video_style" items="Default,TED,WMP"|gettxtlist values="mejs,mejs-ted,mejs-wmp" label="Player Style"|gettext value=$config.video_style|default:"mejs" focus=1}
 {control type="text" name="video_width" label="Video Width"|gettext value=$config.video_width|default:200 size=4}
 {control type="text" name="video_height" label="Video Height"|gettext value=$config.video_height|default:143 size=4}

@@ -147,7 +147,7 @@ class eventregistrationController extends expController {
         $currentweek = -1;
 
         $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
-        $week = intval(date('W', $timefirst));
+        $week = (int)(date('W', $timefirst));
         if ($week >= 52 && $info['mon'] == 1) $week = 1;
         $infofirst = getdate($timefirst);
 
@@ -1251,7 +1251,7 @@ class eventregistrationController extends expController {
 //                }
 //            }
 //
-//            $parent = isset($this->params['cat']) ? intval($this->params['cat']) : $default_id;
+//            $parent = isset($this->params['cat']) ? (int)($this->params['cat']) : $default_id;
 //
 //            $category = new storeCategory($parent);
 

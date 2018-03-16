@@ -189,7 +189,7 @@ class tagtreecontrol extends formcontrol {
                         'label'				: '" . gt('Add a Sub-Category') . "',
                         'action'			: function (data) {
                                                   var inst = $.jstree.reference(data.reference),
-                                                  obj = inst.get_node(data.reference);
+                                                      obj = inst.get_node(data.reference);
                                                   window.location=eXp.PATH_RELATIVE+'index.php?module=" . $this->controller->baseclassname . "&action=adsubnode&id='+obj.id;
                                               }
                     },
@@ -198,7 +198,7 @@ class tagtreecontrol extends formcontrol {
                         'label'				: '" . gt('View this Category') . "',
                         'action'			: function (data) {
                                                   var inst = $.jstree.reference(data.reference),
-                                                  obj = inst.get_node(data.reference);
+                                                      obj = inst.get_node(data.reference);
                                                   window.location=obj.original.href;
                                               }
                     },
@@ -208,7 +208,7 @@ class tagtreecontrol extends formcontrol {
                         'label'				: '" . gt('Edit this Category') . "',
                         'action'			: function (data) {
                                                   var inst = $.jstree.reference(data.reference),
-                                                  obj = inst.get_node(data.reference);
+                                                      obj = inst.get_node(data.reference);
                                                   window.location=eXp.PATH_RELATIVE+'index.php?module=" . $this->controller->baseclassname . "&action=edit&id='+obj.id;
                                               }
                     },
@@ -217,7 +217,7 @@ class tagtreecontrol extends formcontrol {
                         'label'				: '" . gt('Configure this Category') . "',
                         'action'			: function (data) {
                                                   var inst = $.jstree.reference(data.reference),
-                                                  obj = inst.get_node(data.reference);
+                                                      obj = inst.get_node(data.reference);
                                                   window.location=eXp.PATH_RELATIVE+'index.php?module=" . $this->controller->baseclassname . "&action=configure&id='+obj.id;
                                               }
                     }," . ($this->addable?"
@@ -225,9 +225,16 @@ class tagtreecontrol extends formcontrol {
                         'icon'				: '" . $icon['delete'] . " text-danger',
                         'label'				: '" . gt('Delete this Category') . "',
                         'action'			: function (data) {
+                                                  // get confirmation first
                                                   var inst = $.jstree.reference(data.reference),
-                                                  obj = inst.get_node(data.reference);
-                                                  window.location=eXp.PATH_RELATIVE+'index.php?module=" . $this->controller->baseclassname . "&action=delete&id='+obj.id;
+                                                      obj = inst.get_node(data.reference);
+                                                  $.prompt('" . gt('Are you sure you want to delete this node?') . "', {
+                                                      title: '" . gt('Remove')." ' + obj.text,
+                                                      buttons: {'" . gt('Delete') . "':true,'" . gt('No') . "':false},
+                                                      submit: function(e,v,m,f){
+                                                          window.location=eXp.PATH_RELATIVE+'index.php?module=" . $this->controller->baseclassname . "&action=delete&id='+obj.id;
+                                                      }
+                                                  });
                                               }
                     },
                     ":"") . "
@@ -273,7 +280,7 @@ class tagtreecontrol extends formcontrol {
         ";
         expJavascript::pushToFoot(array(
             "unique"  => 'expddtree',
-            "jquery"=> 'jstree',
+            "jquery"=> 'jstree,jquery-impromptu',
             "content" => $script,
         ));
         return $html;

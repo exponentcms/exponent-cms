@@ -25,7 +25,7 @@
     {else}
         {$qtype = 'success'}
     {/if}
-    <div class="alert msg-queue alert-{$qtype} alert-dismissible" role="alert" fade in">
+    <div class="alert msg-queue alert-{$qtype} alert-dismissible fade in" role="alert" >
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         {foreach from=$queue item=msg}
             <div class="msg">{$msg}</div>

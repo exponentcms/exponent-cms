@@ -30,7 +30,7 @@ if ($new_orders > 0) {
 } else {
     $newo = '';
 };
-// get latest 5 orders
+// get latest 5 new orders
 $new_status = order::getDefaultOrderStatus();
 $order = new order();
 $recent_orders = $order->find('all', 'purchased !=0 AND order_status_id = ' . $new_status, 'purchased DESC', 5);
@@ -78,10 +78,23 @@ $items1[] = array(
 
 $items2 = array();
 foreach ($recent_orders as $ord) {
+    $state = strtolower($ord->billingmethod[0]->transaction_state);
+    if ($state === 'complete' || $state === 'paid') {
+        if (bs4()) {
+            $badge = 'badge-success">';
+        } else {
+            $badge = 'alert-success">';
+        }
+    } else {
+        if (bs4()) {
+            $badge = 'badge-secondary">';
+        } else {
+            $badge = '">';
+        }
+    }
     $items2[] = array(
         'text' => count($ord->orderitem) . ' ' . gt('item') . (count($ord->orderitem) > 1 ? 's' : '') . ' ' . gt('ordered on') . ' ' . expDateTime::format_date($ord->purchased) .
-            ' <span class="badge ' . ((strtolower($ord->billingmethod[0]->transaction_state) == 'complete' ||
-            strtolower($ord->billingmethod[0]->transaction_state) == 'paid') ? 'alert-success">' : '">') . expCore::getCurrency($ord->grand_total) . '</span>',
+            ' <span class="badge ' . $badge . expCore::getCurrency($ord->grand_total) . '</span>',
         'icon' => 'fa-file text-success',
         'icon5' => 'fas fa-file text-success',
         'classname' => 'search',

@@ -118,7 +118,7 @@ class filemanagercontrol extends formcontrol {
                     maxUploads: limit,
                     multipart: false,
                     noParams: false,
-                    maxSize: " . intval(ini_get('upload_max_filesize')*1024) . ",";
+                    maxSize: " . (int)(ini_get('upload_max_filesize')*1024) . ",";
         if (!empty($this->accept)) {
             $js .= '
                     accept: "'.$this->accept.'",';

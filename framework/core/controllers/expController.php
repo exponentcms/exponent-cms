@@ -89,7 +89,7 @@ abstract class expController {
         // set up the path to this module view files
         array_pop($controllerpath); // remove 'controllers' from array
         $controllerpath[count($controllerpath) - 1] = 'views';
-        array_push($controllerpath, $this->baseclassname);
+        $controllerpath[] = $this->baseclassname;
         $this->relative_viewpath = implode('/', array_slice($controllerpath, -3, 3));
 //        $this->viewpath = BASE.'framework/modules/'.$this->relative_viewpath;
         //FIXME this requires we move the 'core' controllers into the modules folder or use this hack
@@ -569,7 +569,7 @@ abstract class expController {
         }
 
         foreach ($tags as $tagid) {
-            $sql .= ($first) ? 'exptags_id=' . intval($tagid) : ' OR exptags_id=' . intval($tagid);
+            $sql .= ($first) ? 'exptags_id=' . (int)($tagid) : ' OR exptags_id=' . (int)($tagid);
             $first = false;
         }
         $sql .= ") AND content_type='" . $model->classname . "'";
@@ -610,7 +610,7 @@ abstract class expController {
                 $record = $this->$modelname->find($this->params['id']);
             } else {
                 $currentrecord = $this->$modelname->find($this->params['id']);
-                $records = $this->$modelname->find('revisions', $this->$modelname->identifier . '=' . intval($this->params['id']) . ' AND revision_id=' . intval($this->params['revision_id']));
+                $records = $this->$modelname->find('revisions', $this->$modelname->identifier . '=' . (int)($this->params['id']) . ' AND revision_id=' . (int)($this->params['revision_id']));
                 $record = $records[0];
                 $record->current_revision_id = $currentrecord->revision_id;
             }
@@ -793,7 +793,7 @@ abstract class expController {
         $rank = 1;
         foreach ($this->params['rerank'] as $id) {
             $modelname = $this->params['model'];
-            $obj = new $modelname(intval($id));
+            $obj = new $modelname((int)($id));
             $obj->rank = $rank;
             $obj->save(false, true);
             $rank++;

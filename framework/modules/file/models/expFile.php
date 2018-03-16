@@ -317,8 +317,42 @@ class expFile extends expRecord {
     public function exists() {
         return (!empty($this->id) && is_file(BASE . PATH_RELATIVE . $this->directory . $this->filename));
     }
+
+    public function afterDelete() {
+        global $db;
+
+	    // get and delete all attachments to this file
+	    $db->delete('content_expFiles','expfiles_id='.$this->id);
+    }
+
+    function copyToDirectory($destination) {
+        //eDebug($this,true);
+        copy($this->path, $destination . $this->filename);
+    }
+
 // =========================================================================
 // Static Methods
+
+    /**
+     * Return expFile object for given path
+     *   either an existing or a new expFile
+     *   prevents duplication of existing expFile objects
+     *
+     * @param $path
+     * @return array|expFile|int
+     */
+    public static function make_expFile($path) {
+        $efile = new expFile();
+        $path = str_replace(array(BASE, '\\'), array('', '/'), $path);
+        $thefile = $efile->find('first','directory="' . dirname($path) . '/' . '" AND filename="' . basename($path) . '"');
+        if (empty($thefile->id)) {
+            $newfile = new expFile(array('directory' => dirname($path) . '/', 'filename' => basename($path)));
+            @$newfile->save(false);
+            return $newfile;
+        } else {
+            return $thefile;
+        }
+    }
 
     public static function selectAllFiles() {
         global $db;
@@ -430,7 +464,7 @@ class expFile extends expRecord {
         // Move the temporary uploaded file into the destination directory,
         // and change the name.
         $resized = false;
-        $maxwidth = intval($_max_width);
+        $maxwidth = (int)($_max_width);
         require_once(BASE . 'external/class.upload/class.upload.php');
         $handle = new upload($_FILES[$_postName]);
         $handle->file_new_name_body = pathinfo($_destFile, PATHINFO_FILENAME);
@@ -553,7 +587,7 @@ class expFile extends expRecord {
         // Move the temporary uploaded file into the destination directory,
         // and change the name.
         $resized = false;
-        $maxwidth = intval($_max_width);
+        $maxwidth = (int)($_max_width);
         require_once(BASE . 'external/class.upload/class.upload.php');
         $handle = new upload('php:' . $fileName);
         $handle->file_new_name_body = pathinfo($_destFile, PATHINFO_FILENAME);
@@ -992,11 +1026,6 @@ class expFile extends expRecord {
         } else {
             return imagecreate($w, $h);
         }
-    }
-
-    function copyToDirectory($destination) {
-        //eDebug($this,true);
-        copy($this->path, $destination . $this->filename);
     }
 
     /**
@@ -2180,13 +2209,6 @@ class expFile extends expRecord {
             $errors[] = gt('Unable to read EQL file');
             return false;
         }
-    }
-
-    public function afterDelete() {
-        global $db;
-
-	    // get and delete all attachments to this file
-	    $db->delete('content_expFiles','expfiles_id='.$this->id);
     }
 
     /**

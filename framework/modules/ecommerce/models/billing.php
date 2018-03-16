@@ -64,7 +64,8 @@ class billing extends expRecord {
             $order->billingmethod[0]->setAddress($billingAddy);
         } else {
             $order = new order($id);
-            if (empty($order->id)) return false;
+            if (empty($order->id)) 
+                return;
         }
         //}
 

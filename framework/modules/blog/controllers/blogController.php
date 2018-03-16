@@ -248,7 +248,7 @@ class blogController extends expController {
         }
 
         foreach ($tags as $tagid) {
-            $sql .= ($first) ? 'exptags_id='.intval($tagid) : ' OR exptags_id='.intval($tagid);
+            $sql .= ($first) ? 'exptags_id='.(int)($tagid) : ' OR exptags_id='.(int)($tagid);
             $first = false;
         }
         $sql .= ") AND content_type='".$model->classname."'";
@@ -310,7 +310,7 @@ class blogController extends expController {
      */
     public static function searchHit($record) {
         $blog = new blog($record->original_id);
-        if (expPermissions::check('edit', expUnserialize($record->location_data)) || $blog->private == 0 && ($blog->publish === 0 || $blog->publish <= time())) {
+        if (expPermissions::check('edit', expUnserialize($record->location_data)) || ($blog->private == 0 && ($blog->publish === 0 || $blog->publish <= time()))) {
             return true;
         } else {
             return false;

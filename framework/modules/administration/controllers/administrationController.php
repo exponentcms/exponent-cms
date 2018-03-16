@@ -108,7 +108,7 @@ class administrationController extends expController {
 
         foreach($tables as $table) {
             $basename = strtolower(str_replace($db->prefix, '', $table));
-            if (!in_array($basename, $used_tables) && !stripos($basename, 'forms')) {
+            if (!in_array($basename, $used_tables) && stripos($basename, 'forms_') === false) {
                 $unused_tables[$basename] = new stdClass();
                 $unused_tables[$basename]->name = $table;
                 $unused_tables[$basename]->rows = $db->countObjects($basename);
@@ -764,7 +764,7 @@ class administrationController extends expController {
                                 $unzip_error = 'Entry has been deleted';
                                 break;
                             default:
-                                $unzip_error = 'An unknown error has occurred (' . intval($unzip_error_no) . ')';
+                                $unzip_error = 'An unknown error has occurred (' . (int)($unzip_error_no) . ')';
                         }
                         flash('error',gt('Error extracting ZIP archive') . ': ' . ' : ' . $unzip_error . '<br />');
 					} else {
