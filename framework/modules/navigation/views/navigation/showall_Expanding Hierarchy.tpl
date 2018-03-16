@@ -40,5 +40,5 @@
             </li>
         {/if}
     {/foreach}
-    <ul>
+    </ul>
 </div>

@@ -128,7 +128,7 @@
 
     {if $config.show_player && !$item->ext_file}
         {if $filetype == "mp3"}
-            <audio id="{$item->expFile.downloadable[0]->filename}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$item->expFile.downloadable[0]->directory}{$item->expFile.downloadable[0]->filename}" type="audio/mp3">
+            <audio id="player{$item->expFile.downloadable[0]->id}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$item->expFile.downloadable[0]->directory}{$item->expFile.downloadable[0]->filename}" type="audio/mp3">
             </audio>
         {elseif $filetype == "mp4" || $filetype == "m4v" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v"}
             <video width="360" height="240" src="{$smarty.const.PATH_RELATIVE}{$item->expFile.downloadable[0]->directory}{$item->expFile.downloadable[0]->filename}" type="{$item->expFile.downloadable[0]->mimetype}"
