@@ -43,7 +43,7 @@ elFinder.prototype.commands.netmount = function() {
 								o[protocol].select(fm, e, data);
 							}
 							setTimeout(function() {
-								content.find('input:text.elfinder-tabstop:visible:first').focus();
+								content.find('input:text.elfinder-tabstop:visible:first').trigger('focus');
 							}, 20);
 						})
 						.addClass('ui-corner-all')
@@ -55,7 +55,7 @@ elFinder.prototype.commands.netmount = function() {
 						destroyOnClose : false,
 						open           : function() {
 							$(window).on('focus.'+fm.namespace, winFocus);
-							inputs.protocol.change();
+							inputs.protocol.trigger('change');
 						},
 						close          : function() { 
 							dfrd.state() == 'pending' && dfrd.reject();
@@ -127,7 +127,7 @@ elFinder.prototype.commands.netmount = function() {
 							if (comp) {
 								doMount();
 							} else {
-								next.focus();
+								next.trigger('focus');
 							}
 						}
 					}),
@@ -169,7 +169,7 @@ elFinder.prototype.commands.netmount = function() {
 				dialog = fm.dialog(form.append(content), opts);
 				dialogNode = dialog.closest('.ui-dialog');
 				dialog.ready(function(){
-					inputs.protocol.change();
+					inputs.protocol.trigger('change');
 					dialog.elfinderdialog('posInit');
 				});
 				return dialog;
@@ -226,7 +226,31 @@ elFinder.prototype.commands.netunmount = function() {
 				.fail(function(error) {
 					error && fm.error(error);
 				}),
-			drive  = fm.file(hashes[0]);
+			drive  = fm.file(hashes[0]),
+			childrenRoots = function(hash) {
+				var roots = [],
+					work;
+				if (fm.leafRoots) {
+					work = [];
+					$.each(fm.leafRoots, function(phash, hashes) {
+						var parents = fm.parents(phash),
+							idx, deep;
+						if ((idx = $.inArray(hash, parents)) !== -1) {
+							idx = parents.length - idx;
+							$.each(hashes, function(i, h) {
+								work.push({i: idx, hash: h});
+							});
+						}
+					});
+					if (work.length) {
+						work.sort(function(a, b) { return a.i < b.i; });
+						$.each(work, function(i, o) {
+							roots.push(o.hash);
+						});
+					}
+				}
+				return roots;
+			};
 
 		if (this._disabled) {
 			return dfrd.reject();
@@ -239,35 +263,72 @@ elFinder.prototype.commands.netunmount = function() {
 				accept : {
 					label    : 'btnUnmount',
 					callback : function() {  
-						var chDrive = (fm.root() == drive.hash),
-							base = $('#'+fm.navHash2Id(drive.hash)).parent(),
-							navTo = (base.next().length? base.next() : base.prev()).find('.elfinder-navbar-root');
-						fm.request({
-							data   : {cmd  : 'netmount', protocol : 'netunmount', host: drive.netkey, user : drive.hash, pass : 'dum'}, 
-							notify : {type : 'netunmount', cnt : 1, hideCnt : true},
-							preventFail : true
-						})
-						.fail(function(error) {
-							dfrd.reject(error);
-						})
-						.done(function(data) {
-							var open = fm.root();
-							if (chDrive) {
-								if (navTo.length) {
-									open = fm.navId2Hash(navTo[0].id);
-								} else {
-									// fallback
-									$.each(fm.files(), function(h, f) {
-										if (f.mime == 'directory') {
-											open = h;
-											return null;
-										}
+						var target =  drive.hash,
+							roots = childrenRoots(target),
+							requests = [],
+							removed = [],
+							doUmount = function() {
+								$.when(requests).done(function() {
+									fm.request({
+										data   : {cmd  : 'netmount', protocol : 'netunmount', host: drive.netkey, user : target, pass : 'dum'}, 
+										notify : {type : 'netunmount', cnt : 1, hideCnt : true},
+										preventFail : true
+									})
+									.fail(function(error) {
+										dfrd.reject(error);
+									})
+									.done(function(data) {
+										dfrd.resolve();
 									});
+								}).fail(function(error) {
+									if (removed.length) {
+										fm.remove({ removed: removed });
+									}
+									dfrd.reject(error);
+								});
+							};
+						
+						if (roots.length) {
+							fm.confirm({
+								title : self.title,
+								text  : (function() {
+									var msgs = ['unmountChildren'];
+									$.each(roots, function(i, hash) {
+										msgs.push([fm.file(hash).name]);
+									});
+									return msgs;
+								})(),
+								accept : {
+									label : 'btnUnmount',
+									callback : function() {
+										$.each(roots, function(i, hash) {
+											var d = fm.file(hash);
+											if (d.netkey) {
+												requests.push(fm.request({
+													data   : {cmd  : 'netmount', protocol : 'netunmount', host: d.netkey, user : d.hash, pass : 'dum'}, 
+													notify : {type : 'netunmount', cnt : 1, hideCnt : true},
+													preventDefault : true
+												}).done(function(data) {
+													if (data.removed) {
+														removed = removed.concat(data.removed);
+													}
+												}));
+											}
+										});
+										doUmount();
+									}
+								},
+								cancel : {
+									label : 'btnCancel',
+									callback : function() {
+										dfrd.reject();
+									}
 								}
-								fm.exec('open', open);
-							}
-							dfrd.resolve();
-						});
+							});
+						} else {
+							requests = null;
+							doUmount();
+						}
 					}
 				},
 				cancel : {

@@ -36,7 +36,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 						i = panels[l].length;
 						while (i--) {
 							name = panels[l][i];
-							if ((!disabled || $.inArray(name, disabled) === -1) && (cmd = commands[name])) {
+							if ((!disabled || !disabled[name]) && (cmd = commands[name])) {
 								button = 'elfinder'+cmd.options.ui;
 								if (! buttons[name] && $.fn[button]) {
 									buttons[name] = $('<div/>')[button](cmd);
@@ -98,7 +98,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 						icon     : 'accept',
 						callback : function() {
 							textLabel = ! textLabel;
-							self.height('').find('.elfinder-button-text')[textLabel? 'show':'hide']();
+							self.css('height', '').find('.elfinder-button-text')[textLabel? 'show':'hide']();
 							fm.trigger('uiresize').storage('toolbarTextLabel', textLabel? '1' : '0');
 						},
 					},{
@@ -152,9 +152,9 @@ $.fn.elfindertoolbar = function(fm, opts) {
 		render();
 		
 		fm.bind('open sync select toolbarpref', function() {
-			var disabled = Object.assign([], fm.option('disabled')),
+			var disabled = Object.assign({}, fm.option('disabledFlip')),
 				userHides = fm.storage('toolbarhides'),
-				doRender, sel;
+				doRender, sel, disabledKeys;
 			
 			if (! userHides && Array.isArray(options.defaultHides)) {
 				userHides = {};
@@ -169,29 +169,30 @@ $.fn.elfindertoolbar = function(fm, opts) {
 				}
 				sel = fm.selected();
 				if (sel.length) {
-					disabled = fm.getDisabledCmds(sel);
+					disabled = fm.getDisabledCmds(sel, true);
 				}
 			}
 			
 			$.each(userHides, function(n) {
-				if ($.inArray(n, disabled) === -1) {
-					disabled.push(n);
+				if (!disabled[n]) {
+					disabled[n] = true;
 				}
 			});
 			
 			if (Object.keys(fm.commandMap).length) {
 				$.each(fm.commandMap, function(from, to){
 					if (to === 'hidden') {
-						disabled.push(from);
+						disabled[from] = true;
 					}
 				});
 			}
 			
-			if (!dispre || dispre.toString() !== disabled.sort().toString()) {
-				render(disabled && disabled.length? disabled : null);
+			disabledKeys = Object.keys(disabled);
+			if (!dispre || dispre.toString() !== disabledKeys.sort().toString()) {
+				render(disabledKeys.length? disabled : null);
 				doRender = true;
 			}
-			dispre = disabled.concat().sort();
+			dispre = disabledKeys.sort();
 
 			if (doRender || uiCmdMapPrev !== JSON.stringify(fm.commandMap)) {
 				uiCmdMapPrev = JSON.stringify(fm.commandMap);
@@ -266,22 +267,29 @@ $.fn.elfindertoolbar = function(fm, opts) {
 							fm.trigger('resize');
 						},
 						always: function() {
-							self.css('height', '');
-							fm.trigger('uiresize');
-							if (swipeHandle) {
-								if (toshow) {
-									swipeHandle.stop(true, true).hide();
-								} else {
-									swipeHandle.height(data.handleH? data.handleH : '');
-									fm.resources.blink(swipeHandle, 'slowonce');
+							setTimeout(function() {
+								self.css('height', '');
+								fm.trigger('uiresize');
+								if (swipeHandle) {
+									if (toshow) {
+										swipeHandle.stop(true, true).hide();
+									} else {
+										swipeHandle.height(data.handleH? data.handleH : '');
+										fm.resources.blink(swipeHandle, 'slowonce');
+									}
 								}
-							}
-							data.init && fm.trigger('uiautohide');
+								toshow && self.scrollTop('0px');
+								data.init && fm.trigger('uiautohide');
+							}, 0);
 						}
 					}, data);
 				self.data('swipeClose', ! toshow).stop(true, true).animate({height : 'toggle'}, opt);
 				autoHide.toolbar = !toshow;
 				fm.storage('autoHide', Object.assign(fm.storage('autoHide'), {toolbar: autoHide.toolbar}));
+			}).on('touchstart', function(e) {
+				if (self.scrollBottom() > 5) {
+					e.originalEvent._preventSwipeY = true;
+				}
 			});
 		}
 	});

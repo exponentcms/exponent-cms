@@ -31,7 +31,7 @@ class elFinder {
 	 * 
 	 * @var integer
 	 */
-	protected static $ApiRevision = 32;
+	protected static $ApiRevision = 33;
 	
 	/**
 	 * Storages (root dirs)
@@ -122,6 +122,14 @@ class elFinder {
 		'application/sql'
 	);
 	
+	/**
+	 * Maximum memory size to be extended during GD processing
+	 * (0: not expanded, -1: unlimited or memory size notation)
+	 *
+	 * @var integer|string
+	 */
+	public static $memoryLimitGD = 0;
+
 	/**
 	 * Path of current request flag file for abort check
 	 * 
@@ -452,9 +460,24 @@ class elFinder {
 	public function __construct($opts) {
 		// set default_charset
 		if (version_compare(PHP_VERSION, '5.6', '>=')) {
-			ini_set('internal_encoding', 'UTF-8');
-			ini_set('default_charset', 'UTF-8');
+			if (ini_get('iconv.internal_encoding')) {
+				ini_set('iconv.internal_encoding', '');
+			}
+			if (ini_get('mbstring.internal_encoding')) {
+				ini_set('mbstring.internal_encoding', '');
+			}
+			if (ini_get('internal_encoding')) {
+				ini_set('internal_encoding', '');
+			}
+		} else {
+			if (function_exists('iconv_set_encoding') && strtoupper(iconv_get_encoding('internal_encoding')) !== 'UTF-8') {
+				iconv_set_encoding('internal_encoding', 'UTF-8');
+			}
+			if (function_exists('mb_internal_encoding') && strtoupper(mb_internal_encoding()) !== 'UTF-8') {
+				mb_internal_encoding('UTF-8');
+			}
 		}
+		ini_set('default_charset', 'UTF-8');
 		
 		// define accept constant of server commands path
 		! defined('ELFINDER_TAR_PATH')      && define('ELFINDER_TAR_PATH',      'tar');
@@ -471,6 +494,8 @@ class elFinder {
 		! defined('ELFINDER_JPEGTRAN_PATH') && define('ELFINDER_JPEGTRAN_PATH', 'jpegtran');
 		! defined('ELFINDER_FFMPEG_PATH')   && define('ELFINDER_FFMPEG_PATH',   'ffmpeg');
 		
+		! defined('ELFINDER_DISABLE_ZIPEDITOR') && define('ELFINDER_DISABLE_ZIPEDITOR', false);
+
 		// for backward compat
 		$this->version = (string)self::$ApiVersion;
 		
@@ -514,7 +539,7 @@ class elFinder {
 		$this->debug = (isset($opts['debug']) && $opts['debug'] ? true : false);
 		if ($this->debug) {
 			error_reporting(defined('ELFINDER_DEBUG_ERRORLEVEL')? ELFINDER_DEBUG_ERRORLEVEL : -1);
-			ini_set('diaplay_errors', '1');
+			ini_set('display_errors', '1');
 			// clear output buffer and stop output filters
 			while(ob_get_level() && ob_end_clean()){}
 		}
@@ -542,9 +567,10 @@ class elFinder {
 		// try session start | restart
 		$this->session->start();
 		
-		$sessionUseCmds = array();
+		// 'netmount' added to handle requests synchronously on unmount
+		$sessionUseCmds = array('netmount');
 		if (isset($opts['sessionUseCmds']) && is_array($opts['sessionUseCmds'])) {
-			$sessionUseCmds = $opts['sessionUseCmds'];
+			$sessionUseCmds = array_merge($sessionUseCmds, $opts['sessionUseCmds']);
 		}
 
 		// set self::$volumesCnt by HTTP header "X-elFinder-VolumesCntStart"
@@ -607,7 +633,10 @@ class elFinder {
 		}
 
 		// set defaultMimefile
-		elFinder::$defaultMimefile = (isset($opts['defaultMimefile']) ? $opts['defaultMimefile'] : '');
+		elFinder::$defaultMimefile = isset($opts['defaultMimefile'])? $opts['defaultMimefile'] : '';
+
+		// set memoryLimitGD
+		elFinder::$memoryLimitGD = isset($opts['memoryLimitGD'])? $opts['memoryLimitGD'] : 0;
 
 		// bind events listeners
 		if (!empty($opts['bind']) && is_array($opts['bind'])) {
@@ -648,6 +677,11 @@ class elFinder {
 
 		if (!isset($opts['roots']) || !is_array($opts['roots'])) {
 			$opts['roots'] = array();
+		}
+
+		// try to enable elFinderVolumeFlysystemZipArchiveNetmount to zip editing
+		if (empty(elFinder::$netDrivers['ziparchive'])) {
+			elFinder::$netDrivers['ziparchive'] = 'FlysystemZipArchiveNetmount';
 		}
 
 		// check for net volumes stored in session
@@ -1072,9 +1106,6 @@ class elFinder {
 		// unlock locked items
 		$this->itemAutoUnlock();
 		
-		// remove self::$abortCheckFile
-		$this->abort();
-		
 		// custom data
 		if ($this->customData !== null) {
 			$result['customData'] = $this->customData? json_encode($this->customData) : '';
@@ -1250,6 +1281,7 @@ class elFinder {
 	protected function netmount($args) {
 		$options  = array();
 		$protocol = $args['protocol'];
+		$toast = '';
 		
 		if ($protocol === 'netunmount') {
 			if (! empty($args['user']) && $volume = $this->volume($args['user'])) {
@@ -1296,6 +1328,10 @@ class elFinder {
 				}
 				return $options;
 			}
+			if (!empty($options['toast'])) {
+				$toast = $options['toast'];
+				unset($options['toast']);
+			}
 		}
 		
 		$netVolumes = $this->getNetVolumes();
@@ -1309,10 +1345,10 @@ class elFinder {
 		
 		// load additional volume root options
 		if (! empty($this->optionsNetVolumes['*'])) {
-			$options = array_merge($options, $this->optionsNetVolumes['*']);
+			$options = array_merge($this->optionsNetVolumes['*'], $options);
 		}
 		if (! empty($this->optionsNetVolumes[$protocol])) {
-			$options = array_merge($options, $this->optionsNetVolumes[$protocol]);
+			$options = array_merge($this->optionsNetVolumes[$protocol], $options);
 		}
 		
 		if (! $key =  $volume->netMountKey) {
@@ -1320,12 +1356,16 @@ class elFinder {
 		}
 		$options['netkey'] = $key;
 		
-		if ($volume->mount($options)) {
+		if (!isset($netVolumes[$key]) && $volume->mount($options)) {
 			$options['driver'] = $driver;
 			$netVolumes[$key]  = $options;
 			$this->saveNetVolumes($netVolumes);
 			$rootstat = $volume->file($volume->root());
-			return array('added' => array($rootstat));
+			$res = array('added' => array($rootstat));
+			if ($toast) {
+				$res['toast'] = $toast;
+			}
+			return $res;
 		} else {
 			$this->removeNetVolume(null, $volume);
 			return array('error' => $this->error(self::ERROR_NETMOUNT, $args['host'], implode(' ', $volume->error())));
@@ -4266,6 +4306,44 @@ class elFinder {
 		}
 	}
 	
+	/**
+	 * Gets the memory size by imageinfo.
+	 *
+	 * @param      array    $imgInfo   array that result of getimagesize()
+	 *
+	 * @return     integer  The memory size by imageinfo.
+	 */
+	public static function getMemorySizeByImageInfo($imgInfo) {
+		$width = $imgInfo[0];
+		$height = $imgInfo[1];
+		$bits = isset($imgInfo['bits'])? $imgInfo['bits'] : 24;
+		$channels = isset($imgInfo['channels'])? $imgInfo['channels'] : 3;
+		return round(($width * $height * $bits * $channels / 8 + Pow(2, 16)) * 1.65);
+	}
+
+	/**
+	 * Auto expand memory for GD processing
+	 *
+	 * @param      array  $imgInfos  The image infos
+	 */
+	public static function expandMemoryForGD($imgInfos) {
+		if (elFinder::$memoryLimitGD != 0 && $imgInfos && is_array($imgInfos)) {
+			if (!is_array($imgInfos[0])) {
+				$imgInfos = array($imgInfos);
+			}
+			$limit = self::getIniBytes('', elFinder::$memoryLimitGD);
+			$memLimit = self::getIniBytes('memory_limit');
+			$needs = 0;
+			foreach($imgInfos as $info) {
+				$needs += self::getMemorySizeByImageInfo($info);
+			}
+			$needs += memory_get_usage();
+			if ($needs > $memLimit && ($limit == -1 || $limit > $needs)) {
+				ini_set('memory_limit', $needs);
+			}
+		}
+	}
+
 	/***************************************************************************/
 	/*                                 callbacks                               */
 	/***************************************************************************/
