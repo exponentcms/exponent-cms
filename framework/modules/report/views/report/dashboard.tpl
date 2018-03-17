@@ -100,7 +100,7 @@
                         <td>{icon class=view controller=order action=show id=$order->id text="" title='View this order'|gettext}</td>
                     </tr>
                 {foreachelse}
-                    <tr><td colspan=5>{message text='No Orders Found!'|gettext}</td></tr>
+                    <tr><td colspan=6>{message text='No Orders Found!'|gettext}</td></tr>
                 {/foreach}
             </tbody>
         </table>
