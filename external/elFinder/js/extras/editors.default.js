@@ -679,7 +679,7 @@
 						editorBase = $(editor.getWrapperElement()).css({
 							// fix CSS conflict to SimpleMDE
 							padding: 0,
-					    	border: 'none'
+							border: 'none'
 						});
 						ta.data('cm', true);
 						
@@ -783,13 +783,13 @@
 					dfrd = $.Deferred(),
 					cdn  = fm.options.cdns.simplemde,
 					start = function(SimpleMDE) {
-						var h     = base.height(),
+						var h	 = base.height(),
 							delta = base.outerHeight(true) - h + 14,
 							editor, editorBase, opts;
 						
 						// fit height function
 						textarea._setHeight = function(height) {
-							var h    = height || base.height(),
+							var h	= height || base.height(),
 								ctrH = 0,
 								areaH;
 							base.children('.editor-toolbar,.editor-statusbar').each(function() {
@@ -990,6 +990,7 @@
 			exts : ['htm', 'html', 'xhtml'],
 			html : '<div class="edit-editor-ckeditor5"></div>',
 			setup : function(opts, fm) {
+				var confObj = this;
 				// check cdn and ES6 support
 				if (!fm.options.cdns.ckeditor5 || typeof window.Symbol !== 'function' || typeof Symbol() !== 'symbol') {
 					this.disabled = true;
@@ -998,6 +999,9 @@
 						this.ckeditor5Mode = opts.extraOptions.ckeditor5Mode;
 					}
 				}
+				fm.bind('destroy', function() {
+					confObj.editor = null;
+				});
 			},
 			// Prepare on before show dialog
 			prepare : function(base, dialogOpts, file) {
@@ -1031,6 +1035,13 @@
 					fm   = this.fm,
 					dfrd = $.Deferred(),
 					mode = self.confObj.ckeditor5Mode || 'balloon',
+					lang = (function() {
+						var l = fm.lang.toLowerCase().replace('_', '-');
+						if (l.substr(0, 2) === 'zh' && l !== 'zh-cn') {
+							l = 'zh';
+						}
+						return l;
+					})(),
 					init = function(cEditor) {
 						var base = $(editnode).parent(),
 							opts;
@@ -1040,8 +1051,8 @@
 
 						// CKEditor5 configure options
 						opts = {
-							toolbar: ['headings', '|', 'bold', 'italic', 'link', 'insertimage', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo' ]
-							// ,language: fm.lang // currently version this isn't support yet
+							toolbar: ['heading', '|', 'bold', 'italic', 'link', 'imageUpload', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo' ],
+							language: lang
 						};
 
 						// trigger event 'editEditorPrepare'
@@ -1056,7 +1067,6 @@
 							.create(editnode, opts)
 							.then(function(editor) {
 								var fileRepo = editor.plugins.get('FileRepository');
-								fileRepo.createAdapter = /* for <= 1.0.0-alpha.2 */
 								fileRepo.createUploadAdapter = function(loader) {
 									return new uploder(loader);
 								};
@@ -1079,7 +1089,7 @@
 					uploder = function(loader) {
 						this.upload = function() {
 							return new Promise(function(resolve, reject) {
-								fm.getCommand('upload').exec({files: [loader.file]})
+								fm.exec('upload', {files: [loader.file]})
 									.done(function(data){
 										if (data.added && data.added.length) {
 											fm.url(data.added[0].hash, { async: true }).done(function(url) {
@@ -1094,30 +1104,58 @@
 										}
 									})
 									.fail(function(error) {
-										reject(fm.i18n(error? error : 'errUploadNoFiles'));
+										reject(fm.i18n(error? (error === 'userabort'? 'errAbort' : error) : 'errUploadNoFiles'));
+									})
+									.progress(function(data) {
+										loader.uploadTotal = data.total;
+										loader.uploaded = data.progress;
 									});
 							});
 						};
-						this.abort = function() {};
-					};
+						this.abort = function() {
+							fm.getUI().trigger('uploadabort');
+						};
+					}, loader;
 
-				if (!self.confObj.loader) {
-					self.confObj.loader = $.Deferred();
+				if (!self.confObj.editor) {
+					loader = $.Deferred();
 					self.fm.loadScript([
-						fm.options.cdns.ckeditor5 + '/' + mode + '/ckeditor.js'
-						// currently version this isn't support yet
-						//,fm.options.cdns.ckeditor5 + '/' + mode + '/translations/'+fm.lang+'.js'
+						//fm.options.cdns.ckeditor5 + '/' + mode + '/ckeditor.js'
+						// uses "t/ckeditor5/914" until next release
+						fm.options.cdns.ckeditor5 + mode + '/5c757fcc3e924454bf5f65c806f4a159aaafd293/build/ckeditor.js'
 					], function(editor) {
 						if (!editor) {
 							editor = window.BalloonEditor || window.InlineEditor || window.ClassicEditor;
 						}
-						self.confObj.loader.resolve(editor);
+						if (fm.lang !== 'en') {
+							self.fm.loadScript([
+								//fm.options.cdns.ckeditor5 + '/' + mode + '/translations/' + lang + '.js'
+								// uses "t/ckeditor5/914" until next release
+								fm.options.cdns.ckeditor5 + mode + '/5c757fcc3e924454bf5f65c806f4a159aaafd293/build/translations/' + lang + '.js'
+							], function(obj) {
+								loader.resolve(editor);
+							}, {
+								tryRequire: true,
+								loadType: 'tag',
+								error: function(obj) {
+									lang = 'en';
+									loader.resolve(editor);
+								}
+							});
+						} else {
+							loader.resolve(editor);
+						}
 					}, {
 						tryRequire: true,
 						loadType: 'tag'
 					});
+					loader.done(function(editor) {
+						self.confObj.editor = editor;
+						init(editor);
+					});
+				} else {
+					init(self.confObj.editor);
 				}
-				self.confObj.loader.done(init);
 				return dfrd;
 			},
 			getContent : function() {
@@ -1172,7 +1210,7 @@
 						// fit height function
 						textarea._setHeight = function(height) {
 							var base = $(this).parent(),
-								h    = height || base.height(),
+								h	= height || base.height(),
 								ctrH = 0,
 								areaH;
 							base.find('.mce-container-body:first').children('.mce-toolbar,.mce-toolbar-grp,.mce-statusbar').each(function() {
