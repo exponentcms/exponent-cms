@@ -61,7 +61,7 @@ yadcf,0.9.2,github.com/vedmack/yadcf,0.9.2,
 tag-it,2,aehlke.github.io/tag-it/,2,renamed css file to same as js file for our loader
 multiselect,2,mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.1.0,excolo.github.io/Excolo-Slider/,1.1.0,
-OwlCarousel2,2.3.2,github.com/smashingboxes/OwlCarousel2,2.3.2,
+OwlCarousel2,2.3.3,github.com/smashingboxes/OwlCarousel2,2.3.3,
 colorbox,1.6.4,www.jacklmoore.com/colorbox,1.6.4,using style #5 renamed to jquery.colorbox.css
 Searcher,0.3.0,github.com/lloiser/jquery-searcher/,0.3.0,
 DateTimePicker,2.5.18exp,xdsoft.net/jqplugins/datetimepicker/,2.5.18,rename .full version; we add .js auto-close on inline date select and extra 'reset' work & remove .css z-index issue
