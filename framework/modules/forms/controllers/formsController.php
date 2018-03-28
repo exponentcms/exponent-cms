@@ -693,7 +693,7 @@ class formsController extends expController {
                         $mod = !empty($this->params['module']) ? $this->params['module'] : $this->params['controller'];
                         $location_data = expCore::makeLocation($mod,$this->params['src'],$this->params['int']);
                     }
-                    $db_data->location_data = $location_data;
+                    $db_data->location_data = serialize($location_data);
                     $f->insertRecord($db_data);
                 }
 
