@@ -32,7 +32,7 @@ Font-Awesome4,4.7.0,fortawesome.github.com/Font-Awesome,4.7.0,
 Adminer,4.6.2exp,www.adminer.org,4.6.2,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.2,github.com/LPology/Simple-Ajax-Uploader,2.6.2,also converted to yui module 2.5.3
 normalize.css,8.0.0,necolas.github.com/normalize.css/,8.0.0,auto included in bootstrap 3
-MediaElement.js,4.2.8,mediaelementjs.com/,4.2.8,
+MediaElement.js,4.2.9,mediaelementjs.com/,4.2.9,
 MediaElement plugins,2.5.0,github.com/johndyer/mediaelement-plugins,2.5.0,
 Facebook PHP SDK3,3.2.3,github.com/facebook/facebook-php-sdk,5.6.2,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.6.2,
@@ -42,7 +42,7 @@ csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 CKEditor,4.9.0,ckeditor.com,4.9.0,"add fieldinsert (exp), tableresize, sourcedialog, image2 fileupload & imageupload widgets & kama skin"
 TinyMCE,4.7.9,tinymce.com,4.7.9,"add fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 PLUpload,2.3.6,github.com/moxiecode/plupload,2.3.6/3.1.1,"needed for TinyMCE Quick Upload, placed in that plugin folder"
-elFinder,2.1.35,elfinder.org,2.1.35,customized in /framework with Exponent php classes and .js files
+elFinder,2.1.37,elfinder.org,2.1.37,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
 jQuery,2.2.4,jquery.com,2.2.4,
 jQuery Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon
