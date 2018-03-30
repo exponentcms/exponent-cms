@@ -93,13 +93,11 @@ class update_ecom2 extends upgradescript {
 
         // copy product summary into body if no body exists, summary deprecated
         $prod = new product();
-        $prods = $prod->find('all',1);
+        $prods = $prod->find('all','body=null AND summary!=null');
         foreach ($prods as $product) {
-            if (empty($product->body) && !empty($product->summary)) {
-                $product->body = $product->summary;
-                $product->update();
-                $fixed++;
-            }
+            $product->body = $product->summary;
+            $product->update();
+            $fixed++;
         }
 
         return ($fixed?$fixed:gt('No')).' '.gt('e-Commerce settings were corrected');
