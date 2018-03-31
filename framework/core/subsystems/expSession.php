@@ -249,7 +249,7 @@ class expSession {
 		global $db;
 
 		if (isset($_SESSION[SYS_SESSION_KEY]['ticket'])) {
-			if($db->selectObject('sessionticket',"ticket='".$_SESSION[SYS_SESSION_KEY]['ticket']."'") != null ) {
+			if($db->havedb && $db->selectObject('sessionticket',"ticket='".$_SESSION[SYS_SESSION_KEY]['ticket']."'") != null ) {
 				return $_SESSION[SYS_SESSION_KEY]['ticket'];
 			}
 		}
