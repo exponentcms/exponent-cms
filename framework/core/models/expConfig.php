@@ -68,8 +68,8 @@ class expConfig extends expRecord {
      */
     public function update($params=array()) {
         foreach($params['config'] as $key => $value) {
-//            if (substr($key,-5) == '_list') $params['config'][$key] = listbuildercontrol::parseData($params['config'],$key,true);
-            if (substr($key,-5) == '_list') $params['config'][$key] = listbuildercontrol::parseData($key, $params['config'], true);
+            if (substr($key,-5) === '_list')
+                $params['config'][$key] = listbuildercontrol::parseData($key, $params['config'], true);
         }
 
         unset(
@@ -88,9 +88,8 @@ class expConfig extends expRecord {
             $params['config']['__cfduid']
         );
 
-        if(is_array($params['config'])) {
+        if(is_array($params['config']))
             $params['config'] = serialize($params['config']);
-        }
 
         parent::update($params);
     }

@@ -59,7 +59,7 @@ if ($db->havedb) {
     $section = $router->getSection();
     $sectionObj = $router->getSectionObj($section);
     if ($sectionObj->alias_type == 1) {  // asking for an external link url instead of exponent
-        redirect_to(substr($sectionObj->external_link, 0, 4) == 'http' ? $sectionObj->external_link : 'http://' . $sectionObj->external_link);
+        redirect_to(substr($sectionObj->external_link, 0, 4) === 'http' ? $sectionObj->external_link : 'http://' . $sectionObj->external_link);
     }
 }
 if (ENABLE_TRACKING)
@@ -74,10 +74,10 @@ if (expJavascript::requiresJSON()) {
 
 // Check to see if we are in maintenance mode.
 //if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login') && !expJavascript::inAjaxAction()) {
-if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !(!empty($_REQUEST['controller']) && $_REQUEST['controller'] == 'login' && !empty($_REQUEST['action']) && $_REQUEST['action'] == 'login')) {
+if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !(!empty($_REQUEST['controller']) && $_REQUEST['controller'] === 'login' && !empty($_REQUEST['action']) && $_REQUEST['action'] === 'login')) {
 	//only admins/acting_admins are allowed to get to the site, all others get the maintenance view
 	$template = new standalonetemplate('_maintenance');
-    if (!empty($_REQUEST['controller']) && $_REQUEST['controller'] == 'login') {
+    if (!empty($_REQUEST['controller']) && $_REQUEST['controller'] === 'login') {
         $template->assign("login", true);
     }
 	$template->output();
@@ -107,10 +107,10 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
             if (empty($framework)) {
                 $framework = expSession::get('framework');
             }
-            if ($framework == 'jquery' || $framework == 'bootstrap' || $framework == 'bootstrap3' || $framework == 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
-            if ($framework == 'bootstrap' || $framework == 'bootstrap3' || $framework == 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
-            if ($framework == 'bootstrap3' || $framework == 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
-            if ($framework == 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap4');
+            if ($framework === 'jquery' || $framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
+            if ($framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
+            if ($framework === 'bootstrap3' || $framework === 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
+            if ($framework === 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap4');
             if (newui()) array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
             array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
 

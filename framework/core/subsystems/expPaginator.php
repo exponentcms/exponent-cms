@@ -329,10 +329,41 @@ class expPaginator {
 		// get the page parameters from the router to build the links
         $page_params = $router->params;
 //		$page_params = $this->cleanParams($router->params);
-        foreach (array("__utma", "__utmz", "route_sanitized") as $key) {
-            if (isset($page_params[$key]))
-                unset($page_params[$key]);
-        }
+//        $bad_params = array(
+//            'PHPSESSID',
+//            '_ga',
+//            '_gat',
+//            '_gaq',
+//            '__utma',
+//            '__utmb',
+//            '__utmc',
+//            '__utmt',
+//            '__utmv',
+//            '__utmli',
+//            '__utmz',
+//            '__zlcmid',
+//            '__cfduid'
+//        );
+//        foreach ($bad_params as $key) {
+//            if (isset($page_params[$key]))
+//                unset($page_params[$key]);
+//        }
+        unset(
+            $page_params['PHPSESSID'],
+            $page_params['_ga'],
+            $page_params['_gat'],
+            $page_params['_gaq'],
+            $page_params['__utma'],
+            $page_params['__utmb'],
+            $page_params['__utmc'],
+            $page_params['__utmt'],
+            $page_params['__utmv'],
+            $page_params['__utmli'],
+            $page_params['__utmz'],
+            $page_params['__zlcmid'],
+            $page_params['__cfduid']
+        );
+
         if (!empty($page_params['search_string']))
             $page_params['search_string'] = urlencode($page_params['search_string']);
 
