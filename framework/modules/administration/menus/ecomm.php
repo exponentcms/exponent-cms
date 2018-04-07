@@ -46,6 +46,18 @@ $ecom = array(
                 ),
             ),
             array(
+                'text'      => gt('Customers'),
+                'icon'      => 'fa-user',
+                'icon5'      => 'fas fa-user',
+                'classname' => 'euser',
+                'url'       => makeLink(
+                    array(
+                        'controller' => 'users',
+                        'action'     => 'manage'
+                    )
+                ),
+            ),
+            array(
                 'text'      => gt("Orders"),
                 'icon'      => 'fa-list-ul',
                 'icon5'      => 'fas fa-list-ul',
