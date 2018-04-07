@@ -32,22 +32,20 @@
 				<th>{'Email'|gettext}:</th>
 				<td>{$u->email}</td>
 			</tr>
-			<tr>
+            {if $u->is_acting_admin == 1}
+            <tr>
 				<th>{'Is Admin'|gettext}:</th>
 				<td>
-				{if $u->is_acting_admin == 1}
 					{'Yes'|gettext}
-				{else}
-					{'No'|gettext}
-				{/if}
 				</td>
 			</tr>
-			<tr>
+            {/if}
+            <tr>
 				<th>{'Last Login'|gettext}:</th>
 				<td>{$u->last_login|format_date}</td>
 			</tr>
             <tr><td colspan=2>
-                <a class="manage" href="{link module=users action=edituser id=$u->id}">{'Update Profile'|gettext}</a>
+                <a class="manage {button_style}" href="{link module=users action=edituser id=$u->id}">{'Update Profile'|gettext}</a>
             </td></tr>
 		</table>
 	</div>
@@ -67,9 +65,9 @@
 						{if $billings[0]->id == ''}
 							{'You have not selected an address yet'|gettext}.
                         {else}
-							{foreach from=$billings item=billing}
+							{foreach $billings as $billing}
 								{$billing|address}
-								{br}
+                                {if !$billing@last}{br}{/if}
 							{/foreach}
 						{/if}
 					</td>
@@ -77,16 +75,16 @@
 						{if $shippings[0]->id == ''}
 							{'No address yet'|gettext}
 						{else}
-							{foreach from=$shippings item=shipping}
+							{foreach $shippings as $shipping}
 								{$shipping|address}
-								{br}
+								{if !$shipping@last}{br}{/if}
 							{/foreach}
 						{/if}
 					</td>
 				</tr>
                 {*{if $billings[0]->id == '' || $shippings[0]->id == ''}*}
                     <tr><td colspan=2>
-                        <a class="manage" href="{link module=address action=myaddressbook user_id=$u->id}">{'Manage Addresses'|gettext}</a>
+                        <a class="manage {button_style}" href="{link module=address action=myaddressbook user_id=$u->id}">{'Manage Addresses'|gettext}</a>
                     </td></tr>
                 {*{/if}*}
 			</tbody>
@@ -106,16 +104,16 @@
 			<tbody>
 				{foreach from=$orders->records item=listing name=listings}
                     <tr class="{cycle values='odd,even'}">
+                        <td>{$listing->purchased|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</td>
                         <td><a href="{link controller=order action=myOrder id=$listing->id}">{$listing->invoice_id}</a></td>
                         <td style="text-align:right;">{$listing->grand_total|currency}</td>
-                        <td>{$listing->purchased|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</td>
                         {*<td>{$listing->order_type}</td>*}
                         <td>{$listing->status}</td>
                         <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png" color=green}</a>{/if}</td>
                     </tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
-				        <td colspan="4">{'No orders have been placed yet'|gettext}</td>
+				        <td colspan="5">{'No orders have been placed yet'|gettext}</td>
 				    </tr>
 				{/foreach}
 		    </tbody>
