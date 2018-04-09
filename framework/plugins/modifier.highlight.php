@@ -33,7 +33,7 @@
  * @param string $word phrase(s) to highlight
  * @param string $highlight type of highlight (style/class) to place inside <span> tag
  *
- * @return array
+ * @return string
  */
 function smarty_modifier_highlight($text='', $word='', $highlight='html5') {
    if(strlen($text) > 0 && strlen($word) > 0) {

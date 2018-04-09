@@ -33,7 +33,7 @@
  * @param array  $from
  * @param int    $index
  *
- * @return array
+ * @return string
  */
 function smarty_modifier_array_lookup($value='', $from=array(), $index=0) {
     if (array_key_exists($value, $from)) {

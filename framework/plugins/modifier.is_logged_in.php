@@ -30,7 +30,8 @@
  * Purpose:  determine if user is logged in
  *
  * @param array
- * @return array
+ *
+ * @return boolean
  */
 function smarty_modifier_is_logged_in($string) {
 	if(expSession::loggedIn()) {

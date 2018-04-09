@@ -36,9 +36,8 @@
  * @param string $light
  * @param bool   $yiq
  *
- * @return array
+ * @return string
  */
-
 function smarty_modifier_contrast($hexcolor, $dark = '#000000', $light = '#FFFFFF', $yiq = false) {
     if (!$yiq) {
         return (hexdec($hexcolor) > 0xffffff / 2) ? $dark : $light;

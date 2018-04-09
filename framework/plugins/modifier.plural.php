@@ -33,9 +33,8 @@
  * @param string $word
  * @param int    $counter
  *
- * @return array
+ * @return string
  */
-
 function smarty_modifier_plural($word = '', $counter = 0) {
     # What to append to the word to make it plural?
     $plural_marker = 's';

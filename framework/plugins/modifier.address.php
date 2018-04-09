@@ -31,7 +31,7 @@
  *
  * @param        array
  *
- * @return array
+ * @return string
  */
 function smarty_modifier_address($address) {
 	$addyid = is_numeric($address) ? $address : $address->id;

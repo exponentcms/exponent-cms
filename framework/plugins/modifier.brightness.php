@@ -36,7 +36,6 @@
  *
  * @return string
  */
-
 function smarty_modifier_brightness($colourstr, $steps = 20) {
     $colourstr = str_replace('#', '', $colourstr);
     $rhex = substr($colourstr, 0, 2);

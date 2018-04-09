@@ -30,7 +30,8 @@
  * Purpose:  replace spaces with non-breaking spaces
  *
  * @param array
- * @return array
+ *
+ * @return string
  */
 function smarty_modifier_nobreak($string) {
 	return str_replace(' ', '&#160;', $string);

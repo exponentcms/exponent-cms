@@ -30,7 +30,7 @@
  *
  * @param        array
  *
- * @return array
+ * @return string
  */
 function smarty_modifier_relative_date($timestamp) {
     return expDateTime::relativeDate($timestamp);

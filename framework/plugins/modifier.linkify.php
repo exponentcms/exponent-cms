@@ -23,29 +23,14 @@
  */
 
 /**
- * Smarty regex_replace modifier plugin
- * Type:     modifier<br>
- * Name:     regex_replace<br>
- * Purpose:  regular expression search/replace
- *
- * @link     http://smarty.php.net/manual/en/language.modifier.regex.replace.php
- *           regex_replace (Smarty online manual)
- * @author   Monte Ohrt <monte at ohrt dot com>
- *
- * @param string
- * @param    string|array
- * @param    string|array
- *
- * @return string
- */
-/**
- * Turn all URLs in clickable links.
+ * Turn all URLs into clickable links.
  *
  * @param string $value
  * @param array  $protocols http/https, ftp, mail, twitter
  * @param array  $attributes
  *
  * @internal param string $mode normal or all
+ *
  * @return string
  */
 function smarty_modifier_linkify(

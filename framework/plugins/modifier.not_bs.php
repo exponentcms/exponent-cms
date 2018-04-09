@@ -30,7 +30,8 @@
  * Purpose:  convert to kilobytes
  *
  * @param array
- * @return array
+ *
+ * @return string
  */
 function smarty_modifier_not_bs($text) {
 	return bs() ? '' : $text;

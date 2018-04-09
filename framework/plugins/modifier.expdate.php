@@ -32,7 +32,7 @@
  * @param $timestamp
  * @param $format
  *
- * @return array
+ * @return string
  */
 function smarty_modifier_expdate($timestamp,$format) {
 	return date($format, $timestamp);

@@ -30,7 +30,8 @@
  * Purpose:  convert to kilobytes
  *
  * @param array
- * @return array
+ *
+ * @return string
  */
 function smarty_modifier_megabytes($bytes) {
 	return round($bytes/1048576, 2);

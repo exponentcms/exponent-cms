@@ -32,7 +32,7 @@
  * @param $number
  * @param $decimals
  *
- * @return array
+ * @return string
  */
 function smarty_modifier_currency($number,$decimals=2) {
     $number = ($number=="") ? 0 : $number;

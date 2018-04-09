@@ -30,10 +30,11 @@
  * Purpose:  remove spaces, replacing them with underscores
  *
  * @param array
- * @return array
+ *
+ * @return string
  */
 function smarty_modifier_remove_space($string) {
-		return str_replace(' ', '_', $string);
+    return str_replace(' ', '_', $string);
 }
 
 ?>

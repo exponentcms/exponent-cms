@@ -30,7 +30,8 @@
  * Purpose:  reverse arrays
  *
  * @param array
- * @return array
+ *
+ * @return string
  */
 function smarty_modifier_reverse_array($array)
 {

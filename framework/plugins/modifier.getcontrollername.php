@@ -30,6 +30,7 @@
  * Purpose:  Return the module name for this module
  *
  * @param string $str
+ *
  * @return string
  */
 function smarty_modifier_getcontrollername($str) {

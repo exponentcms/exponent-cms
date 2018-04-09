@@ -32,7 +32,7 @@
  * @param        array
  * @param string $format
  *
- * @return array
+ * @return string
  */
 function smarty_modifier_format_date($timestamp,$format=DISPLAY_DATE_FORMAT) {
 	// Do some sort of mangling of the format for windows.
