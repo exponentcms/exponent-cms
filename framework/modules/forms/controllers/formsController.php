@@ -457,7 +457,7 @@ class formsController extends expController {
                     $form->register(uniqid(''), '', new htmlcontrol($antispam));
                 }
 
-                if (empty($this->config['submitbtn'])) $this->config['submitbtn'] = gt('Submit');
+//                if (empty($this->config['submitbtn'])) $this->config['submitbtn'] = gt('Submit');
                 if (!empty($this->params['id'])) {
                     $cancel = gt('Cancel');
                     $form->meta('action', 'submit_data');
