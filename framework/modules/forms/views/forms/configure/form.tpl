@@ -26,6 +26,7 @@
 {if $config.is_saved && !empty($config.table_name)}
     {control type=text name='table_name' label='Saved to Database'|gettext value=$config.table_name disabled=true}
 {/if}
+{control type="checkbox" name="quick_submit" label="Allow single click form submission?"|gettext value=1 checked=$config.quick_submit description='Enable this setting to skip form entry confirmation'|gettext}
 {control type="checkbox" name="restrict_enter" label="Restrict Form Entry by Using Permissions?"|gettext value=1 checked=$config.restrict_enter description='Enable this setting to only allow those users with permission to enter data'|gettext}
 {control type=html name='description' label='Form Description'|gettext value=$config.description description='Placed below module description and above the form'|gettext}
 {group label='Form Display Settings'|gettext}

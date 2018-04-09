@@ -261,6 +261,7 @@ class forms extends expRecord {
     private function getRecordSefURL($record = array()) {
         // first make sure we have an sef url
         if (empty($record->sef_url)) {
+            $record->sef_url = null;
             // create an sef url from existing field
             $needles = array(
                 'name',
