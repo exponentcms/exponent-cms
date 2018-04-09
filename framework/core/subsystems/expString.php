@@ -385,10 +385,10 @@ class expString {
                     //                        $ret = substr($string, $j);
                     //                    }
                     //                }
-                    if (sizeof($tagsArray) != 0) {
+                    if (count($tagsArray) != 0) {
                         // Close broken XHTML elements
-                        while (sizeof($tagsArray) != 0) {
-                            if (sizeof($tagsArray) > 1) {
+                        while (count($tagsArray) != 0) {
+                            if (count($tagsArray) > 1) {
                                 $aTag = array_pop($tagsArray);
                                 $string .= "</" . $aTag . ">";
                             } // You may add more tags here to put the link and added text before the closing tag

@@ -989,12 +989,12 @@ class paypalExpressCheckout extends billingcalculator {
         $httpParsedResponseAr = array();
         foreach ($httpResponseAr as $i => $value) {
             $tmpAr = explode("=", $value);
-            if (sizeof($tmpAr) > 1) {
+            if (count($tmpAr) > 1) {
                 $httpParsedResponseAr[$tmpAr[0]] = $tmpAr[1];
             }
         }
 
-        if ((0 == sizeof($httpParsedResponseAr)) || !array_key_exists('ACK', $httpParsedResponseAr)) {
+        if ((0 == count($httpParsedResponseAr)) || !array_key_exists('ACK', $httpParsedResponseAr)) {
             exit("Invalid HTTP Response for POST request($nvpreq) to $API_Endpoint.");
         }
 
