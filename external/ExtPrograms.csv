@@ -95,8 +95,9 @@ iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v
 Kint,2.2.0,github.com/kint-php/kint,2.2.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
-Twitter-Bootstrap,,twitter.github.com/bootstrap,4.0.0,patched bootstrap.scss includes swatches & exp variables
-Bootswatch,,bootswatch.com/,4.0.0+1,change 1st line variables.scss comment to output to .css file
+Twitter-Bootstrap,,twitter.github.com/bootstrap,4.1.0,patched bootstrap.scss includes swatches & exp variables
+popper.js,,github.com/FezVrasta/popper.js,1.14.3,needed by BS4
+Bootswatch,,bootswatch.com/,4.1.0,change 1st line variables.scss comment to output to .css file
 Font-Awesome,,fontawesome.com,5.0.9,add 'fonts' to main sheet
 DataTables Buttons,,www.datatables.net,1.5.1,
 DataTables Responsive,,www.datatables.net,2.2.1,

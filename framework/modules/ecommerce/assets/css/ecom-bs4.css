@@ -355,6 +355,7 @@ table.table.order-info2 > thead > tr > th,
 .email-customer h4 {
 	background-color: lightgrey;
 	padding: 8px;
+    cursor: pointer;
 }
 
 table.table.order-info2 > thead > tr > th:hover,
