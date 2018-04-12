@@ -86,7 +86,7 @@ class mysqli_database extends database {
    			);
    		}
    		catch (PDOException $e) {
-   			self::fatal(
+   			expDatabase::fatal(
    				"An error occurred while connecting to the database. ".
    				"The error reported by the server was: ".$e->getMessage()
    			);
