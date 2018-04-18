@@ -580,12 +580,12 @@ if (!defined('SWIFT_PATH')) {
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
     define('LEXER_VERSION', '1.0.1');
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
-    define('EMAIL_VERSION', '2.1.2');
-    define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VERSION . '/EmailValidator/');
+    define('EMAIL_VALIDATOR_VERSION', '2.1.4');
+    define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
 /**
- * Optional HTMLTOPDF Version Constants
+ * Optional expHTMLTOPDF Version Constants
  * Changing the versions here lets Exponent adjust where to look
  */
 if (!defined('MPDF7_VERSION')) {
