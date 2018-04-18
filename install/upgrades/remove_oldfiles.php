@@ -659,6 +659,7 @@ class remove_oldfiles extends upgradescript {
             'external/editors/ckeditor/skins/v2',
             'external/editors/ckeditor402',
             'external/editors/images/',
+            'external/EmailValidator-2.1.2/',
             'external/facebook-php-sdk-3.2.2/',
             'external/fedex-php/',
             'external/fedex-phpv13/',
