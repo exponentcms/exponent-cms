@@ -697,7 +697,8 @@ class expString {
    		// Is the string an array?
    		if (is_array($str))
    		{
-   			while (list($key) = each($str))
+//   		  while (list($key) = each($str))
+            foreach($str as $key => $value)
    			{
                 if (preg_match('/^[a-zA-Z0-9_\-\.\/\\@\x7f-\xff]*$/', $key)) {  // check for valid array name
                     $str[$key] = self::xss_clean($str[$key]);
