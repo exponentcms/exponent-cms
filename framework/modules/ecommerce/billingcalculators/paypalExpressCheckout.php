@@ -804,7 +804,8 @@ class paypalExpressCheckout extends billingcalculator {
 
         // convert the api params to a name value pair string
         $nvpstr = "";
-        while (list($key, $value) = each($apiParams)) {
+//        while (list($key, $value) = each($apiParams)) {
+        foreach($apiParams as $key=>$value) {
             $nvpstr .= $key . '=' . urlencode(str_replace(',', '', $value)) . '&';
         }
 
