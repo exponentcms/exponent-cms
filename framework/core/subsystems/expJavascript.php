@@ -203,8 +203,12 @@ class expJavascript {
             }
 
             foreach ($expJS as $file) {
-                if (!empty($file['fullpath']) && file_exists($_SERVER['DOCUMENT_ROOT'].$file['fullpath'])) {
-                    if ($file['name'] == 'ckeditor' || $file['name'] == 'tinymce') {
+                if (strpos($file['fullpath'], 'http') === 0 || strpos($file['fullpath'], '//') === 0)
+                    $proto = true;
+                else
+                    $proto = false;
+                if (!empty($file['fullpath']) && ($proto || file_exists($_SERVER['DOCUMENT_ROOT'] . $file['fullpath']))) {
+                    if ($file['name'] === 'ckeditor' || $file['name'] === 'tinymce' || $proto) {
                         $scripts .= "\t".'<script type="text/javascript" src="'.$file['fullpath'] . '"></script>' . "\r\n";
                         continue;
                     }
@@ -335,8 +339,8 @@ class expJavascript {
 
             if (!empty($expJS)) {
                 $scripts .= "\t" . "<!-- Other Scripts -->" . "\r\n";
-                foreach ($expJS as $mod) {
-                    $scripts .= "\t" . '<script type="text/javascript" src="' . $mod['fullpath'] . '"></script>' . "\r\n";
+                foreach ($expJS as $file) {
+                    $scripts .= "\t" . '<script type="text/javascript" src="' . $file['fullpath'] . '"></script>' . "\r\n";
                 }
             }
             $scripts .= "\t" . "<!-- Inline Code -->" . "\r\n";
