@@ -108,6 +108,9 @@ class billingcalculator extends expRecord {
     /**
      * Should return html to display user data.
      *
+     * @param $billingmethod
+     *
+     * @return string
      */
     function userView($billingmethod) {
 //        return '';
@@ -219,6 +222,9 @@ class billingcalculator extends expRecord {
     /**
      * Return billing calculator name
      *
+     * @param $calc_id
+     *
+     * @return null
      */
     public static function getCalcName($calc_id) {
         global $db;
@@ -229,6 +235,9 @@ class billingcalculator extends expRecord {
     /**
      * Return billing calculator title
      *
+     * @param $calc_id
+     *
+     * @return null
      */
     public static function getCalcTitle($calc_id) {
         global $db;

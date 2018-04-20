@@ -154,7 +154,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      * @param string $oldpath source file hash or path
      * @param string $newpath dest dir hash or path
      *
-     * @return \expFile
+     * @return array|int
      * @author Dave Leffler
      */
     protected function _move_expFile($oldpath, $newpath)
@@ -206,7 +206,6 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      *
      * @param string $oldpath source file hash
      *
-     * @return \expFile
      * @author   Dave Leffler
      */
     protected function _remove_expFile($oldpath)

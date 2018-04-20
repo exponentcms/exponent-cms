@@ -386,6 +386,7 @@ class expRouter {
      * Set up for page request, but check store category/product also
      *
      * @return bool
+     * @throws ReflectionException
      */
     public function routePageRequest() {
         global $db, $user;

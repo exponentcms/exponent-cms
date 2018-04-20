@@ -28,6 +28,10 @@ class expComment extends expRecord {
 
     /**
      * attach the comment to the item it belongs to (blog, news, etc..);
+     *
+     * @param $content_type
+     * @param $content_id
+     * @param null $subtype
      */
     public function attachComment($content_type, $content_id, $subtype = null) {
         global $db;

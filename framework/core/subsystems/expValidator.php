@@ -598,10 +598,11 @@ class expValidator {
     /**
      * Generate a random secure password
      *
-     * @param int $len
-     * @param int $caps
-     * @param int $nums
-     * @param int $spec
+     * @param string $len
+     * @param string $cap
+     * @param string $num
+     * @param string $sym
+     *
      * @return string
      */
     public static function generatePassword($len = MIN_PWD_LEN, $cap = MIN_UPPER, $num = MIN_DIGITS, $sym = MIN_SYMBOL)

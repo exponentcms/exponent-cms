@@ -243,6 +243,10 @@ class expString {
 
     /**\
      * Replace any non-ascii character with its hex code with NO active db connection
+     *
+     * @param $value
+     *
+     * @return string
      */
     public static function escape($value) {
         global $db;
@@ -269,6 +273,7 @@ class expString {
      * @param        $string
      * @param string $strtype
      * @param string $type
+     * @param string $more
      *
      * @return string
      */
@@ -1084,11 +1089,13 @@ class expString {
    	}
 
     /**
-   	 * Get random bytes
-   	 *
-   	 * @param	int	$length	Output length
-   	 * @return	string
-   	 */
+     * Get random bytes
+     *
+     * @param    int $length Output length
+     *
+     * @return    string
+     * @throws Exception
+     */
     private static function get_random_bytes($length)
    	{
    		if (empty($length) OR ! ctype_digit((string) $length))

@@ -77,7 +77,6 @@ class pagecontrol extends formcontrol {
      * Event hook for when control is un-registered (removed) on a form
      *
      * @param $form
-     * @return bool
      */
     function onUnRegister(&$form) { // Do we need the explicit ref op??
         if ($form->is_paged) $form->is_paged--;
@@ -87,7 +86,6 @@ class pagecontrol extends formcontrol {
      * Event hook for when control is registered on a form
      *
      * @param $form
-     * @return bool
      */
     function onRegister(&$form) { // Do we need the explicit ref op??
         $form->is_paged++;

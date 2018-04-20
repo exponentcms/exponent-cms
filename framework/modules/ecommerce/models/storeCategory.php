@@ -142,7 +142,6 @@ class storeCategory extends expNestedNode {
     /**
      * Return number of products assigned to this category
      *
-     * @param null $id
      * @return int
      */
     public function getCatProductsCount() {

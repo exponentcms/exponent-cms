@@ -709,7 +709,7 @@ class expDateTime {
      * @param        array
      * @param string $format
      *
-     * @return array
+     * @return string
      */
     public static function format_date($timestamp,$format=DISPLAY_DATE_FORMAT) {
     	// Do some sort of mangling of the format for windows.

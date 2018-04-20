@@ -51,8 +51,6 @@ class section extends expRecord {
     /**
      * make an sef_name for section
      *
-     * @param string $title
-     *
      * @return mixed|string
      */
     public function makeSefUrl()
@@ -251,6 +249,10 @@ class section extends expRecord {
 
     /**
      * return sibling pages including top level and standalone
+     *
+     * @param bool $exclude_self
+     *
+     * @return array|int
      */
     public function getSiblings($exclude_self = true) {
         if ($exclude_self) {
@@ -460,7 +462,9 @@ class section extends expRecord {
      * Returns all subordinate sections
      *
      * @param $i            section
-     * @param bool $notyui  format of return
+     * @param bool $notyui format of return
+     * @param bool $singlelevel
+     *
      * @return array
      */
     public static function getChildren(&$i, $notyui=false, $singlelevel=false) {

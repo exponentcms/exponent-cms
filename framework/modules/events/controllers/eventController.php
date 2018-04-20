@@ -822,6 +822,13 @@ class eventController extends expController {
 
     /**
      * function to build a string to pull in all events within requested date range
+     *
+     * @param $timestamp
+     * @param null $endtimestamp
+     * @param string $field
+     * @param bool $multiday
+     *
+     * @return string
      */
     function build_daterange_sql($timestamp, $endtimestamp=null, $field='date', $multiday=false) {
         if (empty($endtimestamp)) {

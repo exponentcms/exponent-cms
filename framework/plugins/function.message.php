@@ -36,7 +36,6 @@
  *
  * @param         $params
  * @param \Smarty $smarty
- * @return bool
  */
 function smarty_function_message($params,&$smarty) {
     $text = empty($params['text']) ? '&#160;' : $params['text'];

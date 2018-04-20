@@ -50,6 +50,11 @@ class expTemplate {
 
     /**
      * @deprecated 2.2.0 backward compatibility wrapper
+     * @param $name
+     * @param $view
+     * @param bool $recurse
+     *
+     * @return string
      */
 	public static function getModuleViewFile($name, $view, $recurse=true) {  //FIXME Not Used 2.2???
 		return self::getViewFile("modules", $name, $view);
@@ -57,6 +62,12 @@ class expTemplate {
 
     /** exdoc
      * @deprecated 2.2.0 backward compatibility wrapper
+     * @param $module
+     * @param $view
+     * @param $form
+     * @param $values
+     *
+     * @return form
      */
     public static function getViewConfigForm($module,$view,$form,$values) {  //FIXME Not Used 2.2???
 		$form_file = "";
@@ -107,6 +118,10 @@ class expTemplate {
 
     /** exdoc
      * @deprecated 2.2.0 backward compatibility wrapper
+     * @param $module
+     * @param $view
+     *
+     * @return array
      */
 	public static function getViewConfigOptions($module,$view) {  //FIXME Not Used 2.2???
 		$form_file = "";
@@ -179,6 +194,9 @@ class expTemplate {
 
     /** exdoc
      * @deprecated previously held view static config variables, e.g., calendar view type
+     * @param $viewfile
+     *
+     * @return mixed|null
      */
 	public static function getViewParams($viewfile) {
 		$base = substr($viewfile,0,-4);

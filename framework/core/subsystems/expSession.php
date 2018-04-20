@@ -203,14 +203,15 @@ class expSession {
 		define('SITE_403_HTML', SITE_403_REAL_HTML);
 	}
 
-	/** exdoc
-	 * Creates user ticket in sessionticket table and session
-	 *
-	 * @param $ticket
-	 * @param user/object $user The user object of the newly logged-in user. Uses id of 0 if not supplied.
-	 * @return
-	 * @node Subsystems:Sessions
-	 */
+    /** exdoc
+     * Creates user ticket in sessionticket table and session
+     *
+     * @param $ticket
+     * @param $user
+     *
+     * @return mixed
+     * @node Subsystems:Sessions
+     */
 	public static function updateTicket($ticket, $user){
 		global $db;
 

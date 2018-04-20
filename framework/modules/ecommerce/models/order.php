@@ -791,6 +791,8 @@ class order extends expRecord {
     /**
      * Return next invoice number and advance counter
      *
+     * @param bool $increment
+     *
      * @return mixed|null
      */
     public function getInvoiceNumber($increment=true) {

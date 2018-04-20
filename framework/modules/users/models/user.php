@@ -253,6 +253,8 @@ class user extends expRecord {
      * Generate password hash
      *
      * @param $password
+     * @param null $salt
+     *
      * @return string
      */
     public static function encryptPassword($password, $salt = null) {

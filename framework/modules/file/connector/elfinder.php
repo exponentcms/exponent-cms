@@ -148,7 +148,6 @@ class elFinderSimpleLogger
      *
      * @param $path
      *
-     * @return \elFinderSimpleLogger
      * @author Dmitry (dio) Levashov
      */
     public function __construct($path)
@@ -212,10 +211,11 @@ class elFinderSimpleLogger
      * Write log into file
      *
      * @param  string $log log record
+     * @param bool $eol
      *
      * @return void
      * @author Dmitry (dio) Levashov
-     **/
+     */
     protected function write($log, $eol=false)
     {
         if ($eol)
@@ -285,6 +285,9 @@ class elFinderTestACL
 
 /**
  * example acceptedName function
+ * @param $name
+ *
+ * @return bool
  */
 function validName($name)
 {

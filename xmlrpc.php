@@ -38,6 +38,13 @@ class xmlrpc_server_methods_container
 
 /**
  * Internal User Login function
+ *
+ * @param $username
+ * @param $password
+ * @param $src
+ * @param $area
+ *
+ * @return bool
  */
 function userLogin($username, $password, $src, $area)
 {

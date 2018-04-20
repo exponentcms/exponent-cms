@@ -770,7 +770,7 @@ class paypalExpressCheckout extends billingcalculator {
      *
      * @param string $where
      *
-     * @return bool
+     * @return void
      */
     function delete($where = '') {
         return;

@@ -19,6 +19,10 @@
 /**
  * @subpackage Controllers
  * @package    Modules
+ * @param $x
+ * @param $y
+ *
+ * @return int
  */
 function compare($x, $y) {
     if ($x->eventdate == $y->eventdate)

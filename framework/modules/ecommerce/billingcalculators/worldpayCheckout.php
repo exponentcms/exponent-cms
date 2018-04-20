@@ -167,7 +167,7 @@ class worldpayCheckout extends billingcalculator {
      *
      * @param string $where
      *
-     * @return bool
+     * @return null
      */
     function delete($where = '') {
         return;

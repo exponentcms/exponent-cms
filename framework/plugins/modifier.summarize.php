@@ -33,6 +33,7 @@
  * @param $string
  * @param $strtype
  * @param $type
+ * @param string $more
  *
  * @return string
  */

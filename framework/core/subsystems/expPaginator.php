@@ -97,14 +97,13 @@ class expPaginator {
     public $cats = array();
     public $sort_dropdown = array();
 
-	/**
-	 * expPaginator Constructor
-	 *
-	 * This is the main entry point for using the expPaginator.  See example above.
-	 *
-	 * @param array $params Use this to set any of the class variables. Ones not passed will be set to a default.
-	 * @return \expPaginator
-	 */
+    /**
+     * expPaginator Constructor
+     *
+     * This is the main entry point for using the expPaginator.  See example above.
+     *
+     * @param array $params Use this to set any of the class variables. Ones not passed will be set to a default.
+     */
 	public function __construct($params=array()) {
 		global $router, $db;
 
@@ -711,6 +710,10 @@ class expPaginator {
     /** exdoc
      * Object/Array sorting comparison function -- sorts by a specified column in ascending order.
      * @node Subsystems:expPaginator
+     * @param $a
+     * @param $b
+     *
+     * @return int
      */
     public function asc($a,$b) {
         $col = $this->order;
@@ -726,6 +729,10 @@ class expPaginator {
     /** exdoc
      * Object/Array sorting comparison function -- sorts by a specified column in descending order.
      * @node Subsystems:expPaginator
+     * @param $a
+     * @param $b
+     *
+     * @return int
      */
     public function desc($a,$b) {
         $col = $this->order;

@@ -67,6 +67,7 @@ class navigationController extends expController {
      * @param null $src
      * @param array $params
      *
+     * @throws ReflectionException
      */
     function __construct($src = null, $params = array())
     {
@@ -133,6 +134,9 @@ class navigationController extends expController {
 
     /**
      * @deprecated 2.3.4 moved to section model
+     * @param bool $notyui
+     *
+     * @return array
      */
     public static function navhierarchy($notyui=false) {
         global $sections;
@@ -191,6 +195,10 @@ class navigationController extends expController {
 
     /**
      * @deprecated 2.3.4 moved to section model
+     * @param $i
+     * @param bool $notyui
+     *
+     * @return array
      */
     public static function getChildren(&$i, $notyui=false) {
         global $sections;
@@ -268,6 +276,9 @@ class navigationController extends expController {
 
     /**
      * @deprecated 2.3.4 moved to section model
+     * @param $i
+     *
+     * @return bool
      */
     public static function hasChildren($i) {
         global $sections;
@@ -540,6 +551,8 @@ class navigationController extends expController {
 
     /**
      * @deprecated 2.0.0 this only for deprecated templates
+     * @param $section
+     * @param $template
      */
     public static function process_section($section, $template) {
         global $db;
@@ -573,6 +586,8 @@ class navigationController extends expController {
 
     /**
      * @deprecated 2.0.0 this only for deprecated templates
+     * @param $parent_section
+     * @param $subtpl
      */
     function process_subsections($parent_section, $subtpl) {
         global $db;
@@ -647,6 +662,9 @@ class navigationController extends expController {
     /**
      * Check for cascading page view permission, esp. if not public
      * @deprecated 2.3.4 moved to section model
+     * @param $section
+     *
+     * @return bool
      */
     public static function canView($section) {
         global $db;
@@ -671,6 +689,9 @@ class navigationController extends expController {
     /**
      * Check to see if page is public with cascading
      * @deprecated 2.3.4 moved to section model
+     * @param $s
+     *
+     * @return bool|int
      */
     public static function isPublic($s) {
         if ($s == null) {

@@ -135,6 +135,7 @@ class filedownloadController extends expController {
      *
      * @param $request
      * @param $object
+     * @param $canonical
      *
      * @return null
      */
@@ -179,6 +180,7 @@ class filedownloadController extends expController {
      *
      * @param $request
      * @param $object
+     * @param $canonical
      *
      * @return null
      */

@@ -229,6 +229,10 @@ class expUtil {
 
     /**
      * Converts a currency amount to the floating point value
+     *
+     * @param $amount
+     *
+     * @return null|string|string[]
      */
     public static function currency_to_float($amount) {
         return preg_replace("/[^0-9.]/", "", $amount);

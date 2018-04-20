@@ -288,6 +288,11 @@ class expWKPDF extends expHtmlToPDF
     /**
      * Constructor: initialize command line and reserve temporary file.
      *
+     * @param string $paper_size
+     * @param string $orientation
+     * @param null $html
+     * @param bool $use_file
+     *
      * @throws Exception
      */
     public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)

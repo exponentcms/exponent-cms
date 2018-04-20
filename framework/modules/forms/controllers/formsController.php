@@ -1389,6 +1389,7 @@ class formsController extends expController {
 
     /**
      * create a new default config array using the form defaults
+     * @param $form
      */
     private function get_defaults($form) {
         if (empty($this->config)) { // NEVER overwrite an existing config

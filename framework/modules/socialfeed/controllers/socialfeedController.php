@@ -314,6 +314,10 @@ class socialfeedController extends expController
 
     /**
      * Render posts from the Facebook feed
+     *
+     * @param $facebook_entry
+     *
+     * @return mixed
      */
     private function parse_facebook_data($facebook_entry) {
         $ids = explode('_',$facebook_entry->id);
