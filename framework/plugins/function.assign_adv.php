@@ -31,7 +31,6 @@
  *
  * @param         $params
  * @param \Smarty $smarty
- * @throws SmartyException
  */
 function smarty_function_assign_adv($params, &$smarty)
 {
