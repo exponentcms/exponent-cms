@@ -37,7 +37,7 @@
 			</div>
 		</div>
 	</div>
-	<div style="align:center;">
+	<div style="text-align:center;">
 		<strong><?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Top Nav","source"=>"@top")); ?></strong>
 	</div>
 	<?php expTheme::foot(); ?>
