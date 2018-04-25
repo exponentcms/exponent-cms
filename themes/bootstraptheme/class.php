@@ -28,7 +28,7 @@ class bootstraptheme extends theme {
         $settings = expSettings::parseFile(__DIR__ . "/config.php");
         if (empty($settings['SWATCH']))
             $settings['SWATCH'] = 'default';
-        $ret = "An HTML5 responsive grids theme based on <a href=\"https://getbootstrap.com/2.3.2/\" target=\"_blank\">Twitter Bootstrap v 2</a> and <a href=\"http://fontawesome.io/3.2.1/\" target=\"_blank\">Font Awesome v3</a>";
+        $ret = "An HTML5 responsive grids theme based on <a href=\"https://getbootstrap.com/2.3.2/\" target=\"_blank\">Twitter Bootstrap v2</a> and <a href=\"http://fontawesome.io/3.2.1/\" target=\"_blank\">Font Awesome v3</a>";
         if ($settings['SWATCH'] != 'default')
             $ret .= " using the <strong>" . ucfirst($settings['SWATCH']) . "</strong> Swatch";
         return $ret;
