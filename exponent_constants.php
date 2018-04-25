@@ -561,7 +561,7 @@ if (!defined('SMARTY_PATH')) {
 //    if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
 //    } else {
-//        define('SMARTY_VERSION', '3.1.31');  //note smarty v3.1.28+ won't work with php < v7.1.x
+//        define('SMARTY_VERSION', '3.1.32');  //note smarty v3.1.28+ won't work with php < v7.1.x
 //    }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
@@ -589,7 +589,7 @@ if (!defined('SWIFT_PATH')) {
  * Changing the versions here lets Exponent adjust where to look
  */
 if (!defined('MPDF7_VERSION')) {
-    define('MPDF7_VERSION', '7.0.3');
+    define('MPDF7_VERSION', '7.0.2');
 }
 if (!defined('HTML2PDF5_VERSION')) {
     define('HTML2PDF5_VERSION', '5.0.1');

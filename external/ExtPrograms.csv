@@ -1,5 +1,5 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-Swiftmailer,5.4.9/6.0.2,swiftmailer.org,6.0.2,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
+Swiftmailer,5.4.9/6.0.2,github.com/swiftmailer/swiftmailer,6.0.2,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
 Doctrine Lexer,1.0.1,github.com/doctrine/lexer,1.0.1,needed by swiftmailer v6
 EmailValidator,2.1.4,github.com/egulias/EmailValidator,2.1.4,needed by swiftmailer v6; add autoloader and move within folders
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc� to work"
@@ -89,8 +89,8 @@ Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 dompdf,0.8.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,0.8.2,"optional, patched to display our images and not break on bad tables"
 mPDF,7.0.3/6.1.4/5.7.4a,github.com/mpdf/mpdf,7.0.3,optional
 log,1.0.2,github.com/php-fig/log,1.0.2,"optional, required by mPDF v7"
-HTML2PDF,5.0.1/4.6.1,github.com/spipu/html2pdf,5.1.0,"optional, we tweak tcpdfConfig.php"
-TCPDF,6.2.13,sourceforge.net/projects/tcpdf,6.2.17,"optional, used by HTML2PDF"
+HTML2PDF,5.1.0/4.6.1,github.com/spipu/html2pdf,5.1.0,"optional, we tweak tcpdfConfig.php"
+TCPDF,6.2.17,sourceforge.net/projects/tcpdf,6.2.17,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
 Kint,2.2.0,github.com/kint-php/kint,2.2.0,"optional, for formatted edebug output"
 ,,,,
