@@ -1,7 +1,7 @@
 /*
- *  Bootstrap Duallistbox - v3.0.6
+ *  Bootstrap Duallistbox - v3.0.7
  *  A responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices.
- *  http://www.virtuosoft.eu/code/bootstrap-duallistbox/
+ *  https://www.virtuosoft.eu/code/bootstrap-duallistbox/
  *
  *  Made by István Ujj-Mészáros
  *  Under Apache License v2.0 License
@@ -18,6 +18,7 @@
       removeSelectedLabel: 'Remove selected',
       removeAllLabel: 'Remove all',
       moveOnSelect: true,                                                                 // true/false (forced true on androids, see the comment later)
+      moveOnDoubleClick: true,                                                            // true/false (forced false on androids, cause moveOnSelect is forced to true)
       preserveSelectionOnMove: false,                                                     // 'all' / 'moved' / false
       selectedListLabel: false,                                                           // 'string', false
       nonSelectedListLabel: false,                                                        // 'string', false
@@ -448,6 +449,7 @@
       this.setRemoveSelectedLabel(this.settings.removeSelectedLabel);
       this.setRemoveAllLabel(this.settings.removeAllLabel);
       this.setMoveOnSelect(this.settings.moveOnSelect);
+      this.setMoveOnDoubleClick(this.settings.moveOnDoubleClick);
       this.setPreserveSelectionOnMove(this.settings.preserveSelectionOnMove);
       this.setSelectedListLabel(this.settings.selectedListLabel);
       this.setNonSelectedListLabel(this.settings.nonSelectedListLabel);
@@ -485,16 +487,16 @@
         this.container.find('.clear1, .clear2').removeClass('btn-default btn-xs').addClass('btn-mini');
         this.container.find('input, select').removeClass('form-control');
         this.container.find('.btn').removeClass('btn-default');
-        this.container.find('.moveall > i, .move > i').removeClass('fa fa-arrow-right').addClass('icon-arrow-right');
-        this.container.find('.removeall > i, .remove > i').removeClass('fa fa-arrow-left').addClass('icon-arrow-left');
+        this.container.find('.moveall > i, .move > i').removeClass('glyphicon glyphicon-arrow-right').addClass('icon-arrow-right');
+        this.container.find('.removeall > i, .remove > i').removeClass('glyphicon glyphicon-arrow-left').addClass('icon-arrow-left');
       } else {
         this.container.removeClass('row-fluid bs2compatible').addClass('row');
         this.container.find('.box1, .box2').removeClass('span6').addClass('col-md-6');
         this.container.find('.clear1, .clear2').removeClass('btn-mini').addClass('btn-default btn-xs');
         this.container.find('input, select').addClass('form-control');
         this.container.find('.btn').addClass('btn-default');
-        this.container.find('.moveall > i, .move > i').removeClass('icon-arrow-right').addClass('fa fa-arrow-right');
-        this.container.find('.removeall > i, .remove > i').removeClass('icon-arrow-left').addClass('fa fa-arrow-left');
+        this.container.find('.moveall > i, .move > i').removeClass('icon-arrow-right').addClass('glyphicon glyphicon-arrow-right');
+        this.container.find('.removeall > i, .remove > i').removeClass('icon-arrow-left').addClass('glyphicon glyphicon-arrow-left');
       }
       if (refresh) {
         refreshSelects(this);
@@ -569,6 +571,30 @@
         this.container.removeClass('moveonselect');
         this.elements.select1.off('change');
         this.elements.select2.off('change');
+      }
+      if (refresh) {
+        refreshSelects(this);
+      }
+      return this.element;
+    },
+    setMoveOnDoubleClick: function(value, refresh) {
+      if (isBuggyAndroid) {
+        value = false;
+      }
+      this.settings.moveOnDoubleClick = value;
+      if (this.settings.moveOnDoubleClick) {
+        this.container.addClass('moveondoubleclick');
+        var self = this;
+        this.elements.select1.on('dblclick', function() {
+          move(self);
+        });
+        this.elements.select2.on('dblclick', function() {
+          remove(self);
+        });
+      } else {
+        this.container.removeClass('moveondoubleclick');
+        this.elements.select1.off('dblclick');
+        this.elements.select2.off('dblclick');
       }
       if (refresh) {
         refreshSelects(this);
@@ -676,6 +702,13 @@
     },
     setInfoText: function(value, refresh) {
       this.settings.infoText = value;
+      if (value) {
+        this.elements.info1.show();
+        this.elements.info2.show();
+      } else {
+        this.elements.info1.hide();
+        this.elements.info2.hide();
+      }
       if (refresh) {
         refreshSelects(this);
       }
