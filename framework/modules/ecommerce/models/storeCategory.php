@@ -53,7 +53,7 @@ class storeCategory extends expNestedNode {
             // first delete all the products assigned to this sub category
 //            $products = $db->selectObjects('product_storeCategories', 'storecategories_id=' . $cat->id);
 //            foreach($products as $product) {
-//                $prod = new product($product->id);
+//                $prod = new product($product->product_id);
 //                $prod->delete();
 //            }
 
@@ -70,7 +70,7 @@ class storeCategory extends expNestedNode {
         // first delete all the products assigned to this category
 //        $products = $db->selectObjects('product_storeCategories', 'storecategories_id=' . $this->id);
 //        foreach($products as $product) {
-//            $prod = new product($product->id);
+//            $prod = new product($product->product_id);
 //            $prod->delete();
 //        }
 

@@ -39,7 +39,7 @@ class update_ecom5 extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Products and Store Category associated records (child products) were not being removed.  This script orphaned ecommerce table records."; }
+	function description() { return "Products and Store Category associated records (child products) were not being removed.  This script removes orphaned ecommerce table records."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -65,11 +65,11 @@ class update_ecom5 extends upgradescript {
 		$missing_category_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `" . $db->prefix . "product_storecategories` WHERE storecategories_id != 0 AND storecategories_id NOT IN (SELECT id FROM " . $db->prefix . "storeCategories)");
         if ($missing_category_count)
 		    $db->delete("product_storecategories","storecategories_id != 0 AND storecategories_id NOT IN (SELECT id FROM " . $db->prefix . "storeCategories)");
-		$orphan_product_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `" . $db->prefix . "product` WHERE parent_id != 0 AND parent_id NOT IN (SELECT id FROM " . $db->prefix . "product)");
+		$orphan_product_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `" . $db->prefix . "product` WHERE parent_id != 0 AND parent_id NOT IN (SELECT temp.id FROM (SELECT id FROM " . $db->prefix . "product) temp)");
         if ($orphan_product_count)
-		    $db->delete("product","parent_id != 0 AND parent_id NOT IN (SELECT id FROM " . $db->prefix . "product)");
+		    $db->delete("product","parent_id != 0 AND parent_id NOT IN (SELECT temp.id FROM (SELECT id FROM " . $db->prefix . "product) temp)");
 
-		return ($missing_product_count?$missing_product_count:gt('No'))." ".gt("missing prodcuts").", ".($missing_category_count?$missing_category_count:gt('No'))." ".gt("missing categories and")." ".($orphan_product_count?$orphan_product_count:gt('No'))." ".gt("orphaned child products")." ".gt("were found and removed from the database.");
+		return ($missing_product_count?$missing_product_count:gt('No'))." ".gt("missing products").", ".($missing_category_count?$missing_category_count:gt('No'))." ".gt("missing categories and")." ".($orphan_product_count?$orphan_product_count:gt('No'))." ".gt("orphaned child products")." ".gt("were found and removed from the database.");
 	}
 }
 
