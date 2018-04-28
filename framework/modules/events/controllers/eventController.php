@@ -1566,7 +1566,7 @@ class eventController extends expController {
                             $ourtzoffsets = -(kigkonsult\iCalcreator\util\util::tz2offset(date('O',self::_date2timestamp($dtstart['value']))));
                             // Set the timezone to GMT
                             @date_default_timezone_set('GMT');
-                            if (!empty($dtstart['params']['TZID'])) $tzoffsets = getTzOffsetForDate($tzarray, $dtstart['params']['TZID'], $dtstart['value']);
+                            if (!empty($dtstart['params']['TZID'])) $tzoffsets = kigkonsult\iCalcreator\getTzOffsetForDate($tzarray, $dtstart['params']['TZID'], $dtstart['value']);
                             // Set the default timezone
                             @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
                             if (isset($tzoffsets['offsetSec'])) $date_tzoffset = $ourtzoffsets + $tzoffsets['offsetSec'];
