@@ -68,7 +68,7 @@
                 <div class="tweet-content">
                     {if $config.showimage}
                         <div class="tweet-image">
-                            {img src="`$item.image`" class="img-rounded" alt="tweet profile image"|gettext}
+                            {img src="`$item.image`" class="img-rounded" alt="tweet profile image"|gettext noq=1}
                             {*{if $item.retweetedbyme}{img src="`$smarty.const.PATH_RELATIVE`framework/modules/twitter/assets/images/tweeted.png" style="position:relative;top:-16px;left:-58px;"}{/if}*}
                         </div>
                     {*{elseif $item.retweetedbyme}*}
