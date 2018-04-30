@@ -135,13 +135,13 @@ class order extends expRecord {
         $sessAr = expSession::get('verify_shopper');
         // initialize this users cart if they have ecomm installed.
         $active = ECOM;
-        if (!expModules::controllerExists('cart') || empty($active)) {
+        if (!expModules::controllerExists('cart') || empty($active) || !$db->havedb) {
             // if ecomm is turned off, no cart.
             return null;
-        } else if (isset($router->params['controller']) && $router->params['controller'] == 'order' &&
-            ($router->params['action'] == 'verifyReturnShopper' ||
-             $router->params['action'] == 'verifyAndRestoreCart' ||
-             $router->params['action'] == 'clearCart') &&
+        } else if (isset($router->params['controller']) && $router->params['controller'] === 'order' &&
+            ($router->params['action'] === 'verifyReturnShopper' ||
+             $router->params['action'] === 'verifyAndRestoreCart' ||
+             $router->params['action'] === 'clearCart') &&
             (!isset($sessAr['validated']) || $sessAr['validated'] != true)
         ) {
             return new order();
@@ -790,6 +790,8 @@ class order extends expRecord {
 
     /**
      * Return next invoice number and advance counter
+     *
+     * @param bool $increment
      *
      * @return mixed|null
      */

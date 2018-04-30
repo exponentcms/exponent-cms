@@ -158,7 +158,8 @@ class payflowpro extends creditcard {
 
         // convert the api params to a name value pair string
         $nvpstr = "";
-        while (list($key, $value) = each($apiParams)) {
+//        while (list($key, $value) = each($apiParams)) {
+        foreach($apiParams as $key=>$value) {
             $tmpVal = urlencode(preg_replace('/,/', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
         }
@@ -303,7 +304,8 @@ class payflowpro extends creditcard {
 
         // convert the api params to a name value pair string
         $nvpstr = "";
-        while (list($key, $value) = each($apiParams)) {
+//        while (list($key, $value) = each($apiParams)) {
+        foreach($apiParams as $key=>$value) {
             $tmpVal = urlencode(str_replace(',', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
             //$nvpstr .= $key . '=' . $tmpVal . '&';
@@ -438,7 +440,8 @@ class payflowpro extends creditcard {
 
         // convert the api params to a name value pair string
         $nvpstr = "";
-        while (list($key, $value) = each($apiParams)) {
+//        while (list($key, $value) = each($apiParams)) {
+        foreach($apiParams as $key=>$value) {
             $tmpVal = urlencode(preg_replace('/,/', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
         }
@@ -552,7 +555,8 @@ class payflowpro extends creditcard {
 
         // convert the api params to a name value pair string
         $nvpstr = "";
-        while (list($key, $value) = each($apiParams)) {
+//        while (list($key, $value) = each($apiParams)) {
+        foreach($apiParams as $key=>$value) {
             $tmpVal = urlencode(preg_replace('/,/', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
         }
@@ -671,7 +675,8 @@ class payflowpro extends creditcard {
 
         // convert the api params to a name value pair string
         $nvpstr = "";
-        while (list($key, $value) = each($apiParams)) {
+//        while (list($key, $value) = each($apiParams)) {
+        foreach($apiParams as $key=>$value) {
             $tmpVal = urlencode(preg_replace('/,/', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
         }

@@ -89,8 +89,7 @@
         </div>
         {*<div id="loading" class="loadingdiv">{"Loading"|gettext} {"Product Edit Form"|gettext}</div>*}
         {loading title="Loading Product Edit Form"|gettext}
-        {control type="buttongroup" submit="Save Product"|gettext cancel="Cancel"|gettext}
-        {if isset($record->original_id)}
+        {if $record->original_id && $record->parent_id == 0}
             {control type="hidden" name="original_id" value=$record->original_id}
             {control type="hidden" name="original_model" value=$record->original_model}
             {control type="checkbox" name="copy_children" label="Copy Child Products?"|gettext value="1"}
@@ -98,6 +97,7 @@
             {control type="checkbox" name="adjust_child_price" label="Reset Price on Child Products?"|gettext value="1"}
             {control type="text" name="new_child_price" label="New Child Price"|gettext value=""}
         {/if}
+        {control type="buttongroup" submit="Save Product"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
 

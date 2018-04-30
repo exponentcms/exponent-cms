@@ -11,25 +11,31 @@ Disallow: /exponent_version.php
 Disallow: /getswversion.php
 Disallow: /login.php
 Disallow: /overrides.php
-Disallow: /popup.php
+Disallow: /phpdoc.xml
+Disallow: /reset.php
 Disallow: /selector.php
 Disallow: /site_rss.php
 Disallow: /source_selector.php
-Disallow: /thumb.php
+# Disallow: /thumb.php
+Disallow: /wlwmanifest.xml
+Disallow: /xmlrpc.php
+
 Disallow: /ABOUT.md
 Disallow: /CHANGELOG.md
 Disallow: /CREDITS.md
 Disallow: /INSTALLATION.md
 Disallow: /LICENSE
+Disallow: /OPTIONAL.md
 Disallow: /README.md
 Disallow: /RELEASE.md
 Disallow: /TODO.md
+
 Disallow: /cgi-bin/
 Disallow: /cart/
 Disallow: /login/
 Disallow: /users/
 Disallow: /files/
-Disallow: /tmp/
 Disallow: /search/
+Disallow: /tmp/
 
 # Sitemap: http://www.mysite.com/sitemap.xml

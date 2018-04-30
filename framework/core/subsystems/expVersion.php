@@ -118,6 +118,10 @@ class expVersion {
 
     /**
      * Routine to check for installation or upgrade
+     *
+     * @param bool $force
+     *
+     * @return bool
      */
     public static function checkVersion($force=false) {
         global $db, $user;

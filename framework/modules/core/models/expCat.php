@@ -80,11 +80,11 @@ class expCat extends expRecord {
 //		}
 //    }
 
-    /**
-   	 * rerank expCat items
-   	 * @param $direction
-   	 * @param string $where
-   	 */
+//    /**
+//   	 * rerank expCat items
+//   	 * @param $direction
+//   	 * @param string $where
+//   	 */
 //   	public function rerank($direction, $where='') {
 //       global $db;
 //       if (!empty($this->rank)) {

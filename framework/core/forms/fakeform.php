@@ -95,7 +95,7 @@ class fakeform extends form {
         } elseif (newui()) {
             $class = " class=\"exp-skin\"";
         }
-		$html .= "<form role=\"form\" id='abc123' name=\"" . $this->name . "\"" . $class . " method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
+		$html .= "<form role=\"form\" id='fakeform' name=\"" . $this->name . "\"" . $class . " method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		foreach ($this->meta as $name=>$value)
             $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";
         $this->style_form();

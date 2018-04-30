@@ -15,7 +15,7 @@
 
 <div class="events email rsvp">
     {group label="RSVP to this Event"|gettext}
-        {form action=send_feedback}
+        {form name=send_feedback|cat:$event->id action=send_feedback}
             {if !empty($event->event->title)}
                 {$title = $event->event->title}
             {elseif !empty($event->title)}

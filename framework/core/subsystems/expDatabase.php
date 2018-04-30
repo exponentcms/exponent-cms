@@ -24,20 +24,22 @@
  */
 class expDatabase {
 
-	/**
-	 * Connect to the Exponent database
-	 *
-	 * This function attempts to connect to the exponent database,
-	 * and then returns the database object to the caller.
-	 *
-	 * @param string $username the database username
-	 * @param string $password the database password
-	 * @param string $hostname the url of the database server
-	 * @param string $database the name of the database
-	 * @param string $dbclass
-	 * @param bool $new
-	 * @return \database the database object
-	 */
+    /**
+     * Connect to the Exponent database
+     *
+     * This function attempts to connect to the exponent database,
+     * and then returns the database object to the caller.
+     *
+     * @param string $username the database username
+     * @param string $password the database password
+     * @param string $hostname the url of the database server
+     * @param string $database the name of the database
+     * @param string $dbclass
+     * @param bool $new
+     * @param null $log
+     *
+     * @return \database the database object
+     */
 	public static function connect($username,$password,$hostname,$database,$dbclass = '',$new=false,$log=null) {
 		if (!defined('DB_ENGINE')) {
 			$backends = array_keys(self::backends(1));
@@ -1056,43 +1058,45 @@ abstract class database {
 	    return false;
 	}
 
-	/**
-	* Select a series of objects
-	*
-	* Selects a set of objects from the database.  Because of the way
-	* Exponent handles objects and database tables, this is akin to
-	* SELECTing a set of records from a database table.  Returns an
-	* array of objects, in any random order.
-	*
-	* @param string $table The name of the table/object to look at
-	* @param string $where Criteria used to narrow the result set.  If this
-	*   is specified as null, then no criteria is applied, and all objects are
-	*   returned
-	* @param null $orderby
-	* @return array
-	*/
+    /**
+     * Select a series of objects
+     *
+     * Selects a set of objects from the database.  Because of the way
+     * Exponent handles objects and database tables, this is akin to
+     * SELECTing a set of records from a database table.  Returns an
+     * array of objects, in any random order.
+     *
+     * @param string $table The name of the table/object to look at
+     * @param string $where Criteria used to narrow the result set.  If this
+     *   is specified as null, then no criteria is applied, and all objects are
+     *   returned
+     * @param null $orderby
+     * @param bool $is_revisioned
+     * @param bool $needs_approval
+     * @param null $user
+     *
+     * @return array
+     */
 	abstract function selectObjects($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false, $user=null);
 
 	/**
 	 * @param  $terms
 	 * @param null $where
-	 * @return array
 	 */
 	function selectSearch($terms, $where = null) {  //FIXME never used
 
 	}
 
-	/**
-	 * @param null $colsA
-	 * @param null $colsB
-	 * @param  $tableA
-	 * @param  $tableB
-	 * @param  $keyA
-	 * @param null $keyB
-	 * @param null $where
-	 * @param null $orderby
-	 * @return array'
-	 */
+    /**
+     * @param null $colsA
+     * @param null $colsB
+     * @param  $tableA
+     * @param  $tableB
+     * @param  $keyA
+     * @param null $keyB
+     * @param null $where
+     * @param null $orderby
+     */
 	function selectAndJoinObjects($colsA=null, $colsB=null, $tableA, $tableB, $keyA, $keyB=null, $where = null, $orderby = null) {  //FIXME never used
 
 	}
@@ -1123,12 +1127,11 @@ abstract class database {
 	 */
 	abstract function selectColumn($table, $col, $where = null, $orderby = null, $distinct=false);
 
-	/**
-	 * @param  $table
-	 * @param  $col
-	 * @param null $where
-	 * @return int
-	 */
+    /**
+     * @param  $table
+     * @param  $col
+     * @param null $where
+     */
 	function selectSum($table, $col, $where = null) {  //FIXME never used
 
 	}
@@ -1194,8 +1197,9 @@ abstract class database {
      *
      * @param string $table The name of the table to count objects in.
      * @param string $where Criteria for counting.
-     * @param bool   $is_revisioned
-     * @param bool   $needs_approval
+     * @param bool $is_revisioned
+     * @param bool $needs_approval
+     * @param null $user
      *
      * @return int
      */
@@ -1290,10 +1294,10 @@ abstract class database {
     /**
      * Reduces table item revisions to a passed total
      *
-     * @param string  $table     The name of the table to trim
-     * @param integer $id        The item id
-     * @param integer $num       The number of revisions to retain
-     * @param int     $workflow  is workflow turned on (or force)
+     * @param string $table The name of the table to trim
+     * @param integer $id The item id
+     * @param integer $num The number of revisions to retain
+     * @param int|string $workflow is workflow turned on (or force)
      */
     public function trim_revisions($table, $id, $num, $workflow=ENABLE_WORKFLOW) {
         if ($workflow && $num) {
@@ -1449,10 +1453,9 @@ abstract class database {
 	    return $data;
 	}
 
-	/**
-	 * @param  $table
-	 * @return array
-	 */
+    /**
+     * @param  $table
+     */
 	function describeTable($table) { //FIXME never used
 
 	}
@@ -1622,21 +1625,25 @@ abstract class database {
 	    return ' LIMIT ' . $offset . ',' . $num . ' ';
 	}
 
-	/**
-	* Select an array of arrays
-	*
-	* Selects a set of arrays from the database.  Because of the way
-	* Exponent handles objects and database tables, this is akin to
-	* SELECTing a set of records from a database table.  Returns an
-	* array of arrays, in any random order.
-	*
-	* @param string $table The name of the table/object to look at
-	* @param string $where Criteria used to narrow the result set.  If this
-	*   is specified as null, then no criteria is applied, and all objects are
-	*   returned
-	* @param string $orderby
-	* @return array
-	*/
+    /**
+     * Select an array of arrays
+     *
+     * Selects a set of arrays from the database.  Because of the way
+     * Exponent handles objects and database tables, this is akin to
+     * SELECTing a set of records from a database table.  Returns an
+     * array of arrays, in any random order.
+     *
+     * @param string $table The name of the table/object to look at
+     * @param string $where Criteria used to narrow the result set.  If this
+     *   is specified as null, then no criteria is applied, and all objects are
+     *   returned
+     * @param string $orderby
+     * @param bool $is_revisioned
+     * @param bool $needs_approval
+     * @param null $user
+     *
+     * @return array
+     */
 	abstract function selectArrays($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false, $user=null);
 
 	/**
@@ -1663,45 +1670,46 @@ abstract class database {
      * @param string $where Criteria used to narrow the result set.  If this
      *                      is specified as null, then no criteria is applied, and all objects are
      *                      returned
-     * @param null   $orderby
-     * @param bool   $is_revisioned
-     * @param bool   $needs_approval
+     * @param null $orderby
+     * @param bool $is_revisioned
+     * @param bool $needs_approval
+     * @param null $user
      *
      * @return array|void
      */
 	abstract function selectArray($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false, $user=null);
 
     /**
-	 * Instantiate objects from selected records from the database
+     * Instantiate objects from selected records from the database
      *
      * @param string $table The name of the table/object to look at
      * @param string $where Criteria used to narrow the result set.  If this
      *                      is specified as null, then no criteria is applied, and all objects are
      *                      returned
      * @param        $classname
-     * @param bool   $get_assoc
-     * @param bool   $get_attached
-     * @param array  $except
-     * @param bool   $cascade_except
-     * @param null   $order
-     * @param null   $limitsql
-     * @param bool   $is_revisioned
-     * @param bool   $needs_approval
+     * @param bool $get_assoc
+     * @param bool $get_attached
+     * @param array $except
+     * @param bool $cascade_except
+     * @param null $order
+     * @param null $limitsql
+     * @param bool $is_revisioned
+     * @param bool $needs_approval
+     * @param null $user
      *
      * @return array
      */
 	abstract function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false, $user=null);
 
-	/**
-	 * Instantiate objects from selected records from the database
-	 *
-	* @param string $sql The sql statement to run on the model/classname
-	* @param string $classname Can be $this->baseclassname
-	* Returns an array of fields
-	* @param bool $get_assoc
-	* @param bool $get_attached
-	* @return array
-	*/
+    /**
+     * Instantiate objects from selected records from the database
+     *
+     * @param string $sql The sql statement to run on the model/classname
+     * @param string $classname Can be $this->baseclassname
+     * Returns an array of fields
+     * @param bool $get_assoc
+     * @param bool $get_attached
+     */
 	function selectExpObjectsBySql($sql, $classname, $get_assoc=true, $get_attached=true) {  //FIXME never used
 
 	}

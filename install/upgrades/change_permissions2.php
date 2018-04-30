@@ -52,7 +52,10 @@ class change_permissions2 extends upgradescript {
 
     /**
      * function will chmod dirs and files recursively
+     *
      * @param type $start_dir
+     * @param int $dir_perms
+     * @param int $file_perms
      */
     function chmod_recursive($start_dir, $dir_perms = 0755, $file_perms = 0644) {
         if (is_dir($start_dir)) {

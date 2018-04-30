@@ -30,7 +30,8 @@
  * Purpose:  convert to mega/kilo/bytes
  *
  * @param array
- * @return array
+ *
+ * @return string
  */
 function smarty_modifier_bytes($bytes) {
     if ($bytes >= 1048576) {

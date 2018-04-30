@@ -31,7 +31,7 @@
  * @param         $userid
  * @param boolean $type if true return user name instead of record
  *
- * @return array
+ * @return string
  */
 function smarty_modifier_username($userid,$type=null) {
 	global $db;

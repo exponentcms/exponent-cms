@@ -71,7 +71,7 @@ class facebookController extends expController {
         if (!empty($params)) {
             // Include facebook class
             require_once(BASE . "external/facebook-php-sdk-3.2.3/src/facebook.php");
-//            require_once(BASE . "external/php-graph-sdk-5.3.1/src/Facebook/autoload.php");
+//            require_once(BASE . "external/php-graph-sdk-5.6.2/src/Facebook/autoload.php");
 
             // configuration
 //            $desc = 'Facebook constantly changes their SDK and methods for communicating with Facebook. The script in this post supports the latest Facebook authentication changes that will be implemented i October 2012.';
@@ -126,7 +126,7 @@ class facebookController extends expController {
         if (!empty($params)) {
             // Include facebook class
             require_once(BASE . "external/facebook-php-sdk-3.2.3/src/facebook.php");
-//            require_once(BASE . "external/php-graph-sdk-5.3.1/src/Facebook/autoload.php");
+//            require_once(BASE . "external/php-graph-sdk-5.6.2/src/Facebook/autoload.php");
 
             // configuration
 //            $desc = 'Facebook constantly changes their SDK and methods for communicating with Facebook. The script in this post supports the latest Facebook authentication changes that will be implemented i October 2012.';

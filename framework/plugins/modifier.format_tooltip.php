@@ -32,7 +32,7 @@
  * @param string $text
  * @param int    $length
  *
- * @return array
+ * @return string
  */
 function smarty_modifier_format_tooltip($text='', $length=77) {
 	$text = strip_tags($text);

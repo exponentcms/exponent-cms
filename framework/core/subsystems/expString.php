@@ -243,6 +243,10 @@ class expString {
 
     /**\
      * Replace any non-ascii character with its hex code with NO active db connection
+     *
+     * @param $value
+     *
+     * @return string
      */
     public static function escape($value) {
         global $db;
@@ -269,6 +273,7 @@ class expString {
      * @param        $string
      * @param string $strtype
      * @param string $type
+     * @param string $more
      *
      * @return string
      */
@@ -385,10 +390,10 @@ class expString {
                     //                        $ret = substr($string, $j);
                     //                    }
                     //                }
-                    if (sizeof($tagsArray) != 0) {
+                    if (count($tagsArray) != 0) {
                         // Close broken XHTML elements
-                        while (sizeof($tagsArray) != 0) {
-                            if (sizeof($tagsArray) > 1) {
+                        while (count($tagsArray) != 0) {
+                            if (count($tagsArray) > 1) {
                                 $aTag = array_pop($tagsArray);
                                 $string .= "</" . $aTag . ">";
                             } // You may add more tags here to put the link and added text before the closing tag
@@ -697,7 +702,8 @@ class expString {
    		// Is the string an array?
    		if (is_array($str))
    		{
-   			while (list($key) = each($str))
+//   		  while (list($key) = each($str))
+            foreach($str as $key => $value)
    			{
                 if (preg_match('/^[a-zA-Z0-9_\-\.\/\\@\x7f-\xff]*$/', $key)) {  // check for valid array name
                     $str[$key] = self::xss_clean($str[$key]);
@@ -1083,11 +1089,13 @@ class expString {
    	}
 
     /**
-   	 * Get random bytes
-   	 *
-   	 * @param	int	$length	Output length
-   	 * @return	string
-   	 */
+     * Get random bytes
+     *
+     * @param    int $length Output length
+     *
+     * @return    string
+     * @throws Exception
+     */
     private static function get_random_bytes($length)
    	{
    		if (empty($length) OR ! ctype_digit((string) $length))

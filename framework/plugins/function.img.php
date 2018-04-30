@@ -33,14 +33,15 @@
  * @param \Smarty $smarty
  * @return string
  */
-function smarty_function_img($params,&$smarty) {
-	$closing = (XHTML==1) ? ' />' : '>';
-    $id = (isset($params['id'])) ? ' id="'.$params['id'].'"' : '';
-    $alt = (isset($params['alt'])) ? ' alt="'.$params['alt'].'"' : '';
-    $title = (isset($params['title'])) ? ' title="'.$params['title'].'"' : '';
-    $class = (isset($params['class'])) ? ' class="'.$params['class'].'"' : '';
-    $style = (isset($params['style'])) ? ' style="'.$params['style'].'"' : '';
-    $rel = (isset($params['rel'])) ? ' rel="'.$params['rel'].'"' : '';
+function smarty_function_img($params,&$smarty)
+{
+    $closing = (XHTML == 1) ? ' />' : '>';
+    $id = (isset($params['id'])) ? ' id="' . $params['id'] . '"' : '';
+    $alt = (isset($params['alt'])) ? ' alt="' . $params['alt'] . '"' : '';
+    $title = (isset($params['title'])) ? ' title="' . $params['title'] . '"' : '';
+    $class = (isset($params['class'])) ? ' class="' . $params['class'] . '"' : '';
+    $style = (isset($params['style'])) ? ' style="' . $params['style'] . '"' : '';
+    $rel = (isset($params['rel'])) ? ' rel="' . $params['rel'] . '"' : '';
     if (isset($params['square']) && (!isset($params['w']) && !isset($params['h']))) {
         $params['w'] = $params['square'];
         $params['h'] = $params['square'];
@@ -48,18 +49,22 @@ function smarty_function_img($params,&$smarty) {
         $params['w'] = $params['h'];
     }
 //    $dims = (isset($params['w']) && isset($params['h']) && isset($params['zc'])) ? ' height="'.$params['h'].'" width="'.$params['w'].'"' : '';
-	$dims = '';
-	 if (isset($params['w']) && isset($params['h']) && isset($params['zc'])) {
-		 $dims = ' height="'.$params['h'].'" width="'.$params['w'].'"';
+    $dims = '';
+    if (isset($params['w']) && isset($params['h']) && isset($params['zc'])) {
+        $dims = ' height="' . $params['h'] . '" width="' . $params['w'] . '"';
 //	 } elseif (isset($params['w']) && isset($params['h'])) {
 //		 $dims = ' height="'.$params['h'].'" width="'.$params['w'].'"';
 //	 } elseif (isset($params['w'])) {
 //		 $dims = ' width="'.$params['w'].'"';
 //	 } elseif (isset($params['h'])) {
 //		 $dims = ' height="'.$params['h'].'"';
-	 }
+    }
 
-	if (!isset($params['q']) && defined('THUMB_QUALITY')) $params['q'] = THUMB_QUALITY;
+    if (!isset($params['q']) && defined('THUMB_QUALITY'))
+        $params['q'] = THUMB_QUALITY;
+    if (isset($params['noq'])) {
+        unset($params['q'], $params['noq']);
+    }
 
 	if (empty($params['fulllink']) && !EXPORT_AS_PDF === 1) {
 		$src = PATH_RELATIVE.'thumb.php?';

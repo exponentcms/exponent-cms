@@ -178,10 +178,11 @@ abstract class basetemplate {
 		$this->tpl->assign('permissions', $permissions_register);
 	}
 
-	/**
-	 * Render the template and return the result to the caller.
-	 * @return bool|mixed|string
-	 */
+    /**
+     * Render the template and return the result to the caller.
+     * @return bool|mixed|string
+     * @throws Exception
+     */
 	function render() { // Caching support?
         try {
             if (empty($this->file_is_a_config)) {

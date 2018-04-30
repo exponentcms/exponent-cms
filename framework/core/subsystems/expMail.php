@@ -384,17 +384,17 @@ class expMail {
         return $numsent;
 	}
 
-	/**
-	 *  batchSend() - Does not seem to be working correctly.  Use at your own risk!
-	 *
-	 *  This should probably be taken out as it look like a failed attempt to use the old-school AntiFlood plugin
-	 *  This is leftover code from Swift 3.x
-	 *
-	 * @todo Update this section to use batch processing properly
-	 *
-	 * @author Tyler Smart <tyleresmart@gmail.com>
-	 * @return array
-	 */
+    /**
+     *  batchSend() - Does not seem to be working correctly.  Use at your own risk!
+     *
+     *  This should probably be taken out as it look like a failed attempt to use the old-school AntiFlood plugin
+     *  This is leftover code from Swift 3.x
+     *
+     * @todo Update this section to use batch processing properly
+     *
+     * @author Tyler Smart <tyleresmart@gmail.com>
+     * @return void
+     */
 	public function batchSend() {
 //		require_once(BASE . 'external/Swift-4/lib/classes/Swift/Plugins/AntiFloodPlugin.php');
 //		$this->attachPlugin(new Swift_Plugin_AntiFlood(200, 5), "anti-flood");
@@ -415,7 +415,7 @@ class expMail {
      *
      * @param array $params
      *
-     * @return array
+     * @return bool|int
      */
 	public function quickBatchSend($params = array()) {
 		if (empty($params['html_message']) && empty($params['text_message'])) {

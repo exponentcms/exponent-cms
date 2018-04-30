@@ -31,6 +31,8 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ *
+ * @return string
  */
 function smarty_function_module_style($params,&$smarty) {
 	if (empty($params['style']))

@@ -30,7 +30,8 @@
  * Purpose:  return the group name for a group id
  *
  * @param array
- * @return array
+ *
+ * @return string
  */
 function smarty_modifier_groupname($groupid) {
 	global $db;

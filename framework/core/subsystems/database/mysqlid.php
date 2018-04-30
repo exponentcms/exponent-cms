@@ -42,7 +42,7 @@ class mysqlid_database {
      * governing mysqli_connect also govern this method.
      *
      * @internal param null $log_file
-     * @return \mysqlid_database
+     * @return void
      *
      * @internal param string $username The username to connect to the server as.
      *

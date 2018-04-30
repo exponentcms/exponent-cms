@@ -68,7 +68,7 @@
                         <a href="{link action=current_carts}" title="{'View Carts'|gettext}">{$active_carts}</a>
                     </td>
                     <td style="text-align:center;">
-                        <a href="{link controller=users action=showall}" title="{'View Customers'|gettext}">{$online}</a>
+                        <a href="{link controller=users action=manage}" title="{'View Customers'|gettext}">{$online}</a>
                     </td>
                 </tr>
             </tbody>
@@ -100,7 +100,7 @@
                         <td>{icon class=view controller=order action=show id=$order->id text="" title='View this order'|gettext}</td>
                     </tr>
                 {foreachelse}
-                    <tr><td colspan=5>{message text='No Orders Found!'|gettext}</td></tr>
+                    <tr><td colspan=6>{message text='No Orders Found!'|gettext}</td></tr>
                 {/foreach}
             </tbody>
         </table>

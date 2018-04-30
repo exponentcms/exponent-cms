@@ -31,6 +31,7 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ * @throws ReflectionException
  */
 function smarty_function_google_map($params,&$smarty) {
     global $db;

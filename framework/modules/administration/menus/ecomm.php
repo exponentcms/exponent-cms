@@ -46,6 +46,18 @@ $ecom = array(
                 ),
             ),
             array(
+                'text'      => gt('Customers'),
+                'icon'      => 'fa-user',
+                'icon5'      => 'fas fa-user',
+                'classname' => 'euser',
+                'url'       => makeLink(
+                    array(
+                        'controller' => 'users',
+                        'action'     => 'manage'
+                    )
+                ),
+            ),
+            array(
                 'text'      => gt("Orders"),
                 'icon'      => 'fa-list-ul',
                 'icon5'      => 'fas fa-list-ul',
@@ -53,6 +65,18 @@ $ecom = array(
                 'submenu'   => array(
                     'id'       => 'ordermenu',
                     'itemdata' => array(
+                        array(
+                            'text'      => gt("Manage Orders"),
+                            'icon'      => 'fa-search',
+                            'icon5'      => 'fas fa-search',
+                            'classname' => 'search',
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'order',
+                                    'action'     => 'showall'
+                                )
+                            ),
+                        ),
                         array(
                             'text'      => gt("Batch Process Orders"),
                             'icon'      => 'fa-cogs',
@@ -163,30 +187,6 @@ $ecom = array(
                             ),
                         ),
                         array(
-                            'text'      => gt("Manage Product Statuses"),
-                            'icon'      => 'fa-cog',
-                            'icon5'      => 'fas fa-cog',
-                            'classname' => 'manage',
-                            'url'       => makeLink(
-                                array(
-                                    'controller' => 'product_status',
-                                    'action'     => 'manage'
-                                )
-                            ),
-                        ),
-                        array(
-                            'text'      => gt("Manage Product Options"),
-                            'icon'      => 'fa-cog',
-                            'icon5'      => 'fas fa-cog',
-                            'classname' => 'manage',
-                            'url'       => makeLink(
-                                array(
-                                    'controller' => 'ecomconfig',
-                                    'action'     => 'options'
-                                )
-                            ),
-                        ),
-                        array(
                             'text'      => gt("Manage Store Categories"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
@@ -208,6 +208,30 @@ $ecom = array(
                                 array(
                                     'controller' => 'company',
                                     'action'     => 'showall'
+                                )
+                            ),
+                        ),
+                        array(
+                            'text'      => gt("Manage Product Statuses"),
+                            'icon'      => 'fa-cog',
+                            'icon5'      => 'fas fa-cog',
+                            'classname' => 'manage',
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'product_status',
+                                    'action'     => 'manage'
+                                )
+                            ),
+                        ),
+                        array(
+                            'text'      => gt("Manage Product Options"),
+                            'icon'      => 'fa-cog',
+                            'icon5'      => 'fas fa-cog',
+                            'classname' => 'manage',
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'ecomconfig',
+                                    'action'     => 'options'
                                 )
                             ),
                         ),
@@ -328,7 +352,7 @@ $ecom = array(
                     'id'       => 'store',
                     'itemdata' => array(
                         array(
-                            'text'      => gt("General Store Settings"),
+                            'text'      => gt("Store General Settings"),
                             'icon'      => 'fa-cogs',
                             'icon5'      => 'fas fa-cogs',
                             'classname' => 'configure',

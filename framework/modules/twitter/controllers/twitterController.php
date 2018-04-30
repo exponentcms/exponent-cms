@@ -279,6 +279,8 @@ class twitterController extends expController {
 
     /**
      * Send a Tweet
+     *
+     * @param array $params
      */
     public static function postTweet($params=array()) {
         if (!empty($params)) {
@@ -305,6 +307,8 @@ class twitterController extends expController {
 
     /**
      * Send an Event Tweet
+     *
+     * @param array $params
      */
     public static function postEventTweet($params=array()) {
         if (!empty($params)) {

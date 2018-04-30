@@ -16,6 +16,7 @@
 ##################################################
 
 //Global Variables
+/** @define "BASE" "../.." */
 
 // expModules
 /**
@@ -255,7 +256,9 @@ $order = null;
  * Main module action/display logic/routine; initializes/checks controller before calling action/method
  *
  * @param array $parms
+ *
  * @return bool|mixed|string
+ * @throws ReflectionException
  */
 function renderAction(array $parms=array()) {
     global $user, $db;
@@ -538,6 +541,11 @@ function get_model_for_controller($controller_name) {
 
 /**
  * @deprecated 2.3.3 moved to expTemplate subsystem
+ * @param $view
+ * @param $loc
+ * @param string $controllername
+ *
+ * @return controllertemplate
  */
 function get_common_template($view, $loc, $controllername='') {
     return expTemplate::get_common_template($view, $loc, $controllername);
@@ -581,6 +589,10 @@ function get_common_template($view, $loc, $controllername='') {
 
 /**
  * @deprecated 2.3.3 moved to expTemplate subsystem
+ * @param $controller
+ * @param $loc
+ *
+ * @return array
  */
 function get_config_templates($controller, $loc) {
     return expTemplate::get_config_templates($controller, $loc);
@@ -647,6 +659,10 @@ function get_config_templates($controller, $loc) {
 
 /**
  * @deprecated 2.3.3 moved to expTemplate subsystem
+ * @param array $paths
+ * @param array $excludes
+ *
+ * @return array
  */
 function find_config_views($paths=array(), $excludes=array()) {
     return expTemplate::find_config_views($paths, $excludes);
@@ -682,6 +698,11 @@ function find_config_views($paths=array(), $excludes=array()) {
 
 /**
  * @deprecated 2.3.3 moved to expTemplate subsystem
+ * @param $controller
+ * @param $action
+ * @param null $loc
+ *
+ * @return controllertemplate
  */
 function get_template_for_action($controller, $action, $loc=null) {
     expTemplate::get_template_for_action($controller, $action, $loc);
@@ -755,6 +776,11 @@ function get_template_for_action($controller, $action, $loc=null) {
 
 /**
  * @deprecated 2.3.3 moved to expTemplate subsystem
+ * @param $ctl
+ * @param $action
+ * @param $human_readable
+ *
+ * @return array
  */
 function get_action_views($ctl, $action, $human_readable) {
     expTemplate::get_action_views($ctl, $action, $human_readable);
@@ -901,6 +927,8 @@ function expProcessBuffer($buffer, $mode=null) {
  * Ensure we have a valid html 'id' attribute
  *
  * @param $id
+ * @param string $value
+ *
  * @return mixed
  */
 function createValidId($id, $value='') {
@@ -957,6 +985,8 @@ function framework() {
 
 /**
  * Is the current framework Bootstrap v2 based?
+ *
+ * @param bool $strict
  *
  * @return bool
  */
@@ -1112,10 +1142,10 @@ function eDebug($var, $halt=false, $disable_log=false){
         } else {
             if (file_exists(BASE . 'external/kint/Kint.class.php')) {
                 require_once BASE . 'external/kint/Kint.class.php';
-                d($var);  // kint
+                d($var);  // kint v1
             } elseif (file_exists(BASE . 'external/kint/build/kint.php')) {
                 require_once BASE . 'external/kint/build/kint.php';
-                d($var);  // kint
+                d($var);  // kint v2
             } else {
                 echo "<pre>";
                 print_r($var);

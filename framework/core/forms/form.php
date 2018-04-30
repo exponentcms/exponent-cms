@@ -318,7 +318,7 @@ class form extends baseform {
             $class = " class=\"exp-skin\"";
         }
 		if (isset($this->ajax_updater)) {
-			$html .= "<form role=\"form\" name=\"" . $this->name . "\" method=\"" ;
+			$html .= "<form role=\"form\" id='".$this->id."' name=\"" . $this->name . "\" method=\"" ;
 			$html .= $this->method . "\" action=\"" . $this->action ."\" ";
 			$html .= " onsubmit=\"new Ajax.Updater('".$this->div_to_update."', '".$this->action."', ";
 			$html .= "{asynchronous:true, parameters:Form.serialize(this)}); return false;\">\r\n";

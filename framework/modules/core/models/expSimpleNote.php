@@ -33,6 +33,10 @@ class expSimpleNote extends expRecord {
 
     /**
      * attach the note to the item it belongs to (product, order, etc..);
+     *
+     * @param $content_type
+     * @param $content_id
+     * @param null $subtype
      */
     public function attachNote($content_type, $content_id, $subtype = null) {
         global $db;

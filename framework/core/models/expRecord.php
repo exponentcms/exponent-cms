@@ -81,8 +81,7 @@ class expRecord {
      * @param bool $get_assoc
      * @param bool $get_attached
      *
-     * @return expRecord
-     *
+     * @throws ReflectionException
      */
     function __construct($params = null, $get_assoc = true, $get_attached = true) {
         global $db;
@@ -341,6 +340,7 @@ class expRecord {
      * re-construct the item from the database
      *
      * @return bool
+     * @throws ReflectionException
      */
     public function refresh() {
         if (empty($this->id))
@@ -357,8 +357,7 @@ class expRecord {
      * Additionally, if a record ID is given, that record is pulled and
      * field values are also populated into class properties.
      *
-     * @name          build
-     *
+     * @param mixed $params array or Object for table selection
      * @category db_record
      * @uses     [db_type]::getDataDefinition() Builds  a data definition from existing table.
      * @requires $db
@@ -368,8 +367,6 @@ class expRecord {
      * @PHPUnit  Not Defined
      *
      * @global object $db
-     *
-     * @param mixed   $params array or Object for table selection
      */
     public function build($params = array()) {
         global $db;

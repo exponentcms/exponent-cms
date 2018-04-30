@@ -804,14 +804,15 @@ class migrationController extends expController {
         expHistory::back();
     }
 
-	/**
-	 * main routine to convert old school module data into new controller format
-	 * @var \mysqli_database $db the exponent database object
-	 * @param  $iloc
-	 * @param  $module
-	 * @param int $hc
-	 * @return
-	 */
+    /**
+     * main routine to convert old school module data into new controller format
+     *
+     * @param  $iloc
+     * @param  $module
+     * @param int $hc
+     *
+     * @return mixed
+     */
     private function convert($iloc, $module, $hc=0) {
         if (!in_array($iloc->mod, $this->params['migrate'])) return $module;
         global $db;

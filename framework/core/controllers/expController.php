@@ -69,11 +69,10 @@ abstract class expController {
     public $rss_is_podcast = false;
 
     /**
-     * @param null  $src
+     * @param null $src
      * @param array $params
      *
-     * @return expController
-     *
+     * @throws ReflectionException
      */
     public function __construct($src = null, $params = array()) {
         // setup some basic information about this class
@@ -998,6 +997,8 @@ abstract class expController {
      *
      * this function is very general and will most of the time need to be overwritten and customized
      *
+     * @param int $limit
+     *
      * @return array
      */
     public function getRSSContent($limit = 0) {
@@ -1232,6 +1233,7 @@ abstract class expController {
      * add module item or all items to search index
      *
      * @return int number of items added to search index
+     * @throws ReflectionException
      */
     public function addContentToSearch() {
         global $db;
@@ -1325,6 +1327,7 @@ abstract class expController {
     /**
      * delete module, config, and all its items
      * @param bool $loc
+     * @throws ReflectionException
      */
     public function delete_instance($loc = false) {
         $model = new $this->basemodel_name();
@@ -1430,6 +1433,7 @@ abstract class expController {
      *
      * @param $request
      * @param $object
+     * @param $canonical
      *
      * @return array
      */
@@ -1442,6 +1446,7 @@ abstract class expController {
      *
      * @param $request
      * @param $object
+     * @param $canonical
      *
      * @return array
      */

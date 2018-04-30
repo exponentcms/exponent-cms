@@ -519,7 +519,8 @@ class helpController extends expController {
      * Hack to try and determine page which help doc is assoc with
      * @static
      * @param $params
-     * @return null|void
+     *
+     * @return section
      */
 	public static function getSection($params) {
 	    global $db;

@@ -32,7 +32,7 @@
  * @param $string
  * @param $ignore_whitespace
  *
- * @return array
+ * @return string
  */
 function smarty_modifier_urlencode($string,$ignore_whitespace=false) {
 	if ($ignore_whitespace) $string = trim($string);

@@ -770,7 +770,7 @@ class paypalExpressCheckout extends billingcalculator {
      *
      * @param string $where
      *
-     * @return bool
+     * @return void
      */
     function delete($where = '') {
         return;
@@ -804,7 +804,8 @@ class paypalExpressCheckout extends billingcalculator {
 
         // convert the api params to a name value pair string
         $nvpstr = "";
-        while (list($key, $value) = each($apiParams)) {
+//        while (list($key, $value) = each($apiParams)) {
+        foreach($apiParams as $key=>$value) {
             $nvpstr .= $key . '=' . urlencode(str_replace(',', '', $value)) . '&';
         }
 
@@ -989,12 +990,12 @@ class paypalExpressCheckout extends billingcalculator {
         $httpParsedResponseAr = array();
         foreach ($httpResponseAr as $i => $value) {
             $tmpAr = explode("=", $value);
-            if (sizeof($tmpAr) > 1) {
+            if (count($tmpAr) > 1) {
                 $httpParsedResponseAr[$tmpAr[0]] = $tmpAr[1];
             }
         }
 
-        if ((0 == sizeof($httpParsedResponseAr)) || !array_key_exists('ACK', $httpParsedResponseAr)) {
+        if ((0 == count($httpParsedResponseAr)) || !array_key_exists('ACK', $httpParsedResponseAr)) {
             exit("Invalid HTTP Response for POST request($nvpreq) to $API_Endpoint.");
         }
 

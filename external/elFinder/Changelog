@@ -1,3 +1,43 @@
+2018-03-28  Naoki Sawada  <hypweb+elfinder@gmail.com>
+
+	* elFinder (2.1.37):
+		- [php:security] re-fix directory traversal vulnerability for windows server
+
+
+2018-03-28  Naoki Sawada  <hypweb+elfinder@gmail.com>
+
+	* elFinder (2.1.36):
+		- [js:core] Fixed #2433 cwdOptions becomes trash folder's options when folder restoring
+		- [php:plugin:sanitizer] add on option `callBack` (#2432)
+		- [ui:uploadbutton] Fixed #2435 can't upload
+		- [cmd:upload] Fixed #2436 can’t upload with state that one file selected in cwd
+		- [VD:abstract] Fixed #2425 adjustment of `internal_encoding` setting
+		- [php:security] correction of symbolic link determination
+		- [cmd:rename] bugfix of undo/redo functions
+		- [php:plugin] add option onDropWith for plugin function iaEnabled (#2442)
+		- [cmd:paste] Fixed #2439 missing `src` param on API < 2.1
+		- [proxy:Ver1] correction of response data normalization on paste
+		- [php:security] fix directory traversal vulnerability
+		- And some minor bug fixes
+
+
+2018-03-21  Naoki Sawada  <hypweb+elfinder@gmail.com>
+
+	* elFinder (2.1.35):
+		- [cmd:upload] notify progress data to dfrd.progress in uploading
+		- [VD:LocalFileSystem,OneDrive] fix wrong result of isNameExists()
+		- [ui:dialog] Fixed #2431 form elements can not get focus with mouse down
+		- And some minor bug fixes
+
+
+2018-03-18  Naoki Sawada  <hypweb+elfinder@gmail.com>
+
+	* elFinder (2.1.34):
+		- [VD:abstract] Fixed #2423 no longer running under PHP < 5.4
+		- [cmd:mkdir] Fixed #2422 bugfix of behavior of mkdir on navbar
+		- And some minor bug fixes
+
+
 2018-03-14  Naoki Sawada  <hypweb+elfinder@gmail.com>
 
 	* elFinder (2.1.33):

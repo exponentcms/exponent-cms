@@ -32,7 +32,7 @@
  * @param $number
  * @param $decimals
  *
- * @return array
+ * @return string
  */
 function smarty_modifier_number_format($number,$decimals) {
     $number = ($number=="") ? 0 : $number;

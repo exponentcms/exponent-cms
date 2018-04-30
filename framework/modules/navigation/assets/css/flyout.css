@@ -114,7 +114,7 @@ a.active.triggerlogin, a.active.triggerlogin:visited {
 	background: #222222 url(../../../../modules/users/assets/images/minus.png) 15% 55% no-repeat;
 	text-decoration: none !important;
 	font-size: 0px;
-	padding: 5px 15px 10px 0px;
+    padding: 22px 15px 10px 10px;
 }
 
 .flyout .columns {

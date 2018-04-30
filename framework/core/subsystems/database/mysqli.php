@@ -86,7 +86,7 @@ class mysqli_database extends database {
    			);
    		}
    		catch (PDOException $e) {
-   			self::fatal(
+   			expDatabase::fatal(
    				"An error occurred while connecting to the database. ".
    				"The error reported by the server was: ".$e->getMessage()
    			);
@@ -419,6 +419,10 @@ class mysqli_database extends database {
      *   is specified as null, then no criteria is applied, and all objects are
      *   returned
      * @param null $orderby
+     * @param bool $is_revisioned
+     * @param bool $needs_approval
+     * @param null $user
+     *
      * @return array
      */
     function selectObjects($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false, $user=null) {
@@ -722,8 +726,9 @@ class mysqli_database extends database {
      *
      * @param string $table The name of the table to count objects in.
      * @param string $where Criteria for counting.
-     * @param bool   $is_revisioned
-     * @param bool   $needs_approval
+     * @param bool $is_revisioned
+     * @param bool $needs_approval
+     * @param null $user
      *
      * @return int
      */
@@ -1198,6 +1203,10 @@ class mysqli_database extends database {
      *   is specified as null, then no criteria is applied, and all objects are
      *   returned
      * @param string $orderby
+     * @param bool $is_revisioned
+     * @param bool $needs_approval
+     * @param null $user
+     *
      * @return array
      */
     function selectArrays($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false, $user=null) {
@@ -1265,9 +1274,10 @@ class mysqli_database extends database {
      * @param string $where Criteria used to narrow the result set.  If this
      *                      is specified as null, then no criteria is applied, and all objects are
      *                      returned
-     * @param null   $orderby
-     * @param bool   $is_revisioned
-     * @param bool   $needs_approval
+     * @param null $orderby
+     * @param bool $is_revisioned
+     * @param bool $needs_approval
+     * @param null $user
      *
      * @return array|void
      */
@@ -1306,14 +1316,15 @@ class mysqli_database extends database {
      *                      is specified as null, then no criteria is applied, and all objects are
      *                      returned
      * @param string $classname
-     * @param bool   $get_assoc
-     * @param bool   $get_attached
-     * @param array  $except
-     * @param bool   $cascade_except
-     * @param null   $order
-     * @param null   $limitsql
-     * @param bool   $is_revisioned
-     * @param bool   $needs_approval
+     * @param bool $get_assoc
+     * @param bool $get_attached
+     * @param array $except
+     * @param bool $cascade_except
+     * @param null $order
+     * @param null $limitsql
+     * @param bool $is_revisioned
+     * @param bool $needs_approval
+     * @param null $user
      *
      * @return array
      */

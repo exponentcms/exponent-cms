@@ -31,7 +31,9 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ *
  * @return bool
+ * @throws ReflectionException
  */
 function smarty_function_optiondisplayer($params,&$smarty) {
     global $db;

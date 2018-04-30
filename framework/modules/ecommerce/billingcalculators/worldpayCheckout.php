@@ -108,7 +108,8 @@ class worldpayCheckout extends billingcalculator {
             );
             // convert the api params to a name value pair string
             $datapost = "";
-            while (list($key, $value) = each($data)) {
+//            while (list($key, $value) = each($data)) {
+            foreach($data as $key=>$value) {
                 $datapost .= $key . '=' . urlencode(str_replace(',', '', $value)) . '&';
             }
 
@@ -166,7 +167,7 @@ class worldpayCheckout extends billingcalculator {
      *
      * @param string $where
      *
-     * @return bool
+     * @return null
      */
     function delete($where = '') {
         return;

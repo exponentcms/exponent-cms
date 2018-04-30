@@ -142,7 +142,7 @@ class socialfeedController extends expController
         }
         require_once(BASE . "external/facebook-php-sdk-4.0.23/autoload.php"); //v4
 //        require_once(BASE . "external/facebook-php-sdk-v4-5.2.0/src/Facebook/autoload.php");
-//        require_once(BASE . "external/php-graph-sdk-5.3.1/src/Facebook/autoload.php");
+//        require_once(BASE . "external/php-graph-sdk-5.6.2/src/Facebook/autoload.php");
         FacebookSession::setDefaultApplication($config['app_id'], $config['secret']); //v4
 //        $fb = new Facebook\Facebook(array(
 //            'app_id'     => $config['app_id'],
@@ -314,6 +314,10 @@ class socialfeedController extends expController
 
     /**
      * Render posts from the Facebook feed
+     *
+     * @param $facebook_entry
+     *
+     * @return mixed
      */
     private function parse_facebook_data($facebook_entry) {
         $ids = explode('_',$facebook_entry->id);

@@ -32,7 +32,7 @@
  * @param        array
  * @param string $col
  *
- * @return array
+ * @return string
  */
 function smarty_modifier_countryname($country,$col='name') {
 	global $db;

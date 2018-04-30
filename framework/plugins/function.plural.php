@@ -31,6 +31,8 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ *
+ * @return mixed
  */
 function smarty_function_plural($params,&$smarty) {
 	if ($params['count'] == 1) return $params['singular'];

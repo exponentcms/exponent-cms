@@ -1335,6 +1335,10 @@ class reportController extends expController {
 
     /**
      * @deprecated 2.3.3 moved to expString
+     * @param $str
+     * @param bool $isHTML
+     *
+     * @return mixed
      */
     public static function parseAndTrimExport($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str);
@@ -1369,6 +1373,10 @@ class reportController extends expController {
 
     /**
      * @deprecated 2.3.3 moved to expString
+     * @param $str
+     * @param bool $isHTML
+     *
+     * @return mixed
      */
     public static function parseAndTrimImport($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str);
@@ -1407,6 +1415,10 @@ class reportController extends expController {
 
     /**
      * @deprecated 2.3.3 moved to expString
+     * @param $str
+     * @param bool $isHTML
+     *
+     * @return mixed
      */
     public static function parseAndTrim($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str);
@@ -1443,6 +1455,11 @@ class reportController extends expController {
 
     /**
      * @deprecated 2.3.3 moved to expString
+     * @param $val
+     * @param string $eof
+     * @param bool $isHTML
+     *
+     * @return string
      */
     function outputField($val, $eof = ',', $isHTML = false) {
         $newVal = expString::parseAndTrimExport($val, $isHTML);
@@ -1666,6 +1683,9 @@ class reportController extends expController {
 
     /**
      * @deprecated 2.3.3 moved to expString
+     * @param $val
+     *
+     * @return null|string|string[]
      */
     function stripLineEndings($val) {
         return preg_replace('/\r\n/', ' ', trim($val));
@@ -2189,6 +2209,10 @@ class reportController extends expController {
 
     /**
      * @deprecated 2.3.4 moved to storeCategory
+     * @param $catID
+     * @param bool $reset
+     *
+     * @return bool|string
      */
     public static function buildCategoryString($catID, $reset = false) {
         static $cstr = '';

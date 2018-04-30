@@ -30,6 +30,7 @@
  * Purpose:  Replace comma separated list with the chosen language for the text
  *
  * @param string $str
+ *
  * @return string
  */
 function smarty_modifier_gettxtlist($str) {

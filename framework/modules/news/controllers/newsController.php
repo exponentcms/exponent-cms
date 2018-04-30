@@ -357,6 +357,7 @@ class newsController extends expController {
      *
      * @param $request
      * @param $object
+     * @param $canonical
      *
      * @return null
      */
@@ -393,6 +394,7 @@ class newsController extends expController {
      *
      * @param $request
      * @param $object
+     * @param $canonical
      *
      * @return null
      */

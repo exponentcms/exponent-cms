@@ -97,14 +97,13 @@ class expPaginator {
     public $cats = array();
     public $sort_dropdown = array();
 
-	/**
-	 * expPaginator Constructor
-	 *
-	 * This is the main entry point for using the expPaginator.  See example above.
-	 *
-	 * @param array $params Use this to set any of the class variables. Ones not passed will be set to a default.
-	 * @return \expPaginator
-	 */
+    /**
+     * expPaginator Constructor
+     *
+     * This is the main entry point for using the expPaginator.  See example above.
+     *
+     * @param array $params Use this to set any of the class variables. Ones not passed will be set to a default.
+     */
 	public function __construct($params=array()) {
 		global $router, $db;
 
@@ -329,10 +328,41 @@ class expPaginator {
 		// get the page parameters from the router to build the links
         $page_params = $router->params;
 //		$page_params = $this->cleanParams($router->params);
-        foreach (array("__utma", "__utmz", "route_sanitized") as $key) {
-            if (isset($page_params[$key]))
-                unset($page_params[$key]);
-        }
+//        $bad_params = array(
+//            'PHPSESSID',
+//            '_ga',
+//            '_gat',
+//            '_gaq',
+//            '__utma',
+//            '__utmb',
+//            '__utmc',
+//            '__utmt',
+//            '__utmv',
+//            '__utmli',
+//            '__utmz',
+//            '__zlcmid',
+//            '__cfduid'
+//        );
+//        foreach ($bad_params as $key) {
+//            if (isset($page_params[$key]))
+//                unset($page_params[$key]);
+//        }
+        unset(
+            $page_params['PHPSESSID'],
+            $page_params['_ga'],
+            $page_params['_gat'],
+            $page_params['_gaq'],
+            $page_params['__utma'],
+            $page_params['__utmb'],
+            $page_params['__utmc'],
+            $page_params['__utmt'],
+            $page_params['__utmv'],
+            $page_params['__utmli'],
+            $page_params['__utmz'],
+            $page_params['__zlcmid'],
+            $page_params['__cfduid']
+        );
+
         if (!empty($page_params['search_string']))
             $page_params['search_string'] = urlencode($page_params['search_string']);
 
@@ -680,6 +710,10 @@ class expPaginator {
     /** exdoc
      * Object/Array sorting comparison function -- sorts by a specified column in ascending order.
      * @node Subsystems:expPaginator
+     * @param $a
+     * @param $b
+     *
+     * @return int
      */
     public function asc($a,$b) {
         $col = $this->order;
@@ -695,6 +729,10 @@ class expPaginator {
     /** exdoc
      * Object/Array sorting comparison function -- sorts by a specified column in descending order.
      * @node Subsystems:expPaginator
+     * @param $a
+     * @param $b
+     *
+     * @return int
      */
     public function desc($a,$b) {
         $col = $this->order;

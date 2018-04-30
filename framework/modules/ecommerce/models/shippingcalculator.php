@@ -110,6 +110,9 @@ class shippingcalculator extends expRecord {
     /**
      * Return shipping calculator name
      *
+     * @param $calc_id
+     *
+     * @return null
      */
     public static function getCalcName($calc_id) {
         global $db;
@@ -120,6 +123,9 @@ class shippingcalculator extends expRecord {
     /**
      * Return shipping calculator title
      *
+     * @param $calc_id
+     *
+     * @return null
      */
     public static function getCalcTitle($calc_id) {
         global $db;

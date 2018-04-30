@@ -138,8 +138,9 @@ class authorizedotnet extends creditcard {
         }
 
         $data2 = "";
-        while (list($key, $value) = each($data)) {
-//			$data2 .= $key . '=' . urlencode(ereg_replace(',', '', $value)) . '&';
+//        while (list($key, $value) = each($data)) {
+        foreach($data as $key=>$value) {
+			$data2 .= $key . '=' . urlencode(ereg_replace(',', '', $value)) . '&';
             $data2 .= $key . '=' . urlencode(str_ireplace(',', '', $value)) . '&';
         }
 
@@ -230,7 +231,8 @@ class authorizedotnet extends creditcard {
         }
 
         $data2 = "";
-        while (list($key, $value) = each($data)) {
+//        while (list($key, $value) = each($data)) {
+        foreach($data as $key=>$value) {
             $data2 .= $key . '=' . urlencode(str_ireplace(',', '', $value)) . '&';
         }
 
@@ -271,7 +273,8 @@ class authorizedotnet extends creditcard {
             );
 
             $data2 = "";
-            while (list($key, $value) = each($data)) {
+//            while (list($key, $value) = each($data)) {
+            foreach($data as $key=>$value) {
                 $data2 .= $key . '=' . urlencode(str_ireplace(',', '', $value)) . '&';
             }
 
@@ -342,7 +345,8 @@ class authorizedotnet extends creditcard {
         }
 
         $data2 = "";
-        while (list($key, $value) = each($data)) {
+//        while (list($key, $value) = each($data)) {
+        foreach($data as $key=>$value) {
             $data2 .= $key . '=' . urlencode(str_ireplace(',', '', $value)) . '&';
         }
 
@@ -414,7 +418,8 @@ class authorizedotnet extends creditcard {
         }
 
         $data2 = "";
-        while (list($key, $value) = each($data)) {
+//        while (list($key, $value) = each($data)) {
+        foreach($data as $key=>$value) {
             $data2 .= $key . '=' . urlencode(str_ireplace(',', '', $value)) . '&';
         }
 

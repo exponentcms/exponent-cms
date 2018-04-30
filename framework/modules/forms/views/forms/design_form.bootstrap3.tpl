@@ -142,7 +142,7 @@
         });
 
         // we need to catch 'edit' button clicks
-        $('#abc123').on('click', '.edit', function(evt) {
+        $('#fakeform').on('click', '.edit', function(evt) {
             evt.preventDefault();
             var ctl = evt.target;
             if (ctl.tagName != 'A')
@@ -197,7 +197,7 @@
                                         $(ctl).closest('.item').find('link').each(function(k, n){
                                             $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
                                         });
-                                        $('#abc123 .delete').attr('onClick', '');  // remove delete button non-ajax onClick action
+                                        $('#fakeform .delete').attr('onClick', '');  // remove delete button non-ajax onClick action
                                     }
                                 });
                             }
@@ -214,7 +214,7 @@
         });
 
         // we need to catch 'delete' button clicks
-        $('#abc123').on('click', '.delete', function(evt) {
+        $('#fakeform').on('click', '.delete', function(evt) {
             evt.preventDefault();
             var ctl = evt.target;
             if (ctl.tagName != 'A')
@@ -236,9 +236,9 @@
                             data: 'id=' + id,
                             success:function(msg) {
                                 $(ctl).closest('.item').remove();  //  remove control from the displayed form
-                                // we need to check if there are any controls left on the abc123 form and if not add an empty item
-                                if ($('#abc123 .item').length == 0) {
-                                    $('<div class="item empty">&#160;</div>').appendTo('#abc123');
+                                // we need to check if there are any controls left on the fakeform form and if not add an empty item
+                                if ($('#fakeform .item').length == 0) {
+                                    $('<div class="item empty">&#160;</div>').appendTo('#fakeform');
                                 }
                             }
                         });
@@ -254,10 +254,10 @@
         });
 
         // we don't want the non-ajax onClick action taking place first
-        $('#abc123 .delete').attr('onClick', '');
+        $('#fakeform .delete').attr('onClick', '');
 
         // form
-        Sortable.create(abc123, {
+        Sortable.create(fakeform, {
             group: {
                 name: 'form',
                 put: ['controls']
@@ -296,9 +296,9 @@
                                     $(evt.item).find('link').each(function(k, n){
                                         $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
                                     });
-                                    $('#abc123 .delete').attr('onClick', '');
-                                    // we need to check if there is an empty item on the abc123 form and if so delete it
-                                    $('#abc123 .item.empty').remove();
+                                    $('#fakeform .delete').attr('onClick', '');
+                                    // we need to check if there is an empty item on the fakeform form and if so delete it
+                                    $('#fakeform .item.empty').remove();
                                 }
                             });
                             dialog.close();
@@ -360,9 +360,9 @@
                                             $(evt.item).find('link').each(function(k, n){
                                                 $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
                                             });
-                                            $('#abc123 .delete').attr('onClick', '');
-                                            // we need to check if there is an empty item on the abc123 form and if so delete it
-                                            $('#abc123 .item.empty').remove();
+                                            $('#fakeform .delete').attr('onClick', '');
+                                            // we need to check if there is an empty item on the fakeform form and if so delete it
+                                            $('#fakeform .item.empty').remove();
                                         }
                                     });
                                 }
@@ -451,9 +451,9 @@
                     success: function(o){
                         itemEl.remove();  //  we don't won't to show removed controls sitting in the trash can
                         //  control has already been removed from the displayed form
-                        // we need to check if there are any controls left on the abc123 form and if not add an empty item
-                        if ($('#abc123 .item').length == 0) {
-                            $('<div class="item empty">&#160;</div>').appendTo('#abc123');
+                        // we need to check if there are any controls left on the fakeform form and if not add an empty item
+                        if ($('#fakeform .item').length == 0) {
+                            $('<div class="item empty">&#160;</div>').appendTo('#fakeform');
                         }
                     }
                 });

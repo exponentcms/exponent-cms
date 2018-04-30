@@ -338,6 +338,8 @@ class blogController extends expController {
 
     /**
      * delete module's items (all) by instance
+     *
+     * @param bool $loc
      */
     function delete_instance($loc = false) {
         parent::delete_instance(true);
@@ -348,6 +350,7 @@ class blogController extends expController {
      *
      * @param $request
      * @param $object
+     * @param $canonical
      *
      * @return null
      */
@@ -384,6 +387,7 @@ class blogController extends expController {
      *
      * @param $request
      * @param $object
+     * @param $canonical
      *
      * @return null
      */

@@ -66,9 +66,10 @@ class expGeo
      * List active Regions for a specific Country. Returns an array of region objects.
      *
      * @param integer $country_id The id of the country to get regions for
+     * @param null $include_blank
      *
-     * @node Subsystems:expGeo
      * @return array
+     * @node Subsystems:expGeo
      */
     public static function listRegions($country_id, $include_blank = null)
     {

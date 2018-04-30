@@ -112,7 +112,7 @@ class textcontrol extends formcontrol {
             }
             $html .= '</div>';
         }
-        if (!empty($this->description)) $html .= "<div class=\"".(bs3() || bs4()?"help-block":"control-desc")."\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"".((bs3() || bs4())?"help-block":"control-desc")."\">".$this->description."</div>";
         $html .= ($this->horizontal) ? '</div>' : '';
         return $html;
     }

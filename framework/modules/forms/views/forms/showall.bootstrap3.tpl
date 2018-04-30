@@ -14,6 +14,34 @@
  *}
 
 {if !$error}
+    {css unique="yadcf"}
+    {literal}
+        table.dataTable thead > tr {
+            font-size-adjust: 0.4;
+        }
+        table.dataTable thead > tr > th {
+            padding-left: 5px;
+            padding-top: 0;
+            padding-bottom: 0;
+            vertical-align: top;
+        }
+        div.dataTables_paginate ul.pagination {
+            display: inline-flex;
+        }
+        .yadcf-filter-wrapper {
+            display: block;
+        }
+        table.dataTable thead .sorting,
+        table.dataTable thead .sorting_asc,
+        table.dataTable thead .sorting_desc  {
+            background-image: none;
+        }
+        .text-right {
+            text-align: right;
+        }
+    {/literal}
+    {/css}
+
     <div class="module forms showall">
         {if !empty($title)}
         <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>

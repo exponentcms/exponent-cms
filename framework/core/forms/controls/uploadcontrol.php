@@ -156,6 +156,7 @@ class uploadcontrol extends formcontrol {
      *
      * @param $name
      * @param $values
+     * @param bool $for_db
      *
      * @return string   The full directory and filename of the uploaded file
      */

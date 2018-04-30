@@ -36,8 +36,11 @@ class expModules {
 	    return $controllers;
 	}
 
-	/**
+    /**
      * Recursive function used to load 2.0 modules controllers
+     *
+     * @param $dir
+     * @param $controllers
      */
 	public static function loadModules($dir, &$controllers) {
 //		global $db;
@@ -100,8 +103,11 @@ class expModules {
 	}
 
     /**
-        * Recursive function used to load 2.0 models
-        */
+     * Recursive function used to load 2.0 models
+     *
+     * @param $dir
+     * @param $models
+     */
    	public static function loadModels($dir, &$models) {
    //		global $db;
    	    if (is_readable($dir)) {
@@ -201,6 +207,10 @@ class expModules {
     /**
      * Returns list of installed/used controllers
      *
+     * @param null $type
+     * @param null $loc
+     *
+     * @return array
      */
 	public static function listInstalledControllers($type=null, $loc=null) {
 	    if (empty($type)) return array();

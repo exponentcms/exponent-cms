@@ -1464,7 +1464,7 @@ class storeController extends expController {
         if ($product_type === "childProduct" || $product_type === "product") {
             if ($record->parent_id != 0) {
                 $parent = new $product_type($record->parent_id, false, false);
-                if (isset($this->params['original_id'])) {
+                if (!isset($this->params['original_id'])) {
                     flash("message", gt("Child product saved."));
                 } else {
                     flash("message", gt("Child product copied and saved."));

@@ -166,8 +166,9 @@ class uploadcontrol extends formcontrol {
     /**
      * Moves the uploaded file into our file system, NOT the database
      *
-     * @param $original_name
-     * @param $formvalues
+     * @param $name
+     * @param $values
+     * @param bool $for_db
      *
      * @return string   The full directory and filename of the uploaded file
      */

@@ -252,18 +252,16 @@ class expFile extends expRecord {
      *
      * @PHPUnit Not Defined
      *
-     * @param mixed $params    - If an INT is given, this assumes that it needs to
+     * @param mixed $params - If an INT is given, this assumes that it needs to
      *                         load an existing File Record.
      *                       - If an ARRAY is given, this assumes that the elements
      *                         of the array are values to the File table that need
      *                         to be modified or other processing.
      *                       - If NULL is given, an empty File Object is created
      *
-     * @param bool  $get_assoc
-     * @param bool  $get_attached
-     *
-     * @return \expFile Object@throws void
-     *
+     * @param bool $get_assoc
+     * @param bool $get_attached
+     * @throws ReflectionException
      */
     public function __construct($params = array(), $get_assoc = false, $get_attached = true) {
         // Set 'directory' as the default FILE location
@@ -316,6 +314,13 @@ class expFile extends expRecord {
 
     public function exists() {
         return (!empty($this->id) && is_file(BASE . PATH_RELATIVE . $this->directory . $this->filename));
+    }
+
+    public function beforeSave() {
+        // Add/update posted/accessed time.
+        if (empty($this->posted))
+            $this->posted = time();
+        $this->last_accessed = time();
     }
 
     public function afterDelete() {
@@ -711,11 +716,9 @@ class expFile extends expRecord {
      *
      * @PHPUnit Not Defined|Implement|Completed
      *
-     * @param string $file       Full path to file to download
+     * @param string $file Full path to file to download
      *
-     * @return void
-     * @throws void
-     *
+     * @return bool
      */
     public static function download($file) {
         // we are expecting an int val as a file ID or the whole file object.
@@ -968,6 +971,7 @@ class expFile extends expRecord {
      * is in place, however.
      *
      * @param string $filename The path/filename of the image.
+     * @param null $sizeinfo
      *
      * @return null|resource|string
      * @node Model:expFile
@@ -1543,13 +1547,11 @@ class expFile extends expRecord {
      * Recursively removes the given directory, and all
      * of the files and directories underneath it.
      *
-     * @param string $dir The path of the directory to remove
-     *
-     * @node Model:expFile
-     *
      * @param string $dir directory to work with
      *
      * @return int
+     * @node Model:expFile
+     *
      */
     public static function removeDirectory($dir) {
         if (strpos($dir, BASE) != 0) $dir = BASE . $dir;
@@ -1843,13 +1845,14 @@ class expFile extends expRecord {
      * that some errors were encountered.  Check $errors to be sure everything
      * was fine.
      *
-     * @param string        $file   The filename of the EQL file to restore from
-     * @param array         $errors A referenced array that stores errors.  Whatever
+     * @param string $file The filename of the EQL file to restore from
+     * @param array $errors A referenced array that stores errors.  Whatever
      *                              variable is passed in this argument will contain all errors encountered
      *                              during the parse/restore.
-     * @param null/string   $type   The type of eql file to restore
+     * @param null $type
      *
      * @return bool
+     * @throws ReflectionException
      * @node     Model:expFile
      */
     public static function restoreDatabase($file, &$errors, $type = null) {

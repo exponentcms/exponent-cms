@@ -1196,6 +1196,7 @@ class expTheme
 
     /**
      * @deprecated 2.2.1
+     * @param array $params
      */
     public static function showController($params = array())
     {
@@ -1362,16 +1363,17 @@ class expTheme
     /** exdoc
      * Calls the necessary methods to show a specific module - NOT intended to be called directly from theme
      *
-     * @param string $module   The classname of the module to display
-     * @param string $view     The name of the view to display the module with
-     * @param string $title    The title of the module (support is view-dependent)
-     * @param string $source   The source of the module.
-     * @param bool   $pickable Whether or not the module is pickable in the Source Picker.
-     * @param null   $section
-     * @param bool   $hide_menu
-     * @param array  $params
+     * @param string $module The classname of the module to display
+     * @param string $view The name of the view to display the module with
+     * @param string $title The title of the module (support is view-dependent)
+     * @param string $source The source of the module.
+     * @param bool $pickable Whether or not the module is pickable in the Source Picker.
+     * @param null $section
+     * @param bool $hide_menu
+     * @param array $params
      *
      * @return void
+     * @throws ReflectionException
      * @node Subsystems:Theme
      */
     public static function showModule(
@@ -1655,6 +1657,7 @@ class expTheme
      * Return the icon associated for the current frameowrk
      *
      * @param        $class
+     * @param null $size
      *
      * @return stdClass|string
      */
@@ -1932,6 +1935,7 @@ class expTheme
      * Return the full icon style string for the current framework
      *
      * @param        $class
+     * @param null $text
      *
      * @return string
      */

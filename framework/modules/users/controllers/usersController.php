@@ -1130,9 +1130,9 @@ class usersController extends expController {
             'dir'        => $dir,
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'columns'    => array(
+                gt('Date Purchased') => 'purchased',
                 gt('Order #')        => 'invoice_id',
                 gt('Total')          => 'total',
-                gt('Date Purchased') => 'purchased',
 //                gt('Type')           => 'order_type_id',
                 gt('Status')         => 'order_status_id',
                 gt('Ref')            => 'orig_referrer',

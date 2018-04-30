@@ -417,8 +417,8 @@ class formsController extends expController {
                 if (!empty($data->sef_url))
                     $form->register("sef_url", gt('SEF URL'), new textcontrol($data->sef_url));
 
-                // if we are editing an existing record we'll need to do recaptcha here since we won't call confirm_data
-                if (!empty($this->params['id'])) {
+                // if we are editing an existing record or doing quick submission we'll need to do recaptcha here since we won't call confirm_data
+                if (!empty($this->params['id']) || !empty($this->config['quick_submit'])) {
                     $antispam = '';
                     if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL == 'recaptcha') {
                         // make sure we have the proper config.
@@ -457,7 +457,7 @@ class formsController extends expController {
                     $form->register(uniqid(''), '', new htmlcontrol($antispam));
                 }
 
-                if (empty($this->config['submitbtn'])) $this->config['submitbtn'] = gt('Submit');
+//                if (empty($this->config['submitbtn'])) $this->config['submitbtn'] = gt('Submit');
                 if (!empty($this->params['id'])) {
                     $cancel = gt('Cancel');
                     $form->meta('action', 'submit_data');
@@ -475,9 +475,9 @@ class formsController extends expController {
                 if (empty($this->config['resetbtn'])) $this->config['resetbtn'] = '';
                 $form->register("submit", "", new buttongroupcontrol($this->config['submitbtn'], $this->config['resetbtn'], $cancel, 'finish'));
 
-                $form->meta("m", $this->loc->mod);
-                $form->meta("s", $this->loc->src);
-                $form->meta("i", $this->loc->int);
+//                $form->meta("m", $this->loc->mod);
+//                $form->meta("s", $this->loc->src);
+//                $form->meta("i", $this->loc->int);
                 $form->meta("id", $f->id);
                 $formmsg = '';
                 $form->location(expCore::makeLocation("forms", $this->loc->src, $this->loc->int));
@@ -594,6 +594,10 @@ class formsController extends expController {
         }
         expSession::set('forms_data_' . $this->params['id'], $this->params);
 
+        if (!empty($this->config['quick_submit'])) {  // for quick submission skip to next step
+            redirect_to(array('controller'=>'forms', 'action'=>'submit_data', 'skip'=>1, 'id'=>$f->id));
+        }
+
         assign_to_template(array(
             'responses'       => $responses,
             'captions'        => $captions,
@@ -606,6 +610,11 @@ class formsController extends expController {
      *  used for both initial entry and editing records
      */
     public function submit_data() {
+        if (!empty($this->params['skip'])) {
+            $this->params = expSession::get('forms_data_' . $this->params['id']);
+            $this->params['controller'] = 'forms';
+        }
+
         // Check for form errors
         $this->params['manual_redirect'] = true;  //fixme is this desired effect or should we go back to the failed form?
         if (!expValidator::check_antispam($this->params)) {
@@ -693,7 +702,7 @@ class formsController extends expController {
                         $mod = !empty($this->params['module']) ? $this->params['module'] : $this->params['controller'];
                         $location_data = expCore::makeLocation($mod,$this->params['src'],$this->params['int']);
                     }
-                    $db_data->location_data = $location_data;
+                    $db_data->location_data = serialize($location_data);
                     $f->insertRecord($db_data);
                 }
 
@@ -1380,6 +1389,7 @@ class formsController extends expController {
 
     /**
      * create a new default config array using the form defaults
+     * @param $form
      */
     private function get_defaults($form) {
         if (empty($this->config)) { // NEVER overwrite an existing config

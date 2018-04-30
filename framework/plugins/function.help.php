@@ -31,7 +31,6 @@
  *
  * @param         $params
  * @param \Smarty $smarty
- * @return bool
  */
 function smarty_function_help($params,&$smarty) {
 

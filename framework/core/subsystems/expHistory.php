@@ -80,14 +80,12 @@ class expHistory {
      */
     public $history = array();
 
-	/**
-	 * expHistory Constructor
-	 *
-	 * The constructor will grab the users history from the session.  If it is not present in the session
-	 * it will be initialized and saved later.
-	 *
-	 * @return \expHistory
-	 */
+    /**
+     * expHistory Constructor
+     *
+     * The constructor will grab the users history from the session.  If it is not present in the session
+     * it will be initialized and saved later.
+     */
 	public function __construct() {
 		/** exdoc
 		 * Flow Type Specifier : None

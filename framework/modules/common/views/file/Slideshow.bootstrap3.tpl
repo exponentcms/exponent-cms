@@ -22,7 +22,12 @@
 
 {/css}
 {css unique="owlcarousel-theme" link="`$smarty.const.PATH_RELATIVE`external/jquery/addons/css/owl.theme.default.css" corecss="animate"}
-
+{literal}
+    .owl-carousel.owl-drag .owl-item {
+        -ms-touch-action: pan-y;
+        touch-action: pan-y;
+    }
+{/literal}
 {/css}
 
 <div id="ss-{$name}" class="slideshow-container">

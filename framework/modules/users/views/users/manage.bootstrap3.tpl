@@ -40,7 +40,11 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Managing Users"|gettext) module="manage-users"}
         </div>
-        <h2>{$moduletitle|default:"Manage Users"|gettext}</h2>
+        {if $smarty.const.ECOM}
+            <h2>{$moduletitle|default:"Manage Customers"|gettext}</h2>
+        {else}
+            <h2>{$moduletitle|default:"Manage Users"|gettext}</h2>
+        {/if}
         <blockquote>
             {'From here, you can create, modify and remove normal user accounts.'|gettext}&#160;&#160;
             {'You will not be able to create, modify or remove administrator accounts (these options will be disabled).'|gettext}

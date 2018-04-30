@@ -30,6 +30,7 @@
  * Purpose:  Replace with the chosen language for this text
  *
  * @param string $str
+ *
  * @return string
  */
 function smarty_modifier_gettext($str) {
