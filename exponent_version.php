@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2018 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -41,11 +41,11 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
          * This number is bumped each time a distribution of a single version is
          * released.  For instance, the 3rd beta has an version type iteration of 3.
          */
-        define('EXPONENT_VERSION_ITERATION','5'); // only applies to betas, alphas, or release candidates
+        define('EXPONENT_VERSION_ITERATION','6'); // only applies to betas, alphas, or release candidates
         /* exdoc
          * This is the date that this version of Exponent was released.
          */
-        define('EXPONENT_VERSION_BUILDDATE','1520985601');
+        define('EXPONENT_VERSION_BUILDDATE','1525132801');
     } else {
         // the info for the "next" version if we are a pre-release from the repository
         define('EXPONENT_VERSION_MAJOR','2');
