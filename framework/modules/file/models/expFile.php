@@ -316,6 +316,13 @@ class expFile extends expRecord {
         return (!empty($this->id) && is_file(BASE . PATH_RELATIVE . $this->directory . $this->filename));
     }
 
+    public function beforeSave() {
+        // Add/update posted/accessed time.
+        if (empty($this->posted))
+            $this->posted = time();
+        $this->last_accessed = time();
+    }
+
     public function afterDelete() {
         global $db;
 
