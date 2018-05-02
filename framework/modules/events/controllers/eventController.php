@@ -573,7 +573,7 @@ class eventController extends expController {
                         }
                     }
                 }
-                $items = expSorter::sort(array('array' => $items, 'sortby' => 'eventstart', 'order' => 'ASC'));
+                $items = expSorter::sort(array('array' => $items, 'sortby' => 'eventstart', 'order' => $sort_asc?'ASC':'DESC'));
                 // Upcoming events can be configured to show a specific number of events.
                 // The previous call gets all events in the future from today
                 // If configured, cut the array to the configured number of events
