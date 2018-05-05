@@ -280,6 +280,7 @@ abstract class elFinderVolumeDriver {
 			'rtf:text/rtf'                 => 'application/rtf',
 			'rtfd:text/rtfd'               => 'application/rtfd',
 			'ico:image/vnd.microsoft.icon' => 'image/x-icon',
+			'amr:application/octet-stream' => 'audio/amr',
 			'm4a:video/mp4'                => 'audio/mp4',
 			'oga:application/ogg'          => 'audio/ogg',
 			'ogv:application/ogg'          => 'video/ogg',
@@ -2453,18 +2454,21 @@ abstract class elFinderVolumeDriver {
 			return false;
 		}
 		$archivers = $archivers['create'];
+		if (!$archivers) {
+			return false;
+		}
 		foreach(array('zip', 'tgz') as $ext) {
-			$mime = self::$mimetypes[$ext];
+			$mime = $this->mimetype('file.'.$ext, true);
 			if (isset($archivers[$mime])) {
 				$cmd = $archivers[$mime];
 				break;
 			}
 		}
 		if (!$cmd) {
-			$cmd = $archivers[0];
-			$ext = $cmd['ext'];
+			$cmd = array_shift($archivers);
 			$mime = $this->mimetype('file.'.$ext, true);
 		}
+		$ext = $cmd['ext'];
 		$res = false;
 		$mixed = false;
 		$hashes = array_values($hashes);
@@ -2869,6 +2873,14 @@ abstract class elFinderVolumeDriver {
 	 */
 	public function search($q, $mimes, $hash = null) {
 		$res = array();
+		$matchMethod = null;
+		$args = func_get_args();
+		if (!empty($args[3])) {
+			$matchMethod = 'searchMatch' . $args[3];
+			if (! is_callable(array($this, $matchMethod))) {
+				return array();
+			}
+		}
 
 		$dir = null;
 		if ($hash) {
@@ -2906,7 +2918,8 @@ abstract class elFinderVolumeDriver {
 			$q = join(' ', $query);
 			$this->doSearchCurrentQuery = array(
 				'q' => $q,
-				'excludes' => $excludes
+				'excludes' => $excludes,
+				'matchMethod' => $matchMethod
 			);
 		}
 		
@@ -2978,7 +2991,7 @@ abstract class elFinderVolumeDriver {
 			return false;
 		}
 		if (empty($file['url']) && $this->URL) {
-			$path = str_replace($this->separator, '/', substr($this->decode($hash), strlen($this->root) + 1));
+			$path = str_replace($this->separator, '/', substr($this->decode($hash), strlen(rtrim($this->root, '/'.$this->separator)) + 1));
 			if ($this->encoding) {
 				$path = $this->convEncIn($path, true);
 			}
@@ -4421,6 +4434,7 @@ abstract class elFinderVolumeDriver {
 			}
 			if (! empty($res['dirs']) && is_numeric($res['dirs'])) {
 				$result['dirs'] += $res['dirs'];
+				--$result['dirs'];
 			}
 		}
 		$this->options['checkSubfolders'] = $subdirs;
@@ -4596,7 +4610,7 @@ abstract class elFinderVolumeDriver {
 	 **/
 	protected function doSearch($path, $q, $mimes) {
 		$result = array();
-		
+		$matchMethod = empty($this->doSearchCurrentQuery['matchMethod'])? 'stripos' : $this->doSearchCurrentQuery['matchMethod'];
 		$timeout = $this->options['searchTimeout']? $this->searchStart + $this->options['searchTimeout'] : 0;
 		if ($timeout && $timeout < time()) {
 			$this->setError(elFinder::ERROR_SEARCH_TIMEOUT, $this->path($this->encode($path)));
@@ -4632,7 +4646,7 @@ abstract class elFinderVolumeDriver {
 				}
 			}
 
-			if ((!$mimes || $stat['mime'] !== 'directory') && $this->stripos($name, $q) !== false) {
+			if ((!$mimes || $stat['mime'] !== 'directory') && $this->$matchMethod($name, $q, $p) !== false) {
 				$stat['path'] = $this->path($stat['hash']);
 				if ($this->URL && !isset($stat['url'])) {
 					$path = str_replace($this->separator, '/', substr($p, strlen($this->root) + 1));
@@ -5705,8 +5719,8 @@ abstract class elFinderVolumeDriver {
 			$tmpout = '';
 			$tmperr = '';
 
-			$output = stream_get_contents($pipes[1]);
 			$error_output = stream_get_contents($pipes[2]);
+			$output = stream_get_contents($pipes[1]);
 
 			fclose($pipes[1]);
 			fclose($pipes[2]);
@@ -6177,7 +6191,7 @@ abstract class elFinderVolumeDriver {
 			$cwd = getcwd();
 			if (chdir($dir)) {
 				foreach($files as $i => $file) {
-					$files[$i] = '.'.DIRECTORY_SEPARATOR.$file;
+					$files[$i] = '.'.DIRECTORY_SEPARATOR.basename($file);
 				}
 				$files = array_map('escapeshellarg', $files);
 				

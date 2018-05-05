@@ -13,12 +13,53 @@
 
 /* container */
 .elfinder-cwd { 
-	position:relative;
+	position:absolute;
+	top: 0;
 	cursor:default;
 	padding:0;
 	margin:0;
 	-ms-touch-action: auto;
 	touch-action: auto;
+	min-width: 100%;
+}
+.elfinder-ltr .elfinder-cwd {
+	left: 0;
+}
+.elfinder-rtl .elfinder-cwd {
+	right: 0;
+}
+
+.elfinder-cwd.elfinder-table-header-sticky {
+	position: -webkit-sticky;
+	position: -ms-sticky;
+	position: sticky;
+	top: 0;
+	left: auto;
+	right: auto;
+	width: -webkit-max-content;
+	width: -moz-max-content;
+	width: -ms-max-content;
+	width: max-content;
+	height: 0;
+	overflow: visible;
+}
+
+.elfinder-cwd.elfinder-table-header-sticky table {
+	border-top: 2px solid;
+	padding-top: 0;
+}
+
+.elfinder-cwd.elfinder-table-header-sticky td {
+	display: inline-block;
+}
+
+.elfinder-droppable-active .elfinder-cwd.elfinder-table-header-sticky table {
+	border-top: 2px solid transparent;
+}
+
+/* fixed table header container */
+.elfinder-cwd-fixheader .elfinder-cwd {
+	position: relative;
 }
 
 /* container active on dropenter */
@@ -108,19 +149,11 @@
 	padding-bottom:2px;
 	cursor:default;
 	border:none;
-/*	overflow:hidden;*/
 	position:relative;
 }
-
-/*.elfinder-cwd-view-icons .elfinder-cwd-file .elfinder-cwd-select {
-	top: 0px;
-	left: 0px;
-}*/
-
-/*.elfinder-rtl .elfinder-cwd-view-icons .elfinder-cwd-file .elfinder-cwd-select {
-	left: auto;
-	right: 7px;
-}*/
+.elfinder-cwd-view-icons .elfinder-cwd-file .ui-state-active {
+	border:none;
+}
 
 /* ltr/rtl enviroment */
 .elfinder-ltr .elfinder-cwd-view-icons .elfinder-cwd-file { float:left;  margin:0 3px 2px 0; }
@@ -265,7 +298,7 @@
 .elfinder-cwd .elfinder-navbar-root-network.elfinder-droppable-active .elfinder-cwd-icon,
 .elfinder-cwd-view-list .elfinder-navbar-root-network td .elfinder-cwd-icon  {
 	background-image:url("../img/toolbar.png");
-	background-position: 0 71.65%; /* Don't forget change % when toolbar.png edited */
+	background-position: 0 70.5%; /* Don't forget change % when toolbar.png edited */
 	background-size: cover;
 }
 .elfinder-cwd .elfinder-navbar-root-network.elfinder-droppable-active .elfinder-cwd-icon {
@@ -678,7 +711,7 @@
 }
 
 .elfinder-touch .elfinder-cwd thead .elfinder-cwd-selectall {
-	padding-top: 5px;
+	padding-top: 4px;
 }
 
 .elfinder .elfinder-cwd table thead tr { border-left:0 solid; border-top:0 solid; border-right:0 solid; }
@@ -691,6 +724,11 @@
 }
 .elfinder-rtl .elfinder-cwd.elfinder-has-checkbox table thead td:first-child {
 	padding: 4px 22px 4px 14px;
+}
+.elfinder-touch .elfinder-cwd table thead td,
+.elfinder-touch .elfinder-cwd.elfinder-has-checkbox table thead td:first-child {
+	padding-top: 8px;
+	padding-bottom: 8px;
 }
 
 .elfinder .elfinder-cwd table thead td.ui-state-active {
@@ -732,10 +770,6 @@ tr.elfinder-cwd-file td .elfinder-cwd-select {
 
 .elfinder-touch .elfinder-cwd tr td {
 	padding: 10px 12px;
-}
-
-.elfinder-touch .elfinder-cwd table thead td {
-	padding: 8px 14px;
 }
 
 .elfinder-touch .elfinder-cwd tr.elfinder-cwd-file td {
@@ -792,10 +826,10 @@ tr.elfinder-cwd-file td .elfinder-cwd-select {
 /* table header resize handle */
 .elfinder-cwd-view-list thead td .ui-resizable-handle {
 	height: 100%;
-	top: 3px;
+	top: 6px;
 }
 .elfinder-touch .elfinder-cwd-view-list thead td .ui-resizable-handle {
-	top: -5px;
+	top: -4px;
 	margin: 10px;
 }
 .elfinder-cwd-view-list thead td .ui-resizable-e {
@@ -814,4 +848,41 @@ tr.elfinder-cwd-file td .elfinder-cwd-select {
 /* empty message */
 .elfinder-cwd-wrapper-empty .elfinder-cwd-view-list.elfinder-cwd:after {
 	margin-top: 0;
+}
+
+/* overlay message board */
+.elfinder-cwd-message-board {
+	position: absolute;
+	position: -webkit-sticky;
+	position: sticky;
+	width: 100%;
+	height: calc(100% - 0.01px); /* for Firefox scroll problem */
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	pointer-events: none;
+	background-color: transparent;
+}
+/* overlay message board for trash */
+.elfinder-cwd-wrapper-trash .elfinder-cwd-message-board {
+	background-image: url(../img/trashmesh.png);
+}
+.elfinder-cwd-message-board .elfinder-cwd-trash {
+	position: absolute;
+	bottom: 0;
+	font-size: 30px;
+	width: 100%;
+	text-align: right;
+	display: none;
+}
+.elfinder-rtl .elfinder-cwd-message-board .elfinder-cwd-trash {
+	text-align: left;
+}
+.elfinder-mobile .elfinder-cwd-message-board .elfinder-cwd-trash {
+	font-size: 20px;
+}
+.elfinder-cwd-wrapper-trash .elfinder-cwd-message-board .elfinder-cwd-trash {
+	display: block;
+	opacity: .3;
 }

@@ -58,11 +58,12 @@
 /* current directory */
 /* Is in trash */
 .elfinder-cwd-wrapper.elfinder-cwd-wrapper-trash {
-	background-color: #f0efef;
+	background-color: #f0f0f0;
 }
 
 /* selected file in "icons" view */
-.elfinder-cwd-view-icons .elfinder-cwd-file .ui-state-hover { background:#ccc; }
+.elfinder-cwd-view-icons .elfinder-cwd-file .ui-state-hover,
+.elfinder-cwd-view-icons .elfinder-cwd-file .ui-state-active { background:#ccc; }
 
 /* type badge in "icons" view */
 .elfinder-cwd-icon:before { 
@@ -82,7 +83,12 @@
 	border-top:1px solid #fff;
 }
 .elfinder-cwd .elfinder-droppable-active td { background:#A7C6E5 !important; }
-
+.elfinder-cwd.elfinder-table-header-sticky table {
+	border-top-color: #fff;
+}
+.elfinder-droppable-active .elfinder-cwd.elfinder-table-header-sticky table {
+	border-top-color: #A7C6E5;
+}
 
 /* common selected background/color */
 .elfinder-cwd-view-icons .elfinder-cwd-file .elfinder-cwd-filename.ui-state-hover,
@@ -97,7 +103,10 @@
 .elfinder .elfinder-statusbar a { text-decoration:none; color:#555;}
 
 
-.std42-dialog .elfinder-help, .std42-dialog .elfinder-help .ui-widget-content { background:#fff;}
+.std42-dialog .elfinder-help,
+.std42-dialog .elfinder-help .ui-widget-content,
+.std42-dialog .elfinder-preference,
+.std42-dialog .elfinder-preference .ui-widget-content { background:#fff;}
 
 /* contextmenu */
 .elfinder-contextmenu .ui-state-active { background: #6293df; color:#fff; }

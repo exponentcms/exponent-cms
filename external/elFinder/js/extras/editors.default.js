@@ -104,15 +104,18 @@
 		pixlrLoad = function(mode, base) {
 			var self = this,
 				fm = this.fm,
+				clPreventBack = fm.res('class', 'preventback'),
 				node = $(base).children('img:first')
 					.data('loading')()
 					.data('resizeoff', function() {
 						$(window).off('resize.'+node.attr('id'));
+						dialog.addClass(clPreventBack);
 						return node;
 					})
 					.on('click', function() {
 						launch();
 					}),
+				dialog = $(base).closest('.ui-dialog'),
 				elfNode = fm.getUI(),
 				container = $('<iframe class="ui-front" allowtransparency="true">'),
 				file = this.file,
@@ -166,6 +169,7 @@
 									error('Please disable your ad blocker.');
 								}
 							}, 1000);
+							dialog.addClass(clPreventBack);
 							fm.toFront(container);
 						})
 						.on('error', error)
@@ -306,6 +310,7 @@
 				var self = this,
 					fm = this.fm,
 					node = $(base).children('img:first'),
+					dialog = $(base).closest('.ui-dialog'),
 					elfNode = fm.getUI(),
 					dfrd = $.Deferred(),
 					container = $('#elfinder-aviary-container'),
@@ -358,7 +363,10 @@
 								featherEditor.close();
 							},
 							onLoad: onload || function(){},
-							onClose: function() { $(container).hide(); },
+							onClose: function() { 
+								dialog.removeClass(fm.res('class', 'preventback'));
+								$(container).hide();
+							},
 							appendTo: container.get(0),
 							maxSize: 2048,
 							language: getLang()
@@ -376,6 +384,7 @@
 						dfrd.resolve(featherEditor);
 					},
 					launch = function() {
+						dialog.addClass(fm.res('class', 'preventback'));
 						$(container).show();
 						featherEditor.launch({
 							image: node.attr('id'),
@@ -1089,7 +1098,7 @@
 					uploder = function(loader) {
 						this.upload = function() {
 							return new Promise(function(resolve, reject) {
-								fm.exec('upload', {files: [loader.file]})
+								fm.exec('upload', {files: [loader.file]}, void(0), fm.cwd().hash)
 									.done(function(data){
 										if (data.added && data.added.length) {
 											fm.url(data.added[0].hash, { async: true }).done(function(url) {
@@ -1120,18 +1129,14 @@
 				if (!self.confObj.editor) {
 					loader = $.Deferred();
 					self.fm.loadScript([
-						//fm.options.cdns.ckeditor5 + '/' + mode + '/ckeditor.js'
-						// uses "t/ckeditor5/914" until next release
-						fm.options.cdns.ckeditor5 + mode + '/5c757fcc3e924454bf5f65c806f4a159aaafd293/build/ckeditor.js'
+						fm.options.cdns.ckeditor5 + '/' + mode + '/ckeditor.js'
 					], function(editor) {
 						if (!editor) {
 							editor = window.BalloonEditor || window.InlineEditor || window.ClassicEditor;
 						}
 						if (fm.lang !== 'en') {
 							self.fm.loadScript([
-								//fm.options.cdns.ckeditor5 + '/' + mode + '/translations/' + lang + '.js'
-								// uses "t/ckeditor5/914" until next release
-								fm.options.cdns.ckeditor5 + mode + '/5c757fcc3e924454bf5f65c806f4a159aaafd293/build/translations/' + lang + '.js'
+								fm.options.cdns.ckeditor5 + '/' + mode + '/translations/' + lang + '.js'
 							], function(obj) {
 								loader.resolve(editor);
 							}, {
@@ -1339,7 +1344,8 @@
 				iconImg : 'img/edit_zohooffice.png',
 				cmdCheck : 'ZohoOffice',
 				preventGet: true,
-				hideButtons: true
+				hideButtons: true,
+				syncInterval : 15000
 			},
 			mimes : [
 				'application/msword',
@@ -1462,8 +1468,6 @@
 					xhr = $(ta).data('xhr');
 				if (xhr.state() === 'pending') {
 					xhr.reject();
-				} else {
-					fm.sync(fm.cwd().hash);
 				}
 			}
 		},
