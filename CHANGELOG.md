@@ -14,6 +14,7 @@ Version 2.4.3
 -------------
 ### Address issues in v2.4.2 and Prepare for v3.0.0
  - adds IIS compatibility; requires rewrite_url module; thanks to Todd Giardina, Todd's IT
+ - adds Twitter Bootstrap v4 with Font Awesome v5 theme support including a sample theme
  - fixes and tweaks many issues in previous versions
 
 Version 2.4.2

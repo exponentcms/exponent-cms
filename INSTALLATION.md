@@ -11,7 +11,7 @@ Requirements
 - Linux-based web host (recommended)
   - or Windows-based web host
 - Apache 2.0 or greater (recommended)
-  - or Microsoft IIS, or nginx, or lighttpd
+  - or Microsoft IIS, nginx, or lighttpd
 - PHP 5.5.x or greater (v7.0.x or greater recommended)
 - MySQL or MariaDB database
 
