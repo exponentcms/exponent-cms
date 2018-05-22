@@ -928,7 +928,7 @@ class fileController extends expController {
 //        	include_once(BASE.'external/Tar.php');  // fixme change to PharData
 //        	$tar = new Archive_Tar($_FILES['file']['tmp_name'],'gz');
             $tar = new PharData($_FILES['file']['tmp_name']);
-            $tar->decompress();  // creates .tar file
+            $tar->decompress();  // uncompressed and creates .tar file
         	$dest_dir = BASE.'tmp/extensionuploads/'.uniqid('');
         	@mkdir($dest_dir, octdec(DIR_DEFAULT_MODE_STR + 0));
         	if (!file_exists($dest_dir)) {
@@ -950,7 +950,7 @@ class fileController extends expController {
 
         			$dh = opendir($dest_dir . '/files');
         			while (($file = readdir($dh)) !== false) {
-        				if ($file{0} != '.' && is_dir($dest_dir . '/files/' . $file)) {
+        				if ($file{0} !== '.' && is_dir($dest_dir . '/files/' . $file)) {
         					$mods[$file] = array(
         						'',
         						array_keys(expFile::listFlat($dest_dir . '/files/' . $file,1,null, array(),$dest_dir . '/files/'))
@@ -1055,17 +1055,19 @@ class fileController extends expController {
         }
         //}
 
-        $fname = tempnam(BASE.'/tmp','exporter_files_');
+        $fname = substr(tempnam(BASE.'/tmp','exporter_files_'), 0, -4);
 
 //        include_once(BASE.'external/Tar.php');  // change to PharData
 //        $tar = new Archive_Tar($fname,'gz');
 //        $tar->createModify($files,'',BASE);
         $tar = new PharData($fname . '.tar');
         foreach($files as $file) {
-            $tar->addFile($file, str_replace(BASE, "", $file));
+            if (file_exists($file))
+                $tar->addFile($file, str_replace(BASE, "", $file));
         }
         $tar->compress(Phar::GZ);
         unset($tar);
+        unlink($fname . '.tmp');  // remove intermediary .tmp file
         unlink($fname . '.tar');  // remove intermediary .tar file
 
         $filename = str_replace(

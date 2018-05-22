@@ -672,10 +672,10 @@ class administrationController extends expController {
                     rename($_FILES['mod_archive']['tmp_name'], $dest);
                 }
 
-				if ($compression != 'zip') {// If not zip, must be tar
+				if ($compression !== 'zip') {// If not zip, it must be tar
                     $tar = new PharData($dest);
                     if ($compression) {
-                        $tar->decompress();  // creates .tar file
+                        $tar->decompress();  // uncompressed and creates .tar file
                         $tar = new PharData(BASE . "tmp/extensionuploads/$sessid/archive.tar");
                     }
 					$return = $tar->extractTo(dirname($dest));
@@ -685,7 +685,7 @@ class administrationController extends expController {
 //						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=tar');
 //						self::verify_extension('tar');
 					}
-				} else { // must be a zip
+				} else { // it must be a zip
 					$unzip = new ZipArchive();
 
                     $unzip_error_no = $unzip->open($dest);
@@ -1204,26 +1204,31 @@ class administrationController extends expController {
 	}
 
     public function export_theme() {
-        include_once(BASE.'external/Tar.php');
-
         $themeclass = $this->params['theme'];
-        $fname = tempnam(BASE.'/tmp','exporter_files_');
-        $tar = new Archive_Tar($fname,'gz');
-        $tar->createModify(BASE.'themes/'.$themeclass,'themes/',BASE.'themes/');
+        $fname = substr(tempnam(BASE.'/tmp','exporter_files_'), 0, -4);
+//        include_once(BASE . 'external/Tar.php'); // fixme change to PharData
+//        $tar = new Archive_Tar($fname,'gz');
+//        $tar->createModify(BASE.'themes/'.$themeclass,'themes/',BASE.'themes/');
+        $tar = new PharData($fname . '.tar');
+        $tar->buildFromDirectory(BASE . 'themes/' . $themeclass);
+        $tar->compress(Phar::GZ);
+        unset($tar);
+        unlink($fname . '.tmp');  // remove intermediary .tmp file
+        unlink($fname . '.tar');  // remove intermediary .tar file
 
-        $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',$themeclass.'.tar.gz');
+        $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',$themeclass . '.tar.gz');
 
         ob_end_clean();
         // This code was lifted from phpMyAdmin, but this is Open Source, right?
 
         // 'application/octet-stream' is the registered IANA type but
         //        MSIE and Opera seems to prefer 'application/octetstream'
-        $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+        $mime_type = (EXPONENT_USER_BROWSER === 'IE' || EXPONENT_USER_BROWSER === 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
 
         header('Content-Type: ' . $mime_type);
         header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
         // IE need specific headers
-        if (EXPONENT_USER_BROWSER == 'IE') {
+        if (EXPONENT_USER_BROWSER === 'IE') {
             header('Content-Disposition: inline; filename="' . $filename . '"');
             header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
             header('Pragma: public');
@@ -1232,12 +1237,13 @@ class administrationController extends expController {
             header('Pragma: no-cache');
         }
 
-        $fh = fopen($fname,'rb');
+        $fh = fopen($fname . '.tar.gz','rb');
         while (!feof($fh)) {
             echo fread($fh,8192);
         }
         fclose($fh);
         unlink($fname);
+        unlink($fname . '.tar.gz');
 
         exit(''); // Exit, since we are exporting.
     }
