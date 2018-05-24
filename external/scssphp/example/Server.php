@@ -516,9 +516,6 @@ class Server
         $this->scss = $scss;
         $this->showErrorsAsCSS = false;
 
-        if (! ini_get('date.timezone')) {
-//            throw new ServerException('Default date.timezone not set');
-            date_default_timezone_set('UTC');
-        }
+        date_default_timezone_set('UTC');
     }
 }
