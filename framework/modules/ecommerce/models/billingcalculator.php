@@ -145,15 +145,19 @@ class billingcalculator extends expRecord {
     }
 
     function configForm() {
-        if (bs3(true) || bs4()) {
-            $tpl = 'configure.bootstrap3.tpl';
-            if (!file_exists(BASE . 'framework/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/' . $tpl)) {
+        if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/configure.tpl')) {
+            return BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/configure.tpl';
+        } else {
+            if (bs3(true) || bs4()) {
+                $tpl = 'configure.bootstrap3.tpl';
+                if (!file_exists(BASE . 'framework/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/' . $tpl)) {
+                    $tpl = 'configure.tpl';
+                }
+            } else {
                 $tpl = 'configure.tpl';
             }
-        } else {
-            $tpl = 'configure.tpl';
+            return BASE . 'framework/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/' . $tpl;
         }
-        return BASE . 'framework/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/' . $tpl;
     }
 
     function parseConfig($values) {

@@ -237,6 +237,7 @@ class shippingController extends expController {
         expHistory::back();
     }
 
+    //fixme currently only allows creation
 	public function editspeed() {
         global $db;
 
@@ -246,9 +247,9 @@ class shippingController extends expController {
         assign_to_template(array(
             'calculator'=>$calc
         ));
-
     }
 
+    //fixme currently only allows creation
 	public function saveEditSpeed() {
 		global $db;
 
