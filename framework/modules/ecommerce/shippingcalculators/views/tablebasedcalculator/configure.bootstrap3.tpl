@@ -60,8 +60,9 @@ input.form-control {
                     {br}
                     <table id="shippingtable" border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                         <thead>
-                            <tr>
-                                <th colspan="4" style="width:50%">
+                            <tr class="row">
+                                <th></th>
+                                <th colspan="3" style="width:50%">
                                     {"Price Range"|gettext}
                                 </th>
                                 {foreach from=$calculator->shippingspeeds item=calc}
@@ -75,9 +76,9 @@ input.form-control {
                             <!-- loop me -->
                             {section name=i loop=$calculator->configdata.from}
                                 {if !($smarty.section.i.last)}
-                                <tr class="row-{$smarty.section.i.index+1} {cycle values='odd,even'}">
+                                <tr class="row line row-{$smarty.section.i.index+1} {cycle values='odd,even'}">
                                     <td>
-                                        <a href="#" class="delete">{'Remove'|gettext}</a>
+                                        <a class="{expTheme::buttonStyle('red')} delete" href="#"><i class="fa fa-times-circle"></i> {'Remove'|gettext}</a>
                                     </td>
                                     <td class="from amount">
                                         <label for="from-{$smarty.section.i.index}">{currency_symbol}</label><input class="form-control" type="text" size="10" id="from-{$smarty.section.i.index}" value="{$calculator->configdata.from[i]}" name="from[]}">
@@ -100,7 +101,7 @@ input.form-control {
                             {/section}
                             <!-- stop looping me loop me -->
 
-                            <tr class="row-{$smarty.section.i.index+1} even last">
+                            <tr class="row row-{$smarty.section.i.index+1} even last">
                                 <td>
                                     &#160;
                                 </td>
@@ -121,6 +122,7 @@ input.form-control {
                             </tr>
                         </tbody>
                     </table>
+                    <small>Price Ranges will be sorted incrementally on Save</small>{br}{br}
                     {*{control type="text" name="handling" label="Handling Charge"|gettext size=5 filter=money value=$calculator->configdata.handling description='Charge added to each shipment regardless of total cost'|gettext}*}
                     {control type="text" name="shipping_service_name" label="Default Name for Shipping Service"|gettext value=$calculator->configdata.shipping_service_name|default:'Simple'|gettext}
                 </div>
@@ -128,7 +130,6 @@ input.form-control {
             </div>
         </div>
     </div>
-    {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
     {loading}
 </div>
 
@@ -142,9 +143,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var odev = "odd";
 
     var rowTemplate = function (i){
-    return '<tr class="row-'+i+' '+odev+'">'+
+    return '<tr class="row line row-'+i+' '+odev+'">'+
             '<td class="from">'+
-                '<a class="delete" href="#">{/literal}{'Remove'|gettext}{literal}</a>'+
+                '<a class="{/literal}{expTheme::buttonStyle('red')}{literal} delete" href="#"><i class="fa fa-times-circle"></i> Remove</a>'+
             '</td>'+
             '<td class="from">'+
                 '<label for="from-'+i+'">{/literal}{currency_symbol}{literal}</label>'+
@@ -167,13 +168,13 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 			'</tr>';
     }
 
-    var updateUpRange = function (rc){
+    // var updateUpRange = function (rc){
         // stb.one('#to-'+rc).on({
         //     'key':function(e){
         //         Y.log(e.keyCode);
         //     }
         // });
-    }
+    // }
 
     var setRemover = function (rem){
         stb.one('.row-'+rem+' .delete').on('click',function(e){
@@ -182,12 +183,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             andup.toggleClass('even');
             var prevdel = stb.one('.row-'+(rem-1)+' .delete');
             if (!Y.Lang.isNull(prevdel)) prevdel.setStyle('display','inline');
-            e.target.ancestor('.row').remove ();
+            e.target.ancestor('.line').remove ();
         });
     }
 
-    if (stb.all('tr.row')._nodes.length>1) {
-        stb.all('tr.row').each(function(n,k){
+    if (stb.all('tr.line')._nodes.length>=1) {
+        stb.all('tr.line').each(function(n,k){
             setRemover(k+1);
         });
     };
@@ -207,7 +208,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
     addrange.on({'click':addNewRow});
 //    Y.one('#tablebasedcalculator').removeClass('hide');
-//    Y.one('.loadingdiv').remove();
 });
 {/literal}
 {/script}

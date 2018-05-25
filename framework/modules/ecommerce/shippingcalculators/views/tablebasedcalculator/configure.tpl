@@ -74,7 +74,7 @@
                             <!-- loop me -->
                             {section name=i loop=$calculator->configdata.from}
                                 {if !($smarty.section.i.last)}
-                                <tr class="row-{$smarty.section.i.index+1} {cycle values='odd,even'}">
+                                <tr class="row row-{$smarty.section.i.index+1} {cycle values='odd,even'}">
                                     <td>
                                         <a href="#" class="delete">{'Remove'|gettext}</a>
                                     </td>
@@ -120,6 +120,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <small>Price Ranges will be sorted incrementally on Save</small>{br}{br}
                     {*{control type="text" name="handling" label="Handling Charge"|gettext size=5 filter=money value=$calculator->configdata.handling description='Charge added to each shipment regardless of total cost'|gettext}*}
                     {control type="text" name="shipping_service_name" label="Default Name for Shipping Service"|gettext value=$calculator->configdata.shipping_service_name|default:'Simple'|gettext}
                 </div>
@@ -127,7 +128,6 @@
             </div>
         </div>
     </div>
-    {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
     {loading}
 </div>
 
@@ -166,13 +166,13 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 			'</tr>';
     }
 
-    var updateUpRange = function (rc){
+    // var updateUpRange = function (rc){
         // stb.one('#to-'+rc).on({
         //     'key':function(e){
         //         Y.log(e.keyCode);
         //     }
         // });
-    }
+    // }
 
     var setRemover = function (rem){
         stb.one('.row-'+rem+' .delete').on('click',function(e){
@@ -185,7 +185,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         });
     }
 
-    if (stb.all('tr.row')._nodes.length>1) {
+    if (stb.all('tr.row')._nodes.length>=1) {
         stb.all('tr.row').each(function(n,k){
             setRemover(k+1);
         });
@@ -205,8 +205,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     }
 
     addrange.on({'click':addNewRow});
-//    Y.one('#tablebasedcalculator').removeClass('hide');
-//    Y.one('.loadingdiv').remove();
 });
 {/literal}
 {/script}

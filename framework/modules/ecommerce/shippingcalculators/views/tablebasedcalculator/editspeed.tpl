@@ -14,4 +14,5 @@
  *}
 
 {control type="hidden" name="table" value='shippingspeeds'}
+{control type="hidden" name="id" value=$record->id}
 {control type=text name=speed label="Shipping Speed"|gettext value=$record->speed}
