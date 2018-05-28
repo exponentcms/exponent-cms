@@ -14,6 +14,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../" */
 
 /**
  * This is the class expCSS
@@ -48,7 +49,7 @@ class expCSS {
                 }
                 $less_path = ltrim($less_path, '/');
                 $css_path = str_replace("/less/", "/css/", $less_path);
-                $css_path = substr($css_path, 0, strlen($css_path)-4)."css";
+                $css_path = substr($css_path, 0, -4)."css";
                 //indexing the array by the filename
                 if (!isset($css_primer[$path_rel.$css_path]))
                     if (self::auto_compile_less($less_path, $css_path, $lless_vars))
@@ -69,7 +70,7 @@ class expCSS {
                 }
                 $scss_path = ltrim($scss_path, '/');
                 $css_path = str_replace("/scss/", "/css/", $scss_path);
-                $css_path = substr($css_path, 0, strlen($css_path)-4)."css";
+                $css_path = substr($css_path, 0, -4)."css";
                 //indexing the array by the filename
                 if (!isset($css_primer[$path_rel.$css_path]))
                     if (self::auto_compile_scss($scss_path, $css_path, $lless_vars))
@@ -100,7 +101,7 @@ class expCSS {
                 }
                 $less_path = ltrim($less_path, '/');
                 $css_path = str_replace("/less/", "/css/", $less_path);
-                $css_path = substr($css_path, 0, strlen($css_path)-4)."css";
+                $css_path = substr($css_path, 0, -4)."css";
                 //indexing the array by the filename
                 if (!isset($css_links[$path_rel.$css_path]))
                     if (self::auto_compile_less($less_path, $css_path, $lless_vars))
@@ -121,7 +122,7 @@ class expCSS {
                 }
                 $scss_path = ltrim($scss_path, '/');
                 $css_path = str_replace("/scss/", "/css/", $scss_path);
-                $css_path = substr($css_path, 0, strlen($css_path)-4)."css";
+                $css_path = substr($css_path, 0, -4)."css";
                 //indexing the array by the filename
                 if (!isset($css_links[$path_rel.$css_path]))
                     if (self::auto_compile_scss($scss_path, $css_path, $lless_vars))
@@ -187,7 +188,13 @@ class expCSS {
             }
             if (!empty($params['css'])) {
                 echo '<style type="text/css">';
-                echo trim($params['css']);
+                $htmlcss = trim($params['css']);
+                if (MINIFY == 1 && MINIFY_INLINE_CSS == 1) {
+                    include_once(BASE . 'external/minify/min/lib/CSSMin.php');
+                    $min = new CSSmin();
+                    $htmlcss = $min->run($htmlcss) . "\r\n";
+                }
+                echo $htmlcss;
                 echo '</style>' . "\r\n";
             }
 		    echo "</div>";
@@ -278,8 +285,11 @@ class expCSS {
                 $htmlcss .= "\t" . '</style>' . "\r\n";
             }
             if (MINIFY == 1 && MINIFY_INLINE_CSS == 1) {
-                include_once(BASE . 'external/minify/min/lib/JSMin.php');
-                $htmlcss = JSMin::minify($htmlcss) . "\r\n";
+//                include_once(BASE . 'external/minify/min/lib/JSMin.php');
+//                $htmlcss = JSMin::minify($htmlcss) . "\r\n";
+                include_once(BASE . 'external/minify/min/lib/CSSMin.php');
+                $min = new CSSmin();
+                $htmlcss = $min->run($htmlcss) . "\r\n";
             }
             $html .= $htmlcss;
         }
@@ -298,18 +308,6 @@ class expCSS {
         if (!isset($less_vars['themepath']))
             $less_vars['themepath'] = '';
 
-        // code for testing scss compiler
-//        self::auto_compile_scss('external/bootstrap3/scss/test_2.scss', 'tmp/css/test.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap3/scss/newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
-
-//        if (($less_vars['swatch'] == 'custom'))
-//            $less_vars['swatch'] = '';  // there is no 'custom' swatch for bootstrap 4 (yet?)
-//        self::auto_compile_scss('external/font-awesome5/web-fonts-with-css/scss/fontawesome.scss', 'tmp/css/testfa5.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test
-
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
         $lessdirs[] = 'themes/' . DISPLAY_THEME . '/less/';
@@ -326,7 +324,7 @@ class expCSS {
                         }
                         if (is_file($filename)) {
                             $css_dir = str_replace("/less/","/css/", $lessdir);
-                            $css_file = substr($lessfile,0,strlen($lessfile) - 4) . "css";
+                            $css_file = substr($lessfile,0, -4) . "css";
                             self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
                         }
                     }
@@ -336,9 +334,9 @@ class expCSS {
                     $dh = opendir($lessdir);
                     while (($lessfile = readdir($dh)) !== false) {
                         $filename = $lessdir . $lessfile;
-                        if (is_file($filename) && substr($filename,-5,5) == ".less" && basename($filename) != 'variables.less') {
+                        if (is_file($filename) && substr($filename,-5,5) === ".less" && basename($filename) !== 'variables.less') {
                             $css_dir = str_replace("/less/","/css/", $lessdir);
-                            $css_file = substr($lessfile,0,strlen($lessfile) - 4)."css";
+                            $css_file = substr($lessfile,0, -4)."css";
                             self::auto_compile_less($lessdir . $lessfile,$css_dir . $css_file, $less_vars);
                         }
                     }
@@ -361,7 +359,7 @@ class expCSS {
                         }
                         if (is_file($filename) || is_file("_" . $filename)) {
                             $css_dir = str_replace("/scss/","/css/", $scssdir);
-                            $css_file = substr($scssfile,0,strlen($scssfile) - 4) . "css";
+                            $css_file = substr($scssfile,0, -4) . "css";
                             self::auto_compile_scss($scssdir . $scssfile,$css_dir . $css_file, $less_vars);
                         }
                     }
@@ -371,9 +369,9 @@ class expCSS {
                     $dh = opendir($scssdir);
                     while (($scssfile = readdir($dh)) !== false) {
                         $filename = $scssdir . $scssfile;
-                        if (is_file($filename) && substr($filename,-5,5) == ".scss" && basename($filename) != '_variables.scss') {
+                        if (is_file($filename) && substr($filename,-5,5) === ".scss" && basename($filename) !== '_variables.scss') {
                             $css_dir = str_replace("/scss/","/css/",$scssdir);
-                            $css_file = substr($scssfile,0,strlen($scssfile) - 4) . "css";
+                            $css_file = substr($scssfile,0, -4) . "css";
                             self::auto_compile_scss($scssdir . $scssfile,$css_dir.$css_file, $less_vars);
                         }
                     }
@@ -402,7 +400,7 @@ class expCSS {
                     $dh = opendir($cssdir);
                     while (($cssfile = readdir($dh)) !== false) {
                         $filename = $cssdir.$cssfile;
-                        if ( is_file($filename) && substr($filename,-4,4) == ".css") {
+                        if ( is_file($filename) && substr($filename,-4,4) === ".css") {
                             $endfile = explode("/",$filename);
                             $tmpfile = explode(".",end($endfile));
                             $css_theme[$key.reset($tmpfile)."-theme".$variation] = PATH_RELATIVE."themes/".DISPLAY_THEME."/css".$variation."/".$cssfile;
@@ -569,7 +567,7 @@ class expCSS {
                             }
                         }
 
-                        if (DEVELOPMENT && LESS_COMPILER_MAP && $less_compiler == 'less.php') {
+                        if (DEVELOPMENT && LESS_COMPILER_MAP && $less_compiler === 'less.php') {
                             if ((int)LESS_COMPILER_MAP === 1) {
                                 $map_write_to = null;  // inline map
                                 $map_url = null;
@@ -591,7 +589,7 @@ class expCSS {
                             ));
                         }
 
-                        if (MINIFY==1 && MINIFY_LESS==1 && $less_compiler == 'less.php') {
+                        if (MINIFY==1 && MINIFY_LESS==1 && $less_compiler === 'less.php') {
                             $less->setOptions(array(
                                 'compress'         => true,  // compress output file?
                             ));
@@ -605,14 +603,14 @@ class expCSS {
                             if (!is_array($cache) ||
                                 $new_cache['updated'] > $cache['updated']
                             ) {
-                                if (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n") {
+                                if (!empty($new_cache['compiled']) && $new_cache['compiled'] !== "\n") {
                                     $file_updated = true;
                                     // store compiler cache file
                                     $new_cache['vars'] = !empty($vars) ? $vars : null;
                                     file_put_contents($cache_fname, serialize($new_cache));
                                 }
                             }
-                            if ($file_updated || (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n" && !file_exists(BASE . $css_fname))) {
+                            if ($file_updated || (!empty($new_cache['compiled']) && $new_cache['compiled'] !== "\n" && !file_exists(BASE . $css_fname))) {
                                 // write compiled css file
                                 $css_loc = pathinfo(BASE . $css_fname);
                                 if (!is_dir($css_loc['dirname'])) {
@@ -690,7 +688,7 @@ class expCSS {
                             }
                         }
 
-                        if (DEVELOPMENT && LESS_COMPILER_MAP && $scss_compiler == 'scssphp') {
+                        if (DEVELOPMENT && LESS_COMPILER_MAP && $scss_compiler === 'scssphp') {
                             $scss->setSourceMap((int)LESS_COMPILER_MAP);  // output .map file?
                             $scss->setSourceMapOptions(array(
 //                                'outputSourceFiles' => true,  // include css source in .map file?
@@ -703,7 +701,7 @@ class expCSS {
                             ));
                         }
 
-                        if (MINIFY==1 && MINIFY_LESS==1 && $scss_compiler == 'scssphp') {
+                        if (MINIFY==1 && MINIFY_LESS==1 && $scss_compiler === 'scssphp') {
                             $scss->setFormatter('Leafo\ScssPhp\Formatter\Compressed');
                         } else {
 //                            $scss->setFormatter('Leafo\ScssPhp\Formatter\Nested');  // scss_formatter_nested is default
@@ -717,14 +715,14 @@ class expCSS {
                             $file_updated = false;
                             $new_cache = $scss_server->cachedCompile($cache, false);
                             if (!is_array($cache) || $new_cache['updated'] > $cache['updated']) {
-                                if (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n") {
+                                if (!empty($new_cache['compiled']) && $new_cache['compiled'] !== "\n") {
                                     $file_updated = true;
                                     // store compiler cache file
                                     $new_cache['vars'] = !empty($vars) ? $vars : null;
                                     file_put_contents($cache_fname, serialize($new_cache));
                                 }
                             }
-                            if ($file_updated || (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n" && !file_exists(BASE . $css_fname))) {
+                            if ($file_updated || (!empty($new_cache['compiled']) && $new_cache['compiled'] !== "\n" && !file_exists(BASE . $css_fname))) {
                                 // write compiled css file
                                 $css_loc = pathinfo(BASE . $css_fname);
                                 if (!is_dir($css_loc['dirname'])) {
@@ -768,8 +766,8 @@ class expCSS {
         if (is_readable($dir)) {
             $dh = opendir($dir);
             while (($file = readdir($dh)) !== false) {
-                if (is_readable($dir . '/' . $file) && is_file($dir . '/' . $file) && substr($file, -5, 5) == '.less') {
-                   $files .= substr($file, 0, strlen($file) -5) . ',';
+                if (is_readable($dir . '/' . $file) && is_file($dir . '/' . $file) && substr($file, -5, 5) === '.less') {
+                   $files .= substr($file, 0, -5) . ',';
                 }
             }
             expCSS::pushToHead(array(
