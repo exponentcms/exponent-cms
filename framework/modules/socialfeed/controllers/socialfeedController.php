@@ -202,7 +202,7 @@ class socialfeedController extends expController
                     if (empty($this->config['socialfeed_facebook_apiv24']))
                         $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts'); //v4
                     else // facebook api v2.4+ requires specific request for fields
-                        $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts?fields=type,message,likes,link,created_time,source,object_id,actions'); //v4 new api v2.4+
+                        $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts?fields=type,message,likes,link,created_time,source,object_id,actions,picture'); //v4 new api v2.4+
                     $response = $request->execute(); //v4
                     $graph_object = $response->getGraphObject(); //v4
                     $facebook_values = $graph_object->asArray(); //v4
@@ -333,6 +333,12 @@ class socialfeedController extends expController
                 if (isset($facebook_entry->source))
                     $message_feed['video'] = $facebook_entry->source;
                 $message_feed['picture'] = 'https://graph.facebook.com/'.$facebook_entry->object_id.'/picture?type=normal';
+            }
+        }
+        if ($facebook_entry->type === 'link') {
+            if ($this->display_pic == 1) {
+//                $message_feed['picture'] = $facebook_entry->picture;
+                $message_feed['picture'] = $facebook_entry->picture;
             }
         }
         if (isset($facebook_entry->message) && !empty($facebook_entry->message)) {
