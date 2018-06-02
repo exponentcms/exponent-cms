@@ -101,7 +101,7 @@ input.form-control {
                             {/section}
                             <!-- stop looping me loop me -->
 
-                            <tr class="row row-{$smarty.section.i.index+1} even last">
+                            <tr class="row row-{$smarty.section.i.index+1}last {if $lastcharge%2}even{else}odd{/if}">
                                 <td>
                                     &#160;
                                 </td>
@@ -139,7 +139,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var stb = Y.one('#shippingtable tbody');
     var andup = stb.one('.last');
     var addrange = Y.one('#newrange');
-    var definc = 5.00;
+//    var definc = 5.00;
     var odev = "odd";
 
     var rowTemplate = function (i){
@@ -167,14 +167,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 			{literal}
 			'</tr>';
     }
-
-    // var updateUpRange = function (rc){
-        // stb.one('#to-'+rc).on({
-        //     'key':function(e){
-        //         Y.log(e.keyCode);
-        //     }
-        // });
-    // }
 
     var setRemover = function (rem){
         stb.one('.row-'+rem+' .delete').on('click',function(e){
@@ -207,7 +199,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     }
 
     addrange.on({'click':addNewRow});
-//    Y.one('#tablebasedcalculator').removeClass('hide');
 });
 {/literal}
 {/script}
