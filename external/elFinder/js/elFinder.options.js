@@ -13,21 +13,21 @@ elFinder.prototype._options = {
 	cdns : {
 		// for editor etc.
 		ace        : '//cdnjs.cloudflare.com/ajax/libs/ace/1.3.3',
-		codemirror : '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.37.0',
+		codemirror : '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.38.0',
 		ckeditor   : '//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2',
-		ckeditor5  : '//cdn.ckeditor.com/ckeditor5/10.0.0',
-		tinymce    : '//cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.11',
+		ckeditor5  : '//cdn.ckeditor.com/ckeditor5/10.0.1',
+		tinymce    : '//cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.13',
 		simplemde  : '//cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2',
 		// for quicklook etc.
 		hls        : '//cdnjs.cloudflare.com/ajax/libs/hls.js/0.9.1/hls.min.js',
-		dash       : '//cdnjs.cloudflare.com/ajax/libs/dashjs/2.6.7/dash.all.min.js',
+		dash       : '//cdnjs.cloudflare.com/ajax/libs/dashjs/2.6.8/dash.all.min.js',
 		flv        : '//cdnjs.cloudflare.com/ajax/libs/flv.js/1.4.2/flv.min.js',
 		prettify   : '//cdn.rawgit.com/google/code-prettify/fbd527e9f76914e36f730ec9849f2115473a65d8/loader/run_prettify.js',
 		psd        : '//cdnjs.cloudflare.com/ajax/libs/psd.js/3.2.0/psd.min.js',
 		rar        : '//cdn.rawgit.com/nao-pon/rar.js/6cef13ec66dd67992fc7f3ea22f132d770ebaf8b/rar.min.js',
 		zlibUnzip  : '//cdn.rawgit.com/imaya/zlib.js/0.3.1/bin/unzip.min.js', // need check unzipFiles() in quicklook.plugins.js when update
 		zlibGunzip : '//cdn.rawgit.com/imaya/zlib.js/0.3.1/bin/gunzip.min.js',
-		marked     : '//cdnjs.cloudflare.com/ajax/libs/marked/0.3.19/marked.min.js',
+		marked     : '//cdnjs.cloudflare.com/ajax/libs/marked/0.4.0/marked.min.js',
 		sparkmd5   : '//cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.0/spark-md5.min.js',
 		jssha      : '//cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha.js',
 		amr        : '//cdn.rawgit.com/yxl/opencore-amr-js/dcf3d2b5f384a1d9ded2a54e4c137a81747b222b/js/amrnb.js'
@@ -722,7 +722,23 @@ elFinder.prototype._options = {
 				columnsCustomName : {},
 				// fixed list header colmun
 				fixedHeader : true
-			}
+			},
+
+			// icons view setting
+			iconsView : {
+				// default icon size (0-3 in default CSS (cwd.css - elfinder-cwd-size[number]))
+				size: 0,
+				// number of maximum size (3 in default CSS (cwd.css - elfinder-cwd-size[number]))
+				// uses in preference.js
+				sizeMax: 3,
+				// Name of each size
+				sizeNames: {
+					0: 'viewSmall',
+					1: 'viewMedium',
+					2: 'viewLarge',
+					3: 'viewExtraLarge' 
+				}
+			},
 
 			// /**
 			//  * Add CSS class name to cwd directories (optional)

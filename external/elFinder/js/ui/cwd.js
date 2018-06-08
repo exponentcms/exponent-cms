@@ -245,7 +245,9 @@ $.fn.elfindercwd = function(fm, options) {
 					return f.icon? fm.getIconStyle(f) : '';
 				},
 				mime : function(f) {
-					return fm.mime2class(f.mime);
+					var cName = fm.mime2class(f.mime);
+					f.icon && (cName += ' elfinder-cwd-bgurl');
+					return cName;
 				},
 				size : function(f) {
 					return (f.mime === 'directory' && !f.size)? '-' : fm.formatSize(f.size);
@@ -658,15 +660,20 @@ $.fn.elfindercwd = function(fm, options) {
 			 * @return void
 			 */
 			wrapperRepaint = function(init, recnt) {
+				var firstNode = (list? cwd.find('tbody:first') : cwd).children('[id]:first');
+				if (!firstNode.length) {
+					return;
+				}
 				var selectable = cwd.data('selectable'),
 					rec = (function() {
 						var wos = wrapper.offset(),
 							w = $(window),
-							l = wos.left - w.scrollLeft() + (fm.direction === 'ltr'? 30 : wrapper.width() - 30),
+							x = firstNode.width() / 2,
+							l = wos.left - w.scrollLeft() + (fm.direction === 'ltr'? x : wrapper.width() - x),
 							t = wos.top - w.scrollTop() + 10 + (list? bufferExt.itemH || (fm.UA.Touch? 36 : 24) : 0);
 						return {left: Math.max(0, Math.round(l)), top: Math.max(0, Math.round(t))};
 					})(),
-					tgt = $(document.elementFromPoint(rec.left , rec.top)),
+					tgt = init? firstNode : $(document.elementFromPoint(rec.left , rec.top)),
 					ids = {},
 					tmbs = {},
 					multi = 5,
@@ -708,21 +715,35 @@ $.fn.elfindercwd = function(fm, options) {
 							attachThumbnails(tmbs);
 						}
 					},
+					setTarget = function() {
+						if (!tgt.hasClass(clFile)) {
+							tgt = tgt.closest(fileSelector);
+						}
+					},
 					arr, widget;
 				
 				inViewHashes = {};
 				selectable && cwd.selectable('option', 'disabled');
 				
 				if (tgt.length) {
-					if (tgt.hasClass('ui-widget')) {
-						// serach button etc.
-						widget = tgt;
-						widget.hide();
-						tgt = $(document.elementFromPoint(rec.left , rec.top));
-						widget.show();
+					if (!tgt.hasClass(clFile) && !tgt.closest(fileSelector).length) {
+						// dialog, serach button etc.
+						widget = fm.getUI().find('.ui-dialog:visible,.ui-widget:visible');
+						if (widget.length) {
+							widget.hide();
+							tgt = $(document.elementFromPoint(rec.left , rec.top));
+							widget.show();
+						} else {
+							widget = null;
+						}
 					}
-					if (! tgt.hasClass(clFile)) {
-						tgt = tgt.closest(fileSelector);
+					setTarget();
+					if (!tgt.length) {
+						// try search 5px down
+						widget && widget.hide();
+						tgt = $(document.elementFromPoint(rec.left , rec.top + 5));
+						widget && widget.show();
+						setTarget();
 					}
 				}
 
@@ -844,7 +865,7 @@ $.fn.elfindercwd = function(fm, options) {
 									dirs = true;
 								}
 								if (f.tmb || (stmb && f.mime.indexOf('image/') === 0)) {
-									atmb[f.hash] = f.tmb;
+									atmb[f.hash] = f.tmb || 'self';
 								}
 								clipCuts[f.hash] && locks.push(f.hash);
 								return itemhtml(f);
@@ -926,6 +947,8 @@ $.fn.elfindercwd = function(fm, options) {
 							go(chk);
 							bufferExt.rendering = false;
 						});
+					} else {
+						!fm.enabled() && resize();
 					}
 				} else {
 					resize();
@@ -1458,8 +1481,8 @@ $.fn.elfindercwd = function(fm, options) {
 				}
 			},
 
-			bottomMarkerShow = function(place, cnt) {
-				var place = place || (list ? cwd.find('tbody') : cwd),
+			bottomMarkerShow = function(cur, cnt) {
+				var place = cur || (list ? cwd.find('tbody') : cwd),
 					boxSize = itemBoxSize[fm.viewType],
 					col = 1,
 					row;
@@ -1526,9 +1549,9 @@ $.fn.elfindercwd = function(fm, options) {
 							wrapper.data('touching', null);
 						}
 					} else {
-						requestAnimationFrame(function() {
+						setTimeout(function() {
 							cwd.removeData('longtap');
-						});
+						}, 80);
 					}
 					clearTimeout(cwd.data('tmlongtap'));
 				},
@@ -1870,26 +1893,26 @@ $.fn.elfindercwd = function(fm, options) {
 							wrapper.data('touching', null);
 							fm.dblclick({file : fm.cwdId2Hash(this.id)});
 						}
-						requestAnimationFrame(function() {
+						setTimeout(function() {
 							cwd.removeData('longtap');
-						});
+						}, 80);
 					}
 				})
 				// attach draggable
 				.on('mouseenter.'+fm.namespace, fileSelector, function(e) {
 					if (scrolling) { return; }
-					var $this = $(this), helper = null,
-						target = list ? $this : $this.children('div.elfinder-cwd-file-wrapper,div.elfinder-cwd-filename');
+					var $this = $(this), helper = null;
 
-					if (!mobile && !$this.data('dragRegisted') && !$this.hasClass(clTmp) && !target.hasClass(clDraggable) && !target.hasClass(clDisabled)) {
+					if (!mobile && !$this.data('dragRegisted') && !$this.hasClass(clTmp) && !$this.hasClass(clDraggable) && !$this.hasClass(clDisabled)) {
 						$this.data('dragRegisted', true);
 						if (!fm.isCommandEnabled('copy', fm.searchStatus.state > 1? fm.cwdId2Hash($this.attr('id')) : void 0)) {
 							return;
 						}
-						target.on('mousedown', function(e) {
+						$this.on('mousedown', function(e) {
 							// shiftKey or altKey + drag start for HTML5 native drag function
 							// Note: can no use shiftKey with the Google Chrome 
-							var metaKey = e.shiftKey || e.altKey;
+							var metaKey = e.shiftKey || e.altKey,
+								disable = false;
 							if (metaKey && !fm.UA.IE && cwd.data('selectable')) {
 								// destroy jQuery-ui selectable while trigger native drag
 								cwd.selectable('disable').selectable('destroy').removeData('selectable');
@@ -1897,12 +1920,24 @@ $.fn.elfindercwd = function(fm, options) {
 									cwd.selectable(selectableOption).selectable('option', {disabled: false}).selectable('refresh').data('selectable', true);
 								});
 							}
-							target.draggable('option', 'disabled', metaKey).removeClass('ui-state-disabled');
+							$this.removeClass('ui-state-disabled');
 							if (metaKey) {
-								target.attr('draggable', 'true');
+								$this.draggable('option', 'disabled', true).attr('draggable', 'true');
 							} else {
-								target.removeAttr('draggable')
-								      .draggable('option', 'cursorAt', {left: 50 - parseInt($(e.currentTarget).css('margin-left')), top: 47});
+								if (!$this.hasClass(clSelected)) {
+									if (list) {
+										disable = $(e.target).closest('span,tr').is('tr');
+									} else {
+										disable = $(e.target).hasClass('elfinder-cwd-file');
+									}
+								}
+								if (disable) {
+									$this.draggable('option', 'disabled', true);
+								} else {
+									$this.draggable('option', 'disabled', false)
+										  .removeAttr('draggable')
+									      .draggable('option', 'cursorAt', {left: 50 - parseInt($(e.currentTarget).css('margin-left')), top: 47});
+								}
 							}
 						})
 						.on('dragstart', function(e) {
@@ -2130,6 +2165,57 @@ $.fn.elfindercwd = function(fm, options) {
 						fixTableHeader({fitWidth: true});
 						fm.storage('cwdColWidth', colWidth = null);
 					}
+				})
+				.on('iconpref', function(e, data) {
+					cwd.removeClass(function(i, cName) {
+						return (cName.match(/\belfinder-cwd-size\S+/g) || []).join(' ');
+					});
+					iconSize = data? (parseInt(data.size) || 0) : 0;
+					if (!list) {
+						if (iconSize > 0) {
+							cwd.addClass('elfinder-cwd-size' + iconSize);
+						}
+						if (bufferExt.renderd) {
+							requestAnimationFrame(function() {
+								itemBoxSize.icons = {};
+								bufferExt.hpi = null;
+								bottomMarkerShow(cwd, bufferExt.renderd);
+								wrapperRepaint();
+							});
+						}
+					}
+				})
+				// Change icon size with mouse wheel event
+				.on('onwheel' in document ? 'wheel' : 'mousewheel', function(e) {
+					var tm, size, delta;
+					if (!list && ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey))) {
+						e.stopPropagation();
+						e.preventDefault();
+						tm = cwd.data('wheelTm');
+						if (typeof tm !== 'undefined') {
+							clearTimeout(tm);
+							cwd.data('wheelTm', setTimeout(function() {
+								cwd.removeData('wheelTm');
+							}, 200));
+						} else {
+							cwd.data('wheelTm', false);
+							size = iconSize || 0;
+							delta = e.originalEvent.deltaY ? e.originalEvent.deltaY : -(e.originalEvent.wheelDelta);
+							if (delta > 0) {
+								if (iconSize > 0) {
+									size = iconSize - 1;
+								}
+							} else {
+								if (iconSize < options.iconsView.sizeMax) {
+									size = iconSize + 1;
+								}
+							}
+							if (size !== iconSize) {
+								fm.storage('iconsize', size);
+								cwd.trigger('iconpref', {size: size});
+							}
+						}
+					}
 				}),
 			wrapper = $('<div class="elfinder-cwd-wrapper"/>')
 				// make cwd itself droppable for folders from nav panel
@@ -2229,6 +2315,9 @@ $.fn.elfindercwd = function(fm, options) {
 
 			// has UI tree
 			hasUiTree,
+
+			// Icon size of icons view
+			iconSize,
 			
 			winScrTm;
 
@@ -2300,7 +2389,7 @@ $.fn.elfindercwd = function(fm, options) {
 		fm
 			.one('init', function(){
 				var style = document.createElement('style'),
-				sheet, node, base, resizeTm, i = 0;
+				sheet, node, base, resizeTm, iconSize, i = 0;
 				if (document.head) {
 					document.head.appendChild(style);
 					sheet = style.sheet;
@@ -2310,6 +2399,9 @@ $.fn.elfindercwd = function(fm, options) {
 					sheet.insertRule('.elfinder-cwd-wrapper-empty.elfinder-search-result .elfinder-cwd:not(.elfinder-table-header-sticky):after{ content:"'+fm.i18n('emptySearch')+'" }', i++);
 					sheet.insertRule('.elfinder-cwd-wrapper-empty.elfinder-search-result.elfinder-incsearch-result .elfinder-cwd:not(.elfinder-table-header-sticky):after{ content:"'+fm.i18n('emptyIncSearch')+'" }', i++);
 					sheet.insertRule('.elfinder-cwd-wrapper-empty.elfinder-search-result.elfinder-letsearch-result .elfinder-cwd:not(.elfinder-table-header-sticky):after{ content:"'+fm.i18n('emptyLetSearch')+'" }', i++);
+				}
+				if (iconSize = fm.storage('iconsize') || 0) {
+					cwd.trigger('iconpref', {size: iconSize});
 				}
 				if (! mobile) {
 					fm.one('open', function() {
@@ -2468,6 +2560,11 @@ $.fn.elfindercwd = function(fm, options) {
 				if (l != list) {
 					list = l;
 					fm.viewType = list? 'list' : 'icons';
+					if (iconSize) {
+						fm.one('cwdinit', function() {
+							cwd.trigger('iconpref', {size: iconSize});
+						});
+					}
 					content();
 
 					if (allsel) {

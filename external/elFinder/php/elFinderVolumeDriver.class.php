@@ -235,7 +235,7 @@ abstract class elFinderVolumeDriver {
 		'encoding'        => '',
 		// for convert character encoding (default is '': Not change locale)
 		'locale'          => '',
-		// URL of volume icon (16x16 pixel image file)
+		// URL of volume icon image
 		'icon'            => '',
 		// CSS Class of volume root in tree
 		'rootCssClass'    => '',
@@ -256,9 +256,11 @@ abstract class elFinderVolumeDriver {
 		// Static extension/MIME of general server side scripts to security issues
 		'staticMineMap'   => array(
 			'php:*'                        => 'text/x-php',
+			'pht:*'                        => 'text/x-php',
 			'php3:*'                       => 'text/x-php',
 			'php4:*'                       => 'text/x-php',
 			'php5:*'                       => 'text/x-php',
+			'php7:*'                       => 'text/x-php',
 			'phtml:*'                      => 'text/x-php',
 			'cgi:*'                        => 'text/x-httpd-cgi',
 			'pl:*'                         => 'text/x-perl',
@@ -305,7 +307,7 @@ abstract class elFinderVolumeDriver {
 		// MIME regex of send HTTP header "Content-Disposition: inline" or allow preview in quicklook
 		// '.' is allow inline of all of MIME types
 		// '$^' is not allow inline of all of MIME types
-		'dispInlineRegex' => '^(?:(?:image|video|audio)|application/(?:x-mpegURL|dash\+xml)|(?:text/plain|application/pdf)$)',
+		'dispInlineRegex' => '^(?:(?:image|video|audio)|application/(?:ogg|x-mpegURL|dash\+xml)|(?:text/plain|application/pdf)$)',
 		// temporary content URL's base path
 		'tmpLinkPath'     => '',
 		// temporary content URL's base URL
@@ -2229,7 +2231,7 @@ abstract class elFinderVolumeDriver {
 		
 		$mimeByName = '';
 		if ($this->mimeDetect === 'internal') {
-			$mime = $this->mimetype($name, true);
+			$mime = $this->mimetype($tmpname, $name);
 		} else {
 			$mime = $this->mimetype($tmpname, $name);
 			$mimeByName = $this->mimetype($name, true);
@@ -4285,7 +4287,7 @@ abstract class elFinderVolumeDriver {
 			$nameCheck = true;
 		}
 		$ext = (false === $pos = strrpos($name, '.')) ? '' : substr($name, $pos + 1);
-		$size = file_exists($path)? filesize($path) : 0;
+		$size = file_exists($path)? filesize($path) : -1;
 		if (! $nameCheck && is_readable($path) && $size > 0) {
 			// detecting by contents
 			if ($this->mimeDetect === 'finfo') {
@@ -4906,7 +4908,11 @@ abstract class elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function tmbname($stat) {
-		return $stat['hash'].$stat['ts'].'.png';
+		$name = $stat['hash'].$stat['ts'].'.png';
+		if (strlen($name) > 255) {
+			$name = $this->id.md5($stat['hash']).$stat['ts'].'.png';
+		}
+		return $name;
 	}
 	
 	/**
@@ -6303,7 +6309,7 @@ abstract class elFinderVolumeDriver {
 					$res['rmNames'][] = $name;
 					continue;
 				}
-				if ($chkMime && ($mimeByName = elFinderVolumeDriver::mimetypeInternalDetect($name)) && $mimeByName !== 'unknown' && !$this->allowPutMime($mimeByName)) {
+				if ($chkMime && ($mimeByName = elFinderVolumeDriver::mimetypeInternalDetect($name)) && !$this->allowPutMime($mimeByName)) {
 					self::localRmdirRecursive($p);
 					$res['mimes'][] = $p;
 					$res['rmNames'][] = $name;
@@ -6336,7 +6342,7 @@ abstract class elFinderVolumeDriver {
 				unlink($path);
 				$res['writables'][] = $path;
 				$res['rmNames'][] = $name;
-			} else if ($chkMime && ($mimeByName = elFinderVolumeDriver::mimetypeInternalDetect($name)) && $mimeByName !== 'unknown' && !$this->allowPutMime($mimeByName)) {
+			} else if ($chkMime && ($mimeByName = elFinderVolumeDriver::mimetypeInternalDetect($name)) && !$this->allowPutMime($mimeByName)) {
 				unlink($path);
 				$res['mimes'][] = $path;
 				$res['rmNames'][] = $name;

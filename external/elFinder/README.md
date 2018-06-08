@@ -1,7 +1,7 @@
 elFinder
 ========
 
-**WARNING: IF YOU HAVE OLDER (IN PARTICULAR 2.1.36 OR EARLIER) VERSIONS OF ELFINDER ON PUBLIC SERVERS, IT MAY CAUSE SERIOUS DAMAGE TO YOUR SERVER AND VISITED USER. YOU SHOULD UPDATE TO THE LATEST VERSION OR REMOVE IT FROM THE SERVER.**
+**WARNING: IF YOU HAVE OLDER (IN PARTICULAR 2.1.38 OR EARLIER) VERSIONS OF ELFINDER ON PUBLIC SERVERS, IT MAY CAUSE SERIOUS DAMAGE TO YOUR SERVER AND VISITED USER. YOU SHOULD UPDATE TO THE LATEST VERSION OR REMOVE IT FROM THE SERVER.**
 
 <pre>
       _ ______ _           _           
@@ -92,13 +92,13 @@ Requirements
 ------------
 ### jQuery / jQuery UI
  * jQuery 1.8.0+
- * jQuery UI 1.9.0+ (require selectable, draggable, droppable and resizable)
+ * jQuery UI 1.9.0+ (require draggable, droppable, resizable, selectable and slider)
 
 **However, we recommend newest version.**
 
 ### Client
- * Modern browser. elFinder was tested in Internet Explorer 8
-   and newest Firefox, Chrome, IE, Edge and Opera
+ * Modern browsers both of desktop or mobile. elFinder was tested in newest Chrome, Edge, Firefox, IE and Opera
+     - **Caution**: Web App mode ("apple-mobile-web-app-capable" meta tag) on iOS is not work perfectly in elFinder
 
 ### Server
  * Any web server
@@ -128,7 +128,7 @@ Installation
 Downloads
 ------------
 **Stable releases** ([Changelog](https://github.com/Studio-42/elFinder/blob/master/Changelog))
- + [elFinder 2.1.38](https://github.com/Studio-42/elFinder/archive/2.1.38.zip)
+ + [elFinder 2.1.39](https://github.com/Studio-42/elFinder/archive/2.1.39.zip)
  + [elFinder 2.0.9](https://github.com/Studio-42/elFinder/archive/2.0.9.zip) (deprecated)
 
 **Nightly builds**

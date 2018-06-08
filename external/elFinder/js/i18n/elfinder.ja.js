@@ -2,7 +2,7 @@
  * Japanese translation
  * @author Tomoaki Yoshida <info@yoshida-studio.jp>
  * @author Naoki Sawada <hypweb+elfinder@gmail.com>
- * @version 2018-04-04
+ * @version 2018-05-22
  */
 (function(root, factory) {
 	if (typeof define === 'function' && define.amd) {
@@ -314,6 +314,10 @@
 			'selectlfile'     : '最後のアイテムを選択',
 			'viewlist'        : 'リスト形式で表示',
 			'viewicons'       : 'アイコン形式で表示',
+			'viewSmall'       : '小アイコン', // from v2.1.39 added 22.5.2018
+			'viewMedium'      : '中アイコン', // from v2.1.39 added 22.5.2018
+			'viewLarge'       : '大アイコン', // from v2.1.39 added 22.5.2018
+			'viewExtraLarge'  : '特大アイコン', // from v2.1.39 added 22.5.2018
 			'places'          : 'よく使う項目',
 			'calc'            : '計算中',
 			'path'            : 'パス',
@@ -457,6 +461,7 @@
 			'workspace'       : 'ワークスペース', // from v2.1.38 added 4.4.2018
 			'dialog'          : 'ダイアログ', // from v2.1.38 added 4.4.2018
 			'all'             : 'すべて', // from v2.1.38 added 4.4.2018
+			'iconSize'        : 'アイコンサイズ (アイコンビュー)', // form v2.1.39 added 7.5.2018
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : '不明',
