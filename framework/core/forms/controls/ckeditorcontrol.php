@@ -158,6 +158,7 @@ class ckeditorcontrol extends formcontrol {
             $paste_word = 'forcePasteAsPlainText : true,';
         if (!$user->globalPerm('prevent_uploads')) {
             $upload = "filebrowserUploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader.php',";
+            $upload .= "filebrowserUploadMethod : 'form',";
             $upload .= "uploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader_paste.php',";
         } else
             $upload = '';
