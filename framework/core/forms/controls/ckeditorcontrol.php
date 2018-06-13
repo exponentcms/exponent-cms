@@ -143,7 +143,7 @@ class ckeditorcontrol extends formcontrol {
                 $tbc = '';
             }
             // $tb must be javascript array [..]
-            $tb = expString::check_javascript($tb);  // $styleset must be enclosed in quotes '..' or brackets [..]
+            $tb = expString::check_javascript(trim($tb));  // $styleset must be enclosed in quotes '..' or brackets [..]
             $tb = "toolbar : [".$tb.$tbc."],";
         }
         if (MOBILE) {
