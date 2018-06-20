@@ -806,6 +806,7 @@ class eventController extends expController {
                         } else {
                             $keyw = SITE_KEYWORDS;
                         }
+                        //fixme, we don't have any meta data stored for an event record
                         $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
                         $metainfo['keywords'] = empty($object->event->meta_keywords) ? $keyw : $object->event->meta_keywords;
                         $metainfo['description'] = empty($object->event->meta_description) ? $desc : $object->event->meta_description;
