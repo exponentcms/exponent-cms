@@ -687,13 +687,21 @@
                                 {literal}
                                 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                                     if (e.target.hash === '#addressInvoice') {
-                                        var center = invoice_map.getCenter();
-                                        google.maps.event.trigger(invoice_map, "resize");
-                                        invoice_map.setCenter(center);
+                                        if ({/literal}{if ecomconfig::getConfig('site_mapping') !== 'mapquest'}1{else}0{/if}{literal}) {
+                                            var center = invoice_map.getCenter();
+                                            google.maps.event.trigger(invoice_map, "resize");
+                                            invoice_map.setCenter(center);
+                                        } else {
+                                            invoice_map.invalidateSize();
+                                        }
                                     } else if (e.target.hash === '#addressShipping') {
-                                        var center = shipping_map.getCenter();
-                                        google.maps.event.trigger(shipping_map, "resize");
-                                        shipping_map.setCenter(center);
+                                        if ({/literal}{if ecomconfig::getConfig('site_mapping') !== 'mapquest'}1{else}0{/if}{literal}) {
+                                            var center = shipping_map.getCenter();
+                                            google.maps.event.trigger(shipping_map, "resize");
+                                            shipping_map.setCenter(center);
+                                        } else {
+                                            shipping_map.invalidateSize();
+                                        }
                                     }
                                 })
                                 {/literal}

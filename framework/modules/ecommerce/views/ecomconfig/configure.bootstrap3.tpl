@@ -118,7 +118,15 @@
                     <div id="tab7" role="tabpanel" class="tab-pane fade">
                         <h2>{'General Location Settings'|gettext}</h2>
                         {control type="checkbox" name="address_allow_admins_all" label="Allow admins access to the full geographical data regardless of other settings?"|gettext value=1 checked=$config.address_allow_admins_all}
-                        {control type="text" name="map_apikey" label="Google Maps API Key"|gettext value=$config.map_apikey}
+                        <blockquote>
+                            {'You MUST obtain an API Key from the Maps provider for the maps feature to work!'|gettext}
+                            <ul>
+                                <li><a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">{'Get a Google Maps API Key'|gettext}</a></li>
+                                <li><a href="https://developer.mapquest.com/user/me/plan" target="_blank">{'Get a MapQuest Maps API Key'|gettext}</a></li>
+                            </ul>
+                        </blockquote>
+                        {control type=radiogroup columns=2 name="site_mapping" items="Google Maps,MapQuest"|gettxtlist values="google,mapquest" default=$config.site_mapping|default:"google"}
+                        {control type="text" name="map_apikey" label="Maps API Key"|gettext value=$config.map_apikey}
                     </div>
                     <div id="tab8" role="tabpanel" class="tab-pane fade">
                         <h2>{"Product Feeds Settings"|gettext}</h2>

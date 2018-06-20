@@ -11,4 +11,5 @@ define("MENU_ALIGN",'left');
 define("MENU_LENGTH",'2');
 define("FLYOUT_SIDEBAR",'1');
 define("ENHANCED_STYLE",'0');
+define("THEME_CUSTOM_LANGUAGE",'0');
 ?>

@@ -15,6 +15,8 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../../" */
+
 /**
  * @subpackage Controllers
  * @package    Modules

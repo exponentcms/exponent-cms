@@ -31,7 +31,7 @@ class elFinder {
 	 * 
 	 * @var integer
 	 */
-	protected static $ApiRevision = 37;
+	protected static $ApiRevision = 39;
 	
 	/**
 	 * Storages (root dirs)
@@ -231,7 +231,7 @@ class elFinder {
 		'tree'      => array('target' => true),
 		'parents'   => array('target' => true, 'until' => false),
 		'tmb'       => array('targets' => true),
-		'file'      => array('target' => true, 'download' => false),
+		'file'      => array('target' => true, 'download' => false, 'cpath' => false),
 		'zipdl'     => array('targets' => true, 'download' => false),
 		'size'      => array('targets' => true),
 		'mkdir'     => array('target' => true, 'name' => false, 'dirs' => false),
@@ -245,7 +245,7 @@ class elFinder {
 		'put'       => array('target' => true, 'content' => '', 'mimes' => false, 'encoding' => false),
 		'archive'   => array('targets' => true, 'type' => true, 'mimes' => false, 'name' => false),
 		'extract'   => array('target' => true, 'mimes' => false, 'makedir' => false),
-		'search'    => array('q' => true, 'mimes' => false, 'target' => false),
+		'search'    => array('q' => true, 'mimes' => false, 'target' => false, 'type' => false),
 		'info'      => array('targets' => true, 'compare' => false),
 		'dim'       => array('target' => true, 'substitute' => false),
 		'resize'    => array('target' => true, 'width' => false, 'height' => false, 'mode' => false, 'x' => false, 'y' => false, 'degree' => false, 'quality' => false, 'bg' => false),
@@ -727,7 +727,7 @@ class elFinder {
 					$this->mountErrors[] = 'Driver "'.$class.'" : '.$e->getMessage();
 				}
 			} else {
-				$this->removeNetVolume($i, $volume);
+				$this->removeNetVolume($i, null);
 				$this->mountErrors[] = 'Driver "'.$class.'" does not exist';
 			}
 		}
@@ -1593,7 +1593,7 @@ class elFinder {
 		$h404    = 'HTTP/1.x 404 Not Found';
 		
 		if (!$download) {
-			//1st: Return srrsy contains download archive file info
+			//1st: Return array contains download archive file info
 			$error = array(self::ERROR_ARCHIVE);
 			if (($volume = $this->volume($targets[0])) !== false) {
 				if ($dlres = $volume->zipdl($targets)) {
@@ -1605,9 +1605,11 @@ class elFinder {
 						$name = $dlres['prefix'].'_Files';
 					}
 					$name .= '.'.$dlres['ext'];
+					$uniqid = uniqid();
+					$this->session->set('zipdl' . $uniqid, basename($path));
 					$result = array(
 						'zipdl' => array(
-							'file' => basename($path),
+							'file' => $uniqid,
 							'name' => $name,
 							'mime' => $dlres['mime']
 						)
@@ -1618,21 +1620,21 @@ class elFinder {
 			}
 			return array('error' => $error);
 		} else {
-			// 2nd: Return array contains opened file pointer, root itself and required headers
-			if (count($targets) !== 4 || ($volume = $this->volume($targets[0])) == false) {
+			// 2nd: Return array contains opened file session key, root itself and required headers
+			if (count($targets) !== 4 || ($volume = $this->volume($targets[0])) == false || !($file = $this->session->get('zipdl' . $targets[1]))) {
 				return array('error' => 'File not found', 'header' => $h404, 'raw' => true);
 			}
-			$file = $targets[1];
-			// checking the validity of the file parameter
-			if (strpos(str_replace('/', DIRECTORY_SEPARATOR, $file), DIRECTORY_SEPARATOR) !== false) {
+			$this->session->remove('zipdl' . $targets[1]);
+			if ($volume->commandDisabled('zipdl')) {
 				return array('error' => 'File not found', 'header' => $h404, 'raw' => true);
 			}
-			$path = $volume->getTempPath().DIRECTORY_SEPARATOR.$file;
+			$path = $volume->getTempPath() . DIRECTORY_SEPARATOR . basename($file);
+			if (!is_readable($path) || !is_writable($path)) {
+				return array('error' => 'File not found', 'header' => $h404, 'raw' => true);
+			}
 			// register auto delete on shutdown
 			$GLOBALS['elFinderTempFiles'][$path] = true;
-			if (!is_writable($path)) {
-				return array('error' => 'File not found', 'header' => $h404, 'raw' => true);
-			}
+			// for HTTP headers
 			$name = $targets[2];
 			$mime = $targets[3];
 			
@@ -1698,6 +1700,9 @@ class elFinder {
 			return array('error' => 'File not found', 'header' => $h404, 'raw' => true);
 		}
 
+		// check aborted by user
+		elFinder::checkAborted();
+
 		// allow change MIME type by 'file.pre' callback functions
 		$mime = isset($args['mime'])? $args['mime'] : $file['mime'];
 		if ($download) {
@@ -1733,6 +1738,10 @@ class elFinder {
 			}
 		}
 		
+		if ($args['cpath'] && $args['reqid']) {
+			setcookie('elfdl' . $args['reqid'], '1', 0, $args['cpath']);
+		}
+
 		$result = array(
 			'volume'  => $volume,
 			'pointer' => $fp,
@@ -2953,7 +2962,18 @@ class elFinder {
 					$_target = $thash;
 					if (! isset($addedDirs[$thash])) {
 						$addedDirs[$thash] = true;
-						$result['added'][] =$dir;
+						$result['added'][] = $dir;
+						// to support multi-level directory creation
+						$_phash = isset($dir['phash'])? $dir['phash'] : null;
+						while($_phash && ! isset($addedDirs[$_phash]) && $_phash !== $target) {
+							if ($_dir = $volume->dir($_phash)) {
+								$addedDirs[$_phash] = true;
+								$result['added'][] = $_dir;
+								$_phash = isset($_dir['phash'])? $_dir['phash'] : null;
+							} else {
+								break;
+							}
+						}
 					}
 				} else {
 					$result['error'] = $this->error(self::ERROR_UPLOAD, self::ERROR_TRGDIR_NOT_FOUND, 'hash@'.$thash);
@@ -3351,17 +3371,18 @@ class elFinder {
 		$q      = trim($args['q']);
 		$mimes  = !empty($args['mimes']) && is_array($args['mimes']) ? $args['mimes'] : array();
 		$target = !empty($args['target'])? $args['target'] : null;
+		$type   = !empty($args['type'])? $args['type'] : null;
 		$result = array();
 		$errors = array();
 
 		if ($target) {
 			if ($volume = $this->volume($target)) {
-				$result = $volume->search($q, $mimes, $target);
+				$result = $volume->search($q, $mimes, $target, $type);
 				$errors = array_merge($errors, $volume->error());
 			}
 		} else {
 			foreach ($this->volumes as $volume) {
-				$result = array_merge($result, $volume->search($q, $mimes));
+				$result = array_merge($result, $volume->search($q, $mimes, null, $type));
 				$errors = array_merge($errors, $volume->error());
 			}
 		}
@@ -4169,13 +4190,10 @@ class elFinder {
 			$url = parse_url($dlurl);
 			$ports = array(
 				'http'  => '80',
-				'ssl'   => '443',
+				'https' => '443',
 				'ftp'   => '21'
 			);
 			$url['scheme'] = strtolower($url['scheme']);
-			if ($url['scheme'] === 'https') {
-				$url['scheme'] = 'ssl';
-			}
 			if (! isset($url['port']) && isset($ports[$url['scheme']])) {
 				$url['port'] = $ports[$url['scheme']];
 			}
@@ -4191,8 +4209,9 @@ class elFinder {
 				}
 			}
 
+			$transport = ($url['scheme'] === 'https')? 'tls' : 'tcp';
 			$query = isset($url['query']) ? '?'.$url['query'] : '';
-			$stream = stream_socket_client($url['scheme'].'://'.$url['host'].':'.$url['port']);
+			$stream = stream_socket_client($transport.'://'.$url['host'].':'.$url['port']);
 			stream_set_timeout($stream, 300);
 			fputs($stream, "GET {$url['path']}{$query} HTTP/1.1\r\n");
 			fputs($stream, "Host: {$url['host']}\r\n");

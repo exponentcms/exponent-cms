@@ -34,6 +34,9 @@ elFinder.prototype.commands.netmount = function() {
 					},
 					inputs = {
 						protocol : $('<select/>')
+						.on('mousedown', function(e) {
+							e.stopPropagation();
+						})
 						.on('change', function(e, data){
 							var protocol = this.value;
 							content.find('.elfinder-netmount-tr').hide();
@@ -42,9 +45,9 @@ elFinder.prototype.commands.netmount = function() {
 							if (typeof o[protocol].select == 'function') {
 								o[protocol].select(fm, e, data);
 							}
-							setTimeout(function() {
+							requestAnimationFrame(function() {
 								content.find('input:text.elfinder-tabstop:visible:first').trigger('focus');
-							}, 20);
+							});
 						})
 						.addClass('ui-corner-all')
 					},

@@ -81,6 +81,7 @@ CKEDITOR.replace('fields-" . js_escape($field["field"]) . "',{
 		filebrowserImageBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "update"=> "ck", "filter"=> 'image')) . "',
 		filebrowserFlashBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "update"=> "ck")) . "',
         filebrowserUploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader.php',
+        filebrowserUploadMethod : 'form',
         uploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader_paste.php',
 		filebrowserWindowWidth : " . FM_WIDTH . ",
 		filebrowserWindowHeight : " . FM_HEIGHT . ",

@@ -13,6 +13,8 @@ elFinder.prototype.commands.download = function() {
 		czipdl = null,
 		zipOn  = false,
 		mixed  = false,
+		dlntf  = false,
+		cpath  = window.location.pathname || '/',
 		filter = function(hashes, inExec) {
 			var volumeid, mixedCmd;
 			
@@ -163,9 +165,9 @@ elFinder.prototype.commands.download = function() {
 					};
 					node = self.extra.node;
 					node.ready(function(){
-						setTimeout(function(){
+						requestAnimationFrame(function(){
 							node.parent().addClass('ui-state-disabled').css('pointer-events', 'auto');
-						}, 10);
+						});
 					});
 				}
 			}
@@ -174,6 +176,7 @@ elFinder.prototype.commands.download = function() {
 		if (fm.api >= 2.1012) {
 			czipdl = fm.getCommand('zipdl');
 		}
+		dlntf = fm.api > 2.1038 && !fm.isCORS;
 	});
 	
 	this.exec = function(select) {
@@ -223,7 +226,7 @@ elFinder.prototype.commands.download = function() {
 						eachCancel : true,
 						preventDefault : true
 					}).done(function(e) {
-						var zipdl, dialog, btn = {}, dllink, form, iframe,
+						var zipdl, dialog, btn = {}, dllink, form, iframe, m,
 							uniq = 'dlw' + (+new Date());
 						if (e.error) {
 							fm.error(e.error);
@@ -231,7 +234,8 @@ elFinder.prototype.commands.download = function() {
 						} else if (e.zipdl) {
 							zipdl = e.zipdl;
 							if (dlName) {
-								dlName += '.zip';
+								m = fm.splitFileExtention(zipdl.name || '');
+								dlName += m[1]? ('.' + m[1]) : '.zip';
 							} else {
 								dlName = zipdl.name;
 							}
@@ -248,13 +252,13 @@ elFinder.prototype.commands.download = function() {
 								dllink = $('<a/>')
 									.attr('href', url)
 									.attr('download', fm.escape(dlName))
-									.attr('target', '_blank')
 									.on('click', function() {
 										dfd.resolve();
 										dialog && dialog.elfinderdialog('destroy');
 									});
 								if (linkdl) {
-									dllink.append('<span class="elfinder-button-icon elfinder-button-icon-download"></span>'+fm.escape(dlName));
+									dllink.attr('target', '_blank')
+										.append('<span class="elfinder-button-icon elfinder-button-icon-download"></span>'+fm.escape(dlName));
 									btn[fm.i18n('btnCancel')] = function() {
 										dialog.elfinderdialog('destroy');
 									};
@@ -311,7 +315,28 @@ elFinder.prototype.commands.download = function() {
 				}
 				a.dispatchEvent(clickEv);
 			},
-			link, html5dl, fileCnt, clickEv;
+			checkCookie = function(id) {
+				var name = 'elfdl' + id,
+					parts;
+				parts = document.cookie.split(name + "=");
+				if (parts.length === 2) {
+					ntftm && clearTimeout(ntftm);
+					document.cookie = name + '=; path=' + cpath + '; max-age=0';
+					closeNotify();
+				} else {
+					setTimeout(function() { checkCookie(id); }, 200);
+				}
+			},
+			closeNotify = function() {
+				if (fm.ui.notify.children('.elfinder-notify-download').length) {
+					fm.notify({
+						type : 'download',
+						cnt : -1
+					});
+				}
+			},
+			reqids = [],
+			link, html5dl, fileCnt, clickEv, cid, ntftm, reqid;
 			
 		if (!files.length) {
 			return dfrd.reject();
@@ -347,12 +372,38 @@ elFinder.prototype.commands.download = function() {
 			);
 			return dfrd;
 		} else {
+			reqids = [];
 			for (i = 0; i < files.length; i++) {
 				url = fm.openUrl(files[i].hash, true);
+				if (dlntf && url.substr(0, fm.options.url.length) === fm.options.url) {
+					reqid = fm.getRequestId();
+					reqids.push(reqid);
+					url += '&cpath=' + cpath + '&reqid=' + reqid;
+					ntftm = setTimeout(function() {
+						fm.notify({
+							type : 'download',
+							cnt : 1,
+							cancel : (fm.UA.IE || fm.UA.Edge)? void(0) : function() {
+								if (reqids.length) {
+									$.each(reqids, function() {
+										fm.request({
+											data: {
+												cmd: 'abort',
+												id: this
+											},
+											preventDefault: true
+										});
+									});
+								}
+								reqids = [];
+							}
+						});
+					}, fm.notifyDelay);
+					checkCookie(reqid);
+				}
 				if (html5dl && (!fm.UA.Safari || fm.isSameOrigin(url))) {
 					click(link.attr('href', url)
 						.attr('download', fm.escape(files[i].name))
-						.attr('target', '_blank')
 						.get(0)
 					);
 				} else {
@@ -360,6 +411,8 @@ elFinder.prototype.commands.download = function() {
 						setTimeout(function(){
 							if (! window.open(url)) {
 								fm.error('errPopup');
+								ntftm && cleaerTimeout(ntftm);
+								closeNotify();
 							}
 						}, 100);
 					} else {

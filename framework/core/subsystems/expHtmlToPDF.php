@@ -21,7 +21,7 @@
  * @package    Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
+/** @define "BASE" "../../../" */
 
 class expHtmlToPDF
 {
@@ -877,7 +877,7 @@ class expDOMPDF080 extends expDOMPDF070
 
 /**
  * This is the class expMPDF
- * a wrapper for using mPDF
+ * a wrapper for using mPDF v5.7
  *
  * @package    Subsystems
  * @subpackage Subsystems
@@ -1070,7 +1070,7 @@ class expMPDF extends expHtmlToPDF
 
 /**
  * This is the class expMPDF6
- * a wrapper for using mPDF v6.0.0
+ * a wrapper for using mPDF v6.1
  *
  * @package    Subsystems
  * @subpackage Subsystems
@@ -1122,13 +1122,13 @@ class expMPDF6 extends expMPDF
 
 /**
  * This is the class expMPDF7
- * a wrapper for using mPDF v7.0.0
+ * a wrapper for using mPDF v7.0
  *
  * @package    Subsystems
  * @subpackage Subsystems
  */
 
-class expMPDF7 extends expMPDF6
+class expMPDF7 extends expMPDF
 {
 
     /**

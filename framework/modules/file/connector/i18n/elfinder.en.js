@@ -2,7 +2,7 @@
  * English translation
  * @author Troex Nevelin <troex@fury.scancode.ru>
  * @author Naoki Sawada <hypweb+elfinder@gmail.com>
- * @version 2018-03-10
+ * @version 2018-05-22
  */
 // elfinder.en.js is integrated into elfinder.(full|min).js by jake build
 if (typeof elFinder === 'function' && elFinder.prototype.i18) {
@@ -156,6 +156,7 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'cmdselectall' : 'Select all', // from v2.1.28 added 15.08.2017
 			'cmdselectnone': 'Select none', // from v2.1.28 added 15.08.2017
 			'cmdselectinvert': 'Invert selection', // from v2.1.28 added 15.08.2017
+            'cmdopennew'   : 'Open in new window', // from v2.1.38 added 3.4.2018
             'cmdpixlr'     : 'Edit on Pixlr',
             'cmdlinks'     : 'Switch to Page/Module Selector',
 
@@ -309,7 +310,11 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'selectlfile'     : 'Select last item',
 			'viewlist'        : 'List view',
 			'viewicons'       : 'Icons view',
-			'places'          : 'Quick Access',
+			'viewSmall'       : 'Small icons', // from v2.1.39 added 22.5.2018
+			'viewMedium'      : 'Medium icons', // from v2.1.39 added 22.5.2018
+			'viewLarge'       : 'Large icons', // from v2.1.39 added 22.5.2018
+			'viewExtraLarge'  : 'Extra large icons', // from v2.1.39 added 22.5.2018
+            'places'          : 'Quick Access',
 			'calc'            : 'Calculate',
 			'path'            : 'Path',
 			'aliasfor'        : 'Alias for',
@@ -331,9 +336,9 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'protocolver'     : 'protocol version',
 			'homepage'        : 'Project home',
 			'docs'            : 'Documentation',
-			'github'          : 'Fork us on Github',
-			'twitter'         : 'Follow us on twitter',
-			'facebook'        : 'Join us on facebook',
+			'github'          : 'Fork us on GitHub',
+			'twitter'         : 'Follow us on Twitter',
+			'facebook'        : 'Join us on Facebook',
 			'team'            : 'Team',
 			'chiefdev'        : 'chief developer',
 			'developer'       : 'developer',
@@ -423,7 +428,7 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'folderToEmpty'   : 'Empty the folder "$1".', // from v2.1.25 added 22.6.2017
 			'filderIsEmpty'   : 'There are no items in a folder "$1".', // from v2.1.25 added 22.6.2017
 			'preference'      : 'Preference', // from v2.1.26 added 28.6.2017
-			'language'        : 'Language setting', // from v2.1.26 added 28.6.2017
+			'language'        : 'Language', // from v2.1.26 added 28.6.2017
 			'clearBrowserData': 'Initialize the settings saved in this browser', // from v2.1.26 added 28.6.2017
 			'toolbarPref'     : 'Toolbar settings', // from v2.1.27 added 2.8.2017
 			'charsLeft'       : '... $1 chars left.',  // from v2.1.29 added 30.8.2017
@@ -446,6 +451,13 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'unmountChildren' : 'The following volume(s) mounted on this volume also unmounted. Are you sure to unmount it?', // from v2.1.33 added 5.3.2018
 			'selectionInfo'   : 'Selection Info', // from v2.1.33 added 7.3.2018
 			'hashChecker'     : 'Algorithms to show the file hash', // from v2.1.33 added 10.3.2018
+			'infoItems'       : 'Info Items (Selection Info Panel)', // from v2.1.38 added 28.3.2018
+			'pressAgainToExit': 'Press again to exit.', // from v2.1.38 added 1.4.2018
+			'toolbar'         : 'Toolbar', // from v2.1.38 added 4.4.2018
+			'workspace'       : 'Work Space', // from v2.1.38 added 4.4.2018
+			'dialog'          : 'Dialog', // from v2.1.38 added 4.4.2018
+			'all'             : 'All', // from v2.1.38 added 4.4.2018
+			'iconSize'        : 'Icon Size (Icons view)', // form v2.1.39 added 7.5.2018
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Unknown',

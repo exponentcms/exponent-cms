@@ -3,7 +3,7 @@
  * @author Dmitry "dio" Levashov <dio@std42.ru>
  * @author Andrew Berezovsky <andrew.berezovsky@gmail.com>
  * @author Alex Yashkin <alex@yashkin.by>
- * @version 2018-03-19
+ * @version 2018-05-27
  */
 (function(root, factory) {
 	if (typeof define === 'function' && define.amd) {
@@ -163,6 +163,7 @@
 			'cmdselectall' : 'Выбрать все', // from v2.1.28 added 15.08.2017
 			'cmdselectnone': 'Отменить выбор', // from v2.1.28 added 15.08.2017
 			'cmdselectinvert': 'Инвертировать выбор', // from v2.1.28 added 15.08.2017
+			'cmdopennew'   : 'Открыть в новом окне', // from v2.1.38 added 3.4.2018
 
 			/*********************************** buttons ***********************************/
 			'btnClose'  : 'Закрыть',
@@ -314,6 +315,10 @@
 			'selectlfile'     : 'Выбрать последний файл',
 			'viewlist'        : 'В виде списка',
 			'viewicons'       : 'В виде иконок',
+			'viewSmall'       : 'Маленькие иконки', // from v2.1.39 added 22.5.2018
+			'viewMedium'      : 'Средние иконки', // from v2.1.39 added 22.5.2018
+			'viewLarge'       : 'Большие иконки', // from v2.1.39 added 22.5.2018
+			'viewExtraLarge'  : 'Очень большие иконки', // from v2.1.39 added 22.5.2018
 			'places'          : 'Избранное',
 			'calc'            : 'Вычислить',
 			'path'            : 'Путь',
@@ -336,9 +341,9 @@
 			'protocolver'     : 'версия протокола',
 			'homepage'        : 'Сайт проекта',
 			'docs'            : 'Документация',
-			'github'          : 'Форкните на Github',
-			'twitter'         : 'Следите в twitter',
-			'facebook'        : 'Присоединяйтесь на facebook',
+			'github'          : 'Форкните на GitHub',
+			'twitter'         : 'Следите в Twitter',
+			'facebook'        : 'Присоединяйтесь на Facebook',
 			'team'            : 'Команда',
 			'chiefdev'        : 'ведущий разработчик',
 			'developer'       : 'разработчик',
@@ -451,6 +456,13 @@
 			'unmountChildren' : 'Тома, смонтированные на этом томе, также будут размонтированы. Вы хотите отключить его?', // from v2.1.33 added 5.3.2018
 			'selectionInfo'   : 'Свойства', // from v2.1.33 added 7.3.2018
 			'hashChecker'     : 'Алгоритмы для отображения хеш-сумм файлов', // from v2.1.33 added 10.3.2018
+			'infoItems'       : 'Элементы в панели свойств', // from v2.1.38 added 28.3.2018
+			'pressAgainToExit': 'Нажмите снова для выхода.', // from v2.1.38 added 1.4.2018
+			'toolbar'         : 'Панель', // from v2.1.38 added 4.4.2018
+			'workspace'       : 'Рабочая область', // from v2.1.38 added 4.4.2018
+			'dialog'          : 'Диалог', // from v2.1.38 added 4.4.2018
+			'all'             : 'Все', // from v2.1.38 added 4.4.2018
+			'iconSize'        : 'Размер иконок (В виде иконок)', // form v2.1.39 added 7.5.2018
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Неизвестный',

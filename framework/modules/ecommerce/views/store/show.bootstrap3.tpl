@@ -509,7 +509,7 @@
 
                                             </td>
                                             <td>
-                                                <span><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">{"Out Of Stock"|gettext}</a></span>
+                                                <span><a href="javascript:void(0);" rel=nofollow title="{$chiprod->availability_note}">{"Out Of Stock"|gettext}</a></span>
                                             </td>
                                         {elseif $product->active_type != 0 || $chiprod->availability_type == 3 || $chiprod->active_type == 1 || $chiprod->active_type == 2}
                                             <td>
@@ -532,7 +532,7 @@
                                         {/if}
                                         <td data-title="{'Price'|gettext}" class="text-right">
                                             {if $chiprod->availability_type == 3 && $chiprod->active_type == 0}
-                                                <strong><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">{'Call for Price'|gettext}</a></strong>
+                                                <strong><a href="javascript:void(0);" rel=nofollow title="{$chiprod->availability_note}">{'Call for Price'|gettext}</a></strong>
                                             {else}
                                                 {if $chiprod->use_special_price}
                                                     <div style="color:red; font-size: 8px; font-weight: bold;">{'SALE!'|gettext}</div>

@@ -61,7 +61,9 @@ function smarty_function_google_map($params,&$smarty) {
 
     $height = !empty($params['height']) ? $params['height'] : '190';
     $html = '<div id="gmap-' . $params['unique'] .'" class="" style="height:' . $height . 'px"></div>';
-    $script = "
+    if (ecomconfig::getConfig('site_mapping') !== 'mapquest') {
+        // google maps
+        $script = "
     if (typeof google !== 'undefined') {
         var geocoder = new google.maps.Geocoder();
         var " . $params['unique'] . "_map;
@@ -90,13 +92,49 @@ function smarty_function_google_map($params,&$smarty) {
             });
         });
     }
-   ";
+        ";
 
-    expJavascript::pushToFoot(array(
-        "unique"=>'0-gmaps',
-        "jquery"=>1,
-        "src"=>'https://maps.google.com/maps/api/js?key=' . ecomconfig::getConfig('map_apikey')
-     ));
+        expJavascript::pushToFoot(array(
+            "unique" => '0-gmaps',
+            "jquery" => 1,
+            "src" => 'https://maps.google.com/maps/api/js?key=' . ecomconfig::getConfig('map_apikey')
+        ));
+    } else {
+        // mapquest maps
+        $script = "
+    var " . $params['unique'] . "_map;
+
+    $(document).ready(function() {
+        L.mapquest.key = '" . ecomconfig::getConfig('map_apikey') ."';  'YkoZbxnJFcXUZCE3Zjd6WEBkd4PCC2rX';
+
+        L.mapquest.geocoding().geocode('" . expString::escape($address_string) . "', createMap" . $params['unique'] . ");
+
+        function createMap" . $params['unique'] . "(error, response) {
+            var location = response.results[0].locations[0];
+            var latLng = location.displayLatLng;
+            " . $params['unique'] . "_map = L.mapquest.map('gmap-" . $params['unique'] . "', {
+                center: latLng,
+                layers: L.mapquest.tileLayer('map'),
+                zoom: 10
+            });
+            L.marker(latLng, {
+                icon: L.mapquest.icons.marker(),
+                draggable: false
+            }).bindPopup('" . expString::escape($address_string) . "').addTo(" . $params['unique'] . "_map);
+        }
+    });
+       ";
+
+        expJavascript::pushToFoot(array(
+            "unique"=>'0-gmaps',
+            "jquery"=>1,
+            "src"=>'https://api.mqcdn.com/sdk/mapquest-js/v1.3.1/mapquest.js'
+         ));
+        expCSS::pushToHead(array(
+            "link"=>"https://api.mqcdn.com/sdk/mapquest-js/v1.3.1/mapquest.css"
+        ));
+    }
+
     expJavascript::pushToFoot(array(
         "unique"=>'gmap-' . $params['unique'],
         "jquery"=>1,

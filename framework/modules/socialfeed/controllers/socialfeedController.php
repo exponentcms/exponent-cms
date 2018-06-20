@@ -15,6 +15,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../../" */
 
 /**
  * @subpackage Controllers
@@ -201,7 +202,7 @@ class socialfeedController extends expController
                     if (empty($this->config['socialfeed_facebook_apiv24']))
                         $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts'); //v4
                     else // facebook api v2.4+ requires specific request for fields
-                        $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts?fields=type,message,likes,link,created_time,source,object_id,actions'); //v4 new api v2.4+
+                        $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts?fields=type,message,likes,link,created_time,source,object_id,actions,picture'); //v4 new api v2.4+
                     $response = $request->execute(); //v4
                     $graph_object = $response->getGraphObject(); //v4
                     $facebook_values = $graph_object->asArray(); //v4
@@ -321,16 +322,23 @@ class socialfeedController extends expController
      */
     private function parse_facebook_data($facebook_entry) {
         $ids = explode('_',$facebook_entry->id);
-        if ($facebook_entry->type == 'photo') {
+        if ($facebook_entry->type === 'photo') {
             if ($this->display_pic == 1) {
 //                $message_feed['picture'] = $facebook_entry->picture;
                 $message_feed['picture'] = 'https://graph.facebook.com/'.$facebook_entry->object_id.'/picture?type=normal';
             }
         }
-        if ($facebook_entry->type == 'video') {
+        if ($facebook_entry->type === 'video') {
             if ($this->display_video == 1) {
-                $message_feed['video'] = $facebook_entry->source;
+                if (isset($facebook_entry->source))
+                    $message_feed['video'] = $facebook_entry->source;
                 $message_feed['picture'] = 'https://graph.facebook.com/'.$facebook_entry->object_id.'/picture?type=normal';
+            }
+        }
+        if ($facebook_entry->type === 'link') {
+            if ($this->display_pic == 1) {
+//                $message_feed['picture'] = $facebook_entry->picture;
+                $message_feed['picture'] = $facebook_entry->picture;
             }
         }
         if (isset($facebook_entry->message) && !empty($facebook_entry->message)) {
@@ -340,7 +348,7 @@ class socialfeedController extends expController
                 $this->config['socialfeed_trim_length']
             );
         }
-        if ($facebook_entry->type == 'event') {
+        if ($facebook_entry->type === 'event') {
             try {
                 $request = new FacebookRequest($this->session, 'GET', $ids[1]); //v4
                 $response = $request->execute(); //v4
@@ -539,10 +547,10 @@ class socialfeedController extends expController
                                 $twitter_tweets[$key]['tweet'] = preg_replace_callback(
                                     '/#(\\w+)|@(\\w+)/',
                                     function ($hash) {
-                                        if ($hash[0][0] == '#') {
+                                        if ($hash[0][0] === '#') {
                                             return '<a href="' . 'https:twitter.com/hashtag/' . $hash[1] . '" target="_blank">' . $hash[0] . '</a>';
                                         }
-                                        if ($hash[0][0] == '@') {
+                                        if ($hash[0][0] === '@') {
                                             return '<a href="' . 'https:twitter.com/' . $hash[2] . '" target="_blank">' . $hash[0] . '</a>';
                                         }
                                     },

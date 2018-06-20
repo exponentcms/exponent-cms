@@ -69,13 +69,15 @@ $.fn.elfindertoolbar = function(fm, opts) {
 				}
 				
 				(! self.data('swipeClose') && self.children().length)? self.show() : self.hide();
+				prevHeight = self[0].clientHeight;
 				fm.trigger('toolbarload').trigger('uiresize');
 			},
 			buttons = {},
 			panels   = filter(opts || []),
 			dispre   = null,
 			uiCmdMapPrev = '',
-			l, i, cmd, panel, button, swipeHandle, autoHide, textLabel;
+			prevHeight = 0,
+			l, i, cmd, panel, button, swipeHandle, autoHide, textLabel, resizeTm;
 		
 		// normalize options
 		options.showPreferenceButton = options.showPreferenceButton.toLowerCase();
@@ -105,7 +107,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 						label    : fm.i18n('toolbarPref'),
 						icon     : 'preference',
 						callback : function() {
-							fm.exec('help', void(0), {tab: 'preference'});
+							fm.exec('preference', void(0), {tab: 'toolbar'});
 						}
 					}],
 					x: e.pageX,
@@ -231,6 +233,15 @@ $.fn.elfindertoolbar = function(fm, opts) {
 					});
 				}
 			}
+		}).bind('resize', function(e) {
+			resizeTm && cancelAnimationFrame(resizeTm);
+			resizeTm = requestAnimationFrame(function() {
+				var h = self[0].clientHeight;
+				if (prevHeight !== h) {
+					prevHeight = h;
+					fm.trigger('uiresize');
+				}
+			});
 		});
 		
 		if (fm.UA.Touch) {
@@ -267,7 +278,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 							fm.trigger('resize');
 						},
 						always: function() {
-							setTimeout(function() {
+							requestAnimationFrame(function() {
 								self.css('height', '');
 								fm.trigger('uiresize');
 								if (swipeHandle) {
@@ -280,7 +291,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 								}
 								toshow && self.scrollTop('0px');
 								data.init && fm.trigger('uiautohide');
-							}, 0);
+							});
 						}
 					}, data);
 				self.data('swipeClose', ! toshow).stop(true, true).animate({height : 'toggle'}, opt);

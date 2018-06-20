@@ -130,10 +130,10 @@
 }
 
 .socialfeed .pinboards.items .item:nth-child(even) {
-    -o-transform: rotate(4deg);
-    -webkit-transform: rotate(4deg);
-    -moz-transform: rotate(4deg);
-    -ms-transform: rotate(4deg);
+    -o-transform: rotate(3deg);
+    -webkit-transform: rotate(3deg);
+    -moz-transform: rotate(3deg);
+    -ms-transform: rotate(3deg);
     position: relative;
     top: 5px;
     background:#cfc;
@@ -157,6 +157,16 @@
     position: relative;
     top: -10px;
     background: #fce0ff;
+}
+
+.socialfeed .pinboards.items .item:nth-child(6n) {
+    -o-transform: rotate(2deg);
+    -webkit-transform: rotate(2deg);
+    -moz-transform: rotate(2deg);
+    -ms-transform: rotate(2deg);
+    position: relative;
+    top: -10px;
+    background: #ffb88d;
 }
 
 .socialfeed .pinboards.items .item:hover,

@@ -15,6 +15,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../../" */
 
 /**
  * @subpackage Controllers
@@ -573,7 +574,7 @@ class eventController extends expController {
                         }
                     }
                 }
-                $items = expSorter::sort(array('array' => $items, 'sortby' => 'eventstart', 'order' => 'ASC'));
+                $items = expSorter::sort(array('array' => $items, 'sortby' => 'eventstart', 'order' => $sort_asc?'ASC':'DESC'));
                 // Upcoming events can be configured to show a specific number of events.
                 // The previous call gets all events in the future from today
                 // If configured, cut the array to the configured number of events
@@ -805,6 +806,7 @@ class eventController extends expController {
                         } else {
                             $keyw = SITE_KEYWORDS;
                         }
+                        //fixme, we don't have any meta data stored for an event record
                         $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
                         $metainfo['keywords'] = empty($object->event->meta_keywords) ? $keyw : $object->event->meta_keywords;
                         $metainfo['description'] = empty($object->event->meta_description) ? $desc : $object->event->meta_description;

@@ -10,10 +10,11 @@ $.fn.elfindercontextmenu = function(fm) {
 			cmItem = 'elfinder-contextmenu-item',
 			smItem = 'elfinder-contextsubmenu-item',
 			exIcon = 'elfinder-contextmenu-extra-icon',
+			cHover = fm.res('class', 'hover'),
 			dragOpt = {
 				distance: 8,
 				start: function() {
-					menu.data('drag', true).data('touching') && menu.find('.ui-state-hover').removeClass('ui-state-hover');
+					menu.data('drag', true).data('touching') && menu.find('.'+cHover).removeClass(cHover);
 				},
 				stop: function() {
 					menu.data('draged', true).removeData('drag');
@@ -22,19 +23,19 @@ $.fn.elfindercontextmenu = function(fm) {
 			menu = $(this).addClass('touch-punch ui-helper-reset ui-front ui-widget ui-state-default ui-corner-all elfinder-contextmenu elfinder-contextmenu-'+fm.direction)
 				.hide()
 				.on('touchstart', function(e) {
-					menu.data('touching', true).children().removeClass('ui-state-hover');
+					menu.data('touching', true).children().removeClass(cHover);
 				})
 				.on('touchend', function(e) {
 					menu.removeData('touching');
 				})
 				.on('mouseenter mouseleave', '.'+cmItem, function(e) {
-					$(this).toggleClass('ui-state-hover', (e.type === 'mouseenter' || (! menu.data('draged') && menu.data('submenuKeep'))? true : false));
+					$(this).toggleClass(cHover, (e.type === 'mouseenter' || (! menu.data('draged') && menu.data('submenuKeep'))? true : false));
 					if (menu.data('draged') && menu.data('submenuKeep')) {
-						menu.find('.elfinder-contextmenu-sub:visible').parent().addClass('ui-state-hover');
+						menu.find('.elfinder-contextmenu-sub:visible').parent().addClass(cHover);
 					}
 				})
 				.on('mouseenter mouseleave', '.'+exIcon, function(e) {
-					$(this).parent().toggleClass('ui-state-hover', e.type === 'mouseleave');
+					$(this).parent().toggleClass(cHover, e.type === 'mouseleave');
 				})
 				.on('mouseenter mouseleave', '.'+cmItem+',.'+smItem, function(e) {
 					var setIndex = function(target, sub) {
@@ -54,7 +55,7 @@ $.fn.elfindercontextmenu = function(fm) {
 						var target = $(this),
 							unHover = function() {
 								if (selected && !selected.children('div.elfinder-contextmenu-sub:visible').length) {
-									selected.removeClass('ui-state-hover');
+									selected.removeClass(cHover);
 								}
 							};
 						if (e.type === 'mouseenter') {
@@ -62,7 +63,7 @@ $.fn.elfindercontextmenu = function(fm) {
 							if (target.hasClass(smItem)) {
 								// submenu
 								if (subselected) {
-									subselected.removeClass('ui-state-hover');
+									subselected.removeClass(cHover);
 								}
 								if (selected) {
 									subnodes = selected.find('div.'+smItem);
@@ -100,7 +101,8 @@ $.fn.elfindercontextmenu = function(fm) {
 					}, 100);
 				})
 				.draggable(dragOpt),
-			subpos  = fm.direction == 'ltr' ? 'left' : 'right',
+			ltr = fm.direction === 'ltr',
+			subpos = ltr? 'left' : 'right',
 			types = Object.assign({}, fm.options.contextmenu),
 			tpl     = '<div class="'+cmItem+'{className}"><span class="elfinder-button-icon {icon} elfinder-contextmenu-icon"{style}/><span>{label}</span></div>',
 			item = function(label, icon, callback, opts) {
@@ -147,7 +149,8 @@ $.fn.elfindercontextmenu = function(fm) {
 						if (e.originalEvent.touches.length > 1) {
 							return;
 						}
-						menu.stop().show();
+						menu.stop();
+						fm.toFront(menu);
 						menu.data('hideTm') && clearTimeout(menu.data('hideTm'));
 					})
 					.data('hideTm', setTimeout(function() {
@@ -160,8 +163,16 @@ $.fn.elfindercontextmenu = function(fm) {
 								}
 								var tgt = $(e.target);
 								if (menu.first().length && !tgt.is('input:checkbox') && !tgt.hasClass('elfinder-cwd-select')) {
+									e.stopPropagation();
+									//e.preventDefault();
 									open(e.originalEvent.touches[0].pageX, e.originalEvent.touches[0].pageY);
-									return false;
+									cwd.data('longtap', true)
+									tgt.one('touchend', function() {
+										setTimeout(function() {
+											cwd.removeData('longtap');
+										}, 80);
+									});
+									return;
 								}
 								cwd.find('.elfinder-cwd-file').off(evTouchStart);
 							})
@@ -172,6 +183,9 @@ $.fn.elfindercontextmenu = function(fm) {
 								duration: 300,
 								fail: function() {
 									menu.css('opacity', '1').show();
+								},
+								done: function() {
+									fm.toHide(menu);
 								}
 							});
 						}
@@ -196,8 +210,8 @@ $.fn.elfindercontextmenu = function(fm) {
 					e.stopImmediatePropagation();
 					if (code == ESC || code === sublev) {
 						if (selected && subnodes && subselected) {
-							subselected.trigger('mouseleave');
-							selected.addClass('ui-state-hover');
+							subselected.trigger('mouseleave').trigger('submenuclose');
+							selected.addClass(cHover);
 							subnodes = null;
 							subselected = null;
 						} else {
@@ -224,7 +238,7 @@ $.fn.elfindercontextmenu = function(fm) {
 							} else if (code == UP && (! selected || --nodes._cur < 0)) {
 								nodes._cur = nodes.length - 1;
 							}
-							selected = nodes.eq(nodes._cur).addClass('ui-state-hover');
+							selected = nodes.eq(nodes._cur).addClass(cHover);
 						}
 					} else if (selected && (code == ENT || code === subent)) {
 						if (selected.hasClass('elfinder-contextmenu-group')) {
@@ -234,7 +248,7 @@ $.fn.elfindercontextmenu = function(fm) {
 								selected.trigger('mouseenter');
 								subnodes = selected.find('div.'+smItem);
 								subnodes._cur = 0;
-								subselected = subnodes.first().addClass('ui-state-hover');
+								subselected = subnodes.first().addClass(cHover);
 							}
 						} else {
 							code == ENT && selected.click();
@@ -286,22 +300,19 @@ $.fn.elfindercontextmenu = function(fm) {
 				
 				fm.UA.Mobile && autoToggle();
 				
-				setTimeout(function() {
+				requestAnimationFrame(function() {
 					fm.getUI().one('click.' + fm.namespace, close);
-				}, 0);
+				});
 			},
 			
 			close = function() {
 				fm.getUI().off('click.' + fm.namespace, close);
 				$(document).off('keydown.' + fm.namespace, keyEvts);
-				if (prevSelected) {
-					fm.select({selected: prevSelected});
-					prevSelected = null;
-				}
+
 				currentType = currentTargets = null;
 				
 				if (menu.is(':visible') || menu.children().length) {
-					menu.removeAttr('style').hide().empty().removeData('submenuKeep');
+					fm.toHide(menu.removeAttr('style').empty().removeData('submenuKeep'));
 					try {
 						if (! menu.draggable('instance')) {
 							menu.draggable(dragOpt);
@@ -345,11 +356,6 @@ $.fn.elfindercontextmenu = function(fm) {
 					disabled = fm.getDisabledCmds(targets);
 				}
 				
-				if (type === 'navbar') {
-					prevSelected = fm.selected();
-					fm.select({selected: targets, origin: 'navbar'});
-				}
-
 				selcnt = fm.selected().length;
 				if (selcnt > 1) {
 					menu.append('<div class="ui-corner-top ui-widget-header elfinder-contextmenu-header"><span>'
@@ -405,7 +411,8 @@ $.fn.elfindercontextmenu = function(fm) {
 								} else {
 									var bstyle = base.attr('style');
 									base.width(base.width());
-									submenu.css({ left: 'auto', right: 'auto' });
+									// top: '-1000px' to prevent visible scrollbar of window with the elFinder option `height: '100%'`
+									submenu.css({ top: '-1000px', left: 'auto', right: 'auto' });
 									var nodeOffset = node.offset(),
 										nodeleft   = nodeOffset.left,
 										nodetop    = nodeOffset.top,
@@ -415,18 +422,44 @@ $.fn.elfindercontextmenu = function(fm) {
 										baseOffset = base.offset(),
 										wwidth     = baseOffset.left + base.width(),
 										wheight    = baseOffset.top + base.height(),
-										x, y, over;
+										cltr       = ltr, 
+										x          = nodewidth,
+										y, over;
 	
-									over = (nodeleft + nodewidth + width) - wwidth;
-									x = (nodeleft > width && over > 0)? (fm.UA.Mobile? 10 - width : nodewidth - over) : nodewidth;
-									if (subpos === 'right' && nodeleft < width) {
-										x = fm.UA.Mobile? 30 - nodewidth : nodewidth - (width - nodeleft);
+									if (ltr) {
+										over = (nodeleft + nodewidth + width) - wwidth;
+										if (over > 10) {
+											if (nodeleft > width - 5) {
+												x = x - 5;
+												cltr = false;
+											} else {
+												if (!fm.UA.Mobile) {
+													x = nodewidth - over;
+												}
+											}
+										}
+									} else {
+										over = width - nodeleft;
+										if (over > 0) {
+											if ((nodeleft + nodewidth + width - 15) < wwidth) {
+												x = x - 5;
+												cltr = true;
+											} else {
+												if (!fm.UA.Mobile) {
+													x = nodewidth - over;
+												}
+											}
+										}
 									}
 									over = (nodetop + 5 + height) - wheight;
 									y = (over > 0 && nodetop < wheight)? 5 - over : (over > 0? 30 - height : 5);
 	
 									menu.find('.elfinder-contextmenu-sub:visible').hide();
-									submenu.css({ top : y }).css(subpos, x).show();
+									submenu.css({
+										top : y,
+										left : cltr? x : 'auto',
+										right: cltr? 'auto' : x
+									}).show();
 									base.attr('style', bstyle);
 								}
 							};
@@ -437,12 +470,20 @@ $.fn.elfindercontextmenu = function(fm) {
 										menu.removeData('submenuKeep');
 									}
 								})
+								.on('submenuclose', '.elfinder-contextmenu-sub', function(e) {
+									hover(false);
+								})
 								.on('click', '.'+smItem, function(e){
 									var opts, $this;
 									e.stopPropagation();
 									if (! menu.data('draged')) {
-										menu.hide();
 										$this = $(this);
+										if (!cmd.keepContextmenu) {
+											menu.hide();
+										} else {
+											$this.removeClass(cHover);
+											node.addClass(cHover);
+										}
 										opts = $this.data('exec');
 										if (typeof opts === 'undefined') {
 											opts = {};
@@ -452,7 +493,7 @@ $.fn.elfindercontextmenu = function(fm) {
 											opts._currentType = type;
 											opts._currentNode = $this;
 										}
-										close();
+										!cmd.keepContextmenu && close();
 										fm.exec(cmd.name, targets, opts);
 									}
 								})
@@ -468,18 +509,20 @@ $.fn.elfindercontextmenu = function(fm) {
 											clearTimeout(node.data('timer'));
 											node.removeData('timer');
 										}
-										if (e.type === 'mouseleave') {
-											if (! menu.data('submenuKeep')) {
+										if (!$(e.target).closest('.elfinder-contextmenu-sub', menu).length) {
+											if (e.type === 'mouseleave') {
+												if (! menu.data('submenuKeep')) {
+													node.data('timer', setTimeout(function() {
+														node.removeData('timer');
+														hover(false);
+													}, 250));
+												}
+											} else {
 												node.data('timer', setTimeout(function() {
 													node.removeData('timer');
-													hover(false);
-												}, 250));
+													hover(true);
+												}, nodes.find('div.elfinder-contextmenu-sub:visible').length? 250 : 0));
 											}
-										} else {
-											node.data('timer', setTimeout(function() {
-												node.removeData('timer');
-												hover(true);
-											}, nodes.find('div.elfinder-contextmenu-sub:visible').length? 250 : 0));
 										}
 									}
 								});
@@ -503,7 +546,7 @@ $.fn.elfindercontextmenu = function(fm) {
 						} else {
 							node = item(cmd.title, cmd.className? cmd.className : cmd.name, function() {
 								if (! menu.data('draged')) {
-									close();
+									!cmd.keepContextmenu && close();
 									fm.exec(cmd.name, targets, {_userAction: true, _currentType: type, _currentNode: node});
 								}
 							});
@@ -564,8 +607,7 @@ $.fn.elfindercontextmenu = function(fm) {
 			},
 			
 			currentType = null,
-			currentTargets = null,
-			prevSelected = null;
+			currentTargets = null;
 		
 		fm.one('load', function() {
 			base = fm.getUI();

@@ -14,6 +14,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../" */
 
 /**
  * This is the class expController

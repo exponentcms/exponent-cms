@@ -363,7 +363,7 @@ class easypostcalculator extends shippingcalculator
         }
         foreach ($messages as $message) {
             //note we definitely get errors if USPS used for over 70 lbs
-            if (!($message['carrier'] == 'USPS' && $total_weight > 1120))
+            if (!($message['carrier'] === 'USPS' && $total_weight > 1120))
                 flash('error', 'easypost: ' . $message['carrier'] . ': ' . $message['message']);
         }
 
@@ -422,14 +422,14 @@ class easypostcalculator extends shippingcalculator
         $config = array();
         foreach ($config_vars as $varname) {
             $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
-            if ($varname == 'shipfrom') {
+            if ($varname === 'shipfrom') {
                 $config[$varname]['state'] = geoRegion::getAbbrev($values[$varname]['address_region_id']);
                 $config[$varname]['country'] = geoRegion::getCountryCode($values[$varname]['address_country_id']);
                 unset(
                     $config[$varname]['address_region_id'],
                     $config[$varname]['address_country_id']
                 );
-            } elseif ($varname == 'handling') {
+            } elseif ($varname === 'handling') {
                 $config[$varname] = isset($values[$varname]) ? expUtil::currency_to_float($values[$varname]) : null;
             }
 
@@ -774,7 +774,7 @@ class easypostcalculator extends shippingcalculator
         $init = self::ep_initialize();
         if (!empty($inputJSON)) {
             $event = \EasyPost\Event::receive($inputJSON);
-            if($event->description == 'tracker.updated') {
+            if($event->description === 'tracker.updated') {
                 //process event here
                 $sm = new shippingmethod();
                 $my_sm = $sm->find('first', 'carrier="' . $event->result->carrier . '" AND shipping_tracking_number="' . $event->result->tracking_code . '"');
@@ -792,7 +792,7 @@ class easypostcalculator extends shippingcalculator
     function getPackageDetails($shippingmethod, $tracking_only=false)
     {
         $msg = '';
-        if (($shippingmethod->shipping_options['shipment_status'] == 'created' || $shippingmethod->shipping_options['shipment_status'] == 'purchased') && !$tracking_only) {
+        if (($shippingmethod->shipping_options['shipment_status'] === 'created' || $shippingmethod->shipping_options['shipment_status'] === 'purchased') && !$tracking_only) {
             $msg .= '<h4>' . $shippingmethod->carrier . ' - ' . $shippingmethod->option_title . '</h4>';
             $msg .= gt('Package').':<ul>';
             if ($shippingmethod->predefinedpackage) {
@@ -806,12 +806,12 @@ class easypostcalculator extends shippingcalculator
                 $msg .= '<li>' . $oi->quantity . ' x ' . $oi->products_model . ' - ' . $oi->products_name . '</li>';
             }
             $msg .= '</ul>';
-            if ($shippingmethod->shipping_options['shipment_status'] == 'purchased') {
+            if ($shippingmethod->shipping_options['shipment_status'] === 'purchased') {
                 $msg .= gt('Shipping Cost').': ';
                 $sc = $shippingmethod->shipping_options['shipment_cost'];
                 $msg .= expCore::getCurrency($sc);
             }
-            if ($shippingmethod->shipping_options['pickup_status'] == 'purchased') {
+            if ($shippingmethod->shipping_options['pickup_status'] === 'purchased') {
                 $msg .= '<br>'.gt('Pickup Cost').': ';
                 $pc = $shippingmethod->shipping_options['pickup_cost'];
                 $msg .= expCore::getCurrency($pc);

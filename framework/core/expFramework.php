@@ -883,7 +883,7 @@ function expUnserialize($serial_str) {
 //    if ($out1 !== $out) {
 //        eDebug('problem:<br>'.$out.'<br>'.$out1);
 //    }
-    $out2 = unserialize($out);
+    $out2 = @unserialize($out);
     if (is_array($out2)) {
         if (!empty($out2['moduledescription'])) {  // work-around for links in module descriptions
             $out2['moduledescription'] = stripslashes($out2['moduledescription']);
@@ -905,6 +905,9 @@ function expUnserialize($serial_str) {
         }
     } elseif (is_object($out2) && get_class($out2) == 'htmlcontrol') {
         $out2->html = stripslashes($out2->html);
+    }
+    if ($out2 === false && !empty($out)) {
+        $out2 = $out;
     }
     return $out2;
 }

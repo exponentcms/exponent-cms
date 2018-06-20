@@ -301,6 +301,7 @@
                 filebrowserFlashBrowseUrl : '{/literal}{link controller="file" action="picker" ajax_action=1 update="ck"}{literal}',
                 {/literal}{if (!$user->globalPerm('prevent_uploads'))}
                 filebrowserUploadUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/uploader.php',
+                filebrowserUploadMethod : 'form',
                 uploadUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/uploader_paste.php',
                 {/if}{literal}
                 filebrowserWindowWidth : {/literal}{$smarty.const.FM_WIDTH}{literal},

@@ -115,10 +115,12 @@
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/open.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/open.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/opendir.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/opennew.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/paste.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/pixlr.js"></script>*}
     {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/pixlr.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/places.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/preference.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/quicklook.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/quicklook.plugins.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/quicklook.plugins.js"></script>
@@ -261,9 +263,9 @@
                     // help dialog tabs
                     help : {
                         {/literal}{if $smarty.const.DEVELOPMENT}
-                        view : ['about', 'shortcuts', 'help', 'preference', 'debug'],
+                        view : ['about', 'shortcuts', 'help', 'debug'],
                         {else}
-                        view : ['about', 'shortcuts', 'help', 'preference'],
+                        view : ['about', 'shortcuts', 'help'],
                         {/if}{literal}
                     }
                 },
@@ -303,7 +305,7 @@
                         ['search'],
                         ['view', 'sort'],
                         ['links', 'places'],   // links added
-                        ['help'],
+                        ['preference', 'help'],
                         ['fullscreen']
                     ],
                     // toolbar extra options

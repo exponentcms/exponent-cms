@@ -112,7 +112,6 @@ class tablebasedcalculator extends shippingcalculator {
 		$where = " shippingcalculator_id = {$values['id']}";
 		$speeds = $db->selectObjects("shippingspeeds", $where);
         $config_vars = array(
-            'handling',
             'to',
             'from'
         );
@@ -123,7 +122,7 @@ class tablebasedcalculator extends shippingcalculator {
 		// eDebug($config_vars, true);
         $sorted_config = array();
         foreach ($config_vars as $varname) {
-            if ($varname == 'rate' || $varname == 'handling') {
+            if ($varname === 'rate' || $varname === 'handling') {
                 $config[$varname] = isset($values[$varname]) ? expUtil::currency_to_float($values[$varname]) : null;
             } else {
                 $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
@@ -141,7 +140,9 @@ class tablebasedcalculator extends shippingcalculator {
             $i++;
         }
 
-        return $sorted_config;
+        unset($values['controller'],$values['src'],$values['int'],$values['action'],$values['id']);
+        // add other params to sorted ones
+        return array_replace($values, $sorted_config);
     }
 
     function availableMethods() {

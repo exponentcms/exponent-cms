@@ -143,7 +143,7 @@ class ckeditorcontrol extends formcontrol {
                 $tbc = '';
             }
             // $tb must be javascript array [..]
-            $tb = expString::check_javascript($tb);  // $styleset must be enclosed in quotes '..' or brackets [..]
+            $tb = expString::check_javascript(trim($tb));  // $styleset must be enclosed in quotes '..' or brackets [..]
             $tb = "toolbar : [".$tb.$tbc."],";
         }
         if (MOBILE) {
@@ -158,6 +158,7 @@ class ckeditorcontrol extends formcontrol {
             $paste_word = 'forcePasteAsPlainText : true,';
         if (!$user->globalPerm('prevent_uploads')) {
             $upload = "filebrowserUploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader.php',";
+            $upload .= "filebrowserUploadMethod : 'form',";
             $upload .= "uploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader_paste.php',";
         } else
             $upload = '';

@@ -318,13 +318,13 @@ elFinder.prototype.commands.rename = function() {
 				return [name.substr(0, name.length - ext.length - 1), ext];
 			},
 			unselect = function() {
-				setTimeout(function() {
+				requestAnimationFrame(function() {
 					input && input.trigger('blur');
-				}, 50);
+				});
 			},
 			rest     = function(){
 				if (!overlay.is(':hidden')) {
-					overlay.elfinderoverlay('hide').off('click', cancel);
+					overlay.elfinderoverlay('hide').off('click close', cancel);
 				}
 				pnode.removeClass('ui-front')
 					.css('position', '')
@@ -345,7 +345,7 @@ elFinder.prototype.commands.rename = function() {
 					if (tarea) {
 						name = name.replace(/([_.])/g, '&#8203;$1');
 					}
-					setTimeout(function() {
+					requestAnimationFrame(function() {
 						if (navbar) {
 							input.replaceWith(name);
 						} else {
@@ -356,7 +356,7 @@ elFinder.prototype.commands.rename = function() {
 								target.find(filename).html(name);
 							}
 						}
-					}, 0);
+					});
 					error && fm.error(error);
 				})
 				.always(function() {
@@ -471,11 +471,15 @@ elFinder.prototype.commands.rename = function() {
 						e.preventDefault();
 					}
 				})
-				.on('blur', blur),
+				.on('blur', blur)
+				.on('dragenter dragleave dragover drop', function(e) {
+					// stop bubbling to prevent upload with native drop event
+					e.stopPropagation();
+				}),
 			select = function() {
 				var name = fm.splitFileExtention(input.val())[0];
 				if (!inError && fm.UA.Mobile && !fm.UA.iOS) { // since iOS has a bug? (z-index not effect) so disable it
-					overlay.on('click', cancel).elfinderoverlay('show');
+					overlay.on('click close', cancel).elfinderoverlay('show');
 					pnode.css('z-index', overlay.css('z-index') + 1);
 				}
 				! fm.enabled() && fm.enable();
@@ -506,11 +510,6 @@ elFinder.prototype.commands.rename = function() {
 				target.trigger('scrolltoview', {blink : false});
 			},
 			inError = false;
-		
-		if (fm.UA.iOS) {
-			// prevent auto zoom
-			input.css('font-size', '16px');
-		}
 		
 		pnode.addClass('ui-front')
 			.css('position', 'relative')
