@@ -190,7 +190,7 @@ class expCSS {
                 echo '<style type="text/css">';
                 $htmlcss = trim($params['css']);
                 if (MINIFY == 1 && MINIFY_INLINE_CSS == 1) {
-                    include_once(BASE . 'external/minify/min/lib/CSSMin.php');
+                    include_once(BASE . 'external/minify/min/lib/CSSmin.php');
                     $min = new CSSmin();
                     $htmlcss = $min->run($htmlcss) . "\r\n";
                 }
@@ -287,7 +287,7 @@ class expCSS {
             if (MINIFY == 1 && MINIFY_INLINE_CSS == 1) {
 //                include_once(BASE . 'external/minify/min/lib/JSMin.php');
 //                $htmlcss = JSMin::minify($htmlcss) . "\r\n";
-                include_once(BASE . 'external/minify/min/lib/CSSMin.php');
+                include_once(BASE . 'external/minify/min/lib/CSSmin.php');
                 $min = new CSSmin();
                 $htmlcss = $min->run($htmlcss) . "\r\n";
             }
