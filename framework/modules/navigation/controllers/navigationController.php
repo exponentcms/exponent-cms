@@ -1162,9 +1162,9 @@ class navigationController extends expController {
             require_once(BASE . 'external/font-awesome.class.php');
             $fa = new Smk_FontAwesome;
             if (bs4()) {
-                $icons = $fa->getArray(BASE . 'external/font-awesome5/advanced-options/metadata/icons.json');
-//                $icons = $fa->getArray(BASE . 'external/font-awesome5/advanced-options/metadata/icons.yml');
-//                $icons = $fa->getArray(BASE . 'external/font-awesome5/web-fonts-with-css/css/fontawesome.css');
+                $icons = $fa->getArray(BASE . 'external/font-awesome5/metadata/icons.json');
+//                $icons = $fa->getArray(BASE . 'external/font-awesome5/metadata/icons.yml');
+//                $icons = $fa->getArray(BASE . 'external/font-awesome5/css/fontawesome.css');
                 $icons = $fa->sortByName($icons);
 //                return $fa->nameGlyph($icons);
                 return $fa->readableName($icons);

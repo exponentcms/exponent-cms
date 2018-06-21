@@ -454,7 +454,7 @@ class expTheme
                 ));
                 expCSS::pushToHead(array(
 //                    "scssprimer"=>"external/font-awesome4/scss/font-awesome.scss",
-                    "scssprimer"=>"external/font-awesome5/web-fonts-with-css/scss/fontawesome.scss",
+                    "scssprimer"=>"external/font-awesome5/scss/fontawesome.scss",
                     "lessvars"=>$less_vars,
                 ));
             } elseif (newui()) {
