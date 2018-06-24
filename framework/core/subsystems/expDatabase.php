@@ -272,7 +272,7 @@ class expDatabase {
 	 *  @param  array $columns Column information array
 	 *  @return string SQL limit clause
 	 */
-	static function limit ( $request, $columns )
+	static function limit ( $request )
 	{
 		$limit = '';
 
@@ -317,7 +317,9 @@ class expDatabase {
 //				}
 			}
 
-			$order = 'ORDER BY '.implode(', ', $orderBy);
+            if ( count( $orderBy ) ) {
+                $order = 'ORDER BY '.implode(', ', $orderBy);
+            }
 		}
 
 		return $order;
@@ -448,7 +450,7 @@ class expDatabase {
 		$dbpdo = self::sql_connect();
 
 		// Build the SQL query string from the request
-		$limit = self::limit( $request, $columns );
+		$limit = self::limit( $request );
 		$order = self::order( $request, $columns );
 		$where = self::filter( $request, $columns, $bindings );
 
@@ -519,7 +521,7 @@ class expDatabase {
    		$whereAllSql = '';
 
    		// Build the SQL query string from the request
-   		$limit = self::limit( $request, $columns );
+   		$limit = self::limit( $request );
    		$order = self::order( $request, $columns );
    		$where = self::filter( $request, $columns, $bindings );
 
