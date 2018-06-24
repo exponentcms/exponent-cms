@@ -33,9 +33,9 @@
                                 <input type=checkbox name=act-upon[] value={$listing->id} />
                             {else}
                                 {if $page->linkables[$key]}
-                                    <a href="{link parse_attrs=$page->linkables[$key] record=$listing}">{$listing->$col}</a>
+                                    <a href="{link parse_attrs=$page->linkables[$key] record=$listing}">{$listing->$col|format:$page->format[$key]}</a>
                                 {else}
-                                    {$listing->$col}
+                                    {$listing->$col|format:$page->format[$key]}
                                 {/if}
                             {/if}
                         </td>
