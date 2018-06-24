@@ -162,7 +162,10 @@ class expPaginator {
 		            $params = explode(',',$colparse[$key][1]);
 		            foreach ($params as $paramval) {
 		                $prm = explode('=',$paramval);
-		                $this->linkables[$key][$prm[0]] = $prm[1];
+		                if ($prm[0] === 'FORMAT') {
+                            $this->format[$key] = $prm[1];
+                        } else
+    		                $this->linkables[$key][$prm[0]] = $prm[1];
 		            }
 		        }
 		    }
