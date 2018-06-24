@@ -1971,7 +1971,8 @@ exit();
         $search    = $this->params['ordernum'];
         $searchInv = (int)($search);
 
-        $sql = "SELECT DISTINCT(o.id), o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, concat('".expCore::getCurrencySymbol()."',format(o.grand_total,2)) as grand_total, os.title as status_title, ot.title as order_type";
+//        $sql = "SELECT DISTINCT(o.id), o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, concat('".expCore::getCurrencySymbol()."',format(o.grand_total,2)) as grand_total, os.title as status_title, ot.title as order_type";
+        $sql = "SELECT DISTINCT(o.id), o.invoice_id, o.purchased as purchased_date, b.firstname as bfirst, b.lastname as blast, o.grand_total as grand_total, os.title as status_title, ot.title as order_type";
         $sql .= " from " . $db->prefix . "orders as o ";
         $sql .= "INNER JOIN " . $db->prefix . "orderitems as oi ON oi.orders_id = o.id ";
         $sql .= "INNER JOIN " . $db->prefix . "order_type as ot ON ot.id = o.order_type_id ";
@@ -1993,18 +1994,18 @@ exit();
         $page = new expPaginator(array(
             'sql'       => $sql . $sqlwhere,
             'limit'     => $limit,
-            'order'     => 'o.invoice_id',
-            'dir'       => 'DESC',
+            'order'     => (isset($this->params['order']) ? $this->params['order'] : 'o.invoice_id'),
+            'dir'       => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),  // newest first
             'page'      => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=> $this->baseclassname,
             'action'    => $this->params['action'],
             'columns'   => array(
                 'actupon'           => true,
                 gt('Order #')       => 'invoice_id|controller=order,action=show,showby=id',
-                gt('Purchased Date')=> 'purchased_date',
+                gt('Purchased Date')=> 'purchased_date|FORMAT=date',
                 gt('First')         => 'bfirst',
                 gt('Last')          => 'blast',
-                gt('Total')         => 'grand_total',
+                gt('Total')         => 'grand_total|FORMAT=currency',
                 gt('Order Type')    => 'order_type',
                 gt('Status')        => 'status_title'
             ),

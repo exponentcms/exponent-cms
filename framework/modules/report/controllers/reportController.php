@@ -577,7 +577,8 @@ class reportController extends expController {
         //build
         $start_sql = "SELECT DISTINCT(o.id), ";
         $count_sql = "SELECT COUNT(DISTINCT(o.id)) as c, ";
-        $sql = "o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, concat('".expCore::getCurrencySymbol()."',format(o.grand_total,2)) as grand_total, os.title as status_title, ot.title as order_type";
+//        $sql = "o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, concat('".expCore::getCurrencySymbol()."',format(o.grand_total,2)) as grand_total, os.title as status_title, ot.title as order_type";
+        $sql = "o.invoice_id, o.purchased as purchased_date, b.firstname as bfirst, b.lastname as blast, o.grand_total as grand_total, os.title as status_title, ot.title as order_type";
         if (isset($p['order_status_changed'])){
             if ((count($p['order_status_changed']) == 1 && $p['order_status_changed'][0] != -1) || count($p['order_status_changed']) > 1 || (!empty($p['include_status_date']) && (!empty($p['date-sstartdate']) || !empty($p['date-senddate'])))) $sql .= ", FROM_UNIXTIME(osc.created_at,'%c/%e/%y %h:%i:%s %p') as status_changed_date";
         }
@@ -597,22 +598,41 @@ class reportController extends expController {
 
         $sqlwhere = "WHERE o.purchased != 0";
 
-        if (!empty($p['include_purchased_date']) && !empty($p['date-pstartdate'])) $sqlwhere .= " AND o.purchased >= " . strtotime($p['date-pstartdate'] . " " . $p['time-h-pstartdate'] . ":" . $p['time-m-pstartdate'] . " " . $p['ampm-pstartdate']);
-        /*if ($p->['time-h-startdate'] == )
-        if ($p->['time-m-startdate'] == )
-        if ($p->['ampm-startdate'] == )*/
-        if (!empty($p['include_purchased_date']) && !empty($p['date-penddate'])) $sqlwhere .= " AND o.purchased <= " . strtotime($p['date-penddate'] . " " . $p['time-h-penddate'] . ":" . $p['time-m-penddate'] . " " . $p['ampm-penddate']);
-        /*if ($p->['date-enddate'] == )
-        if ($p->['time-h-enddate'] == )
-        if ($p->['time-m-enddate'] == )
-        if ($p->['ampm-enddate'] == )*/
-        if (!empty($p['include_status_date']) && !empty($p['date-sstartdate'])) $sqlwhere .= " AND osc.created_at >= " . strtotime($p['date-sstartdate'] . " " . $p['time-h-sstartdate'] . ":" . $p['time-m-sstartdate'] . " " . $p['ampm-sstartdate']);
+        if (!empty($p['include_purchased_date'])) {
+            if (!empty($p['pstartdate'])) {
+                if (is_numeric($p['pstartdate']))
+                    $p['pstartdate'] = '@' . $p['pstartdate'];
+                $sqlwhere .= " AND o.purchased >= " . strtotime($p['pstartdate']);
+            } elseif (!empty($p['date-pstartdate']))
+                $sqlwhere .= " AND o.purchased >= " . strtotime($p['date-pstartdate'] . " " . $p['time-h-pstartdate'] . ":" . $p['time-m-pstartdate'] . " " . $p['ampm-pstartdate']);
 
-        if (!empty($p['include_status_date']) && !empty($p['date-senddate'])) $sqlwhere .= " AND osc.created_at <= " . strtotime($p['date-senddate'] . " " . $p['time-h-senddate'] . ":" . $p['time-m-senddate'] . " " . $p['ampm-senddate']);
+            if (!empty($p['penddate'])) {
+                if (is_numeric($p['penddate']))
+                    $p['penddate'] = '@' . $p['penddate'];
+                $sqlwhere .= " AND o.purchased <= " . strtotime($p['penddate']);
+            } elseif (!empty($p['date-penddate']))
+                $sqlwhere .= " AND o.purchased <= " . strtotime($p['date-penddate'] . " " . $p['time-h-penddate'] . ":" . $p['time-m-penddate'] . " " . $p['ampm-penddate']);
+        }
+
+        if (!empty($p['include_status_date'])) {
+            if (!empty($p['sstartdate'])) {
+                if (is_numeric($p['sstartdate']))
+                    $p['sstartdate'] = '@' . $p['sstartdate'];
+                $sqlwhere .= " AND osc.created_at >= " . strtotime($p['sstartdate']);
+            } elseif (!empty($p['date-sstartdate']))
+                $sqlwhere .= " AND osc.created_at >= " . strtotime($p['date-sstartdate'] . " " . $p['time-h-sstartdate'] . ":" . $p['time-m-sstartdate'] . " " . $p['ampm-sstartdate']);
+
+            if (!empty($p['senddate'])) {
+                if (is_numeric($p['senddate']))
+                    $p['senddate'] = '@' . $p['senddate'];
+                $sqlwhere .= " AND osc.created_at <= " . strtotime($p['senddate']);
+            } elseif (!empty($p['date-senddate']))
+                $sqlwhere .= " AND osc.created_at <= " . strtotime($p['date-senddate'] . " " . $p['time-h-senddate'] . ":" . $p['time-m-senddate'] . " " . $p['ampm-senddate']);
+        }
 
         $inc = 0;
         $sqltmp = '';
-        if (isset($p['product_status'])) {
+        if (isset($p['order_status'])) {
             foreach ($p['order_status'] as $os) {
                 if ($os == -1) continue;
                 else if ($inc == 0) {
@@ -627,7 +647,7 @@ class reportController extends expController {
 
         $inc = 0;
         $sqltmp = '';
-        if (isset($p['product_status_changed'])) {
+        if (isset($p['order_status_changed'])) {
             foreach ($p['order_status_changed'] as $osc) {
                 if ($osc == -1) continue;
                 else if ($inc == 0) {
@@ -871,17 +891,17 @@ class reportController extends expController {
             'sql'        => $sql . $sqlwhere,
             'limit'      => empty($this->config['limit']) ? 350 : $this->config['limit'],
             'order'      => (isset($this->params['order']) ? $this->params['order'] : 'invoice_id'),
-            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),  // newest first
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->baseclassname,
             'action'     => $this->params['action'],
             'columns'    => array(
                 'actupon'                 => true,
                 gt('Order #')             => 'invoice_id|controller=order,action=show,showby=id',
-                gt('Purchased Date')      => 'purchased_date',
+                gt('Purchased Date')      => 'purchased_date|FORMAT=date',
                 gt('First')               => 'bfirst',
                 gt('Last')                => 'blast',
-                gt('Total')               => 'grand_total',
+                gt('Total')               => 'grand_total|FORMAT=currency',
                 gt('Status Changed Date') => 'status_changed_date',
                 gt('Order Type')          => 'order_type',
                 gt('Status')              => 'status_title'
@@ -964,13 +984,14 @@ class reportController extends expController {
                 }
             }
 
-            foreach ($payment_summary as $key => $item) {
-                $payments_key_arr[] = '"' . $key . '"';
-                $payment_values_arr[] = round($item, 2);
-            }
-            $payments_key = implode(",", $payments_key_arr);
-            $payment_values = implode(",", $payment_values_arr);
         }
+
+        foreach ($payment_summary as $key => $item) {
+            $payments_key_arr[] = '"' . $key . '"';
+            $payment_values_arr[] = round($item, 2);
+        }
+        $payments_key = implode(",", $payments_key_arr);
+        $payment_values = implode(",", $payment_values_arr);
 
         //tax
 //        $tax_sql = "SELECT SUM(tax) as tax_total FROM " . $db->prefix . "orders WHERE id IN (" . $orders_string . ")";
@@ -1143,7 +1164,8 @@ class reportController extends expController {
         $p = $this->params;
         $sqlids = "SELECT DISTINCT(p.id) from ";
         $count_sql = "SELECT COUNT(DISTINCT(p.id)) as c FROM ";
-        $sqlstart = "SELECT DISTINCT(p.id), p.title, p.model, concat('".expCore::getCurrencySymbol()."',format(p.base_price,2)) as base_price";//, ps.title as status from ";
+//        $sqlstart = "SELECT DISTINCT(p.id), p.title, p.model, concat('".expCore::getCurrencySymbol()."',format(p.base_price,2)) as base_price";//, ps.title as status from ";
+        $sqlstart = "SELECT DISTINCT(p.id), p.title, p.model, base_price";//, ps.title as status from ";
         $sql = $db->prefix . "product as p ";
         if (!isset($p['allproducts'])){
             $sql .= "INNER JOIN " . $db->prefix . "product_status as ps ON p.product_status_id = ps.id ";
@@ -1289,7 +1311,7 @@ class reportController extends expController {
             'count_sql'  => $count_sql . $sql . $sqlwhere,
             'limit'      => empty($this->config['limit']) ? 350 : $this->config['limit'],
             'order'      => (isset($this->params['order']) ? $this->params['order'] : 'id'),
-            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->baseclassname,
             'action'     => $this->params['action'],
@@ -1298,7 +1320,7 @@ class reportController extends expController {
                 'ID'      => 'id',
                 gt('Product') => 'title|controller=store,action=show,showby=id',
                 'SKU'     => 'model',
-                gt('Price')   => 'base_price',
+                gt('Price')   => 'base_price|FORMAT=currency',
                 gt('Status')   => 'status'
             ),
             //'columns'=>array('Product'=>'title','SKU'=>'model'),
