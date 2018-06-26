@@ -15,7 +15,9 @@ Version 2.4.3
 ### Address issues in v2.4.2 and Prepare for v3.0.0
  - adds IIS compatibility; requires rewrite_url module; thanks to Todd Giardina, Todd's IT
  - adds Twitter Bootstrap v4 with Font Awesome v5 theme support including a sample theme
- - fixes and tweaks many issues in previous versions
+ - adds forms quick-submit option to skip form entry confirmation for a 1-step submission
+ - add optional mapquest maps option now that google maps will cost to use
+ - fixes and tweaks many issues in previous versions, esp. with users and ecommerce
 
 Version 2.4.2
 -------------
