@@ -1726,6 +1726,7 @@ class expTheme
                 case 'groupperms' :
                     $class = 'group';
                     break;
+                case 'dayviewlink' :
                 case 'monthviewlink' :
                 case 'weekviewlink' :
                     $class = 'calendar';
@@ -1813,6 +1814,7 @@ class expTheme
                 case 'groupperms' :
                     $class = 'group';
                     break;
+                case 'dayviewlink' :
                 case 'monthviewlink' :
                 case 'weekviewlink' :
                     $class = 'calendar';
@@ -1904,6 +1906,7 @@ class expTheme
                 case 'groupperms' :
                     $class = 'users';
                     break;
+                case 'dayviewlink' :
                 case 'monthviewlink' :
                 case 'weekviewlink' :
                     $class = 'calendar';

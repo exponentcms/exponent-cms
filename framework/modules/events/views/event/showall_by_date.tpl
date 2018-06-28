@@ -20,11 +20,11 @@
 <div class="module events showall showall-by-date">
 	<div class="module-actions">
         {if !$config.disable_links}
-            {icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext}
+            {icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext nofollow=1}
 			{if !bs()}
 				{nbsp count=2}|{nbsp count=2}
 		    {/if}
-            {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
+            {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext nofollow=1}
         {/if}
         {permissions}
             <div class="module-actions">

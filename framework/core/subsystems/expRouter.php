@@ -734,7 +734,7 @@ class expRouter {
             }
             $url .= '&printerfriendly=1\' , \'mywindow\',\'menubar=1,resizable=1,scrollbars=1,width='.$width.',height='.$height.'\');"';
             $url .= ' title="'.$title_text.'"';
-            $url .= '> '.$link_text.'</a>';
+            $url .= ' rel="nofollow"> '.$link_text.'</a>';
             $url = str_replace('&ajax_action=1','',$url);
         }
 
@@ -764,7 +764,7 @@ class expRouter {
             }
             $url .= '&exportaspdf=1'.$orientation.$limit.'&\' , \'mywindow\',\'menubar=1,resizable=1,scrollbars=1,width='.$width.',height='.$height.'\');"';
             $url .= ' title="'.$title_text.'"';
-            $url .= '> '.$link_text.'</a>';
+            $url .= ' rel="nofollow"> '.$link_text.'</a>';
             $url = str_replace('&ajax_action=1','',$url);
         }
 

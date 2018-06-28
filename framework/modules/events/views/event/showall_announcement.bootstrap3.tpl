@@ -26,11 +26,11 @@
 
     <div class="module-actions">
         {if !$config.disable_links}
-            {icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext}
+            {icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext nofollow=1}
         {/if}
         {permissions}
             {if $permissions.manage}
-                {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
+                {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext nofollow=1}
                 {if !$config.disabletags}
                     {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
                 {/if}

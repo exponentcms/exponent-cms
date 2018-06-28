@@ -22,14 +22,14 @@
 <div class="module events">
 	<div class="module-actions">
         {if !$config.disable_links}
-            {icon class="monthviewlink" action=showall time=$time title='View Entire Month'|gettext text='View Month'|gettext}
+            {icon class="monthviewlink" action=showall time=$time title='View Entire Month'|gettext text='View Month'|gettext nofollow=1}
         {/if}
         {permissions}
             {if $permissions.manage}
                 {if !bs()}
                     {nbsp count=2}|{nbsp count=2}
                 {/if}
-                {icon class="adminviewlink" action=showall view='showall_Administration' time=$time text='Administration View'|gettext}
+                {icon class="adminviewlink" action=showall view='showall_Administration' time=$time text='Administration View'|gettext nofollow=1}
                 {if !$config.disabletags}
                     {if !bs()}
                         {nbsp count=2}|{nbsp count=2}

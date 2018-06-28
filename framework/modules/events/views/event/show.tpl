@@ -24,15 +24,15 @@
     <div class="vevent">
 	<div class="module-actions">
         {if !$config.disable_links}
-            {icon class="dayviewlink" action=showall view=showall_Day time=$eventstart title='View Entire Day'|gettext text='View Day'|gettext}
+            {icon class="dayviewlink" action=showall view=showall_Day time=$eventstart title='View Entire Day'|gettext text='View Day'|gettext nofollow=1}
             {if !bs()}
                 {nbsp count=2}|{nbsp count=2}
             {/if}
-            {icon class="weekviewlink" action=showall view=showall_Week time=$eventstart title='View Entire Week'|gettext text='View Week'|gettext}
+            {icon class="weekviewlink" action=showall view=showall_Week time=$eventstart title='View Entire Week'|gettext text='View Week'|gettext nofollow=1}
             {if !bs()}
                 {nbsp count=2}|{nbsp count=2}
             {/if}
-            {icon class="monthviewlink" action=showall time=$eventstart title='View Entire Month'|gettext text='View Month'|gettext}
+            {icon class="monthviewlink" action=showall time=$eventstart title='View Entire Month'|gettext text='View Month'|gettext nofollow=1}
         {/if}
 		{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'|not_bs}
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'|not_bs}

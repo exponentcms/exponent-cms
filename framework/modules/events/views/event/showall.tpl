@@ -27,14 +27,14 @@
             {if !bs()}
                 {nbsp count=2}|{nbsp count=2}
             {/if}
-            {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
+            {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext nofollow=1}
         {/if}
 		{permissions}
 			{if $permissions.manage}
                 {if !bs()}
                     {nbsp count=2}|{nbsp count=2}
                 {/if}
-                {icon class="adminviewlink" action=showall view='showall_Administration' time=$time text='Administration View'|gettext}
+                {icon class="adminviewlink" action=showall view='showall_Administration' time=$time text='Administration View'|gettext nofollow=1}
                 {if !$config.disabletags}
                     {if !bs()}
                         {nbsp count=2}|{nbsp count=2}

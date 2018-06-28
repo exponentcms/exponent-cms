@@ -792,27 +792,18 @@ class eventController extends expController {
                     $object = new eventdate((int)$router->params['date_id']);
                     // set the meta info
                     if (!empty($object)) {
-                        if (!empty($object->event->body)) {
-                            $desc = str_replace('"',"'",expString::summarize($object->event->body,'html','para'));
-                        } else {
-                            $desc = SITE_DESCRIPTION;
-                        }
-                        if (!empty($object->expTag)) {
+                        // we don't have any meta data stored for an event record
+                        $metainfo['title'] = $object->event->title;
+                        $metainfo['description'] = $object->event->body;
+                        $metainfo['canonical'] = $router->plainPath();
+                        if (!empty($object->event->expTag)) {
                             $keyw = '';
                             foreach ($object->expTag as $tag) {
                                 if (!empty($keyw)) $keyw .= ', ';
                                 $keyw .= $tag->title;
                             }
-                        } else {
-                            $keyw = SITE_KEYWORDS;
+                            $metainfo['keywords'] = $keyw;
                         }
-                        //fixme, we don't have any meta data stored for an event record
-                        $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
-                        $metainfo['keywords'] = empty($object->event->meta_keywords) ? $keyw : $object->event->meta_keywords;
-                        $metainfo['description'] = empty($object->event->meta_description) ? $desc : $object->event->meta_description;
-                        $metainfo['canonical'] = empty($object->event->canonical) ? $router->plainPath() : $object->event->canonical;
-                        $metainfo['noindex'] = empty($object->event->meta_noindex) ? false : $object->event->meta_noindex;
-                        $metainfo['nofollow'] = empty($object->event->meta_nofollow) ? false : $object->event->meta_nofollow;
                         return $metainfo;
                         break;
                     }

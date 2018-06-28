@@ -20,7 +20,7 @@
 <div class="module events list">
     {$myloc=serialize($__loc)}
     {if !$config.disable_links}
-        {icon class="monthviewlink" action=showall time=$time text='Month View'|gettext}
+        {icon class="monthviewlink" action=showall time=$time text='Month View'|gettext nofollow=1}
 		{if !bs()}
 			{nbsp count=2}|{nbsp count=2}
 	    {/if}
