@@ -324,7 +324,7 @@ class reportController extends expController {
                     $operator = '=';
                     break;
             }
-            $sqlwhere .= " AND o.grand_total" . $operator . (int)($p['order-price-num']);
+            $sqlwhere .= " AND o.grand_total" . $operator . expUtil::currency_to_float($p['order-price-num']);
         }
 
         if (!empty($p['pnam'])) {
@@ -706,7 +706,7 @@ class reportController extends expController {
                     $operator = '=';
                     break;
             }
-            $sqlwhere .= " AND o.grand_total" . $operator . $p['order-price-num'];
+            $sqlwhere .= " AND o.grand_total" . $operator . expUtil::currency_to_float($p['order-price-num']);
         }
 
         if (!empty($p['pnam'])) {
@@ -1276,7 +1276,7 @@ class reportController extends expController {
                     $operator = '=';
                     break;
             }
-            $sqlwhere .= " AND p.base_price" . $operator . $p['product-price-num'];
+            $sqlwhere .= " AND p.base_price" . $operator . expUtil::currency_to_float($p['product-price-num']);
         }
 
         if (!empty($p['pnam'])) {
