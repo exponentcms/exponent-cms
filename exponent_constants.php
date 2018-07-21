@@ -575,7 +575,7 @@ if (!defined('SWIFT_PATH')) {
     if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
         define('SWIFT_VERSION', '5.4.9');
     } else {
-        define('SWIFT_VERSION', '6.0.2');  //note v6.x requires php v7.x
+        define('SWIFT_VERSION', '6.1.2');  //note v6.x requires php v7.x
     }
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
     define('LEXER_VERSION', '1.0.1');
@@ -589,10 +589,10 @@ if (!defined('SWIFT_PATH')) {
  * Changing the versions here lets Exponent adjust where to look
  */
 if (!defined('MPDF7_VERSION')) {
-    define('MPDF7_VERSION', '7.0.2');
+    define('MPDF7_VERSION', '7.1.1');
 }
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.0.1');
+    define('HTML2PDF5_VERSION', '5.1.0');
 }
 
 ?>
