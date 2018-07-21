@@ -17,6 +17,7 @@ Version 2.4.3
  - adds Twitter Bootstrap v4 with Font Awesome v5 theme support including a sample theme
  - adds forms quick-submit option to skip form entry confirmation for a 1-step submission
  - add optional mapquest maps option now that google maps will cost to use
+ - adds private module indicator to module chrome
  - fixes and tweaks many issues in previous versions, esp. with users and ecommerce
 
 Version 2.4.2
