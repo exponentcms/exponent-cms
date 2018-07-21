@@ -383,6 +383,40 @@
     font-size: 12px;
 }
 
+.elfinder-edit-onlineconvert-button {
+    display: inline-block;
+    width: 180px;
+    min-height: 30px;
+    vertical-align: top;
+}
+.elfinder-edit-onlineconvert-button button,
+.elfinder-edit-onlineconvert-bottom-btn button {
+    cursor: pointer;
+}
+.elfinder-edit-onlineconvert-button .elfinder-button-icon {
+    margin: 0 10px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.elfinder-edit-onlineconvert-bottom-btn {
+    text-align: center;
+    margin: 10px 0 0;
+}
+
+.elfinder-edit-onlineconvert-link {
+    margin-top: 1em;
+    text-align: center;
+}
+.elfinder-edit-onlineconvert-link .elfinder-button-icon {
+    background-image: url("../img/edit_onlineconvert.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-bottom: -3px;
+}
+.elfinder-edit-onlineconvert-link a {
+    text-decoration: none;
+}
+
 /********************** COMMAND "SORT" ****************************/
 /* for list table header sort triangle icon */
 div.elfinder-cwd-wrapper-list tr.ui-state-default td {
@@ -538,6 +572,20 @@ div.elfinder-cwd-wrapper-list tr.ui-state-default td span.ui-icon {
     position: absolute;
     left: 0;
     top: 45px;
+}
+
+ul.elfinder-help-integrations ul {
+    margin-bottom: 1em;
+    padding: 0;
+    margin: 0 1em 1em;
+}
+
+ul.elfinder-help-integrations a {
+    text-decoration: none;
+}
+
+ul.elfinder-help-integrations a:hover {
+    text-decoration: underline;
 }
 
 .elfinder-help-debug {

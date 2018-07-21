@@ -263,7 +263,7 @@
                     // help dialog tabs
                     help : {
                         {/literal}{if $smarty.const.DEVELOPMENT}
-                        view : ['about', 'shortcuts', 'help', 'debug'],
+                        view : ['about', 'shortcuts', 'help', 'integrations', 'debug'],
                         {else}
                         view : ['about', 'shortcuts', 'help'],
                         {/if}{literal}

@@ -76,14 +76,21 @@ elFinder.prototype.resources = {
 				sel  = fm.selected(),
 				move = this.move || false,
 				empty= wz.hasClass('elfinder-cwd-wrapper-empty'),
+				unselect = function() {
+					requestAnimationFrame(function() {
+						input && input.trigger('blur');
+					});
+				},
 				rest = function(){
 					if (!overlay.is(':hidden')) {
 						overlay.elfinderoverlay('hide').off('click close', cancel);
 					}
-					node.removeClass('ui-front').css('position', '');
+					pnode.removeClass('ui-front')
+						.css('position', '')
+						.off('unselect.'+fm.namespace, unselect);
 					if (tarea) {
 						nnode && nnode.css('max-height', '');
-					} else if (pnode) {
+					} else if (!tree) {
 						pnode.css('width', '')
 							.parent('td').css('overflow', '');
 					}
@@ -118,12 +125,7 @@ elFinder.prototype.resources = {
 					move  : move
 				},
 				data = this.data || {},
-				node = ui.trigger('create.'+fm.namespace, file).find('#'+fm[find](id))
-					.on('unselect.'+fm.namespace, function() {
-						requestAnimationFrame(function() {
-							input && input.trigger('blur');
-						});
-					}),
+				node = ui.trigger('create.'+fm.namespace, file).find('#'+fm[find](id)),
 				nnode, pnode,
 				overlay = fm.getUI('overlay'),
 				cleanup = function() {
@@ -234,7 +236,16 @@ elFinder.prototype.resources = {
 										fm.unlockfiles({files : [id]});
 										inError = true;
 										input.show().prev().remove();
-										fm.error(error, {modal: true, close: function(){setTimeout(select, 120);}});
+										fm.error(error,　{
+											modal: true,
+											close: function() {
+												if (Array.isArray(error) && $.inArray('errUploadMime', error) !== -1) {
+													dfrd.notify('errUploadMime').reject();
+												} else {
+													setTimeout(select, 120);
+												}
+											}
+										});
 									})
 									.done(function(data) {
 										if (data && data.added && data.added[0]) {
@@ -323,12 +334,12 @@ elFinder.prototype.resources = {
 					});
 				}
 				nnode = node.contents().filter(function(){ return this.nodeType==3 && $(this).parent().attr('id') === fm.navHash2Id(file.hash); });
+				pnode = nnode.parent();
 				nnode.replaceWith(input.val(file.name));
 			} else {
 				empty && wz.removeClass('elfinder-cwd-wrapper-empty');
 				nnode = node.find('.elfinder-cwd-filename');
 				pnode = nnode.parent();
-				node.css('position', 'relative').addClass('ui-front');
 				if (tarea) {
 					nnode.css('max-height', 'none');
 				} else {
@@ -338,6 +349,9 @@ elFinder.prototype.resources = {
 				}
 				nnode.empty().append(input.val(file.name));
 			}
+			pnode.addClass('ui-front')
+				.css('position', 'relative')
+				.on('unselect.'+fm.namespace, unselect);
 			
 			fm.bind('resize', resize).one('open', openCallback);
 			
