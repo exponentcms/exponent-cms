@@ -470,7 +470,7 @@ class orderController extends expController {
         /**
          * to do this same thing as below using expHtmlToPDF
          */
-        $mypdf = new expHtmlToPDF('Letter','portrait',$invoice);
+        $mypdf = new expHtmlToPDF(HTMLTOPDF_PAPER,'portrait',$invoice);
         $mypdf->createpdf('D',$org_name . "_Invoice" . ".pdf");
         exit();
 
@@ -584,7 +584,7 @@ exit();
             $pdf->Output($org_name . "_Invoice" . ".pdf", 'I');
             exit();*/
             eDebug("Done rendering invoice html. Starting PDF Generation: " . $timer->mark());
-            $pdfer = new expHtmlToPDF('Letter', 'Portrait', $invoice);
+            $pdfer = new expHtmlToPDF(HTMLTOPDF_PAPER, 'Portrait', $invoice);
 //            $pdfer->set_html($invoice);
 //            $pdfer->set_orientation('Portrait');
 //            $pdfer->set_page_size('Letter');
