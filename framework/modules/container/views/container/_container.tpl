@@ -19,7 +19,7 @@
 		{if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $container->permissions.manage)}
 			<div id="module{$container->id}" class="exp-container-module-wrapper">
 				<div class="container-chrome module-chrome">
-					<a href="#" class="trigger" title="{$container->info.module|gettext}">{$container->info.module|gettext}</a>
+					<a href="#" class="trigger" title="{$container->info.module|gettext}">{if $container->is_private}{img src="`$smarty.const.ICON_RELATIVE`lock.png" square=12 title='Private Module'|gettext} {/if}{$container->info.module|gettext}</a>
                     {nocache}
                         {getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last}
                     {/nocache}
