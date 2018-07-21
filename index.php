@@ -136,7 +136,7 @@ if (EXPORT_AS_PDF == 1) {
 	$content = expProcessBuffer($content);  // we didn't actually process the output buffer by adding styles
 
     // convert to PDF
-    $pdf = new expHtmlToPDF('Letter',EXPORT_AS_PDF_LANDSCAPE?'landscape':'portrait',$content);
+    $pdf = new expHtmlToPDF(HTMLTOPDF_PAPER,EXPORT_AS_PDF_LANDSCAPE?'landscape':'portrait',$content);
     $pdf->createpdf(HTMLTOPDF_OUTPUT?'D':'I',$sectionObj->name.".pdf");
     echo '<script type="text/javascript">
         <!--
