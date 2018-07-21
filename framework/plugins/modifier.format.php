@@ -37,7 +37,10 @@
 function smarty_modifier_format($string, $format=null) {
     switch ($format) {
         case 'date':
-            return strftime(DISPLAY_DATETIME_FORMAT, $string);
+            if (!empty($string))
+                return strftime(DISPLAY_DATETIME_FORMAT, $string);
+            else
+                return ''; // 0 isn't really a date
             break;
         case 'currency' :
             $string = ($string=="") ? 0 : $string;
