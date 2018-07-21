@@ -37,7 +37,7 @@
         </div>
         {$begin = expDateTime::startOfYearTimestamp(time())}
         {control type="yuidatetimecontrol" name="begin" label="Start Date"|gettext showtime=false edit_text="Beginning of This Year" checked=true value=$begin}
-        {$end = expDateTime::endOfYearTimestamp(expDateTime::endOfYearTimestamp(time()) + 2)}
+        {$end = expDateTime::endOfYearTimestamp(expDateTime::endOfYearTimestamp(time()) + 1)}
         {control type="yuidatetimecontrol" name="end" label="End Date"|gettext showtime=false edit_text="End of Next Year" checked=true value=$end}
         <label>{'Module to import into'|gettext}</label>
         <table class="exp-skin-table aggregate">
