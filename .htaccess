@@ -28,6 +28,12 @@ DirectoryIndex index.php
 #     RewriteCond %{HTTP_HOST} ^www\.example\.com$ [NC]
 #     RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
 
+    # To force the domain to serve the site securely using HTTPS,
+    # (http://www.example.com/... will be redirected to https://www.example.com/...)
+    # uncomment and adapt the following:
+#    RewriteCond %{HTTPS} !=on
+#    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
 # the next two lines will dish out .html pages if they exist, which may not be a desired effect!
     RewriteRule ^$ index.html [QSA]
     RewriteRule ^([^.]+)$ $1.html [QSA]
