@@ -1,0 +1,17 @@
+/*!
+ * Exponent variation for NewUI interface
+ */
+
+.exp-skin {
+  $swatch: "cerulean"; // newui uses this swatch
+  $enable-rounded: true; // default true
+  $enable-shadows: false; // default false
+  $enable-gradients: false; // default false
+  $enable-transitions: true; // default true
+
+  //$themepath: "../../../themes/bootstrap4theme/scss";
+
+  @import "bootstrap";
+
+  font-family: $font-family-sans-serif !important;
+}
