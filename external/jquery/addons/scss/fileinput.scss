@@ -1,0 +1,129 @@
+// Import bootstrap variables including default color palette and fonts
+@import "../../../bootstrap4/scss/functions";
+@import "../#{$themepath}/../scss/variables"; //exp Modify this for theme colors, font-sizes, etc
+@import "../../../bootstrap4/scss/#{$swatch}/variables";
+@import "../../../bootstrap4/scss/variables";
+@import "../../../bootstrap4/scss/mixins";
+
+// Fileinput
+// CSS for file upload button and fileinput widget
+// ------------------------------------------------
+
+.btn-file {
+  overflow: hidden;
+  position: relative;
+  vertical-align: middle;
+  > input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    font-size: 23px;
+    height: 100%;
+    width: 100%;
+    direction: ltr;
+    cursor: pointer;
+  }
+}
+
+.fileinput {
+  margin-bottom: 9px;
+  display: inline-block;
+  .form-control {
+    padding-top: 7px;
+    padding-bottom: 5px;
+    display: inline-block;
+    margin-bottom: 0px;
+    vertical-align: middle;
+    cursor: text;
+  }
+  .thumbnail {
+    overflow: hidden;
+    display: inline-block;
+    margin-bottom: 5px;
+    vertical-align: middle;
+    text-align: center;
+    > img {
+      max-height: 100%;
+    }
+  }
+  .btn {
+    vertical-align: middle;
+  }
+}
+.fileinput-exists .fileinput-new,
+.fileinput-new .fileinput-exists {
+  display: none;
+}
+
+//close X button alignment
+.fileinput-exists.close {
+  float: none;
+}
+
+.fileinput-inline .fileinput-controls {
+  display: inline;
+}
+
+.fileinput-filename {
+  vertical-align: middle;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.form-control .fileinput-filename {
+  vertical-align: bottom;
+}
+
+.fileinput.input-group {
+    display: table;
+}
+
+// Not 100% correct, but helps in typical use case
+.fileinput-new.input-group .btn-file,
+.fileinput-new .input-group .btn-file {
+  border-radius: 0 $border-radius $border-radius 0;
+
+  &.btn-xs,
+  &.btn-sm {
+    border-radius: 0 $border-radius-sm $border-radius-sm 0;
+  }
+  &.btn-lg {
+    border-radius: 0 $border-radius-lg $border-radius-lg 0;
+  }
+}
+
+.form-group.has-warning .fileinput {
+  .fileinput-preview {
+    color: $warning;
+  }
+  .thumbnail {
+    border-color: $warning;
+  }
+}
+.form-group.has-error .fileinput {
+  .fileinput-preview {
+    color: $danger;
+  }
+  .thumbnail {
+    border-color: $danger;
+  }
+}
+.form-group.has-success .fileinput {
+  .fileinput-preview {
+    color: $success;
+  }
+  .thumbnail {
+    border-color: $success;
+  }
+}
+
+
+// Input group fixes
+
+.input-group-addon:not(:first-child) {
+  border-left: 0;
+}
