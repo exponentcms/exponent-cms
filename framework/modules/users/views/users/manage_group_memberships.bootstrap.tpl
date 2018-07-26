@@ -21,15 +21,12 @@
 		<h2>{"Manage Group Memberships"|gettext} - {$group->name}</h2>
     </div>
 
-    {form action="update_memberships"}
-        {*<input type="hidden" name="id" value="{$group->id}"/>*}
+    {form id="myform" action="update_memberships"}
         {control type="hidden" name="id" value=$group->id}
-        {*{pagelinks paginate=$page top=1}*}
         {$table_filled = true}
         <table id="groups-manage">
             <thead>
                 <tr>
-                    {*{$page->header_columns}*}
                     <th data-class="expand">{'Username'|gettext}</th>
                     <th data-hide="phone" data-name="First">{'First Name'|gettext}</th>
                     <th data-hide="phone" data-name="Last">{'Last Name'|gettext}</th>
@@ -44,9 +41,11 @@
                         <td>{$grp_user->firstname}</td>
                         <td>{$grp_user->lastname}</td>
                         <td>
+                            {*{$grp_user->id}*}
                             {control type=checkbox name="memdata[`$grp_user->id`][is_member]" value=1 checked=$grp_user->is_member}
                         </td>
                         <td>
+                            {*{$grp_user->id}*}
                             {control type=checkbox name="memdata[`$grp_user->id`][is_admin]" value=1 checked=$grp_user->is_admin}
                         </td>
                     </tr>
@@ -56,7 +55,6 @@
                 {/foreach}
             </tbody>
         </table>
-        {*{pagelinks paginate=$page bottom=1}*}
         {control type="buttongroup" submit="Save Memberships"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
@@ -73,6 +71,7 @@
         var tableContainer = $('#groups-manage');
 
         var table = tableContainer.DataTable({
+            autoWidth: false,
             columns: [
                 null,
                 null,
@@ -80,29 +79,64 @@
                 { searchable: false, orderable: false },
                 { searchable: false, orderable: false },
             ],
-            columnDefs: [
-               {
-                  'targets': [3,4],
-                  'data': 0,
-                  'checkboxes': true
-               }
-            ],
-            autoWidth: false,
-            // preDrawCallback: function () {
-            //     // Initialize the responsive datatables helper once.
-            //     if (!responsiveHelper) {
-            //         responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
-            //     }
-            // },
-            // rowCallback: function (nRow) {
-            //     responsiveHelper.createExpandIcon(nRow);
-            // },
-            // drawCallback: function (oSettings) {
-            //     responsiveHelper.respond();
-            // }
+            // columnDefs: [
+            //    {
+            //       targets: [3,4],
+            //       data: 0,
+            //       checkboxes: true
+            //    }
+            // ],
         });
-        // var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
-        // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+
+        // Handle form submission event
+        // $('#myform').on('submit', function(e){
+        //     var form = this;
+        //
+        //     var rows_selected = table.column(3).checkboxes.selected();
+        //     // Iterate over all selected checkboxes
+        //     $.each(rows_selected, function(index, rowId){
+        //         // Create a hidden element
+        //         $(form).append(
+        //             $('<input>')
+        //             .attr('type', 'hidden')
+        //             .attr('name', 'memdata['+rowId+'][is_member]')
+        //             .val(rowId)
+        //         );
+        //     });
+        //     var rows_selected = table.column(4).checkboxes.selected();
+        //     // Iterate over all selected checkboxes
+        //     $.each(rows_selected, function(index, rowId){
+        //         // Create a hidden element
+        //         $(form).append(
+        //             $('<input>')
+        //             .attr('type', 'hidden')
+        //             .attr('name', 'memdata['+rowId+'][is_admin]')
+        //             .val(rowId)
+        //         );
+        //     });
+        // });
+
+        // Handle form submission event
+        $('#myform').on('submit', function(e){
+           var form = this;
+
+           // Iterate over all checkboxes in the table
+           table.$('input[type="checkbox"]').each(function(){
+              // If checkbox doesn't exist in DOM
+              if(!$.contains(document, this)){
+                 // If checkbox is checked
+                 if(this.checked){
+                    // Create a hidden element
+                    $(form).append(
+                       $('<input>')
+                          .attr('type', 'hidden')
+                          .attr('name', this.name)
+                          .val(this.value)
+                    );
+                 }
+              }
+           });
+        });
     } );
 {/literal}
 {/script}

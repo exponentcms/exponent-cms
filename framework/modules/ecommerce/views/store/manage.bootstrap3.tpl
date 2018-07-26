@@ -218,9 +218,6 @@
             };
         })();
 
-        // var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
-        // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
-
         yadcf.init(table, [{
             column_number: 0,
             column_data_type: "text",

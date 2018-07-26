@@ -75,7 +75,7 @@
 </div>
 
 {if $table_filled}
-{script unique="manage-users" jquery='jquery.dataTables2,dataTables.tableTools2,dataTables.bootstrap2,datatables.responsive2'}
+{script unique="manage-users" jquery='jquery.dataTables2,dataTables.bootstrap2,datatables.responsive2'}
 {literal}
     $(document).ready(function() {
         // var responsiveHelper;
@@ -105,21 +105,7 @@
             ],
             order: [[0, 'asc']],
             autoWidth: false,
-            // preDrawCallback: function () {
-            //     // Initialize the responsive datatables helper once.
-            //     if (!responsiveHelper) {
-            //         responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
-            //     }
-            // },
-            // rowCallback: function (nRow) {
-            //     responsiveHelper.createExpandIcon(nRow);
-            // },
-            // drawCallback: function (oSettings) {
-            //     responsiveHelper.respond();
-            // }
         });
-        // var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
-        // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}
 {/script}

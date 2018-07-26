@@ -15,6 +15,18 @@
 
 {css unique="manage-groups"}
 {literal}
+    table.dataTable thead > tr {
+        font-size-adjust: 0.4;
+    }
+    table.dataTable thead > tr > th {
+        padding-left: 5px;
+        padding-top: 0;
+        padding-bottom: 0;
+        vertical-align: top;
+    }
+    .row-detail .yadcf-filter-wrapper {
+        display: none;
+    }
     table.dataTable thead .sorting,
     table.dataTable thead .sorting_asc,
     table.dataTable thead .sorting_desc  {
@@ -31,15 +43,12 @@
 		<h2>{"Manage Group Memberships"|gettext} - {$group->name}</h2>
     </div>
 
-    {form action="update_memberships"}
-        {*<input type="hidden" name="id" value="{$group->id}"/>*}
+    {form id="myform" action="update_memberships"}
         {control type="hidden" name="id" value=$group->id}
-        {*{pagelinks paginate=$page top=1}*}
         {$table_filled = true}
         <table id="groups-manage">
             <thead>
                 <tr>
-                    {*{$page->header_columns}*}
                     <th data-class="expand">{'Username'|gettext}</th>
                     <th data-hide="phone" data-name="First">{'First Name'|gettext}</th>
                     <th data-hide="phone" data-name="Last">{'Last Name'|gettext}</th>
@@ -47,6 +56,7 @@
                     <th data-hide="phone" data-name="Admin">{'Is Admin'|gettext}</th>
                 </tr>
             </thead>
+            {*{if !$smarty.const.ECOM_LARGE_DB}*}
             <tbody>
                 {foreach from=$page->records item=grp_user name=listings}
                     <tr>
@@ -54,9 +64,11 @@
                         <td>{$grp_user->firstname}</td>
                         <td>{$grp_user->lastname}</td>
                         <td>
+                            {*{$grp_user->id}*}
                             {control type=checkbox name="memdata[`$grp_user->id`][is_member]" value=1 checked=$grp_user->is_member}
                         </td>
                         <td>
+                            {*{$grp_user->id}*}
                             {control type=checkbox name="memdata[`$grp_user->id`][is_admin]" value=1 checked=$grp_user->is_admin}
                         </td>
                     </tr>
@@ -65,13 +77,13 @@
                     <td colspan="5"><h4>{'No Data'|gettext}</h4></td>
                 {/foreach}
             </tbody>
+            {*{/if}*}
         </table>
-        {*{pagelinks paginate=$page bottom=1}*}
         {control type="buttongroup" submit="Save Memberships"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
 
-{if $table_filled}
+{*{if $table_filled}*}
 {script unique="manage-groups" jquery='jquery.dataTables,dataTables.bootstrap,dataTables.checkboxes'}
 {literal}
     $(document).ready(function() {
@@ -83,37 +95,65 @@
         var tableContainer = $('#groups-manage');
 
         var table = tableContainer.DataTable({
-            columns: [
-                null,
-                null,
-                null,
-                { searchable: false, orderable: false },
-                { searchable: false, orderable: false },
-            ],
-            columnDefs: [
-               {
-                  'targets': [3,4],
-                  'data': 0,
-                  'checkboxes': true
-               }
-            ],
+            stateSave: true,
             autoWidth: false,
-            // preDrawCallback: function () {
-            //     // Initialize the responsive datatables helper once.
-            //     if (!responsiveHelper) {
-            //         responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
-            //     }
-            // },
-            // rowCallback: function (nRow) {
-            //     responsiveHelper.createExpandIcon(nRow);
-            // },
-            // drawCallback: function (oSettings) {
-            //     responsiveHelper.respond();
-            // }
+            order: [[0, 'asc']],
+    {/literal}
+    {*
+    {if $smarty.const.ECOM_LARGE_DB}
+    {literal}
+            processing: true,
+            serverSide: true,
+            ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=users&action=getUsersByJSON3&group={/literal}{$group->id}{literal}&json=1",
+    {/literal}
+    {/if}
+    *}
+    {literal}
+            // columns: [
+            //     null,
+            //     null,
+            //     null,
+            //     { searchable: false, orderable: false },
+            //     { searchable: false, orderable: false },
+            // ],
+            columns: [
+                { data: 'username' },
+                { data: 'firstname' },
+                { data: 'lastname' },
+                { data: 'is_acting_admin', searchable: false, orderable: true },
+                { data: 'id', searchable: false, orderable: false },
+            ],
+            // columnDefs: [
+            //    {
+            //       targets: [3,4],
+            //       data: 0,
+            //       checkboxes: true
+            //    }
+            // ],
         });
-        // var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
-        // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+
+        // Handle form submission event
+        $('#myform').on('submit', function(e){
+           var form = this;
+
+           // Iterate over all checkboxes in the table
+           table.$('input[type="checkbox"]').each(function(){
+              // If checkbox doesn't exist in DOM
+              if(!$.contains(document, this)){
+                 // If checkbox is checked
+                 if(this.checked){
+                    // Create a hidden element
+                    $(form).append(
+                       $('<input>')
+                          .attr('type', 'hidden')
+                          .attr('name', this.name)
+                          .val(this.value)
+                    );
+                 }
+              }
+           });
+        });
     } );
 {/literal}
 {/script}
-{/if}
+{*{/if}*}

@@ -154,9 +154,6 @@
             pagingType: "full_numbers",
 //            dom: '{/literal}{$pageit}{literal}',  // pagination location
             // dom: 'T<"clear">lfrtip',
-            // tableTools: {
-            //     sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            // },
             scrollX: true,
             columnDefs: [
                 { searchable: false, targets: [ -1 ] },

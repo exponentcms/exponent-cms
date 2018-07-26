@@ -112,9 +112,6 @@
             pagingType: "full_numbers",
 //            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
 //             dom: 'T<"clear">lfrtip',
-            // tableTools: {
-            //     sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            // },
             scrollX: true,
             columnDefs: [
 //                { searchable: true, targets: [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },

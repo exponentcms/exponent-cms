@@ -29,12 +29,10 @@
 		{icon class=add controller=users action=edit_group text="Create a New User Group"|gettext alt="Create a New User Group"|gettext}
 	</div>
     {br}
-    {*{pagelinks paginate=$page top=1}*}
     {$table_filled = true}
 	<table id="groups-manage">
 	    <thead>
 			<tr>
-				{*{$page->header_columns}*}
                 <th data-class="expand" data-name="Name">{'Group Name'|gettext}</th>
                 <th data-hide="phone" data-name="Desc">{'Description'|gettext}</th>
                 <th data-hide="phone">{'Type'|gettext}</th>
@@ -65,7 +63,6 @@
 			{/foreach}
 		</tbody>
 	</table>
-    {*{pagelinks paginate=$page bottom=1}*}
 </div>
 
 {if $table_filled}
@@ -101,8 +98,6 @@
                 responsiveHelper.respond();
             }
         });
-        // var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
-        // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}
 {/script}

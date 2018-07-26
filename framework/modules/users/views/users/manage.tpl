@@ -89,11 +89,6 @@
     {/if}
     {literal}
             pagingType: "full_numbers",
-//            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-//             dom: 'T<"clear">lfrtip',
-            // tableTools: {
-            //     sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            // },
             stateSave: true,
             columns: [
                 { data: 'username' },

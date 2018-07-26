@@ -29,12 +29,10 @@
 		{icon class=add controller=users action=edit_group text="Create a New User Group"|gettext alt="Create a New User Group"|gettext}
 	</div>
     {br}
-    {*{pagelinks paginate=$page top=1}*}
     {$table_filled = true}
 	<table id="groups-manage">
 	    <thead>
 			<tr>
-				{*{$page->header_columns}*}
                 <th>{'Group Name'|gettext}</th>
                 <th>{'Description'|gettext}</th>
                 <th>{'Type'|gettext}</th>
@@ -65,7 +63,6 @@
 			{/foreach}
 		</tbody>
 	</table>
-    {*{pagelinks paginate=$page bottom=1}*}
 </div>
 
 {if $table_filled}
@@ -76,11 +73,6 @@
 
         var table = tableContainer.DataTable({
             pagingType: "full_numbers",
-//            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-//             dom: 'T<"clear">lfrtip',
-            // tableTools: {
-            //     sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            // },
             columns: [
                 null,
                 null,
