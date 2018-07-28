@@ -165,7 +165,7 @@ Version 2.3.8
   - new 'manage by sitemap' feature to better analyze and manage entire existing page structure
   - now allows for styling of 'tags', example in bootstrap3theme sample theme
   - we now attempt to email to user name instead of only using email address (more professional)
-  - optional support for Kint debugging eDebug output (http://raveren.github.io/kint/)
+  - optional support for Kint debugging eDebug output (https://kint-php.github.io/kint/)
   - replaced old custom browser fallback/polyfill support with Webshims library
   - adds module styling settings to help emphasize individual modules (borders, background & visibility)
   - attempts to suppress easypost error messages from USPS if shipping package over 70lbs
