@@ -1,198 +1,187 @@
 Version 2.4.3 - Specific changes from previous version
 ------------------------------------------------------
 
-#### v242 adds these features to v241 previous releases:
-- implement php v7.2 compatibility, removes create_function() calls
-- remove support for php v5.3 and v5.4 
-- remove support for obsolete browsers, optionally can be turned back on
-- implement support for SwiftMailer v6.x if php version 7.0+; v5.4.8 used if older php version
-- unserialize feature to the SQL Command output view of the database manager
-- filedownload item attached file as podcast item image, if an image
-- export to csv in portfolio module, so pieces could be imported as a form 
-- wysiwyg editor option to text area in form design to allow wysiwyg form entry
-- tweak forms portfolio view to optionally display 'grouping'; also allow paged support for that view
-- update expCSS subsystem to allow passing scss files for compilation using scssprimer and scsscss params
-- update elFinder windows 10 theme icons and add 3 new elFinder themes (bootstrap/libreicons, Material, & Material Gray)
-- update bootstrap 3 listbuilder and datetimepicker to use font awesome icons instead of bootstrap glyphicons
-- change bs3 chrome menus to use newui skin (helps when using custom styles)
-- events showall_by_date action and showall_year view
-- form record sef url support; change edit record save to update record instead of delete and recreate
-- inline css compiler mapping output to iLess, less.php and scssphp
-- add form validation feedback icons
-- add motd csv file import, random message display, yearly calendar display of all messages available
-- update social feed to better display facebook videos by an image rather than a simple link
-- allow jquery addons to have scss stylesheets if in bs4 theme
-- replace Pear based archive functions with newer php built-in ZipArchive/PharData
+#### v243 adds these features to v242 and previous patches:
+- added private module indicator to module chrome
+- added sample http2 config settings to .htaccess & nginx.conf
+- added sample Bootstrap 4 theme & associated libraries to package
+- removed sample Bootstrap 2 theme from package
 
-#### v242 fixes these issues in v241 previous releases:
-- fix elFinder upload fails without having php fileinfo module loaded
-- fix old yui mega menu so it is usable within bootstrap themes (though not recommended)
-- regression fix (240p1) bad regex param cleaning removes valid dash in src names
-- regression fix (v237p3) unable to import files because of too strict regex param array cleaning
-- fix feedcreator library to properly set itunes item image
-- fix broken page on search output in some scenarios
-- fix/standardize csv export/import issues in forms & event registration modules
-- fix mangled output of portfolio view custom definition
-- fix issues with form csv import and dropdownlist population
-- fix ecommerce order management filtering by date
-- fix input to bootstrap tags picker allowing 'enter' to select from list
-- regression fix (v241p3) ckeditor control custom settings can cause crash in non-bs3 themes
-- regression fix less compiler sourcemap issues with less.php (241p3 bad path) & iLess (crash)
-- regression fix (v239) bootstrap 3 wysiwyg form designer drag/drop form control reranking logic was flawed
-- regression fix (v2.0) MOTD module flawed logic
-- fix mediaplayer displays to be responsive
-- fix toggle objects might crash with languages using accents
-- fix text module inline edit view would crash when reverting and no item title existed
-- regression fix font icons in bootstrap 2 flydown menu
-- regression (v237p3) fix install extension command
+#### v243 fixes these issues in v242 and previous patches:
+- regression fix (242p4) unable to change user group membership
+- regression fix (241p3) order report doesn't adhere to order status or order status changed input
+- regression fix (241p3) order and product reports don't adhere to date request
+- regression fix (242p5) fix order payment summary charts
+- fix bs4 form design horizontal style
+- regression fix tags views by title were in reverse alphabetical order
+- fix event module SEO issues (spider too deep, bad meta info, no day view link icon)
+- fix ecommerce report creation rejecting product/order amount due to currency symbol
 
-#### v242 updates these 3rd party libraries in v241 previous releases:
-- CKEditor to v4.8.0
-- tinymce to v4.7.4
-- elFinder to v2.1.31, adds dockable previewer, icon filetype tags
-- plupload to v2.3.6 (v3.1.1 is latest)
-- mediaelement to v4.2.7; mediaelement plugins to v2.5.0
-- jQuery to v3.2.1 (if old browser support turned off), also loads jQuery migrate v3.0.1
-- swiftmailer to v6.0.2 (v5.4.8 remains for older php version 5.x support)
-- minify to v2.3.3 (v3.0.3 is latest)
-- twitter-api-php to v1.0.6
-- xmlrpc.php to v4.3.0 (removed old v3 files)
-- select2 to v4.0.5
-- moment.js to v2.20.1
-- strength-meter to v1.1.4
-- datetimepicker to v2.5.14
-- yadcf to v0.9.2
-- scssphp to v0.7.4 (with hack to compile bs4 newui; also adds sourcemap support)
-- EasyPost library to v3.4.0
-- iCalCreator library to v2.24.0
-- SimplePie rss library to v1.5.1
+#### v243 updates these 3rd party libraries in v242 and previous patches:
+- adminer v4.6.3
+- ckeditor v4.10.0
+- tinymce v4.8.0
+- swiftmailer v6.1.2
+- elFinder v2.1.40
+- datatables to v1.10.19
+- scssphp to v0.7.7
+- adds Bootstrap v4.1.3 with Boot Swatches v4.1.3
+- adds Font Awesome 5.2.0
 
+## v242patch7
 
-#### v241patch6 adds these features to v241:
-- update optional eDebug support for Kint v2.0
-- font-awesome icon on page not found view in bootstrap2/3; adds search box if no similar results found
-- more secure system password generator
-- adds error checking to fileupload control to account for a file not being uploaded due to a server configuration issue
+#### v242patch7 adds these features to v242 and previous patches:
+- adds dropdown configuration settings to simpletheme
+- adds a sample NGINX server configuration file for sef urls
+- add display of socialfeed facebook link type post thumbnails
+- add optional mapquest maps option now that google maps will cost to use
 
-#### v241patch6 fixes these issues in v241:
-- fix ie10 viewport bug workaround
-- fix ealerts send, since expBot doesn't appear to be working correctly
-- security fix for rouge admins attempting to elevate their permissions (thanks to chengable)
-- regression fix (v241p5) valid custom wysiwyg configuration may break page
-- fix the verify return shopper view (probably always broken?)
-- regression fix (v240) unable to edit existing orders
-- regression fix (v240) unable to add/activate user addresses (ecom)
-- fix photoalbum bs3 slideshow view to optionally display text
-- fix workflow issue which prevented updating item ranks/order
-- fix fatal issue when attempting to view form data using default columns
-- fixes several issues with workflow, esp. search index
+#### v242patch7 fixes these issues in v242 and previous patches:
+- regression fix 'show past events' should be most recent first
+- regression fix (v242) export files/themes broken
+- regression fix (v242) bootstrap4 (or theme custom) shipping/billing calculator views not displayed
+- fix minified css removed necessary spaces
+- regression fix (v242p4) unable to update group membership
+- regression fix (v242p6) ckeditor file upload send to server feature broken
+- fix issues with ckeditor custom toolbar if empty lines are at end of configuration
+- regression fix (242p6) ckeditor undo feature missing
 
-#### v241patch6 updates these 3rd party libraries in v241:
-- tinymce to v4.6.6, adds new help/about plugin
-- ckeditor to v4.7.2, also updates autosave plugin
-- elFinder to v2.1.28, updates edit file editors
-- mediaelement to v4.2.5 and mediaelement plugins to v2.4.0
-- normalize.css to v7.0.0
-- swiftmailer to v5.4.8 (v6.x requires php v7+)
-- easypost library to v3.3.5
-- sortable jquery plugin to v1.6.0
-- validate jquery plugin to v1.17.0
-- xmlrpc to v4.2.0
-- plupload to v2.3.3 (used by tinymce quickupload plugin)
+#### v242patch7 updates these 3rd party libraries in v242 and previous patches:
+- elFinder to 2.1.39
+- TinyMCE to 4.7.13
+- YADCF to v0.9.3
+- scssphp to v0.7.6
+- moment.js to v2.22.2
 
+## v242patch6
 
-#### v241patch5 adds these features to v241:
-- change default password security to blowfish vs md5
-- allow specifying events send_reminders view in url
-- add jquery/bootstrap-3 based toggle widget
+#### v242patch6 adds these features to v242 and previous patches:
+- update robots.txt to remove thumb.php thumbnailer since Google indexing has begun to complain...also disallowing newer documents
+- adds customers command (manage users) to ecommerce menu
+- adds forms quick-submit option to skip form entry confirmation for a 1-step submission
 
-#### v241patch5 fixes these issues in v241:
-- regression fix (v240) invalidating valid source names made some modules disappear
-- fix styling issue with bs3 form designer 'Toggle Designer Grid'
-- regression fix with links showall view links if the open new window option was selected
-- fix possible xss security issue with elFinder (thanks to chengable)
-- fix new socialfeed notes view photos on firefox and opera
+#### v242patch6 fixes these issues in v242 and previous patches:
+- fix slideshow scroll page up/down on touch devices
+- regression fix (v242p5) form submission warning
+- give proper ids to event feedback forms to prevent errors when multiple RSVP events are shown on page
+- fix expString and billing calculators to be php v7.2 compliant (remove each() statement)
+- regression fix recaptcha (form submission) was broken when minimize & combine js scripts was turned on
+- regression fix (v242p5) remove orphan child product records upgrade script
+- regression fix (v242) crash with ical pull events time zones
+- fix a twitter profile image issue; add 'noq' param to {img} to preven tacking on &q=75 to twitter call for profile image
 
-#### v241patch5 updates these 3rd party libraries in v241:
-- mediaelement.js to v4.0.6
+#### v242patch6 updates these 3rd party libraries in v242 and previous patches:
+- CKEditor to v4.9.2
+- TinyMCE to v4.7.11
+- elFinder to 2.1.37
+- jquery datetimepicker to v2.5.20
+- mediaelement to v4.2.9
+- owlCarousel2 to v2.3.4
+- moment.js to v2.22.1
+- easypost sdk to v3.4.1
+- EmailValidator to v2.1.4
+- Bootstrap DualListBox to v3.0.7
 
+## v242patch5
 
-#### v241patch4 adds NO features to v241:
+#### v242patch5 adds these features to v242 and previous patches:
+- adds small device responsive view to store show product w/ child products in bs3 framework
+- uses speedier casting instead of intval/floatval/stringval functions
+- update delete products/categories to better clean up associated tables
+- adds new optional upgrade script to remove orphan eCommerce records
+- adds customer stats to ecommerce dashboard, splits out dashboard data
+- add delete confirmation to bootstrap store category tree deletions
+- add autoplay setting to media player
 
-#### v241patch4 fixes these issues in v241:
-- fix issue with chrome (module dropdown menus) in bootstrap 3 nested containers (mainly tabbed)
-- regression fix (v241p3) links have wrong id's
+#### v242patch5 fixes these issues in v242 and previous patches:
+- regression fix (v242) unable to update existing form records
+- regression fix (v241p6) new users unable to create new account (non-ecommerce)
+- regression fix (v242p1) IIS support always switches to https urls
+- regression fix orders report, show payment summary tax data not displayed
+- regression fix (v242p4) images in manage products not displayed
+- regression fix media player youtube videos fail to play when multiple videos are on a page
+- fix unused tables shouldn't list forms data tables for removal
+- fix product model complains when doing update() from other than edit view
+- fix fix_sef_urls upgrade script to not add an sef_url to child products
+- fix photoalbum configuration to not send duplicate config settings from both 'gallery' and 'module view' tabs
+- fix some cross-domain loading issues for https: sites (fonts, maps)
+- fix bootstrap 4 support in orders and printer-friendly views
 
-#### v241patch4 updates these 3rd party libraries in v241:
-- database manager (adminer) to v4.3.1
-- mediaelement.js to v4.0.5, mediaelement plugins to v2.1.1
-- iCalcreator to v2.22.5
+#### v242patch5 updates these 3rd party libraries in v242 and previous patches:
+- TinyMCE to v4.7.9
+- Adminer db manager to v4.6.2
+- moment.js to v2.21.0
+- owlCarousel2 to v2.3.2
+- elFinder to v2.1.33
 
+## v242patch4
 
-#### v241patch3 adds these features to v241:
-- adds better serialized data preview feature to database manager
-- adds optional support for dompdf v0.8.0
-- adds default pdf paper size support
-- update optional update script ecom3 to trim orphaned orders to last 7 days since system now auto-trims to last 30 days
-- adds 'post it' style view variation to socialfeed module under bootstrap3
-- now attempts to help prevent complete page crashes for improper custom wysiwyg editor configuration entries
-- google maps now mandates an api key; added setting to general store settings
+#### v242patch4 adds these features to v242 and previous patches:
+- allow optional custom import/export methods
+- adds # child products to the manage products view
+- adds view customer to the manage users view if ecom is on
 
-#### v241patch3 fixes these issues in v241:
-- regression fix (v241) upload (zipped) extension/patch broken
-- (regression?) fix some issues with eaas module image setting storage/retrieval
-- fixes issue with dompdf v0.7.0 library detection
-- regression fix google_maps plugin crashes on addresses with apostrophe (bootstrap 3 show order)
-- regression fix (v240p1) unable to edit addresses for basic user
-- regression fix (v240) saving (Facebook, etc...) 'app_id' corrupted entry
-- fix manage orders/products sort by price/date links were bad
-- fix many issues with sorting order/product reports, however still doesn't retain all settings between refreshes
-- regression fix (v240) saving site configuration values with quotes added multiple slashes
+#### v242patch4 fixes these issues in v242 and previous patches:
+- fix to get the bs3 view order invoice map to display correctly (instead of gray)
+- regression fix users unable to create their own account
+- regression fix (v242p2) some search issues
+- better large ecom database optional support (orders, products, & users)
+- still lacks group membership & permissions support
+- removes tabletools & responsive support (at least temporarily)
 
-#### v241patch3 updates these 3rd party libraries in v241:
-- TinyMCE editor to v4.5.6
-- ReCaptcha to v1.1.3
-- Owl Carousel to v2.2.1
-- SimpleAjaxUploader to v2.6.2
-- mediaelement.js to v4.0.3, includes plugins v2.1.0
-- adminer database manager to v4.3.0
-- normalize.css to v6.0.0
-- less.php to v1.7.0.14
-- bootstrap-dialog to v1.35.4
-- moment.js to v2.18.1
-- elFinder to v2.1.23
-- jstree to v3.3.4
+#### v242patch4 updates these 3rd party libraries in v242 and previous patches:
+- TinyMCE to v4.7.6
+- Adminer database manager to v4.6.1
+- jQuery to v3.3.1
+- SwiftMailer to v5.4.9 (though we still also ship v6.0.2 for php 7.x)
+- scssphp to v0.7.5
+- elFinder to v2.1.32
+- DataTables to v1.10.16
+- jquery datetimepicker to v2.5.18
+- phpxmlrpc to v 4.3.1
+- normalize.css to v8.0.0
 
+## v242patch3
 
-#### v241patch2 adds these features to v241:
-- update dynamic SEO page titles to reduce length
+#### v242patch3 adds no features to v242 and previous patches:
 
-#### v241patch2 fixes these issues in v241:
-- regression fix (v240) unable to update cart item quantities
-- regression fix (v241) several elFinder upload/paste issues
-- regression fix wildcard module name for action_maps.php (probably never worked correctly)
-- security fix exploits using source_selector.php, reported by Belladona-c0re and croxy CVE-2017-6364
-- regression fix some 500 errors when permissions or logged in checks fail
+#### v242patch3 fixes these issues in v242 and previous patches:
+- regression fix (242p2) unable to install exponent due to no db engine installed message
 
-#### v241patch2 updates these 3rd party libraries in v241:
-- bootstrap datetimepicker to v4.17.47
-- easypost library to v3.3.3
-- plupload to v2.3.1
-- TinyMCE to v4.5.4
-- elFinder to v2.1.22 to fix upload/mimetype (security) issues
-- Sortable jquery plugin to v1.5.1
-- less.php less compiler to v1.17.0.13 to bring less.js support from 1.7.0 to 2.5.3
-- mediaelement.js to v3.2.3, includes plugins v1.2.2
+#### v242patch3 updates no 3rd party libraries in v242 and previous patches:
 
+## v242patch2
 
-#### v241patch1 adds NO features to v241:
+#### v242patch2 adds these features to v242 and previous patches:
+- allow customer order comments/instructions during checkout
+- enhance search indexing code
 
-#### v241patch1 fixes these issues in v241:
-- fix fatal crash when sending emails
-- Unrestricted File Deletion / Upload Vulnerability in elFinder, reported by mm
+#### v242patch2 fixes these issues in v242 and previous patches:
+- regression fix (v241p6) admins unable to add new users
+- regression fix (v242p1) code snippet saves emtpy body when using Ace editor
+- regression fix (v242p1) db manager issues; fix tinymce implementation; fix tables filter; calendar widget extra input field; disable ckeditor for now
+- fix some methods to better handle large database tables
 
-#### v241patch1 updates these 3rd party libraries in v241:
-- TinyMCE to v4.5.2
-- CKEditor to v4.6.2
-- elFinder to v2.1.20
-- mediaelement.js to v2.23.5
+#### v242patch2 updates these 3rd party libraries in v242 and previous patches:
+- tinymce to v4.7.5
+- adminer to v4.5.0
+
+## v242patch1
+
+#### v242patch1 adds these features to v242:
+- add version constants for some HTMLTOPDF engines to facilitate easier future updates
+- update store category tree to display number of products in category and flag improper category selection
+- Microsoft IIS server compatibility (requires url_rewrite module), thanks to Todd Giardina, Todd's IT
+- Additional db indexes added which should improve performance on sites with much data (blogs, ecommerce)
+- enhance adding new items by only adding that single item to the search index instead of re-indexing the entire module
+
+#### v242patch1 fixes these issues in v242:
+- !!regression fix (v242) sending mail crashes under php v7+ on non-windows server or when using simple mail option on php v7+ on any system
+- resolve some cross-domain (https to http) security issues (this was NOT a vulnerability)
+- resolve some store/showall and time limit issues with large databases
+- fix db manager calendar widget saving wrong dates
+
+#### v242patch1 updates these 3rd party libraries in v242:
+- jstree to v3.3.5
+- mediaelement.js to v4.2.8
+- adminer (db manager) to v4.4.0

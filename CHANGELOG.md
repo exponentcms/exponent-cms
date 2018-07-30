@@ -15,19 +15,20 @@ Version 2.4.3
 ### Address issues in v2.4.2 and Prepare for v3.0.0
  - adds IIS compatibility; requires rewrite_url module; thanks to Todd Giardina, Todd's IT
  - adds Twitter Bootstrap v4 with Font Awesome v5 theme support including a sample theme
- - sample Twitter Bootstrap v2 theme removed
+   - sample Twitter Bootstrap v2 theme removed
  - adds forms quick-submit option to skip form entry confirmation for a 1-step submission
- - add optional mapquest maps option now that google maps will cost to use
- - adds private module indicator to module chrome
+ - add optional mapquest maps option now that google maps require paid subscription to use
+ - adds private (not public) module indicator to module chrome
+ - adds better, more consistent support for http2 (secure) sites
  - fixes and tweaks many issues in previous versions, esp. with users and ecommerce
 
 Version 2.4.2
 -------------
 ### Address issues in v2.4.1 and Prepare for v3.0.0
  - compatible with PHP 5.5.x, 5.6.x, 7.0.x, 7.1.x, and 7.2.x
-   -- removed compatibility with PHP 5.3.x and 5.4.x
+   - removed compatibility with PHP 5.3.x and 5.4.x
  - optionally removes support for obsolete browsers
-   -- uses jQuery v3.x and doesn't load browser shims
+   - uses jQuery v3.x and doesn't load browser shims
  - adds events module showall_by_date and showall_year views
  - adds sef url support to form module records
  - adds form validation feedback icons to bootstrap 3
@@ -219,7 +220,7 @@ Version 2.3.7
   - !!! regression fix an admin was able to possibly edit a super-admin user profile
   - !!! security fix elFinder would allow an authenticated user to upload an xss script then execute it CVE-ID 2015-8684
   - regression fix enhanced password hash strength would break all future logins due to stored hash field not being long enough (since v2.3.5)
-    -- only occurred when upgrading from a version prior to v2.3.5 and only when increasing password crypto depth above 0
+    - only occurred when upgrading from a version prior to v2.3.5 and only when increasing password crypto depth above 0
   - regression fix ajax paging would add 'time' parameter twice to calendar urls
   - regression fix ajax paging would add google analytics params to the urls
 ### Known Issues
@@ -279,14 +280,14 @@ Version 2.3.4
   - adds most recent event date to search hit for events and event registrations
   - now only indexes content from active modules instead of every module
   - updates several bootstrap3 ecommerce views to more closely follow bootstrap3 styling
-    -- newly styled invoices and packing slips
+    - newly styled invoices and packing slips
   - new product option: must be purchased in multiple quantities
   - ecommerce invoice payment info is now more customer friendly when not managing order(s)
   - ecommerce store database sample now includes product options, discounts, and sample orders
   - reCaptcha anti-spam support updated to latest library
   - reactivates split credit card ecommerce payment option
   - adds optional 'time till site returns' countdown clock to maintenance view
-    -- login removed from maintenance view unless attempting to logon or if db is down
+    - login removed from maintenance view unless attempting to logon or if db is down
   - after adding a new module which requires configuration, the system now displays the module configuration settings page
   - includes all fixes from v2.3.3 patches (#1)
 ### Known Issues
@@ -366,9 +367,9 @@ Version 2.3.1
   * !!!Fixes bug which could allow display of orders to non-admin users
   - php v5.6 compatible
   - updates ecommerce to be more robust with non-US areas (countries w/o regions/states)
-    -- Much improved interface for managing sales tax and also countries/regions
+    - Much improved interface for managing sales tax and also countries/regions
   - adds many Twitter Bootstrap v3 widgets/components to that theme framework, moving away from YUI2/YUI3/jQueryUI
-    -- many tweaks and fixes applied to the Twitter Bootstrap v3 theme framework
+    - many tweaks and fixes applied to the Twitter Bootstrap v3 theme framework
   - adds NEWUI & BS3 Slingbar 'bottom' location (can't be dragged/dropped, but only changed in site configuration)
   - allows upgrading a site where the config.php file is read-only to prevent hacking (w/ assoc. warnings)
   - adds 4-column container view
@@ -397,8 +398,8 @@ Version 2.3.1
   - adds optional 'hidden' controls (checkbox, text, textarea) to forms to allow (prefilled) data fields unavailable on initial entry, but can be updated later (e.g. paid, notes)
   - adds new 'church site' site sample database in addition to 'sample site', 'blog' and 'eCommerce store' during installation
   - vastly improved SEO for events, eventregistrations, & products
-    -- event & product data (dates, cost, reviews, etc...) now available to search engine as rich snippets
-    -- more accurate meta data made available to search engines
+    - event & product data (dates, cost, reviews, etc...) now available to search engine as rich snippets
+    - more accurate meta data made available to search engines
   - enhances the import/export abilities for transferring site content/data from other sites or in other formats
   - adds Google+ link to blog author signature option for linking to search hits on Google (profile/picture)
   - adds new search/filter & sorting to manage permissions, users, groups and forms showall views
@@ -415,12 +416,12 @@ Version 2.2.3
 -------------
 ### Address issues in v2.2.2 and finally remove features deprecated in v2.2.0
   * !!! changes use/function of the 'create' permission
-    -- 'create' permission is NO longer automatically tied to an 'edit' permission
-    -- a user with the 'create' permission may also edit and delete items which they have created
-    -- an 'edit' permission is required to edit other users' items and likewise for delete
-    -- an 'edit' permission by itself will NOT allow creation of new items
+    - 'create' permission is NO longer automatically tied to an 'edit' permission
+    - a user with the 'create' permission may also edit and delete items which they have created
+    - an 'edit' permission is required to edit other users' items and likewise for delete
+    - an 'edit' permission by itself will NOT allow creation of new items
   - adds user group 'global' permissions/restrictions to: prevent file uploading, prevent user profile changes, hide individual exponent/slingbar menus, or the entire slingbar
-    -- restrictions apply to all non-admin users assigned to that user group
+    - restrictions apply to all non-admin users assigned to that user group
   - now enforces non-public page and hidden module restrictions to content on/in those pages/modules to prevent access by search engines, etc...
   - adds 'noindex' and 'nofollow' SEO meta tag options to pages/items to prevent addition to search engines
   * revises navigation flyout sidebar view to display module title vertically and allow more than one navigation flyout sidebar on a page
@@ -449,11 +450,11 @@ Version 2.2.2
 -------------
 ### Address issues in v2.2.1, enhance SEO and Social Media features
   - greatly enhances default page meta data (SEO out of the box)
-    -- changes 'show item' page meta description to fallback to item summary for better display by Facebook when sharing links
-    -- uses item tags in 'show' view for keywords when no meta keywords available instead of defaulting to site keywords
+    - changes 'show item' page meta description to fallback to item summary for better display by Facebook when sharing links
+    - uses item tags in 'show' view for keywords when no meta keywords available instead of defaulting to site keywords
   - adds more social media features
-    -- new optional facebook like & tweet button to news posts
-    -- new optional auto facebook post/tweet to blog posts, news items, file downloads, & events
+    - new optional facebook like & tweet button to news posts
+    - new optional auto facebook post/tweet to blog posts, news items, file downloads, & events
   - adds showall news by date method
   - adds a new 'toggle' view to faq display
   - adds 'word match only' setting for search results
@@ -463,7 +464,7 @@ Version 2.2.2
 ### Known Issues
   - 0.9x theme support is deprecated but still present in this distribution, it will be removed in the near future
   - Flowplayer & YouTube modules are deprecated but still present in this distribution, they will be removed in the near future
-    -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
+    - There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
@@ -491,7 +492,7 @@ Version 2.2.1
 ### Known Issues
   - 0.9x theme support is deprecated but still present in this distribution, it will be removed in the near future
   - Flowplayer & YouTube modules are deprecated but still present in this distribution, they will be removed in the near future
-    -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
+    - There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
@@ -504,40 +505,40 @@ Version 2.2.0
   - Fixes CVE-ID 2013-3294 SQL Injection vulnerabilities
   - Fixes CVE-ID 2013-3295 Directory traversal vulnerability
   - Removes all the 'old school' 1.x files
-    -- removes deprecated headline controller (converting them to text modules), suggest a custom text module 'headline' view be created if needed
-    -- forces deprecation/removal of formmodule/formbuilder
-    -- replaces the containermodule with container 2.0 controller
-    -- also fully deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist
+    - removes deprecated headline controller (converting them to text modules), suggest a custom text module 'headline' view be created if needed
+    - forces deprecation/removal of formmodule/formbuilder
+    - replaces the containermodule with container 2.0 controller
+    - also fully deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist
   - moves to jQuery/Twitter-Bootstrap as primary libraries over YUI2/3 (which are still backwards compatible)
-    -- adds normalize.css and Twitter Bootstrap as system (theme) features
+    - adds normalize.css and Twitter Bootstrap as system (theme) features
   - implements an html5 input fallback system to display html5 controls/features in older browsers
-    -- adds more simple controls to forms designer (email, url, telephone, range, number, several date/time controls)
-    -- allows switching to similar type control after creation
+    - adds more simple controls to forms designer (email, url, telephone, range, number, several date/time controls)
+    - allows switching to similar type control after creation
   - updates style of maintenance/site-down page
   - tweaks and more features to ecommerce (esp. online donations and event registrations) making it more robust and polished
-    -- adds single or multi-person event registration using site forms to collect registration data
-    -- quick add donation at set amount or allow user to enter amount
-    -- event registrations now abide by 'options'
+    - adds single or multi-person event registration using site forms to collect registration data
+    - quick add donation at set amount or allow user to enter amount
+    - event registrations now abide by 'options'
   - adds new forms showall portfolio view for multi-record custom view (fixes custom single record view)
-    -- adds new import form data, or create a form from csv file feature
+    - adds new import form data, or create a form from csv file feature
   - implements broader use of ajax paging and use of new html5 input types, temporarily adds additional date/time form designer controls
   - enhances attached file display features
   - adds new html5 media player module for audio, video & youtube, which deprecates both flowplayer and youtube modules
-    -- updates filedownload module media player to html5 (flash not required)
+    - updates filedownload module media player to html5 (flash not required)
   - adds new import users from csv file feature
   - adds ability to optionally run selected 'upgrade scripts' outside of installation
   - moves /conf folder inside /framework to help streamline folder structure
   - adds theme export feature
   - adds new 'blog' and 'eCommerce store'site sample database in addition to 'sample site' during installation
   - adds category support to blog module
-    -- adds new comments and categories views to blog
+    - adds new comments and categories views to blog
   - adds file upload pause, resume, & cancel feature
   - enables user authentication via an LDAP server (requires php ldap module)
   - updates look of countdown module to be more professional looking with new display options
   - removes addressbook module from list of available modules since it's not designed to be placed on a page
 ### Known Issues
   - Flowplayer & YouTube modules are deprecated, but still present in this distribution, they will be removed in the future
-    -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
+    - There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
