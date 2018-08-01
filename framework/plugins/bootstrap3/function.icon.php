@@ -126,18 +126,34 @@ if (!function_exists('smarty_function_icon')) {
 
         $linktext = $img . $text;
 
-        if (BTN_SIZE == 'large' || (!empty($params['size']) && $params['size'] == 'large')) {
-            $btn_size = 'btn-lg';
-            $icon_size = 'fa-lg';
-        } elseif (BTN_SIZE == 'small' || (!empty($params['size']) && $params['size'] == 'small')) {
-            $btn_size = 'btn-sm';
-            $icon_size = '';
-        } elseif (BTN_SIZE == 'extrasmall' || (!empty($params['size']) && $params['size'] == 'extrasmall')) {
-            $btn_size = 'btn-xs';
-            $icon_size = '';
-        } else { // medium
-            $btn_size = '';
-            $icon_size = 'fa-lg';
+        if (!empty($params['size'])) {
+            if ($params['size'] === 'extrasmall') {
+                $btn_size = 'btn-xs';
+                $icon_size = '';
+            } elseif ($params['size'] === 'small') {
+                $btn_size = 'btn-sm';
+                $icon_size = '';
+            } elseif ($params['size'] === 'large') {
+                $btn_size = 'btn-lg';
+                $icon_size = 'fa-lg';
+            } else { // medium
+                $btn_size = '';
+                $icon_size = 'fa-lg';
+            }
+        } else {
+            if (BTN_SIZE === 'extrasmall') {
+                $btn_size = 'btn-xs';
+                $icon_size = '';
+            } elseif (BTN_SIZE === 'small') {
+                $btn_size = 'btn-sm';
+                $icon_size = '';
+            } elseif (BTN_SIZE === 'large') {
+                $btn_size = 'btn-lg';
+                $icon_size = 'fa-lg';
+            } else { // medium
+                $btn_size = '';
+                $icon_size = 'fa-lg';
+            }
         }
 
         $icon = expTheme::buttonIcon($class);
