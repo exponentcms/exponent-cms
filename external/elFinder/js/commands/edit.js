@@ -9,8 +9,10 @@ elFinder.prototype.commands.edit = function() {
 	var self  = this,
 		fm    = this.fm,
 		dlcls = 'elfinder-dialog-edit',
+		clsEditing = fm.res('class', 'editing'),
 		mimesSingle = [],
 		mimes = [],
+		allowAll = false,
 		rtrim = function(str){
 			return str.replace(/\s+$/, '');
 		},
@@ -54,14 +56,16 @@ elFinder.prototype.commands.edit = function() {
 			}
 			return $.grep(files, function(file) {
 				var res;
-				if (skip) {
+				if (skip || file.mime === 'directory') {
 					return false;
 				}
-				res = (fm.mimeIsText(file.mime) || $.inArray(file.mime, cnt === 1? mimesSingle : mimes) !== -1) 
+				res = file.read
+					&& (allowAll || fm.mimeIsText(file.mime) || $.inArray(file.mime, cnt === 1? mimesSingle : mimes) !== -1) 
 					&& (!self.onlyMimes.length || $.inArray(file.mime, self.onlyMimes) !== -1)
-					&& file.read && file.write
 					&& (cnt === 1 || (file.mime === mime && file.name.substr(ext.length * -1) === ext))
-					&& fm.uploadMimeCheck(file.mime, file.phash)? true : false;
+					&& (fm.uploadMimeCheck(file.mime, file.phash)? true : false)
+					&& setEditors(file, cnt)
+					&& Object.keys(editors).length;
 				if (!res) {
 					skip = true;
 				}
@@ -139,8 +143,8 @@ elFinder.prototype.commands.edit = function() {
 							fm.disable();
 						},
 						make = function() {
-							self.mime = file.mime;
-							self.prefix = file.name.replace(/ \d+(\.[^.]+)?$/, '$1');
+							self.mime = saveAsFile.mime || file.mime;
+							self.prefix = (saveAsFile.name || file.name).replace(/ \d+(\.[^.]+)?$/, '$1');
 							self.requestCmd = 'mkfile';
 							self.nextAction = {};
 							self.data = {target : phash};
@@ -155,6 +159,11 @@ elFinder.prototype.commands.edit = function() {
 										fail();
 									}
 									dialogs.fadeIn();
+								})
+								.progress(function(err) {
+									if (err && err === 'errUploadMime') {
+										ta.trigger('saveAsFail');
+									}
 								})
 								.fail(fail)
 								.always(function() {
@@ -190,41 +199,50 @@ elFinder.prototype.commands.edit = function() {
 					title   : fm.escape(file.name),
 					width   : getDlgWidth(),
 					buttons : {},
+					cssClass  : dlcls  + ' ' + clsEditing,
 					maxWidth  : 'window',
 					maxHeight : 'window',
 					allowMinimize : true,
 					allowMaximize : true,
+					openMaximized : editorMaximized(),
 					btnHoverFocus : false,
 					closeOnEscape : false,
 					close   : function() {
 						var close = function() {
-							var conf;
-							dfrd.resolve();
-							if (ta.editor) {
-								ta.editor.close(ta[0], ta.editor.instance);
-								conf = ta.editor.confObj;
-								if (conf.info && conf.info.syncInterval) {
-									fileSync(file.hash);
+								var conf;
+								dfrd.resolve();
+								if (ta.editor) {
+									ta.editor.close(ta[0], ta.editor.instance);
+									conf = ta.editor.confObj;
+									if (conf.info && conf.info.syncInterval) {
+										fileSync(file.hash);
+									}
 								}
-							}
-							ta.elfinderdialog('destroy');
-						};
+								ta.elfinderdialog('destroy');
+							},
+							onlySaveAs = (typeof saveAsFile.name !== 'undefined'),
+							accept = onlySaveAs? {
+								label    : 'btnSaveAs',
+								callback : function() {
+									requestAnimationFrame(saveAs);
+								}
+							} : {
+								label    : 'btnSaveClose',
+								callback : function() {
+									save();
+									close();
+								}
+							};
 						if (changed()) {
 							fm.confirm({
 								title  : self.title,
 								text   : 'confirmNotSave',
-								accept : {
-									label    : 'btnSaveClose',
-									callback : function() {
-										save();
-										close();
-									}
-								},
+								accept : accept,
 								cancel : {
 									label    : 'btnClose',
 									callback : close
 								},
-								buttons : [{
+								buttons : onlySaveAs? null : [{
 									label    : 'btnSaveAs',
 									callback : function() {
 										requestAnimationFrame(saveAs);
@@ -286,7 +304,7 @@ elFinder.prototype.commands.edit = function() {
 						}, interval);
 					}
 				},
-				clsEditing = fm.res('class', 'editing'),
+				saveAsFile = {},
 				ta, old, dialogNode, selEncoding, extEditor, maxW, syncInterval;
 				
 			if (editor) {
@@ -442,7 +460,18 @@ elFinder.prototype.commands.edit = function() {
 				})
 				.css({ overflow: 'hidden', minHeight: '7em' })
 				.addClass('elfinder-edit-editor')
-				.closest('.ui-dialog').addClass(dlcls  + ' ' + clsEditing);
+				.closest('.ui-dialog')
+				.on('changeType', function(e, data) {
+					if (data.extention && data.mime) {
+						var ext = data.extention,
+							mime = data.mime,
+							btnSet = $(this).children('.ui-dialog-buttonpane').children('.ui-dialog-buttonset');
+						btnSet.children('.elfinder-btncnt-0,.elfinder-btncnt-1').hide();
+						saveAsFile.name = fm.splitFileExtention(file.name)[0] + '.' + data.extention;
+						saveAsFile.mime = data.mime;
+						btnSet.children('.elfinder-btncnt-2').trigger('click');
+					}
+				});
 			
 			// care to viewport scale change with mobile devices
 			maxW = (fm.options.dialogContained? elfNode : $(window)).width();
@@ -473,9 +502,8 @@ elFinder.prototype.commands.edit = function() {
 				return dfrd.resolve();
 			}
 			
-			if (!file.read || !file.write) {
+			if (!file.read || (!file.write && (!editor.info || !editor.info.converter))) {
 				error = ['errOpen', file.name, 'errPerm'];
-				fm.error(error);
 				return dfrd.reject(error);
 			}
 			
@@ -647,7 +675,7 @@ elFinder.prototype.commands.edit = function() {
 					if (!editorMimes) {
 						return fm.mimeIsText(fileMime);
 					} else {
-						if ($.inArray(fileMime, editorMimes) !== -1 ) {
+						if (editorMimes[0] === '*' || $.inArray(fileMime, editorMimes) !== -1) {
 							return true;
 						}
 						var i, l;
@@ -674,7 +702,8 @@ elFinder.prototype.commands.edit = function() {
 					}
 					return false;
 				},
-				optEditors = self.options.editors || [];
+				optEditors = self.options.editors || [],
+				cwdWrite = fm.cwd().write;
 			
 			stored = fm.storage('storedEditors') || {};
 			editors = {};
@@ -684,6 +713,9 @@ elFinder.prototype.commands.edit = function() {
 			$.each(optEditors, function(i, editor) {
 				var name;
 				if ((cnt === 1 || !editor.info || !editor.info.single)
+						&& ((!editor.info || !editor.info.converter)? file.write : cwdWrite)
+						&& (!editor.info.converter || file.size > 0)
+						&& (!editor.info.maxSize || file.size <= editor.info.maxSize)
 						&& mimeMatch(file.mime, editor.mimes || null)
 						&& extMatch(file.name, editor.exts || null)
 						&& typeof editor.load == 'function'
@@ -696,6 +728,7 @@ elFinder.prototype.commands.edit = function() {
 					editors[editor.id] = editor;
 				}
 			});
+			return Object.keys(editors).length? true : false;
 		},
 		store = function(mime, editor) {
 			if (mime && editor) {
@@ -710,6 +743,10 @@ elFinder.prototype.commands.edit = function() {
 		useStoredEditor = function() {
 			var d = fm.storage('useStoredEditor');
 			return d? (d > 0) : self.options.useStoredEditor;
+		},
+		editorMaximized = function() {
+			var d = fm.storage('editorMaximized');
+			return d? (d > 0) : self.options.editorMaximized;
 		},
 		getSubMenuRaw = function(files, callback) {
 			var subMenuRaw = [];
@@ -806,6 +843,12 @@ elFinder.prototype.commands.edit = function() {
 									mimes = mimes.concat(editor.mimes);
 								}
 							}
+							if (!allowAll && editor.mimes && editor.mimes[0] === '*') {
+								allowAll = true;
+							}
+							if (editor.info && editor.info.integrate) {
+								fm.trigger('helpIntegration', Object.assign({cmd: 'edit'}, editor.info.integrate));
+							}
 						}
 					});
 					
@@ -834,42 +877,43 @@ elFinder.prototype.commands.edit = function() {
 			
 			if (e.data.type === 'files' && self.enabled()) {
 				file = fm.file(e.data.targets[0]);
-				setEditors(file, e.data.targets.length);
-				if (Object.keys(editors).length > 1) {
-					if (!useStoredEditor() || !(editor = getStoredEditor(file.mime))) {
-						delete self.extra;
-						self.variants = [];
-						$.each(editors, function(id, editor) {
-							self.variants.push([{ editor: editor }, editor.i18n, editor.info && editor.info.iconImg? fm.baseUrl + editor.info.iconImg : 'edit']);
-						});
+				if (setEditors(file, e.data.targets.length)) {
+					if (Object.keys(editors).length > 1) {
+						if (!useStoredEditor() || !(editor = getStoredEditor(file.mime))) {
+							delete self.extra;
+							self.variants = [];
+							$.each(editors, function(id, editor) {
+								self.variants.push([{ editor: editor }, editor.i18n, editor.info && editor.info.iconImg? fm.baseUrl + editor.info.iconImg : 'edit']);
+							});
+						} else {
+							single(editor);
+							self.extra = {
+								icon: 'menu',
+								node: $('<span/>')
+									.attr({title: fm.i18n('select')})
+									.on('click touchstart', function(e){
+										if (e.type === 'touchstart' && e.originalEvent.touches.length > 1) {
+											return;
+										}
+										var node = $(this);
+										e.stopPropagation();
+										e.preventDefault();
+										fm.trigger('contextmenu', {
+											raw: getSubMenuRaw(fm.selectedFiles(), function() {
+												var hashes = fm.selected();
+												fm.exec('edit', hashes, {editor: this});
+												fm.trigger('selectfiles', {files : hashes});
+											}),
+											x: node.offset().left,
+											y: node.offset().top
+										});
+									})
+							};
+						}
 					} else {
-						single(editor);
-						self.extra = {
-							icon: 'menu',
-							node: $('<span/>')
-								.attr({title: fm.i18n('select')})
-								.on('click touchstart', function(e){
-									if (e.type === 'touchstart' && e.originalEvent.touches.length > 1) {
-										return;
-									}
-									var node = $(this);
-									e.stopPropagation();
-									e.preventDefault();
-									fm.trigger('contextmenu', {
-										raw: getSubMenuRaw(fm.selectedFiles(), function() {
-											var hashes = fm.selected();
-											fm.exec('edit', hashes, {editor: this});
-											fm.trigger('selectfiles', {files : hashes});
-										}),
-										x: node.offset().left,
-										y: node.offset().top
-									});
-								})
-						};
+						single(editors[Object.keys(editors)[0]]);
+						delete self.extra;
 					}
-				} else {
-					single(editors[Object.keys(editors)[0]]);
-					delete self.extra;
 				}
 			}
 		});

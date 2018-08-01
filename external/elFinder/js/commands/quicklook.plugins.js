@@ -551,13 +551,16 @@ elFinder.prototype.commands.quicklook.plugins = [
 			setNavi = function() {
 				navi.css('bottom', win.hasClass('elfinder-quicklook-fullscreen')? '50px' : '');
 			},
-			getNode = function(src) {
+			getNode = function(src, hash) {
 				return $('<audio class="elfinder-quicklook-preview-audio ui-front" controls preload="auto" autobuffer><source src="'+src+'" /></audio>')
 					.on('change', function(e) {
 						// Firefox fire change event on seek or volume change
 						e.stopPropagation();
 					})
-					.on('error', reset)
+					.on('error', function(e) {
+						node && node.data('hash') === hash && reset();
+					})
+					.data('hash', hash)
 					.appendTo(preview);
 			},
 			amrToWavUrl = function(hash) {
@@ -605,6 +608,18 @@ elFinder.prototype.commands.quicklook.plugins = [
 				}
 				return dfd;
 			},
+			play = function(player) {
+				var hash = node.data('hash'),
+					playPromise;
+				autoplay && (playPromise = player.play());
+				if (playPromise && playPromise.catch) {
+					playPromise.catch(function(e) {
+						if (!player.paused) {
+							node && node.data('hash') === hash && reset();
+						}
+					});
+				}
+			},
 			reset = function() {
 				if (node && node.parent().length) {
 					var elm = node[0],
@@ -636,7 +651,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 				if (!html5) {
 					if (fm.options.cdns.amr && type === 'amr' && AMR !== false) {
 						e.stopImmediatePropagation();
-						node = getNode(srcUrl);
+						node = getNode(srcUrl, curHash);
 						amrToWavUrl(file.hash).done(function(url) {
 							if (curHash === file.hash) {
 								var elm = node[0];
@@ -644,7 +659,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 									node.children('source').attr('src', url);
 									elm.pause();
 									elm.load();
-									autoplay && elm.play();
+									play(elm);
 									win.on('viewchange.audio', setNavi);
 									setNavi();
 								} catch(e) {
@@ -660,8 +675,8 @@ elFinder.prototype.commands.quicklook.plugins = [
 					}
 				} else {
 					e.stopImmediatePropagation();
-					node = getNode(srcUrl);
-					autoplay && node[0].play();
+					node = getNode(srcUrl, curHash);
+					play(node[0]);
 					win.on('viewchange.audio', setNavi);
 					setNavi();
 				}
@@ -695,7 +710,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 			node,
 			win  = ql.window,
 			navi = ql.navbar,
-			cHls, cDash, cFlv, autoplay,
+			cHls, cDash, pDash, cFlv, autoplay, tm,
 			setNavi = function() {
 				if (fm.UA.iOS) {
 					if (win.hasClass('elfinder-quicklook-fullscreen')) {
@@ -718,7 +733,9 @@ elFinder.prototype.commands.quicklook.plugins = [
 						}
 					},
 					err = 0, 
-					canPlay, tm;
+					canPlay;
+				//reset();
+				pDash = null;
 				opts = opts || {};
 				ql.hideinfo();
 				node = $('<video class="elfinder-quicklook-preview-video" controls preload="auto" autobuffer playsinline>'
@@ -730,7 +747,8 @@ elFinder.prototype.commands.quicklook.plugins = [
 					.on('timeupdate progress', errTm)
 					.on('canplay', function() {
 						canPlay = true;
-					});
+					})
+					.data('hash', file.hash);
 				// can not handling error event with jQuery `on` event handler
 				node[0].addEventListener('error', function(e) {
 					if (opts.src && fm.convAbsUrl(opts.src) === fm.convAbsUrl(e.target.src)) {
@@ -755,16 +773,19 @@ elFinder.prototype.commands.quicklook.plugins = [
 				hls.loadSource(fm.openUrl(file.hash));
 				hls.attachMedia(node[0]);
 				if (autoplay) {
-					hls.on(cHls.Events.MANIFEST_PARSED,function() {
-						node[0].play();
+					hls.on(cHls.Events.MANIFEST_PARSED, function() {
+						play(node[0]);
 					});
 				}
 			},
 			loadDash = function(file) {
-				var player;
 				render(file);
-				player = window.dashjs.MediaPlayer().create();
-				player.initialize(node[0], fm.openUrl(file.hash), autoplay);
+				pDash = window.dashjs.MediaPlayer().create();
+				pDash.getDebug().setLogToBrowserConsole(false);
+				pDash.initialize(node[0], fm.openUrl(file.hash), autoplay);
+				pDash.on('error', function(e) {
+					reset(true);
+				});
 			},
 			loadFlv = function(file) {
 				if (!cFlv.isSupported()) {
@@ -782,12 +803,26 @@ elFinder.prototype.commands.quicklook.plugins = [
 				});
 				player.attachMediaElement(node[0]);
 				player.load();
-				autoplay && player.play();
+				play(player);
+			},
+			play = function(player) {
+				var hash = node.data('hash'),
+					playPromise;
+				autoplay && (playPromise = player.play());
+				if (playPromise && playPromise.catch) {
+					playPromise.catch(function(e) {
+						if (!player.paused) {
+							node && node.data('hash') === hash && reset(true);
+						}
+					});
+				}
 			},
 			reset = function(showInfo) {
+				tm && clearTimeout(tm);
 				if (node && node.parent().length) {
 					var elm = node[0];
 					win.off('viewchange.video');
+					pDash && pDash.reset();
 					try {
 						elm.pause();
 						node.empty();
@@ -795,7 +830,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 						elm.load();
 					} catch(e) {}
 					node.remove();
-					node= null;
+					node = null;
 				}
 				showInfo && ql.info.show();
 			};
@@ -804,14 +839,14 @@ elFinder.prototype.commands.quicklook.plugins = [
 			var file = e.file,
 				mime = file.mime.toLowerCase(),
 				type = mimes[mime],
-				stock;
+				stock, playPromise;
 			
-			if (mimes[mime] && ql.dispInlineRegex.test(file.mime) && (((type === 'm3u8' || type === 'mpd' || type === 'flv') && !fm.UA.ltIE10) || ql.support.video[type])) {
+			if (mimes[mime] && ql.dispInlineRegex.test(file.mime) && (((type === 'm3u8' || (type === 'mpd' && !fm.UA.iOS) || type === 'flv') && !fm.UA.ltIE10) || ql.support.video[type])) {
 				autoplay = ql.autoPlay();
 				if (ql.support.video[type] && (type !== 'm3u8' || fm.UA.Safari)) {
 					e.stopImmediatePropagation();
 					render(file, { src: fm.openUrl(file.hash) });
-					autoplay && node[0].play();
+					play(node[0]);
 				} else {
 					if (cHls !== false && fm.options.cdns.hls && type === 'm3u8') {
 						e.stopImmediatePropagation();
@@ -1214,28 +1249,150 @@ elFinder.prototype.commands.quicklook.plugins = [
 	},
 
 	/**
-	 * Any supported files preview plugin using Google docs online viewer
+	 * CAD-Files and 3D-Models online viewer on sharecad.org
 	 *
 	 * @param elFinder.commands.quicklook
 	 **/
 	function(ql) {
 		"use strict";
 		var fm      = ql.fm,
-			mimes   = fm.arrayFlip(ql.options.googleDocsMimes || []),
+			mimes   = fm.arrayFlip(ql.options.sharecadMimes || []),
+			preview = ql.preview,
+			win     = ql.window,
+			node;
+			
+		if (ql.options.sharecadMimes.length) {
+			ql.addIntegration({
+				title: 'ShareCAD.org CAD and 3D-Models viewer',
+				link: 'https://sharecad.org/DWGOnlinePlugin'
+			});
+		}
+
+		preview.on(ql.evUpdate, function(e) {
+			var file = e.file;
+			if (mimes[file.mime.toLowerCase()]) {
+				var win     = ql.window,
+					loading, url;
+				
+				if (file.url == '1') {
+					preview.hide();
+					$('<div class="elfinder-quicklook-info-data"><button class="elfinder-info-button">'+fm.i18n('getLink')+'</button></div>').appendTo(ql.info.find('.elfinder-quicklook-info'))
+					.on('click', function() {
+						var self = $(this);
+						self.html('<span class="elfinder-info-spinner">');
+						fm.request({
+							data : {cmd : 'url', target : file.hash},
+							preventDefault : true
+						})
+						.always(function() {
+							self.html('');
+						})
+						.done(function(data) {
+							var rfile = fm.file(file.hash);
+							file.url = rfile.url = data.url || '';
+							if (file.url) {
+								preview.trigger({
+									type: ql.evUpdate,
+									file: file,
+									forceUpdate: true
+								});
+							}
+						});
+					});
+				}
+				if (file.url !== '' && file.url != '1') {
+					e.stopImmediatePropagation();
+					preview.one('change', function() {
+						loading.remove();
+						node.off('load').remove();
+						node = null;
+					}).addClass('elfinder-overflow-auto');
+					
+					loading = $('<div class="elfinder-quicklook-info-data"> '+fm.i18n('nowLoading')+'<span class="elfinder-info-spinner"></div>').appendTo(ql.info.find('.elfinder-quicklook-info'));
+					
+					url = fm.convAbsUrl(fm.url(file.hash));
+					node = $('<iframe class="elfinder-quicklook-preview-iframe" scrolling="no"/>')
+						.css('background-color', 'transparent')
+						.appendTo(preview)
+						.on('load', function() {
+							ql.hideinfo();
+							loading.remove();
+							ql.preview.after(ql.info);
+							$(this).css('background-color', '#fff').show();
+						})
+						.on('error', function() {
+							loading.remove();
+							ql.preview.after(ql.info);
+						})
+						.attr('src', '//sharecad.org/cadframe/load?url=' + encodeURIComponent(url));
+					
+					ql.info.after(ql.preview);
+				}
+			}
+			
+		});
+	},
+
+	/**
+	 * Any supported files preview plugin using (Google docs | MS Office) online viewer
+	 *
+	 * @param elFinder.commands.quicklook
+	 **/
+	function(ql) {
+		"use strict";
+		var fm      = ql.fm,
+			mimes   = Object.assign(fm.arrayFlip(ql.options.googleDocsMimes || [], 'g'), fm.arrayFlip(ql.options.officeOnlineMimes || [], 'm')),
 			preview = ql.preview,
 			win     = ql.window,
 			navi    = ql.navbar,
+			urls    = {
+				g: 'docs.google.com/gview?embedded=true&url=',
+				m: 'view.officeapps.live.com/op/embed.aspx?wdStartOn=0&src='
+			},
+			navBottom = {
+				g: '56px',
+				m: '24px'
+			},
+			mLimits = {
+				xls  : 5242880, // 5MB
+				xlsb : 5242880,
+				xlsx : 5242880,
+				xlsm : 5242880,
+				other: 10485760 // 10MB
+			},
 			node;
-			
+		
+		if (ql.options.googleDocsMimes.length) {
+			ql.addIntegration({
+				title: 'Google Docs Viewer',
+				link: 'https://docs.google.com/'
+			});
+		}
+		if (ql.options.officeOnlineMimes.length) {
+			ql.addIntegration({
+				title: 'MS Online Doc Viewer',
+				link: 'https://products.office.com/office-online/view-office-documents-online'
+			});
+		}
+
+
 		preview.on(ql.evUpdate, function(e) {
-			var file = e.file;
-			if (mimes[file.mime]) {
+			var file = e.file,
+				type;
+			// 25MB is maximum filesize of Google Docs prevew
+			if (file.size <= 26214400 && (type = mimes[file.mime])) {
 				var win     = ql.window,
 					setNavi = function() {
-						navi.css('bottom', win.hasClass('elfinder-quicklook-fullscreen')? '56px' : '');
+						navi.css('bottom', win.hasClass('elfinder-quicklook-fullscreen')? navBottom[type] : '');
 					},
-					loading;
+					ext     = fm.mimeTypes[file.mime],
+					loading, url;
 				
+				if (type === 'm') {
+					if ((mLimits[ext] && file.size > mLimits[ext]) || file.size > mLimits.other) {
+						type = 'g';
+					}
+				}
 				if (file.url == '1') {
 					preview.hide();
 					$('<div class="elfinder-quicklook-info-data"><button class="elfinder-info-button">'+fm.i18n('getLink')+'</button></div>').appendTo(ql.info.find('.elfinder-quicklook-info'))
@@ -1273,6 +1430,10 @@ elFinder.prototype.commands.quicklook.plugins = [
 					
 					loading = $('<div class="elfinder-quicklook-info-data"> '+fm.i18n('nowLoading')+'<span class="elfinder-info-spinner"></div>').appendTo(ql.info.find('.elfinder-quicklook-info'));
 					
+					url = fm.convAbsUrl(fm.url(file.hash));
+					if (file.ts) {
+						url += (url.match(/\?/)? '&' : '?') + '_t=' + file.ts;
+					}
 					node = $('<iframe class="elfinder-quicklook-preview-iframe"/>')
 						.css('background-color', 'transparent')
 						.appendTo(preview)
@@ -1286,7 +1447,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 							loading.remove();
 							ql.preview.after(ql.info);
 						})
-						.attr('src', '//docs.google.com/gview?embedded=true&url=' + encodeURIComponent(fm.convAbsUrl(fm.url(file.hash))));
+						.attr('src', 'https://' + urls[type] + encodeURIComponent(url));
 					
 					win.on('viewchange.googledocs', setNavi);
 					setNavi();

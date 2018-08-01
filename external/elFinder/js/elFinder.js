@@ -2200,6 +2200,10 @@ var elFinder = function(elm, opts, bootCallback) {
 						}
 					}
 					xhrAbort();
+					if (isOpen) {
+						openDir = self.file(data.target);
+						openDir && openDir.volumeid && self.isRoot(openDir) && delete self.volumeExpires[openDir.volumeid];
+					}
 					self.trigger(cmd + 'fail', response);
 					if (error) {
 						deffail ? self.error(error) : self.debug('error', self.i18n(error));
@@ -2336,7 +2340,8 @@ var elFinder = function(elm, opts, bootCallback) {
 					return dfrd;
 				}
 			},
-			bindData = {opts: opts, result: true};
+			bindData = {opts: opts, result: true},
+			openDir;
 		
 		// prevent request initial request is completed
 		if (!self.api && !data.init) {
@@ -2910,6 +2915,11 @@ var elFinder = function(elm, opts, bootCallback) {
 	this.exec = function(cmd, files, opts, dstHash) {
 		var dfrd, resType;
 		
+		// apply commandMap for keyboard shortcut
+		if (!dstHash && this.commandMap[cmd] && this.commandMap[cmd] !== 'hidden') {
+			cmd = this.commandMap[cmd];
+		}
+
 		if (cmd === 'open') {
 			if (this.searchStatus.state || this.searchStatus.ininc) {
 				this.trigger('searchend', { noupdate: true });
@@ -4058,6 +4068,8 @@ var elFinder = function(elm, opts, bootCallback) {
 	 */
 	this.leafRoots = {};
 	
+	this.volumeExpires = {};
+
 	/**
 	 * Loaded commands
 	 *
@@ -4220,7 +4232,13 @@ var elFinder = function(elm, opts, bootCallback) {
 			if (e.target === this) {
 				tm && cancelAnimationFrame(tm);
 				tm = requestAnimationFrame(function() {
-					self.trigger('resize', {width : node.width(), height : node.height()});
+					var prv = node.data('resizeSize') || {w: 0, h: 0},
+						size = {w: Math.round(node.width()), h: Math.round(node.height())};
+					node.data('resizeSize', size);
+					if (size.w !== prv.w || size.h !== prv.h) {
+						node.trigger('resize');
+						self.trigger('resize', {width : size.w, height : size.h});
+					}
 				});
 			}
 		})
@@ -5858,15 +5876,15 @@ elFinder.prototype = {
 					});
 					atag = $('a[href]', tmp);
 					atag.each(function(){
-						var loc,
+						var text, loc,
 							parseUrl = function(url) {
 								var a = document.createElement('a');
 								a.href = url;
 								return a;
 							};
-						if ($(this).text()) {
+						if (text = $(this).text()) {
 							loc = parseUrl($(this).attr('href'));
-							if (loc.href && (atag.length === 1 || ! loc.pathname.match(/(?:\.html?|\/[^\/.]*)$/i))) {
+							if (loc.href && (atag.length === 1 || ! loc.pathname.match(/(?:\.html?|\/[^\/.]*)$/i) || $.trim(text).match(/\.[a-z0-9-]{1,10}$/i))) {
 								if ($.inArray(loc.href, ret) == -1 && $.inArray(loc.href, check) == -1) ret.push(loc.href);
 							}
 						}
@@ -6528,7 +6546,7 @@ elFinder.prototype = {
 								data.overwrite = 0;
 								formData.append('name[]', fm.date(fm.nonameDateFormat) + '.png');
 							}
-							if (fm.UA.iOS) {
+							if (file.name && fm.UA.iOS) {
 								if (file.name.match(/^image\.jpe?g$/i)) {
 									data.overwrite = 0;
 									formData.append('name[]', fm.date(fm.nonameDateFormat) + '.jpg');
@@ -7275,6 +7293,11 @@ elFinder.prototype = {
 								// regist fm.roots
 								if (type !== 'cwd') {
 									self.roots[vid] = file.hash;
+								}
+
+								// regist fm.volumeExpires
+								if (file.expires) {
+									self.volumeExpires[vid] = file.expires;
 								}
 							}
 							
@@ -8643,7 +8666,8 @@ elFinder.prototype = {
 			fail: function(fm, err){
 				$(this.inputs.host[0]).removeData('inrequest');
 				this.protocol.trigger('change', 'reset');
-			}
+			},
+			integrateInfo: opts.integrate
 		};
 	},
 	
@@ -9176,13 +9200,13 @@ elFinder.prototype = {
 			};
 		}
 		// set lock
+		dir.locked = 1;
 		if (!prev.locked) {
-			dir.locked = 1;
 			change = true;
 		}
 		// has leaf root to `dirs: 1`
+		dir.dirs = 1;
 		if (!prev.dirs) {
-			dir.dirs = 1;
 			change = true;
 		}
 		// set ts
@@ -9264,7 +9288,7 @@ elFinder.prototype = {
 	 */
 	splitFileExtention : function(name) {
 		var m;
-		if (m = name.match(/^(.+?)?\.((?:tar\.(?:gz|bz|bz2|z|lzo))|cpio\.gz|ps\.gz|xcf\.(?:gz|bz2)|[a-z0-9]{1,4})$/i)) {
+		if (m = name.match(/^(.+?)?\.((?:tar\.(?:gz|bz|bz2|z|lzo))|cpio\.gz|ps\.gz|xcf\.(?:gz|bz2)|[a-z0-9]{1,10})$/i)) {
 			if (typeof m[1] === 'undefined') {
 				m[1] = '';
 			}

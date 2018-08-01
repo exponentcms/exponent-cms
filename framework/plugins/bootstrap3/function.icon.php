@@ -126,18 +126,34 @@ if (!function_exists('smarty_function_icon')) {
 
         $linktext = $img . $text;
 
-        if (BTN_SIZE == 'large' || (!empty($params['size']) && $params['size'] == 'large')) {
-            $btn_size = 'btn-lg';
-            $icon_size = 'fa-lg';
-        } elseif (BTN_SIZE == 'small' || (!empty($params['size']) && $params['size'] == 'small')) {
-            $btn_size = 'btn-sm';
-            $icon_size = '';
-        } elseif (BTN_SIZE == 'extrasmall' || (!empty($params['size']) && $params['size'] == 'extrasmall')) {
-            $btn_size = 'btn-xs';
-            $icon_size = '';
-        } else { // medium
-            $btn_size = '';
-            $icon_size = 'fa-lg';
+        if (!empty($params['size'])) {
+            if ($params['size'] === 'extrasmall') {
+                $btn_size = 'btn-xs';
+                $icon_size = '';
+            } elseif ($params['size'] === 'small') {
+                $btn_size = 'btn-sm';
+                $icon_size = '';
+            } elseif ($params['size'] === 'large') {
+                $btn_size = 'btn-lg';
+                $icon_size = 'fa-lg';
+            } else { // medium
+                $btn_size = '';
+                $icon_size = 'fa-lg';
+            }
+        } else {
+            if (BTN_SIZE === 'extrasmall') {
+                $btn_size = 'btn-xs';
+                $icon_size = '';
+            } elseif (BTN_SIZE === 'small') {
+                $btn_size = 'btn-sm';
+                $icon_size = '';
+            } elseif (BTN_SIZE === 'large') {
+                $btn_size = 'btn-lg';
+                $icon_size = 'fa-lg';
+            } else { // medium
+                $btn_size = '';
+                $icon_size = 'fa-lg';
+            }
         }
 
         $icon = expTheme::buttonIcon($class);
@@ -169,6 +185,8 @@ if (!function_exists('smarty_function_icon')) {
             $params['color'],
             $params['wide']
         );
+        $nofollow = !empty($params['nofollow']) ? $params['nofollow'] : '';
+        unset($params['nofollow']);
         $onclick = !empty($params['onclick']) ? $params['onclick'] : '';
         unset($params['onclick']);
         $secure = !empty($params['secure']) ? $params['secure'] : false;
@@ -187,6 +205,8 @@ if (!function_exists('smarty_function_icon')) {
             $linktext = '<span class="sr-only">' . $title . '</span>';
         if(!empty($params['action']) && $params['action'] == 'scriptaction') {
             echo '<a',$name,' href="#" title="', $title, '" class="btn ',$icon->type,' ',$btn_size,'"';
+            if (!empty($nofollow))
+                echo ' rel="nofollow"';
             if (!empty($onclick))
                 echo ' onclick="', $onclick, '"';
             echo '><i class="',$icon->prefix,$icon->class,' ',$icon_size,'" aria-hidden="true"></i> ', $linktext, '</a>';
@@ -205,6 +225,8 @@ if (!function_exists('smarty_function_icon')) {
                 echo ' onclick="return confirm(\'', gt('Are you sure you want to'), ' ', $params['action'], ' ', gt('this'), ' ', $smarty->getTemplateVars('model_name'), ' ', gt('item'), '?\');"';
 //            if ($params['action'] == "merge" && empty($onclick))
 //                echo ' onclick="return confirm(\'' . gt('Are you sure you want to merge this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') . '?\');"';
+            if (!empty($nofollow))
+                echo ' rel="nofollow"';
             if (!empty($onclick))
                 echo ' onclick="', $onclick . '"';
             echo '><i class="',$icon->prefix,$icon->class,' ',$icon_size,'" aria-hidden="true"></i> ',$linktext,'</a>';

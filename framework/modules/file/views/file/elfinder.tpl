@@ -70,7 +70,6 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/cwd.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/dialog.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/fullscreenbutton.js"></script>
-    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/mkdirbutton.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/navbar.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/navdock.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/overlay.js"></script>
@@ -117,8 +116,6 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/opendir.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/opennew.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/paste.js"></script>
-    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/pixlr.js"></script>*}
-    {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/pixlr.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/places.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/preference.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/quicklook.js"></script>
@@ -258,12 +255,14 @@
                     // "quicklook" command options. For additional extensions
                     quicklook : {
                         autoplay : false,
-                        googleDocsMimes : ['application/pdf', 'image/tiff', 'application/vnd.ms-office', 'application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+                        googleDocsMimes   : ['application/pdf', 'image/tiff', 'application/vnd.ms-office', 'application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/postscript', 'application/rtf'],
+                        // MS Office Online overrides Google Docs on these mimetypes
+                        officeOnlineMimes : ['application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.oasis.opendocument.text', 'application/vnd.oasis.opendocument.spreadsheet', 'application/vnd.oasis.opendocument.presentation'],
                     },
                     // help dialog tabs
                     help : {
                         {/literal}{if $smarty.const.DEVELOPMENT}
-                        view : ['about', 'shortcuts', 'help', 'debug'],
+                        view : ['about', 'shortcuts', 'help', 'integrations', 'debug'],
                         {else}
                         view : ['about', 'shortcuts', 'help'],
                         {/if}{literal}

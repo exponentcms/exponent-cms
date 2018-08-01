@@ -148,9 +148,6 @@
             //     responsiveHelper.respond();
             // }
         });
-        // var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
-        // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
-
         // restore all rows so we get all form input instead of only those displayed
         // $('#manage-groups').on('submit', function (e) {
         //     // Force all the rows back onto the DOM for postback

@@ -3202,7 +3202,7 @@ class storeController extends expController {
                         exptheme::iconStyle('edit','').'</a>';
            		    if ($row['product_type'] === "product" || $row['product_type'] === "eventregistration") {
                         $return .= '
-                    <a class="' . $cclass . '" href="' . makeLink(array('controller' => 'store', 'action' => 'copyProduct', 'id' => $d)) . '" title="' . gt('Copy Product') . '">' .
+                        <a class="' . $cclass . '" href="' . makeLink(array('controller' => 'store', 'action' => 'copyProduct', 'id' => $d)) . '" title="' . gt('Copy Product') . '">' .
                             exptheme::iconStyle('copy', '') . '</a>';
                     }
            		    $return .= '

@@ -161,6 +161,7 @@ class eventController extends expController {
                     $beginyear = expDateTime::startOfYearTimestamp($time); // get beginning of year
                 }
                 $date = expDateTime::startOfMonthTimestamp($beginyear); // get the first month
+                // build mini calendars for the year
                 $annual = array();
                 for ($i = 1; $i <= 12; $i++) {
                     $month = expDateTime::startOfMonthTimestamp($date); // reset to first of month for loop
@@ -188,8 +189,11 @@ class eventController extends expController {
                     $date = strtotime('+1 month', $date); // advance to next month
                 }
 
-                $nextyear = strtotime('+1 year', $time);
-                $begin = expDateTime::startOfMonthTimestamp($time);
+                // build event list for the year
+//                $begin = expDateTime::startOfMonthTimestamp($time);
+                $begin = $beginyear;
+//                $nextyear = strtotime('+1 year', $time);
+                $nextyear = strtotime('+1 year', $beginyear);
                 $end = expDateTime::endOfMonthTimestamp($nextyear);
                 $dates = $ed->find("all", $locsql . " AND (date >= " . $begin . " AND date <= " . $end . ")");
                 $items = $this->event->getEventsForDates($dates, true, isset($this->config['only_featured']) ? true : false, true);
@@ -223,7 +227,8 @@ class eventController extends expController {
                     "year"     => $annual,
                     "items"   => $items,
                     "now"      => $time,
-                    "prevyear" => strtotime('-1 year', $time),
+//                    "prevyear" => strtotime('-1 year', $time),
+                    "prevyear" => strtotime('-1 year', $beginyear),
                     "nextyear" => $nextyear,
                 ));
                 break;  // end switch $viewtype minicalendar
@@ -792,27 +797,18 @@ class eventController extends expController {
                     $object = new eventdate((int)$router->params['date_id']);
                     // set the meta info
                     if (!empty($object)) {
-                        if (!empty($object->event->body)) {
-                            $desc = str_replace('"',"'",expString::summarize($object->event->body,'html','para'));
-                        } else {
-                            $desc = SITE_DESCRIPTION;
-                        }
-                        if (!empty($object->expTag)) {
+                        // we don't have any meta data stored for an event record
+                        $metainfo['title'] = $object->event->title;
+                        $metainfo['description'] = $object->event->body;
+                        $metainfo['canonical'] = $router->plainPath();
+                        if (!empty($object->event->expTag)) {
                             $keyw = '';
                             foreach ($object->expTag as $tag) {
                                 if (!empty($keyw)) $keyw .= ', ';
                                 $keyw .= $tag->title;
                             }
-                        } else {
-                            $keyw = SITE_KEYWORDS;
+                            $metainfo['keywords'] = $keyw;
                         }
-                        //fixme, we don't have any meta data stored for an event record
-                        $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
-                        $metainfo['keywords'] = empty($object->event->meta_keywords) ? $keyw : $object->event->meta_keywords;
-                        $metainfo['description'] = empty($object->event->meta_description) ? $desc : $object->event->meta_description;
-                        $metainfo['canonical'] = empty($object->event->canonical) ? $router->plainPath() : $object->event->canonical;
-                        $metainfo['noindex'] = empty($object->event->meta_noindex) ? false : $object->event->meta_noindex;
-                        $metainfo['nofollow'] = empty($object->event->meta_nofollow) ? false : $object->event->meta_nofollow;
                         return $metainfo;
                         break;
                     }
@@ -1204,6 +1200,8 @@ class eventController extends expController {
 
             if (bs3())
                 $css = file_get_contents(BASE . "external/bootstrap3/css/bootstrap.css");
+            elseif (bs4())
+                $css = file_get_contents(BASE . "external/bootstrap4/css/bootstrap.css");
             elseif (bs2())
                 $css = file_get_contents(BASE . "external/bootstrap/css/bootstrap.css");
             else

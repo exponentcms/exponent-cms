@@ -115,10 +115,10 @@ class fakeform extends form {
 
         $this->even = ($this->even=="odd") ? "even" : "odd";
         $html = "<div id='".$this->controls[$name]->_id."' class=\"formmoduleedit item ".$this->even." control" . (!empty($this->controls[$name]->is_hidden)?' ishidden':'') . ($this->controls[$name]->_controltype == 'pagecontrol'?' ispaged':'') . "\" >";
-        if ($this->controls[$name]->horizontal&&bs3())
+        if ($this->controls[$name]->horizontal&&(bs4()||bs3()))
             $html .= '<div class="row">';
 
-        $html .= "<div class=\"item-actions".($this->controls[$name]->horizontal&&bs3()?' col-sm-12':'')."\">";
+        $html .= "<div class=\"item-actions".($this->controls[$name]->horizontal&&(bs4()||bs3())?' col-sm-12':'')."\">";
 
         //build edit button
         if (!$this->controls[$name]->_readonly) {
@@ -157,16 +157,16 @@ class fakeform extends form {
 
         if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'radiogroupcontrol' && $this->controls[$name]->_controltype != 'checkboxcontrol')  // flipped non-checkbox non-radio group
               || (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {  // not flipped checkbox
-             if (bs3() && $this->controls[$name]->_controltype == 'checkboxcontrol') {
+             if ((bs4()||bs3()) && $this->controls[$name]->_controltype == 'checkboxcontrol') {
                  $html .= $this->controls[$name]->toHTML($this->controlLbl[$name], $name) . "\r\n";
              } else {
-                 $html .= "<label class=\"".(bs3()||bs2()?"control-label":"label").($this->horizontal&&bs3()?' col-sm-2':'')."\" style=\"background: transparent;\"></label>";
+                 $html .= "<label class=\"".(bs4()||bs3()||bs2()?"control-label":"label").($this->horizontal&&(bs4()||bs3())?' col-sm-2':'')."\" style=\"background: transparent;\"></label>";
                  $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
              }
         }
         $for   = ' for="' . $name . '"';
-        if (!bs3() && (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {  // not flipped checkbox
-            $html .= "<label ".$for." class=\"".(bs3()||bs2()?"control-label":"label form-check-label").($this->horizontal&&bs3()?' col-sm-2':'')."\" style=\"width:auto; display:inline;\">";
+        if (!bs4() && !bs3() && (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {  // not flipped checkbox
+            $html .= "<label ".$for." class=\"".(bs4()||bs3()||bs2()?"control-label":"label form-check-label").($this->horizontal&&(bs4()||bs3())?' col-sm-2':'')."\" style=\"width:auto; display:inline;\">";
             if($this->controls[$name]->required)
                 $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
             $html .= $this->controlLbl[$name];
@@ -175,7 +175,7 @@ class fakeform extends form {
                 if (bs4()) {
                     $html .= "<br><small class=\""."form-text text-muted"."\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</small>";
                 } else {
-                    $html .= "<br><div class=\"".(bs3()?"help-block":"control-desc")."\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</div>";
+                    $html .= "<br><div class=\"".(bs4()||bs3()?"help-block":"control-desc")."\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</div>";
                 }
             }
         }
@@ -183,10 +183,10 @@ class fakeform extends form {
         if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol') || $this->controls[$name]->_controltype == 'pagecontrol') {
         } elseif (!empty($this->controlLbl[$name])) {  // flipped non-checkbox or page control
             if ($this->controls[$name]->_controltype == 'checkboxcontrol') {
-                $html .= "<label ".$for." class=\"".(bs3()||bs2()?"control-label":"label form-check-label").($this->horizontal&&bs3()?' col-sm-2':'')."\" style=\"font-weight: normal;display:inline;\">";
+                $html .= "<label ".$for." class=\"".(bs4()||bs3()||bs2()?"control-label":"label form-check-label").($this->horizontal&&(bs4()||bs3())?' col-sm-2':'')."\" style=\"font-weight: normal;display:inline;\">";
             } else {
                 $break = $this->controls[$name]->_controltype == 'radiogroupcontrol' && $this->controls[$name]->cols != 1 ? true : false;
-                $html .= "<label class=\"".(bs3()||bs2()?"control-label":"label").($this->horizontal&&bs3()?' col-sm-2':'').($break?" form-check-inline":"")."\">";
+                $html .= "<label class=\"".(bs4()||bs3()||bs2()?"control-label":"label").($this->horizontal&&(bs4()||bs3())?' col-sm-2':'').($break?" form-check-inline":"")."\">";
             }
             if($this->controls[$name]->required)
                 $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
@@ -200,7 +200,7 @@ class fakeform extends form {
                 if (bs4()) {
                     $html .= "<small class=\""."form-text text-muted"."\">" . $this->controls[$name]->description . "</small>";
                 } else {
-                    $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">" . $this->controls[$name]->description . "</div>";
+                    $html .= "<div class=\"".((bs4()||bs3())?"help-block":"control-desc")."\">" . $this->controls[$name]->description . "</div>";
                 }
             }
         }
@@ -209,7 +209,7 @@ class fakeform extends form {
             $this->controls[$name]->design_time = true;
             $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
         }
-        if ($this->controls[$name]->horizontal&&bs3())
+        if ($this->controls[$name]->horizontal&&(bs4()||bs3()))
             $html .= '</div>';
         $html .= "</div>";
 

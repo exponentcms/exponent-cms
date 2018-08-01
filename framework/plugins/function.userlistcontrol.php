@@ -34,9 +34,8 @@
  * @param \Smarty $smarty
  */
 function smarty_function_userlistcontrol($params, &$smarty) {
-//    echo '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/forms/controls/listbuildercontrol.js"></script>';
-
     global $db;
+
     $users = $db->selectObjects("user", null, "username");
 
     $selected = isset($params['items']) ? $params['items'] : null;
@@ -62,7 +61,6 @@ function smarty_function_userlistcontrol($params, &$smarty) {
     if (!empty($params['class'])) $control->class = $params['class'];
     $name    = isset($params['name']) ? $params['name'] : "userlist";
     $label   = isset($params['label']) ? $params['label'] : "";
-//    echo $control->controlToHTML($name);
     echo $control->ToHTML($label,$name);
 }
 

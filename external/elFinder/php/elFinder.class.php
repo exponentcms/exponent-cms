@@ -31,7 +31,7 @@ class elFinder {
 	 * 
 	 * @var integer
 	 */
-	protected static $ApiRevision = 39;
+	protected static $ApiRevision = 40;
 	
 	/**
 	 * Storages (root dirs)
@@ -2833,11 +2833,13 @@ class elFinder {
 						$_name = preg_replace('~^.*?([^/#?]+)(?:\?.*)?(?:#.*)?$~', '$1', rawurldecode($url));
 						// Check `Content-Disposition` response header
 						if ($data && ($headers = get_headers($url, true)) && !empty($headers['Content-Disposition'])) {
-							if (preg_match('/filename\*?=(?:([a-zA-Z0-9_-]+?)\'\')?"?([a-z0-9_.~%-]+)"?/i', $headers['Content-Disposition'], $m)) {
+							if (preg_match('/filename\*=(?:([a-zA-Z0-9_-]+?)\'\')"?([a-z0-9_.~%-]+)"?/i', $headers['Content-Disposition'], $m)) {
 								$_name = rawurldecode($m[2]);
 								if ($m[1] && strtoupper($m[1]) !== 'UTF-8' && function_exists('mb_convert_encoding')) {
 									$_name = mb_convert_encoding($_name, 'UTF-8', $m[1]);
 								}
+							} else if (preg_match('/filename="?([ a-z0-9_.~%-]+)"?/i', $headers['Content-Disposition'], $m)) {
+								$_name = rawurldecode($m[1]);
 							}
 						}
 					}
@@ -4326,7 +4328,7 @@ class elFinder {
 	 * @return array
 	 */
 	public static function splitFileExtention($name) {
-		if (preg_match('/^(.+?)?\.((?:tar\.(?:gz|bz|bz2|z|lzo))|cpio\.gz|ps\.gz|xcf\.(?:gz|bz2)|[a-z0-9]{1,4})$/i', $name, $m)) {
+		if (preg_match('/^(.+?)?\.((?:tar\.(?:gz|bz|bz2|z|lzo))|cpio\.gz|ps\.gz|xcf\.(?:gz|bz2)|[a-z0-9]{1,10})$/i', $name, $m)) {
 			return array((string)$m[1], $m[2]);
 		} else {
 			return array($name, '');

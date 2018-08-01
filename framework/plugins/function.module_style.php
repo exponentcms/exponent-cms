@@ -62,9 +62,10 @@ function smarty_function_module_style($params,&$smarty) {
 			case 'background':
 				switch ($style) {
 					case 'well':
-						$class .= 'well';
 						if (bs4()) {
                             $class .= 'card card-body bg-faded';
+                        } else {
+                            $class .= 'well';
                         }
 						break;
 					case 'light':
@@ -79,9 +80,10 @@ function smarty_function_module_style($params,&$smarty) {
 				}
 				break;
 			case 'styled':
-				$class .= 'well';
                 if (bs4()) {
                     $class .= 'card card-body bg-faded';
+                } else {
+                    $class .= 'well';
                 }
                 break;
 				break;

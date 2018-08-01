@@ -24,7 +24,7 @@
         {exp_include file='minical.tpl'}
     </div>
     {if !$config.disable_links}
-        {icon class="monthviewlink" action=showall time=$now text='View Calendar'|gettext}
+        {icon class="monthviewlink" action=showall time=$now text='View Calendar'|gettext nofollow=1}
     	{br}
     {/if}
 	{permissions}

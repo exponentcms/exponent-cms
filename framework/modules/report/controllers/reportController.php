@@ -41,11 +41,11 @@ class reportController extends expController {
     );
 
     static function displayname() {
-        return gt("Ecom Report Builder");
+        return gt("e-Commerce Report Builder");
     }
 
     static function description() {
-        return gt("Build reports based on store activity");
+        return gt("Build reports for your store");
     }
 
     static function author() {
@@ -231,7 +231,7 @@ class reportController extends expController {
     }
 
     /**
-     * FIXME Function not known/incomplete
+     * FIXME Purpose not known/incomplete
      */
     function cart_summary() {
         global $db;
@@ -324,7 +324,7 @@ class reportController extends expController {
                     $operator = '=';
                     break;
             }
-            $sqlwhere .= " AND o.grand_total" . $operator . (int)($p['order-price-num']);
+            $sqlwhere .= " AND o.grand_total" . $operator . expUtil::currency_to_float($p['order-price-num']);
         }
 
         if (!empty($p['pnam'])) {
@@ -362,8 +362,8 @@ class reportController extends expController {
         }
 
         if (!empty($p['zip'])) {
-            if ($p['bl-sp-zip'] == 'b') $sqlwhere .= " AND b.zip LIKE '%" . expString::escape($p['zip']) . "%'";
-            else if ($p['bl-sp-zip'] == 's') $sqlwhere .= " AND s.zip LIKE '%" . expString::escape($p['zip']) . "%'";
+            if ($p['bl-sp-zip'] === 'b') $sqlwhere .= " AND b.zip LIKE '%" . expString::escape($p['zip']) . "%'";
+            else if ($p['bl-sp-zip'] === 's') $sqlwhere .= " AND s.zip LIKE '%" . expString::escape($p['zip']) . "%'";
         }
 
         if (isset($p['state'])) {
@@ -374,11 +374,11 @@ class reportController extends expController {
                 if ($s == -1) continue;
                 else if ($inc == 0) {
                     $inc++;
-                    if ($p['bl-sp-state'] == 'b') $sqltmp .= " AND (b.state = " . $s;
-                    else if ($p['bl-sp-state'] == 's') $sqltmp .= " AND (s.state = " . $s;
+                    if ($p['bl-sp-state'] === 'b') $sqltmp .= " AND (b.state = " . $s;
+                    else if ($p['bl-sp-state'] === 's') $sqltmp .= " AND (s.state = " . $s;
                 } else {
-                    if ($p['bl-sp-state'] == 'b') $sqltmp .= " OR b.state = " . $s;
-                    else if ($p['bl-sp-state'] == 's') $sqltmp .= " OR s.state = " . $s;
+                    if ($p['bl-sp-state'] === 'b') $sqltmp .= " OR b.state = " . $s;
+                    else if ($p['bl-sp-state'] === 's') $sqltmp .= " OR s.state = " . $s;
                 }
             }
             if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
@@ -570,51 +570,72 @@ class reportController extends expController {
     function generateOrderReport() {
         global $db;
 
-        //eDebug($this->params);
         $p = $this->params;
 
-        //eDebug();
         //build
         $start_sql = "SELECT DISTINCT(o.id), ";
-        $count_sql = "SELECT COUNT(DISTINCT(o.id)) as c, ";
-        $sql = "o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, concat('".expCore::getCurrencySymbol()."',format(o.grand_total,2)) as grand_total, os.title as status_title, ot.title as order_type";
+        $count_sql = "SELECT COUNT(DISTINCT(o.id)) AS c, ";
+        $sql = "o.invoice_id, o.purchased as purchased_date, b.firstname AS bfirst, b.lastname AS blast, o.grand_total AS grand_total, os.title AS status_title, ot.title AS order_type";
         if (isset($p['order_status_changed'])){
-            if ((count($p['order_status_changed']) == 1 && $p['order_status_changed'][0] != -1) || count($p['order_status_changed']) > 1 || (!empty($p['include_status_date']) && (!empty($p['date-sstartdate']) || !empty($p['date-senddate'])))) $sql .= ", FROM_UNIXTIME(osc.created_at,'%c/%e/%y %h:%i:%s %p') as status_changed_date";
+            if ((count($p['order_status_changed']) == 1 && $p['order_status_changed'][0] != -1) || count($p['order_status_changed']) > 1 || (!empty($p['include_status_date']) && (!empty($p['date-sstartdate']) || !empty($p['date-senddate']))))
+                $sql .= ", osc.created_at AS status_changed_date";
         }
-        $sql .= " from " . $db->prefix . "orders as o ";
-        $sql .= "INNER JOIN " . $db->prefix . "orderitems as oi ON oi.orders_id = o.id ";
-        $sql .= "INNER JOIN " . $db->prefix . "order_type as ot ON ot.id = o.order_type_id ";
-        $sql .= "INNER JOIN " . $db->prefix . "product as p ON oi.product_id = p.id ";
+        $sql .= " FROM " . $db->prefix . "orders AS o ";
+        $sql .= "INNER JOIN " . $db->prefix . "orderitems AS oi ON oi.orders_id = o.id ";
+        $sql .= "INNER JOIN " . $db->prefix . "order_type AS ot ON ot.id = o.order_type_id ";
+        $sql .= "INNER JOIN " . $db->prefix . "product AS p ON oi.product_id = p.id ";
         //if ($p['order_type'][0] != -1) $sql .= "INNER JOIN " . $db->prefix . "order_type as ot ON o.order_type_id = ot.id ";
-        $sql .= "INNER JOIN " . $db->prefix . "order_status as os ON os.id = o.order_status_id ";
+        $sql .= "INNER JOIN " . $db->prefix . "order_status AS os ON os.id = o.order_status_id ";
         if (isset($p['order_status_changed'])) {
-            if ((count($p['order_status_changed']) == 1 && $p['order_status_changed'][0] != -1) || count($p['order_status_changed']) > 1 || (!empty($p['include_status_date']) && (!empty($p['date-sstartdate']) || !empty($p['date-senddate'])))) $sql .= "INNER JOIN " . $db->prefix . "order_status_changes as osc ON osc.orders_id = o.id ";
+            if ((count($p['order_status_changed']) == 1 && $p['order_status_changed'][0] != -1) || count($p['order_status_changed']) > 1 || (!empty($p['include_status_date']) && (!empty($p['date-sstartdate']) || !empty($p['date-senddate']))))
+                $sql .= "INNER JOIN " . $db->prefix . "order_status_changes AS osc ON osc.orders_id = o.id ";
         }
-        $sql .= "INNER JOIN " . $db->prefix . "billingmethods as b ON b.orders_id = o.id ";
-        $sql .= "INNER JOIN " . $db->prefix . "shippingmethods as s ON s.id = oi.shippingmethods_id ";
-        $sql .= "LEFT JOIN " . $db->prefix . "geo_region as gr ON (gr.id = b.state OR gr.id = s.state) ";
-        if (isset($p['discounts']) && $p['discounts'][0] != -1) $sql .= "LEFT JOIN " . $db->prefix . "order_discounts as od ON od.orders_id = o.id ";
+        $sql .= "INNER JOIN " . $db->prefix . "billingmethods AS b ON b.orders_id = o.id ";
+        $sql .= "INNER JOIN " . $db->prefix . "shippingmethods AS s ON s.id = oi.shippingmethods_id ";
+        $sql .= "LEFT JOIN " . $db->prefix . "geo_region AS gr ON (gr.id = b.state OR gr.id = s.state) ";
+        if (isset($p['discounts']) && $p['discounts'][0] != -1)
+            $sql .= "LEFT JOIN " . $db->prefix . "order_discounts AS od ON od.orders_id = o.id ";
 
         $sqlwhere = "WHERE o.purchased != 0";
 
-        if (!empty($p['include_purchased_date']) && !empty($p['date-pstartdate'])) $sqlwhere .= " AND o.purchased >= " . strtotime($p['date-pstartdate'] . " " . $p['time-h-pstartdate'] . ":" . $p['time-m-pstartdate'] . " " . $p['ampm-pstartdate']);
-        /*if ($p->['time-h-startdate'] == )
-        if ($p->['time-m-startdate'] == )
-        if ($p->['ampm-startdate'] == )*/
-        if (!empty($p['include_purchased_date']) && !empty($p['date-penddate'])) $sqlwhere .= " AND o.purchased <= " . strtotime($p['date-penddate'] . " " . $p['time-h-penddate'] . ":" . $p['time-m-penddate'] . " " . $p['ampm-penddate']);
-        /*if ($p->['date-enddate'] == )
-        if ($p->['time-h-enddate'] == )
-        if ($p->['time-m-enddate'] == )
-        if ($p->['ampm-enddate'] == )*/
-        if (!empty($p['include_status_date']) && !empty($p['date-sstartdate'])) $sqlwhere .= " AND osc.created_at >= " . strtotime($p['date-sstartdate'] . " " . $p['time-h-sstartdate'] . ":" . $p['time-m-sstartdate'] . " " . $p['ampm-sstartdate']);
+        if (!empty($p['include_purchased_date'])) {
+            if (!empty($p['pstartdate'])) {
+                if (is_numeric($p['pstartdate']))
+                    $p['pstartdate'] = '@' . $p['pstartdate'];
+                $sqlwhere .= " AND o.purchased >= " . strtotime($p['pstartdate']);
+            } elseif (!empty($p['date-pstartdate']))
+                $sqlwhere .= " AND o.purchased >= " . strtotime($p['date-pstartdate'] . " " . $p['time-h-pstartdate'] . ":" . $p['time-m-pstartdate'] . " " . $p['ampm-pstartdate']);
 
-        if (!empty($p['include_status_date']) && !empty($p['date-senddate'])) $sqlwhere .= " AND osc.created_at <= " . strtotime($p['date-senddate'] . " " . $p['time-h-senddate'] . ":" . $p['time-m-senddate'] . " " . $p['ampm-senddate']);
+            if (!empty($p['penddate'])) {
+                if (is_numeric($p['penddate']))
+                    $p['penddate'] = '@' . $p['penddate'];
+                $sqlwhere .= " AND o.purchased <= " . strtotime($p['penddate']);
+            } elseif (!empty($p['date-penddate']))
+                $sqlwhere .= " AND o.purchased <= " . strtotime($p['date-penddate'] . " " . $p['time-h-penddate'] . ":" . $p['time-m-penddate'] . " " . $p['ampm-penddate']);
+        }
+
+        if (!empty($p['include_status_date'])) {
+            if (!empty($p['sstartdate'])) {
+                if (is_numeric($p['sstartdate']))
+                    $p['sstartdate'] = '@' . $p['sstartdate'];
+                $sqlwhere .= " AND osc.created_at >= " . strtotime($p['sstartdate']);
+            } elseif (!empty($p['date-sstartdate']))
+                $sqlwhere .= " AND osc.created_at >= " . strtotime($p['date-sstartdate'] . " " . $p['time-h-sstartdate'] . ":" . $p['time-m-sstartdate'] . " " . $p['ampm-sstartdate']);
+
+            if (!empty($p['senddate'])) {
+                if (is_numeric($p['senddate']))
+                    $p['senddate'] = '@' . $p['senddate'];
+                $sqlwhere .= " AND osc.created_at <= " . strtotime($p['senddate']);
+            } elseif (!empty($p['date-senddate']))
+                $sqlwhere .= " AND osc.created_at <= " . strtotime($p['date-senddate'] . " " . $p['time-h-senddate'] . ":" . $p['time-m-senddate'] . " " . $p['ampm-senddate']);
+        }
 
         $inc = 0;
         $sqltmp = '';
-        if (isset($p['product_status'])) {
+        if (isset($p['order_status'])) {
             foreach ($p['order_status'] as $os) {
-                if ($os == -1) continue;
+                if ($os == -1)
+                    continue;
                 else if ($inc == 0) {
                     $inc++;
                     $sqltmp .= " AND (o.order_status_id = " . $os;
@@ -623,13 +644,15 @@ class reportController extends expController {
                 }
             }
         }
-        if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
+        if (!empty($sqltmp))
+            $sqlwhere .= $sqltmp .= ")";
 
         $inc = 0;
         $sqltmp = '';
-        if (isset($p['product_status_changed'])) {
+        if (isset($p['order_status_changed'])) {
             foreach ($p['order_status_changed'] as $osc) {
-                if ($osc == -1) continue;
+                if ($osc == -1)
+                    continue;
                 else if ($inc == 0) {
                     $inc++;
                     //$sqltmp .= " AND ((osc.to_status_id = " . $osc . " AND (osc.from_status_id != " . $osc . ")";
@@ -640,13 +663,15 @@ class reportController extends expController {
                 }
             }
         }
-        if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
+        if (!empty($sqltmp))
+            $sqlwhere .= $sqltmp .= ")";
 
         $inc = 0;
         $sqltmp = '';
         if (isset($p['order_type'])) {
             foreach ($p['order_type'] as $ot) {
-                if ($ot == -1) continue;
+                if ($ot == -1)
+                    continue;
                 else if ($inc == 0) {
                     $inc++;
                     $sqltmp .= " AND (o.order_type_id = " . $ot;
@@ -655,7 +680,8 @@ class reportController extends expController {
                 }
             }
         }
-        if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
+        if (!empty($sqltmp))
+            $sqlwhere .= $sqltmp .= ")";
 
         if (!empty($p['order-range-num'])) {
             $operator = '';
@@ -686,7 +712,7 @@ class reportController extends expController {
                     $operator = '=';
                     break;
             }
-            $sqlwhere .= " AND o.grand_total" . $operator . $p['order-price-num'];
+            $sqlwhere .= " AND o.grand_total" . $operator . expUtil::currency_to_float($p['order-price-num']);
         }
 
         if (!empty($p['pnam'])) {
@@ -701,7 +727,8 @@ class reportController extends expController {
         $sqltmp = '';
         if (isset($p['product_status'])) {
             foreach ($p['product_status'] as $pstat) {
-                if ($pstat == -1 || empty($pstat)) continue;
+                if ($pstat == -1 || empty($pstat))
+                    continue;
 
                 $product_status = new product_status($pstat);
                 if ($inc == 0) {
@@ -712,7 +739,8 @@ class reportController extends expController {
                 }
             }
         }
-        if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
+        if (!empty($sqltmp))
+            $sqlwhere .= $sqltmp .= ")";
 
         if (!empty($p['uidata'])) {
             $sqlwhere .= " AND oi.user_input_fields != '' AND oi.user_input_fields != 'a:0:{}'";
@@ -722,7 +750,8 @@ class reportController extends expController {
         $sqltmp = '';
         if (isset($p['discounts'])) {
             foreach ($p['discounts'] as $d) {
-                if ($d == -1) continue;
+                if ($d == -1)
+                    continue;
                 else if ($inc == 0) {
                     $inc++;
                     $sqltmp .= " AND (od.discounts_id = " . $d;
@@ -731,7 +760,8 @@ class reportController extends expController {
                 }
             }
         }
-        if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
+        if (!empty($sqltmp))
+            $sqlwhere .= $sqltmp .= ")";
 
         if (!empty($p['blshpname'])) {
             $sqlwhere .= " AND (b.firstname LIKE '%" . $p['blshpname'] . "%'";
@@ -746,25 +776,33 @@ class reportController extends expController {
         }
 
         if (!empty($p['zip'])) {
-            if ($p['bl-sp-zip'] == 'b') $sqlwhere .= " AND b.zip LIKE '%" . $p['zip'] . "%'";
-            else if ($p['bl-sp-zip'] == 's') $sqlwhere .= " AND s.zip LIKE '%" . $p['zip'] . "%'";
+            if ($p['bl-sp-zip'] === 'b')
+                $sqlwhere .= " AND b.zip LIKE '%" . $p['zip'] . "%'";
+            else if ($p['bl-sp-zip'] === 's')
+                $sqlwhere .= " AND s.zip LIKE '%" . $p['zip'] . "%'";
         }
 
         if (isset($p['state'])) {
             $inc = 0;
             $sqltmp = '';
             foreach ($p['state'] as $s) {
-                if ($s == -1) continue;
+                if ($s == -1)
+                    continue;
                 else if ($inc == 0) {
                     $inc++;
-                    if ($p['bl-sp-state'] == 'b') $sqltmp .= " AND (b.state = " . $s;
-                    else if ($p['bl-sp-state'] == 's') $sqltmp .= " AND (s.state = " . $s;
+                    if ($p['bl-sp-state'] === 'b')
+                        $sqltmp .= " AND (b.state = " . $s;
+                    else if ($p['bl-sp-state'] === 's')
+                        $sqltmp .= " AND (s.state = " . $s;
                 } else {
-                    if ($p['bl-sp-state'] == 'b') $sqltmp .= " OR b.state = " . $s;
-                    else if ($p['bl-sp-state'] == 's') $sqltmp .= " OR s.state = " . $s;
+                    if ($p['bl-sp-state'] === 'b')
+                        $sqltmp .= " OR b.state = " . $s;
+                    else if ($p['bl-sp-state'] === 's')
+                        $sqltmp .= " OR s.state = " . $s;
                 }
             }
-            if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
+            if (!empty($sqltmp))
+                $sqlwhere .= $sqltmp .= ")";
         }
 
         if (isset($p['payment_method'])) {
@@ -773,8 +811,9 @@ class reportController extends expController {
             //get each calculator's id
 
             foreach ($p['payment_method'] as $s) {
-                if ($s == -1) continue;
-                if ($s == 'VisaCard' || $s == 'AmExCard' || $s == 'MasterCard' || $s == 'DiscoverCard') {
+                if ($s == -1)
+                    continue;
+                if ($s === 'VisaCard' || $s === 'AmExCard' || $s === 'MasterCard' || $s === 'DiscoverCard') {
                     $paymentQuery = 'b.billing_options LIKE "%' . $s . '%"';
                 } else {
                     $bc = new billingcalculator();
@@ -789,7 +828,8 @@ class reportController extends expController {
                     $sqltmp .= " OR " . $paymentQuery;
                 }
             }
-            if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
+            if (!empty($sqltmp))
+                $sqlwhere .= $sqltmp .= ")";
         }
 
         //echo $sql . $sqlwhere . "<br>";
@@ -871,18 +911,18 @@ class reportController extends expController {
             'sql'        => $sql . $sqlwhere,
             'limit'      => empty($this->config['limit']) ? 350 : $this->config['limit'],
             'order'      => (isset($this->params['order']) ? $this->params['order'] : 'invoice_id'),
-            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),  // newest first
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->baseclassname,
             'action'     => $this->params['action'],
             'columns'    => array(
                 'actupon'                 => true,
                 gt('Order #')             => 'invoice_id|controller=order,action=show,showby=id',
-                gt('Purchased Date')      => 'purchased_date',
+                gt('Purchased Date')      => 'purchased_date|FORMAT=date',
                 gt('First')               => 'bfirst',
                 gt('Last')                => 'blast',
-                gt('Total')               => 'grand_total',
-                gt('Status Changed Date') => 'status_changed_date',
+                gt('Total')               => 'grand_total|FORMAT=currency',
+                gt('Status Changed Date') => 'status_changed_date|FORMAT=date',
                 gt('Order Type')          => 'order_type',
                 gt('Status')              => 'status_title'
             ),
@@ -964,13 +1004,14 @@ class reportController extends expController {
                 }
             }
 
-            foreach ($payment_summary as $key => $item) {
-                $payments_key_arr[] = '"' . $key . '"';
-                $payment_values_arr[] = round($item, 2);
-            }
-            $payments_key = implode(",", $payments_key_arr);
-            $payment_values = implode(",", $payment_values_arr);
         }
+
+        foreach ($payment_summary as $key => $item) {
+            $payments_key_arr[] = '"' . $key . '"';
+            $payment_values_arr[] = round($item, 2);
+        }
+        $payments_key = implode(",", $payments_key_arr);
+        $payment_values = implode(",", $payment_values_arr);
 
         //tax
 //        $tax_sql = "SELECT SUM(tax) as tax_total FROM " . $db->prefix . "orders WHERE id IN (" . $orders_string . ")";
@@ -1037,7 +1078,7 @@ class reportController extends expController {
             foreach ($order->orderitem as $oi) {
                 // eDebug($oi,true);
                 $item = array();
-                if ($oi->user_input_fields == '' || $oi->user_input_fields == 'a:0:{}') continue;
+                if ($oi->user_input_fields == '' || $oi->user_input_fields === 'a:0:{}') continue;
                 else $item['user_input_data'] = expUnserialize($oi->user_input_fields);;
 
                 $model = preg_replace($pattern, '', preg_replace('/\s/', '', $oi->products_model));
@@ -1139,20 +1180,19 @@ class reportController extends expController {
     function generateProductReport() {
         global $db;
 
-        // eDebug($this->params);
         $p = $this->params;
-        $sqlids = "SELECT DISTINCT(p.id) from ";
-        $count_sql = "SELECT COUNT(DISTINCT(p.id)) as c FROM ";
-        $sqlstart = "SELECT DISTINCT(p.id), p.title, p.model, concat('".expCore::getCurrencySymbol()."',format(p.base_price,2)) as base_price";//, ps.title as status from ";
-        $sql = $db->prefix . "product as p ";
+        $sqlids = "SELECT DISTINCT(p.id) FROM ";
+        $count_sql = "SELECT COUNT(DISTINCT(p.id)) AS c FROM ";
+        $sqlstart = "SELECT DISTINCT(p.id), p.title, p.model, base_price"; //, ps.title as status from ";
+        $sql = $db->prefix . "product AS p ";
         if (!isset($p['allproducts'])){
-            $sql .= "INNER JOIN " . $db->prefix . "product_status as ps ON p.product_status_id = ps.id ";
-            $sqlstart .= ", ps.title as status from ";
+            $sql .= "INNER JOIN " . $db->prefix . "product_status AS ps ON p.product_status_id = ps.id ";
+            $sqlstart .= ", ps.title AS status FROM ";
             if (!isset($p['uncategorized'])){
-                $sql .= "INNER JOIN " . $db->prefix . "product_storeCategories as psc ON p.id = psc.product_id ";
+                $sql .= "INNER JOIN " . $db->prefix . "product_storeCategories AS psc ON p.id = psc.product_id ";
             }
         } else {
-            $sqlstart .= " from ";
+            $sqlstart .= " FROM ";
         }
         //$sqlidsjoin = "INNER JOIN " . $db->prefix . "product as childp ON p.id = childp.parent_id ";
         $sqlwhere = 'WHERE (1=1 ';
@@ -1161,7 +1201,8 @@ class reportController extends expController {
         $sqltmp = '';
         if (isset($p['product_status'])) {
             foreach ($p['product_status'] as $os) {
-                if ($os == '') continue;
+                if ($os == '')
+                    continue;
                 else if ($inc == 0) {
                     $inc++;
                     $sqltmp .= " AND (p.product_status_id = " . $os;
@@ -1170,14 +1211,16 @@ class reportController extends expController {
                 }
 
             }
-            if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
+            if (!empty($sqltmp))
+                $sqlwhere .= $sqltmp .= ")";
         }
 
         $inc = 0;
         $sqltmp = '';
         if (!empty($p['product_type'])) {
             foreach ($p['product_type'] as $ot) {
-                if ($ot == '') continue;
+                if ($ot == '')
+                    continue;
                 else if ($inc == 0) {
                     $inc++;
                     $sqltmp .= " AND (p.product_type = '" . $ot . "'";
@@ -1187,23 +1230,25 @@ class reportController extends expController {
 
             }
         }
-        if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
+        if (!empty($sqltmp))
+            $sqlwhere .= $sqltmp .= ")";
 
         if (!isset($p['allproducts'])) {
             if (!isset($p['uncategorized'])) {
                 $inc = 0;
                 $sqltmp = '';
                 if (!empty($p['storeCategory'])) foreach ($p['storeCategory'] as $ot) {
-                    if ($ot == '') continue;
+                    if ($ot == '')
+                        continue;
                     else if ($inc == 0) {
                         $inc++;
                         $sqltmp .= " AND (psc.storecategories_id = " . $ot;
                     } else {
                         $sqltmp .= " OR psc.storecategories_id = " . $ot;
                     }
-
                 }
-                if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
+                if (!empty($sqltmp))
+                    $sqlwhere .= $sqltmp .= ")";
             } else {
                 $sqlwhere .= " AND psc.storecategories_id = 0 AND p.parent_id = 0";
             }
@@ -1229,7 +1274,8 @@ class reportController extends expController {
         $sqltmp = '';
         if (isset($p['company'])) {
             foreach ($p['company'] as $os) {
-                if ($os == '') continue;
+                if ($os == '')
+                    continue;
                 else if ($inc == 0) {
                     $inc++;
                     $sqltmp .= " AND (p.companies_id = " . $os;
@@ -1238,7 +1284,8 @@ class reportController extends expController {
                 }
 
             }
-            if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
+            if (!empty($sqltmp))
+                $sqlwhere .= $sqltmp .= ")";
         }
 
         if (!empty($p['product-price-num'])) {
@@ -1254,7 +1301,7 @@ class reportController extends expController {
                     $operator = '=';
                     break;
             }
-            $sqlwhere .= " AND p.base_price" . $operator . $p['product-price-num'];
+            $sqlwhere .= " AND p.base_price" . $operator . expUtil::currency_to_float($p['product-price-num']);
         }
 
         if (!empty($p['pnam'])) {
@@ -1275,7 +1322,7 @@ class reportController extends expController {
         expSession::set('product_export_query', $exportSQL);
         //expSession::set('product_export_query', "SELECT  DISTINCT(p.id) FROM `" . $db->prefix . "product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0");
 
-        $product = new product();
+//        $product = new product();
         //$items = $product->find('all', '', 'id', 25);
         //$page = new expPaginator();
         //eDebug($page,true);
@@ -1289,7 +1336,7 @@ class reportController extends expController {
             'count_sql'  => $count_sql . $sql . $sqlwhere,
             'limit'      => empty($this->config['limit']) ? 350 : $this->config['limit'],
             'order'      => (isset($this->params['order']) ? $this->params['order'] : 'id'),
-            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->baseclassname,
             'action'     => $this->params['action'],
@@ -1298,7 +1345,7 @@ class reportController extends expController {
                 'ID'      => 'id',
                 gt('Product') => 'title|controller=store,action=show,showby=id',
                 'SKU'     => 'model',
-                gt('Price')   => 'base_price',
+                gt('Price')   => 'base_price|FORMAT=currency',
                 gt('Status')   => 'status'
             ),
             //'columns'=>array('Product'=>'title','SKU'=>'model'),
@@ -1331,140 +1378,6 @@ class reportController extends expController {
         //
         //
         // assign_to_template(array('page'=>$page));
-    }
-
-    /**
-     * @deprecated 2.3.3 moved to expString
-     * @param $str
-     * @param bool $isHTML
-     *
-     * @return mixed
-     */
-    public static function parseAndTrimExport($str, $isHTML = false) { //�Death from above�? �
-        //echo "1<br>"; eDebug($str);
-
-        $str = str_replace("�", "&rsquo;", $str);
-        $str = str_replace("�", "&lsquo;", $str);
-        $str = str_replace("�", "&#174;", $str);
-        $str = str_replace("�", "-", $str);
-        $str = str_replace("�", "&#151;", $str);
-        $str = str_replace("�", "&rdquo;", $str);
-        $str = str_replace("�", "&ldquo;", $str);
-        $str = str_replace("\r\n", " ", $str);
-        $str = str_replace("\t", " ", $str);
-        $str = str_replace(",", "\,", $str);
-        $str = str_replace("�", "&#188;", $str);
-        $str = str_replace("�", "&#189;", $str);
-        $str = str_replace("�", "&#190;", $str);
-
-        if (!$isHTML) {
-            $str = str_replace('\"', "&quot;", $str);
-            $str = str_replace('"', "&quot;", $str);
-        } else {
-            $str = str_replace('"', '""', $str);
-        }
-
-        //$str = htmlspecialchars($str);
-        //$str = utf8_encode($str);
-        $str = trim(str_replace("�", "&trade;", $str));
-        //echo "2<br>"; eDebug($str,die);
-        return $str;
-    }
-
-    /**
-     * @deprecated 2.3.3 moved to expString
-     * @param $str
-     * @param bool $isHTML
-     *
-     * @return mixed
-     */
-    public static function parseAndTrimImport($str, $isHTML = false) { //�Death from above�? �
-        //echo "1<br>"; eDebug($str);
-//        global $db;
-
-        $str = str_replace("�", "&rsquo;", $str);
-        $str = str_replace("�", "&lsquo;", $str);
-        $str = str_replace("�", "&#174;", $str);
-        $str = str_replace("�", "-", $str);
-        $str = str_replace("�", "&#151;", $str);
-        $str = str_replace("�", "&rdquo;", $str);
-        $str = str_replace("�", "&ldquo;", $str);
-        $str = str_replace("\r\n", " ", $str);
-        $str = str_replace("\,", ",", $str);
-        $str = str_replace('""', '"', $str); //do this no matter what...in case someone added a quote in a non HTML field
-        if (!$isHTML) {
-            //if HTML, then leave the single quotes alone, otheriwse replace w/ special Char
-            $str = str_replace('"', "&quot;", $str);
-        }
-        $str = str_replace("�", "&#188;", $str);
-        $str = str_replace("�", "&#189;", $str);
-        $str = str_replace("�", "&#190;", $str);
-        //$str = htmlspecialchars($str);
-        //$str = utf8_encode($str);
-//        if (DB_ENGINE=='mysqli') {
-//	        $str = @mysqli_real_escape_string($db->connection,trim(str_replace("�", "&trade;", $str)));
-//        } elseif(DB_ENGINE=='mysql') {
-//            $str = @mysql_real_escape_string(trim(str_replace("�", "&trade;", $str)),$db->connection);
-//        } else {
-//	        $str = trim(str_replace("�", "&trade;", $str));
-//        }
-        $str = @expString::escape(trim(str_replace("�", "&trade;", $str)));
-        //echo "2<br>"; eDebug($str,die);
-        return $str;
-    }
-
-    /**
-     * @deprecated 2.3.3 moved to expString
-     * @param $str
-     * @param bool $isHTML
-     *
-     * @return mixed
-     */
-    public static function parseAndTrim($str, $isHTML = false) { //�Death from above�? �
-        //echo "1<br>"; eDebug($str);
-//        global $db;
-
-        $str = str_replace("�", "&rsquo;", $str);
-        $str = str_replace("�", "&lsquo;", $str);
-        $str = str_replace("�", "&#174;", $str);
-        $str = str_replace("�", "-", $str);
-        $str = str_replace("�", "&#151;", $str);
-        $str = str_replace("�", "&rdquo;", $str);
-        $str = str_replace("�", "&ldquo;", $str);
-        $str = str_replace("\r\n", " ", $str);
-        //$str = str_replace(",","\,",$str);
-
-        $str = str_replace('\"', "&quot;", $str);
-        $str = str_replace('"', "&quot;", $str);
-        $str = str_replace("�", "&#188;", $str);
-        $str = str_replace("�", "&#189;", $str);
-        $str = str_replace("�", "&#190;", $str);
-        //$str = htmlspecialchars($str);
-        //$str = utf8_encode($str);
-//        if (DB_ENGINE=='mysqli') {
-//	        $str = @mysqli_real_escape_string($db->connection,trim(str_replace("�", "&trade;", $str)));
-//        } elseif(DB_ENGINE=='mysql') {
-//            $str = @mysql_real_escape_string(trim(str_replace("�", "&trade;", $str)),$db->connection);
-//        } else {
-//	        $str = trim(str_replace("�", "&trade;", $str));
-//        }
-        $str = @expString::escape(trim(str_replace("�", "&trade;", $str)));
-        //echo "2<br>"; eDebug($str,die);
-        return $str;
-    }
-
-    /**
-     * @deprecated 2.3.3 moved to expString
-     * @param $val
-     * @param string $eof
-     * @param bool $isHTML
-     *
-     * @return string
-     */
-    function outputField($val, $eof = ',', $isHTML = false) {
-        $newVal = expString::parseAndTrimExport($val, $isHTML);
-        if ($newVal != '') return '"' . $newVal . '"' . $eof;
-        else return $eof;
     }
 
     /**
@@ -1549,7 +1462,7 @@ class reportController extends expController {
 //                $line .= expString::outputField('US');
                 $line .= expString::outputField(geoRegion::getCountryCode($m->country));
                 $line .= expString::outputField($m->phone, chr(13) . chr(10));
-                break;
+                break;  // fixme this breaks foreach loop on 1st run
             }
             $out .= $line;
         }
@@ -1682,17 +1595,7 @@ class reportController extends expController {
     }
 
     /**
-     * @deprecated 2.3.3 moved to expString
-     * @param $val
-     *
-     * @return null|string|string[]
-     */
-    function stripLineEndings($val) {
-        return preg_replace('/\r\n/', ' ', trim($val));
-    }
-
-    /**
-     * FIXME Function not known/incomplete
+     * FIXME Purpose not known/incomplete
      */
     function productFeed() {
 //        global $db;
@@ -2066,7 +1969,7 @@ class reportController extends expController {
     }
 
     /**
-     * FIXME Function not known/incomplete
+     * FIXME Purpose not known/incomplete
      */
     function payment_report() {
 //        global $db;
@@ -2206,24 +2109,6 @@ class reportController extends expController {
     }
 
     //public $catstring = '';
-
-    /**
-     * @deprecated 2.3.4 moved to storeCategory
-     * @param $catID
-     * @param bool $reset
-     *
-     * @return bool|string
-     */
-    public static function buildCategoryString($catID, $reset = false) {
-        static $cstr = '';
-        if ($reset) $cstr = '';
-        if (strlen($cstr) > 0) $cstr .= "::";
-        $cat = new storeCategory($catID);
-        //eDebug($cat);
-        if (!empty($cat->parent_id)) self::buildCategoryString($cat->parent_id);
-        $cstr .= $cat->title . "::";
-        return substr($cstr, 0, -2);
-    }
 
     /**
      * Get parameters for an products report

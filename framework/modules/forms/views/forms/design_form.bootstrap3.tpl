@@ -40,7 +40,7 @@
         <div class="module-actions">
             {*{ddrerank module="forms_control" model="forms_control" where="forms_id=`$form->id`" sortfield="caption" label="Form Controls"|gettext}*}
             {icon id='toggle_grid' action=scriptaction text='Toggle Designer Grid'|gettext title='Provides more accurate form display'|gettext}
-            {icon id='toggle_style' class="h hidden-xs d-none" action=scriptaction text='Toggle Form Style'|gettext title='Provides alternate form display'|gettext value=0}
+            {icon id='toggle_style' class="hidden-xs d-none d-sm-inline" action=scriptaction text='Toggle Form Style'|gettext title='Provides alternate form display'|gettext value=0}
             {*{icon id='toggle_style' action=scriptaction text='Style'|gettext}*}
         </div>
     {*</div>*}

@@ -426,7 +426,9 @@ class expSession {
 		$ticket->last_active = time();
 		$ticket->start_time = time();
 		$ticket->browser = $_SERVER['HTTP_USER_AGENT'];
-		$ticket->ip_address = $_SERVER['REMOTE_ADDR'];
+        if (!empty($_SERVER['REMOTE_ADDR'])) {  // for cli/cron utilities
+            $ticket->ip_address = $_SERVER['REMOTE_ADDR'];
+        }
 		if (!empty($_SERVER['HTTP_REFERER'])) {
 			$ticket->referrer = $_SERVER['HTTP_REFERER'];
 		}

@@ -16,7 +16,18 @@ elFinder.prototype.commands.netmount = function() {
 	
 	this.handlers = {
 		load : function() {
-			this.drivers = this.fm.netDrivers;
+			var fm = self.fm;
+			self.drivers = fm.netDrivers;
+			if (self.drivers.length) {
+				requestAnimationFrame(function() {
+					$.each(self.drivers, function() {
+						var d = self.options[this];
+						if (d && d.integrateInfo) {
+							fm.trigger('helpIntegration', Object.assign({cmd: 'netmount'}, d.integrateInfo));
+						}
+					});
+				});
+			}
 		}
 	};
 
@@ -34,14 +45,11 @@ elFinder.prototype.commands.netmount = function() {
 					},
 					inputs = {
 						protocol : $('<select/>')
-						.on('mousedown', function(e) {
-							e.stopPropagation();
-						})
 						.on('change', function(e, data){
 							var protocol = this.value;
 							content.find('.elfinder-netmount-tr').hide();
 							content.find('.elfinder-netmount-tr-'+protocol).show();
-							dialogNode.children('.ui-dialog-buttonpane:first').find('button').show();
+							dialogNode && dialogNode.children('.ui-dialog-buttonpane:first').find('button').show();
 							if (typeof o[protocol].select == 'function') {
 								o[protocol].select(fm, e, data);
 							}
@@ -281,6 +289,7 @@ elFinder.prototype.commands.netunmount = function() {
 										dfrd.reject(error);
 									})
 									.done(function(data) {
+										drive.volumeid && delete fm.volumeExpires[drive.volumeid];
 										dfrd.resolve();
 									});
 								}).fail(function(error) {
@@ -313,6 +322,7 @@ elFinder.prototype.commands.netunmount = function() {
 													preventDefault : true
 												}).done(function(data) {
 													if (data.removed) {
+														d.volumeid && delete fm.volumeExpires[d.volumeid];
 														removed = removed.concat(data.removed);
 													}
 												}));

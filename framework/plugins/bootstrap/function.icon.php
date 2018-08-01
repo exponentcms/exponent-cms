@@ -34,7 +34,8 @@
  * @param \Smarty $smarty
  */
 if (!function_exists('smarty_function_icon')) {
-    function smarty_function_icon($params, &$smarty) {
+    function smarty_function_icon($params, &$smarty)
+    {
         $loc = $smarty->getTemplateVars('__loc');
         if (isset($params['record'])) {
             $record = $params['record'];
@@ -111,10 +112,10 @@ if (!function_exists('smarty_function_icon')) {
             unset($params['hash']);
         }
 
-        if  (empty($params['img']) && empty($params['text'])) {
+        if (empty($params['img']) && empty($params['text'])) {
             $img = gt(ucfirst($class));
         } else if (!empty($params['img'])) {
-            $imgtmp = explode('.',$params['img']);
+            $imgtmp = explode('.', $params['img']);
             $class = $imgtmp[0];
             $img = '';
 //	    $img 	= '<img class="'.$class.' btn" src="'.ICON_RELATIVE.$params['img'].'" title="'.$title.'" alt="'.$alt.'"'.XHTML_CLOSING.'>';
@@ -125,15 +126,28 @@ if (!function_exists('smarty_function_icon')) {
 
         $linktext = $img . $text;
 
-        if (BTN_SIZE == 'large' || (!empty($params['size']) && $params['size'] == 'large')) {
-            $btn_size = '';  // actually default size, NOT true bootstrap large
-            $icon_size = 'icon-large';
-        } elseif (BTN_SIZE == 'small' || (!empty($params['size']) && $params['size'] == 'small')) {
-            $btn_size = 'btn-mini';
-            $icon_size = '';
-        } else { // medium
-            $btn_size = 'btn-small';
-            $icon_size = 'icon-large';
+        if (!empty($params['size'])) {
+            if ($params['size'] === 'small') {
+                $btn_size = 'btn-mini';
+                $icon_size = '';
+            } elseif ($params['size'] === 'large') {
+                $btn_size = '';  // actually default size, NOT true bootstrap large
+                $icon_size = 'icon-large';
+            } else { // medium
+                $btn_size = 'btn-small';
+                $icon_size = 'icon-large';
+            }
+        } else {
+            if (BTN_SIZE === 'small') {
+                $btn_size = 'btn-mini';
+                $icon_size = '';
+            } elseif (BTN_SIZE === 'large') {
+                $btn_size = '';  // actually default size, NOT true bootstrap large
+                $icon_size = 'icon-large';
+            } else { // medium
+                $btn_size = 'btn-small';
+                $icon_size = 'icon-large';
+            }
         }
 
         $icon = expTheme::buttonIcon($class);
@@ -157,6 +171,8 @@ if (!function_exists('smarty_function_icon')) {
             $params['size'],
             $params['color']
         );
+        $nofollow = !empty($params['nofollow']) ? $params['nofollow'] : '';
+        unset($params['nofollow']);
         $onclick = !empty($params['onclick']) ? $params['onclick'] : '';
         unset($params['onclick']);
         $secure = !empty($params['secure']) ? $params['secure'] : false;
@@ -175,6 +191,8 @@ if (!function_exists('smarty_function_icon')) {
             $linktext = '<span class="sr-only">' . $title . '</span>';
         if(!empty($params['action']) && $params['action'] == 'scriptaction') {
             echo '<a',$name,' href="#" title="', $title, '" class=" btn ',$icon->type,' ',$btn_size,'"';
+            if (!empty($nofollow))
+                echo ' rel="nofollow"';
             if (!empty($onclick))
                 echo ' onclick="' . $onclick . '"';
             echo '><i class="icon-',$icon->class,' ',$icon_size,'"></i> ', $linktext, '</a>';
@@ -193,6 +211,8 @@ if (!function_exists('smarty_function_icon')) {
                 echo ' onclick="return confirm(\'', gt('Are you sure you want to'), ' ', $params['action'], ' ', gt('this'), ' ', $smarty->getTemplateVars('model_name'), ' ', gt('item'), '?\');"';
 //            if ($params['action'] == "merge" && empty($onclick))
 //                echo ' onclick="return confirm(\'' . gt('Are you sure you want to merge this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') . '?\');"';
+            if (!empty($nofollow))
+                echo ' rel="nofollow"';
             if (!empty($onclick))
                 echo ' onclick="' . $onclick . '"';
             echo '><i class="icon-',$icon->class,' ',$icon_size,'"></i> ', $linktext, '</a>';

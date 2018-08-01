@@ -77,7 +77,12 @@ function smarty_function_prod_images($params,&$smarty) {
         default;
             $class = "ecom-image";
             $class .= !empty($params['class']) ? ' ' . $params['class'] : '' ;
-            $html = '<a class="prod-img" href="'.makelink(array("controller"=>"store","action"=>"show","title"=>$rec->title)).'" title="' . gt('View') . ' ' . $rec->title.'">';
+            if ($rec->parent_id) {
+                $link = makelink(array("controller"=>"store","action"=>"show","id"=>$rec->parent_id));
+            } else {
+                $link = makelink(array("controller"=>"store","action"=>"show","title"=>$rec->sef_url));
+            }
+            $html = '<a class="prod-img" href="'.$link.'" title="' . gt('View') . ' ' . $rec->title.'">';
                 $width = !empty($params['width']) ? $params['width'] : (!empty($config["listingwidth"]) ? $config["listingwidth"] : 100) ;
                 $imgparams = array("constraint"=>1,
                                    "file_id"=>$images[0]->id,

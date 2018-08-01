@@ -207,9 +207,6 @@
             };
         })();
 
-        // var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
-        // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
-
         var datepickerDefaults = {
             showTodayButton: true,
             showClear: true

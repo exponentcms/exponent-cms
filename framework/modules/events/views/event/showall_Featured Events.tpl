@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module events cal-admin">
-	{icon action=showall text='Month View'|gettext}{br}
+	{icon action=showall text='Month View'|gettext nofollow=1}{br}
 	<{$config.heading_level|default:'h1'}>
         {ical_link}
         {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}

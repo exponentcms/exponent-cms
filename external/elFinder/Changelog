@@ -1,3 +1,30 @@
+2018-07-14  Naoki Sawada  <hypweb+elfinder@gmail.com>
+
+	* elFinder (2.1.40):
+		- [php:plugin] Fixed #2532 perform folder name filtering on folder upload
+		- [VD:abstract] Fixed #2534 bugfix of `doSerach()` method
+		- [API,ui:cwd] Fixed #2535 show the remaining time until the volume expires into cwd
+		- [js:core] bugfix of click problem of select element of netmount oauth dialog
+		- [cmd:rm] Fixed #2541 to be able to customize the action of to put in the trash
+		- [VD:abstract] fallback imgLib to 'gd' when error in Imagick (#2544)
+		- [ui:dialog] Fixed #2545 problem of the mousedown event of the form element
+		- [VD:abstract] Fixed #2549 freezes while creating and extracting a zip/7zip archive
+		- [ui:dialog] Fixed #2551 trigger `dialogopen` event before open the dialog
+		- [ui:dialog] Fixed #2558 autoopen after creation of dialog if it has open callback
+		- [cmd:upload] Fixed #2559 since 2.1.30, broken paste upload on iOS
+		- [ui:dialog] Fixed #2560 corection of restore dialog size on maximize/minimize
+		- [cmd:edit,preference] Fixed #2566 add preference 'Open the maximized editor window'
+		- [cmd:quicklook] Fixed #2567 support Microsoft Office Online viewer
+		- [VD:abstract] Fixed #2564 bugfix of MIME-Type detection
+		- [cmd:quicklook,VD:abstract] Fixed #2575 add CAD-Files and 3D-Models online viewer on sharecad.org
+		- [cmd:edit] Fixed #2570 add online-convert.com integration
+		- [cmd:edit] Fixed #2580 fix detectation of current enabled editors
+		- [cmd:help] Add a tab "Integrations" to listing external services
+		- [cmd:edit:images] Fixed #2568 open one format save to another
+		- [js:core] Fixed #2582 sync size of list view column headers on browser resize
+		- And some minor bug fixes
+
+
 2018-06-05  Naoki Sawada  <hypweb+elfinder@gmail.com>
 
 	* elFinder (2.1.39):

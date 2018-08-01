@@ -454,7 +454,7 @@ class expTheme
                 ));
                 expCSS::pushToHead(array(
 //                    "scssprimer"=>"external/font-awesome4/scss/font-awesome.scss",
-                    "scssprimer"=>"external/font-awesome5/web-fonts-with-css/scss/fontawesome.scss",
+                    "scssprimer"=>"external/font-awesome5/scss/fontawesome.scss",
                     "lessvars"=>$less_vars,
                 ));
             } elseif (newui()) {
@@ -1726,6 +1726,7 @@ class expTheme
                 case 'groupperms' :
                     $class = 'group';
                     break;
+                case 'dayviewlink' :
                 case 'monthviewlink' :
                 case 'weekviewlink' :
                     $class = 'calendar';
@@ -1813,6 +1814,7 @@ class expTheme
                 case 'groupperms' :
                     $class = 'group';
                     break;
+                case 'dayviewlink' :
                 case 'monthviewlink' :
                 case 'weekviewlink' :
                     $class = 'calendar';
@@ -1904,6 +1906,7 @@ class expTheme
                 case 'groupperms' :
                     $class = 'users';
                     break;
+                case 'dayviewlink' :
                 case 'monthviewlink' :
                 case 'weekviewlink' :
                     $class = 'calendar';

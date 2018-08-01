@@ -245,7 +245,7 @@ elFinder.prototype.commands.resize = function() {
 								width.val(w);
 								height.val(h);
 							}
-						}),
+						}).addClass('elfinder-focus'),
 					height  = $(input)
 						.on('change', function() {
 							var h = round(parseInt(height.val())),
@@ -661,7 +661,7 @@ elFinder.prototype.commands.resize = function() {
 						rfile.height = dim[1];
 					},
 					init    = function() {
-						var elm, memSize, r_scale, inputFirst, imgRatio;
+						var elm, memSize, r_scale, imgRatio;
 						
 						if (inited) {
 							return;
@@ -733,7 +733,7 @@ elFinder.prototype.commands.resize = function() {
 						setupimg();
 						
 						uitype[ctrgrup]('enable');
-						inputFirst = control.find('input,select').prop('disabled', false)
+						control.find('input,select').prop('disabled', false)
 							.filter(':text').on('keydown', function(e) {
 								var cOpts;
 								if (e.keyCode == $.ui.keyCode.ENTER) {
@@ -779,7 +779,7 @@ elFinder.prototype.commands.resize = function() {
 							.filter(':first');
 						
 						setStep8();
-						!fm.UA.Mobile && inputFirst.trigger('focus');
+						!fm.UA.Mobile && width.trigger('focus');
 						resizable();
 					},
 					img     = $('<img/>')
@@ -1428,7 +1428,7 @@ elFinder.prototype.commands.resize = function() {
 						if (api2) {
 							imgr.on('mousedown touchstart', rotate.start)
 								.on('touchend', rotate.stop);
-							$(document).on('mouseup', rotate.stop);
+							base.on('mouseup', rotate.stop);
 						}
 						if (hasSize && !substituteImg) {
 							return init();

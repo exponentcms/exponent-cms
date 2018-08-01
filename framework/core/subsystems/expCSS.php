@@ -308,6 +308,11 @@ class expCSS {
         if (!isset($less_vars['themepath']))
             $less_vars['themepath'] = '';
 
+//        // code for testing scss compiler
+//        self::auto_compile_scss('external/font-awesome5/scss/fontawesome.scss', 'tmp/css/testfa5.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test
+
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
         $lessdirs[] = 'themes/' . DISPLAY_THEME . '/less/';

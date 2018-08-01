@@ -27,7 +27,7 @@
 		<div class="module-actions">
 			<p>
 			{if $permissions.manage}
-				{icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}{br}
+				{icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext nofollow=1}{br}
 			{/if}
 			{if $permissions.create}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}

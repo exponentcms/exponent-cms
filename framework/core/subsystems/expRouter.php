@@ -116,7 +116,7 @@ class expRouter {
 
                         if (count($missing_params) == 0) {
                             foreach($this->maps[$i]['url_parts'] as $key=>$value) {
-                                if ($key == 'controller') {
+                                if ($key === 'controller') {
                                     $link .= urlencode($value)."/";
                                 } else {
                                     $link .= urlencode($params[$key])."/";
@@ -131,8 +131,10 @@ class expRouter {
                 //if ($link != '') return self::encode($linkbase.$link);
                 if ($link != '') return self::cleanLink($linkbase.$link);
 
-                if (!empty($params['controller'])) $link .= $params['controller'].'/';
-                if (!empty($params['action'])) $link .= $params['action'].'/';
+                if (!empty($params['controller']))
+                    $link .= $params['controller'].'/';
+                if (!empty($params['action']))
+                    $link .= $params['action'].'/';
                 foreach ($params as $key=>$value) {
                     if(!is_array($value) && strpos($key,'__') !== 0 && $key !== 'PHPSESSID') {
                         $value = trim($value);
@@ -141,8 +143,8 @@ class expRouter {
                         }
                         $key = trim($key);
                         if ($value != "") {
-                            if ($key != 'module' && $key != 'action' && $key != 'controller') {
-                                if ($key != 'src') {
+                            if ($key !== 'module' && $key !== 'action' && $key !== 'controller') {
+                                if ($key !== 'src') {
                                     $link .= urlencode($key)."/".urlencode($value)."/";
                                 } else {
                                     $link .= $key."/".$value."/";
@@ -163,7 +165,7 @@ class expRouter {
                     $value = trim($value);
                     $key = trim($key);
                     if ($value != "") {
-                        if ($key != 'src') {
+                        if ($key !== 'src') {
                             $link .= urlencode($key)."=".urlencode($value)."&";
                         } else {
                             $link .= $key."=".$value."&";
@@ -734,7 +736,7 @@ class expRouter {
             }
             $url .= '&printerfriendly=1\' , \'mywindow\',\'menubar=1,resizable=1,scrollbars=1,width='.$width.',height='.$height.'\');"';
             $url .= ' title="'.$title_text.'"';
-            $url .= '> '.$link_text.'</a>';
+            $url .= ' rel="nofollow"> '.$link_text.'</a>';
             $url = str_replace('&ajax_action=1','',$url);
         }
 
@@ -764,7 +766,7 @@ class expRouter {
             }
             $url .= '&exportaspdf=1'.$orientation.$limit.'&\' , \'mywindow\',\'menubar=1,resizable=1,scrollbars=1,width='.$width.',height='.$height.'\');"';
             $url .= ' title="'.$title_text.'"';
-            $url .= '> '.$link_text.'</a>';
+            $url .= ' rel="nofollow"> '.$link_text.'</a>';
             $url = str_replace('&ajax_action=1','',$url);
         }
 

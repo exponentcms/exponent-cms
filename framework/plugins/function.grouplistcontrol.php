@@ -34,9 +34,8 @@
  * @param \Smarty $smarty
  */
 function smarty_function_grouplistcontrol($params, &$smarty) {
-//    echo '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/forms/controls/listbuildercontrol.js"></script>';
-
     global $db;
+
     $groups = $db->selectObjects("group", null, "name");
     if (!empty($groups)) {
         $selected = isset($params['items']) ? $params['items'] : null;
@@ -53,12 +52,11 @@ function smarty_function_grouplistcontrol($params, &$smarty) {
        if (!empty($params['class'])) $control->class = $params['class'];
        $name    = isset($params['name']) ? $params['name'] : "grouplist";
        $label   = isset($params['label']) ? $params['label'] : "";
-   //    echo $control->controlToHTML($name);
        echo $control->ToHTML($label,$name);
     } else {
         $class = '';
         if (!empty($params['class'])) $class = ' '.$params['class'];
-        echo '<div class="control'.$class.'"><label class="label">'.$params['label'].'</label><strong>'.gt('No User Group Accounts have been created!').'</strong></div>';
+        echo '<div class="control' . $class . '"><label class="' . (bs4()||bs3()?"control-label":"label") . '">' . $params['label'] . '</label>: <strong>' . gt('No User Group Accounts have been created!') . '</strong></div>';
     }
 }
 

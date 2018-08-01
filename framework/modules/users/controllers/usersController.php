@@ -41,6 +41,7 @@ class usersController extends expController {
         'showall'          => 'Show Users',
         'getUsersByJSON'   => 'Get Users',
         'getUsersByJSON2'   => 'Get Users',
+        'getUsersByJSON3'   => 'Get Users',
     );
 
     static function displayname() {
@@ -775,67 +776,73 @@ class usersController extends expController {
 
     public function manage_group_memberships() {
         global $db, $user;
-//        expHistory::set('manageable', $this->params);
+        expHistory::set('manageable', $this->params);
 
-        $memb = $db->selectObject('groupmembership', 'member_id=' . $user->id . ' AND group_id=' . $this->params['id'] . ' AND is_admin=1');
-
-        $perm_level = 0;
-        if ($memb) $perm_level = 1;
-        if (expPermissions::check('user_management', expCore::makeLocation('administrationmodule'))) $perm_level = 2;
+//        $memb = $db->selectObject('groupmembership', 'member_id=' . $user->id . ' AND group_id=' . $this->params['id'] . ' AND is_admin=1');
+//        $perm_level = 0;
+//        if ($memb) $perm_level = 1;
+//        if (expPermissions::check('user_management', expCore::makeLocation('administrationmodule')))
+//            $perm_level = 2;
 
         $group = $db->selectObject('group', 'id=' . $this->params['id']);
-        $users = user::getAllUsers(0);
 
-        $members = array();
-        $admins = array();
-        foreach ($db->selectObjects('groupmembership', 'group_id=' . $group->id) as $m) {
-            $members[] = $m->member_id;
-            if ($m->is_admin == 1) {
-                $admins[] = $m->member_id;
-            }
-        }
+//        if (!ECOM_LARGE_DB) {//fixme
+            $users = user::getAllUsers(0);
 
-        for ($i = 0, $iMax = count($users); $i < $iMax; $i++) {
-            if (in_array($users[$i]->id, $members)) {
-                $users[$i]->is_member = 1;
-            } else {
-                $users[$i]->is_member = 0;
+            $members = array();
+            $admins = array();
+            foreach ($db->selectObjects('groupmembership', 'group_id=' . $group->id) as $m) {
+                $members[] = $m->member_id;
+                if ($m->is_admin == 1) {
+                    $admins[] = $m->member_id;
+                }
             }
 
-            if (in_array($users[$i]->id, $admins)) {
-                $users[$i]->is_admin = 1;
-            } else {
-                $users[$i]->is_admin = 0;
-            }
-        }
+            for ($i = 0, $iMax = count($users); $i < $iMax; $i++) {
+                if (in_array($users[$i]->id, $members)) {
+                    $users[$i]->is_member = 1;
+                } else {
+                    $users[$i]->is_member = 0;
+                }
 
-        //$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        $page = new expPaginator(array(
+                if (in_array($users[$i]->id, $admins)) {
+                    $users[$i]->is_admin = 1;
+                } else {
+                    $users[$i]->is_admin = 0;
+                }
+            }
+
+            //$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
+            $page = new expPaginator(array(
 //          'model'=>'user',
-            'records'    => $users,
-            'where'      => 1,
+                'records' => $users,
+                'where' => 1,
 //          'limit'=>9999,  // unless we're showing all users on a page at once, there's no way to
-            // add all users to a group, since it's rebuilding the group on save...
-            'order'      => empty($this->config['order']) ? 'username' : $this->config['order'],
-            'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
-            'columns'    => array(
-                gt('Username')   => 'username',
-                gt('First Name') => 'firstname',
-                gt('Last Name')  => 'lastname',
-                gt('Is Member')  => 'is_member',
-                gt('Is Admin')   => 'is_admin',
-            ),
-            'controller' => $this->baseclassname,
-            'action'     => $this->params['action'],
-        ));
+                // add all users to a group, since it's rebuilding the group on save...
+                'order' => empty($this->config['order']) ? 'username' : $this->config['order'],
+                'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
+                'columns' => array(
+                    gt('Username') => 'username',
+                    gt('First Name') => 'firstname',
+                    gt('Last Name') => 'lastname',
+                    gt('Is Member') => 'is_member',
+                    gt('Is Admin') => 'is_admin',
+                ),
+                'controller' => $this->baseclassname,
+                'action' => $this->params['action'],
+            ));
+//        } else {
+//            $users = array();
+//            $page = array();
+//        }
 
         assign_to_template(array(
             'page'       => $page,
             'group'      => $group,
             'users'      => $users,
-            'canAdd'     => (count($members) < count($users) ? 1 : 0),
-            'hasMember'  => (count($members) > 0 ? 1 : 0),
-            'perm_level' => $perm_level,
+//            'canAdd'     => (count($members) < count($users) ? 1 : 0),
+//            'hasMember'  => (count($members) > 0 ? 1 : 0),
+//            'perm_level' => $perm_level,
         ));
     }
 
@@ -880,20 +887,19 @@ class usersController extends expController {
     }
 
     public function update_memberships() {
-//        global $user, $db;
         global $db;
 
         //$memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
         $group = $db->selectObject('group', 'id=' . $this->params['id']);
 
-//        $db->delete('groupmembership', 'group_id=' . $group->id);
+        $db->delete('groupmembership', 'group_id=' . $group->id);
         $memb = new stdClass();
         $memb->group_id = $group->id;
         if ($this->params['memdata'] != "") {
             foreach ($this->params['memdata'] as $u => $str) {
                 $memb->member_id = $u;
-                $memb->is_admin = $str['is_admin'];
-//                $db->insertObject($memb, 'groupmembership');
+                $memb->is_admin = !empty($str['is_admin']);
+                $db->insertObject($memb, 'groupmembership');
             }
         }
         expSession::triggerRefresh();
@@ -960,7 +966,6 @@ class usersController extends expController {
         }
 
         if (!empty($this->params['query'])) {
-
             $this->params['query'] = expString::escape($this->params['query']);
             $totalrecords = $this->$modelname->find('count', (empty($filter) ? '' : $filter . " AND ") . "(username LIKE '%" . $this->params['query'] . "%' OR firstname LIKE '%" . $this->params['query'] . "%' OR lastname LIKE '%" . $this->params['query'] . "%' OR email LIKE '%" . $this->params['query'] . "%')");
 
@@ -983,7 +988,6 @@ class usersController extends expController {
                 'records'         => $users
             );
         } else {
-
             $totalrecords = $this->$modelname->find('count', $filter);
 
             $users = $this->$modelname->find('all', $filter, $sort . ' ' . $dir, $results, $startIndex);
@@ -1005,14 +1009,13 @@ class usersController extends expController {
                 'pageSize'        => $results,
                 'records'         => $users
             );
-
         }
 
         echo json_encode($returnValue);
     }
 
     /**
-     * For server-side population of DataTables
+     * For server-side population of DataTables user list
      */
     public function getUsersByJSON2() {
         global $db;
@@ -1086,6 +1089,58 @@ class usersController extends expController {
 
         // DB table to use
         $table = $db->prefix . $this->model_table;
+
+        // Table's primary key
+        $primaryKey = 'id';
+
+        echo json_encode(
+            expDatabase::complex( $this->params, $table, $primaryKey, $columns )
+        );
+    }
+
+    /**
+     * For server-side population of DataTables group membership list
+     */
+    public function getUsersByJSON3() {
+        global $db;
+
+        // Array of database columns which should be read and sent back to DataTables.
+        // The `db` parameter represents the column name in the database, while the `dt`
+        // parameter represents the DataTables column identifier. In this case simple
+        // indexes
+
+        $columns = array(
+        	array(
+        	    'db' => 'username',
+                'dt' => 'username',
+            ),
+        	array(
+        	    'db' => 'firstname',
+                'dt' => 'firstname',
+            ),
+        	array(
+        	    'db' => 'lastname',
+                'dt' => 'lastname'
+            ),
+            array(
+           		'db' => 'id',
+           		'dt' => 'id',
+           	),
+            array(
+           		'db' => 'group_id',
+           		'dt' => 'group_id',
+           	),
+        	array(
+        	    'db' => 'is_admin',
+                'dt' => 'is_admin',
+            ),
+        );
+
+        // DB table to use
+//        $table = $db->prefix . $this->model_table;
+        $sql = 'SELECT u.username, u.firstname, u.lastname, u.id, g.group_id, g.is_admin FROM ' . $db->prefix . 'user u ';
+        $sql .= 'LEFT JOIN ' . $db->prefix . 'groupmembership g ON g.member_id = u.id AND g.group_id = ' . $this->params['group'] . ' ';
+        $table = '(' . $sql . ') temp';  // note: for passing complex joins
 
         // Table's primary key
         $primaryKey = 'id';
