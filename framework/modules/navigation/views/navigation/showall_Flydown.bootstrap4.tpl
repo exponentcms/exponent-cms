@@ -14,7 +14,11 @@
  *}
 
 {css unique="z-dropdown-bootstrap" lesscss="`$asset_path`less/dropdown-bootstrap.less"}
-
+{literal}
+    .img_left {
+    	margin-top : 5px;
+    }
+{/literal}
 {/css}
 {css unique="mega" lesscss="`$asset_path`less/yamm.less"}
 
