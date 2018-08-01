@@ -161,6 +161,7 @@ class eventController extends expController {
                     $beginyear = expDateTime::startOfYearTimestamp($time); // get beginning of year
                 }
                 $date = expDateTime::startOfMonthTimestamp($beginyear); // get the first month
+                // build mini calendars for the year
                 $annual = array();
                 for ($i = 1; $i <= 12; $i++) {
                     $month = expDateTime::startOfMonthTimestamp($date); // reset to first of month for loop
@@ -188,8 +189,11 @@ class eventController extends expController {
                     $date = strtotime('+1 month', $date); // advance to next month
                 }
 
-                $nextyear = strtotime('+1 year', $time);
-                $begin = expDateTime::startOfMonthTimestamp($time);
+                // build event list for the year
+//                $begin = expDateTime::startOfMonthTimestamp($time);
+                $begin = $beginyear;
+//                $nextyear = strtotime('+1 year', $time);
+                $nextyear = strtotime('+1 year', $beginyear);
                 $end = expDateTime::endOfMonthTimestamp($nextyear);
                 $dates = $ed->find("all", $locsql . " AND (date >= " . $begin . " AND date <= " . $end . ")");
                 $items = $this->event->getEventsForDates($dates, true, isset($this->config['only_featured']) ? true : false, true);
@@ -223,7 +227,8 @@ class eventController extends expController {
                     "year"     => $annual,
                     "items"   => $items,
                     "now"      => $time,
-                    "prevyear" => strtotime('-1 year', $time),
+//                    "prevyear" => strtotime('-1 year', $time),
+                    "prevyear" => strtotime('-1 year', $beginyear),
                     "nextyear" => $nextyear,
                 ));
                 break;  // end switch $viewtype minicalendar

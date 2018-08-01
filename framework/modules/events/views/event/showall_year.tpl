@@ -122,30 +122,30 @@
                                     {if !empty($item->event->expCat[0]->title)}<span
                                             class="category">{$item->event->expCat[0]->title}</span>{/if}
                                 </span>
-                                {*{permissions}*}
-                                {*{if substr($item->location_data,0,3) == 'O:8'}*}
-                                    {*<span class="item-actions">*}
-                                        {*{if $permissions.edit || ($permissions.create && $item->poster == $user->id)}*}
-                                            {*{if $myloc != $item->location_data}*}
-                                                {*{if $permissions.manage}*}
-                                                    {*{icon action=merge id=$item->id text=notext title="Merge Aggregated Content"|gettext}*}
-                                                {*{else}*}
-                                                    {*{icon class=merge img='arrow_merge.png' text=notext title="Merged Content"|gettext}*}
-                                                {*{/if}*}
-                                            {*{/if}*}
-                                            {*{icon action=edit record=$item date_id=$item->date_id text=notext title="Edit this Event"|gettext}*}
-                                            {*{icon action=copy record=$item date_id=$item->date_id text=notext title="Copy this Event"|gettext}*}
-                                        {*{/if}*}
-                                        {*{if $permissions.delete || ($permissions.create && $item->poster == $user->id)}*}
-                                            {*{if $item->is_recurring == 0}*}
-                                                {*{icon action=delete record=$item date_id=$item->date_id text=notext title="Delete this Event"|gettext}*}
-                                            {*{else}*}
-                                                {*{icon action=delete_recurring class=delete record=$item date_id=$item->date_id text=notext title="Delete this Event"|gettext}*}
-                                            {*{/if}*}
-                                        {*{/if}*}
-                                    {*</span>*}
-                                {*{/if}*}
-                                {*{/permissions}*}
+                                {permissions}
+                                {if substr($item->location_data,0,3) == 'O:8'}
+                                    <span class="item-actions">
+                                        {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                                            {if $myloc != $item->location_data}
+                                                {if $permissions.manage}
+                                                    {icon action=merge id=$item->id text=notext title="Merge Aggregated Content"|gettext size=extrasmall}
+                                                {else}
+                                                    {icon class=merge img='arrow_merge.png' text=notext title="Merged Content"|gettext size=extrasmall}
+                                                {/if}
+                                            {/if}
+                                            {icon action=edit record=$item date_id=$item->date_id text=notext title="Edit this Event"|gettext size=extrasmall}
+                                            {icon action=copy record=$item date_id=$item->date_id text=notext title="Copy this Event"|gettext size=extrasmall}
+                                        {/if}
+                                        {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+                                            {if $item->is_recurring == 0}
+                                                {icon action=delete record=$item date_id=$item->date_id text=notext title="Delete this Event"|gettext size=extrasmall}
+                                            {else}
+                                                {icon action=delete_recurring class=delete record=$item date_id=$item->date_id text=notext title="Delete this Event"|gettext size=extrasmall}
+                                            {/if}
+                                        {/if}
+                                    </span>
+                                {/if}
+                                {/permissions}
                             </div>
                         </li>
                         {$item_number=$item_number+1}
