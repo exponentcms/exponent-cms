@@ -360,6 +360,7 @@ class expCore
         $chImg = curl_init($url);
         curl_setopt($chImg, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($chImg, CURLOPT_CONNECTTIMEOUT, 30);
+        curl_setopt($chImg, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt(
             $chImg,
             CURLOPT_USERAGENT,
