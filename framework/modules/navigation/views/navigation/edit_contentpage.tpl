@@ -63,6 +63,7 @@
                         {*TODO we don't secure individual pages at this time*}
                         {*{control type="checkbox" name="secured" label="Secured"|gettext|cat:"?" checked=$section->secured value=1}*}
                     {/if}
+                    {if $section->parent != -1}
                     {group label='Menu Item Icon'|gettext}
                         {control type="files" name="files" label="Graphic Icon"|gettext accept="image/*" value=$section->expFile limit=1 description='Select an icon to use with this menu item'|gettext}
                         {if bs2()}
@@ -70,6 +71,11 @@
                         {/if}
                         {control type="checkbox" name="glyph_only" label="Display Icon Alone"|gettext checked=$section->glyph_only value=1 description='Should the menu only display the icon without the page name?'|gettext}
                     {/group}
+                    {else}
+                        {control type=hidden name=files value=$section->expFile}
+                        {control type=hidden name=glyph value=$section->glyph}
+                        {control type=hidden name=glyph_only value=$section->glyph_only}
+                    {/if}
                 </div>
                 <div id="tab2">
                     <h2>{'SEO Information'|gettext}</h2>
