@@ -103,7 +103,7 @@ class expLang {
                 self::writeTemplate_custom($str);
             elseif (defined('WRITE_LANG_TEMPLATE') && WRITE_LANG_TEMPLATE && LANG === 'English - US')
                 self::writeTemplate($str);  // write to the system default language file
-            eLog('gt("' .trim($str) . '");', 'New phrase found');
+            eLog('gt("' . trim($str) . '");', 'New phrase found');
         }
 		return $strt;
 	}
@@ -116,7 +116,9 @@ class expLang {
 	public static function writeTemplate($str) {
 	    global $default_lang, $default_lang_file;
 
-        if (!array_key_exists(trim(addslashes(strip_tags($str))),$default_lang)) {
+	    if (strlen($str) < 2)
+	        return;  // we never want single characters
+        if (!array_key_exists(trim(addslashes(strip_tags($str))), $default_lang)) {
             $str = stripslashes(strip_tags($str));
             @$fp = fopen($default_lang_file, 'w+');
             if($fp === false && DEVELOPMENT) {
@@ -128,7 +130,7 @@ class expLang {
             fwrite($fp,"<?php\n");
             fwrite($fp,"return array(\n");
             foreach($default_lang as $key => $value){
-                fwrite($fp,"\t\"".$key."\"=>\"".$value."\",\n");
+                fwrite($fp,"\t\"" . $key . "\"=>\"" . $value . "\",\n");
             }
             fwrite($fp,");\n");
             fwrite($fp,"?>\n");

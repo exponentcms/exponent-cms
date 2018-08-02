@@ -44,7 +44,7 @@ global $default_lang, $cur_lang;
 if (empty($default_lang))
     $default_lang = include(BASE."framework/core/lang/English - US.php");
 
-if (LANGUAGE=="English - US") {
+if (LANGUAGE === "English - US") {
     print "You can't update the current language 'English - US' which is also the default translation!\n";
     print "Create and/or Switch to another Translation using Manage Translations!\n";
     print "Or use the 'lang_extract.php' script to add new phrases to it.\n";
