@@ -146,14 +146,14 @@
                         {if (isset($message['video']) && !empty($message['video']))}
                             <div class="fb-video">
                                 <a href="{$message['video']}" target="_blank" title="{'View Video'|gettext}">
-                                    <img class="img-responsive" src="{$message['picture']}" alt="{'Facebook video'|gettext}" alt="{'Facebook Video'|gettext}">
+                                    <img class="img-responsive" src="{$message['picture']}" alt="{'Facebook video'|gettext}">
                                 </a>
                             </div>
                         <!-- Picture -->
                         {elseif (isset($message['picture']) && !empty($message['picture']))}
                             <div class="fb-pic">
                                 <a href="{$message['photo_link']}" target="_blank" title="{'View Photos'|gettext}">
-                                    <img class="img-responsive" src="{$message['picture']}" alt="{'Facebook photo'|gettext}" alt="{'Facebook Image'|gettext}">
+                                    <img class="img-responsive" src="{$message['picture']}" alt="{'Facebook photo'|gettext}">
                                 </a>
                             </div>
                         {/if}
