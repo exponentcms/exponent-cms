@@ -26,6 +26,9 @@
     .mini-cal ul li {
         list-style: none;
     }
+    .mini-cal ul {
+        padding-left: 0;
+    }
 {/literal}
 {/css}
 
