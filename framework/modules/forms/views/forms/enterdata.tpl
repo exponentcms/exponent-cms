@@ -21,10 +21,23 @@
         {/css}
     {else}
         {css unique="formmod2"}
+        {literal}
             .stepy-step label {
             	margin   : 0;
                 display  : inline;
             }
+        {/literal}
+        {/css}
+    {/if}
+    {if bs3() || bs4()}
+        {css unique="formmod"}
+        {literal}
+            @media (max-width: 544px) {
+                .stepy-header li span {
+                    display: none;
+                }
+            }
+        {/literal}
         {/css}
     {/if}
 
