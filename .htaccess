@@ -34,6 +34,8 @@ DirectoryIndex index.php
 #    RewriteCond %{HTTPS} !=on
 #    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+    RewriteRule ^.*\.git.* - [R=404]
+
 # the next two lines will dish out .html pages if they exist, which may not be a desired effect!
     RewriteRule ^$ index.html [QSA]
     RewriteRule ^([^.]+)$ $1.html [QSA]
