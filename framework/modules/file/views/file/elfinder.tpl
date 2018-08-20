@@ -104,6 +104,7 @@
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/help.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/help.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/hidden.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/hide.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/home.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/info.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/info.js"></script>
@@ -296,7 +297,7 @@
                         ['mkdir', 'mkfile', 'upload'],
                         ['open', 'download', 'getfile'],
                         ['undo', 'redo'],
-                        ['copy', 'cut', 'paste', 'rm', 'empty'],
+                        ['copy', 'cut', 'paste', 'rm', 'empty', 'hide'],
                         ['duplicate', 'rename', 'edit', 'resize', 'chmod'],
                         ['selectall', 'selectnone', 'selectinvert'],
                         ['quicklook', 'info'],

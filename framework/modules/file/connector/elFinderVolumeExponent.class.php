@@ -263,9 +263,9 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         if (is_dir($npath)) {
             $dir = opendir($npath);
             while(false !== ( $file = readdir($dir)) ) {
-                if ($file != "." && $file != ".." && is_dir("$npath/$file")) {
+                if ($file !== "." && $file !== ".." && is_dir("$npath/$file")) {
                     $this->scan_folder("$npath/$file", "$opath");
-                } elseif (substr($file, 0, 1) != '.') {
+                } elseif (substr($file, 0, 1) !== '.') {
                     if (file_exists($npath . '/' . $file)) $this->_move_expFile(BASE . $opath . "/" . $file, $npath);
                 }
             }
@@ -321,8 +321,8 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
                     $result['write'] = false;
                     $result['locked'] = true;
                 }
-            } elseif($result['mime'] == 'directory') {
-                if ((strtolower($result['name']) == 'avatars' || strtolower($result['name']) == 'uploads')) {
+            } elseif($result['mime'] === 'directory') {
+                if ((strtolower($result['name']) === 'avatars' || strtolower($result['name']) === 'uploads')) {
                      // only admins can see the avatars and uploads subfolders and their contents
                     $result['locked'] = true;
                     if (!$user->isSuperAdmin()) {

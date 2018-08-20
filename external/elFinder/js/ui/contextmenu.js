@@ -108,7 +108,8 @@ $.fn.elfindercontextmenu = function(fm) {
 			item = function(label, icon, callback, opts) {
 				var className = '',
 					style = '',
-					iconClass = '';
+					iconClass = '',
+					v, pos;
 				if (opts) {
 					if (opts.className) {
 						className = ' ' + opts.className;
@@ -118,7 +119,9 @@ $.fn.elfindercontextmenu = function(fm) {
 						icon = '';
 					}
 					if (opts.iconImg) {
-						style = ' style="background:url(\''+fm.escape(opts.iconImg)+'\') 0 0 no-repeat;background-size:contain;"';
+						v = opts.iconImg.split(/ +/);
+						pos = v[1] && v[2]? fm.escape(v[1] + 'px ' + v[2] + 'px') : '';
+						style = ' style="background:url(\''+fm.escape(v[0])+'\') '+(pos? pos : '0 0')+' no-repeat;'+(pos? '' : 'posbackground-size:contain;')+'"';
 					}
 				}
 				return $(tpl.replace('{icon}', icon ? 'elfinder-button-icon-'+icon : (iconClass? iconClass : ''))
@@ -132,10 +135,13 @@ $.fn.elfindercontextmenu = function(fm) {
 					});
 			},
 			urlIcon = function(iconUrl) {
+				var v = iconUrl.split(/ +/),
+					pos = v[1] && v[2]? (v[1] + 'px ' + v[2] + 'px') : '';
 				return {
-					backgroundImage: 'url("'+iconUrl+'")',
+					backgroundImage: 'url("'+v[0]+'")',
 					backgroundRepeat: 'no-repeat',
-					backgroundSize: 'contain'
+					backgroundPosition: pos? pos : '',
+					backgroundSize: pos? '' : 'contain'
 				};
 			},
 			base, cwd,
@@ -399,10 +405,11 @@ $.fn.elfindercontextmenu = function(fm) {
 							if (!cmd.variants.length) {
 								return;
 							}
-							node = item(cmd.title, cmd.className? cmd.className : cmd.name, function(){});
+							node = item(cmd.title, cmd.className? cmd.className : cmd.name, function(){}, cmd.contextmenuOpts);
 							
 							submenu = $('<div class="ui-front ui-corner-all elfinder-contextmenu-sub"/>')
 								.hide()
+								.css('max-height', fm.getUI().height() - 30)
 								.appendTo(node.append('<span class="elfinder-contextmenu-arrow"/>'));
 							
 							hover = function(show){
@@ -458,7 +465,8 @@ $.fn.elfindercontextmenu = function(fm) {
 									submenu.css({
 										top : y,
 										left : cltr? x : 'auto',
-										right: cltr? 'auto' : x
+										right: cltr? 'auto' : x,
+										overflowY: 'auto'
 									}).show();
 									base.attr('style', bstyle);
 								}
@@ -549,7 +557,7 @@ $.fn.elfindercontextmenu = function(fm) {
 									!cmd.keepContextmenu && close();
 									fm.exec(cmd.name, targets, {_userAction: true, _currentType: type, _currentNode: node});
 								}
-							});
+							}, cmd.contextmenuOpts);
 							if (cmd.extra && cmd.extra.node) {
 								$('<span class="elfinder-button-icon elfinder-button-icon-'+(cmd.extra.icon || '')+' '+exIcon+'"/>')
 									.append(cmd.extra.node).appendTo(node);

@@ -342,109 +342,6 @@ elFinder.prototype.commands.quicklook.plugins = [
 	},
 
 	/**
-	 * Texts preview plugin
-	 *
-	 * @param elFinder.commands.quicklook
-	 **/
-	function(ql) {
-		"use strict";
-		var fm      = ql.fm,
-			preview = ql.preview,
-			textMaxlen = parseInt(ql.options.textMaxlen) || 2000,
-			prettify = function() {
-				if (fm.options.cdns.prettify) {
-					fm.loadScript([fm.options.cdns.prettify + (fm.options.cdns.prettify.match(/\?/)? '&' : '?') + 'autorun=false']);
-					prettify = function() { return true; };
-				} else {
-					prettify = function() { return false; };
-				}
-			},
-			PRcheck = function(node, cnt) {
-				if (prettify()) {
-					if (typeof window.PR === 'undefined' && cnt--) {
-						setTimeout(function() { PRcheck(node, cnt); }, 100);
-					} else {
-						if (typeof window.PR === 'object') {
-							node.css('cursor', 'wait');
-							requestAnimationFrame(function() {
-								PR.prettyPrint && PR.prettyPrint(null, node.get(0));
-								node.css('cursor', '');
-							});
-						} else {
-							prettify = function() { return false; };
-						}
-					}
-				}
-			};
-		
-		preview.on(ql.evUpdate, function(e) {
-			var file = e.file,
-				mime = file.mime,
-				jqxhr, loading;
-			
-			if (fm.mimeIsText(file.mime) && (!ql.options.getSizeMax || file.size <= ql.options.getSizeMax)) {
-				e.stopImmediatePropagation();
-				
-				(typeof window.PR === 'undefined') && prettify();
-				
-				loading = $('<div class="elfinder-quicklook-info-data"> '+fm.i18n('nowLoading')+'<span class="elfinder-info-spinner"></div>').appendTo(ql.info.find('.elfinder-quicklook-info'));
-
-				// stop loading on change file if not loadin yet
-				preview.one('change', function() {
-					jqxhr.state() == 'pending' && jqxhr.reject();
-				});
-				
-				jqxhr = fm.request({
-					data           : {cmd : 'get', target : file.hash, conv : 1, _t : file.ts},
-					options        : {type: 'get', cache : true},
-					preventDefault : true
-				})
-				.done(function(data) {
-					var reg = new RegExp('^(data:'+file.mime.replace(/([.+])/g, '\\$1')+';base64,)', 'i'),
-						text = data.content,
-						part, more, node, m;
-					ql.hideinfo();
-					if (window.atob && (m = text.match(reg))) {
-						text = atob(text.substr(m[1].length));
-					}
-					
-					more = text.length - textMaxlen;
-					if (more > 100) {
-						part = text.substr(0, textMaxlen) + '...';
-					} else {
-						more = 0;
-					}
-					
-					node = $('<div class="elfinder-quicklook-preview-text-wrapper"><pre class="elfinder-quicklook-preview-text prettyprint"></pre></div>');
-					
-					if (more) {
-						node.append($('<div class="elfinder-quicklook-preview-charsleft"><hr/><span>' + fm.i18n('charsLeft', fm.toLocaleString(more)) + '</span></div>')
-							.on('click', function() {
-								var top = node.scrollTop();
-								$(this).remove();
-								node.children('pre').removeClass('prettyprinted').text(text).scrollTop(top);
-								PRcheck(node, 100);
-							})
-						);
-					}
-					node.children('pre').text(part || text);
-					
-					node.on('touchstart', function(e) {
-						if ($(this)['scroll' + (fm.direction === 'ltr'? 'Right' : 'Left')]() > 5) {
-							e.originalEvent._preventSwipeX = true;
-						}
-					}).appendTo(preview);
-					
-					PRcheck(node, 100);
-				})
-				.always(function() {
-					loading.remove();
-				});
-			}
-		});
-	},
-	
-	/**
 	 * PDF preview plugin
 	 *
 	 * @param elFinder.commands.quicklook
@@ -454,9 +351,11 @@ elFinder.prototype.commands.quicklook.plugins = [
 		var fm      = ql.fm,
 			mime    = 'application/pdf',
 			preview = ql.preview,
-			active  = false;
+			active  = false,
+			urlhash = '',
+			firefox, toolbar;
 			
-		if ((fm.UA.Safari && fm.OS === 'mac' && !fm.UA.iOS) || fm.UA.IE) {
+		if ((fm.UA.Safari && fm.OS === 'mac' && !fm.UA.iOS) || fm.UA.IE || fm.UA.Firefox) {
 			active = true;
 		} else {
 			$.each(navigator.plugins, function(i, plugins) {
@@ -468,20 +367,28 @@ elFinder.prototype.commands.quicklook.plugins = [
 			});
 		}
 
-		active && preview.on(ql.evUpdate, function(e) {
-			var file = e.file, node;
-			
-			if (file.mime === mime && ql.dispInlineRegex.test(file.mime)) {
-				e.stopImmediatePropagation();
-				ql.hideinfo();
-				ql.cover.addClass('elfinder-quicklook-coverbg');
-				node = $('<object class="elfinder-quicklook-preview-pdf" data="'+fm.openUrl(file.hash)+'" type="application/pdf" />')
-					.appendTo(preview);
+		if (active) {
+			if (typeof ql.options.pdfToolbar !== 'undefined' && !ql.options.pdfToolbar) {
+				urlhash = '#toolbar=0';
 			}
-			
-		});
-		
-			
+			preview.on(ql.evUpdate, function(e) {
+				var file = e.file;
+				
+				if (active && file.mime === mime && ql.dispInlineRegex.test(file.mime)) {
+					e.stopImmediatePropagation();
+					ql.hideinfo();
+					ql.cover.addClass('elfinder-quicklook-coverbg');
+					$('<object class="elfinder-quicklook-preview-pdf" data="'+fm.openUrl(file.hash)+urlhash+'" type="application/pdf" />')
+						.on('error', function(e) {
+							active = false;
+							ql.update(void(0), fm.cwd());
+							ql.update(void(0), file);
+						})
+						.appendTo(preview);
+				}
+				
+			});
+		}
 	},
 	
 	/**
@@ -548,11 +455,12 @@ elFinder.prototype.commands.quicklook.plugins = [
 			win  = ql.window,
 			navi = ql.navbar,
 			AMR, autoplay,
+			controlsList = typeof ql.options.mediaControlsList === 'string' && ql.options.mediaControlsList? ' controlsList="' + fm.escape(ql.options.mediaControlsList) + '"' : '',
 			setNavi = function() {
 				navi.css('bottom', win.hasClass('elfinder-quicklook-fullscreen')? '50px' : '');
 			},
 			getNode = function(src, hash) {
-				return $('<audio class="elfinder-quicklook-preview-audio ui-front" controls preload="auto" autobuffer><source src="'+src+'" /></audio>')
+				return $('<audio class="elfinder-quicklook-preview-audio ui-front" controls' + controlsList + ' preload="auto" autobuffer><source src="'+src+'" /></audio>')
 					.on('change', function(e) {
 						// Firefox fire change event on seek or volume change
 						e.stopPropagation();
@@ -612,8 +520,9 @@ elFinder.prototype.commands.quicklook.plugins = [
 				var hash = node.data('hash'),
 					playPromise;
 				autoplay && (playPromise = player.play());
-				if (playPromise && playPromise.catch) {
-					playPromise.catch(function(e) {
+				// uses "playPromise['catch']" instead "playPromise.catch" to support Old IE
+				if (playPromise && playPromise['catch']) {
+					playPromise['catch'](function(e) {
 						if (!player.paused) {
 							node && node.data('hash') === hash && reset();
 						}
@@ -711,6 +620,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 			win  = ql.window,
 			navi = ql.navbar,
 			cHls, cDash, pDash, cFlv, autoplay, tm,
+			controlsList = typeof ql.options.mediaControlsList === 'string' && ql.options.mediaControlsList? ' controlsList="' + fm.escape(ql.options.mediaControlsList) + '"' : '',
 			setNavi = function() {
 				if (fm.UA.iOS) {
 					if (win.hasClass('elfinder-quicklook-fullscreen')) {
@@ -738,7 +648,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 				pDash = null;
 				opts = opts || {};
 				ql.hideinfo();
-				node = $('<video class="elfinder-quicklook-preview-video" controls preload="auto" autobuffer playsinline>'
+				node = $('<video class="elfinder-quicklook-preview-video" controls' + controlsList + ' preload="auto" autobuffer playsinline>'
 						+'</video>')
 					.on('change', function(e) {
 						// Firefox fire change event on seek or volume change
@@ -809,8 +719,9 @@ elFinder.prototype.commands.quicklook.plugins = [
 				var hash = node.data('hash'),
 					playPromise;
 				autoplay && (playPromise = player.play());
-				if (playPromise && playPromise.catch) {
-					playPromise.catch(function(e) {
+				// uses "playPromise['catch']" instead "playPromise.catch" to support Old IE
+				if (playPromise && playPromise['catch']) {
+					playPromise['catch'](function(e) {
 						if (!player.paused) {
 							node && node.data('hash') === hash && reset(true);
 						}
@@ -1456,6 +1367,108 @@ elFinder.prototype.commands.quicklook.plugins = [
 			}
 			
 		});
-	}
+	},
 
+	/**
+	 * Texts preview plugin
+	 *
+	 * @param elFinder.commands.quicklook
+	 **/
+	function(ql) {
+		"use strict";
+		var fm      = ql.fm,
+			preview = ql.preview,
+			textMaxlen = parseInt(ql.options.textMaxlen) || 2000,
+			prettify = function() {
+				if (fm.options.cdns.prettify) {
+					fm.loadScript([fm.options.cdns.prettify + (fm.options.cdns.prettify.match(/\?/)? '&' : '?') + 'autorun=false']);
+					prettify = function() { return true; };
+				} else {
+					prettify = function() { return false; };
+				}
+			},
+			PRcheck = function(node, cnt) {
+				if (prettify()) {
+					if (typeof window.PR === 'undefined' && cnt--) {
+						setTimeout(function() { PRcheck(node, cnt); }, 100);
+					} else {
+						if (typeof window.PR === 'object') {
+							node.css('cursor', 'wait');
+							requestAnimationFrame(function() {
+								PR.prettyPrint && PR.prettyPrint(null, node.get(0));
+								node.css('cursor', '');
+							});
+						} else {
+							prettify = function() { return false; };
+						}
+					}
+				}
+			};
+		
+		preview.on(ql.evUpdate, function(e) {
+			var file = e.file,
+				mime = file.mime,
+				jqxhr, loading;
+			
+			if (fm.mimeIsText(file.mime) && (!ql.options.getSizeMax || file.size <= ql.options.getSizeMax)) {
+				e.stopImmediatePropagation();
+				
+				(typeof window.PR === 'undefined') && prettify();
+				
+				loading = $('<div class="elfinder-quicklook-info-data"> '+fm.i18n('nowLoading')+'<span class="elfinder-info-spinner"></div>').appendTo(ql.info.find('.elfinder-quicklook-info'));
+
+				// stop loading on change file if not loadin yet
+				preview.one('change', function() {
+					jqxhr.state() == 'pending' && jqxhr.reject();
+				});
+				
+				jqxhr = fm.request({
+					data           : {cmd : 'get', target : file.hash, conv : 1, _t : file.ts},
+					options        : {type: 'get', cache : true},
+					preventDefault : true
+				})
+				.done(function(data) {
+					var reg = new RegExp('^(data:'+file.mime.replace(/([.+])/g, '\\$1')+';base64,)', 'i'),
+						text = data.content,
+						part, more, node, m;
+					ql.hideinfo();
+					if (window.atob && (m = text.match(reg))) {
+						text = atob(text.substr(m[1].length));
+					}
+					
+					more = text.length - textMaxlen;
+					if (more > 100) {
+						part = text.substr(0, textMaxlen) + '...';
+					} else {
+						more = 0;
+					}
+					
+					node = $('<div class="elfinder-quicklook-preview-text-wrapper"><pre class="elfinder-quicklook-preview-text prettyprint"></pre></div>');
+					
+					if (more) {
+						node.append($('<div class="elfinder-quicklook-preview-charsleft"><hr/><span>' + fm.i18n('charsLeft', fm.toLocaleString(more)) + '</span></div>')
+							.on('click', function() {
+								var top = node.scrollTop();
+								$(this).remove();
+								node.children('pre').removeClass('prettyprinted').text(text).scrollTop(top);
+								PRcheck(node, 100);
+							})
+						);
+					}
+					node.children('pre').text(part || text);
+					
+					node.on('touchstart', function(e) {
+						if ($(this)['scroll' + (fm.direction === 'ltr'? 'Right' : 'Left')]() > 5) {
+							e.originalEvent._preventSwipeX = true;
+						}
+					}).appendTo(preview);
+					
+					PRcheck(node, 100);
+				})
+				.always(function() {
+					loading.remove();
+				});
+			}
+		});
+	}
 ];

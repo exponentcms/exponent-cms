@@ -12,15 +12,17 @@ elFinder.prototype._options = {
 	 */
 	cdns : {
 		// for editor etc.
-		ace        : '//cdnjs.cloudflare.com/ajax/libs/ace/1.3.3',
-		codemirror : '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.39.0',
+		ace        : '//cdnjs.cloudflare.com/ajax/libs/ace/1.4.1',
+		codemirror : '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.39.2',
 		ckeditor   : '//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.10.0',
-		ckeditor5  : '//cdn.ckeditor.com/ckeditor5/10.1.0',
-		tinymce    : '//cdnjs.cloudflare.com/ajax/libs/tinymce/4.8.0',
+		ckeditor5  : '//cdn.ckeditor.com/ckeditor5/11.0.1',
+		tinymce    : '//cdnjs.cloudflare.com/ajax/libs/tinymce/4.8.2',
 		simplemde  : '//cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2',
+		fabric16   : '//cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.7',
+		tui        : '//uicdn.toast.com',
 		// for quicklook etc.
 		hls        : '//cdnjs.cloudflare.com/ajax/libs/hls.js/0.10.1/hls.min.js',
-		dash       : '//cdnjs.cloudflare.com/ajax/libs/dashjs/2.8.0/dash.all.min.js',
+		dash       : '//cdnjs.cloudflare.com/ajax/libs/dashjs/2.9.0/dash.all.min.js',
 		flv        : '//cdnjs.cloudflare.com/ajax/libs/flv.js/1.4.2/flv.min.js',
 		prettify   : '//cdn.rawgit.com/google/code-prettify/453bd5f51e61245339b738b1bbdd42d7848722ba/loader/run_prettify.js',
 		psd        : '//cdnjs.cloudflare.com/ajax/libs/psd.js/3.2.0/psd.min.js',
@@ -255,6 +257,8 @@ elFinder.prototype._options = {
 			folders  : false,
 			// action after callback (""/"close"/"destroy")
 			oncomplete : '',
+			// action when callback is fail (""/"close"/"destroy")
+			onerror : '',
 			// get path before callback call
 			getPath    : true, 
 			// get image sizes before callback call
@@ -294,6 +298,11 @@ elFinder.prototype._options = {
 			autoplay : true,
 			width    : 450,
 			height   : 300,
+			// ControlsList of HTML5 audio/video preview
+			// see https://googlechrome.github.io/samples/media/controlslist.html
+			mediaControlsList : '', // e.g. 'nodownload nofullscreen noremoteplayback'
+			// Show toolbar of PDF preview (with <embed> tag)
+			pdfToolbar : true,
 			// Maximum characters length to preview
 			textMaxlen : 2000,
 			// quicklook window must be contained in elFinder node on window open (true|false)
@@ -326,6 +335,8 @@ elFinder.prototype._options = {
 			// list of allowed mimetypes to edit of text files
 			// if empty - any text files can be edited
 			mimes : [],
+			// MIME-types of text file to make as empty files
+			makeTextMimes : ['text/plain', 'text/css', 'text/html'],
 			// Use the editor stored in the browser
 			// This value allowd overwrite with user preferences
 			useStoredEditor : false,
@@ -426,6 +437,14 @@ elFinder.prototype._options = {
 				'Windows-1250', 'Windows-1251', 'Windows-1252', 'Windows-1253', 'Windows-1254', 'Windows-1257'],
 			// options for extra editors
 			extraOptions : {
+				// TUI Image Editor's options
+				tuiImgEditOpts : {
+					// Path prefix of icon-a.svg, icon-b.svg, icon-c.svg and icon-d.svg in the Theme. 
+					// `iconsPath` MUST follow the same origin policy.
+					iconsPath : void(0), // default is "./img/tui-"
+					// Theme object
+					theme : {}
+				},
 				// Specify the Creative Cloud API key when using Creative SDK image editor of Creative Cloud.
 				// You can get the API key at https://console.adobe.io/.
 				creativeCloudApiKey : '',
@@ -437,7 +456,6 @@ elFinder.prototype._options = {
 				ckeditor5Mode : 'balloon',
 				// Setting for Online-Convert.com
 				onlineConvert : {
-					'fix%20' : true,// fix '%20' bug of input URL of online-convert.com
 					maxSize  : 100, // (MB) Max 100MB on free account
 					showLink : true // It must be enabled with free account
 				}
@@ -642,7 +660,7 @@ elFinder.prototype._options = {
 			['mkdir', 'mkfile', 'upload'],
 			['open', 'download', 'getfile'],
 			['undo', 'redo'],
-			['copy', 'cut', 'paste', 'rm', 'empty'],
+			['copy', 'cut', 'paste', 'rm', 'empty', 'hide'],
 			['duplicate', 'rename', 'edit', 'resize', 'chmod'],
 			['selectall', 'selectnone', 'selectinvert'],
 			['quicklook', 'info'],
@@ -1117,11 +1135,11 @@ elFinder.prototype._options = {
 	 */
 	contextmenu : {
 		// navbarfolder menu
-		navbar : ['open', 'opennew', 'download', '|', 'upload', 'mkdir', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', 'empty', '|', 'rename', '|', 'archive', '|', 'places', 'info', 'chmod', 'netunmount'],
+		navbar : ['open', 'opennew', 'download', '|', 'upload', 'mkdir', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', 'empty', 'hide', '|', 'rename', '|', 'archive', '|', 'places', 'info', 'chmod', 'netunmount'],
 		// current directory menu
-		cwd    : ['undo', 'redo', '|', 'back', 'up', 'reload', '|', 'upload', 'mkdir', 'mkfile', 'paste', '|', 'empty', '|', 'view', 'sort', 'selectall', 'colwidth', '|', 'places', 'info', 'chmod', 'netunmount', '|', 'fullscreen', '|', 'preference'],
+		cwd    : ['undo', 'redo', '|', 'back', 'up', 'reload', '|', 'upload', 'mkdir', 'mkfile', 'paste', '|', 'empty', 'hide', '|', 'view', 'sort', 'selectall', 'colwidth', '|', 'places', 'info', 'chmod', 'netunmount', '|', 'fullscreen', '|', 'preference'],
 		// current directory file menu
-		files  : ['getfile', '|' ,'open', 'opennew', 'download', 'opendir', 'quicklook', '|', 'upload', 'mkdir', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', 'empty', '|', 'rename', 'edit', 'resize', '|', 'archive', 'extract', '|', 'selectall', 'selectinvert', '|', 'places', 'info', 'chmod', 'netunmount']
+		files  : ['getfile', '|' ,'open', 'opennew', 'download', 'opendir', 'quicklook', '|', 'upload', 'mkdir', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', 'empty', 'hide', '|', 'rename', 'edit', 'resize', '|', 'archive', 'extract', '|', 'selectall', 'selectinvert', '|', 'places', 'info', 'chmod', 'netunmount']
 	},
 
 	/**

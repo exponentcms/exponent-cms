@@ -355,8 +355,10 @@ $opts = array(
 //        'Watermark' => array(
 //            'enable'         => true,       // For control by volume driver
 //            'source'         => 'logo.png', // Path to Water mark image
-//            'marginRight'    => 5,          // Margin right pixel
-//            'marginBottom'   => 5,          // Margin bottom pixel
+//            'ratio'          => 0.2,        // Ratio to original image (ratio > 0 and ratio <= 1)
+//            'position'       => 'RB',       // Position L(eft)/C(enter)/R(ight) and T(op)/M(edium)/B(ottom)
+//            'marginX'        => 5,          // Margin horizontal pixel
+//            'marginY'        => 5,          // Margin vertical pixel
 //            'quality'        => THUMB_QUALITY,         // JPEG image save quality
 //            'transparency'   => 70,         // Water mark image transparency ( other than PNG )
 //            'targetType'     => IMG_GIF|IMG_JPG|IMG_PNG|IMG_WBMP, // Target image formats ( bit-field )
