@@ -38,6 +38,5 @@
         <ignore>framework/conf/data/extra_phrases.php</ignore>
         <ignore>framework/core/lang/*</ignore>
         <ignore>framework/modules/pixidou/*</ignore>
-        <ignore>framework/modules/news/models/SimplePie.php</ignore>
     </files>
 </phpdoc>
