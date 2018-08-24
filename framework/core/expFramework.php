@@ -1146,6 +1146,9 @@ function eDebug($var, $halt=false, $disable_log=false){
             if (file_exists(BASE . 'external/kint/Kint.class.php')) {
                 require_once BASE . 'external/kint/Kint.class.php';
                 d($var);  // kint v1
+            } elseif (expCore::is_php('7.0') && file_exists(BASE . 'external/kint3/build/kint.phar')) {
+                require_once BASE . 'external/kint3/build/kint.phar';
+                d($var);  // kint v3
             } elseif (file_exists(BASE . 'external/kint/build/kint.php')) {
                 require_once BASE . 'external/kint/build/kint.php';
                 d($var);  // kint v2
