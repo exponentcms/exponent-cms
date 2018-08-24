@@ -98,7 +98,7 @@ function build_menu($page, $params) {
         if ($page->depth)
             $menu .= '"><a class="dropdown-item' . $active . '" href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').'>' . $menu_item . '</a></li>'."\n";
         else
-            $menu .= '"><a class="nav-link" href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').'>' . $menu_item . '</a></li>'."\n";
+            $menu .= '"><a class="nav-link" href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').' title="'. $page->title .'">' . $menu_item . '</a></li>'."\n";
     } elseif ((empty($page->type) || (!empty($page->type) && $page->type != 3))) {                                                // this is a submenu item
         if (isset($page->depth) && $page->depth + 1 < $params['length']) {
             $menu = '<li class="nav-item dropdown-submenu';
