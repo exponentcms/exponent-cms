@@ -178,6 +178,7 @@
                     </div>
                     {control type="dropdown" name="sc[SITE_FILE_MANAGER]" label="File Manager"|gettext items="Traditional,elFinder"|gettxtlist values="picker,elfinder" default=$smarty.const.SITE_FILE_MANAGER}
                     {control type="dropdown" name="sc[ELFINDER_THEME]" label="elFinder Theme"|gettext items=$elf_themes default=$smarty.const.ELFINDER_THEME default=""}
+                    {control type="checkbox" postfalse=1 name="sc[FM_MSOFFICE]" label="Prefer MS Office for Doc Previews?"|gettext checked=$smarty.const.FM_MSOFFICE value=1}
                     {control type="text" name="sc[FM_WIDTH]" label="Popup Window Width"|gettext value=$smarty.const.FM_WIDTH|default:1024 size="4"}
                     {control type="text" name="sc[FM_HEIGHT]" label="Popup Window Height"|gettext value=$smarty.const.FM_HEIGHT|default:600 size="4"}
                     {control type="text" name="sc[FM_LIMIT]" label="Number of Files per Page"|gettext value=$smarty.const.FM_LIMIT|default:25 size="4"}

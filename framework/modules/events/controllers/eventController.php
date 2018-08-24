@@ -140,6 +140,7 @@ class eventController extends expController {
          * - minical
          * - byday
          * - monthly
+         * - year
          */
         /*
          * $viewrange(s)
