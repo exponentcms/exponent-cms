@@ -96,9 +96,9 @@ function build_menu($page, $params) {
         else
             $menu .= ' class="nav-item';
         if ($page->depth)
-            $menu .= '"><a class="dropdown-item' . $active . '" href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').'>' . $menu_item . '</a></li>'."\n";
+            $menu .= '"><a class="dropdown-item' . $active . '" href="'.$page->url.'"'.($page->new_window?' target="_blank"':'') . ' title="'. $page->title .'">' . $menu_item . '</a></li>'."\n";
         else
-            $menu .= '"><a class="nav-link" href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').' title="'. $page->title .'">' . $menu_item . '</a></li>'."\n";
+            $menu .= '"><a class="nav-link" href="'.$page->url.'"'.($page->new_window?' target="_blank"':'') . ' title="'. $page->title .'">' . $menu_item . '</a></li>'."\n";
     } elseif ((empty($page->type) || (!empty($page->type) && $page->type != 3))) {                                                // this is a submenu item
         if (isset($page->depth) && $page->depth + 1 < $params['length']) {
             $menu = '<li class="nav-item dropdown-submenu';
@@ -110,9 +110,9 @@ function build_menu($page, $params) {
             $menu .= ' active';
         }
         if ($page->depth)
-            $menu .= '"><a href="'.$page->url.'" id="dropdownMenu' . $page->id . '" class="dropdown-item dropdown-toggle' . $active . '" href="'.$page->url.'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'.($page->new_window?' target="_blank"':'').'>' . $menu_item;
+            $menu .= '"><a href="'.$page->url.'" id="dropdownMenu' . $page->id . '" class="dropdown-item dropdown-toggle' . $active . '" href="'.$page->url.'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'.($page->new_window?' target="_blank"':'').' title="'. $page->title .'">' . $menu_item;
         else
-            $menu .= '"><a href="'.$page->url.'" id="dropdownMenu' . $page->id . '" class="nav-link dropdown-toggle" href="'.$page->url.'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'.($page->new_window?' target="_blank"':'').'>' . $menu_item;
+            $menu .= '"><a href="'.$page->url.'" id="dropdownMenu' . $page->id . '" class="nav-link dropdown-toggle" href="'.$page->url.'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'.($page->new_window?' target="_blank"':'').' title="'. $page->title .'">' . $menu_item;
         if (empty($page->depth))
             $menu .= '<b class="caret"></b>';
         $menu .= '</a>'."\n".'<ul class="dropdown-menu'.($params['menualign']=='right'?' float-right':'').'" role="menu" aria-labelledby="dropdownMenu' . $page->id . '">'."\n";
@@ -152,7 +152,7 @@ function build_menu($page, $params) {
         }
         $menu = '
         <li class="dropdown' . (empty($page->width) ? ' yamm-fw' : '') . ($page->class == "right" ? ' float-right ' : '') . '">';
-        $menu .= '<a href="#" id="dropdownMenu' . $page->id . '" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'. $menu_item . '<b class="caret"></b></a>';
+        $menu .= '<a href="#" id="dropdownMenu' . $page->id . '" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="'. $page->title .'">'. $menu_item . '<b class="caret"></b></a>';
         $menu .= '<ul class="dropdown-menu" style="right:0;" role="menu" aria-labelledby="dropdownMenu' . $page->id . '"><li role="menuitem"><div class="yamm-content">';
         if (bs4())
             $menu .= '<div class="row"><div class="col-sm-12">';

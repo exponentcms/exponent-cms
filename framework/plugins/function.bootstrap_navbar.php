@@ -93,7 +93,7 @@ function build_menu($page,$params) {
             $menu .= ' class="active"';
         if ($page->url == "#")
             $menu .= ' class="disabled"';
-        $menu .= '><a href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').' title="'. $page->title .'">' . $menu_item . '</a></li>'."\n";
+        $menu .= '><a href="'.$page->url.'"'.($page->new_window?' target="_blank"':'') . ' title="'. $page->title .'">' . $menu_item . '</a></li>'."\n";
     } elseif ((empty($page->type) || (!empty($page->type) && $page->type != 3))) {                                                // this is a submenu item
         if (isset($page->depth) && $page->depth + 1 < $params['length']) {
             $menu = '<li class="dropdown-submenu';
@@ -102,7 +102,7 @@ function build_menu($page,$params) {
         }
         if ($sectionObj->id == $page->id)
             $menu .= ' active';
-        $menu .= '"><a href="'.$page->url.'" id="dropdownMenu' . $page->id . '" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'.($page->new_window?' target="_blank"':'').'>' . $menu_item;
+        $menu .= '"><a href="'.$page->url.'" id="dropdownMenu' . $page->id . '" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'.($page->new_window?' target="_blank"':'').' title="'. $page->title .'">' . $menu_item;
         if (empty($page->depth) && $params['length'] > 1)
             $menu .= '<b class="caret"></b>';
         $menu .= '</a>'."\n".'<ul class="dropdown-menu'.($params['menualign']=='right'?' pull-right':'').'" role="menu" aria-labelledby="dropdownMenu' . $page->id . '">'."\n";
@@ -139,7 +139,7 @@ function build_menu($page,$params) {
         }
         $menu = '
         <li class="dropdown' . (empty($page->width) ? ' yamm-fw' : '') . ($page->class == "right" ? ' pull-right ' : '') . '">';
-        $menu .= '<a href="#" id="dropdownMenu' . $page->id . '" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'. $menu_item . '<b class="caret"></b></a>';
+        $menu .= '<a href="#" id="dropdownMenu' . $page->id . '" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="'. $page->title .'">'. $menu_item . '<b class="caret"></b></a>';
         $menu .= '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu' . $page->id . '"><li role="menuitem"><div class="yamm-content">';
         if (bs3())
             $menu .= '<div class="row"><div class="col-sm-12">';
