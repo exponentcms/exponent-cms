@@ -707,14 +707,14 @@ class expCSS {
                         }
 
                         if (MINIFY==1 && MINIFY_LESS==1 && $scss_compiler === 'scssphp') {
-                            $scss->setFormatter('Leafo\ScssPhp\Formatter\Compressed');
+//                            $scss->setFormatter('Leafo\ScssPhp\Formatter\Compressed');  // with comments
+                            $scss->setFormatter('Leafo\ScssPhp\Formatter\Crunched');  // without comments
                         } else {
-//                            $scss->setFormatter('Leafo\ScssPhp\Formatter\Nested');  // scss_formatter_nested is default
                             $scss->setFormatter('Leafo\ScssPhp\Formatter\Expanded');  // scss_formatter_nested is default
                         }
 
                         $scss->setVariables($vars);
-                        $scss->setNumberPrecision(8);  //FIXME docs recommends, but dist only has 6 digits of precision
+//                        $scss->setNumberPrecision(8);  //FIXME docs recommends, but dist only has 6 digits of precision
 
                         try {
                             $file_updated = false;
