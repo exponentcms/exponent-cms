@@ -128,7 +128,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      * @return \expFile
      * @author Dave Leffler
      */
-    protected static function _get_expFile($path)
+    protected static function _get_expFile($path, $newuser=null)
     {
         $efile = new expFile();
         $path = str_replace(array('\\', BASE), array('/', ''), $path);
@@ -144,9 +144,13 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
                 $thefile->posted = $thefile->last_accessed = 0;
             }
             if (empty($thefile->poster)) {
-                $u = new user();
-                $su = $u->find('first', 'is_system_user = 1');
-                $thefile->poster = $su->id;
+                if (!empty($newuser)) {
+                    $thefile->poster = $newuser;
+                } else {
+                    $u = new user();
+                    $su = $u->find('first', 'is_system_user = 1');
+                    $thefile->poster = $su->id;
+                }
             }
             $thefile->save();
         }
@@ -295,7 +299,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $result = parent::stat($path);
         // we don't include directories nor dot files in expFiles
         if ($result && !empty($result['mime'])) {
-            if ($result['mime'] != 'directory' && substr(
+            if ($result['mime'] !== 'directory' && substr(
                     $result['name'],
                     0,
                     1
@@ -453,8 +457,14 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      **/
     protected function _save($fp, $dir, $name, $stat)
     {
+        global $user;
+
         $path = parent::_save($fp, $dir, $name, $stat);
-        self::_get_expFile($path);
+        $thefile = self::_get_expFile($path, $user->id);  // update exp db
+//        if (empty($thefile->poster)) {
+//            $thefile->poster = $user->id;
+//            $thefile->save();
+//        }
         return $path;
     }
 
@@ -464,9 +474,9 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
 
         $stat = parent::upload($fp, $dst, $name, $tmpname, $hashes);
         // set owner of file in db
-        $efile = new expFile($stat['id']);
-        $efile->poster = $user->id;
-        $efile->save();
+//        $efile = new expFile($stat['id']);
+//        $efile->poster = $user->id;
+//        $efile->save();
 
         // return owner of file
         $stat['owner'] = user::getUserAttribution($user->id);
