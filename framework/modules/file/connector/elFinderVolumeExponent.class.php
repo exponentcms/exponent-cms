@@ -143,6 +143,11 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
             } else {
                 $thefile->posted = $thefile->last_accessed = 0;
             }
+            if (empty($thefile->poster)) {
+                $u = new user();
+                $su = $u->find('first', 'is_system_user = 1');
+                $thefile->poster = $su->id;
+            }
             $thefile->save();
         }
         return $thefile;
@@ -451,6 +456,21 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $path = parent::_save($fp, $dir, $name, $stat);
         self::_get_expFile($path);
         return $path;
+    }
+
+    public function upload($fp, $dst, $name, $tmpname, $hashes = array())
+    {
+        global $user;
+
+        $stat = parent::upload($fp, $dst, $name, $tmpname, $hashes);
+        // set owner of file in db
+        $efile = new expFile($stat['id']);
+        $efile->poster = $user->id;
+        $efile->save();
+
+        // return owner of file
+        $stat['owner'] = user::getUserAttribution($user->id);
+        return $stat;
     }
 
     /********************  archivers *************************/
