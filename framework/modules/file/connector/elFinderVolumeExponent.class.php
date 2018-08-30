@@ -69,11 +69,13 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      */
     public function shared($target, $newshared = null)
     {
+        global $user;
+
         $path = $this->decode($target);
         $file = self::_get_expFile($path);
         $newshared = mb_strtoupper(trim($newshared)) === mb_strtoupper("true") ? true : false;
         $shared = !empty($file->shared);
-        if ($newshared != $shared) {
+        if ($newshared != $shared && ($file->poster == $user->id || $user->isAdmin())) {
             $file->update(array('shared' => $newshared));
             $this->clearcache();
         }
@@ -90,10 +92,12 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      */
     public function title($target, $newtitle = null)
     {
+        global $user;
+
         $path = $this->decode($target);
         $file = self::_get_expFile($path);
         $title = $file->title;
-        if ($newtitle != $title) {
+        if ($newtitle != $title && ($file->poster == $user->id || $user->isAdmin())) {
             $file->update(array('title' => $newtitle));
             $this->clearcache();
         }
@@ -110,10 +114,12 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      */
     public function alt($target, $newalt = null)
     {
+        global $user;
+
         $path = $this->decode($target);
         $file = self::_get_expFile($path);
         $alt = $file->alt;
-        if ($newalt != $alt) {
+        if ($newalt != $alt && ($file->poster == $user->id || $user->isAdmin())) {
             $file->update(array('alt' => $newalt));
             $this->clearcache();
         }
