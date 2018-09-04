@@ -143,10 +143,10 @@ abstract class basetemplate {
 	/**
 	 * Assign a variable to the template.
 	 *
-	 * @param string $var The name of the variable - how it will be referenced inside the Smarty code
+	 * @param string|array $var The name of the variable - how it will be referenced inside the Smarty code
 	 * @param mixed $val The value of the variable.
 	 */
-	function assign($var, $val) {
+	function assign($var, $val=null) {
 		$this->tpl->assign($var, $val);
 	}
 
