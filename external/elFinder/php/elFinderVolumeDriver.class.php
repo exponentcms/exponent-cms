@@ -297,7 +297,6 @@ abstract class elFinderVolumeDriver {
 			'm3u8:text/plain'              => 'application/x-mpegURL',
 			'mpd:text/plain'               => 'application/dash+xml',
 			'mpd:application/xml'          => 'application/dash+xml',
-			'xml:application/xml'          => 'text/xml',
 			'*:application/x-dosexec'      => 'application/x-executable',
 			'doc:application/vnd.ms-office'=> 'application/msword',
 			'xls:application/vnd.ms-office'=> 'application/vnd.ms-excel',
@@ -1724,6 +1723,7 @@ abstract class elFinderVolumeDriver {
 					}
 				}
 			}
+			$this->removed = array_values($this->removed);
 		}
 		return $this->removed;
 	}
@@ -4327,7 +4327,7 @@ abstract class elFinderVolumeDriver {
 			if ($type) {
 				$type = explode(';', $type);
 				$type = trim($type[0]);
-				if ($ext && preg_match('~^application/(?:octet-stream|(?:x-)?zip)~', $type)) {
+				if ($ext && preg_match('~^application/(?:octet-stream|(?:x-)?zip|xml)$~', $type)) {
 					// load default MIME table file "mime.types"
 					if (!elFinderVolumeDriver::$mimetypesLoaded) {
 						elFinderVolumeDriver::loadMimeTypes();
@@ -4984,7 +4984,7 @@ abstract class elFinderVolumeDriver {
 				&& (
 					($type === 'image' && ($this->imgLib === 'gd' ? in_array($stat['mime'], array('image/jpeg', 'image/png', 'image/gif', 'image/x-ms-bmp')) : true))
 					 ||
-					($this->imgLib !== 'gd' && in_array($stat['mime'], array('application/postscript', 'application/pdf')))
+					(ELFINDER_IMAGEMAGICK_PS && $this->imgLib !== 'gd' && in_array($stat['mime'], array('application/postscript', 'application/pdf')))
 				);
 		}
 		return false;
@@ -5993,7 +5993,7 @@ abstract class elFinderVolumeDriver {
 		$srcType = $this->getExtentionByMime($mime, ':');
 		$ani = false;
 		if (preg_match('/^(?:gif|png|ico)/', $srcType)) {
-			$cmd = 'identify ' . escapeshellarg($srcType . $path);
+			$cmd = ELFINDER_IDENTIFY_PATH . ' ' . escapeshellarg($srcType . $path);
 			if ($this->procExec($cmd, $o) === 0) {
 				$ani = preg_split('/(?:\r\n|\n|\r)/', trim($o));
 				if (count($ani) < 2) {

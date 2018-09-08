@@ -4,14 +4,20 @@
 
 /* statusbar container */
 .elfinder-statusbar {
+    display: flex;
+    justify-content: space-between;
     cursor: default;
     text-align: center;
     font-weight: normal;
     padding: .2em .5em;
-
     border-right: 0 solid transparent;
     border-bottom: 0 solid transparent;
     border-left: 0 solid transparent;
+}
+
+.elfinder-statusbar:before,
+.elfinder-statusbar:after {
+    display: none;
 }
 
 .elfinder-statusbar span {
@@ -19,8 +25,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
-    text-overflow: "..";
-    -o-text-overflow: "..";
+}
+
+.elfinder-statusbar span.elfinder-path-other {
+    flex-shrink: 0;
+    text-overflow: clip;
+    -o-text-overflow: clip;
 }
 
 .elfinder-statusbar span.ui-state-hover,
@@ -34,20 +44,25 @@
 
 /* path in statusbar */
 .elfinder-path {
+    display: flex;
+    order: 1;
+    flex-grow: 1;
     cursor: pointer;
-    max-width: 30%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
+    max-width: 30%\9;
 }
 
 .elfinder-ltr .elfinder-path {
-    float: left;
+    text-align: left;
+    float: left\9;
 }
 
 .elfinder-rtl .elfinder-path {
-    float: right;
+    text-align: right;
+    float: right\9;
 }
 
 /* path in workzone (case of swipe to navbar close) */
@@ -114,19 +129,26 @@
 
 /* total/selected size in statusbar */
 .elfinder-stat-size {
+    order: 3;
+    flex-grow: 1;
     overflow: hidden;
-    text-wrap: none;
+    white-space: nowrap;
 }
 
 .elfinder-ltr .elfinder-stat-size {
-    float: right;
+    text-align: right;
+    float: right\9;
 }
 
 .elfinder-rtl .elfinder-stat-size {
-    float: left;
+    text-align: left;
+    float: left\9;
 }
 
+/* info of current selected item */
 .elfinder-stat-selected {
+    order: 2;
+    margin: 0 .5em;
     white-space: nowrap;
     overflow: hidden;
 }

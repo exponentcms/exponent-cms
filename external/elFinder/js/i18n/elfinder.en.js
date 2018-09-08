@@ -2,7 +2,7 @@
  * English translation
  * @author Troex Nevelin <troex@fury.scancode.ru>
  * @author Naoki Sawada <hypweb+elfinder@gmail.com>
- * @version 2018-08-07
+ * @version 2018-08-24
  */
 // elfinder.en.js is integrated into elfinder.(full|min).js by jake build
 if (typeof elFinder === 'function' && elFinder.prototype.i18) {
@@ -10,9 +10,9 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 		translator : 'Troex Nevelin &lt;troex@fury.scancode.ru&gt;, Naoki Sawada &lt;hypweb+elfinder@gmail.com&gt;',
 		language   : 'English',
 		direction  : 'ltr',
-		dateFormat : 'M d, Y h:i A', // Mar 13, 2012 05:27 PM
-		fancyDateFormat : '$1 h:i A', // will produce smth like: Today 12:25 PM,
-		nonameDateFormat : 'ymd-His', // to apply if upload file is noname: 120513172700
+		dateFormat : 'M d, Y h:i A', // will show like: Aug 24, 2018 04:39 PM
+		fancyDateFormat : '$1 h:i A', // will show like: Today 04:39 PM
+		nonameDateFormat : 'ymd-His', // noname upload will show like: 180824-163916
 		messages   : {
 
 			/********************************** errors **********************************/
@@ -156,7 +156,7 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'cmdselectnone': 'Select none', // from v2.1.28 added 15.08.2017
 			'cmdselectinvert': 'Invert selection', // from v2.1.28 added 15.08.2017
 			'cmdopennew'   : 'Open in new window', // from v2.1.38 added 3.4.2018
-			'cmdhide'      : 'Hide (personal)', // from v2.1.41 added 24.7.2018
+			'cmdhide'      : 'Hide (Preference)', // from v2.1.41 added 24.7.2018
 
 			/*********************************** buttons ***********************************/
 			'btnClose'  : 'Close',

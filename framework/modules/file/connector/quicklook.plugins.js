@@ -1185,6 +1185,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 				var win     = ql.window,
 					loading, url;
 
+				e.stopImmediatePropagation();
 				if (file.url == '1') {
 					preview.hide();
 					$('<div class="elfinder-quicklook-info-data"><button class="elfinder-info-button">'+fm.i18n('getLink')+'</button></div>').appendTo(ql.info.find('.elfinder-quicklook-info'))
@@ -1212,7 +1213,6 @@ elFinder.prototype.commands.quicklook.plugins = [
 					});
 				}
 				if (file.url !== '' && file.url != '1') {
-					e.stopImmediatePropagation();
 					preview.one('change', function() {
 						loading.remove();
 						node.off('load').remove();
@@ -1245,6 +1245,106 @@ elFinder.prototype.commands.quicklook.plugins = [
 	},
 
 	/**
+	 * KML preview with GoogleMaps API
+	 *
+	 * @param elFinder.commands.quicklook
+	 */
+	function(ql) {
+		"use strict";
+		var fm      = ql.fm,
+			mimes   = {
+				'application/vnd.google-earth.kml+xml' : true,
+				'application/vnd.google-earth.kmz' : true
+			},
+			preview = ql.preview,
+			gMaps, loadMap, wGmfail, fail, mapScr;
+
+		if (ql.options.googleMapsApiKey) {
+			ql.addIntegration({
+				title: 'Google Maps',
+				link: 'https://www.google.com/intl/' + fm.lang.replace('_', '-') + '/help/terms_maps.html'
+			});
+			gMaps = (window.google && google.maps);
+			// start load maps
+			loadMap = function(file, node) {
+				var mapsOpts = ql.options.googleMapsOpts.maps;
+				ql.hideinfo();
+				try {
+					new gMaps.KmlLayer(fm.convAbsUrl(fm.url(file.hash)), Object.assign({
+						map: new gMaps.Map(node.get(0), mapsOpts)
+					}, ql.options.googleMapsOpts.kml));
+				} catch(e) {
+					fail();
+				}
+			};
+			// keep stored error handler if exists
+			wGmfail = window.gm_authFailure;
+			// on error function
+			fail = function() {
+				mapScr = null;
+			};
+			// API script url
+			mapScr = 'https://maps.googleapis.com/maps/api/js?key=' + ql.options.googleMapsApiKey;
+			// error handler
+			window.gm_authFailure = function() {
+				fail();
+				wGmfail && wGmfail();
+			};
+
+			preview.on(ql.evUpdate, function(e) {
+				var file = e.file;
+				if (mapScr && mimes[file.mime.toLowerCase()]) {
+					var win     = ql.window,
+						loading, url, node;
+
+					e.stopImmediatePropagation();
+					if (file.url == '1') {
+						preview.hide();
+						$('<div class="elfinder-quicklook-info-data"><button class="elfinder-info-button">'+fm.i18n('getLink')+'</button></div>').appendTo(ql.info.find('.elfinder-quicklook-info'))
+						.on('click', function() {
+							var self = $(this);
+							self.html('<span class="elfinder-info-spinner">');
+							fm.request({
+								data : {cmd : 'url', target : file.hash},
+								preventDefault : true
+							})
+							.always(function() {
+								self.html('');
+							})
+							.done(function(data) {
+								var rfile = fm.file(file.hash);
+								file.url = rfile.url = data.url || '';
+								if (file.url) {
+									preview.trigger({
+										type: ql.evUpdate,
+										file: file,
+										forceUpdate: true
+									});
+								}
+							});
+						});
+					}
+					if (file.url !== '' && file.url != '1') {
+						node = $('<div style="width:100%;height:100%;"/>').appendTo(preview);
+						preview.one('change', function() {
+							node.remove();
+							node = null;
+						});
+						if (!gMaps) {
+							fm.loadScript([mapScr], function() {
+								gMaps = window.google && google.maps;
+								gMaps && loadMap(file, node);
+							});
+						} else {
+							loadMap(file, node);
+						}
+					}
+				}
+			});
+		}
+	},
+
+	/**
 	 * Any supported files preview plugin using (Google docs | MS Office) online viewer
 	 *
 	 * @param elFinder.commands.quicklook
@@ -1271,22 +1371,24 @@ elFinder.prototype.commands.quicklook.plugins = [
 				xlsm : 5242880,
 				other: 10485760 // 10MB
 			},
-			node;
+			node, enable;
 
 		if (ql.options.googleDocsMimes.length) {
+			enable = true;
 			ql.addIntegration({
 				title: 'Google Docs Viewer',
 				link: 'https://docs.google.com/'
 			});
 		}
 		if (ql.options.officeOnlineMimes.length) {
+			enable = true;
 			ql.addIntegration({
 				title: 'MS Online Doc Viewer',
 				link: 'https://products.office.com/office-online/view-office-documents-online'
 			});
 		}
 
-
+		if (enable) {
 		preview.on(ql.evUpdate, function(e) {
 			var file = e.file,
 				type;
@@ -1367,6 +1469,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 			}
 
 		});
+		}
 	},
 
 	/**
