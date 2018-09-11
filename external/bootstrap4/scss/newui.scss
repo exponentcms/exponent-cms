@@ -9,7 +9,7 @@
   $enable-gradients: false; // default false
   $enable-transitions: true; // default true
 
-  $themepath: "../../../themes/bootstrap4theme/scss";
+  $themepath: "../../../themes/bootstrap4theme/scss";  // hack to prevent picking up theme styles
 
   @import "bootstrap";
 

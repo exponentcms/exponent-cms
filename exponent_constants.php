@@ -589,10 +589,10 @@ if (!defined('SWIFT_PATH')) {
  * Changing the versions here lets Exponent adjust where to look
  */
 if (!defined('MPDF7_VERSION')) {
-    define('MPDF7_VERSION', '7.1.1');
+    define('MPDF7_VERSION', '7.1.4');
 }
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.1.0');
+    define('HTML2PDF5_VERSION', '5.2.0');
 }
 
 ?>
