@@ -79,7 +79,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
                 <a id="a-',$params['unique'],'" data-toggle="collapse" data-target="#',$params['unique'],'-content" class="',$params['collapsed']?' collapsed':'','"></a></h2>
             </div>
         ';
-        echo '  <div id="',$params['unique'],'-content" class="card-body collapse',!$params['collapsed']?' in':'','">';
+        echo '  <div id="',$params['unique'],'-content" class="card-body collapse',!$params['collapsed']?' show':'','">';
         if (!empty($summary)) {
             echo  '<div id="',$params['unique'],'-summary" class="hide">', $params['summary'], '  </div>';
         }
@@ -111,7 +111,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
                 $(\'#h2-' . $params['unique'] . '\').removeAttr(\'data-toggle\');
                 $(\'#a-' . $params['unique'] . '\').removeAttr(\'data-toggle\');
                 if ('.(int)!empty($params['collapsed']).') {
-                    $(\'#' . $params['unique'] . '-content\').addClass(\'in\')    
+                    $(\'#' . $params['unique'] . '-content\').addClass(\'show\')    
                     $(\'#a-' . $params['unique'] . '\').toggleClass(\'collapsed\');
                     doClick();
                 }
@@ -120,7 +120,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
         } else {  // no summary, simply swap popup title
             $script = '
             var doClick = function (e){
-                if ($(\'#' . $params['unique'] . '-content\').hasClass(\'in\')) {
+                if ($(\'#' . $params['unique'] . '-content\').hasClass(\'show\')) {
                     $(\'#' . $params['unique'] . '-head\').prop(\'title\',\'' . gt('Click to Expand') . '\');
                 } else {
                     $(\'#' . $params['unique'] . '-head\').prop(\'title\',\'' . gt('Click to Collapse') . '\');
@@ -144,16 +144,14 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 
         $css = '
         .card.toggle .card-title a:after {
-            font-family:Fontawesome;
-            //content:\'\f077\';
+            font-family:"Font Awesome 5 Free";
             content:\'\f102\';
             float:right;
             font-size:18px;
             font-weight:700;
         }
         .card.toggle .card-title a.collapsed:after  {
-            font-family:Fontawesome;
-            //content:\'\f078\';
+            font-family:"Font Awesome 5 Free";
             content:\'\f103\';
         }
         ';
