@@ -62,7 +62,7 @@
                     {$nextid=$smarty.section.tid.index+1}
 					<td>
 						{if $tables[$nextid] != ""}
-                            <input type="checkbox" id="tables_{$tables[$nextid]}" name="tables[{$tables[$nextid]}]" {if $tables[$nextid] != 'sessionticket' && $tables[$nextid] != 'search'}checked {/if}/>
+                            <input type="checkbox" id="tables_{$tables[$nextid]}" name="tables[{$tables[$nextid]}]" {if $tables[$nextid] != 'sessionticket' && $tables[$nextid] != 'search' && $tables[$nextid] != 'search_queries' && $tables[$nextid] != 'redirect'}checked {/if}/>
                         {/if}
 					</td>
 
