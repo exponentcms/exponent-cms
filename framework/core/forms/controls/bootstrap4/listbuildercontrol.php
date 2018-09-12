@@ -92,7 +92,7 @@ class listbuildercontrol extends formcontrol {
 //			$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
 		}
         $html .= "<div style=\"clear:both\"></div>";
-        if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">".$this->description."</small>";
 		return $html;
 	}
 
