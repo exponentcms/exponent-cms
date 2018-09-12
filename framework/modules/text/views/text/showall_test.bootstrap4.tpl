@@ -15,10 +15,6 @@
 
 {css unique="bootstrap-test"}
 {literal}
-    body {
-      padding-top: 120px;
-    }
-
     pre {
       background: #f7f7f9;
     }
@@ -72,7 +68,7 @@
     }
 
     .bs-docs-section {
-      margin-top: 4em;
+      margin-top: 2em;
       .page-header h1 {
         padding: 2rem 0;
         font-size: 3rem;
