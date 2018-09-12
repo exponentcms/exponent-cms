@@ -50,7 +50,7 @@
 	{form action=export_eql_process}
 		<table cellspacing="0" cellpadding="2">
 			{section name=tid loop=$tables step=2}
-				<tr class="row {cycle values='even,odd'}">
+				<tr class="{cycle values='even,odd'}">
 					<td>
 						<input type="checkbox" id="tables_{$tables[tid]}" name="tables[{$tables[tid]}]" {if $tables[tid] != 'sessionticket' && $tables[tid] != 'search' && $tables[tid] != 'search_queries' && $tables[tid] != 'redirect'}checked {/if}/>
 					</td>
