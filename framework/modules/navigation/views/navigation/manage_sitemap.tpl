@@ -226,6 +226,7 @@
             </div>
             {if $canManageStandalones}
             <div id="tab2">
+                {icon class="add" action=edit_contentpage parent=-1 text='Create a New Standalone Page'|gettext}
                 <table class="table table-responsive table-striped table-condensed">
                     <thead>
                         <th>
