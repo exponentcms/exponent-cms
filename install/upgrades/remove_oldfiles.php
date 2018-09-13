@@ -687,6 +687,7 @@ class remove_oldfiles extends upgradescript {
             'external/ReCaptcha/RequestMethod/',
             'external/Respond-1.3.0/',
             'external/SimpleAjaxUploader/',
+            'external/simplepie-1.5.1/',
             'external/Smarty/',
             'external/Smarty-2/',
             'external/Smarty-3.1.4/',

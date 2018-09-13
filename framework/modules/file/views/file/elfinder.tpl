@@ -104,6 +104,7 @@
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/help.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/help.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/hidden.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/hide.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/home.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/info.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/info.js"></script>
@@ -256,8 +257,10 @@
                     quicklook : {
                         autoplay : false,
                         googleDocsMimes   : ['application/pdf', 'image/tiff', 'application/vnd.ms-office', 'application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/postscript', 'application/rtf'],
+                        {/literal}{if $smarty.const.FM_MSOFFICE}
                         // MS Office Online overrides Google Docs on these mimetypes
                         officeOnlineMimes : ['application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.oasis.opendocument.text', 'application/vnd.oasis.opendocument.spreadsheet', 'application/vnd.oasis.opendocument.presentation'],
+                        {/if}{literal}
                     },
                     // help dialog tabs
                     help : {
@@ -296,7 +299,7 @@
                         ['mkdir', 'mkfile', 'upload'],
                         ['open', 'download', 'getfile'],
                         ['undo', 'redo'],
-                        ['copy', 'cut', 'paste', 'rm', 'empty'],
+                        ['copy', 'cut', 'paste', 'rm', 'empty', 'hide'],
                         ['duplicate', 'rename', 'edit', 'resize', 'chmod'],
                         ['selectall', 'selectnone', 'selectinvert'],
                         ['quicklook', 'info'],

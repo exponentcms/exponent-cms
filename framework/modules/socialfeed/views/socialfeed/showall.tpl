@@ -103,7 +103,7 @@
                     {if (isset($message['video']) && !empty($message['video']))}
                         <div class="fb-video">
                             <a href="{$message['video']}" target="_blank" title="{'View Video'|gettext}">
-                                <img class="img-responsive" src="{$message['picture']}" alt="{'Facebook video'|gettext}" alt="{'Facebook Video'|gettext}">
+                                <img class="img-responsive" src="{$message['picture']}" alt="{'Facebook video'|gettext}">
                             </a>
                         </div>
                     <!-- Picture -->

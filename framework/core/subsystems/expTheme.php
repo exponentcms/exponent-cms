@@ -523,6 +523,27 @@ class expTheme
             $metainfo['nofollow'] = empty($sectionObj->nofollow) ? false : $sectionObj->nofollow;
         }
 
+        // facebook
+        if (empty($metainfo['fb'])) {
+            $metainfo['fb']['type'] = 'website';
+            $metainfo['fb']['title'] = $metainfo['title'];
+            $metainfo['fb']['description'] = $metainfo['description'];
+            $metainfo['fb']['url'] = $metainfo['canonical'];
+            if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/images/logo.png')) {
+                $metainfo['fb']['image'] = URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png' . "\n";
+            }
+        }
+
+        // twitter
+        if (empty($metainfo['tw'])) {
+            $metainfo['tw']['card'] = 'summary';
+            $metainfo['tw']['title'] = $metainfo['title'];
+            $metainfo['tw']['description'] = $metainfo['description'];
+            if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/images/logo.png')) {
+                $metainfo['tw']['image'] = URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png' . "\n";
+            }
+        }
+
         // clean up meta tag output
         foreach ($metainfo as $key=>$value) {
             $metainfo[$key] = expString::parseAndTrim($value, true);

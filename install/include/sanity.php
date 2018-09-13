@@ -35,7 +35,7 @@ define('SANITY_ERROR',				2);
  * @param $flags    type of check to perform
  * @return int      error
  */
-function sanity_checkFile($file,$as_file,$flags) {
+function sanity_checkFile($file, $as_file, $flags) {
 	$__oldumask = umask(0);
 	if (!file_exists($file)) {
 		if ($flags == SANITY_CREATEFILE) {
@@ -90,23 +90,23 @@ function sanity_checkFile($file,$as_file,$flags) {
  * @param $flag type of check
  * @return int  error
  */
-function sanity_checkDirectory($dir,$flag) {
+function sanity_checkDirectory($dir, $flag) {
 	$status = sanity_checkFile(BASE.$dir,false,$flag);
 	if ($status != SANITY_FINE) {
 		return $status;
 	}
 
-	if (is_readable(BASE.$dir)) {
-		$dh = opendir(BASE.$dir);
+	if (is_readable(BASE . $dir)) {
+		$dh = opendir(BASE . $dir);
 		while (($file = readdir($dh)) !== false) {
-			if ($file{0} != '.' && $file != 'CVS') {
-				if (is_file(BASE.$dir.'/'.$file)) {
-					$status = sanity_checkFile(BASE.$dir.'/'.$file,true,$flag);
+			if ($file{0} !== '.' && $file !== 'CVS') {
+				if (is_file(BASE . $dir . '/' . $file)) {
+					$status = sanity_checkFile(BASE . $dir . '/' . $file,true, $flag);
 					if ($status != SANITY_FINE) {
 						return $status;
 					}
 				} else {
-					$status = sanity_checkDirectory($dir.'/'.$file,$flag);
+					$status = sanity_checkDirectory($dir . '/' . $file, $flag);
 					if ($status != SANITY_FINE) {
 						return $status;
 					}
@@ -145,7 +145,7 @@ function sanity_checkServer() {
 	$status = array(
 		gt('Database Backend')=>_sanity_checkDB(),
 		gt('GD Graphics Library 2.0+')=>_sanity_checkGD(),
-		'PHP 5.5.0+'=>_sanity_checkPHPVersion(),
+		'PHP 5.6.0+'=>_sanity_checkPHPVersion(),
 		gt('ZLib Support')=>_sanity_checkZlib(),
         gt('cURL Library Support')=>_sanity_checkcURL(),
 		gt('XML (Expat) Library Support')=>_sanity_checkXML(),
@@ -182,7 +182,7 @@ function _sanity_checkGD() {
 		return array(SANITY_WARNING,gt('No GD Support'));
 	}
 	$info = gd_info();
-	if ($info['GD Version'] == 'Not Supported') {
+	if ($info['GD Version'] === 'Not Supported') {
 		return array(SANITY_WARNING,gt('No GD Support'));
 	} else if (strpos($info['GD Version'],'2.') === false) {
 		return array(SANITY_WARNING,sprintf(gt('Older Version Installed').' (%s)',$info['GD Version']));
@@ -191,10 +191,10 @@ function _sanity_checkGD() {
 }
 
 function _sanity_checkPHPVersion() {
-	if (version_compare(phpversion(),'5.5.0','>=')) {
+	if (version_compare(phpversion(),'5.6.0','>=')) {
 		return array(SANITY_FINE,phpversion());
 	} else {
-		return array(SANITY_ERROR,gt('This version of ExponentCMS requires PHP 5.5.0 or higher. You are running PHP').' '.phpversion().'<br>('.gt('not supported'.')'));
+		return array(SANITY_ERROR,gt('This version of ExponentCMS requires PHP 5.6.0 or higher. You are running PHP').' '.phpversion().'<br>('.gt('not supported'.')'));
 	}
 }
 

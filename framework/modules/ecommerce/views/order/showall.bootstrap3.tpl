@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="yadcf" link="`$smarty.const.JQUERY_RELATIVE`addons/css/select2-bootstrap.css"}
+{css unique="yadcf" lesscss="`$smarty.const.JQUERY_RELATIVE`addons/less/select2-bootstrap.less"}
 {literal}
     table.dataTable thead > tr {
         font-size-adjust: 0.4;

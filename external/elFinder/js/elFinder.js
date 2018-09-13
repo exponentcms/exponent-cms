@@ -157,6 +157,13 @@ var elFinder = function(elm, opts, bootCallback) {
 		files = {},
 		
 		/**
+		 * Hidden Files/dirs cache
+		 *
+		 * @type Object
+		 **/
+		hiddenFiles = {},
+
+		/**
 		 * Files/dirs hash cache of each dirs
 		 *
 		 * @type Object
@@ -267,6 +274,12 @@ var elFinder = function(elm, opts, bootCallback) {
 		 */
 		prevSorterStr = '',
 
+		/**
+		 * Map table of file extention to MIME-Type
+		 * @type Object
+		 */
+		extToMimeTable,
+
 		beeper = $(document.createElement('audio')).hide().appendTo('body')[0],
 			
 		syncInterval,
@@ -340,6 +353,15 @@ var elFinder = function(elm, opts, bootCallback) {
 						gcJobRes = self.asyncJob(calc, hashes, {
 							interval : 20,
 							numPerOnce : 100
+						}).done(function() {
+							var hd = self.storage('hide') || {items: {}};
+							if (Object.keys(hiddenFiles).length) {
+								$.each(hiddenFiles, function(h) {
+									if (!hd.items[h]) {
+										delete hiddenFiles[h];
+									}
+								});
+							}
 						});
 					}
 				};
@@ -402,24 +424,29 @@ var elFinder = function(elm, opts, bootCallback) {
 				},
 				keeps = ['sizeInfo'],
 				changedParents = {},
-				f, i, keepProp, parents;
+				hideData = self.storage('hide') || {},
+				hides = hideData.items || {},
+				f, i, keepProp, parents, hidden;
 
 			for (i = 0; i < l; i++) {
 				f = Object.assign({}, data[i]);
+				hidden = (!hideData.show && hides[f.hash])? true : false;
 				if (f.name && f.hash && f.mime) {
-					if (sorterChk && f.phash === cwd) {
-						setSorter(f);
-						sorterChk = false;
-					}
-					
-					if (f.phash && (type === 'add' || type === 'change')) {
-						if (parents = self.parents(f.phash)) {
-							$.each(parents, function() {
-								changedParents[this] = true;
-							});
+					if (!hidden) {
+						if (sorterChk && f.phash === cwd) {
+							setSorter(f);
+							sorterChk = false;
+						}
+						
+						if (f.phash && (type === 'add' || type === 'change')) {
+							if (parents = self.parents(f.phash)) {
+								$.each(parents, function() {
+									changedParents[this] = true;
+								});
+							}
 						}
 					}
-					
+
 					if (files[f.hash]) {
 						$.each(keeps, function() {
 							if(files[f.hash][this] && ! f[this]) {
@@ -431,17 +458,25 @@ var elFinder = function(elm, opts, bootCallback) {
 						}
 						deleteCache(files[f.hash], true);
 					}
-					files[f.hash] = f;
-					if (f.mime === 'directory' && !ownFiles[f.hash]) {
-						ownFiles[f.hash] = {};
+					if (hides[f.hash]) {
+						hiddenFiles[f.hash] = f;
 					}
-					if (f.phash) {
-						if (!ownFiles[f.phash]) {
-							ownFiles[f.phash] = {};
+					if (hidden) {
+						l--;
+						data.splice(i--, 1);
+					} else {
+						files[f.hash] = f;
+						if (f.mime === 'directory' && !ownFiles[f.hash]) {
+							ownFiles[f.hash] = {};
 						}
-						ownFiles[f.phash][f.hash] = true;
+						if (f.phash) {
+							if (!ownFiles[f.phash]) {
+								ownFiles[f.phash] = {};
+							}
+							ownFiles[f.phash][f.hash] = true;
+						}
 					}
-				} 
+				}
 			}
 			// delete sizeInfo cache
 			$.each(Object.keys(changedParents), function() {
@@ -761,6 +796,9 @@ var elFinder = function(elm, opts, bootCallback) {
 	 */
 	this.cssloaded = false;
 	
+	
+	this.mimesCanMakeEmpty = {};
+
 	/**
 	 * Callback function at boot up that option specified at elFinder starting
 	 * 
@@ -816,8 +854,15 @@ var elFinder = function(elm, opts, bootCallback) {
 			return self.options.baseUrl;
 		} else {
 			baseUrl = '';
-			myTag = $('head > script[src$="js/elfinder.min.js"],script[src$="js/elfinder.full.js"]:first');
-			if (myTag.length) {
+			//myTag = $('head > script[src$="js/elfinder.min.js"],script[src$="js/elfinder.full.js"]:first');
+			myTag = null;
+			$('head > script').each(function() {
+				if (this.src && this.src.match(/js\/elfinder(?:-[a-z0-9_-]+)?\.(?:min|full)\.js$/i)) {
+					myTag = $(this);
+					return false;
+				}
+			});
+			if (myTag) {
 				myCss = $('head > link[href$="css/elfinder.min.css"],link[href$="css/elfinder.full.css"]:first').length;
 				if (! myCss) {
 					// to request CSS auto loading
@@ -1431,8 +1476,8 @@ var elFinder = function(elm, opts, bootCallback) {
 	 * @param  String  file hash
 	 * @return Object
 	 */
-	this.file = function(hash) { 
-		return hash? files[hash] : void(0); 
+	this.file = function(hash, alsoHidden) { 
+		return hash? (files[hash] || (alsoHidden? hiddenFiles[hash] : void(0))) : void(0); 
 	};
 	
 	/**
@@ -1584,7 +1629,9 @@ var elFinder = function(elm, opts, bootCallback) {
 					return file.url;
 				}
 				
-				baseUrl = self.option('url', file.phash || file.hash);
+				if (typeof baseUrl === 'undefined') {
+					baseUrl = self.option('url', file.phash || file.hash);
+				}
 				
 				if (baseUrl) {
 					return baseUrl + $.map(self.path2array(hash), function(n) { return encodeURIComponent(n); }).slice(1).join('/');
@@ -1606,7 +1653,7 @@ var elFinder = function(elm, opts, bootCallback) {
 			return async? dfrd.resolve('') : '';
 		}
 		
-		if (file.url == '1') {
+		if (file.url == '1' || (temp && !file.url && !(baseUrl = self.option('url', file.phash || file.hash)))) {
 			this.request({
 				data : { cmd : 'url', target : hash, options : { temporary: temp? 1 : 0 } },
 				preventDefault : true,
@@ -1899,6 +1946,12 @@ var elFinder = function(elm, opts, bootCallback) {
 						self.trigger(cmd + 'done');
 					});
 				}).then(function() {
+					// make toast message
+					if (data.toasts && Array.isArray(data.toasts)) {
+						$.each(data.toasts, function() {
+							this.msg && self.toast(this);
+						});
+					}
 					// force update content
 					data.sync && self.sync();
 				});
@@ -2017,7 +2070,7 @@ var elFinder = function(elm, opts, bootCallback) {
 					setTextMimes = function() {
 						self.textMimes = {};
 						$.each(self.res('mimes', 'text'), function() {
-							self.textMimes[this] = true;
+							self.textMimes[this.toLowerCase()] = true;
 						});
 					},
 					actionTarget;
@@ -2064,7 +2117,7 @@ var elFinder = function(elm, opts, bootCallback) {
 
 						if (!!data.init) {
 							self.uplMaxSize = self.returnBytes(response.uplMaxSize);
-							self.uplMaxFile = !!response.uplMaxFile? parseInt(response.uplMaxFile) : 20;
+							self.uplMaxFile = !!response.uplMaxFile? Math.max(parseInt(response.uplMaxFile), 50) : 20;
 						}
 					}
 
@@ -2649,14 +2702,14 @@ var elFinder = function(elm, opts, bootCallback) {
 	 * To bind to multiply events at once, separate events names by space
 	 * 
 	 * @param  String  event(s) name(s)
-	 * @param  Object  event handler
+	 * @param  Object  event handler or {done: handler}
 	 * @param  Boolean priority first
 	 * @return elFinder
 	 */
 	this.bind = function(event, callback, priorityFirst) {
 		var i, len;
 		
-		if (typeof(callback) == 'function') {
+		if (callback && (typeof callback === 'function' || typeof callback.done === 'function')) {
 			event = ('' + event).toLowerCase().replace(/^\s+|\s+$/g, '').split(/\s+/);
 			
 			len = event.length;
@@ -2708,7 +2761,9 @@ var elFinder = function(elm, opts, bootCallback) {
 		var type      = evType.toLowerCase(),
 			isopen    = (type === 'open'),
 			dataIsObj = (typeof data === 'object'),
-			handlers  = listeners[type] || [], i, l, jst, event;
+			handlers  = listeners[type] || [],
+			dones     = [],
+			i, l, jst, event;
 		
 		this.debug('event-'+type, data);
 		
@@ -2726,6 +2781,13 @@ var elFinder = function(elm, opts, bootCallback) {
 					// probably un-binded this handler
 					continue;
 				}
+
+				// handler is $.Deferred(), call all functions upon completion
+				if (handlers[i].done) {
+					dones.push(handlers[i].done);
+					continue;
+				}
+				
 				// set `event.data` only callback has argument
 				if (handlers[i].length) {
 					if (!allowModify) {
@@ -2742,8 +2804,7 @@ var elFinder = function(elm, opts, bootCallback) {
 				}
 
 				try {
-					if (handlers[i].call(event, event, this) === false 
-					|| event.isDefaultPrevented()) {
+					if (handlers[i].call(event, event, this) === false || event.isDefaultPrevented()) {
 						this.debug('event-stoped', event.type);
 						break;
 					}
@@ -2753,6 +2814,20 @@ var elFinder = function(elm, opts, bootCallback) {
 				
 			}
 			
+			// call done functions
+			if (l = dones.length) {
+				for (i = 0; i < l; i++) {
+					try {
+						if (dones[i].call(event, event, this) === false || event.isDefaultPrevented()) {
+							this.debug('event-stoped', event.type + '(done)');
+							break;
+						}
+					} catch (ex) {
+						window.console && window.console.log && window.console.log(ex);
+					}
+				}
+			}
+
 			if (this.toUnbindEvents[type] && this.toUnbindEvents[type].length) {
 				$.each(this.toUnbindEvents[type], function(i, v) {
 					self.unbind(v.type, v.callback);
@@ -2797,7 +2872,7 @@ var elFinder = function(elm, opts, bootCallback) {
 				pattern = patterns[i];
 				parts   = pattern.split('+');
 				code    = (code = parts.pop()).length == 1 
-					? code > 0 ? code : code.charCodeAt(0) 
+					? (code > 0 ? code : code.charCodeAt(0))
 					: (code > 0 ? code : $.ui.keyCode[code]);
 
 				if (code && !shortcuts[pattern]) {
@@ -3093,7 +3168,8 @@ var elFinder = function(elm, opts, bootCallback) {
 			prevEnabled = enabled;
 			enabled = false;
 		}
-		this.disable().trigger('hide');
+		this.disable();
+		this.trigger('hide');
 		node.hide();
 	};
 	
@@ -3636,7 +3712,8 @@ var elFinder = function(elm, opts, bootCallback) {
 		'NUM7' : 103,
 		'NUM8' : 104,
 		'NUM9' : 105,
-		'CONTEXTMENU' : 93
+		'CONTEXTMENU' : 93,
+		'DOT'  : 190
 	});
 	
 	this.dragUpload = false;
@@ -3757,6 +3834,21 @@ var elFinder = function(elm, opts, bootCallback) {
 		});
 
 		return dfd;
+	};
+
+	this.getMimetype = function(name, orgMime) {
+		var mime = orgMime,
+			ext, m;
+		m = (name + '').match(/\.([^.]+)$/);
+		if (m && (ext = m[1])) {
+			if (!extToMimeTable) {
+				extToMimeTable = self.arrayFlip(self.mimeTypes);
+			}
+			if (!(mime = extToMimeTable[ext.toLowerCase()])) {
+				mime = orgMime;
+			}
+		}
+		return mime;
 	};
 
 	/**
@@ -4029,7 +4121,23 @@ var elFinder = function(elm, opts, bootCallback) {
 			self.searchStatus.ininc = false;
 			self.searchStatus.mixed = false;
 		})
-
+		.bind('canMakeEmptyFile', function(e) {
+			var data = e.data,
+				obj = {};
+			if (data && Array.isArray(data.mimes)) {
+				if (!data.unshift) {
+					obj = self.mimesCanMakeEmpty;
+				}
+				$.each(data.mimes, function() {
+					if (!obj[this]) {
+						obj[this] = self.mimeTypes[this];
+					}
+				});
+				if (data.unshift) {
+					self.mimesCanMakeEmpty = Object.assign(obj, self.mimesCanMakeEmpty);
+				}
+			}
+		})
 		;
 
 	// We listen and emit a sound on delete according to option
@@ -5048,8 +5156,10 @@ var elFinder = function(elm, opts, bootCallback) {
 			// check css loaded and remove hide
 			(function() {
 				var loaded = function() {
-						node.data('cssautoloadHide').remove();
-						node.removeData('cssautoloadHide');
+						if (node.data('cssautoloadHide')) {
+							node.data('cssautoloadHide').remove();
+							node.removeData('cssautoloadHide');
+						}
 						self.cssloaded = true;
 						requestAnimationFrame(function() {
 							self.trigger('cssloaded');
@@ -5243,13 +5353,16 @@ elFinder.prototype = {
 				Angle   : 0,
 				Rotated : false,
 				CSS : (function() {
-					var mStyle = document.createElement('a').style, css;
+					var aStyle = document.createElement('a').style,
+						pStyle = document.createElement('p').style,
+						css;
 					css = 'position:sticky;position:-webkit-sticky;';
 					css += 'width:-webkit-max-content;width:-moz-max-content;width:-ms-max-content;width:max-content;';
-					mStyle.cssText = css;
+					aStyle.cssText = css;
 					return {
-						positionSticky : mStyle.position.indexOf('sticky')!==-1,
-						widthMaxContent : mStyle.width.indexOf('max-content')!==-1
+						positionSticky : aStyle.position.indexOf('sticky')!==-1,
+						widthMaxContent : aStyle.width.indexOf('max-content')!==-1,
+						flex : typeof pStyle.flex !== 'undefined'
 					};
 				})()
 			};
@@ -5884,7 +5997,7 @@ elFinder.prototype = {
 							};
 						if (text = $(this).text()) {
 							loc = parseUrl($(this).attr('href'));
-							if (loc.href && (atag.length === 1 || ! loc.pathname.match(/(?:\.html?|\/[^\/.]*)$/i) || $.trim(text).match(/\.[a-z0-9-]{1,10}$/i))) {
+							if (loc.href && loc.href.match(/^(?:ht|f)tp/i) && (atag.length === 1 || ! loc.pathname.match(/(?:\.html?|\/[^\/.]*)$/i) || $.trim(text).match(/\.[a-z0-9-]{1,10}$/i))) {
 								if ($.inArray(loc.href, ret) == -1 && $.inArray(loc.href, check) == -1) ret.push(loc.href);
 							}
 						}
@@ -5986,6 +6099,11 @@ elFinder.prototype = {
 							data.changed && data.changed.length && self.change(data);
 							self.trigger('upload', data, false);
 							self.trigger('uploaddone');
+							if (data.toasts && Array.isArray(data.toasts)) {
+								$.each(data.toasts, function() {
+									this.msg && self.toast(this);
+								});
+							}
 							data.sync && self.sync();
 							data.debug && fm.debug('backend-debug', data);
 						}
@@ -6607,12 +6725,13 @@ elFinder.prototype = {
 								file._remove = true;
 								relPath = void(0);
 							} else {
-								relPath = relPath.replace(/\/[^\/]*$/, '');
+								// add '/' as prefix to make same to folder uploading with DnD, see #2607
+								relPath = '/' + relPath.replace(/\/[^\/]*$/, '').replace(/^\//, '');
 								if (relPath && $.inArray(relPath, mkdirs) === -1) {
 									mkdirs.push(relPath);
 									// checking the root directory to supports <input type="file" webkitdirectory> see #2378
-									idx = relPath.indexOf('/');
-									if (idx !== -1 && (rootDir = relPath.substr(0, idx)) && $.inArray(rootDir, mkdirs) === -1) {
+									idx = relPath.substr(1).indexOf('/');
+									if (idx !== -1 && (rootDir = relPath.substr(0, idx + 1)) && $.inArray(rootDir, mkdirs) === -1) {
 										mkdirs.unshift(rootDir);
 									}
 								}
@@ -6623,7 +6742,7 @@ elFinder.prototype = {
 						hashes = {};
 						if (mkdirs.length) {
 							(function() {
-								var checkDirs = $.map(mkdirs, function(name) { return name.indexOf('/') === -1 ? {name: name} : null;}),
+								var checkDirs = $.map(mkdirs, function(name) { return name.substr(1).indexOf('/') === -1 ? {name: name.substr(1)} : null;}),
 									cancelDirs = [];
 								fm.uploads.checkExists(checkDirs, target, fm, true).done(
 									function(res, res2) {
@@ -6636,7 +6755,7 @@ elFinder.prototype = {
 											$.each(paths.concat(), function(i, path) {
 												if ($.inArray(path, cancelDirs) === 0) {
 													files[i]._remove = true;
-													delete paths[i];
+													paths[i] = void(0);
 												}
 											});
 										}
@@ -6695,10 +6814,10 @@ elFinder.prototype = {
 												.done(function(data) {
 													if (data.hashes) {
 														paths = $.map(paths.concat(), function(p) {
-															if (p === '') {
+															if (p === '/') {
 																return target;
 															} else {
-																return data.hashes['/' + p];
+																return data.hashes[p];
 															}
 														});
 													}
@@ -6959,8 +7078,11 @@ elFinder.prototype = {
 					type: event,
 					callback: h
 				});
-				return callback.apply(this, arguments);
+				return (callback.done? callback.done : callback).apply(this, arguments);
 			};
+		if (callback.done) {
+			h = {done: h};
+		}
 		return this.bind(event, h, priorityFirst);
 	},
 	
@@ -7343,13 +7465,18 @@ elFinder.prototype = {
 						if (self.trashes[file.hash]) {
 							file.locked = true;
 						}
-					} else if (fileFilter) {
-						try {
-							if (! fileFilter(file)) {
-								return ign;
+					} else {
+						if (fileFilter) {
+							try {
+								if (! fileFilter(file)) {
+									return ign;
+								}
+							} catch(e) {
+								self.debug(e);
 							}
-						} catch(e) {
-							self.debug(e);
+						}
+						if (file.size == 0) {
+							file.mime = self.getMimetype(file.name, file.mime);
 						}
 					}
 					
@@ -8065,6 +8192,8 @@ elFinder.prototype = {
 		mime = mime.split('/');
 		if (isText) {
 			mime[0] += ' ' + prefix + 'text';
+		} else if (mime[1] && mime[1].match(/\+xml$/)) {
+			mime[0] += ' ' + prefix + 'xml';
 		}
 		
 		return prefix + mime[0] + (mime[1] ? ' ' + prefix + mime[1].replace(/(\.|\+)/g, '-') : '');
@@ -8117,7 +8246,7 @@ elFinder.prototype = {
 	 * @return Boolean
 	 */
 	mimeIsText : function(mime) {
-		return (this.textMimes[mime] || (mime.indexOf('text/') === 0 && mime.substr(5, 3) !== 'rtf'))? true : false;
+		return (this.textMimes[mime.toLowerCase()] || (mime.indexOf('text/') === 0 && mime.substr(5, 3) !== 'rtf') || mime.match(/^application\/.+\+xml$/))? true : false;
 	},
 	
 	/**
@@ -9313,6 +9442,18 @@ elFinder.prototype = {
 			fi++;
 		}
 		return segments;
+	},
+
+	arrayBufferToBase64 : function(ab) {
+		if (!window.btoa) {
+			return '';
+		}
+		var dView = new Uint8Array(ab), // Get a byte view
+			arr = Array.prototype.slice.call(dView), // Create a normal array
+			arr1 = arr.map(function(item) {
+				return String.fromCharCode(item); // Convert
+			});
+	    return window.btoa(arr1.join('')); // Form a string
 	},
 
 	log : function(m) { window.console && window.console.log && window.console.log(m); return this; },

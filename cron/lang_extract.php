@@ -117,7 +117,7 @@ function do_extract($file, $regex, $isalist=false) {
            $matches,
            PREG_PATTERN_ORDER
    	);
-    print "$file"." - ";
+    print "$file" . " - ";
     $num_added = 0;
 	for ($i = 0, $iMax = count($matches[0]); $i < $iMax; $i++) {
         str_replace('"', "\'", $matches[0][$i]);  // remove the killer double-quotes
@@ -140,11 +140,11 @@ function do_extract($file, $regex, $isalist=false) {
 function do_file($file, $fileext) {
 	global $regex_gt, $regex_gettext_mod, $regex_gettxtlist_mod, $regex_gettext_func, $regex_glist;
 
-    if ($fileext == 'tpl') {
+    if ($fileext === 'tpl') {
         do_extract($file,$regex_gettext_mod);
         do_extract($file,$regex_gettxtlist_mod,true);
 //        do_extract($file,$regex_gettext_func);  //FIXME these tend to hold computations and likewise break things?
-    } elseif ($fileext == 'php') {
+    } elseif ($fileext === 'php') {
         do_extract($file,$regex_gt);
         do_extract($file,$regex_glist,true);
     }
@@ -157,7 +157,7 @@ function do_dir($dir) {
 	$d = dir($dir);
 
 	while (false !== ($entry = $d->read())) {
-		if ($entry == '.' || $entry == '..') {
+		if ($entry === '.' || $entry === '..') {
 			continue;
 		}
 
@@ -179,9 +179,9 @@ function do_dir($dir) {
 
 for ($ac=1; $ac < $_SERVER['argc']; $ac++) {
     print "Extracting Language Phrases\n";
-	if ($_SERVER['argv'][$ac] == '-r') {
+	if ($_SERVER['argv'][$ac] === '-r') {
 		$recur = false;
-	} elseif ($_SERVER['argv'][$ac] == '-t'){
+	} elseif ($_SERVER['argv'][$ac] === '-t'){
 		$custom = true;
     } elseif (is_dir($_SERVER['argv'][$ac])) { // go through directory
 		do_dir($_SERVER['argv'][$ac]);

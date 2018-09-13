@@ -81,7 +81,7 @@ if (!function_exists('smarty_function_getchromemenu')) {
             $reorder['where'] = "external='".$module->internal."'";
             $reorder['label'] = gt("Modules");
             echo '
-            <li class="dropdown-item" role="menuitem">';
+            <li role="menuitem">';
             smarty_function_ddrerank($reorder, $smarty);
             echo '</li>
             ';

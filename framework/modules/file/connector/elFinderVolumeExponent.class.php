@@ -69,11 +69,13 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      */
     public function shared($target, $newshared = null)
     {
+        global $user;
+
         $path = $this->decode($target);
         $file = self::_get_expFile($path);
         $newshared = mb_strtoupper(trim($newshared)) === mb_strtoupper("true") ? true : false;
         $shared = !empty($file->shared);
-        if ($newshared != $shared) {
+        if ($newshared != $shared && ($file->poster == $user->id || $user->isAdmin())) {
             $file->update(array('shared' => $newshared));
             $this->clearcache();
         }
@@ -90,10 +92,12 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      */
     public function title($target, $newtitle = null)
     {
+        global $user;
+
         $path = $this->decode($target);
         $file = self::_get_expFile($path);
         $title = $file->title;
-        if ($newtitle != $title) {
+        if ($newtitle != $title && ($file->poster == $user->id || $user->isAdmin())) {
             $file->update(array('title' => $newtitle));
             $this->clearcache();
         }
@@ -110,10 +114,12 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      */
     public function alt($target, $newalt = null)
     {
+        global $user;
+
         $path = $this->decode($target);
         $file = self::_get_expFile($path);
         $alt = $file->alt;
-        if ($newalt != $alt) {
+        if ($newalt != $alt && ($file->poster == $user->id || $user->isAdmin())) {
             $file->update(array('alt' => $newalt));
             $this->clearcache();
         }
@@ -128,7 +134,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      * @return \expFile
      * @author Dave Leffler
      */
-    protected static function _get_expFile($path)
+    protected static function _get_expFile($path, $newuser=null)
     {
         $efile = new expFile();
         $path = str_replace(array('\\', BASE), array('/', ''), $path);
@@ -142,6 +148,15 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
                 $thefile->posted = $thefile->last_accessed = filemtime(BASE . $path);
             } else {
                 $thefile->posted = $thefile->last_accessed = 0;
+            }
+            if (empty($thefile->poster)) {
+                if (!empty($newuser)) {
+                    $thefile->poster = $newuser;
+                } else {
+                    $u = new user();
+                    $su = $u->find('first', 'is_system_user = 1');
+                    $thefile->poster = $su->id;
+                }
             }
             $thefile->save();
         }
@@ -263,9 +278,9 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         if (is_dir($npath)) {
             $dir = opendir($npath);
             while(false !== ( $file = readdir($dir)) ) {
-                if ($file != "." && $file != ".." && is_dir("$npath/$file")) {
+                if ($file !== "." && $file !== ".." && is_dir("$npath/$file")) {
                     $this->scan_folder("$npath/$file", "$opath");
-                } elseif (substr($file, 0, 1) != '.') {
+                } elseif (substr($file, 0, 1) !== '.') {
                     if (file_exists($npath . '/' . $file)) $this->_move_expFile(BASE . $opath . "/" . $file, $npath);
                 }
             }
@@ -290,7 +305,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $result = parent::stat($path);
         // we don't include directories nor dot files in expFiles
         if ($result && !empty($result['mime'])) {
-            if ($result['mime'] != 'directory' && substr(
+            if ($result['mime'] !== 'directory' && substr(
                     $result['name'],
                     0,
                     1
@@ -321,8 +336,8 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
                     $result['write'] = false;
                     $result['locked'] = true;
                 }
-            } elseif($result['mime'] == 'directory') {
-                if ((strtolower($result['name']) == 'avatars' || strtolower($result['name']) == 'uploads')) {
+            } elseif($result['mime'] === 'directory') {
+                if ((strtolower($result['name']) === 'avatars' || strtolower($result['name']) === 'uploads')) {
                      // only admins can see the avatars and uploads subfolders and their contents
                     $result['locked'] = true;
                     if (!$user->isSuperAdmin()) {
@@ -448,9 +463,30 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      **/
     protected function _save($fp, $dir, $name, $stat)
     {
+        global $user;
+
         $path = parent::_save($fp, $dir, $name, $stat);
-        self::_get_expFile($path);
+        $thefile = self::_get_expFile($path, $user->id);  // update exp db
+//        if (empty($thefile->poster)) {
+//            $thefile->poster = $user->id;
+//            $thefile->save();
+//        }
         return $path;
+    }
+
+    public function upload($fp, $dst, $name, $tmpname, $hashes = array())
+    {
+        global $user;
+
+        $stat = parent::upload($fp, $dst, $name, $tmpname, $hashes);
+        // set owner of file in db
+//        $efile = new expFile($stat['id']);
+//        $efile->poster = $user->id;
+//        $efile->save();
+
+        // return owner of file
+        $stat['owner'] = user::getUserAttribution($user->id);
+        return $stat;
     }
 
     /********************  archivers *************************/

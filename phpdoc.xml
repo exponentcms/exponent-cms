@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-    <title>Exponent v2.4.3</title>
+    <title>Exponent v2.5.0</title>
     <parser>
         <default-package-name>Framework</default-package-name>
         <target>../exponent-api/phpdoc</target>
@@ -38,6 +38,5 @@
         <ignore>framework/conf/data/extra_phrases.php</ignore>
         <ignore>framework/core/lang/*</ignore>
         <ignore>framework/modules/pixidou/*</ignore>
-        <ignore>framework/modules/news/models/SimplePie.php</ignore>
     </files>
 </phpdoc>

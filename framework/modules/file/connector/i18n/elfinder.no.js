@@ -116,7 +116,7 @@
 			'cmdhome'      : 'Hjem',
 			'cmdinfo'      : 'Vis info',
 			'cmdmkdir'     : 'Ny mappe',
-			'cmdmkfile'    : 'Ny tekst-fil',
+			'cmdmkfile'    : 'Ny fil',
 			'cmdopen'      : 'Åpne',
 			'cmdpaste'     : 'Lim inn',
 			'cmdquicklook' : 'Forhåndsvis',

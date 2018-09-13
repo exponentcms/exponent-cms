@@ -199,6 +199,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var rows = stb.all('tr');
         var rowcount = rows._nodes.length;
         stb.one('.last').insert(rowTemplate(rowcount),'before');
+        stb.one('#from-{/literal}{$calc->id}{literal}-'+rowcount).focus();
         var oldrowdelete = stb.one('.row-'+(rowcount-1)+' .delete');
         if (!Y.Lang.isNull(oldrowdelete)) oldrowdelete.setStyle('display','none');
         setRemover(rowcount)

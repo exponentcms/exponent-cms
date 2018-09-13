@@ -544,7 +544,7 @@ class administrationController extends expController {
 			'mods'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-mods'
 		);
 
-        require_once(BASE . 'external/simplepie-1.5.1/autoloader.php');
+        require_once(BASE . 'external/simplepie-1.5.2/autoloader.php');
 		$RSS = new SimplePie();
 		$RSS->set_cache_location(BASE . 'tmp/rsscache');  // default is ./cache
 //	    $RSS->set_cache_duration(3600);  // default if 3600
@@ -1299,7 +1299,7 @@ class administrationController extends expController {
         uasort($themes,'strnatcmp');
 
         // Available elFinder Themes
-        $elf_themes = array(''=>gt('Default/OSX'));
+        $elf_themes = array();
         if (is_readable(BASE.'external/elFinder/themes')) {
         	$theme_dh = opendir(BASE.'external/elFinder/themes');
         	while (($theme_file = readdir($theme_dh)) !== false) {
@@ -1309,6 +1309,7 @@ class administrationController extends expController {
         	}
         }
         uasort($elf_themes,'strnatcmp');
+        $elf_themes = array_merge(array(''=>gt('Default/OSX')), $elf_themes);
 
         // Available Languages
 	    $langs = expLang::langList();

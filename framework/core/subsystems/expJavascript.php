@@ -148,7 +148,9 @@ class expJavascript {
                             'css_primer'=>JQUERYUI_CSS
                         ));
                     } else {
-                        if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
+                        if ($mod === 'jstree') {
+                            $scripts .= "\t" . '<script type="text/javascript" src="' . JQUERY_RELATIVE . 'addons/js/' . $mod . '.js"></script>' . "\r\n";
+                        } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
                             if (strlen($srt[$i]) + strlen(PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js') <= $strlen && $i <= MINIFY_MAX_FILES) {
                                 $srt[$i] .= PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js' . ",";
                             } else {
