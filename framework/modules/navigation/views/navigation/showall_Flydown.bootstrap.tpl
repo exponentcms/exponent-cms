@@ -26,6 +26,7 @@
         <div class="container">
             <!-- toggle for collapsed/mobile navbar content -->
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                Menu
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>

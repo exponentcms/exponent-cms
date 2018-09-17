@@ -69,6 +69,7 @@
       <button type="button" class="navbar-toggle" data-toggle="collapse"
           data-target="#admin-navbar-collapse-1">
           <span class="sr-only">{'Toggle navigation'|gettext}</span>
+          Menu
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>

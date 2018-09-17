@@ -37,6 +37,7 @@
             <!-- menu header -->
             <a class="navbar-brand" href="{$smarty.const.URL_FULL}">{$smarty.const.ORGANIZATION_NAME}</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar-collapse-1" aria-controls="navbarNav" aria-expanded="false" aria-label="{'Toggle navigation'|gettext}">
+                Menu
                 <span class="navbar-toggler-icon"></span>
             </button>
         {*</div>*}
