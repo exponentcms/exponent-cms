@@ -53,7 +53,7 @@ class datetimecontrol extends formcontrol {
 
     function toHTML($label, $name) {
         if (!$this->showdate && !$this->showtime) return "";
-        $html = "<div id=\"" . $name . "Control\" class=\"datetime-control control ' . ($this->horizontal ? 'row ' : '') . 'form-group";
+        $html = "<div id=\"" . $name . "Control\" class=\"datetime-control control " . ($this->horizontal ? 'row ' : '') . "form-group";
         $html .= (!empty($this->required)) ? ' required">' : '">';
         //$html .= "<label>";
         if (empty($this->flip)) {
