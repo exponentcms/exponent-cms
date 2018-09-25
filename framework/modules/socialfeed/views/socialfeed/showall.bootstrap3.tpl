@@ -71,10 +71,10 @@
                 {$style = $style|cat:' d.none'}
             {/if}
             {if $message@iteration > $config.socialfeed_feeds_count / 4 * 2}
-                {$style = $style|cat:' d-sm-none'}
+                {$style = $style|cat:' d-none d-md-block'}
             {/if}
             {if $message@iteration > $config.socialfeed_feeds_count / 4 * 3}
-                {$style = $style|cat:' d-md-none'}
+                {$style = $style|cat:' d-none d-lg-block'}
             {/if}
             {/if}
             {if $config.socialfeed_display_type == 'pinboard'}
