@@ -57,6 +57,11 @@
 {script unique="mediaelement-src" jquery="jquery.colorbox" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
 {/script}
 
+{if !empty($config.video_renderer)}
+{script unique="mediaelement-src-v" jquery=1 src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/renderers/`$config.video_renderer`.min.js"}
+{/script}
+{/if}
+
 {script unique="mediaplayer-`$name`"}
 {literal}
     mejs.i18n.language('{/literal}{substr($smarty.const.LOCALE,0,2)}{literal}'); // Setting language

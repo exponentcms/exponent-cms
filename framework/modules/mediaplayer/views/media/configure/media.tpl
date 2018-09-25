@@ -27,6 +27,7 @@
 </div>
 {control type="checkbox" name="autoplay" label="Automatically Play First Media File"|gettext value=1 checked=$config.autoplay}
 {control type=dropdown name="video_style" items="Default,TED,WMP"|gettxtlist values="mejs,mejs-ted,mejs-wmp" label="Player Style"|gettext value=$config.video_style|default:"mejs" focus=1}
+{control type=dropdown name="video_renderer" items="None,Dailymotion,Facebook,SoundCloud,Twitch,Vimeo"|gettxtlist values=",dailymotion,facebook,soundcloud,twitch,vimeo" label="Additional Video Renderer"|gettext value=$config.video_renderer|default:""}
 {control type="text" name="video_width" label="Video Width"|gettext value=$config.video_width|default:200 size=4}
 {control type="text" name="video_height" label="Video Height"|gettext value=$config.video_height|default:143 size=4}
 {control type="checkbox" name="use_lightbox" label="Use Lightbox?"|gettext value=1 checked=$config.use_lightbox}
