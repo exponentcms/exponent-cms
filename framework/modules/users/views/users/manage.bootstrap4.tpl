@@ -83,7 +83,9 @@
                                     {icon img="view.png" class=view action=viewuser record=$user}
                                 {/if}
                                 {icon img="edit.png" class=edit action=edituser record=$user}
+                                {if !$user->is_ldap}
                                 {icon img="change_password.png" class=password action=change_password record=$user title="Change this users password"|gettext}
+                                {/if}
                                 {icon img="delete.png" action=delete record=$user title="Delete"|gettext onclick="return confirm('Are you sure you want to delete this user?');"}
                             </div>
                         {/permissions}
