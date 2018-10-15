@@ -3,6 +3,8 @@
 /**
  * Displays JSON preview as a table.
  *
+ * @link https://github.com/pematon/adminer-plugins
+ *
  * @author Peter Knut
  * @copyright 2014-2018 Pematon, s.r.o. (http://www.pematon.com/)
  */
@@ -184,9 +186,9 @@ class AdminerJsonPreview
             return;
         }
 
-        if (is_string($value) && substr($value, 0, 1) == '{' && ($json = json_decode($value, true))) {
+        if (is_string($value) && in_array(substr($value, 0, 1), ['{', '[']) && ($json = json_decode($value, true))) {
             echo "<a class='icon json-icon json-link' href='#' title='JSON' data-index='$counter'><span>JSON</span></a><br/>";
-            echo $this->convertJson($json, 1, $counter++);
+            echo $this->convertJson($json, 1, $counter);
         }
     }
 

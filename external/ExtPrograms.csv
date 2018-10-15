@@ -1,10 +1,10 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-Swiftmailer,5.4.12/6.1.2,github.com/swiftmailer/swiftmailer,6.1.2,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
+Swiftmailer,5.4.12/6.1.3,github.com/swiftmailer/swiftmailer,6.1.3,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
 Doctrine Lexer,1.0.1,github.com/doctrine/lexer,1.0.1,needed by swiftmailer v6
-EmailValidator,2.1.4,github.com/egulias/EmailValidator,2.1.4,needed by swiftmailer v6; add autoloader and move within folders
+EmailValidator,2.1.4,github.com/egulias/EmailValidator,2.1.5,needed by swiftmailer v6; add autoloader and move within folders
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc� to work"
 fedex-php,16.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,16.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
-Smarty,3.1.27,smarty.net,3.1.32,
+Smarty,3.1.27,smarty.net,3.1.33,
 phpthumb,1.7.14-201608101311,github.com/JamesHeinrich/phpThumb,1.7.14-201608101311,phpThumb.config.php - we also allow &amp in parsing and err command
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.3,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
@@ -20,7 +20,7 @@ SimplePie,1.5.2,github.com/simplepie/simplepie,1.5.2,
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,0.33,github.com/verot/class.upload.php,0.34,Correct flip operation where flip vertical & horizontal were inverted/swapped
 iCalCreator,2.24.0,github.com/iCalcreator/iCalcreator,2.24.0,php7 fixes & vcalendar $this->filename fix
-scssphp,0.7.6exp,github.com/leafo/scssphp,0.7.7,hacked to compile newui
+scssphp,0.7.7exp,github.com/leafo/scssphp,0.7.7,hacked to compile newui
 lessphp,0.5.0,github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
 less.php,1.7.0.14,github.com/oyejorge/less.php,1.7.0.14,
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
@@ -32,7 +32,7 @@ Bootswatch3,3.3.7,bootswatch.com/,3.3.7,change 1st line variables.less comment t
 Bootswatch4,4.1.3,bootswatch.com/,4.1.3,change 1st line variables.scss comment to output to .css file
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome4,4.7.0,fortawesome.github.com/Font-Awesome,4.7.0,
-Font-Awesome5,5.3.1,fontawesome.com,5.3.1,add 'fonts' to main sheet
+Font-Awesome5,5.4.1,fontawesome.com,5.4.1,add 'fonts' to main sheet
 Adminer,4.6.3exp,www.adminer.org,4.6.3,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.2,github.com/LPology/Simple-Ajax-Uploader,2.6.2,also converted to yui module 2.5.3
 normalize.css,8.0.0,necolas.github.com/normalize.css/,8.0.0,auto included in bootstrap 3
@@ -43,8 +43,8 @@ Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.6.3,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
-CKEditor,4.10.0,ckeditor.com,4.10.0,"add fieldinsert (exp), tableresize, sourcedialog, image2 fileupload & imageupload widgets & kama skin"
-TinyMCE,4.8.2,tinymce.com,4.8.2,"add fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
+CKEditor,4.10.1,ckeditor.com,4.10.1,"add fieldinsert (exp), tableresize, sourcedialog, image2 fileupload & imageupload widgets & kama skin"
+TinyMCE,4.8.3,tinymce.com,4.8.3,"add fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 PLUpload,2.3.6,github.com/moxiecode/plupload,2.3.6/3.1.2,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 elFinder,2.1.42,elfinder.org,2.1.42,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
@@ -54,7 +54,7 @@ jQuery3,3.3.1,jquery.com,3.3.1,
 jQuery3 Migrate,3.0.1,jquery.com,3.0.1,
 jQueryUI,1.12.1,jqueryui.com,1.12.1,
 stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
-validate,1.17.0exp,jqueryvalidation.org/,1.17.0,edit for 'undefined' in 'min' & 'max'
+validate,1.17.0exp,jqueryvalidation.org/,1.18.0,edit for 'undefined' in 'min' & 'max'
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker/,1.6.3,used by adminer
 TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
@@ -74,7 +74,7 @@ Bootstrap DateTimePicker,4.17.47,github.com/Eonasdan/bootstrap-datetimepicker,4.
 moment.js,2.22.2,github.com/moment/moment,2.22.2,needed for Bootstrap DateTimePicker
 strength-meter,1.1.4,github.com/kartik-v/strength-meter,1.1.4,
 Sortable,1.6.0,github.com/RubaXa/Sortable,1.6.0,
-jstree,3.3.5,github.com/vakata/jstree,3.3.5,added nav menu icons to stylesheet
+jstree,3.3.6,github.com/vakata/jstree,3.3.6,added nav menu icons to stylesheet
 bootstrap3-dialog,1.35.4,github.com/nakupanda/bootstrap3-dialog,1.35.4,use /src .less file and add our .less variable imports; w/ bs4 fixes
 impromptu,6.2.3,trentrichardson.com/Impromptu,6.2.3,add some colors to .css
 bootstrap-touch-carousel,0.8.0exp,github.com/ixisio/bootstrap-touch-carousel,0.8.0,patched with vertical drag fix
@@ -82,7 +82,7 @@ bootstrap-tagsinput,0.8.0exp,github.com/timschlechter/bootstrap-tagsinput,0.8.0,
 Typeahead,0.11.1,twitter.github.io/typeahead.js/,0.11.1,needed by bootstrap-tagsinput
 bootstrap-duallistbox,3.0.7,github.com/istvan-ujjmeszaros/bootstrap-duallistbox,3.0.7/4.0.1,
 select2,4.0.5,github.com/ivaynberg/select2,4.0.5,renamed select2.full.js to select2.js
-shuffle.js,v3.1.1,github.com/Vestride/Shuffle,4.2.0/5.1.2,
+shuffle.js,v3.1.1,github.com/Vestride/Shuffle,4.2.0/5.2.0,
 Jasny Bootstrap2,2.3.1,jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,3.2.0beta1,jasny.github.io/bootstrap,3.2.0beta1,only using fileinput at this time
 easypost sdk,3.4.1,github.com/EasyPost/easypost-php,3.4.1,
@@ -92,13 +92,13 @@ Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
 dompdf,0.8.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,0.8.2,"optional, patched to display our images and not break on bad tables"
-mPDF,7.0.3/6.1.4/5.7.4a,github.com/mpdf/mpdf,7.1.4,optional
+mPDF,7.0.3/6.1.4/5.7.4a,github.com/mpdf/mpdf,7.1.5,optional
 log,1.0.2,github.com/php-fig/log,1.0.2,"optional, required by mPDF v7"
 DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.7.0,"optional, required by mPDF v7"
 HTML2PDF,5.1.0/4.6.1,github.com/spipu/html2pdf,5.2.0,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.2.17,sourceforge.net/projects/tcpdf,6.2.17,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
-Kint,2.2.0,github.com/kint-php/kint,2.2.0,"optional, for formatted edebug output"
+Kint,2.2.0/3.0.0,github.com/kint-php/kint,3.0.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
 DataTables Buttons,,www.datatables.net,1.5.3,

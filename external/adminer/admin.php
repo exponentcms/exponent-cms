@@ -34,7 +34,6 @@ function adminer_object() {
 //        new AdminerDumpDate,
         new AdminerDumpZip,  // adds zip option to export
         new AdminerEditCalendar(
-//            "<script type='text/javascript' src='".JQUERY_SCRIPT."'></script>\n<script type='text/javascript' src='".JQUERYUI_SCRIPT."'></script>\n<script type='text/javascript' src='".JQUERY_RELATIVE."addons/js/jquery-ui-timepicker-addon.js'></script>\n<link rel='stylesheet' type='text/css' href='".JQUERYUI_CSS."'>\n<link rel='stylesheet' type='text/css' href='".JQUERY_RELATIVE."addons/css/jquery-ui-timepicker-addon.css'>\n",
             "<link rel='stylesheet' type='text/css' href='".JQUERYUI_CSS."'>\n"
             . "<link rel='stylesheet' type='text/css' href='".JQUERY_RELATIVE."addons/css/jquery-ui-timepicker-addon.css'>\n"
             . script_src(JQUERY_SCRIPT)
