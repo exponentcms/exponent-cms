@@ -65,7 +65,7 @@ class order extends expRecord {
                 //FIXME we could auto-associate these with has_many
                 $this->shippingmethods[$smid] = new shippingmethod($smid);
                 //FIXME we could auto-associate these with get_assoc_for
-                $this->shippingmethods[$smid]->orderitem = $this->getOrderitemsByShippingmethod($smid);
+//                $this->shippingmethods[$smid]->orderitem = $this->getOrderitemsByShippingmethod($smid);
 
 //                $requiresShipping = false;
 //                foreach ($this->shippingmethods[$smid]->orderitem as $oi) {
