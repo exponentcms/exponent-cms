@@ -158,12 +158,20 @@ const TempusDominusBootstrap4 = ($ => { // eslint-disable-line no-unused-vars
                 }).append($('<span>').addClass(this._options.icons.today))));
             }
             if (!this._options.sideBySide && this._hasDate() && this._hasTime()) {
+                let title, icon;
+                if (this._options.viewMode === 'times') {
+                    title = this._options.tooltips.selectDate;
+                    icon = this._options.icons.date;
+                } else {
+                    title = this._options.tooltips.selectTime;
+                    icon = this._options.icons.time;
+                }
                 row.push($('<td>').append($('<a>').attr({
                     href: '#',
                     tabindex: '-1',
                     'data-action': 'togglePicker',
-                    'title': this._options.tooltips.selectTime
-                }).append($('<span>').addClass(this._options.icons.time))));
+                    'title': title
+                }).append($('<span>').addClass(icon))));
             }
             if (this._options.buttons.showClear) {
                 row.push($('<td>').append($('<a>').attr({
@@ -219,7 +227,7 @@ const TempusDominusBootstrap4 = ($ => { // eslint-disable-line no-unused-vars
             }
             if (this._hasDate()) {
                 content.append($('<li>').addClass(this._options.collapse && this._hasTime() ? 'collapse' : '')
-                    .addClass((this._options.collapse && this._hasTime() && this._options.viewMode === 'time' ? '' : 'show'))
+                    .addClass((this._options.collapse && this._hasTime() && this._options.viewMode === 'times' ? '' : 'show'))
                     .append(dateView));
             }
             if (this._options.toolbarPlacement === 'default') {
@@ -227,7 +235,7 @@ const TempusDominusBootstrap4 = ($ => { // eslint-disable-line no-unused-vars
             }
             if (this._hasTime()) {
                 content.append($('<li>').addClass(this._options.collapse && this._hasDate() ? 'collapse' : '')
-                    .addClass((this._options.collapse && this._hasDate() && this._options.viewMode === 'time' ? 'show' : ''))
+                    .addClass((this._options.collapse && this._hasDate() && this._options.viewMode === 'times' ? 'show' : ''))
                     .append(timeView));
             }
             if (this._options.toolbarPlacement === 'bottom') {
@@ -635,7 +643,7 @@ const TempusDominusBootstrap4 = ($ => { // eslint-disable-line no-unused-vars
                     {
                         const month = $(e.target).closest('tbody').find('span').index($(e.target));
                         this._viewDate.month(month);
-                        if (this.currentViewMode === DateTimePicker.MinViewModeNumber) {
+                        if (this.currentViewMode === this.MinViewModeNumber) {
                             this._setValue(lastPicked.clone().year(this._viewDate.year()).month(this._viewDate.month()), this._getLastPickedDateIndex());
                             if (!this._options.inline) {
                                 this.hide();
@@ -651,7 +659,7 @@ const TempusDominusBootstrap4 = ($ => { // eslint-disable-line no-unused-vars
                     {
                         const year = parseInt($(e.target).text(), 10) || 0;
                         this._viewDate.year(year);
-                        if (this.currentViewMode === DateTimePicker.MinViewModeNumber) {
+                        if (this.currentViewMode === this.MinViewModeNumber) {
                             this._setValue(lastPicked.clone().year(this._viewDate.year()), this._getLastPickedDateIndex());
                             if (!this._options.inline) {
                                 this.hide();
@@ -667,7 +675,7 @@ const TempusDominusBootstrap4 = ($ => { // eslint-disable-line no-unused-vars
                     {
                         const year = parseInt($(e.target).data('selection'), 10) || 0;
                         this._viewDate.year(year);
-                        if (this.currentViewMode === DateTimePicker.MinViewModeNumber) {
+                        if (this.currentViewMode === this.MinViewModeNumber) {
                             this._setValue(lastPicked.clone().year(this._viewDate.year()), this._getLastPickedDateIndex());
                             if (!this._options.inline) {
                                 this.hide();
@@ -688,8 +696,20 @@ const TempusDominusBootstrap4 = ($ => { // eslint-disable-line no-unused-vars
                         if ($(e.target).is('.new')) {
                             day.add(1, 'M');
                         }
-                        this._setValue(day.date(parseInt($(e.target).text(), 10)), this._getLastPickedDateIndex());
-                        if (!this._hasTime() && !this._options.keepOpen && !this._options.inline) {
+
+                        var selectDate = day.date(parseInt($(e.target).text(), 10)), index = 0;
+                        if (this._options.allowMultidate) {
+                            index = this._datesFormatted.indexOf(selectDate.format('YYYY-MM-DD'));
+                            if (index !== -1) {
+                                this._setValue(null, index); //deselect multidate
+                            } else {
+                                this._setValue(selectDate, this._getLastPickedDateIndex() + 1);
+                            }
+                        } else {
+                            this._setValue(selectDate, this._getLastPickedDateIndex());
+                        }
+
+                        if (!this._hasTime() && !this._options.keepOpen && !this._options.inline && !this._options.allowMultidate) {
                             this.hide();
                         }
                         break;
