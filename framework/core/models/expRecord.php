@@ -152,33 +152,68 @@ class expRecord {
         if ($get_attached) $this->getAttachableItems();
     }
 
-//    public function __get($property) {
-//        if (property_exists($this, $property)) {
-//            return $this->$property;
-//        }
-//    }
+    /**
+     * Generic magic method
+     *
+     * @param $property
+     * @return null
+     */
+    public function __get($property) {
+        if (property_exists($this, $property)) {
+            return $this->$property;
+        }
 
-//    public function __set($property, $value) {
-//        if (property_exists($this, $property)) {
-//            $this->$property = $value;
-//        }
-//    }
-
-//    public function  __isset($property) {
-//        return isset($this->$property);
-//    }
-
-//    public function __unset($property) {
-//        unset($this->$property);
-//    }
+        return null;
+    }
 
     /**
-     * name of module for backwards compat with old modules
+     *  Generic magic method
+     *  We MUST create/set non-existing properties for Exponent code to work
+     *
+     * @param $property
+     * @param $value
+     */
+    public function __set($property, $value) {
+//        if (property_exists($this, $property)) {
+            $this->$property = $value;
+//        }
+    }
+
+    /**
+     * Generic magic method
+     *
+     * @param $property
+     * @return bool
+     */
+    public function  __isset($property) {
+        return isset($this->$property);
+    }
+
+    /**
+     * Generic magic method
+     *
+     * @param $property
+     */
+    public function __unset($property) {
+        unset($this->$property);
+    }
+
+    /**
+     * name of model for backwards compat with old modules
      *
      * @return string
      */
     public function name() {
         return static::displayname();
+    }
+
+    /**
+     * name of model
+     *
+     * @return string
+     */
+    public static function displayname() {
+        return gt("Exponent Base Model");
     }
 
     /**
@@ -422,11 +457,11 @@ class expRecord {
             }
 
             //if (isset($this->col)) {
-            if ($col != 'data' && is_string($this->$col)) {
+            if ($col !== 'data' && is_string($this->$col)) {
                 $this->$col = stripslashes($this->$col);
             }
             //}
-            if (ENABLE_WORKFLOW && $this->supports_revisions && $col == 'revision_id' && $this->$col == null)
+            if (ENABLE_WORKFLOW && $this->supports_revisions && $col === 'revision_id' && $this->$col == null)
                 $this->$col = 1;  // first revision is #1
         }
     }
@@ -441,7 +476,7 @@ class expRecord {
         global $db;
 
         if (!empty($this->rank)) {
-            $next_prev = $direction == 'up' ? $this->rank - 1 : $this->rank + 1;
+            $next_prev = $direction === 'up' ? $this->rank - 1 : $this->rank + 1;
             $where .= empty($this->location_data) ? null : (!empty($where) ? " AND " : '') . "location_data='" . $this->location_data . "'" . $this->grouping_sql;
             $db->switchValues($this->tablename, 'rank', $this->rank, $next_prev, $where);
         }
@@ -732,7 +767,7 @@ class expRecord {
                                 $obj->subtype      = $subtype;
                                 $obj->content_id   = $this->id;
                                 $obj->content_type = $this->classname;
-                                if ($type == 'expFile' || $type == 'expCats') $obj->rank = $item->rank + 1;
+                                if ($type === 'expFile' || $type === 'expCats') $obj->rank = $item->rank + 1;
                                 $db->insertObject($obj, $itemtype->attachable_table);
                             }
                         } elseif (is_array($item)) {
@@ -742,7 +777,7 @@ class expRecord {
                                     $obj->subtype      = $subtype;
                                     $obj->content_id   = $this->id;
                                     $obj->content_type = $this->classname;
-                                    if ($type == 'expFile' || $type == 'expCats') $obj->rank = $rank + 1;
+                                    if ($type === 'expFile' || $type === 'expCats') $obj->rank = $rank + 1;
                                     $db->insertObject($obj, $itemtype->attachable_table);
                                 }
                             }
@@ -750,7 +785,7 @@ class expRecord {
                             $obj->$refname     = $item;
                             $obj->content_id   = $this->id;
                             $obj->content_type = $this->classname;
-                            if ($type == 'expFile' || $type == 'expCats') $obj->rank = $subtype + 1;
+                            if ($type === 'expFile' || $type === 'expCats') $obj->rank = $subtype + 1;
                             $db->insertObject($obj, $itemtype->attachable_table);
                         }
                     }
@@ -850,7 +885,7 @@ class expRecord {
      *   has_many
      *   has_and_belongs_to_many
      *
-     * @param null $obj
+     * @param object $obj
      *
      * @return null
      */
@@ -954,11 +989,11 @@ class expRecord {
                 $sql .= "ON ef.id = cef." . $tablename . "_id";
                 $sql .= " WHERE content_id=" . $this->id;
                 $sql .= " AND content_type='" . $this->classname . "'";
-                if ($type == 'expComment') {
+                if ($type === 'expComment') {
                     $sql .= " AND approved='1'";
                 }
 
-                $order = ($type == 'expFile' || $type == 'expCats' || $type == 'expDefinableField') ? ' ORDER BY rank ASC' : null;
+                $order = ($type === 'expFile' || $type === 'expCats' || $type === 'expDefinableField') ? ' ORDER BY rank ASC' : null;
                 $sql .= $order;
 
                 $items = $db->selectArraysBySql($sql);
@@ -1186,7 +1221,7 @@ class expRecord {
      */
     public function getTimestamp($type = 0) {
         if ($type == 0) $getType = 'created_at';
-        elseif ($type == 'publish') $getType = 'publish';
+        elseif ($type === 'publish') $getType = 'publish';
         else $getType = 'edited_at';
         if (isset($this->$getType)) return expDateTime::format_date($this->$getType, DISPLAY_DATETIME_FORMAT);
         else return null;

@@ -142,25 +142,51 @@ abstract class expController {
             $this->permissions = array_merge($this->permissions, array('approve'=>'Approval'));
     }
 
-//    public function __get($property) {
+    /**
+     * Generic magic method
+     *
+     * @param $property
+     * @return null
+     */
+    public function __get($property) {
+        if (property_exists($this, $property)) {
+            return $this->$property;
+        }
+
+        return null;
+    }
+
+    /**
+     *  Generic magic method
+     *  We MUST create/set non-existing properties for Exponent code to work
+     *
+     * @param $property
+     * @param $value
+     */
+    public function __set($property, $value) {
 //        if (property_exists($this, $property)) {
-//            return $this->$property;
+            $this->$property = $value;
 //        }
-//    }
+    }
 
-//    public function __set($property, $value) {
-//        if (property_exists($this, $property)) {
-//            $this->$property = $value;
-//        }
-//    }
+    /**
+     * Generic magic method
+     *
+     * @param $property
+     * @return bool
+     */
+    public function  __isset($property) {
+        return isset($this->$property);
+    }
 
-//    public function  __isset($property) {
-//        return isset($this->$property);
-//    }
-
-//    public function __unset($property) {
-//        unset($this->$property);
-//    }
+    /**
+     * Generic magic method
+     *
+     * @param $property
+     */
+    public function __unset($property) {
+        unset($this->$property);
+    }
 
     /**
      * name of module for backwards compat with old modules
@@ -390,7 +416,7 @@ abstract class expController {
         $used_tags = expSorter::sort(array('array' => $used_tags, 'order' => 'count DESC', 'type' => 'a'));
         if (!empty($this->config['limit'])) $used_tags = array_slice($used_tags, 0, $this->config['limit']);
         $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
-        if ($order != 'hits') {
+        if ($order !== 'hits') {
             $used_tags = expSorter::sort(array('array' => $used_tags, 'order' => $order, 'ignore_case' => true, 'rank' => ($order === 'rank') ? 1 : 0));
         }
 
@@ -433,7 +459,7 @@ abstract class expController {
         $used_cats = expSorter::sort(array('array' => $used_cats, 'order' => 'count DESC', 'type' => 'a'));
         if (!empty($this->config['limit'])) $used_cats = array_slice($used_cats, 0, $this->config['limit']);
         $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
-        if ($order != 'count') {
+        if ($order !== 'count') {
             $used_cats = expSorter::sort(array('array' => $used_cats, 'order' => $order, 'ignore_case' => true, 'rank' => ($order === 'rank') ? 1 : 0));
         }
 
@@ -692,7 +718,7 @@ abstract class expController {
 
         // check for auto send facebook status
         if (!empty($this->params['send_status'])) {
-            if ($this->classname == 'eventController') {
+            if ($this->classname === 'eventController') {
                 facebookController::postEvent(
                     array('model' => $modelname, 'id' => $this->params['date_id'], 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
                 );
@@ -705,7 +731,7 @@ abstract class expController {
 
         // check for auto send tweet
         if (!empty($this->params['send_tweet'])) {
-            if ($this->classname == 'eventController') {
+            if ($this->classname === 'eventController') {
                 twitterController::postEventTweet(
                     array('model' => $modelname, 'id' => $this->params['date_id'], 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
                 );
@@ -1076,7 +1102,7 @@ abstract class expController {
 //            header('Content-Transfer-Encoding: binary');
             header('Content-Encoding:');
             // IE need specific headers
-            if (EXPONENT_USER_BROWSER == 'IE') {
+            if (EXPONENT_USER_BROWSER === 'IE') {
                 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
                 header('Pragma: public');
                 header('Vary: User-Agent');
@@ -1346,7 +1372,7 @@ abstract class expController {
     /**
      * get the metainfo for this module
      *
-     * @return array
+     * @return array|boolean
      */
     public function metainfo() {
         global $router;
