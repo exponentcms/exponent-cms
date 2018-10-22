@@ -27,7 +27,7 @@ class billing extends expRecord {
     public $calculator = null;
     public $available_calculators = array();
     public $selectable_calculators = array();
-    public $form = '';
+    public $form = array();
     public $billingmethod = null;
 
     public function __construct($id=null) {
@@ -103,7 +103,6 @@ class billing extends expRecord {
 //        $this->info = empty($this->calculator->id) ? '' : $this->calculator->userView($options);
         $this->info = (empty($this->calculator->id) || empty($options)) ? '' : $this->calculator->userView($this->billingmethod);
 
-        $this->form = array();
         foreach($this->available_calculators as $key => $item) {
             if (class_exists($item)) {
                 $calc = new $item($key);
