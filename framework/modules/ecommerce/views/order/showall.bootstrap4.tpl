@@ -164,14 +164,13 @@
     {literal}
             processing: true,
             "language": {
-                processing: '<i class="fa fa-spinner fa-spin fa-fw"></i> <span>Loading Records...</span> '
+                processing: '<i class="fas fa-spinner fa-spin fa-fw"></i> <span>Loading Records...</span> '
             },
             serverSide: true,
             ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=order&action=getOrdersByJSON&json=1{/literal}{if $closed_count == -1}&showclosed=1{/if}{literal}",
     {/literal}
     {/if}
     {literal}
-//            jQueryUI: true,
             stateSave: true,
             columns: [
                 { data: 'name', type: 'html' },

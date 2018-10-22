@@ -206,7 +206,7 @@
     {literal}
             processing: true,
             "language": {
-                processing: '<i class="fa fa-spinner fa-spin fa-fw"></i> <span>Loading Records...</span> '
+                processing: '<i class="fas fa-spinner fa-spin fa-fw"></i> <span>Loading Records...</span> '
             },
             serverSide: true,
             ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=store&action=getProductsByJSON&json=1",
