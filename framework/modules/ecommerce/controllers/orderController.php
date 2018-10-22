@@ -2180,7 +2180,7 @@ exit();
      * For server-side population of DataTables
      */
     public function getOrdersByJSON() {
-        global $db;
+        global $db, $order;
 
         // Array of database columns which should be read and sent back to DataTables.
         // The `db` parameter represents the column name in the database, while the `dt`
@@ -2347,7 +2347,18 @@ exit();
         $stmt6->execute();
         $data['yadcf_data_6'] = $stmt6->fetchAll(PDO::FETCH_COLUMN, 0);
 
+        $data['invoicenum'] = $order->getInvoiceNumber(false);
+
         echo json_encode($data);
+    }
+
+    /**
+     * For server-side re-population of DataTables
+     */
+    public function getInvoiceNumByJSON() {
+        global $order;
+
+        echo json_encode((int)$order->getInvoiceNumber(false));
     }
 
 }

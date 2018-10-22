@@ -32,6 +32,11 @@
     table.dataTable thead .sorting_desc  {
         background-image: none;
     }
+    .dataTables_wrapper .dataTables_processing {
+        background: lightgray;
+        height: 55px;
+        border: 1px black solid;
+    }
 {/literal}
 {/css}
 
@@ -103,6 +108,9 @@
     {if $smarty.const.ECOM_LARGE_DB}
     {literal}
             processing: true,
+            "language": {
+                processing: '<i class="fa fa-spinner fa-spin fa-fw"></i> <span>Loading Records...</span> '
+            },
             serverSide: true,
             ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=users&action=getUsersByJSON3&group={/literal}{$group->id}{literal}&json=1",
     {/literal}

@@ -30,9 +30,7 @@
     div.dataTables_paginate ul.pagination {
         display: inline-flex;
     }
-    input#yadcf-filter--orders-1.yadcf-filter {
-        width: 50px;
-    }
+    input#yadcf-filter--orders-1.yadcf-filter,
     input#yadcf-filter--orders-2.yadcf-filter {
         width: 50px;
     }
@@ -46,6 +44,11 @@
     table.dataTable thead .sorting_asc,
     table.dataTable thead .sorting_desc  {
         background-image: none;
+    }
+    .dataTables_wrapper .dataTables_processing {
+        background: lightgray;
+        height: 55px;
+        border: 1px black solid;
     }
     .yadcf-filter-reset-button {
         padding: 2px 5px;
@@ -112,7 +115,7 @@
         <thead>
             <tr>
                 <th data-class="expand">{'Customer'|gettext}</th>
-                <th>{'Inv #'|gettext}</th>
+                <th>{'Inv#'|gettext}</th>
                 <th>{'Total'|gettext}</th>
                 <th data-hide="phone">{'Payment'|gettext}</th>
                 <th data-hide="phone">{'Purchased'|gettext}</th>
@@ -154,12 +157,14 @@
 //            phone : 480
 //        };
         var tableContainer = $('#orders');
-
         var table = tableContainer.DataTable({
     {/literal}
     {if $smarty.const.ECOM_LARGE_DB}
     {literal}
             processing: true,
+            "language": {
+                processing: '<i class="fa fa-spinner fa-spin fa-fw"></i> <span>Loading Records...</span> '
+            },
             serverSide: true,
             ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=order&action=getOrdersByJSON&json=1{/literal}{if $closed_count == -1}&showclosed=1{/if}{literal}",
     {/literal}
@@ -169,10 +174,10 @@
             stateSave: true,
             columns: [
                 { data: 'name', type: 'html' },
-                { data: 'invoice_id', type: 'html-num-fmt' },
-                { data: 'grand_total', type: 'html-num-fmt', className: "text-right" },
+                { data: 'invoice_id', type: 'html-num-fmt', "orderSequence": [ "desc", "asc" ] },
+                { data: 'grand_total', type: 'html-num-fmt', "orderSequence": [ "desc", "asc" ], className: "text-right" },
                 { data: 'calc' },
-                { data: 'purchased' },
+                { data: 'purchased', "orderSequence": [ "desc", "asc" ] },
                 { data: 'order_type' },
                 { data: 'status', type: 'html' },
                 { data: 'orig_referrer', searchable: false, orderable: false }
@@ -273,6 +278,25 @@
             select_type: 'select2',
             style_class: 'form-control',
         }]);
+
+    {/literal}
+    {if $smarty.const.ECOM_LARGE_DB}
+    {literal}
+        setInterval( function () {
+            $.ajax({
+                headers: { 'X-Transaction': 'Getting Invoice Number'},
+                url: EXPONENT.PATH_RELATIVE+'index.php?controller=order&action=getInvoiceNumByJSON&ajax_action=1',
+                success: function(invnum){
+                    var data = table.ajax.json();
+                    if (invnum != data.invoicenum) {
+                        table.ajax.reload(); // user paging is reset on reload
+                    }
+                }
+            });
+        }, 30000 );
+    {/literal}
+    {/if}
+    {literal}
     });
 {/literal}
 {/script}
