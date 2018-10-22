@@ -24,14 +24,14 @@
 class passthru extends billingcalculator {
 
     function name() {
-        return gt("Passthru Payment");
+        return gt("Pass Thru Payment");
     }
 
 //    public $use_title = 'Pass-Thru';
     public $payment_type = 'Passthru';
 
     function description() {
-        return gt("Enabling this payment option will allow you or your customers to bypass payment processing at the cart and allow payment methods after the order is processed, such as cash, check, pay in store, or manually process via credit card.") . "<br>** " . gt("This is a restricted payment option and only accessible by site admins.");
+        return gt("Enabling this payment option will allow an Admin to bypass payment processing at the cart and allow payment methods after the order is processed, such as cash, check, pay in store, or manually process via credit card.") . "<br>** " . gt("This is a restricted payment option and only accessible by site admins.");
     }
 
     function hasConfig() {
@@ -178,6 +178,7 @@ class passthru extends billingcalculator {
 
         $ot = new order_type($order->order_type_id);
         if ($ot->creates_new_user == true) {
+            //fixme do we always want to create a new user?
             $addy = new address($order->billingmethod[0]->addresses_id);
             $newUser = new user();
             $newUser->username = $addy->email . time(); //make a unique username
@@ -188,8 +189,10 @@ class passthru extends billingcalculator {
             $newUser->firstname = $addy->firstname;
             $newUser->lastname = $addy->lastname;
             $newUser->is_system_user = false;
+            $newUser->created_on = time();
             $newUser->save(true);
             $newUser->refresh();
+
             $addy->user_id = $newUser->id;
             $addy->is_default = true;
             $addy->save();
