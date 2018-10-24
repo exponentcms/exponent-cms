@@ -186,7 +186,6 @@
     {/literal}
     {/if}
     {literal}
-//            jQueryUI: true,
             stateSave: true,
             columns: [
                 { data: 'product_type', type: 'text' },
@@ -214,6 +213,7 @@
             // }
         });
 
+        //  Strip HTML using DOM methods
         (function () {
             var _div = document.createElement('div');
 

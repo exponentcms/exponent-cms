@@ -109,7 +109,7 @@
     {literal}
             processing: true,
             "language": {
-                processing: '<span>Loading Records...</span> '
+                processing: '<span>{/literal}{'Loading Records'|gettext}...{literal}</span> '
             },
             serverSide: true,
             ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=order&action=getOrdersByJSON&json=1{/literal}{if $closed_count == -1}&showclosed=1{/if}{literal}",
@@ -135,6 +135,7 @@
             order: [[4, 'desc']]
         });
 
+        //  Strip HTML using DOM methods
         (function () {
             var _div = document.createElement('div');
 
@@ -177,8 +178,12 @@
             column_number: 3,
             column_data_type: "text",
             filter_type: "select",
-            filter_default_label: "Select Type",
-            select_type: 'select2'
+            filter_default_label: "Select Payment",
+            select_type: 'select2',
+            select_type_options: {
+            //     width: '50px',
+                minimumResultsForSearch: -1 // remove search box
+            }
         }, {
             column_number: 4,
             column_data_type: "text",
@@ -191,14 +196,22 @@
             column_data_type: "text",
             filter_type: "select",
             filter_default_label: "Select Type",
-            select_type: 'select2'
+            select_type: 'select2',
+            select_type_options: {
+            //     width: '50px',
+                minimumResultsForSearch: -1 // remove search box
+            }
         }, {
             column_number: 6,
             column_data_type: "html",
             html_data_type: "text",
             filter_type: "select",
             filter_default_label: "Select Status",
-            select_type: 'select2'
+            select_type: 'select2',
+            select_type_options: {
+            //     width: '50px',
+                minimumResultsForSearch: -1 // remove search box
+            }
         }]);
 
     {/literal}

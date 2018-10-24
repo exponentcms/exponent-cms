@@ -171,6 +171,7 @@
             order: [[5, 'asc']],
         });
 
+        //  Strip HTML using DOM methods
         (function () {
             var _div = document.createElement('div');
 
