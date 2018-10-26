@@ -26,7 +26,6 @@
         </div>
     {/permissions}
 	<ul>
-        {*{foreach from=$page->records item=listing}*}
 		{pagelinks paginate=$page top=1}
 	    {foreach from=$page->records item=item}
 		<li class="item listing">
