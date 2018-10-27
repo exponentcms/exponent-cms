@@ -731,6 +731,7 @@ class remove_oldfiles extends upgradescript {
             'external/swiftmailer-5.4.8/',
             'external/swiftmailer-5.4.9/',
             'external/swiftmailer-6.0.2/',
+            'external/swiftmailer-6.1.2/',
             'external/webshim-1.15.10/',
             'external/yui3/',
             'external/lissa/',
