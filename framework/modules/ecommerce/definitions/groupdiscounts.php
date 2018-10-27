@@ -26,9 +26,9 @@ return array(
         DB_PRIMARY=>true,
         DB_INCREMENT=>true),
 	'group_id'=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+        DB_FIELD_TYPE=>DB_DEF_ID),
     'discounts_id'=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+        DB_FIELD_TYPE=>DB_DEF_ID),
     'dont_allow_other_discounts'=>array(
         DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
     'rank'=>array(

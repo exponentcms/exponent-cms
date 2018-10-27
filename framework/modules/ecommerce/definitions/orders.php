@@ -64,11 +64,11 @@ return array(
 //        DB_FIELD_TYPE => DB_DEF_ID
 //    ),
     'order_status_id' => array(
-        DB_FIELD_TYPE => DB_DEF_INTEGER,
+        DB_FIELD_TYPE => DB_DEF_ID,
         DB_INDEX => 10
     ),
     'order_type_id' => array(
-        DB_FIELD_TYPE => DB_DEF_INTEGER
+        DB_FIELD_TYPE => DB_DEF_ID
     ),
     'subtotal' => array(
         DB_FIELD_TYPE => DB_DEF_DECIMAL
@@ -100,7 +100,7 @@ return array(
         DB_FIELD_LEN => 2000
     ),
     'poster' => array(
-        DB_FIELD_TYPE => DB_DEF_INTEGER
+        DB_FIELD_TYPE => DB_DEF_ID
     ),
     'created_at' => array(
         DB_FIELD_TYPE => DB_DEF_TIMESTAMP
@@ -116,13 +116,13 @@ return array(
         DB_FIELD_LEN => 2000
     ),
     'sales_rep_1_id' => array(
-        DB_FIELD_TYPE => DB_DEF_INTEGER
+        DB_FIELD_TYPE => DB_DEF_ID
     ),
     'sales_rep_2_id' => array(
-        DB_FIELD_TYPE => DB_DEF_INTEGER
+        DB_FIELD_TYPE => DB_DEF_ID
     ),
     'sales_rep_3_id' => array(
-        DB_FIELD_TYPE => DB_DEF_INTEGER
+        DB_FIELD_TYPE => DB_DEF_ID
     ),
     'return_count' => array(
         DB_FIELD_TYPE => DB_DEF_STRING,

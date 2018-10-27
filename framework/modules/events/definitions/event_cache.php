@@ -48,8 +48,8 @@ return array(
 	'is_allday'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
     'event_id'=>array(
-        DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>255,
+   		DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_INDEX=>10
     )
 );
 

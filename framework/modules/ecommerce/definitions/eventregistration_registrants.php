@@ -33,8 +33,7 @@ return array(
         DB_FIELD_LEN=>255,
         DB_INDEX=>10),
     'orderitem_id'=>array(
-        DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>255),
+        DB_FIELD_TYPE=>DB_DEF_ID),
     'control_name'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>250),

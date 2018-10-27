@@ -32,7 +32,7 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>25),
     'discounts_id'=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER)
+        DB_FIELD_TYPE=>DB_DEF_ID)
 );
 
 ?>

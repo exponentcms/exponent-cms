@@ -32,11 +32,11 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100000),
 	'poster'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+		DB_FIELD_TYPE=>DB_DEF_ID),
     'created_at'=>array(
    		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
     'editor'=>array(
-   		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+   		DB_FIELD_TYPE=>DB_DEF_ID),
     'edited_at'=>array(
    		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	'rank'=>array(
