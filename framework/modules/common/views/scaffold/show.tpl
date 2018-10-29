@@ -17,7 +17,7 @@
     {if $smarty.const.DEVELOPMENT}
         <h4>{'This is the scaffold view'|gettext}</h4>
     {/if}
-    <h1>{'Showing'|gettext} {$model_name}, id: {$object->id|default:'null'}</h1>
+    <h1>{'Showing'|gettext} {$model_name}, id: {$record->id|default:'null'}</h1>
 
     <div class="item" id="scaffold-object">
         {list_object object=$record}
