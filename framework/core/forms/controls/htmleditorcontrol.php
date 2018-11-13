@@ -196,7 +196,7 @@ class htmleditorcontrol extends htmleditor
 
     static function templateFormat($db_data, $ctl)
     {
-        return str_replace(array("\r\n", "\n", "\r", '\r\n', '\n', '\r'), '<br />', htmlspecialchars($db_data));
+        return str_replace(array("\r\n", "\n", "\r", '\r\n', '\n', '\r'), '<br />', $db_data);
     }
 }
 
