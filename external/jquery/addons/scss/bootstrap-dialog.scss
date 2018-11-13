@@ -10,7 +10,7 @@
     .modal-header {
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
-        display: block;
+        //display: block;
     }
     .bootstrap-dialog-title {
         color: #fff;
@@ -31,6 +31,12 @@
             cursor: pointer;
             opacity: 1.0;
         }
+    }
+
+    @media (min-width: 1172px) {
+      .modal-xl {
+        max-width: 95%;
+      }
     }
 
     /* dialog types */
@@ -55,6 +61,12 @@
         }
     }
 
+    &.type-secondary {
+        .modal-header {
+            background-color: $secondary;
+        }
+    }
+
     &.type-success {
         .modal-header {
             background-color: $success;
@@ -70,6 +82,18 @@
     &.type-danger {
         .modal-header {
             background-color: $danger;
+        }
+    }
+
+    &.type-light {
+        .modal-header {
+            background-color: $light;
+        }
+    }
+
+    &.type-dark {
+        .modal-header {
+            background-color: $dark;
         }
     }
 
