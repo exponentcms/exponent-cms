@@ -56,11 +56,10 @@ if (!defined('EXPONENT')) {
                 <tr>
                     <td class="input">
                         <?php
-                        if (strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') !== false || strpos(
-                                $_SERVER['SERVER_SOFTWARE'],
-                                'WebServerX'
-                            ) !== false
-                        ) {
+                        if (strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !== false ||
+                            strpos($_SERVER['SERVER_SOFTWARE'],'Apache') !== false ||
+                            strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') !== false)
+                        {
                             $sefurl = true;
                         } else {
                             $sefurl = false;
