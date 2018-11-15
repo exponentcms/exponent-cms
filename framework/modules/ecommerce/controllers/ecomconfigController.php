@@ -118,8 +118,8 @@ class ecomconfigController extends expController {
 
         // if the title of the master changed we should update the option groups that are already using it.
         if ($oldtitle != $opt->title) {
-
-        }$db->sql('UPDATE '.$db->prefix.'option SET title="'.$opt->title.'" WHERE option_master_id='.$opt->id);
+            $db->sql('UPDATE '.$db->prefix.'option SET title="'.$opt->title.'" WHERE option_master_id='.$opt->id);
+        }
 
         expHistory::back();
     }
