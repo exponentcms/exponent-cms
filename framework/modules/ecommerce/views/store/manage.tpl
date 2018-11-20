@@ -191,6 +191,7 @@
             // filter_type: "multi_select",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             // select_type: 'select2',
             select_type_options: {
                 width: '30px'
@@ -201,6 +202,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             select_type_options: {
                 width: '70px'
             }
@@ -210,6 +212,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             select_type_options: {
                 width: '30px'
             }
@@ -219,6 +222,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             select_type_options: {
                 width: '30px'
             }
@@ -228,6 +232,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             select_type_options: {
                 width: '30px'
             }

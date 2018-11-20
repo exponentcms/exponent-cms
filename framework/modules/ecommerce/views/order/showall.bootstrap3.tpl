@@ -224,6 +224,7 @@
             // filter_type: "multi_select",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             // select_type: 'select2'
             style_class: 'form-control',
         }, {
@@ -232,6 +233,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             style_class: 'form-control',
             select_type_options: {
                 width: '70px'
@@ -242,6 +244,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             style_class: 'form-control',
             select_type_options: {
                 width: '70px'
@@ -266,6 +269,7 @@
             date_format: 'MM/DD/YYYY hh:mmA',
             filter_type: "range_date",
             filter_default_label: ["From","To"],
+            filter_delay: 500,
         }, {
             column_number: 5,
             column_data_type: "text",
