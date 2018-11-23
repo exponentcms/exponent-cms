@@ -3,7 +3,7 @@
 // Since there is no official Bootstrap 4 theme for Select 2 this is a good fallback.
 
 $screen-sm-min: 576px !default;
-$btn-default-color: $btn-secondary-color !default;
+$btn-default-color: $secondary !default;
 
 $s2bs-input-border: $input-border-color !default;
 $s2bs-clear-selection-hover-color: $btn-secondary-color !default;
