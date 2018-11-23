@@ -136,9 +136,9 @@
                             {*{/if}*}
                         {*</td>*}
                         <td>
-                            {if $listing->product_type == "product"}
+                            {*{if $listing->product_type == "product" || $listing->product_type == "eventregistration"}*}
                                 {$listing->base_price|currency}
-                            {/if}
+                            {*{/if}*}
                         </td>
                         <td>
                             {permissions}
