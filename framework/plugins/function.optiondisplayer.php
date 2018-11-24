@@ -45,7 +45,7 @@ function smarty_function_optiondisplayer($params,&$smarty) {
     // get the option group
     $og = new optiongroup();
     //$group = $og->find('bytitle', $groupname);
-    $group = $og->find('first', 'product_id='.$product->id.' AND title="'.$groupname.'"');
+    $group = $og->find('first', 'product_id='.$product->id.' AND title=\''.$groupname.'\'');
 
     //grab the options configured for this product
     $options = $product->optionDropdown($group->title, $display_price_as);
@@ -58,7 +58,7 @@ function smarty_function_optiondisplayer($params,&$smarty) {
     if (!array_key_exists($default,$options)) $default = null;
 
     $view = $params['view'];
-    if ($view != 'checkboxes' && $view != 'dropdown') {
+    if ($view !== 'checkboxes' && $view !== 'dropdown') {
         if (!empty($params['view'])) {
             $view = 'checkboxes';
         } else {
