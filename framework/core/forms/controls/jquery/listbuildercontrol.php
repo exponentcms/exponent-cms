@@ -54,7 +54,7 @@ class listbuildercontrol extends formcontrol {
 		$this->process = $process;
 
 		if (!$this->newList) {
-			$html = "<div class=\"".(bs3()?"help-block":"control-desc")."\"></div><select name='".$name."[]' id='$name' class=\"form-control\" multiple='multiple'>";
+			$html = "<div class=\"".(bs3()?"help-block":"control-desc")."\"></div><select name='".$name."[]' id='$name' class=\"form-control\" multiple='multiple' size='$this->size'>";
             $list = $this->default + $this->source;
 			foreach ($list as $key=>$value) {
 				$html .= "<option value='$key'";
