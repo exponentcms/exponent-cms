@@ -140,7 +140,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $path = str_replace(array('\\', BASE), array('/', ''), $path);
         $thefile = $efile->find(
             'first',
-            'directory="' . dirname($path) . '/' . '" AND filename="' . basename($path) . '"'
+            'directory=\'' . dirname($path) . '/' . '\' AND filename=\'' . basename($path) . '\''
         );
         if (empty($thefile->id)) {
             $thefile = new expFile(array('directory' => dirname($path) . '/', 'filename' => basename($path)));
@@ -189,12 +189,12 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $efile = new expFile();
         $thefile = $efile->find(
             'first',
-            'directory="' . dirname($opath) . '/' . '" AND filename="' . basename($opath) . '"'
+            'directory=\'' . dirname($opath) . '/' . '\' AND filename=\'' . basename($opath) . '\''
         );
         if (empty($thefile->id)) {
             $thefile = $efile->find(
                 'first',
-                'directory="' . dirname($npath) . '/' . '" AND filename="' . basename($npath) . '"'
+                'directory=\'' . dirname($npath) . '/' . '\' AND filename=\'' . basename($npath) . '\''
             );
         }
         if (!is_dir(BASE. $npath)) {
@@ -231,7 +231,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $efile = new expFile();
         $thefile = $efile->find(
             'first',
-            'directory="' . dirname($opath) . '/' . '" AND filename="' . basename($opath) . '"'
+            'directory=\'' . dirname($opath) . '/' . '\' AND filename=\'' . basename($opath) . '\''
         );
         if (!empty($thefile->id)) {
             $thefile->delete();

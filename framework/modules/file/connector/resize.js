@@ -109,7 +109,7 @@ elFinder.prototype.commands.resize = function() {
 			clsediting = fm.res('class', 'editing'),
 			open = function(file, id) {
 				var isJpeg   = (file.mime === 'image/jpeg'),
-					dialog   = $('<div class="elfinder-dialog-resize"/>'),
+					dialog   = $('<div class="elfinder-resize-container"/>'),
 					input    = '<input type="number" class="ui-corner-all"/>',
 					row      = '<div class="elfinder-resize-row"/>',
 					label    = '<div class="elfinder-resize-label"/>',
@@ -184,7 +184,7 @@ elFinder.prototype.commands.resize = function() {
 							e.preventDefault();
 							}
 						}),
-					spinner  = $('<div class="elfinder-resize-spinner">'+fm.i18n('ntfloadimg')+'</div>'),
+					spinner  = $('<div class="elfinder-resize-loading">'+fm.i18n('ntfloadimg')+'</div>'),
 					rhandle  = $('<div class="elfinder-resize-handle touch-punch"/>'),
 					rhandlec = $('<div class="elfinder-resize-handle touch-punch"/>'),
 					uiresize = $('<div class="elfinder-resize-uiresize elfinder-resize-control-panel"/>'),
@@ -1199,7 +1199,7 @@ elFinder.prototype.commands.resize = function() {
 							dialogs;
 
 						if (checkVals()) {
-							dialogs = fmnode.children('.' + dlcls + ':visible').removeClass(clsediting).fadeOut();
+							dialogs = fmnode.children('.' + self.dialogClass + ':visible').removeClass(clsediting).fadeOut();
 							base.removeClass(clactive);
 							fm.enable();
 							if (fm.searchStatus.state < 2 && file.phash !== fm.cwd().hash) {
@@ -1417,7 +1417,7 @@ elFinder.prototype.commands.resize = function() {
 
 				dialog.find('input,button').addClass('elfinder-tabstop');
 
-				base = fm.dialog(dialog, {
+				base = self.fmDialog(dialog, {
 					title          : fm.escape(file.name),
 					width          : dialogWidth,
 					resizable      : false,
@@ -1476,7 +1476,7 @@ elFinder.prototype.commands.resize = function() {
 							dinit();
 						}
 					}
-				}).attr('id', id).closest('.ui-dialog').addClass(dlcls + ' ' + clsediting);
+				}).attr('id', id).closest('.ui-dialog').addClass(clsediting);
 
 				// for IE < 9 dialog mising at open second+ time.
 				if (fm.UA.ltIE8) {

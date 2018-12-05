@@ -7,6 +7,7 @@
 elFinder.prototype.commands.netmount = function() {
 	"use strict";
 	var self = this,
+		hasMenus = false,
 		content;
 
 	this.alwaysEnabled  = true;
@@ -22,8 +23,11 @@ elFinder.prototype.commands.netmount = function() {
 				requestAnimationFrame(function() {
 					$.each(self.drivers, function() {
 						var d = self.options[this];
-						if (d && d.integrateInfo) {
-							fm.trigger('helpIntegration', Object.assign({cmd: 'netmount'}, d.integrateInfo));
+						if (d) {
+							hasMenus = true;
+							if (d.integrateInfo) {
+								fm.trigger('helpIntegration', Object.assign({cmd: 'netmount'}, d.integrateInfo));
+							}
 						}
 					});
 				});
@@ -32,7 +36,7 @@ elFinder.prototype.commands.netmount = function() {
 	};
 
 	this.getstate = function() {
-		return this.drivers.length ? 0 : -1;
+		return hasMenus ? 0 : -1;
 	};
 	
 	this.exec = function() {
@@ -117,7 +121,7 @@ elFinder.prototype.commands.netmount = function() {
 							})
 							.fail(function(error) {
 								if (cur.fail && typeof cur.fail == 'function') {
-									cur.fail(fm, error);
+									cur.fail(fm, fm.parseError(error));
 								}
 								dfrd.reject(error);
 							});
@@ -177,7 +181,7 @@ elFinder.prototype.commands.netmount = function() {
 				
 				content.find('select,input').addClass('elfinder-tabstop');
 				
-				dialog = fm.dialog(form.append(content), opts);
+				dialog = self.fmDialog(form.append(content), opts);
 				dialogNode = dialog.closest('.ui-dialog');
 				dialog.ready(function(){
 					inputs.protocol.trigger('change');

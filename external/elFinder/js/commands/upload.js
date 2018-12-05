@@ -391,11 +391,12 @@ elFinder.prototype.commands.upload = function() {
 			
 		}
 		
-		uidialog = fm.dialog(dialog, {
+		uidialog = this.fmDialog(dialog, {
 			title          : this.title + '<span class="elfinder-upload-target">' + (targetDir? ' - ' + fm.escape(targetDir.i18 || targetDir.name) : '') + '</span>',
 			modal          : true,
 			resizable      : false,
 			destroyOnClose : true,
+			propagationEvents : ['mousemove', 'mouseup', 'click'],
 			close          : function() {
 				var cm = fm.getUI('contextmenu');
 				if (cm.is(':visible')) {

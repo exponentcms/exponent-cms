@@ -27,14 +27,16 @@ elFinder.prototype.resources = {
 		placedir    : 'elfinder-place-dir',
 		searchbtn   : 'elfinder-button-search',
 		editing     : 'elfinder-to-editing',
-		preventback : 'elfinder-prevent-back'
+		preventback : 'elfinder-prevent-back',
+		tabstab     : 'ui-state-default ui-tabs-tab ui-corner-top ui-tab',
+		tabsactive  : 'ui-tabs-active ui-state-active'
 	},
 	tpl : {
 		perms      : '<span class="elfinder-perms"/>',
 		lock       : '<span class="elfinder-lock"/>',
 		symlink    : '<span class="elfinder-symlink"/>',
 		navicon    : '<span class="elfinder-nav-icon"/>',
-		navspinner : '<span class="elfinder-navbar-spinner"/>',
+		navspinner : '<span class="elfinder-spinner elfinder-navbar-spinner"/>',
 		navdir     : '<div class="elfinder-navbar-wrapper{root}"><span id="{id}" class="ui-corner-all elfinder-navbar-dir {cssclass}"><span class="elfinder-navbar-arrow"/><span class="elfinder-navbar-icon" {style}/>{symlink}{permissions}{name}</span><div class="elfinder-navbar-subtree" style="display:none"/></div>',
 		placedir   : '<div class="elfinder-navbar-wrapper"><span id="{id}" class="ui-corner-all elfinder-navbar-dir {cssclass}" title="{title}"><span class="elfinder-navbar-arrow"/><span class="elfinder-navbar-icon" {style}/>{symlink}{permissions}{name}</span><div class="elfinder-navbar-subtree" style="display:none"/></div>'
 		

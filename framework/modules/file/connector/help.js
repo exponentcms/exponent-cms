@@ -19,13 +19,23 @@
 		prim    = 'ui-priority-primary',
 		sec     = 'ui-priority-secondary',
 		lic     = 'elfinder-help-license',
-		tab     = '<li class="ui-state-default ui-corner-top elfinder-help-tab-{id}"><a href="#'+fm.namespace+'-help-{id}">{title}</a></li>',
+		tab     = '<li class="' + fm.res('class', 'tabstab') + ' elfinder-help-tab-{id}"><a href="#'+fm.namespace+'-help-{id}" class="ui-tabs-anchor">{title}</a></li>',
 		html    = ['<div class="ui-tabs ui-widget ui-widget-content ui-corner-all elfinder-help">',
-				'<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">'],
+				'<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-top">'],
 		stpl    = '<div class="elfinder-help-shortcut"><div class="elfinder-help-shortcut-pattern">{pattern}</div> {descrip}</div>',
 		sep     = '<div class="elfinder-help-separator"/>',
 		selfUrl = $('base').length? document.location.href.replace(/#.*$/, '') : '',
+		clTabActive = fm.res('class', 'tabsactive'),
 
+		getTheme = function() {
+			var src;
+			if (fm.theme && fm.theme.author) {
+				src = atpl[r]('elfinder-help-team', 'elfinder-help-team elfinder-help-term-theme')[r](author, fm.i18n(fm.theme.author) + (fm.theme.email? ' &lt;'+fm.theme.email+'&gt;' : ''))[r](work, fm.i18n('theme') + ' ('+fm.i18n(fm.theme.name)+')');
+			} else {
+				src = '<div class="elfinder-help-team elfinder-help-term-theme" style="display:none"></div>';
+			}
+			return src;
+		},
 
 		about = function() {
 			html.push('<div id="'+fm.namespace+'-help-about" class="ui-tabs-panel ui-widget-content ui-corner-bottom"><div class="elfinder-help-logo"/>');
@@ -57,6 +67,8 @@
 					html.push(atpl[r](author, $.trim(this))[r](work, fm.i18n('translator')+' ('+fm.i18[fm.lang].language+')'));
 				});
 			}
+
+			html.push(getTheme());
 
 			html.push(sep);
 			html.push('<div class="'+lic+'">'+fm.i18n('icons')+': Pixelmixer, <a href="http://p.yusukekamiyamane.com" target="_blank">Fugue</a>, <a href="https://icons8.com" target="_blank">Icons8</a></div>');
@@ -205,7 +217,7 @@
 		$.inArray('about', parts) !== -1 && about();
 		$.inArray('shortcuts', parts) !== -1 && shortcuts();
 		if ($.inArray('help', parts) !== -1) {
-			helpSource = fm.baseUrl+'js/i18n/help/%s.html.js';
+			helpSource = fm.i18nBaseUrl + 'help/%s.html.js';
 			help();
 		}
 		$.inArray('integrations', parts) !== -1 && integrations();
@@ -215,8 +227,11 @@
 		content = $(html.join(''));
 
 		content.find('.ui-tabs-nav li')
-			.on('mouseenter mouseleave', function() {
-				$(this).toggleClass('ui-state-hover');
+			.on('mouseenter mouseleave', function(e) {
+				$(this).toggleClass('ui-state-hover', e.type === 'mouseenter');
+			})
+			.on('focus blur', 'a', function(e) {
+				$(e.delegateTarget).toggleClass('ui-state-focus', e.type === 'focusin');
 			})
 			.children()
 			.on('click', function(e) {
@@ -225,11 +240,8 @@
 				e.preventDefault();
 				e.stopPropagation();
 
-				if (!link.hasClass('ui-tabs-selected')) {
-					link.parent().addClass('ui-tabs-selected ui-state-active').siblings().removeClass('ui-tabs-selected').removeClass('ui-state-active');
+				link.parent().addClass(clTabActive).siblings().removeClass(clTabActive);
 					content.children('.ui-tabs-panel').hide().filter(link.attr('href')).show();
-				}
-
 			})
 			.filter(':first').trigger('click');
 
@@ -286,6 +298,8 @@
 						}
 					}
 				}
+			}).bind('themechange', function() {
+				content.find('div.elfinder-help-term-theme').replaceWith(getTheme());
 			});
 		}
 
@@ -312,7 +326,7 @@
 		}
 
 		content.find('#'+fm.namespace+'-help-about').find('.apiver').text(fm.api);
-		self.dialog = fm.dialog(content, {
+		self.dialog = self.fmDialog(content, {
 				title : self.title,
 				width : 530,
 				maxWidth: 'window',

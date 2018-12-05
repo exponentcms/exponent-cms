@@ -20,7 +20,7 @@ var elFinder = function(elm, opts, bootCallback) {
 		 *
 		 * @type Array
 		 **/
-		conflictChecks = ['button'],
+		conflictChecks = ['button', 'tooltip'],
 		
 		/**
 		 * Node on which elfinder creating
@@ -790,13 +790,27 @@ var elFinder = function(elm, opts, bootCallback) {
 	this.baseUrl = '';
 	
 	/**
+	 * Base URL of i18n js files
+	 * baseUrl + "js/i18n/" when empty value
+	 * 
+	 * @type String
+	 */
+	this.i18nBaseUrl = '';
+
+	/**
 	 * Is elFinder CSS loaded
 	 * 
 	 * @type Boolean
 	 */
 	this.cssloaded = false;
 	
-	
+	/**
+	 * Current theme object
+	 * 
+	 * @type Object|Null
+	 */
+	this.theme = null;
+
 	this.mimesCanMakeEmpty = {};
 
 	/**
@@ -805,7 +819,36 @@ var elFinder = function(elm, opts, bootCallback) {
 	 * @type Function
 	 */
 	this.bootCallback;
-	
+
+	/**
+	 * ID. Required to create unique cookie name
+	 *
+	 * @type String
+	 **/
+	this.id = id;
+
+	/**
+	 * Method to store/fetch data
+	 *
+	 * @type Function
+	 **/
+	this.storage = (function() {
+		try {
+			if ('localStorage' in window && window['localStorage'] !== null) {
+				if (self.UA.Safari) {
+					// check for Mac/iOS safari private browsing mode
+					window.localStorage.setItem('elfstoragecheck', 1);
+					window.localStorage.removeItem('elfstoragecheck');
+				}
+				return self.localStorage;
+			} else {
+				return self.cookie;
+			}
+		} catch (e) {
+			return self.cookie;
+		}
+	})();
+
 	/**
 	 * Configuration options
 	 *
@@ -888,6 +931,8 @@ var elFinder = function(elm, opts, bootCallback) {
 		}
 	})();
 	
+	this.i18nBaseUrl = (this.options.i18nBaseUrl || this.baseUrl + 'js/i18n').replace(/\/$/, '') + '/';
+
 	// set dispInlineRegex
 	cwdOptionsDefault['dispInlineRegex'] = this.options.dispInlineRegex;
 	
@@ -902,7 +947,22 @@ var elFinder = function(elm, opts, bootCallback) {
 				$('head').append(node.data('cssautoloadHide'));
 				
 				// load CSS
-				self.loadCss([baseUrl+'css/elfinder.min.css', baseUrl+'css/theme.css']);
+				self.loadCss([baseUrl+'css/elfinder.min.css', baseUrl+'css/theme.css'], {
+					dfd: $.Deferred().always(function() {
+						if (node.data('cssautoloadHide')) {
+							node.data('cssautoloadHide').remove();
+							node.removeData('cssautoloadHide');
+						}
+					}).done(function() {
+						if (!self.cssloaded) {
+							self.cssloaded = true;
+							self.trigger('cssloaded');
+						}
+					}).fail(function() {
+						self.cssloaded = false;
+						self.error(['errRead', 'CSS (elfinder or theme)']);
+					})
+				});
 				
 				// additional CSS files
 				if (Array.isArray(self.options.cssAutoLoad)) {
@@ -912,6 +972,9 @@ var elFinder = function(elm, opts, bootCallback) {
 			self.options.cssAutoLoad = false;
 		})();
 	}
+
+	// load theme if exists
+	self.changeTheme(self.storage('theme') || self.options.theme);
 	
 	/**
 	 * Volume option to set the properties of the root Stat
@@ -1115,13 +1178,6 @@ var elFinder = function(elm, opts, bootCallback) {
 	this.abortCmdsOnOpen = this.options.abortCmdsOnOpen || ['tmb', 'parents'];
 
 	/**
-	 * ID. Required to create unique cookie name
-	 *
-	 * @type String
-	 **/
-	this.id = id;
-	
-	/**
 	 * ui.nav id prefix
 	 * 
 	 * @type String
@@ -1196,28 +1252,6 @@ var elFinder = function(elm, opts, bootCallback) {
 		mixed  : false, // in multi volumes search: false or Array that target volume ids
 		ininc  : false // in incremental search
 	};
-
-	/**
-	 * Method to store/fetch data
-	 *
-	 * @type Function
-	 **/
-	this.storage = (function() {
-		try {
-			if ('localStorage' in window && window['localStorage'] !== null) {
-				if (self.UA.Safari) {
-					// check for Mac/iOS safari private browsing mode
-					window.localStorage.setItem('elfstoragecheck', 1);
-					window.localStorage.removeItem('elfstoragecheck');
-				}
-				return self.localStorage;
-			} else {
-				return self.cookie;
-			}
-		} catch (e) {
-			return self.cookie;
-		}
-	})();
 
 	/**
 	 * Interface language
@@ -1630,7 +1664,7 @@ var elFinder = function(elm, opts, bootCallback) {
 				}
 				
 				if (typeof baseUrl === 'undefined') {
-					baseUrl = self.option('url', file.phash || file.hash);
+					baseUrl = self.option('url', (!self.isRoot(file) && file.phash) || file.hash);
 				}
 				
 				if (baseUrl) {
@@ -1653,7 +1687,7 @@ var elFinder = function(elm, opts, bootCallback) {
 			return async? dfrd.resolve('') : '';
 		}
 		
-		if (file.url == '1' || (temp && !file.url && !(baseUrl = self.option('url', file.phash || file.hash)))) {
+		if (file.url == '1' || (temp && !file.url && !(baseUrl = self.option('url', (!self.isRoot(file) && file.phash) || file.hash)))) {
 			this.request({
 				data : { cmd : 'url', target : hash, options : { temporary: temp? 1 : 0 } },
 				preventDefault : true,
@@ -2013,7 +2047,7 @@ var elFinder = function(elm, opts, bootCallback) {
 				}
 				
 				self.trigger(cmd + 'done');
-				dfrd.reject(error, xhr, status);
+				dfrd.reject({error: error}, xhr, status);
 			},
 			/**
 			 * Request success handler. Valid response data and reject/resolve dfrd.
@@ -2043,9 +2077,9 @@ var elFinder = function(elm, opts, bootCallback) {
 				}
 				
 				if (!response) {
-					return dfrd.reject(['errResponse', 'errDataEmpty'], xhr, response);
+					return dfrd.reject({error :['errResponse', 'errDataEmpty']}, xhr, response);
 				} else if (!$.isPlainObject(response)) {
-					return dfrd.reject(['errResponse', 'errDataNotJSON'], xhr, response);
+					return dfrd.reject({error :['errResponse', 'errDataNotJSON']}, xhr, response);
 				} else if (response.error) {
 					if (isOpen) {
 						// check leafRoots
@@ -2053,7 +2087,7 @@ var elFinder = function(elm, opts, bootCallback) {
 							self.leafRoots[phash] = $.grep(roots, function(h) { return h !== data.target; });
 						});
 					}
-					return dfrd.reject(response.error, xhr, response);
+					return dfrd.reject({error :response.error}, xhr, response);
 				}
 				
 				var resolve = function() {
@@ -2084,7 +2118,7 @@ var elFinder = function(elm, opts, bootCallback) {
 					response = self.normalize(response);
 					
 					if (!self.validResponse(cmd, response)) {
-						return dfrd.reject((response.norError || 'errResponse'), xhr, response);
+						return dfrd.reject({error :(response.norError || 'errResponse')}, xhr, response);
 					}
 					
 					if (isOpen) {
@@ -2239,12 +2273,18 @@ var elFinder = function(elm, opts, bootCallback) {
 					requestQueueSkipOpen = true;
 				}
 				
-				requestCnt++;
-				
 				dfrd.always(function() {
 					delete options.headers['X-elFinderReqid'];
 				}).fail(function(error, xhr, response) {
+					var errData = {
+						cmd: cmd,
+						err: error,
+						xhr: xhr,
+						rc: response
+					};
+
 					// unset this cmd queue when user canceling
+					// see notify : function - `cancel.reject(0);`
 					if (error === 0) {
 						if (requestQueue.length) {
 							requestQueue = $.grep(requestQueue, function(req) {
@@ -2252,6 +2292,16 @@ var elFinder = function(elm, opts, bootCallback) {
 							});
 						}
 					}
+					// trigger "requestError" event
+					self.trigger('requestError', errData);
+					if (errData._event && errData._event.isDefaultPrevented()) {
+						deffail = false;
+						syncOnFail = false;
+						if (error) {
+							error.error = '';
+						}
+					}
+					// abort xhr
 					xhrAbort();
 					if (isOpen) {
 						openDir = self.file(data.target);
@@ -2266,12 +2316,12 @@ var elFinder = function(elm, opts, bootCallback) {
 
 				if (!cmd) {
 					syncOnFail = false;
-					return dfrd.reject('errCmdReq');
+					return dfrd.reject({error :'errCmdReq'});
 				}
 				
 				if (self.maxTargets && data.targets && data.targets.length > self.maxTargets) {
 					syncOnFail = false;
-					return dfrd.reject(['errMaxTargets', self.maxTargets]);
+					return dfrd.reject({error :['errMaxTargets', self.maxTargets]});
 				}
 
 				defdone && dfrd.done(done);
@@ -2313,8 +2363,14 @@ var elFinder = function(elm, opts, bootCallback) {
 				dfrd.syncOnFail = function(state) {
 					syncOnFail = !!state;
 				};
-				
+
+				requestCnt++;
+
 				dfrd.xhr = xhr = self.transport.send(options).always(function() {
+					// set responseURL from native xhr object
+					if (options._xhr && typeof options._xhr.responseURL !== 'undefined') {
+						xhr.responseURL = options._xhr.responseURL || '';
+					}
 					--requestCnt;
 					if (requestQueue.length) {
 						requestQueue.shift()();
@@ -2620,7 +2676,7 @@ var elFinder = function(elm, opts, bootCallback) {
 		.fail(function(error, xhr) {
 			if (! polling || $.inArray('errOpen', error) !== -1) {
 				dfrd.reject(error);
-				error && self.request({
+				self.parseError(error) && self.request({
 					data   : {cmd : 'open', target : (self.lastDir('') || self.root()), tree : 1, init : 1},
 					notify : {type : 'open', cnt : 1, hideCnt : true}
 				});
@@ -2772,6 +2828,9 @@ var elFinder = function(elm, opts, bootCallback) {
 		}
 		if (l = handlers.length) {
 			event = $.Event(type);
+			if (data) {
+				data._event = event;
+			}
 			if (allowModify) {
 				event.data = data;
 			}
@@ -3032,7 +3091,7 @@ var elFinder = function(elm, opts, bootCallback) {
 	 * @return jQuery
 	 */
 	this.dialog = function(content, options) {
-		var dialog = $('<div/>').append(content).appendTo(node).elfinderdialog(options, this),
+		var dialog = $('<div/>').append(content).appendTo(node).elfinderdialog(options, self),
 			dnode  = dialog.closest('.ui-dialog'),
 			resize = function(){
 				! dialog.data('draged') && dialog.is(':visible') && dialog.elfinderdialog('posInit');
@@ -3300,7 +3359,7 @@ var elFinder = function(elm, opts, bootCallback) {
 						var dosync = true, hash = cwd, cts;
 						if (cwdOptions.syncChkAsTs && files[hash] && (cts = files[hash].ts)) {
 							self.request({
-								data           : {cmd : 'info', targets : [hash], compare : cts, reload : 1},
+								data : {cmd : 'info', targets : [hash], compare : cts, reload : 1},
 								preventDefault : true
 							})
 							.done(function(data){
@@ -3325,9 +3384,10 @@ var elFinder = function(elm, opts, bootCallback) {
 								}
 							})
 							.fail(function(error, xhr){
-								if (error && xhr.status != 0) {
-									self.error(error);
-									if ($.inArray('errOpen', error) !== -1) {
+								var err = self.parseError(error);
+								if (err && xhr.status != 0) {
+									self.error(err);
+									if (Array.isArray(err) && $.inArray('errOpen', err) !== -1) {
 										self.request({
 											data   : {cmd : 'open', target : (self.lastDir('') || self.root()), tree : 1, init : 1},
 											notify : {type : 'open', cnt : 1, hideCnt : true}
@@ -3418,7 +3478,6 @@ var elFinder = function(elm, opts, bootCallback) {
 			width   : '100%',
 			height  : '100%',
 			margin  : 0,
-			padding : 0,
 			top     : 0,
 			left    : 0,
 			display : 'block',
@@ -3730,7 +3789,14 @@ var elFinder = function(elm, opts, bootCallback) {
 	}
 	
 	if (typeof(this.transport.send) != 'function') {
-		this.transport.send = function(opts) { return $.ajax(opts); };
+		this.transport.send = function(opts) {
+			if (!self.UA.IE) {
+				// keep native xhr object for handling property responseURL
+				opts._xhr = new XMLHttpRequest();
+				opts.xhr = function() { return opts._xhr; };
+			}
+			return $.ajax(opts);
+		};
 	}
 	
 	if (this.transport.upload == 'iframe') {
@@ -4029,6 +4095,20 @@ var elFinder = function(elm, opts, bootCallback) {
 	})(this);
 
 	/**
+	 * Parse error value to display
+	 *
+	 * @param  Mixed  error
+	 * @return Mixed  parsed error
+	 */
+	this.parseError = function(error) {
+		var arg = error;
+		if ($.isPlainObject(arg)) {
+			arg = arg.error;
+		}
+		return arg;
+	};
+
+	/**
 	 * Alias for this.trigger('error', {error : 'message'})
 	 *
 	 * @param  String  error message
@@ -4036,10 +4116,14 @@ var elFinder = function(elm, opts, bootCallback) {
 	 **/
 	this.error = function() {
 		var arg = arguments[0],
-			opts = arguments[1] || null;
-		return arguments.length == 1 && typeof(arg) == 'function'
-			? self.bind('error', arg)
-			: (arg === true? this : self.trigger('error', {error : arg, opts : opts}));
+			opts = arguments[1] || null,
+			err;
+		if (arguments.length == 1 && typeof(arg) === 'function') {
+			return self.bind('error', arg);
+		} else {
+			err = this.parseError(arg);
+			return (err === true || !err)? this : self.trigger('error', {error: err, opts : opts});
+		}
 	};
 	
 	// create bind/trigger aliases for build-in events
@@ -4137,6 +4221,11 @@ var elFinder = function(elm, opts, bootCallback) {
 					self.mimesCanMakeEmpty = Object.assign(obj, self.mimesCanMakeEmpty);
 				}
 			}
+		})
+		.bind('themechange', function() {
+			requestAnimationFrame(function() {
+				self.trigger('uiresize');
+			});
 		})
 		;
 
@@ -4445,7 +4534,7 @@ var elFinder = function(elm, opts, bootCallback) {
 	// auto load language file
 	dfrdsBeforeBootup.push((function() {
 		var lang   = self.lang,
-			langJs = self.baseUrl + 'js/i18n/elfinder.' + lang + '.js',
+			langJs = self.i18nBaseUrl + 'elfinder.' + lang + '.js',
 			dfd    = $.Deferred().done(function() {
 				if (self.i18[lang]) {
 					self.lang = lang;
@@ -4706,6 +4795,11 @@ var elFinder = function(elm, opts, bootCallback) {
 							i = '<div class="elfinder-cwd-icon elfinder-cwd-icon-drag '+self.mime2class(mime)+' ui-corner-all"/>';
 							if (tmb) {
 								i = $(i).addClass(tmb.className).css('background-image', "url('"+tmb.url+"')").get(0).outerHTML;
+							} else if (f.icon) {
+								i = $(i).css(self.getIconStyle(f, true)).get(0).outerHTML;
+							}
+							if (f.csscls) {
+								i = '<div class="'+f.csscls+'">' + i + '</div>';
 							}
 							return i;
 						},
@@ -4831,12 +4925,15 @@ var elFinder = function(elm, opts, bootCallback) {
 				autoOpen      : false,
 				closeOnEscape : false,
 				title         : '&nbsp;',
-				width         : parseInt(self.options.notifyDialog.width)
+				width         : self.options.notifyDialog.width? parseInt(self.options.notifyDialog.width) : null,
+				minHeight     : null
 			}),
 			statusbar : $('<div class="ui-widget-header ui-helper-clearfix ui-corner-bottom elfinder-statusbar"/>').hide().appendTo(node),
 			toast : $('<div class="elfinder-toast"/>').appendTo(node),
 			bottomtray : $('<div class="elfinder-bottomtray">').appendTo(node)
 		};
+
+		self.trigger('uiready');
 
 		// load required ui
 		$.each(self.options.ui || [], function(i, ui) {
@@ -5905,7 +6002,7 @@ elFinder.prototype = {
 											data   : {cmd : 'rename', target : hash, name : bak},
 											notify : {type : 'rename', cnt : 1}
 										})
-										.fail(function(error) {
+										.fail(function() {
 											item._remove = true;
 											fm.sync();
 										})
@@ -6024,6 +6121,7 @@ elFinder.prototype = {
 				isDataType  = (data.isDataType || data.type == 'data'),
 				target      = (data.target || self.cwd().hash),
 				dropEvt     = (data.dropEvt || null),
+				extraData　 = data.extraData || null,
 				chunkEnable = (self.option('uploadMaxConn', target) != -1),
 				multiMax    = Math.min(5, Math.max(1, self.option('uploadMaxConn', target))),
 				retryWait   = 10000, // 10 sec
@@ -6042,8 +6140,9 @@ elFinder.prototype = {
 					return dfd;
 				},
 				dfrd   = $.Deferred()
-					.fail(function(error) {
-						var userAbort;
+					.fail(function(err) {
+						var error = self.parseError(err),
+							userAbort;
 						if (error === 'userabort') {
 							userAbort = true;
 							error = void 0;
@@ -6234,7 +6333,7 @@ elFinder.prototype = {
 			}, false);
 			
 			xhr.addEventListener('load', function(e) {
-				var status = xhr.status, res, curr = 0, error = '';
+				var status = xhr.status, res, curr = 0, error = '', errData, errObj;
 				
 				if (status >= 400) {
 					if (status > 500) {
@@ -6279,20 +6378,31 @@ elFinder.prototype = {
 				
 				res._multiupload = data.multiupload? true : false;
 				if (res.error) {
+					errData = {
+						cmd: 'upload',
+						err: res,
+						xhr: xhr,
+						rc: xhr.status
+					};
 					self.trigger('uploadfail', res);
+					// trigger "requestError" event
+					self.trigger('requestError', errData);
+					if (errData._event && errData._event.isDefaultPrevented()) {
+						res.error = '';
+					}
 					if (res._chunkfailure || res._multiupload) {
 						abort = true;
 						self.uploads.xhrUploading = false;
 						notifyto && clearTimeout(notifyto);
 						if (ntfUpload.length) {
 							self.notify({type : 'upload', cnt : -cnt, progress : 0, size : 0});
-							dfrd.reject(res.error);
+							dfrd.reject(res);
 						} else {
 							// for multi connection
 							dfrd.reject();
 						}
 					} else {
-						dfrd.reject(res.error);
+						dfrd.reject(res);
 					}
 				} else {
 					dfrd.resolve(res);
@@ -6477,7 +6587,7 @@ elFinder.prototype = {
 						
 						// file size check
 						if ((maxFileSize && blobSize > maxFileSize) || (!blobSlice && fm.uplMaxSize && blobSize > fm.uplMaxSize)) {
-							self.error(self.i18n('errUploadFile', blob.name) + ' ' + self.i18n('errUploadFileSize'));
+							self.error(['errUploadFile', blob.name, 'errUploadFileSize']);
 							cnt--;
 							total--;
 							continue;
@@ -6485,7 +6595,7 @@ elFinder.prototype = {
 						
 						// file mime check
 						if (blob.type && ! self.uploadMimeCheck(blob.type, target)) {
-							self.error(self.i18n('errUploadFile', blob.name) + ' ' + self.i18n('errUploadMime') + ' (' + self.escape(blob.type) + ')');
+							self.error(['errUploadFile', blob.name, 'errUploadMime', '(' + blob.type + ')']);
 							cnt--;
 							total--;
 							continue;
@@ -6495,12 +6605,12 @@ elFinder.prototype = {
 							start = 0;
 							end = BYTES_PER_CHUNK;
 							chunks = -1;
-							total = Math.floor(blobSize / BYTES_PER_CHUNK);
+							total = Math.floor((blobSize - 1) / BYTES_PER_CHUNK);
 							blobMtime = blob.lastModified? Math.round(blob.lastModified/1000) : 0;
 
 							totalSize += blobSize;
 							chunked[chunkID] = 0;
-							while(start <= blobSize) {
+							while(start < blobSize) {
 								chunk = blob[blobSlice](start, end);
 								chunk._chunk = blob.name + '.' + (++chunks) + '_' + total + '.part';
 								chunk._cid   = chunkID;
@@ -6531,7 +6641,7 @@ elFinder.prototype = {
 								end = start + BYTES_PER_CHUNK;
 							}
 							if (chunk == null) {
-								self.error(self.i18n('errUploadFile', blob.name) + ' ' + self.i18n('errUploadFileSize'));
+								self.error(['errUploadFile', blob.name, 'errUploadFileSize']);
 								cnt--;
 								total--;
 							} else {
@@ -6542,7 +6652,7 @@ elFinder.prototype = {
 							}
 							continue;
 						}
-						if ((fm.uplMaxSize && size + blobSize >= fm.uplMaxSize) || fcnt > fm.uplMaxFile) {
+						if ((fm.uplMaxSize && size + blobSize > fm.uplMaxSize) || fcnt > fm.uplMaxFile) {
 							size = 0;
 							fcnt = 1;
 							c++;
@@ -6704,6 +6814,13 @@ elFinder.prototype = {
 						(dropEvt.shiftKey? '1' : '0'), 2));
 				}
 				
+				// set extraData on current request
+				if (extraData) {
+					$.each(extraData, function(key, val) {
+						formData.append(key, val);
+					});
+				}
+
 				xhr.send(formData);
 				
 				return true;
@@ -6812,14 +6929,25 @@ elFinder.prototype = {
 													}
 												})
 												.done(function(data) {
-													if (data.hashes) {
-														paths = $.map(paths.concat(), function(p) {
-															if (p === '/') {
-																return target;
-															} else {
+													var rm = false;
+													if (!data.hashes) {
+														data.hashes = {};
+													}
+													paths = $.map(paths.concat(), function(p, i) {
+														if (p === '/') {
+															return target;
+														} else {
+															if (data.hashes[p]) {
 																return data.hashes[p];
+															} else {
+																rm = true;
+																files[i]._remove = true;
+																return null;
 															}
-														});
+														}
+													});
+													if (rm) {
+														files = $.grep(files, function(file) { return file._remove? false : true; });
 													}
 												})
 												.always(function(data) {
@@ -6893,15 +7021,26 @@ elFinder.prototype = {
 									}
 								})
 								.done(function(data) {
-									if (data.hashes) {
-										result[1] = $.map(result[1], function(p) {
-											p = p.replace(/\/[^\/]*$/, '');
-											if (p === '') {
-												return target;
-											} else {
+									var rm = false;
+									if (!data.hashes) {
+										data.hashes = {};
+									}
+									result[1] = $.map(result[1], function(p, i) {
+										p = p.replace(/\/[^\/]*$/, '');
+										if (p === '') {
+											return target;
+										} else {
+											if (data.hashes[p]) {
 												return data.hashes[p];
+											} else {
+												rm = true;
+												result[0][i]._remove = true;
+												return null;
 											}
-										});
+										}
+									});
+									if (rm) {
+										result[0] = $.grep(result[0], function(file) { return file._remove? false : true; });
 									}
 								})
 								.always(function(data) {
@@ -8092,7 +8231,7 @@ elFinder.prototype = {
 				}
 				return m;
 			},
-			i, j, m, escFunc, start = 0;
+			i, j, m, escFunc, start = 0, isErr;
 		
 		if (arguments.length && arguments[0] === false) {
 			escFunc = function(m){ return m; };
@@ -8125,15 +8264,21 @@ elFinder.prototype = {
 			}
 			m = input[i];
 			if (typeof m == 'string') {
+				isErr = !!(messages[m] && m.match(/^err/));
 				// translate message
 				m = messages[m] || (escFunc? escFunc(m) : self.escape(m));
 				// replace placeholders in message
 				m = m.replace(/\$(\d+)/g, function(match, placeholder) {
+					var res;
 					placeholder = i + parseInt(placeholder);
 					if (placeholder > 0 && input[placeholder]) {
 						ignore.push(placeholder);
 					}
-					return escFunc? escFunc(input[placeholder]) : self.escape(input[placeholder]);
+					res = escFunc? escFunc(input[placeholder]) : self.escape(input[placeholder]);
+					if (isErr) {
+						res = '<span class="elfinder-err-var elfinder-err-var' + placeholder + '">' + res + '</span>';
+					}
+					return res;
 				});
 			} else {
 				// get HTML from jQuery object
@@ -8682,7 +8827,7 @@ elFinder.prototype = {
 				}
 			},
 			spinner = function() {
-				return $('<div class="elfinder-netmount-spinner"/>').append('<span class="elfinder-info-spinner"/>');
+				return $('<div class="elfinder-netmount-spinner"/>').append('<span class="elfinder-spinner"/>');
 			},
 			xhr;
 		return {
@@ -8692,7 +8837,7 @@ elFinder.prototype = {
 				offline  : $('<input type="checkbox"/>').on('change', function() {
 					$(this).parents('table.elfinder-netmount-tb').find('select:first').trigger('change', 'reset');
 				}),
-				host     : $('<span><span class="elfinder-info-spinner"/></span><input type="hidden"/>'),
+				host     : $('<span><span class="elfinder-spinner"/></span><input type="hidden"/>'),
 				path     : $('<input type="text" value="'+opts.root+'"/>'),
 				user     : $('<input type="hidden"/>'),
 				pass     : $('<input type="hidden"/>')
@@ -8704,7 +8849,7 @@ elFinder.prototype = {
 					data = d || null;
 				this.vars.mbtn = f.host.closest('.ui-dialog').children('.ui-dialog-buttonpane:first').find('button.elfinder-btncnt-0');
 				if (! f0.data('inrequest')
-						&& (f0.find('span.elfinder-info-spinner').length
+						&& (f0.find('span.elfinder-spinner').length
 							|| data === 'reset'
 							|| (data === 'winfocus' && ! f0.siblings('span.elfinder-button-icon-reload').length))
 							)
@@ -8714,13 +8859,13 @@ elFinder.prototype = {
 						oline.attr('title', fm.i18n('offlineAccess'));
 						oline.uniqueId().after($('<label/>').attr('for', oline.attr('id')).html(' '+fm.i18n('offlineAccess')));
 					}
-					f0.data('inrequest', true).empty().addClass('elfinder-info-spinner')
+					f0.data('inrequest', true).empty().addClass('elfinder-spinner')
 						.parent().find('span.elfinder-button-icon').remove();
 					fm.request({
 						data : {cmd : 'netmount', protocol: protocol, host: host, user: 'init', options: {id: fm.id, offline: oline.prop('checked')? 1:0, pass: f.host[1].value}},
 						preventDefault : true
 					}).done(function(data){
-						f0.removeClass("elfinder-info-spinner").html(data.body.replace(/\{msg:([^}]+)\}/g, function(whole,s1){return fm.i18n(s1, host);}));
+						f0.removeClass("elfinder-spinner").html(data.body.replace(/\{msg:([^}]+)\}/g, function(whole,s1){return fm.i18n(s1, host);}));
 					});
 					opts.noOffline && oline.closest('tr').hide();
 				} else {
@@ -8738,7 +8883,7 @@ elFinder.prototype = {
 				
 				opts.noOffline && f.offline.closest('tr').hide();
 				if (data.mode == 'makebtn') {
-					f0.removeClass('elfinder-info-spinner').removeData('expires').removeData('funcexpup');
+					f0.removeClass('elfinder-spinner').removeData('expires').removeData('funcexpup');
 					f.host.find('input').on('mouseenter mouseleave', function(){$(this).toggleClass('ui-state-hover');});
 					f1.val('');
 					f.path.val(opts.root).next().remove();
@@ -8755,7 +8900,7 @@ elFinder.prototype = {
 						expires = '()';
 						f0.data('expires', data.expires);
 					}
-					f0.html(host + expires).removeClass('elfinder-info-spinner');
+					f0.html(host + expires).removeClass('elfinder-spinner');
 					if (data.expires) {
 						f0.data('funcexpup', function() {
 							var rem = Math.floor((f0.data('expires') - (+new Date()) / 1000) / 60);
@@ -9034,19 +9179,57 @@ elFinder.prototype = {
 	 * Load CSS files
 	 * 
 	 * @param  Array    to load CSS file URLs
+	 * @param  Object   options
 	 * @return elFinder
 	 */
-	loadCss : function(urls) {
-		var self = this;
+	loadCss : function(urls, opts) {
+		var self = this,
+			clName, dfds;
 		if (typeof urls === 'string') {
 			urls = [ urls ];
 		}
+		if (opts) {
+			if (opts.className) {
+				clName = opts.className;
+			}
+			if (opts.dfd && opts.dfd.promise) {
+				dfds = [];
+			}
+		}
 		$.each(urls, function(i, url) {
+			var link, df;
 			url = self.convAbsUrl(url).replace(/^https?:/i, '');
+			if (dfds) {
+				dfds[i] = $.Deferred();
+			}
 			if (! $("head > link[href='+url+']").length) {
-				$('head').append('<link rel="stylesheet" type="text/css" href="' + url + '" />');
+				link = document.createElement('link');
+				link.type = 'text/css';
+				link.rel = 'stylesheet';
+				link.href = url;
+				if (clName) {
+					link.className = clName;
+				}
+				if (dfds) {
+					link.onload = function() {
+						dfds[i].resolve();
+					};
+					link.onerror = function() {
+						dfds[i].reject();
+					};
+				}
+				$('head').append(link);
+			} else {
+				dfds && dfds[i].resolve();
 			}
 		});
+		if (dfds) {
+			$.when.apply(null, dfds).done(function() {
+				opts.dfd.resolve();
+			}).fail(function() {
+				opts.dfd.reject();
+			});
+		}
 		return this;
 	},
 	
@@ -9307,6 +9490,96 @@ elFinder.prototype = {
 		return dfrd;
 	},
 	
+	/**
+	 * Gets the theme object by settings of options.themes
+	 *
+	 * @param  String  themeid  The themeid
+	 * @return Object  jQuery.Deferred
+	 */
+	getTheme : function(themeid) {
+		var self = this,
+			dfd = $.Deferred(),
+			absUrl = function(url, base) {
+				if (Array.isArray(url)) {
+					return $.map(url, function(v) {
+						return absUrl(v, base);
+					});
+				} else {
+					return url.match(/^(?:http|\/\/)/i)? url : (base || self.baseUrl) + url.replace(/^(?:\.\/|\/)/, '');
+				}
+			},
+			themeObj, m;
+		if (themeid && (themeObj = self.options.themes[themeid])) {
+			if (typeof themeObj === 'string') {
+				url = absUrl(themeObj);
+				if (m = url.match(/^(.+\/)[^/]+\.json$/i)) {
+					$.getJSON(url).done(function(data) {
+						themeObj = data;
+						themeObj.id = themeid;
+						if (themeObj.cssurls) {
+							themeObj.cssurls = absUrl(themeObj.cssurls, m[1]);
+						}
+						dfd.resolve(themeObj);
+					}).fail(function() {
+						dfd.reject();
+					});
+				} else {
+					dfd.resolve({
+						id: themeid,
+						name: themeid,
+						cssurls: [url]
+					});
+				}
+			} else if ($.isPlainObject(themeObj) && themeObj.cssurls) {
+				themeObj.id = themeid;
+				themeObj.cssurls = absUrl(themeObj.cssurls);
+				if (!Array.isArray(themeObj.cssurls)) {
+					themeObj.cssurls = [themeObj.cssurls];
+				}
+				if (!themeObj.name) {
+					themeObj.name = themeid;
+				}
+				dfd.resolve(themeObj);
+			} else {
+				dfd.reject();
+			}
+		} else {
+			dfd.reject();
+		}
+		return dfd;
+	},
+
+	/**
+	 * Change current theme
+	 *
+	 * @param  String  themeid  The themeid
+	 * @return Object  this elFinder instance
+	 */
+	changeTheme : function(themeid) {
+		var self = this;
+		if (themeid) {
+			if (self.options.themes[themeid] && (!self.theme || self.theme.id !== themeid)) {
+				self.getTheme(themeid).done(function(themeObj) {
+					if (themeObj.cssurls) {
+						$('head>link.elfinder-theme-ext').remove();
+						self.loadCss(themeObj.cssurls, {
+							className: 'elfinder-theme-ext',
+							dfd: $.Deferred().done(function() {
+								self.theme = themeObj;
+								self.trigger && self.trigger('themechange');
+							})
+						});
+					}
+				});
+			} else if (themeid === 'default' && self.theme) {
+				$('head>link.elfinder-theme-ext').remove();
+				self.theme = null;
+				self.trigger && self.trigger('themechange');
+			}
+		}
+		return this;
+	},
+
 	/**
 	 * Apply leaf root stats to target directory
 	 *

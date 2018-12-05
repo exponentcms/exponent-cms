@@ -12,27 +12,27 @@ elFinder.prototype._options = {
 	 */
 	cdns : {
 		// for editor etc.
-		ace        : '//cdnjs.cloudflare.com/ajax/libs/ace/1.4.1',
-		codemirror : '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.39.2',
-		ckeditor   : '//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.10.0',
-		ckeditor5  : '//cdn.ckeditor.com/ckeditor5/11.0.1',
-		tinymce    : '//cdnjs.cloudflare.com/ajax/libs/tinymce/4.8.2',
-		simplemde  : '//cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2',
-		fabric16   : '//cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.7',
-		tui        : '//uicdn.toast.com',
+		ace        : 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1',
+		codemirror : 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.40.2',
+		ckeditor   : 'https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.10.0',
+		ckeditor5  : 'https://cdn.ckeditor.com/ckeditor5/11.1.1',
+		tinymce    : 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.8.3',
+		simplemde  : 'https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2',
+		fabric16   : 'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.7',
+		tui        : 'https://uicdn.toast.com',
 		// for quicklook etc.
-		hls        : '//cdnjs.cloudflare.com/ajax/libs/hls.js/0.10.1/hls.min.js',
-		dash       : '//cdnjs.cloudflare.com/ajax/libs/dashjs/2.9.0/dash.all.min.js',
-		flv        : '//cdnjs.cloudflare.com/ajax/libs/flv.js/1.4.2/flv.min.js',
-		prettify   : '//cdn.rawgit.com/google/code-prettify/453bd5f51e61245339b738b1bbdd42d7848722ba/loader/run_prettify.js',
-		psd        : '//cdnjs.cloudflare.com/ajax/libs/psd.js/3.2.0/psd.min.js',
-		rar        : '//cdn.rawgit.com/nao-pon/rar.js/6cef13ec66dd67992fc7f3ea22f132d770ebaf8b/rar.min.js',
-		zlibUnzip  : '//cdn.rawgit.com/imaya/zlib.js/0.3.1/bin/unzip.min.js', // need check unzipFiles() in quicklook.plugins.js when update
-		zlibGunzip : '//cdn.rawgit.com/imaya/zlib.js/0.3.1/bin/gunzip.min.js',
-		marked     : '//cdnjs.cloudflare.com/ajax/libs/marked/0.4.0/marked.min.js',
-		sparkmd5   : '//cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.0/spark-md5.min.js',
-		jssha      : '//cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha.js',
-		amr        : '//cdn.rawgit.com/yxl/opencore-amr-js/dcf3d2b5f384a1d9ded2a54e4c137a81747b222b/js/amrnb.js'
+		hls        : 'https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.10.1/hls.min.js',
+		dash       : 'https://cdnjs.cloudflare.com/ajax/libs/dashjs/2.9.1/dash.all.min.js',
+		flv        : 'https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.4.2/flv.min.js',
+		prettify   : 'https://cdn.jsdelivr.net/gh/google/code-prettify@453bd5f51e61245339b738b1bbdd42d7848722ba/loader/run_prettify.js',
+		psd        : 'https://cdnjs.cloudflare.com/ajax/libs/psd.js/3.2.0/psd.min.js',
+		rar        : 'https://cdn.jsdelivr.net/gh/nao-pon/rar.js@6cef13ec66dd67992fc7f3ea22f132d770ebaf8b/rar.min.js',
+		zlibUnzip  : 'https://cdn.jsdelivr.net/gh/imaya/zlib.js@0.3.1/bin/unzip.min.js', // need check unzipFiles() in quicklook.plugins.js when update
+		zlibGunzip : 'https://cdn.jsdelivr.net/gh/imaya/zlib.js@0.3.1/bin/gunzip.min.js',
+		marked     : 'https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.1/marked.min.js',
+		sparkmd5   : 'https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.0/spark-md5.min.js',
+		jssha      : 'https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha.js',
+		amr        : 'https://cdn.jsdelivr.net/gh/yxl/opencore-amr-js@dcf3d2b5f384a1d9ded2a54e4c137a81747b222b/js/amrnb.js'
 	},
 	
 	/**
@@ -185,12 +185,21 @@ elFinder.prototype._options = {
 
 	/**
 	 * Base URL of elfFinder library starting from Manager HTML
-	 * Auto detect when empty value`
+	 * Auto detect when empty value
 	 * 
 	 * @type String
 	 * @default ""
 	 */
 	baseUrl : '',
+
+	/**
+	 * Base URL of i18n js files
+	 * baseUrl + "js/i18n/" when empty value
+	 * 
+	 * @type String
+	 * @default ""
+	 */
+	i18nBaseUrl : '',
 	
 	/**
 	 * Auto load required CSS
@@ -201,6 +210,35 @@ elFinder.prototype._options = {
 	 * @default true
 	 */
 	cssAutoLoad : true,
+
+	/**
+	 * Theme to load
+	 * {"themeid" : "Theme CSS URL"} or
+	 * {"themeid" : "Theme manifesto.json URL"} or
+	 * Theme manifesto.json Object
+	 * {
+	 *   "themeid" : {
+	 *     "name":"Theme Name",
+	 *     "cssurls":"Theme CSS URL",
+	 *     "author":"Author Name",
+	 *     "email":"Author Email",
+	 *     "license":"License",
+	 *     "link":"Web Site URL",
+	 *     "image":"Screen Shot URL",
+	 *     "description":"Description"
+	 *   }
+	 * }
+	 * 
+	 * @type Object
+	 */
+	themes : {},
+
+	/**
+	 * Theme id to initial theme
+	 * 
+	 * @type String|Null
+	 */
+	theme : null,
 	
 	/**
 	 * Additional css class for filemanager node.
@@ -272,7 +310,10 @@ elFinder.prototype._options = {
 			method : 'post',
 			// Where to open into : 'window'(default), 'tab' or 'tabs'
 			// 'tabs' opens in each tabs
-			into   : 'window'
+			into   : 'window',
+			// Default command list of action when select file
+			// String value that is 'Command Name' or 'Command Name1/CommandName2...'
+			selectAction : 'open'
 		},
 		opennew : {
 			// URL of to open elFinder manager
@@ -322,6 +363,12 @@ elFinder.prototype._options = {
 					suppressInfoWindows : false,
 					preserveViewport : false
 				}
+			},
+			// ViewerJS (https://viewerjs.org/) Options
+			// To enable this you need to place ViewerJS on the same server as elFinder and specify that URL in `url`.
+			viewerjs : {
+				url: '', // Example '/ViewerJS/index.html'
+				mimes: ['application/pdf', 'application/vnd.oasis.opendocument.text', 'application/vnd.oasis.opendocument.spreadsheet', 'application/vnd.oasis.opendocument.presentation']
 			},
 			// MIME types to CAD-Files and 3D-Models online viewer on sharecad.org
 			// Example ['image/vnd.dwg', 'image/vnd.dxf', 'model/vnd.dwf', 'application/vnd.hp-hpgl', 'application/plt', 'application/step', 'model/iges', 'application/vnd.ms-pki.stl', 'application/sat', 'image/cgm', 'application/x-msmetafile']
@@ -489,6 +536,8 @@ elFinder.prototype._options = {
 		},
 		// "info" command options.
 		info : {
+			// If the URL of the Directory is null,
+			// it is assumed that the link destination is a URL to open the folder in elFinder
 			nullUrlDirLinkSelf : true,
 			// Information items to be hidden by default
 			// These name are 'size', 'aliasfor', 'path', 'link', 'dim', 'modify', 'perms', 'locked', 'owner', 'group', 'perm' and your custom info items label
@@ -517,7 +566,7 @@ elFinder.prototype._options = {
 				// 	 * 
 				// 	 * @type String
 				// 	 */
-				// 	tpl : '<div class="elfinder-info-desc"><span class="elfinder-info-spinner"></span></div>',
+				// 	tpl : '<div class="elfinder-info-desc"><span class="elfinder-spinner"></span></div>',
 				// 	
 				// 	/**
 				// 	 * Restricts to mimetypes (optional)
@@ -583,6 +632,16 @@ elFinder.prototype._options = {
 			helpSource : ''
 		},
 		preference : {
+			// dialog width
+			width: 600,
+			// dialog height
+			height: 400,
+			// tabs setting see preference.js : build()
+			categories: null,
+			// preference setting see preference.js : build()
+			prefs: null,
+			// language setting  see preference.js : build()
+			langs: null,
 			// Command list of action when select file
 			// Array value are 'Command Name' or 'Command Name1/CommandName2...'
 			selectActions : ['open', 'edit/download', 'resize/edit/download', 'download', 'quicklook']
@@ -682,7 +741,7 @@ elFinder.prototype._options = {
 		],
 		// toolbar extra options
 		toolbarExtra : {
-			// also displays the text label on the button (true / false)
+			// also displays the text label on the button (true / false / 'none')
 			displayTextLabel: false,
 			// Exclude `displayTextLabel` setting UA type
 			labelExcludeUA: ['Mobile'],
@@ -692,7 +751,9 @@ elFinder.prototype._options = {
 			defaultHides: ['home', 'reload'],
 			// show Preference button ('none', 'auto', 'always')
 			// If you do not include 'preference' in the context menu you should specify 'auto' or 'always'
-			showPreferenceButton: 'none'
+			showPreferenceButton: 'none',
+			// show Preference button into contextmenu of the toolbar (true / false)
+			preferenceInContextmenu: true
 		},
 		// directories tree options
 		tree : {
@@ -1000,10 +1061,10 @@ elFinder.prototype._options = {
 	 * Position CSS, Width of notifications dialogs
 	 *
 	 * @type Object
-	 * @default {position: {top : '12px', right : '12px'}, width : 280}
+	 * @default {position: {}, width : null} - Apply CSS definition
 	 * position: CSS object | null (null: position center & middle)
 	 */
-	notifyDialog : {position: {top : '12px', right : '12px'}, width : 280},
+	notifyDialog : {position: {}, width : null},
 	
 	/**
 	 * Dialog contained in the elFinder node

@@ -8,9 +8,9 @@ elFinder.prototype.commands.preference = function() {
 	var self    = this,
 		fm      = this.fm,
 		r       = 'replace',
-		tab     = '<li class="ui-state-default ui-corner-top elfinder-preference-tab-{id}"><a href="#'+fm.namespace+'-preference-{id}" id="'+fm.namespace+'-preference-tab-{id}" class="{class}">{title}</a></li>',
+		tab     = '<li class="' + fm.res('class', 'tabstab') + ' elfinder-preference-tab-{id}"><a href="#'+fm.namespace+'-preference-{id}" id="'+fm.namespace+'-preference-tab-{id}" class="ui-tabs-anchor {class}">{title}</a></li>',
 		base    = $('<div class="ui-tabs ui-widget ui-widget-content ui-corner-all elfinder-preference">'), 
-		ul      = $('<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">'),
+		ul      = $('<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-top">'),
 		tabs    = $('<div class="elfinder-preference-tabs ui-tabs-panel ui-widget-content ui-corner-bottom"/>'),
 		sep     = '<div class="elfinder-preference-separator"/>',
 		selfUrl = $('base').length? document.location.href.replace(/#.*$/, '') : '',
@@ -18,9 +18,11 @@ elFinder.prototype.commands.preference = function() {
 			$('#'+fm.namespace+'-preference-tab-'+tab).trigger('mouseover').trigger('click');
 			openTab = tab;
 		},
+		clTabActive = fm.res('class', 'tabsactive'),
 		build   = function() {
 			var cats = self.options.categories || {
 					'language' : ['language'],
+					'theme' : ['theme'],
 					'toolbar' : ['toolbarPref'],
 					'workspace' : ['iconSize','columnPref', 'selectAction', 'makefileTypes', 'useStoredEditor', 'editorMaximized', 'showHidden'],
 					'dialog' : ['autoFocusDialog'],
@@ -28,7 +30,7 @@ elFinder.prototype.commands.preference = function() {
 					'reset' : ['clearBrowserData'],
 					'all' : true
 				},
-				forms = self.options.prefs || ['language', 'toolbarPref', 'iconSize', 'columnPref', 'selectAction', 'makefileTypes', 'useStoredEditor', 'editorMaximized', 'showHidden', 'infoItems', 'hashChecker', 'autoFocusDialog', 'clearBrowserData'];
+				forms = self.options.prefs || ['language', 'theme', 'toolbarPref', 'iconSize', 'columnPref', 'selectAction', 'makefileTypes', 'useStoredEditor', 'editorMaximized', 'showHidden', 'infoItems', 'hashChecker', 'autoFocusDialog', 'clearBrowserData'];
 			
 			forms = fm.arrayFlip(forms, true);
 			
@@ -87,6 +89,73 @@ elFinder.prototype.commands.preference = function() {
 				return langSel.append(optTags.join('')).val(fm.lang);
 			})());
 			
+			forms.theme && (forms.theme = (function() {
+				if (!fm.options.themes || !Object.keys(fm.options.themes).length) {
+					return null;
+				}
+				var themeSel = $('<select/>').on('change', function() {
+						var theme = $(this).val();
+						fm.changeTheme(theme).storage('theme', theme);
+					}),
+					optTags = [],
+					tpl = {
+						image: '<img class="elfinder-preference-theme elfinder-preference-theme-image" src="$2" />',
+						link: '<a href="$1" target="_blank" title="$3">$2</a>',
+						data: '<dt>$1</dt><dd><span class="elfinder-preference-theme elfinder-preference-theme-$0">$2</span></dd>'
+					},
+					items = ['image', 'description', 'author', 'email', 'license'],
+					render = function(key, data) {
+					},
+					defBtn = $('<button class="ui-button ui-corner-all ui-widget elfinder-preference-theme-default"/>').text(fm.i18n('default')).on('click', function(e) {
+						themeSel.val('default').trigger('change');
+					}),
+					list = $('<div class="elfinder-reference-hide-taball"/>').on('click', 'button', function() {
+							var val = $(this).data('themeid')
+							themeSel.val(val).trigger('change');
+					});
+
+				themeSel.append('<option value="default">'+fm.i18n('default')+'</option>');
+				$.each(fm.options.themes, function(id, val) {
+					var opt = $('<option class="elfinder-theme-option-'+id+'" value="'+id+'">'+fm.i18n(id)+'</option>'),
+						dsc = $('<fieldset class="ui-widget ui-widget-content ui-corner-all elfinder-theme-list-'+id+'"><legend>'+fm.i18n(id)+'</legend><div><span class="elfinder-spinner"/></div></fieldset>'),
+						tm;
+					themeSel.append(opt);
+					list.append(dsc);
+					tm = setTimeout(function() {
+						dsc.find('span.elfinder-spinner').replaceWith(fm.i18n(['errRead', id]));
+					}, 10000);
+					fm.getTheme(id).always(function() {
+						tm && clearTimeout(tm);
+					}).done(function(data) {
+						var link, val = $(), dl = $('<dl/>');
+						link = data.link? tpl.link.replace(/\$1/g, data.link).replace(/\$3/g, fm.i18n('website')) : '$2';
+						if (data.name) {
+							opt.html(fm.i18n(data.name));
+						}
+						dsc.children('legend').html(link.replace(/\$2/g, fm.i18n(data.name) || id));
+						$.each(items, function(i, key) {
+							var t = tpl[key] || tpl.data,
+								elm;
+							if (data[key]) {
+								elm = t.replace(/\$0/g, fm.escape(key)).replace(/\$1/g, fm.i18n(key)).replace(/\$2/g, fm.i18n(data[key]));
+								if (key === 'image' && data.link) {
+									elm = $(elm).on('click', function() {
+										themeSel.val(id).trigger('change');
+									}).attr('title', fm.i18n('select'));
+								}
+								dl.append(elm);
+							}
+						});
+						val = val.add(dl);
+						val = val.add($('<div class="elfinder-preference-theme-btn"/>').append($('<button class="ui-button ui-corner-all ui-widget"/>').data('themeid', id).html(fm.i18n('select'))));
+						dsc.find('span.elfinder-spinner').replaceWith(val);
+					}).fail(function() {
+						dsc.find('span.elfinder-spinner').replaceWith(fm.i18n(['errRead', id]));
+					});
+				});
+				return $('<div/>').append(themeSel.val(fm.theme && fm.theme.id? fm.theme.id : 'default'), defBtn, list);
+			})());
+
 			forms.toolbarPref && (forms.toolbarPref = (function() {
 				var pnls = $.map(fm.options.uiOptions.toolbar, function(v) {
 						return $.isArray(v)? v : null;
@@ -164,10 +233,11 @@ elFinder.prototype.commands.preference = function() {
 						fm.storage('selectAction', act === 'default'? null : act);
 					}),
 					optTags = [],
-					acts = self.options.selectActions;
+					acts = self.options.selectActions,
+					defAct = fm.getCommand('open').options.selectAction || 'open';
 				
-				if ($.inArray('open', acts) === -1) {
-					acts.unshift('open');
+				if ($.inArray(defAct, acts) === -1) {
+					acts.unshift(defAct);
 				}
 				$.each(acts, function(i, act) {
 					var names = $.map(act.split('/'), function(cmd) {
@@ -179,7 +249,7 @@ elFinder.prototype.commands.preference = function() {
 					});
 					optTags.push('<option value="'+act+'">'+names.join('/')+'</option>');
 				});
-				return actSel.append(optTags.join('')).val(fm.storage('selectAction') || 'open');
+				return actSel.append(optTags.join('')).val(fm.storage('selectAction') || defAct);
 			})());
 			
 			forms.makefileTypes && (forms.makefileTypes = (function() {
@@ -435,23 +505,28 @@ elFinder.prototype.commands.preference = function() {
 				e.preventDefault();
 				e.stopPropagation();
 
-				ul.children().removeClass('ui-tabs-selected ui-state-active');
-				t.removeClass('ui-state-hover').parent().addClass('ui-tabs-selected ui-state-active');
+				ul.children().removeClass(clTabActive);
+				t.removeClass('ui-state-hover').parent().addClass(clTabActive);
 
 				if (h.match(/all$/)) {
-					tabs.children().show();
+					tabs.addClass('elfinder-preference-taball').children().show();
 				} else {
-					tabs.children().hide();
+					tabs.removeClass('elfinder-preference-taball').children().hide();
 					$(h).show();
 				}
+			}).on('focus blur', 'a', function(e) {
+				$(this).parent().toggleClass('ui-state-focus', e.type === 'focusin');
+			}).on('mouseenter mouseleave', 'li', function(e) {
+				$(this).toggleClass('ui-state-hover', e.type === 'mouseenter');
 			});
 
-			base.append(ul, tabs).find('a,input,select,button').addClass('elfinder-tabstop');
+			tabs.find('a,input,select,button').addClass('elfinder-tabstop');
+			base.append(ul, tabs);
 
-			dialog = fm.dialog(base, {
+			dialog = self.fmDialog(base, {
 				title : self.title,
-				width : 600,
-				height: 400,
+				width : self.options.width || 600,
+				height: self.options.height || 400,
 				maxWidth: 'window',
 				maxHeight: 'window',
 				autoOpen : false,

@@ -17,9 +17,7 @@
     float: left;
     background: transparent;
     padding: 0;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
+    overflow: hidden;
 }
 
 /*.elfinder-buttonset:first-child { margin:0; }*/
@@ -41,6 +39,10 @@
     cursor: default;
 }
 
+.elfinder-rtl .elfinder-button {
+    float: right;
+}
+
 .elfinder-touch .elfinder-button {
     min-width: 20px;
     height: 20px;
@@ -48,24 +50,6 @@
 
 .elfinder .ui-icon-search {
     cursor: pointer;
-}
-
-.elfinder-button:first-child {
-    -moz-border-radius-topleft: 4px;
-    -webkit-border-top-left-radius: 4px;
-    border-top-left-radius: 4px;
-    -moz-border-radius-bottomleft: 4px;
-    -webkit-border-bottom-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-}
-
-.elfinder-button:last-child {
-    -moz-border-radius-topright: 4px;
-    -webkit-border-top-right-radius: 4px;
-    border-top-right-radius: 4px;
-    -moz-border-radius-bottomright: 4px;
-    -webkit-border-bottom-right-radius: 4px;
-    border-bottom-right-radius: 4px;
 }
 
 /* separator between buttons, required for berder between button with ui color */
@@ -77,6 +61,10 @@
     border-right: 0 solid;
     border-bottom: 0 solid;
     width: 0;
+}
+
+.elfinder-rtl .elfinder-toolbar-button-separator {
+    float: right;
 }
 
 .elfinder-touch .elfinder-toolbar-button-separator {
@@ -289,10 +277,6 @@
     background-position: 0 -736px;
 }
 
-.elfinder-button-icon-opendir {
-    background-position: 0 -32px;
-}
-
 .elfinder-button-icon-menu {
     background-position: 0 -752px;
 }
@@ -347,6 +331,26 @@
 
 .elfinder-button-icon-hide {
     background-position: 0 -992px;
+}
+
+.elfinder-button-icon-text {
+    background-position: 0 -1008px;
+}
+
+/* button icon mirroring for rtl */
+.elfinder-rtl .elfinder-button-icon-back,
+.elfinder-rtl .elfinder-button-icon-forward,
+.elfinder-rtl .elfinder-button-icon-getfile,
+.elfinder-rtl .elfinder-button-icon-help,
+.elfinder-rtl .elfinder-button-icon-redo,
+.elfinder-rtl .elfinder-button-icon-rename,
+.elfinder-rtl .elfinder-button-icon-search,
+.elfinder-rtl .elfinder-button-icon-undo,
+.elfinder-rtl .elfinder-button-icon-view-list,
+.elfinder-rtl .ui-icon-search {
+    -ms-transform: scale(-1, 1);
+    -webkit-transform: scale(-1, 1);
+    transform: scale(-1, 1);
 }
 
 /* button with dropdown menu*/
@@ -437,7 +441,6 @@
     margin: 1px 4px;
     height: auto;
     min-height: 26px;
-    float: right;
     width: 70px;
     overflow: visible;
 }
@@ -493,6 +496,10 @@
 .elfinder-rtl .elfinder-button-search {
     float: left;
     margin-left: 10px;
+}
+
+.elfinder-rtl .ui-controlgroup > .ui-controlgroup-item {
+    float: right;
 }
 
 /* search text field */
