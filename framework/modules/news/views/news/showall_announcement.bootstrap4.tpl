@@ -47,9 +47,9 @@
     {$myloc=serialize($__loc)}
     {foreach from=$page->records item=item}
         {*<div class="item announcement{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}{if $item->is_featured} featured{/if}">*}
-        <div class="item card card-{if $item->is_featured}danger{else}{cycle values="info,success"}{/if}{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
-            <div class="card-header">
-                <{$config.item_level|default:'h2'} class="card-title">{$item->title}</{$config.item_level|default:'h2'}>
+        <div class="item card{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
+            <div class="card-header bg-{if $item->is_featured}danger{else}{cycle values="info,success"}{/if}">
+                <{$config.item_level|default:'h2'} class="card-title text-white">{$item->title}</{$config.item_level|default:'h2'}>
             </div>
             <div class="card-body">
             {if $item->isRss != true}
