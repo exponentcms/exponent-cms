@@ -122,7 +122,7 @@ Installation
 Downloads
 ------------
 **Stable releases** ([Changelog](https://github.com/Studio-42/elFinder/blob/master/Changelog))
- + [elFinder 2.1.43](https://github.com/Studio-42/elFinder/archive/2.1.43.zip)
+ + [elFinder 2.1.44](https://github.com/Studio-42/elFinder/archive/2.1.44.zip)
  + [elFinder 2.0.9](https://github.com/Studio-42/elFinder/archive/2.0.9.zip) (deprecated)
 
 **Nightly builds**
@@ -155,7 +155,7 @@ You can create or modify the language file to use translation tool. Please refer
  * [ASP.NET Core](https://github.com/gordon-matt/elFinder.NetCore)
  * [ASP.NET](https://github.com/leniel/elFinder.Net)
  * [Java Servlet](https://github.com/trustsystems/elfinder-java-connector)
- * [JavaScript/Efw](https://github.com/efwGrp/efw3.X/blob/master/help/api_efw_tag.md#elfinder-tag)
+ * [JavaScript/Efw](https://github.com/efwGrp/efw3.X/blob/master/help/tag.elfinder.md)
  * [Nodejs](https://github.com/dekyfin/elfinder-node)
  * [Python](https://github.com/Studio-42/elfinder-python)
  * [Ruby/Rails](https://github.com/phallstrom/el_finder)

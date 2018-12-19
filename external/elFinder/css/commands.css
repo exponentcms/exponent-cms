@@ -169,6 +169,16 @@
     margin-left: -5px;
 }
 
+.elfinder-dialog.elfinder-dialog-resize .ui-resizable-e {
+    width: 10px;
+    height: 100%;
+}
+
+.elfinder-dialog.elfinder-dialog-resize .ui-resizable-s {
+    width: 100%;
+    height: 10px;
+}
+
 .elfinder-resize-loading {
     position: absolute;
     width: 200px;
@@ -365,18 +375,18 @@
 }
 
 /* edit area */
-.ui-dialog .ui-dialog-content.elfinder-edit-editor {
+.elfinder-dialog-edit .ui-dialog-content.elfinder-edit-editor {
     background-color: #fff;
 }
 
-.ui-dialog .ui-dialog-content.elfinder-edit-editor .elfinder-edit-imageeditor {
+.elfinder-dialog-edit .ui-dialog-content.elfinder-edit-editor .elfinder-edit-imageeditor {
     width: 100%;
     height: 300px;
     max-height: 100%;
     text-align: center;
 }
 
-.ui-dialog .ui-dialog-content.elfinder-edit-editor .elfinder-edit-imageeditor * {
+.elfinder-dialog-edit .ui-dialog-content.elfinder-edit-editor .elfinder-edit-imageeditor * {
     -webkit-user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -391,13 +401,25 @@
     display: none;
 }
 
+.elfinder-edit-imageeditor .tui-image-editor-main.tui-image-editor-menu-crop .tui-image-editor-wrap,
+.elfinder-edit-imageeditor .tui-image-editor-main.tui-image-editor-menu-flip .tui-image-editor-wrap,
+.elfinder-edit-imageeditor .tui-image-editor-main.tui-image-editor-menu-rotate .tui-image-editor-wrap,
+.elfinder-edit-imageeditor .tui-image-editor-main.tui-image-editor-menu-draw .tui-image-editor-wrap,
+.elfinder-edit-imageeditor .tui-image-editor-main.tui-image-editor-menu-shape .tui-image-editor-wrap,
+.elfinder-edit-imageeditor .tui-image-editor-main.tui-image-editor-menu-icon .tui-image-editor-wrap,
+.elfinder-edit-imageeditor .tui-image-editor-main.tui-image-editor-menu-text .tui-image-editor-wrap,
+.elfinder-edit-imageeditor .tui-image-editor-main.tui-image-editor-menu-mask .tui-image-editor-wrap,
+.elfinder-edit-imageeditor .tui-image-editor-main.tui-image-editor-menu-filter .tui-image-editor-wrap {
+    height: calc(100% - 150px);
+}
+
 /* bottom margen for softkeyboard on fullscreen mode */
 .elfinder-touch.elfinder-fullscreen-native textarea.elfinder-file-edit {
     padding-bottom: 20em;
     margin-bottom: -20em;
 }
 
-.std42-dialog .ui-dialog-buttonpane .elfinder-dialog-confirm-encoding {
+.elfinder-dialog-edit .ui-dialog-buttonpane .elfinder-dialog-confirm-encoding {
     font-size: 12px;
 }
 
@@ -415,7 +437,7 @@
     margin-top: 8px;
 }
 
-.ui-dialog-buttonpane .ui-icon {
+.elfinder-dialog-edit .ui-dialog-buttonpane .ui-icon {
     cursor: pointer;
 }
 
@@ -427,11 +449,15 @@
     font-size: 16pt;
 }
 
-.elfinder-dialog .elfinder-edit-spinner .elfinder-spinner,
-.elfinder-dialog .elfinder-edit-spinner .elfinder-spinner-text {
+.elfinder-dialog-edit .elfinder-edit-spinner .elfinder-spinner,
+.elfinder-dialog-edit .elfinder-edit-spinner .elfinder-spinner-text {
     float: none;
 }
 
+.elfinder-dialog-edit .elfinder-toast > div {
+    width: 280px;
+}
+ 
 .elfinder-edit-onlineconvert-button {
     display: inline-block;
     width: 180px;
@@ -702,8 +728,9 @@ ul.elfinder-help-integrations a:hover {
 }
 
 /********************** COMMAND "PREFERENCE" ****************************/
-.elfinder-preference .ui-tabs-nav {
+.elfinder-dialog .elfinder-preference .ui-tabs-nav {
     margin-bottom: 1px;
+    height: auto;
 }
 
 /* fix tabs */

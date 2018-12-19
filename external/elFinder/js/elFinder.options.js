@@ -239,7 +239,14 @@ elFinder.prototype._options = {
 	 * @type String|Null
 	 */
 	theme : null,
-	
+
+	/**
+	 * Maximum value of error dialog open at the same time
+	 * 
+	 * @type Number
+	 */
+	maxErrorDialogs : 5,
+
 	/**
 	 * Additional css class for filemanager node.
 	 *
@@ -961,9 +968,9 @@ elFinder.prototype._options = {
 	sortStickFolders : true,
 	
 	/**
-	 * Sort also applies to the treeview
+	 * Sort also applies to the treeview (null: disable this feature)
 	 *
-	 * @type {Boolean}
+	 * @type Boolean|null
 	 * @default false
 	 */
 	sortAlsoTreeview : false,
