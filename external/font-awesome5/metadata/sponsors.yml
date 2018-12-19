@@ -375,6 +375,11 @@ pal-fed:
     - palfed
   label: PalFed
   url: 'https://www.palfed.com'
+pcsg:
+  icons:
+    - horse-head
+  label: PCSG
+  url: 'https://www.pcsg.de'
 phabricator:
   icons:
     - phabricator

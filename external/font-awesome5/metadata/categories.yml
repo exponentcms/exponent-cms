@@ -29,6 +29,7 @@ animals:
     - frog
     - hippo
     - horse
+    - horse-head
     - kiwi-bird
     - otter
     - paw
@@ -79,6 +80,7 @@ arrows:
     - chevron-up
     - cloud-download-alt
     - cloud-upload-alt
+    - compress-arrows-alt
     - download
     - exchange-alt
     - expand-arrows-alt
@@ -215,13 +217,19 @@ autumn:
 buildings:
   icons:
     - building
+    - campground
     - church
+    - city
+    - dungeon
     - gopuram
     - home
     - hospital
     - hospital-alt
+    - hotel
     - house-damage
+    - igloo
     - industry
+    - landmark
     - mosque
     - place-of-worship
     - school
@@ -229,6 +237,7 @@ buildings:
     - torii-gate
     - university
     - vihara
+    - warehouse
   label: Buildings
 business:
   icons:
@@ -339,6 +348,7 @@ chat:
     - quote-left
     - quote-right
     - smile
+    - sms
     - video
     - video-slash
   label: Chat
@@ -428,6 +438,7 @@ computers:
     - database
     - desktop
     - download
+    - ethernet
     - hdd
     - headphones
     - keyboard
@@ -439,8 +450,12 @@ computers:
     - plug
     - power-off
     - print
+    - satellite
+    - satellite-dish
     - save
+    - sd-card
     - server
+    - sim-card
     - stream
     - tablet
     - tablet-alt
@@ -468,6 +483,7 @@ currency:
     - ruble-sign
     - rupee-sign
     - shekel-sign
+    - tenge
     - won-sign
     - yen-sign
   label: Currency
@@ -741,6 +757,8 @@ hands:
     - allergies
     - fist-raised
     - hand-holding
+    - hand-holding-heart
+    - hand-holding-usd
     - hand-lizard
     - hand-paper
     - hand-peace
@@ -753,7 +771,9 @@ hands:
     - hand-scissors
     - hand-spock
     - hands
+    - hands-helping
     - handshake
+    - praying-hands
     - thumbs-down
     - thumbs-up
   label: Hands
@@ -772,6 +792,19 @@ health:
     - user-md
     - wheelchair
   label: Health
+holiday:
+  icons:
+    - candy-cane
+    - carrot
+    - cookie-bite
+    - gift
+    - gifts
+    - glass-cheers
+    - holly-berry
+    - mug-hot
+    - sleigh
+    - snowman
+  label: Holiday
 images:
   icons:
     - adjust
@@ -804,6 +837,7 @@ interfaces:
     - beer
     - bell
     - bell-slash
+    - blog
     - bug
     - bullhorn
     - bullseye
@@ -861,6 +895,8 @@ interfaces:
     - frown
     - glasses
     - grip-horizontal
+    - grip-lines
+    - grip-lines-vertical
     - grip-vertical
     - hashtag
     - heart
@@ -935,6 +971,7 @@ interfaces:
     - times-circle
     - toggle-off
     - toggle-on
+    - tools
     - trash
     - trash-alt
     - trophy
@@ -1047,6 +1084,7 @@ maps:
     - plus-square
     - print
     - recycle
+    - restroom
     - road
     - rocket
     - route
@@ -1059,6 +1097,7 @@ maps:
     - shopping-basket
     - shopping-cart
     - shower
+    - snowplow
     - street-view
     - subway
     - suitcase
@@ -1070,6 +1109,7 @@ maps:
     - tint
     - traffic-light
     - train
+    - tram
     - tree
     - trophy
     - truck
@@ -1123,6 +1163,7 @@ medical:
     - allergies
     - ambulance
     - band-aid
+    - biohazard
     - bone
     - bong
     - brain
@@ -1153,6 +1194,8 @@ medical:
     - prescription-bottle
     - prescription-bottle-alt
     - procedures
+    - radiation
+    - radiation-alt
     - smoking
     - smoking-ban
     - star-of-life
@@ -1190,6 +1233,7 @@ objects:
     - anchor
     - archive
     - award
+    - baby-carriage
     - balance-scale
     - bath
     - bed
@@ -1215,7 +1259,9 @@ objects:
     - calendar-alt
     - camera
     - camera-retro
+    - candy-cane
     - car
+    - carrot
     - church
     - clipboard
     - cloud
@@ -1266,10 +1312,14 @@ objects:
     - gavel
     - gem
     - gift
+    - gifts
+    - glass-cheers
     - glass-martini
+    - glass-whiskey
     - glasses
     - globe
     - graduation-cap
+    - guitar
     - hat-wizard
     - hdd
     - headphones
@@ -1278,9 +1328,11 @@ objects:
     - heart
     - helicopter
     - highlighter
+    - holly-berry
     - home
     - hospital
     - hourglass
+    - igloo
     - image
     - images
     - industry
@@ -1307,6 +1359,7 @@ objects:
     - microchip
     - microphone
     - microphone-alt
+    - mitten
     - mobile
     - mobile-alt
     - money-bill
@@ -1315,6 +1368,7 @@ objects:
     - money-check-alt
     - moon
     - motorcycle
+    - mug-hot
     - newspaper
     - paint-brush
     - paper-plane
@@ -1337,18 +1391,24 @@ objects:
     - ruler-combined
     - ruler-horizontal
     - ruler-vertical
+    - satellite
+    - satellite-dish
     - save
     - school
     - screwdriver
     - scroll
+    - sd-card
     - search
     - shield-alt
     - shopping-bag
     - shopping-basket
     - shopping-cart
     - shower
+    - sim-card
     - skull-crossbones
+    - sleigh
     - snowflake
+    - snowplow
     - space-shuttle
     - star
     - sticky-note
@@ -1365,8 +1425,11 @@ objects:
     - taxi
     - thumbtack
     - ticket-alt
+    - toilet
     - toolbox
+    - tools
     - train
+    - tram
     - trash
     - trash-alt
     - tree
@@ -1504,16 +1567,26 @@ shapes:
 spinners:
   icons:
     - asterisk
+    - atom
     - certificate
     - circle-notch
     - cog
+    - compact-disc
     - compass
     - crosshairs
+    - dharmachakra
+    - haykal
     - life-ring
+    - palette
+    - ring
+    - slash
     - snowflake
     - spinner
+    - stroopwafel
     - sun
     - sync
+    - sync-alt
+    - yin-yang
   label: Spinners
 sports:
   icons:
@@ -1526,6 +1599,10 @@ sports:
     - golf-ball
     - hockey-puck
     - quidditch
+    - skating
+    - skiing
+    - skiing-nordic
+    - snowboarding
     - table-tennis
     - volleyball-ball
   label: Sports
@@ -1636,6 +1713,7 @@ travel:
     - globe-africa
     - globe-americas
     - globe-asia
+    - globe-europe
     - hot-tub
     - hotel
     - luggage-cart
@@ -1654,6 +1732,7 @@ travel:
     - swimmer
     - swimming-pool
     - taxi
+    - tram
     - umbrella-beach
     - wine-glass
     - wine-glass-alt
@@ -1663,22 +1742,34 @@ users-people:
     - accessible-icon
     - address-book
     - address-card
+    - baby
     - bed
     - blind
     - chalkboard-teacher
     - child
     - female
     - frown
+    - hiking
     - id-badge
     - id-card
     - id-card-alt
     - male
     - meh
+    - people-carry
+    - person-booth
     - poo
     - portrait
     - power-off
+    - pray
+    - restroom
+    - running
+    - skating
+    - skiing
+    - skiing-nordic
     - smile
+    - snowboarding
     - street-view
+    - swimmer
     - user
     - user-alt
     - user-alt-slash
@@ -1703,12 +1794,15 @@ users-people:
     - user-tie
     - user-times
     - users
+    - users-cog
+    - walking
     - wheelchair
   label: Users & People
 vehicles:
   icons:
     - accessible-icon
     - ambulance
+    - baby-carriage
     - bicycle
     - bus
     - bus-alt
@@ -1718,6 +1812,7 @@ vehicles:
     - car-side
     - fighter-jet
     - helicopter
+    - horse
     - motorcycle
     - paper-plane
     - plane
@@ -1725,10 +1820,14 @@ vehicles:
     - ship
     - shopping-cart
     - shuttle-van
+    - sleigh
+    - snowplow
     - space-shuttle
     - subway
     - taxi
+    - tractor
     - train
+    - tram
     - truck
     - truck-monster
     - truck-pickup
@@ -1758,9 +1857,23 @@ weather:
     - water
     - wind
   label: Weather
+winter:
+  icons:
+    - glass-whiskey
+    - icicles
+    - igloo
+    - mitten
+    - skating
+    - skiing
+    - skiing-nordic
+    - snowboarding
+    - snowplow
+    - tram
+  label: Winter
 writing:
   icons:
     - archive
+    - blog
     - book
     - bookmark
     - edit
