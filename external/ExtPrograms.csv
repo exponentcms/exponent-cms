@@ -54,7 +54,7 @@ jQuery3,3.3.1,jquery.com,3.3.1,
 jQuery3 Migrate,3.0.1,jquery.com,3.0.1,
 jQueryUI,1.12.1,jqueryui.com,1.12.1,
 stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
-validate,1.17.0exp,jqueryvalidation.org/,1.19.0,edit for 'undefined' in 'min' & 'max'
+validate,1.19.0exp,jqueryvalidation.org/,1.19.0,edit for 'undefined' in 'min' & 'max'
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker/,1.6.3,used by adminer
 TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
