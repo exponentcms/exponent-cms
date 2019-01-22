@@ -110,12 +110,12 @@ function build_menu($page, $params) {
             $menu .= ' active';
         }
         if ($page->depth)
-            $menu .= '"><a href="'.$page->url.'" id="dropdownMenu' . $page->id . '" class="dropdown-item dropdown-toggle' . $active . '" href="'.$page->url.'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'.($page->new_window?' target="_blank"':'').' title="'. $page->title .'">' . $menu_item;
+            $menu .= '"><a href="'.$page->url.'" data-target="dropdownMenu' . $page->id . '" class="dropdown-item dropdown-toggle' . $active . '" href="'.$page->url.'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'.($page->new_window?' target="_blank"':'').' title="'. $page->title .'">' . $menu_item;
         else
-            $menu .= '"><a href="'.$page->url.'" id="dropdownMenu' . $page->id . '" class="nav-link dropdown-toggle" href="'.$page->url.'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'.($page->new_window?' target="_blank"':'').' title="'. $page->title .'">' . $menu_item;
+            $menu .= '"><a href="'.$page->url.'" data-target="dropdownMenu' . $page->id . '" class="nav-link dropdown-toggle" href="'.$page->url.'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'.($page->new_window?' target="_blank"':'').' title="'. $page->title .'">' . $menu_item;
         if (empty($page->depth))
             $menu .= '<b class="caret"></b>';
-        $menu .= '</a>'."\n".'<ul class="dropdown-menu'.($params['menualign']=='right'?' float-right':'').'" role="menu" aria-labelledby="dropdownMenu' . $page->id . '">'."\n";
+        $menu .= '</a>'."\n".'<ul class="dropdown-menu'.($params['menualign']=='right'?' float-right':'').'" role="menu" id="dropdownMenu' . $page->id . ' aria-labelledby="dropdownMenu' . $page->id . '">'."\n";
         if ($page->url != "#") {  // we also need a 'menu item' for active parent pages
             $topmenu = new stdClass();
             $topmenu->id = $page->id;
