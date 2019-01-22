@@ -188,7 +188,7 @@ class creditcard extends billingcalculator {
     //Should return html to display user data.
     function userView($billingmethod) {
         $opts = expUnserialize($billingmethod->billing_options);
-        if (empty($opts)) return false;
+        if (empty($opts->cc_type)) return false;
 
         $billinginfo = '<table id="ccinfo"' . (bs3()?' class=" table"':'') . ' border=0 cellspacing=0 cellpadding=0>';
         $billinginfo .= '<thead><tr><th colspan="2">' . gt('Paying by') . ' ' . $this->name() . '</th></tr></thead>';

@@ -82,10 +82,10 @@ class paypalExpressCheckout extends billingcalculator {
      * from the url such that if we already have it we'll call another PP api to get the
      * details and make it match up to the order.
      *
-     * @param mixed $billingmethod The billing method information for this user
+     * @param billingmethod $billingmethod The billing method information for this user
      * @param mixed $opts
      * @param array $params The url prameters, as if sef was off.
-     * @param       $order
+     * @param order $order
      *
      * @return mixed An object indicating pass of failure.
      */
@@ -163,7 +163,7 @@ class paypalExpressCheckout extends billingcalculator {
                 $sig = $config['signature'];
             }
             /**
-             * An array of the data sent to PayPal. It will be transformend into Name=Value pairs later.
+             * An array of the data sent to PayPal. It will be transformed into Name=Value pairs later.
              *
              * @var array
              */
@@ -173,7 +173,7 @@ class paypalExpressCheckout extends billingcalculator {
                 'USER'                               => $uname,
                 'PWD'                                => $pwd,
                 'SIGNATURE'                          => $sig,
-                'VERSION'                            => paypalExpressCheckout::PAYPAL_API_VERSION,
+                'VERSION'                            => self::PAYPAL_API_VERSION,
                 'RETURNURL'                          => $returnURL,
                 'CANCELURL'                          => $cancelURL,
                 'ALLOWNOTE'                          => '1', // 0 or 1 to allow buyer to send note from paypal, we don't do anything with it so turn it off
@@ -276,7 +276,16 @@ class paypalExpressCheckout extends billingcalculator {
         return $opts->result;
     }
 
-//    function process($billingmethod, $opts, $params, $invoice_number) {
+    /**
+     *  process transaction
+     *
+     * @param billingmethod $billingmethod
+     * @param mixed $opts
+     * @param array $params
+     * @param order $order
+     *
+     * @return object
+     */
     function process($billingmethod, $opts, $params, $order) {
         $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
         $config = expUnserialize($this->config);
@@ -297,7 +306,7 @@ class paypalExpressCheckout extends billingcalculator {
             'USER'                           => $uname,
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
-            'VERSION'                        => paypalExpressCheckout::PAYPAL_API_VERSION,
+            'VERSION'                        => self::PAYPAL_API_VERSION,
             'SOLUTIONTYPE'                   => 'Sole', //added per post
             'LANDINGPAGE'                    => 'Billing', //added per post
             'TOKEN'                          => $opts->result->token,
@@ -406,6 +415,15 @@ class paypalExpressCheckout extends billingcalculator {
 
     }
 
+    /**
+     * capture (delayed) transaction
+     *
+     * @param billingmethod $billingmethod
+     * @param float $amount
+     * @param order $order
+     *
+     * @return object
+     */
     function delayed_capture($billingmethod, $amount , $order) {
         $opts = expUnserialize($billingmethod->billing_options);
         $config = expUnserialize($this->config);
@@ -426,7 +444,7 @@ class paypalExpressCheckout extends billingcalculator {
             'USER'                           => $uname,
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
-            'VERSION'                        => paypalExpressCheckout::PAYPAL_API_VERSION,
+            'VERSION'                        => self::PAYPAL_API_VERSION,
             'AUTHORIZATIONID'                => $opts->result->transId,
             'AMT'                            => number_format($amount, 2, '.', ''),
             'COMPLETETYPE'                   => 'Complete',  // or 'NotComplete'
@@ -492,6 +510,14 @@ class paypalExpressCheckout extends billingcalculator {
         return $opts->result;
     }
 
+    /**
+     * void transaction
+     *
+     * @param billingmethod $billingmethod
+     * @param order $order
+     *
+     * @return object
+     */
     function void_transaction($billingmethod, $order) {
         $opts = expUnserialize($billingmethod->billing_options);
         $config = expUnserialize($this->config);
@@ -512,7 +538,7 @@ class paypalExpressCheckout extends billingcalculator {
             'USER'                           => $uname,
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
-            'VERSION'                        => paypalExpressCheckout::PAYPAL_API_VERSION,
+            'VERSION'                        => self::PAYPAL_API_VERSION,
             'AUTHORIZATIONID'                => $opts->result->transId,
             // optional parameters
             'NOTE'                           => '',
@@ -562,7 +588,15 @@ class paypalExpressCheckout extends billingcalculator {
         return $opts->result;
     }
 
-    // credit (refund) transaction
+    /**
+     * credit (refund) transaction
+     *
+     * @param billingmethod $billingmethod
+     * @param float $amount
+     * @param order $order
+     *
+     * @return object
+     */
     function credit_transaction($billingmethod, $amount, $order) {
         $opts = expUnserialize($billingmethod->billing_options);
         $config = expUnserialize($this->config);
@@ -592,7 +626,7 @@ class paypalExpressCheckout extends billingcalculator {
             'USER'                           => $uname,
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
-            'VERSION'                        => paypalExpressCheckout::PAYPAL_API_VERSION,
+            'VERSION'                        => self::PAYPAL_API_VERSION,
             'TRANSACTIONID'                  => $opts->result->transId,
             'REFUNDTYPE'                     => $refundType,
             'AMT'                            => $amount,
@@ -746,6 +780,7 @@ class paypalExpressCheckout extends billingcalculator {
     function parseConfig($values) {
         $config_vars = array(
             'incontext',
+            'merchantid',
             'username',
             'password',
             'signature',
@@ -946,61 +981,61 @@ class paypalExpressCheckout extends billingcalculator {
      * @internal param \The $string POST Message fields in &name=value pair format
      * @return    array    Parsed HTTP Response body
      */  //FIXME Deprecated now in favor of above standard
-    function PPHttpPost($methodName_, $nvpStr_) {
-        $environment = 'sandbox';
-        $config = expUnserialize($this->config);
-        // Set up your API credentials, PayPal end point, and API version.
-        $API_UserName = urlencode($config['username']);
-        $API_Password = urlencode($config['password']);
-        $API_Signature = urlencode($config['signature']);
-        $API_Endpoint = "https://api-3t.paypal.com/nvp";
-        if ("sandbox" === $environment || "beta-sandbox" === $environment) {
-            $API_Endpoint = "https://api-3t.$environment.paypal.com/nvp";
-        }
-        $version = urlencode(paypalExpressCheckout::PAYPAL_API_VERSION);
-
-        // Set the curl parameters.
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $API_Endpoint);
-        curl_setopt($ch, CURLOPT_VERBOSE, 1);
-
-        // Turn off the server and peer verification (TrustManager Concept).
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1);
-
-        // Set the API operation, version, and API signature in the request.
-        $nvpreq = "METHOD=$methodName_&VERSION=$version&PWD=$API_Password&USER=$API_UserName&SIGNATURE=$API_Signature$nvpStr_";
-
-        // Set the request as a POST FIELD for curl.
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpreq);
-
-        // Get response from the server.
-        $httpResponse = curl_exec($ch);
-
-        if (!$httpResponse) {
-            exit("$methodName_ failed: " . curl_error($ch) . '(' . curl_errno($ch) . ')');
-        }
-
-        // Extract the response details.
-        $httpResponseAr = explode("&", $httpResponse);
-
-        $httpParsedResponseAr = array();
-        foreach ($httpResponseAr as $i => $value) {
-            $tmpAr = explode("=", $value);
-            if (count($tmpAr) > 1) {
-                $httpParsedResponseAr[$tmpAr[0]] = $tmpAr[1];
-            }
-        }
-
-        if ((0 == count($httpParsedResponseAr)) || !array_key_exists('ACK', $httpParsedResponseAr)) {
-            exit("Invalid HTTP Response for POST request($nvpreq) to $API_Endpoint.");
-        }
-
-        return $httpParsedResponseAr;
-    }
+//    function PPHttpPost($methodName_, $nvpStr_) {
+//        $environment = 'sandbox';
+//        $config = expUnserialize($this->config);
+//        // Set up your API credentials, PayPal end point, and API version.
+//        $API_UserName = urlencode($config['username']);
+//        $API_Password = urlencode($config['password']);
+//        $API_Signature = urlencode($config['signature']);
+//        $API_Endpoint = "https://api-3t.paypal.com/nvp";
+//        if ("sandbox" === $environment || "beta-sandbox" === $environment) {
+//            $API_Endpoint = "https://api-3t.$environment.paypal.com/nvp";
+//        }
+//        $version = urlencode(self::PAYPAL_API_VERSION);
+//
+//        // Set the curl parameters.
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_URL, $API_Endpoint);
+//        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+//
+//        // Turn off the server and peer verification (TrustManager Concept).
+//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+//
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//        curl_setopt($ch, CURLOPT_POST, 1);
+//
+//        // Set the API operation, version, and API signature in the request.
+//        $nvpreq = "METHOD=$methodName_&VERSION=$version&PWD=$API_Password&USER=$API_UserName&SIGNATURE=$API_Signature$nvpStr_";
+//
+//        // Set the request as a POST FIELD for curl.
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpreq);
+//
+//        // Get response from the server.
+//        $httpResponse = curl_exec($ch);
+//
+//        if (!$httpResponse) {
+//            exit("$methodName_ failed: " . curl_error($ch) . '(' . curl_errno($ch) . ')');
+//        }
+//
+//        // Extract the response details.
+//        $httpResponseAr = explode("&", $httpResponse);
+//
+//        $httpParsedResponseAr = array();
+//        foreach ($httpResponseAr as $i => $value) {
+//            $tmpAr = explode("=", $value);
+//            if (count($tmpAr) > 1) {
+//                $httpParsedResponseAr[$tmpAr[0]] = $tmpAr[1];
+//            }
+//        }
+//
+//        if ((0 == count($httpParsedResponseAr)) || !array_key_exists('ACK', $httpParsedResponseAr)) {
+//            exit("Invalid HTTP Response for POST request($nvpreq) to $API_Endpoint.");
+//        }
+//
+//        return $httpParsedResponseAr;
+//    }
 
 }
 

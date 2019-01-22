@@ -34,7 +34,7 @@
             {literal}
             <script>
                 window.paypalCheckoutReady = function () {
-                    paypal.checkout.setup('<dleffler>' , {
+                    paypal.checkout.setup('<{/literal}{$calc->configdata.merchantid}{literal}>' , {
                         {/literal}{if $calc->configdata.testmode}environment: 'sandbox' ,{/if}{literal}
                         container: 'paypalexpressinc'
                     });

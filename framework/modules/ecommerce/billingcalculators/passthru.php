@@ -179,26 +179,28 @@ class passthru extends billingcalculator {
         $ot = new order_type($order->order_type_id);
         if ($ot->creates_new_user == true) {
             //fixme do we always want to create a new user?
+            //use selected billing address for new user info
             $addy = new address($order->billingmethod[0]->addresses_id);
             $newUser = new user();
-            $newUser->username = $addy->email . time(); //make a unique username
-//            $password = md5(time() . mt_rand(50, 1000)); //generate random password
+            $newUser->username = $addy->email . time(); //make a unique username //fixme do we always want to do this?
             $password = expValidator::generatePassword(); //generate random password
             $newUser->setPassword($password, $password);
             $newUser->email = $addy->email;
             $newUser->firstname = $addy->firstname;
             $newUser->lastname = $addy->lastname;
             $newUser->is_system_user = false;
-            $newUser->created_on = time();
+            $newUser->created_on = $newUser->last_login = time();
             $newUser->save(true);
             $newUser->refresh();
 
+            //save new billing address to new user
             $addy->user_id = $newUser->id;
             $addy->is_default = true;
             $addy->save();
             $order->user_id = $newUser->id;
             $order->save();
 
+            //check selected shipping address to see if it's different from billing address, if so also move it to new user
             if ($order->orderitem[0]->shippingmethod->addresses_id != $addy->id) {
                 $addy = new address($order->orderitem[0]->shippingmethod->addresses_id);
                 $addy->user_id = $newUser->id;
@@ -206,7 +208,7 @@ class passthru extends billingcalculator {
                 $addy->save();
             }
 
-            //make sure current user is good to go
+            //revert current admin user to original addresses
             $defAddy = $addy->find('first', 'user_id=' . $user->id);
             $obj = new stdClass();
             $obj->id = $defAddy->id;

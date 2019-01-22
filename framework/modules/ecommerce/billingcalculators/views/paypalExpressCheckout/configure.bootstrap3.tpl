@@ -26,6 +26,7 @@
         <div class="tab-content">
 	        <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                 {control type="checkbox" name="incontext" label="Enable In-Context Checkout?"|gettext value=1 checked=$calculator->configdata.incontext}
+                {control type="text" name="merchantid" label="Merchant account ID"|gettext value=$calculator->configdata.merchantid description="Needed for In-Context Checkout. Displayed on Paypal Account Profile."|gettext}
 	            {control type="text" name="username" label="API Username"|gettext value=$calculator->configdata.username}
 	            {control type="password" name="password" label="API Password"|gettext value=$calculator->configdata.password}
 	            {control type="text" name="signature" label="Signature"|gettext value=$calculator->configdata.signature}
