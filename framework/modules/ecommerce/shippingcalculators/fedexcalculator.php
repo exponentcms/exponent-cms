@@ -42,11 +42,11 @@ class fedexcalculator extends shippingcalculator {
 
     public function getRates($order) {
 //        require_once(BASE . 'external/fedex-php/fedex-common.php');
-        //require_once('fedex-common.php');
 
         //The WSDL is not included with the sample code.
         //Please include and reference in $path_to_wsdl variable.
-        $path_to_wsdl = BASE . 'external/fedex-phpv16/wsdl/RateService_v16.wsdl';
+//        $path_to_wsdl = BASE . 'external/fedex-phpv16/wsdl/RateService_v16.wsdl';
+        $path_to_wsdl = BASE . 'external/fedex-phpv22/wsdl/RateService_v22.wsdl';
 
         ini_set("soap.wsdl_cache_enabled", "0");
 
@@ -58,9 +58,9 @@ class fedexcalculator extends shippingcalculator {
                                                     )
         );
         $request['ClientDetail']            = array('AccountNumber' => $this->configdata['fedex_account_number'], 'MeterNumber' => $this->configdata['fedex_meter_number']);
-        //$request['TransactionDetail'] = array('CustomerTransactionId' => ' *** Rate Available Services Request v9 using PHP ***');
-        $request['TransactionDetail']                  = array('CustomerTransactionId' => md5("Probody " . date('c')));
-        $request['Version']                            = array('ServiceId' => 'crs', 'Major' => '16', 'Intermediate' => '0', 'Minor' => '0');
+        $request['TransactionDetail'] = array('CustomerTransactionId' => ' *** Rate Available Services Request using PHP ***');
+//        $request['TransactionDetail']                  = array('CustomerTransactionId' => md5("Probody " . date('c')));
+        $request['Version']                            = array('ServiceId' => 'crs', 'Major' => '24', 'Intermediate' => '0', 'Minor' => '0');
         $request['ReturnTransitAndCommit']             = true;
         $request['RequestedShipment']['DropoffType']   = 'REGULAR_PICKUP'; // valid values REGULAR_PICKUP, REQUEST_COURIER, ...
         $request['RequestedShipment']['ShipTimestamp'] = date('c');
