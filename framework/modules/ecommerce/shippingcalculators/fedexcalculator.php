@@ -46,7 +46,7 @@ class fedexcalculator extends shippingcalculator {
         //The WSDL is not included with the sample code.
         //Please include and reference in $path_to_wsdl variable.
 //        $path_to_wsdl = BASE . 'external/fedex-phpv16/wsdl/RateService_v16.wsdl';
-        $path_to_wsdl = BASE . 'external/fedex-phpv22/wsdl/RateService_v22.wsdl';
+        $path_to_wsdl = BASE . 'external/fedex-phpv22/wsdl/RateService_v24.wsdl';
 
         ini_set("soap.wsdl_cache_enabled", "0");
 
