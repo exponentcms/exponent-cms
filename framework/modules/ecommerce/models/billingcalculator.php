@@ -55,15 +55,27 @@ class billingcalculator extends expRecord {
     /**
      * Called for billing method selection screen, return true if it's a valid billing method.
      *
-     * @param $method
-     * @param $opts
-     * @param $params
-     * @param $order
+     * @param billingmethod $method
+     * @param mixed $opts
+     * @param array $params
+     * @param order $order
+     *
+     * @return object
      */
     function preprocess($method, $opts, $params, $order) {
         return;
     }
 
+    /**
+     * Process the transaction
+     *
+     * @param billingmethod $method
+     * @param mixed $opts
+     * @param array $params
+     * @param order $order
+     *
+     * @return object
+     */
     function process($method, $opts, $params, $order) {
         return null;
     }
@@ -73,22 +85,39 @@ class billingcalculator extends expRecord {
          return true;
     }
 
-    /*
+    /**
      * Capture an authorized transaction
+     *
+     * @param billingmethod $billingmethod
+     * @param float $amount
+     * @param order $order
+     *
+     * @return object
      */
     function delayed_capture($billingmethod, $amount , $order)
     {
     }
 
-    /*
+    /**
      * Void the remainder of an authorized transaction
+     *
+     * @param billingmethod $method
+     * @param order $order
+     *
+     * @return object
      */
     function void_transaction($billingmethod, $order)
     {
     }
 
-    /*
+    /**
      * Refund an already captured transaction
+     *
+     * @param billingmethod $method
+     * @param float $amount
+     * @param order $order
+     *
+     * @return object
      */
     function credit_transaction($method, $amount, $order)
     {
@@ -148,11 +177,10 @@ class billingcalculator extends expRecord {
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/configure.tpl')) {
             return BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/configure.tpl';
         } else {
-            if (bs3(true) || bs4()) {
+            if (bs4() && file_exists(BASE . 'framework/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/' . 'configure.bootstrap4.tpl')) {
+                $tpl = 'configure.bootstrap4.tpl';
+            } elseif ((bs3(true) || bs4()) && file_exists(BASE . 'framework/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/' . 'configure.bootstrap3.tpl')) {
                 $tpl = 'configure.bootstrap3.tpl';
-                if (!file_exists(BASE . 'framework/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/' . $tpl)) {
-                    $tpl = 'configure.tpl';
-                }
             } else {
                 $tpl = 'configure.tpl';
             }

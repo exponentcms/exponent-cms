@@ -64,11 +64,10 @@ class shippingcalculator extends expRecord {
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/configure.tpl')) {
             return BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/configure.tpl';
         } else {
-            if (bs3(true) || bs4()) {
+            if (bs4() && file_exists(BASE . 'framework/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/' . 'configure.bootstrap4.tpl')) {
+                $tpl = 'configure.bootstrap4.tpl';
+            } elseif ((bs3(true) || bs4()) && file_exists(BASE . 'framework/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/' . 'configure.bootstrap3.tpl')) {
                 $tpl = 'configure.bootstrap3.tpl';
-                if (!file_exists(BASE . 'framework/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/' . $tpl)) {
-                    $tpl = 'configure.tpl';
-                }
             } else {
                 $tpl = 'configure.tpl';
             }
