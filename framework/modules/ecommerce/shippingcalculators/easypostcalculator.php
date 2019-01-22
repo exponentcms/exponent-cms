@@ -31,7 +31,7 @@ class easypostcalculator extends shippingcalculator
     //overridden methods:
     public function name()
     {
-        return gt('easypost');
+        return gt('EasyPost');
     }
 
     public function description()

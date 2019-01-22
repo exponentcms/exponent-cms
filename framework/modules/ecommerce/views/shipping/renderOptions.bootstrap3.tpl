@@ -29,6 +29,7 @@
                                         {$oc=$option.cost|number_format:2}
                                         {control type=radio name="option" columns=1 value=$option.id label="`$oc|currency` - `$option.title`" checked=$selected}
                                     {/foreach}
+                                    {br}
                                     <button type="submit" class="{button_style color=blue size=small}">{"Update Shipping Option"|gettext}</button>
                                 {/form}
                             </div>
@@ -45,6 +46,7 @@
             </div>
             {pop id="change_shipping" type=form text="Change Shipping Option"|gettext title="Shipping Options"|gettext buttons="Close"|gettext}
                 {form name="shpmthdopts" controller=shipping action=selectShippingOption}
+                    <div class="row">
                     {$width = 12 / count($shipping->pricelist)}
                     {if $width < 4}{$width = 4}{/if}
                     {foreach $shipping->pricelist as $carrier=>$carriers}
@@ -65,8 +67,10 @@
                             {/if}
                         </div>
                     {/foreach}
+                    {br}
                     <div>
                         <button type="submit" class="{button_style color=blue size=small}">{"Update Shipping Option"|gettext}</button>
+                    </div>
                     </div>
                 {/form}
             {/pop}
