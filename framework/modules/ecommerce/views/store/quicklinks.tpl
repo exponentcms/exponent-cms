@@ -13,9 +13,15 @@
  *
  *}
 
-{css unique="store-quicklinks" link="`$asset_path`css/cart.css"}
+{if bs()}
+{css unique="inline-cart" link="`$asset_path`css/inline-cart-bs.css"}
 
 {/css}
+{else}
+{css unique="inline-cart" link="`$asset_path`css/inline-cart.css"}
+
+{/css}
+{/if}
 
 <div class="module store quick-links">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h2'}>{$moduletitle}</{$config.heading_level|default:'h2'}>{/if}

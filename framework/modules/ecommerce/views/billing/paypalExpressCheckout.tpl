@@ -35,8 +35,19 @@
             <script>
                 window.paypalCheckoutReady = function () {
                     paypal.checkout.setup('<{/literal}{$calc->configdata.merchantid}{literal}>' , {
-                        {/literal}{if $calc->configdata.testmode}environment: 'sandbox' ,{/if}{literal}
+                        {/literal}
+                        {if $calc->configdata.testmode}environment: 'sandbox' ,{/if}
+                        {if !bs()}
                         container: 'paypalexpressinc'
+                        {else}
+                        buttons: [{
+                            container: 'paypalexpressinc',
+                            // color: 'blue',
+                            shape: 'rect',
+                            size:  'medium'
+                        }]
+                        {/if}
+                        {literal}
                     });
                 };
             </script>

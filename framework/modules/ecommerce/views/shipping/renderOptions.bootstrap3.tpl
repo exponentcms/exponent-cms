@@ -67,9 +67,9 @@
                             {/if}
                         </div>
                     {/foreach}
-                    {br}
-                    <div>
-                        <button type="submit" class="{button_style color=blue size=small}">{"Update Shipping Option"|gettext}</button>
+                    <div class="col-sm-12">
+                        {br}
+                        <button type="submit" class="{button_style color=blue size=small} float-right pull-right">{"Update Shipping Option"|gettext}</button>
                     </div>
                     </div>
                 {/form}

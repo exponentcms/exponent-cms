@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="cart" link="`$asset_path`css/cart.css" corecss="button,panels"}
+{css unique="cart" link="`$asset_path`css/cart-bs.css" corecss="button,panels"}
 
 {/css}
 {uniqueid assign="id"}
@@ -93,7 +93,7 @@
         </div>
     </div>
 
-    <h2>{"Your Items"|gettext}</h2>
+    <h2>{"Items"|gettext}</h2>
     <div class="cartitems separate">
         <!-- p>You have <strong>{$order->item_count}</strong> item{if $order->item_count > 1}s{/if} in your cart. <a id="expandcart" href="#" class="exp-ecom-link">[Click here to show your cart]<span></span></a></p -->
         <div id="shoppingcartwrapper">
@@ -157,8 +157,9 @@
                         {if $smarty.foreach.gtfoi.first}{$shpMthdOp=$option}{/if}
                     {/foreach}
                 {/if}
-                <div class="shipping-info">
-                    <h2>{"Your Shipping Information"|gettext}</h2>
+                <div class="shipping-info row">
+                    <div class="col-12">
+                    <h2>{"Shipping Information"|gettext}</h2>
                     {if $order->forced_shipping == true || $is_shipping_discount == true}
                         <ul id="forcedshipping" class="queue message">
                             {if $order->forced_shipping == true}
@@ -169,17 +170,17 @@
                             {/if}
                         </ul>
                     {/if}
-
+                    </div>
                     {*if $order->orderitem|@count>1 && $shipping->splitshipping == false && $order->forced_shipping == false}
                         <a id="multiaddresslink" class="exp-ecom-link {if hideMultiShip == 1}hide{/if}" href="{link action=splitShipping}">Ship to multiple addresses</a>
                     {/if*}
 
                     {if $shipping->splitshipping == false}
-                        {clear}
-                        <h3>{"Shipping Address"|gettext}</h3>
-                        <!--p>Would you like to <a class="ordermessage" href="#" rel="{$shipping->shippingmethod->id}">add a gift message</a> to this Order?</p-->
+                        {*{clear}*}
+                        <div class="shipping-address col-4">
+                            <h3>{"Shipping Address"|gettext}</h3>
+                            <!--p>Would you like to <a class="ordermessage" href="#" rel="{$shipping->shippingmethod->id}">add a gift message</a> to this Order?</p-->
 
-                        <div class="shipping-address">
                             <div id="shpAddSwp">
                                 {if $shipping->address->id == ''}
                                     {"No address yet"|gettext}
@@ -197,7 +198,7 @@
                                 {/pop}
                             </div>
                         </div>
-                        {clear}
+                        {*{clear}*}
                     {else}
                         {* else, we have split shipping *}
                         <a id="multiaddresslink" class="ecomlink-link" href="{link action=splitShipping}">{"Edit Shipping Information"|gettext}</a>
@@ -225,11 +226,12 @@
                     {/if}
                     {* end split shipping *}
 
+                    <div class="col-8">
                     {if $shipping->selectable_calculators|@count > 1}{$multicalc=1}{/if}
                     {if !$shipping->address->id}{$noShippingPrices=1}{/if}
 
                     {if $multicalc}
-                        <h3>{"Shipping Methods"|gettext}</h3>
+                        <h3>{"Shipping Method"|gettext}</h3>
 
                         <div class="separate">
                             {if $order->forced_shipping == true}
@@ -275,7 +277,7 @@
                     {/if}
                     {if $shipping->splitshipping == false}
 
-                        {clear}
+                        {*{clear}*}
 
                         <div id="shipping-services">
                             <h3>{"Selected Shipping Option"|gettext}</h3>
@@ -330,14 +332,18 @@
 
                     {/if}
                     {* end split shipping *}
+                    </div>
                 </div>
             {/if} {* end shipping required check *}
         </div>
         <div class="billingdetails separate">
-            <h2>{"Your Billing Information"|gettext}</h2>
-            <h3>{"Billing Address"|gettext}</h3>
+            <div class="shipping-info row">
+            <div class="col-12">
+            <h2>{"Billing Information"|gettext}</h2>
+            </div>
 
-            <div class="billing-address">
+            <div class="billing-address col-4">
+                <h3>{"Billing Address"|gettext}</h3>
                 <div id="bllAddSwp">
                     {if $billing->address->id == ''}
                         {"You have not selected an address yet."|gettext}
@@ -354,17 +360,18 @@
                     {/pop}
                 </div>
             </div>
-            <div style="clear: both;"></div>
+            {*{clear}*}
         {*</div>*}
         {*<div class="separate">*}
+            <div class="col-8">
             {if $order->total}
                 {*<h2>{"Payment Information"|gettext}</h2>*}
                 {if $billing->calculator_views|@count > 1}
-                    <h3>{"Payment Methods"|gettext}</h3>
+                    <h3>{"Payment Method"|gettext}</h3>
                     <div id="cart-{$id}" class="">
                         <ul class="nav nav-tabs" role="tablist">
                             {foreach from=$billing->calculator_views item=cviews name=tabs}
-                                <li role="presentation" class="nav-item"><a href="#tab{$smarty.foreach.tabs.iteration}" class="nav-link{if $smarty.foreach.tabs.first} active{/if}" role="tab" data-toggle="tab">{$billing->selectable_calculators[$cviews.id]}</a></li>
+                                <li role="presentation" class="nav-item"><a href="#tab{$smarty.foreach.tabs.iteration}" class="nav-link{if $smarty.foreach.tabs.first} active{/if}" role="tab" data-toggle="tab" title="{'Select this payment method'|gettext}">{$billing->selectable_calculators[$cviews.id]}</a></li>
                             {/foreach}
                         </ul>
                         <div class="tab-content">
@@ -399,6 +406,7 @@
                     {/form}
                 </div>
             {/if}
+            </div>
         </div>
         <!--div class="separate">
                 <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}-dis continue" href="#" id="checkoutnow"><strong><em>Complete your checkout information to continue</em></strong></a>

@@ -13,9 +13,15 @@
  *
  *}
 
+{if bs()}
+{css unique="inline-cart" link="`$asset_path`css/inline-cart-bs.css"}
+
+{/css}
+{else}
 {css unique="inline-cart" link="`$asset_path`css/inline-cart.css"}
 
 {/css}
+{/if}
 
 <div class="module cart show-inline">
     <div class="quick-links">
