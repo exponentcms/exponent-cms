@@ -1,5 +1,5 @@
 /*!
- * elFinder-Material-Theme (Light) v2.1.5 (https://github.com/RobiNN1/elFinder-Material-Theme)
+ * elFinder-Material-Theme (Light) v2.1.7 (https://github.com/RobiNN1/elFinder-Material-Theme)
  * Copyright 2016-2018 Róbert Kelčák {RobiNN}
  * Licensed under MIT (https://github.com/RobiNN1/elFinder-Material-Theme/blob/master/LICENSE)
  */
@@ -38,6 +38,35 @@ select.elfinder-tabstop.ui-state-hover {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
+.elfinder input[type="checkbox"] {
+  position: relative;
+}
+.elfinder input[type="checkbox"]:after,
+.elfinder input[type="checkbox"]:focus:after {
+  content: "";
+  display: block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #707070;
+  background-color: #fff;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
+.elfinder input[type="checkbox"]:checked:before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 6px;
+  display: table;
+  width: 4px;
+  height: 12px;
+  border: 2px solid #707070;
+  border-top-width: 0;
+  border-left-width: 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
 /**
  * Loading
  */
@@ -52,22 +81,6 @@ select.elfinder-tabstop.ui-state-hover {
  * Progress Bar
  */
 @-webkit-keyframes progress-animation {
-  from {
-    background-position: 1rem 0;
-  }
-  to {
-    background-position: 0 0;
-  }
-}
-@-moz-keyframes progress-animation {
-  from {
-    background-position: 1rem 0;
-  }
-  to {
-    background-position: 0 0;
-  }
-}
-@-o-keyframes progress-animation {
   from {
     background-position: 1rem 0;
   }
@@ -94,15 +107,11 @@ select.elfinder-tabstop.ui-state-hover {
 .elfinder-notify-progress,
 .elfinder-resize-spinner {
   background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   -webkit-background-size: 1rem 1rem;
-  -o-background-size: 1rem 1rem;
   background-size: 1rem 1rem;
   -webkit-animation: progress-animation 1s linear infinite;
-  -moz-animation: progress-animation 1s linear infinite;
-  -o-animation: progress-animation 1s linear infinite;
   animation: progress-animation 1s linear infinite;
   background-color: #0275d8;
   height: 1rem;
@@ -697,7 +706,7 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
 }
 .elfinder-quicklook-titlebar-icon .ui-icon {
   border: 0;
-  opacity: .8;
+  opacity: 0.8;
   font-size: 15px;
   padding: 1px;
 }
@@ -844,8 +853,6 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
 .elfinder-drag-helper-move .elfinder-drag-helper-icon-status {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 .elfinder-drag-helper-move .elfinder-drag-helper-icon-status:before {
@@ -854,8 +861,6 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
 .elfinder-drag-helper-plus .elfinder-drag-helper-icon-status {
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -o-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 .elfinder-drag-helper-plus .elfinder-drag-helper-icon-status:before {
@@ -897,8 +902,6 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
   display: block;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
-  -moz-transform: translateX(-50%);
-  -o-transform: translateX(-50%);
   transform: translateX(-50%);
 }
 .elfinder-cwd-icon-zip:before,
@@ -1233,7 +1236,7 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
 .elfinder .elfinder-navbar .elfinder-perms,
 .elfinder .elfinder-navbar .elfinder-symlink {
   color: #1d1d1d;
-  opacity: .8;
+  opacity: 0.8;
 }
 .elfinder-navbar-dir {
   color: #525252;
@@ -1277,7 +1280,6 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
   padding: 2px;
   -webkit-border-radius: 2px !important;
   border-radius: 2px !important;
-  width: 100px !important;
   background: #fff;
   color: #222;
 }
@@ -1327,7 +1329,7 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
 .elfinder-cwd-view-list .elfinder-perms,
 .elfinder-cwd-view-list .elfinder-symlink {
   font-size: 14px;
-  opacity: .7;
+  opacity: 0.7;
 }
 .elfinder-cwd-view-list .elfinder-perms {
   left: inherit;
@@ -1362,6 +1364,10 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
   background: #339ef4;
   color: #555;
 }
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-bgurl:after,
+.elfinder .elfinder-quicklook-info-wrapper .elfinder-cwd-bgurl:after {
+  display: none;
+}
 /**
  * Status Bar
  */
@@ -1395,7 +1401,6 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4) !important;
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
-  -moz-transition: all 0.4s;
   transition: all 0.4s;
   background: #fff;
   color: #222;
@@ -1529,7 +1534,6 @@ a.ui-button:active .ui-icon,
   border-color: inherit;
   -webkit-transition: 0.2s ease-out;
   -o-transition: 0.2s ease-out;
-  -moz-transition: 0.2s ease-out;
   transition: 0.2s ease-out;
   opacity: 0.8;
   color: #fff;
@@ -1546,10 +1550,16 @@ a.ui-button:active .ui-icon,
 }
 .std42-dialog .ui-dialog-buttonpane button {
   margin: 2px;
-  padding: .4em .5em;
 }
 .std42-dialog .ui-dialog-buttonpane button span.ui-icon {
   padding: 0;
+}
+.std42-dialog .ui-dialog-buttonpane .ui-dialog-buttonset.elfinder-edit-extras {
+  margin-top: -4px;
+}
+.std42-dialog,
+.std42-dialog .ui-widget-content {
+  background-color: #fff;
 }
 .elfinder-mobile .std42-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close .ui-icon,
 .std42-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close:hover .ui-icon {
@@ -1573,7 +1583,7 @@ a.ui-button:active .ui-icon,
 .elfinder-upload-dialog-wrapper .elfinder-upload-dirselect {
   width: inherit;
   height: inherit;
-  padding: .4em;
+  padding: 0.4em;
   margin-left: 5px;
   color: #222;
 }
@@ -1585,7 +1595,7 @@ a.ui-button:active .ui-icon,
   border-radius: 2px;
 }
 .elfinder-upload-dialog-wrapper .ui-button {
-  padding: .4em 3px;
+  padding: 0.4em 3px;
   margin: 0 -15px 0 19px;
 }
 .elfinder-upload-dropbox {
