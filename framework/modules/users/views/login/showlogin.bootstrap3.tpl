@@ -42,7 +42,10 @@
                 "link"  => ""
             ]
         ]}
-        {breadcrumb items=$breadcrumb active=1 style=flat}
+        <div class="row">
+            {breadcrumb items=$breadcrumb active=1 style="flat col-sm-7 col-7"}
+            <div class="col-sm-5 col-5"></div>
+        </div>
     {/if}
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
         <div class="login-form one col-sm-6">

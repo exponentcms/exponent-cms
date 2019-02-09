@@ -203,8 +203,8 @@ table#cart table td {
 }
 
 .separate {
-	/*padding       : 5px 0;*/
-	border-bottom : 1px dotted #999;
+	padding       : 5px 0;
+	/*border-bottom : 1px dotted #999;*/
 	/*margin        : 0 0 5px 0;*/
 	width         : 100%;
 }

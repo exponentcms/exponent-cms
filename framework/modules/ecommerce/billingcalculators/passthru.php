@@ -159,7 +159,7 @@ class passthru extends billingcalculator {
         $opts->result->CVV2MATCH = 'Pending';
         $opts->result->traction_type = 'Pending';
         $trax_state = "authorization pending";
-        $trax_state->payment_status = $trax_state;
+        $opts->result->payment_status = $trax_state;
 
         //$opts2->billing_info = $opts;
 //        $opts2 = new stdClass();
