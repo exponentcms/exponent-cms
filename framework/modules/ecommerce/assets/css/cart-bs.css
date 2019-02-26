@@ -303,7 +303,10 @@ table#cart table td {
     /*background            : #7d7dc4;*/
     /*color                 : #fff;*/
     /*border-bottom-width: 1px;*/
-    border-color: #dee2e6 #dee2e6 #dee2e6;
+    /*border-color: #dee2e6 #dee2e6 #dee2e6;*/
+    border-color: #eeeeee #eeeeee #dddddd;
+    text-decoration: none;
+    background-color: #eeeeee;
 }
 
 #expresscheckout span.servopt {
