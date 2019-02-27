@@ -404,6 +404,7 @@ $.fn.elfindertree = function(fm, opts) {
 					dir.csscls && (cname += ' ' + fm.escape(dir.csscls));
 					return cname;
 				},
+				title       : function(dir) { return opts.attrTitle? (' title="' + fm.escape(fm.path(dir.hash, true) || dir.i18 || dir.name) + '"') : ''; },
 				root        : function(dir) {
 					var cls = '';
 					if (!dir.phash || dir.isroot) {
@@ -1106,16 +1107,24 @@ $.fn.elfindertree = function(fm, opts) {
 				.on('mouseenter mouseleave', selNavdir, function(e) {
 					var enter = (e.type === 'mouseenter');
 					if (enter && scrolling) { return; }
-					var link  = $(this); 
+					var link  = $(this),
+						hash, dir; 
 					
 					if (!link.hasClass(dropover+' '+disabled)) {
 						if (!mobile && enter && !link.data('dragRegisted') && !link.hasClass(root+' '+draggable+' elfinder-na elfinder-wo')) {
 							link.data('dragRegisted', true);
-							if (fm.isCommandEnabled('copy', fm.navId2Hash(link.attr('id')))) {
+							if (fm.isCommandEnabled('copy', (hash = fm.navId2Hash(link.attr('id'))))) {
 								link.draggable(fm.draggable);
 							}
 						}
 						link.toggleClass(hover, enter);
+					}
+					// update title attr if necessary
+					if (enter && opts.attrTitle) {
+						dir = fm.file(hash || fm.navId2Hash(link.attr('id')));
+						if (!dir.isroot && link.attr('title') === (dir.i18 || dir.name)) {
+							link.attr('title', fm.path(hash, true));
+						}
 					}
 				})
 				// native drag enter
@@ -1199,6 +1208,7 @@ $.fn.elfindertree = function(fm, opts) {
 						return;
 					}
 					clearTimeout($(this).data('tmlongtap'));
+					$(this).removeData('tmlongtap');
 					if (e.type == 'touchmove') {
 						$(this).removeClass(hover);
 					}
@@ -1273,13 +1283,14 @@ $.fn.elfindertree = function(fm, opts) {
 					
 					e.preventDefault();
 
-					fm.trigger('contextmenu', {
-						'type'    : 'navbar',
-						'targets' : [fm.navId2Hash($(this).attr('id'))],
-						'x'       : e.pageX,
-						'y'       : e.pageY
-					});
-					
+					if (!self.data('tmlongtap')) {
+						fm.trigger('contextmenu', {
+							'type'    : 'navbar',
+							'targets' : [fm.navId2Hash($(this).attr('id'))],
+							'x'       : e.pageX,
+							'y'       : e.pageY
+						});
+					}
 					self.addClass('ui-state-hover');
 					
 					fm.getUI('contextmenu').children().on('mouseenter', function() {

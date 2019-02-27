@@ -59,7 +59,7 @@ class remove_empty_tags extends upgradescript {
 
         $count = $db->countObjects('expTags', "title=''");
 		$db->delete('expTags', "title=''");
-		$db->delete('content_expTags', "NOT EXISTS (SELECT 1 FROM " . $db->prefix . "expTags WHERE " . $db->prefix . "expTags.id = " . $db->prefix . "content_expTags.exptags_id)");
+		$db->delete('content_expTags', "NOT EXISTS (SELECT 1 FROM " . $db->tableStmt('expTags') . " WHERE " . $db->tableStmt('expTags.id') . " = " . $db->tableStmt('content_expTags.exptags_id') . ")");
 
         return ($count?$count:gt('No')).' '.gt('empty tags and their references were removed');
 	}

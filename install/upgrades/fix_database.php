@@ -82,7 +82,7 @@ class fix_database extends upgradescript {
 		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
 		$found = 0;
 		foreach ($sectionrefs as $sectionref) {
-			if ($db->selectObject('section',"id='".$sectionref->section."'") == null) {
+			if ($db->selectObject('section',"id=".(int)$sectionref->section) == null) {
 			// There is no section/page for sectionref so change the refcount
 				$sectionref->refcount = 0;
 				$db->updateObject($sectionref,"sectionref");

@@ -79,7 +79,7 @@ class fix_help_sections extends upgradescript
             foreach ($helplocs as $helploc) {
                 if (!empty($helploc)) {
                     $helpsrc = expUnserialize($helploc);
-                    $sectionlist[$helpsrc->src] = $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $helpsrc->src . '"');
+                    $sectionlist[$helpsrc->src] = $db->selectValue('sectionref', 'section', 'module = \'help\' AND source=\'' . $helpsrc->src . '\'');
                 }
             }
 

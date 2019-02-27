@@ -313,6 +313,7 @@ elFinder.prototype.commands.download = function() {
 					clickEv = document.createEvent('MouseEvents');
 					clickEv.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 				}
+				fm.pauseUnloadCheck(true);
 				a.dispatchEvent(clickEv);
 			},
 			checkCookie = function(id) {

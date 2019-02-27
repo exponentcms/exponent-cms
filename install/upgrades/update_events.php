@@ -48,7 +48,7 @@ class update_events extends upgradescript {
 	function needed() {
         global $db;
 
-		return $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."event` WHERE `id` NOT IN (SELECT `event_id` FROM `".$db->prefix."eventdate`)");  // only needed if there if issues
+		return $db->countObjectsBySql("SELECT COUNT(*) as c FROM " . $db->tableStmt('event') . " WHERE 'id' NOT IN (SELECT 'event_id' FROM " . $db->tableStmt('eventdate') . ")");  // only needed if there if issues
 	}
 
 	/**
@@ -58,9 +58,9 @@ class update_events extends upgradescript {
 	function upgrade() {
 	    global $db;
 
-		$events_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."event` WHERE `id` NOT IN (SELECT `event_id` FROM `".$db->prefix."eventdate`)");
+		$events_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM " . $db->tableStmt('event') . " WHERE 'id' NOT IN (SELECT 'event_id' FROM " . $db->tableStmt('eventdate') . ")");
         if ($events_count) {
-            $db->delete("event","`id` NOT IN (SELECT `event_id` FROM `".$db->prefix."eventdate`)");
+            $db->delete("event","'id' NOT IN (SELECT 'event_id' FROM " . $db->tableStmt('eventdate') . ")");
             // let's update the search index to reflect the current events
             $ec = new eventController();
             $db->delete('search', "ref_module='" . $ec->baseclassname . "' AND ref_type='" . $ec->searchCategory() . "'");

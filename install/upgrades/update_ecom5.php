@@ -59,15 +59,15 @@ class update_ecom5 extends upgradescript {
 	function upgrade() {
 	    global $db;
 
-		$missing_product_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `" . $db->prefix . "product_storecategories` WHERE product_id != 0 AND product_id NOT IN (SELECT id FROM " . $db->prefix . "product)");
+		$missing_product_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM " . $db->tableStmt('product_storecategories') . " WHERE product_id != 0 AND product_id NOT IN (SELECT id FROM " . $db->tableStmt('product') . ")");
 		if ($missing_product_count)
-		    $db->delete("product_storecategories","product_id != 0 AND product_id NOT IN (SELECT id FROM " . $db->prefix . "product)");
-		$missing_category_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `" . $db->prefix . "product_storecategories` WHERE storecategories_id != 0 AND storecategories_id NOT IN (SELECT id FROM " . $db->prefix . "storeCategories)");
+		    $db->delete("product_storecategories","product_id != 0 AND product_id NOT IN (SELECT id FROM " . $db->tableStmt('product') . ")");
+		$missing_category_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM " . $db->tableStmt('product_storecategories') . " WHERE storecategories_id != 0 AND storecategories_id NOT IN (SELECT id FROM " . $db->tableStmt('storeCategories') . ")");
         if ($missing_category_count)
-		    $db->delete("product_storecategories","storecategories_id != 0 AND storecategories_id NOT IN (SELECT id FROM " . $db->prefix . "storeCategories)");
-		$orphan_product_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `" . $db->prefix . "product` WHERE parent_id != 0 AND parent_id NOT IN (SELECT temp.id FROM (SELECT id FROM " . $db->prefix . "product) temp)");
+		    $db->delete("product_storecategories","storecategories_id != 0 AND storecategories_id NOT IN (SELECT id FROM " . $db->tableStmt('storeCategories') . ")");
+		$orphan_product_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM " . $db->tableStmt('product') . " WHERE parent_id != 0 AND parent_id NOT IN (SELECT temp.id FROM (SELECT id FROM " . $db->tableStmt('product') . ") temp)");
         if ($orphan_product_count)
-		    $db->delete("product","parent_id != 0 AND parent_id NOT IN (SELECT temp.id FROM (SELECT id FROM " . $db->prefix . "product) temp)");
+		    $db->delete("product","parent_id != 0 AND parent_id NOT IN (SELECT temp.id FROM (SELECT id FROM " . $db->tableStmt('product') . ") temp)");
 
 		return ($missing_product_count?$missing_product_count:gt('No'))." ".gt("missing products").", ".($missing_category_count?$missing_category_count:gt('No'))." ".gt("missing categories and")." ".($orphan_product_count?$orphan_product_count:gt('No'))." ".gt("orphaned child products")." ".gt("were found and removed from the database.");
 	}

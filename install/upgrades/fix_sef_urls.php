@@ -96,7 +96,7 @@ class fix_sef_urls extends upgradescript {
                             if (!is_bool(expValidator::is_valid_sef_name('sef_url', $item, $opts))) {
                                 $item->sef_url = expRouter::encode($item->sef_url);
                                 // we need to test for uniqueness or update will fail
-                                $dupe = $db->selectValue($model->tablename, 'sef_url', 'sef_url="'.$item->sef_url.'"' . $opts['grouping_sql']);
+                                $dupe = $db->selectValue($model->tablename, 'sef_url', 'sef_url=\''.$item->sef_url.'\'' . $opts['grouping_sql']);
                         		if (!empty($dupe)) {
                         			list($u, $s) = explode(' ',microtime());
                                     $item->sef_url .= '-'.$s.'-'.$u;
@@ -123,7 +123,7 @@ class fix_sef_urls extends upgradescript {
                             if (!is_bool(expValidator::is_valid_sef_name('sef_url', $item, array()))) {
                                 $item->sef_url = expRouter::encode($item->sef_url);
                                 // we need to test for uniqueness or update will fail
-                                $dupe = $db->selectValue($model->tablename, 'sef_url', 'sef_url="' . $item->sef_url . '"');
+                                $dupe = $db->selectValue($model->tablename, 'sef_url', 'sef_url=\'' . $item->sef_url . '\'');
                                 if (!empty($dupe)) {
                                     list($u, $s) = explode(' ', microtime());
                                     $item->sef_url .= '-' . $s . '-' . $u;

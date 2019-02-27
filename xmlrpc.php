@@ -87,11 +87,11 @@ function exp_getModuleInstancesByType($type = null)
 
     global $db;
 
-    $refs = $db->selectObjects('sectionref', 'module="' . $type . '"');
+    $refs = $db->selectObjects('sectionref', 'module=\'' . $type . '\'');
     $modules = array();
     foreach ($refs as $ref) {
         if ($ref->refcount > 0) {
-            $instance = $db->selectObject('container', 'internal like "%' . $ref->source . '%"');
+            $instance = $db->selectObject('container', 'internal like \'%' . $ref->source . '%\'');
             $mod = new stdClass();
             $mod->title = !empty($instance->title) ? $instance->title : "Untitled";
             $mod->section = $db->selectvalue('section', 'name', 'id=' . $ref->section);
@@ -129,8 +129,8 @@ function getUsersBlogs($xmlrpcmsg)
         foreach ($blogs as $src => $blog) {
             $blog_name = (empty($blog[0]->title) ? 'Untitled' : $blog[0]->title) . ' on page ' . $blog[0]->section;
             $loc = expCore::makeLocation('blog', $src);
-            $section = $db->selectObject('sectionref', 'source="' . $src . '"');
-            $page = $db->selectObject('section', 'id="' . $section->section . '"');
+            $section = $db->selectObject('sectionref', 'source=\'' . $src . '\'');
+            $page = $db->selectObject('section', 'id=' . (int)$section->section);
             if (expPermissions::check('create', $loc) || (expPermissions::check('edit', $loc))) {
                 $structArray[] = new xmlrpcval(
                     array(

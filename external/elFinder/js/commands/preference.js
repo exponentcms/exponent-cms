@@ -24,20 +24,23 @@ elFinder.prototype.commands.preference = function() {
 					'language' : ['language'],
 					'theme' : ['theme'],
 					'toolbar' : ['toolbarPref'],
-					'workspace' : ['iconSize','columnPref', 'selectAction', 'makefileTypes', 'useStoredEditor', 'editorMaximized', 'showHidden'],
+					'workspace' : ['iconSize','columnPref', 'selectAction', 'makefileTypes', 'useStoredEditor', 'editorMaximized', 'useFullscreen', 'showHidden'],
 					'dialog' : ['autoFocusDialog'],
 					'selectionInfo' : ['infoItems', 'hashChecker'],
 					'reset' : ['clearBrowserData'],
 					'all' : true
 				},
-				forms = self.options.prefs || ['language', 'theme', 'toolbarPref', 'iconSize', 'columnPref', 'selectAction', 'makefileTypes', 'useStoredEditor', 'editorMaximized', 'showHidden', 'infoItems', 'hashChecker', 'autoFocusDialog', 'clearBrowserData'];
+				forms = self.options.prefs || ['language', 'theme', 'toolbarPref', 'iconSize', 'columnPref', 'selectAction', 'makefileTypes', 'useStoredEditor', 'editorMaximized', 'useFullscreen', 'showHidden', 'infoItems', 'hashChecker', 'autoFocusDialog', 'clearBrowserData'];
 			
 			forms = fm.arrayFlip(forms, true);
 			
 			if (fm.options.getFileCallback) {
 				delete forms.selectAction;
 			}
-			
+			if (!fm.UA.Fullscreen) {
+				delete forms.useFullscreen;
+			}
+
 			forms.language && (forms.language = (function() {
 				var langSel = $('<select/>').on('change', function() {
 						var lang = $(this).val();
@@ -46,7 +49,7 @@ elFinder.prototype.commands.preference = function() {
 					}),
 					optTags = [],
 					langs = self.options.langs || {
-						ar: 'اللغة العربية',
+						ar: 'العربية',
 						bg: 'Български',
 						ca: 'Català',
 						cs: 'Čeština',
@@ -289,7 +292,7 @@ elFinder.prototype.commands.preference = function() {
 								err = function() {
 									uiToast.appendTo(input.closest('.ui-dialog'));
 									fm.toast({
-										msg:　fm.i18n('errUsupportType'),
+										msg: fm.i18n('errUsupportType'),
 										mode: 'warning',
 										onHidden: function() {
 											uiToast.children().length === 1 && uiToast.appendTo(fm.getUI());
@@ -350,6 +353,13 @@ elFinder.prototype.commands.preference = function() {
 				return s? (s > 0) : fm.options.commandsOptions.edit.editorMaximized;
 			})()).on('change', function(e) {
 				fm.storage('editorMaximized', $(this).is(':checked')? 1 : -1);
+			}));
+
+			forms.useFullscreen && (forms.useFullscreen = $('<input type="checkbox"/>').prop('checked', (function() {
+				var s = fm.storage('useFullscreen');
+				return s? (s > 0) : fm.options.commandsOptions.fullscreen.mode === 'screen';
+			})()).on('change', function(e) {
+				fm.storage('useFullscreen', $(this).is(':checked')? 1 : -1);
 			}));
 
 			if (forms.showHidden) {

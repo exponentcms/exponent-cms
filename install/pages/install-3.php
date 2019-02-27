@@ -86,7 +86,7 @@ $warning = array();
 
     if ($passed) {
         //set connection encoding, works only on mySQL > 4.1
-        if ($config["db_engine"] == "mysqli") {
+        if ($config["db_engine"] === "mysqli") {
             if (!defined('DB_ENCODING')) {
                 define('DB_ENCODING', $config["DB_ENCODING"]);
             }
@@ -126,7 +126,7 @@ $warning = array();
         }
     }
 
-    if ($passed) {
+    if ($passed && $config["db_engine"] === "mysqli") {
         echoStart(gt('MySQL lower_case_table_names setting') . ':');
         $server = @mysqli_fetch_assoc($db->sql("SHOW VARIABLES LIKE '%lower_case_file%'", false));
         $setting = @mysqli_fetch_assoc($db->sql("SHOW VARIABLES LIKE '%lower_case_table%'", false));
@@ -208,7 +208,7 @@ $warning = array();
     if ($passed) {
         echoStart(gt('Checking SELECT privilege') . ':');
         $obj = @$db->selectObject($tablename, "id=" . $insert_id);
-        if ($obj == null || $obj->installer_test != "Exponent Installer Wizard") {
+        if ($obj == null || $obj->installer_test !== "Exponent Installer Wizard") {
             echoFailure(gt("Trying to Select Items") . " (" . $db->error() . ")");
         } else {
             echoSuccess();

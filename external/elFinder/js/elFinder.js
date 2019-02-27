@@ -49,14 +49,14 @@ var elFinder = function(elm, opts, bootCallback) {
 		 *
 		 * @type String
 		 **/
-		id = node.attr('id') || '',
+		id = node.attr('id') || node.attr('id', 'elfauto' + $('.elfinder').length).attr('id'),
 		
 		/**
 		 * Events namespace
 		 *
 		 * @type String
 		 **/
-		namespace = 'elfinder-' + (id ? id : Math.random().toString().substr(2, 7)),
+		namespace = 'elfinder-' + id,
 		
 		/**
 		 * Mousedown event
@@ -279,6 +279,12 @@ var elFinder = function(elm, opts, bootCallback) {
 		 * @type Object
 		 */
 		extToMimeTable,
+
+		/**
+		 * Disabled page unload function
+		 * @type Boolean
+		 */
+		diableUnloadCheck = false,
 
 		beeper = $(document.createElement('audio')).hide().appendTo('body')[0],
 			
@@ -821,6 +827,13 @@ var elFinder = function(elm, opts, bootCallback) {
 	this.bootCallback;
 
 	/**
+	 * Callback function at reload(restart) elFinder 
+	 * 
+	 * @type Function
+	 */
+	this.reloadCallback;
+
+	/**
 	 * ID. Required to create unique cookie name
 	 *
 	 * @type String
@@ -848,6 +861,26 @@ var elFinder = function(elm, opts, bootCallback) {
 			return self.cookie;
 		}
 	})();
+
+	/**
+	 * Set pause page unload check function or Get state
+	 *
+	 * @param      Boolean   state   To set state
+	 * @param      Boolean   keep    Keep disabled
+	 * @return     Boolean|void
+	 */
+	this.pauseUnloadCheck = function(state, keep) {
+		if (typeof state === 'undefined') {
+			return diableUnloadCheck;
+		} else {
+			diableUnloadCheck = !!state;
+			if (state && !keep) {
+				requestAnimationFrame(function() {
+					diableUnloadCheck = false;
+				});
+			}
+		}
+	};
 
 	/**
 	 * Configuration options
@@ -3134,7 +3167,7 @@ var elFinder = function(elm, opts, bootCallback) {
 		}
 		dfrd = this._commands[cmd] && this.isCommandEnabled(cmd, dstHash) 
 			? this._commands[cmd].exec(files, opts) 
-			: $.Deferred().reject('No such command');
+			: $.Deferred().reject('errUnknownCmd');
 		
 		resType = typeof dfrd;
 		if (!(resType === 'object' && dfrd.promise)) {
@@ -3185,7 +3218,7 @@ var elFinder = function(elm, opts, bootCallback) {
 	 * @return jQuery
 	 */
 	this.getUI = function(ui) {
-		return this.ui[ui] || (ui? $() : node);
+		return ui? (this.ui[ui] || $()) : node;
 	};
 	
 	/**
@@ -3561,7 +3594,7 @@ var elFinder = function(elm, opts, bootCallback) {
 			}
 		}
 
-		var orgStyle, bodyOvf, resizeTm, fullElm, exitFull, toFull,
+		var orgStyle, bodyOvf, resizeTm, fullElm, exitFull, toFull, funcObj,
 			cls = 'elfinder-fullscreen',
 			clsN = 'elfinder-fullscreen-native',
 			checkDialog = function() {
@@ -3581,85 +3614,88 @@ var elFinder = function(elm, opts, bootCallback) {
 					}
 				});
 			},
-			funcObj = self.UA.Fullscreen? {
-				// native full screen mode
-				
-				fullElm: function() {
-					return document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement || null;
-				},
-				
-				exitFull: function() {
-					if (document.exitFullscreen) {
-						return document.exitFullscreen();
-					} else if (document.webkitExitFullscreen) {
-						return document.webkitExitFullscreen();
-					} else if (document.mozCancelFullScreen) {
-						return document.mozCancelFullScreen();
-					} else if (document.msExitFullscreen) {
-						return document.msExitFullscreen();
-					}
-				},
-				
-				toFull: function(elem) {
-					if (elem.requestFullscreen) {
-						return elem.requestFullscreen();
-					} else if (elem.webkitRequestFullscreen) {
-						return elem.webkitRequestFullscreen();
-					} else if (elem.mozRequestFullScreen) {
-						return elem.mozRequestFullScreen();
-					} else if (elem.msRequestFullscreen) {
-						return elem.msRequestFullscreen();
-					}
-					return false;
-				}
-			} : {
-				// node element maximize mode
-				
-				fullElm: function() {
-					var full;
-					if (node.hasClass(cls)) {
-						return node.get(0);
-					} else {
-						full = node.find('.' + cls);
-						if (full.length) {
-							return full.get(0);
+			setFuncObj = function() {
+				var useFullscreen = self.storage('useFullscreen');
+				funcObj = self.UA.Fullscreen && (useFullscreen? useFullscreen > 0 : self.options.commandsOptions.fullscreen.mode === 'screen') ? {
+					// native full screen mode
+					
+					fullElm: function() {
+						return document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement || null;
+					},
+					
+					exitFull: function() {
+						if (document.exitFullscreen) {
+							return document.exitFullscreen();
+						} else if (document.webkitExitFullscreen) {
+							return document.webkitExitFullscreen();
+						} else if (document.mozCancelFullScreen) {
+							return document.mozCancelFullScreen();
+						} else if (document.msExitFullscreen) {
+							return document.msExitFullscreen();
 						}
+					},
+					
+					toFull: function(elem) {
+						if (elem.requestFullscreen) {
+							return elem.requestFullscreen();
+						} else if (elem.webkitRequestFullscreen) {
+							return elem.webkitRequestFullscreen();
+						} else if (elem.mozRequestFullScreen) {
+							return elem.mozRequestFullScreen();
+						} else if (elem.msRequestFullscreen) {
+							return elem.msRequestFullscreen();
+						}
+						return false;
 					}
-					return null;
-				},
-				
-				exitFull: function() {
-					var elm;
+				} : {
+					// node element maximize mode
 					
-					$(window).off('resize.' + namespace, resize);
-					if (bodyOvf !== void(0)) {
-						$('body').css('overflow', bodyOvf);
+					fullElm: function() {
+						var full;
+						if (node.hasClass(cls)) {
+							return node.get(0);
+						} else {
+							full = node.find('.' + cls);
+							if (full.length) {
+								return full.get(0);
+							}
+						}
+						return null;
+					},
+					
+					exitFull: function() {
+						var elm;
+						
+						$(window).off('resize.' + namespace, resize);
+						if (bodyOvf !== void(0)) {
+							$('body').css('overflow', bodyOvf);
+						}
+						bodyOvf = void(0);
+						
+						if (orgStyle) {
+							elm = orgStyle.elm;
+							restoreStyle(elm);
+							$(elm).trigger('resize', {fullscreen: 'off'});
+						}
+						
+						$(window).trigger('resize');
+					},
+					
+					toFull: function(elem) {
+						bodyOvf = $('body').css('overflow') || '';
+						$('body').css('overflow', 'hidden');
+						
+						$(elem).css(self.getMaximizeCss())
+							.addClass(cls)
+							.trigger('resize', {fullscreen: 'on'});
+						
+						checkDialog();
+						
+						$(window).on('resize.' + namespace, resize).trigger('resize');
+						
+						return true;
 					}
-					bodyOvf = void(0);
-					
-					if (orgStyle) {
-						elm = orgStyle.elm;
-						restoreStyle(elm);
-						$(elm).trigger('resize', {fullscreen: 'off'});
-					}
-					
-					$(window).trigger('resize');
-				},
-				
-				toFull: function(elem) {
-					bodyOvf = $('body').css('overflow') || '';
-					$('body').css('overflow', 'hidden');
-					
-					$(elem).css(self.getMaximizeCss())
-						.addClass(cls)
-						.trigger('resize', {fullscreen: 'on'});
-					
-					checkDialog();
-					
-					$(window).on('resize.' + namespace, resize).trigger('resize');
-					
-					return true;
-				}
+				};
 			},
 			restoreStyle = function(elem) {
 				if (orgStyle && orgStyle.elm == elem) {
@@ -3679,6 +3715,8 @@ var elFinder = function(elm, opts, bootCallback) {
 				}
 			};
 		
+		setFuncObj();
+
 		$(document).on('fullscreenchange.' + namespace + ' webkitfullscreenchange.' + namespace + ' mozfullscreenchange.' + namespace + ' MSFullscreenChange.' + namespace, function(e){
 			if (self.UA.Fullscreen) {
 				var elm = funcObj.fullElm(),
@@ -3733,6 +3771,7 @@ var elFinder = function(elm, opts, bootCallback) {
 				}
 			}
 			
+			setFuncObj();
 			orgStyle = {elm: elm, style: $(elm).attr('style')};
 			if (funcObj.toFull(elm) !== false) {
 				return elm;
@@ -4518,22 +4557,24 @@ var elFinder = function(elm, opts, bootCallback) {
 		})
 		.on('beforeunload.' + namespace,function(e){
 			var msg, cnt;
-			if (node.is(':visible')) {
-				if (self.ui.notify.children().length && $.inArray('hasNotifyDialog', self.options.windowCloseConfirm) !== -1) {
-					msg = self.i18n('ntfsmth');
-				} else if (node.find('.'+self.res('class', 'editing')).length && $.inArray('editingFile', self.options.windowCloseConfirm) !== -1) {
-					msg = self.i18n('editingFile');
-				} else if ((cnt = Object.keys(self.selected()).length) && $.inArray('hasSelectedItem', self.options.windowCloseConfirm) !== -1) {
-					msg = self.i18n('hasSelected', ''+cnt);
-				} else if ((cnt = Object.keys(self.clipboard()).length) && $.inArray('hasClipboardData', self.options.windowCloseConfirm) !== -1) {
-					msg = self.i18n('hasClipboard', ''+cnt);
+			if (!self.pauseUnloadCheck()) {
+				if (node.is(':visible')) {
+					if (self.ui.notify.children().length && $.inArray('hasNotifyDialog', self.options.windowCloseConfirm) !== -1) {
+						msg = self.i18n('ntfsmth');
+					} else if (node.find('.'+self.res('class', 'editing')).length && $.inArray('editingFile', self.options.windowCloseConfirm) !== -1) {
+						msg = self.i18n('editingFile');
+					} else if ((cnt = Object.keys(self.selected()).length) && $.inArray('hasSelectedItem', self.options.windowCloseConfirm) !== -1) {
+						msg = self.i18n('hasSelected', ''+cnt);
+					} else if ((cnt = Object.keys(self.clipboard()).length) && $.inArray('hasClipboardData', self.options.windowCloseConfirm) !== -1) {
+						msg = self.i18n('hasClipboard', ''+cnt);
+					}
+					if (msg) {
+						e.returnValue = msg;
+						return msg;
+					}
 				}
-				if (msg) {
-					e.returnValue = msg;
-					return msg;
-				}
+				self.trigger('unload');
 			}
-			self.trigger('unload');
 		});
 
 		// bind window onmessage for CORS
@@ -4658,7 +4699,7 @@ var elFinder = function(elm, opts, bootCallback) {
 		self.messages = i18n.messages;
 		
 		// check jquery ui
-		if (!($.fn.selectable && $.fn.draggable && $.fn.droppable && $.fn.resizable && $.fn.slider)) {
+		if (!($.fn.selectable && $.fn.draggable && $.fn.droppable && $.fn.resizable && $.fn.button && $.fn.slider)) {
 			return alert(self.i18n('errJqui'));
 		}
 		
@@ -6198,7 +6239,7 @@ elFinder.prototype = {
 				isDataType  = (data.isDataType || data.type == 'data'),
 				target      = (data.target || self.cwd().hash),
 				dropEvt     = (data.dropEvt || null),
-				extraData　 = data.extraData || null,
+				extraData   = data.extraData || null,
 				chunkEnable = (self.option('uploadMaxConn', target) != -1),
 				multiMax    = Math.min(5, Math.max(1, self.option('uploadMaxConn', target))),
 				retryWait   = 10000, // 10 sec
@@ -6585,7 +6626,7 @@ elFinder.prototype = {
 				chunkID = new Date().getTime().toString().substr(-9), // for take care of the 32bit backend system
 				BYTES_PER_CHUNK = Math.min((fm.uplMaxSize? fm.uplMaxSize : 2097152) - 8190, fm.options.uploadMaxChunkSize), // uplMaxSize margin 8kb or options.uploadMaxChunkSize
 				blobSlice = chunkEnable? false : '',
-				blobSize, blobMtime, i, start, end, chunks, blob, chunk, added, done, last, failChunk,
+				blobSize, blobMtime, blobName, i, start, end, chunks, blob, chunk, added, done, last, failChunk,
 				multi = function(files, num){
 					var sfiles = [], cid, sfilesLen = 0, cancelChk;
 					if (!abort) {
@@ -6614,7 +6655,8 @@ elFinder.prototype = {
 									renames: renames,
 									hashes: hashes,
 									multiupload: true,
-									overwrite: data.overwrite === 0? 0 : void 0
+									overwrite: data.overwrite === 0? 0 : void 0,
+									clipdata: data.clipdata
 								}, void 0, target)
 								.fail(function(error) {
 									if (error && error === 'No such command') {
@@ -6717,12 +6759,13 @@ elFinder.prototype = {
 							chunks = -1;
 							total = Math.floor((blobSize - 1) / BYTES_PER_CHUNK);
 							blobMtime = blob.lastModified? Math.round(blob.lastModified/1000) : 0;
+							blobName = data.clipdata? fm.date(fm.nonameDateFormat) + '.png' : blob.name;
 
 							totalSize += blobSize;
 							chunked[chunkID] = 0;
 							while(start < blobSize) {
 								chunk = blob[blobSlice](start, end);
-								chunk._chunk = blob.name + '.' + (++chunks) + '_' + total + '.part';
+								chunk._chunk = blobName + '.' + (++chunks) + '_' + total + '.part';
 								chunk._cid   = chunkID;
 								chunk._range = start + ',' + chunk.size + ',' + blobSize;
 								chunk._mtime = blobMtime;
@@ -6874,29 +6917,37 @@ elFinder.prototype = {
 				});
 				
 				$.each(files, function(i, file) {
+					var name;
 					if (file._chunkmerged) {
 						formData.append('chunk', file._chunkmerged);
 						formData.append('upload[]', file._name);
 						formData.append('mtime[]', file._mtime);
+						data.clipdata && formData.append('overwrite', 0);
 					} else {
 						if (file._chunkfail) {
 							formData.append('upload[]', 'chunkfail');
 							formData.append('mimes', 'chunkfail');
 						} else {
-							formData.append('upload[]', file);
 							if (data.clipdata) {
-								data.overwrite = 0;
-								formData.append('name[]', fm.date(fm.nonameDateFormat) + '.png');
-							}
-							if (file.name && fm.UA.iOS) {
-								if (file.name.match(/^image\.jpe?g$/i)) {
+								if (!file._chunk) {
 									data.overwrite = 0;
-									formData.append('name[]', fm.date(fm.nonameDateFormat) + '.jpg');
-								} else if (file.name.match(/^capturedvideo\.mov$/i)) {
-									data.overwrite = 0;
-									formData.append('name[]', fm.date(fm.nonameDateFormat) + '.mov');
+									name = fm.date(fm.nonameDateFormat) + '.png';
+								}
+							} else {
+								if (file.name) {
+									name = file.name;
+									if (fm.UA.iOS) {
+										if (name.match(/^image\.jpe?g$/i)) {
+											data.overwrite = 0;
+											name = fm.date(fm.nonameDateFormat) + '.jpg';
+										} else if (name.match(/^capturedvideo\.mov$/i)) {
+											data.overwrite = 0;
+											name = fm.date(fm.nonameDateFormat) + '.mov';
+										}
+									}
 								}
 							}
+							name? formData.append('upload[]', file, name) : formData.append('upload[]', file);
 						}
 						if (file._chunk) {
 							formData.append('chunk', file._chunk);
@@ -9530,9 +9581,9 @@ elFinder.prototype = {
 					cache.push($.Deferred().resolve(file.sizeInfo? file.sizeInfo : {size: file.size, dirCnt: 0, fileCnt : 1}));
 				} else {
 					if (! grps[root]) {
-						grps[root] = [ this ];
+						grps[root] = [ this.toString() ];
 					} else {
-						grps[root].push(this);
+						grps[root].push(this.toString());
 					}
 				}
 			});
