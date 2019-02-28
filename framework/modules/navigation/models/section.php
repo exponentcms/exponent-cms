@@ -62,7 +62,7 @@ class section extends expRecord {
         } else {
             $sef_name = expRouter::encode('Untitled');
         }
-        $dupe = $db->selectValue($this->tablename, 'sef_name', 'sef_name="' . $sef_name . '"');
+        $dupe = $db->selectValue($this->tablename, 'sef_name', 'sef_name=\'' . $sef_name . '\'');
         if (!empty($dupe)) {
             list($u, $s) = explode(' ', microtime());
             $sef_name .= '-' . $s . '-' . $u;

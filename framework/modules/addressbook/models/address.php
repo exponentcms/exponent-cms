@@ -114,7 +114,7 @@ class address extends expRecord {
             $user->lastname = expString::sanitize($_POST['lastname']);
             //eDebug($_POST);
             //eDebug($user);
-            $checkUser = $db->selectObject('user','username="' . $user->username . '"');
+            $checkUser = $db->selectObject('user','username=\'' . $user->username . '\'');
             if (isset($checkUser->id))
             {
                 expValidator::failAndReturnToForm(gt("The email address you entered already exists as a user. If you have lost your password, you may reset it here:")." <a href='/users/reset_password'>Reset Password</a>.", expString::sanitize($_POST));

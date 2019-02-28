@@ -289,7 +289,7 @@ class faqController extends expController {
             // get the location data for this content
             if (isset($cnt['location_data'])) $loc = expUnserialize($cnt['location_data']);
             $src = isset($loc->src) ? $loc->src : null;
-            if (!$db->selectObjects('sectionref', "module='" . $loc->mod . "' AND source=" . $loc->src . " AND refcount!=0")) {
+            if (!$db->selectObjects('sectionref', "module='" . $loc->mod . "' AND source='" . $loc->src . "' AND refcount!=0")) {
                 continue; // this item is in the recycle bin
             }
 

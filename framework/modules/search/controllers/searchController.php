@@ -239,7 +239,11 @@ class searchController extends expController {
         //eDebug($sql);
 
         //$res = $mod->find('all',$sql,'id',25);
-        $sql = "select DISTINCT(p.id), p.title, model, sef_url, f.id as fileid from ".$db->prefix."product as p INNER JOIN ".$db->prefix."content_expfiles as cef ON p.id=cef.content_id INNER JOIN ".$db->prefix."expfiles as f ON cef.expfiles_id = f.id where match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') AND p.parent_id=0 order by match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') desc LIMIT 25";
+        $sql = "SELECT DISTINCT(p.id), p.title, model, sef_url, f.id AS fileid FROM " .
+            $db->tableStmt('product') . " AS p INNER JOIN " . $db->tableStmt('content_expfiles') .
+            " AS cef ON p.id=cef.content_id INNER JOIN " . $db->tableStmt('expfiles') .
+            " AS f ON cef.expfiles_id = f.id WHERE MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "') AND p.parent_id=0 
+            ORDER BY MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "') DESC " . $db->limitStmt(25, 0);
         //$res = $db->selectObjectsBySql($sql);
         //$res = $db->selectObjectBySql('SELECT * FROM `" . $db->prefix . "product`');
 
@@ -360,7 +364,7 @@ class searchController extends expController {
 
 		$count   = $db->countObjects('search_queries');
 
-		$records = $db->selectObjectsBySql("SELECT COUNT(query) cnt, query FROM " .$db->prefix . "search_queries GROUP BY query ORDER BY cnt DESC LIMIT 0, {$limit}");
+		$records = $db->selectObjectsBySql("SELECT COUNT(query) cnt, query FROM " . $db->tableStmt('search_queries') . " GROUP BY query ORDER BY cnt DESC " . $db->limitStmt($limit, 0));
 
         $records_key_arr = array();
         $records_values_arr = array();

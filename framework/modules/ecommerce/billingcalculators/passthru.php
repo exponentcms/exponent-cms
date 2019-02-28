@@ -107,19 +107,29 @@ class passthru extends billingcalculator {
     //Should return html to display user data.
     function userView($billingmethod) {
         $opts = expUnserialize($billingmethod->billing_options);
-           //eDebug($opts,true);
-        if (isset($opts->result)) return '';
-        $ot = new order_type($opts->order_type);
-        $os = new order_status($opts->order_status);
-        if (!empty($opts->sales_rep_1_id)) $sr1 = new sales_rep($opts->sales_rep_1_id);
-        if (!empty($opts->sales_rep_2_id)) $sr2 = new sales_rep($opts->sales_rep_2_id);
-        if (!empty($opts->sales_rep_3_id)) $sr3 = new sales_rep($opts->sales_rep_3_id);
-        $msg = gt('Order Type') . ': ' . $ot->title;
-        $msg .= '<br>' . gt('Order Status') . ': ' . $os->title;
-        if (!empty($sr1)) $msg .= '<br>' . gt('Sales Rep 1') . ': ' . $sr1->initials;
-        if (!empty($sr2)) $msg .= '<br>' . gt('Sales Rep 2') . ': ' . $sr2->initials;
-        if (!empty($sr3)) $msg .= '<br>' . gt('Sales Rep 3') . ': ' . $sr3->initials;
-        //$order
+        if (isset($opts->result))
+            return '';
+        $msg = '';
+        if (!empty($opts->order_type))
+            $ot = new order_type($opts->order_type);
+        if (!empty($ot->title))
+            $msg = gt('Order Type') . ': ' . $ot->title;
+        if (!empty($opts->order_status))
+            $os = new order_status($opts->order_status);
+        if (!empty($os->title))
+            $msg .= '<br>' . gt('Order Status') . ': ' . $os->title;
+        if (!empty($opts->sales_rep_1_id))
+            $sr1 = new sales_rep($opts->sales_rep_1_id);
+        if (!empty($sr1))
+            $msg .= '<br>' . gt('Sales Rep 1') . ': ' . $sr1->initials;
+        if (!empty($opts->sales_rep_2_id))
+            $sr2 = new sales_rep($opts->sales_rep_2_id);
+        if (!empty($sr2))
+            $msg .= '<br>' . gt('Sales Rep 2') . ': ' . $sr2->initials;
+        if (!empty($opts->sales_rep_3_id))
+            $sr3 = new sales_rep($opts->sales_rep_3_id);
+        if (!empty($sr3))
+            $msg .= '<br>' . gt('Sales Rep 3') . ': ' . $sr3->initials;
         return $msg;
     }
 
@@ -129,17 +139,23 @@ class passthru extends billingcalculator {
         $obj = new stdClass();
         $obj->order_type = $params['order_type'];
         $obj->order_status = $params['order_status'];
-        if (isset($params['sales_rep_1_id'])) $obj->sales_rep_1_id = $params['sales_rep_1_id'];
-        if (isset($params['sales_rep_2_id'])) $obj->sales_rep_2_id = $params['sales_rep_2_id'];
-        if (isset($params['sales_rep_2_id'])) $obj->sales_rep_3_id = $params['sales_rep_3_id'];
+        if (isset($params['sales_rep_1_id']))
+            $obj->sales_rep_1_id = $params['sales_rep_1_id'];
+        if (isset($params['sales_rep_2_id']))
+            $obj->sales_rep_2_id = $params['sales_rep_2_id'];
+        if (isset($params['sales_rep_2_id']))
+            $obj->sales_rep_3_id = $params['sales_rep_3_id'];
         return $obj;
     }
 
     function preprocess($billingmethod, $opts, $params, $order) {
         $billingmethod->update(array('billing_options' => serialize($opts)));
-        if (isset($params['sales_rep_1_id'])) $order->sales_rep_1_id = $params['sales_rep_1_id'];
-        if (isset($params['sales_rep_2_id'])) $order->sales_rep_2_id = $params['sales_rep_2_id'];
-        if (isset($params['sales_rep_3_id'])) $order->sales_rep_3_id = $params['sales_rep_3_id'];
+        if (isset($params['sales_rep_1_id']))
+            $order->sales_rep_1_id = $params['sales_rep_1_id'];
+        if (isset($params['sales_rep_2_id']))
+            $order->sales_rep_2_id = $params['sales_rep_2_id'];
+        if (isset($params['sales_rep_3_id']))
+            $order->sales_rep_3_id = $params['sales_rep_3_id'];
         $order->save();
         /* eDebug($billingmethod);
          eDebug($opts);

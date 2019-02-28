@@ -26,12 +26,12 @@ if ($user->globalPerm('hide_pages_menu'))
     return false;
 
 if (!$user->isAdmin()) {
-    $pageperms = $db->selectValue('userpermission', 'uid', "uid='" . $user->id . "' AND source='' AND internal!=''");
+    $pageperms = $db->selectValue('userpermission', 'uid', "uid=" . $user->id . " AND source='' AND internal!=''");
     if (!$pageperms) {
         $groups = $user->getGroupMemberships();
         foreach ($groups as $group) {
             if (!$pageperms) {
-                $pageperms = $db->selectValue('grouppermission', 'gid', "gid='" . $group->id . "' AND source='' AND internal!=''");
+                $pageperms = $db->selectValue('grouppermission', 'gid', "gid=" . $group->id . " AND source='' AND internal!=''");
             } else {
                 break;
             }
@@ -119,12 +119,12 @@ $manageperms = false;
 if ($user->isAdmin()) {
     $manageperms = true;
 } else {
-    $manageperms = $db->selectValue('userpermission', 'uid', "uid='" . $user->id . "' AND module='navigation' AND permission='manage'");
+    $manageperms = $db->selectValue('userpermission', 'uid', "uid=" . $user->id . " AND module='navigation' AND permission='manage'");
     if (!$manageperms) {
         $groups = $user->getGroupMemberships();
         foreach ($groups as $group) {
             if (!$manageperms) {
-                $manageperms = $db->selectValue('grouppermission', 'gid', "gid='" . $group->id . "' AND module='navigation' AND permission='manage'");
+                $manageperms = $db->selectValue('grouppermission', 'gid', "gid=" . $group->id . " AND module='navigation' AND permission='manage'");
             } else {
                 break;
             }

@@ -131,8 +131,6 @@ class mysqlid_database {
 
 		//anything else would result in an inconsistent user experience
 
-		//TODO: determine how to handle encoding on postgres
-
 //		list($major, $minor, $micro) = sscanf(mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
 //		if(defined('DB_ENCODING')) {
 //			//SET NAMES is possible since version 4.1

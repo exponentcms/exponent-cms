@@ -61,7 +61,7 @@ class ecomconfigController extends expController {
 
         // if the title of the master changed we should update the option groups that are already using it.
         if ($oldtitle != $og->title) {
-            $db->sql('UPDATE '.$db->prefix.'optiongroup SET title="'.$og->title.'" WHERE title="'.$oldtitle.'"');
+            $db->sql('UPDATE ' . $db->tableStmt('optiongroup') . ' SET title=\''.$og->title.'\' WHERE title=\''.$oldtitle.'\'');
         }
 
         expHistory::back();
@@ -118,7 +118,7 @@ class ecomconfigController extends expController {
 
         // if the title of the master changed we should update the option groups that are already using it.
         if ($oldtitle != $opt->title) {
-            $db->sql('UPDATE '.$db->prefix.'option SET title="'.$opt->title.'" WHERE option_master_id='.$opt->id);
+            $db->sql('UPDATE ' . $db->tableStmt('option') . ' SET title=\''.$opt->title.'\' WHERE option_master_id='.$opt->id);
         }
 
         expHistory::back();
@@ -143,11 +143,13 @@ class ecomconfigController extends expController {
     /***************  DISCOUNTS        *******************************/
     /*****************************************************************/
     public function manage_discounts() {
+        global $db;
+
         expHistory::set('manageable', $this->params);
 
         $page = new expPaginator(array(
             'model'=>'discounts',
-			'sql'=>'SELECT * FROM '.DB_TABLE_PREFIX.'_discounts',
+			'sql'=>'SELECT * FROM ' . $db->tableStmt('discounts'),
 			'limit'=> 10,
             'order'      => (isset($this->params['order']) ? $this->params['order'] : null),
             'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : ''),

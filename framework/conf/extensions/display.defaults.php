@@ -17,7 +17,7 @@
 ##################################################
 
 if (!defined('LANGUAGE')) define('LANGUAGE','English - US');
-if (!defined('DISPLAY_THEME_REAL')) define('DISPLAY_THEME_REAL','retrotheme');
+if (!defined('DISPLAY_THEME_REAL')) define('DISPLAY_THEME_REAL','bootstrap4theme');
 if (!defined('THEME_STYLE_REAL')) define('THEME_STYLE_REAL','');
 if (!defined('INVERT_HIDE_TITLE')) define('INVERT_HIDE_TITLE','0');
 if (!defined('FORCE_MOBILE')) define('FORCE_MOBILE','0');

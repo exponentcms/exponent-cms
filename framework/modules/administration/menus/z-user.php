@@ -80,7 +80,7 @@ if (!$user->isAdmin()) {
     $previewperms = !$db->selectValue(
         'userpermission',
         'uid',
-        "uid='" . $user->id . "' AND (permission='manage' OR permission='edit')"
+        "uid=" . $user->id . " AND (permission='manage' OR permission='edit')"
     );
     if (!$previewperms) {
         $groups = $user->getGroupMemberships();
@@ -89,7 +89,7 @@ if (!$user->isAdmin()) {
                 $previewperms = !$db->selectValue(
                     'grouppermission',
                     'gid',
-                    "gid='" . $group->id . "' AND (permission='manage' OR permission='edit')"
+                    "gid=" . $group->id . " AND (permission='manage' OR permission='edit')"
                 );
             } else {
                 break;

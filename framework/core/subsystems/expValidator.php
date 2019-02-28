@@ -155,7 +155,7 @@ class expValidator {
 	public static function uniqueness_of($field, $object, $opts) {
         global $db;
 
-        $sql = "`".$field."`='".$object->$field."'";
+        $sql = $field."='".$object->$field."'";
         if (!empty($object->id)) $sql .= ' AND id != '.$object->id;
         if (array_key_exists('grouping_sql', $opts)) $sql .= $opts['grouping_sql'];  // allow grouping sql parameter to be passed
         $ret = $db->countObjects($object->tablename, $sql);

@@ -241,7 +241,7 @@ class expRecord {
 
         $sql = empty($where) ? 1 : $where;
         //eDebug("Supports Revisions:" . $this->supports_revisions);
-//        if ($this->supports_revisions && $range != 'revisions') $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE $where)";
+//        if ($this->supports_revisions && $range != 'revisions') $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM " . $db->tableStmt($this->tablename) . " WHERE $where)";
 //        $sql .= empty($order) ? '' : ' ORDER BY ' . $order;
         $order = expString::escape($order);
         if ($limit !== null)
@@ -257,19 +257,19 @@ class expRecord {
 
         if (strcasecmp($range, 'all') == 0) {  // return all items matching request, most current revision
 //            $sql .= empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
-            $limitsql = empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
+            $limitsql = empty($limit) ? '' : ' '. $db->limitStmt($limit, $limitstart);
             return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $supports_revisions, $needs_approval, $user->id);
         } elseif (strcasecmp($range, 'revisions') == 0) {  // return all items matching request, all revisions
 //            $sql .= empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
-            $limitsql = empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
+            $limitsql = empty($limit) ? '' : ' '. $db->limitStmt($limit, $limitstart);
             return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql);
         } elseif (strcasecmp($range, 'first') == 0) {  // return the first item matching request
 //            $sql .= ' LIMIT 0,1';
-            $limitsql = ' LIMIT 0,1';
+            $limitsql = ' '. $db->limitStmt(1);
             $records = $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $supports_revisions, $needs_approval, $user->id);
             return empty($records) ? null : $records[0];
         } elseif (strcasecmp($range, 'bytitle') == 0) {  // return items requested by title/sef_url (will there be more than one?)
-            $limitsql = ' LIMIT 0,1';
+            $limitsql = ' '. $db->limitStmt(1);
             $records = $db->selectExpObjects($this->tablename, "title='" . $where . "' OR sef_url='" . $where . "'", $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $supports_revisions, $needs_approval, $user->id);
             return empty($records) ? null : $records[0];
         } elseif (strcasecmp($range, 'count') == 0) {  // return count of items
@@ -280,11 +280,11 @@ class expRecord {
                 $records[] = new $this->classname($id);
             return $records;
         } elseif (strcasecmp($range, 'bytag') == 0) {  // return items tagged with request (id or title/sef_url)
-            if (!is_int($where))  $where = $db->selectObject($db->prefix . 'expTags',"title='" . $where . "' OR sef_url='" . $where . "'");
-            $sql = 'SELECT DISTINCT m.id FROM ' . $db->prefix . $this->tablename . ' m ';
-            $sql .= 'JOIN ' . $db->prefix . 'content_expTags ct ';
+            if (!is_int($where))  $where = $db->selectObject('expTags',"title='" . $where . "' OR sef_url='" . $where . "'");
+            $sql = 'SELECT DISTINCT m.id FROM ' . $db->tableStmt($this->tablename) . ' m ';
+            $sql .= 'JOIN ' . $db->tableStmt('content_expTags') . ' ct ';
             $sql .= 'ON m.id = ct.content_id WHERE ct.exptags_id=' . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
-            if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE ct.exptags_id=" . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
+            if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM " . $db->tableStmt($this->tablename) . " WHERE ct.exptags_id=" . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
             $tag_assocs = $db->selectObjectsBySql($sql);
             $records    = array();
             foreach ($tag_assocs as $assoc) {
@@ -292,11 +292,11 @@ class expRecord {
             }
             return $records;
         } elseif (strcasecmp($range, 'bycat') == 0) {  // return items categorized/grouped under request (id or title/sef_url)
-            if (!is_int($where))  $where = $db->selectObject($db->prefix . 'expCats',"title='" . $where . "' OR sef_url='" . $where . "'");
-            $sql = 'SELECT DISTINCT m.id FROM ' . $db->prefix . $this->tablename . ' m ';
-            $sql .= 'JOIN ' . $db->prefix . 'content_expCats ct ';
+            if (!is_int($where))  $where = $db->selectObject('expCats',"title='" . $where . "' OR sef_url='" . $where . "'");
+            $sql = 'SELECT DISTINCT m.id FROM ' . $db->tableStmt($this->tablename) . ' m ';
+            $sql .= 'JOIN ' . $db->tableStmt('content_expCats') . ' ct ';
             $sql .= 'ON m.id = ct.content_id WHERE ct.expcats_id=' . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
-            if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE ct.expcats_id=" . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
+            if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM ' . $db->tableStmt($this->tablename) . ' WHERE ct.expcats_id=" . (int)($where) . " AND ct.content_type='" . $this->classname . "'";
             $cat_assocs = $db->selectObjectsBySql($sql);
             $records    = array();
             foreach ($cat_assocs as $assoc) {
@@ -321,7 +321,7 @@ class expRecord {
     public function findBy($column, $value, $get_assoc = true, $get_attached = true, $except = array(), $cascade_except = false) {
 //        global $db;
 
-        $where = "`" . $column . "`=";
+        $where = $column . "=";
         if (!is_numeric($value)) $where .= "'";
         $where .= $value;
         if (!is_numeric($value)) $where .= "'";
@@ -477,7 +477,7 @@ class expRecord {
 
         if (!empty($this->rank)) {
             $next_prev = $direction === 'up' ? $this->rank - 1 : $this->rank + 1;
-            $where .= empty($this->location_data) ? null : (!empty($where) ? " AND " : '') . "location_data='" . $this->location_data . "'" . $this->grouping_sql;
+            $where .= empty($this->location_data) ? null : (!empty($where) ? " AND " : '') . "location_data='" . $this->location_data . "'" . $db->wrapStmt($this->grouping_sql);
             $db->switchValues($this->tablename, 'rank', $this->rank, $next_prev, $where);
         }
     }
@@ -675,12 +675,12 @@ class expRecord {
                     //FIXME: $where .= empty($this->rank_by_field) ? null : "AND " . $this->rank_by_field . "='" . $this->$this->rank_by_field . "'";
                     $groupby = empty($this->location_data) ? null : 'location_data';
                     $groupby .= empty($this->rank_by_field) ? null : (empty($groupby) ? null : ',' . $this->rank_by_field);
-                    $this->rank = $db->max($this->tablename, 'rank', $groupby, $where . $this->grouping_sql) + 1;
+                    $this->rank = $db->max($this->tablename, 'rank', $groupby, $where . $db->wrapStmt($this->grouping_sql)) + 1;
                 } else {
                     // check if this rank is already there..if so increment everything below it.
-                    $obj = $db->selectObject($this->tablename, 'rank=' . $this->rank . $this->grouping_sql);
+                    $obj = $db->selectObject($this->tablename, 'rank=' . $this->rank . $db->wrapStmt($this->grouping_sql));
                     if (!empty($obj)) {
-                        $db->increment($this->tablename, 'rank', 1, 'rank>=' . $this->rank . $this->grouping_sql);
+                        $db->increment($this->tablename, 'rank', 1, 'rank>=' . $this->rank . $db->wrapStmt($this->grouping_sql));
                     }
                 }
             }
@@ -783,6 +783,7 @@ class expRecord {
                             }
                         } elseif (is_numeric($item)) {
                             $obj->$refname     = $item;
+                            $obj->subtype      = $subtype;
                             $obj->content_id   = $this->id;
                             $obj->content_type = $this->classname;
                             if ($type === 'expFile' || $type === 'expCats') $obj->rank = $subtype + 1;
@@ -821,7 +822,7 @@ class expRecord {
         if (!empty($where))
             $where .= ' AND ';  // for help in reranking, NOT deleting object
         if (property_exists($this, 'rank'))
-            $db->decrement($this->tablename, 'rank', 1, $where . 'rank>=' . $this->rank . $this->grouping_sql);
+            $db->decrement($this->tablename, 'rank', 1, $where . 'rank>=' . $this->rank . $db->wrapStmt($this->grouping_sql));
 
         // delete attached item connections
         foreach ($this->attachable_item_types as $content_table=> $type) {
@@ -869,7 +870,7 @@ class expRecord {
 		} else {
 			$this->sef_url = expRouter::encode('Untitled');
 		}
-        $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url="'.$this->sef_url.'"' . $this->grouping_sql);
+        $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url=\''.$this->sef_url.'\'' . $db->wrapStmt($this->grouping_sql));
 		if (!empty($dupe)) {
 			list($u, $s) = explode(' ',microtime());
 			$this->sef_url .= '-'.$s.'-'.$u;
@@ -937,7 +938,7 @@ class expRecord {
         $objarray = array();
         if (!empty($this->id) && !empty($this->attachable_table)) {
 //            $assocs = $db->selectObjects($this->attachable_table, $this->classname.'s_id='.$this->id.' AND content_type="'.$content_type.'"');  //FIXME is it plural where others are single?
-            $assocs = $db->selectObjects($this->attachable_table, strtolower($this->tablename) . '_id=' . $this->id . ' AND content_type="' . $content_type . '"');
+            $assocs = $db->selectObjects($this->attachable_table, strtolower($this->tablename) . '_id=' . $this->id . ' AND content_type=\'' . $content_type . '\'');
             foreach ($assocs as $assoc) {
                 if (class_exists($assoc->content_type)) $objarray[] = new $assoc->content_type($assoc->content_id);
             }
@@ -985,7 +986,7 @@ class expRecord {
                 $this->$type = array();
             } else {
                 $sql = 'SELECT ef.*, cef.subtype AS subtype FROM ';
-                $sql .= $db->prefix . $tablename . ' ef JOIN ' . $db->prefix . $content_table . ' cef ';
+                $sql .= $db->tableStmt($tablename) . ' ef JOIN ' . $db->tableStmt($content_table) . ' cef ';
                 $sql .= "ON ef.id = cef." . $tablename . "_id";
                 $sql .= " WHERE content_id=" . $this->id;
                 $sql .= " AND content_type='" . $this->classname . "'";
@@ -1096,7 +1097,7 @@ class expRecord {
                 $assocObj  = new $assoc_object(null, false, false);
                 $tablename = $this->makeManyToManyTablename($assocObj->tablename);
 
-                $ret     = $db->selectObjects($assocObj->tablename, 'id IN (SELECT ' . $assocObj->tablename . '_id from ' . $db->prefix . $tablename . ' WHERE ' . $this->tablename . '_id=' . $this->id . ')', $assocObj->default_sort_field != '' ? $assocObj->default_sort_field . " " . $assocObj->default_sort_direction : null);
+                $ret     = $db->selectObjects($assocObj->tablename, 'id IN (SELECT ' . $assocObj->tablename . '_id FROM ' . $db->tableStmt($tablename) . ' WHERE ' . $this->tablename . '_id=' . $this->id . ')', $assocObj->default_sort_field != '' ? $assocObj->default_sort_field . " " . $assocObj->default_sort_direction : null);
                 $records = array();
                 foreach ($ret as $record) {
                     $record_array = object2Array($record);
@@ -1120,7 +1121,7 @@ class expRecord {
                 $assocObj  = new $assoc_object(null, false, false);
                 $tablename = $this->makeManyToManyTablename($assocObj->classname);
 
-                $ret     = $db->selectObjects($assocObj->tablename, 'id IN (SELECT ' . $assocObj->classname . '_id from ' . $db->prefix . $tablename . ' WHERE ' . $this->tablename . '_id=' . $this->id . ')');
+                $ret     = $db->selectObjects($assocObj->tablename, 'id IN (SELECT ' . $assocObj->classname . '_id FROM ' . $db->tableStmt($tablename) . ' WHERE ' . $this->tablename . '_id=' . $this->id . ')');
                 $records = array();
                 foreach ($ret as $record) {
                     $record_array = object2Array($record);

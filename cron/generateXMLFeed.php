@@ -47,16 +47,16 @@
 
     $count=0;
     $columns = '';
-    $sql = 'SELECT DISTINCT(p.id),active_type,availability_type,quantity, model,feed_title,feed_body,google_product_type,p.sef_url,base_price,use_special_price, special_price,f.directory,f.filename, c.title as company, sc.id as storeCategoryId FROM '.DB_TABLE_PREFIX.'_product p
-    LEFT JOIN '.DB_TABLE_PREFIX.'_content_expFiles cf ON
+    $sql = 'SELECT DISTINCT(p.id),active_type,availability_type,quantity, model,feed_title,feed_body,google_product_type,p.sef_url,base_price,use_special_price, special_price,f.directory,f.filename, c.title as company, sc.id as storeCategoryId FROM '.$this->tableStmt('product').' p
+    LEFT JOIN '.$this->tableStmt('content_expFiles').' cf ON
          p.id = cf.content_id 
-    LEFT JOIN '.DB_TABLE_PREFIX.'_expFiles f ON
+    LEFT JOIN '.$this->tableStmt('expFiles').' f ON
         cf.expfiles_id = f.id 
-    LEFT JOIN '.DB_TABLE_PREFIX.'_companies c ON
+    LEFT JOIN '.$this->tableStmt('companies').' c ON
         c.id = p.companies_id
-    LEFT JOIN '.DB_TABLE_PREFIX.'_product_storeCategories psc ON
+    LEFT JOIN '.$this->tableStmt('product_storeCategories').' psc ON
         p.id = psc.product_id
-    LEFT JOIN '.DB_TABLE_PREFIX.'_storeCategories sc ON
+    LEFT JOIN '.$this->tableStmt('storeCategories').' sc ON
         psc.storeCategories_id = sc.id
     WHERE p.parent_id=0 AND (availability_type=0 OR availability_type=1 OR availability_type=2) AND(active_type=0 OR active_type=1) AND p.sef_url != "" AND cf.subtype="mainimage" ORDER BY p.title ASC';
 
@@ -114,8 +114,8 @@
         //temporary hack in
         $gpath = $db->selectPathToNestedNode('storeCategories',$prod->storeCategoryId);
 
-        $gsql = 'SELECT title FROM '.DB_TABLE_PREFIX.'_google_product_types bpt
-            INNER JOIN '.DB_TABLE_PREFIX.'_google_product_types_storeCategories bptsc ON
+        $gsql = 'SELECT title FROM '.$this->tableStmt('google_product_types').' bpt
+            INNER JOIN '.$this->tableStmt('google_product_types_storeCategories').' bptsc ON
                 bptsc.google_product_types_id = bpt.id
             WHERE bptsc.storecategories_id = ' . $gpath[0]->id;
         $g_catObj = $db->selectObjectBySql($gsql);
@@ -325,8 +325,8 @@
             if($path_count == 0)
             {
                 //first one, so get the root b_category''
-                $sql = 'SELECT title FROM '.DB_TABLE_PREFIX.'t_bing_product_types bpt
-                    INNER JOIN '.DB_TABLE_PREFIX.'_bing_product_types_storeCategories bptsc ON
+                $sql = 'SELECT title FROM '.$this->tableStmt('bing_product_types').' bpt
+                    INNER JOIN '.$this->tableStmt('bing_product_types_storeCategories').' bptsc ON
                         bptsc.bing_product_types_id = bpt.id
                     WHERE bptsc.storecategories_id = ' . $cat->id;
                 $b_catObj = $db->selectObjectBySql($sql);

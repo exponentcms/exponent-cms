@@ -67,7 +67,7 @@ class storeCategoryController extends expNestedNodeController {
         $product_types = ecomconfig::getConfig('product_types');
 
         //Declaration of array variables for product types bing and google
-        $arr_product_type = ''; //A Multi-dimentional array to be passed in the view that contains the html of listbuildercontrol for product types like bing and google
+        $arr_product_type = array(); //A Multi-dimentional array to be passed in the view that contains the html of listbuildercontrol for product types like bing and google
 
         if (!empty($product_types)) foreach ($product_types as $value) {
 
@@ -75,8 +75,8 @@ class storeCategoryController extends expNestedNodeController {
             $product_type_id = $value . 's_id';
             $product_type_list = $value . 's_list';
             $new_product_type = new $product_type;
-            $f_recorded_product_types = '';
-            $f_types = '';
+            $f_recorded_product_types = array();
+            $f_types = array();
             //Import product type records if it is empty
             if ($db->tableIsEmpty($product_type)) {
                 $file = BASE . "framework/modules/ecommerce/assets/sql/exponent_{$product_type}.sql";
@@ -102,7 +102,7 @@ class storeCategoryController extends expNestedNodeController {
                 }
             }
 
-            $recorded_product_type = $db->selectObjectsBySql("SELECT {$product_type_id}, title FROM " . $db->prefix . "{$value}s_storeCategories, " . $db->prefix . "{$product_type} WHERE {$product_type_id} = id and storecategories_id = " . $id);
+            $recorded_product_type = $db->selectObjectsBySql("SELECT {$product_type_id}, title FROM " . $db->tableStmt($value . 's_storeCategories') . ", " . $db->tableStmt($product_type) . " WHERE {$product_type_id} = id and storecategories_id = " . $id);
 
             foreach ($db->selectFormattedNestedTree("{$product_type}") as $item) {
                 $f_types[$item->id] = $item->title;
@@ -111,7 +111,7 @@ class storeCategoryController extends expNestedNodeController {
             foreach ($recorded_product_type as $item) {
                 $f_recorded_product_types[$item->$product_type_id] = trim($item->title);
             }
-            $control = new listbuildercontrol(@$f_recorded_product_types, $f_types);
+            $control = new listbuildercontrol(@$f_recorded_product_types, $f_types, 24);
             $arr_product_type[$value] = $control->controlToHTML($product_type_list, "copy");
         }
 
@@ -169,7 +169,7 @@ class storeCategoryController extends expNestedNodeController {
         $rank = 1;
         $category = new storeCategory($this->params['id']);
         foreach ($this->params['rerank'] as $id) {
-            $sql = "SELECT DISTINCT sc.* FROM " . $db->prefix . "product_storeCategories sc JOIN " . $db->prefix . "product p ON p.id = sc.product_id WHERE p.id=" . $id . " AND sc.storecategories_id IN (SELECT id FROM " . $db->prefix . "storeCategories WHERE rgt BETWEEN " . $category->lft . " AND " . $category->rgt . ") ORDER BY rank ASC";
+            $sql = "SELECT DISTINCT sc.* FROM " . $db->tableStmt('product_storeCategories') . " sc JOIN " . $db->tableStmt('product') . " p ON p.id = sc.product_id WHERE p.id=" . $id . " AND sc.storecategories_id IN (SELECT id FROM " . $db->tableStmt('storeCategories') . " WHERE rgt BETWEEN " . $category->lft . " AND " . $category->rgt . ") ORDER BY rank ASC";
             $prod = $db->selectObjectBySQL($sql);
             $prod->rank = $rank;
             $db->updateObject($prod, "product_storeCategories", "storecategories_id=" . $prod->storecategories_id . " AND product_id=" . $id);

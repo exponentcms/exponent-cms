@@ -155,7 +155,7 @@ class shippingController extends expController {
                 if (is_file("$dir/$file") && substr("$dir/$file", -4) === ".php") {
                     include_once("$dir/$file");
                     $classname = substr($file, 0, -4);
-                    $id = $db->selectValue('shippingcalculator', 'id', 'calculator_name="'.$classname.'"');
+                    $id = $db->selectValue('shippingcalculator', 'id', 'calculator_name=\''.$classname.'\'');
                     if (empty($id)) {
                         // update list of calculators in db
                         $calcobj = new $classname($this->params);
@@ -274,7 +274,7 @@ class shippingController extends expController {
         global $db;
 
         // we ALWAYS assume this is coming from easypost webhook
-        $calc_id = $db->selectValue('shippingcalculator','id','calculator_name="easypostcalculator" AND enabled=1');
+        $calc_id = $db->selectValue('shippingcalculator','id','calculator_name=\'easypostcalculator\' AND enabled=1');
         if ($calc_id) {
             $ep = new easypostcalculator($calc_id);
             if ($ep->trackerEnabled()) {

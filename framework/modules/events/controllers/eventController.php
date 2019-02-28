@@ -1343,7 +1343,7 @@ class eventController extends expController {
             if (file_exists($cache_fname)) {
                 $cache = unserialize(file_get_contents($cache_fname));
                 if ($startdate >= $cache['start_date'] || $startdate >= $cache['first_date']) {
-                    $events = $db->selectObjects('event_cache','feed="'.$extgcalurl.'" AND ' . self::build_daterange_sql($startdate,$enddate,'eventdate',true));
+                    $events = $db->selectObjects('event_cache','feed=\''.$extgcalurl.'\' AND ' . self::build_daterange_sql($startdate,$enddate,'eventdate',true));
                     foreach ($events as $event) {
                         if ($multiday) {
                             $extevents[$event->eventdate][$dy] = $event;
@@ -1394,7 +1394,7 @@ class eventController extends expController {
             if (file_exists($cache_fname)) {
                 $cache = unserialize(file_get_contents($cache_fname));
                 if ($startdate >= $cache['start_date'] || $startdate >= $cache['first_date']) {
-                    $events = $db->selectObjects('event_cache','feed="'.$exticalurl.'" AND ' . self::build_daterange_sql($startdate,$enddate,'eventdate',true));
+                    $events = $db->selectObjects('event_cache','feed=\''.$exticalurl.'\' AND ' . self::build_daterange_sql($startdate,$enddate,'eventdate',true));
                     foreach ($events as $event) {
                         $extevents[$event->eventdate][$dy] = $event;
                         $extevents[$event->eventdate][$dy]->location_data = 'icalevent' . $key;
@@ -1502,8 +1502,8 @@ class eventController extends expController {
 
     public function get_ical_events($exticalurl, $startdate=null, $enddate=null, &$dy=0, $key=0, $multiday=false) {
         $extevents = array();
-        require_once BASE . 'external/iCalcreator-2.24/autoload.php';
-        $v = new kigkonsult\iCalcreator\vcalendar(); // initiate new CALENDAR
+        require_once BASE . 'external/iCalcreator-2.26.8/autoload.php';
+        $v = new Kigkonsult\Icalcreator\vcalendar(); // initiate new CALENDAR
         if (stripos($exticalurl, 'http') === 0) {
             $v->setConfig('url', $exticalurl);
         } else {
@@ -1539,7 +1539,7 @@ class eventController extends expController {
 
         // Set the timezone to GMT
         @date_default_timezone_set('GMT');
-        $tzarray = kigkonsult\iCalcreator\getTimezonesAsDateArrays($v);
+        $tzarray = Kigkonsult\Icalcreator\getTimezonesAsDateArrays($v);
         // Set the default timezone
         @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
         if (!empty($eventArray)) foreach ($eventArray as $year => $yearArray) {
@@ -1563,17 +1563,17 @@ class eventController extends expController {
                         $tzoffsets = array();
                         $date_tzoffset = 0;
                         if (!empty($tzarray)) {
-//                                $ourtzoffsets = -(kigkonsult\iCalcreator\util\util::tz2offset(date('O',time())));
-                            $ourtzoffsets = -(kigkonsult\iCalcreator\util\util::tz2offset(date('O',self::_date2timestamp($dtstart['value']))));
+//                                $ourtzoffsets = -(Kigkonsult\Icalcreator\util\util::tz2offset(date('O',time())));
+                            $ourtzoffsets = -(Kigkonsult\Icalcreator\util\util::tz2offset(date('O',self::_date2timestamp($dtstart['value']))));
                             // Set the timezone to GMT
                             @date_default_timezone_set('GMT');
-                            if (!empty($dtstart['params']['TZID'])) $tzoffsets = kigkonsult\iCalcreator\getTzOffsetForDate($tzarray, $dtstart['params']['TZID'], $dtstart['value']);
+                            if (!empty($dtstart['params']['TZID'])) $tzoffsets = Kigkonsult\Icalcreator\getTzOffsetForDate($tzarray, $dtstart['params']['TZID'], $dtstart['value']);
                             // Set the default timezone
                             @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
                             if (isset($tzoffsets['offsetSec'])) $date_tzoffset = $ourtzoffsets + $tzoffsets['offsetSec'];
                         }
                         if (empty($tzoffsets)) {
-                            $date_tzoffset = -(kigkonsult\iCalcreator\util\util::tz2offset(date('O',self::_date2timestamp($dtstart['value']))));
+                            $date_tzoffset = -(Kigkonsult\Icalcreator\util\util::tz2offset(date('O',self::_date2timestamp($dtstart['value']))));
                         }
                         //FIXME we must have the real timezone offset for the date by this point
 
@@ -1583,13 +1583,13 @@ class eventController extends expController {
                                 && (int)$dtend['value']['hour'] == 0 && (int)$dtend['value']['min'] == 0  && (int)$dtend['value']['sec'] == 0
                                 && ((((int)$dtstart['value']['day'] - (int)$dtend['value']['day']) == -1) || (((int)$dtstart['value']['month'] - (int)$dtend['value']['month']) == -1) || (((int)$dtstart['value']['month'] - (int)$dtend['value']['month']) == -11)))) {
                             $dtst = strtotime($currdate[1]);
-                            $dtst1 = kigkonsult\iCalcreator\util\util::timestamp2date($dtst);
+                            $dtst1 = Kigkonsult\Icalcreator\util\util::timestamp2date($dtst);
                             $dtstart['value']['year'] = $dtst1['year'];
                             $dtstart['value']['month'] = $dtst1['month'];
                             $dtstart['value']['day'] = $dtst1['day'];
                             $currenddate = $vevent->getProperty('x-current-dtend');
                             $dtet = strtotime($currenddate[1]);
-                            $dtet1 = kigkonsult\iCalcreator\util\util::timestamp2date($dtet);
+                            $dtet1 = Kigkonsult\Icalcreator\util\util::timestamp2date($dtet);
                             $dtend['value']['year'] = $dtet1['year'];
                             $dtend['value']['month'] = $dtet1['month'];
                             $dtend['value']['day'] = $dtet1['day'];
@@ -1695,8 +1695,8 @@ class eventController extends expController {
         return mktime( $datetime['hour'], $datetime['min'], $datetime['sec'], $datetime['month'], $datetime['day'], $datetime['year'] );
       $output = $offset = 0;
       if( empty( $wtz )) {
-        if( kigkonsult\iCalcreator\util\util::isOffset( $datetime['tz'] )) {
-          $offset = kigkonsult\iCalcreator\util\util::tz2offset( $datetime['tz'] ) * -1;
+        if( Kigkonsult\Icalcreator\util\util::isOffset( $datetime['tz'] )) {
+          $offset = Kigkonsult\Icalcreator\util\util::tz2offset( $datetime['tz'] ) * -1;
           $wtz    = 'UTC';
         }
         else
@@ -1775,14 +1775,14 @@ class eventController extends expController {
                             $event_cache->is_allday = $extevent->is_allday;
                         $found = false;
                         if ($extevent->eventdate->date < $start)   // prevent duplicating events crossing month boundaries
-                            $found = $db->selectObject('event_cache','feed="'.$extgcalurl.'" AND event_id="'.$event_cache->event_id.'" AND eventdate='.$event_cache->eventdate);
+                            $found = $db->selectObject('event_cache','feed=\'"'.$extgcalurl.'\' AND event_id='.$event_cache->event_id.' AND eventdate='.$event_cache->eventdate);
                         if (!$found)
                             $db->insertObject($event_cache,'event_cache');
                     }
                 }
                 $start = expDateTime::startOfMonthTimestamp($end + 1024);
             }
-            $cache_contents = serialize(array('start_date'=>$start,'first_date'=>(int)$db->selectValue('event_cache','eventdate','feed="'.$extgcalurl.'" ORDER BY eventdate'),'refresh_date'=>time()));
+            $cache_contents = serialize(array('start_date'=>$start,'first_date'=>(int)$db->selectValue('event_cache','eventdate','feed=\''.$extgcalurl.'\' ORDER BY eventdate'),'refresh_date'=>time()));
             file_put_contents($cache_fname, $cache_contents);
         }
 
@@ -1811,7 +1811,7 @@ class eventController extends expController {
                     $db->insertObject($event_cache, 'event_cache');
                 }
             }
-            $cache_contents = serialize(array('start_date'=>$start,'first_date'=>(int)$db->selectValue('event_cache','eventdate','feed="'.$exticalurl.'" ORDER BY eventdate'),'refresh_date'=>time()));
+            $cache_contents = serialize(array('start_date'=>$start,'first_date'=>(int)$db->selectValue('event_cache','eventdate','feed=\''.$exticalurl.'\' ORDER BY eventdate'),'refresh_date'=>time()));
             file_put_contents($cache_fname, $cache_contents);
         }
         flash('message', gt('External Calendar Event cache updated'));

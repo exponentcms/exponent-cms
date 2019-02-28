@@ -77,8 +77,8 @@ abstract class expNestedNode extends expRecord {
 			$this->lft = $adjust_val + 1;
 			$this->rgt = $adjust_val + 2;
 
-			$db->sql('UPDATE `'.$db->prefix.$this->table.'` SET rgt = rgt + 2 WHERE rgt > '.$adjust_val);
-			$db->sql('UPDATE `'.$db->prefix.$this->table.'` SET lft = lft + 2 WHERE lft > '.$adjust_val);
+			$db->sql('UPDATE ' . $db->tableStmt($this->table) . ' SET rgt = rgt + 2 WHERE rgt > '.$adjust_val);
+			$db->sql('UPDATE ' . $db->tableStmt($this->table) . ' SET lft = lft + 2 WHERE lft > '.$adjust_val);
 		}
 		$this->save(true);
 	}

@@ -106,9 +106,9 @@ class storeCategory extends expNestedNode {
 		}
 
 		for ($i = 0, $iMax = count($children); $i < $iMax; $i++) {
-			$sql  = 'SELECT count(DISTINCT p.id) as c FROM '.$db->prefix.'product p JOIN '.$db->prefix.'product_storeCategories sc ';
+			$sql  = 'SELECT count(DISTINCT p.id) as c FROM ' . $db->tableStmt('product') . ' p JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ';
           	$sql .= 'ON p.id = sc.product_id WHERE sc.storecategories_id IN (';
-          	$sql .= 'SELECT id FROM '.$db->prefix.'storeCategories WHERE rgt BETWEEN '.$children[$i]->lft.' AND '.$children[$i]->rgt.")";
+          	$sql .= 'SELECT id FROM ' . $db->tableStmt('storeCategories') . ' WHERE rgt BETWEEN '.$children[$i]->lft.' AND '.$children[$i]->rgt.")";
 
           	$count = $db->selectObjectBySql($sql);
           	$children[$i]->product_count = $count->c;
@@ -128,8 +128,8 @@ class storeCategory extends expNestedNode {
         //if(!empty($order)) $order = " ORDER BY " . $order;
         $order = " ORDER BY p.title ASC";
 
-        $sql_start = 'SELECT DISTINCT p.* FROM ' . DB_TABLE_PREFIX . '_product p ';
-        $sql = 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
+        $sql_start = 'SELECT DISTINCT p.* FROM ' . $db->tableStmt('product') . ' p ';
+        $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ON p.id = sc.product_id ';
         $sql .= 'WHERE ';
         if (!($user->is_admin || $user->is_acting_admin))
             $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
@@ -150,8 +150,8 @@ class storeCategory extends expNestedNode {
         //if(!empty($order)) $order = " ORDER BY " . $order;
         $order = " ORDER BY p.title ASC";
 
-        $sql_start = 'SELECT count(DISTINCT p.id) as c FROM ' . DB_TABLE_PREFIX . '_product p ';
-        $sql = 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
+        $sql_start = 'SELECT count(DISTINCT p.id) as c FROM ' . $db->tableStmt('product') . ' p ';
+        $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ON p.id = sc.product_id ';
         $sql .= 'WHERE ';
         if (!($user->is_admin || $user->is_acting_admin))
             $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
@@ -188,12 +188,12 @@ class storeCategory extends expNestedNode {
         global $db;
 
         //$sql = 'SELECT DISTINCT p.* FROM '.$db->prefix.'product p ';
-        $sql = 'SELECT DISTINCT cf.expfiles_id, exp.directory, exp.filename FROM '.$db->prefix.'product as p ';
-        $sql .= 'JOIN '.$db->prefix.'content_expFiles cf ON p.id = cf.content_id ';
-		$sql .= 'JOIN '.$db->prefix.'expFiles exp ON cf.expfiles_id = exp.id ';
-        $sql .= 'JOIN '.$db->prefix.'product_storeCategories psc ON p.id = psc.product_id ';
+        $sql = 'SELECT DISTINCT cf.expfiles_id, exp.directory, exp.filename FROM ' . $db->tableStmt('product') . ' as p ';
+        $sql .= 'JOIN ' . $db->tableStmt('content_expFiles') . ' cf ON p.id = cf.content_id ';
+		$sql .= 'JOIN ' . $db->tableStmt('expFiles') . ' exp ON cf.expfiles_id = exp.id ';
+        $sql .= 'JOIN ' . $db->tableStmt('product_storeCategories') . ' psc ON p.id = psc.product_id ';
         $sql .= 'WHERE psc.storecategories_id IN (';
-        $sql .= 'SELECT id FROM '.$db->prefix.'storeCategories WHERE rgt BETWEEN '.$this->lft.' AND '.$this->rgt.')';
+        $sql .= 'SELECT id FROM ' . $db->tableStmt('storeCategories') . ' WHERE rgt BETWEEN '.$this->lft.' AND '.$this->rgt.')';
         /*$sql  = 'SELECT cf.id FROM '.$db->prefix.'storeCategories sc JOIN '.$db->prefix.'content_expFiles as cf ';
         $sql .= 'ON cf.content_id = psc.product_id ';
         $sql .= 'JOIN '.$db->prefix.'product_storeCategories as psc ON psc.storecategories_id = sc.id ';

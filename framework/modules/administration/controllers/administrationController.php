@@ -181,7 +181,7 @@ class administrationController extends expController {
 		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
 		$no_sections = array();
 		foreach ($sectionrefs as $sectionref) {
-			if ($db->selectObject('section',"id='".$sectionref->section."'") == null) {
+			if ($db->selectObject('section',"id=".(int)$sectionref->section) == null) {
 			// There is no section/page for sectionref so change the refcount
 				$sectionref->refcount = 0;
 				$db->updateObject($sectionref,"sectionref");
@@ -678,7 +678,7 @@ class administrationController extends expController {
                         $tar->decompress();  // uncompressed and creates .tar file
                         $tar = new PharData(BASE . "tmp/extensionuploads/$sessid/archive.tar");
                     }
-					$return = $tar->extractTo(dirname($dest));
+					$return = $tar->extractTo(dirname($dest), null, true);
 					if (!$return) {
 						flash('error', gt('Error extracting TAR archive'));
 					} else {
@@ -1388,7 +1388,7 @@ class administrationController extends expController {
         }
 
         $expcat = new expCat();
-        $cats = $expcat->find('all','module="file"');
+        $cats = $expcat->find('all','module=\'file\'');
         $folders = array();
         $folders[] = 'Root Folder';
         foreach ($cats as $cat) {

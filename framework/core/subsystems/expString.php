@@ -248,10 +248,10 @@ class expString {
      *
      * @return string
      */
-    public static function escape($value) {
+    public static function escape($value, $force=null) {
         global $db;
 
-        if (!empty($db->havedb)) {
+        if (!empty($db->havedb) && !$force) {
             return $db->escapeString($value);
         }
 

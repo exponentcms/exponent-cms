@@ -58,7 +58,7 @@ class discounts extends expRecord {
 
     public function getCouponByName($code) {
         //if valid, return objec, else return null
-        return $this->find('first', 'coupon_code="' . trim($code) . '"');
+        return $this->find('first', 'coupon_code=\'' . trim($code) . '\'');
     }
 
     public function isAvailable() {

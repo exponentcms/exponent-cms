@@ -970,9 +970,9 @@ function curPageURL() {
 function ecom_active() {
     global $db;
 
-    return ($db->selectValue('modstate', 'active', 'module="store"') ||
-        $db->selectValue('modstate', 'active', 'module="eventregistration"') ||
-        $db->selectValue('modstate', 'active', 'module="donation"') || FORCE_ECOM);
+    return ($db->selectValue('modstate', 'active', 'module=\'store\'') ||
+        $db->selectValue('modstate', 'active', 'module=\'eventregistration\'') ||
+        $db->selectValue('modstate', 'active', 'module=\'donation\'') || FORCE_ECOM);
 }
 
 /**

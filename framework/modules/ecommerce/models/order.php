@@ -154,7 +154,7 @@ class order extends expRecord {
             // grab the origional referrer from the session table so that we can transfer it into the cart where it will be used for reporting purposes
             // sessions are temporary so we can't report on the referrer in the session table itsef because it may not be there
             // and we can't just get the referrer ar this point becaues the user likely navigated the site a bit and we want the origional referring site
-            $orig_referrer = $db->selectValue('sessionticket', 'referrer', "`ticket`='" . $ticket . "'");
+            $orig_referrer = $db->selectValue('sessionticket', 'referrer', "ticket='" . $ticket . "'");
 
             //see if we have a LIVE and ACTIVE session w/ cart and grab it if so
             $sessioncart = $order->find('first', "invoice_id='' AND sessionticket_ticket='" . $ticket . "'");

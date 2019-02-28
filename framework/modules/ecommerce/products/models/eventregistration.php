@@ -779,7 +779,7 @@ class eventregistration extends expRecord {
         $orders = new order();
         $order_ids = array();
         foreach ($order_ids_complete as $item) {
-            $odr = $orders->find("first", "id ='{$item}' and invoice_id <> 0");
+            $odr = $orders->find("first", "id ={$item} and invoice_id <> 0");
             if (!empty($odr) || strpos($item, "admin-created") !== false) {
                 $order_ids[] = $item;
             }

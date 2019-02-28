@@ -58,7 +58,6 @@ class mysqli_database extends database {
 		//As we do not have any setting for ISAM or InnoDB tables yet, i set the minimum specs
 		// for using this feature to 4.1.2, although isam tables got the support for utf8 already in 4.1
 		//anything else would result in an inconsistent user experience
-		//TODO: determine how to handle encoding on postgres
 
 		list($major, $minor, $micro) = sscanf(@mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
 		if(defined('DB_ENCODING')) {
@@ -94,6 +93,67 @@ class mysqli_database extends database {
 
    		return $dbpdo;
    	}
+
+    /**
+   	* Return the tablename for the database
+   	*
+   	* Returns a full table name for the database.
+   	*
+   	* @param string $tablename The name of the table
+   	* @return string
+   	*/
+    function tableStmt($tablename) {
+   	    return $this->prefix . $tablename;
+    }
+
+    /**
+   	* Return the limit statement for the database
+   	*
+   	* Returns a correct limit statement for the database.
+   	*
+     * @param int $count The number of records to return
+     * @param int $offset The offset to the first record to return
+   	* @return string
+   	*/
+    function limitStmt($count, $offset=0) {
+        return " LIMIT $offset, $count";
+    }
+
+    /**
+     * Return the unixtime to date statement for the database
+     *
+     * Returns a correct unixtime to date statement for the database.
+     *
+     * @param string $column_name The name of the data column to convert
+     * @return string
+     */
+    function datetimeStmt($column_name) {
+        return "FROM_UNIXTIME(" . $column_name . ",'%c/%e/%y %h:%i:%s %p')";
+    }
+
+    /**
+     * Return the number to currency statement for the database
+     *
+     * Returns a correct number to currency statement for the database.
+     *
+     * @param string $column_name The name of the data column to convert
+     * @return string
+     */
+    function currencyStmt($column_name) {
+        return "CONCAT('" . expCore::getCurrencySymbol() . "',FORMAT(" . $column_name . ",2))";
+    }
+
+    /**
+     * Return a sql statement with keywords wrapped for the database
+     *
+     * Returns a keyword wrapped sql statement for the database.
+     *
+     * @param string $sql The sql statement to check for keyword wrap
+     * @return string
+     */
+    function wrapStmt($sql) {
+        return $sql;
+    }
 
     /**
      * Create a new Table
@@ -253,7 +313,7 @@ class mysqli_database extends database {
         if (is_array($newdatadef) && is_array($dd)) {
             $diff = @array_diff_assoc($newdatadef, $dd);
             if (count($diff)) {
-                $modified = true;
+//                $modified = true;
                 $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
                 foreach ($diff as $name => $def) {
                     $sql .= " ADD COLUMN (" . $this->fieldSQL($name, $def) . "),";
@@ -466,9 +526,19 @@ class mysqli_database extends database {
     function selectSearch($terms, $where = null) {
         if ($where == null)
             $where = "1";
-
-        $sql = "SELECT *, MATCH (s.title, s.body) AGAINST ('" . $terms . "*') as score from " . $this->prefix . "search as s ";
-        $sql .= "WHERE MATCH (title, body) against ('" . $terms . "*' IN BOOLEAN MODE) ORDER BY score DESC";
+        $sql = "SELECT *, MATCH (s.title, s.body, s.keywords) AGAINST ('" . $terms . "*') AS score FROM " . $this->tableStmt('search') . " AS s ";
+        $sql .= "WHERE ";
+        if (ECOM) {
+            $search_type = ecomconfig::getConfig('ecom_search_results');
+            if ($search_type === 'ecom') {
+                $sql .= "ref_module = 'product' AND ";
+            } elseif ($search_type === 'products') {
+                $sql .= "ref_type = 'product' AND ";
+            }
+        }
+        $sql .= "MATCH (title, body, keywords) AGAINST ('" . $terms . "*' IN BOOLEAN MODE) ";
+//        $sql = "SELECT *, MATCH (s.title, s.body) AGAINST ('" . $terms . "*') AS score FROM " . $this->prefix . "search AS s ";
+//        $sql .= "WHERE MATCH (title, body) AGAINST ('" . $terms . "*' IN BOOLEAN MODE) ORDER BY score DESC";
         $res = @mysqli_query($this->connection, $sql);
         if ($res == null)
             return array();
@@ -843,7 +913,7 @@ class mysqli_database extends database {
         $values = ") VALUES (";
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
-            if ($var{0} != '_') {
+            if ($var{0} !== '_' && $val !== null) {
                 $sql .= "`$var`,";
                 if ($values != ") VALUES (") {
                     $values .= ",";
@@ -1117,13 +1187,13 @@ class mysqli_database extends database {
      * @return array|null
      */
     function getDataDefinition($table) {
-        // make sure the table exists
-        if (!$this->tableExists($table))
-            return array();
-
         // check if we have a cached version of this table description.
         if (expSession::issetTableCache($table))
             return expSession::getTableCache($table);
+
+        // make sure the table exists
+        if (!$this->tableExists($table))
+            return array();
 
         $res = @mysqli_query($this->connection, "DESCRIBE `" . $this->prefix . "$table`");
         $dd = array();

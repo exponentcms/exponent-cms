@@ -154,11 +154,19 @@
     </header>
 </div>
 
+{if $smarty.const.DB_ENGINE === "mysqli"}
+    {$db_driver = "server"}
+    {$ns = ""}
+{else}
+    {$db_driver = "mssql"}
+    {$dbo = $smarty.const.DB_SCHEMA}
+    {$ns = "&ns="|cat:$dbo}
+{/if}
 {script unique="z-admin2" bootstrap="dropdown,collapse"}
 {literal}
     jQuery(document).ready(function($) {
         var adminerwindow = function (){
-            var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?server={/literal}{$smarty.const.DB_HOST}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}');
+            var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?{/literal}{$db_driver}{literal}={/literal}{$smarty.const.DB_HOST|escape:"url"}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}{/literal}{$ns}{literal}');
             if (!win) { err(); }
         }
 

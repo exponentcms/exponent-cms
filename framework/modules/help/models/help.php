@@ -63,7 +63,7 @@ class help extends expRecord {
         $this->grouping_sql = " AND help_version_id='".$this->help_version_id."'";
 		if (isset($params['help_section'])) {
 			// manipulate section & source to correct values
-			$params['section'] = $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $params['help_section'] .'"');
+			$params['section'] = $db->selectValue('sectionref', 'section', 'module = \'help\' AND source=\'' . $params['help_section'] .'\'');
 			$params['src'] = $params['help_section'];
             $params['rank'] = 0;
             // check for and update any child help docs to new section

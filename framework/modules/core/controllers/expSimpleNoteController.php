@@ -81,6 +81,8 @@ class expSimpleNoteController extends expController {
     }
 
     function manage() {
+        global $db;
+
         expHistory::set('manageable', $this->params);
 
         /* The global constants can be overriden by passing appropriate params */
@@ -90,8 +92,8 @@ class expSimpleNoteController extends expController {
         $require_notification = empty($this->params['require_notification']) ? SIMPLENOTE_REQUIRE_NOTIFICATION : $this->params['require_notification'];
         $notification_email = empty($this->params['notification_email']) ? SIMPLENOTE_NOTIFICATION_EMAIL : $this->params['notification_email'];
 
-        $sql  = 'SELECT n.* FROM '.DB_TABLE_PREFIX.'_expSimpleNote n ';
-        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expSimpleNote cnt ON n.id=cnt.expsimplenote_id ';
+        $sql  = 'SELECT n.* FROM ' . $db->tableStmt('expSimpleNote') . ' n ';
+        $sql .= 'JOIN ' . $db->tableStmt('content_expSimpleNote') . ' cnt ON n.id=cnt.expsimplenote_id ';
         $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
         $sql .= 'AND n.approved=0';
 
@@ -134,8 +136,8 @@ class expSimpleNoteController extends expController {
         $notification_email = empty($this->params['notification_email']) ? SIMPLENOTE_NOTIFICATION_EMAIL : expString::escape($this->params['notification_email']);
 
 
-        $sql  = 'SELECT n.* FROM '.$db->prefix.'expSimpleNote n ';
-        $sql .= 'JOIN '.$db->prefix.'content_expSimpleNote cnt ON n.id=cnt.expsimplenote_id ';
+        $sql  = 'SELECT n.* FROM ' . $db->tableStmt('expSimpleNote') . ' n ';
+        $sql .= 'JOIN ' . $db->tableStmt('content_expSimpleNote') . ' cnt ON n.id=cnt.expsimplenote_id ';
         $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".expString::escape($this->params['content_type'])."' ";
         $sql .= 'AND n.approved=1';
 
@@ -155,8 +157,8 @@ class expSimpleNoteController extends expController {
 
         // count the unapproved notes
         if ($require_approval == 1 && $user->isAdmin()) {
-            $sql  = 'SELECT count(com.id) as c FROM '.$db->prefix.'expSimpleNote com ';
-            $sql .= 'JOIN '.$db->prefix.'content_expSimpleNote cnt ON com.id=cnt.expsimplenote_id ';
+            $sql  = 'SELECT count(com.id) as c FROM ' . $db->tableStmt('expSimpleNote') . ' com ';
+            $sql .= 'JOIN ' . $db->tableStmt('content_expSimpleNote') . ' cnt ON com.id=cnt.expsimplenote_id ';
             $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".expString::escape($this->params['content_type'])."' ";
             $sql .= 'AND com.approved=0';
             $unapproved = $db->countObjectsBySql($sql);

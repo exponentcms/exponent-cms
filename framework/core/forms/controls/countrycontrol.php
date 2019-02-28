@@ -136,7 +136,7 @@ class countrycontrol extends dropdowncontrol {
         global $db;
 
         if (isset($db_data)) {
-            return $db->selectValue('geo_country', 'name', 'id="' . $db_data . '"');
+            return $db->selectValue('geo_country', 'name', 'id=' . (int)$db_data);
         } else {
             return "";
         }

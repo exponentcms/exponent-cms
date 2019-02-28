@@ -78,7 +78,7 @@ class statescontrol extends dropdowncontrol {
 
             // sanitize the default value. can accept as id, code abbrv or full name,
             if (!empty($this->default) && !is_numeric($this->default) && !is_array($this->default)) {
-                $this->default = $db->selectValue('geo_region', 'id', 'name="' . $this->default . '" OR code="' . $this->default . '"');
+                $this->default = $db->selectValue('geo_region', 'id', 'name=\'' . $this->default . '\' OR code=\'' . $this->default . '\'');
             }
         } else {
             echo "NO TABLE";
@@ -149,7 +149,7 @@ class statescontrol extends dropdowncontrol {
         global $db;
 
         if (isset($db_data)) {
-            return $db->selectValue('geo_region', 'name', 'id="' . $db_data . '"');
+            return $db->selectValue('geo_region', 'name', 'id=' . (int)$db_data);
         } else {
             return "";
         }

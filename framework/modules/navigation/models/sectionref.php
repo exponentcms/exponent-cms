@@ -61,7 +61,8 @@ class sectionref extends expRecord {
         }
 
         // first remove duplicate records
-        $db->sql('DELETE FROM ' . $db->prefix . 'sectionref WHERE id NOT IN (SELECT * FROM (SELECT MIN(n.id) FROM ' . $db->prefix . 'sectionref n GROUP BY n.module, n.source) x)');
+        $db->sql('DELETE FROM ' . $db->tableStmt('sectionref') . ' WHERE id NOT IN (SELECT * FROM (SELECT MIN(n.id) FROM ' .
+            $db->tableStmt('sectionref') . ' n GROUP BY n.module, n.source, n.id, n.internal, n.section, n.refcount, n.is_original) x)');
         $ret = scan_page(0);  // the page hierarchy
         $ret .= scan_page(-1);  // now the stand alone pages
 

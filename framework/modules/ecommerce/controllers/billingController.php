@@ -62,7 +62,7 @@ class billingController extends expController {
                 if (is_file("$dir/$file") && substr("$dir/$file", -4) === ".php") {
                     include_once("$dir/$file");
                     $classname = substr($file, 0, -4);
-                    $id = $db->selectValue('billingcalculator', 'id', 'calculator_name="'.$classname.'"');
+                    $id = $db->selectValue('billingcalculator', 'id', 'calculator_name=\''.$classname.'\'');
                     if (empty($id)) {
                         // update list of calculators in db
 //                        $calobj = null;

@@ -178,13 +178,20 @@ class expSettings
         $str = "<?php\n";
         foreach ($values as $directive => $value) {
             $directive = trim(strtoupper($directive));
-            if ($directive == 'CURRENTCONFIGNAME') {  // save and strip out the profile name
+            if ($directive === 'CURRENTCONFIGNAME') {  // save and strip out the profile name
                 $profile = $value;
                 continue;
             }
             $str .= "define(\"$directive\",";
+            if ($directive === 'DB_HOST') {
+                if (strpos($value, "\\\\") !== false) {
+                    $value = stripslashes($value);
+                }
+                $str .= "'" . addslashes($value) . "'" . ");\n";
+                continue;
+            }
             $value = stripslashes($value); // slashes added by POST
-            if (substr($directive, -5, 5) == "_HTML") {
+            if (substr($directive, -5, 5) === "_HTML") {
                 $value = htmlentities($value, ENT_QUOTES, LANG_CHARSET);
 //              $value = str_replace(array("\r\n","\r","\n"),"<br />",$value);
                 $value = str_replace(array("\r\n", "\r", "\n"), "", $value);
@@ -193,7 +200,7 @@ class expSettings
             } elseif (is_int($value)) {
                 $str .= "'" . (int)($value) . "'";
             } else {
-                if ($directive != 'SESSION_TIMEOUT') {
+                if ($directive !== 'SESSION_TIMEOUT') {
 //                    $str .= "'" . expString::escape(str_replace("'", "\'", $value)) . "'";  //FIXME is this still necessary since we stripslashes above???
                     $str .= "'" . expString::escape($value) . "'";
                 } //                    $str .= "'".$value."'";

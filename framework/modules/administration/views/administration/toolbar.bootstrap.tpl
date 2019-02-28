@@ -66,6 +66,14 @@
 
 </div>
 
+{if $smarty.const.DB_ENGINE === "mysqli"}
+    {$db_driver = "server"}
+    {$ns = ""}
+{else}
+    {$db_driver = "mssql"}
+    {$dbo = $smarty.const.DB_SCHEMA}
+    {$ns = "&ns="|cat:$dbo}
+{/if}
 {script unique="admin99" yui3mods="node,dd,anim,event-custom,cookie,yui2-yahoo-dom-event,yui2-menu,yui2-connection,yui2-container"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
@@ -167,7 +175,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
      }
 
      var adminerwindow = function (){
-         var win = window.open(EXPONENT.PATH_RELATIVE + 'external/adminer/admin.php?server={/literal}{$smarty.const.DB_HOST}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}');
+         var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?{/literal}{$db_driver}{literal}={/literal}{$smarty.const.DB_HOST|escape:"url"}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}{/literal}{$ns}{literal}');
          if (!win) { err(); }
      }
 

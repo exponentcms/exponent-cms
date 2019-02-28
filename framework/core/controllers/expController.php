@@ -581,8 +581,8 @@ abstract class expController {
         $model = new $modelname();
 
         // start building the sql query
-        $sql = 'SELECT DISTINCT m.id FROM ' . $db->prefix . $model->tablename . ' m ';
-        $sql .= 'JOIN ' . $db->prefix . $tagobj->attachable_table . ' ct ';
+        $sql = 'SELECT DISTINCT m.id FROM ' . $db->tableStmt($model->tablename) . ' m ';
+        $sql .= 'JOIN ' . $db->tableStmt($tagobj->attachable_table) . ' ct ';
         $sql .= 'ON m.id = ct.content_id WHERE (';
         $first = true;
 
@@ -920,7 +920,7 @@ abstract class expController {
         }
 
         $expcat = new expCat();
-        $cats = $expcat->find('all','module="file"');
+        $cats = $expcat->find('all','module=\'file\'');
         $folders = array();
         $folders[] = 'Root Folder';
         foreach ($cats as $cat) {

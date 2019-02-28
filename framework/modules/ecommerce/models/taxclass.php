@@ -65,9 +65,9 @@ class taxclass extends expRecord {
         $zones = array();
         foreach ($order->orderitem as $item) {
             //FIXME we need to ensure any applicable origin tax is at the top of the list
-            $sql  = "SELECT tz.name, tr.rate, tr.shipping_taxed, tr.origin_tax FROM ".$db->prefix."tax_geo as tg ";
-            $sql .= "JOIN ".$db->prefix."tax_zone as tz ON tg.zone_id=tz.id ";
-            $sql .= "JOIN ".$db->prefix."tax_rate as tr ON tr.zone_id=tg.zone_id ";
+            $sql  = "SELECT tz.name, tr.rate, tr.shipping_taxed, tr.origin_tax FROM " . $db->tableStmt('tax_geo') . " as tg ";
+            $sql .= "JOIN " . $db->tableStmt('tax_zone') . " as tz ON tg.zone_id=tz.id ";
+            $sql .= "JOIN " . $db->tableStmt('tax_rate') . " as tr ON tr.zone_id=tg.zone_id ";
             $sql .= "WHERE tr.class_id=".$item->product->tax_class_id;
             if (!empty($global_config->config['store']))
                 $sql .= " AND (tg.country_id=".(int)($global_config->config['store']['country']) . " AND tg.region_id=".(int)($global_config->config['store']['state']);

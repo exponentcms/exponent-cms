@@ -84,7 +84,7 @@ class formsController extends expController {
             if (!empty($this->config)) {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['title'])) {
-                $f = $this->forms->find('first', 'sef_url="' . expString::escape($this->params['title']) . '"');
+                $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($this->params['title']) . '\'');
                 if (!empty($f))
                     $this->get_defaults($f);
             } elseif (!empty($this->params['id'])) {
@@ -236,7 +236,7 @@ class formsController extends expController {
                 if (!empty($f))
                     $this->get_defaults($f);
             } elseif (!empty($this->params['title'])) {
-                $f = $this->forms->find('first', 'sef_url="' . expString::escape($this->params['title']) . '"');
+                $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($this->params['title']) . '\'');
                 if (!empty($f))
                     $this->get_defaults($f);
 //                if (!empty($f))
