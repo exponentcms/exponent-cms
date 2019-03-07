@@ -1279,8 +1279,9 @@ abstract class expController {
                 $loc = expUnserialize($cnt['location_data']);
             $src = isset($loc->src) ? $loc->src : null;
             // we don't want stuff in the recycle bin
-            if ($this::hasSources() && !$db->selectObjects('sectionref', "module='" . $loc->mod . "' AND source=" . $loc->src . " AND refcount!=0")) {
-                continue; // this item is in the recycle bin
+            if (!$db->selectObjects('sectionref', "module='" . $loc->mod . "' AND source='" . $loc->src . "' AND refcount!=0")) {
+                if ($this::hasSources())
+                    continue; // this module is in the recycle bin and isn't automatically picked up by other modules
             }
 
             $origid = $cnt['id'];
