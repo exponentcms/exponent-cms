@@ -1208,8 +1208,14 @@ class eventController extends expController {
             else
                 $css = file_get_contents(BASE . "framework/modules/events/assets/css/calendar.css");
             if (MINIFY==1&&MINIFY_INLINE_CSS==1) {
-                include_once(BASE . 'external/minify/min/lib/JSMin.php');
-                $css = JSMin::minify($css);
+                if (MINIFY_USE_JSMIN) {
+                    include_once(BASE . 'external/minify/min/lib/JSMin.php');
+                    $css = JSMin::minify($css);
+                } else {
+                    include_once(BASE . 'external/minify/min/lib/CSSmin.php');
+                    $min = new CSSmin();
+                    $css = $min->run($css);
+                }
             }
             $template->assign("css", $css);
             $template->assign("config", $this->config);

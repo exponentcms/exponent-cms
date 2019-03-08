@@ -85,11 +85,11 @@
         {*<a class="{button_style}" href="{$backlink}">{'Done'|gettext}</a>*}
         {br}{icon button=true class=reply link=$backlink text='Exit Forms Designer'|gettext}
     </p>
-    <div id="trash" class="trash">
+    <div id="trash" class="trash" title="{'Drag a control from the form and drop it on this box to remove it'|gettext}">
         <strong>{'Trash Can'|gettext}</strong>{br}
         {img class="img-center" src="`$smarty.const.PATH_RELATIVE`framework/modules/recyclebin/assets/images/trashcan_full_large.png"}
     </div>
-    <ul id="controls" class="controls">
+    <ul id="controls" class="controls" title="{'Drag a control from this box and drop it on the form to add it to the selected location'|gettext}">
         <strong>{'Available Form Controls'|gettext}</strong>
         {foreach from=$types key=value item=caption}
             <li class="item" type="{$value}">
