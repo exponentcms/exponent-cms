@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -558,11 +558,11 @@ if (!defined('JQUERY_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-//    if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
+    if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
-//    } else {
-//        define('SMARTY_VERSION', '3.1.33');  //note smarty v3.1.28+ won't work properly with php < v7.1.x
-//    }
+    } else {
+        define('SMARTY_VERSION', '3.1.33');  //note smarty v3.1.28+ won't work properly with php < v7.1.x
+    }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
 }
