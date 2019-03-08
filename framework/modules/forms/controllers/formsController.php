@@ -595,7 +595,7 @@ class formsController extends expController {
         expSession::set('forms_data_' . $this->params['id'], $this->params);
 
         if (!empty($this->config['quick_submit'])) {  // for quick submission skip to next step
-            redirect_to(array('controller'=>'forms', 'action'=>'submit_data', 'skip'=>1, 'id'=>$f->id));
+            redirect_to(array('controller'=>'forms', 'action'=>'submit_data', 'skip'=>1, 'id'=>$f->id, 'src' => $this->loc->src));
         }
 
         assign_to_template(array(

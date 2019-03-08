@@ -37,6 +37,7 @@ class user extends expRecord {
             'username' => array('length' => 3)
         ),
     );
+    public $expeAlerts = array();
 
     function __construct($params = null, $get_assoc = false, $get_attached = false) {
         if (is_array($params) && isset($params['pass1']))
