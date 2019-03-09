@@ -1855,7 +1855,7 @@ return array(
 	"Fade Out Up Big"=>"Fade Out hasta grandes",
 	"Failed"=>"No se pudo",
 	"Failed Altering"=>"No se pudo alterar",
-	"Fax"=>"Fax",
+	"Fax"=>"Da:",
 	"Feature this Event?"=>"¿Característica de este evento?",
 	"Feature this News Post?"=>"¿Cuentan con este Post de noticias?",
 	"Feature this Portfolio Piece"=>"Cuentan con esta pieza de cartera",
