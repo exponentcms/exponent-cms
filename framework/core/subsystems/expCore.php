@@ -351,32 +351,39 @@ class expCore
      *
      * @param      $url
      * @param bool $ref
-     * @param bool $post
+     * @param bool/array $post
+     * @param bool/array $auth
      *
      * @return mixed
      */
-    public static function loadData($url, $ref = false, $post = false)
+    public static function loadData($url, $ref = false, $post = false, $auth = false)
     {
         $chImg = curl_init($url);
         curl_setopt($chImg, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($chImg, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($chImg, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt(
-            $chImg,
-            CURLOPT_USERAGENT,
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0) Gecko/20100101 Firefox/4.0"
-        );
-        if ($post) {
+        curl_setopt($chImg, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0) Gecko/20100101 Firefox/4.0");
+        if ($auth !== false) {
+            curl_setopt($chImg, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $auth));
+        }
+        if ($post !== false) {
+            $payload = json_encode($post);
+            // Set HTTP Header for POST request
+//            curl_setopt($chImg, CURLOPT_HTTPHEADER, array(
+//                'Content-Type: application/json',
+//                'Content-Length: ' . strlen($payload))
+//            );
             curl_setopt($chImg, CURLOPT_POST, true);
+            curl_setopt($chImg, CURLOPT_POSTFIELDS, $payload);
         }
         if ($ref) {
             curl_setopt($chImg, CURLOPT_REFERER, $ref);
         }
         $curl_scraped_data = curl_exec($chImg);
-        if ($post) {
+        if ($post !== false) {
             curl_setopt($chImg, CURLOPT_POST, false);
         }
         curl_close($chImg);
+
         return $curl_scraped_data;
     }
 
