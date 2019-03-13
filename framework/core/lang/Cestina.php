@@ -1632,8 +1632,6 @@ return array(
 	        účet u Authorize.net dříve, než můžete použít ke zpracování kreditních karet.",
 	"Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It requires a PayPal Payflow Merchant Account before you can use it to process credit cards."=>"Povolením této možnosti platby umožní svým zákazníkům používat jejich kreditní kartu k nákupům na vašem webu.  To vyžaduje účet PayPal Payflow obchodníka před použitím zpracování kreditních karet.",
 	"Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  The credit card number
-	        will be split with part of it being stored in the database and the other part getting emailed to site administrator."=>"Povolením této možnosti platby umožní svým zákazníkům používat jejich kreditní karty k nákupu na webu.  Číslo kreditní karty bude rozdělena část je uložena v databázi a na straně druhé se e-mailem na správce webu.",
-	"Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  The credit card number
 	        will be split with part of it being stored in the database and the other part getting emailed to site administrator."=>"Povolením této možnosti platby umožní svým zákazníkům používat jejich kreditní karty k nákupu na webu.  Číslo kreditní karty
 	        rozdělí se jeho část je uložena v databázi a na straně druhé se e-mailem na správce webu.",
 	"Enabling this payment option will allow your customers to use their worldpay account to make purchases."=>"Povolením této možnosti platby umožní svým zákazníkům používat jejich worldpay účet k nákupům.",
@@ -3378,6 +3376,7 @@ return array(
 	"Optimized the Database Tables"=>"Optimalizováno databázových tabulek",
 	"Option Available"=>"Možnost k dispozici",
 	"Option Weight"=>"Možnost váha",
+	"Optional Discount Code"=>"Kód volitelné slevy",
 	"Optional Features"=>"Volitelné funkce",
 	"Optional Promotional Code"=>"Volitelné kód speciální nabídky",
 	"Optional entry to get a specific board"=>"Nepovinná položka získat konkrétní desky",
@@ -5902,6 +5901,7 @@ return array(
 	"Your Response"=>"Vaše reakce",
 	"Your Secure Shopping Cart"=>"Bezpečný nákupní košík",
 	"Your Shipping Information"=>"Informace o způsobu dodání",
+	"Your Shopping Cart"=>"Váš nákupní košík",
 	"Your Website Configuration has been updated"=>"Vaše webové stránky konfigurace byla aktualizována",
 	"Your account does not appear to have an email address.  Please contact the site administrators to reset your password"=>"Váš účet se nezobrazí na e-mailovou adresu.  Kontaktujte prosím správci webu o obnovení hesla",
 	"Your account information has been updated."=>"Byly aktualizovány informace o vašem účtu.",
