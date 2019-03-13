@@ -108,7 +108,7 @@
     {clear}
     {if !$noactivediscounts}
         <div class="separate">
-            <h2>{"Optional Promotional Code"|gettext}</h2>
+            <h2>{"Optional Discount Code"|gettext}</h2>
 
             <div class="apply-codes">
                 {if !$discounts}
