@@ -3320,7 +3320,7 @@ return array(
 	"Optimized the Database Tables"=>"Otimizadas as tabelas de banco de dados",
 	"Option Available"=>"Opção disponível",
 	"Option Weight"=>"Peso de opção",
-	"Optional Discount Code"=>"Optional Discount Code",
+	"Optional Discount Code"=>"Código de desconto opcional",
 	"Optional Features"=>"Recursos opcionais",
 	"Optional Promotional Code"=>"Código promocional opcional",
 	"Optional entry to get a specific board"=>"Entrada opcional para obter um Conselho específico",
