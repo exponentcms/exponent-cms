@@ -814,7 +814,7 @@ class importexportController extends expController {
                             if (!empty($value))
                                 $result = storeCategory::importCategoryString($value);
                             else
-                                continue;
+                                continue 2;
 
 //                            if (is_numeric($result)) {
                             if ($result) {
