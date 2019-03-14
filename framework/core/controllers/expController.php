@@ -1407,8 +1407,11 @@ abstract class expController {
                         if (!empty($object->expTag)) {
                             $keyw = '';
                             foreach ($object->expTag as $tag) {
-                                if (!empty($keyw)) $keyw .= ', ';
-                                $keyw .= $tag->title;
+                                if (!empty($tag->title)) {
+                                    if (!empty($keyw))
+                                        $keyw .= ', ';
+                                    $keyw .= $tag->title;
+                                }
                             }
                         } else {
                             $keyw = SITE_KEYWORDS;
