@@ -155,7 +155,9 @@ class expSettings
                         $opts[1] = substr($opts[1], 0, -2);
                     }
 
-                    if (substr($opts[0], -5, 5) == "_HTML") {
+                    if (substr($opts[0], -5, 5) == "_HTML" || $opts[0] === 'DEFAULT_AVATAR') {
+                        if(strpos( $opts[1], "'") === false){
+                            $opts[1] = "'" . $opts[1] . "'";                        }
                         $opts[1] = eval("return " . $opts[1] . ";");
                         /*					$opts[1] = preg_replace('/<[bB][rR]\s?\/?>/',"\r\n",$opts[1]); */
                     }
@@ -203,8 +205,7 @@ class expSettings
                 if ($directive !== 'SESSION_TIMEOUT') {
 //                    $str .= "'" . expString::escape(str_replace("'", "\'", $value)) . "'";  //FIXME is this still necessary since we stripslashes above???
                     $str .= "'" . expString::escape($value) . "'";
-                } //                    $str .= "'".$value."'";
-                else {
+                } else {
                     $str .= "'" . expString::escape(str_replace("'", '', $value)) . "'";
                 }
             }
