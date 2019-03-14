@@ -30,7 +30,7 @@ return array(
 	'name'=>'ODBC to MS SQL Server Database Backend',
 	'author'=>'Dave Leffler',
 	'description'=>'MS SQL Server Database via ODBC Backend available in PHP5+.',
-	'is_valid'=>(function_exists('odbc_connect') ? 1 : 0),
+	'is_valid'=>0,//(function_exists('odbc_connect') ? 1 : 0),
 	'version'=>expVersion::getVersion(true)
 );
 
