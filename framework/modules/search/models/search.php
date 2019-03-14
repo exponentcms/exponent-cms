@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -50,28 +50,21 @@ class search extends expRecord {
         }
 
         //setup the sql query
-        /*$sql  = "SELECT *, MATCH (s.title,s.body) AGAINST ('".$terms."') as score from ".$db->prefix."search as s ";
-		$sql .= "LEFT OUTER JOIN ".$db->prefix."product p ON s.original_id = p.id WHERE MATCH(title,body) against ('".$terms."' IN BOOLEAN MODE)";
-
-        SELECT *, MATCH (s.title,s.body) AGAINST ('army combat uniform') as score from " . $db->prefix . "search as s
-        LEFT OUTER JOIN " . $db->prefix . "product p ON s.original_id = p.id WHERE MATCH(s.title,s.body) against ('army combat uniform' IN BOOLEAN MODE)*/
-
-        $sql = "SELECT *, MATCH (s.title, s.body, s.keywords) AGAINST ('" . $terms . "*') as score from " . $db->prefix . "search as s ";
-        $sql .= "WHERE ";
-        if (ECOM) {
-            $search_type = ecomconfig::getConfig('ecom_search_results');
-            if ($search_type === 'ecom') {
-                $sql .= "ref_module = 'product' AND ";
-            } elseif ($search_type === 'products') {
-                $sql .= "ref_type = 'product' AND ";
-            }
-        }
-        $sql .= "MATCH (title, body, keywords) against ('" . $terms . "*' IN BOOLEAN MODE) ";
+//        $sql = "SELECT *, MATCH (s.title, s.body, s.keywords) AGAINST ('" . $terms . "*') AS score FROM " . $db->tableStmt('search') . " AS s ";
+//        $sql .= "WHERE ";
+//        if (ECOM) {
+//            $search_type = ecomconfig::getConfig('ecom_search_results');
+//            if ($search_type === 'ecom') {
+//                $sql .= "ref_module = 'product' AND ";
+//            } elseif ($search_type === 'products') {
+//                $sql .= "ref_type = 'product' AND ";
+//            }
+//        }
+//        $sql .= "MATCH (title, body, keywords) AGAINST ('" . $terms . "*' IN BOOLEAN MODE) ";
 
         // look up the records.
-        //eDebug($sql);
-        $records = $db->selectObjectsBySql($sql);
-        //eDebug($records);
+//        $records = $db->selectObjectsBySql($sql);
+        $records = $db->selectSearch($terms);
 
         // modify search results based on permissions
         $recs = $records;
@@ -79,7 +72,7 @@ class search extends expRecord {
             if ($only_best && $records[$i]->score == 0) {
                 unset($recs[$i]); // page is not available for viewing
 //            } elseif ($records[$i]->ref_type == 'product') {
-            } elseif ($records[$i]->ref_module == 'product') {
+            } elseif ($records[$i]->ref_module === 'product' || $records[$i]->ref_module === 'store') {  //fixme for base code
 //                $score = $records[$i]->score;
                 if (!product::canView($records[$i]->original_id)) {
                     unset($recs[$i]); // product is not available for viewing
@@ -89,14 +82,14 @@ class search extends expRecord {
                     $records[$i] = new product($records[$i]->original_id);
                     $records[$i]->score = $score;
                 }*/
-            } else if ($records[$i]->ref_type == 'section') {
+            } else if ($records[$i]->ref_type === 'section') {
 //                $section = $db->selectObject('section', 'id=' . $records[$i]->original_id);
                 $section = new section($records[$i]->original_id);
                 if (empty($section) || !$section->canView()) {
                     unset($recs[$i]); // page is not available for viewing
                     //$records[$i]->canview = false;
                 }
-            } else if ($records[$i]->ref_module == 'event') {  // add (closest) date to title/link
+            } else if ($records[$i]->ref_module === 'event') {  // add (closest) date to title/link
                 $event = $db->selectObject('eventdate', 'event_id=' . $records[$i]->original_id . ' ORDER BY ABS( DATEDIFF( date, NOW() ) )');
                 if (!empty($event)) {
                     if (!empty($eventlimit) && $event->date < time()-($eventlimit*24*60*60))
@@ -115,7 +108,7 @@ class search extends expRecord {
                     if (!empty($sectionref)) {
 //                        $section = $db->selectObject("section", "id=" . $sectionref->section);
                         $section = new section($sectionref->section);
-                        if (empty($section) || !($section->canView($section) && !$db->selectObject('container', 'internal="' . $records[$i]->location_data . '" AND is_private=1'))) { // check page visibility
+                        if (empty($section) || !($section->canView($section) && !$db->selectObject('container', 'internal=\'' . $records[$i]->location_data . '\' AND is_private=1'))) { // check page visibility
                             unset($recs[$i]); // item is not available for viewing
                             continue; // skip rest of checks for this record
                             //$records[$i]->canview = false;

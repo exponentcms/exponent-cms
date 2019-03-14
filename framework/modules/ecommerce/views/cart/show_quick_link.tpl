@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,9 +13,15 @@
  *
  *}
 
+{if bs()}
+{css unique="inline-cart" link="`$asset_path`css/inline-cart-bs.css"}
+
+{/css}
+{else}
 {css unique="inline-cart" link="`$asset_path`css/inline-cart.css"}
 
 {/css}
+{/if}
 
 <div class="module cart show-inline">
     <div class="quick-links">

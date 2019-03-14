@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -43,7 +43,7 @@
         ]}
         {breadcrumb items=$breadcrumb active=0 style=flat}
     {/if}
-    <h1>{ecomconfig var='cart_title_text' default="Your Secure Shopping Cart"|gettext}</h1>
+    <h1>{ecomconfig var='cart_title_text' default="Your Shopping Cart"|gettext}</h1>
     <div id="cart-message">{ecomconfig var='cart_description_text' default=""}</div>
     <div class="module-actions" style="padding:8px; 0">
         {*<a class="{button_style}" href="{backlink}">{"Continue Shopping"|gettext}</a>*}

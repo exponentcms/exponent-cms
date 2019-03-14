@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -84,7 +84,7 @@ class formsController extends expController {
             if (!empty($this->config)) {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['title'])) {
-                $f = $this->forms->find('first', 'sef_url="' . expString::escape($this->params['title']) . '"');
+                $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($this->params['title']) . '\'');
                 if (!empty($f))
                     $this->get_defaults($f);
             } elseif (!empty($this->params['id'])) {
@@ -236,7 +236,7 @@ class formsController extends expController {
                 if (!empty($f))
                     $this->get_defaults($f);
             } elseif (!empty($this->params['title'])) {
-                $f = $this->forms->find('first', 'sef_url="' . expString::escape($this->params['title']) . '"');
+                $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($this->params['title']) . '\'');
                 if (!empty($f))
                     $this->get_defaults($f);
 //                if (!empty($f))
@@ -595,7 +595,7 @@ class formsController extends expController {
         expSession::set('forms_data_' . $this->params['id'], $this->params);
 
         if (!empty($this->config['quick_submit'])) {  // for quick submission skip to next step
-            redirect_to(array('controller'=>'forms', 'action'=>'submit_data', 'skip'=>1, 'id'=>$f->id));
+            redirect_to(array('controller'=>'forms', 'action'=>'submit_data', 'skip'=>1, 'id'=>$f->id, 'src' => $this->loc->src));
         }
 
         assign_to_template(array(

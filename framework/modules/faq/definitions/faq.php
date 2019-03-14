@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -42,11 +42,11 @@ return array(
     'rank'=>array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER),
     'poster'=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+        DB_FIELD_TYPE=>DB_DEF_ID),
     'created_at'=>array(
         DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
     'editor'=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+        DB_FIELD_TYPE=>DB_DEF_ID),
     'edited_at'=>array(
         DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
     'location_data'=>array(

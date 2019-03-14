@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -62,7 +62,7 @@ class update_ealerts extends upgradescript {
                 $db->dropTable('user_subscriptions');
             }
             if (!$db->tableExists('user_subscriptions')) {
-                $db->sql('RENAME TABLE '.$db->prefix.'expeAlerts_subscribers TO '.$db->prefix.'user_subscriptions');
+                $db->sql('RENAME TABLE ' . $db->tableStmt('expeAlerts_subscribers') . ' TO ' . $db->tableStmt('user_subscriptions'));
             }
             if ($db->tableExists('expeAlerts_subscribers') && !$db->countObjects('expeAlerts_subscribers')) {
                 $db->dropTable('expeAlerts_subscribers');

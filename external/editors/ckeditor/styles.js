@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -13,7 +13,7 @@
 // ignore it. Otherwise it is strongly recommended to customize this file to match your
 // website requirements and design properly.
 //
-// For more information refer to: https://docs.ckeditor.com/ckeditor4/docs/#!/guide/dev_styles-section-style-rules
+// For more information refer to: https://ckeditor.com/docs/ckeditor4/latest/guide/dev_styles.html#style-rules
 
 CKEDITOR.stylesSet.add( 'default', [
 	/* Block styles */
@@ -33,6 +33,7 @@ CKEDITOR.stylesSet.add( 'default', [
 	{ name: 'Address',			element: 'address' },
 	*/
 
+	/*
 	{ name: 'Italic Title',		element: 'h2', styles: { 'font-style': 'italic' } },
 	{ name: 'Subtitle',			element: 'h3', styles: { 'color': '#aaa', 'font-style': 'italic' } },
 	{
@@ -59,7 +60,8 @@ CKEDITOR.stylesSet.add( 'default', [
 	{ name: 'Superscript',		element: 'sup' },
 	*/
 
-	{ name: 'Marker',			element: 'span', attributes: { 'class': 'marker' } },
+	// { name: 'Marker',			element: 'span', attributes: { 'class': 'marker' } },
+	{ name: 'Marker',			element: 'mark' },
 
 	{ name: 'Big',				element: 'big' },
 	{ name: 'Small',			element: 'small' },
@@ -76,21 +78,30 @@ CKEDITOR.stylesSet.add( 'default', [
 	{ name: 'Cited Work',		element: 'cite' },
 	{ name: 'Inline Quotation',	element: 'q' },
 
-	{ name: 'Language: RTL',	element: 'span', attributes: { 'dir': 'rtl' } },
-	{ name: 'Language: LTR',	element: 'span', attributes: { 'dir': 'ltr' } },
+	//{ name: 'Language: RTL',	element: 'span', attributes: { 'dir': 'rtl' } },
+	//{ name: 'Language: LTR',	element: 'span', attributes: { 'dir': 'ltr' } },
 
 	/* Object styles */
 
 	{
-		name: 'Styled Image (left)',
-		element: 'img',
-		attributes: { 'class': 'left' }
+		name: 'Styled image (left)',
+		type: 'widget',
+		widget: 'image',
+		attributes: { 'class': 'image-left' }
 	},
 
 	{
-		name: 'Styled Image (right)',
-		element: 'img',
-		attributes: { 'class': 'right' }
+		name: 'Styled image (right)',
+		type: 'widget',
+		widget: 'image',
+		attributes: { 'class': 'image-right' }
+	},
+
+	{
+		name: 'Styled image (center)',
+		type: 'widget',
+		widget: 'image',
+		attributes: { 'class': 'image-center' }
 	},
 
 	{

@@ -32,12 +32,6 @@
     border-left: 0 solid transparent;
     border-top: 0 solid transparent;
     border-right: 0 solid transparent;
-    -moz-border-radius-bottomleft: 0;
-    -webkit-border-bottom-left-radius: 0;
-    border-bottom-left-radius: 0;
-    -moz-border-radius-bottomright: 0;
-    -webkit-border-bottom-right-radius: 0;
-    border-bottom-right-radius: 0;
     font-weight: normal;
     padding: .2em 1em;
 }
@@ -153,6 +147,18 @@
     vertical-align: middle;
 }
 
+.elfinder-ltr .elfinder-spinner,
+.elfinder-ltr .elfinder-spinner-text {
+    float: left;
+}
+
+.elfinder-rtl .elfinder-spinner,
+.elfinder-rtl .elfinder-spinner-text  {
+    float: right;
+}
+
+
+
 /* resize handle for touch devices */
 .elfinder-touch .std42-dialog.ui-dialog:not(ui-resizable-disabled) .ui-resizable-se {
     width: 12px;
@@ -258,7 +264,28 @@
     padding-right: 56px;
 }
 
+.elfinder-dialog-error .elfinder-err-var {
+    word-break: break-all;
+}
+
 /*********************** NOTIFY DIALOG **************************/
+
+.elfinder-dialog-notify {
+    top : 36px;
+    width : 280px;
+}
+
+.elfinder-ltr .elfinder-dialog-notify {
+    right : 12px;
+}
+
+.elfinder-rtl .elfinder-dialog-notify {
+    left : 12px;
+}
+
+.elfinder-dialog-notify .ui-dialog-titlebar {
+    height: 5px;
+}
 
 .elfinder-dialog-notify .ui-dialog-titlebar-close {
     display: none;
@@ -446,16 +473,25 @@
 }
 
 .elfinder-info-tb td.elfinder-info-hash {
-    word-break: break-word;
-    max-width: 32em;
+    display: inline-block;
+    word-break: break-all;
+    max-width: 32ch;
 }
 
-.elfinder-info-tb tr td:first-child {
+.elfinder-ltr .elfinder-info-tb tr td:first-child {
     text-align: right;
 }
 
-.elfinder-info-tb span {
+.elfinder-ltr .elfinder-info-tb span {
     float: left;
+}
+
+.elfinder-rtl .elfinder-info-tb tr td:first-child {
+    text-align: left;
+}
+
+.elfinder-rtl .elfinder-info-tb span {
+    float: right;
 }
 
 .elfinder-info-tb a {
@@ -465,14 +501,6 @@
 
 .elfinder-info-tb a:hover {
     text-decoration: none;
-}
-
-.elfinder-info-spinner {
-    width: 14px;
-    height: 14px;
-    float: left;
-    background: url("../img/spinner-mini.gif") center center no-repeat;
-    margin: 0 5px;
 }
 
 .elfinder-netmount-tb {
@@ -596,10 +624,4 @@ button.elfinder-info-button {
 
 .elfinder-rm-title + br {
     display: none;
-}
-
-/*********************** EDIT DIALOG **************************/
-
-.ui-dialog-titlebar select.elfinder-edit-changed {
-    border-bottom: 1px solid #13ae10;
 }

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -130,6 +130,7 @@
             </a>
             {*<a class="navbar-brand" href="{$smarty.const.URL_FULL}">{$smarty.const.ORGANIZATION_NAME}</a>*}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#admin-navbar-collapse-1" aria-controls="navbarNav" aria-expanded="false" aria-label="{'Toggle navigation'|gettext}">
+                Menu
                 <span class="navbar-toggler-icon"></span>
             </button>
         {*</div>*}
@@ -153,11 +154,19 @@
     </header>
 </div>
 
+{if $smarty.const.DB_ENGINE === "mysqli"}
+    {$db_driver = "server"}
+    {$ns = ""}
+{else}
+    {$db_driver = "mssql"}
+    {$dbo = $smarty.const.DB_SCHEMA}
+    {$ns = "&ns="|cat:$dbo}
+{/if}
 {script unique="z-admin2" bootstrap="dropdown,collapse"}
 {literal}
     jQuery(document).ready(function($) {
         var adminerwindow = function (){
-            var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?server={/literal}{$smarty.const.DB_HOST}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}');
+            var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?{/literal}{$db_driver}{literal}={/literal}{$smarty.const.DB_HOST|escape:"url"}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}{/literal}{$ns}{literal}');
             if (!win) { err(); }
         }
 

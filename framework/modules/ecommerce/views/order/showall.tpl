@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -30,11 +30,9 @@
     div.dataTables_paginate ul.pagination {
         display: inline-flex;
     }
-    input#yadcf-filter--orders-1.yadcf-filter {
-        width: 35px;
-    }
+    input#yadcf-filter--orders-1.yadcf-filter,
     input#yadcf-filter--orders-2.yadcf-filter {
-        width: 50px;
+        width: 35px;
     }
     .yadcf-filter-wrapper {
         display: block;
@@ -46,6 +44,11 @@
     }
     .text-right {
         text-align: right;
+    }
+    .dataTables_wrapper .dataTables_processing {
+        background: lightgray;
+        height: 55px;
+        border: 1px black solid;
     }
 {/literal}
 {/css}
@@ -62,7 +65,7 @@
         <thead>
             <tr>
                 <th>{'Customer'|gettext}</th>
-                <th>{'Inv #'|gettext}</th>
+                <th>{'Inv#'|gettext}</th>
                 <th>{'Total'|gettext}</th>
                 <th>{'Payment'|gettext}</th>
                 <th>{'Purchased'|gettext}</th>
@@ -105,6 +108,9 @@
     {if $smarty.const.ECOM_LARGE_DB}
     {literal}
             processing: true,
+            "language": {
+                processing: '<span>{/literal}{'Loading Records'|gettext}...{literal}</span> '
+            },
             serverSide: true,
             ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=order&action=getOrdersByJSON&json=1{/literal}{if $closed_count == -1}&showclosed=1{/if}{literal}",
     {/literal}
@@ -118,10 +124,10 @@
             stateSave: true,
             columns: [
                 { data: 'name', type: 'html' },
-                { data: 'invoice_id', type: 'html-num-fmt' },
-                { data: 'grand_total', type: 'html-num-fmt', className: "text-right" },
+                { data: 'invoice_id', type: 'html-num-fmt', "orderSequence": [ "desc", "asc" ] },
+                { data: 'grand_total', type: 'html-num-fmt', "orderSequence": [ "desc", "asc" ], className: "text-right" },
                 { data: 'calc' },
-                { data: 'purchased' },
+                { data: 'purchased', "orderSequence": [ "desc", "asc" ] },
                 { data: 'order_type' },
                 { data: 'status', type: 'html' },
                 { data: 'orig_referrer', searchable: false, orderable: false }
@@ -129,6 +135,7 @@
             order: [[4, 'desc']]
         });
 
+        //  Strip HTML using DOM methods
         (function () {
             var _div = document.createElement('div');
 
@@ -148,6 +155,7 @@
             // filter_type: "multi_select",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             // select_type: 'select2'
         }, {
             column_number: 1,
@@ -155,6 +163,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             select_type_options: {
                 width: '70px'
             }
@@ -164,6 +173,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             select_type_options: {
                 width: '70px'
             }
@@ -171,29 +181,61 @@
             column_number: 3,
             column_data_type: "text",
             filter_type: "select",
-            filter_default_label: "Select Type",
-            select_type: 'select2'
+            filter_default_label: "Select Payment",
+            select_type: 'select2',
+            select_type_options: {
+            //     width: '50px',
+                minimumResultsForSearch: -1 // remove search box
+            }
         }, {
             column_number: 4,
             column_data_type: "text",
             // html5_data: "data-search",
             date_format: 'MM/DD/YYYY hh:mmA',
             filter_type: "range_date",
-            filter_default_label: ["From","To"]
+            filter_default_label: ["From","To"],
+            filter_delay: 500,
         }, {
             column_number: 5,
             column_data_type: "text",
             filter_type: "select",
             filter_default_label: "Select Type",
-            select_type: 'select2'
+            select_type: 'select2',
+            select_type_options: {
+            //     width: '50px',
+                minimumResultsForSearch: -1 // remove search box
+            }
         }, {
             column_number: 6,
             column_data_type: "html",
             html_data_type: "text",
             filter_type: "select",
             filter_default_label: "Select Status",
-            select_type: 'select2'
+            select_type: 'select2',
+            select_type_options: {
+            //     width: '50px',
+                minimumResultsForSearch: -1 // remove search box
+            }
         }]);
+
+    {/literal}
+    {if $smarty.const.ECOM_LARGE_DB}
+    {literal}
+        setInterval( function () {
+            $.ajax({
+                headers: { 'X-Transaction': 'Getting Invoice Number'},
+                url: EXPONENT.PATH_RELATIVE+'index.php?controller=order&action=getInvoiceNumByJSON&ajax_action=1',
+                success: function(invnum){
+                    var data = table.ajax.json();
+                    if (invnum != data.invoicenum) {
+                        table.ajax.reload(); // user paging is reset on reload
+                    }
+                }
+            });
+        }, 30000 );
+    {/literal}
+    {/if}
+    {literal}
     } );
 {/literal}
 {/script}

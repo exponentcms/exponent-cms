@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -45,7 +45,7 @@ class add_file_posted extends upgradescript {
 	 * @return bool
 	 */
 	function needed() {
-		return true;  // we'll just do it ine very instance instead of testing if user profile extensions are active
+		return true;  // we'll just do it in every instance
 	}
 
 	/**
@@ -82,7 +82,8 @@ class add_file_posted extends upgradescript {
                 }
                 if (empty($file->mimetype)) {
                     $_fileData = pathinfo(BASE . $file->directory . $file->filename);
-                    if (array_key_exists($_fileData['extension'],$_types)) $file->mimetype = $_types[$_fileData['extension']];
+                    if (isset($_fileData['extension']) && array_key_exists($_fileData['extension'], $_types))
+                        $file->mimetype = $_types[$_fileData['extension']];
                 }
                 $db->updateObject($file,'expFiles');
                 $count++;

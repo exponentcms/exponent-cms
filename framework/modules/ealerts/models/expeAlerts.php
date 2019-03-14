@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -56,8 +56,8 @@ class expeAlerts extends expRecord {
         $enabled = empty($pending) ? 1 : 0;
 
         // find pending subscriptions  //FIXME, not pulling any items?
-        $sql  = 'SELECT e.* FROM '.$db->prefix.'expeAlerts e ';
-        $sql .= 'JOIN '.$db->prefix.'expeAlerts_subscribers es ON e.id=es.subscribers_id ';
+        $sql  = 'SELECT e.* FROM ' . $db->tableStmt('expeAlerts') . ' e ';
+        $sql .= 'JOIN ' . $db->tableStmt('expeAlerts_subscribers') . ' es ON e.id=es.subscribers_id ';
         $sql .= 'WHERE es.enabled='.$enabled.' && es.subscribers_id='.$id;
 
         return $db->selectObjectsBySql($sql);

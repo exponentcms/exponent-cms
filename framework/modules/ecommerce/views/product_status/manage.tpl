@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +18,7 @@
 {/css}
 
 <div class="modules order_type showall">
-	<h1>{$moduletitle|default:"Product Status Administration"|gettext}</h1>
+	<h1>{$moduletitle|default:"Manage Product Statuses"|gettext}</h1>
     <blockquote>
         {'The top product status code will be used as the default product status'|gettext}
     </blockquote>

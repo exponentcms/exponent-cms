@@ -715,6 +715,7 @@ class Parser
         $b->selectors    = $selectors;
         $b->comments     = [];
         $b->parent       = $this->env;
+        $b->atrootParent = $this->env;
 
         if (! $this->env) {
             $b->children = [];
@@ -762,7 +763,9 @@ class Parser
         if (empty($block->parent)) {
             $this->throwParseError('unexpected }');
         }
-
+//        if ($block->type == Type::T_AT_ROOT || $block->type == Type::T_MIXIN || $block->type == Type::T_INCLUDE) {
+//            $block->atrootParent = $block->parent;
+//        }
         $this->env = $block->parent;
         unset($block->parent);
 
@@ -1737,6 +1740,8 @@ class Parser
                     $content[] = $m[2] . '"';
                 } elseif ($this->literal("'", false)) {
                     $content[] = $m[2] . "'";
+                } elseif ($this->literal("\\", false)) {
+                    $content[] = $m[2] . "\\";
                 } else {
                     $content[] = $m[2];
                 }
@@ -1753,7 +1758,9 @@ class Parser
                 $delim = '"';
 
                 foreach ($content as &$string) {
-                    if ($string === "\\'") {
+                    if ($string === "\\\\") {
+                        $string = "\\";
+                    } elseif ($string === "\\'") {
                         $string = "'";
                     } elseif ($string === '\\"') {
                         $string = '"';
@@ -1893,18 +1900,35 @@ class Parser
     {
         $oldWhite = $this->eatWhiteDefault;
         $this->eatWhiteDefault = true;
+        $selector = false;
 
         $s = $this->seek();
 
         if ($this->literal('#{') && $this->valueList($value) && $this->literal('}', false)) {
+
             if ($lookWhite) {
                 $left = preg_match('/\s/', $this->buffer[$s - 1]) ? ' ' : '';
-                $right = preg_match('/\s/', $this->buffer[$this->count]) ? ' ': '';
+                $right = preg_match('/\s/', $this->buffer[$this->count]) ? ' ' : '';
             } else {
                 $left = $right = false;
             }
-
             $out = [Type::T_INTERPOLATE, $value, $left, $right];
+
+            $this->eatWhiteDefault = $oldWhite;
+
+            if ($this->eatWhiteDefault) {
+                $this->whitespace();
+            }
+
+            return true;
+        }
+
+        $this->seek($s);
+
+        if ($this->literal('#{') && $selector = $this->selectorSingle($sel) && $this->literal('}', false)) {
+
+            $out = $sel[0];
+
             $this->eatWhiteDefault = $oldWhite;
 
             if ($this->eatWhiteDefault) {
@@ -2091,6 +2115,11 @@ class Parser
                 $parts[] = Compiler::$selfSelector;
                 continue;
             }
+            // self
+//            if ($this->literal('#{&}', true)) {
+//                $parts[] = Compiler::$selfSelector;
+//                continue;
+//            }
 
             if ($this->literal('.', false)) {
                 $parts[] = '.';

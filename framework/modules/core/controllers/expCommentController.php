@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -59,6 +59,8 @@ class expCommentController extends expController {
 	}
 
 	function manage() {
+        global $db;
+
 	    expHistory::set('manageable', $this->params);
 
         $order = 'approved';
@@ -70,8 +72,8 @@ class expCommentController extends expController {
 //        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
 //        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
 
-	    $sql  = 'SELECT c.*, cnt.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
-        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
+	    $sql  = 'SELECT c.*, cnt.* FROM ' . $db->tableStmt('expComments') . ' c ';
+        $sql .= 'JOIN ' . $db->tableStmt('content_expComments') . ' cnt ON c.id=cnt.expcomments_id ';
         if (!empty($this->params['content_id']) && !empty($this->params['content_type'])) {
             $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
             $order = 'created_at';
@@ -127,8 +129,8 @@ class expCommentController extends expController {
 //        $sql .= 'JOIN '.$db->prefix.'user u ON c.poster=u.id ';
 //        $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
 
-        $sql  = 'SELECT c.* FROM '.$db->prefix.'expComments c ';
-        $sql .= 'JOIN '.$db->prefix.'content_expComments cnt ON c.id=cnt.expcomments_id ';
+        $sql  = 'SELECT c.* FROM ' . $db->tableStmt('expComments') . ' c ';
+        $sql .= 'JOIN ' . $db->tableStmt('content_expComments') . ' cnt ON c.id=cnt.expcomments_id ';
         $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".expString::escape($this->params['content_type'])."' ";
         if (!$user->isAdmin()) {
             $sql .= 'AND c.approved=1';
@@ -153,7 +155,7 @@ class expCommentController extends expController {
             //FIXME here is where we might sanitize the comments before displaying them
 //            $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
             $comments->records[$key]->username = user::getUserAttribution($commentor->id);  // follow the site attribution setting
-            $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
+            $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id=".$record->poster);
         }
 
         if (empty($this->params['config']['disable_nested_comments'])) $comments->records = self::arrangecomments($comments->records);
@@ -161,8 +163,8 @@ class expCommentController extends expController {
 
         // count the unapproved comments
         if ($require_approval == 1 && $user->isAdmin()) {
-            $sql  = 'SELECT count(com.id) as c FROM '.$db->prefix.'expComments com ';
-            $sql .= 'JOIN '.$db->prefix.'content_expComments cnt ON com.id=cnt.expcomments_id ';
+            $sql  = 'SELECT count(com.id) as c FROM ' . $db->tableStmt('expComments') . ' com ';
+            $sql .= 'JOIN ' . $db->tableStmt('content_expComments') . ' cnt ON com.id=cnt.expcomments_id ';
             $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".expString::escape($this->params['content_type'])."' ";
             $sql .= 'AND com.approved=0';
             $unapproved = $db->countObjectsBySql($sql);
@@ -246,11 +248,10 @@ class expCommentController extends expController {
      * @return int
      */
     public static function countComments($params) {
-//        global $user, $db;
-        global $user;
+        global $user, $db;
 
-        $sql  = 'SELECT c.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
-        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
+        $sql  = 'SELECT c.* FROM ' . $db->tableStmt('expComments') . ' c ';
+        $sql .= 'JOIN ' . $db->tableStmt('content_expComments') . ' cnt ON c.id=cnt.expcomments_id ';
         $sql .= 'WHERE cnt.content_id='.$params['content_id']." AND cnt.content_type='".$params['content_type']."' ";
         if (!$user->isAdmin()) {
             $sql .= 'AND c.approved=1';
@@ -274,8 +275,8 @@ class expCommentController extends expController {
     public static function getComments($params) {
         global $user, $db;
 
-          $sql  = 'SELECT c.* FROM '.$db->prefix.'expComments c ';
-          $sql .= 'JOIN '.$db->prefix.'content_expComments cnt ON c.id=cnt.expcomments_id ';
+          $sql  = 'SELECT c.* FROM ' . $db->tableStmt('expComments') . ' c ';
+          $sql .= 'JOIN ' . $db->tableStmt('content_expComments') . ' cnt ON c.id=cnt.expcomments_id ';
           $sql .= 'WHERE cnt.content_id='.$params['content_id']." AND cnt.content_type='".$params['content_type']."' ";
           if (!$user->isAdmin()) {
               $sql .= 'AND c.approved=1';
@@ -300,7 +301,7 @@ class expCommentController extends expController {
               //FIXME here is where we might sanitize the comments before displaying them
 //              $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
               $comments->records[$key]->username = user::getUserAttribution($commentor->id);  // follow the site attribution setting
-              $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
+              $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id=".$record->poster);
           }
 //          if (empty($params['config']['disable_nested_comments'])) $comments->records = self::arrangecomments($comments->records);
           // eDebug($sql, true);

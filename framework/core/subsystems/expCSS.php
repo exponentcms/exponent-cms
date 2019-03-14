@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -190,9 +190,14 @@ class expCSS {
                 echo '<style type="text/css">';
                 $htmlcss = trim($params['css']);
                 if (MINIFY == 1 && MINIFY_INLINE_CSS == 1) {
-                    include_once(BASE . 'external/minify/min/lib/CSSmin.php');
-                    $min = new CSSmin();
-                    $htmlcss = $min->run($htmlcss) . "\r\n";
+                    if (MINIFY_USE_JSMIN) {
+                        include_once(BASE . 'external/minify/min/lib/JSMin.php');
+                        $htmlcss = JSMin::minify($htmlcss) . "\r\n";
+                    } else {
+                        include_once(BASE . 'external/minify/min/lib/CSSmin.php');
+                        $min = new CSSmin();
+                        $htmlcss = $min->run($htmlcss) . "\r\n";
+                    }
                 }
                 echo $htmlcss;
                 echo '</style>' . "\r\n";
@@ -285,11 +290,14 @@ class expCSS {
                 $htmlcss .= "\t" . '</style>' . "\r\n";
             }
             if (MINIFY == 1 && MINIFY_INLINE_CSS == 1) {
-//                include_once(BASE . 'external/minify/min/lib/JSMin.php');
-//                $htmlcss = JSMin::minify($htmlcss) . "\r\n";
-                include_once(BASE . 'external/minify/min/lib/CSSmin.php');
-                $min = new CSSmin();
-                $htmlcss = $min->run($htmlcss) . "\r\n";
+                if (MINIFY_USE_JSMIN) {
+                    include_once(BASE . 'external/minify/min/lib/JSMin.php');
+                    $htmlcss = JSMin::minify($htmlcss) . "\r\n";
+                } else {
+                    include_once(BASE . 'external/minify/min/lib/CSSmin.php');
+                    $min = new CSSmin();
+                    $htmlcss = $min->run($htmlcss) . "\r\n";
+                }
             }
             $html .= $htmlcss;
         }

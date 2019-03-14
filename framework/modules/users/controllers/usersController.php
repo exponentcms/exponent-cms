@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -1088,7 +1088,7 @@ class usersController extends expController {
         );
 
         // DB table to use
-        $table = $db->prefix . $this->model_table;
+        $table = $db->tableStmt($this->model_table);
 
         // Table's primary key
         $primaryKey = 'id';
@@ -1138,8 +1138,8 @@ class usersController extends expController {
 
         // DB table to use
 //        $table = $db->prefix . $this->model_table;
-        $sql = 'SELECT u.username, u.firstname, u.lastname, u.id, g.group_id, g.is_admin FROM ' . $db->prefix . 'user u ';
-        $sql .= 'LEFT JOIN ' . $db->prefix . 'groupmembership g ON g.member_id = u.id AND g.group_id = ' . $this->params['group'] . ' ';
+        $sql = 'SELECT u.username, u.firstname, u.lastname, u.id, g.group_id, g.is_admin FROM ' . $db->tableStmt('user') . ' u ';
+        $sql .= 'LEFT JOIN ' . $db->tableStmt('groupmembership') . ' g ON g.member_id = u.id AND g.group_id = ' . $this->params['group'] . ' ';
         $table = '(' . $sql . ') temp';  // note: for passing complex joins
 
         // Table's primary key
@@ -1151,7 +1151,7 @@ class usersController extends expController {
     }
 
     public function viewuser() {
-        global $user;
+        global $user, $db;
 
         if (!empty($this->params['id']) && $user->isAdmin()) {
             $u = new user($this->params['id']);
@@ -1168,9 +1168,9 @@ class usersController extends expController {
 
         // build out a SQL query that gets all the data we need and is sortable.
         $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as gtotal, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
-        $sql .= 'FROM ' . DB_TABLE_PREFIX . '_orders o, ' . DB_TABLE_PREFIX . '_billingmethods b, ';
-        $sql .= DB_TABLE_PREFIX . '_order_status os, ';
-        $sql .= DB_TABLE_PREFIX . '_order_type ot ';
+        $sql .= 'FROM ' . $db->tableStmt('orders') . ' o, ' . $db->tableStmt('billingmethods') . ' b, ';
+        $sql .= $db->tableStmt('order_type') . '_order_status os, ';
+        $sql .= $db->tableStmt('order_type') . ' ot ';
         $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $u->id;
 
         $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;

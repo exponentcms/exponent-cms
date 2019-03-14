@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -43,7 +43,7 @@ class expRatingController extends expController {
 
         $this->params['content_type'] = preg_replace("/[^[:alnum:][:space:]]/u", '', $this->params['content_type']);
         $this->params['subtype'] = preg_replace("/[^[:alnum:][:space:]]/u", '', $this->params['subtype']);
-        $this->params['id'] = $db->selectValue('content_expRatings','expratings_id',"content_id='".$this->params['content_id']."' AND content_type='".$this->params['content_type']."' AND subtype='".$this->params['subtype']."' AND poster='".$user->id."'");
+        $this->params['id'] = $db->selectValue('content_expRatings','expratings_id',"content_id=".$this->params['content_id']." AND content_type='".$this->params['content_type']."' AND subtype='".$this->params['subtype']."' AND poster=".$user->id);
         $msg = gt('Thank you for your rating');
         $rating = new expRating($this->params);
         if (!empty($rating->id)) $msg = gt('Your rating has been adjusted');

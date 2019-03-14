@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -280,7 +280,7 @@ if ($include_products) {
     //Get all the active products
     $total = $db->countObjects('product', '(active_type = 0 or active_type = 1) and parent_id = 0');
     for ($i = 0; $i < $total; $i += 100) {
-        $orderby = 'id LIMIT ' . ($i) . ', 100';
+        $orderby = 'id '. $db->limitStmt(100, $i);
 
         $products = $db->selectColumn('product', 'sef_url', '(active_type = 0 or active_type = 1) and parent_id = 0', $orderby);
         foreach ($products as $item) {

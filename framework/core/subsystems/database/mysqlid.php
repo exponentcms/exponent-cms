@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -130,8 +130,6 @@ class mysqlid_database {
 		// for using this feature to 4.1.2, although isam tables got the support for utf8 already in 4.1
 
 		//anything else would result in an inconsistent user experience
-
-		//TODO: determine how to handle encoding on postgres
 
 //		list($major, $minor, $micro) = sscanf(mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
 //		if(defined('DB_ENCODING')) {

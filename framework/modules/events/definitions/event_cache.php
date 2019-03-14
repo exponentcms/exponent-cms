@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -48,8 +48,8 @@ return array(
 	'is_allday'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
     'event_id'=>array(
-        DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>255,
+   		DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_INDEX=>10
     )
 );
 

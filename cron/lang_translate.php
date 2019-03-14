@@ -2,7 +2,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -95,8 +95,8 @@ if (defined('LOCALE')) {
             }
         }
     }
-    print $num_untrans." Phrases appear Un-Translated in the ".utf8_decode(LANG)." Translation\n";
-    print $num_added." New Phases were Translated in the ".utf8_decode(LANG)." Translation\n";
+    print $num_untrans." Phrases appeared Un-Translated in the ".utf8_decode(LANG)." Translation\n";
+    print $num_added." New Phases were attempted to be Translated in the ".utf8_decode(LANG)." Translation\n";
 } else {
     print "There is no Locale Assigned for the ".utf8_decode(LANG)." to attempt a Translation\n";
     exit;

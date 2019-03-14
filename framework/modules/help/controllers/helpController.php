@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -129,7 +129,7 @@ class helpController extends expController {
             }
 	    }
 	    $this->params['title'] = expString::escape($this->params['title']);  // escape title to prevent sql injection
-	    $doc = $help->find('first', 'help_version_id='.$version_id.' AND sef_url="'.$this->params['title'].'"');
+	    $doc = $help->find('first', 'help_version_id='.$version_id.' AND sef_url=\''.$this->params['title'].'\'');
         $children = $help->find('count','parent='.$doc->id);
         if (empty($doc)) {
             redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));
@@ -184,8 +184,8 @@ class helpController extends expController {
         foreach ($helplocs as $helploc) {
             if (!empty($helploc)) {
                 $helpsrc = expUnserialize($helploc);
-                $id = $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $helpsrc->src . '"');
-                $sectionlist[$helpsrc->src] = '(' . $id . ') ' . $db->selectValue('section', 'name', 'id="' . $id . '"');
+                $id = $db->selectValue('sectionref', 'section', 'module = \'help\' AND source=\'' . $helpsrc->src . '\'');
+                $sectionlist[$helpsrc->src] = '(' . $id . ') ' . $db->selectValue('section', 'name', 'id=' . (int)$id);
             }
         }
         $sectionlist[$this->loc->src] .= ' '.gt("(current section)");
@@ -215,9 +215,9 @@ class helpController extends expController {
 	    }
 
         $sections = array();
-        foreach ($db->selectObjects('sectionref','module="help"') as $sectionref) {
+        foreach ($db->selectObjects('sectionref','module=\'help\'') as $sectionref) {
             if (!empty($sectionref->source) && empty($sections[$sectionref->source])) {
-                $sections[$sectionref->source] = $db->selectValue('section', 'name', 'id="' . $sectionref->section .'"');
+                $sections[$sectionref->source] = $db->selectValue('section', 'name', 'id=\'' . $sectionref->section .'\'');
             }
         }
 
@@ -315,13 +315,15 @@ class helpController extends expController {
      * Manage help versions
      */
 	public function manage_versions() {
+	    global $db;
+
 	    expHistory::set('manageable', $this->params);
 
 	    $hv = new help_version();
 	    $current_version = $hv->find('first', 'is_current=1');
 
-	    $sql  = 'SELECT hv.*, COUNT(h.title) AS num_docs FROM '.DB_TABLE_PREFIX.'_help h ';
-	    $sql .= 'RIGHT JOIN '.DB_TABLE_PREFIX.'_help_version hv ON h.help_version_id=hv.id GROUP BY hv.version';
+	    $sql  = 'SELECT hv.*, COUNT(h.title) AS num_docs FROM ' . $db->tableStmt('help') . ' h ';
+	    $sql .= 'RIGHT JOIN ' . $db->tableStmt('help_version') . ' hv ON h.help_version_id=hv.id GROUP BY hv.version, hv.id, hv.title, hv.is_current';
 
 	    $page = new expPaginator(array(
             'sql'=>$sql,
@@ -394,7 +396,7 @@ class helpController extends expController {
 
 	    // check to see if the we have a new current version and unset the old current version.
 	    if (!empty($this->params['is_current'])) {
-//	        $db->sql('UPDATE '.DB_TABLE_PREFIX.'_help_version set is_current=0');
+//	        $db->sql('UPDATE ' . $db->tableStmt('help_version') . ' set is_current=0');
             help_version::clearHelpVersion();
 	    }
 	    expSession::un_set('help-version');
@@ -477,7 +479,7 @@ class helpController extends expController {
         $total = $db->countObjects($this->$modelname->tablename, $where);
         $count = 0;
         for ($i = 0; $i < $total; $i += 100) {
-            $orderby = 'id LIMIT ' . ($i) . ', 100';
+            $orderby = 'id '. $db->limitStmt(100, $i);
             $content = $db->selectArrays($this->$modelname->tablename, $where, $orderby);
             foreach ($content as $cnt) {
                 $origid = $cnt['id'];
@@ -536,7 +538,7 @@ class helpController extends expController {
         }
         $doc = $help->find('first','help_version_id='.$version_id.' and sef_url="'.$params['title'].'"');
 	    $session_section = expSession::get('last_section') ? expSession::get('last_section') : 1 ;
-        $help_sectionref = $db->selectObject('sectionref','module="help" AND source="'. expUnserialize($doc->location_data)->src.'"');
+        $help_sectionref = $db->selectObject('sectionref','module="help" AND source=\''. expUnserialize($doc->location_data)->src.'\'');
         $sid = !empty($help_sectionref) ? $help_sectionref->section : (($doc->section!=0) ? $doc->section : $session_section);
         if (!expSession::get('last_section')) {
             expSession::set('last_section',$sid);

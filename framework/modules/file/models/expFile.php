@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -349,7 +349,7 @@ class expFile extends expRecord {
     public static function make_expFile($path) {
         $efile = new expFile();
         $path = str_replace(array(BASE, '\\'), array('', '/'), $path);
-        $thefile = $efile->find('first','directory="' . dirname($path) . '/' . '" AND filename="' . basename($path) . '"');
+        $thefile = $efile->find('first','directory=\'' . dirname($path) . '/' . '\' AND filename=\'' . basename($path) . '\'');
         if (empty($thefile->id)) {
             $newfile = new expFile(array('directory' => dirname($path) . '/', 'filename' => basename($path)));
             @$newfile->save(false);
@@ -2039,7 +2039,7 @@ class expFile extends expRecord {
                 // check for and process to rebuild old formbuilder module data table
                 if (!empty($oldformdata)) {
                     foreach ($oldformdata as $tablename => $tabledata) {
-                        $oldform = $db->selectObject('formbuilder_form', 'table_name="' . substr($tablename, 12) . '"');
+                        $oldform = $db->selectObject('formbuilder_form', 'table_name=\'' . substr($tablename, 12) . '\'');
                         if (!empty($oldform)) {
                             // create the old table
                             $table = self::updateFormbuilderTable($oldform);
@@ -2068,7 +2068,7 @@ class expFile extends expRecord {
                 // check for and process to rebuild new forms module data table
                 if (!empty($newformdata)) {
                     foreach ($newformdata as $tablename => $tabledata) {
-                        $newform = $db->selectObject('forms', 'table_name="' . substr($tablename, 6) . '"');
+                        $newform = $db->selectObject('forms', 'table_name=\'' . substr($tablename, 6) . '\'');
                         if (!empty($newform)) {
                             // create the new table
                             $form = new forms($newform->id);

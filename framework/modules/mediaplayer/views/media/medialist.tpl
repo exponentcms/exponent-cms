@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -59,7 +59,8 @@
                             {if $item->media_type == "file"}
                                 <source type="{$item->expFile.media[0]->mimetype}" src="{$smarty.const.PATH_RELATIVE}{$item->expFile.media[0]->directory}{$item->expFile.media[0]->filename}" />
                             {else}
-                                <source type="video/youtube" src="{$item->url}" />
+                                {*<source type="video/youtube" src="{$item->url}" />*}
+                                <source src="{$item->url}" />
                             {/if}
                         </video>
                     {/if}

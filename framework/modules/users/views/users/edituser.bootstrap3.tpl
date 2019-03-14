@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -64,7 +64,7 @@
 	                {*control type=checkbox name="recv_html" label="I prefer HTML Email" value=1 checked=$edit_user->recv_html*}
 	                {if $user->isAdmin()}
                         {if $smarty.const.USE_LDAP}
-                            {control type=checkbox name=is_ldap value=1 label="Use LDAP Authentication?"|gettext checked=$edit_user->is_ldap}
+                            {control type=checkbox name=is_ldap value=1 label="Use LDAP Authentication?"|gettext checked=$edit_user->is_ldap postfalse=1}
                         {/if}
                         {if $user->isSuperAdmin()} {* only super admins can create/change admins *}
                             {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?"|gettext checked=$edit_user->is_acting_admin}

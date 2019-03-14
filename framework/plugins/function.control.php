@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -338,7 +338,7 @@ function smarty_function_control($params, &$smarty) {
 
                     // sanitize the default value. can accept as id, code abbrv or full name,
                     if (!empty($params['default']) && !is_numeric($params['default']) && !is_array($params['default'])) {
-                        $params['default'] = $db->selectValue('geo_country', 'id', 'name="' . $params['default'] . '" OR code="' . $params['default'] . '"');
+                        $params['default'] = $db->selectValue('geo_country', 'id', 'name=\'' . $params['default'] . '\' OR code=\'' . $params['default'] . '\'');
                     }
                     if (isset($params['default']))
                         $control->default = $params['default'];

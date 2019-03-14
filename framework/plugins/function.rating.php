@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -97,8 +97,8 @@ function smarty_function_rating($params,&$smarty) {
         else $html .= '</div><em><span class="avg"> </span> <span class="raters">'.gt('Be the first to rate this item.').'</em></div>';
     }
 
-    $rated = $db->selectValue('content_expRatings','expratings_id',"content_type='".$params['content_type']."' AND subtype='".$params['subtype']."' AND poster='".$user->id."'");
-    $rated_val = $db->selectValue('expRatings','rating',"id='".$rated."' AND poster='".$user->id."'");
+    $rated = $db->selectValue('content_expRatings','expratings_id',"content_type='".$params['content_type']."' AND subtype='".$params['subtype']."' AND poster=".$user->id);
+    $rated_val = $db->selectValue('expRatings','rating',"id=".(int)$rated." AND poster=".(int)$user->id);
     if ($user->isLoggedIn() && empty($params['readonly'])) {
         $html .= '
             <div class="rating-form">

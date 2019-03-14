@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -113,10 +113,10 @@ class orderController extends expController {
 
         if (!ECOM_LARGE_DB) {
             // build out a SQL query that gets all the data we need and is sortable.
-            $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as gtotal, b.transaction_state as paid, b.billingcalculator_id as method, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
-            $sql .= 'FROM ' . $db->prefix . 'orders o, ' . $db->prefix . 'billingmethods b, ';
-            $sql .= $db->prefix . 'order_status os, ';
-            $sql .= $db->prefix . 'order_type ot ';
+            $sql = 'SELECT o.*, b.firstname AS firstname, b.billing_cost AS gtotal, b.transaction_state AS paid, b.billingcalculator_id AS method, b.middlename AS middlename, b.lastname AS lastname, os.title AS status, ot.title AS order_type ';
+            $sql .= 'FROM ' . $db->tableStmt('orders') . ' o, ' . $db->tableStmt('billingmethods') . ' b, ';
+            $sql .=$db->tableStmt('order_status') . ' os, ';
+            $sql .= $db->tableStmt('order_type') . ' ot ';
             $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0';
       //FIXME this sql isn't correct???
     //        if (!empty($status_where)) {
@@ -1971,14 +1971,14 @@ exit();
         $search    = $this->params['ordernum'];
         $searchInv = (int)($search);
 
-//        $sql = "SELECT DISTINCT(o.id), o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, concat('".expCore::getCurrencySymbol()."',format(o.grand_total,2)) as grand_total, os.title as status_title, ot.title as order_type";
-        $sql = "SELECT DISTINCT(o.id), o.invoice_id, o.purchased as purchased_date, b.firstname as bfirst, b.lastname as blast, o.grand_total as grand_total, os.title as status_title, ot.title as order_type";
-        $sql .= " from " . $db->prefix . "orders as o ";
-        $sql .= "INNER JOIN " . $db->prefix . "orderitems as oi ON oi.orders_id = o.id ";
-        $sql .= "INNER JOIN " . $db->prefix . "order_type as ot ON ot.id = o.order_type_id ";
-        $sql .= "INNER JOIN " . $db->prefix . "order_status as os ON os.id = o.order_status_id ";
-        $sql .= "INNER JOIN " . $db->prefix . "billingmethods as b ON b.orders_id = o.id ";
-        $sql .= "INNER JOIN " . $db->prefix . "shippingmethods as s ON s.id = oi.shippingmethods_id ";
+//        $sql = "SELECT DISTINCT(o.id), o.invoice_id, " . $db->datetimeStmt('o.purchased') . " AS purchased_date, b.firstname AS bfirst, b.lastname AS blast, " . $db->currencyStmt('o.grand_total') . " AS grand_total, os.title AS status_title, ot.title AS order_type";
+        $sql = "SELECT DISTINCT(o.id), o.invoice_id, o.purchased AS purchased_date, b.firstname AS bfirst, b.lastname AS blast, o.grand_total AS grand_total, os.title AS status_title, ot.title AS order_type";
+        $sql .= " FROM " . $db->tableStmt('orders') . " AS o ";
+        $sql .= "INNER JOIN " . $db->tableStmt('orderitems') . " AS oi ON oi.orders_id = o.id ";
+        $sql .= "INNER JOIN " . $db->tableStmt('order_type') . " AS ot ON ot.id = o.order_type_id ";
+        $sql .= "INNER JOIN " . $db->tableStmt('order_status') . " AS os ON os.id = o.order_status_id ";
+        $sql .= "INNER JOIN " . $db->tableStmt('billingmethods') . " AS b ON b.orders_id = o.id ";
+        $sql .= "INNER JOIN " . $db->tableStmt('shippingmethods') . " AS s ON s.id = oi.shippingmethods_id ";
 
         $sqlwhere = "WHERE o.purchased != 0";
         if ($searchInv != 0) $sqlwhere .= " AND (o.invoice_id LIKE '%" . $searchInv . "%' OR";
@@ -2137,12 +2137,12 @@ exit();
         global $db;
 
         $this->params['query'] = expString::escape($this->params['query']);
-        $sql = "select DISTINCT(a.id) as id, a.firstname as firstname, a.middlename as middlename, a.lastname as lastname, a.organization as organization, a.email as email ";
-        $sql .= "from " . $db->prefix . "addresses as a "; //R JOIN " .
-        //$db->prefix . "billingmethods as bm ON bm.addresses_id=a.id ";
-        $sql .= " WHERE match (a.firstname,a.lastname,a.email,a.organization) against ('" . $this->params['query'] .
+        $sql = "SELECT DISTINCT(a.id) AS id, a.firstname AS firstname, a.middlename AS middlename, a.lastname AS lastname, a.organization AS organization, a.email AS email ";
+        $sql .= "FROM " . $db->tableStmt('addresses') . " AS a "; //R JOIN " .
+        //$db->prefix . "billingmethods AS bm ON bm.addresses_id=a.id ";
+        $sql .= " WHERE MATCH (a.firstname,a.lastname,a.email,a.organization) AGAINST ('" . $this->params['query'] .
             "*' IN BOOLEAN MODE) ";
-        $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) ASC LIMIT 12";
+        $sql .= "ORDER BY MATCH (a.firstname,a.lastname,a.email,a.organization)  AGAINST ('" . $this->params['query'] . "*' IN BOOLEAN MODE) ASC ". $db->limitStmt(12);
         $res = $db->selectObjectsBySql($sql);
         foreach ($res as $key=>$record) {
             $res[$key]->title = $record->firstname . ' ' . $record->lastname;
@@ -2161,12 +2161,12 @@ exit();
         global $db;
 
         $this->params['query'] = expString::escape($this->params['query']);
-        $sql = "select DISTINCT(a.id) as id, a.source as source, a.firstname as firstname, a.middlename as middlename, a.lastname as lastname, a.organization as organization, a.email as email ";
-        $sql .= "from " . $db->prefix . "external_addresses as a "; //R JOIN " .
-        //$db->prefix . "billingmethods as bm ON bm.addresses_id=a.id ";
-        $sql .= " WHERE match (a.firstname,a.lastname,a.email,a.organization) against ('" . $this->params['query'] .
+        $sql = "SELECT DISTINCT(a.id) AS id, a.source AS source, a.firstname AS firstname, a.middlename AS middlename, a.lastname AS lastname, a.organization AS organization, a.email AS email ";
+        $sql .= "FROM " . $db->tableStmt('external_addresses') . " AS a "; //R JOIN " .
+        //$db->prefix . "billingmethods AS bm ON bm.addresses_id=a.id ";
+        $sql .= " WHERE MATCH (a.firstname,a.lastname,a.email,a.organization) AGAINST ('" . $this->params['query'] .
             "*' IN BOOLEAN MODE) ";
-        $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) ASC LIMIT 12";
+        $sql .= "ORDER BY MATCH (a.firstname,a.lastname,a.email,a.organization)  AGAINST ('" . $this->params['query'] . "*' IN BOOLEAN MODE) ASC ". $db->limitStmt(12);
         $res = $db->selectObjectsBySql($sql);
         foreach ($res as $key=>$record) {
             $res[$key]->title = $record->firstname . ' ' . $record->lastname;
@@ -2180,7 +2180,7 @@ exit();
      * For server-side population of DataTables
      */
     public function getOrdersByJSON() {
-        global $db;
+        global $db, $order;
 
         // Array of database columns which should be read and sent back to DataTables.
         // The `db` parameter represents the column name in the database, while the `dt`
@@ -2312,8 +2312,8 @@ exit();
 
         // DB table to use
         // build out a SQL query that gets all the data we need and is sortable.
-        $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as gtotal, b.transaction_state as paid, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type, bc.title as calc, CONCAT_WS(", ", b.lastname, b.firstname) AS name ';
-        $sql .= 'FROM ' . $db->prefix . 'orders o, ' . $db->prefix . 'billingmethods b, '. $db->prefix . 'order_status os, ' . $db->prefix . 'order_type ot, ' . $db->prefix . 'billingcalculator bc ';
+        $sql = 'SELECT o.*, b.firstname AS firstname, b.billing_cost AS gtotal, b.transaction_state AS paid, b.middlename AS middlename, b.lastname AS lastname, os.title AS status, ot.title AS order_type, bc.title AS calc, CONCAT_WS(\', \', b.lastname, b.firstname) AS name ';
+        $sql .= 'FROM ' . $db->tableStmt('orders') . ' o, ' . $db->tableStmt('billingmethods') . ' b, ' . $db->tableStmt('order_status') . ' os, ' . $db->tableStmt('order_type') . ' ot, ' . $db->tableStmt('billingcalculator') . ' bc ';
         $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND b.billingcalculator_id = bc.id AND o.purchased > 0';
         $sql .= $status_where;
 //        $table = $db->prefix . $this->model_table;
@@ -2335,19 +2335,30 @@ exit();
 //        }
 //        $data['yadcf_data_0'] = array_keys(array_flip($data['yadcf_data_0']));
         // for payment list
-        $stmt3 = $dbs->prepare( 'SELECT `title` FROM ' . $db->prefix . 'billingcalculator WHERE `enabled` = 1' );
+        $stmt3 = $dbs->prepare( 'SELECT title FROM ' . $db->tableStmt('billingcalculator') . ' WHERE enabled = 1' );
         $stmt3->execute();
         $data['yadcf_data_3'] = $stmt3->fetchAll(PDO::FETCH_COLUMN, 0);
         // for order type list
-        $stmt5 = $dbs->prepare( 'SELECT `title` FROM ' . $db->prefix . 'order_type' );
+        $stmt5 = $dbs->prepare( 'SELECT title FROM ' . $db->tableStmt('order_type') );
         $stmt5->execute();
         $data['yadcf_data_5'] = $stmt5->fetchAll(PDO::FETCH_COLUMN, 0);
         // for status list
-        $stmt6 = $dbs->prepare( 'SELECT `title` FROM ' . $db->prefix . 'order_status' );
+        $stmt6 = $dbs->prepare( 'SELECT title FROM ' . $db->tableStmt('order_status') );
         $stmt6->execute();
         $data['yadcf_data_6'] = $stmt6->fetchAll(PDO::FETCH_COLUMN, 0);
 
+        $data['invoicenum'] = $order->getInvoiceNumber(false);
+
         echo json_encode($data);
+    }
+
+    /**
+     * For server-side re-population of DataTables
+     */
+    public function getInvoiceNumByJSON() {
+        global $order;
+
+        echo json_encode((int)$order->getInvoiceNumber(false));
     }
 
 }

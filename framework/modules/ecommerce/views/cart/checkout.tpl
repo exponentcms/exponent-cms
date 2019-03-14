@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -97,7 +97,7 @@
         </div>
     </div>
 
-    <h2>{"Your Items"|gettext}</h2>
+    <h2>{"Items"|gettext}</h2>
     <div class="cartitems separate">
         <!-- p>You have <strong>{$order->item_count}</strong> item{if $order->item_count > 1}s{/if} in your cart. <a id="expandcart" href="#" class="exp-ecom-link">[Click here to show your cart]<span></span></a></p -->
         <div id="shoppingcartwrapper">
@@ -108,7 +108,7 @@
     {clear}
     {if !$noactivediscounts}
         <div class="separate">
-            <h2>{"Optional Promotional Code"|gettext}</h2>
+            <h2>{"Optional Discount Code"|gettext}</h2>
 
             <div class="apply-codes">
                 {if !$discounts}
@@ -162,7 +162,7 @@
                     {/foreach}
                 {/if}
                 <div class="shipping-info">
-                    <h2>{"Your Shipping Information"|gettext}</h2>
+                    <h2>{"Shipping Information"|gettext}</h2>
                     {if $order->forced_shipping == true || $is_shipping_discount == true}
                         <ul id="forcedshipping" class="queue message">
                             {if $order->forced_shipping == true}
@@ -229,7 +229,7 @@
                     {if !$shipping->address->id}{$noShippingPrices=1}{/if}
 
                     {if $multicalc}
-                        <h3>{"Shipping Methods"|gettext}</h3>
+                        <h3>{"Shipping Method"|gettext}</h3>
 
                         <div class="separate">
                             {if $order->forced_shipping == true}
@@ -337,7 +337,7 @@
             </div>
         {/if} {* end shipping required check *}
         <div class="billingdetails separate">
-            <h2>{"Your Billing Information"|gettext}</h2>
+            <h2>{"Billing Information"|gettext}</h2>
             <h3>{"Billing Address"|gettext}</h3>
 
             <div class="billing-address">
@@ -359,11 +359,11 @@
             {if $order->total}
                 {*<h2>{"Payment Information"|gettext}</h2>*}
                 {if $billing->calculator_views|@count > 1}
-                    <h3>{"Payment Methods"|gettext}</h3>
+                    <h3>{"Payment Method"|gettext}</h3>
                     <div id="cart-{$id}" class="yui-navset">
                         <ul class="yui-nav">
                             {foreach from=$billing->calculator_views item=cviews name=calcs}
-                                <li><a href="#tab{$smarty.foreach.calcs.iteration}">{$billing->selectable_calculators[$cviews.id]}</a></li>
+                                <li><a href="#tab{$smarty.foreach.calcs.iteration}" title="{'Select this payment method'|gettext}">{$billing->selectable_calculators[$cviews.id]}</a></li>
                             {/foreach}
                         </ul>
                         <div class="yui-content">

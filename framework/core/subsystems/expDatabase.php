@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -122,7 +122,7 @@ class expDatabase {
         $renamed = array();
         foreach ($tablenames as $oldtablename=>$newtablename) {
             if (!$db->tableExists($newtablename)) {
-                $db->sql('RENAME TABLE '.$db->prefix.$oldtablename.' TO '.$db->prefix.$newtablename);
+                $db->sql('RENAME TABLE ' . $db->tableStmt($oldtablename) . ' TO ' . $db->tableStmt($newtablename));
                 $renamed[] = $newtablename;
             }
         }
@@ -274,13 +274,17 @@ class expDatabase {
 	 */
 	static function limit ( $request )
 	{
-		$limit = '';
+	    global $db;
 
-		if ( isset($request['start']) && $request['length'] != -1 ) {
-			$limit = "LIMIT ".(int)($request['start']).", ".(int)($request['length']);
-		}
+	    return $db::limit_pdo($request);
 
-		return $limit;
+//		$limit = '';
+//
+//		if ( isset($request['start']) && $request['length'] != -1 ) {
+//			$limit = "LIMIT ".(int)($request['start']).", ".(int)($request['length']);
+//		}
+//
+//		return $limit;
 	}
 
 	/**
@@ -294,35 +298,39 @@ class expDatabase {
 	 */
 	static function order ( $request, $columns )
 	{
-		$order = '';
+	    global $db;
 
-		if ( isset($request['order']) && count($request['order']) ) {
-			$orderBy = array();
-			$dtColumns = self::pluck( $columns, 'dt' );
+	    return $db::order_pdo($request, $columns);
 
-			for ( $i=0, $ien=count($request['order']) ; $i<$ien ; $i++ ) {
-				// Convert the column index into the column data property
-				$columnIdx = (int)($request['order'][$i]['column']);
-				$requestColumn = $request['columns'][$columnIdx];
-
-				$columnIdx = array_search( $requestColumn['data'], $dtColumns );
-				$column = $columns[ $columnIdx ];
-
-//				if ( $requestColumn['orderable'] === 'true' ) {  //fixme allows us to initially sort an unsortable column
-					$dir = $request['order'][$i]['dir'] === 'asc' ?
-						'ASC' :
-						'DESC';
-
-					$orderBy[] = '`'.$column['db'].'` '.$dir;
-//				}
-			}
-
-            if ( count( $orderBy ) ) {
-                $order = 'ORDER BY '.implode(', ', $orderBy);
-            }
-		}
-
-		return $order;
+//		$order = '';
+//
+//		if ( isset($request['order']) && count($request['order']) ) {
+//			$orderBy = array();
+//			$dtColumns = self::pluck( $columns, 'dt' );
+//
+//			for ( $i=0, $ien=count($request['order']) ; $i<$ien ; $i++ ) {
+//				// Convert the column index into the column data property
+//				$columnIdx = (int)($request['order'][$i]['column']);
+//				$requestColumn = $request['columns'][$columnIdx];
+//
+//				$columnIdx = array_search( $requestColumn['data'], $dtColumns );
+//				$column = $columns[ $columnIdx ];
+//
+////				if ( $requestColumn['orderable'] === 'true' ) {  //fixme allows us to initially sort an unsortable column
+//					$dir = $request['order'][$i]['dir'] === 'asc' ?
+//						'ASC' :
+//						'DESC';
+//
+//					$orderBy[] = '`'.$column['db'].'` '.$dir;
+////				}
+//			}
+//
+//            if ( count( $orderBy ) ) {
+//                $order = 'ORDER BY '.implode(', ', $orderBy);
+//            }
+//		}
+//
+//		return $order;
 	}
 
 	/**
@@ -342,93 +350,97 @@ class expDatabase {
 	 */
 	static function filter ( $request, $columns, &$bindings )
 	{
-		$globalSearch = array();
-		$columnSearch = array();
-		$dtColumns = self::pluck( $columns, 'dt' );
+        global $db;
 
-		if ( isset($request['search']) && $request['search']['value'] != '' ) {
-			$str = $request['search']['value'];
+   	    return $db::filter_pdo( $request, $columns, $bindings);
 
-			for ( $i=0, $ien=count($request['columns']) ; $i<$ien ; $i++ ) {
-				$requestColumn = $request['columns'][$i];
-				$columnIdx = array_search( $requestColumn['data'], $dtColumns );
-				$column = $columns[ $columnIdx ];
-
-				if ( $requestColumn['searchable'] === 'true' ) {
-                    if (stripos($str, '-yadcf_delim-') !== false) {
-                        $val = explode('-yadcf_delim-', $str);
-                        if (empty($val[0])) {
-                            $val[0] = '0';
-                        } elseif (expDateTime::is_date($val[0])) {
-                            $val[0] = strtotime($val[0]);
-                        }
-                        if (empty($val[1])) {
-                            $val[1] = time();
-                        } elseif (expDateTime::is_date($val[1])) {
-                            $val[1] = strtotime($val[1]);
-                        }
-                        $binding0 = self::bind( $bindings, $val[0], PDO::PARAM_STR );
-                        $binding1 = self::bind( $bindings, $val[1], PDO::PARAM_STR );
-                        $globalSearch[] = "`".$column['db']."` BETWEEN ".$binding0." AND ".$binding1;
-                    } else {
-                        $binding = self::bind( $bindings, '%'.$str.'%', PDO::PARAM_STR );
-                        $globalSearch[] = "`".$column['db']."` LIKE ".$binding;
-                    }
-				}
-			}
-		}
-
-		// Individual column filtering
-		if ( isset( $request['columns'] ) ) {
-			for ( $i=0, $ien=count($request['columns']) ; $i<$ien ; $i++ ) {
-				$requestColumn = $request['columns'][$i];
-				$columnIdx = array_search( $requestColumn['data'], $dtColumns );
-				$column = $columns[ $columnIdx ];
-
-				$str = $requestColumn['search']['value'];
-
-				if ( $requestColumn['searchable'] === 'true' && $str != '' ) {
-				    if (stripos($str, '-yadcf_delim-') !== false) {
-				        $val = explode('-yadcf_delim-', $str);
-                        if (empty($val[0])) {
-                            $val[0] = '0';
-                        } elseif (expDateTime::is_date($val[0])) {
-                            $val[0] = strtotime($val[0]);
-                        }
-                        if (empty($val[1])) {
-                            $val[1] = time();
-                        } elseif (expDateTime::is_date($val[1])) {
-                            $val[1] = strtotime($val[1]);
-                        }
-                        $binding0 = self::bind( $bindings, $val[0], PDO::PARAM_STR );
-                        $binding1 = self::bind( $bindings, $val[1], PDO::PARAM_STR );
-                        $columnSearch[] = "`".$column['db']."` BETWEEN ".$binding0." AND ".$binding1;
-                    } else {
-                        $binding = self::bind( $bindings, '%'.$str.'%', PDO::PARAM_STR );
-                        $columnSearch[] = "`".$column['db']."` LIKE ".$binding;
-                    }
-				}
-			}
-		}
-
-		// Combine the filters into a single string
-		$where = '';
-
-		if ( count( $globalSearch ) ) {
-			$where = '('.implode(' OR ', $globalSearch).')';
-		}
-
-		if ( count( $columnSearch ) ) {
-			$where = $where === '' ?
-				implode(' AND ', $columnSearch) :
-				$where .' AND '. implode(' AND ', $columnSearch);
-		}
-
-		if ( $where !== '' ) {
-			$where = 'WHERE '.$where;
-		}
-
-		return $where;
+//		$globalSearch = array();
+//		$columnSearch = array();
+//		$dtColumns = self::pluck( $columns, 'dt' );
+//
+//		if ( isset($request['search']) && $request['search']['value'] != '' ) {
+//			$str = $request['search']['value'];
+//
+//			for ( $i=0, $ien=count($request['columns']) ; $i<$ien ; $i++ ) {
+//				$requestColumn = $request['columns'][$i];
+//				$columnIdx = array_search( $requestColumn['data'], $dtColumns );
+//				$column = $columns[ $columnIdx ];
+//
+//				if ( $requestColumn['searchable'] === 'true' ) {
+//                    if (stripos($str, '-yadcf_delim-') !== false) {
+//                        $val = explode('-yadcf_delim-', $str);
+//                        if (empty($val[0])) {
+//                            $val[0] = '0';
+//                        } elseif (expDateTime::is_date($val[0])) {
+//                            $val[0] = strtotime($val[0]);
+//                        }
+//                        if (empty($val[1])) {
+//                            $val[1] = time();
+//                        } elseif (expDateTime::is_date($val[1])) {
+//                            $val[1] = strtotime($val[1]);
+//                        }
+//                        $binding0 = self::bind( $bindings, $val[0], PDO::PARAM_STR );
+//                        $binding1 = self::bind( $bindings, $val[1], PDO::PARAM_STR );
+//                        $globalSearch[] = "`".$column['db']."` BETWEEN ".$binding0." AND ".$binding1;
+//                    } else {
+//                        $binding = self::bind( $bindings, '%'.$str.'%', PDO::PARAM_STR );
+//                        $globalSearch[] = "`".$column['db']."` LIKE ".$binding;
+//                    }
+//				}
+//			}
+//		}
+//
+//		// Individual column filtering
+//		if ( isset( $request['columns'] ) ) {
+//			for ( $i=0, $ien=count($request['columns']) ; $i<$ien ; $i++ ) {
+//				$requestColumn = $request['columns'][$i];
+//				$columnIdx = array_search( $requestColumn['data'], $dtColumns );
+//				$column = $columns[ $columnIdx ];
+//
+//				$str = $requestColumn['search']['value'];
+//
+//				if ( $requestColumn['searchable'] === 'true' && $str != '' ) {
+//				    if (stripos($str, '-yadcf_delim-') !== false) {
+//				        $val = explode('-yadcf_delim-', $str);
+//                        if (empty($val[0])) {
+//                            $val[0] = '0';
+//                        } elseif (expDateTime::is_date($val[0])) {
+//                            $val[0] = strtotime($val[0]);
+//                        }
+//                        if (empty($val[1])) {
+//                            $val[1] = time();
+//                        } elseif (expDateTime::is_date($val[1])) {
+//                            $val[1] = strtotime($val[1]);
+//                        }
+//                        $binding0 = self::bind( $bindings, $val[0], PDO::PARAM_STR );
+//                        $binding1 = self::bind( $bindings, $val[1], PDO::PARAM_STR );
+//                        $columnSearch[] = "`".$column['db']."` BETWEEN ".$binding0." AND ".$binding1;
+//                    } else {
+//                        $binding = self::bind( $bindings, '%'.$str.'%', PDO::PARAM_STR );
+//                        $columnSearch[] = "`".$column['db']."` LIKE ".$binding;
+//                    }
+//				}
+//			}
+//		}
+//
+//		// Combine the filters into a single string
+//		$where = '';
+//
+//		if ( count( $globalSearch ) ) {
+//			$where = '('.implode(' OR ', $globalSearch).')';
+//		}
+//
+//		if ( count( $columnSearch ) ) {
+//			$where = $where === '' ?
+//				implode(' AND ', $columnSearch) :
+//				$where .' AND '. implode(' AND ', $columnSearch);
+//		}
+//
+//		if ( $where !== '' ) {
+//			$where = 'WHERE '.$where;
+//		}
+//
+//		return $where;
 	}
 
 	/**
@@ -446,49 +458,53 @@ class expDatabase {
 	 */
 	static function simple ( $request, $table, $primaryKey, $columns )
 	{
-		$bindings = array();
-		$dbpdo = self::sql_connect();
+	    global $db;
 
-		// Build the SQL query string from the request
-		$limit = self::limit( $request );
-		$order = self::order( $request, $columns );
-		$where = self::filter( $request, $columns, $bindings );
+	    return $db::simple_pdo($request, $table, $primaryKey, $columns);
 
-		// Main query to actually get the data
-		$data = self::sql_exec( $dbpdo, $bindings,
-			"SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
-			 FROM $table
-			 $where
-			 $order
-			 $limit"
-		);
-
-		// Data set length after filtering
-		$resFilterLength = self::sql_exec( $dbpdo, $bindings,
-			"SELECT COUNT(`{$primaryKey}`)
-			 FROM   $table
-			 $where"
-		);
-		$recordsFiltered = $resFilterLength[0][0];
-
-		// Total data set length
-		$resTotalLength = self::sql_exec( $dbpdo,
-			"SELECT COUNT(`{$primaryKey}`)
-			 FROM   $table"
-		);
-		$recordsTotal = $resTotalLength[0][0];
-
-		/*
-		 * Output
-		 */
-		return array(
-			"draw"            => isset ( $request['draw'] ) ?
-                (int)( $request['draw'] ) :
-				0,
-			"recordsTotal"    => (int)( $recordsTotal ),
-			"recordsFiltered" => (int)( $recordsFiltered ),
-			"data"            => self::data_output( $columns, $data )
-		);
+//		$bindings = array();
+//		$dbpdo = self::sql_connect();
+//
+//		// Build the SQL query string from the request
+//		$limit = self::limit( $request );
+//		$order = self::order( $request, $columns );
+//		$where = self::filter( $request, $columns, $bindings );
+//
+//		// Main query to actually get the data
+//		$data = self::sql_exec( $dbpdo, $bindings,
+//			"SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
+//			 FROM $table
+//			 $where
+//			 $order
+//			 $limit"
+//		);
+//
+//		// Data set length after filtering
+//		$resFilterLength = self::sql_exec( $dbpdo, $bindings,
+//			"SELECT COUNT(`{$primaryKey}`)
+//			 FROM   $table
+//			 $where"
+//		);
+//		$recordsFiltered = $resFilterLength[0][0];
+//
+//		// Total data set length
+//		$resTotalLength = self::sql_exec( $dbpdo,
+//			"SELECT COUNT(`{$primaryKey}`)
+//			 FROM   $table"
+//		);
+//		$recordsTotal = $resTotalLength[0][0];
+//
+//		/*
+//		 * Output
+//		 */
+//		return array(
+//			"draw"            => isset ( $request['draw'] ) ?
+//                                 (int)( $request['draw'] ) :
+//                                 0,
+//			"recordsTotal"    => (int)( $recordsTotal ),
+//			"recordsFiltered" => (int)( $recordsFiltered ),
+//			"data"            => self::data_output( $columns, $data )
+//		);
 	}
 
 	/**
@@ -516,68 +532,72 @@ class expDatabase {
 	 */
     static function complex ( $request, $table, $primaryKey, $columns, $whereResult=null, $whereAll=null )
    	{
-   		$bindings = array();
-        $dbpdo = self::sql_connect();
-   		$whereAllSql = '';
+   	    global $db;
 
-   		// Build the SQL query string from the request
-   		$limit = self::limit( $request );
-   		$order = self::order( $request, $columns );
-   		$where = self::filter( $request, $columns, $bindings );
+   	    return $db::complex_pdo($request, $table, $primaryKey, $columns, $whereResult, $whereAll);
 
-   		$whereResult = self::_flatten( $whereResult );
-   		$whereAll = self::_flatten( $whereAll );
-
-   		if ( $whereResult ) {
-   			$where = $where ?
-   				$where .' AND '.$whereResult :
-   				'WHERE '.$whereResult;
-   		}
-
-   		if ( $whereAll ) {
-   			$where = $where ?
-   				$where .' AND '.$whereAll :
-   				'WHERE '.$whereAll;
-
-   			$whereAllSql = 'WHERE '.$whereAll;
-   		}
-
-   		// Main query to actually get the data
-   		$data = self::sql_exec( $dbpdo, $bindings,
-   			"SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
-   			 FROM $table
-   			 $where
-   			 $order
-   			 $limit"
-   		);
-
-   		// Data set length after filtering
-   		$resFilterLength = self::sql_exec( $dbpdo, $bindings,
-   			"SELECT COUNT(`{$primaryKey}`)
-   			 FROM   $table
-   			 $where"
-   		);
-   		$recordsFiltered = $resFilterLength[0][0];
-
-   		// Total data set length
-   		$resTotalLength = self::sql_exec( $dbpdo, $bindings,
-   			"SELECT COUNT(`{$primaryKey}`)
-   			 FROM   $table ".
-   			$whereAllSql
-   		);
-   		$recordsTotal = $resTotalLength[0][0];
-
-   		/*
-   		 * Output
-   		 */
-   		return array(
-   			"draw"            => isset ( $request['draw'] ) ?
-                (int)( $request['draw'] ) :
-   				0,
-   			"recordsTotal"    => (int)( $recordsTotal ),
-   			"recordsFiltered" => (int)( $recordsFiltered ),
-   			"data"            => self::data_output( $columns, $data )
-   		);
+//   		$bindings = array();
+//        $dbpdo = self::sql_connect();
+//   		$whereAllSql = '';
+//
+//   		// Build the SQL query string from the request
+//   		$limit = self::limit( $request );
+//   		$order = self::order( $request, $columns );
+//   		$where = self::filter( $request, $columns, $bindings );
+//
+//   		$whereResult = self::_flatten( $whereResult );
+//   		$whereAll = self::_flatten( $whereAll );
+//
+//   		if ( $whereResult ) {
+//   			$where = $where ?
+//   				$where .' AND '.$whereResult :
+//   				'WHERE '.$whereResult;
+//   		}
+//
+//   		if ( $whereAll ) {
+//   			$where = $where ?
+//   				$where .' AND '.$whereAll :
+//   				'WHERE '.$whereAll;
+//
+//   			$whereAllSql = 'WHERE '.$whereAll;
+//   		}
+//
+//   		// Main query to actually get the data
+//   		$data = self::sql_exec( $dbpdo, $bindings,
+//   			"SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
+//   			 FROM $table
+//   			 $where
+//   			 $order
+//   			 $limit"
+//   		);
+//
+//   		// Data set length after filtering
+//   		$resFilterLength = self::sql_exec( $dbpdo, $bindings,
+//   			"SELECT COUNT(`{$primaryKey}`)
+//   			 FROM   $table
+//   			 $where"
+//   		);
+//   		$recordsFiltered = $resFilterLength[0][0];
+//
+//   		// Total data set length
+//   		$resTotalLength = self::sql_exec( $dbpdo, $bindings,
+//   			"SELECT COUNT(`{$primaryKey}`)
+//   			 FROM   $table ".
+//   			 $whereAllSql
+//   		);
+//   		$recordsTotal = $resTotalLength[0][0];
+//
+//   		/*
+//   		 * Output
+//   		 */
+//   		return array(
+//   			"draw"            => isset ( $request['draw'] ) ?
+//                                 (int)( $request['draw'] ) :
+//                                 0,
+//   			"recordsTotal"    => (int)( $recordsTotal ),
+//   			"recordsFiltered" => (int)( $recordsFiltered ),
+//   			"data"            => self::data_output( $columns, $data )
+//   		);
    	}
 
 	/**
@@ -595,7 +615,7 @@ class expDatabase {
 	/**
 	 * Execute an SQL query on the database
 	 *
-	 * @param  resource $dbpdo  Database handler
+	 * @param  resource/PDO $dbpdo  Database handler
 	 * @param  array    $bindings Array of PDO binding values from bind() to be
 	 *   used for safely escaping strings. Note that this can be given as the
 	 *   SQL query string if no bindings are required.
@@ -759,12 +779,330 @@ abstract class database {
 	//	function connect ($username, $password, $hostname, $database, $new=false) {
 	abstract function __construct($username, $password, $hostname, $database, $new=false);
 
+	/** Begin SSP Methods */
     /**
      * Connect to the database by PDO
    	 *
    	 * @return PDO Database connection handle
    	 */
    	abstract function sql_connect_pdo();
+
+    /**
+   	 * Paging
+   	 *
+   	 * Construct the LIMIT clause for server-side processing SQL query
+   	 *
+   	 *  @param  array $request Data sent to server by DataTables
+   	 *  @return string SQL limit clause
+   	 */
+   	static function limit_pdo ( $request )
+   	{
+   		$limit = '';
+
+   		if ( isset($request['start']) && $request['length'] != -1 ) {
+   			$limit = "LIMIT ".(int)($request['start']).", ".(int)($request['length']);
+   		}
+
+   		return $limit;
+   	}
+
+   	/**
+   	 * Ordering
+   	 *
+   	 * Construct the ORDER BY clause for server-side processing SQL query
+   	 *
+   	 *  @param  array $request Data sent to server by DataTables
+   	 *  @param  array $columns Column information array
+   	 *  @return string SQL order by clause
+   	 */
+   	static function order_pdo ( $request, $columns )
+   	{
+   		$order = '';
+
+   		if ( isset($request['order']) && count($request['order']) ) {
+   			$orderBy = array();
+   			$dtColumns = expDatabase::pluck( $columns, 'dt' );
+
+   			for ( $i=0, $ien=count($request['order']) ; $i<$ien ; $i++ ) {
+   				// Convert the column index into the column data property
+   				$columnIdx = (int)($request['order'][$i]['column']);
+   				$requestColumn = $request['columns'][$columnIdx];
+
+   				$columnIdx = array_search( $requestColumn['data'], $dtColumns );
+   				$column = $columns[ $columnIdx ];
+
+   //				if ( $requestColumn['orderable'] === 'true' ) {  //fixme allows us to initially sort an unsortable column
+   					$dir = $request['order'][$i]['dir'] === 'asc' ?
+   						'ASC' :
+   						'DESC';
+
+   					$orderBy[] = '`'.$column['db'].'` '.$dir;
+   //				}
+   			}
+
+               if ( count( $orderBy ) ) {
+                   $order = 'ORDER BY '.implode(', ', $orderBy);
+               }
+   		}
+
+   		return $order;
+   	}
+
+    /**
+   	 * Searching / Filtering
+   	 *
+   	 * Construct the WHERE clause for server-side processing SQL query.
+   	 *
+   	 * NOTE this does not match the built-in DataTables filtering which does it
+   	 * word by word on any field. It's possible to do here performance on large
+   	 * databases would be very poor
+   	 *
+   	 *  @param  array $request Data sent to server by DataTables
+   	 *  @param  array $columns Column information array
+   	 *  @param  array $bindings Array of values for PDO bindings, used in the
+   	 *    sql_exec() function
+   	 *  @return string SQL where clause
+   	 */
+   	static function filter_pdo ( $request, $columns, &$bindings )
+   	{
+   		$globalSearch = array();
+   		$columnSearch = array();
+   		$dtColumns = expDatabase::pluck( $columns, 'dt' );
+
+   		if ( isset($request['search']) && $request['search']['value'] != '' ) {
+   			$str = $request['search']['value'];
+
+   			for ( $i=0, $ien=count($request['columns']) ; $i<$ien ; $i++ ) {
+   				$requestColumn = $request['columns'][$i];
+   				$columnIdx = array_search( $requestColumn['data'], $dtColumns );
+   				$column = $columns[ $columnIdx ];
+
+   				if ( $requestColumn['searchable'] === 'true' ) {
+                       if (stripos($str, '-yadcf_delim-') !== false) {
+                           $val = explode('-yadcf_delim-', $str);
+                           if (empty($val[0])) {
+                               $val[0] = '0';
+                           } elseif (expDateTime::is_date($val[0])) {
+                               $val[0] = strtotime($val[0]);
+                           }
+                           if (empty($val[1])) {
+                               $val[1] = time();
+                           } elseif (expDateTime::is_date($val[1])) {
+                               $val[1] = strtotime($val[1]);
+                           }
+                           $binding0 = expDatabase::bind( $bindings, $val[0], PDO::PARAM_STR );
+                           $binding1 = expDatabase::bind( $bindings, $val[1], PDO::PARAM_STR );
+                           $globalSearch[] = "`".$column['db']."` BETWEEN ".$binding0." AND ".$binding1;
+                       } else {
+                           $binding = expDatabase::bind( $bindings, '%'.$str.'%', PDO::PARAM_STR );
+                           $globalSearch[] = "`".$column['db']."` LIKE ".$binding;
+                       }
+   				}
+   			}
+   		}
+
+   		// Individual column filtering
+   		if ( isset( $request['columns'] ) ) {
+   			for ( $i=0, $ien=count($request['columns']) ; $i<$ien ; $i++ ) {
+   				$requestColumn = $request['columns'][$i];
+   				$columnIdx = array_search( $requestColumn['data'], $dtColumns );
+   				$column = $columns[ $columnIdx ];
+
+   				$str = $requestColumn['search']['value'];
+
+   				if ( $requestColumn['searchable'] === 'true' && $str != '' ) {
+   				    if (stripos($str, '-yadcf_delim-') !== false) {
+   				        $val = explode('-yadcf_delim-', $str);
+                           if (empty($val[0])) {
+                               $val[0] = '0';
+                           } elseif (expDateTime::is_date($val[0])) {
+                               $val[0] = strtotime($val[0]);
+                           }
+                           if (empty($val[1])) {
+                               $val[1] = time();
+                           } elseif (expDateTime::is_date($val[1])) {
+                               $val[1] = strtotime($val[1]);
+                           }
+                           $binding0 = expDatabase::bind( $bindings, $val[0], PDO::PARAM_STR );
+                           $binding1 = expDatabase::bind( $bindings, $val[1], PDO::PARAM_STR );
+                           $columnSearch[] = "`".$column['db']."` BETWEEN ".$binding0." AND ".$binding1;
+                       } else {
+                           $binding = expDatabase::bind( $bindings, '%'.$str.'%', PDO::PARAM_STR );
+                           $columnSearch[] = "`".$column['db']."` LIKE ".$binding;
+                       }
+   				}
+   			}
+   		}
+
+   		// Combine the filters into a single string
+   		$where = '';
+
+   		if ( count( $globalSearch ) ) {
+   			$where = '('.implode(' OR ', $globalSearch).')';
+   		}
+
+   		if ( count( $columnSearch ) ) {
+   			$where = $where === '' ?
+   				implode(' AND ', $columnSearch) :
+   				$where .' AND '. implode(' AND ', $columnSearch);
+   		}
+
+   		if ( $where !== '' ) {
+   			$where = 'WHERE '.$where;
+   		}
+
+   		return $where;
+   	}
+
+    /**
+   	 * Perform the SQL queries needed for an server-side processing requested,
+   	 * utilising the helper functions of this class, limit(), order() and
+   	 * filter() among others. The returned array is ready to be encoded as JSON
+   	 * in response to an SSP request, or can be modified if needed before
+   	 * sending back to the client.
+   	 *
+   	 *  @param  array $request Data sent to server by DataTables
+   	 *  @param  string $table SQL table to query
+   	 *  @param  string $primaryKey Primary key of the table
+   	 *  @param  array $columns Column information array
+   	 *  @return array          Server-side processing response array
+   	 */
+   	static function simple_pdo ( $request, $table, $primaryKey, $columns )
+   	{
+   		$bindings = array();
+   		$dbpdo = expDatabase::sql_connect();
+
+   		// Build the SQL query string from the request
+   		$limit = expDatabase::limit( $request );
+   		$order = expDatabase::order( $request, $columns );
+   		$where = expDatabase::filter( $request, $columns, $bindings );
+
+   		// Main query to actually get the data
+   		$data = expDatabase::sql_exec( $dbpdo, $bindings,
+   			"SELECT `".implode("`, `", expDatabase::pluck($columns, 'db'))."`
+   			 FROM $table
+   			 $where
+   			 $order
+   			 $limit"
+   		);
+
+   		// Data set length after filtering
+   		$resFilterLength = expDatabase::sql_exec( $dbpdo, $bindings,
+   			"SELECT COUNT(`{$primaryKey}`)
+   			 FROM   $table
+   			 $where"
+   		);
+   		$recordsFiltered = $resFilterLength[0][0];
+
+   		// Total data set length
+   		$resTotalLength = expDatabase::sql_exec( $dbpdo,
+   			"SELECT COUNT(`{$primaryKey}`)
+   			 FROM   $table"
+   		);
+   		$recordsTotal = $resTotalLength[0][0];
+
+   		/*
+   		 * Output
+   		 */
+   		return array(
+   			"draw"            => isset ( $request['draw'] ) ?
+                                    (int)( $request['draw'] ) :
+                                    0,
+   			"recordsTotal"    => (int)( $recordsTotal ),
+   			"recordsFiltered" => (int)( $recordsFiltered ),
+   			"data"            => expDatabase::data_output( $columns, $data )
+   		);
+   	}
+
+   	/**
+   	 * The difference between this method and the `simple` one, is that you can
+   	 * apply additional `where` conditions to the SQL queries. These can be in
+   	 * one of two forms:
+   	 *
+   	 * * 'Result condition' - This is applied to the result set, but not the
+   	 *   overall paging information query - i.e. it will not effect the number
+   	 *   of records that a user sees they can have access to. This should be
+   	 *   used when you want apply a filtering condition that the user has sent.
+   	 * * 'All condition' - This is applied to all queries that are made and
+   	 *   reduces the number of records that the user can access. This should be
+   	 *   used in conditions where you don't want the user to ever have access to
+   	 *   particular records (for example, restricting by a login id).
+   	 *
+   	 *  @param  array $request Data sent to server by DataTables
+   	 *  @param  string $table SQL table to query
+   	 *  @param  string $primaryKey Primary key of the table
+   	 *  @param  array $columns Column information array
+   	 *  @param  string $whereResult WHERE condition to apply to the result set
+   	 *  @param  string $whereAll WHERE condition to apply to all queries
+        *
+   	 *  @return array          Server-side processing response array
+   	 */
+       static function complex_pdo ( $request, $table, $primaryKey, $columns, $whereResult=null, $whereAll=null )
+      	{
+      		$bindings = array();
+            $dbpdo = expDatabase::sql_connect();
+      		$whereAllSql = '';
+
+      		// Build the SQL query string from the request
+      		$limit = expDatabase::limit( $request );
+      		$order = expDatabase::order( $request, $columns );
+      		$where = expDatabase::filter( $request, $columns, $bindings );
+
+      		$whereResult = expDatabase::_flatten( $whereResult );
+      		$whereAll = expDatabase::_flatten( $whereAll );
+
+      		if ( $whereResult ) {
+      			$where = $where ?
+      				$where .' AND '.$whereResult :
+      				'WHERE '.$whereResult;
+      		}
+
+      		if ( $whereAll ) {
+      			$where = $where ?
+      				$where .' AND '.$whereAll :
+      				'WHERE '.$whereAll;
+
+      			$whereAllSql = 'WHERE '.$whereAll;
+      		}
+
+      		// Main query to actually get the data
+      		$data = expDatabase::sql_exec( $dbpdo, $bindings,
+      			"SELECT `".implode("`, `", expDatabase::pluck($columns, 'db'))."`
+      			 FROM $table
+      			 $where
+      			 $order
+      			 $limit"
+      		);
+
+      		// Data set length after filtering
+      		$resFilterLength = expDatabase::sql_exec( $dbpdo, $bindings,
+      			"SELECT COUNT(`{$primaryKey}`)
+      			 FROM   $table
+      			 $where"
+      		);
+      		$recordsFiltered = $resFilterLength[0][0];
+
+      		// Total data set length
+      		$resTotalLength = expDatabase::sql_exec( $dbpdo, $bindings,
+      			"SELECT COUNT(`{$primaryKey}`)
+      			 FROM   $table ".
+      			 $whereAllSql
+      		);
+      		$recordsTotal = $resTotalLength[0][0];
+
+      		/*
+      		 * Output
+      		 */
+      		return array(
+      			"draw"            => isset ( $request['draw'] ) ?
+                                    (int)( $request['draw'] ) :
+                                    0,
+      			"recordsTotal"    => (int)( $recordsTotal ),
+      			"recordsFiltered" => (int)( $recordsFiltered ),
+      			"data"            => expDatabase::data_output( $columns, $data )
+      		);
+      	}
+        /** End SSP Methods */
 
 	   /**
 	    * Create a new Table
@@ -832,6 +1170,57 @@ abstract class database {
 	        $sql .= " AUTO_INCREMENT";
 	    return $sql;
 	}
+
+    /**
+   	* Return the tablename for the database
+   	*
+   	* Returns a full table name for the database.
+   	*
+   	* @param string $tablename The name of the table
+   	* @return string
+   	*/
+    abstract function tableStmt($tablename);
+
+    /**
+     * Return the limit statement for the database
+     *
+     * Returns a correct limit statement for the database.
+     *
+     * @param int $count The number of records to return
+     * @param int $offset The offset to the first record to return
+     * @return string
+     */
+    abstract function limitStmt($count, $offset=0);
+
+    /**
+     * Return the unixtime to date statement for the database
+     *
+     * Returns a correct unixtime to date statement for the database.
+     *
+     * @param string $column_name The name of the data column to convert
+     * @return string
+     */
+    abstract function datetimeStmt($column_name);
+
+    /**
+     * Return the number to currency statement for the database
+     *
+     * Returns a correct number to currency statement for the database.
+     *
+     * @param string $column_name The name of the data column to convert
+     * @return string
+     */
+    abstract function currencyStmt($column_name);
+
+    /**
+     * Return a sql statement with keywords wrapped for the database
+     *
+     * Returns a keyword wrapped sql statement for the database.
+     *
+     * @param string $sql The sql statement to check for keyword wrap
+     * @return string
+     */
+    abstract function wrapStmt($sql);
 
 	/**
 	* Switch field values between two entries in a  Table
@@ -1053,8 +1442,8 @@ abstract class database {
 	 */
 	function setUniqueFlag($object, $table, $col, $where=1) {
 	    if (isset($object->id)) {
-	        $this->sql("UPDATE " . $this->prefix . $table . " SET " . $col . "=0 WHERE " . $where);
-	        $this->sql("UPDATE " . $this->prefix . $table . " SET " . $col . "=1 WHERE id=" . $object->id);
+	        $this->sql("UPDATE " . $this->tableStmt($table) . " SET " . $col . "=0 WHERE " . $where);
+	        $this->sql("UPDATE " . $this->tableStmt($table) . " SET " . $col . "=1 WHERE id=" . $object->id);
 	        return true;
 	    }
 	    return false;
@@ -1084,10 +1473,9 @@ abstract class database {
 	/**
 	 * @param  $terms
 	 * @param null $where
+     * @return array
 	 */
-	function selectSearch($terms, $where = null) {  //FIXME never used
-
-	}
+    abstract function selectSearch($terms, $where = null);
 
     /**
      * @param null $colsA
@@ -1722,17 +2110,19 @@ abstract class database {
 	 */
 	function selectNestedTree($table) {
 	    $sql = 'SELECT node.*, (COUNT(parent.sef_url) - 1) AS depth
-            FROM `' . $this->prefix . $table . '` AS node,
-            `' . $this->prefix . $table . '` AS parent
+            FROM ' . $this->tableStmt($table) . ' AS node,
+            ' . $this->tableStmt($table) . ' AS parent
             WHERE node.lft BETWEEN parent.lft AND parent.rgt
-            GROUP BY node.sef_url
+            GROUP BY node.sef_url, node.id, node.title, node.body, node.is_active, node.is_events, node.hide_closed_events, node.canonical, 
+            node.meta_title, node.meta_keywords, node.meta_description, node.noindex, node.nofollow, node.items_per_page, node.expFiles_id, node.
+            rgt, node.lft, node.parent_id, node.poster, node.created_at, node.editor, node.edited_at, node.location_data
             ORDER BY node.lft';
 	    return $this->selectObjectsBySql($sql);
 	}
 
 	function selectFormattedNestedTree($table) {
 		$sql = "SELECT CONCAT( REPEAT( '&#160;&#160;&#160;', (COUNT(parent.title) -1) ), node.title) AS title, node.id
-				FROM " .$this->prefix . $table. " as node, " .$this->prefix . $table. " as parent
+				FROM " . $this->tableStmt($table) . " as node, " . $this->tableStmt($table) . " as parent
 				WHERE node.lft BETWEEN parent.lft and parent.rgt
 				GROUP BY node.title, node.id
 				ORDER BY node.lft";
@@ -1747,11 +2137,11 @@ abstract class database {
 	 * @return void
 	 */
 	function adjustNestedTreeFrom($table, $start, $width) {
-	    $table = $this->prefix . $table;
-	    $this->sql('UPDATE `' . $table . '` SET rgt = rgt + ' . $width . ' WHERE rgt >=' . $start);
-	    $this->sql('UPDATE `' . $table . '` SET lft = lft + ' . $width . ' WHERE lft >=' . $start);
-	    //eDebug('UPDATE `'.$table.'` SET rgt = rgt + '.$width.' WHERE rgt >='.$start);
-	    //eDebug('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft >='.$start);
+	    $table = $this->tableStmt($table);
+	    $this->sql('UPDATE ' . $table . ' SET rgt = rgt + ' . $width . ' WHERE rgt >=' . $start);
+	    $this->sql('UPDATE ' . $table . ' SET lft = lft + ' . $width . ' WHERE lft >=' . $start);
+	    //eDebug('UPDATE \''.$table.'\' SET rgt = rgt + '.$width.' WHERE rgt >='.$start);
+	    //eDebug('UPDATE \''.$table.'\' SET lft = lft + '.$width.' WHERE lft >='.$start);
 	}
 
 	/**
@@ -1762,11 +2152,11 @@ abstract class database {
 	 * @return void
 	 */
 	function adjustNestedTreeBetween($table, $lft, $rgt, $width) {
-	    $table = $this->prefix . $table;
-	    $this->sql('UPDATE `' . $table . '` SET rgt = rgt + ' . $width . ' WHERE rgt BETWEEN ' . $lft . ' AND ' . $rgt);
-	    $this->sql('UPDATE `' . $table . '` SET lft = lft + ' . $width . ' WHERE lft BETWEEN ' . $lft . ' AND ' . $rgt);
-	    //eDebug('UPDATE `'.$table.'` SET rgt = rgt + '.$width.' WHERE rgt BETWEEN '.$lft.' AND '.$rgt);
-	    //eDebug('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft BETWEEN '.$lft.' AND '.$rgt);
+	    $table = $this->tableStmt($table);
+	    $this->sql('UPDATE ' . $table . ' SET rgt = rgt + ' . $width . ' WHERE rgt BETWEEN ' . $lft . ' AND ' . $rgt);
+	    $this->sql('UPDATE ' . $table . ' SET lft = lft + ' . $width . ' WHERE lft BETWEEN ' . $lft . ' AND ' . $rgt);
+	    //eDebug('UPDATE \''.$table.'\' SET rgt = rgt + '.$width.' WHERE rgt BETWEEN '.$lft.' AND '.$rgt);
+	    //eDebug('UPDATE \''.$table.'\' SET lft = lft + '.$width.' WHERE lft BETWEEN '.$lft.' AND '.$rgt);
 	}
 
 	/**
@@ -1774,32 +2164,33 @@ abstract class database {
 	 * @param null $node
 	 * @return array
 	 */
-	function selectNestedBranch($table, $node=null) {
-	    if (empty($node))
-	        return array();
+    function selectNestedBranch($table, $node=null) {
+   	    if (empty($node))
+   	        return array();
 
-	    $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
-	    $sql = 'SELECT node.*,
-	           (COUNT(parent.title) - (sub_tree.depth + 1)) AS depth
-	           FROM `' . $this->prefix . $table . '` AS node,
-	           `' . $this->prefix . $table . '` AS parent,
-	           `' . $this->prefix . $table . '` AS sub_parent,
-	                   (       SELECT node.*, (COUNT(parent.title) - 1) AS depth
-	                           FROM `' . $this->prefix . $table . '` AS node,
-	                           `' . $this->prefix . $table . '` AS parent
-	                           WHERE node.lft BETWEEN parent.lft
-	                           AND parent.rgt AND node.' . $where . '
-	                           GROUP BY node.title
-	                           ORDER BY node.lft )
-	           AS sub_tree
-	           WHERE node.lft BETWEEN parent.lft AND parent.rgt
-	           AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
-	           AND sub_parent.title = sub_tree.title
-	           GROUP BY node.title
-	           ORDER BY node.lft;';
+           $table = $this->tableStmt($table);
+   	    $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
+   	    $sql = 'SELECT node.*,
+   	           (COUNT(parent.title) - (sub_tree.depth + 1)) AS depth
+   	           FROM ' .$table . ' AS node,
+   	           ' . $table . ' AS parent,
+   	           ' .$table . ' AS sub_parent,
+                  ( SELECT node.*, (COUNT(parent.title) - 1) AS depth
+                      FROM ' . $table . ' AS node,
+                      ' . $table . ' AS parent
+                      WHERE node.lft BETWEEN parent.lft
+                      AND parent.rgt AND node.' . $where . '
+                      GROUP BY node.title
+                      ORDER BY node.lft )
+   	           AS sub_tree
+   	           WHERE node.lft BETWEEN parent.lft AND parent.rgt
+   	           AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
+   	           AND sub_parent.title = sub_tree.title
+   	           GROUP BY node.title
+   	           ORDER BY node.lft;';
 
-	    return $this->selectObjectsBySql($sql);
-	}
+   	    return $this->selectObjectsBySql($sql);
+   	}
 
 	/**
 	 * @param  $table
@@ -1808,12 +2199,12 @@ abstract class database {
 	 * @return void
 	 */
 	function deleteNestedNode($table, $lft, $rgt) {
-	    $table = $this->prefix . $table;
+	    $table = $this->tableStmt($table);
 
 	    $width = ($rgt - $lft) + 1;
-	    $this->sql('DELETE FROM `' . $table . '` WHERE lft BETWEEN ' . $lft . ' AND ' . $rgt);
-	    $this->sql('UPDATE `' . $table . '` SET rgt = rgt - ' . $width . ' WHERE rgt > ' . $rgt);
-	    $this->sql('UPDATE `' . $table . '` SET lft = lft - ' . $width . ' WHERE lft > ' . $rgt);
+	    $this->sql('DELETE FROM ' . $table . ' WHERE lft BETWEEN ' . $lft . ' AND ' . $rgt);
+	    $this->sql('UPDATE ' . $table . ' SET rgt = rgt - ' . $width . ' WHERE rgt > ' . $rgt);
+	    $this->sql('UPDATE ' . $table . ' SET lft = lft - ' . $width . ' WHERE lft > ' . $rgt);
 	}
 
 	/**
@@ -1827,8 +2218,8 @@ abstract class database {
 
 	    $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
 	    $sql = 'SELECT parent.*
-            FROM `' . $this->prefix . $table . '` AS node,
-            `' . $this->prefix . $table . '` AS parent
+            FROM ' . $this->tableStmt($table) . ' AS node,
+            ' . $this->tableStmt($table) . ' AS parent
             WHERE node.lft BETWEEN parent.lft AND parent.rgt
             AND node.' . $where . '
             ORDER BY parent.lft;';
@@ -1841,17 +2232,19 @@ abstract class database {
 	 * @return array
 	 */
 	function selectNestedNodeParent($table, $node=null) {
+	    global $db;
+
 	    if (empty($node))
 	        return array();
 
 	    $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
 	    $sql = 'SELECT parent.*
-            FROM `' . $this->prefix . $table . '` AS node,
-            `' . $this->prefix . $table . '` AS parent
+            FROM ' . $this->tableStmt($table) . ' AS node,
+            ' . $this->tableStmt($table) . ' AS parent
             WHERE node.lft BETWEEN parent.lft AND parent.rgt
             AND node.' . $where . '
             ORDER BY parent.lft DESC
-            LIMIT 1, 1;';
+            ' . $db->limitStmt(1, 1) . ';';
 	    $parent_array = $this->selectObjectsBySql($sql);
 	    return $parent_array[0];
 	}
@@ -1865,25 +2258,30 @@ abstract class database {
 	    if (empty($node))
 	        return array();
 
+        $table = $this->tableStmt($table);
 	    $where = is_numeric($node) ? 'node.id=' . $node : 'node.title="' . $node . '"';
 	    $sql = '
             SELECT node.*, (COUNT(parent.title) - (sub_tree.depth + 1)) AS depth
-            FROM ' . $this->prefix . $table . ' AS node,
-                ' . $this->prefix . $table . ' AS parent,
-                ' . $this->prefix . $table . ' AS sub_parent,
+            FROM ' . $table . ' AS node,
+                ' . $table . ' AS parent,
+                ' . $table . ' AS sub_parent,
                 (
                     SELECT node.*, (COUNT(parent.title) - 1) AS depth
-                    FROM ' . $this->prefix . $table . ' AS node,
-                    ' . $this->prefix . $table . ' AS parent
+                    FROM ' . $table . ' AS node,
+                    ' . $table . ' AS parent
                     WHERE node.lft BETWEEN parent.lft AND parent.rgt
                     AND ' . $where . '
-                    GROUP BY node.title
+                    GROUP BY node.title, node.id, node.body, node.sef_url, node.is_active, node.is_events, node.hide_closed_events, node.canonical, 
+                    node.meta_title, node.meta_keywords, node.meta_description, node.noindex, node.nofollow, node.items_per_page, node.expFiles_id, node.
+                    rgt, node.lft, node.parent_id, node.poster, node.created_at, node.editor, node.edited_at, node.location_data
                     ORDER BY node.lft
                 )AS sub_tree
             WHERE node.lft BETWEEN parent.lft AND parent.rgt
                 AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
                 AND sub_parent.title = sub_tree.title
-            GROUP BY node.title
+            GROUP BY node.title, node.id, node.body, node.sef_url, node.is_active, node.is_events, node.hide_closed_events, node.canonical, 
+            node.meta_title, node.meta_keywords, node.meta_description, node.noindex, node.nofollow, node.items_per_page, node.expFiles_id, node.
+            rgt, node.lft, node.parent_id, node.poster, node.created_at, node.editor, node.edited_at, node.location_data
             HAVING depth = 1
             ORDER BY node.lft;';
 	    $children = $this->selectObjectsBySql($sql);

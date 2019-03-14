@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,5 +24,6 @@ if (!defined('DB_HOST')) define('DB_HOST','localhost');
 if (!defined('DB_PORT')) define('DB_PORT','3306');
 if (!defined('DB_ENCODING')) define('DB_ENCODING','utf8');
 if (!defined('DB_STORAGE_ENGINE')) define('DB_STORAGE_ENGINE','MYISAM');
+if (!defined('DB_SCHEMA')) define('DB_SCHEMA','');
 
 ?>

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -47,7 +47,7 @@ class update_ckeditorv4 extends upgradescript {
    	function needed() {
            global $db;
 
-           $settings = $db->selectObject('htmleditor_ckeditor', 'skin!="kama"');
+           $settings = $db->selectObject('htmleditor_ckeditor', 'skin!=\'kama\'');
            if (!empty($settings)) {
                return true;
            } else return false;
@@ -61,7 +61,7 @@ class update_ckeditorv4 extends upgradescript {
            global $db;
 
            $fixed = 0;
-           $settings = $db->selectObject('htmleditor_ckeditor','skin!="kama"');  // only valid v3 skin still in v4 is 'kama'
+           $settings = $db->selectObject('htmleditor_ckeditor','skin!=\'kama\'');  // only valid v3 skin still in v4 is 'kama'
            if (!empty($settings)) foreach ($settings as $setting) {
                $setting->skin = 'kama';  // exp default skin for v4
                $db->updateObject($setting,'htmleditor_ckeditor');

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -57,7 +57,11 @@ if (!function_exists('smarty_function_ddrerank')) {
         $controller = !empty($params['controller']) ? $params['controller'] : $loc->mod;
 
         if (!empty($params['sql'])) {
-            $sql = explode("LIMIT", $params['sql']);
+            if( strpos( $params['sql'], 'ROWS FETCH NEXT' ) !== false) {
+                $sql = explode("OFFSET", $params['sql']);
+            } else {
+                $sql = explode("LIMIT", $params['sql']);
+            }
             $params['items'] = $db->selectObjectsBySQL($sql[0]);
         } elseif (!empty($params['items'][0]->id)) {
             $model = empty($params['model']) ? $params['items'][0]->classname : $params['model'];

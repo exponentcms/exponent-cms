@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -59,15 +59,15 @@ class update_ecom3 extends upgradescript {
 	    global $db;
 
         // purchased == 0 or invoice_id == 0 on unsubmitted orders
-		$orders_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."orders` WHERE `invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now()) - 604800 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".$db->prefix."sessionticket`)");
+		$orders_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM " . $db->tableStmt('orders') . " WHERE 'invoice_id' = '0' AND 'edited_at' < UNIX_TIMESTAMP(now()) - 604800 AND 'sessionticket_ticket' NOT IN (SELECT 'ticket' FROM " . $db->tableStmt('sessionticket') . ")");
         if ($orders_count)
-    		$db->delete("orders","`invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now()) - 604800 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".$db->prefix."sessionticket`)");
-		$orderitems_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."orderitems` WHERE `orders_id` NOT IN (SELECT `id` FROM `".$db->prefix."orders`)");
+    		$db->delete("orders","'invoice_id' = '0' AND 'edited_at' < UNIX_TIMESTAMP(now()) - 604800 AND 'sessionticket_ticket' NOT IN (SELECT 'ticket' FROM " . $db->tableStmt('sessionticket') . ")");
+		$orderitems_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM " . $db->tableStmt('orderitems') . " WHERE 'orders_id' NOT IN (SELECT 'id' FROM " . $db->tableStmt('orders') . ")");
         if ($orderitems_count)
-    		$db->delete("orderitems","`orders_id` NOT IN (SELECT `id` FROM `".$db->prefix."orders`)");
-		$shippingmethods_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".$db->prefix."shippingmethods` WHERE `id` NOT IN (SELECT `shippingmethods_id` FROM `".$db->prefix."orders`)");
+    		$db->delete("orderitems","'orders_id' NOT IN (SELECT 'id' FROM " . $db->tableStmt('orders') . ")");
+		$shippingmethods_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM " . $db->tableStmt('shippingmethods') . " WHERE 'id' NOT IN (SELECT 'shippingmethods_id' FROM " . $db->tableStmt('orders') . ")");
         if ($shippingmethods_count)
-    		$db->delete("shippingmethods","`id` NOT IN (SELECT `shippingmethods_id` FROM `".$db->prefix."orders`)");
+    		$db->delete("shippingmethods","'id' NOT IN (SELECT 'shippingmethods_id' FROM " . $db->tableStmt('orders') . ")");
 		return ($orders_count?$orders_count:gt('No'))." ".gt("orphaned Orders").", ".($orderitems_count?$orderitems_count:gt('No'))." ".gt("orphaned Order Items and")." ".($shippingmethods_count?$shippingmethods_count:gt('No'))." ".gt("orphaned Shipping Methods")." ".gt("were found and removed from the database.");
 	}
 }

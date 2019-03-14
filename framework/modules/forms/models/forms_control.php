@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -98,7 +98,7 @@ class forms_control extends expRecord {
         $this->grouping_sql = " AND forms_id='" . $this->forms_id . "'";
         parent::afterSave();
         //first page control MUST be the first control (rank = 1)
-        $pager = $this->find('first', "forms_id='" . $this->forms_id . "' AND data LIKE '%pagecontrol%'", 'rank');
+        $pager = $this->find('first', "forms_id=" . $this->forms_id . " AND data LIKE '%pagecontrol%'", 'rank');
         // if we have at least one pagecontrol and it's not rank=1, move it to the top
         if (!empty($pager)) {
              if ($pager->rank != 1) {
@@ -107,7 +107,7 @@ class forms_control extends expRecord {
                  // change first pagecontrol rank to 1
                 $pager->rank = 1;
                 $pager->save();
-            } elseif ($this->find('count', "forms_id='" . $this->forms_id . "' AND rank = 1") > 1) {
+            } elseif ($this->find('count', "forms_id=" . $this->forms_id . " AND rank = 1") > 1) {
                  $db->increment($this->tablename, 'rank', 1, 'rank>=' . $pager->rank . $this->grouping_sql);
                  $pager->rank = 1;
                  $pager->save();

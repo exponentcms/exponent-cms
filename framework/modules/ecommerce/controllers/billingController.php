@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -53,16 +53,18 @@ class billingController extends expController {
 	    global $db;
 
 	    expHistory::set('manageable', $this->params);
+
 //	    $classes = array();
         $dir = BASE."framework/modules/ecommerce/billingcalculators";
         if (is_readable($dir)) {
             $dh = opendir($dir);
             while (($file = readdir($dh)) !== false) {
-                if (is_file("$dir/$file") && substr("$dir/$file", -4) == ".php") {
+                if (is_file("$dir/$file") && substr("$dir/$file", -4) === ".php") {
                     include_once("$dir/$file");
                     $classname = substr($file, 0, -4);
-                    $id = $db->selectValue('billingcalculator', 'id', 'calculator_name="'.$classname.'"');
+                    $id = $db->selectValue('billingcalculator', 'id', 'calculator_name=\''.$classname.'\'');
                     if (empty($id)) {
+                        // update list of calculators in db
 //                        $calobj = null;
                         $calcobj = new $classname();
                         if ($calcobj->isSelectable() == true) {

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -55,9 +55,9 @@
     {/permissions}
     {foreach from=$items item=item}
         {*<div class="item announcement{if $item->is_featured} featured{/if}">*}
-        <div class="vevent item card card-{if $item->is_featured}danger{else}{cycle values="info,success"}{/if}">
+        <div class="vevent item card bg-{if $item->is_featured}danger{else}{cycle values="info,success"}{/if}">
             <div class="event-info event-date card-header">
-                <{$config.item_level|default:'h2'} class="card-title">
+                <{$config.item_level|default:'h2'} class="card-title text-white">
                     {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
                     <a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}"
                         {if substr($item->location_data,1,8) != 'calevent'}
@@ -111,8 +111,6 @@
                 </div>
                 {if (!empty($item->feedback_form) && $item->feedback_form != 'Disallow Feedback')}
                     {$feedback_form = $item->feedback_form}
-                {/if}
-                {if !empty($feedback_form)}
                     {$event = $item}
                     {toggle unique=$name|cat:$item->id collapsed=1 title='Click to open'|gettext|cat:' '|cat:$feedback_form}
                         {include file="email/$feedback_form.tpl"}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -79,7 +79,7 @@ class fix_help_sections extends upgradescript
             foreach ($helplocs as $helploc) {
                 if (!empty($helploc)) {
                     $helpsrc = expUnserialize($helploc);
-                    $sectionlist[$helpsrc->src] = $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $helpsrc->src . '"');
+                    $sectionlist[$helpsrc->src] = $db->selectValue('sectionref', 'section', 'module = \'help\' AND source=\'' . $helpsrc->src . '\'');
                 }
             }
 

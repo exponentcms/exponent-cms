@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,13 +52,13 @@ class help_version extends expRecord {
     public static function getHelpVersionId($version) {
         global $db;
 
-        return $db->selectValue('help_version', 'id', 'version="'.$db->escapeString($version).'"');
+        return $db->selectValue('help_version', 'id', 'version=\''.$db->escapeString($version).'\'');
     }
 
     public static function getHelpVersion($version_id) {
         global $db;
 
-        return $db->selectValue('help_version', 'version', 'id="'.(int)($version_id).'"');
+        return $db->selectValue('help_version', 'version', 'id='.(int)($version_id));
     }
 
     public static function getHelpVersionsDropdown() {

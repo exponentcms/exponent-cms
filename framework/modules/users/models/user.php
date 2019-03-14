@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -37,6 +37,7 @@ class user extends expRecord {
             'username' => array('length' => 3)
         ),
     );
+    public $expeAlerts = array();
 
     function __construct($params = null, $get_assoc = false, $get_attached = false) {
         if (is_array($params) && isset($params['pass1']))
@@ -308,10 +309,10 @@ class user extends expRecord {
 
         //FIXME who should get a slingbar? any non-view permissions? new group setting?
         // check userpermissions to see if the user has the ability to edit anything
-        if (!empty($this->id) && $db->selectValue('userpermission', 'uid', 'uid=\'' . $this->id . '\' AND permission!=\'view\'')) return true;
+        if (!empty($this->id) && $db->selectValue('userpermission', 'uid', 'uid=' . $this->id . ' AND permission!=\'view\'')) return true;
         // check groups to see if assigned groups have the ability to edit anything
         foreach ($this->groups as $group) {
-            if ($db->selectValue('grouppermission', 'gid', 'gid=\'' . $group->id . '\' AND permission!=\'view\'')) return true;
+            if ($db->selectValue('grouppermission', 'gid', 'gid=' . $group->id . ' AND permission!=\'view\'')) return true;
         }
 
         return false;
@@ -343,9 +344,9 @@ class user extends expRecord {
 
         // build out a SQL query that gets all the data we need and is sortable.
         $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as gtotal, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
-        $sql .= 'FROM ' . $db->prefix . 'orders o, ' . $db->prefix . 'billingmethods b, ';
-        $sql .= $db->prefix . 'order_status os, ';
-        $sql .= $db->prefix . 'order_type ot ';
+        $sql .= 'FROM ' . $db->tableStmt('orders') . ' o, ' . $db->tableStmt('billingmethods') . ' b, ';
+        $sql .= $db->tableStmt('order_status') . ' os, ';
+        $sql .= $db->tableStmt('order_type') . ' ot ';
         $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $this->id;
         $customer = new stdClass();
         $customer->records = $db->selectObjectsBySql($sql);

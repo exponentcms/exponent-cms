@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -107,6 +107,10 @@ class tagpickercontrol extends formcontrol {
             exptags.initialize();
 
             $('#" . $this->id . "').attr('data-role', 'tagsinput').tagsinput({
+        ";
+        if (bs4())
+            $script .= "    tagClass: 'badge badge-info',";
+        $script .= "
                 typeaheadjs: {
                     name: 'exptags',
                     displayKey: 'value',

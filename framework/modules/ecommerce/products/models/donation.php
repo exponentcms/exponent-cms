@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -68,10 +68,10 @@ class donation extends product {
         $sql .= empty($order) ? '' : ' ORDER BY ' . expString::escape($order);
 
         if (strcasecmp($range, 'all') == 0) {
-            $sql .= empty($limit) ? '' : ' LIMIT ' . (int)($limitstart) . ',' . (int)($limit);
+            $sql .= empty($limit) ? '' : ' ' . $db->limitStmt((int)$limit, (int)$limitstart);
             return $db->selectExpObjects($this->tablename, $sql, $this->classname);
         } elseif (strcasecmp($range, 'first') == 0) {
-            $sql .= ' LIMIT 0,1';
+            $sql .= ' '. $db->limitStmt(1, 0);
             $records = $db->selectExpObjects($this->tablename, $sql, $this->classname);
             return empty($records) ? null : $records[0];
         } elseif (strcasecmp($range, 'bytitle') == 0) {
@@ -84,8 +84,8 @@ class donation extends product {
             foreach ($where as $id) $records[] = new $this->classname($id);
             return $records;
         } elseif (strcasecmp($range, 'bytag') == 0) {
-            $sql = 'SELECT DISTINCT m.id FROM ' . $db->prefix . $this->table . ' m ';
-            $sql .= 'JOIN ' . $db->prefix . 'content_expTags ct ';
+            $sql = 'SELECT DISTINCT m.id FROM ' . $db->tableStmt($this->table) . ' m ';
+            $sql .= 'JOIN ' . $db->tableStmt('content_expTags') . ' ct ';
             $sql .= 'ON m.id = ct.content_id WHERE ct.exptags_id=' . $where . " AND ct.content_type='" . $this->classname . "'";
             $tag_assocs = $db->selectObjectsBySql($sql);
             $records = array();

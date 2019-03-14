@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -56,7 +56,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		define('EXPONENT_VERSION_BUILDDATE',time());
 	}
 	// set DEVELOPMENT to 1 to debug the install process
-//        define('DEVELOPMENT','1');
+        define('DEVELOPMENT','1');
 }
 
 ?>

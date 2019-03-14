@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -50,7 +50,7 @@
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
         <div class="item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
             {if $config.datetag}
-                <p class="post-date">
+                <p class="post-date{if $item->publish_date > $smarty.now} future-date{/if}">
                     <span class="month">{$item->publish_date|format_date:"%b"}</span>
                     <span class="day">{$item->publish_date|format_date:"%e"}</span>
                     <span class="year">{$item->publish_date|format_date:"%Y"}</span>
@@ -64,7 +64,7 @@
             <div class="post-info">
                 <span class="attribution">
                     {if $item->private}<strong>({'Draft'|gettext})</strong>{/if}
-                    {if $item->publish_date > $smarty.now}
+                    {if !$config.datetag && $item->publish_date > $smarty.now}
                         <strong>{'Will be'|gettext}&#160;
                     {/if}
                     {$prepend = ''}
@@ -76,7 +76,7 @@
                     {if !$config.datetag}
                         {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
                     {/if}
-                    {if $item->publish_date > $smarty.now}
+                    {if !$config.datetag && $item->publish_date > $smarty.now}
                         </strong>&#160;
                     {/if}
                 </span>

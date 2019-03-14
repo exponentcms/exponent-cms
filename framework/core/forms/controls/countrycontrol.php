@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -136,7 +136,7 @@ class countrycontrol extends dropdowncontrol {
         global $db;
 
         if (isset($db_data)) {
-            return $db->selectValue('geo_country', 'name', 'id="' . $db_data . '"');
+            return $db->selectValue('geo_country', 'name', 'id=' . (int)$db_data);
         } else {
             return "";
         }

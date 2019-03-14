@@ -355,7 +355,7 @@
                             .append(dateView.addClass('col-md-6'))
                             .append(timeView.addClass('col-md-6'))
                     );
-                    if (options.toolbarPlacement === 'bottom') {
+                    if (options.toolbarPlacement === 'bottom' || options.toolbarPlacement === 'default') { //exp
                         template.append(toolbar);
                     }
                     return template;
@@ -2342,7 +2342,7 @@
         if (element.hasClass('input-group')) {
             // in case there is more then one 'input-group-addon' Issue #48
             if (element.find('.datepickerbutton').length === 0) {
-                component = element.find('.input-group-addon');
+                component = element.find('.input-group-append');
             } else {
                 component = element.find('.datepickerbutton');
             }
@@ -2460,15 +2460,15 @@
         disabledDates: false,
         enabledDates: false,
         icons: {
-            time: 'fa fa-clock-o',
-            date: 'fa fa-calendar',
-            up: 'fa fa-chevron-up',
-            down: 'fa fa-chevron-down',
-            previous: 'fa fa-chevron-left',
-            next: 'fa fa-chevron-right',
-            today: 'fa fa-crosshairs',
-            clear: 'fa fa-trash-o',
-            close: 'fa fa-times'
+            time: 'far fa-clock',
+            date: 'far fa-calendar-alt',
+            up: 'fas fa-chevron-up',
+            down: 'fas fa-chevron-down',
+            previous: 'fas fa-chevron-left',
+            next: 'fas fa-chevron-right',
+            today: 'fas fa-crosshairs',
+            clear: 'fas fa-trash-alt',
+            close: 'fas fa-times'
         },
         tooltips: {
             today: 'Go to today',

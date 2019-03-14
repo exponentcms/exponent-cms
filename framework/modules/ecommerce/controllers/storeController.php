@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -137,11 +137,11 @@ class storeController extends expController {
 //            if (isset($router->url_parts[array_search('id', $router->url_parts) + 1]) && ($router->url_parts[array_search('id', $router->url_parts) + 1] != 0)) {
             if (!empty($params['id'])) {
 //                $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='" . $router->url_parts[array_search('id', $router->url_parts) + 1] . "'");
-                $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='" . $params['id'] . "'");
+                $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id=" . $params['id']);
             } elseif (!empty($params['title'])) {
 //                $prod_id    = $db->selectValue('product', 'id', "sef_url='" . $router->url_parts[array_search('title', $router->url_parts) + 1] . "'");
                 $prod_id = $db->selectValue('product', 'id', "sef_url='" . $params['title'] . "'");
-                $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='" . $prod_id . "'");
+                $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id=" . (int)$prod_id);
             }
         } elseif (isset($this->config['show_first_category']) || (!expTheme::inAction() && $section == SITE_DEFAULT_SECTION)) {
             if (!empty($this->config['show_first_category'])) {
@@ -182,14 +182,14 @@ class storeController extends expController {
         expHistory::set('viewable', $this->params);
 
         if (empty($this->category->is_events)) {
-            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM ' . $db->prefix . 'product p ';
+            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) AS c FROM ' . $db->tableStmt('product') . ' p ';
 
-            $sql_start = 'SELECT DISTINCT p.*, IF(base_price > special_price AND use_special_price=1,special_price, base_price) as price FROM ' . $db->prefix . 'product p ';
-            $sql = 'JOIN ' . $db->prefix . 'product_storeCategories sc ON p.id = sc.product_id ';
+            $sql_start = 'SELECT DISTINCT p.*, IF(base_price > special_price AND use_special_price=1,special_price, base_price) AS price FROM ' . $db->tableStmt('product') . ' p ';
+            $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ON p.id = sc.product_id ';
             $sql .= 'WHERE ';
             if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
             $sql .= 'sc.storecategories_id IN (';
-            $sql .= 'SELECT id FROM ' . $db->prefix . 'storeCategories WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
+            $sql .= 'SELECT id FROM ' . $db->tableStmt('storeCategories') . ' WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
 
             $count_sql = $count_sql_start . $sql;
             $sql = $sql_start . $sql;
@@ -201,12 +201,12 @@ class storeController extends expController {
             if (empty($order)) $order = 'title';
             if (empty($dir)) $dir = 'ASC';
         } else { // this is an event category
-            $sql_start = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . $db->prefix . 'product p ';
-            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c, er.event_starttime, er.signup_cutoff FROM ' . $db->prefix . 'product p ';
-            $sql = 'JOIN ' . $db->prefix . 'product_storeCategories sc ON p.id = sc.product_id ';
-            $sql .= 'JOIN ' . $db->prefix . 'eventregistration er ON p.product_type_id = er.id ';
+            $sql_start = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . $db->tableStmt('product') . ' p ';
+            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) AS c, er.event_starttime, er.signup_cutoff FROM ' . $db->tableStmt('product') . ' p ';
+            $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ON p.id = sc.product_id ';
+            $sql .= 'JOIN ' . $db->tableStmt('eventregistration') . ' er ON p.product_type_id = er.id ';
             $sql .= 'WHERE sc.storecategories_id IN (';
-            $sql .= 'SELECT id FROM ' . $db->prefix . 'storeCategories WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
+            $sql .= 'SELECT id FROM ' . $db->tableStmt('storeCategories') . ' WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
             if ($this->category->hide_closed_events) {
                 $sql .= ' AND er.signup_cutoff > ' . time();
             }
@@ -280,7 +280,7 @@ class storeController extends expController {
         }
 
 //        $ancestors = $this->category->pathToNode();
-        $rerankSQL = "SELECT DISTINCT p.* FROM " . $db->prefix . "product p JOIN " . $db->prefix . "product_storeCategories sc ON p.id = sc.product_id WHERE sc.storecategories_id=" . $this->category->id . " ORDER BY rank ASC";
+        $rerankSQL = "SELECT DISTINCT p.* FROM " . $db->tableStmt('product') . " p JOIN " . $db->tableStmt('product_storeCategories') . " sc ON p.id = sc.product_id WHERE sc.storecategories_id=" . $this->category->id . " ORDER BY rank ASC";
         //eDebug($router);
         $defaultSort = $router->current_url;
 
@@ -323,12 +323,14 @@ class storeController extends expController {
      * @deprecated 2.0.0 moved to eventregistration
      */
     function upcomingEvents() {
+        global $db;
+
         $this->params['controller'] = 'eventregistration';
         redirect_to($this->params);
 
         //fixme old code
-        $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
-        $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
+        $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . $db->tableStmt('product') . ' p ';
+        $sql .= 'JOIN ' . $db->tableStmt('eventregistration') . ' er ON p.product_type_id = er.id ';
         $sql .= 'WHERE 1 AND er.signup_cutoff > ' . time();
 
         $limit = empty($this->config['event_limit']) ? 10 : $this->config['event_limit'];
@@ -425,9 +427,9 @@ class storeController extends expController {
 //            $dates = $er->find('all', "(eventdate >= " . expDateTime::startOfDayTimestamp($start) . " AND eventdate <= " . expDateTime::endOfDayTimestamp($start) . ")");
 
             if ($user->isAdmin()) {
-                $events = $er->find('all', 'product_type="eventregistration"', "title ASC");
+                $events = $er->find('all', 'product_type=\'eventregistration\'', "title ASC");
             } else {
-                $events = $er->find('all', 'product_type="eventregistration" && active_type=0', "title ASC");
+                $events = $er->find('all', 'product_type="\'eventregistration\' && active_type=0', "title ASC");
             }
             $dates = array();
 
@@ -496,9 +498,9 @@ class storeController extends expController {
 //
 //            $category = new storeCategory($parent);
 
-            $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . $db->prefix . 'product p ';
+            $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . $db->tableStmt('product') . ' p ';
 //            $sql .= 'JOIN ' . $db->prefix . 'product_storeCategories sc ON p.id = sc.product_id ';
-            $sql .= 'JOIN ' . $db->prefix . 'eventregistration er ON p.product_type_id = er.id ';
+            $sql .= 'JOIN ' . $db->tableStmt('eventregistration') . ' er ON p.product_type_id = er.id ';
             $sql .= 'WHERE 1 ';
 //            $sql .= ' AND sc.storecategories_id IN (SELECT id FROM ' . $db->prefix . 'storeCategories WHERE rgt BETWEEN ' . $category->lft . ' AND ' . $category->rgt . ')';
 //            if ($category->hide_closed_events) {
@@ -554,6 +556,8 @@ class storeController extends expController {
     }
 
     function showallUncategorized() {
+        global $db;
+
         expHistory::set('viewable', $this->params);
 
         set_time_limit(0);
@@ -561,7 +565,7 @@ class storeController extends expController {
 //        $sql .= 'sc ON p.id = sc.product_id WHERE sc.storecategories_id = 0 AND parent_id=0';
 //        $sql = 'SELECT p.* FROM ' . DB_TABLE_PREFIX . '_product p LEFT OUTER JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories ';
 //        $sql .= 'sc ON p.id = sc.product_id WHERE sc.product_id is null AND p.parent_id=0';
-        $sql = 'SELECT * FROM ' . DB_TABLE_PREFIX . '_product WHERE parent_id = 0 AND id NOT IN (SELECT product_id FROM ' . DB_TABLE_PREFIX . '_product_storeCategories)';
+        $sql = 'SELECT * FROM ' . $db->tableStmt('product') . ' WHERE parent_id = 0 AND id NOT IN (SELECT product_id FROM ' . $db->tableStmt('product_storeCategories') . ')';
 
         expSession::set('product_export_query', $sql);
 
@@ -594,10 +598,10 @@ class storeController extends expController {
         if (!ECOM_LARGE_DB) {
 //            $limit = empty($this->config['pagination_default']) ? 50: $this->config['pagination_default'];
             $limit = 0;  // we'll paginate on the page
-            $sql = 'SELECT p.product_type, p.title, p.model, COUNT(c.id) as children, p.base_price, p.id, f.id as fileid FROM ' . $db->prefix . 'product p ';
-            $sql .= "LEFT JOIN " . $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' ";
-            $sql .= "LEFT JOIN " . $db->prefix . "expFiles as f ON cef.expFiles_id = f.id ";
-            $sql .= 'LEFT JOIN ' . $db->prefix . 'product c ON c.parent_id = p.id WHERE p.parent_id = 0 GROUP BY p.id ';
+            $sql = 'SELECT p.product_type, p.title, p.sef_url, p.model, COUNT(c.id) AS children, p.base_price, p.id, f.id AS fileid FROM ' . $db->tableStmt('product') . ' p ';
+            $sql .= "LEFT JOIN " . $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' ";
+            $sql .= "LEFT JOIN " . $db->tableStmt('expFiles') . " AS f ON cef.expFiles_id = f.id ";
+            $sql .= 'LEFT JOIN ' . $db->tableStmt('product') . ' c ON c.parent_id = p.id WHERE p.parent_id = 0 GROUP BY p.id, p.product_type, p.title, p.sef_url, p.model, p.base_price, f.id ';
             $page = new expPaginator(array(
 //                'model'      => 'product',
 //                'where'      => 'parent_id=0',
@@ -628,12 +632,14 @@ class storeController extends expController {
      *   therefore they can't really be displayed
      */
     function showallImpropercategorized() {
+        global $db;
+
         set_time_limit(0);
         expHistory::set('viewable', $this->params);
 
-        $sql = 'SELECT DISTINCT(p.id), p.product_type FROM ' . DB_TABLE_PREFIX . '_product p ';
-        $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories psc ON p.id = psc.product_id ';
-        $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_storeCategories sc ON psc.storecategories_id = sc.parent_id ';
+        $sql = 'SELECT DISTINCT(p.id), p.product_type FROM ' . $db->tableStmt('product') . ' p ';
+        $sql .= 'JOIN ' . $db->tableStmt('product_storeCategories') . ' psc ON p.id = psc.product_id ';
+        $sql .= 'JOIN ' . $db->tableStmt('storeCategories') . ' sc ON psc.storecategories_id = sc.parent_id ';
         $sql .= 'WHERE p.parent_id=0 AND sc.parent_id != 0';
 
         expSession::set('product_export_query', $sql);
@@ -684,8 +690,8 @@ class storeController extends expController {
             if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
                 $sql = expSession::get('product_export_query');
                 if (empty($sql))
-                    $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (parent_id=0 AND product_type="product")';
-                $sql .= ' LIMIT ' . ($i) . ', 100';
+                    $sql = 'SELECT DISTINCT(p.id) FROM ' . $db->tableStmt('product') . ' AS p WHERE (parent_id=0 AND product_type=\'product\')';
+                $sql .= $db->limitStmt(100, $i);
                 //eDebug($sql);
                 //expSession::set('product_export_query','');
                 $prods = $db->selectArraysBySql($sql);
@@ -858,7 +864,7 @@ class storeController extends expController {
     function showallManufacturers() {
         global $db;
         expHistory::set('viewable', $this->params);
-        $sql = 'SELECT comp.* FROM ' . $db->prefix . 'companies as comp JOIN ' . $db->prefix . 'product AS prod ON prod.companies_id = comp.id WHERE parent_id=0 GROUP BY comp.title ORDER BY comp.title;';
+        $sql = 'SELECT comp.* FROM ' . $db->tableStmt('companies') . ' AS comp JOIN ' . $db->tableStmt('product') . ' AS prod ON prod.companies_id = comp.id WHERE parent_id=0 GROUP BY comp.title ORDER BY comp.title;';
         $manufacturers = $db->selectObjectsBySql($sql);
         assign_to_template(array(
             'manufacturers' => $manufacturers
@@ -993,7 +999,7 @@ class storeController extends expController {
 
         expHistory::set('viewable', $this->params);
         $product = new product();
-        $model = $product->find("first", 'model="' . expString::escape($this->params['model']) . '"');
+        $model = $product->find("first", 'model=\'' . expString::escape($this->params['model']) . '\'');
         //eDebug($model);
         $product_type = new $model->product_type($model->id);
         //eDebug($product_type);
@@ -1026,6 +1032,8 @@ class storeController extends expController {
     }
 
     function showallFeaturedProducts() {
+        global $db;
+
         expHistory::set('viewable', $this->params);
         $order = !empty($this->params['order']) ? $this->params['order'] : $this->config['orderby'];
         $dir = !empty($this->params['dir']) ? $this->params['dir'] : $this->config['orderby_dir'];
@@ -1034,7 +1042,7 @@ class storeController extends expController {
 
         $page = new expPaginator(array(
             'model_field' => 'product_type',
-            'sql'         => 'SELECT * FROM ' . DB_TABLE_PREFIX . '_product WHERE is_featured=1',
+            'sql'         => 'SELECT * FROM ' . $db->tableStmt('product') . ' WHERE is_featured=1',
             'limit'       => ecomconfig::getConfig('pagination_default'),
             'order'       => $order,
             'dir'         => $dir,
@@ -1054,6 +1062,8 @@ class storeController extends expController {
     }
 
     function showallCategoryFeaturedProducts() {
+        global $db;
+
         expHistory::set('viewable', $this->params);
         $curcat = $this->category;
 
@@ -1062,7 +1072,7 @@ class storeController extends expController {
         if (empty($order)) $order = 'title';
         if (empty($dir)) $dir = 'ASC';
         //FIXME bad sql statement needs to be a JOIN
-        $sql = 'SELECT * FROM ' . DB_TABLE_PREFIX . '_product as p,' . DB_TABLE_PREFIX . '_product_storeCategories as sc WHERE sc.product_id = p.id and p.is_featured=1 and sc.storecategories_id =' . $curcat->id;
+        $sql = 'SELECT * FROM ' . $db->tableStmt('product') . ' AS p,' . $db->tableStmt('product_storeCategories') . ' AS sc WHERE sc.product_id = p.id and p.is_featured=1 and sc.storecategories_id =' . $curcat->id;
         $page = new expPaginator(array(
             'model_field' => 'product_type',
             'sql'         => $sql,
@@ -1100,12 +1110,12 @@ class storeController extends expController {
     }
 
     function showTopLevel_images() {
-        global $user;
+        global $user, $db;
 
         expHistory::set('viewable', $this->params);
-        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM ' . DB_TABLE_PREFIX . '_product p ';
-        $sql_start = 'SELECT DISTINCT p.* FROM ' . DB_TABLE_PREFIX . '_product p ';
-        $sql = 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
+        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) AS c FROM ' . $db->tableStmt('product') . ' p ';
+        $sql_start = 'SELECT DISTINCT p.* FROM ' . $db->tableStmt('product') . ' p ';
+        $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ON p.id = sc.product_id ';
         $sql .= 'WHERE ';
         if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1)'; //' AND ' ;
         //$sql .= 'sc.storecategories_id IN (';
@@ -1183,7 +1193,7 @@ class storeController extends expController {
         $total = $db->countObjects($model->table, 'parent_id=0');
         $count = 0;
         for ($i = 0; $i < $total; $i += 100) {
-            $orderby = 'id LIMIT ' . ($i) . ', 100';
+            $orderby = 'id '. $db->limitStmt(100, $i);
             $content = $db->selectArrays($model->table, 'parent_id=0', $orderby);
             foreach ($content as $cnt) {
                 // unlike other controller->addContentToSearch() methods, we pass off to our model;
@@ -1663,7 +1673,7 @@ class storeController extends expController {
         // get the search terms
         $terms = expString::escape($this->params['search_string']);
 
-        $sql = "model like '%" . $terms . "%'";
+        $sql = "model LIKE '%" . $terms . "%'";
 
         $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
         $page = new expPaginator(array(
@@ -1695,7 +1705,7 @@ class storeController extends expController {
     function search_by_model() {
         global $db, $user;
 
-        $sql = "select DISTINCT(p.id) as id, p.title, model from " . $db->prefix . "product as p WHERE ";
+        $sql = "SELECT DISTINCT(p.id) AS id, p.title, model FROM " . $db->tableStmt('product') . " AS p WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
 
         //if first character of search is a -, then we do a wild card, else from beginning
@@ -1706,8 +1716,8 @@ class storeController extends expController {
             $sql .= " p.model LIKE '" . $this->params['query'];
         }
 
-        $sql .= "%' AND p.parent_id=0 GROUP BY p.id ";
-        $sql .= "order by p.model ASC LIMIT 30";
+        $sql .= "%' AND p.parent_id=0 GROUP BY p.id, p.title, p.model ";
+        $sql .= "ORDER BY p.model ASC " . $db->limitStmt(30);
         $res = $db->selectObjectsBySql($sql);
         //eDebug($sql);
         $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
@@ -1740,14 +1750,14 @@ class storeController extends expController {
         $search_type = ecomconfig::getConfig('ecom_search_results');
 
         // look for term in full text search
-        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid, match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) as score ";
-        $sql .= "  from " . $db->prefix . "product as p LEFT JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
-            "expFiles as f ON cef.expFiles_id = f.id WHERE ";
+        $sql = "SELECT DISTINCT(p.id) AS id, p.title, model, sef_url, f.id AS fileid, MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AS score ";
+        $sql .= "  FROM " . $db->tableStmt('product') . " AS p LEFT JOIN " .
+            $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->tableStmt('expFiles') .
+            " AS f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         if ($search_type == 'products') $sql .= 'product_type = "product" AND ';
-        $sql .= " match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id ";
-        $sql .= "order by score desc LIMIT 10";
+        $sql .= " MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id ";
+        $sql .= "ORDER BY score DESC " . $db->limitStmt(10);
 
         $firstObs = $db->selectObjectsBySql($sql);
         foreach ($firstObs as $set) {
@@ -1758,14 +1768,14 @@ class storeController extends expController {
         }
 
         // look for specific term in fields
-        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p LEFT JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
-            "expFiles as f ON cef.expFiles_id = f.id WHERE ";
+        $sql = "SELECT DISTINCT(p.id) AS id, p.title, model, sef_url, f.id AS fileid  FROM " . $db->tableStmt('product') . " AS p LEFT JOIN " .
+            $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->tableStmt('expFiles') .
+            " AS f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         if ($search_type == 'products') $sql .= 'product_type = "product" AND ';
-        $sql .= " (p.model like '%" . $this->params['query'] . "%' ";
-        $sql .= " OR p.title like '%" . $this->params['query'] . "%') ";
-        $sql .= " AND p.parent_id=0 GROUP BY p.id LIMIT 10";
+        $sql .= " (p.model LIKE '%" . $this->params['query'] . "%' ";
+        $sql .= " OR p.title LIKE '%" . $this->params['query'] . "%') ";
+        $sql .= " AND p.parent_id=0 GROUP BY p.id " . $db->limitStmt(10);
 
         $secondObs = $db->selectObjectsBySql($sql);
         foreach ($secondObs as $set) {
@@ -1775,14 +1785,14 @@ class storeController extends expController {
         }
 
         // look for begins with term in fields
-        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p LEFT JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
-            "expFiles as f ON cef.expFiles_id = f.id WHERE ";
+        $sql = "SELECT DISTINCT(p.id) AS id, p.title, model, sef_url, f.id AS fileid  FROM " . $db->tableStmt('product') . " AS p LEFT JOIN " .
+            $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->tableStmt('expFiles') .
+            " AS f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         if ($search_type == 'products') $sql .= 'product_type = "product" AND ';
-        $sql .= " (p.model like '" . $this->params['query'] . "%' ";
-        $sql .= " OR p.title like '" . $this->params['query'] . "%') ";
-        $sql .= " AND p.parent_id=0 GROUP BY p.id LIMIT 10";
+        $sql .= " (p.model LIKE '" . $this->params['query'] . "%' ";
+        $sql .= " OR p.title LIKE '" . $this->params['query'] . "%') ";
+        $sql .= " AND p.parent_id=0 GROUP BY p.id " . $db->limitStmt(10);
 
         $thirdObs = $db->selectObjectsBySql($sql);
         foreach ($thirdObs as $set) {
@@ -1824,18 +1834,18 @@ class storeController extends expController {
 
         $this->params['query'] = expString::escape($this->params['query']);
         //$this->params['query'] = str_ireplace('-','\-',$this->params['query']);
-        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid, ";
-        $sql .= "match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) as relevance, ";
-        $sql .= "CASE when p.model like '" . $this->params['query'] . "%' then 1 else 0 END as modelmatch, ";
-        $sql .= "CASE when p.title like '%" . $this->params['query'] . "%' then 1 else 0 END as titlematch ";
-        $sql .= "from " . $db->prefix . "product as p INNER JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage'  INNER JOIN " . $db->prefix .
-            "expFiles as f ON cef.expFiles_id = f.id WHERE ";
+        $sql = "SELECT DISTINCT(p.id) AS id, p.title, model, sef_url, f.id AS fileid, ";
+        $sql .= "MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AS relevance, ";
+        $sql .= "CASE WHEN p.model LIKE '" . $this->params['query'] . "%' THEN 1 ELSE 0 END AS modelmatch, ";
+        $sql .= "CASE WHEN p.title LIKE '%" . $this->params['query'] . "%' THEN 1 ELSE 0 END AS titlematch ";
+        $sql .= "FROM " . $db->tableStmt('product') . " AS p INNER JOIN " .
+            $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage'  INNER JOIN " . $db->tableStmt('expFiles') .
+            " AS f ON cef.expFiles_id = f.id WHERE ";
         if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
-        $sql .= " match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0 ";
+        $sql .= " MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0 ";
         $sql .= " HAVING relevance > 0 ";
         //$sql .= "GROUP BY p.id ";
-        $sql .= "order by modelmatch,titlematch,relevance desc LIMIT 10";
+        $sql .= "ORDER BY modelmatch, titlematch, relevance DESC " . $db->limitStmt(10);
 
         eDebug($sql);
         $res = $db->selectObjectsBySql($sql);
@@ -2394,7 +2404,7 @@ class storeController extends expController {
         $columns = $db->getTextColumns('product');
 
         for ($i = 0; $i < $total; $i += 100) {
-            $orderby = 'id LIMIT ' . ($i) . ', 100';
+            $orderby = 'id '. $db->limitStmt(100, $i);
             $products = $db->selectObjectsIndexedArray('product', null, $orderby);
             foreach ($products as $item) {
 
@@ -2440,7 +2450,7 @@ class storeController extends expController {
         $columns = $db->getTextColumns('product');
 
         for ($i = 0; $i < $total; $i += 100) {
-            $orderby = 'id LIMIT ' . ($i) . ', 100';
+            $orderby = 'id '. $db->limitStmt(100, $i);
             $products = $db->selectObjectsIndexedArray('product', null, $orderby);
             foreach ($products as $item) {
                 //Since body, summary, featured_body can have a ? intentionally such as a link with get parameter.
@@ -2525,7 +2535,7 @@ class storeController extends expController {
         }
 
         //check if there are interrupted model alias in the db
-        $res = $db->selectObjectsBySql("SELECT * FROM ".$db->prefix."model_aliases_tmp WHERE is_processed = 0");
+        $res = $db->selectObjectsBySql("SELECT * FROM " . $db->tableStmt('model_aliases_tmp') . " WHERE is_processed = 0");
         if (!empty($res)) {
             assign_to_template(array(
                 'continue' => '1'
@@ -2543,7 +2553,7 @@ class storeController extends expController {
 
             //if go to the next processs
             if (isset($this->params['next'])) {
-                $res = $db->selectObjectBySql("SELECT * FROM ".$db->prefix."model_aliases_tmp LIMIT " . ($index - 1) . ", 1");
+                $res = $db->selectObjectBySql("SELECT * FROM " . $db->tableStmt('model_aliases_tmp') . " " . $db->limitStmt(1, $index - 1));
                 //Update the record in the tmp table to mark it as process
                 $res->is_processed = 1;
                 $db->updateObject($res, 'model_aliases_tmp');
@@ -2555,7 +2565,7 @@ class storeController extends expController {
 
         do {
             $count = $db->countObjects('model_aliases_tmp', 'is_processed=0');
-            $res = $db->selectObjectBySql("SELECT * FROM ".$db->prefix."model_aliases_tmp LIMIT {$index}, 1");
+            $res = $db->selectObjectBySql("SELECT * FROM " . $db->tableStmt('model_aliases_tmp') . " " . $db->limitStmt(1, $index));
             //Validation
             //Check the field one
             if (!empty($res)) {
@@ -2641,7 +2651,7 @@ class storeController extends expController {
         $product = $db->selectObject("product", "title='{$title}'");
 
         if (!empty($product->id)) {
-            $res = $db->selectObjectBySql("SELECT * FROM ".$db->prefix."model_aliases_tmp LIMIT " . ($index - 1) . ", 1");
+            $res = $db->selectObjectBySql("SELECT * FROM " . $db->tableStmt('model_aliases_tmp') . " " . $db->limitStmt(1, $index - 1));
             //Add the first field
             $tmp = new stdClass();
             $tmp->model = $res->field1;
@@ -2822,7 +2832,7 @@ class storeController extends expController {
             } elseif ($header[0] == 'model') {
                 if (!empty($data['model'])) {
                     $p = new product();
-                    $product = $p->find('first','model="' . $data['model'] . '"');
+                    $product = $p->find('first','model=\'' . $data['model'] . '\'');
                     if (empty($product->id)) {
                         $errorSet[$count] = gt("Is not an existing product SKU/Model.");
                         continue;
@@ -2865,7 +2875,7 @@ class storeController extends expController {
                             $product->$key = (int)($value);
                         } elseif (!empty($value)) {  // it's a company name, not a company id#
                             $co = new company();
-                            $company = $co->find('first', 'title=' . $value);
+                            $company = $co->find('first', 'title=\'' . $value . '\'');
                             if (empty($company->id)) {
                                 $params['title'] = $value;
                                 $company->update();
@@ -2960,7 +2970,7 @@ class storeController extends expController {
                             if (!empty($value))
                                 $result = storeCategory::importCategoryString($value);
                             else
-                                continue;
+                                continue 2;
 
 //                            if (is_numeric($result)) {
                             if ($result) {
@@ -3162,7 +3172,7 @@ class storeController extends expController {
                         $link = makeLink(array('controller'=>'store', 'action'=>'show', 'title'=>$item->sef_url));
                     }
                     return '<a href="' . $link . '">' .
-                        '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile[0]->id . '&square=true&h=50" alt="item'.$item->id.'">' .
+                        '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile['mainimage'][0]->id . '&square=true&h=50" alt="item'.$item->id.'">' .
                         '<br>' . $d . '</a>';
           		}
             ),
@@ -3216,9 +3226,9 @@ class storeController extends expController {
 
         // DB table to use
         // build out a SQL query that gets all the data we need and is sortable.
-        $sql = 'SELECT p.product_type, p.title, p.model, COUNT(c.id) as children, p.base_price, p.id FROM ' . $db->prefix . 'product p ';
-        $sql .= 'LEFT JOIN ' . $db->prefix . 'product c ON c.parent_id = p.id ';
-        $sql .= 'WHERE p.parent_id = 0 GROUP BY p.id';
+        $sql = 'SELECT p.product_type, p.title, p.model, COUNT(c.id) AS children, p.base_price, p.id FROM ' . $db->tableStmt('product') . ' p ';
+        $sql .= 'LEFT JOIN ' . $db->tableStmt('product') . ' c ON c.parent_id = p.id ';
+        $sql .= 'WHERE p.parent_id = 0 GROUP BY p.id, p.product_type, p.title, p.model, p.base_price';
 //        $table = $db->prefix . $this->model_table;
         $table = '(' . $sql . ') temp';  // note: for passing complex joins
 

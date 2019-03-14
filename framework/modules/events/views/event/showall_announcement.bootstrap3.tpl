@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -111,8 +111,6 @@
                 </div>
                 {if (!empty($item->feedback_form) && $item->feedback_form != 'Disallow Feedback')}
                     {$feedback_form = $item->feedback_form}
-                {/if}
-                {if !empty($feedback_form)}
                     {$event = $item}
                     {toggle unique=$name|cat:$item->id collapsed=1 title='Click to open'|gettext|cat:' '|cat:$feedback_form}
                         {include file="email/$feedback_form.tpl"}

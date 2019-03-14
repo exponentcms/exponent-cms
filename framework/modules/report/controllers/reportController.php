@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -151,7 +151,7 @@ class reportController extends expController {
         global $db;
 
         // get number of active carts
-        $sql = "SELECT COUNT(*) as c FROM " . $db->prefix . "orders, " . $db->prefix . "sessionticket WHERE ticket = sessionticket_ticket AND purchased = 0";
+        $sql = "SELECT COUNT(*) AS c FROM " . $db->tableStmt('orders') . ", " . $db->tableStmt('sessionticket') . " WHERE ticket = sessionticket_ticket AND purchased = 0";
         $allCarts = $db->countObjectsBySql($sql);
 
         // get latest 5 orders
@@ -243,16 +243,16 @@ class reportController extends expController {
         }
 
         $p = $this->params;
-        $sql = "SELECT DISTINCT(o.id), o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, concat('".expCore::getCurrencySymbol()."',format(o.grand_total,2)) as grand_total, os.title as status_title from ";
-        $sql .= $db->prefix . "orders as o ";
-        $sql .= "INNER JOIN " . $db->prefix . "orderitems as oi ON oi.orders_id = o.id ";
-        $sql .= "INNER JOIN " . $db->prefix . "product as p ON oi.product_id = p.id ";
-        if (!empty($p['order_status'][0]) && $p['order_status'][0] != -1) $sql .= "INNER JOIN " . $db->prefix . "order_type as ot ON o.order_type_id = ot.id ";
-        $sql .= "INNER JOIN " . $db->prefix . "order_status as os ON os.id = o.order_status_id ";
-        $sql .= "INNER JOIN " . $db->prefix . "billingmethods as b ON b.orders_id = o.id ";
-        $sql .= "INNER JOIN " . $db->prefix . "shippingmethods as s ON s.id = oi.shippingmethods_id ";
-        $sql .= "INNER JOIN " . $db->prefix . "geo_region as gr ON (gr.id = b.state OR gr.id = s.state) ";
-        if (!empty($p['discounts'][0]) && $p['discounts'][0] != -1) $sql .= "LEFT JOIN " . $db->prefix . "order_discounts as od ON od.orders_id = o.id ";
+        $sql = "SELECT DISTINCT(o.id), o.invoice_id, " . $db->datetimeStmt('o.purchased') . " AS purchased_date, b.firstname AS bfirst, b.lastname AS blast, " . $db->currencyStmt('o.grand_total') . " AS grand_total, os.title AS status_title FROM ";
+        $sql .= $db->tableStmt('orders') . " AS o ";
+        $sql .= "INNER JOIN " . $db->tableStmt('orderitems') . " AS oi ON oi.orders_id = o.id ";
+        $sql .= "INNER JOIN " . $db->tableStmt('product') . " AS p ON oi.product_id = p.id ";
+        if (!empty($p['order_status'][0]) && $p['order_status'][0] != -1) $sql .= "INNER JOIN " . $db->tableStmt('order_type') . " AS ot ON o.order_type_id = ot.id ";
+        $sql .= "INNER JOIN " . $db->tableStmt('order_status') . " AS os ON os.id = o.order_status_id ";
+        $sql .= "INNER JOIN " . $db->tableStmt('billingmethods') . " AS b ON b.orders_id = o.id ";
+        $sql .= "INNER JOIN " . $db->tableStmt('shippingmethods') . " AS s ON s.id = oi.shippingmethods_id ";
+        $sql .= "INNER JOIN " . $db->tableStmt('geo_region') . " AS gr ON (gr.id = b.state OR gr.id = s.state) ";
+        if (!empty($p['discounts'][0]) && $p['discounts'][0] != -1) $sql .= "LEFT JOIN " . $db->tableStmt('order_discounts') . " AS od ON od.orders_id = o.id ";
 
         $sqlwhere = "WHERE o.purchased != 0";
 
@@ -575,26 +575,26 @@ class reportController extends expController {
         //build
         $start_sql = "SELECT DISTINCT(o.id), ";
         $count_sql = "SELECT COUNT(DISTINCT(o.id)) AS c, ";
-        $sql = "o.invoice_id, o.purchased as purchased_date, b.firstname AS bfirst, b.lastname AS blast, o.grand_total AS grand_total, os.title AS status_title, ot.title AS order_type";
+        $sql = "o.invoice_id, o.purchased AS purchased_date, b.firstname AS bfirst, b.lastname AS blast, o.grand_total AS grand_total, os.title AS status_title, ot.title AS order_type";
         if (isset($p['order_status_changed'])){
             if ((count($p['order_status_changed']) == 1 && $p['order_status_changed'][0] != -1) || count($p['order_status_changed']) > 1 || (!empty($p['include_status_date']) && (!empty($p['date-sstartdate']) || !empty($p['date-senddate']))))
                 $sql .= ", osc.created_at AS status_changed_date";
         }
-        $sql .= " FROM " . $db->prefix . "orders AS o ";
-        $sql .= "INNER JOIN " . $db->prefix . "orderitems AS oi ON oi.orders_id = o.id ";
-        $sql .= "INNER JOIN " . $db->prefix . "order_type AS ot ON ot.id = o.order_type_id ";
-        $sql .= "INNER JOIN " . $db->prefix . "product AS p ON oi.product_id = p.id ";
-        //if ($p['order_type'][0] != -1) $sql .= "INNER JOIN " . $db->prefix . "order_type as ot ON o.order_type_id = ot.id ";
-        $sql .= "INNER JOIN " . $db->prefix . "order_status AS os ON os.id = o.order_status_id ";
+        $sql .= " FROM " . $db->tableStmt('orders') . " AS o ";
+        $sql .= "INNER JOIN " . $db->tableStmt('orderitems') . " AS oi ON oi.orders_id = o.id ";
+        $sql .= "INNER JOIN " . $db->tableStmt('order_type') . " AS ot ON ot.id = o.order_type_id ";
+        $sql .= "INNER JOIN " . $db->tableStmt('product') . " AS p ON oi.product_id = p.id ";
+        //if ($p['order_type'][0] != -1) $sql .= "INNER JOIN " . $db->prefix . "order_type AS ot ON o.order_type_id = ot.id ";
+        $sql .= "INNER JOIN " . $db->tableStmt('order_status') . " AS os ON os.id = o.order_status_id ";
         if (isset($p['order_status_changed'])) {
             if ((count($p['order_status_changed']) == 1 && $p['order_status_changed'][0] != -1) || count($p['order_status_changed']) > 1 || (!empty($p['include_status_date']) && (!empty($p['date-sstartdate']) || !empty($p['date-senddate']))))
-                $sql .= "INNER JOIN " . $db->prefix . "order_status_changes AS osc ON osc.orders_id = o.id ";
+                $sql .= "INNER JOIN " . $db->tableStmt('order_status_changes') . " AS osc ON osc.orders_id = o.id ";
         }
-        $sql .= "INNER JOIN " . $db->prefix . "billingmethods AS b ON b.orders_id = o.id ";
-        $sql .= "INNER JOIN " . $db->prefix . "shippingmethods AS s ON s.id = oi.shippingmethods_id ";
-        $sql .= "LEFT JOIN " . $db->prefix . "geo_region AS gr ON (gr.id = b.state OR gr.id = s.state) ";
+        $sql .= "INNER JOIN " . $db->tableStmt('billingmethods') . " AS b ON b.orders_id = o.id ";
+        $sql .= "INNER JOIN " . $db->tableStmt('shippingmethods') . " AS s ON s.id = oi.shippingmethods_id ";
+        $sql .= "LEFT JOIN " . $db->tableStmt('geo_region') . " AS gr ON (gr.id = b.state OR gr.id = s.state) ";
         if (isset($p['discounts']) && $p['discounts'][0] != -1)
-            $sql .= "LEFT JOIN " . $db->prefix . "order_discounts AS od ON od.orders_id = o.id ";
+            $sql .= "LEFT JOIN " . $db->tableStmt('order_discounts') . " AS od ON od.orders_id = o.id ";
 
         $sqlwhere = "WHERE o.purchased != 0";
 
@@ -974,11 +974,11 @@ class reportController extends expController {
         $payment_values_arr = array();
         // $Credit Cards
 //        $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, user_title FROM " . $db->prefix . "billingmethods, " . $db->prefix . "billingcalculator WHERE " . $db->prefix . "billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
-        $sql_end = "FROM " . $db->prefix . "billingmethods, " . $db->prefix . "billingcalculator WHERE " . $db->prefix . "billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
-        $total = $db->countObjectsBySql('SELECT COUNT(*) as c ' . $sql_end);
+        $sql_end = "FROM " . $db->tableStmt('billingmethods') . ", " . $db->tableStmt('billingcalculator') . " WHERE " . $db->tableStmt('billingcalculator') . ".id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
+        $total = $db->countObjectsBySql('SELECT COUNT(*) AS c ' . $sql_end);
         $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, title " . $sql_end;
         for ($i = 0; $i < $total; $i += 100) {
-            $res = $db->selectObjectsBySql($sql . ' LIMIT ' . $i . ', 100');
+            $res = $db->selectObjectsBySql($sql . $db->limitStmt(100, $i));
             if (!empty($res)) {
                 foreach ($res as $item) {
                     $options = expUnserialize($item->billing_options);
@@ -1014,7 +1014,7 @@ class reportController extends expController {
         $payment_values = implode(",", $payment_values_arr);
 
         //tax
-//        $tax_sql = "SELECT SUM(tax) as tax_total FROM " . $db->prefix . "orders WHERE id IN (" . $orders_string . ")";
+//        $tax_sql = "SELECT SUM(tax) AS tax_total FROM " . $db->prefix . "orders WHERE id IN (" . $orders_string . ")";
 //        $tax_res = $db->selectObjectBySql($tax_sql);
 //        $tax_types = taxController::getTaxRates();
 //        $tax_type_formatted = $tax_types[0]->zonename . ' - ' . $tax_types[0]->classname . ' - ' . $tax_types[0]->rate . '%';
@@ -1183,18 +1183,18 @@ class reportController extends expController {
         $p = $this->params;
         $sqlids = "SELECT DISTINCT(p.id) FROM ";
         $count_sql = "SELECT COUNT(DISTINCT(p.id)) AS c FROM ";
-        $sqlstart = "SELECT DISTINCT(p.id), p.title, p.model, base_price"; //, ps.title as status from ";
-        $sql = $db->prefix . "product AS p ";
+        $sqlstart = "SELECT DISTINCT(p.id), p.title, p.model, base_price"; //, ps.title AS status FROM ";
+        $sql =  $db->tableStmt('product') . " AS p ";
         if (!isset($p['allproducts'])){
-            $sql .= "INNER JOIN " . $db->prefix . "product_status AS ps ON p.product_status_id = ps.id ";
+            $sql .= "INNER JOIN " . $db->tableStmt('product_status') . " AS ps ON p.product_status_id = ps.id ";
             $sqlstart .= ", ps.title AS status FROM ";
             if (!isset($p['uncategorized'])){
-                $sql .= "INNER JOIN " . $db->prefix . "product_storeCategories AS psc ON p.id = psc.product_id ";
+                $sql .= "INNER JOIN " . $db->tableStmt('product_storeCategories') . " AS psc ON p.id = psc.product_id ";
             }
         } else {
             $sqlstart .= " FROM ";
         }
-        //$sqlidsjoin = "INNER JOIN " . $db->prefix . "product as childp ON p.id = childp.parent_id ";
+        //$sqlidsjoin = "INNER JOIN " . $db->prefix . "product AS childp ON p.id = childp.parent_id ";
         $sqlwhere = 'WHERE (1=1 ';
 
         $inc = 0;
@@ -1640,13 +1640,13 @@ class reportController extends expController {
         }
 
         // purchased == 0 or invoice_id == 0 on unsubmitted orders
-        $sql = "SELECT * FROM " . $db->prefix . "orders WHERE purchased = 0 AND edited_at >= " . $this->tstart . " AND edited_at <= " . $this->tend . " AND sessionticket_ticket NOT IN ";
-        $sql .= "(SELECT ticket FROM " . $db->prefix . "sessionticket) ORDER BY edited_at DESC";
+        $sql = "SELECT * FROM " . $db->tableStmt('orders') . " WHERE purchased = 0 AND edited_at >= " . $this->tstart . " AND edited_at <= " . $this->tend . " AND sessionticket_ticket NOT IN ";
+        $sql .= "(SELECT ticket FROM " . $db->tableStmt('sessionticket') . ") ORDER BY edited_at DESC";
         // echo $sql;
         $allCarts = $db->selectObjectsBySql($sql);
         foreach ($allCarts as $item) {
 
-            $sql = "SELECT * FROM " . $db->prefix . "orderitems WHERE orders_id =" . $item->id;
+            $sql = "SELECT * FROM " . $db->tableStmt('orderitems') . " WHERE orders_id =" . $item->id;
 
             $carts = $db->selectObjectsBySql($sql);
             foreach ($carts as $item2) {
@@ -1710,9 +1710,9 @@ class reportController extends expController {
     function pruge_abandoned_carts() {
         global $db;
 
-        $db->delete("orders","`invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now()) - 2592000 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".$db->prefix."sessionticket`)");
-        $db->delete("orderitems","`orders_id` NOT IN (SELECT `id` FROM `".$db->prefix."orders`)");
-        $db->delete("shippingmethods","`id` NOT IN (SELECT `shippingmethods_id` FROM `".$db->prefix."orders`)");
+        $db->delete("orders","'invoice_id' = '0' AND 'edited_at' < UNIX_TIMESTAMP(now()) - 2592000 AND 'sessionticket_ticket' NOT IN (SELECT 'ticket' FROM " . $db->tableStmt('sessionticket') . ")");
+        $db->delete("orderitems","'orders_id' NOT IN (SELECT 'id' FROM " . $db->tableStmt('orders') . ")");
+        $db->delete("shippingmethods","'id' NOT IN (SELECT 'shippingmethods_id' FROM " . $db->tableStmt('orders') . ")");
     }
 
     /**
@@ -1730,14 +1730,14 @@ class reportController extends expController {
         $valueproducts = '';
         // $sql = "SELECT * FROM " . $db->prefix . "orders WHERE DATEDIFF(FROM_UNIXTIME(edited_at, '%Y-%m-%d'), '" . date('Y-m-d') . "') = 0";
 
-        $sql = "SELECT * FROM " . $db->prefix . "orders, " . $db->prefix . "sessionticket WHERE ticket = sessionticket_ticket";
+        $sql = "SELECT * FROM " . $db->tableStmt('orders') . ", " . $db->tableStmt('sessionticket') . " WHERE ticket = sessionticket_ticket";
 
         $allCarts = $db->selectObjectsBySql($sql);
 
         // eDebug($allCarts, true);
         foreach ($allCarts as $item) {
 
-            $sql = "SELECT * FROM " . $db->prefix . "orderitems WHERE orders_id =" . $item->id;
+            $sql = "SELECT * FROM " . $db->tableStmt('orderitems') . " WHERE orders_id =" . $item->id;
 
             $carts = $db->selectObjectsBySql($sql);
 
@@ -1798,12 +1798,12 @@ class reportController extends expController {
         $this->setDateParams($this->params);
         $except = array('order_discounts', 'billingmethod', 'order_status_changes', 'billingmethod','order_discounts');
         //$orders = $this->o->find('all','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend,null,null,null,true,false,$except,true);
-        // $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m-%d') as formattedDate FROM orders WHERE created_at
+        // $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m-%d') AS formattedDate FROM orders WHERE created_at
         eDebug(date('Y-m-d'), true);
         // eDebug($this->tend);
         eDebug(date('Y-m-d, g:i:s A', $this->tend));
         $allOrderCount = $this->o->find('count','created_at >= ' . $this->tstart . ' AND created_at <= ' . $this->tend,null,null,null,true,false,$except,true);
-        $sql = "SELECT COUNT(DISTINCT(`orders_id`)) as c FROM " . $db->prefix . "orderitems oi ";
+        $sql = "SELECT COUNT(DISTINCT(`orders_id`)) AS c FROM " . $db->prefix . "orderitems oi ";
         $sql .= "JOIN " . $db->prefix . "orders o ON  oi.orders_id = o.id ";
         $sql .= "WHERE o.created_at >= " . $this->tstart . " AND o.created_at <= " . $this->tend;
         //$sql .= " AND o.user_id != 0 AND o.order_type_id = 1";
@@ -1811,7 +1811,7 @@ class reportController extends expController {
         eDebug($sql);
         $allCartsWithItems = $db->countObjectsBySql($sql);
 
-        $sql = "SELECT COUNT(DISTINCT(`orders_id`)) as c FROM " . $db->prefix . "orderitems oi ";
+        $sql = "SELECT COUNT(DISTINCT(`orders_id`)) AS c FROM " . $db->prefix . "orderitems oi ";
         $sql .= "JOIN " . $db->prefix . "orders o ON  oi.orders_id = o.id ";
         $sql .= "WHERE o.created_at >= " . $this->tstart . " AND o.created_at <= " . $this->tend;
         eDebug($sql);
@@ -1857,7 +1857,7 @@ class reportController extends expController {
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
             if (empty($sql))
-                $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (parent_id=0)';
+                $sql = 'SELECT DISTINCT(p.id) FROM ' . $db->tableStmt('product') . ' AS p WHERE (parent_id=0)';
             //eDebug($sql);
             //expSession::set('product_export_query','');
             $prods = $db->selectArraysBySql($sql);
@@ -2019,7 +2019,7 @@ class reportController extends expController {
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
             if (empty($sql))
-                $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (parent_id=0)';
+                $sql = 'SELECT DISTINCT(p.id) FROM ' . $db->tableStmt('product') . ' AS p WHERE (parent_id=0)';
             //eDebug($sql);
             //expSession::set('product_export_query','');
             $prods = $db->selectArraysBySql($sql);

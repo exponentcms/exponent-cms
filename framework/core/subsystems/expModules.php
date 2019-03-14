@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -224,7 +224,7 @@ class expModules {
         $modules = array();
         foreach ($refs as $ref) {
             if ($ref->refcount > 0) {
-                $instance = $db->selectObject('container', 'internal like "%'.$ref->source.'%"');
+                $instance = $db->selectObject('container', 'internal like \'%'.$ref->source.'%\'');
                 $mod = new stdClass();
                 $mod->title = !empty($instance->title) ? $instance->title : "Untitled";
                 $mod->section = $db->selectvalue('section', 'name', 'id='.$ref->section);

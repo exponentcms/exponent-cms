@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -56,6 +56,10 @@ function smarty_function_scaffold($params,&$smarty) {
 			        $ctl['type'] = 'hidden';
 		        } else {
 			        $ctl['type'] = expTemplate::guessControlType($col, $default_value, $key);  //FIXME $default_value is NOT set
+                    if (is_array($ctl['type'])) {
+                        $ctl['items'] = $ctl['type'];
+                        $ctl['type'] = 'dropdown';
+                    }
 		        }
 
 		        //format the values if needed
@@ -71,7 +75,7 @@ function smarty_function_scaffold($params,&$smarty) {
 
 		        //write out the control itself...and then we're done.
 		        if (isset($col[FORM_FIELD_ONCLICK])) $ctl['onclick'] = $col[FORM_FIELD_ONCLICK];
-		        $ctl['label'] = isset($col[FORM_FIELD_LABEL]) ? $col[FORM_FIELD_LABEL] : $key;
+                $ctl['label'] = ucwords(str_replace('_', ' ', isset($col[FORM_FIELD_LABEL]) ? $col[FORM_FIELD_LABEL] : $key));
 		        $ctl['name'] = isset($col[FORM_FIELD_NAME]) ? $col[FORM_FIELD_NAME] : $key;
 		        smarty_function_control($ctl, $smarty);
 		        //echo $control->controlToHTML($control_label, $control_name);

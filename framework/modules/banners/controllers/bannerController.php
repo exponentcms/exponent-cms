@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -90,11 +90,13 @@ class bannerController extends expController {
     }
 
     public function manage() {
+        global $db;
+
         expHistory::set('manageable', $this->params);
 
         // build out a SQL query that gets all the data we need and is sortable.
         $sql  = 'SELECT b.*, c.title as companyname, f.expfiles_id as file_id ';
-        $sql .= 'FROM '.DB_TABLE_PREFIX.'_banner b, '.DB_TABLE_PREFIX.'_companies c , '.DB_TABLE_PREFIX.'_content_expFiles f ';
+        $sql .= 'FROM ' . $db->tableStmt('banner') . ' b, ' . $db->tableStmt('companies') . ' c , ' . $db->tableStmt('content_expFiles') . ' f ';
         $sql .= 'WHERE b.companies_id = c.id AND (b.id = f.content_id AND f.content_type="banner")';
 
 		$page = new expPaginator(array(

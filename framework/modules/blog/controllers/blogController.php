@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -234,8 +234,8 @@ class blogController extends expController {
         $model = new $modelname();
 
         // start building the sql query
-        $sql  = 'SELECT DISTINCT m.id FROM '.$db->prefix.$model->tablename.' m ';
-        $sql .= 'JOIN '.$db->prefix.$tagobj->attachable_table.' ct ';
+        $sql  = 'SELECT DISTINCT m.id FROM ' . $db->tableStmt($model->tablename) . ' m ';
+        $sql .= 'JOIN ' . $db->tableStmt($tagobj->attachable_table) . ' ct ';
         $sql .= 'ON m.id = ct.content_id WHERE (';
         $first = true;
 

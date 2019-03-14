@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -44,7 +44,12 @@
     table.dataTable thead .sorting_desc  {
         background-image: none;
     }
-    {/literal}
+    .dataTables_wrapper .dataTables_processing {
+        background: lightgray;
+        height: 55px;
+        border: 1px black solid;
+    }
+{/literal}
 {/css}
 
 <div class="module store showall-uncategorized">
@@ -138,6 +143,9 @@
     {if $smarty.const.ECOM_LARGE_DB}
     {literal}
             processing: true,
+            "language": {
+                processing: '<span>Loading Records...</span> '
+            },
             serverSide: true,
             ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=store&action=getProductsByJSON&json=1",
     {/literal}
@@ -163,6 +171,7 @@
             order: [[5, 'asc']],
         });
 
+        //  Strip HTML using DOM methods
         (function () {
             var _div = document.createElement('div');
 
@@ -182,6 +191,7 @@
             // filter_type: "multi_select",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             // select_type: 'select2',
             select_type_options: {
                 width: '30px'
@@ -192,6 +202,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             select_type_options: {
                 width: '70px'
             }
@@ -201,6 +212,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             select_type_options: {
                 width: '30px'
             }
@@ -210,6 +222,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             select_type_options: {
                 width: '30px'
             }
@@ -219,6 +232,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             select_type_options: {
                 width: '30px'
             }

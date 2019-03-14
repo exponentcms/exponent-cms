@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -155,7 +155,9 @@ class expSettings
                         $opts[1] = substr($opts[1], 0, -2);
                     }
 
-                    if (substr($opts[0], -5, 5) == "_HTML") {
+                    if (substr($opts[0], -5, 5) == "_HTML" || $opts[0] === 'DEFAULT_AVATAR') {
+                        if(strpos( $opts[1], "'") === false){
+                            $opts[1] = "'" . $opts[1] . "'";                        }
                         $opts[1] = eval("return " . $opts[1] . ";");
                         /*					$opts[1] = preg_replace('/<[bB][rR]\s?\/?>/',"\r\n",$opts[1]); */
                     }
@@ -178,13 +180,20 @@ class expSettings
         $str = "<?php\n";
         foreach ($values as $directive => $value) {
             $directive = trim(strtoupper($directive));
-            if ($directive == 'CURRENTCONFIGNAME') {  // save and strip out the profile name
+            if ($directive === 'CURRENTCONFIGNAME') {  // save and strip out the profile name
                 $profile = $value;
                 continue;
             }
             $str .= "define(\"$directive\",";
+            if ($directive === 'DB_HOST') {
+                if (strpos($value, "\\\\") !== false) {
+                    $value = stripslashes($value);
+                }
+                $str .= "'" . addslashes($value) . "'" . ");\n";
+                continue;
+            }
             $value = stripslashes($value); // slashes added by POST
-            if (substr($directive, -5, 5) == "_HTML") {
+            if (substr($directive, -5, 5) === "_HTML") {
                 $value = htmlentities($value, ENT_QUOTES, LANG_CHARSET);
 //              $value = str_replace(array("\r\n","\r","\n"),"<br />",$value);
                 $value = str_replace(array("\r\n", "\r", "\n"), "", $value);
@@ -193,11 +202,10 @@ class expSettings
             } elseif (is_int($value)) {
                 $str .= "'" . (int)($value) . "'";
             } else {
-                if ($directive != 'SESSION_TIMEOUT') {
+                if ($directive !== 'SESSION_TIMEOUT') {
 //                    $str .= "'" . expString::escape(str_replace("'", "\'", $value)) . "'";  //FIXME is this still necessary since we stripslashes above???
                     $str .= "'" . expString::escape($value) . "'";
-                } //                    $str .= "'".$value."'";
-                else {
+                } else {
                     $str .= "'" . expString::escape(str_replace("'", '', $value)) . "'";
                 }
             }

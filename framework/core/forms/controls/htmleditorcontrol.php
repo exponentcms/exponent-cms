@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -196,7 +196,7 @@ class htmleditorcontrol extends htmleditor
 
     static function templateFormat($db_data, $ctl)
     {
-        return str_replace(array("\r\n", "\n", "\r", '\r\n', '\n', '\r'), '<br />', htmlspecialchars($db_data));
+        return str_replace(array("\r\n", "\n", "\r", '\r\n', '\n', '\r'), '<br />', $db_data);
     }
 }
 

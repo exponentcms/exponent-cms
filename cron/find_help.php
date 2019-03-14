@@ -2,7 +2,7 @@
 <?php
     ##################################################
     #
-    # Copyright (c) 2004-2018 OIC Group, Inc.
+    # Copyright (c) 2004-2019 OIC Group, Inc.
     #
     # This file is part of Exponent
     #
@@ -29,7 +29,7 @@
                 $verbose = true;
             } elseif (!empty($_SERVER['argv'][$ac])) {
                 $version_title = $_SERVER['argv'][$ac];
-                $version = $db->selectValue('help_version', 'id', 'version="' . $_SERVER['argv'][$ac] . '"');
+                $version = $db->selectValue('help_version', 'id', 'version=\'' . $_SERVER['argv'][$ac] . '\'');
             }
         }
     } else {
@@ -39,7 +39,7 @@
         }
         if (!empty($_GET['version'])) {
             $version_title = $_GET['version'];
-            $version = $db->selectValue('help_version', 'id', 'version="' . expString::escape($_GET['version']) . '"');
+            $version = $db->selectValue('help_version', 'id', 'version=\'' . expString::escape($_GET['version']) . '\'');
         }
     }
     /**
@@ -66,7 +66,7 @@
     $pages = array_unique($param_array['page']);
     sort($pages);
     foreach ($pages as $page) {
-        if (!$db->selectObject('section', 'sef_name=' . $page)) {
+        if (!$db->selectObject('section', 'sef_name=\'' . $page . '\'')) {
             print $page . $nl;
         }
     }

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,7 +26,6 @@
         </div>
     {/permissions}
 	<ul>
-        {*{foreach from=$page->records item=listing}*}
 		{pagelinks paginate=$page top=1}
 	    {foreach from=$page->records item=item}
 		<li class="item listing">

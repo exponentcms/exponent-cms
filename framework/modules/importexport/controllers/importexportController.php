@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -676,7 +676,7 @@ class importexportController extends expController {
             } elseif ($header[0] == 'model') {
                 if (!empty($data['model'])) {
                     $p = new product();
-                    $product = $p->find('first','model="' . $data['model'] . '"');
+                    $product = $p->find('first','model=\'' . $data['model'] . '\'');
                     if (empty($product->id)) {
                         $errorSet[$count] = gt("Is not an existing product SKU/Model.");
                         continue;
@@ -719,7 +719,7 @@ class importexportController extends expController {
                             $product->$key = (int)($value);
                         } elseif (!empty($value)) {  // it's a company name, not a company id#
                             $co = new company();
-                            $company = $co->find('first', 'title=' . $value);
+                            $company = $co->find('first', 'title=\'' . $value . '\'');
                             if (empty($company->id)) {
                                 $params['title'] = $value;
                                 $company->update();
@@ -814,7 +814,7 @@ class importexportController extends expController {
                             if (!empty($value))
                                 $result = storeCategory::importCategoryString($value);
                             else
-                                continue;
+                                continue 2;
 
 //                            if (is_numeric($result)) {
                             if ($result) {

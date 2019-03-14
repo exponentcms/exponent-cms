@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +18,7 @@
 {/css}
 
 <div class="modules order_status showall">
-	<h1>{$moduletitle|default:"Manage Status Codes"|gettext}</h1>
+	<h1>{$moduletitle|default:"Manage Order Statuses"|gettext}</h1>
     {permissions}
         <div class="module-actions">
             {if $permissions.create}

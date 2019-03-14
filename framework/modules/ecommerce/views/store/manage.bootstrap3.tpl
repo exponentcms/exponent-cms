@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -52,6 +52,11 @@
     table.dataTable thead .sorting_asc,
     table.dataTable thead .sorting_desc  {
         background-image: none;
+    }
+    .dataTables_wrapper .dataTables_processing {
+        background: lightgray;
+        height: 55px;
+        border: 1px black solid;
     }
     .yadcf-filter-reset-button {
         padding: 2px 5px;
@@ -131,9 +136,9 @@
                             {*{/if}*}
                         {*</td>*}
                         <td>
-                            {if $listing->product_type == "product"}
+                            {*{if $listing->product_type == "product" || $listing->product_type == "eventregistration"}*}
                                 {$listing->base_price|currency}
-                            {/if}
+                            {*{/if}*}
                         </td>
                         <td>
                             {permissions}
@@ -173,12 +178,14 @@
     {if $smarty.const.ECOM_LARGE_DB}
     {literal}
             processing: true,
+            "language": {
+                processing: '<i class="fa fa-spinner fa-spin fa-fw"></i> <span>Loading Records...</span> '
+            },
             serverSide: true,
             ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=store&action=getProductsByJSON&json=1",
     {/literal}
     {/if}
     {literal}
-//            jQueryUI: true,
             stateSave: true,
             columns: [
                 { data: 'product_type', type: 'text' },
@@ -206,6 +213,7 @@
             // }
         });
 
+        //  Strip HTML using DOM methods
         (function () {
             var _div = document.createElement('div');
 
@@ -225,6 +233,7 @@
             // filter_type: "multi_select",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             // select_type: 'select2',
             style_class: 'form-control',
             select_type_options: {
@@ -236,6 +245,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             style_class: 'form-control',
             select_type_options: {
                 width: '70px'
@@ -246,6 +256,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             style_class: 'form-control',
             select_type_options: {
                 width: '30px'
@@ -256,6 +267,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             style_class: 'form-control',
             select_type_options: {
                 width: '30px'
@@ -266,6 +278,7 @@
             html_data_type: "text",
             filter_type: "text",
             filter_default_label: "",
+            filter_delay: 500,
             style_class: 'form-control',
             select_type_options: {
                 width: '30px'

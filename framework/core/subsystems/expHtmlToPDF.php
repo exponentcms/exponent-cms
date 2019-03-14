@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -843,7 +843,7 @@ class expDOMPDF080 extends expDOMPDF070
      */
     public static function installed()
     {
-        return file_exists(BASE . 'external/dompdf082/autoload.inc.php');
+        return file_exists(BASE . 'external/dompdf' . DOMPDF8_VERSION . '/autoload.inc.php');
     }
 
     /**
@@ -856,10 +856,10 @@ class expDOMPDF080 extends expDOMPDF070
      */
     public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
-        if (file_exists(BASE . 'external/dompdf082/autoload.inc.php')) {
+        if (file_exists(BASE . 'external/dompdf' . DOMPDF8_VERSION . '/autoload.inc.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata'))
                 expFile::makeDirectory('tmp/ttfontdata');
-            require_once(BASE . 'external/dompdf082/autoload.inc.php');
+            require_once(BASE . 'external/dompdf' . DOMPDF8_VERSION . '/autoload.inc.php');
             $this->pdf = new Dompdf\Dompdf();
             $this->size = $paper_size;
             $this->orient = $orientation;

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -31,6 +31,16 @@
     table.dataTable thead .sorting_asc,
     table.dataTable thead .sorting_desc  {
         background-image: none;
+    }
+    .dataTables_wrapper .dataTables_processing {
+        background: lightgray;
+        height: 55px;
+        border: 1px black solid;
+    }
+    .dataTables_wrapper .dataTables_processing {
+        background: lightgray;
+        height: 55px;
+        border: 1px black solid;
     }
 {/literal}
 {/css}
@@ -83,7 +93,9 @@
                                     {icon img="view.png" class=view action=viewuser record=$user}
                                 {/if}
                                 {icon img="edit.png" class=edit action=edituser record=$user}
+                                {if !$user->is_ldap}
                                 {icon img="change_password.png" class=password action=change_password record=$user title="Change this users password"|gettext}
+                                {/if}
                                 {icon img="delete.png" action=delete record=$user title="Delete"|gettext onclick="return confirm('Are you sure you want to delete this user?');"}
                             </div>
                         {/permissions}
@@ -110,6 +122,9 @@
     {if $smarty.const.ECOM_LARGE_DB}
     {literal}
             processing: true,
+            "language": {
+                processing: '<i class="fas fa-spinner fa-spin fa-fw"></i> <span>Loading Records...</span> '
+            },
             serverSide: true,
             ajax: eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=users&action=getUsersByJSON2&json=1",
     {/literal}

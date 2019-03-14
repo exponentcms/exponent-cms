@@ -2,7 +2,7 @@
  * Japanese translation
  * @author Tomoaki Yoshida <info@yoshida-studio.jp>
  * @author Naoki Sawada <hypweb+elfinder@gmail.com>
- * @version 2018-08-24
+ * @version 2019-02-18
  */
 (function(root, factory) {
 	if (typeof define === 'function' && define.amd) {
@@ -115,6 +115,7 @@
 			'errEditorNotFound'    : 'このファイルタイプのエディターがありません。', // from v2.1.25 added 23.5.2017
 			'errServerError'       : 'サーバー側でエラーが発生しました。', // from v2.1.25 added 16.6.2017
 			'errEmpty'             : 'フォルダ"$1"を空にすることができません。', // from v2.1.25 added 22.6.2017
+			'moreErrors'           : 'さらに $1 件のエラーがあります。', // from v2.1.44 added 9.12.2018
 
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'アーカイブ作成',
@@ -290,7 +291,8 @@
 			'untitled folder'   : '新規フォルダ',   // added 10.11.2015
 			'Archive'           : '新規アーカイブ',  // from v2.1 added 10.11.2015
 			'untitled file'     : '新規ファイル.$1',  // from v2.1.41 added 6.8.2018
-			'extentionfile'     : '$1 ファイル',     // from v2.1.41 added 6.8.2018
+			'extentionfile'     : '$1: ファイル',     // from v2.1.41 added 6.8.2018
+			'extentiontype'     : '$1: $2',      // from v2.1.43 added 17.10.2018
 
 			/********************************** messages **********************************/
 			'confirmReq'      : '処理を実行しますか？',
@@ -478,6 +480,16 @@
 			'makefileTypes'   : '「新しいファイル」で有効にするファイルタイプ', // from v2.1.41 added 7.8.2018
 			'typeOfTextfile'  : 'テキストファイルのタイプ', // from v2.1.41 added 7.8.2018
 			'add'             : '追加', // from v2.1.41 added 7.8.2018
+			'theme'           : 'テーマ', // from v2.1.43 added 19.10.2018
+			'default'         : 'デフォルト', // from v2.1.43 added 19.10.2018
+			'description'     : '説明', // from v2.1.43 added 19.10.2018
+			'website'         : 'ウェブサイト', // from v2.1.43 added 19.10.2018
+			'author'          : '作者', // from v2.1.43 added 19.10.2018
+			'email'           : 'Email', // from v2.1.43 added 19.10.2018
+			'license'         : 'ライセンス', // from v2.1.43 added 19.10.2018
+			'exportToSave'    : 'このアイテムは保存できません。 編集内容を失わないようにするには、PCにエクスポートする必要があります。', // from v2.1.44 added 1.12.2018
+			'dblclickToSelect': 'ファイルをダブルクリックして選択します。', // from v2.1.47 added 22.1.2019
+			'useFullscreen'   : 'フルスクリーンモードの利用', // from v2.1.47 added 19.2.2019
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : '不明',

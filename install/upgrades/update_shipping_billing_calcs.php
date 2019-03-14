@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -67,7 +67,7 @@ class update_shipping_billing_calcs extends upgradescript {
                 if (is_file("$dir/$file") && substr("$dir/$file", -4) == ".php") {
                     include_once("$dir/$file");
                     $classname = substr($file, 0, -4);
-                    $id = $db->selectValue('billingcalculator', 'id', 'calculator_name="'.$classname.'"');
+                    $id = $db->selectValue('billingcalculator', 'id', 'calculator_name=\''.$classname.'\'');
                     $calcobj = new $classname($id);
                     if ((method_exists($calcobj,'isSelectable')) && $calcobj->isSelectable() == true) {
                         $calcobj->update(
@@ -90,7 +90,7 @@ class update_shipping_billing_calcs extends upgradescript {
                 if (is_file("$dir/$file") && substr("$dir/$file", -4) == ".php") {
                     include_once("$dir/$file");
                     $classname = substr($file, 0, -4);
-                    $id = $db->selectValue('shippingcalculator', 'id', 'calculator_name="' . $classname . '"');
+                    $id = $db->selectValue('shippingcalculator', 'id', 'calculator_name=\'' . $classname . '\'');
                     $calcobj = new $classname($id);
                     if ($calcobj->isSelectable() == true) {
                         $calcobj->update(

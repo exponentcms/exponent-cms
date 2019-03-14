@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -121,6 +121,7 @@ class remove_oldfiles extends upgradescript {
             'external/adminer/adminer-4.5.0-mysql.php',
             'external/adminer/adminer-4.6.1-mysql.php',
             'external/adminer/adminer-4.6.2-mysql.php',
+            'external/adminer/adminer-4.6.3-mysql.php',
             'external/bootstrap/js/.jshintrc',
             'external/editors/_header.tpl',
             'external/editors/Default.tpl',
@@ -670,6 +671,7 @@ class remove_oldfiles extends upgradescript {
             'external/flowplayer-3.2.16/',
             'external/html5forms/',
             'external/iCalcreator-2.22/',
+            'external/iCalcreator-2.24/',
             'external/iepngfixv2/',
             'external/jquery/js/ui/minified/',
             'external/magpierss/',
@@ -731,6 +733,7 @@ class remove_oldfiles extends upgradescript {
             'external/swiftmailer-5.4.8/',
             'external/swiftmailer-5.4.9/',
             'external/swiftmailer-6.0.2/',
+            'external/swiftmailer-6.1.2/',
             'external/webshim-1.15.10/',
             'external/yui3/',
             'external/lissa/',

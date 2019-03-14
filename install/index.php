@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -119,7 +119,7 @@ if (isset($_REQUEST['install_sample'])) {
             $tar = new PharData($files);
             $tar->decompress();  // creates .tar file
             $tar = new PharData(substr($files, 0, -3));
-            $return = $tar->extractTo(BASE);
+            $return = $tar->extractTo(BASE, null, true);
             unset($tar);
             unlink(substr($files, 0, -3)); // remove intermediary .tar file
         }

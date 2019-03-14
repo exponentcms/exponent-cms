@@ -8,7 +8,7 @@
 	"use strict";
 	var m   = 'msg',
 		fm  = this.fm,
-		spclass = 'elfinder-info-spinner',
+		spclass = 'elfinder-spinner',
 		btnclass = 'elfinder-info-button',
 		msg = {
 			calc     : fm.i18n('calc'),
@@ -32,6 +32,13 @@
 			group    : fm.i18n('group'),
 			perm     : fm.i18n('perm'),
 			getlink  : fm.i18n('getLink')
+		},
+		applyZWSP = function(str, remove) {
+			if (remove) {
+				return str.replace(/\u200B/g, '');
+			} else {
+				return str.replace(/(\/|\\)/g, "$1\u200B");
+			}
 		};
 	
 	this.items = ['size', 'aliasfor', 'path', 'link', 'dim', 'modify', 'perms', 'locked', 'owner', 'group', 'perm'];
@@ -142,7 +149,7 @@
 			!hideItems.aleasfor && file.alias && content.push(row.replace(l, msg.aliasfor).replace(v, file.alias));
 			if (!hideItems.path) {
 				if (path = fm.path(file.hash, true)) {
-					content.push(row.replace(l, msg.path).replace(v, fm.escape(path).replace(/(\/|\\)/g, "$1&#8203;")).replace('{class}', 'elfinder-info-path'));
+					content.push(row.replace(l, msg.path).replace(v, applyZWSP(fm.escape(path))).replace('{class}', 'elfinder-info-path'));
 				} else {
 					content.push(row.replace(l, msg.path).replace(v, tpl.spinner.replace('{text}', msg.calc).replace('{name}', 'path')).replace('{class}', 'elfinder-info-path'));
 					reqs.push(fm.path(file.hash, true, {notify: null})
@@ -150,7 +157,7 @@
 						replSpinner(msg.unknown, 'path');
 					})
 					.done(function(path) {
-						replSpinner(path.replace(/(\/|\\)/g, "$1&#8203;"), 'path');
+						replSpinner(applyZWSP(path), 'path');
 					}));
 				}
 			}
@@ -160,13 +167,19 @@
 				if (file.url == '1') {
 					content.push(row.replace(l, msg.link).replace(v, '<button class="'+btnclass+' '+spclass+'-url">'+msg.getlink+'</button>'));
 				} else {
-					if (o.nullUrlDirLinkSelf && file.mime == 'directory' && file.url === null) {
-						var loc = window.location;
-						href = loc.pathname + loc.search + '#elf_' + file.hash;
+					if (file.url) {
+						href = file.url;
+					} else if (file.mime === 'directory') {
+						if (o.nullUrlDirLinkSelf && file.url === null) {
+							var loc = window.location;
+							href = loc.pathname + loc.search + '#elf_' + file.hash;
+						} else if (file.url !== '' && fm.option('url', (!fm.isRoot(file) && file.phash) || file.hash)) {
+							href = fm.url(file.hash);
+						}
 					} else {
 						href = fm.url(file.hash);
 					}
-					content.push(row.replace(l, msg.link).replace(v,  '<a href="'+href+'" target="_blank">'+name_esc+'</a>'));
+					href && content.push(row.replace(l, msg.link).replace(v,  '<a href="'+href+'" target="_blank">'+name_esc+'</a>'));
 				}
 			}
 			
@@ -280,8 +293,20 @@
 		
 		view = view.replace('{title}', title).replace('{content}', content.join('').replace(/{class}/g, ''));
 		
-		dialog = fm.dialog(view, opts);
-		dialog.attr('id', id);
+		dialog = self.fmDialog(view, opts);
+		dialog.attr('id', id).one('mousedown', '.elfinder-info-path', function() {
+			$(this).html(applyZWSP($(this).html(), true));
+		});
+
+		if (fm.UA.Mobile && $.fn.tooltip) {
+			dialog.children('.ui-dialog-content .elfinder-info-title').tooltip({
+				classes: {
+					'ui-tooltip': 'elfinder-ui-tooltip ui-widget-shadow'
+				},
+				tooltipClass: 'elfinder-ui-tooltip ui-widget-shadow',
+				track: true
+			});
+		}
 
 		if (file && file.url == '1') {
 			dialog.on('click', '.'+spclass+'-url', function(){

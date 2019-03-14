@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -227,7 +227,8 @@ class expPaginator {
             } else {
                 $this->total_records = count($db->selectObjectsBySql($this->sql));
             }
-			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
+			if (!empty($this->limit))
+			    $this->sql .= ' ' . $db->limitStmt($this->limit, $this->start);
 
 			$this->records = array();
 			if (isset($this->model) || isset($params['model_field'])) {

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -76,7 +76,7 @@ class eventregistrationController extends expController {
 
         $pass_events = array();
         if (!empty($this->params['past']) && $user->isAdmin()) {
-            $events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
+            $events = $this->eventregistration->find('all', 'product_type=\'eventregistration\'', "title ASC", $limit);
             foreach ($events as $event) {
                // $this->signup_cutoff > time()
                if ($event->eventdate <= time() && $event->eventenddate <= time()) {
@@ -86,18 +86,19 @@ class eventregistrationController extends expController {
            }
         } else {
             if ($user->isAdmin()) {
-                $events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
+                $events = $this->eventregistration->find('all', 'product_type=\'eventregistration\'', "title ASC", $limit);
             } else {
-                $events = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
+                $events = $this->eventregistration->find('all', 'product_type=\'eventregistration\' AND active_type=0', "title ASC", $limit);
             }
             foreach ($events as $event) {
-                if ($user->isAdmin()) {
-                    $endtime = $event->eventenddate;
-                } else {
-                    $endtime = $event->signup_cutoff;
-                }
+//                if ($user->isAdmin()) {
+                    $endtime = $event->eventenddate; //fixme don't display after event date
+//                } else {
+//                    $endtime = $event->signup_cutoff; //fixme don't display after cutoff date
+//                }
                 // $this->signup_cutoff > time()
-                if ($event->eventdate > time() && $endtime > time()) {
+//                if ($event->eventdate > time() && $endtime > time()) {
+                if ($endtime > time()) {
                     $pass_events[] = $event;
                 }
                 // eDebug($event->signup_cutoff, true);
@@ -192,9 +193,9 @@ class eventregistrationController extends expController {
 //            $dates = $er->find('all', "(eventdate >= " . expDateTime::startOfDayTimestamp($start) . " AND eventdate <= " . expDateTime::endOfDayTimestamp($start) . ")");
 
             if ($user->isAdmin()) {
-                $events = $er->find('all', 'product_type="eventregistration"', "title ASC");
+                $events = $er->find('all', 'product_type=\'eventregistration\'', "title ASC");
             } else {
-                $events = $er->find('all', 'product_type="eventregistration" && active_type=0', "title ASC");
+                $events = $er->find('all', 'product_type=\'eventregistration\' && active_type=0', "title ASC");
             }
             $dates = array();
 
@@ -240,9 +241,12 @@ class eventregistrationController extends expController {
     }
 
     function upcomingEvents() {
-        $sql = 'SELECT DISTINCT p.*, er.eventdate, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
-        $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
-        $sql .= 'WHERE er.signup_cutoff > ' . time() . ' AND er.eventdate > ' . time();
+        global $db;
+
+        $sql = 'SELECT DISTINCT p.*, er.eventdate, er.event_starttime, er.signup_cutoff FROM ' . $db->tableStmt('product') . ' p ';
+        $sql .= 'JOIN ' . $db->tableStmt('eventregistration') . ' er ON p.product_type_id = er.id ';
+//        $sql .= 'WHERE er.signup_cutoff > ' . time() . ' AND er.eventdate > ' . time(); //fixme don't display after cutoff date
+        $sql .= 'WHERE er.eventenddate > ' . time(); //fixme don't display after event date
 
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
         $order = 'eventdate';
@@ -366,7 +370,7 @@ class eventregistrationController extends expController {
 
         $pass_events = array();
         if (!empty($this->params['past']) && $user->isAdmin()) {
-            $events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
+            $events = $this->eventregistration->find('all', 'product_type=\'eventregistration\'', "title ASC", $limit);
             foreach ($events as $event) {
                // $this->signup_cutoff > time()
                if ($event->eventdate <= time() && $event->eventenddate <= time()) {
@@ -376,9 +380,9 @@ class eventregistrationController extends expController {
            }
         } else {
             if ($user->isAdmin()) {
-                $events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
+                $events = $this->eventregistration->find('all', 'product_type=\'eventregistration\'', "title ASC", $limit);
             } else {
-                $events = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
+                $events = $this->eventregistration->find('all', 'product_type=\'eventregistration\' AND active_type=0', "title ASC", $limit);
             }
             foreach ($events as $event) {
                 // $this->signup_cutoff > time()
@@ -1215,7 +1219,7 @@ class eventregistrationController extends expController {
      */
     static function getRegEventsForDates($startdate, $enddate, $color="#FFFFFF") {
         $er = new eventregistration();
-        $events      = $er->find('all', 'product_type="eventregistration" && active_type=0');
+        $events      = $er->find('all', 'product_type=\'eventregistration\' && active_type=0');
         $pass_events = array();
         foreach ($events as $event) {
             if ($event->eventdate >= $startdate && $event->eventdate <= $enddate) {
@@ -1259,9 +1263,9 @@ class eventregistrationController extends expController {
 //
 //            $category = new storeCategory($parent);
 
-            $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . $db->prefix . 'product p ';
+            $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . $db->tableStmt('product') . ' p ';
 //            $sql .= 'JOIN ' . $db->prefix . 'product_storeCategories sc ON p.id = sc.product_id ';
-            $sql .= 'JOIN ' . $db->prefix . 'eventregistration er ON p.product_type_id = er.id ';
+            $sql .= 'JOIN ' . $db->tableStmt('eventregistration') . ' er ON p.product_type_id = er.id ';
             $sql .= 'WHERE 1 ';
 //            $sql .= ' AND sc.storecategories_id IN (SELECT id FROM exponent_storeCategories WHERE rgt BETWEEN ' . $category->lft . ' AND ' . $category->rgt . ')';
 //            if ($category->hide_closed_events) {

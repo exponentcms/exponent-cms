@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -125,7 +125,7 @@ class migrationController extends expController {
         $old_db = $this->connect();
         $pages = $old_db->selectObjects('section','id > 1');
         foreach($pages as $page) {
-			if ($db->selectObject('section',"id='".$page->id."'")) {
+			if ($db->selectObject('section',"id=".(int)$page->id)) {
 				$page->exists = true;
 			} else {
 				$page->exists = false;
@@ -163,7 +163,7 @@ class migrationController extends expController {
 						$page->sef_name = expRouter::encode('Untitled');
 					}
 				}
-				$dupe = $db->selectValue('section', 'sef_name', 'sef_name="'.$page->sef_name.'"');
+				$dupe = $db->selectValue('section', 'sef_name', 'sef_name=\''.$page->sef_name.'\'');
 				if (!empty($dupe)) {
 					list($u, $s) = explode(' ',microtime());
                     $page->sef_name .= '-'.$s.'-'.$u;
@@ -190,7 +190,7 @@ class migrationController extends expController {
 						$page->sef_name = expRouter::encode('Untitled');
 					}
 				}
-				$dupe = $db->selectValue('section', 'sef_name', 'sef_name="'.$page->sef_name.'"');
+				$dupe = $db->selectValue('section', 'sef_name', 'sef_name=\''.$page->sef_name.'\'');
 				if (!empty($dupe)) {
 					list($u, $s) = explode(' ',microtime());
                     $page->sef_name .= '-'.$s.'-'.$u;
@@ -299,7 +299,7 @@ class migrationController extends expController {
         //eDebug($containers);
         $old_db = $this->connect();
 
-        $sql  = 'SELECT *, COUNT(module) as count FROM '.$this->config['prefix'].'_sectionref WHERE is_original=1 GROUP BY module';
+        $sql  = 'SELECT *, COUNT(module) as count FROM '.$this->config['prefix'].'_sectionref WHERE is_original=1 GROUP BY module, id, source, internal, section, refcount, is_original';
         $modules = $old_db->selectObjectsBySql($sql);
 		for ($i = 0, $iMax = count($modules); $i < $iMax; $i++) {
             if (array_key_exists($modules[$i]->module, $this->new_modules)) {

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -23,6 +23,7 @@ if (!defined('MINIFY_URL_LENGTH')) define('MINIFY_URL_LENGTH','1500');
 
 if (!defined('MINIFY_ERROR_LOGGER')) define('MINIFY_ERROR_LOGGER','0');
 if (!defined('MINIFY_INLINE_CSS')) define('MINIFY_INLINE_CSS','1');
+if (!defined('MINIFY_USE_JSMIN')) define('MINIFY_USE_JSMIN','1');
 if (!defined('MINIFY_LESS')) define('MINIFY_LESS','1');
 if (!defined('MINIFY_LINKED_CSS')) define('MINIFY_LINKED_CSS','1');
 if (!defined('MINIFY_INLINE_JS')) define('MINIFY_INLINE_JS','1');

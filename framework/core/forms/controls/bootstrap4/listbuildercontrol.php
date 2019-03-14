@@ -53,7 +53,7 @@ class listbuildercontrol extends formcontrol {
 		$this->process = $process;
 
 		if (!$this->newList) {
-			$html = "<select name='".$name."[]' id='$name' class=\"form-control\" multiple='multiple'>";
+			$html = "<select name='".$name."[]' id='$name' class=\"form-control\" multiple='multiple' size='$this->size'>";
             $list = $this->default + $this->source;
 			foreach ($list as $key=>$value) {
 				$html .= "<option value='$key'";
@@ -108,7 +108,7 @@ class listbuildercontrol extends formcontrol {
 		$disabled = $this->disabled != 0 ? "disabled" : "";
 		$class = empty($this->class) ? '' : $this->class;
 
-		$html = "<div".$divID." class=\"".$this->type."-control control ' . ($this->horizontal ? 'row ' : '') . 'form-group ".$class.$disabled;
+		$html = "<div" . $divID . " class=\"" . $this->type . "-control control " . ($this->horizontal ? 'row ' : '') . "form-group " . $class . $disabled;
 		$html .= !empty($this->required) ? ' required">' : '">';
 		//$html .= "<label>";
         if($this->required) {

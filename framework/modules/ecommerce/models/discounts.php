@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -58,7 +58,7 @@ class discounts extends expRecord {
 
     public function getCouponByName($code) {
         //if valid, return objec, else return null
-        return $this->find('first', 'coupon_code="' . trim($code) . '"');
+        return $this->find('first', 'coupon_code=\'' . trim($code) . '\'');
     }
 
     public function isAvailable() {

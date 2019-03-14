@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -970,9 +970,9 @@ function curPageURL() {
 function ecom_active() {
     global $db;
 
-    return ($db->selectValue('modstate', 'active', 'module="store"') ||
-        $db->selectValue('modstate', 'active', 'module="eventregistration"') ||
-        $db->selectValue('modstate', 'active', 'module="donation"') || FORCE_ECOM);
+    return ($db->selectValue('modstate', 'active', 'module=\'store\'') ||
+        $db->selectValue('modstate', 'active', 'module=\'eventregistration\'') ||
+        $db->selectValue('modstate', 'active', 'module=\'donation\'') || FORCE_ECOM);
 }
 
 /**

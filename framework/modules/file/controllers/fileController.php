@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -72,7 +72,7 @@ class fileController extends expController {
 //        global $user;
 
         $expcat = new expCat();
-        $cats = $expcat->find('all','module="file"');
+        $cats = $expcat->find('all','module=\'file\'');
         $jscatarray = array();
         $catarray = array();
         $catarray[] = 'Root Folder';
@@ -106,7 +106,7 @@ class fileController extends expController {
         }
 
         $expcat = new expCat();
-        $cats = $expcat->find('all','module="file"');
+        $cats = $expcat->find('all','module=\'file\'');
         $catarray = array();
         $catarray[] = 'Root Folder';
         foreach ($cats as $cat) {
@@ -261,7 +261,7 @@ class fileController extends expController {
             $efile = new expFile();
             $path = str_replace(BASE, '', $this->params['id']);
             $path = str_replace('\\', '/', $path);
-            $file = $efile->find('first','directory="'.dirname($path).'/'.'" AND filename="'.basename($path).'"');
+            $file = $efile->find('first','directory=\''.dirname($path).'/'.'\' AND filename=\''.basename($path).'\'');
         }
         $ar = new expAjaxReply(200, 'ok', $file);
         $ar->send();
@@ -422,7 +422,7 @@ class fileController extends expController {
 //            $this->params['module'] = 'file';
 //            $this->params['title'] = $this->params['folder'];
 //            parent::update();
-            $cats = $expcat->find('all','module="file"','rank');
+            $cats = $expcat->find('all','module=\'file\'','rank');
             $catarray = array();
             $catarray[] = 'Root Folder';
             foreach ($cats as $cat) {
@@ -936,7 +936,7 @@ class fileController extends expController {
         	} else {
 //        		$return = $tar->extract($dest_dir);
                 $tar = new PharData(substr($_FILES['file']['tmp_name'], 0, -3) . 'tar');
-                $return = $tar->extractTo($dest_dir);
+                $return = $tar->extractTo($dest_dir, null, true);
                 unset($tar);
                 unlink(substr($_FILES['file']['tmp_name'], 0, -3) . 'tar'); // remove intermediary .tar file
         		if (!$return) {

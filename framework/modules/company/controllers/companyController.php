@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -66,15 +66,14 @@ class companyController extends expController {
 
     function show()
     {
-//        global $db, $user, $router;
-        global $user, $router;
+        global $db, $user, $router;
         //eDebug($this->params,true);
 
         expHistory::set('viewable', $this->params);
 
-        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p ';
+        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM ' . $db->tableStmt('product') . ' p ';
 
-        $sql_start  = 'SELECT DISTINCT p.* FROM '.DB_TABLE_PREFIX.'_product p ';
+        $sql_start  = 'SELECT DISTINCT p.* FROM ' . $db->tableStmt('product') . ' p ';
         //$sql = 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
         $sql = 'WHERE ';
         if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ' ;
@@ -124,15 +123,14 @@ class companyController extends expController {
     //TODO this is a misnomer as we only accept an id NOT a title and duplicates the show() method
     function showByTitle()
     {
-//        global $db, $user, $router;
-        global $user, $router;
+        global $db, $user, $router;
         //eDebug($this->params,true);
 
         expHistory::set('viewable', $this->params);
 
-        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p ';
+        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM ' . $db->tableStmt('product') . ' p ';
 
-        $sql_start  = 'SELECT DISTINCT p.* FROM '.DB_TABLE_PREFIX.'_product p ';
+        $sql_start  = 'SELECT DISTINCT p.* FROM ' . $db->tableStmt('product') . ' p ';
         //$sql = 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
         $sql = 'WHERE ';
         if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ' ;

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -558,11 +558,11 @@ if (!defined('JQUERY_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-//    if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
+    if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
-//    } else {
-//        define('SMARTY_VERSION', '3.1.32');  //note smarty v3.1.28+ won't work with php < v7.1.x
-//    }
+    } else {
+        define('SMARTY_VERSION', '3.1.33');  //note smarty v3.1.28+ won't work properly with php < v7.1.x
+    }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
 }
@@ -575,7 +575,7 @@ if (!defined('SWIFT_PATH')) {
     if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
         define('SWIFT_VERSION', '5.4.12');
     } else {
-        define('SWIFT_VERSION', '6.1.2');  //note v6.x requires php v7.x
+        define('SWIFT_VERSION', '6.1.3');  //note v6.x requires php v7.x
     }
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
     define('LEXER_VERSION', '1.0.1');
@@ -589,10 +589,13 @@ if (!defined('SWIFT_PATH')) {
  * Changing the versions here lets Exponent adjust where to look
  */
 if (!defined('MPDF7_VERSION')) {
-    define('MPDF7_VERSION', '7.1.4');
+    define('MPDF7_VERSION', '7.0.2');
+}
+if (!defined('DOMPDF8_VERSION')) {
+    define('DOMPDF8_VERSION', '082');
 }
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.0');
+    define('HTML2PDF5_VERSION', '5.0.1');
 }
 
 ?>

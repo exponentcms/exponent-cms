@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -136,17 +136,17 @@ class calendarcontrol extends formcontrol
                 locale: '" . LOCALE . "',
                 showTodayButton: true,
                 sideBySide: true,
-                icons: {
-                    time: 'far fa-clock',
-                    date: 'far fa-calendar-alt',
-                    up: 'fas fa-chevron-up',
-                    down: 'fas fa-chevron-down',
-                    previous: 'fas fa-chevron-left',
-                    next: 'fas fa-chevron-right',
-                    today: 'fas fa-crosshairs',
-                    clear: 'fas fa-trash-alt',
-                    close: 'fas fa-times'
-                },
+//                icons: {
+//                    time: 'far fa-clock',
+//                    date: 'far fa-calendar-alt',
+//                    up: 'fas fa-chevron-up',
+//                    down: 'fas fa-chevron-down',
+//                    previous: 'fas fa-chevron-left',
+//                    next: 'fas fa-chevron-right',
+//                    today: 'fas fa-crosshairs',
+//                    clear: 'fas fa-trash-alt',
+//                    close: 'fas fa-times'
+//                },
             });
         ";
 

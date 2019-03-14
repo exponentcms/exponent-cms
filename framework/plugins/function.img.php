@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -42,12 +42,12 @@ function smarty_function_img($params,&$smarty)
     $class = (isset($params['class'])) ? ' class="' . $params['class'] . '"' : '';
     $style = (isset($params['style'])) ? ' style="' . $params['style'] . '"' : '';
     $rel = (isset($params['rel'])) ? ' rel="' . $params['rel'] . '"' : '';
-    if (isset($params['square']) && (!isset($params['w']) && !isset($params['h']))) {
-        $params['w'] = $params['square'];
-        $params['h'] = $params['square'];
-    } elseif (isset($params['square']) && $params['square'] == 'true' && !isset($params['w'])) {
-        $params['w'] = $params['h'];
-    }
+//    if (isset($params['square']) && (!isset($params['w']) && !isset($params['h']))) {
+//        $params['w'] = $params['square'];
+//        $params['h'] = $params['square'];
+//    } elseif (isset($params['square']) && $params['square'] == 'true' && !isset($params['w'])) {
+//        $params['w'] = $params['h'];
+//    }
 //    $dims = (isset($params['w']) && isset($params['h']) && isset($params['zc'])) ? ' height="'.$params['h'].'" width="'.$params['w'].'"' : '';
     $dims = '';
     if (isset($params['w']) && isset($params['h']) && isset($params['zc'])) {

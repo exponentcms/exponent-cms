@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -248,59 +248,64 @@ class expTemplate {
 		return $list;
 	}
 
-	public static function guessControlType($ddcol, $default_value=null, $colname=null) {
-		$control = null;
+    public static function guessControlType($ddcol, $default_value=null, $colname=null) {
+   	    global $db;
 
-		if (array_key_exists('FORM_FIELD_TYPE', $ddcol)) {
-			new $ddcol['FORM_FIELD_TYPE']($default_value);
-		} else {
-			if ($ddcol[DB_FIELD_TYPE] == DB_DEF_ID && $colname != 'id') {
-                //If the id field is a foreign key reference than we need to try to scaffold
-                /*$field_str = array();
-                if (stristr($col->Field, '_')) $field_str = split("_id", $col->Field);
-                if ( (count($field_str) > 0) && ($db->tableExists($field_str[0])) ) {
-                    $foreign_table = $db->describeTable($field_str[0]);
-                    $fcolname = "";
-                    foreach ($foreign_table as $forcol) {
-                        if ($forcol->Field == "title" || $forcol->Field == "name") {
-                            $fcolname = $forcol->Field;
-                            break;
-                        }
-                    }
+   //		$control = null;
+   		if (array_key_exists('FORM_FIELD_TYPE', $ddcol)) {
+   //			new $ddcol['FORM_FIELD_TYPE']($default_value);
+   			return $ddcol['FORM_FIELD_TYPE'];
+   		} else {
+   			if ($ddcol[DB_FIELD_TYPE] === DB_DEF_ID && $colname !== 'id') {
+                   //If the id field is a foreign key reference than we need to try to scaffold
+                   $field_str = array();
+                   if (stristr($colname, '_')) $field_str = explode("_id", $colname);
+                   if ( (count($field_str) > 0) && ($db->tableExists($field_str[0])) ) {
+                       $foreign_table = $db->describeTable($field_str[0]);
+                       $fcolname = "";
+                       foreach ($foreign_table as $forcol) {
+                           if ($forcol->Field === "title" || $forcol->Field === "name") {
+                               $fcolname = $forcol->Field;
+                               break;
+                           }
+                       }
 
-                    if ($fcolname != "") {
-                        $foreign_key = $db->selectDropdown($field_str[0],$col->Field, null,$fcolname);
-                        eDebug($foreign_key);
-                        $control = new dropdowncontrol("", $foreign_key, true);
-                    }
-                }*/
-			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_ID && $colname == 'id' && $default_value != null) {
-                //$control = new htmlcontrol('<input type="hidden" name="id" value="'.$default_value.'" />');
-				return 'editor';
-			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_INTEGER) {
-                //$control = new genericcontrol($default_value);
-				return 'text';
-			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_BOOLEAN) {
-                //$control = new genericcontrol($default_value);
-				return 'radio';
-			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_TIMESTAMP) {
-                //$control = new calendarcontrol($default_value);
-                return 'calendar';
-			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_DECIMAL) {
-                //$control = new genericcontrol($default_value);
-				return 'text';
-			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_STRING) {
-                if ($ddcol[DB_FIELD_LEN] > 255) {
-                    //$control = new texteditorcontrol($default_value);
-                    return 'html';
-                } else {
-                    //$control = new genericcontrol($default_value);
-                    return 'text';
-                }
-			}
-		}
-		return 'text';
-	}
+                       if ($fcolname != "") {
+                           $foreign_key = $db->selectDropdown($field_str[0], $fcolname);
+   //                        eDebug($foreign_key);
+   //                        $control = new dropdowncontrol("", $foreign_key, true);
+                           return $foreign_key;
+                       }
+                   }
+   			} elseif ($ddcol[DB_FIELD_TYPE] === DB_DEF_ID && $colname === 'id' && $default_value != null) {
+                   //$control = new htmlcontrol('<input type="hidden" name="id" value="'.$default_value.'" />');
+   				return 'editor';
+   			} elseif ($ddcol[DB_FIELD_TYPE] === DB_DEF_INTEGER) {
+                   //$control = new genericcontrol($default_value);
+   //                return 'text';
+   				return 'number';
+   			} elseif ($ddcol[DB_FIELD_TYPE] === DB_DEF_BOOLEAN) {
+                   //$control = new genericcontrol($default_value);
+//   				return 'radio';
+                return 'checkbox';
+   			} elseif ($ddcol[DB_FIELD_TYPE] === DB_DEF_TIMESTAMP) {
+                   //$control = new calendarcontrol($default_value);
+                   return 'calendar';
+   			} elseif ($ddcol[DB_FIELD_TYPE] === DB_DEF_DECIMAL) {
+                   //$control = new genericcontrol($default_value);
+   				return 'text';
+   			} elseif ($ddcol[DB_FIELD_TYPE] === DB_DEF_STRING) {
+                   if ($ddcol[DB_FIELD_LEN] > 255) {
+                       //$control = new texteditorcontrol($default_value);
+                       return 'html';
+                   } else {
+                       //$control = new genericcontrol($default_value);
+                       return 'text';
+                   }
+   			}
+   		}
+   		return 'text';
+   	}
 
     /** exdoc
      * This function finds the most appropriate version of a file

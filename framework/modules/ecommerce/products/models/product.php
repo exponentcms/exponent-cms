@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -601,7 +601,7 @@ class product extends expRecord {
             $db->delete('product_notes', 'product_id=' . $this->id);
 
             // delete product options
-            $db->delete('option', 'product_id=' . $this->id . " AND optiongroup_id IN (SELECT id from " . $db->prefix . "optiongroup WHERE product_id=" . $this->id . ")");
+            $db->delete('option', 'product_id=' . $this->id . " AND optiongroup_id IN (SELECT id from " . $db->tableStmt('optiongroup') . " WHERE product_id=" . $this->id . ")");
 
             // delete product option groups
             $db->delete('optiongroup', 'product_id=' . $this->id);

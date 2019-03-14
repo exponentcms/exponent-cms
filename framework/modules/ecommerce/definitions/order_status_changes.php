@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,18 +26,18 @@ return array(
 		DB_PRIMARY=>true,
 		DB_INCREMENT=>true),
 	'from_status_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+		DB_FIELD_TYPE=>DB_DEF_ID),
     'to_status_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+		DB_FIELD_TYPE=>DB_DEF_ID),
 	'comment'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>10000),
 	'poster'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+		DB_FIELD_TYPE=>DB_DEF_ID),
 	'created_at'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	'orders_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER,
+		DB_FIELD_TYPE=>DB_DEF_ID,
         DB_INDEX=>10),
 );
 

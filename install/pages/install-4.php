@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -56,11 +56,10 @@ if (!defined('EXPONENT')) {
                 <tr>
                     <td class="input">
                         <?php
-                        if (strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') !== false || strpos(
-                                $_SERVER['SERVER_SOFTWARE'],
-                                'WebServerX'
-                            ) !== false
-                        ) {
+                        if (strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !== false ||
+                            strpos($_SERVER['SERVER_SOFTWARE'],'Apache') !== false ||
+                            strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') !== false)
+                        {
                             $sefurl = true;
                         } else {
                             $sefurl = false;

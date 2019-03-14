@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -62,7 +62,7 @@ class fix_faq_filedownload_modules extends upgradescript {
                 $db->dropTable('faq');
             }
             if (!$db->tableExists('faq')) {
-                $db->sql('RENAME TABLE '.$db->prefix.'faqs TO '.$db->prefix.'faq');
+                $db->sql('RENAME TABLE ' . $db->tableStmt('faqs') . ' TO ' . $db->tableStmt('faq'));
             }
             if ($db->tableExists('faqs') && !$db->countObjects('faqs')) {
                 $db->dropTable('faqs');
@@ -77,7 +77,7 @@ class fix_faq_filedownload_modules extends upgradescript {
                 $db->dropTable('filedownload');
             }
             if (!$db->tableExists('filedownload')) {
-                $db->sql('RENAME TABLE '.$db->prefix.'filedownloads TO '.$db->prefix.'filedownload');
+                $db->sql('RENAME TABLE ' . $db->tableStmt('filedownloads') . ' TO ' . $db->tableStmt('filedownload'));
             }
             if ($db->tableExists('filedownloads') && !$db->countObjects('filedownloads')) {
                 $db->dropTable('filedownloads');

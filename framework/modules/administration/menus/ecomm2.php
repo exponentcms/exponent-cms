@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -29,7 +29,7 @@ if (!$user->isAdmin()) {
     $viewregperms = $db->selectValue(
         'userpermission',
         'uid',
-        "uid='" . $user->id . "' AND module=='eventregistration' AND permission!='view_registrants'"
+        "uid=" . $user->id . " AND module=='eventregistration' AND permission!='view_registrants'"
     );
     if (!$viewregperms) {
         $groups = $user->getGroupMemberships();
@@ -38,7 +38,7 @@ if (!$user->isAdmin()) {
                 $viewregperms = $db->selectValue(
                     'grouppermission',
                     'gid',
-                    "gid='" . $group->id . "' AND module=='eventregistration' AND permission!='view_registrants'"
+                    "gid=" . $group->id . " AND module=='eventregistration' AND permission!='view_registrants'"
                 );
             } else {
                 break;
@@ -49,11 +49,11 @@ if (!$user->isAdmin()) {
         return false;
 }
 
-if (!$db->selectValue('modstate', 'active', 'module="eventregistration"'))
+if (!$db->selectValue('modstate', 'active', 'module=\'eventregistration\''))
     return false;
 
 $ev = new eventregistration();
-$allevents = $ev->find('all', 'product_type="eventregistration" && active_type=0');
+$allevents = $ev->find('all', 'product_type=\'eventregistration\' AND active_type=0');
 $events = array();
 foreach ($allevents as $event) {
     if ($event->eventenddate > time()) {

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,19 +28,21 @@ if ($db->havedb) {
 
 $config = array(
     'db_engine' => 'mysqli',
+    'db_encoding' => 'utf8',
+    'db_storage_engine' => 'MYISAM',
     'db_host' => 'localhost',
     'db_port' => '3306',
     'db_name' => '',
+    'db_schema' => '',
     'db_user' => '',
     'db_pass' => '',
-    'db_table_prefix' => 'exponent',
-    'DB_ENCODING' => 'utf8'
+    'db_table_prefix' => 'exponent'
 );
 
 ?>
 <script type="text/javascript">
     function hideAllOptions() {
-        var allEngines = new Array("mysql");
+        var allEngines = new Array("mysqli","sqlsvr");
         var optionObj;
         for (var option in allEngines) {
             optionObj = document.getElementById(allEngines[option] + "_options");
@@ -75,15 +77,16 @@ $config = array(
         </select>
         <div class="control_help">
             <?php echo gt(
-                'Select which database server software package your web server is running.  If the software is not listed, it is not supported by Exponent.'
+                'Select which database server software package your web server is running.  If the Database Type is not listed, it is not supported by Exponent.'
             ); ?>
             <br/><br/>
             <?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
         </div>
     </div>
-    <div class="control" id="mysql_options">
+    <div id="mysqli_options" <?php if ($config['db_engine'] !== 'mysqli') { echo "style=\"display:none;\""; } ?>>
+    <div class="control">
         <span class="label"><?php echo gt('Database Encoding'); ?>: </span>
-        <select class="form-control" name="sc[DB_ENCODING]" value="<?php echo $config['DB_ENCODING']; ?>">
+        <select class="form-control" name="sc[DB_ENCODING]" value="<?php echo $config['db_encoding']; ?>">
             <?PHP
             foreach (expSettings::dropdownData("DB_ENCODING") as $key => $value) {
                 echo '<option value="' . $key . '">' . $value . '</option>';
@@ -98,7 +101,7 @@ $config = array(
     </div>
     <div class="control">
         <span class="label"><?php echo gt('Database Storage Engine'); ?>: </span>
-        <select class="form-control" name="sc[DB_STORAGE_ENGINE]" value="<?php echo $config['DB_STORAGE_ENGINE']; ?>">
+        <select class="form-control" name="sc[DB_STORAGE_ENGINE]" value="<?php echo $config['db_storage_engine']; ?>">
             <?PHP
             foreach (expSettings::dropdownData("DB_STORAGE_ENGINE") as $key => $value) {
                 echo '<option value="' . $key . '">' . $value . '</option>';
@@ -110,6 +113,7 @@ $config = array(
             <br/><br/>
             <?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
         </div>
+    </div>
     </div>
     <div class="control">
         <span class="label"><?php echo gt('Address'); ?>: </span>
@@ -149,6 +153,17 @@ $config = array(
         <input class="text form-control" type="text" name="sc[db_name]" value="<?php echo $config['db_name']; ?>"
                required=1/>
     </div>
+    <div id="sqlsvr_options" <?php if ($config['db_engine'] !== 'sqlsvr') { echo "style=\"display:none;\""; } ?>>
+    <div class="control">
+        <span class="label"><?php echo gt('Database Schema'); ?>: </span>
+        <input class="text form-control" type="text" name="sc[db_schema]" value="<?php echo $config['db_schema']; ?>"/>
+        <div class="control_help">
+            <?php echo gt('Enter the Schema. The default is \'dbo\'.'); ?>
+            <br/><br/>
+            <?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
+        </div>
+    </div>
+    </div>
     <div class="control">
         <span class="label"><?php echo gt('Username'); ?>: </span>
         <input class="text form-control" type="text" name="sc[db_user]" value="<?php echo $config['db_user']; ?>"
@@ -156,7 +171,7 @@ $config = array(
 
         <div class="control_help">
             <?php echo gt(
-                'All database server software supported by Exponent require some sort of authentication.  Enter the name of the user account to use for logging into the database server.'
+                'All database server software supported by Exponent requires some sort of authentication.  Enter the name of the user account to use for logging into the database server.'
             ); ?>
             <br/><br/>
             <?php echo gt('Make sure that this user has the proper database user privileges.'); ?>  (<a href=""

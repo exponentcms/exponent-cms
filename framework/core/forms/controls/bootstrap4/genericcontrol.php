@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -65,7 +65,7 @@ class genericcontrol extends formcontrol {
         $disabled = $this->disabled == true ? "disabled" : "";
         if ($this->type != 'hidden') {
             $class = empty($this->class) ? '' : ' '.$this->class;
-            $html = '<div' . $divID . ' class="' . $this->type.'-control control ' . ($this->horizontal ? 'row ' : '') . 'form-group ' . $class . '" ' . $disabled;
+            $html = '<div' . $divID . ' class="' . $this->type . '-control control ' . ($this->horizontal ? 'row ' : '') . 'form-group ' . $class . '" ' . $disabled;
             $html .= (!empty($this->required)) ? ' required="required">' : '>';
       		//$html .= "<label>";
             if($this->required) {

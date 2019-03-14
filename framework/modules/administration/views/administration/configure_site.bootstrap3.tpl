@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2018 OIC Group, Inc.
+ * Copyright (c) 2004-2019 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -490,6 +490,7 @@
                     {group label="Minify Debugging Settings"|gettext}
                         {control type="checkbox" postfalse=1 name="sc[MINIFY_ERROR_LOGGER]" label="Enable logging of minify error messages to FirePHP?"|gettext checked=$smarty.const.MINIFY_ERROR_LOGGER value=1}
                         {control type="checkbox" postfalse=1 name="sc[MINIFY_INLINE_CSS]" label="Minify inline css styles?"|gettext checked=$smarty.const.MINIFY_INLINE_CSS value=1}
+                        {control type="checkbox" postfalse=1 name="sc[MINIFY_USE_JSMIN]" label="Minify inline css styles using JSMIN?"|gettext checked=$smarty.const.MINIFY_USE_JSMIN value=1}
                         {control type="checkbox" postfalse=1 name="sc[MINIFY_LESS]" label="Minify .less compiled style-sheets?"|gettext checked=$smarty.const.MINIFY_LESS value=1}
                         {control type="checkbox" postfalse=1 name="sc[MINIFY_LINKED_CSS]" label="Minify and Combine linked css style-sheets?"|gettext checked=$smarty.const.MINIFY_LINKED_CSS value=1}
                         {control type="checkbox" postfalse=1 name="sc[MINIFY_INLINE_JS]" label="Minify inline javascript?"|gettext checked=$smarty.const.MINIFY_INLINE_JS value=1}

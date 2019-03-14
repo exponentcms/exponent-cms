@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -65,7 +65,7 @@ class order extends expRecord {
                 //FIXME we could auto-associate these with has_many
                 $this->shippingmethods[$smid] = new shippingmethod($smid);
                 //FIXME we could auto-associate these with get_assoc_for
-                $this->shippingmethods[$smid]->orderitem = $this->getOrderitemsByShippingmethod($smid);
+//                $this->shippingmethods[$smid]->orderitem = $this->getOrderitemsByShippingmethod($smid);
 
 //                $requiresShipping = false;
 //                foreach ($this->shippingmethods[$smid]->orderitem as $oi) {
@@ -154,7 +154,7 @@ class order extends expRecord {
             // grab the origional referrer from the session table so that we can transfer it into the cart where it will be used for reporting purposes
             // sessions are temporary so we can't report on the referrer in the session table itsef because it may not be there
             // and we can't just get the referrer ar this point becaues the user likely navigated the site a bit and we want the origional referring site
-            $orig_referrer = $db->selectValue('sessionticket', 'referrer', "`ticket`='" . $ticket . "'");
+            $orig_referrer = $db->selectValue('sessionticket', 'referrer', "ticket='" . $ticket . "'");
 
             //see if we have a LIVE and ACTIVE session w/ cart and grab it if so
             $sessioncart = $order->find('first', "invoice_id='' AND sessionticket_ticket='" . $ticket . "'");

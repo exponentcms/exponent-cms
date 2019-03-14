@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -60,7 +60,7 @@ class ealertController extends expController {
 
         // find this E-Alert in the database
         $src = empty($this->params['src']) ? null : expString::escape($this->params['src']);
-        $ealert = $db->selectObject('expeAlerts', 'module="'.$this->params['orig_controller'].'" AND src="'.$src.'"');
+        $ealert = $db->selectObject('expeAlerts', 'module=\''.$this->params['orig_controller'].'\' AND src=\''.$src.'\'');
         if (!empty($ealert->autosend_ealerts)) {
             redirect_to(array('controller'=>'ealert','action'=>'send_auto','model'=>$this->params['model'],'id'=>$this->params['id'], 'src'=>$this->params['src']));
         }
@@ -111,7 +111,7 @@ class ealertController extends expController {
 
         // find this E-Alert in the database
         $src = empty($this->params['src']) ? null : expString::escape($this->params['src']);
-        $ealert = $db->selectObject('expeAlerts', 'module="'.$this->params['model'].'" AND src="'.$src.'"');
+        $ealert = $db->selectObject('expeAlerts', 'module=\''.$this->params['model'].'\' AND src=\''.$src.'\'');
 
          // find the content for the E-Alerts
         $model = $this->params['model'];
@@ -150,8 +150,8 @@ class ealertController extends expController {
 
         if (!empty($message)) {
             // look up the subscribers
-            $sql = 'SELECT s.* FROM ' . $db->prefix . 'user_subscriptions es ';
-            $sql .= 'LEFT JOIN ' . $db->prefix . 'user s ON s.id=es.user_id WHERE es.expeAlerts_id=' . $this->params['ealert_id'];
+            $sql = 'SELECT s.* FROM ' . $db->tableStmt('user_subscriptions') . ' es ';
+            $sql .= 'LEFT JOIN ' . $db->tableStmt('user') . ' s ON s.id=es.user_id WHERE es.expeAlerts_id=' . $this->params['ealert_id'];
             $subscribers = $db->selectObjectsBySql($sql);
 
             $count = 1;

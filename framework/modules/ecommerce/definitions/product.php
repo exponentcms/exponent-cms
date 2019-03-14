@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,7 +26,7 @@ return array(
 		DB_PRIMARY=>true,
 		DB_INCREMENT=>true),
     'poster'=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+        DB_FIELD_TYPE=>DB_DEF_ID),
     'created_at'=>array(
         DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
     'editor'=>array(
@@ -34,7 +34,7 @@ return array(
     'edited_at'=>array(
         DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
     "previous_id"=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+        DB_FIELD_TYPE=>DB_DEF_ID),
 	"title"=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100,
@@ -116,7 +116,7 @@ return array(
 		DB_INDEX=>10,
 		DB_FULLTEXT=>true),  //fixme is this needed?
     "product_status_id"=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+        DB_FIELD_TYPE=>DB_DEF_ID),
     "active_type"=>array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	"no_shipping"=>array(
@@ -200,7 +200,7 @@ return array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>10000),
     "parent_id"=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER,
+        DB_FIELD_TYPE=>DB_DEF_ID,
         DB_INDEX=>10),
     "child_rank"=>array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER),

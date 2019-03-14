@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,14 +24,14 @@
 class passthru extends billingcalculator {
 
     function name() {
-        return gt("Passthru Payment");
+        return gt("Pass Thru Payment");
     }
 
 //    public $use_title = 'Pass-Thru';
     public $payment_type = 'Passthru';
 
     function description() {
-        return gt("Enabling this payment option will allow you or your customers to bypass payment processing at the cart and allow payment methods after the order is processed, such as cash, check, pay in store, or manually process via credit card.") . "<br>** " . gt("This is a restricted payment option and only accessible by site admins.");
+        return gt("Enabling this payment option will allow an Admin to bypass payment processing at the cart and allow payment methods after the order is processed, such as cash, check, pay in store, or manually process via credit card.") . "<br>** " . gt("This is a restricted payment option and only accessible by site admins.");
     }
 
     function hasConfig() {
@@ -107,19 +107,29 @@ class passthru extends billingcalculator {
     //Should return html to display user data.
     function userView($billingmethod) {
         $opts = expUnserialize($billingmethod->billing_options);
-           //eDebug($opts,true);
-        if (isset($opts->result)) return '';
-        $ot = new order_type($opts->order_type);
-        $os = new order_status($opts->order_status);
-        if (!empty($opts->sales_rep_1_id)) $sr1 = new sales_rep($opts->sales_rep_1_id);
-        if (!empty($opts->sales_rep_2_id)) $sr2 = new sales_rep($opts->sales_rep_2_id);
-        if (!empty($opts->sales_rep_3_id)) $sr3 = new sales_rep($opts->sales_rep_3_id);
-        $msg = gt('Order Type') . ': ' . $ot->title;
-        $msg .= '<br>' . gt('Order Status') . ': ' . $os->title;
-        if (!empty($sr1)) $msg .= '<br>' . gt('Sales Rep 1') . ': ' . $sr1->initials;
-        if (!empty($sr2)) $msg .= '<br>' . gt('Sales Rep 2') . ': ' . $sr2->initials;
-        if (!empty($sr3)) $msg .= '<br>' . gt('Sales Rep 3') . ': ' . $sr3->initials;
-        //$order
+        if (isset($opts->result))
+            return '';
+        $msg = '';
+        if (!empty($opts->order_type))
+            $ot = new order_type($opts->order_type);
+        if (!empty($ot->title))
+            $msg = gt('Order Type') . ': ' . $ot->title;
+        if (!empty($opts->order_status))
+            $os = new order_status($opts->order_status);
+        if (!empty($os->title))
+            $msg .= '<br>' . gt('Order Status') . ': ' . $os->title;
+        if (!empty($opts->sales_rep_1_id))
+            $sr1 = new sales_rep($opts->sales_rep_1_id);
+        if (!empty($sr1))
+            $msg .= '<br>' . gt('Sales Rep 1') . ': ' . $sr1->initials;
+        if (!empty($opts->sales_rep_2_id))
+            $sr2 = new sales_rep($opts->sales_rep_2_id);
+        if (!empty($sr2))
+            $msg .= '<br>' . gt('Sales Rep 2') . ': ' . $sr2->initials;
+        if (!empty($opts->sales_rep_3_id))
+            $sr3 = new sales_rep($opts->sales_rep_3_id);
+        if (!empty($sr3))
+            $msg .= '<br>' . gt('Sales Rep 3') . ': ' . $sr3->initials;
         return $msg;
     }
 
@@ -129,17 +139,23 @@ class passthru extends billingcalculator {
         $obj = new stdClass();
         $obj->order_type = $params['order_type'];
         $obj->order_status = $params['order_status'];
-        if (isset($params['sales_rep_1_id'])) $obj->sales_rep_1_id = $params['sales_rep_1_id'];
-        if (isset($params['sales_rep_2_id'])) $obj->sales_rep_2_id = $params['sales_rep_2_id'];
-        if (isset($params['sales_rep_2_id'])) $obj->sales_rep_3_id = $params['sales_rep_3_id'];
+        if (isset($params['sales_rep_1_id']))
+            $obj->sales_rep_1_id = $params['sales_rep_1_id'];
+        if (isset($params['sales_rep_2_id']))
+            $obj->sales_rep_2_id = $params['sales_rep_2_id'];
+        if (isset($params['sales_rep_2_id']))
+            $obj->sales_rep_3_id = $params['sales_rep_3_id'];
         return $obj;
     }
 
     function preprocess($billingmethod, $opts, $params, $order) {
         $billingmethod->update(array('billing_options' => serialize($opts)));
-        if (isset($params['sales_rep_1_id'])) $order->sales_rep_1_id = $params['sales_rep_1_id'];
-        if (isset($params['sales_rep_2_id'])) $order->sales_rep_2_id = $params['sales_rep_2_id'];
-        if (isset($params['sales_rep_3_id'])) $order->sales_rep_3_id = $params['sales_rep_3_id'];
+        if (isset($params['sales_rep_1_id']))
+            $order->sales_rep_1_id = $params['sales_rep_1_id'];
+        if (isset($params['sales_rep_2_id']))
+            $order->sales_rep_2_id = $params['sales_rep_2_id'];
+        if (isset($params['sales_rep_3_id']))
+            $order->sales_rep_3_id = $params['sales_rep_3_id'];
         $order->save();
         /* eDebug($billingmethod);
          eDebug($opts);
@@ -159,7 +175,7 @@ class passthru extends billingcalculator {
         $opts->result->CVV2MATCH = 'Pending';
         $opts->result->traction_type = 'Pending';
         $trax_state = "authorization pending";
-        $trax_state->payment_status = $trax_state;
+        $opts->result->payment_status = $trax_state;
 
         //$opts2->billing_info = $opts;
 //        $opts2 = new stdClass();
@@ -178,24 +194,29 @@ class passthru extends billingcalculator {
 
         $ot = new order_type($order->order_type_id);
         if ($ot->creates_new_user == true) {
+            //fixme do we always want to create a new user?
+            //use selected billing address for new user info
             $addy = new address($order->billingmethod[0]->addresses_id);
             $newUser = new user();
-            $newUser->username = $addy->email . time(); //make a unique username
-//            $password = md5(time() . mt_rand(50, 1000)); //generate random password
+            $newUser->username = $addy->email . time(); //make a unique username //fixme do we always want to do this?
             $password = expValidator::generatePassword(); //generate random password
             $newUser->setPassword($password, $password);
             $newUser->email = $addy->email;
             $newUser->firstname = $addy->firstname;
             $newUser->lastname = $addy->lastname;
             $newUser->is_system_user = false;
+            $newUser->created_on = $newUser->last_login = time();
             $newUser->save(true);
             $newUser->refresh();
+
+            //save new billing address to new user
             $addy->user_id = $newUser->id;
             $addy->is_default = true;
             $addy->save();
             $order->user_id = $newUser->id;
             $order->save();
 
+            //check selected shipping address to see if it's different from billing address, if so also move it to new user
             if ($order->orderitem[0]->shippingmethod->addresses_id != $addy->id) {
                 $addy = new address($order->orderitem[0]->shippingmethod->addresses_id);
                 $addy->user_id = $newUser->id;
@@ -203,7 +224,7 @@ class passthru extends billingcalculator {
                 $addy->save();
             }
 
-            //make sure current user is good to go
+            //revert current admin user to original addresses
             $defAddy = $addy->find('first', 'user_id=' . $user->id);
             $obj = new stdClass();
             $obj->id = $defAddy->id;

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2018 OIC Group, Inc.
+# Copyright (c) 2004-2019 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -89,7 +89,7 @@ function smarty_function_module_style($params,&$smarty) {
 				break;
 			case 'hiddenxs':
 				if (bs4())
-                    $class .= 'd-none';
+                    $class .= 'd-none d-sm-block';
                 elseif (bs3())
 					$class .= 'hidden-xs';
 				elseif (bs2())
@@ -97,7 +97,7 @@ function smarty_function_module_style($params,&$smarty) {
 				break;
 			case 'hiddensm':
 				if (bs4())
-                    $class .= 'd-sm-none';
+                    $class .= 'd-none d-md-block';
                 elseif (bs3())
 					$class .= 'hidden-sm';
 				elseif (bs2())
@@ -105,7 +105,7 @@ function smarty_function_module_style($params,&$smarty) {
 				break;
 			case 'hiddenmd':
                 if (bs4())
-                    $class .= 'd-md-none';
+                    $class .= 'd-none d-lg-block';
                 elseif (bs3())
 					$class .= 'hidden-md';
 				elseif (bs2())
@@ -113,7 +113,7 @@ function smarty_function_module_style($params,&$smarty) {
 				break;
 			case 'hiddenlg':
                 if (bs4())
-                    $class .= 'd-lg-none';
+                    $class .= 'd-none d-xl-block';
                 elseif (bs3())
 					$class .= 'hidden-lg';
 				elseif (bs2())

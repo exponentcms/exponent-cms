@@ -2,7 +2,7 @@
 
 ----------
 
-Copyright (c) 2004-2018 OIC Group, Inc.
+Copyright (c) 2004-2019 OIC Group, Inc.
 
 For installation information, please read the [INSTALLATION.md](INSTALLATION.md) file.
 
