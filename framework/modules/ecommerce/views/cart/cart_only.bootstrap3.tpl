@@ -41,7 +41,7 @@
                                     <input class="form-control" type="text" size="2" name="quantity" value="{$item->quantity}">
                                     <input type="hidden" name="id" value="{$item->id}">
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" title="{'Update quantities'|gettext}"><i class="fa fa-refresh fa-lg text-success" aria-hidden="true"></i></button>
+                                        <button type="submit" class="btn btn-default" title="{'Update quantities'|gettext}"><i class="fa fa-refresh fa-lg text-success" aria-hidden="true"></i></button>
                                         <a href="{link action=removeItem id=$item->id}" class="btn btn-default" title="{'Remove'|gettext} {$item->product->title} {'from cart'|gettext}" onclick="return confirm('{'Are you sure you want to remove this item?'|gettext}');" style="display:inline-block;margin: 0 0 0 -3px;">
                                             <i class="fa fa-times-circle fa-lg text-danger" aria-hidden="true"></i>
                                         </a>
