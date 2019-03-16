@@ -10,6 +10,13 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ----------
 
+Version 2.5.1
+-------------
+### Address issues in v2.5.0 and Prepare for v3.0.0
+ - compatible with PHP 7.1.x, 7.2.x, and 7.3.x
+   - removed support for PHP 5.6.x, and 7.0.x
+ - robusts  support for an MS SQL Server database
+
 Version 2.5.0
 -------------
 ### Address issues in v2.4.3 and Prepare for v3.0.0
