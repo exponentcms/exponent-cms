@@ -99,6 +99,7 @@
 {if $control == ''}{$control = "'playpause','progress','current','duration','tracks','volume','fullscreen'"}{/if}
 
 {script unique="mediaelement-src" jquery="jquery.colorbox" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
+
 {/script}
 
 {script unique="mediaplayer-`$name`"}

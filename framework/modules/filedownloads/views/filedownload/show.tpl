@@ -170,6 +170,7 @@
 
 {if $config.show_player}
     {script unique="mediaelement-src" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
+
     {/script}
 
     {script unique="filedownload-`$id`"}
