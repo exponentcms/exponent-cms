@@ -82,10 +82,10 @@ class checkboxcontrol extends formcontrol {
             if (empty($label)) {
                 $for = '';
             }
-            $html = '<div id="' . $divID . '" class="checkbox control form-group form-check';
+            $html = '<div id="' . $divID . '"' . (($this->horizontal) ? ' style="width:100%;"' : '') . ' class="checkbox control form-group form-check';
             $html .= (!empty($this->class)) ? ' ' . $this->class : '';
             $html .= (!empty($this->required)) ? ' required">' : '">';
-            $html .= ($this->horizontal) ? '<div class="col-sm-offset-2 col-sm-10">' : '';
+            $html .= ($this->horizontal) ? '<div class="offset-sm-2 col-sm-10">' : '';
 
 //            $html .= "<div class=\"checkbox\"><label class=\"control-label\">".$label;
             $html .= "<label" . $for . " class=\"form-check-label label\">";

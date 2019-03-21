@@ -64,7 +64,7 @@ class radiogroupcontrol extends formcontrol {
 	function controlToHTML($name, $label) {
         //eDebug($this->items);
         $html = '';
-        $html .= ($this->horizontal) ? '<div class="col-sm-10">' : '';
+        $html .= ($this->horizontal) ? '<div class="offset-sm-2 col-sm-10">' : '';
 		foreach ($this->items as $rvalue=>$rlabel) {  //FJD
 			$radio = null;
 

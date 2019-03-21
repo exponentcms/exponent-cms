@@ -783,7 +783,7 @@ class expRecord {
                             }
                         } elseif (is_numeric($item)) {
                             $obj->$refname     = $item;
-                            $obj->subtype      = $subtype;
+//                            $obj->subtype      = $subtype; //note this is NOT a subtype, but the array index
                             $obj->content_id   = $this->id;
                             $obj->content_type = $this->classname;
                             if ($type === 'expFile' || $type === 'expCats') $obj->rank = $subtype + 1;

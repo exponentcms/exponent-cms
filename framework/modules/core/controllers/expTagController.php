@@ -118,6 +118,8 @@ class expTagController extends expController {
                 $attatchedat = $page->records[$key]->findWhereAttachedTo($contenttype);
                 if (!empty($attatchedat)) {
                     $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
+                    if (!isset($page->records[$key]->attached))
+                        $page->records[$key]->attached = array();
                     $page->records[$key]->attached[$contenttype] = $attatchedat;
                     //FIXME here is a hack to get the faq to be listed
                     if ($contenttype == 'faq' && !empty($page->records[$key]->attached[$contenttype][0]->question)) {

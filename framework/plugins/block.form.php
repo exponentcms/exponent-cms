@@ -139,18 +139,18 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             $(element).closest('form').addClass('was-validated');
                             // move backward to label and set to invalid
                             $(element).parent().find('label').removeClass('valid-feedback').addClass('invalid-feedback');
-	 						$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
-	 						$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
-							$(element).closest('.form-group').append('<i class=\"fa fa-exclamation fa-lg invalid-feedback\"></i>');
+//	 						$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
+//	 						$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
+//							$(element).closest('.form-group').append('<i class=\"fas fa-exclamation fa-lg invalid-feedback\"></i>');
                         },
                         unhighlight: function(element, errorClass, validClass) {
                             // mark form as validated
                             $(element).closest('form').addClass('was-validated');
                             // move backward to label and set to valid
                             $(element).parent().find('label').removeClass('invalid-feedback').addClass('valid-feedback');
-							$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
-							$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
-							$(element).closest('.form-group').append('<i class=\"fa fa-check fa-lg valid-feedback\"></i>');
+//							$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
+//							$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
+//							$(element).closest('.form-group').append('<i class=\"fas fa-check fa-lg valid-feedback\"></i>');
                         },
                         errorElement: 'small',
                         errorClass: 'form-text invalid-feedback',
@@ -235,18 +235,18 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             $(element).closest('form').addClass('was-validated');
                             // move backward to label and set to invalid
                             $(element).parent().find('label').removeClass('valid-feedback').addClass('invalid-feedback');
-	 						$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
-	 						$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
-							$(element).closest('.form-group').append('<i class=\"fa fa-exclamation fa-lg invalid-feedback\"></i>');
+//	 						$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
+//	 						$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
+//							$(element).closest('.form-group').append('<i class=\"fas fa-exclamation fa-lg invalid-feedback\"></i>');
                         },
                         unhighlight: function(element, errorClass, validClass) {
                             // mark form as validated
                             $(element).closest('form').addClass('was-validated');
                             // move backward to label and set to valid
                             $(element).parent().find('label').removeClass('invalid-feedback').addClass('valid-feedback');
-							$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
-							$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
-							$(element).closest('.form-group').append('<i class=\"fa fa-check fa-lg valid-feedback\"></i>');
+//							$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
+//							$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
+//							$(element).closest('.form-group').append('<i class=\"fas fa-check fa-lg valid-feedback\"></i>');
                         },
                         errorElement: 'small',
                         errorClass: 'form-text invalid-feedback',

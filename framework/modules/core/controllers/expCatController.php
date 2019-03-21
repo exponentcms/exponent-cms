@@ -108,6 +108,8 @@ class expCatController extends expController {
                 $attatchedat = $cats->records[$key]->findWhereAttachedTo($contenttype);
                 if (!empty($attatchedat)) {
                     $cats->records[$key]->attachedcount = @$cats->records[$key]->attachedcount + count($attatchedat);
+                    if (!isset($cats->records[$key]->attached))
+                        $cats->records[$key]->attached = array();
                     $cats->records[$key]->attached[$contenttype] = $attatchedat;
                     //FIXME here is a hack to get the faq to be listed
                     if ($contenttype == 'faq' && !empty($cats->records[$key]->attached[$contenttype][0]->question)) {
