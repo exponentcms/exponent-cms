@@ -24,6 +24,12 @@
 	position: relative;
 }
 
+@media (max-width: 768px) {
+    .cart-breadcrumb a {
+    	padding-left: 54px;
+    }
+}
+
 /*since the first link does not have a triangle before it we can reduce the left padding to make it look consistent with other links*/
 .cart-breadcrumb a:first-child {
 	padding-left: 46px;
