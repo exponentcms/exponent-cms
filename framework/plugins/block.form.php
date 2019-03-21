@@ -139,8 +139,8 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             $(element).closest('form').addClass('was-validated');
                             // move backward to label and set to invalid
                             $(element).parent().find('label').removeClass('valid-feedback').addClass('invalid-feedback');
-	 						$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
-	 						$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
+//	 						$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
+//	 						$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
 //							$(element).closest('.form-group').append('<i class=\"fas fa-exclamation fa-lg invalid-feedback\"></i>');
                         },
                         unhighlight: function(element, errorClass, validClass) {
@@ -148,8 +148,8 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             $(element).closest('form').addClass('was-validated');
                             // move backward to label and set to valid
                             $(element).parent().find('label').removeClass('invalid-feedback').addClass('valid-feedback');
-							$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
-							$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
+//							$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
+//							$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
 //							$(element).closest('.form-group').append('<i class=\"fas fa-check fa-lg valid-feedback\"></i>');
                         },
                         errorElement: 'small',
@@ -183,12 +183,12 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                         highlight: function(element, errorClass, validClass) {
                             $(element).closest('.form-group').removeClass('has-success').addClass('has-error').addClass('has-feedback');
                             $(element).closest('.form-group').find('i.fa.form-control-feedback').remove();
-//                            $(element).closest('.form-group').append('<i class=\"fa fa-exclamation fa-lg form-control-feedback\"></i>');
+                            $(element).closest('.form-group').append('<i class=\"fa fa-exclamation fa-lg form-control-feedback\"></i>');
                         },
                         unhighlight: function(element, errorClass, validClass) {
                             $(element).closest('.form-group').removeClass('has-error').addClass('has-success').addClass('has-feedback');
                             $(element).closest('.form-group').find('i.fa.form-control-feedback').remove();
-//                            $(element).closest('.form-group').append('<i class=\"fa fa-check fa-lg form-control-feedback\"></i>');
+                            $(element).closest('.form-group').append('<i class=\"fa fa-check fa-lg form-control-feedback\"></i>');
                         },
                         errorElement: 'span',
                         errorClass: 'help-block',
@@ -235,8 +235,8 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             $(element).closest('form').addClass('was-validated');
                             // move backward to label and set to invalid
                             $(element).parent().find('label').removeClass('valid-feedback').addClass('invalid-feedback');
-	 						$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
-	 						$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
+//	 						$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
+//	 						$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
 //							$(element).closest('.form-group').append('<i class=\"fas fa-exclamation fa-lg invalid-feedback\"></i>');
                         },
                         unhighlight: function(element, errorClass, validClass) {
@@ -244,8 +244,8 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             $(element).closest('form').addClass('was-validated');
                             // move backward to label and set to valid
                             $(element).parent().find('label').removeClass('invalid-feedback').addClass('valid-feedback');
-							$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
-							$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
+//							$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
+//							$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
 //							$(element).closest('.form-group').append('<i class=\"fas fa-check fa-lg valid-feedback\"></i>');
                         },
                         errorElement: 'small',
@@ -280,12 +280,12 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                         highlight: function(element, errorClass, validClass) {
                             $(element).closest('.form-group').removeClass('has-success').addClass('has-error').addClass('has-feedback');
                             $(element).closest('.form-group').find('i.fa.form-control-feedback').remove();
-//                            $(element).closest('.form-group').append('<i class=\"fa fa-exclamation fa-lg form-control-feedback\"></i>');
+                            $(element).closest('.form-group').append('<i class=\"fa fa-exclamation fa-lg form-control-feedback\"></i>');
                         },
                         unhighlight: function(element, errorClass, validClass) {
                             $(element).closest('.form-group').removeClass('has-error').addClass('has-success').addClass('has-feedback');
                             $(element).closest('.form-group').find('i.fa.form-control-feedback').remove();
-//                            $(element).closest('.form-group').append('<i class=\"fa fa-check fa-lg form-control-feedback\"></i>');
+                            $(element).closest('.form-group').append('<i class=\"fa fa-check fa-lg form-control-feedback\"></i>');
                         },
                         errorElement: 'span',
                         errorClass: 'help-block',
