@@ -26,11 +26,10 @@ return array(
         DB_PRIMARY=>true,
         DB_INCREMENT=>true),
     'event_id'=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER,
+        DB_FIELD_TYPE=>DB_DEF_ID,
         DB_INDEX=>10),
     'connector_id'=>array(
-        DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>255,
+        DB_FIELD_TYPE=>DB_DEF_ID,
         DB_INDEX=>10),
     'orderitem_id'=>array(
         DB_FIELD_TYPE=>DB_DEF_ID),
