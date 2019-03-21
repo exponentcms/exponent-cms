@@ -102,6 +102,7 @@ class expHTMLEditorController extends expController
         $obj->stylesset = stripSlashes($this->params['stylesset']);
         $obj->formattags = stripSlashes($this->params['formattags']);
         $obj->fontnames = stripSlashes($this->params['fontnames']);
+        $obj->additionalconfig = stripSlashes($this->params['additionalconfig']);
         if (empty($this->params['id'])) {
             $this->params['id'] = $db->insertObject($obj, 'htmleditor_' . $this->params['editor']);
         } else {
@@ -123,6 +124,7 @@ class expHTMLEditorController extends expController
         $tool->stylesset = !empty($tool->stylesset) ? @stripSlashes($tool->stylesset) : '';
         $tool->formattags = !empty($tool->formattags) ? @stripSlashes($tool->formattags) : '';
         $tool->fontnames = !empty($tool->fontnames) ? @stripSlashes($tool->fontnames) : '';
+        $tool->additionalconfig = !empty($tool->additionalconfig) ? @stripSlashes($tool->additionalconfig) : '';
         $skins_dir = opendir(BASE . 'external/editors/' . $this->params['editor'] . '/skins');
         $skins = array();
         while (($skin = readdir($skins_dir)) !== false) {
