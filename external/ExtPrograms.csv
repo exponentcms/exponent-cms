@@ -32,7 +32,7 @@ Bootswatch3,3.4.1,bootswatch.com/,3.4.1,change 1st line variables.less comment t
 Bootswatch4,4.3.1,bootswatch.com/,4.3.1,change 1st line variables.scss comment to output to .css file
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome4,4.7.0,fortawesome.github.com/Font-Awesome,4.7.0,
-Font-Awesome5,5.7.2,fontawesome.com,5.7.1,add import all 'fonts' sheets to main sheet
+Font-Awesome5,5.8.0,fontawesome.com,5.8.0,add import all 'fonts' sheets to main sheet
 Adminer,4.7.1exp,www.adminer.org,4.7.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.2,github.com/LPology/Simple-Ajax-Uploader,2.6.2,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css/,8.0.1,auto included in bootstrap 3
@@ -44,7 +44,7 @@ Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 CKEditor,4.11.3,ckeditor.com,4.11.3/12.0.0,"add fieldinsert (exp), tableresize, sourcedialog, image2 fileupload & imageupload widgets & kama skin"
-TinyMCE,4.9.3,tinymce.com,4.9.3/5.0.2,"add fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
+TinyMCE,4.9.4,tinymce.com,4.9.4/5.0.2,"add fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 PLUpload,2.3.6,github.com/moxiecode/plupload,2.3.6/3.1.2,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 elFinder,2.1.48,elfinder.org,2.1.48,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
@@ -93,7 +93,7 @@ Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
 dompdf,0.8.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,0.8.3,"optional, patched to display our images and not break on bad tables"
-mPDF,7.0.2/6.1.4/5.7.4a,github.com/mpdf/mpdf,7.1.9,optional
+mPDF,7.0.2/6.1.4/5.7.4a,github.com/mpdf/mpdf,7.1.9/8.0.0,optional
 log,1.0.2,github.com/php-fig/log,1.1.0,"optional, required by mPDF v7"
 DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.8.1,"optional, required by mPDF v7"
 HTML2PDF,5.0.1/4.6.1,github.com/spipu/html2pdf,5.2.1,"optional, we tweak tcpdfConfig.php"
