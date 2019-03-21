@@ -71,15 +71,15 @@ class listbuildercontrol extends formcontrol {
 			$html .= "</td>";
 			$html .= '<td valign="middle" width="10" style="border:none;">';
 			if($process == "copy") {
-				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;,&quot;copy&quot;); return false' ><i class='fas fa-fw fa-arrow-right'></i><i class='fas fa-fw fa-arrow-right'></i></button>";
+				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;,&quot;copy&quot;); return false' ><i class='fas fa-fw fa-arrow-right' style='display:inline;'></i>&nbsp;<i class='fas fa-fw fa-arrow-right' style='display:inline;'></i></button>";
 			} else {
-				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;); return false' ><i class='fas fa-fw fa-arrow-right'></i><i class='fas fa-fw fa-arrow-right'></i></button>";
+				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;); return false' ><i class='fas fa-fw fa-arrow-right' style='display:inline;'></i>&nbsp;<i class='fas fa-fw fa-arrow-right' style='display:inline;'></i></button>";
 			}
 			$html .= "<br />";
 			if($process == "copy") {
-				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;,&quot;copy&quot); return false;' ><i class='fas fa-fw fa-arrow-left'></i><i class='fas fa-fw fa-arrow-left'></i></button>";
+				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;,&quot;copy&quot); return false;' ><i class='fas fa-fw fa-arrow-left' style='display:inline;'></i>&nbsp;<i class='fas fa-fw fa-arrow-left' style='display:inline;'></i></button>";
 			} else {
-				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;); return false;' ><i class='fas fa-fw fa-arrow-left'></i><i class='fas fa-fw fa-arrow-left'></i></button>";
+				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;); return false;' ><i class='fas fa-fw fa-arrow-left' style='display:inline;'></i>&nbsp;<i class='fas fa-fw fa-arrow-left' style='display:inline;'></i></button>";
 			}
 			$html .= "</td>";
 			$html .= "<td width='40%' valign='top' style='border:none;'><small class=\"form-text text-muted\">".gt('Selected')."</small><select " . ((bs3()||bs4()) ? "class=\"form-control\" " : "") . "id='dest_$name' size='".$this->size."'>";
