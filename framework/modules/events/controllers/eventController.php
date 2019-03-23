@@ -894,29 +894,25 @@ class eventController extends expController {
             if ($this->config['enable_ical']) {
                 $ed = new eventdate();
                 if (isset($this->params['date_id'])) { // get single specific event only
-//                    $dates = array($db->selectObject("eventdate","id=".$this->params['date_id']));
                     $dates = $ed->find('first', "id=" . $this->params['date_id']);
                     $Filename = "Event-" . $this->params['date_id'];
                 } else {
                     $locsql = $this->aggregateWhereClause();
-
-                    $day = expDateTime::startOfDayTimestamp(time());
-                    if (!empty($this->config['enable_ical']) && isset($this->config['rss_limit']) && ($this->config['rss_limit'] > 0)) {
-                        $rsslimit = " AND date <= " . ($day + ($this->config['rss_limit'] * 86400));
-                    } else {
-                        $rsslimit = "";
-                    }
-
                     if (isset($this->params['time'])) {
-                        $time = (int)($this->params['time']); // get current month's events
-//                        $dates = $db->selectObjects("eventdate",$locsql." AND (date >= ".expDateTime::startOfMonthTimestamp($time)." AND date <= ".expDateTime::endOfMonthTimestamp($time).")");
+                        $time = (int)($this->params['time']); // get requested month's events
                         $dates = $ed->find('all', $locsql . " AND (date >= " . expDateTime::startOfMonthTimestamp($time) . " AND date <= " . expDateTime::endOfMonthTimestamp($time) . ")");
+                    } elseif (isset($this->params['date'])) {
+                        $dates = $ed->find('all', $locsql . " AND date >= " . expDateTime::startOfDayTimestamp($this->params['date']));
                     } else {
-                        $time = date('U', strtotime("midnight -1 month", time())); // previous month also
-//                        $dates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfDayTimestamp($time).$rsslimit);
+                        $day = expDateTime::startOfDayTimestamp(time());
+                        if (!empty($this->config['enable_ical']) && isset($this->config['rss_limit']) && ($this->config['rss_limit'] > 0)) {
+                            $rsslimit = " AND date <= " . ($day + ($this->config['rss_limit'] * 86400));
+                        } else {
+                            $rsslimit = "";
+                        }
+                        $time = date('U', strtotime("midnight -1 month")); // previous month also
                         $dates = $ed->find('all', $locsql . " AND date >= " . expDateTime::startOfDayTimestamp($time) . $rsslimit);
                     }
-                    //			$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
                     $title = $this->config['feed_title'];
                     $Filename = preg_replace('/\s+/', '', $title); // without whitespace
                 }
@@ -961,7 +957,7 @@ class eventController extends expController {
                                 } elseif (($dec == 61) || ($dec < 32) || ($dec > 126)) {
                                     $h2 = floor($dec / 16);
                                     $h1 = floor($dec % 16);
-                                    $c = $escape . $hex["$h2"] . $hex["$h1"];
+                                    $c = $escape . $hex[(string)$h2] . $hex[(string)$h1];
                                     $length += 2;
                                     $addtl_chars += 2;
                                 }
@@ -980,8 +976,7 @@ class eventController extends expController {
                                      * Also, do not start at 0, if there was *no* whitespace in
                                      * the whole line */
                                     if (($i + $addtl_chars) > $whitesp_diff) {
-                                        $output .= substr($cur_conv_line, 0, (strlen($cur_conv_line) -
-                                            $whitesp_diff)) . $linebreak;
+                                        $output .= substr($cur_conv_line, 0, strlen($cur_conv_line) - $whitesp_diff) . $linebreak;
                                         $i = $i - $whitesp_diff + $addtl_chars;
                                     } else {
                                         $output .= $cur_conv_line . $linebreak;
@@ -1021,7 +1016,6 @@ class eventController extends expController {
                 }
                 $msg .= "X-WR-CALNAME:$Filename\n";
 
-//                $items = $this->getEventsForDates($dates);
                 $items = $this->event->getEventsForDates($dates);
 
                 for ($i = 0, $iMax = count($items); $i < $iMax; $i++) {
@@ -1051,7 +1045,7 @@ class eventController extends expController {
                     if (!isset($this->params['style'])) {
                         // it's going to Outlook so remove all formatting from body text
                         $body = quoted_printable_encode($body);
-                    } elseif ($this->params['style'] == "g") {
+                    } elseif ($this->params['style'] === "g") {
                         // It's going to Google (doesn't like quoted-printable, but likes html breaks)
                         $body = str_replace(array("\n"), "<br />", $body);
                     } else {

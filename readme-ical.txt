@@ -7,8 +7,9 @@ Currently this action
 - requires either an sef_url ('title'), 'event_id', or event/calendar module 'src' as a parameter
 - adheres to aggregated/merged calendars
 - passes a single event when an 'event_id' is passed
-- passes all future events from a date 1 month ago, if a calendar module sef_url/src is passed; limited by the module iCal setting
-- passes a "month's" events if passed with a 'time'
+- passes all future events from a date 1 month ago, if a calendar module sef_url/src is passed; limited by the module iCal Maximum days setting
+- optionally passes a "month's" events if passed with a 'time'; events limited to one month
+- optionally passes all forward events if passed with a 'date'; all events occuring after passed date
 - three encoding styles available using the 'style' parameter to better format line-endings
   -- no style = standard ics
   -- style='g' will provide better formatting for display in Google calendar

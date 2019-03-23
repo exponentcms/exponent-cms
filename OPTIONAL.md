@@ -97,7 +97,7 @@ Exponent CMS includes built-in Developer Debugging support, but this feature can
 installing the [Kint](https://github.com/kint-php/kint) PHP library. Simply extract a release into
 the /external folder which creates an subfolder named 'kint'. v3.x is supported if subfolder is
 named 'kint3'. The feature is auto-activated by this installation.
-- v3.1 is the most recent release; v2.2 is the newest 2.x version, but v1.1 is also supported
+- v3.2 is the most recent release; v2.2 is the newest 2.x version, but v1.1 is also supported
 
 ### Alternate .less Compiler
 
