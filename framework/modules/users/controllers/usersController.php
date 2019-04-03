@@ -608,27 +608,52 @@ class usersController extends expController {
         global $db;
 
         $db->delete('passreset_token', 'expires < ' . time());
+        if (empty($this->params['uid']) || empty($this->params['token'])) {
+            flash('error', gt('You are not allowed to perform this action.'));
+            expHistory::back();
+        }
+        $tok = $db->selectObject('passreset_token', 'uid=' . $this->params['uid'] . " AND token='" . preg_replace('/[^A-Za-z0-9]/', '', $this->params['token']) . "'");
+        if ($tok == null) {
+            flash('error', gt('Your password reset request has expired.  Please try again.'));
+            expHistory::back();
+        }
+
+        assign_to_template(array(
+            'u'      => new user($tok->uid),
+            'token' => $tok->token
+        ));
+    }
+
+    public function change_password_token() {
+        global $db;
+
+        $db->delete('passreset_token', 'expires < ' . time());
+        if (empty($this->params['uid']) || empty($this->params['token'])) {
+            flash('error', gt('You are not allowed to perform this action.'));
+            expHistory::back();
+        }
         $tok = $db->selectObject('passreset_token', 'uid=' . (int)($this->params['uid']) . " AND token='" . preg_replace('/[^A-Za-z0-9]/', '', expString::escape($this->params['token'])) . "'");
         if ($tok == null) {
             flash('error', gt('Your password reset request has expired.  Please try again.'));
             expHistory::back();
         }
 
-        // create the password
-//        $newpass = '';
-//        for ($i = 0, $iMax = mt_rand(12, 20); $i < $iMax; $i++) {
-//            $num = mt_rand(48, 122);
-//            if (($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num > 48 && $num < 57)) $newpass .= chr($num);
-//            else $i--;
-//        }
-        $newpass = expValidator::generatePassword();
-
         // look up the user
         $u = new user($tok->uid);
 
+        $ret = $u->setPassword($this->params['new_password1'], $this->params['new_password2']);
+        if (is_string($ret)) {
+            flash('error', $ret);
+            expHistory::returnTo('editable');
+        } else {
+            $params = array();
+            $params['is_admin'] = !empty($u->is_admin);
+            $params['is_acting_admin'] = !empty($u->is_acting_admin);
+            $u->update($params);
+        }
+
         // get the email message body and render it
-        $email = $template = expTemplate::get_template_for_action($this, 'email/confirm_password_email', $this->loc);
-        $email->assign('newpass', $newpass);
+        $email = $template = expTemplate::get_template_for_action($this, 'email/password_changed_email', $this->loc);
         $email->assign('username', $u->username);
         $msg = $email->render();
 
@@ -642,13 +667,10 @@ class usersController extends expController {
             'subject'      => gt('The account password for') . ' ' . HOSTNAME . ' ' . gt('was reset'),
         ));
 
-        // Save new password
-        $u->update(array('password' => user::encryptPassword($newpass)));
-
         // cleanup the reset token
         $db->delete('passreset_token', 'uid=' . $tok->uid);
 
-        flash('message', gt('Your password has been reset and the new password has been emailed to you.'));
+        flash('message', gt('Your password has been reset.'));
 
         // send the user the login page.
         redirect_to(array('controller' => 'login', 'action' => 'loginredirect'));
