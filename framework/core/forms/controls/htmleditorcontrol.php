@@ -25,16 +25,30 @@ if (!defined('EXPONENT')) exit('');
  * @package Subsystems-Forms
  * @subpackage Control
  */
-if (SITE_WYSIWYG_EDITOR == "ckeditor") {
+if (SITE_WYSIWYG_EDITOR === "ckeditor") {
 
     class htmleditor extends ckeditorcontrol
     {
 
     }
 
-} elseif (SITE_WYSIWYG_EDITOR == "tinymce") {
+} elseif (SITE_WYSIWYG_EDITOR === "ckeditor5") {
+
+    class htmleditor extends ckeditor5control
+    {
+
+    }
+
+} elseif (SITE_WYSIWYG_EDITOR === "tinymce") {
 
     class htmleditor extends tinymcecontrol
+    {
+
+    }
+
+} elseif (SITE_WYSIWYG_EDITOR === "tinymce5") {
+
+    class htmleditor extends tinymce5control
     {
 
     }
@@ -101,9 +115,9 @@ if (SITE_WYSIWYG_EDITOR == "ckeditor") {
 
             //spares us to send the js editor init code more than once
             //TODO: Convert to OO API and use eXp->EditorControl->doneInit instead
-            if (!defined('SITE_WYSIWYG_INIT')) {
-                define('SITE_WYSIWYG_INIT', 1);
-            }
+//            if (!defined('SITE_WYSIWYG_INIT')) {
+//                define('SITE_WYSIWYG_INIT', 1);
+//            }
 
 //			return $html;
 
@@ -112,7 +126,7 @@ if (SITE_WYSIWYG_EDITOR == "ckeditor") {
         static function parseData($name, $values, $for_db = false)
         {
             $html = $values[$name];
-            if (trim($html) == "<br />") $html = "";
+            if (trim($html) === "<br />") $html = "";
             return $html;
         }
     }
