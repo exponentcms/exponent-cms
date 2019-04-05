@@ -1510,8 +1510,12 @@ class eventController extends expController {
             $v->setConfig('directory', dirname($exticalurl));
             $v->setConfig('filename', basename($exticalurl));
         }
-        $v->parse();
-        if ($startdate === null) {
+        try {
+            $v->parse();
+        }
+        catch( Exception $e ) {
+            return array();
+        }       if ($startdate === null) {
             $startYear = false;
             $startMonth = false;
             $startDay = false;
@@ -1531,7 +1535,7 @@ class eventController extends expController {
         }
         // get all events within period split out recurring events as single events per each day
         try {
-            $eventArray = $v->selectComponents($startYear, $startMonth, $startDay, $endYear, $endMonth, $endDay, 'vevent');
+            $eventArray = $v->selectComponents($startYear, $startMonth, $startDay, $endYear, $endMonth, $endDay, 'Vevent');
         }
         catch( Exception $e ) {
             return array();
@@ -1563,8 +1567,8 @@ class eventController extends expController {
                         $tzoffsets = array();
                         $date_tzoffset = 0;
                         if (!empty($tzarray)) {
-//                                $ourtzoffsets = -(Kigkonsult\Icalcreator\util\util::tz2offset(date('O',time())));
-                            $ourtzoffsets = -(Kigkonsult\Icalcreator\util\util::tz2offset(date('O',self::_date2timestamp($dtstart['value']))));
+                            $ourtzoffsets = -(Kigkonsult\Icalcreator\util\util::tz2offset(date('O',time())));
+//                            $ourtzoffsets = -(Kigkonsult\Icalcreator\util\DateTimeZoneFactory::offsetToSeconds(date('O',self::_date2timestamp($dtstart['value']))));
                             // Set the timezone to GMT
                             @date_default_timezone_set('GMT');
                             if (!empty($dtstart['params']['TZID'])) $tzoffsets = Kigkonsult\Icalcreator\getTzOffsetForDate($tzarray, $dtstart['params']['TZID'], $dtstart['value']);
