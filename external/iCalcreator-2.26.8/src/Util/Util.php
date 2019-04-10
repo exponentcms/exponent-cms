@@ -1991,7 +1991,7 @@ class Util implements IcalInterface
      * @static
      */
     public static function dateTimeHasOffset( $datetime ) {
-        $tzName = ($datetime->getTimezone())->getName();
+        $tzName = $datetime->getTimezone()->getName();
         return (( false != strpos( $tzName, Util::$COLON )) || Util::isOffset( $tzName ));
     }
 
