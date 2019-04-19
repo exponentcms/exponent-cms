@@ -104,7 +104,6 @@ elFinder.prototype.commands.resize = function() {
 			ctrgrup = $().controlgroup? 'controlgroup' : 'buttonset',
 			grid8Def = typeof options.grid8px === 'undefined' || options.grid8px !== 'disable'? true : false,
 			presetSize = Array.isArray(options.presetSize)? options.presetSize : [],
-			dlcls = 'elfinder-dialog-resize',
 			clactive = 'elfinder-dialog-active',
 			clsediting = fm.res('class', 'editing'),
 			open = function(file, id) {
