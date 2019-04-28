@@ -103,3 +103,60 @@ a.quickcart {
 /*.cart.show-inline .quick-links ul {*/
 	/*margin-left: 0;*/
 /*}*/
+
+/****************  quicklinks  ***********************/
+
+.store.quick-links ul,
+.store.quick-links ul li {
+	padding    : 0;
+	margin     : 0;
+	list-style : none;
+}
+
+.store.quick-links ul li a {
+	display : block;
+	padding : 3px 0 3px 20px;
+}
+
+.store.quick-links a.addressbook {
+	background-image  : url(../images/addressbook.png);
+	background-repeat : no-repeat;
+}
+
+.store.quick-links a.password {
+	background-image  : url(../../../../core/assets/images/change_password.png);
+	background-repeat : no-repeat;
+}
+
+.store.quick-links a.viewcart {
+	background-image  : url(../images/view_cart.png);
+	background-repeat : no-repeat;
+}
+
+.store.quick-links a.checkout {
+	background-image  : url(../images/checkout.png);
+	background-repeat : no-repeat;
+}
+
+.store.quick-links .login {
+	background : transparent url(../../../../core/assets/images/change_password.png) no-repeat scroll 0 50%;
+}
+
+.store.quick-links a.logout {
+	background : url(../../../../core/assets/images/logout.png) no-repeat 0 50%;
+}
+
+.store.quick-links a.profile {
+	background-image  : url(../images/personal.png);
+	background-repeat : no-repeat;
+}
+
+.store.quick-links a.checkoutnow {
+	background-image  : url(../images/checkout.png);
+	background-repeat : no-repeat;
+}
+
+.store.quick-links a.vieworders {
+	background-image  : url(../../../../core/assets/images/view.png);
+	background-repeat : no-repeat;
+}
