@@ -13,7 +13,7 @@
  *
  * @author     Xavier De Cock <xdecock@gmail.com>
  */
-class Swift_CharacterStream_CharacterStream implements Swift_CharacterStream
+class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
 {
     /**
      * The char reader (lazy-loaded) for the current charset.
@@ -111,6 +111,9 @@ class Swift_CharacterStream_CharacterStream implements Swift_CharacterStream
         $this->charReaderFactory = $factory;
     }
 
+    /**
+     * @see Swift_CharacterStream::flushContents()
+     */
     public function flushContents()
     {
         $this->datas = null;
@@ -120,6 +123,9 @@ class Swift_CharacterStream_CharacterStream implements Swift_CharacterStream
         $this->datasSize = 0;
     }
 
+    /**
+     * @see Swift_CharacterStream::importByteStream()
+     */
     public function importByteStream(Swift_OutputByteStream $os)
     {
         $this->flushContents();
@@ -130,12 +136,24 @@ class Swift_CharacterStream_CharacterStream implements Swift_CharacterStream
         }
     }
 
+    /**
+     * @see Swift_CharacterStream::importString()
+     *
+     * @param string $string
+     */
     public function importString($string)
     {
         $this->flushContents();
         $this->write($string);
     }
 
+    /**
+     * @see Swift_CharacterStream::read()
+     *
+     * @param int $length
+     *
+     * @return string
+     */
     public function read($length)
     {
         if ($this->currentPos >= $this->charCount) {
@@ -187,6 +205,13 @@ class Swift_CharacterStream_CharacterStream implements Swift_CharacterStream
         return $ret;
     }
 
+    /**
+     * @see Swift_CharacterStream::readBytes()
+     *
+     * @param int $length
+     *
+     * @return int[]
+     */
     public function readBytes($length)
     {
         $read = $this->read($length);
@@ -199,6 +224,11 @@ class Swift_CharacterStream_CharacterStream implements Swift_CharacterStream
         return false;
     }
 
+    /**
+     * @see Swift_CharacterStream::setPointer()
+     *
+     * @param int $charOffset
+     */
     public function setPointer($charOffset)
     {
         if ($this->charCount < $charOffset) {
@@ -207,6 +237,11 @@ class Swift_CharacterStream_CharacterStream implements Swift_CharacterStream
         $this->currentPos = $charOffset;
     }
 
+    /**
+     * @see Swift_CharacterStream::write()
+     *
+     * @param string $chars
+     */
     public function write($chars)
     {
         if (!isset($this->charReader)) {

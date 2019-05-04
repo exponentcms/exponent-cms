@@ -525,7 +525,7 @@ if (!defined('YUI2_RELATIVE')) {
 if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
-    define('JQUERY3_VERSION', '3.3.1');
+    define('JQUERY3_VERSION', '3.4.1');
     define('JQUERY3_MIGRATE_VERSION', '3.0.1');
     define('JQUERYUI_VERSION', '1.12.1');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
@@ -575,7 +575,7 @@ if (!defined('SWIFT_PATH')) {
     if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
         define('SWIFT_VERSION', '5.4.12');
     } else {
-        define('SWIFT_VERSION', '6.2.0');  //note v6.x requires php v7.x
+        define('SWIFT_VERSION', '6.2.1');  //note v6.x requires php v7.x
     }
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
     define('LEXER_VERSION', '1.0.1');
