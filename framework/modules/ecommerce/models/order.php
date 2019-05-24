@@ -584,7 +584,7 @@ class order extends expRecord {
         /*$od = new order_discounts();
    return $od->find('all', 'orders_id =' . $this->id);*/
         if (isset($this->order_discounts)) return $this->order_discounts;
-        else return null;
+        else return array();
     }
 
     public function calculateGrandTotal()
