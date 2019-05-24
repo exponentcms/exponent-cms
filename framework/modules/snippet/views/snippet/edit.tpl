@@ -71,7 +71,7 @@
     }
 {/css}
 {literal}
-    {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/'}{literal}
+    {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.47.0/'}{literal}
     <script src="{/literal}{$cdn}{literal}codemirror.js"></script>
     <link rel="stylesheet" href="{/literal}{$cdn}{literal}codemirror.css">
     <link rel="stylesheet" href="{/literal}{$cdn}{literal}addon/fold/foldgutter.css">
