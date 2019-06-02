@@ -19,8 +19,8 @@ Twitter API,1.0.6,github.com/J7mbo/twitter-api-php,1.0.6,used by socialmedia mod
 SimplePie,1.5.2,github.com/simplepie/simplepie,1.5.2,
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,0.33,github.com/verot/class.upload.php,0.34,Correct flip operation where flip vertical & horizontal were inverted/swapped
-iCalCreator,2.26.8,github.com/iCalcreator/iCalcreator,2.27.19,""
-scssphp,0.8.0exp,github.com/leafo/scssphp,0.8.0,hacked to compile newui
+iCalCreator,2.26.8,github.com/iCalcreator/iCalcreator,2.27.20,""
+scssphp,0.8.2exp,github.com/leafo/scssphp,0.8.2,hacked to compile newui
 lessphp,0.5.0,github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
 less.php,1.7.0.14,github.com/oyejorge/less.php,1.7.0.14,
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
@@ -36,7 +36,7 @@ Font-Awesome5,5.8.2,fontawesome.com,5.8.2,add import all 'fonts' sheets to main 
 Adminer,4.7.1exp,www.adminer.org,4.7.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.2,github.com/LPology/Simple-Ajax-Uploader,2.6.2,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css/,8.0.1,auto included in bootstrap 3
-MediaElement.js,4.2.9,mediaelementjs.com/,4.2.9,
+MediaElement.js,4.2.10,mediaelementjs.com/,4.2.9,
 MediaElement plugins,2.5.0,github.com/johndyer/mediaelement-plugins,2.5.0,
 Facebook PHP SDK3,3.2.3,github.com/facebook/php-graph-sdk,5.7.0,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
@@ -44,7 +44,7 @@ Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 CKEditor,4.11.4,ckeditor.com,4.11.4/12.1.0,"add fieldinsert (exp), tableresize, sourcedialog, image2 fileupload & imageupload widgets & kama skin"
-TinyMCE,4.9.4,tinymce.com,4.9.4/5.0.4,"add fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
+TinyMCE,4.9.4,tinymce.com,4.9.4/5.0.6,"add fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 PLUpload,2.3.6,github.com/moxiecode/plupload,2.3.6/3.1.2,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 elFinder,2.1.49,elfinder.org,2.1.48,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
@@ -75,7 +75,7 @@ Tempus Dominus Bootstrap 4,5.1.2,github.com/tempusdominus/bootstrap-4,5.1.2,"pla
 moment.js,2.24.0,github.com/moment/moment,2.24.0,needed for Bootstrap DateTimePicker
 strength-meter,1.1.4,github.com/kartik-v/strength-meter,1.1.4,
 Sortable,1.9.0,github.com/SortableJS/Sortable,1.9.0,
-jstree,3.3.7,github.com/vakata/jstree,3.3.7,added nav menu icons to stylesheet
+jstree,3.3.8,github.com/vakata/jstree,3.3.7,added nav menu icons to stylesheet
 bootstrap3-dialog,1.35.4,github.com/nakupanda/bootstrap3-dialog,1.35.4,use /src .less file and add our .less variable imports; w/ bs4 fixes
 impromptu,6.2.3,trentrichardson.com/Impromptu,6.2.3,add some colors to .css
 bootstrap-touch-carousel,0.8.0exp,github.com/ixisio/bootstrap-touch-carousel,0.8.0,patched with vertical drag fix
@@ -93,13 +93,13 @@ Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
 dompdf,0.8.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,0.8.3,"optional, patched to display our images and not break on bad tables"
-mPDF,7.0.2/6.1.4/5.7.4a,github.com/mpdf/mpdf,7.1.9/8.0.0,optional
+mPDF,7.0.2/6.1.4/5.7.4a,github.com/mpdf/mpdf,7.1.9/8.0.1,optional
 log,1.0.2,github.com/php-fig/log,1.1.0,"optional, required by mPDF v7"
 DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.9.1,"optional, required by mPDF v7"
 HTML2PDF,5.0.1/4.6.1,github.com/spipu/html2pdf,5.2.1,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.2.17,sourceforge.net/projects/tcpdf,6.2.26,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
-Kint,2.2.0/3.2.0,github.com/kint-php/kint,3.2.0,"optional, for formatted edebug output"
+Kint,2.2.0/3.2.2,github.com/kint-php/kint,3.2.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
 DataTables Buttons,,www.datatables.net,1.5.4,
