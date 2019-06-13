@@ -1727,7 +1727,7 @@ class reportController extends expController {
         $cartsWithItems = array();
         $cartsWithItemsAndInfo = array();
         $summary = array();
-        $valueproducts = '';
+        $valueproducts = 0;
         // $sql = "SELECT * FROM " . $db->prefix . "orders WHERE DATEDIFF(FROM_UNIXTIME(edited_at, '%Y-%m-%d'), '" . date('Y-m-d') . "') = 0";
 
         $sql = "SELECT * FROM " . $db->tableStmt('orders') . ", " . $db->tableStmt('sessionticket') . " WHERE ticket = sessionticket_ticket";
