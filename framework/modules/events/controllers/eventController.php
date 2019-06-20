@@ -1502,7 +1502,8 @@ class eventController extends expController {
 
     public function get_ical_events($exticalurl, $startdate=null, $enddate=null, &$dy=0, $key=0, $multiday=false) {
         $extevents = array();
-        require_once BASE . 'external/iCalcreator-2.26.8/autoload.php';
+//        require_once BASE . 'external/iCalcreator-2.26.8/autoload.php';
+        require_once BASE . 'external/iCalcreator-2.27.21/autoload.php';
         $v = new Kigkonsult\Icalcreator\vcalendar(); // initiate new CALENDAR
         if (stripos($exticalurl, 'http') === 0) {
             $v->setConfig('url', $exticalurl);
@@ -1515,7 +1516,8 @@ class eventController extends expController {
         }
         catch( Exception $e ) {
             return array();
-        }       if ($startdate === null) {
+        }
+        if ($startdate === null) {
             $startYear = false;
             $startMonth = false;
             $startDay = false;
@@ -1552,14 +1554,17 @@ class eventController extends expController {
                     if (!empty($dailyEventsArray)) foreach ($dailyEventsArray as $vevent) {
                         // process each event
                         $yesterday = false;
-                        $currdate = $vevent->getProperty('x-current-dtstart');
-                        $thisday = explode('-', $currdate[1]);
-                        $thisday2 = substr($thisday[2], 0, 2);
+                        $x_dtstart = $vevent->getProperty('x-current-dtstart');
+                        $thisdate= explode('-', $x_dtstart[1]);
+                        $thismon = substr($thisdate[1], 0, 2);
+                        $thisday = substr($thisdate[2], 0, 2);
                         // if member of a recurrence set,
                         // returns array( 'x-current-dtstart', <DATE>)
                         // <DATE> = (string) date("Y-m-d [H:i:s][timezone/UTC offset]")
                         $dtstart = $vevent->getProperty('dtstart', false, true);
+//                        $dtstart = $vevent->getDtstart();
                         $dtend = $vevent->getProperty('dtend', false, true);
+//                        $dtend = $vevent->getDtend();
                         if (empty($dtend))
                             $dtend = $dtstart;
 
@@ -1567,8 +1572,8 @@ class eventController extends expController {
                         $tzoffsets = array();
                         $date_tzoffset = 0;
                         if (!empty($tzarray)) {
-                            $ourtzoffsets = -(Kigkonsult\Icalcreator\util\util::tz2offset(date('O',time())));
-//                            $ourtzoffsets = -(Kigkonsult\Icalcreator\util\DateTimeZoneFactory::offsetToSeconds(date('O',self::_date2timestamp($dtstart['value']))));
+//                            $ourtzoffsets = -(Kigkonsult\Icalcreator\util\util::tz2offset(date('O',time())));
+                            $ourtzoffsets = -(Kigkonsult\Icalcreator\util\DateTimeZoneFactory::offsetToSeconds(date('O',self::_date2timestamp($dtstart['value']))));
                             // Set the timezone to GMT
                             @date_default_timezone_set('GMT');
                             if (!empty($dtstart['params']['TZID'])) $tzoffsets = Kigkonsult\Icalcreator\getTzOffsetForDate($tzarray, $dtstart['params']['TZID'], $dtstart['value']);
@@ -1577,32 +1582,30 @@ class eventController extends expController {
                             if (isset($tzoffsets['offsetSec'])) $date_tzoffset = $ourtzoffsets + $tzoffsets['offsetSec'];
                         }
                         if (empty($tzoffsets)) {
-                            $date_tzoffset = -(Kigkonsult\Icalcreator\util\util::tz2offset(date('O',self::_date2timestamp($dtstart['value']))));
+//                            $date_tzoffset = -(Kigkonsult\Icalcreator\util\util::tz2offset(date('O',self::_date2timestamp($dtstart['value']))));
+                            $date_tzoffset = -(Kigkonsult\Icalcreator\util\DateTimeZoneFactory::offsetToSeconds(date('O',self::_date2timestamp($dtstart['value']))));
                         }
                         //FIXME we must have the real timezone offset for the date by this point
 
                         //FIXME this is for the google ical feed which is bad!
-                        if ($dtstart['value']['day'] != (int)$thisday2 && (isset($dtstart['value']['day']) && isset($dtend['value']['hour']))&&
+                        if ($dtstart['value']['month'] != (int)$thismon || ($dtstart['value']['day'] != (int)$thisday && (isset($dtstart['value']['day']) && isset($dtend['value']['hour']))&&
                             !((int)$dtstart['value']['hour'] == 0 && (int)$dtstart['value']['min'] == 0  && (int)$dtstart['value']['sec'] == 0
                                 && (int)$dtend['value']['hour'] == 0 && (int)$dtend['value']['min'] == 0  && (int)$dtend['value']['sec'] == 0
-                                && ((((int)$dtstart['value']['day'] - (int)$dtend['value']['day']) == -1) || (((int)$dtstart['value']['month'] - (int)$dtend['value']['month']) == -1) || (((int)$dtstart['value']['month'] - (int)$dtend['value']['month']) == -11)))) {
-                            $dtst = strtotime($currdate[1]);
-                            $dtst1 = Kigkonsult\Icalcreator\util\util::timestamp2date($dtst);
-                            $dtstart['value']['year'] = $dtst1['year'];
-                            $dtstart['value']['month'] = $dtst1['month'];
-                            $dtstart['value']['day'] = $dtst1['day'];
-                            $currenddate = $vevent->getProperty('x-current-dtend');
-                            $dtet = strtotime($currenddate[1]);
-                            $dtet1 = Kigkonsult\Icalcreator\util\util::timestamp2date($dtet);
-                            $dtend['value']['year'] = $dtet1['year'];
-                            $dtend['value']['month'] = $dtet1['month'];
-                            $dtend['value']['day'] = $dtet1['day'];
+                                && ((((int)$dtstart['value']['day'] - (int)$dtend['value']['day']) == -1) || (((int)$dtstart['value']['month'] - (int)$dtend['value']['month']) == -1) || (((int)$dtstart['value']['month'] - (int)$dtend['value']['month']) == -11))))) {
+                            $dtstart['value']['year'] = substr($thisdate[0], 0, 2);
+                            $dtstart['value']['month'] = $thismon;
+                            $dtstart['value']['day'] = $thisday;
+                            $x_dtend = $vevent->getProperty('x-current-dtend');
+                            $enddate= explode('-', $x_dtend[1]);
+                            $dtend['value']['year'] = substr($enddate[0], 0, 2);
+                            $dtend['value']['month'] = substr($enddate[1], 0, 2);
+                            $dtend['value']['day'] = substr($enddate[2], 0, 2);
 //                                $date_tzoffset = 0;
                         }
 
                         if (!empty($dtstart['value']['hour']) && !((int)$dtstart['value']['hour'] == 0 && (int)$dtstart['value']['min'] == 0  && (int)$dtstart['value']['sec'] == 0
-                                                            && (int)$dtend['value']['hour'] == 0 && (int)$dtend['value']['min'] == 0  && (int)$dtend['value']['sec'] == 0
-                                                            && ((((int)$dtstart['value']['day'] - (int)$dtend['value']['day']) == -1) || (((int)$dtstart['value']['month'] - (int)$dtend['value']['month']) == -1) || (((int)$dtstart['value']['month'] - (int)$dtend['value']['month']) == -11)))) {
+                                && (int)$dtend['value']['hour'] == 0 && (int)$dtend['value']['min'] == 0  && (int)$dtend['value']['sec'] == 0
+                                && ((((int)$dtstart['value']['day'] - (int)$dtend['value']['day']) == -1) || (((int)$dtstart['value']['month'] - (int)$dtend['value']['month']) == -1) || (((int)$dtstart['value']['month'] - (int)$dtend['value']['month']) == -11)))) {
                             $eventdate = expDateTime::startOfDayTimestamp(self::_date2timestamp($dtstart['value']) - $date_tzoffset);
 //                                $eventend = expDateTime::startOfDayTimestamp(self::_date2timestamp($dtend['value']) - $date_tzoffset);
                             $extevents[$eventdate][$dy] = new stdClass();
@@ -1611,8 +1614,8 @@ class eventController extends expController {
 //                                if ((int)($dtstart['value']['hour']) == 0 && (int)($dtstart['value']['min']) == 0  && (int)($dtstart['value']['sec']) == 0
 //                                    && (int)($dtend['value']['hour']) == 0 && (int)($dtend['value']['min']) == 0  && (int)($dtend['value']['sec']) == 0
 //                                    && ((((int)($dtstart['value']['day']) - (int)($dtend['value']['day'])) == -1) || (((int)($dtstart['value']['month']) - (int)($dtend['value']['month'])) == -1) || (((int)($dtstart['value']['month']) - (int)($dtend['value']['month'])) == -11))) {
-////                                    if ($dtstart['value']['day'] != (int)($thisday2)) {
-//                                    if (date('d',$eventdate) != $thisday2) {
+////                                    if ($dtstart['value']['day'] != (int)($thisday)) {
+//                                    if (date('d',$eventdate) != $thisday) {
 ////                                    if (date('d',$eventdate) != date('d',$eventend)) {
 //                                        $yesterday = true;
 //                                    } else {
@@ -1620,7 +1623,7 @@ class eventController extends expController {
 //                                        $extevents[$eventdate][$dy]->is_allday = 1;
 //                                    }
 //                                } else {
-                                if (date('d',$eventdate) != $thisday2) {
+                                if (date('d',$eventdate) != $thisday) {
 //                                    if (date('d',$eventdate) != date('d',$eventend)) {
                                     $yesterday = true;
                                 } else {
@@ -1635,8 +1638,8 @@ class eventController extends expController {
                             $extevents[$eventdate][$dy] = new stdClass();
                             $extevents[$eventdate][$dy]->eventdate = new stdClass();
                             $extevents[$eventdate][$dy]->eventdate->date = $eventdate;
-//                                if ($dtstart['value']['day'] != (int)($thisday2)) {
-                            if (date('d',$eventdate) != $thisday2) {
+//                                if ($dtstart['value']['day'] != (int)($thisday)) {
+                            if (date('d',$eventdate) != $thisday) {
 //                                if (date('d',$eventdate) != date('d',$eventend)) {
                                 $yesterday = true;
                             } else {
@@ -1647,8 +1650,8 @@ class eventController extends expController {
 
                         // set the end time if needed
                         if (!$yesterday && isset($dtend['value']['hour']) && empty($extevents[$eventdate][$dy]->is_allday)) {
-//                                if ($dtend['value']['day'] != (int)($thisday2)) {
-//                                if ((date('d',$eventend) != $thisday2)) {
+//                                if ($dtend['value']['day'] != (int)($thisday)) {
+//                                if ((date('d',$eventend) != $thisday)) {
 //                                    $yesterday = true;
 //                                } else {
                             $extevents[$eventdate][$dy]->eventend = ($dtend['value']['hour'] * 3600) + ($dtend['value']['min'] * 60) - $date_tzoffset;
@@ -1663,12 +1666,15 @@ class eventController extends expController {
                             $extevents[$eventdate][$dy]->eventend += $eventdate;
 
                         // dtstart required, one occurrence, (orig. start date)
-                        $extevents[$eventdate][$dy]->title = $vevent->getProperty('summary');
-                        $body = $vevent->getProperty('description');
+//                        $extevents[$eventdate][$dy]->title = $vevent->getProperty('summary');
+                        $extevents[$eventdate][$dy]->title = $vevent->getSummary();
+//                        $body = $vevent->getProperty('description');
+                        $body = $vevent->getDescription();
                         // convert end of lines
-                        $body = nl2br(str_replace("\\n"," <br>\n",$body));
-                        $body = str_replace("\n"," <br>\n",$body);
-                        $body = str_replace(array('==0A','=0A','=C2=A0')," <br>\n",$body);
+                        $body = nl2br(str_replace(array("\\n", "\n", '==0A','=0A','=C2=A0')," <br>",$body));
+//                        $body = str_replace("\n"," <br>",$body);
+//                        $body = str_replace(array('==0A','=0A','=C2=A0')," <br>\n",$body);
+                        $body = str_replace("<br>","<br>\\n",$body);
                         $extevents[$eventdate][$dy]->body = $body;
                         $extevents[$eventdate][$dy]->location_data = 'icalevent' . $key;
                         $extevents[$eventdate][$dy]->color = !empty($this->config['pull_ical_color'][$key]) ? $this->config['pull_ical_color'][$key] : null;
@@ -1692,34 +1698,36 @@ class eventController extends expController {
      * @return false|int|string
      */
     public static function _date2timestamp( $datetime, $wtz=null ) {
-      if( !isset( $datetime['hour'] )) $datetime['hour'] = 0;
-      if( !isset( $datetime['min'] ))  $datetime['min']  = 0;
-      if( !isset( $datetime['sec'] ))  $datetime['sec']  = 0;
-      if( empty( $wtz ) && ( !isset( $datetime['tz'] ) || empty(  $datetime['tz'] )))
-        return mktime( $datetime['hour'], $datetime['min'], $datetime['sec'], $datetime['month'], $datetime['day'], $datetime['year'] );
-      $output = $offset = 0;
-      if( empty( $wtz )) {
-        if( Kigkonsult\Icalcreator\util\util::isOffset( $datetime['tz'] )) {
-          $offset = Kigkonsult\Icalcreator\util\util::tz2offset( $datetime['tz'] ) * -1;
-          $wtz    = 'UTC';
+        if (!isset($datetime['hour']))
+            $datetime['hour'] = 0;
+        if (!isset($datetime['min']))
+            $datetime['min'] = 0;
+        if (!isset($datetime['sec']))
+            $datetime['sec'] = 0;
+        if (empty($wtz) && (!isset($datetime['tz']) || empty($datetime['tz'])))
+            return mktime($datetime['hour'], $datetime['min'], $datetime['sec'], $datetime['month'], $datetime['day'], $datetime['year']);
+        $output = $offset = 0;
+        if (empty($wtz)) {
+            if (Kigkonsult\Icalcreator\util\util::isOffset($datetime['tz'])) {
+//          $offset = Kigkonsult\Icalcreator\util\util::tz2offset( $datetime['tz'] ) * -1;
+                $offset = Kigkonsult\Icalcreator\util\DateTimeZoneFactory::offsetToSeconds($datetime['tz']) * -1;
+                $wtz = 'UTC';
+            } else
+                $wtz = $datetime['tz'];
         }
-        else
-          $wtz    = $datetime['tz'];
-      }
-      if(( 'Z' == $wtz ) || ( 'GMT' == strtoupper( $wtz )))
-        $wtz      = 'UTC';
-      try {
-        $strdate  = sprintf( '%04d-%02d-%02d %02d:%02d:%02d', $datetime['year'], $datetime['month'], $datetime['day'], $datetime['hour'], $datetime['min'], $datetime['sec'] );
-        $d        = new DateTime( $strdate, new DateTimeZone( $wtz ));
-        if( 0    != $offset )  // adjust for offset
-          $d->modify( $offset.' seconds' );
-        $output   = $d->format( 'U' );
-        unset( $d );
-      }
-      catch( Exception $e ) {
-        $output = mktime( $datetime['hour'], $datetime['min'], $datetime['sec'], $datetime['month'], $datetime['day'], $datetime['year'] );
-      }
-      return $output;
+        if (('Z' == $wtz) || ('GMT' == strtoupper($wtz)))
+            $wtz = 'UTC';
+        try {
+            $strdate = sprintf('%04d-%02d-%02d %02d:%02d:%02d', $datetime['year'], $datetime['month'], $datetime['day'], $datetime['hour'], $datetime['min'], $datetime['sec']);
+            $d = new DateTime($strdate, new DateTimeZone($wtz));
+            if (0 != $offset)  // adjust for offset
+                $d->modify($offset . ' seconds');
+            $output = $d->format('U');
+            unset($d);
+        } catch (Exception $e) {
+            $output = mktime($datetime['hour'], $datetime['min'], $datetime['sec'], $datetime['month'], $datetime['day'], $datetime['year']);
+        }
+        return $output;
     }
 
     /**
