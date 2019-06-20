@@ -673,6 +673,7 @@ class remove_oldfiles extends upgradescript {
             'external/html5forms/',
             'external/iCalcreator-2.22/',
             'external/iCalcreator-2.24/',
+            'external/iCalcreator-2.26.8/',
             'external/iepngfixv2/',
             'external/jquery/js/ui/minified/',
             'external/magpierss/',
