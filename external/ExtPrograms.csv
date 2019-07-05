@@ -19,8 +19,8 @@ Twitter API,1.0.6,github.com/J7mbo/twitter-api-php,1.0.6,used by socialmedia mod
 SimplePie,1.5.2,github.com/simplepie/simplepie,1.5.2,
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,0.33,github.com/verot/class.upload.php,0.34,Correct flip operation where flip vertical & horizontal were inverted/swapped
-iCalCreator,2.26.8,github.com/iCalcreator/iCalcreator,2.27.20,""
-scssphp,0.8.2exp,github.com/leafo/scssphp,0.8.2,hacked to compile newui
+iCalCreator,2.27.21,github.com/iCalcreator/iCalcreator,2.27.21,uncomment load utilities
+scssphp,1.0.0exp,github.com/scssphp/scssphp,1.0.0,hacked to compile newui
 lessphp,0.5.0,github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
 less.php,1.7.0.14,github.com/oyejorge/less.php,1.7.0.14,
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
@@ -28,11 +28,11 @@ Twitter-Bootstrap3,3.4.1,twitter.github.com/bootstrap,3.4.1,patched bootstrap.le
 Twitter-Bootstrap4,4.3.1,twitter.github.com/bootstrap,4.3.1,patched bootstrap.scss includes swatches & exp variables
 popper.js,1.15.0,github.com/FezVrasta/popper.js,1.15.0,needed by BS4 (umd)
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch3,3.4.1,bootswatch.com/,3.4.1,change 1st line variables.less comment to output to .css file
+Bootswatch3,3.4.1+1,bootswatch.com/,3.4.1+1,change 1st line variables.less comment to output to .css file
 Bootswatch4,4.3.1,bootswatch.com/,4.3.1,change 1st line variables.scss comment to output to .css file
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome4,4.7.0,fortawesome.github.com/Font-Awesome,4.7.0,
-Font-Awesome5,5.8.2,fontawesome.com,5.8.2,add import all 'fonts' sheets to main sheet
+Font-Awesome5,5.9.0,fontawesome.com,5.9.0,add import all 'fonts' sheets to main sheet
 Adminer,4.7.1exp,www.adminer.org,4.7.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.2,github.com/LPology/Simple-Ajax-Uploader,2.6.2,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css/,8.0.1,auto included in bootstrap 3
@@ -43,8 +43,8 @@ Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
-CKEditor,4.11.4,ckeditor.com,4.11.4/12.1.0,"add fieldinsert (exp), tableresize, sourcedialog, image2 fileupload & imageupload widgets & kama skin"
-TinyMCE,4.9.4,tinymce.com,4.9.4/5.0.6,"add fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
+CKEditor,4.11.4,ckeditor.com,4.11.4/12.2.0,"add fieldinsert (exp), tableresize, sourcedialog, image2 fileupload & imageupload widgets & kama skin"
+TinyMCE,4.9.5,tinymce.com,4.9.4/5.0.8,"add fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 PLUpload,2.3.6,github.com/moxiecode/plupload,2.3.6/3.1.2,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 elFinder,2.1.49,elfinder.org,2.1.49,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
@@ -82,8 +82,8 @@ bootstrap-touch-carousel,0.8.0exp,github.com/ixisio/bootstrap-touch-carousel,0.8
 bootstrap-tagsinput,0.8.0exp,github.com/timschlechter/bootstrap-tagsinput,0.8.0,patched with android fix
 Typeahead,0.11.1,twitter.github.io/typeahead.js/,0.11.1,needed by bootstrap-tagsinput
 bootstrap-duallistbox,3.0.7/4.0.1,github.com/istvan-ujjmeszaros/bootstrap-duallistbox,3.0.7/4.0.1,v4.0.1 placed in bootstrap4theme
-select2,4.0.5,github.com/ivaynberg/select2,4.0.5,renamed select2.full.js to select2.js
-shuffle.js,v3.1.1,github.com/Vestride/Shuffle,4.2.0/5.2.1,
+select2,4.0.5,github.com/ivaynberg/select2,4.0.7,renamed select2.full.js to select2.js
+shuffle.js,v3.1.1,github.com/Vestride/Shuffle,4.2.0/5.2.2,
 Jasny Bootstrap2,2.3.1,jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,3.2.0,jasny.github.io/bootstrap,3.2.0/4.0.0,only using fileinput at this time
 easypost sdk,3.4.1,github.com/EasyPost/easypost-php,3.4.1,
