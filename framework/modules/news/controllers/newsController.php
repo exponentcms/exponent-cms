@@ -56,7 +56,7 @@ class newsController extends expController {
     }
 
     public function showall() {
-        expHistory::set('viewable', $this->params);
+        expHistory::set('viewable', $this->params, true);
         // figure out if should limit the results
         if (isset($this->params['limit'])) {
             $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
@@ -92,7 +92,7 @@ class newsController extends expController {
     }
 
     public function showall_by_date() {
-	    expHistory::set('viewable', $this->params);
+	    expHistory::set('viewable', $this->params, true);
         if (!empty($this->params['day']) && !empty($this->params['month']) && !empty($this->params['year'])) {
             $start_date = expDateTime::startOfDayTimestamp(mktime(0, 0, 0, $this->params['month'], $this->params['day'], $this->params['year']));
             $end_date = expDateTime::endOfDayTimestamp(mktime(23, 59, 59, $this->params['month'], $this->params['day'], $this->params['year']));
@@ -132,7 +132,7 @@ class newsController extends expController {
 	}
 
     public function show() {
-        expHistory::set('viewable', $this->params);
+        expHistory::set('viewable', $this->params, true);
         // figure out if we're looking this up by id or title
         $id = null;
         if (isset($this->params['id'])) {

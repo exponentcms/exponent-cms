@@ -187,10 +187,11 @@ class expHistory {
         expSession::set('history', $history);
     }
 
-  	public static function set($url_type, $params) {
+  	public static function set($url_type, $params, $force=false) {
   	    global $history;
 
-        if (expJavascript::inAjaxAction()) return;  // don't set history on an ajax call
+        if (expJavascript::inAjaxAction() && !$force)
+            return;  // don't set history on an ajax call unless forced
 
   	    $history->setHistory($url_type, $params);
 	}

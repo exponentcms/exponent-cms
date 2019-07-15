@@ -345,7 +345,7 @@ abstract class expController {
         global $db;
 
          // set history
-        expHistory::set('viewable', $this->params);
+        expHistory::set('viewable', $this->params, true);
         $modelname = $this->basemodel_name;
 
         // get the tag being passed

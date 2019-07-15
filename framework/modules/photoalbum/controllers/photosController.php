@@ -46,7 +46,7 @@ class photosController extends expController {
     static function isSearchable() { return true; }
 
     public function showall() {
-        expHistory::set('viewable', $this->params);
+        expHistory::set('viewable', $this->params, true);
         $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
         if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordion' || $this->params['view'] == 'showall_tabbed')) {
             $limit = '0';
