@@ -317,9 +317,7 @@ class expCSS {
             $less_vars['themepath'] = '';
 
 //        // code for testing scss compiler
-//        self::auto_compile_scss('external/font-awesome5/scss/fontawesome.scss', 'tmp/css/testfa5.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap3/scss/test_2.scss', 'tmp/css/test2.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
@@ -687,8 +685,10 @@ class expCSS {
                     // we need to account for leading _ with filename and missing filetype suffix
                     if (is_file(BASE . $scss_pname) || is_file(BASE . "_" . $scss_pname)) {
                         include_once(BASE . 'external/' . $scss_compiler . '/scss.inc.php');
-                        $scss = new \Leafo\ScssPhp\Compiler();
-                        $scss_server = new \Leafo\ScssPhp\Server(BASE . 'tmp/css/', BASE . 'tmp/css/', $scss);
+                        $scss = new \ScssPhp\ScssPhp\Compiler();
+                        $scss_server = new \ScssPhp\ScssPhp\Server(BASE . 'tmp/css/', BASE . 'tmp/css/', $scss);
+
+//                        include_once(BASE . 'external/php-autoprefixer/autoload.inc.php');
 
                         // load the cache
                         $scss_cname = str_replace("/", "_", $scss_pname);
@@ -715,10 +715,10 @@ class expCSS {
                         }
 
                         if (MINIFY==1 && MINIFY_LESS==1 && $scss_compiler === 'scssphp') {
-//                            $scss->setFormatter('Leafo\ScssPhp\Formatter\Compressed');  // with comments
-                            $scss->setFormatter('Leafo\ScssPhp\Formatter\Crunched');  // without comments
+//                            $scss->setFormatter('ScssPhp\ScssPhp\Formatter\Compressed');  // with comments
+                            $scss->setFormatter('ScssPhp\ScssPhp\Formatter\Crunched');  // without comments
                         } else {
-                            $scss->setFormatter('Leafo\ScssPhp\Formatter\Expanded');  // scss_formatter_nested is default
+                            $scss->setFormatter('ScssPhp\ScssPhp\Formatter\Expanded');  // scss_formatter_nested is default
                         }
 
                         $scss->setVariables($vars);
@@ -727,6 +727,7 @@ class expCSS {
                         try {
                             $file_updated = false;
                             $new_cache = $scss_server->cachedCompile($cache, false);
+//                            $new_cache['compiled'] = (new Padaliyajay\PHPAutoprefixer\Autoprefixer($new_cache['compiled']))->compile(MINIFY==1 && MINIFY_LESS==1);
                             if (!is_array($cache) || $new_cache['updated'] > $cache['updated']) {
                                 if (!empty($new_cache['compiled']) && $new_cache['compiled'] !== "\n") {
                                     $file_updated = true;
