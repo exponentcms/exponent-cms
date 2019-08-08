@@ -343,6 +343,9 @@ class Parser
             if ($this->literal('@at-root', 8) &&
                 ($this->selectors($selector) || true) &&
                 ($this->map($with) || true) &&
+                (($this->matchChar('(')
+                    && $this->interpolation($with)
+                    && $this->matchChar(')')) || true) &&
                 $this->matchChar('{', false)
             ) {
                 $atRoot = $this->pushSpecialBlock(Type::T_AT_ROOT, $s);
@@ -383,9 +386,12 @@ class Parser
                     ($this->argValues($argValues) || true) &&
                     $this->matchChar(')') || true) &&
                 ($this->end() ||
+                    ($this->literal('using', 5) &&
+                        $this->argumentDef($argUsing) &&
+                        ($this->end() || $this->matchChar('{') && $hasBlock = true)) ||
                     $this->matchChar('{') && $hasBlock = true)
             ) {
-                $child = [Type::T_INCLUDE, $mixinName, isset($argValues) ? $argValues : null, null];
+                $child = [Type::T_INCLUDE, $mixinName, isset($argValues) ? $argValues : null, null, isset($argUsing) ? $argUsing : null];
 
                 if (! empty($hasBlock)) {
                     $include = $this->pushSpecialBlock(Type::T_INCLUDE, $s);
@@ -577,8 +583,15 @@ class Parser
 
             $this->seek($s);
 
-            if ($this->literal('@content', 8) && $this->end()) {
-                $this->append([Type::T_MIXIN_CONTENT], $s);
+            #if ($this->literal('@content', 8))
+
+            if ($this->literal('@content', 8) &&
+                ($this->end() ||
+                    $this->matchChar('(') &&
+                        $this->argValues($argContent) &&
+                        $this->matchChar(')') &&
+                    $this->end())) {
+                $this->append([Type::T_MIXIN_CONTENT, isset($argContent) ? $argContent : null], $s);
 
                 return true;
             }
@@ -1436,7 +1449,11 @@ class Parser
      */
     protected function valueList(&$out)
     {
-        return $this->genericList($out, 'spaceList', ',');
+        $discardComments = $this->discardComments;
+        $this->discardComments = true;
+        $res = $this->genericList($out, 'spaceList', ',');
+        $this->discardComments = $discardComments;
+        return $res;
     }
 
     /**
@@ -1655,7 +1672,7 @@ class Parser
 
         $this->seek($s);
 
-        if ($this->literal('url(', 4, false) && $this->match('\s*(\/\/\S+)\s*', $m)) {
+        if ($this->literal('url(', 4, false) && $this->match('\s*(\/\/[^\s\)]+)\s*', $m)) {
             $content = 'url(' . $m[1];
 
             if ($this->matchChar(')')) {
@@ -2472,9 +2489,16 @@ class Parser
         $selector = [];
 
         for (;;) {
+            $s = $this->count;
             if ($this->match('[>+~]+', $m, true)) {
-                $selector[] = [$m[0]];
-                continue;
+                if ($subSelector && is_string($subSelector) && strpos($subSelector, 'nth-') === 0
+                 && $m[0] === '+' && $this->match("(\d+|n\b)", $counter)) {
+                    $this->seek($s);
+                }
+                else {
+                    $selector[] = [$m[0]];
+                    continue;
+                }
             }
 
             if ($this->selectorSingle($part, $subSelector)) {
@@ -2606,10 +2630,12 @@ class Parser
                     $ss = $this->count;
 
                     if ($nameParts === ['not'] || $nameParts === ['is'] ||
-                        $nameParts === ['has'] || $nameParts === ['where']
+                        $nameParts === ['has'] || $nameParts === ['where'] ||
+                        $nameParts === ['nth-child'] || $nameParts == ['nth-last-child'] ||
+                        $nameParts === ['nth-of-type'] || $nameParts == ['nth-last-of-type']
                     ) {
-                        if ($this->matchChar('(') &&
-                          ($this->selectors($subs, true) || true) &&
+                        if ($this->matchChar('(', true) &&
+                          ($this->selectors($subs, reset($nameParts)) || true) &&
                           $this->matchChar(')')
                         ) {
                             $parts[] = '(';
@@ -2649,6 +2675,17 @@ class Parser
                         }
                     }
 
+                    continue;
+                }
+            }
+
+            $this->seek($s);
+
+            // 2n+1
+            if ($subSelector && is_string($subSelector) && strpos($subSelector, 'nth-') === 0) {
+                if ($this->match("(\s*(\+\s*|\-\s*)?(\d+|n|\d+n))+", $counter)) {
+                    $parts[] = $counter[0];
+                    //$parts[] = str_replace(' ', '', $counter[0]);
                     continue;
                 }
             }

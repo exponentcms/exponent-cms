@@ -979,6 +979,7 @@ class Compiler
     protected function filterScopeWithWithout($scope, $with, $without)
     {
         $filteredScopes = [];
+        $childStash = [];
 
         if ($scope->type === TYPE::T_ROOT) {
             return $scope;
@@ -986,6 +987,7 @@ class Compiler
 
         // start from the root
         while ($scope->parent && $scope->parent->type !== TYPE::T_ROOT) {
+            array_unshift($childStash, $scope);
             $scope = $scope->parent;
         }
 
@@ -1007,7 +1009,9 @@ class Compiler
                 $filteredScopes[] = $s;
             }
 
-            if ($scope->children) {
+            if (count($childStash)) {
+                $scope = array_shift($childStash);
+            } elseif ($scope->children) {
                 $scope = end($scope->children);
             } else {
                 $scope = null;
@@ -1028,8 +1032,9 @@ class Compiler
         while (count($filteredScopes)) {
             $s = array_shift($filteredScopes);
             $s->parent = $p;
-            $p->children[] = &$s;
-            $p = $s;
+            $p->children[] = $s;
+            $newScope = &$p->children[0];
+            $p = &$p->children[0];
         }
 
         return $newScope;
@@ -1170,16 +1175,23 @@ class Compiler
             if ($block->type === Type::T_DIRECTIVE) {
                 if (isset($block->name)) {
                     return $this->testWithWithout($block->name, $with, $without);
-                }
-                elseif (isset($block->selectors) && preg_match(',@(\w+),ims', json_encode($block->selectors), $m)) {
+                } elseif (isset($block->selectors) && preg_match(',@(\w+),ims', json_encode($block->selectors), $m)) {
                     return $this->testWithWithout($m[1], $with, $without);
-                }
-                else {
+                } else {
                     return $this->testWithWithout('???', $with, $without);
                 }
             }
-        }
-        elseif (isset($block->selectors)) {
+        } elseif (isset($block->selectors)) {
+            // a selector starting with number is a keyframe rule
+            if (count($block->selectors)) {
+                $s = reset($block->selectors);
+                while (is_array($s)) {
+                    $s = reset($s);
+                }
+                if (is_object($s) && get_class($s) === 'ScssPhp\ScssPhp\Node\Number') {
+                    return $this->testWithWithout('keyframes', $with, $without);
+                }
+            }
             return $this->testWithWithout('rule', $with, $without);
         }
 
@@ -1195,7 +1207,8 @@ class Compiler
      * @return bool
      *   true if the block should be kept, false to reject
      */
-    protected function testWithWithout($what, $with, $without) {
+    protected function testWithWithout($what, $with, $without)
+    {
 
         // if without, reject only if in the list (or 'all' is in the list)
         if (count($without)) {
@@ -1730,7 +1743,7 @@ class Compiler
                 $stm[1]->selfParent = $selfParent;
                 $ret = $this->compileChild($stm, $out);
                 $stm[1]->selfParent = null;
-            } elseif ($selfParent && $stm[0] === TYPE::T_INCLUDE) {
+            } elseif ($selfParent && in_array($stm[0], [TYPE::T_INCLUDE, TYPE::T_EXTEND])) {
                 $stm['selfParent'] = $selfParent;
                 $ret = $this->compileChild($stm, $out);
                 unset($stm['selfParent']);
@@ -2059,6 +2072,8 @@ class Compiler
                 return true;
             }
 
+            $this->appendRootDirective('@import ' . $this->compileValue($rawPath). ';', $out);
+
             return false;
         }
 
@@ -2070,16 +2085,19 @@ class Compiler
 
             foreach ($rawPath[2] as $path) {
                 if ($path[0] !== Type::T_STRING) {
+                    $this->appendRootDirective('@import ' . $this->compileValue($rawPath) . ';', $out);
                     return false;
                 }
             }
 
             foreach ($rawPath[2] as $path) {
-                $this->compileImport($path, $out);
+                $this->compileImport($path, $out, $once);
             }
 
             return true;
         }
+
+        $this->appendRootDirective('@import ' . $this->compileValue($rawPath) . ';', $out);
 
         return false;
     }
@@ -2151,6 +2169,10 @@ class Compiler
             if (end($parent->children) !== $out) {
                 $outWrite = &$parent->children[count($parent->children)-1];
             }
+
+            if (!is_string($line)) {
+                $line = $this->compileValue($line);
+            }
         }
 
         // check if it's a flat output or not
@@ -2203,17 +2225,13 @@ class Compiler
             case Type::T_SCSSPHP_IMPORT_ONCE:
                 $rawPath = $this->reduce($child[1]);
 
-                if (! $this->compileImport($rawPath, $out, true)) {
-                    $this->appendRootDirective('@import ' . $this->compileValue($rawPath) . ';', $out);
-                }
+                $this->compileImport($rawPath, $out, true);
                 break;
 
             case Type::T_IMPORT:
                 $rawPath = $this->reduce($child[1]);
 
-                if (! $this->compileImport($rawPath, $out)) {
-                    $this->appendRootDirective('@import ' . $this->compileValue($rawPath) . ';', $out);
-                }
+                $this->compileImport($rawPath, $out);
                 break;
 
             case Type::T_DIRECTIVE:
@@ -2333,8 +2351,11 @@ class Compiler
                     foreach ($results as $result) {
                         // only use the first one
                         $result = current($result);
-
-                        $this->pushExtends($result, $out->selectors, $child);
+                        $selectors = $out->selectors;
+                        if (!$selectors && isset($child['selfParent'])) {
+                            $selectors = $this->multiplySelectors($this->env, $child['selfParent']);
+                        }
+                        $this->pushExtends($result, $selectors, $child);
                     }
                 }
                 break;
@@ -2466,7 +2487,7 @@ class Compiler
 
             case Type::T_INCLUDE:
                 // including a mixin
-                list(, $name, $argValues, $content) = $child;
+                list(, $name, $argValues, $content, $argUsing) = $child;
 
                 $mixin = $this->get(static::$namespaces['mixin'] . $name, false);
 
@@ -2509,11 +2530,18 @@ class Compiler
                 // i.e., recursive @include of the same mixin
                 if (isset($content)) {
                     $copyContent = clone $content;
-                    $copyContent->scope = $callingScope;
+                    $copyContent->scope = clone $callingScope;
 
                     $this->setRaw(static::$namespaces['special'] . 'content', $copyContent, $this->env);
                 } else {
                     $this->setRaw(static::$namespaces['special'] . 'content', null, $this->env);
+                }
+
+                // save the "using" argument list for applying it to when "@content" is invoked
+                if (isset($argUsing)) {
+                    $this->setRaw(static::$namespaces['special'] . 'using', $argUsing, $this->env);
+                } else {
+                    $this->setRaw(static::$namespaces['special'] . 'using', null, $this->env);
                 }
 
                 if (isset($mixin->args)) {
@@ -2532,6 +2560,8 @@ class Compiler
             case Type::T_MIXIN_CONTENT:
                 $env = isset($this->storeEnv) ? $this->storeEnv : $this->env;
                 $content = $this->get(static::$namespaces['special'] . 'content', false, $env);
+                $argUsing = $this->get(static::$namespaces['special'] . 'using', false, $env);
+                $argContent = $child[1];
 
                 if (! $content) {
                     $content = new \stdClass();
@@ -2541,7 +2571,21 @@ class Compiler
                 }
 
                 $storeEnv = $this->storeEnv;
+
+                $varsUsing = [];
+                if (isset($argUsing) && isset($argContent)) {
+                    // Get the arguments provided for the content with the names provided in the "using" argument list
+                    $this->storeEnv = $this->env;
+                    $varsUsing = $this->applyArguments($argUsing, $argContent, false);
+                }
+
+                // restore the scope from the @content
                 $this->storeEnv = $content->scope;
+                // append the vars from using if any
+                foreach ($varsUsing as $name => $val) {
+                    $this->set($name, $val, true, $this->storeEnv);
+                }
+
                 $this->compileChildrenNoReturn($content->children, $out);
 
                 $this->storeEnv = $storeEnv;
@@ -3428,11 +3472,19 @@ class Compiler
                 list(, $interpolate, $left, $right) = $value;
                 list(,, $whiteLeft, $whiteRight) = $interpolate;
 
+                $delim = $left[1];
+                if ($delim && $delim !== ' ' && !$whiteLeft) {
+                    $delim .= ' ';
+                }
                 $left = count($left[2]) > 0 ?
-                    $this->compileValue($left) . $whiteLeft : '';
+                    $this->compileValue($left) . $delim . $whiteLeft: '';
 
+                $delim = $right[1];
+                if ($delim && $delim !== ' ') {
+                    $delim .= ' ';
+                }
                 $right = count($right[2]) > 0 ?
-                    $whiteRight . $this->compileValue($right) : '';
+                    $whiteRight . $delim . $this->compileValue($right) : '';
 
                 return $left . $this->compileValue($interpolate) . $right;
 
@@ -4440,11 +4492,15 @@ class Compiler
             return false;
         }
 
-        @list($sorted, $kwargs) = $this->sortArgs($prototype, $args);
+        @list($sorted, $kwargs) = $this->sortNativeFunctionArgs($prototype, $args);
 
         if ($name !== 'if' && $name !== 'call') {
+            $inExp = true;
+            if ($name === 'join') {
+                $inExp = false;
+            }
             foreach ($sorted as &$val) {
-                $val = $this->reduce($val, true);
+                $val = $this->reduce($val, $inExp);
             }
         }
 
@@ -4487,7 +4543,7 @@ class Compiler
      *
      * @return array
      */
-    protected function sortArgs($prototypes, $args)
+    protected function sortNativeFunctionArgs($prototypes, $args)
     {
         static $parser = null;
 
@@ -4557,7 +4613,7 @@ class Compiler
             }
 
             try {
-                $vars = $this->applyArguments($argDef, $args, false);
+                $vars = $this->applyArguments($argDef, $args, false, false);
 
                 // ensure all args are populated
                 foreach ($prototype as $i => $p) {
@@ -4607,10 +4663,12 @@ class Compiler
      *
      * @param array $argDef
      * @param array $argValues
-     *
+     * @param bool $storeInEnv
+     * @param bool $reduce
+     *   only used if $storeInEnv = false
      * @throws \Exception
      */
-    protected function applyArguments($argDef, $argValues, $storeInEnv = true)
+    protected function applyArguments($argDef, $argValues, $storeInEnv = true, $reduce = true)
     {
         $output = [];
 
@@ -4746,7 +4804,7 @@ class Compiler
             if ($storeInEnv) {
                 $this->set($name, $this->reduce($val, true), true, $env);
             } else {
-                $output[$name] = $val;
+                $output[$name] = ($reduce ? $this->reduce($val, true) : $val);
             }
         }
 
@@ -4764,7 +4822,7 @@ class Compiler
             if ($storeInEnv) {
                 $this->set($name, $this->reduce($default, true), true);
             } else {
-                $output[$name] = $default;
+                $output[$name] = ($reduce ? $this->reduce($default, true) : $default);
             }
         }
 
@@ -5955,7 +6013,7 @@ class Compiler
                 return ',';
 
             case 'space':
-                return '';
+                return ' ';
 
             default:
                 return $list1[1];
