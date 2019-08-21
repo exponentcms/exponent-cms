@@ -1005,7 +1005,9 @@ var elFinder = function(elm, opts, bootCallback) {
 		if (l = handlers.length) {
 			event = $.Event(type);
 			if (data) {
-				data._event = event;
+				data._getEvent = function() {
+					return event;
+				};
 			}
 			if (allowModify) {
 				event.data = data;
@@ -1152,12 +1154,25 @@ var elFinder = function(elm, opts, bootCallback) {
 
 			// additional CSS files
 			if (Array.isArray(self.options.cssAutoLoad)) {
-				if (self.cssloaded === true) {
-					self.loadCss(self.options.cssAutoLoad);
+				if (!self.options.themes.default) {
+					// set as default theme
+					self.options.themes = Object.assign({
+						'default' : {
+							'name': 'default',
+							'cssurls': self.options.cssAutoLoad
+						}
+					}, self.options.themes);
+					if (!self.options.theme) {
+						self.options.theme = 'default';
+					}
 				} else {
-					self.bind('cssloaded', function() {
+					if (self.cssloaded === true) {
 						self.loadCss(self.options.cssAutoLoad);
-					});
+					} else {
+						self.bind('cssloaded', function() {
+							self.loadCss(self.options.cssAutoLoad);
+						});
+					}
 				}
 			}
 
@@ -2574,7 +2589,7 @@ var elFinder = function(elm, opts, bootCallback) {
 						err: error,
 						xhr: xhr,
 						rc: response
-					};
+					}, errMsg;
 
 					// unset this cmd queue when user canceling
 					// see notify : function - `cancel.reject(0);`
@@ -2587,7 +2602,7 @@ var elFinder = function(elm, opts, bootCallback) {
 					}
 					// trigger "requestError" event
 					self.trigger('requestError', errData);
-					if (errData._event && errData._event.isDefaultPrevented()) {
+					if (errData._getEvent && errData._getEvent().isDefaultPrevented()) {
 						deffail = false;
 						syncOnFail = false;
 						if (error) {
@@ -2601,8 +2616,9 @@ var elFinder = function(elm, opts, bootCallback) {
 						openDir && openDir.volumeid && self.isRoot(openDir) && delete self.volumeExpires[openDir.volumeid];
 					}
 					self.trigger(cmd + 'fail', response);
-					if (error) {
-						deffail ? self.error(error) : self.debug('error', self.i18n(error));
+					errMsg = (typeof error === 'object')? error.error : error;
+					if (errMsg) {
+						deffail ? self.error(errMsg) : self.debug('error', self.i18n(errMsg));
 					}
 					syncOnFail && self.sync();
 				});
@@ -5834,7 +5850,7 @@ elFinder.prototype = {
 		
 		data = self.normalize(data);
 		if (!self.validResponse('upload', data)) {
-			return {error : (response.norError || ['errResponse'])};
+			return {error : (data.norError || ['errResponse'])};
 		}
 		data.removed = $.merge((data.removed || []), $.map(data.added || [], function(f) { return self.file(f.hash)? f.hash : null; }));
 		return data;
@@ -6519,7 +6535,7 @@ elFinder.prototype = {
 				
 				if (error) {
 					node.trigger('uploadabort');
-					getFile(files).done(function(file) {
+					getFile(files || {}).done(function(file) {
 						return dfrd.reject(file._cid? null : error);
 					});
 				}
@@ -6557,7 +6573,7 @@ elFinder.prototype = {
 					self.trigger('uploadfail', res);
 					// trigger "requestError" event
 					self.trigger('requestError', errData);
-					if (errData._event && errData._event.isDefaultPrevented()) {
+					if (errData._getEvent && errData._getEvent().isDefaultPrevented()) {
 						res.error = '';
 					}
 					if (res._chunkfailure || res._multiupload) {
@@ -9659,14 +9675,16 @@ elFinder.prototype = {
 					if (fileCnt !== false) {
 						if (typeof data.fileCnt === 'undefined') {
 							fileCnt = false;
+						} else {
+							fileCnt += parseInt(data.fileCnt || 0);
 						}
-						fileCnt += parseInt(data.fileCnt || 0);
 					}
 					if (dirCnt !== false) {
 						if (typeof data.dirCnt === 'undefined') {
 							dirCnt = false;
+						} else {
+							dirCnt += parseInt(data.dirCnt || 0);
 						}
-						dirCnt += parseInt(data.dirCnt || 0);
 					}
 				}
 				changed.length && self.change({changed: changed});
