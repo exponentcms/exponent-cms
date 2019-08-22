@@ -578,9 +578,9 @@ if (!defined('SWIFT_PATH')) {
         define('SWIFT_VERSION', '6.2.1');  //note v6.x requires php v7.x
     }
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
-    define('LEXER_VERSION', '1.0.1');
+    define('LEXER_VERSION', '1.1.0');
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
-    define('EMAIL_VALIDATOR_VERSION', '2.1.4');
+    define('EMAIL_VALIDATOR_VERSION', '2.1.11');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 

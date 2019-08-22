@@ -1,7 +1,7 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
 Swiftmailer,5.4.12/6.2.1,github.com/swiftmailer/swiftmailer,6.2.1,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
-Doctrine Lexer,1.0.1,github.com/doctrine/lexer,1.1.0,needed by swiftmailer v6
-EmailValidator,2.1.4,github.com/egulias/EmailValidator,2.1.11,needed by swiftmailer v6; add autoloader and move within folders
+Doctrine Lexer,1.1.0,github.com/doctrine/lexer,1.1.0,needed by swiftmailer v6
+EmailValidator,2.1.11,github.com/egulias/EmailValidator,2.1.11,needed by swiftmailer v6; add autoloader and move within folders
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,22.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,22.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.27/3.1.33,smarty.net,3.1.33,
