@@ -198,7 +198,7 @@ class reportController extends expController {
                     $oar[$order->order_type->title]['num_orders'] = null;
                     $oar[$order->order_type->title]['num_items'] = null;
                 }
-                $oar[$order->order_type->title]['grand_total'] += $order->grand_total;
+                $oar[$order->order_type->title]['grand_total'] += $order->total;
                 $oar[$order->order_type->title]['num_orders']++;
                 $oar[$order->order_type->title]['num_items'] += count($order->orderitem);
 
@@ -208,7 +208,7 @@ class reportController extends expController {
                     $oar[$order->order_type->title][$order->order_status->title]['num_orders'] = null;
                     $oar[$order->order_type->title][$order->order_status->title]['num_items'] = null;
                 }
-                $oar[$order->order_type->title][$order->order_status->title]['grand_total'] += $order->grand_total;
+                $oar[$order->order_type->title][$order->order_status->title]['grand_total'] += $order->total;
                 $oar[$order->order_type->title][$order->order_status->title]['num_orders']++;
                 $oar[$order->order_type->title][$order->order_status->title]['num_items'] += count($order->orderitem);
             }
@@ -1700,6 +1700,68 @@ class reportController extends expController {
             'summary'               => $summary,
             'cartsWithoutItems'     => $cartsWithoutItems,
             'cartsWithItems'        => $cartsWithItems,
+            'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo
+        ));
+    }
+
+    /**
+     * Report on abandoned carts in row format
+     */
+    function abandoned_carts_row() {
+        global $db;
+
+        $allCarts = array();
+        $carts = array();
+        $cartsWithItemsAndInfo = array();
+        $summary = array();
+        $valueproducts = '';
+
+        $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'), 3 => gt('Last 60 Days'), 4 => gt('Last 90 Days'), 5 => gt('Last 365 Days'), 6 => gt('Forever'));
+        $this->setDateParams($this->params);
+        if (!isset($this->params['quickrange'])) {
+            $this->params['quickrange'] = 0;
+        }
+
+        // purchased == 0 or invoice_id == 0 on unsubmitted orders
+        $sql = "SELECT * FROM " . $db->tableStmt('orders') . " WHERE purchased = 0 AND edited_at >= " . $this->tstart . " AND edited_at <= " . $this->tend . " AND sessionticket_ticket NOT IN ";
+        $sql .= "(SELECT ticket FROM " . $db->tableStmt('sessionticket') . ") ORDER BY edited_at DESC";
+        // echo $sql;
+        $allCarts = $db->selectObjectsBySql($sql);
+        foreach ($allCarts as $item) {
+            $sql = "SELECT * FROM " . $db->tableStmt('orderitems') . " WHERE orders_id =" . $item->id;
+
+            $carts = $db->selectObjectsBySql($sql);
+            foreach ($carts as $item2) {
+                $valueproducts += $item2->products_price_adjusted * $item2->quantity;
+            }
+
+            $carts['last_visit'] = date('Y-m-d, g:i:s A', $item->edited_at);
+            $carts['referrer'] = $item->orig_referrer;
+
+            if (count($carts) > 2) {
+                if (!empty($item->user_id)) {
+                    $u = $db->selectObject('user', 'id=' . $item->user_id);
+                    $carts['name'] = $u->firstname . ' ' . $u->lastname;
+                    $carts['email'] = $u->email;
+                    $cartsWithItemsAndInfo[] = $carts;
+                    // $cartsWithItemsAndInfo['length_of_time']  = round(abs($item->last_active - $item->start_time) / 60,2)." minutes";
+                    // $cartsWithItemsAndInfo['ip_address']  = $item->ip_address;
+                    // $cartsWithItemsAndInfo['referrer']    = $item->referrer;
+                }
+            }
+        }
+        //Added the count
+        $allCarts['count'] = count($allCarts);
+        $cartsWithItemsAndInfo['count'] = count($cartsWithItemsAndInfo); //for the added values at the top
+
+        $summary['totalcarts'] = $allCarts['count'];
+        $summary['valueproducts'] = $valueproducts;
+        $summary['cartsWithItemsAndInfo'] = round(($allCarts['count'] ? $cartsWithItemsAndInfo['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
+
+        assign_to_template(array(
+            'quickrange'            => $quickrange,
+            'quickrange_default'    => $this->params['quickrange'],
+            'summary'               => $summary,
             'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo
         ));
     }
