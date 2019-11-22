@@ -1,9 +1,9 @@
 /**
  * Simple Ajax Uploader
- * Version 2.6.2
+ * Version 2.6.7
  * https://github.com/LPology/Simple-Ajax-Uploader
  *
- * Copyright 2012-2017 LPology, LLC
+ * Copyright 2012-2019 LPology, LLC
  * Released under the MIT license
  */
 
@@ -311,6 +311,7 @@ ss.copyLayout = function( from, to ) {
 
     ss.addStyles( to, {
         position: 'absolute',
+        display: 'block',
         left : box.left + 'px',
         top : box.top + 'px',
         width : from.offsetWidth + 'px',
@@ -693,7 +694,7 @@ ss.SimpleUpload = function( options ) {
         onDone: function( filename, status, textStatus, response, uploadBtn, size ) {},
         onAllDone: function() {},
         onExtError: function( filename, extension ) {},
-        onSizeError: function( filename, fileSize ) {},
+        onSizeError: function( filename, fileSize, uploadBtn ) {},
         onError: function( filename, type, status, statusText, response, uploadBtn, size ) {},
         startXHR: function( filename, fileSize, uploadBtn ) {},
         endXHR: function( filename, fileSize, uploadBtn ) {},
@@ -1998,8 +1999,9 @@ ss.extendObj( ss.SimpleUpload.prototype, {
         }
 
         ss.addStyles( div, {
-            'display' : 'block',
-            'position' : 'absolute',
+            'display' : 'none',
+            'position' : 'relative',
+            'visibility' : 'hidden',
             'overflow' : 'hidden',
             'margin' : 0,
             'padding' : 0,
@@ -2202,7 +2204,7 @@ ss.extendObj( ss.SimpleUpload.prototype, {
         {
             this.removeCurrent( fileObj.id );
             this.log( fileObj.name + ' exceeds ' + this._opts.maxSize + 'K limit' );
-            this._opts.onSizeError.call( this, fileObj.name, fileObj.size );
+            this._opts.onSizeError.call( this, fileObj.name, fileObj.size, fileObj.btn );
             return false;
         }
 
@@ -2275,3 +2277,4 @@ ss.extendObj( ss.SimpleUpload.prototype, ss.DragAndDrop );
 return ss;
 
 }));
+
