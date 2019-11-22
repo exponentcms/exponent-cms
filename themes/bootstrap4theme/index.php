@@ -11,7 +11,7 @@
                 "height"=>"device-height",
                 "initial_scale"=>1,
                 "minimum_scale"=>0.25,
-                "maximum_scale"=>5.0,
+//                "maximum_scale"=>5.0,
                 "user_scalable"=>true,
             ),
             "css_core"=>array(
