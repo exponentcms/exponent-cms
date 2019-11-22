@@ -146,7 +146,7 @@ div.DTTT .btn {
 }
 
 /* centered navbar support */
-@if ($menu_align_center = 1) {
+@if ($menu_align_center == 1) {
 	@media (min-width: ($menu_width + 0px)) {
 		#topnavbar.navbar .navbar-nav {
 			display: inline-block;

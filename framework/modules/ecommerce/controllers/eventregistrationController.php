@@ -134,7 +134,7 @@ class eventregistrationController extends expController {
     function eventsCalendar() {
         global $user;
 
-        expHistory::set('viewable', $this->params);
+        expHistory::set('viewable', $this->params, true);
 
         $time = isset($this->params['time']) ? $this->params['time'] : time();
         assign_to_template(array(

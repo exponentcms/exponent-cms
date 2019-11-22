@@ -1,3 +1,4 @@
+
 <?php
 // +------------------------------------------------------------------------+
 // | class.upload.tr_TR.php                                                 |
@@ -34,6 +35,7 @@
  * @author    Volkan Metin (metinsoft@gmail.com)
  * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
  * @copyright Volkan Metin
+ * @edit Taner İnanır
  * @package   cmf
  * @subpackage external
  */
@@ -83,3 +85,4 @@
     $translation['reading_failed']              = 'Dosya okunurken hata oluştu.';   
         
 ?>
+

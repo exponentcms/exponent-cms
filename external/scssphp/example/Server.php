@@ -2,18 +2,18 @@
 /**
  * SCSSPHP
  *
- * @copyright 2012-2017 Leaf Corcoran
+ * @copyright 2012-2019 Leaf Corcoran
  *
  * @license http://opensource.org/licenses/MIT MIT
  *
- * @link http://leafo.github.io/scssphp
+ * @link http://scssphp.github.io/scssphp
  */
 
-namespace Leafo\ScssPhp;
+namespace ScssPhp\ScssPhp;
 
-use Leafo\ScssPhp\Compiler;
-use Leafo\ScssPhp\Exception\ServerException;
-use Leafo\ScssPhp\Version;
+use ScssPhp\ScssPhp\Compiler;
+use ScssPhp\ScssPhp\Exception\ServerException;
+use ScssPhp\ScssPhp\Version;
 
 /**
  * Server
@@ -38,7 +38,7 @@ class Server
     private $cacheDir;
 
     /**
-     * @var \Leafo\ScssPhp\Compiler
+     * @var \ScssPhp\ScssPhp\Compiler
      */
     private $scss;
 
@@ -62,13 +62,16 @@ class Server
      */
     protected function inputName()
     {
-        switch (true) {
-            case isset($_GET['p']):
-                return $_GET['p'];
-            case isset($_SERVER['PATH_INFO']):
-                return $_SERVER['PATH_INFO'];
-            case isset($_SERVER['DOCUMENT_URI']):
-                return substr($_SERVER['DOCUMENT_URI'], strlen($_SERVER['SCRIPT_NAME']));
+        if (isset($_GET['p'])) {
+            return $_GET['p'];
+        }
+
+        if (isset($_SERVER['PATH_INFO'])) {
+            return $_SERVER['PATH_INFO'];
+        }
+
+        if (isset($_SERVER['DOCUMENT_URI'])) {
+            return substr($_SERVER['DOCUMENT_URI'], strlen($_SERVER['SCRIPT_NAME']));
         }
     }
 
@@ -96,6 +99,8 @@ class Server
     /**
      * Get path to cached .css file
      *
+     * @param string $fname
+     *
      * @return string
      */
     protected function cacheName($fname)
@@ -105,6 +110,8 @@ class Server
 
     /**
      * Get path to meta data
+     *
+     * @param string $out
      *
      * @return string
      */
@@ -270,7 +277,7 @@ class Server
      *
      * @return string|bool
      *
-     * @throws \Leafo\ScssPhp\Exception\ServerException
+     * @throws \ScssPhp\ScssPhp\Exception\ServerException
      */
     public function compileFile($in, $out = null)
     {
@@ -284,11 +291,11 @@ class Server
 
         $compiled = $this->scss->compile(file_get_contents($in), $in);
 
-        if ($out !== null) {
-            return file_put_contents($out, $compiled);
+        if (is_null($out)) {
+            return $compiled;
         }
 
-        return $compiled;
+        return file_put_contents($out, $compiled);
     }
 
     /**
@@ -299,7 +306,7 @@ class Server
      *
      * @return bool
      *
-     * @throws ServerException
+     * @throws \ScssPhp\ScssPhp\Exception\ServerException
      */
     public function checkedCompile($in, $out)
     {
@@ -397,7 +404,7 @@ class Server
      *
      * @return string Compiled CSS results
      *
-     * @throws \Leafo\ScssPhp\Exception\ServerException
+     * @throws \ScssPhp\ScssPhp\Exception\ServerException
      */
     public function checkedCachedCompile($in, $out, $force = false)
     {
@@ -439,7 +446,7 @@ class Server
      *
      * @return array scssphp cache structure
      *
-     * @throws ServerException
+     * @throws \ScssPhp\ScssPhp\Exception\ServerException
      */
     public function cachedCompile($in, $force = false)
     {
@@ -470,29 +477,30 @@ class Server
             return null;
         }
 
-        if ($root !== null) {
-            // If we have a root value which means we should rebuild.
-            $out = array();
-            $out['root'] = $root;
-            $out['compiled'] = $this->compileFile($root);
-            $out['files'] = $this->scss->getParsedFiles();
-            $out['updated'] = time();
-            return $out;
-        } else {
+        if (is_null($root)) {
             // No changes, pass back the structure
             // we were given initially.
             return $in;
         }
+
+        // If we have a root value which means we should rebuild.
+        $out = [];
+        $out['root'] = $root;
+        $out['compiled'] = $this->compileFile($root);
+        $out['files'] = $this->scss->getParsedFiles();
+        $out['updated'] = time();
+
+        return $out;
     }
 
     /**
      * Constructor
      *
-     * @param string                       $dir      Root directory to .scss files
-     * @param string                       $cacheDir Cache directory
-     * @param \Leafo\ScssPhp\Compiler|null $scss     SCSS compiler instance
+     * @param string                         $dir      Root directory to .scss files
+     * @param string                         $cacheDir Cache directory
+     * @param \ScssPhp\ScssPhp\Compiler|null $scss     SCSS compiler instance
      *
-     * @throws ServerException
+     * @throws \ScssPhp\ScssPhp\Exception\ServerException
      */
     public function __construct($dir, $cacheDir = null, $scss = null)
     {

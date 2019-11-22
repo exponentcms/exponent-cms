@@ -655,7 +655,7 @@ class sqlsvr_database extends database {
             if (is_array($diff_c)) {
                 foreach ($diff_c as $name => $def) {
                     if (!array_key_exists($name, $diff) && (isset($def[DB_FIELD_TYPE]) || isset($def[DB_FIELD_LEN]) || isset($def[DB_DEFAULT]) || isset($def[DB_INCREMENT]))) {  // wasn't a new column
-                        if ($dd[$name][DB_FIELD_TYPE] == DB_DEF_STRING) {
+                        if ($newdatadef[$name][DB_FIELD_TYPE] == DB_DEF_STRING) {
                             //check for actual lengths vs. exp placeholder lengths
                             $newlen = $newdatadef[$name][DB_FIELD_LEN];
                             $len = $dd[$name][DB_FIELD_LEN];

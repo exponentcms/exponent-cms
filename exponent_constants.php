@@ -428,23 +428,23 @@ if (empty($_SERVER['HTTP_USER_AGENT'])) {
 }
 if (!defined('EXPONENT_USER_OS')) {
     // 1. Platform
-    if (stristr($_SERVER['HTTP_USER_AGENT'], 'win')) {
+    if (stripos($_SERVER['HTTP_USER_AGENT'], 'win') !== false) {
         define('EXPONENT_USER_OS', 'Win');
-    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'mac')) {
+    } elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'mac') !== false) {
         define('EXPONENT_USER_OS', 'Mac');
-    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'linux')) {
+    } elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'linux') !== false) {
         define('EXPONENT_USER_OS', 'Linux');
-    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'unix')) {
+    } elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'unix') !== false) {
         define('EXPONENT_USER_OS', 'Unix');
-    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'os/2')) {
+    } elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'os/2') !== false) {
         define('EXPONENT_USER_OS', 'OS/2');
-    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'iphone')) {
+    } elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'iphone') !== false) {
         define('EXPONENT_USER_OS', 'iPhone');
-    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'ipad')) {
+    } elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'ipad') !== false) {
         define('EXPONENT_USER_OS', 'iPad');
-    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'android')) {
+    } elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'android') !== false) {
         define('EXPONENT_USER_OS', 'Android');
-    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'webos')) {
+    } elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'webos') !== false) {
         define('EXPONENT_USER_OS', 'Mobile');
     } else {
         define('EXPONENT_USER_OS', 'Other');
@@ -525,7 +525,7 @@ if (!defined('YUI2_RELATIVE')) {
 if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
-    define('JQUERY3_VERSION', '3.3.1');
+    define('JQUERY3_VERSION', '3.4.1');
     define('JQUERY3_MIGRATE_VERSION', '3.0.1');
     define('JQUERYUI_VERSION', '1.12.1');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
@@ -575,12 +575,12 @@ if (!defined('SWIFT_PATH')) {
     if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
         define('SWIFT_VERSION', '5.4.12');
     } else {
-        define('SWIFT_VERSION', '6.2.0');  //note v6.x requires php v7.x
+        define('SWIFT_VERSION', '6.2.3');  //note v6.x requires php v7.x
     }
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
-    define('LEXER_VERSION', '1.0.1');
+    define('LEXER_VERSION', '1.2.0');
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
-    define('EMAIL_VALIDATOR_VERSION', '2.1.4');
+    define('EMAIL_VALIDATOR_VERSION', '2.1.11');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 

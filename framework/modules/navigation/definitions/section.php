@@ -59,6 +59,10 @@ return array(
 		DB_FIELD_LEN=>10000),
 	'secured'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'noindex'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'nofollow'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'alias_type'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'external_link'=>array(

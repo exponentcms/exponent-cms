@@ -1005,7 +1005,9 @@ var elFinder = function(elm, opts, bootCallback) {
 		if (l = handlers.length) {
 			event = $.Event(type);
 			if (data) {
-				data._event = event;
+				data._getEvent = function() {
+					return event;
+				};
 			}
 			if (allowModify) {
 				event.data = data;
@@ -1085,13 +1087,12 @@ var elFinder = function(elm, opts, bootCallback) {
 
 	// set fm.baseUrl
 	this.baseUrl = (function() {
-		var myTag, myCss, base, baseUrl;
+		var myTag, base, baseUrl;
 		
 		if (self.options.baseUrl) {
 			return self.options.baseUrl;
 		} else {
 			baseUrl = '';
-			//myTag = $('head > script[src$="js/elfinder.min.js"],script[src$="js/elfinder.full.js"]:first');
 			myTag = null;
 			$('head > script').each(function() {
 				if (this.src && this.src.match(/js\/elfinder(?:-[a-z0-9_-]+)?\.(?:min|full)\.js$/i)) {
@@ -1100,11 +1101,6 @@ var elFinder = function(elm, opts, bootCallback) {
 				}
 			});
 			if (myTag) {
-				myCss = $('head > link[href$="css/elfinder.min.css"],link[href$="css/elfinder.full.css"]:first').length;
-				if (! myCss) {
-					// to request CSS auto loading
-					self.cssloaded = null;
-				}
 				baseUrl = myTag.attr('src').replace(/js\/[^\/]+$/, '');
 				if (! baseUrl.match(/^(https?\/\/|\/)/)) {
 					// check <base> tag
@@ -1135,23 +1131,56 @@ var elFinder = function(elm, opts, bootCallback) {
 	// auto load required CSS
 	if (this.options.cssAutoLoad) {
 		(function() {
-			var baseUrl = self.baseUrl;
+			var baseUrl = self.baseUrl,
+				myCss = $('head > link[href$="css/elfinder.min.css"],link[href$="css/elfinder.full.css"]:first').length,
+				rmTag = function() {
+					if (node.data('cssautoloadHide')) {
+						node.data('cssautoloadHide').remove();
+						node.removeData('cssautoloadHide');
+					}
+				},
+				loaded = function() {
+					if (!self.cssloaded) {
+						rmTag();
+						self.cssloaded = true;
+						self.trigger('cssloaded');
+					}
+				};
 			
+			if (! myCss) {
+				// to request CSS auto loading
+				self.cssloaded = null;
+			}
+
 			// additional CSS files
 			if (Array.isArray(self.options.cssAutoLoad)) {
-				if (self.cssloaded === true) {
-					self.loadCss(self.options.cssAutoLoad);
+				if (!self.options.themes.default) {
+					// set as default theme
+					self.options.themes = Object.assign({
+						'default' : {
+							'name': 'default',
+							'cssurls': self.options.cssAutoLoad
+						}
+					}, self.options.themes);
+					if (!self.options.theme) {
+						self.options.theme = 'default';
+					}
 				} else {
-					self.bind('cssloaded', function() {
+					if (self.cssloaded === true) {
 						self.loadCss(self.options.cssAutoLoad);
-					});
+					} else {
+						self.bind('cssloaded', function() {
+							self.loadCss(self.options.cssAutoLoad);
+						});
+					}
 				}
 			}
 
 			// try to load main css
 			if (self.cssloaded === null) {
 				// hide elFinder node while css loading
-				node.data('cssautoloadHide', $('<style>.elfinder{visibility:hidden;overflow:hidden}</style>'));
+				node.addClass('elfinder')
+					.data('cssautoloadHide', $('<style>.elfinder{visibility:hidden;overflow:hidden}</style>'));
 				$('head').append(node.data('cssautoloadHide'));
 
 				// set default theme
@@ -1169,30 +1198,52 @@ var elFinder = function(elm, opts, bootCallback) {
 					}
 				}
 
-				// load CSS
-				self.loadCss([baseUrl+'css/elfinder.min.css'], {
-					dfd: $.Deferred().always(function() {
-						if (node.data('cssautoloadHide')) {
-							node.data('cssautoloadHide').remove();
-							node.removeData('cssautoloadHide');
-						}
-					}).done(function() {
-						if (!self.cssloaded) {
-							self.cssloaded = true;
-							self.trigger('cssloaded');
-						}
-					}).fail(function() {
-						self.cssloaded = false;
-						self.error(['errRead', 'CSS (elfinder or theme)']);
-					})
+				// Delay 'visibility' check it required for browsers such as Safari
+				requestAnimationFrame(function() {
+					if (node.css('visibility') === 'hidden') {
+						// load CSS
+						self.loadCss([baseUrl+'css/elfinder.min.css'], {
+							dfd: $.Deferred().done(function() {
+								loaded();
+							}).fail(function() {
+								rmTag();
+								if (!self.cssloaded) {
+									self.cssloaded = false;
+									self.bind('init', function() {
+										if (!self.cssloaded) {
+											self.error(['errRead', 'CSS (elfinder.min)']);
+										}
+									});
+								}
+							})
+						});
+					} else {
+						loaded();
+					}
 				});
 			}
-			self.options.cssAutoLoad = false;
 		})();
 	}
 
 	// load theme if exists
-	this.changeTheme(this.storage('theme') || this.options.theme);
+	(function() {
+		var theme,
+			themes = self.options.themes,
+			ids = Object.keys(themes || {});
+		if (ids.length) {
+			theme = self.storage('theme') || self.options.theme;
+			if (!themes[theme]) {
+				theme = ids[0];
+			}
+			if (self.cssloaded) {
+				self.changeTheme(theme);
+			} else {
+				self.bind('cssloaded', function() {
+					self.changeTheme(theme);
+				});
+			}
+		}
+	})();
 	
 	/**
 	 * Volume option to set the properties of the root Stat
@@ -2538,7 +2589,7 @@ var elFinder = function(elm, opts, bootCallback) {
 						err: error,
 						xhr: xhr,
 						rc: response
-					};
+					}, errMsg;
 
 					// unset this cmd queue when user canceling
 					// see notify : function - `cancel.reject(0);`
@@ -2551,7 +2602,7 @@ var elFinder = function(elm, opts, bootCallback) {
 					}
 					// trigger "requestError" event
 					self.trigger('requestError', errData);
-					if (errData._event && errData._event.isDefaultPrevented()) {
+					if (errData._getEvent && errData._getEvent().isDefaultPrevented()) {
 						deffail = false;
 						syncOnFail = false;
 						if (error) {
@@ -2565,8 +2616,9 @@ var elFinder = function(elm, opts, bootCallback) {
 						openDir && openDir.volumeid && self.isRoot(openDir) && delete self.volumeExpires[openDir.volumeid];
 					}
 					self.trigger(cmd + 'fail', response);
-					if (error) {
-						deffail ? self.error(error) : self.debug('error', self.i18n(error));
+					errMsg = (typeof error === 'object')? error.error : error;
+					if (errMsg) {
+						deffail ? self.error(errMsg) : self.debug('error', self.i18n(errMsg));
 					}
 					syncOnFail && self.sync();
 				});
@@ -4644,6 +4696,15 @@ var elFinder = function(elm, opts, bootCallback) {
 				! self.enabled() && self.enable();
 			});
 		}
+
+		// When the browser tab turn to foreground/background
+		$(window).on('visibilitychange.' + namespace, function(e) {
+			var background = document.hidden || document.webkitHidden || document.msHidden;
+			// AutoSync turn On/Off
+			if (self.options.syncStart) {
+				self.autoSync(background? 'stop' : void(0));
+			}
+		});
 	});
 
 	// store instance in node
@@ -5366,34 +5427,8 @@ var elFinder = function(elm, opts, bootCallback) {
 			})();
 		}
 
-		// trigger event cssloaded if cddAutoLoad disabled
-		if (self.cssloaded === null) {
-			// check css loaded and remove hide
-			(function() {
-				var loaded = function() {
-						if (node.data('cssautoloadHide')) {
-							node.data('cssautoloadHide').remove();
-							node.removeData('cssautoloadHide');
-						}
-						self.cssloaded = true;
-						requestAnimationFrame(function() {
-							self.trigger('cssloaded');
-						});
-					},
-					cnt, fi;
-				if (node.css('visibility') === 'hidden') {
-					cnt = 1000; // timeout 10 secs
-					fi  = setInterval(function() {
-						if (--cnt < 0 || node.css('visibility') !== 'hidden') {
-							clearInterval(fi);
-							loaded();
-						}
-					}, 10);
-				} else {
-					loaded();
-				}
-			})();
-		} else {
+		// trigger event cssloaded if cssAutoLoad disabled
+		if (self.cssloaded === false) {
 			self.cssloaded = true;
 			self.trigger('cssloaded');
 		}
@@ -5815,7 +5850,7 @@ elFinder.prototype = {
 		
 		data = self.normalize(data);
 		if (!self.validResponse('upload', data)) {
-			return {error : (response.norError || ['errResponse'])};
+			return {error : (data.norError || ['errResponse'])};
 		}
 		data.removed = $.merge((data.removed || []), $.map(data.added || [], function(f) { return self.file(f.hash)? f.hash : null; }));
 		return data;
@@ -6500,7 +6535,7 @@ elFinder.prototype = {
 				
 				if (error) {
 					node.trigger('uploadabort');
-					getFile(files).done(function(file) {
+					getFile(files || {}).done(function(file) {
 						return dfrd.reject(file._cid? null : error);
 					});
 				}
@@ -6538,7 +6573,7 @@ elFinder.prototype = {
 					self.trigger('uploadfail', res);
 					// trigger "requestError" event
 					self.trigger('requestError', errData);
-					if (errData._event && errData._event.isDefaultPrevented()) {
+					if (errData._getEvent && errData._getEvent().isDefaultPrevented()) {
 						res.error = '';
 					}
 					if (res._chunkfailure || res._multiupload) {
@@ -9640,14 +9675,16 @@ elFinder.prototype = {
 					if (fileCnt !== false) {
 						if (typeof data.fileCnt === 'undefined') {
 							fileCnt = false;
+						} else {
+							fileCnt += parseInt(data.fileCnt || 0);
 						}
-						fileCnt += parseInt(data.fileCnt || 0);
 					}
 					if (dirCnt !== false) {
 						if (typeof data.dirCnt === 'undefined') {
 							dirCnt = false;
+						} else {
+							dirCnt += parseInt(data.dirCnt || 0);
 						}
-						dirCnt += parseInt(data.dirCnt || 0);
 					}
 				}
 				changed.length && self.change({changed: changed});
@@ -9759,7 +9796,7 @@ elFinder.prototype = {
 						});
 					}
 				});
-			} else if (themeid === 'default' && self.theme) {
+			} else if (themeid === 'default' && self.theme && self.theme.id !== 'default') {
 				$('head>link.elfinder-theme-ext').remove();
 				self.theme = null;
 				self.trigger && self.trigger('themechange');

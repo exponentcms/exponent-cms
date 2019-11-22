@@ -23,11 +23,11 @@
  */
 
 /**
- * Smarty {breadcrum} function plugin
+ * Smarty {breadcrumb} function plugin
  *
  * Type:     function<br>
- * Name:     breadcrum<br>
- * Purpose:  return a 'breadcrumb' widget
+ * Name:     breadcrumb<br>
+ * Purpose:  return a eCommerce 'breadcrumb' widget
  *
  * @param         $params
  * @param \Smarty $smarty

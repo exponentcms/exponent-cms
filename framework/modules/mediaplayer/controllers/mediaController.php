@@ -41,7 +41,7 @@ class mediaController extends expController {
     static function isSearchable() { return true; }
 
     function showall() {
-        expHistory::set('viewable', $this->params);
+        expHistory::set('viewable', $this->params, true);
         $page = new expPaginator(array(
             'model'=>$this->basemodel_name,
             'where'=>$this->aggregateWhereClause(),

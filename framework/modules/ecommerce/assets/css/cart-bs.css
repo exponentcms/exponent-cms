@@ -130,7 +130,7 @@ table#cart table td {
 #cart .options .exp-dropmenu {
 	display      : none;
 	position     : absolute;
-	top          : 20px;
+	top          : 25px;
 	left         : 0;
 	z-index      : 10;
 	border       : 1px solid #333;

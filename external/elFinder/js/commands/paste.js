@@ -206,6 +206,7 @@ elFinder.prototype.commands.paste = function() {
 						fm.request({
 								data   : reqData,
 								notify : {type : cmd, cnt : cnt},
+								cancel : true,
 								navigate : { 
 									toast  : opts.noToast? {} : {
 										inbuffer : {msg: fm.i18n(['complete', fm.i18n('cmd' + cmd)]), action: {
@@ -271,8 +272,12 @@ elFinder.prototype.commands.paste = function() {
 								}
 								dfrd.resolve(data);
 							})
-							.fail(function() {
+							.fail(function(flg) {
 								dfrd.reject();
+								if (flg === 0) {
+									// canceling
+									fm.sync();
+								}
 							})
 							.always(function() {
 								fm.unlockfiles({files : files});
@@ -307,7 +312,7 @@ elFinder.prototype.commands.paste = function() {
 				
 				return dfrd;
 			},
-			parents, fparents;
+			parents, fparents, cutDfrd;
 
 
 		if (!cnt || !dst || dst.mime != 'directory') {
@@ -357,22 +362,48 @@ elFinder.prototype.commands.paste = function() {
 			}
 		});
 
-		if (dfrd.state() == 'rejected') {
+		if (dfrd.state() === 'rejected') {
 			return dfrd;
 		}
 
-		$.when(
-			copy(fcopy),
-			paste(fpaste)
-		)
-		.done(function(cr, pr) {
-			dfrd.resolve(pr && pr.undo? pr : void(0));
-		})
-		.fail(function() {
+		cutDfrd = $.Deferred();
+		if (cut && self.options.moveConfirm) {
+			fm.confirm({
+				title  : 'moveFiles',
+				text   : fm.i18n('confirmMove', dst.i18 || dst.name),
+				accept : {
+					label    : 'btnYes',
+					callback : function() {  
+						cutDfrd.resolve();
+					}
+				},
+				cancel : {
+					label    : 'btnCancel',
+					callback : function() {
+						cutDfrd.reject();
+					}
+				}
+			});
+		} else {
+			cutDfrd.resolve();
+		}
+
+		cutDfrd.done(function() {
+			$.when(
+				copy(fcopy),
+				paste(fpaste)
+			)
+			.done(function(cr, pr) {
+				dfrd.resolve(pr && pr.undo? pr : void(0));
+			})
+			.fail(function() {
+				dfrd.reject();
+			})
+			.always(function() {
+				cut && fm.clipboard([]);
+			});
+		}).fail(function() {
 			dfrd.reject();
-		})
-		.always(function() {
-			cut && fm.clipboard([]);
 		});
 		
 		return dfrd;
