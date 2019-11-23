@@ -289,6 +289,11 @@ function renderAction(array $parms=array()) {
 
     // initialize the controller.
     $src = isset($parms['src']) ? $parms['src'] : null;
+    if (($action === 'show' || $action === 'showall') && isset($parms['view']) && !expJavascript::inAjaxAction()) {
+        if (stripos($parms['view'], $action . '_') !== 0) {
+            unset($parms['view']);
+        }
+    }
     $controller = new $fullControllerName($src, $parms);
 
     //Set up the correct template to use for this action

@@ -164,12 +164,17 @@ class expHistory {
             $url = array('url_type'=>$router->url_type, 'params'=>$router->params);
         }
 
+        if (isset($url['params']['ajax_action']))
+            unset($url['params']['ajax_action']);
+
         if (!empty($url)) {
             $diff = array();
 
             // if this url is the exact same as the last for this type we won't save it..that way refresh won't fill up our history
             if ($size > 0) {
                 $diff = @array_diff_assoc($router->params, $this->history[$url_type][$size-1]['params']);
+                if (isset($diff['ajax_action']))
+                    unset($diff['ajax_action']);
                 if (!$diff && (count($router->params) != count($this->history[$url_type][$size-1]['params']))) $diff = true;;
             }
       	    if (!empty($diff) || $size == 0) $this->history[$url_type][] = $url;
