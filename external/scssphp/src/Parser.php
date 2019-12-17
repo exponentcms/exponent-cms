@@ -547,6 +547,12 @@ class Parser
 
             if ($this->literal('@if', 3) && $this->valueList($cond) && $this->matchChar('{', false)) {
                 $if = $this->pushSpecialBlock(Type::T_IF, $s);
+                while ($cond[0] === Type::T_LIST
+                    && !empty($cond['enclosing'])
+                    && $cond['enclosing'] === 'parent'
+                    && count($cond[2]) == 1) {
+                    $cond = reset($cond[2]);
+                }
                 $if->cond  = $cond;
                 $if->cases = [];
 
@@ -678,6 +684,19 @@ class Parser
                 if (isset($dirValue)) {
                     $directive->value = $dirValue;
                 }
+
+                return true;
+            }
+
+            $this->seek($s);
+
+            // maybe it's a generic blockless directive
+            if ($this->matchChar('@', false) &&
+                $this->keyword($dirName) &&
+                $this->valueList($dirValue) &&
+                $this->end()
+            ) {
+                $this->append([Type::T_DIRECTIVE, [$dirName, $dirValue]], $s);
 
                 return true;
             }
@@ -1520,12 +1539,14 @@ class Parser
         $value = null;
 
         while ($this->$parseItem($value)) {
+            $trailing_delim = false;
             $items[] = $value;
 
             if ($delim) {
                 if (! $this->literal($delim, strlen($delim))) {
                     break;
                 }
+                $trailing_delim = true;
             }
         }
 
@@ -1535,6 +1556,9 @@ class Parser
             return false;
         }
 
+        if ($trailing_delim) {
+            $items[] = [Type::T_NULL];
+        }
         if ($flatten && count($items) === 1) {
             $out = $items[0];
         } else {
@@ -1548,29 +1572,24 @@ class Parser
      * Parse expression
      *
      * @param array $out
+     * @param bool $listOnly
+     * @param bool $lookForExp
      *
      * @return boolean
      */
-    protected function expression(&$out)
+    protected function expression(&$out, $listOnly = false, $lookForExp = true)
     {
         $s = $this->count;
         $discard = $this->discardComments;
         $this->discardComments = true;
+        $allowedTypes = ($listOnly ? [Type::T_LIST] : [Type::T_LIST, Type::T_MAP]);
 
         if ($this->matchChar('(')) {
-            if ($this->parenExpression($out, $s, ")")) {
-                $this->discardComments = $discard;
-
-                return true;
-            }
-
-            $this->seek($s);
-        }
-
-        if ($this->matchChar('[')) {
-            if ($this->parenExpression($out, $s, "]", [Type::T_LIST, Type::T_KEYWORD])) {
-                if ($out[0] !== Type::T_LIST && $out[0] !== Type::T_MAP) {
-                    $out = [Type::T_STRING, '', [ '[', $out, ']' ]];
+            if ($this->enclosedExpression($lhs, $s, ")", $allowedTypes)) {
+                if ($lookForExp) {
+                    $out = $this->expHelper($lhs, 0);
+                } else {
+                    $out = $lhs;
                 }
 
                 $this->discardComments = $discard;
@@ -1581,8 +1600,27 @@ class Parser
             $this->seek($s);
         }
 
-        if ($this->value($lhs)) {
-            $out = $this->expHelper($lhs, 0);
+        if (in_array(Type::T_LIST, $allowedTypes) && $this->matchChar('[')) {
+            if ($this->enclosedExpression($lhs, $s, "]", [Type::T_LIST])) {
+                if ($lookForExp) {
+                    $out = $this->expHelper($lhs, 0);
+                } else {
+                    $out = $lhs;
+                }
+                $this->discardComments = $discard;
+
+                return true;
+            }
+
+            $this->seek($s);
+        }
+
+        if (!$listOnly && $this->value($lhs)) {
+            if ($lookForExp) {
+                $out = $this->expHelper($lhs, 0);
+            } else {
+                $out = $lhs;
+            }
 
             $this->discardComments = $discard;
 
@@ -1603,15 +1641,35 @@ class Parser
      *
      * @return boolean
      */
-    protected function parenExpression(&$out, $s, $closingParen = ")", $allowedTypes = [Type::T_LIST, Type::T_MAP])
+    protected function enclosedExpression(&$out, $s, $closingParen = ")", $allowedTypes = [Type::T_LIST, Type::T_MAP])
     {
-        if ($this->matchChar($closingParen)) {
+        if ($this->matchChar($closingParen) && in_array(Type::T_LIST, $allowedTypes)) {
             $out = [Type::T_LIST, '', []];
-
+            switch ($closingParen) {
+                case ")":
+                    $out['enclosing'] = 'parent'; // parenthesis list
+                    break;
+                case "]":
+                    $out['enclosing'] = 'bracket'; // bracketed list
+                    break;
+            }
             return true;
         }
 
-        if ($this->valueList($out) && $this->matchChar($closingParen) && in_array($out[0], $allowedTypes)) {
+        if ($this->valueList($out) && $this->matchChar($closingParen)
+            && in_array($out[0], [Type::T_LIST, Type::T_KEYWORD])
+            && in_array(Type::T_LIST, $allowedTypes)) {
+            if ($out[0] !== Type::T_LIST || ! empty($out['enclosing'])) {
+                $out = [Type::T_LIST, '', [$out]];
+            }
+            switch ($closingParen) {
+                case ")":
+                    $out['enclosing'] = 'parent'; // parenthesis list
+                    break;
+                case "]":
+                    $out['enclosing'] = 'bracket'; // bracketed list
+                    break;
+            }
             return true;
         }
 
@@ -1655,7 +1713,7 @@ class Parser
                 break;
             }
 
-            if (! $this->value($rhs)) {
+            if (! $this->value($rhs) && ! $this->expression($rhs, true, false)) {
                 break;
             }
 
@@ -2635,6 +2693,7 @@ class Parser
 
                     if ($nameParts === ['not'] || $nameParts === ['is'] ||
                         $nameParts === ['has'] || $nameParts === ['where'] ||
+                        $nameParts === ['slotted'] ||
                         $nameParts === ['nth-child'] || $nameParts == ['nth-last-child'] ||
                         $nameParts === ['nth-of-type'] || $nameParts == ['nth-last-of-type']
                     ) {
