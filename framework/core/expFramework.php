@@ -289,8 +289,8 @@ function renderAction(array $parms=array()) {
 
     // initialize the controller.
     $src = isset($parms['src']) ? $parms['src'] : null;
-    if (($action === 'show' || $action === 'showall') && isset($parms['view']) && !expJavascript::inAjaxAction()) {
-        if (stripos($parms['view'], $action . '_') !== 0) {
+    if (!expJavascript::inAjaxAction() && ($action === 'show' || $action === 'showall') && isset($parms['view'])) {
+        if (stripos($parms['view'], $action . '_') !== 0 && $parms['view'] !== $action) {
             unset($parms['view']);
         }
     }
