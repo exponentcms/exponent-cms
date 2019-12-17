@@ -228,43 +228,43 @@ elFinder.prototype.commands.quicklook.plugins = [
 	 *
 	 * @param elFinder.commands.quicklook
 	 **/
-	function(ql) {
-		"use strict";
-		var fm      = ql.fm,
-			mimes   = fm.arrayFlip(['text/html', 'application/xhtml+xml']),
-			preview = ql.preview;
-
-		preview.on(ql.evUpdate, function(e) {
-			var file = e.file, jqxhr, loading;
-
-			if (mimes[file.mime] && ql.dispInlineRegex.test(file.mime) && (!ql.options.getSizeMax || file.size <= ql.options.getSizeMax)) {
-				e.stopImmediatePropagation();
-
-				loading = $('<div class="elfinder-quicklook-info-data"><span class="elfinder-spinner-text">'+fm.i18n('nowLoading')+'</span><span class="elfinder-spinner"/></div>').appendTo(ql.info.find('.elfinder-quicklook-info'));
-
-				// stop loading on change file if not loaded yet
-				preview.one('change', function() {
-					jqxhr.state() == 'pending' && jqxhr.reject();
-				}).addClass('elfinder-overflow-auto');
-
-				jqxhr = fm.request({
-					data           : {cmd : 'get', target : file.hash, conv : 1, _t : file.ts},
-					options        : {type: 'get', cache : true},
-					preventDefault : true
-				})
-				.done(function(data) {
-					ql.hideinfo();
-					var doc = $('<iframe class="elfinder-quicklook-preview-html"/>').appendTo(preview)[0].contentWindow.document;
-					doc.open();
-					doc.write(data.content);
-					doc.close();
-				})
-				.always(function() {
-					loading.remove();
-				});
-			}
-		});
-	},
+	// function(ql) {
+	// 	"use strict";
+	// 	var fm      = ql.fm,
+	// 		mimes   = fm.arrayFlip(['text/html', 'application/xhtml+xml']),
+	// 		preview = ql.preview;
+    //
+	// 	preview.on(ql.evUpdate, function(e) {
+	// 		var file = e.file, jqxhr, loading;
+    //
+	// 		if (mimes[file.mime] && ql.dispInlineRegex.test(file.mime) && (!ql.options.getSizeMax || file.size <= ql.options.getSizeMax)) {
+	// 			e.stopImmediatePropagation();
+    //
+	// 			loading = $('<div class="elfinder-quicklook-info-data"><span class="elfinder-spinner-text">'+fm.i18n('nowLoading')+'</span><span class="elfinder-spinner"/></div>').appendTo(ql.info.find('.elfinder-quicklook-info'));
+    //
+	// 			// stop loading on change file if not loaded yet
+	// 			preview.one('change', function() {
+	// 				jqxhr.state() == 'pending' && jqxhr.reject();
+	// 			}).addClass('elfinder-overflow-auto');
+    //
+	// 			jqxhr = fm.request({
+	// 				data           : {cmd : 'get', target : file.hash, conv : 1, _t : file.ts},
+	// 				options        : {type: 'get', cache : true},
+	// 				preventDefault : true
+	// 			})
+	// 			.done(function(data) {
+	// 				ql.hideinfo();
+	// 				var doc = $('<iframe class="elfinder-quicklook-preview-html"/>').appendTo(preview)[0].contentWindow.document;
+	// 				doc.open();
+	// 				doc.write(data.content);
+	// 				doc.close();
+	// 			})
+	// 			.always(function() {
+	// 				loading.remove();
+	// 			});
+	// 		}
+	// 	});
+	// },
 
 	/**
 	 * MarkDown preview plugin
@@ -887,12 +887,12 @@ elFinder.prototype.commands.quicklook.plugins = [
 					}
 							);
 				}
-					} else {
+					} else if (fm.options.cdns.videojs) {
 						if (cVideojs) {
 							loadVideojs(file);
 						} else {
 							fm.loadScript(
-								[ 'https://cdnjs.cloudflare.com/ajax/libs/video.js/7.5.0/video.min.js' ],
+								[ fm.options.cdns.videojs + '/video.min.js' ],
 								function(res) {
 									cVideojs = res || window.videojs || false;
 									//window.flvjs = stock;
@@ -904,7 +904,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 										cVideojs = false;
 									}
 								}
-							).loadCss(['https://cdnjs.cloudflare.com/ajax/libs/video.js/7.5.0/video-js.min.css']);
+							).loadCss([fm.options.cdns.videojs + '/video-js.min.css']);
 						}
 			}
 			}
