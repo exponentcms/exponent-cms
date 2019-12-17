@@ -12,18 +12,20 @@ elFinder.prototype._options = {
 	 */
 	cdns : {
 		// for editor etc.
-		ace        : 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5',
+		ace        : 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6',
 		codemirror : 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4',
 		ckeditor   : 'https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.12.1',
-		ckeditor5  : 'https://cdn.ckeditor.com/ckeditor5/12.3.1',
-		tinymce    : 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.14',
+		ckeditor5  : 'https://cdn.ckeditor.com/ckeditor5/16.0.0',
+		tinymce    : 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.16',
 		simplemde  : 'https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2',
+		fabric     : 'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.4.0',
 		fabric16   : 'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.7',
 		tui        : 'https://uicdn.toast.com',
 		// for quicklook etc.
 		hls        : 'https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.12.4/hls.min.js',
 		dash       : 'https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.0.0/dash.all.min.js',
 		flv        : 'https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.5.0/flv.min.js',
+		videojs    : 'https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.5',
 		prettify   : 'https://cdn.jsdelivr.net/gh/google/code-prettify@453bd5f51e61245339b738b1bbdd42d7848722ba/loader/run_prettify.js',
 		psd        : 'https://cdnjs.cloudflare.com/ajax/libs/psd.js/3.2.0/psd.min.js',
 		rar        : 'https://cdn.jsdelivr.net/gh/nao-pon/rar.js@6cef13ec66dd67992fc7f3ea22f132d770ebaf8b/rar.min.js',
@@ -399,7 +401,9 @@ elFinder.prototype._options = {
 			// list of allowed mimetypes to edit of text files
 			// if empty - any text files can be edited
 			mimes : [],
-			// MIME-types of text file to make as empty files
+			// MIME-types to unselected as default of "File types to enable with "New file"" in preferences
+			mkfileHideMimes : [],
+			// MIME-types of text file to make empty file
 			makeTextMimes : ['text/plain', 'text/css', 'text/html'],
 			// Use the editor stored in the browser
 			// This value allowd overwrite with user preferences

@@ -831,8 +831,7 @@ elFinder.prototype.commands.edit = function() {
 				var name;
 				if ((cnt === 1 || !editor.info.single)
 						&& ((!editor.info || !editor.info.converter)? file.write : cwdWrite)
-						//&& (file.size > 0 || (!editor.info.converter && (editor.info.canMakeEmpty || (editor.info.canMakeEmpty !== false && fm.mimeIsText(file.mime)))))
-						&& (file.size > 0 || (!editor.info.converter && fm.mimesCanMakeEmpty[file.mime]))
+						&& (file.size > 0 || (!editor.info.converter && editor.info.canMakeEmpty !== false && fm.mimesCanMakeEmpty[file.mime]))
 						&& (!editor.info.maxSize || file.size <= editor.info.maxSize)
 						&& mimeMatch(file.mime, editor.mimes || null)
 						&& extMatch(file.name, editor.exts || null)
@@ -1051,7 +1050,7 @@ elFinder.prototype.commands.edit = function() {
 		.bind('canMakeEmptyFile', function(e) {
 			if (e.data && e.data.resetTexts) {
 				var defs = fm.arrayFlip(self.options.makeTextMimes || ['text/plain']),
-					hides = fm.storage('mkfileHides') || {};
+					hides = self.getMkfileHides();
 
 				$.each((fm.storage('mkfileTextMimes') || {}), function(mime, type) {
 					if (!defs[mime]) {
@@ -1148,6 +1147,10 @@ elFinder.prototype.commands.edit = function() {
 		});
 		
 		return dfrd;
+	};
+
+	this.getMkfileHides = function() {
+		return fm.storage('mkfileHides') || fm.arrayFlip(self.options.mkfileHideMimes || []);
 	};
 
 };

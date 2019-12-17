@@ -91,9 +91,11 @@ arrows:
     - chevron-up
     - cloud-download-alt
     - cloud-upload-alt
+    - compress-alt
     - compress-arrows-alt
     - download
     - exchange-alt
+    - expand-alt
     - expand-arrows-alt
     - external-link-alt
     - external-link-square-alt
@@ -154,9 +156,11 @@ audio-video:
     - circle
     - closed-captioning
     - compress
+    - compress-alt
     - compress-arrows-alt
     - eject
     - expand
+    - expand-alt
     - expand-arrows-alt
     - fast-backward
     - fast-forward
@@ -209,6 +213,7 @@ automotive:
     - car-battery
     - car-crash
     - car-side
+    - caravan
     - charging-station
     - gas-pump
     - motorcycle
@@ -216,6 +221,7 @@ automotive:
     - shuttle-van
     - tachometer-alt
     - taxi
+    - trailer
     - truck
     - truck-monster
     - truck-pickup
@@ -365,6 +371,7 @@ camping:
   icons:
     - binoculars
     - campground
+    - caravan
     - compass
     - fire
     - fire-alt
@@ -378,6 +385,7 @@ camping:
     - mountain
     - route
     - toilet-paper
+    - trailer
     - tree
   label: Camping
 charity:
@@ -823,6 +831,7 @@ energy:
     - broadcast-tower
     - burn
     - charging-station
+    - fan
     - fire
     - fire-alt
     - gas-pump
@@ -1122,14 +1131,19 @@ household:
   icons:
     - bath
     - bed
+    - bell
     - blender
     - chair
+    - coffee
     - couch
     - door-closed
     - door-open
     - dungeon
     - fan
+    - lightbulb
+    - plug
     - shower
+    - snowflake
     - toilet-paper
     - tv
   label: Household
@@ -1581,6 +1595,7 @@ moving:
   icons:
     - archive
     - box-open
+    - caravan
     - couch
     - dolly
     - people-carry
@@ -1588,6 +1603,7 @@ moving:
     - sign
     - suitcase
     - tape
+    - trailer
     - truck-loading
     - truck-moving
     - wine-glass
@@ -1943,6 +1959,7 @@ religion:
   icons:
     - ankh
     - atom
+    - bahai
     - bible
     - church
     - cross
@@ -1951,7 +1968,6 @@ religion:
     - gopuram
     - hamsa
     - hanukiah
-    - haykal
     - jedi
     - journal-whills
     - kaaba
@@ -2006,9 +2022,11 @@ science:
   label: Science
 science-fiction:
   icons:
+    - atom
     - galactic-republic
     - galactic-senate
     - globe
+    - hand-spock
     - jedi
     - jedi-order
     - journal-whills
@@ -2123,6 +2141,7 @@ spinners:
   icons:
     - asterisk
     - atom
+    - bahai
     - certificate
     - circle-notch
     - cog
@@ -2131,7 +2150,6 @@ spinners:
     - crosshairs
     - dharmachakra
     - fan
-    - haykal
     - life-ring
     - palette
     - ring
@@ -2308,6 +2326,7 @@ travel:
     - bed
     - bus
     - bus-alt
+    - caravan
     - cocktail
     - concierge-bell
     - dumbbell
