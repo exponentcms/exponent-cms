@@ -58,7 +58,7 @@ class AdminerEditCalendar {
     public function selectVal(&$val, $link, $field, $original) {
 		if (preg_match("~date|time|_at|publish|_accessed|posted|created_on|last_|expires|shipped|purchased|updated|signup_cutoff|event~", $field["field"]) ||
             (is_numeric($original) && strlen((string)$original) === 10)) {
-			$val = '<div title="'.htmlentities(html_entity_decode(strftime('%m/%d/%y %I:%M%p',$val)),true).'">'.$val.'</div>';
+			$val = '<div title="'.htmlentities(html_entity_decode(strftime('%m/%d/%y %I:%M%p',(int)$val)),true).'">'.$val.'</div>';
 		}
 	}
 
