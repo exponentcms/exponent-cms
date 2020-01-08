@@ -5,7 +5,7 @@ Doctrine Lexer,1.1.0,github.com/doctrine/lexer,1.2.0,needed by swiftmailer v6
 EmailValidator,2.1.11,github.com/egulias/EmailValidator,2.1.11,needed by swiftmailer v6; add autoloader and move within folders
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,22.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,22.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
-Smarty,3.1.27/3.1.33,smarty.net,3.1.33,
+Smarty,3.1.27/3.1.34,smarty.net,3.1.34,
 phpthumb,1.7.14-201608101311,github.com/JamesHeinrich/phpThumb,1.7.14-201608101311,phpThumb.config.php - we also allow &amp in parsing and err command
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.6,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
@@ -17,9 +17,9 @@ feedcreator.class.php,1.80exp,sourceforge.net/projects/feedcreator,1.80dev,"blog
 xmlrpc.php,4.4.1,github.com/gggeek/phpxmlrpc,4.4.1,
 Twitter model,2.3.1,github.com/tijsverkoyen/TwitterOAuth,2.3.1,placed in Twitter module with _construct tweaked & namespace deleted
 Twitter API,1.0.6,github.com/J7mbo/twitter-api-php,1.0.6,used by socialmedia module
-SimplePie,1.5.2,github.com/simplepie/simplepie,1.5.3,
+SimplePie,1.5.4,github.com/simplepie/simplepie,1.5.4,
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
-class.upload,1.0.2,github.com/verot/class.upload.php,"1.0.2/2.0.3
+class.upload,1.0.7,github.com/verot/class.upload.php,"1.0.7/2.0.8
 ",Correct flip operation where flip vertical & horizontal were inverted/swapped
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.29.14,uncomment load utilities
 scssphp,1.0.6exp,github.com/scssphp/scssphp,1.0.6,hacked to compile newui
@@ -77,7 +77,7 @@ Bootstrap DateTimePicker,4.17.47,github.com/Eonasdan/bootstrap-datetimepicker,4.
 Tempus Dominus Bootstrap 4,5.1.2,github.com/tempusdominus/bootstrap-4,5.1.2,"placed in bootstrap4theme, but not yet used"
 moment.js,2.24.0,github.com/moment/moment,2.24.0,needed for Bootstrap DateTimePicker
 strength-meter,1.1.4,github.com/kartik-v/strength-meter,1.1.4,
-Sortable,1.9.0,github.com/SortableJS/Sortable,1.10.1,
+Sortable,1.9.0,github.com/SortableJS/Sortable,1.10.2,
 jstree,3.3.8,github.com/vakata/jstree,3.3.8,added nav menu icons to stylesheet
 bootstrap3-dialog,1.35.4,github.com/nakupanda/bootstrap3-dialog,1.35.4,use /src .less file and add our .less variable imports; w/ bs4 fixes
 impromptu,6.2.3,trentrichardson.com/Impromptu,6.2.3,add some colors to .css
