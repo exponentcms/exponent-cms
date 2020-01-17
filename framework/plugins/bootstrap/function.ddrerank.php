@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -172,7 +172,7 @@ if (!function_exists('smarty_function_ddrerank')) {
                 ';
             } else {
                 $html .= '<strong>' . gt('Nothing to re-rank') . '</strong>
-            
+
                     </div>
                 </div>
                 ';
@@ -191,7 +191,7 @@ if (!function_exists('smarty_function_ddrerank')) {
                 render       : 'body'
 //                 plugins      : [Y.Plugin.Drag]
             }).plug(Y.Plugin.Drag);
-            
+
             panel.dd.addHandle('.yui3-widget-hd');
             Y.namespace('MyApp');
             var ul = document.getElementById('listToOrder" . $uniqueid . "');
@@ -210,7 +210,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             var panelContainer = Y.one('#panel" . $uniqueid . "').get('parentNode');
             panelContainer.addClass('exp-panel-container');
             Y.one('#panel" . $uniqueid . "').removeClass('hide');
-                        
+
             if (Y.one('#alpha" . $uniqueid . "') != null) Y.one('#alpha" . $uniqueid . "').on('click',function(e){
                 // Get the list items and setup an array for sorting
                 var ul = document.getElementById('listToOrder" . $uniqueid . "');
@@ -277,7 +277,7 @@ if (!function_exists('smarty_function_ddrerank')) {
                         padding: '0 0 0 0'
                     }
                 });
-                
+
                 dragItems.dd.plug(Y.Plugin.DDConstrained, {
 //                    constrain2node: ul,
 //                    constrain: ul,
@@ -370,7 +370,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             });
             }
         });
-        
+
         ";
 
             if (!expTheme::inPreview()) {

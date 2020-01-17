@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2004-2019 OIC Group, Inc.
+ * Copyright (c) 2004-2020 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -201,16 +201,16 @@ class filemanagercontrol extends formcontrol {
                         afq.click(quickUpload);
                     }
                 };
-                
+
                 var showEmptyLI = function(){
                     var blank = $('<li class=\"blank\">".gt('You need to add some files')."</li>');
                     $('#filelist".$name."').append(blank);
                 };
-                
+
                 if (limit > filesAdded) {
                     listenForAdder();
                 }
-                                
+
                 // remove the file from the list
                 $('#filelist".$name."').delegate('.btn-danger', 'click', function(e){
                     $(e.target).closest('li').remove();
@@ -231,7 +231,7 @@ class filemanagercontrol extends formcontrol {
                 if (EXPONENT.batchAddFiles==undefined) {
                     EXPONENT.batchAddFiles = {};
                 }
-            
+
                 EXPONENT.batchAddFiles.".$name." = function(ids) {
                     var j=0;
                     $.each(ids, function(k,obj){
@@ -248,7 +248,7 @@ class filemanagercontrol extends formcontrol {
                             } else {
                                 var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'generic_22x22.png\">';
                             }
-                            
+
                             if (obj.title) {
                                 filetitle = obj.title;
                             } else {
@@ -263,7 +263,7 @@ class filemanagercontrol extends formcontrol {
                             html += filepic;
                             html += '<span class=\"filename\" title=\"'+obj.filename+'\">'+filetitle+'<\/span>';
                             html += '<\/li>';
-                            
+
                             htmln = $(html);
 
                             df.append(htmln);
@@ -279,7 +279,7 @@ class filemanagercontrol extends formcontrol {
                                 $('#adders-".$name."').addClass('hide');
                                 quickUpload.disable();
                             }
-                            
+
                             if (filesAdded >= 2) {
                                 var so = $('#sortfiles-".$name."');
                                 so.unbind('click');
@@ -294,7 +294,7 @@ class filemanagercontrol extends formcontrol {
                         }
                     })
                 };
-                
+
                 EXPONENT.passBackBatch".$name." = function(ids) {
                     $.each(ids, function(k,id){
                         EXPONENT.passBackFile".$name."(id);
@@ -321,7 +321,7 @@ class filemanagercontrol extends formcontrol {
                         } else {
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'generic_22x22.png\">';
                         }
-                    
+
                         if (obj.title) {
                             filetitle = obj.title;
                         } else {
@@ -349,7 +349,7 @@ class filemanagercontrol extends formcontrol {
                             $('#adders-".$name."').addClass('hide');
                             quickUpload.disable();
                         }
-                                                    
+
                         if (filesAdded >= 2) {
                             var so = $('#sortfiles-".$name."');
                             so.unbind('click');
@@ -361,7 +361,7 @@ class filemanagercontrol extends formcontrol {
                         }
                       }
                     };
-                    
+
                     $.ajax({
                         url: EXPONENT.PATH_RELATIVE+'index.php.php?controller=file&action=getFile&ajax_action=1&json=1&id='+id,
                         success: complete

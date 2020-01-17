@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2004-2019 OIC Group, Inc.
+ * Copyright (c) 2004-2020 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -199,7 +199,7 @@ if (!function_exists('smarty_function_ddrerank')) {
 //                      naturalSort.insensitive = true;
                       sortable.sort(order.sort(naturalSort)); // apply
                   });
-                  
+
             ";
             if ($model == 'container') {  // must move modal off of menu to display
                 $script .= "$('#panel" . $uniqueid . "').appendTo('body');";

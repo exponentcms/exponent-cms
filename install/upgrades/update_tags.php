@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -53,12 +53,12 @@ class update_tags extends upgradescript {
 
 	/**
 	 * swaps removes subtype from expTag content entries
-     * 
+     *
 	 * @return bool
 	 */
 	function upgrade() {
 	    global $db;
-	    
+
         $tag_count = $db->countObjects('content_expTags', "subtype REGEXP '[0-9]'");
         $fixSQL =  "UPDATE " . $db->tableStmt('content_expTags') . " ";
         $fixSQL .= "SET subtype='' "; // empty subtype needed

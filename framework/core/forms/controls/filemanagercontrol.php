@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -189,22 +189,22 @@ class filemanagercontrol extends formcontrol {
                         afq.on('click',quickUpload);
                     }
                 };
-                
+
                 var showEmptyLI = function(){
                     var blank = Y.Node.create('<li class=\"blank\">".gt('You need to add some files')."</li>');
                     fl.appendChild(blank);
                 };
-                
+
                 if (limit > filesAdded) {
                     listenForAdder();
                 }
-                                
+
                 // remove the file from the list
                 fl.delegate('click',function(e){
                     e.target.ancestor('li').remove();
                     showFileAdder();
                 },'.delete');
-                
+
                 var showFileAdder = function() {
                     listenForAdder();
                     filesAdded--;
@@ -217,7 +217,7 @@ class filemanagercontrol extends formcontrol {
                 };
 
                 //Drag Drop stuff
-                
+
                 //Listen for all drop:over events
                 Y.DD.DDM.on('drop:over', function(e) {
                     //Get a reference to out drag and drop nodes
@@ -315,7 +315,7 @@ class filemanagercontrol extends formcontrol {
 
                     //var tar = new Y.DD.Drop({ node:Y.one('#filelist".$name."')});
                 }
-                
+
                 initDragables();
 
                 if (EXPONENT.batchAddFiles==undefined) {
@@ -338,7 +338,7 @@ class filemanagercontrol extends formcontrol {
                             } else {
                                 var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'generic_22x22.png\">';
                             }
-                            
+
                             var html = '<li>';
                             html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
                             html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\">".gt('delete')."<\/a>';
@@ -350,9 +350,9 @@ class filemanagercontrol extends formcontrol {
                             }
                             html += '<span class=\"filename\" title=\"'+obj.filename+'\">'+filetitle+'<\/span>';
                             html += '<\/li>';
-                            
-                            htmln = Y.Node.create(html);                        
-                            
+
+                            htmln = Y.Node.create(html);
+
                             df.append(htmln);
 
                             var dd = new Y.DD.Drag({
@@ -414,7 +414,7 @@ class filemanagercontrol extends formcontrol {
                         } else {
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'generic_22x22.png\">';
                         }
-                    
+
                         var html = '<li>';
                         html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
                         html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\">".gt('delete')."<\/a>';
@@ -459,7 +459,7 @@ class filemanagercontrol extends formcontrol {
                         //initDragables();
                       }
                     };
-                    
+
                     var cfg = {
                         on:{
                             success:complete

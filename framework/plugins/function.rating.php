@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -140,7 +140,7 @@ function smarty_function_rating($params,&$smarty) {
         var total_rating = '".$total_rating."';
         var total_average = '".$total_average."';
         var avg_percent = '".$avg_percent."';
-        
+
         function update_totals(mynewrating) {
             total_rating = (total_rating==0) ? parseInt(mynewrating) : total_rating-myrating+parseInt(mynewrating);
             if (myrating=='0') {
@@ -154,7 +154,7 @@ function smarty_function_rating($params,&$smarty) {
             Y.one('#star-average-".$params['subtype']."').setStyle('width',Math.round(avg_percent)+1+'%');
             myrating = mynewrating;
         }
-        
+
         var iocfg = {
             method: 'POST',
             data: 'json=1&ajax_action=1',
