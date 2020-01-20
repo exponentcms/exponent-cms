@@ -300,7 +300,7 @@ var elFinder = function(elm, opts, bootCallback) {
 			// NOTES: Do not touch data object
 		
 			var volumeid, contextmenu, emptyDirs = {}, stayDirs = {},
-				rmClass, hashes, calc, gc, collapsed, prevcwd, sorterStr;
+				rmClass, hashes, calc, gc, collapsed, prevcwd, sorterStr, diff;
 			
 			if (self.api >= 2.1) {
 				// support volume driver option `uiCmdMap`
@@ -393,6 +393,12 @@ var elFinder = function(elm, opts, bootCallback) {
 			cache(data.files);
 			if (!files[cwd]) {
 				cache([data.cwd]);
+			} else {
+				diff = self.diff([data.cwd], true);
+				if (diff.changed.length) {
+					cache(diff.changed, 'change');
+					self.change({changed: diff.changed});
+				}
 			}
 
 			// trigger event 'sorterupdate'
@@ -2379,18 +2385,10 @@ var elFinder = function(elm, opts, bootCallback) {
 			 * @return void
 			 **/
 			success = function(response) {
-				var d = self.options.debug;
-				
 				// Set currrent request command name
 				self.currentReqCmd = cmd;
 				
-				if (response.debug && (!d || d !== 'all')) {
-					if (!d) {
-						d = self.options.debug = {};
-					}
-					d['backend-error'] = true;
-					d['warning'] = true;
-				}
+				response.debug && self.responseDebug(response);
 				
 				if (raw) {
 					self.abortXHR(xhr);
@@ -4096,44 +4094,18 @@ var elFinder = function(elm, opts, bootCallback) {
 	 * Closure of getContentsHashes()
 	 */
 	(function(self) {
-		var hashLibs = {
-				check : true
-			},
-			md5Calc = function(arr) {
-				var spark = new hashLibs.SparkMD5.ArrayBuffer(),
-					job;
+		var hashLibs = {};
 
-				job = self.asyncJob(function(buf) {
-					spark.append(buf);
-				}, arr).done(function() {
-					job._md5 = spark.end();
-				});
-
-				return job;
-			},
-			shaCalc = function(arr, length) {
-				var sha, job;
-
-				try {
-					sha = new hashLibs.jsSHA('SHA' + (length.substr(0, 1) === '3'? length : ('-' + length)), 'ARRAYBUFFER');
-					job = self.asyncJob(function(buf) {
-						sha.update(buf);
-					}, arr).done(function() {
-						job._sha = sha.getHash('HEX');
-					});
-				} catch(e) {
-					job = $.Deferred.reject();
-				}
-
-				return job;
-			};
-
-		// make fm.hashCheckers
-		if (self.options.cdns.sparkmd5) {
-			self.hashCheckers.push('md5');
-		}
-		if (self.options.cdns.jssha) {
-			self.hashCheckers = self.hashCheckers.concat(['sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'sha3-224', 'sha3-256', 'sha3-384', 'sha3-512', 'shake128', 'shake256']);
+		if (window.Worker && window.ArrayBuffer) {
+			// make fm.hashCheckers
+			if (self.options.cdns.sparkmd5) {
+				hashLibs.SparkMD5 = true;
+				self.hashCheckers.push('md5');
+			}
+			if (self.options.cdns.jssha) {
+				hashLibs.jsSHA = true;
+				self.hashCheckers = self.hashCheckers.concat(['sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'sha3-224', 'sha3-256', 'sha3-384', 'sha3-512', 'shake128', 'shake256']);
+			}
 		}
 
 		/**
@@ -4143,120 +4115,119 @@ var elFinder = function(elm, opts, bootCallback) {
 		 * @param      Object  needHashes  need hash lib names
 		 * @return     Object  hashes with lib name as key
 		 */
-		self.getContentsHashes = function(target, needHashes) {
+		self.getContentsHashes = function(target, needHashes, hashOpts) {
 			var dfd = $.Deferred(),
 				needs = self.arrayFlip(needHashes || ['md5'], true),
 				libs = [],
 				jobs = [],
 				res = {},
+				opts = hashOpts? hashOpts : {
+					shake128len : 256,
+					shake256len : 512
+				},
 				req;
 
 			dfd.fail(function() {
 				req && req.reject();
 			});
 
-			if (hashLibs.check) {
-
-				delete hashLibs.check;
-
-				// load SparkMD5
-				var libsmd5 = $.Deferred();
-				if (window.ArrayBuffer && self.options.cdns.sparkmd5) {
-					libs.push(libsmd5);
-					self.loadScript([self.options.cdns.sparkmd5],
-						function(res) { 
-							var SparkMD5 = res || window.SparkMD5;
-							window.SparkMD5 && delete window.SparkMD5;
-							libsmd5.resolve();
-							if (SparkMD5) {
-								hashLibs.SparkMD5 = SparkMD5;
-							}
-						},
-						{
-							tryRequire: true,
-							error: function() {
-								libsmd5.reject();
-							}
-						}
-					);
-				}
-
-				// load jsSha
-				var libssha = $.Deferred();
-				if (window.ArrayBuffer && self.options.cdns.jssha) {
-					libs.push(libssha);
-					self.loadScript([self.options.cdns.jssha],
-						function(res) { 
-							var jsSHA = res || window.jsSHA;
-							window.jsSHA && delete window.jsSHA;
-							libssha.resolve();
-							if (jsSHA) {
-								hashLibs.jsSHA = jsSHA;
-							}
-						},
-						{
-							tryRequire: true,
-							error: function() {
-								libssha.reject();
-							}
-						}
-					);
-				}
-			}
-			
-			$.when.apply(null, libs).always(function() {
-				if (Object.keys(hashLibs).length) {
-					req = self.getContents(target).done(function(arrayBuffer) {
-						var arr = (arrayBuffer instanceof ArrayBuffer && arrayBuffer.byteLength > 0)? self.sliceArrayBuffer(arrayBuffer, 1048576) : false,
-							i;
-
-						if (needs.md5 && hashLibs.SparkMD5) {
-							jobs.push(function() {
-								var job = md5Calc(arr).done(function() {
-									var f;
-									res.md5 = job._md5;
-									if (f = self.file(target)) {
-										f.md5 = job._md5;
+			if (Object.keys(hashLibs).length) {
+				req = self.getContents(target).done(function(arrayBuffer) {
+					if (needs.md5 && hashLibs.SparkMD5) {
+						jobs.push((function() {
+							var job = $.Deferred();
+							try {
+								var wk = self.getWorker();
+								job.fail(function() {
+									wk && wk.terminate();
+								});
+								wk.onmessage = function(ans) {
+									wk && wk.terminate();
+									if (ans.data.hash) {
+										var f;
+										res.md5 = ans.data.hash;
+										if (f = self.file(target)) {
+											f.md5 = res.md5;
+										}
+									} else if (ans.data.error) {
+										res.md5 = ans.data.error;
 									}
 									dfd.notify(res);
+									job.resolve();
+								};
+								wk.onerror = function(e) {
+									job.reject();
+								};
+								wk.postMessage({
+									scripts: [self.options.cdns.sparkmd5, 'calcfilehash.js'],
+									data: { type: 'md5', bin: arrayBuffer }
 								});
 								dfd.fail(function() {
 									job.reject();
 								});
-								return job;
-							});
-						}
-						if (hashLibs.jsSHA) {
-							$.each(['1', '224', '256', '384', '512', '3-224', '3-256', '3-384', '3-512', 'ke128', 'ke256'], function(i, v) {
-								if (needs['sha' + v]) {
-									jobs.push(function() {
-										var job = shaCalc(arr, v).done(function() {
-											var f;
-											res['sha' + v] = job._sha;
-											if (f = self.file(target)) {
-												f['sha' + v] = job._sha;
+							} catch(e) {
+								job.reject();
+								delete hashLibs.SparkMD5;
+							}
+							return job;
+						})());
+					}
+					if (hashLibs.jsSHA) {
+						$.each(['1', '224', '256', '384', '512', '3-224', '3-256', '3-384', '3-512', 'ke128', 'ke256'], function(i, v) {
+							if (needs['sha' + v]) {
+								jobs.push((function() {
+									var job = $.Deferred();
+									try {
+										var wk = self.getWorker();
+										job.fail(function() {
+											wk && wk.terminate();
+										});
+										wk.onmessage = function(ans) {
+											wk && wk.terminate();
+											if (ans.data.hash) {
+												var f;
+												res['sha' + v] = ans.data.hash;
+												if (f = self.file(target)) {
+													f['sha' + v] = res['sha' + v];
+												}
+											} else if (ans.data.error) {
+												res['sha' + v] = ans.data.error;
 											}
 											dfd.notify(res);
+											job.resolve();
+										};
+										wk.onerror = function(e) {
+											job.reject();
+										};
+										wk.postMessage({
+											scripts: [self.options.cdns.jssha, 'calcfilehash.js'],
+											data: { type: v, bin: arrayBuffer, hashOpts: opts }
 										});
-										return job;
-									});
-								}
-							});
-						}
-						if (jobs.length) {
-							self.sequence(jobs).always(function() {
-								dfd.resolve(res);
-							});
-						} else {
-							dfd.reject();
-						}
-					}).fail(function() {
+										dfd.fail(function() {
+											job.reject();
+										});
+									} catch(e) {
+										job.reject();
+										delete hashLibs.jsSHA;
+									}
+									return job;
+								})());
+							}
+						});
+					}
+					if (jobs.length) {
+						$.when.apply(null, jobs).always(function() {
+							dfd.resolve(res);
+						});
+					} else {
 						dfd.reject();
-					});
-				} else {
+					}
+				}).fail(function() {
 					dfd.reject();
-				}
-			});
+				});
+			} else {
+				dfd.reject();
+			}
 
 			return dfd;
 		};
@@ -4647,7 +4618,7 @@ var elFinder = function(elm, opts, bootCallback) {
 		$(window).on('message.' + namespace, function(e){
 			var res = e.originalEvent || null,
 				obj, data;
-			if (res && self.uploadURL.indexOf(res.origin) === 0) {
+			if (res && (self.convAbsUrl(self.options.url).indexOf(res.origin) === 0 || self.convAbsUrl(self.uploadURL).indexOf(res.origin) === 0)) {
 				try {
 					obj = JSON.parse(res.data);
 					data = obj.data || null;
@@ -5580,7 +5551,7 @@ elFinder.prototype = {
 	 **/
 	UA : (function(){
 		var self = this,
-			webkit = !document.unqueID && !window.opera && !window.sidebar && window.localStorage && 'WebkitAppearance' in document.documentElement.style,
+			webkit = !document.unqueID && !window.opera && !window.sidebar && 'localStorage' in window && 'WebkitAppearance' in document.documentElement.style,
 			chrome = webkit && window.chrome,
 			/*setRotated = function() {
 				var a = ((screen && screen.orientation && screen.orientation.angle) || window.orientation || 0) + 0;
@@ -5633,6 +5604,20 @@ elFinder.prototype = {
 			return UA;
 	})(),
 	
+	/**
+	 * Is cookie enabled
+	 * 
+	 * @type Boolean
+	 */
+	cookieEnabled : (function() {
+		var res = false,
+			test = 'elftest=';
+		document.cookie = test + '1';
+		res = document.cookie.split(test).length === 2;
+		document.cookie = test + ';max-age=0';
+		return res;
+	})(),
+
 	/**
 	 * Has RequireJS?
 	 * 
@@ -6375,7 +6360,10 @@ elFinder.prototype = {
 								});
 							}
 							data.sync && self.sync();
-							data.debug && fm.debug('backend-debug', data);
+							if (data.debug) {
+								self.responseDebug(data);
+								fm.debug('backend-debug', data);
+							}
 						}
 					})
 					.always(function() {
@@ -6966,7 +6954,7 @@ elFinder.prototype = {
 				});
 				
 				$.each(files, function(i, file) {
-					var name;
+					var name, relpath;
 					if (file._chunkmerged) {
 						formData.append('chunk', file._chunkmerged);
 						formData.append('upload[]', file._name);
@@ -6994,6 +6982,8 @@ elFinder.prototype = {
 											name = fm.date(fm.nonameDateFormat) + '.mov';
 										}
 									}
+									relpath = (file.webkitRelativePath || file.relativePath || file._relativePath || '').replace(/[^\/]+$/, '');
+									name = relpath + name;
 								}
 							}
 							name? formData.append('upload[]', file, name) : formData.append('upload[]', file);
@@ -7240,6 +7230,7 @@ elFinder.prototype = {
 										data.hashes = {};
 									}
 									result[1] = $.map(result[1], function(p, i) {
+										result[0][i]._relativePath = p.replace(/^\//, '');
 										p = p.replace(/\/[^\/]*$/, '');
 										if (p === '') {
 											return target;
@@ -7521,7 +7512,7 @@ elFinder.prototype = {
 		name = 'elfinder-'+name+this.id;
 
 		if (value === void(0)) {
-			if (document.cookie && document.cookie != '') {
+			if (this.cookieEnabled && document.cookie && document.cookie != '') {
 				c = document.cookie.split(';');
 				name += '=';
 				for (i=0; i<c.length; i++) {
@@ -7538,6 +7529,10 @@ elFinder.prototype = {
 				}
 			}
 			return null;
+		}
+
+		if (!this.cookieEnabled) {
+			return '';
 		}
 
 		o = Object.assign({}, this.options.cookie);
@@ -7654,12 +7649,12 @@ elFinder.prototype = {
 			},
 			normalizeOptions = function(opts) {
 				var getType = function(v) {
-					var type = typeof v;
-					if (type === 'object' && Array.isArray(v)) {
-						type = 'array';
-					}
-					return type;
-				};
+						var type = typeof v;
+						if (type === 'object' && Array.isArray(v)) {
+							type = 'array';
+						}
+						return type;
+					};
 				$.each(self.optionProperties, function(k, empty) {
 					if (empty !== void(0)) {
 						if (opts[k] && getType(opts[k]) !== getType(empty)) {
@@ -7667,10 +7662,28 @@ elFinder.prototype = {
 						}
 					}
 				});
-				if (opts['disabled']) {
-					opts['disabledFlip'] = self.arrayFlip(opts['disabled'], true);
+				if (opts.disabled) {
+					opts.disabledFlip = self.arrayFlip(opts.disabled, true);
+					$.each(self.options.disabledCmdsRels, function(com, rels) {
+						var m, flg;
+						if (opts.disabledFlip[com]) {
+							flg = true;
+						} else if (m = com.match(/^([^&]+)&([^=]+)=(.*)$/)) {
+							if (opts.disabledFlip[m[1]] && opts[m[2]] == m[3]) {
+								flg = true;
+							}
+						}
+						if (flg) {
+							$.each(rels, function(i, rel) {
+								if (!opts.disabledFlip[rel]) {
+									opts.disabledFlip[rel] = true;
+									opts.disabled.push(rel);
+								}
+							});
+						}
+					});
 				} else {
-					opts['disabledFlip'] = {};
+					opts.disabledFlip = {};
 				}
 				return opts;
 			},
@@ -9054,7 +9067,8 @@ elFinder.prototype = {
 				host     : $('<span><span class="elfinder-spinner"/></span><input type="hidden"/>'),
 				path     : $('<input type="text" value="'+opts.root+'"/>'),
 				user     : $('<input type="hidden"/>'),
-				pass     : $('<input type="hidden"/>')
+				pass     : $('<input type="hidden"/>'),
+				mnt2res  : $('<input type="hidden"/>')
 			},
 			select: function(fm, ev, d){
 				var f = this.inputs,
@@ -9144,6 +9158,9 @@ elFinder.prototype = {
 					this.vars.mbtn.show();
 					if (data.folders) {
 						addFolders.call(this, fm, f.path, data.folders);
+					}
+					if (data.mnt2res) {
+						f.mnt2res.val('1');
 					}
 					f.user.val('done');
 					f.pass.val('done');
@@ -9436,7 +9453,7 @@ elFinder.prototype = {
 			if (dfds) {
 				dfds[i] = $.Deferred();
 			}
-			if (! $("head > link[href='+url+']").length) {
+			if (! $('head > link[href="' + self.escape(url) + '"]').length) {
 				link = document.createElement('link');
 				link.type = 'text/css';
 				link.rel = 'stylesheet';
@@ -9725,7 +9742,23 @@ elFinder.prototype = {
 		
 		return dfrd;
 	},
-	
+
+	/**
+	 * Gets the web worker.
+	 *
+	 * @param      {Object}  options  The options
+	 * @return     {Worker}  The worker.
+	 */
+	getWorker : function(options){
+		var wk;
+		try {
+			wk = new Worker(this.baseUrl + 'js/worker/worker.js', options);
+		} catch(e) {
+			throw e;
+		}
+		return wk;
+	},
+
 	/**
 	 * Gets the theme object by settings of options.themes
 	 *
@@ -9971,23 +10004,65 @@ elFinder.prototype = {
 	log : function(m) { window.console && window.console.log && window.console.log(m); return this; },
 	
 	debug : function(type, m) {
-		var d = this.options.debug;
+		var self = this,
+			d = this.options.debug,
+			tb = this.options.toastBackendWarn,
+			tbOpts, showlog;
 
-		if (d && (d === 'all' || d[type])) {
-			window.console && window.console.log && window.console.log('elfinder debug: ['+type+'] ['+this.id+']', m);
-		} 
-		
 		if (type === 'backend-error') {
 			if (! this.cwd().hash || (d && (d === 'all' || d['backend-error']))) {
 				m = Array.isArray(m)? m : [ m ];
 				this.error(m);
 			}
+		} else if (type === 'backend-warning') {
+			showlog = true;
+			if (tb) {
+				tbOpts = $.isPlainObject(tb)? tb : {};
+				$.each(Array.isArray(m)? m : [ m ], function(i, m) {
+					self.toast(Object.assign({
+						mode : 'warning',
+						msg: m
+					}, tbOpts));
+				});
+			}
 		} else if (type === 'backend-debug') {
 			this.trigger('backenddebug', m);
 		}
 		
+		if (showlog || (d && (d === 'all' || d[type]))) {
+			window.console && window.console.log && window.console.log('elfinder debug: ['+type+'] ['+this.id+']', m);
+		}
+
 		return this;
 	},
+
+	/**
+	 * Parse response.debug and trigger debug
+	 *
+	 * @param      Object  response  The response
+	 */
+	responseDebug : function(response) {
+		var rd = response.debug,
+			d;
+		if (rd) {
+			// set options.debug
+			d = this.options.debug;
+			if (!d || d !== 'all') {
+				if (!d) {
+					d = this.options.debug = {};
+				}
+				d['backend-error'] = true;
+				d['warning'] = true;
+			}
+			if (rd.mountErrors && (typeof rd.mountErrors === 'string' || (Array.isArray(rd.mountErrors) && rd.mountErrors.length))) {
+				this.debug('backend-error', rd.mountErrors);
+			}
+			if (rd.backendErrors && (typeof rd.backendErrors === 'string' || (Array.isArray(rd.backendErrors) && rd.backendErrors.length))) {
+				this.debug('backend-warning', rd.backendErrors);
+			}
+		}
+	},
+
 	time : function(l) { window.console && window.console.time && window.console.time(l); },
 	timeEnd : function(l) { window.console && window.console.timeEnd && window.console.timeEnd(l); }
 	
