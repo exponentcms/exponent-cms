@@ -842,6 +842,9 @@ class eventController extends expController {
     }
 
     function send_feedback() {
+        if (!expValidator::check_antispam($this->params)) {
+            expValidator::failAndReturnToForm(gt('Anti-spam verification failed.  Please try again.'), $this->params);
+        }
         $success = false;
         if (isset($this->params['id'])) {
             $ed = new eventdate($this->params['id']);

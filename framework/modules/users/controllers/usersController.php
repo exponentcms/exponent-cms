@@ -201,6 +201,10 @@ class usersController extends expController {
             expHistory::back();
         }
 
+        if (!expValidator::check_antispam($this->params)) {
+            expValidator::failAndReturnToForm(gt('Anti-spam verification failed.  Please try again.'), $this->params);
+        }
+
         $exit = false;
 
         // ensure user has basic permission to edit this account
