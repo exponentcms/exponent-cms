@@ -1415,5 +1415,5 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver
         return ($this->stripos($name, $this->doSearchCurrentQuery['q']) === false) ? false : true;
     }
 
-} // END class
+} // END class 
 

@@ -35,7 +35,8 @@ elFinder.prototype._options = {
 		marked     : 'https://cdnjs.cloudflare.com/ajax/libs/marked/0.7.0/marked.min.js',
 		sparkmd5   : 'https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.0/spark-md5.min.js',
 		jssha      : 'https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha.js',
-		amr        : 'https://cdn.jsdelivr.net/gh/yxl/opencore-amr-js@dcf3d2b5f384a1d9ded2a54e4c137a81747b222b/js/amrnb.js'
+		amr        : 'https://cdn.jsdelivr.net/gh/yxl/opencore-amr-js@dcf3d2b5f384a1d9ded2a54e4c137a81747b222b/js/amrnb.js',
+		tiff       : 'https://cdn.jsdelivr.net/gh/seikichi/tiff.js@545ede3ee46b5a5bc5f06d65954e775aa2a64017/tiff.min.js'
 	},
 	
 	/**
@@ -380,7 +381,8 @@ elFinder.prototype._options = {
 			// To enable this you need to place ViewerJS on the same server as elFinder and specify that URL in `url`.
 			viewerjs : {
 				url: '', // Example '/ViewerJS/index.html'
-				mimes: ['application/pdf', 'application/vnd.oasis.opendocument.text', 'application/vnd.oasis.opendocument.spreadsheet', 'application/vnd.oasis.opendocument.presentation']
+				mimes: ['application/pdf', 'application/vnd.oasis.opendocument.text', 'application/vnd.oasis.opendocument.spreadsheet', 'application/vnd.oasis.opendocument.presentation'],
+				pdfNative: true // Use Native PDF Viewer first
 			},
 			// MIME types to CAD-Files and 3D-Models online viewer on sharecad.org
 			// Example ['image/vnd.dwg', 'image/vnd.dxf', 'model/vnd.dwf', 'application/vnd.hp-hpgl', 'application/plt', 'application/step', 'model/iges', 'application/vnd.ms-pki.stl', 'application/sat', 'image/cgm', 'application/x-msmetafile']
@@ -399,7 +401,7 @@ elFinder.prototype._options = {
 			// MIME-Type regular expression that does not check empty files
 			mimeRegexNotEmptyCheck : /^application\/vnd\.google-apps\./
 		},
-		// "quicklook" command options.
+		// "edit" command options.
 		edit : {
 			// dialog width, integer(px) or integer+'%' (example: 650, '80%' ...)
 			dialogWidth : void(0),

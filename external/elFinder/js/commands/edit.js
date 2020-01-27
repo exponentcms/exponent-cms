@@ -133,7 +133,7 @@ elFinder.prototype.commands.edit = function() {
 						saveDfd = $.Deferred().fail(function(err) {
 							dialogNode.show().find('button.elfinder-btncnt-0,button.elfinder-btncnt-1').hide();
 						}),
-						conf, res;
+						conf, res, tm;
 					if (!loaded()) {
 						return saveDfd.resolve();
 					}
@@ -147,7 +147,20 @@ elFinder.prototype.commands.edit = function() {
 					res = getContent();
 					setOld(res);
 					if (res.promise) {
-						res.done(function(data) {
+						tm = setTimeout(function() {
+							fm.notify({
+								type : 'chkcontent',
+								cnt : 1,
+								hideCnt: true,
+								cancel : function() {
+									res.reject();
+								}
+							});
+						}, 100);
+						res.always(function() {
+							tm && clearTimeout(tm);
+							fm.notify({ type : 'chkcontent', cnt: -1 });
+						}).done(function(data) {
 							dfrd.notifyWith(ta, [encord, ta.data('hash'), old, saveDfd]);
 						}).fail(function(err) {
 							saveDfd.reject(err);
@@ -253,7 +266,10 @@ elFinder.prototype.commands.edit = function() {
 							fm.notify({
 								type : 'chkcontent',
 								cnt : 1,
-								hideCnt: true
+								hideCnt: true,
+								cancel : function() {
+									res.reject();
+								}
 							});
 						}, 100);
 						res.always(function() {
@@ -655,6 +671,10 @@ elFinder.prototype.commands.edit = function() {
 						req.resolve({});
 					}
 				} else {
+					if (conv) {
+						file.encoding = conv;
+						fm.cache(file, 'change');
+					}
 					req = fm.request({
 						data           : {cmd : 'get', target : hash, conv : conv, _t : file.ts},
 						options        : {type: 'get', cache : true},
@@ -910,7 +930,9 @@ elFinder.prototype.commands.edit = function() {
 		},
 		stored;
 	
-	
+	// make public method
+	this.getEncSelect = getEncSelect;
+
 	this.shortcuts = [{
 		pattern     : 'ctrl+e'
 	}];
@@ -1143,7 +1165,7 @@ elFinder.prototype.commands.edit = function() {
 		
 		getEditor().done(function(editor) {
 			while ((file = files.shift())) {
-				list.push(edit(file, void(0), editor).fail(function(error) {
+				list.push(edit(file, (file.encoding || void(0)), editor).fail(function(error) {
 					error && fm.error(error);
 				}));
 			}
