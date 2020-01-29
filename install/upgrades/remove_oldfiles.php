@@ -668,6 +668,7 @@ class remove_oldfiles extends upgradescript {
             'external/facebook-php-sdk-3.2.2/',
             'external/fedex-php/',
             'external/fedex-phpv13/',
+            'external/fedex-phpv16/',
             'external/flowplayer3/',
             'external/flowplayer-3.2.12/',
             'external/flowplayer-3.2.15/',
