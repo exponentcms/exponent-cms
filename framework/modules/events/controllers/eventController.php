@@ -1507,7 +1507,7 @@ class eventController extends expController {
         $extevents = array();
 //        require_once BASE . 'external/iCalcreator-2.26.8/autoload.php';
         require_once BASE . 'external/iCalcreator-2.28.2/autoload.php';
-        $v = new Kigkonsult\Icalcreator\vcalendar(); // initiate new CALENDAR
+        $v = new Kigkonsult\Icalcreator\Vcalendar(); // initiate new CALENDAR
         if (stripos($exticalurl, 'http') === 0) {
             $v->setConfig('url', $exticalurl);
         } else {
