@@ -44,6 +44,10 @@ class usersController extends expController {
         'getUsersByJSON3'   => 'Get Users',
     );
 
+    public $requires_login = array(
+        'change_password'    => 'You may not change a password without being logged in.'
+    );
+
     static function displayname() {
         return gt("User Manager");
     }
@@ -616,7 +620,7 @@ class usersController extends expController {
             flash('error', gt('You are not allowed to perform this action.'));
             expHistory::back();
         }
-        $tok = $db->selectObject('passreset_token', 'uid=' . $this->params['uid'] . " AND token='" . preg_replace('/[^A-Za-z0-9]/', '', $this->params['token']) . "'");
+        $tok = $db->selectObject('passreset_token', 'uid=' . $this->params['uid'] . " AND token='" . preg_replace('/[^A-Za-z0-9.]/', '', expString::escape($this->params['token'])) . "'");
         if ($tok == null) {
             flash('error', gt('Your password reset request has expired.  Please try again.'));
             expHistory::back();
@@ -636,7 +640,7 @@ class usersController extends expController {
             flash('error', gt('You are not allowed to perform this action.'));
             expHistory::back();
         }
-        $tok = $db->selectObject('passreset_token', 'uid=' . (int)($this->params['uid']) . " AND token='" . preg_replace('/[^A-Za-z0-9]/', '', expString::escape($this->params['token'])) . "'");
+        $tok = $db->selectObject('passreset_token', 'uid=' . (int)($this->params['uid']) . " AND token='" . preg_replace('/[^A-Za-z0-9.]/', '', expString::escape($this->params['token'])) . "'");
         if ($tok == null) {
             flash('error', gt('Your password reset request has expired.  Please try again.'));
             expHistory::back();
@@ -709,7 +713,7 @@ class usersController extends expController {
             expHistory::back();
         }
 
-        if (($isuser && empty($this->params['password'])) || (!empty($this->params['password']) && $user->password != user::encryptPassword($this->params['password']))) {
+        if (($isuser && empty($this->params['password'])) || (!empty($this->params['password']) && $user->password != user::encryptPassword($this->params['password'], $user->password))) {
             flash('error', gt('The current password you entered is not correct.'));
             expHistory::returnTo('editable');
         }
@@ -1195,7 +1199,7 @@ class usersController extends expController {
         // build out a SQL query that gets all the data we need and is sortable.
         $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as gtotal, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
         $sql .= 'FROM ' . $db->tableStmt('orders') . ' o, ' . $db->tableStmt('billingmethods') . ' b, ';
-        $sql .= $db->tableStmt('order_type') . '_order_status os, ';
+        $sql .= $db->tableStmt('order_status') . ' os, ';
         $sql .= $db->tableStmt('order_type') . ' ot ';
         $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $u->id;
 
