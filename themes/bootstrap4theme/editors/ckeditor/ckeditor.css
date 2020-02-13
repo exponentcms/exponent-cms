@@ -1,6 +1,6 @@
-@import url('/exp2/external/bootstrap4/css/bootstrap.css');
-@import url('/exp2/external/font-awesome5/css/fontawesome.css');
-@import url('/exp2/framework/core/assets/css/common.css');
-@import url('/exp2/themes/bootstrap4theme/css/bootstraptheme.css');
+@import url('/external/bootstrap4/css/bootstrap.css');
+@import url('/external/font-awesome5/css/fontawesome.css');
+@import url('/framework/core/assets/css/common.css');
+@import url('/themes/bootstrap4theme/css/bootstraptheme.css');
 
 .cke_panel_frame {background:white;}
