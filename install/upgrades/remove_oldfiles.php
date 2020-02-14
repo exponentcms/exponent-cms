@@ -666,6 +666,7 @@ class remove_oldfiles extends upgradescript {
             'external/editors/images/',
             'external/EmailValidator-2.1.2/',
             'external/EmailValidator-2.1.4/',
+            'external/EmailValidator-2.1.11/',
             'external/facebook-php-sdk-3.2.2/',
             'external/fedex-php/',
             'external/fedex-phpv13/',
