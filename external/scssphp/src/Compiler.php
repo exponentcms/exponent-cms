@@ -136,6 +136,7 @@ class Compiler
 
     protected $rootEnv;
     protected $rootBlock;
+    protected $daveStore;  //fixme Dave Hack
 
     /**
      * @var \ScssPhp\ScssPhp\Compiler\Environment
@@ -4145,6 +4146,8 @@ class Compiler
      */
     protected function popEnv()
     {
+        if (@count($this->env->parent->store) > 300)  //fixme Dave Hack
+            $this->daveStore = $this->env->parent->store;  //fixme Dave Hack
         $this->env = $this->env->parent;
     }
 
@@ -4296,7 +4299,8 @@ class Compiler
                 if (! empty($env->declarationScopeParent)) {
                     $env = $env->declarationScopeParent;
                 } else {
-                    $env = $this->rootEnv;
+//                    $env = $this->rootEnv;  //fixme Dave Hack
+                    $env = $env->parent;  //fixme Dave Hack
                 }
                 continue;
             }
@@ -4309,6 +4313,9 @@ class Compiler
         }
 
         if ($shouldThrow) {
+            if (array_key_exists($normalizedName, $this->daveStore)) {  //fixme Dave Hack
+                return $this->daveStore[$normalizedName];  //fixme Dave Hack
+            }  //fixme Dave Hack
             $this->throwError("Undefined variable \$$name" . ($maxDepth <= 0 ? " (infinite recursion)" : ""));
         }
 
