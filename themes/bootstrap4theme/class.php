@@ -29,7 +29,7 @@ class bootstrap4theme extends theme {
         if (empty($settings['SWATCH']))
             $settings['SWATCH'] = 'custom';
         $ret = "An HTML5 responsive grids theme based on <a href=\"http://getbootstrap.com/\" target=\"_blank\">Twitter Bootstrap v4</a> and <a href=\"https://fontawesome.com/\" target=\"_blank\">Font Awesome v5</a>";
-        if ($settings['SWATCH'] != 'custom')
+        if ($settings['SWATCH'] !== 'custom')
             $ret .= " using the <strong>" . ucfirst($settings['SWATCH']) . "</strong> Swatch.";
 	    return $ret;
 	}
@@ -47,8 +47,8 @@ class bootstrap4theme extends theme {
        	if (is_readable(BASE.'external/bootstrap4/scss')) {
        		$dh = opendir(BASE.'external/bootstrap4/scss');
        		while (($file = readdir($dh)) !== false) {
-       			if ($file != '.' && $file != '..' && is_dir(BASE."external/bootstrap4/scss/$file")) {
-                    if ($file != 'mixins' && $file != 'utilities')
+       			if ($file !== '.' && $file !== '..' && is_dir(BASE."external/bootstrap4/scss/$file")) {
+                    if ($file !== 'mixins' && $file !== 'utilities' && $file !== 'vendor')
                         $swatches[$file] = ucfirst($file);
        			}
        		}

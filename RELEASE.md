@@ -8,7 +8,7 @@ Copyright (c) 2004-2020 OIC Group, Inc.
 
 For a complete list of the changes made from release to release, see the [CHANGELOG.md](CHANGELOG.md)
 
-## 2.5.1 - September 2019
+## 2.5.1 - March 2020
 
 ----------
 
