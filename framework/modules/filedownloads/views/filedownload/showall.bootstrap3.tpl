@@ -72,7 +72,7 @@
             // this will allow the CDN to use Flash without restrictions
             // (by default, this is set as `sameDomain`)
             shimScriptAccess: 'always',
-            defaultAudioWidth: 350,
+            defaultAudioWidth: 340,
             success: function(player, node) {
             // $('#' + node.id + '-mode').html('mode: ' + player.rendererName);
             },
