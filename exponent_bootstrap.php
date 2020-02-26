@@ -30,21 +30,21 @@
 
 // Following code allows magic_quotes to be on without screwing stuff up.
 // magic quotes feature was removed in php 5.4.0
-if (function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc())
-{
-	/**
-	 * @param $value
-	 * @return mixed
-	 */
-	function stripslashes_deep($value) {
-		return is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value);
-	}
-
-    $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
-    $_GET = array_map('stripslashes_deep', $_GET);
-    $_POST = array_map('stripslashes_deep', $_POST);
-    $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
-}
+//if (function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc())
+//{
+//	/**
+//	 * @param $value
+//	 * @return mixed
+//	 */
+//	function stripslashes_deep($value) {
+//		return is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value);
+//	}
+//
+//    $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
+//    $_GET = array_map('stripslashes_deep', $_GET);
+//    $_POST = array_map('stripslashes_deep', $_POST);
+//    $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
+//}
 
 // for scripts that want to bootstrap minimally, we will need _realpath()
 // if it isn't already defined.
@@ -55,7 +55,7 @@ if (!function_exists('__realpath')) {
 	 */
 	function __realpath($path) {
 		$path = str_replace('\\','/',realpath($path));
-		if (!empty($path{1}) && $path{1} == ':') {
+		if (!empty($path[1]) && $path[1] === ':') {
 			// We can't just check for C:/, because windows users may have the IIS webroot on X: or F:, etc.
 			$path = substr($path,2);
 		}

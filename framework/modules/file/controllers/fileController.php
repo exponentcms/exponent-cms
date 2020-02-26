@@ -950,7 +950,7 @@ class fileController extends expController {
 
         			$dh = opendir($dest_dir . '/files');
         			while (($file = readdir($dh)) !== false) {
-        				if ($file{0} !== '.' && is_dir($dest_dir . '/files/' . $file)) {
+        				if ($file[0] !== '.' && is_dir($dest_dir . '/files/' . $file)) {
         					$mods[$file] = array(
         						'',
         						array_keys(expFile::listFlat($dest_dir . '/files/' . $file,1,null, array(),$dest_dir . '/files/'))
@@ -958,7 +958,7 @@ class fileController extends expController {
         //					if (class_exists($file)) {
         //						$mods[$file][0] = call_user_func(array($file,'name')); // $file is the class name of the module
         //					}
-        				} elseif ($file != '.' && $file != '..') {
+        				} elseif ($file !== '.' && $file !== '..') {
         					$mods[$file] = array(
         						'',
         						$file

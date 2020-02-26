@@ -1808,7 +1808,7 @@ class storeController extends expController {
         }
 
         function sortSearch($a, $b) {
-            return ($a->weight == $b->weight ? 0 : ($a->weight < $b->weight) ? 1 : -1);
+            return ($a->weight == $b->weight ? 0 : (($a->weight < $b->weight) ? 1 : -1));
         }
 
         if (count($terms)) {

@@ -1649,7 +1649,7 @@ class usersController extends expController {
                 switch ($this->params["unameOptions"]) {
                     case "FILN":
                         if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
-                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname']));
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname'][0] . $userinfo['lastname']));
                         } else {
                             $userinfo['username'] = "";
 //                            $userinfo['clearpassword'] = "";
@@ -1658,7 +1658,7 @@ class usersController extends expController {
                         break;
                     case "FILNNUM":
                         if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
-                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname'] . mt_rand(100, 999)));
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname'][0] . $userinfo['lastname'] . mt_rand(100, 999)));
                         } else {
                             $userinfo['username'] = "";
 //                            $userinfo['clearpassword'] = "";
@@ -1775,7 +1775,7 @@ class usersController extends expController {
                 $userinfo['changed'] = "";
 
                 foreach ($filedata as $field) {
-                    if ($this->params["column"][$i] != "none") {
+                    if ($this->params["column"][$i] !== "none") {
                         $colname = $this->params["column"][$i];
                         $userinfo[$colname] = trim($field);
                     }
@@ -1785,7 +1785,7 @@ class usersController extends expController {
                 switch ($this->params["unameOptions"]) {
                     case "FILN":
                         if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
-                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname']));
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname'][0] . $userinfo['lastname']));
                         } else {
                             $userinfo['username'] = "";
                             $userinfo['clearpassword'] = "";
@@ -1794,7 +1794,7 @@ class usersController extends expController {
                         break;
                     case "FILNNUM":
                         if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
-                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname'] . mt_rand(100, 999)));
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname'][0] . $userinfo['lastname'] . mt_rand(100, 999)));
                         } else {
                             $userinfo['username'] = "";
                             $userinfo['clearpassword'] = "";

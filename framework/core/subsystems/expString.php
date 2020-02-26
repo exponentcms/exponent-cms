@@ -59,11 +59,11 @@ class expString {
      */
 	static function onlyReadables($string) {
         for ($i = 0, $iMax = strlen($string); $i < $iMax; $i++) {
-			$chr = $string{$i};
+			$chr = $string[$i];
 			$ord = ord($chr);
 			if ($ord<32 or $ord>126) {
 			$chr = "~";
-			$string{$i} = $chr;
+			$string[$i] = $chr;
 			}
 		}
 		return str_replace("~", "", $string);

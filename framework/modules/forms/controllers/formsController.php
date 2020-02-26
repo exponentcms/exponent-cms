@@ -1125,7 +1125,7 @@ class formsController extends expController {
                 ));
             }
 
-            if (isset($this->params['control_type']) && $this->params['control_type']{0} == ".") {
+            if (isset($this->params['control_type']) && $this->params['control_type'][0] === ".") {
                 // there is nothing to edit for these type controls, so add it then return
                 $htmlctl = new htmlcontrol();
                 $htmlctl->identifier = uniqid("");

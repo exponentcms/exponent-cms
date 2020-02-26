@@ -155,7 +155,7 @@ class expTemplate {
 	    if (is_dir(BASE.'forms/'.$type)) {
 	        if ($dh = opendir(BASE.'forms/'.$type)) {
 	             while (false !== ($file = readdir($dh))) {
-	                if ( (substr($file,-4,4) == ".tpl") && ($file{0} != '_')) {
+	                if ( (substr($file,-4,4) === ".tpl") && ($file[0] !== '_')) {
 	                    $forms[substr($file,0,-4)] = substr($file,0,-4);
 	                }
 	            }
@@ -166,7 +166,7 @@ class expTemplate {
 	    if (is_dir(THEME_ABSOLUTE.'forms/'.$type)) {
 	        if ($dh = opendir(THEME_ABSOLUTE.'forms/'.$type)) {
 	             while (false !== ($file = readdir($dh))) {
-	                if ( (substr($file,-4,4) == ".tpl") && ($file{0} != '_')) {
+	                if ( (substr($file,-4,4) === ".tpl") && ($file[0] !== '_')) {
 	                    $forms[substr($file,0,-4)] = substr($file,0,-4);
 	                }
 	            }
