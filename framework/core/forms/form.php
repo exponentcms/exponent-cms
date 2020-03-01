@@ -305,7 +305,13 @@ class form extends baseform {
                 "content" => $ws_load,
             ));
         }
-		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"".$script."\"></script>\r\n";
+		foreach ($this->scripts as $uniqueid=>$script) {
+//            $html .= "<script type=\"text/javascript\" src=\"" . $script . "\"></script>\r\n";
+            expJavascript::pushToFoot(array(
+                "unique" => $uniqueid,
+                "src" => $script
+    		));
+        }
 		$html .= '<div class="error">'.$formError.'</div>';
         $class = '';
         if ($this->horizontal) {

@@ -152,7 +152,7 @@ class listbuildercontrol extends formcontrol {
 	}
 
 	function onRegister(&$form) {
-		$form->addScript("listbuilder",PATH_RELATIVE."framework/core/forms/controls/listbuildercontrol.js");
+		$form->addScript("listbuildercontrol",PATH_RELATIVE."framework/core/forms/controls/listbuildercontrol.js");
 	}
 
     static function parseData($name, $values, $forceindex = false) { // 3rd param normally $for_db
