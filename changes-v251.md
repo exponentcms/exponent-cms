@@ -5,7 +5,6 @@ Version 2.5.1 - Specific changes from previous version
 
 ####v251 adds these features to v250 and previous patches:
 - Add 'include a blank' option for user form dropdown controls
-- 
 
 ####v251 fixes these issues in v250 and previous patches:
 - Fix db manager warnings when displaying some tables
@@ -14,7 +13,6 @@ Version 2.5.1 - Specific changes from previous version
 - Fix some anomalies in usersController (courtesy Fred Dirske)
 - Fix bs4 photo slideshow view display of body text and also linkify text content
 - Regression fix (v238p1) not creating a real sef url for new pages
-- 
 
 ####v251 updates these 3rd party libraries in v250 and previous patches:
 - Bootstrap 4 to v4.4.1
