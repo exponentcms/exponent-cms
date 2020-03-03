@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -913,9 +913,9 @@ class mysqli_database extends database {
         $values = ") VALUES (";
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
-            if ($var{0} !== '_' && $val !== null) {
+            if ($var[0] !== '_' && $val !== null) {
                 $sql .= "`$var`,";
-                if ($values != ") VALUES (") {
+                if ($values !== ") VALUES (") {
                     $values .= ",";
                 }
                 $values .= "'" . $this->escapeString($val) . "'";
@@ -976,7 +976,7 @@ class mysqli_database extends database {
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
             //if($is_revisioned && $var=='revision_id') $val++;
-            if ($var{0} != '_') {
+            if ($var[0] !== '_') {
                 if (is_array($val) || is_object($val)) {
                     $val = serialize($val);
                     $sql .= "`$var`='".$val."',";

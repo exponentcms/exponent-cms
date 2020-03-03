@@ -313,9 +313,10 @@
 }
 
 /* image in preview */
-.elfinder-quicklook-preview img {
+.elfinder-quicklook-preview > img,
+.elfinder-quicklook-preview > div > canvas {
     display: block;
-    margin: 0 auto;
+    margin: auto;
 }
 
 /* navigation bar on quicklook window bottom */
@@ -395,6 +396,26 @@
     display: none;
 }
 
+/* text encoding selector */
+.elfinder-quicklook-encoding {
+    height: 40px;
+}
+.elfinder-quicklook-encoding > select {
+    color: #fff;
+    background: #000;
+    border: 0;
+    font-size: 12px;
+    max-width: 100px;
+    display: inline-block;
+    position: relative;
+    top: 6px;
+    left: 5px;
+}
+.elfinder-navdock .elfinder-quicklook .elfinder-quicklook-encoding {
+    display: none;
+}
+
+
 /* text files preview wrapper */
 .elfinder-quicklook-preview-text-wrapper {
     width: 100%;
@@ -429,6 +450,8 @@ pre.elfinder-quicklook-preview-text.prettyprint {
     margin: 0;
     padding: 3px 9px;
     border: none;
+    overflow: visible;
+    background: #fff;
     -o-tab-size: 4;
     -moz-tab-size: 4;
     tab-size: 4;
@@ -481,6 +504,13 @@ embed.elfinder-quicklook-preview-audio {
 .elfinder-quicklook-preview-video {
     width: 100%;
     height: 100%;
+}
+
+/* video.js error message */
+.elfinder-quicklook-preview .vjs-error .vjs-error-display .vjs-modal-dialog-content {
+    font-size: 12pt;
+    padding: 0;
+    color: #fff;
 }
 
 /* allow user select */

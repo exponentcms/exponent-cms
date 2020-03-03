@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -27,7 +27,8 @@ class container extends expRecord {
 
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {
         parent::__construct($params, $get_assoc, $get_attached);
-        $this->grouping_sql = " AND external='".$params['external']."'";
+        if (!empty($params['external']))
+            $this->grouping_sql = " AND external='".$params['external']."'";
     }
 
     public function update($params = array()) {

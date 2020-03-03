@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -242,7 +242,7 @@ class searchController extends expController {
         $sql = "SELECT DISTINCT(p.id), p.title, model, sef_url, f.id AS fileid FROM " .
             $db->tableStmt('product') . " AS p INNER JOIN " . $db->tableStmt('content_expfiles') .
             " AS cef ON p.id=cef.content_id INNER JOIN " . $db->tableStmt('expfiles') .
-            " AS f ON cef.expfiles_id = f.id WHERE MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "') AND p.parent_id=0 
+            " AS f ON cef.expfiles_id = f.id WHERE MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "') AND p.parent_id=0
             ORDER BY MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "') DESC " . $db->limitStmt(25, 0);
         //$res = $db->selectObjectsBySql($sql);
         //$res = $db->selectObjectBySql('SELECT * FROM `" . $db->prefix . "product`');

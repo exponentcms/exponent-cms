@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2019 OIC Group, Inc.
+ * Copyright (c) 2004-2020 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -81,16 +81,16 @@
                             {/if}
                         </div>
                     {/permissions}
+                    {if $slide->link}
+                        <a href="{$slide->link}">
+                    {/if}
                     {if !$config.hidetext}
                         <div class="owl-text-overlay">
                             <{$config.item_level|default:'h2'} class="owl-title">{$slide->title}</{$config.item_level|default:'h2'}>
-                            <div class="hidden-xs d-none">
+                            <div class="hidden-xs d-none d-sm-inline">
                                 {$slide->body}
                             </div>
                         </div>
-                    {/if}
-                    {if $slide->link}
-                        <a href="{$slide->link}">
                     {/if}
                     {*{if $config.quality==100}*}
                         {*<img src="{$slide->expFile[0]->url}" class="slide-image" />*}

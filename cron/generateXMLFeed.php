@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -49,9 +49,9 @@
     $columns = '';
     $sql = 'SELECT DISTINCT(p.id),active_type,availability_type,quantity, model,feed_title,feed_body,google_product_type,p.sef_url,base_price,use_special_price, special_price,f.directory,f.filename, c.title as company, sc.id as storeCategoryId FROM '.$this->tableStmt('product').' p
     LEFT JOIN '.$this->tableStmt('content_expFiles').' cf ON
-         p.id = cf.content_id 
+         p.id = cf.content_id
     LEFT JOIN '.$this->tableStmt('expFiles').' f ON
-        cf.expfiles_id = f.id 
+        cf.expfiles_id = f.id
     LEFT JOIN '.$this->tableStmt('companies').' c ON
         c.id = p.companies_id
     LEFT JOIN '.$this->tableStmt('product_storeCategories').' psc ON

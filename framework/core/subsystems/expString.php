@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -59,11 +59,11 @@ class expString {
      */
 	static function onlyReadables($string) {
         for ($i = 0, $iMax = strlen($string); $i < $iMax; $i++) {
-			$chr = $string{$i};
+			$chr = $string[$i];
 			$ord = ord($chr);
 			if ($ord<32 or $ord>126) {
 			$chr = "~";
-			$string{$i} = $chr;
+			$string[$i] = $chr;
 			}
 		}
 		return str_replace("~", "", $string);

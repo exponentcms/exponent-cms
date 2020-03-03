@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -512,7 +512,7 @@ class odbc_database extends database {
         if (count($fulltext)) {
 //            $sql .= ", FULLTEXT '" . $fulltext[0] . "'" . "( '" . implode("' , '", $fulltext) . "')";
             $ftsql = "CREATE FULLTEXT CATALOG FT_" . $tablename . " AS DEFAULT; ";
-            $ftsql .= "CREATE FULLTEXT INDEX ON " . $this->tableStmt($tablename) . "([" . implode("] , [", $fulltext) . "]) 
+            $ftsql .= "CREATE FULLTEXT INDEX ON " . $this->tableStmt($tablename) . "([" . implode("] , [", $fulltext) . "])
             KEY INDEX PK_" . $tablename . "_" . implode("_", $primary) . "
             ON FT_" . $tablename . "
             WITH STOPLIST = SYSTEM;";
@@ -725,8 +725,8 @@ class odbc_database extends database {
             $ftsql = "DROP FULLTEXT INDEX ON " . $this->tableStmt($tablename) . "; ";
             $ftsql .= "IF NOT EXISTS (SELECT 1 FROM sys.fulltext_catalogs WHERE name = 'FT_" . $tablename . "')
                        CREATE FULLTEXT CATALOG FT_" . $tablename . "; ";
-            $ftsql .= "CREATE FULLTEXT INDEX ON " . $this->tableStmt($tablename) . "([" . implode("] , [", $fulltext) . "]) 
-            KEY INDEX PK_" . $tablename . "_" . implode("_", $primary) . " 
+            $ftsql .= "CREATE FULLTEXT INDEX ON " . $this->tableStmt($tablename) . "([" . implode("] , [", $fulltext) . "])
+            KEY INDEX PK_" . $tablename . "_" . implode("_", $primary) . "
             ON FT_" . $tablename . "
             WITH STOPLIST = SYSTEM;";
             @odbc_exec($this->connection, $sql);
@@ -1583,12 +1583,12 @@ class odbc_database extends database {
             return array();
 
         $describe_sql = "Select SC.name AS 'Field', ISC.DATA_TYPE AS 'Type', SC.max_length AS 'Length', ISC.COLUMN_DEFAULT AS 'Default', SC.IS_NULLABLE AS 'Null', I.is_primary_key AS 'Key', I.is_unique AS 'Unique', SC.is_identity AS 'Auto_Increment'
-        From sys.columns AS SC 
+        From sys.columns AS SC
         LEFT JOIN sys.index_columns AS IC
-        ON IC.object_id = OBJECT_ID('" . $this->tableStmt($table) . "') AND 
+        ON IC.object_id = OBJECT_ID('" . $this->tableStmt($table) . "') AND
         IC.column_id = SC.column_id
-        LEFT JOIN sys.indexes AS I 
-        ON I.object_id = OBJECT_ID('" . $this->tableStmt($table) . "') AND 
+        LEFT JOIN sys.indexes AS I
+        ON I.object_id = OBJECT_ID('" . $this->tableStmt($table) . "') AND
         IC.index_id = I.index_id
         LEFT JOIN information_schema.columns ISC
         ON ISC.TABLE_NAME = '" . $this->prefix . $table . "'
@@ -2038,7 +2038,7 @@ class odbc_database extends database {
                    ' . $table . ' AS parent
                    WHERE node.lft BETWEEN parent.lft
                    AND parent.rgt AND node.' . $where . '
-                   GROUP BY node.title, node.id, node.body, node.sef_url, node.is_active, node.is_events, node.hide_closed_events, node.canonical, 
+                   GROUP BY node.title, node.id, node.body, node.sef_url, node.is_active, node.is_events, node.hide_closed_events, node.canonical,
                    node.meta_title, node.meta_keywords, node.meta_description, node.noindex, node.nofollow, node.items_per_page, node.expFiles_id, node.
                    rgt, node.lft, node.parent_id, node.poster, node.created_at, node.editor, node.edited_at, node.location_data, node.original_id
                    ORDER BY node.lft )
@@ -2046,7 +2046,7 @@ class odbc_database extends database {
 	           WHERE node.lft BETWEEN parent.lft AND parent.rgt
 	           AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
 	           AND sub_parent.title = sub_tree.title
-	           GROUP BY node.title, node.id, node.body, node.sef_url, node.is_active, node.is_events, node.hide_closed_events, node.canonical, 
+	           GROUP BY node.title, node.id, node.body, node.sef_url, node.is_active, node.is_events, node.hide_closed_events, node.canonical,
 	           node.meta_title, node.meta_keywords, node.meta_description, node.noindex, node.nofollow, node.items_per_page, node.expFiles_id, node.
 	           rgt, node.lft, node.parent_id, node.poster, node.created_at, node.editor, node.edited_at, node.location_data, node.original_id, sub_tree.depth
 	           ORDER BY node.lft;';

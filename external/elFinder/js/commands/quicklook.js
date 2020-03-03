@@ -106,7 +106,7 @@
 		 * @return void
 		 **/
 		openedCss = function() {
-			var contain = self.options.contain,
+			var contain = self.options.contain || fm.options.dialogContained,
 				win = contain? fm.getUI() : $(window),
 				elf = fm.getUI().offset(),
 				w = Math.min(width, win.width()-10),
@@ -361,6 +361,11 @@
 		init = true,
 		dockHeight,	getSize, tm4cwd, dockedNode, selectTm;
 
+	/**
+	 * Any flags for each plugin
+	 */
+	this.flags = {};
+	
 	this.cover = cover;
 	this.evUpdate = evUpdate;
 	(this.navbar = navbar)._show = navShow;
@@ -558,7 +563,10 @@
 					state = animated;
 					win.hasClass(fullscreen) && fsicon.click();
 					(hash && (node = cwd.find('#'+hash)).length)
-						? win.animate(closedCss(node), 500, function() { close(closed, true); })
+						? win.animate(closedCss(node), 500, function() {
+							preview.off('changesize');
+							close(closed, true);
+						})
 						: close(closed, true);
 				} else {
 					dockedNode = fm.getUI('navdock').data('removeNode')(self.window.attr('id'), 'detach');

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -178,6 +178,7 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/js/jquery-migrate-1.1.1.min.js',
             'external/jquery/js/jquery-migrate-1.2.1.js',
             'external/jquery/js/jquery-migrate-1.2.1.min.js',
+            'external/jquery/js/jquery-migrate-3.0.1.min.js',
             'external/jquery/js/jquery-ui-1.9.1.custom.js',
             'external/jquery/js/jquery-ui-1.9.1.custom.min.js',
             'external/jquery/js/jquery-ui-1.10.0.custom.js',
@@ -665,9 +666,11 @@ class remove_oldfiles extends upgradescript {
             'external/editors/images/',
             'external/EmailValidator-2.1.2/',
             'external/EmailValidator-2.1.4/',
+            'external/EmailValidator-2.1.11/',
             'external/facebook-php-sdk-3.2.2/',
             'external/fedex-php/',
             'external/fedex-phpv13/',
+            'external/fedex-phpv16/',
             'external/flowplayer3/',
             'external/flowplayer-3.2.12/',
             'external/flowplayer-3.2.15/',
@@ -696,6 +699,7 @@ class remove_oldfiles extends upgradescript {
             'external/SimpleAjaxUploader/',
             'external/simplepie-1.5.1/',
             'external/simplepie-1.5.2/',
+            'external/simplepie-1.5.3/',
             'external/Smarty/',
             'external/Smarty-2/',
             'external/Smarty-3.1.4/',
@@ -709,6 +713,7 @@ class remove_oldfiles extends upgradescript {
             'external/Smarty-3.1.18/',
             'external/Smarty-3.1.19/',
             'external/Smarty-3.1.21/',
+            'external/smarty-3.1.33/',
             'external/swfobject/',
             'external/Swift/',
             'external/Swift-4/',

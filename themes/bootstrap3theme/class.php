@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -29,7 +29,7 @@ class bootstrap3theme extends theme {
         if (empty($settings['SWATCH']))
             $settings['SWATCH'] = 'custom';
         $ret = "An HTML5 responsive grids theme based on <a href=\"https://getbootstrap.com/docs/3.3/\" target=\"_blank\">Twitter Bootstrap v3</a> and <a href=\"http://fontawesome.io/\" target=\"_blank\">Font Awesome v4</a>";
-        if ($settings['SWATCH'] != 'custom')
+        if ($settings['SWATCH'] !== 'custom')
             $ret .= " using the <strong>" . ucfirst($settings['SWATCH']) . "</strong> Swatch";
 	    return $ret;
 	}
@@ -40,8 +40,8 @@ class bootstrap3theme extends theme {
        	if (is_readable(BASE.'external/bootstrap3/less')) {
        		$dh = opendir(BASE.'external/bootstrap3/less');
        		while (($file = readdir($dh)) !== false) {
-       			if ($file != '.' && $file != '..' && is_dir(BASE."external/bootstrap3/less/$file")) {
-                    if ($file != 'mixins' && $file != 'fonts')
+       			if ($file !== '.' && $file !== '..' && is_dir(BASE."external/bootstrap3/less/$file")) {
+                    if ($file !== 'mixins' && $file !== 'fonts')
                         $swatches[$file] = ucfirst($file);
        			}
        		}
@@ -112,6 +112,7 @@ class bootstrap3theme extends theme {
         if (empty($params['menu_height'])) $params['menu_height'] = "1";
         if (empty($params['menu_length'])) $params['menu_length'] = "2";
         if (empty($params['flyout_sidebar'])) $params['flyout_sidebar'] = '0';
+        expSession::set('force_less_compile', 1);
         parent::saveThemeConfig($params);
    	}
 

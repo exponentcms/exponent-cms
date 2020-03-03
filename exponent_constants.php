@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -526,7 +526,7 @@ if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
     define('JQUERY3_VERSION', '3.4.1');
-    define('JQUERY3_MIGRATE_VERSION', '3.0.1');
+    define('JQUERY3_MIGRATE_VERSION', '3.1.0');
     define('JQUERYUI_VERSION', '1.12.1');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
@@ -561,7 +561,7 @@ if (!defined('SMARTY_PATH')) {
     if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
     } else {
-        define('SMARTY_VERSION', '3.1.33');  //note smarty v3.1.28+ won't work properly with php < v7.1.x
+        define('SMARTY_VERSION', '3.1.34');  //note smarty v3.1.28+ won't work properly with php < v7.1.x
     }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
@@ -580,7 +580,7 @@ if (!defined('SWIFT_PATH')) {
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
     define('LEXER_VERSION', '1.2.0');
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
-    define('EMAIL_VALIDATOR_VERSION', '2.1.11');
+    define('EMAIL_VALIDATOR_VERSION', '2.1.15');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
@@ -589,13 +589,16 @@ if (!defined('SWIFT_PATH')) {
  * Changing the versions here lets Exponent adjust where to look
  */
 if (!defined('MPDF7_VERSION')) {
-    define('MPDF7_VERSION', '7.0.2');
+    define('MPDF7_VERSION', '7.0.2'); // 7.1.9
+}
+if (!defined('MPDF8_VERSION')) {
+    define('MPDF8_VERSION', '8.0.5');
 }
 if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '082');
+    define('DOMPDF8_VERSION', '082');  // 084
 }
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.0.1');
+    define('HTML2PDF5_VERSION', '5.0.1');  // 5.2.1
 }
 
 ?>

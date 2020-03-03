@@ -2,7 +2,7 @@
 /**
  * SCSSPHP
  *
- * @copyright 2012-2019 Leaf Corcoran
+ * @copyright 2012-2020 Leaf Corcoran
  *
  * @license http://opensource.org/licenses/MIT MIT
  *
@@ -184,6 +184,10 @@ class Nested extends Formatter
 
         if (! empty($block->selectors)) {
             $this->indentLevel--;
+
+            if (! $this->keepSemicolons) {
+                $this->strippedSemicolon = '';
+            }
 
             $this->write($this->close);
 

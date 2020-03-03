@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -120,6 +120,7 @@ class dropdowncontrol extends formcontrol {
             $object->default = "";
             $object->size = 1;
             $object->items = array();
+            $object->include_blank = false;
             $object->required = false;
         }
         if (empty($object->description)) $object->description = "";
@@ -127,6 +128,7 @@ class dropdowncontrol extends formcontrol {
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
         $form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
+        $form->register("include_blank", gt('Include a Blank Item.'), new checkboxcontrol($object->include_blank,true));
         $form->register("default",gt('Default'), new textcontrol($object->default));
         $form->register("size",gt('Size'), new textcontrol($object->size,3,false,2,"integer"));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
@@ -148,6 +150,7 @@ class dropdowncontrol extends formcontrol {
         $object->description = $values['description'];
         $object->default = $values['default'];
         $object->items = listbuildercontrol::parseData('items', $values, true);
+        $object->include_blank = !empty($values['include_blank']);
         if (isset($values['size'])) $object->size = ((int)($values['size']) <= 0)?1:(int)($values['size']);
         $object->required = !empty($values['required']);
         return $object;

@@ -2,7 +2,7 @@
 
 ----------
 
-Copyright (c) 2004-2019 OIC Group, Inc.
+Copyright (c) 2004-2020 OIC Group, Inc.
 
 ## Optional Features
 
@@ -27,7 +27,7 @@ simply require the user to locally create a PDF file on their end from printable
 
 **mPDF is the preferred library.** We currently support three (3) versions:
 
-v7.0.2 is the newest version supported (v7.1.9 is the newest release)
+v7.0.2 is the newest version supported (v7.1.9/8.0.5 is the newest release)
 - [mpdf7.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf7.zip/download)
 This uses the mPDF v7.0.2 library which has been customized for Exponent.
 This requires Exponent CMS v2.4.2 or later.
@@ -46,7 +46,7 @@ package requires Exponent CMS v2.2.3 or later.
 
 domPDF was the first supported PHP based library. We currently support three (3) versions:
 
-v0.8.2 is the newest version supported (v0.8.3 is the newest release)
+v0.8.2 is the newest version supported (v0.8.5 is the newest release)
 - [dompdf082.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf082.zip/download)
 This uses the domPDF v0.8.2 library which has been customized for Exponent with a fix for thumbnails.
 This package requires Exponent CMS v2.4.2 and later.
@@ -69,7 +69,7 @@ library (TCPDF) to perform the actual PDF creation. This appears to the be the s
 v5.0.1 is the newest version supported (v5.2.1 is the newest release)
 - [html2pdf5.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/html2pdf5.zip/download)
 This uses the HTML2PDF v5.0.1 library which has the configuration customized for Exponent. It requires
-the TCPDF v6.2.13 PDF engine which is included in this package. This package requires
+the TCPDF v6.2.13 (v6.2.26/6.3.5 is the latest) PDF engine which is included in this package. This package requires
 Exponent CMS v2.4.2 or later.
 
 v4.6.1 is the previous stable version, though it is possible that earlier versions back to v4.5.0
@@ -97,7 +97,7 @@ Exponent CMS includes built-in Developer Debugging support, but this feature can
 installing the [Kint](https://github.com/kint-php/kint) PHP library. Simply extract a release into
 the /external folder which creates an subfolder named 'kint'. v3.x is supported if subfolder is
 named 'kint3'. The feature is auto-activated by this installation.
-- v3.2.2 is the most recent release; v2.2 is the newest 2.x version, but v1.1 is also supported
+- v3.3.0 is the most recent release; v2.2 is the newest 2.x version, but v1.1 is also supported
 
 ### Alternate .less Compiler
 

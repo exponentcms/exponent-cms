@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -184,7 +184,7 @@ class listbuildercontrol extends formcontrol {
 
 	function onRegister(&$form) {
         if ($this->newList) {
-		    $form->addScript("listbuilder",PATH_RELATIVE."framework/core/forms/controls/listbuildercontrol.js");
+		    $form->addScript("listbuildercontrol",PATH_RELATIVE."framework/core/forms/controls/listbuildercontrol.js");
         }
 	}
 

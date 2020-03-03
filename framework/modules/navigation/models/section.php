@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -41,8 +41,10 @@ class section extends expRecord {
 
     function update($params=array()) {
         $this->grouping_sql = " AND parent='".$this->parent."'";
-        if (empty($this->sef_name) && empty($params['sef_name']))
-            $params['sef_name'] = self::makeSefUrl();
+        if (empty($this->sef_name) && empty($params['sef_name'])) {
+            $this->name = $params['name'];
+            $params['sef_name'] = $this->makeSefUrl();
+        }
         parent::update($params);
         expSession::clearAllUsersSessionCache('navigation');
 //        expHistory::back();

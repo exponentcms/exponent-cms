@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -305,7 +305,13 @@ class form extends baseform {
                 "content" => $ws_load,
             ));
         }
-		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"".$script."\"></script>\r\n";
+		foreach ($this->scripts as $uniqueid=>$script) {
+//            $html .= "<script type=\"text/javascript\" src=\"" . $script . "\"></script>\r\n";
+            expJavascript::pushToFoot(array(
+                "unique" => $uniqueid,
+                "src" => $script
+    		));
+        }
 		$html .= '<div class="error">'.$formError.'</div>';
         $class = '';
         if ($this->horizontal) {

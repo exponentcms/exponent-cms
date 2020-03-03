@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -534,7 +534,7 @@ class cartController extends expController {
             flash('error', gt('You must pick a billing method'));
         }
         if (empty($billing->address->id)) {
-            flash('error', gt('You must select a billing address'));
+            flash('error', gt('You must pick a billing address'));
         }
 
         // make sure all the methods picked for shipping meet the requirements

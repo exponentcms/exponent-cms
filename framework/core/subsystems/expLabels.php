@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -350,7 +350,7 @@ class expLabels
         }
         $output .= '</tr>
 				</table>
-			
+
 			</body>
 		</html>';
 

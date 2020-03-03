@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -544,7 +544,7 @@ class administrationController extends expController {
 			'mods'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-mods'
 		);
 
-        require_once(BASE . 'external/simplepie-1.5.3/autoloader.php');
+        require_once(BASE . 'external/simplepie-1.5.4/autoloader.php');
 		$RSS = new SimplePie();
 		$RSS->set_cache_location(BASE . 'tmp/rsscache');  // default is ./cache
 //	    $RSS->set_cache_duration(3600);  // default if 3600
@@ -1534,7 +1534,7 @@ class theme {
 	 */
 	function configureTheme () {
 		if (isset($this->params['sv']) && $this->params['sv'] != '') {
-			if (strtolower($this->params['sv'])=='default') {
+			if (strtolower($this->params['sv'])==='default') {
                 $this->params['sv']='';
 			}
 			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config_".$this->params['sv'].".php");
@@ -1569,7 +1569,7 @@ class theme {
 		$theme = $params['theme'];
 		unset ($params['theme']);
 		$sv = $params['sv'];
-		if (strtolower($sv)=='default') {
+		if (strtolower($sv) === 'default') {
 		   $sv='';
 		}
 		unset (
@@ -1582,14 +1582,14 @@ class theme {
             $params['XDEBUG_SESSION']
         );
 		foreach ($params as $key=>$value) {
-			if ($key[0] == '_') {
+			if (strpos($key, '_') === 0) {
 				unset ($params[$key]);
 			}
 		}
 		if (!empty($sv)) {
-			expSettings::saveValues($params, BASE."themes/".$theme."/config_".$sv.".php");
+            expSettings::saveValues($params, BASE . "themes/" . $theme . "/config_" . $sv . ".php");
 		} else {
-			expSettings::saveValues($params, BASE."themes/".$theme."/config.php");
+            expSettings::saveValues($params, BASE . "themes/" . $theme . "/config.php");
 		}
 		expHistory::back();
 	}

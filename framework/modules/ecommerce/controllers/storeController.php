@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -1467,6 +1467,7 @@ class storeController extends expController {
         $record = new $product_type();
 
         $record->update($this->params);
+        $record->refresh();
 
         // unlike other controller->update() methods, we pass off to product->addContentToSearch();
         $record->addContentToSearch();
@@ -1808,7 +1809,7 @@ class storeController extends expController {
         }
 
         function sortSearch($a, $b) {
-            return ($a->weight == $b->weight ? 0 : ($a->weight < $b->weight) ? 1 : -1);
+            return ($a->weight == $b->weight ? 0 : (($a->weight < $b->weight) ? 1 : -1));
         }
 
         if (count($terms)) {

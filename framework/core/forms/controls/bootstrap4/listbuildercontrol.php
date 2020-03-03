@@ -183,7 +183,7 @@ class listbuildercontrol extends formcontrol {
 
 	function onRegister(&$form) {
         if ($this->newList) {
-		    $form->addScript("listbuilder",PATH_RELATIVE."framework/core/forms/controls/listbuildercontrol.js");
+		    $form->addScript("listbuildercontrol",PATH_RELATIVE."framework/core/forms/controls/listbuildercontrol.js");
         }
 	}
 

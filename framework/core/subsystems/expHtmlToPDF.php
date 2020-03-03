@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -1155,6 +1155,51 @@ class expMPDF7 extends expMPDF
             ini_set('display_errors', 0);  // warnings must be turned off to work
             require_once(BASE . 'external/log-1.0.2/autoload.php');
             require_once(BASE . 'external/mpdf-' . MPDF7_VERSION . '/src/autoload.php');
+            $this->size = $paper_size;
+            $this->orient = strtoupper($orientation[0]);
+            $this->pdf = new Mpdf\Mpdf(array(null, $this->size, 0, 15, 15, 16, 16, 9, 9, $this->orient));
+            $this->pdf->setBasePath(URL_BASE);
+            $this->pdf->debug = HTMLTOPDF_DEBUG;
+            if (!empty($html)) {
+                if ($use_file) {
+                    $this->pdf->WriteHTML(file_get_contents($html));
+                } else {
+                    $this->pdf->WriteHTML($html);
+                }
+            }
+            if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
+        }
+    }
+
+}
+
+class expMPDF8 extends expMPDF
+{
+
+    /**
+     * Return status of pdf engine being installed correctly
+     */
+    public static function installed() {
+        return (file_exists(BASE . 'external/mpdf-' . MPDF8_VERSION . '/src/Mpdf.php') && file_exists(BASE . 'external/log-1.0.2/autoload.php'));
+    }
+
+    /**
+     * Constructor: initialize a pdf file file.
+     *
+     * @param string $paper_size  page size
+     * @param string $orientation page orientation
+     * @param string $html        html code for page
+     * @param bool   $use_file    a flag to show $html is an html file location to be loaded
+     */
+    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
+    {
+        if (file_exists(BASE . 'external/mpdf-' . MPDF8_VERSION . '/src/Mpdf.php') && file_exists(BASE . 'external/log-1.0.2/autoload.php')) {
+            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
+            if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", BASE . 'tmp/ttfontdata/');
+            if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
+            ini_set('display_errors', 0);  // warnings must be turned off to work
+            require_once(BASE . 'external/log-1.1.2/autoload.php');
+            require_once(BASE . 'external/mpdf-' . MPDF8_VERSION . '/src/autoload.php');
             $this->size = $paper_size;
             $this->orient = strtoupper($orientation[0]);
             $this->pdf = new Mpdf\Mpdf(array(null, $this->size, 0, 15, 15, 16, 16, 9, 9, $this->orient));

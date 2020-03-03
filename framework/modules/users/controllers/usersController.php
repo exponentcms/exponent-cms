@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -42,6 +42,10 @@ class usersController extends expController {
         'getUsersByJSON'   => 'Get Users',
         'getUsersByJSON2'   => 'Get Users',
         'getUsersByJSON3'   => 'Get Users',
+    );
+
+    public $requires_login = array(
+        'change_password'    => 'You may not change a password without being logged in.'
     );
 
     static function displayname() {
@@ -199,6 +203,10 @@ class usersController extends expController {
         if (!$user->isLoggedIn() && SITE_ALLOW_REGISTRATION == 0) {
             flash('error', gt('This site does not allow user registrations'));
             expHistory::back();
+        }
+
+        if (!expValidator::check_antispam($this->params)) {
+            expValidator::failAndReturnToForm(gt('Anti-spam verification failed.  Please try again.'), $this->params);
         }
 
         $exit = false;
@@ -612,7 +620,7 @@ class usersController extends expController {
             flash('error', gt('You are not allowed to perform this action.'));
             expHistory::back();
         }
-        $tok = $db->selectObject('passreset_token', 'uid=' . $this->params['uid'] . " AND token='" . preg_replace('/[^A-Za-z0-9]/', '', $this->params['token']) . "'");
+        $tok = $db->selectObject('passreset_token', 'uid=' . $this->params['uid'] . " AND token='" . preg_replace('/[^A-Za-z0-9.]/', '', expString::escape($this->params['token'])) . "'");
         if ($tok == null) {
             flash('error', gt('Your password reset request has expired.  Please try again.'));
             expHistory::back();
@@ -632,7 +640,7 @@ class usersController extends expController {
             flash('error', gt('You are not allowed to perform this action.'));
             expHistory::back();
         }
-        $tok = $db->selectObject('passreset_token', 'uid=' . (int)($this->params['uid']) . " AND token='" . preg_replace('/[^A-Za-z0-9]/', '', expString::escape($this->params['token'])) . "'");
+        $tok = $db->selectObject('passreset_token', 'uid=' . (int)($this->params['uid']) . " AND token='" . preg_replace('/[^A-Za-z0-9.]/', '', expString::escape($this->params['token'])) . "'");
         if ($tok == null) {
             flash('error', gt('Your password reset request has expired.  Please try again.'));
             expHistory::back();
@@ -705,7 +713,7 @@ class usersController extends expController {
             expHistory::back();
         }
 
-        if (($isuser && empty($this->params['password'])) || (!empty($this->params['password']) && $user->password != user::encryptPassword($this->params['password']))) {
+        if (($isuser && empty($this->params['password'])) || (!empty($this->params['password']) && $user->password != user::encryptPassword($this->params['password'], $user->password))) {
             flash('error', gt('The current password you entered is not correct.'));
             expHistory::returnTo('editable');
         }
@@ -1191,7 +1199,7 @@ class usersController extends expController {
         // build out a SQL query that gets all the data we need and is sortable.
         $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as gtotal, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
         $sql .= 'FROM ' . $db->tableStmt('orders') . ' o, ' . $db->tableStmt('billingmethods') . ' b, ';
-        $sql .= $db->tableStmt('order_type') . '_order_status os, ';
+        $sql .= $db->tableStmt('order_status') . ' os, ';
         $sql .= $db->tableStmt('order_type') . ' ot ';
         $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $u->id;
 
@@ -1641,7 +1649,7 @@ class usersController extends expController {
                 switch ($this->params["unameOptions"]) {
                     case "FILN":
                         if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
-                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname']));
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname'][0] . $userinfo['lastname']));
                         } else {
                             $userinfo['username'] = "";
 //                            $userinfo['clearpassword'] = "";
@@ -1650,7 +1658,7 @@ class usersController extends expController {
                         break;
                     case "FILNNUM":
                         if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
-                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname'] . mt_rand(100, 999)));
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname'][0] . $userinfo['lastname'] . mt_rand(100, 999)));
                         } else {
                             $userinfo['username'] = "";
 //                            $userinfo['clearpassword'] = "";
@@ -1767,7 +1775,7 @@ class usersController extends expController {
                 $userinfo['changed'] = "";
 
                 foreach ($filedata as $field) {
-                    if ($this->params["column"][$i] != "none") {
+                    if ($this->params["column"][$i] !== "none") {
                         $colname = $this->params["column"][$i];
                         $userinfo[$colname] = trim($field);
                     }
@@ -1777,7 +1785,7 @@ class usersController extends expController {
                 switch ($this->params["unameOptions"]) {
                     case "FILN":
                         if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
-                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname']));
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname'][0] . $userinfo['lastname']));
                         } else {
                             $userinfo['username'] = "";
                             $userinfo['clearpassword'] = "";
@@ -1786,7 +1794,7 @@ class usersController extends expController {
                         break;
                     case "FILNNUM":
                         if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
-                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname'] . mt_rand(100, 999)));
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname'][0] . $userinfo['lastname'] . mt_rand(100, 999)));
                         } else {
                             $userinfo['username'] = "";
                             $userinfo['clearpassword'] = "";

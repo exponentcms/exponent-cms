@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -159,11 +159,11 @@ function smarty_function_prod_images($params,&$smarty) {
 
                     imgs.each(resetZ);
                     imgs.item(0).setStyles({'zIndex':'1','display':'block'});
-                    
+
                     swatches.each(function(n,y){
                         n.set('id','exp-ecom-ms-'+y)
                     });
-                    
+
                     swatches.on('click',function(e){
                         imgs.each(resetZ);
                         var curImg = imgs.item(swatches.indexOf(e.target));
@@ -172,20 +172,20 @@ function smarty_function_prod_images($params,&$smarty) {
                         //animImgWin(imgWin,curImg.get('height'));
                         curImg.setStyles({'zIndex':'1','display':'block'});
                     });
-                
+
                     thumbs.on('click',function(e){
                         imgs.each(resetZ);
-                        
+
                         if (swatches.size()!=0) {
                             var processedIndex = thumbs.indexOf(e.target)==0 ? 0 : swatches.size()+thumbs.indexOf(e.target)-1;
                         } else {
                             var processedIndex = thumbs.indexOf(e.target);
                         }
-                        var curImg = imgs.item(processedIndex);   
-                        curImg.ancestor('ul.enlarged').setStyle('height',curImg.get('height')+'px');                
+                        var curImg = imgs.item(processedIndex);
+                        curImg.ancestor('ul.enlarged').setStyle('height',curImg.get('height')+'px');
                         curImg.setStyles({'zIndex':'1','display':'block'});
                     });
-                    
+
                     // animation...  too much for now, but we'll leave the code
                     var animImgWin = function (node,h) {
                         var hAnim = new Y.Anim({
@@ -196,7 +196,7 @@ function smarty_function_prod_images($params,&$smarty) {
                         });
                         hAnim.run();
                     }
-                
+
                 });
             ";
             expJavascript::pushToFoot(array(

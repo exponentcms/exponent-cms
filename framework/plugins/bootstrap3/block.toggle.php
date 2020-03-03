@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2004-2019 OIC Group, Inc.
+ * Copyright (c) 2004-2020 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,7 +16,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -79,28 +79,28 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
             $script = '
             var bodytext = $(\'#' . $params['unique'] . '-body\');
             var summarytext = $(\'#' . $params['unique'] . '-summary\');
-            
+
             var doClick = function (e){
                 bodytext.toggleClass(\'hide\');
                 summarytext.toggleClass(\'hide\');
                 $(\'#a-' . $params['unique'] . '\').toggleClass(\'collapsed\');
-            
+
                 if ($(\'#' . $params['unique'] . '-body\').hasClass(\'hide\')) {
                     $(\'#' . $params['unique'] . '-head\').prop(\'title\',"' . gt('Click to Expand') . '");
                 } else {
                     $(\'#' . $params['unique'] . '-head\').prop(\'title\',"' . gt('Click to Collapse') . '");
                 }
             }
-            
+
             $(document).ready(function(){  // swap to summary and display it
                 $(\'#h2-' . $params['unique'] . '\').removeAttr(\'data-toggle\');
                 $(\'#a-' . $params['unique'] . '\').removeAttr(\'data-toggle\');
                 if ('.(int)!empty($params['collapsed']).') {
-                    $(\'#' . $params['unique'] . '-content\').addClass(\'in\')    
+                    $(\'#' . $params['unique'] . '-content\').addClass(\'in\')
                     $(\'#a-' . $params['unique'] . '\').toggleClass(\'collapsed\');
                     doClick();
                 }
-            });       
+            });
             ';
         } else {  // no summary, simply swap popup title
             $script = '

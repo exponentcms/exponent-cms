@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -1417,7 +1417,7 @@ class expFile extends expRecord {
             }
             $px_per_char = floor($w / (strlen($string) + 1));
             for ($i = 0, $iMax = strlen($string); $i < $iMax; $i++) {
-                imagestring($img, mt_rand(4, 6), $px_per_char * ($i + 1) + mt_rand(-5, 5), mt_rand(0, $h / 2), $string{$i}, $colors[($i % 10)]);
+                imagestring($img, mt_rand(4, 6), $px_per_char * ($i + 1) + mt_rand(-5, 5), mt_rand(0, $h / 2), $string[$i], $colors[($i % 10)]);
             }
 
             // Need this to be 'configurable'

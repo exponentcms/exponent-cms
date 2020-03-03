@@ -1,4 +1,4 @@
-/* Lumen 4.3.1 */
+/* Lumen 4.4.1 */
 // Bootswatch
 
 
@@ -121,6 +121,17 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400
   &-warning,
   &-danger {
     color: #fff;
+  }
+
+  &-hover tbody {
+    .table-primary:hover,
+    .table-success:hover,
+    .table-info:hover,
+    .table-warning:hover,
+    .table-danger:hover,
+    .table-dark:hover {
+      color: #fff;
+    }
   }
 
   &-primary {
@@ -457,7 +468,7 @@ a.list-group-item {
     &.active {
       background-color: $warning;
     }
-    
+
     &.active:hover,
     &.active:focus {
       background-color: darken($warning, 5%);
@@ -468,7 +479,7 @@ a.list-group-item {
     &.active {
       background-color: $danger;
     }
-    
+
     &.active:hover,
     &.active:focus {
       background-color: darken($danger, 5%);

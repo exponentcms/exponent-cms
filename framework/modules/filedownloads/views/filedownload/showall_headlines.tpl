@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2019 OIC Group, Inc.
+ * Copyright (c) 2004-2020 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -174,6 +174,7 @@
             // this will allow the CDN to use Flash without restrictions
             // (by default, this is set as `sameDomain`)
             shimScriptAccess: 'always',
+            defaultAudioWidth: 340,
             success: function(player, node) {
             // $('#' + node.id + '-mode').html('mode: ' + player.rendererName);
             },

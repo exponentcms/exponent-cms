@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -842,6 +842,9 @@ class eventController extends expController {
     }
 
     function send_feedback() {
+        if (!expValidator::check_antispam($this->params)) {
+            expValidator::failAndReturnToForm(gt('Anti-spam verification failed.  Please try again.'), $this->params);
+        }
         $success = false;
         if (isset($this->params['id'])) {
             $ed = new eventdate($this->params['id']);
@@ -1504,7 +1507,7 @@ class eventController extends expController {
         $extevents = array();
 //        require_once BASE . 'external/iCalcreator-2.26.8/autoload.php';
         require_once BASE . 'external/iCalcreator-2.28.2/autoload.php';
-        $v = new Kigkonsult\Icalcreator\vcalendar(); // initiate new CALENDAR
+        $v = new Kigkonsult\Icalcreator\Vcalendar(); // initiate new CALENDAR
         if (stripos($exticalurl, 'http') === 0) {
             $v->setConfig('url', $exticalurl);
         } else {

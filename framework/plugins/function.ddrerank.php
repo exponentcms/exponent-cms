@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -149,7 +149,7 @@ function smarty_function_ddrerank($params, &$smarty) {
                 ';
         } else {
             $html .= '<strong>' . gt('Nothing to re-rank') . '</strong>
-            
+
                     </div>
                 </div>
                 ';
@@ -168,12 +168,12 @@ function smarty_function_ddrerank($params, &$smarty) {
                 render       : 'body'
 //                 plugins      : [Y.Plugin.Drag]
             }).plug(Y.Plugin.Drag);
-            
+
             panel.dd.addHandle('.yui3-widget-hd');
             var panelContainer = Y.one('#panel" . $uniqueid . "').get('parentNode');
             panelContainer.addClass('exp-panel-container');
             Y.one('#panel" . $uniqueid . "').removeClass('hide');
-                        
+
             Y.one('#rerank" . $uniqueid . "').on('click',function(e){
                 e.halt();
                 panel.show();
@@ -307,7 +307,7 @@ function smarty_function_ddrerank($params, &$smarty) {
                 });
             }
         });
-        
+
         ";
 
         if (!expTheme::inPreview()) {

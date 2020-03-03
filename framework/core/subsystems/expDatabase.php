@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2019 OIC Group, Inc.
+# Copyright (c) 2004-2020 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -2113,7 +2113,7 @@ abstract class database {
             FROM ' . $this->tableStmt($table) . ' AS node,
             ' . $this->tableStmt($table) . ' AS parent
             WHERE node.lft BETWEEN parent.lft AND parent.rgt
-            GROUP BY node.sef_url, node.id, node.title, node.body, node.is_active, node.is_events, node.hide_closed_events, node.canonical, 
+            GROUP BY node.sef_url, node.id, node.title, node.body, node.is_active, node.is_events, node.hide_closed_events, node.canonical,
             node.meta_title, node.meta_keywords, node.meta_description, node.noindex, node.nofollow, node.items_per_page, node.expFiles_id, node.
             rgt, node.lft, node.parent_id, node.poster, node.created_at, node.editor, node.edited_at, node.location_data
             ORDER BY node.lft';
@@ -2271,7 +2271,7 @@ abstract class database {
                     ' . $table . ' AS parent
                     WHERE node.lft BETWEEN parent.lft AND parent.rgt
                     AND ' . $where . '
-                    GROUP BY node.title, node.id, node.body, node.sef_url, node.is_active, node.is_events, node.hide_closed_events, node.canonical, 
+                    GROUP BY node.title, node.id, node.body, node.sef_url, node.is_active, node.is_events, node.hide_closed_events, node.canonical,
                     node.meta_title, node.meta_keywords, node.meta_description, node.noindex, node.nofollow, node.items_per_page, node.expFiles_id, node.
                     rgt, node.lft, node.parent_id, node.poster, node.created_at, node.editor, node.edited_at, node.location_data
                     ORDER BY node.lft
@@ -2279,7 +2279,7 @@ abstract class database {
             WHERE node.lft BETWEEN parent.lft AND parent.rgt
                 AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
                 AND sub_parent.title = sub_tree.title
-            GROUP BY node.title, node.id, node.body, node.sef_url, node.is_active, node.is_events, node.hide_closed_events, node.canonical, 
+            GROUP BY node.title, node.id, node.body, node.sef_url, node.is_active, node.is_events, node.hide_closed_events, node.canonical,
             node.meta_title, node.meta_keywords, node.meta_description, node.noindex, node.nofollow, node.items_per_page, node.expFiles_id, node.
             rgt, node.lft, node.parent_id, node.poster, node.created_at, node.editor, node.edited_at, node.location_data
             HAVING depth = 1
