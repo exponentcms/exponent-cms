@@ -1467,6 +1467,7 @@ class storeController extends expController {
         $record = new $product_type();
 
         $record->update($this->params);
+        $record->refresh();
 
         // unlike other controller->update() methods, we pass off to product->addContentToSearch();
         $record->addContentToSearch();
