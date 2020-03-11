@@ -13,9 +13,9 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Version 2.5.2
 -------------
 ### Address issues in v2.5.1 and Prepare for v3.0.0
- - compatible with PHP 7.1.x, 7.2.x, and 7.3.x
+ - compatible with PHP 7.1.x, 7.2.x, 7.3.x, and 7.4.x
    - deprecated support for PHP 5.6.x, and 7.0.x still exists
-   - not yet fully compatible with PHP 7.4.x
+ - now supports MySQL v5.7.x 'strict' mode
  - fixes and tweaks many issues in previous versions
 
 Version 2.5.1
