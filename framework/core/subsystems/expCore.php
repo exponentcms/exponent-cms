@@ -434,7 +434,7 @@ class expCore
     public static function cast($source, $destinationtype)
     {
         $destination = new $destinationtype();
-        if (is_null($destination)) {
+        if ($destination === null) {
             return $destination;
         }
         $sourceReflection = new ReflectionObject($source);

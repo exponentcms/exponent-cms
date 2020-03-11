@@ -67,7 +67,7 @@ class expDatabase {
 	 * and then returns an array to the caller.
 	 *
 	 * @param int $valid_only
-	 * @return Array An associative array of engine identifiers.
+	 * @return array An associative array of engine identifiers.
 	 *	The internal engine name is the key, and the external
 	 *	descriptive name is the value.
 	 */
@@ -174,7 +174,7 @@ class expDatabase {
    			if (is_readable($moddef)) {
    				$dh = opendir($moddef);
    				while (($file = readdir($dh)) !== false) {
-   					if (is_dir($moddef.'/'.$file) && ($file != '..' && $file != '.')) {
+   					if (is_dir($moddef.'/'.$file) && ($file !== '..' && $file !== '.')) {
    						$dirpath = $moddef.'/'.$file.'/definitions';
    						if (file_exists($dirpath)) {
    							$def_dir = opendir($dirpath);
@@ -1162,7 +1162,11 @@ abstract class database {
 	    } else {
 	        return false; // must specify known FIELD_TYPE
 	    }
-	    $sql .= " NOT NULL";
+	    if ($type == DB_DEF_ID || !empty($def[DB_NOTNULL]) || !empty($def[DB_PRIMARY])) {
+            $sql .= " NOT NULL";
+        } else {
+            $sql .= " NULL";
+        }
 	    if (isset($def[DB_DEFAULT]))
 	        $sql .= " DEFAULT '" . $def[DB_DEFAULT] . "'";
 
@@ -1313,7 +1317,7 @@ abstract class database {
 	        $status["INSERT"] = true;
 
 	    $o = $this->selectObject($tablename, "id=" . $insert_id);
-	    if ($o == null || $o->name != "Testing Name") {
+	    if ($o == null || $o->name !== "Testing Name") {
 	        $status["SELECT"] = false;
 	        return $status;
 	    } else
@@ -1868,22 +1872,22 @@ abstract class database {
 	function getDDFieldType($fieldObj) {
 	    $type = strtolower($fieldObj->Type);
 
-	    if ($type == "int(11)")
+	    if ($type === "int(11)")
 	        return DB_DEF_ID;
-	    if ($type == "int(8)")
+	    if ($type === "int(8)")
 	        return DB_DEF_INTEGER;
-	    elseif ($type == "tinyint(1)")
+	    elseif ($type === "tinyint(1)")
 	        return DB_DEF_BOOLEAN;
-	    elseif ($type == "int(14)")
+	    elseif ($type === "int(14)")
 	        return DB_DEF_TIMESTAMP;
-        elseif ($type == "datetime")
+        elseif ($type === "datetime")
   	        return DB_DEF_TIMESTAMP;
 	    //else if (substr($type,5) == "double")
             //return DB_DEF_DECIMAL;
-	    elseif ($type == "double")
+	    elseif ($type === "double")
 	        return DB_DEF_DECIMAL;
 	    // Strings
-	    elseif ($type == "text" || $type == "mediumtext" || $type == "longtext" || strpos($type, "varchar(") !== false) {
+	    elseif ($type === "text" || $type === "mediumtext" || $type === "longtext" || strpos($type, "varchar(") !== false) {
 	        return DB_DEF_STRING;
 	    } else {
             return DB_DEF_INTEGER;
@@ -1898,11 +1902,11 @@ abstract class database {
 	*/
 	function getDDStringLen($fieldObj) {
 	    $type = strtolower($fieldObj->Type);
-	    if ($type == "text")
+	    if ($type === "text")
 	        return 65535;
-	    else if ($type == "mediumtext")
+	    else if ($type === "mediumtext")
 	        return 16777215;
-	    else if ($type == "longtext")
+	    else if ($type === "longtext")
 	        return 16777216;
 	    else if (strpos($type, "varchar(") !== false) {
 	        return str_replace(array("varchar(", ")"), "", $type) + 0;
@@ -1919,9 +1923,9 @@ abstract class database {
 	*/
 	function getDDKey($fieldObj) {
 	    $key = strtolower($fieldObj->Key);
-	    if ($key == "pri")
+	    if ($key === "pri")
 	        return DB_PRIMARY;
-	    else if ($key == "uni") {
+	    else if ($key === "uni") {
 	        return DB_UNIQUE;
 	    } else {
             return false;
@@ -1936,7 +1940,7 @@ abstract class database {
 	*/
 	function getDDAutoIncrement($fieldObj) {
 	    $auto = strtolower($fieldObj->Extra);
-	    if ($auto == "auto_increment") {
+	    if ($auto === "auto_increment") {
 	        return true;
 	    } else {
             return false;
@@ -1951,7 +1955,7 @@ abstract class database {
 	*/
 	function getDDIsNull($fieldObj) {
 	    $null = strtolower($fieldObj->Null);
-	    if ($null == "yes") {
+	    if ($null === "yes") {
 	        return true;
 	    } else {
             return false;

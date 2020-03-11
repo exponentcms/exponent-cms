@@ -99,7 +99,7 @@ function sanity_checkDirectory($dir, $flag) {
 	if (is_readable(BASE . $dir)) {
 		$dh = opendir(BASE . $dir);
 		while (($file = readdir($dh)) !== false) {
-			if ($file{0} !== '.' && $file !== 'CVS') {
+			if ($file[0] !== '.' && $file !== 'CVS') {
 				if (is_file(BASE . $dir . '/' . $file)) {
 					$status = sanity_checkFile(BASE . $dir . '/' . $file,true, $flag);
 					if ($status != SANITY_FINE) {

@@ -248,6 +248,12 @@ define('DB_DEFAULT', 2);
 define('DB_INCREMENT', 3);
 
 /**
+ * Database 'Not Null'  Field specifier
+ * Fields are set to allow NULL unless this is set.
+ */
+define('DB_NOTNULL', 4);
+
+/**
  * Database 'Primary Key' Field specifier
  * An index for the Exponent Data Definition Language.
  * This single unique index specifies that the field should be treated as
@@ -257,7 +263,7 @@ define('DB_INCREMENT', 3);
  * @see DB_DEF_ID
  * @see DB_INCREMENT
  */
-define('DB_PRIMARY', 4);
+define('DB_PRIMARY', 5);
 
 /**
  * Database 'Unique Key' Field specifier
@@ -265,11 +271,8 @@ define('DB_PRIMARY', 4);
  * This index specifies that the field should be treated as a
  * unique key for the table.  There can zero or multiple unique keys
  * using single or multiple (composite) fields per table.
- *
- * @see DB_DEF_ID
- * @see DB_INCREMENT
  */
-define('DB_UNIQUE', 5);
+define('DB_UNIQUE', 6);
 
 /**
  * Database 'Index' Field specifier
@@ -277,11 +280,8 @@ define('DB_UNIQUE', 5);
  * This index specifies that the field should be treated as a
  * key for the table for more efficient lookups.  There can be
  * multiple key fields per table but they will NOT be composite keys.
- *
- * @see DB_DEF_ID
- * @see DB_INCREMENT
  */
-define('DB_INDEX', 6);  // note will hold index prefix length for string type fields
+define('DB_INDEX', 7);  // note will hold index prefix length for string type fields
 
 /**
  * Database 'Full Text' Index Field specifier
@@ -289,11 +289,8 @@ define('DB_INDEX', 6);  // note will hold index prefix length for string type fi
  * This index specifies that the field should be treated as a
  * key for the table where full text searches will be performed.
  * There is only one (composite) Full Text index per table.
- *
- * @see DB_DEF_ID
- * @see DB_INCREMENT
  */
-define('DB_FULLTEXT', 7);
+define('DB_FULLTEXT', 8);
 
 /**
  * ??????

@@ -32,10 +32,12 @@ return array(
 	'product_type'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>200,
+        DB_NOTNULL=>true,
 		DB_PRIMARY=>true,
 		DB_INCREMENT=>false),
     'rank'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER)
+		DB_FIELD_TYPE=>DB_DEF_INTEGER,
+        DB_NOTNULL=>true)
 
 );
 
