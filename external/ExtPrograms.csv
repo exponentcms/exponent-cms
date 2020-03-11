@@ -23,11 +23,11 @@ class.upload,1.0.8,github.com/verot/class.upload.php,"1.0.8/2.0.9
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.29.21,uncomment load utilities
 scssphp,1.0.8exp,github.com/scssphp/scssphp,1.0.8,hacked to compile newui
 lessphp,0.5.0,github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
-less.php,1.8.3,github.com/wikimedia/less.php,2.0.0,
+less.php,1.8.3exp,github.com/wikimedia/less.php,2.0.0,code edit to retain php v5.6 compatitility
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap3,3.4.1,twitter.github.com/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
 Twitter-Bootstrap4,4.4.1,twitter.github.com/bootstrap,4.4.1,patched bootstrap.scss includes swatches & exp variables
-popper.js,1.16.0,github.com/FezVrasta/popper.js,1.16.0/2.0.6,needed by BS4 (umd)
+popper.js,1.16.0,github.com/FezVrasta/popper.js,1.16.0/2.1.0,needed by BS4 (umd)
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
 Bootswatch3,3.4.1+1,bootswatch.com/,3.4.1+1,change 1st line variables.less comment to output to .css file
 Bootswatch4,4.4.1,bootswatch.com/,4.4.1,change 1st line variables.scss comment to output to .css file
@@ -55,7 +55,7 @@ jQuery Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as 
 jQuery3,3.4.1,jquery.com,3.4.1,
 jQuery3 Migrate,3.1.0,jquery.com,3.1.0,
 jQueryUI,1.12.1,jqueryui.com,1.12.1,
-stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
+stepy,1.1.0exp,github.com/wbotelhos/stepy,1.1.0,"added button class, jquery.validate option passing"
 validate,1.19.1exp,jqueryvalidation.org/,1.19.1,edit for 'undefined' in 'min' & 'max'
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker/,1.6.3,used by adminer
@@ -76,15 +76,15 @@ Bootstrap DateTimePicker,4.17.47,github.com/Eonasdan/bootstrap-datetimepicker,4.
 Tempus Dominus Bootstrap 4,5.1.2,github.com/tempusdominus/bootstrap-4,5.1.2,"placed in bootstrap4theme, but not yet used"
 moment.js,2.24.0,github.com/moment/moment,2.24.0,needed for Bootstrap DateTimePicker
 strength-meter,1.1.4,github.com/kartik-v/strength-meter,1.1.4,
-Sortable,1.9.0,github.com/SortableJS/Sortable,1.10.2,
-jstree,3.3.8,github.com/vakata/jstree,3.3.8,added nav menu icons to stylesheet
+Sortable,1.10.2,github.com/SortableJS/Sortable,1.10.2,
+jstree,3.3.9,github.com/vakata/jstree,3.3.9,added nav menu icons to stylesheet
 bootstrap3-dialog,1.35.4,github.com/nakupanda/bootstrap3-dialog,1.35.4,use /src .less file and add our .less variable imports; w/ bs4 fixes
 impromptu,6.2.3,trentrichardson.com/Impromptu,6.2.3,add some colors to .css
 bootstrap-touch-carousel,0.8.0exp,github.com/ixisio/bootstrap-touch-carousel,0.8.0,patched with vertical drag fix
 bootstrap-tagsinput,0.8.0exp,github.com/timschlechter/bootstrap-tagsinput,0.8.0,patched with android fix
 Typeahead,0.11.1,twitter.github.io/typeahead.js/,0.11.1,needed by bootstrap-tagsinput
 bootstrap-duallistbox,3.0.7/4.0.1,github.com/istvan-ujjmeszaros/bootstrap-duallistbox,3.0.7/4.0.1,v4.0.1 placed in bootstrap4theme
-select2,4.0.12,github.com/ivaynberg/select2,4.0.12,renamed select2.full.js to select2.js
+select2,4.0.13,github.com/ivaynberg/select2,4.0.13,renamed select2.full.js to select2.js
 shuffle.js,v3.1.1,github.com/Vestride/Shuffle,4.2.0/5.2.3,
 Jasny Bootstrap2,2.3.1,jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,4.0.0,jasny.github.io/bootstrap,4.0.0,only using fileinput at this time
