@@ -528,7 +528,7 @@ class expRouter {
             $i = 0;
             if ($part_count == count($map['url_parts'])) {
                 foreach($map['url_parts'] as $key=>$map_part) {
-                    $res = preg_match("/^$map_part/", $this->url_parts[$i]);
+                    $res = preg_match("/^$map_part$/", $this->url_parts[$i]);
                     if ($res != 1) {
                         $matched = false;
                         break;
