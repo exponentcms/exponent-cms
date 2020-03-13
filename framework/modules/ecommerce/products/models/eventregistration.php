@@ -262,13 +262,13 @@ class eventregistration extends expRecord {
 
                         $price = '';
                         if (isset($option->amount)) {
-                            if ($option->modtype == '%') {
+                            if ($option->modtype === '%') {
                                 $diff = ($this->getBasePrice() * ($option->amount * .01)) + $this->getBasePrice();
                             } else {
                                 $diff = $option->amount;
                             }
 
-                            if ($display_price_as == 'total') {
+                            if ($display_price_as === 'total') {
                                 $newprice = ($option->updown == '+') ? ($this->getBasePrice() + $diff) : ($this->getBasePrice() - $diff);
                                 $price = ' (' . expCore::getCurrencySymbol() . number_format($newprice, 2) . ')';
                             } else {
@@ -410,7 +410,7 @@ class eventregistration extends expRecord {
                     $control_type = get_class($ctl);
                     $def = call_user_func(array($control_type, "getFieldDefinition"));
                     if ($def != null) {
-                        if ($control_type == 'uploadcontrol') $registrant['registration'] = $key + 1;
+                        if ($control_type === 'uploadcontrol') $registrant['registration'] = $key + 1;
                         $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $registrant, true));
                         $value = stripslashes(expString::escape($emailValue));
                         $varname = $c->name;
@@ -488,7 +488,7 @@ class eventregistration extends expRecord {
             if (!$isOptionEmpty) {
                 foreach ($params['options'][$og->id] as $opt_id) {
                     $selected_option = new option($opt_id);
-                    $cost = $selected_option->modtype == '$' ? $selected_option->amount : $this->getBasePrice() * ($selected_option->amount * .01);
+                    $cost = $selected_option->modtype === '$' ? $selected_option->amount : $this->getBasePrice() * ($selected_option->amount * .01);
                     $cost = $selected_option->updown == '+' ? $cost : $cost * -1;
                     if (@$params['options_quantity'][$opt_id] > 0) {
                         $price += $cost * $params['options_quantity'][$opt_id];
@@ -624,7 +624,7 @@ class eventregistration extends expRecord {
         $f = new forms($product->forms_id);
         if (empty($f->is_saved)) {
             $registrant = $db->selectObject("eventregistration_registrants", "orderitem_id ='{$item->id}'");
-            if (empty($registrant->control_name) || $registrant->control_name == ' ') {
+            if (empty($registrant->control_name) || $registrant->control_name === ' ') {
                 $registrant->control_name = $user->firstname . ' ' . $user->lastname;
                 $db->updateObject($registrant, "eventregistration_registrants");
             }
@@ -643,7 +643,7 @@ class eventregistration extends expRecord {
         $controls = $fc->find('all','forms_id='.$this->forms_id,'rank');
         foreach ($controls as $key=>$control) {
             $controls[$key]->ctl = expUnserialize($control->data);
-            if ($input_only && get_class($control->ctl) == 'htmlcontrol') {
+            if ($input_only && $control->ctl instanceof \htmlcontrol) {
                 unset($controls[$key]);
             }
         }
@@ -679,7 +679,7 @@ class eventregistration extends expRecord {
         if ($escape) {
             return addslashes($ctl->toHTML($caption, "$name"));
         } else {
-            if ($name == "email" && $adminedit == true) {
+            if ($name === "email" && $adminedit == true) {
                 return $ctl->toHTML($caption, "$name", true);  //FIXME there is no 3rd param for this
             } else {
                 return $ctl->toHTML($caption, "$name");

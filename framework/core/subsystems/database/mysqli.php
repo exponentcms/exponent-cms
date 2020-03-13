@@ -44,7 +44,7 @@ class mysqli_database extends database {
      */
 
 	function __construct($username, $password, $hostname, $database, $new=false) {
-		if (strstr($hostname,':')) {
+		if (strpos($hostname, ':') !== false) {
 			list ( $host, $port ) = @explode (":", $hostname);
 		} else {
             $host = $hostname;

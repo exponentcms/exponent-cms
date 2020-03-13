@@ -52,7 +52,7 @@ class expCore
      * Return a full URL, given the desired querystring arguments as an associative array.
      * This function does take into account the SEF URLs settings and the SSL urls in the site config.
      *
-     * @param Array  $params An associative array of the desired querystring parameters.
+     * @param array  $params An associative array of the desired querystring parameters.
      * @param string $type
      * @param string $sef_name
      *
@@ -129,7 +129,7 @@ class expCore
      * and uses the SSL url is the site is configured to use SSL.  Otherwise, it works exactly like
      * self::makeLink.
      *
-     * @param Array $params An associative array of the desired querystring parameters.
+     * @param array $params An associative array of the desired querystring parameters.
      *
      * @return string
      * @node Subsystems:expCore
@@ -197,10 +197,10 @@ class expCore
     public static function URLisValid($url)
     {
         return (
-            substr($url, 0, 7) == "http://" ||
-            substr($url, 0, 8) == "https://" ||
-            substr($url, 0, 7) == "mailto:" ||
-            substr($url, 0, 6) == "ftp://"
+            substr($url, 0, 7) === "http://" ||
+            substr($url, 0, 8) === "https://" ||
+            substr($url, 0, 7) === "mailto:" ||
+            substr($url, 0, 6) === "ftp://"
         );
     }
 
@@ -216,7 +216,7 @@ class expCore
     {
         $size = ini_get("upload_max_filesize");
         //		$size_msg = "";
-        $type = substr($size, -1, 1);
+        $type = $size[strlen($size) - 1];
         $shorthand_size = substr($size, 0, -1);
         switch ($type) {
             case 'M':
@@ -497,7 +497,7 @@ class expCore
     }
 
     public static function save_csv($data, $rpt_columns=array(), $filename='report.csv') {
-        if (LANG_CHARSET == 'UTF-8') {
+        if (LANG_CHARSET === 'UTF-8') {
             $out = chr(0xEF).chr(0xBB).chr(0xBF);  // add utf-8 signature to file to open appropriately in Excel, etc...
         } else {
             $out = "";
@@ -519,7 +519,7 @@ class expCore
             // 'application/octet-stream' is the registered IANA type but
             // MSIE and Opera seems to prefer 'application/octetstream'
             // It seems that other headers I've added make IE prefer octet-stream again. - RAM
-            $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values;';
+            $mime_type = (EXPONENT_USER_BROWSER === 'IE' || EXPONENT_USER_BROWSER === 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values;';
             header('Content-Type: ' . $mime_type . ' charset=' . LANG_CHARSET. "'");
             header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
             header('Content-length: '.filesize($tmpfname));
@@ -527,7 +527,7 @@ class expCore
             header('Content-Encoding:');
             header('Content-Disposition: attachment; filename="' . $filename . '";');
             // IE need specific headers
-            if (EXPONENT_USER_BROWSER == 'IE') {
+            if (EXPONENT_USER_BROWSER === 'IE') {
                 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
                 header('Pragma: public');
                 header('Vary: User-Agent');
@@ -572,7 +572,7 @@ class expCore
         foreach ($rptcols as $individual_Header) {
             if (!is_array($rptcols) || in_array($individual_Header, $rptcols)) $str .= $individual_Header . ",";  //FIXME $individual_Header is ALWAYS in $rptcols?
         }
-        $str = substr($str, 0, strlen($str) - 1);  // remove trailing commma
+        $str = substr($str, 0, -1);  // remove trailing commma
         $str .= "\r\n";
         // create item rows
         foreach ($items as $item) {
@@ -582,7 +582,7 @@ class expCore
                     $str .= $rowitem . ",";
                 }
             } //foreach rowitem
-            $str = substr($str, 0, strlen($str) - 1);  // remove trailing commma
+            $str = substr($str, 0, -1);  // remove trailing commma
             $str .= "\r\n";
         } //end of foreach loop
         return $str;

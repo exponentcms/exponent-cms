@@ -338,7 +338,7 @@ function renderAction(array $parms=array()) {
     // if you preface the name action name with a common crud action name we can check perms on
     // it with the developer needing to specify any...better safe than sorry.
     // i.e if the action is edit_mymodel it will be checked against the edit permission
-    if (stristr($parms['action'], '_'))
+    if (stripos($parms['action'], '_') !== false)
         $parts = explode("_", $parms['action']);
     else
         $parts = preg_split('/(?=[A-Z])/', $parms['action']);  // account for actions with camelCase action/perm such as editItem
@@ -348,19 +348,19 @@ function renderAction(array $parms=array()) {
     // on the edit form somehow..like a hacker trying to bypass the form and just submit straight to
     // the action. To safeguard, we'll catch if the action is update and change it either to create or
     // edit depending on whether an id param is passed to. that should be sufficient.
-    if ($parms['action'] == 'update' || $common_action == 'update') {
+    if ($parms['action'] === 'update' || $common_action === 'update') {
         $perm_action = (!isset($parms['id']) || $parms['id'] == 0) ? 'create' : 'edit';
-    } elseif (($parms['action'] == 'edit' || $common_action == 'edit') && (!isset($parms['id']) || $parms['id'] == 0)) {
+    } elseif (($parms['action'] === 'edit' || $common_action === 'edit') && (!isset($parms['id']) || $parms['id'] == 0)) {
         $perm_action = 'create';
-    } elseif ($parms['action'] == 'saveconfig') {
+    } elseif ($parms['action'] === 'saveconfig') {
         $perm_action = 'configure';
     } else {
         $perm_action = $parms['action'];
     }
 
     // Here is where we check for ownership of an item and 'create' perm
-    if (($parms['action'] == 'edit' || $parms['action'] == 'update' || $parms['action'] == 'delete' ||
-        $common_action == 'edit' || $common_action == 'update' || $common_action == 'delete') && !empty($parms['id'])) {
+    if (($parms['action'] === 'edit' || $parms['action'] === 'update' || $parms['action'] === 'delete' ||
+        $common_action === 'edit' || $common_action === 'update' || $common_action === 'delete') && !empty($parms['id'])) {
         $theaction = !empty($common_action) ? $common_action : $parms['action'];
         $owner = $db->selectValue($model, 'poster', 'id=' . $parms['id']);
         if ($owner == $user->id && !expPermissions::check($theaction, $controller->loc) && expPermissions::check('create', $controller->loc)) {
@@ -370,7 +370,7 @@ function renderAction(array $parms=array()) {
 
     if (!DISABLE_PRIVACY) {
         // check to see if it's on a private page and we shouldn't see it
-        if ($perm_action == 'showall' || $perm_action == 'show' || $perm_action == 'downloadfile' || $common_action == 'showall' || $common_action == 'show' || $common_action == 'downloadfile') {
+        if ($perm_action === 'showall' || $perm_action === 'show' || $perm_action === 'downloadfile' || $common_action === 'showall' || $common_action === 'show' || $common_action === 'downloadfile') {
             $loc = null;
             if (!empty($parms['src'])) {
                 $loc = expCore::makeLocation($parms['controller'], $parms['src']);
@@ -806,7 +806,7 @@ function get_action_views($ctl, $action, $human_readable) {
         if (is_readable($path)) {
             $dh = opendir($path);
             while (($file = readdir($dh)) !== false) {
-                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl' && substr($file, -15) != '.bootstrap3.tpl' && substr($file, -10) != '.newui.tpl') {
+                if (is_readable($path.'/'.$file) && substr($file, -4) === '.tpl' && substr($file, -14) !== '.bootstrap.tpl' && substr($file, -15) !== '.bootstrap3.tpl' && substr($file, -10) !== '.newui.tpl') {
                     $filename = substr($file, 0, -4);
                     $fileparts = explode('_', $filename);
                     if ($fileparts[0] == $action) {
@@ -846,7 +846,7 @@ function get_filedisplay_views() {
         if (is_readable($path)) {
             $dh = opendir($path);
             while (($file = readdir($dh)) !== false) {
-                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl' && substr($file, -15) != '.bootstrap3.tpl' && substr($file, -10) != '.newui.tpl') {
+                if (is_readable($path.'/'.$file) && substr($file, -4) === '.tpl' && substr($file, -14) !== '.bootstrap.tpl' && substr($file, -15) !== '.bootstrap3.tpl' && substr($file, -10) !== '.newui.tpl') {
                     $filename = substr($file, 0, -4);
                     $views[$filename] = gt($filename);
                 }
@@ -908,7 +908,7 @@ function expUnserialize($serial_str) {
         if (!empty($out2['auto_respond_body'])) {  // work-around for links in forms auto respond
             $out2['auto_respond_body'] = stripslashes($out2['auto_respond_body']);
         }
-    } elseif (is_object($out2) && get_class($out2) == 'htmlcontrol') {
+    } elseif (is_object($out2) && $out2 instanceof \htmlcontrol) {
         $out2->html = stripslashes($out2->html);
     }
     if ($out2 === false && !empty($out)) {
@@ -951,12 +951,12 @@ function curPageURL() {
     if (expJavascript::inAjaxAction()) {
         $new_request = $_REQUEST;
         unset($new_request['ajax_action']);
-        if ($new_request['controller'] == 'store' && $new_request['action'] == 'edit')
+        if ($new_request['controller'] === 'store' && $new_request['action'] === 'edit')
             unset($new_request['view']);
         $pageURL = makeLink($new_request);
     } else {
         $pageURL = 'http';
-        if (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") {
+        if (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on") {
             $pageURL .= "s";
         }
         $pageURL .= "://";

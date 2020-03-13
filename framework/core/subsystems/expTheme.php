@@ -181,7 +181,7 @@ class expTheme
         if (empty($head_config['framework'])) {
             $head_config['framework'] = '';
         }
-        if (bs() || $framework == 'jquery') {
+        if (bs() || $framework === 'jquery') {
             array_unshift(
                 $auto_dirs,
                 BASE . 'framework/core/forms/controls/jquery'
@@ -785,7 +785,7 @@ class expTheme
             $dh = opendir($base);
             // Read out all entries in the THEMEDIR/subthemes directory
             while (($s = readdir($dh)) !== false) {
-                if (substr($s, -4, 4) == '.php' && substr($s, 0, 1) != '_' && is_file($base . "/$s") && is_readable(
+                if (substr($s, -4, 4) === '.php' && $s[0] !== '_' && is_file($base . "/$s") && is_readable(
                         $base . "/$s"
                     )
                 ) {
@@ -981,7 +981,7 @@ class expTheme
 //   			include(BASE.'framework/modules-1/'.$actfile);
         } else {
             notfoundController::handle_not_found();
-            echo '<br /><hr size="1" />';
+            echo '<br /><hr>';
             echo sprintf(
                 gt('No such module action') . ' : %1 : %2',
                 strip_tags($_REQUEST['module']),
@@ -1309,12 +1309,12 @@ class expTheme
         $requestvars['view'] = isset($params['view']) ? $params['view'] : null;
 
         // figure out the scope of the module and set the source accordingly
-        if ($params['scope'] == 'global') {
+        if ($params['scope'] === 'global') {
             $params['source'] = isset($params['source']) ? $params['source'] : null;
-        } elseif ($params['scope'] == 'sectional') {
+        } elseif ($params['scope'] === 'sectional') {
             $params['source'] = isset($params['source']) ? $params['source'] : '@section';
             $params['source'] .= $sectionObj->id;
-        } elseif ($params['scope'] == 'top-sectional') {
+        } elseif ($params['scope'] === 'top-sectional') {
             $params['source'] = isset($params['source']) ? $params['source'] : '@section';
             $section = $sectionObj;
             while ($section->parent > 0) {
@@ -1410,7 +1410,7 @@ class expTheme
         $params = array()
     ) {
         $module = expModules::getModuleName($module); //FIXME patch to cleanup module name
-        if (!AUTHORIZED_SECTION && $module != 'navigation' && $module != 'login') {
+        if (!AUTHORIZED_SECTION && $module !== 'navigation' && $module !== 'login') {
             return;
         }
 
@@ -1426,7 +1426,7 @@ class expTheme
             $sectionObj = $db->selectObject('section', 'id=' . $section_id);
             //$section->id = $section_id;
         }
-        if ($module == "login" && defined('PREVIEW_READONLY') && PREVIEW_READONLY == 1) {
+        if ($module === "login" && defined('PREVIEW_READONLY') && PREVIEW_READONLY == 1) {
             return;
         }
 
@@ -1512,7 +1512,7 @@ class expTheme
 //					}
 //				} else {
                 // if we hit here we're dealing with a hard-coded controller...not a module
-                if (!$hide_menu && $loc->mod != "container") {
+                if (!$hide_menu && $loc->mod !== "container") {
                     $controller = expModules::getController($module);
 //                        $controller = expModules::getControllerClassName($module);
                     $hccontainer = new stdClass(); //php 5.4
@@ -1609,7 +1609,7 @@ class expTheme
                 $found = BTN_COLOR;
             }
         }
-        if (bs4() && $found == 'btn-default') {
+        if (bs4() && $found === 'btn-default') {
             $found = 'btn-secondary';
         }
         return $found;
@@ -1625,20 +1625,20 @@ class expTheme
     public static function buttonSize($size = null)
     {
         if (bs2()) {
-            if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
+            if (BTN_SIZE === 'large' || (!empty($size) && $size === 'large')) {
                 $btn_size = ''; // actually default size, NOT true bootstrap large
-            } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
+            } elseif (BTN_SIZE === 'small' || (!empty($size) && $size === 'small')) {
                 $btn_size = 'btn-mini';
             } else { // medium
                 $btn_size = 'btn-small';
             }
             return $btn_size;
         } elseif (bs3() || bs4()) {
-            if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
+            if (BTN_SIZE === 'large' || (!empty($size) && $size === 'large')) {
                 $btn_size = 'btn-lg';
-            } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
+            } elseif (BTN_SIZE === 'small' || (!empty($size) && $size === 'small')) {
                 $btn_size = 'btn-sm';
-            } elseif (BTN_SIZE == 'extrasmall' || (!empty($size) && $size == 'extrasmall')) {
+            } elseif (BTN_SIZE === 'extrasmall' || (!empty($size) && $size === 'extrasmall')) {
                 if (bs3()) {
                     $btn_size = 'btn-xs';
                 } else {
@@ -1988,18 +1988,18 @@ class expTheme
     public static function iconSize($size = null)
     {
         if (bs2()) {
-            if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
+            if (BTN_SIZE === 'large' || (!empty($size) && $size === 'large')) {
                 $icon_size = 'icon-large';
-            } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
+            } elseif (BTN_SIZE === 'small' || (!empty($size) && $size === 'small')) {
                 $icon_size = '';
             } else { // medium
                 $icon_size = 'icon-large';
             }
             return $icon_size;
         } elseif (bs3() || bs4()) {
-            if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
+            if (BTN_SIZE === 'large' || (!empty($size) && $size === 'large')) {
                 $icon_size = 'fa-lg';
-            } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
+            } elseif (BTN_SIZE === 'small' || (!empty($size) && $size === 'small')) {
                 $icon_size = '';
             } else { // medium
                 $icon_size = 'fa-lg';
@@ -2017,7 +2017,7 @@ class expTheme
 
         if (preg_match(
             '/(tablet|ipad|playbook)|(android(?!.*(mobi|opera mini)))/i',
-            strtolower($_SERVER['HTTP_USER_AGENT'])
+            $_SERVER['HTTP_USER_AGENT']
         )
         ) {
             $tablet_browser++;
@@ -2025,7 +2025,7 @@ class expTheme
 
         if (preg_match(
             '/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|android|iemobile)/i',
-            strtolower($_SERVER['HTTP_USER_AGENT'])
+            $_SERVER['HTTP_USER_AGENT']
         )
         ) {
             $mobile_browser++;
@@ -2175,11 +2175,11 @@ class expTheme
         if ($user->isAdmin() && DEVELOPMENT) {
             $trace = debug_backtrace();
             $caller = $trace[1];
-            if (substr($caller['file'], -16, 6) == 'compat') {
+            if (substr($caller['file'], -16, 6) === 'compat') {
                 $caller = $trace[2];
             }
             $oldcall = $caller['function'];
-            if ($caller['class'] == 'expTheme') {
+            if ($caller['class'] === 'expTheme') {
                 $oldcall = $caller['class'] . '::' . $oldcall;
             }
             $message = '<strong>' . $oldcall . '</strong> ' . gt(

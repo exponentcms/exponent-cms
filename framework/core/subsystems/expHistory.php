@@ -147,10 +147,10 @@ class expHistory {
         // bunch of identical entries
 
         $url = '';
-        if (stristr($router->current_url,'EXPONENT.')) return false;
+        if (stripos($router->current_url, 'EXPONENT.') !== false) return false;
         if (expTheme::inAction()) {
             // we don't want to save history for these action...it screws up the flow when logging in
-            if (!isset($router->params['action']) || $router->params['action'] == 'loginredirect' || $router->params['action'] == 'logout') return false;
+            if (!isset($router->params['action']) || $router->params['action'] === 'loginredirect' || $router->params['action'] === 'logout') return false;
 
             // figure out the module/controller names
             $router_name = isset($router->params['controller']) ? $router->params['controller'] : $router->params['module'];
@@ -181,7 +181,7 @@ class expHistory {
 
       	    // save the "lasts" information
             $this->history['lasts']['type'] = $url_type;
-            if ($url_type != 'editable') $this->history['lasts']['not_editable'] = $url_type;
+            if ($url_type !== 'editable') $this->history['lasts']['not_editable'] = $url_type;
   	    }
 
         expSession::set('history', $this->history);
@@ -214,7 +214,7 @@ class expHistory {
 	    $index = count($this->history[$url_type]) - $goback;
 	    if ($index < 0) $index=0;
 	    $url = $this->history[$url_type][$index]['params'];
-	    if ($this->history[$url_type][$index]['url_type'] == 'base') {
+	    if ($this->history[$url_type][$index]['url_type'] === 'base') {
             $url = array('section'=>'SITE_DEFAULT_SECTION');
         } elseif ( (!isset($this->history[$url_type][$index]['params'])) || ($url['controller'] == $router->params['controller'] && $url['action'] == $router->params['action'])) {
 	        $url = isset($this->history[$url_type][$index-1]['params']) ? $this->history[$url_type][$index-1]['params'] : array('section'=>'SITE_DEFAULT_SECTION');

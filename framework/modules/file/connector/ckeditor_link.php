@@ -232,7 +232,7 @@ if ($user) {
     $sections = section::levelTemplate(0,0);
     $standalones = $db->selectObjects('section','parent = -1');
 ?>
-<strong><?PHP echo gt('Site Hierarchy'); ?></strong><hr size="1" />
+<strong><?PHP echo gt('Site Hierarchy'); ?></strong><hr>
 	<table cellpadding="1" cellspacing="0" border="0" width="100%">
 <?PHP
            foreach ($sections as $section) {
@@ -256,7 +256,7 @@ if ($user) {
     if (count($standalones)) {
 ?>
 <BR /> <BR />
-<strong><?PHP echo gt('Standalone Pages'); ?></strong><hr size="1" />
+<strong><?PHP echo gt('Standalone Pages'); ?></strong><hr>
 	<table cellpadding="1" cellspacing="0" border="0" width="100%">
     <?PHP
            foreach ($standalones as $section) {

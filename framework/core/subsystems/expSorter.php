@@ -38,14 +38,14 @@ class expSorter {
         if (isset($params['ignore_case'])) $this->ignore_case = $params['ignore_case'];
         if (isset($params['type'])) $this->sort_type = $params['type'];
 
-        if ($this->sort_order == 'ASC') {
+        if ($this->sort_order === 'ASC') {
             $dir = 'sortASC';
         } else {
             $dir = 'sortDESC';
         }
-        if ($this->sort_type == 'a') {
+        if ($this->sort_type === 'a') {
             uasort($this->sort_array, array($this,$dir));
-        } elseif ($this->sort_type == 'k') {
+        } elseif ($this->sort_type === 'k') {
             uksort($this->sort_array, array($this,$dir));
         } else {
 	        usort($this->sort_array, array($this,$dir));
@@ -98,7 +98,7 @@ class expSorter {
         $sortby = empty($params['sortby']) ? NULL : $params['sortby'];
         $order = empty($params['order']) ? NULL : $params['order'];
         if (empty($sortby)) $sortby = $params['order'];
-        if (strstr($order," ")) {
+        if (strpos($order, " ") !== false) {
             $orderby = explode(" ",$order);
             $sortby = $orderby[0];
             $order = $orderby[1];

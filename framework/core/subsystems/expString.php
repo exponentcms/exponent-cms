@@ -86,24 +86,7 @@ class expString {
             return $rst;
         }
 
-        $str = str_replace("<br>"," ",$str);
-        $str = str_replace("</br>"," ",$str);
-        $str = str_replace("<br/>"," ",$str);
-        $str = str_replace("<br />"," ",$str);
-        $str = str_replace("\r\n"," ",$str);
-        $str = str_replace('"',"&quot;",$str);
-        $str = str_replace("'","&#39;",$str);
-        $str = str_replace("’","&rsquo;",$str);
-        $str = str_replace("‘","&lsquo;",$str);
-        $str = str_replace("®","&#174;",$str);
-        $str = str_replace("–","-", $str);
-        $str = str_replace("—","&#151;", $str);
-        $str = str_replace("”","&rdquo;", $str);
-        $str = str_replace("“","&ldquo;", $str);
-        $str = str_replace("¼","&#188;",$str);
-        $str = str_replace("½","&#189;",$str);
-        $str = str_replace("¾","&#190;",$str);
-		$str = str_replace("™","&trade;", $str);
+        $str = str_replace(array("<br>", "</br>", "<br/>", "<br />", "\r\n", '"', "'", "’", "‘", "®", "–", "—", "”", "“", "¼", "½", "¾", "™"), array(" ", " ", " ", " ", " ", "&quot;", "&#39;", "&rsquo;", "&lsquo;", "&#174;", "-", "&#151;", "&rdquo;", "&ldquo;", "&#188;", "&#189;", "&#190;", "&trade;"), $str);
 		$str = trim($str);
 
         if ($unescape) {
@@ -123,34 +106,7 @@ class expString {
      * @return string
      */
 	static function convertXMLFeedSafeChar($str) {
-		$str = str_replace("<br>","",$str);
-        $str = str_replace("</br>","",$str);
-        $str = str_replace("<br/>","",$str);
-        $str = str_replace("<br />","",$str);
-        $str = str_replace("&quot;",'"',$str);
-        $str = str_replace("&#39;","'",$str);
-        $str = str_replace("&rsquo;","'",$str);
-        $str = str_replace("&lsquo;","'",$str);
-        $str = str_replace("&#174;","",$str);
-        $str = str_replace("�","-", $str);
-        $str = str_replace("�","-", $str);
-        $str = str_replace("�", '"', $str);
-        $str = str_replace("&rdquo;",'"', $str);
-        $str = str_replace("�", '"', $str);
-        $str = str_replace("&ldquo;",'"', $str);
-        $str = str_replace("\r\n"," ",$str);
-        $str = str_replace("�"," 1/4",$str);
-        $str = str_replace("&#188;"," 1/4", $str);
-        $str = str_replace("�"," 1/2",$str);
-        $str = str_replace("&#189;"," 1/2",$str);
-        $str = str_replace("�"," 3/4",$str);
-        $str = str_replace("&#190;"," 3/4",$str);
-        $str = str_replace("�", "(TM)", $str);
-        $str = str_replace("&trade;","(TM)", $str);
-        $str = str_replace("&reg;","(R)", $str);
-        $str = str_replace("�","(R)",$str);
-        $str = str_replace("&","&amp;",$str);
-		$str = str_replace(">","&gt;",$str);
+        $str = str_replace(array("<br>", "</br>", "<br/>", "<br />", "&quot;", "&#39;", "&rsquo;", "&lsquo;", "&#174;", "�", "�", "�", "&rdquo;", "�", "&ldquo;", "\r\n", "�", "&#188;", "�", "&#189;", "�", "&#190;", "�", "&trade;", "&reg;", "�", "&", ">"), array("", "", "", "", '"', "'", "'", "'", "", "-", "-", '"', '"', '"', '"', " ", " 1/4", " 1/4", " 1/2", " 1/2", " 3/4", " 3/4", "(TM)", "(TM)", "(R)", "(R)", "&amp;", "&gt;"), $str);
         return trim($str);
 	}
 
@@ -278,7 +234,7 @@ class expString {
      * @return string
      */
     public static function summarize($string, $strtype='html', $type='para', $more='...') {
-        $sep = ($strtype == "html" ? array("</p>", "</div>") : array("\r\n", "\n", "\r"));
+        $sep = ($strtype === "html" ? array("</p>", "</div>") : array("\r\n", "\n", "\r"));
         $origstring = $string;
 
         switch ($type) {
@@ -334,17 +290,17 @@ class expString {
                     // Parser loop
                     for ($j = 0, $jMax = strlen($string); $j < $jMax; $j++) {
 
-                        $currentChar = substr($string, $j, 1);
+                        $currentChar = $string[$j];
                         $ret .= $currentChar;
 
                         // Lesser than event
-                        if ($currentChar == "<") $isText = false;
+                        if ($currentChar === "<") $isText = false;
 
                         // Character handler
                         if ($isText) {
 
                             // Memorize last space position
-                            if ($currentChar == " ") {
+                            if ($currentChar === " ") {
                                 $lastSpacePosition = $j;
                             } else {
                                 $lastChar = $currentChar;
@@ -356,7 +312,7 @@ class expString {
                         }
 
                         // Greater than event
-                        if ($currentChar == ">") {
+                        if ($currentChar === ">") {
                             $isText = true;
 
                             // Opening tag handler
@@ -373,7 +329,7 @@ class expString {
                                     $currentTag = substr($currentTag, 1, -1);
                                 }
 
-                                array_push($tagsArray, $currentTag);
+                                $tagsArray[] = $currentTag;
 
                             } else if (strpos($currentTag, "</") !== FALSE) {
                                 array_pop($tagsArray);
@@ -397,7 +353,7 @@ class expString {
                                 $aTag = array_pop($tagsArray);
                                 $string .= "</" . $aTag . ">";
                             } // You may add more tags here to put the link and added text before the closing tag
-                            elseif ($aTag == 'p' || 'div') {
+                            elseif ($aTag === 'p' || 'div') {
                                 $aTag = array_pop($tagsArray);
                                 $string .= "</" . $aTag . ">";
                             } else {
@@ -411,7 +367,7 @@ class expString {
                 break;
             default:
                 $words = explode(" ", strip_tags($string));
-                $string = implode(" ", array_slice($words, 0, $type + 0));
+                $string = implode(" ", array_slice($words, 0, (int)$type + 0));
                 if (strlen($string) < strlen($origstring)) {
                     $string .= " " . $more;
                 }
@@ -424,23 +380,10 @@ class expString {
     public static function parseAndTrimExport($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str);
 
-        $str = str_replace("�", "&rsquo;", $str);
-        $str = str_replace("�", "&lsquo;", $str);
-        $str = str_replace("�", "&#174;", $str);
-        $str = str_replace("�", "-", $str);
-        $str = str_replace("�", "&#151;", $str);
-        $str = str_replace("�", "&rdquo;", $str);
-        $str = str_replace("�", "&ldquo;", $str);
-        $str = str_replace("\r\n", " ", $str);
-        $str = str_replace("\t", " ", $str);
-        $str = str_replace(",", "\,", $str);
-        $str = str_replace("�", "&#188;", $str);
-        $str = str_replace("�", "&#189;", $str);
-        $str = str_replace("�", "&#190;", $str);
+        $str = str_replace(array("�", "�", "�", "�", "�", "�", "�", "\r\n", "\t", ",", "�", "�", "�"), array("&rsquo;", "&lsquo;", "&#174;", "-", "&#151;", "&rdquo;", "&ldquo;", " ", " ", "\,", "&#188;", "&#189;", "&#190;"), $str);
 
         if (!$isHTML) {
-            $str = str_replace('\"', "&quot;", $str);
-            $str = str_replace('"', "&quot;", $str);
+            $str = str_replace(array('\"', '"'), "&quot;", $str);
         } else {
             $str = str_replace('"', '""', $str);
         }
@@ -456,23 +399,12 @@ class expString {
         //echo "1<br>"; eDebug($str);
 //        global $db;
 
-        $str = str_replace("�", "&rsquo;", $str);
-        $str = str_replace("�", "&lsquo;", $str);
-        $str = str_replace("�", "&#174;", $str);
-        $str = str_replace("�", "-", $str);
-        $str = str_replace("�", "&#151;", $str);
-        $str = str_replace("�", "&rdquo;", $str);
-        $str = str_replace("�", "&ldquo;", $str);
-        $str = str_replace("\r\n", " ", $str);
-        $str = str_replace("\,", ",", $str);
-        $str = str_replace('""', '"', $str); //do this no matter what...in case someone added a quote in a non HTML field
+        $str = str_replace(array("�", "�", "�", "�", "�", "�", "�", "\r\n", "\,", '""'), array("&rsquo;", "&lsquo;", "&#174;", "-", "&#151;", "&rdquo;", "&ldquo;", " ", ",", '"'), $str); //do this no matter what...in case someone added a quote in a non HTML field
         if (!$isHTML) {
             //if HTML, then leave the single quotes alone, otheriwse replace w/ special Char
             $str = str_replace('"', "&quot;", $str);
         }
-        $str = str_replace("�", "&#188;", $str);
-        $str = str_replace("�", "&#189;", $str);
-        $str = str_replace("�", "&#190;", $str);
+        $str = str_replace(array("�", "�", "�"), array("&#188;", "&#189;", "&#190;"), $str);
         //$str = htmlspecialchars($str);
         //$str = utf8_encode($str);
 //        if (DB_ENGINE=='mysqli') {
@@ -578,7 +510,7 @@ class expString {
 
         if (is_array($data)) {
             $saved_params = array();
-            if (!empty($data['controller']) && $data['controller'] == 'snippet') {
+            if (!empty($data['controller']) && $data['controller'] === 'snippet') {
                 $saved_params['body'] = $data['body'];  // store snippet body
             }
             foreach ($data as $var=>$val) {
@@ -1114,7 +1046,7 @@ class expString {
             {
                 // If random_bytes() can't do the job, we can't either ...
                 // There's no point in using fallbacks.
-                log_message('error', $e->getMessage());
+                eLog($e->getMessage(), 'error');
                 return FALSE;
             }
         }

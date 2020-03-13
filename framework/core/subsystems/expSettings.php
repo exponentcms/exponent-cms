@@ -63,7 +63,7 @@ class expSettings
                         $file,
                         -13,
                         13
-                    ) == ".defaults.php"
+                    ) === ".defaults.php"
                 ) {
                     @include_once(BASE . "framework/conf/extensions/$file");
                 }
@@ -104,7 +104,7 @@ class expSettings
         if (is_readable($site_root . 'framework/conf/extensions')) {
             $dh = opendir($site_root . 'framework/conf/extensions');
             while (($file = readdir($dh)) !== false) {
-                if (substr($file, -13, 13) == '.defaults.php') {
+                if (substr($file, -13, 13) === '.defaults.php') {
                     $options = array_merge(
                         self::parseFile($site_root . 'framework/conf/extensions/' . $file),
                         $options
@@ -143,21 +143,22 @@ class expSettings
         foreach (file($file) as $line) {
             //$line = trim(preg_replace(array("/^.*define\([\"']/","/[^&][#].*$/"),"",$line));
             $line = trim(preg_replace(array("/^.*define\([\"']/", "/[^&][#][@].*$/"), "", $line));
-            if ($line != "" && substr($line, 0, 2) != "<?" && substr($line, -2, 2) != "?>") {
+            if ($line != "" && substr($line, 0, 2) !== "<?" && substr($line, -2, 2) !== "?>") {
                 $line = str_replace(array("<?php", "?>", "<?",), "", $line);
 
                 $opts = preg_split("/[\"'],/", $line);
 
                 if (count($opts) == 2) {
-                    if (substr($opts[1], 0, 1) == '"' || substr($opts[1], 0, 1) == "'") {
+                    if ($opts[1][0] === '"' || $opts[1][0] === "'") {
                         $opts[1] = substr($opts[1], 1, -3);
                     } else {
                         $opts[1] = substr($opts[1], 0, -2);
                     }
 
-                    if (substr($opts[0], -5, 5) == "_HTML" || $opts[0] === 'DEFAULT_AVATAR') {
-                        if(strpos( $opts[1], "'") === false){
-                            $opts[1] = "'" . $opts[1] . "'";                        }
+                    if (substr($opts[0], -5, 5) === "_HTML" || $opts[0] === 'DEFAULT_AVATAR') {
+                        if(strpos( $opts[1], "'") === false) {
+                            $opts[1] = "'" . $opts[1] . "'";
+                        }
                         $opts[1] = eval("return " . $opts[1] . ";");
                         /*					$opts[1] = preg_replace('/<[bB][rR]\s?\/?>/',"\r\n",$opts[1]); */
                     }
@@ -284,7 +285,7 @@ class expSettings
             $site_root = BASE;
         }
 
-        if (empty($values['configname']) || $values['configname'] == 'Default') {
+        if (empty($values['configname']) || $values['configname'] === 'Default') {
             $configname = '';
         } else {
             //		$configname = str_replace(" ","_",$values['configname']);
@@ -302,14 +303,14 @@ class expSettings
             unset($original_config[$directive]);
 
             $str .= "define(\"$directive\",";
-            if (substr($directive, -5, 5) == "_HTML") {
+            if (substr($directive, -5, 5) === "_HTML") {
                 $value = htmlentities(stripslashes($value), ENT_QUOTES, LANG_CHARSET); // slashes added by POST
                 $value = str_replace(array("\r\n", "\r", "\n"), "<br />", $value);
                 $str .= "exponent_unhtmlentities('$value')";
             } elseif (is_int($value)) {
                 $str .= $value;
             } else {
-                if ($directive != 'SESSION_TIMEOUT') {
+                if ($directive !== 'SESSION_TIMEOUT') {
                     $str .= "'" . str_replace("'", "\'", $value) . "'";
                 } else {
                     $str .= str_replace("'", '', $value);
@@ -330,7 +331,7 @@ class expSettings
         // THIS MAY SCREW UP on checkboxes.
         foreach ($original_config as $directive => $value) {
             $str .= "define(\"$directive\",";
-            if (substr($directive, -5, 5) == "_HTML") {
+            if (substr($directive, -5, 5) === "_HTML") {
                 $value = htmlentities(stripslashes($value), ENT_QUOTES, LANG_CHARSET); // slashes added by POST
                 $str .= "exponent_unhtmlentities('$value')";
             } else {
@@ -410,11 +411,11 @@ class expSettings
                         $file,
                         -14,
                         14
-                    ) == '.structure.php'
+                    ) === '.structure.php'
                 ) {
                     $arr = include(BASE . 'framework/conf/extensions/' . $file);
                     // Check to see if the current user is a super admin, and only include database if so
-                    if (substr($file, 0, -14) != 'database' || $user->is_admin == 1) {
+                    if (substr($file, 0, -14) !== 'database' || $user->is_admin == 1) {
                         $form->register(
                             null,
                             '',
@@ -432,7 +433,7 @@ class expSettings
                                     new htmlcontrol('<br /><br />' . $info['description'], false)
                                 );
                             }
-                            if (is_a($info['control'], "checkboxcontrol")) {
+                            if ($info['control'] instanceof \checkboxcontrol) {
                                 $form->meta("opts[$directive]", 1);
                                 $info['control']->default = $options[$directive];
                                 $info['control']->flip = true;
@@ -488,18 +489,18 @@ class expSettings
                         $file,
                         -14,
                         14
-                    ) == ".structure.php"
+                    ) === ".structure.php"
                 ) {
                     $arr = include(BASE . "framework/conf/extensions/$file");
                     $categorized[$arr[0]] = array();
                     foreach ($arr[1] as $directive => $info) {
-                        if (is_a($info["control"], "passwordcontrol")) {
+                        if ($info["control"] instanceof \passwordcontrol) {
                             $info["value"] = '&lt;' . gt('hidden') . '&gt;';
                         } else {
-                            if (is_a($info["control"], "checkboxcontrol")) {
+                            if ($info["control"] instanceof \checkboxcontrol) {
                                 $info["value"] = (isset($options[$directive]) ? ($options[$directive] ? "yes" : "no") : "no");
                             } else {
-                                if (is_a($info["control"], "dropdowncontrol") && isset($options[$directive])) {
+                                if ($info["control"] instanceof \dropdowncontrol && isset($options[$directive])) {
                                     $info["value"] = @$info["control"]->items[$options[$directive]];
                                 } else {
                                     $info["value"] = (isset($options[$directive]) ? $options[$directive] : "");
@@ -532,7 +533,7 @@ class expSettings
         if (is_readable(BASE . "framework/conf/profiles")) {
             $dh = opendir(BASE . "framework/conf/profiles");
             while (($file = readdir($dh)) !== false) {
-                if (is_readable(BASE . "framework/conf/profiles/$file") && substr($file, -4, 4) == ".php") {
+                if (is_readable(BASE . "framework/conf/profiles/$file") && substr($file, -4, 4) === ".php") {
                     $name = substr($file, 0, -4);
                     $profiles[$name] = str_replace("_", " ", $name);
                 }
@@ -629,7 +630,7 @@ class expSettings
             $t = array();
             foreach (file(BASE . "framework/conf/data/$dropdown_name.dropdown") as $l) {
                 $l = trim($l);
-                if ($l != "" && substr($l, 0, 1) != "#") {
+                if ($l != "" && $l[0] !== "#") {
                     $go = count($t);
 
                     $t[] = trim($l);

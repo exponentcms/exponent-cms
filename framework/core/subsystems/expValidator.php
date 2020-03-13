@@ -303,7 +303,7 @@ class expValidator {
              // domain part length exceeded
              $isValid = false;
           }
-          else if ($local[0] == '.' || $local[$localLen-1] == '.')
+          else if ($local[0] === '.' || $local[$localLen-1] === '.')
           {
              // local part starts or ends with '.'
              $isValid = false;
@@ -452,7 +452,7 @@ class expValidator {
 	/**
      * Routine to note error and return to the filled out form with messages
      *
-	 * @param string $msg
+	 * @param string|array $msg
 	 * @param null $post
 	 */
 	public static function failAndReturnToForm($msg='', $post=null) {
@@ -608,7 +608,7 @@ class expValidator {
     public static function generatePassword($len = MIN_PWD_LEN, $cap = MIN_UPPER, $num = MIN_DIGITS, $sym = MIN_SYMBOL)
     {
         // get count of all required minimum special chars
-        $count = $cap + $num + $sym;
+        $count = (int)$cap + (int)$num + (int)$sym;
 
         // sanitize inputs; should be self-explanatory
         if (!is_numeric($len) || !is_numeric($cap) || !is_numeric($num) || !is_numeric($sym)) {
@@ -642,7 +642,7 @@ class expValidator {
         // build the base password of all lower-case letters
         $out = '';
         for ($i = 0; $i < $len; $i++) {
-            $out .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+            $out .= $chars[mt_rand(0, strlen($chars) - 1)];
         }
 
         // create arrays if special character(s) required
@@ -653,13 +653,13 @@ class expValidator {
 
             // add required special character(s) to second array
             for ($i = 0; $i < $cap; $i++) {
-                array_push($tmp2, substr($caps, mt_rand(0, strlen($caps) - 1), 1));
+                $tmp2[] = $caps[mt_rand(0, strlen($caps) - 1)];
             }
             for ($i = 0; $i < $num; $i++) {
-                array_push($tmp2, substr($nums, mt_rand(0, strlen($nums) - 1), 1));
+                $tmp2[] = $nums[mt_rand(0, strlen($nums) - 1)];
             }
             for ($i = 0; $i < $sym; $i++) {
-                array_push($tmp2, substr($syms, mt_rand(0, strlen($syms) - 1), 1));
+                $tmp2[] = $syms[mt_rand(0, strlen($syms) - 1)];
             }
 
             // hack off a chunk of the base password array that's as big as the special chars array

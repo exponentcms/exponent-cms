@@ -106,7 +106,7 @@ class formsController extends expController {
                     $this->config['column_names_list'] = array();
                     //define some default columns...
                     $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
-                    if (!empty($this->params['view']) && $this->params['view'] == 'showall_portfolio') {
+                    if (!empty($this->params['view']) && $this->params['view'] === 'showall_portfolio') {
                         foreach ($controls as $control) {  // we need to output all columns for portfolio view
                             $this->config['column_names_list'][] = $control->name;
                         }
@@ -121,19 +121,19 @@ class formsController extends expController {
                 $items = $f->selectRecordsArray($where);
                 $columns = array();
                 foreach ($this->config['column_names_list'] as $column_name) {
-                    if ($column_name == "ip") {
+                    if ($column_name === "ip") {
 //                        $columns[gt('IP Address')] = 'ip';
                         $columns['ip'] = gt('IP Address');
-                    } elseif ($column_name == "sef_url") {
+                    } elseif ($column_name === "sef_url") {
 //                        $columns[gt('Referrer')] = 'referrer';
                         $columns['sef_url'] = gt('SEF URL');
-                    } elseif ($column_name == "referrer") {
+                    } elseif ($column_name === "referrer") {
 //                        $columns[gt('Referrer')] = 'referrer';
                         $columns['referrer'] = gt('Referrer');
-                    } elseif ($column_name == "location_data") {
+                    } elseif ($column_name === "location_data") {
 //                        $columns[gt('Entry Point')] = 'location_data';
                         $columns['location_data'] = gt('Entry Point');
-                    } elseif ($column_name == "user_id") {
+                    } elseif ($column_name === "user_id") {
                         foreach ($items as $key => $item) {
                             if ($item[$column_name] != 0) {
                                 $locUser = user::getUserById($item[$column_name]);
@@ -145,7 +145,7 @@ class formsController extends expController {
                         }
 //                        $columns[gt('Posted by')] = 'user_id';
                         $columns['user_id'] = gt('Posted by');
-                    } elseif ($column_name == "timestamp") {
+                    } elseif ($column_name === "timestamp") {
                         foreach ($items as $key => $item) {
                             $item[$column_name] = strftime(DISPLAY_DATETIME_FORMAT, $item[$column_name]);
                             $items[$key] = $item;
@@ -420,12 +420,12 @@ class formsController extends expController {
                 // if we are editing an existing record or doing quick submission we'll need to do recaptcha here since we won't call confirm_data
                 if (!empty($this->params['id']) || !empty($this->config['quick_submit'])) {
                     $antispam = '';
-                    if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL == 'recaptcha') {
+                    if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL === 'recaptcha') {
                         // make sure we have the proper config.
                         if (!defined('RECAPTCHA_PUB_KEY')) {
                             $antispam .= '<h2 style="color:red">' . gt('reCaptcha configuration is missing the public key.') . '</h2>';
                         }
-                        $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
+                        $re_theme = (RECAPTCHA_THEME === 'dark') ? 'dark' : 'light';
                         if ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
                             // skip it for logged on users based on config
                         } else {
@@ -524,7 +524,7 @@ class formsController extends expController {
             if (empty($coldef->is_hidden)) {
                 $coltype = $coldata->getName();
                 // first we clean up the entered data //fixme these should probably be FALSE!
-                if ($coltype == 'uploadcontrol' && !empty($_FILES)) {
+                if ($coltype === 'uploadcontrol' && !empty($_FILES)) {
                     $newupload = true;
                     $value = call_user_func(array($coltype, 'parseData'), $col->name, $_FILES, true);  // this will move the new file
                 } else {
@@ -545,14 +545,14 @@ class formsController extends expController {
                     $captions[$col->name] = $col->caption;
 //                }
                 } else {
-                    if ($coltype == 'checkboxcontrol') {
+                    if ($coltype === 'checkboxcontrol') {
 //                        $responses[$col->caption . $num] = gt('No');
                         $responses[$col->name] = gt('No');  // default for checkboxes is No
                         $captions[$col->name] = $col->caption;
-                    } elseif ($coltype == 'datetimecontrol' || $coltype == 'calendarcontrol' || $coltype == 'popupdatetimecontrol') {
+                    } elseif ($coltype === 'datetimecontrol' || $coltype === 'calendarcontrol' || $coltype === 'popupdatetimecontrol') {
                         $responses[$col->name] = $value;  // allows for a default phrase for no date entered
                         $captions[$col->name] = $col->caption;
-                    } elseif ($coltype == 'uploadcontrol') {
+                    } elseif ($coltype === 'uploadcontrol') {
                         if ($newupload) {  //note: an uploaded file is returned in $_FILEs, NOT in the control name
                             $newfile = call_user_func(
                                     array($coltype, 'moveFile'),
@@ -573,7 +573,7 @@ class formsController extends expController {
 //                        $responses[$col->name] = $this->params[$col->name];
                         $responses[$col->name] = call_user_func(array($coltype, 'templateFormat'), $this->params[$col->name], null);  // convert parsed value to user readable
                         $captions[$col->name] = $col->caption;
-                    } elseif ($coltype != 'htmlcontrol' && $coltype != 'pagecontrol') {
+                    } elseif ($coltype !== 'htmlcontrol' && $coltype !== 'pagecontrol') {
 //                        $responses[$col->caption . $num] = '';
                         $responses[$col->name] = '';  // all other empty controls have empty value
                         $captions[$col->name] = $col->caption;
@@ -640,11 +640,11 @@ class formsController extends expController {
                 $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $this->params, true));
 //                if ($emailValue !== $this->params[$c->name])  //fixme should this be done, isn't data already parsed? only when editing an existing record
 //                    eLog($emailValue.' : '.$this->params[$c->name], 'Mismatch');
-                if (get_class($ctl) == 'texteditorcontrol') {
+                if ($ctl instanceof \texteditorcontrol) {
 //                    $value = expString::escape($emailValue); //fixme does this need to occur later?
 //                    $value = str_replace(array('\r\n', '\n', '\r'), array("\r\n", "\n", "\r"), $value);
                     $value = stripslashes($emailValue);  //fixme does this need to occur later?
-                } elseif (get_class($ctl) == 'htmleditorcontrol') {
+                } elseif ($ctl instanceof \htmleditorcontrol) {
                     $value = stripslashes($emailValue);  //fixme does this need to occur later?
                     $value = str_replace(array("\r\n", "\n", "\r"), '',  $value);
                 } else {
@@ -658,13 +658,13 @@ class formsController extends expController {
                 if (!$ctl->is_hidden) {
                     $emailFields[$c->name] = call_user_func(array($control_type, 'templateFormat'), $value, $ctl);
                     $captions[$c->name] = $c->caption;
-                    if (strtolower($c->name) == "email" && expValidator::isValidEmail($value)) {
+                    if (strtolower($c->name) === "email" && expValidator::isValidEmail($value)) {
                         $from = $value;
                     }
-                    if (strtolower($c->name) == "name") {
+                    if (strtolower($c->name) === "name") {
                         $from_name = $value;
                     }
-                    if (get_class($ctl) == 'uploadcontrol') {
+                    if ($ctl instanceof \uploadcontrol) {
                         $attachments[] = htmlspecialchars_decode($this->params[$c->name]);
                     }
                 }
@@ -1004,7 +1004,7 @@ class formsController extends expController {
                         $column_names[$control->name] = $control->caption;
                     }
                 }
-                if ($control_type != 'pagecontrol' && $control_type != 'htmlcontrol') {
+                if ($control_type !== 'pagecontrol' && $control_type !== 'htmlcontrol') {
                     $fieldlist .= '["{\$fields[\'' . $control->name . '\']}","' . $control->caption . '","' . gt('Insert') . ' ' . $control->caption . ' ' . gt('Field') . '"],';
                 }
             }
@@ -1137,7 +1137,7 @@ class formsController extends expController {
                         $htmlctl->html = "<br />";
                         break;
                     case ".line":
-                        $htmlctl->html = "<hr size='1' />";
+                        $htmlctl->html = "<hr>";
                         break;
                 }
                 $ctl = new forms_control();
@@ -1248,7 +1248,7 @@ class formsController extends expController {
                 if (!isset($this->params['id']) && $control->countControls("name='" . $name . "' AND forms_id=" . $this->params['forms_id']) > 0) {
                     $this->params['_formError'] = gt('Identifier must be unique.');
                     expSession::set('last_POST', $this->params);
-                } elseif ($name == 'id' || $name == 'ip' || $name == 'sef_url' || $name == 'user_id' || $name == 'timestamp' || $name == 'location_data') {
+                } elseif ($name === 'id' || $name === 'ip' || $name === 'sef_url' || $name === 'user_id' || $name === 'timestamp' || $name === 'location_data') {
                     $this->params['_formError'] = sprintf(gt("Identifier cannot be '%s'."), $name);
                     expSession::set('last_POST', $this->params);
                 } else {
@@ -1354,7 +1354,7 @@ class formsController extends expController {
                         $column_names[$control->name] = $control->caption;
                     }
                 }
-                if ($control_type != 'pagecontrol' && $control_type != 'htmlcontrol') {
+                if ($control_type !== 'pagecontrol' && $control_type !== 'htmlcontrol') {
                     $fieldlist .= '["{\$fields[\'' . $control->name . '\']}","' . $control->caption . '","' . gt('Insert') . ' ' . $control->caption . ' ' . gt('Field') . '"],';
                 }
             }
@@ -1485,8 +1485,8 @@ class formsController extends expController {
 
             // populate field data
             foreach ($rpt_columns as $column_name=>$column_caption) {
-                if ($column_name == "ip" || $column_name == "sef_url" || $column_name == "referrer" || $column_name == "location_data") {
-                } elseif ($column_name == "user_id") {
+                if ($column_name === "ip" || $column_name === "sef_url" || $column_name === "referrer" || $column_name === "location_data") {
+                } elseif ($column_name === "user_id") {
                     foreach ($items as $key => $item) {
                         if ($item->$column_name != 0) {
                             $locUser = user::getUserById($item->$column_name);
@@ -1496,7 +1496,7 @@ class formsController extends expController {
                         }
                         $items[$key] = $item;
                     }
-                } elseif ($column_name == "timestamp") {
+                } elseif ($column_name === "timestamp") {
 //                    $srt = $column_name . "_srt";
                     foreach ($items as $key => $item) {
 //                        $item->$srt = $item->$column_name;
@@ -1527,7 +1527,7 @@ class formsController extends expController {
 
             //fixme old routine
 
-            if (LANG_CHARSET == 'UTF-8') {
+            if (LANG_CHARSET === 'UTF-8') {
                 $file = chr(0xEF) . chr(0xBB) . chr(0xBF); // add utf-8 signature to file to open appropriately in Excel, etc...
             } else {
                 $file = "";
@@ -1551,7 +1551,7 @@ class formsController extends expController {
                 //        MSIE and Opera seems to prefer 'application/octetstream'
                 // It seems that other headers I've added make IE prefer octet-stream again. - RAM
 
-                $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values;';
+                $mime_type = (EXPONENT_USER_BROWSER === 'IE' || EXPONENT_USER_BROWSER === 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values;';
                 header('Content-Type: ' . $mime_type . ' charset=' . LANG_CHARSET . "'");
                 header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
                 $filesize = filesize($tmpfname);
@@ -1561,7 +1561,7 @@ class formsController extends expController {
                 header('Content-Disposition: attachment; filename="report.csv"');
                 if ($filesize) header('Content-length: ' . $filesize); // for some reason the webserver cant run stat on the files and this breaks.
                 // IE need specific headers
-                if (EXPONENT_USER_BROWSER == 'IE') {
+                if (EXPONENT_USER_BROWSER === 'IE') {
                     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
                     header('Pragma: public');
                     header('Vary: User-Agent');
@@ -1619,7 +1619,7 @@ class formsController extends expController {
                     $str .= $rowitem . ",";
                 }
             } //foreach rowitem
-            $str = substr($str, 0, strlen($str) - 1);
+            $str = substr($str, 0, -1);
             $str .= "\r\n";
         } //end of foreach loop
         return $str;
@@ -1652,12 +1652,12 @@ class formsController extends expController {
 
             // 'application/octet-stream' is the registered IANA type but
             //        MSIE and Opera seems to prefer 'application/octetstream'
-            $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+            $mime_type = (EXPONENT_USER_BROWSER === 'IE' || EXPONENT_USER_BROWSER === 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
 
             header('Content-Type: ' . $mime_type);
             header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
             // IE need specific headers
-            if (EXPONENT_USER_BROWSER == 'IE') {
+            if (EXPONENT_USER_BROWSER === 'IE') {
                 header('Content-Disposition: inline; filename="' . $filename . '"');
                 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
                 header('Pragma: public');
@@ -1879,7 +1879,7 @@ class formsController extends expController {
         $form->register("title", gt('Form Title'), new textcontrol(''));
         $formcontrols = array();
         foreach ($this->params['control'] as $key=>$control) {
-            if ($control != "none") {
+            if ($control !== "none") {
                 $formcontrols[$key] = new stdClass();
                 $formcontrols[$key]->control = $control;
                 $label = str_replace('&', 'and', $this->params['name'][$key]);
@@ -1921,13 +1921,13 @@ class formsController extends expController {
             $fc->name = $params['identifier'] = $this->params['column'][$key];
             $fc->caption = $params['caption'] = $this->params['caption'][$key];
             $params['description'] = '';
-            if ($control == 'datetimecontrol') {
+            if ($control === 'datetimecontrol') {
                 $params['showdate'] = $params['showtime'] = true;
             }
 //            if ($control == 'htmlcontrol') {
 //                $params['html'] = $this->params['data'][$key];
 //            }
-            if ($control == 'radiogroupcontrol' || $control == 'dropdowncontrol') {
+            if ($control === 'radiogroupcontrol' || $control === 'dropdowncontrol') {
                 $params['default'] = $params['items'] = $this->params['data'][$key];
             }
             $fc->forms_id = $f->id;
@@ -2057,7 +2057,7 @@ class formsController extends expController {
             if ($linenum >= $this->params["rowstart"]) {
                 $i = 0;
                 foreach ($filedata as $field) {
-                    if (!empty($this->params["column"][$i]) && $this->params["column"][$i] != "none") {
+                    if (!empty($this->params["column"][$i]) && $this->params["column"][$i] !== "none") {
                         $colname = $this->params["column"][$i];
                         $record[$colname] = trim($field);
                         $this->params['caption'][$i] = $fields[$colname];
@@ -2120,7 +2120,7 @@ class formsController extends expController {
                 $db_data->referrer = '';
                 $db_data->location_data = '';
                 foreach ($filedata as $field) {
-                    if (!empty($this->params["column"][$i]) && $this->params["column"][$i] != "none") {
+                    if (!empty($this->params["column"][$i]) && $this->params["column"][$i] !== "none") {
                         $colname = $this->params["column"][$i];
                         $control_type = get_class($fields[$colname]);
                         $params[$colname] = $field;

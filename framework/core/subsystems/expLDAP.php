@@ -27,7 +27,7 @@ class expLDAP {
     public $connection = false;
 
     function __construct($server = '') {
-        if (!empty($this->connection)) self::close();
+        if (!empty($this->connection)) $this->close();
         if (empty($server) && !defined(LDAP_SERVER)) $this->connection = false;
         $ldap_server = empty($server) ? LDAP_SERVER : $server;
         $this->connection = @ldap_connect($ldap_server);
@@ -36,12 +36,12 @@ class expLDAP {
     }
 
     function __destruct() {
-        self::close();
+        $this->close();
     }
 
     public function authenticate($username, $password) {
         if (empty($password) || empty($username)) return false; //if the password isn't set, return false to safeguard against anon login
-        return self::bind($username, $password);
+        return $this->bind($username, $password);
     }
 
     public function getLdapUser($username) {
@@ -62,7 +62,7 @@ class expLDAP {
     public function getLdapUserContext($username) {
         if (empty($username)) return "";
 
-        $user = self::getLdapUser($username);
+        $user = $this->getLdapUser($username);
         if (empty($user['dn'])) return '';
 
         return substr_replace($user['dn'], '', 0, stripos($user['dn'], ',') + 1);
@@ -70,14 +70,14 @@ class expLDAP {
 
     public function getLdapUserDN($username) {
         if (empty($username)) return "";
-        $user = self::getLdapUser($username);
+        $user = $this->getLdapUser($username);
         return empty($user['dn']) ? '' : $user['dn'];
     }
 
 //	public function addLdapUserToDatabase($username, $password, $context) {
     public function addLdapUserToDatabase($username, $password) {
         // figure out our context for searching
-        $user = self::getLdapUser($username);
+        $user = $this->getLdapUser($username);
 
         // populate user data
         if (!empty($user)) {
@@ -96,12 +96,12 @@ class expLDAP {
     }
 
 //    public function connectAndBind($server = '', $username = "", $password = "", $context = '') {
-//        self::connect($server);
-//        self::bind($username, $password, $context);
+//        $this->connect($server);
+//        $this->bind($username, $password, $context);
 //    }
 
 //    public function connect($server = '') {
-//        if (!empty($this->connection)) self::close();
+//        if (!empty($this->connection)) $this->close();
 //        if (empty($server) && !defined(LDAP_SERVER)) $this->connection = false;
 //        $ldap_server = empty($server) ? LDAP_SERVER : $server;
 //        $this->connection = @ldap_connect($ldap_server);
@@ -136,10 +136,10 @@ class expLDAP {
         $usr = new user();
         $ldap_users = $usr->find('all', 'is_ldap=1');
         if (!empty($ldap_users)) {
-            self::bind();
+            $this->bind();
             foreach ($ldap_users as $ldap_user) {
                 $newuser = new user(array('username' => $ldap_user->username));
-                $user = self::getLdapUser($ldap_user->username);
+                $user = $this->getLdapUser($ldap_user->username);
                 $userdata = array(
                     'firstname' => $user['givenname'][0],
                     'lastname'  => $user['sn'][0],

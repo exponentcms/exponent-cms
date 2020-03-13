@@ -75,7 +75,7 @@ class expDatabase {
 		$options = array();
 		$dh = opendir(BASE.'framework/core/subsystems/database');
 		while (($file = readdir($dh)) !== false) {
-			if (is_file(BASE.'framework/core/subsystems/database/'.$file) && is_readable(BASE.'framework/core/subsystems/database/'.$file) && substr($file,-9,9) == '.info.php') {
+			if (is_file(BASE.'framework/core/subsystems/database/'.$file) && is_readable(BASE.'framework/core/subsystems/database/'.$file) && substr($file,-9,9) === '.info.php') {
 				$info = include(BASE.'framework/core/subsystems/database/'.$file);
 				if ($info['is_valid'] == 1 || !$valid_only) {
 					$options[substr($file,0,-9)] = $info['name'];
@@ -140,7 +140,7 @@ class expDatabase {
    		if (is_readable($coredefs)) {
    			$dh = opendir($coredefs);
    			while (($file = readdir($dh)) !== false) {
-   				if (is_readable("$coredefs/$file") && is_file("$coredefs/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+   				if (is_readable("$coredefs/$file") && is_file("$coredefs/$file") && substr($file,-4,4) === ".php" && substr($file,-9,9) !== ".info.php") {
    					$tablename = substr($file,0,-4);
    					$dd = include("$coredefs/$file");
    					$info = null;
@@ -180,7 +180,7 @@ class expDatabase {
    							$def_dir = opendir($dirpath);
    							while (($def = readdir($def_dir)) !== false) {
    	//							eDebug("$dirpath/$def");
-   								if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
+   								if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) === ".php" && substr($def,-9,9) !== ".info.php") {
    									$tablename = substr($def,0,-4);
    									$dd = include("$dirpath/$def");
    									$info = null;

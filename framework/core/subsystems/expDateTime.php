@@ -715,7 +715,7 @@ class expDateTime {
     public static function format_date($timestamp,$format=DISPLAY_DATE_FORMAT) {
     	// Do some sort of mangling of the format for windows.
     	// reference the PHP_OS constant to figure that one out.
-    	if (strtolower(substr(PHP_OS,0,3)) == 'win') {
+    	if (strtolower(substr(PHP_OS,0,3)) === 'win') {
     		// We are running on a windows platform.  Run the replacements
 
     		// Preserve the '%%'
