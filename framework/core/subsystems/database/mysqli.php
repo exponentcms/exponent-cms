@@ -283,7 +283,7 @@ class mysqli_database extends database {
                       $unique[$def[DB_UNIQUE]][] = $name;
                 }
             }
-            if (!empty($def[DB_NOTNULL]) || $def[DB_FIELD_TYPE] === DB_DEF_ID || $def[DB_PRIMARY] === true) {
+            if (!empty($def[DB_NOTNULL]) || $def[DB_FIELD_TYPE] === DB_DEF_ID || (!empty($def[DB_PRIMARY]) && $def[DB_PRIMARY] === true)) {
                 $newdatadef[$name][DB_NOTNULL] = true;
             } else {
                 $newdatadef[$name][DB_NOTNULL] = false;
