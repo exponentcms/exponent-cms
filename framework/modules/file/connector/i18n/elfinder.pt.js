@@ -169,7 +169,7 @@
 			'cmdopennew'   : 'Abrir em nova janela', // from v2.1.38 added 3.4.2018
 			'cmdhide'      : 'Ocultar (preferência)', // from v2.1.41 added 24.7.2018
             'cmdpixlr'     : 'Edit on Pixlr',
-                     'cmdlinks'     : 'Switch to Page/Module Selector',
+             'cmdlinks'     : 'Switch to Page/Module Selector',
 
 			/*********************************** buttons ***********************************/
 			'btnClose'  : 'Fechar',

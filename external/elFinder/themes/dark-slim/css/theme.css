@@ -673,7 +673,8 @@ input[type="radio"]{
 /*				DIALOGS 			 */
 /*************************************/
 .dialogelfinder .dialogelfinder-drag{
-	font-size: 85%;
+	font-size: 15px;
+	font-weight: bold;
 }
 .dialogelfinder .dialogelfinder-drag-close{
 	position: relative;
@@ -681,6 +682,7 @@ input[type="radio"]{
 	right: 6px;
 	float: right;
 	margin: 0;
+	font-size: 16px;
 }
 .elfinder .elfinder-dialog{
 	background: #333;

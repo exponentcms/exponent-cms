@@ -261,6 +261,12 @@
     color: #fff;
 }
 
+.elfinder-quicklook-info-progress {
+    width: 0;
+    height: 4px;
+    border-radius: 2px;
+}
+
 /* file icon */
 .elfinder-quicklook .elfinder-cwd-icon {
     position: absolute;
@@ -295,7 +301,7 @@
 }
 
 .elfinder-ltr .elfinder-quicklook .elfinder-cwd-icon:after {
-    left: -20px;
+    left: -42px;
 }
 
 .elfinder-ltr .elfinder-navdock .elfinder-quicklook .elfinder-cwd-icon:after {
@@ -309,7 +315,7 @@
 
 .elfinder-rtl .elfinder-quicklook .elfinder-cwd-icon:after {
     left: auto;
-    right: 46px;
+    right: 42px;
 }
 
 /* image in preview */
