@@ -3,14 +3,14 @@
  * Enter folder or open files in new windows
  *
  * @author Dmitry (dio) Levashov
- **/
+ **/  
 (elFinder.prototype.commands.open = function() {
 	"use strict";
 	var fm = this.fm,
 		self = this;
 	this.alwaysEnabled = true;
 	this.noChangeDirOnRemovedCwd = true;
-
+	
 	this._handlers = {
 		dblclick : function(e) {
 			var arg = e.data && e.data.file? [ e.data.file ]: void(0);
@@ -21,7 +21,7 @@
 		},
 		'select enable disable reload' : function(e) { this.update(e.type == 'disable' ? -1 : void(0));  }
 	};
-
+	
 	this.shortcuts = [{
 		pattern     : 'ctrl+down numpad_enter'+(fm.OS != 'mac' && ' enter')
 	}];
@@ -29,12 +29,12 @@
 	this.getstate = function(select) {
 		var sel = this.files(select),
 			cnt = sel.length;
-
-		return cnt == 1
+		
+		return cnt == 1 
 			? (sel[0].read ? 0 : -1)
 			: (cnt && !fm.UA.Mobile) ? ($.grep(sel, function(file) { return file.mime == 'directory' || ! file.read ? false : true;}).length == cnt ? 0 : -1) : -1;
 	};
-
+	
 	this.exec = function(hashes, cOpts) {
 		var dfrd  = $.Deferred().fail(function(error) { error && fm.error(error); }),
 			files = this.files(hashes),
@@ -70,34 +70,34 @@
 				});
 			}
 		}
-
+		
 		files = $.grep(files, function(file) { return file.mime != 'directory' ? true : false; });
-
+		
 		// nothing to open or files and folders selected - do nothing
 		if (cnt != files.length) {
 			return dfrd.reject();
 		}
-
+		
 		var doOpen = function() {
 			var wnd, target, getOnly;
-
+			
 			try {
 				reg = new RegExp(fm.option('dispInlineRegex'), 'i');
 			} catch(e) {
 				reg = false;
 			}
-
+	
 			// open files
 			html5dl  = (typeof $('<a>').get(0).download === 'string');
 			cnt = files.length;
 			while (cnt--) {
 				target = 'elf_open_window';
 				file = files[cnt];
-
+				
 				if (!file.read) {
 					return dfrd.reject(['errOpen', file.name, 'errPerm']);
 				}
-
+				
 				inline = (reg && file.mime.match(reg));
 				fm.openUrl(file.hash, !inline, function(url) {
 					var link = $('<a>').hide().appendTo($('body'));
@@ -157,11 +157,11 @@
 							}
 							wnd = window.open('about:blank', target);
 						}
-
+						
 						if (!wnd) {
 							return dfrd.reject('errPopup');
 						}
-
+						
 						if (url === '') {
 							var form = document.createElement("form");
 							form.action = fm.options.url;
@@ -180,7 +180,7 @@
 								input.value = val;
 								form.appendChild(input);
 							});
-
+							
 							document.body.appendChild(form);
 							form.submit();
 						} else if (into !== 'window') {
@@ -188,13 +188,12 @@
 						}
 						$(wnd).trigger('focus');
 					}
-            }
 					link.remove();
 				});
 			}
 			return dfrd.resolve(hashes);
 		};
-
+		
 		if (cnt > 1) {
 			fm.confirm({
 				title: 'openMulti',
@@ -205,7 +204,7 @@
 				},
 				cancel : {
 					label : 'btnCancel',
-					callback : function() {
+					callback : function() { 
 						dfrd.reject();
 					}
 				},
@@ -235,7 +234,7 @@
 			}
 			doOpen();
 		}
-
+		
 		return dfrd;
 	};
 

@@ -239,7 +239,7 @@ class storeCategory extends expNestedNode {
 	 * Return existing store category id of string nested category
 	 *   checks to ensure each level of nesting exists
 	 *
-	 * @param $data
+	 * @param string $data
 	 * @return string
 	 */
 	public static function parseCategory($data)
@@ -280,7 +280,7 @@ class storeCategory extends expNestedNode {
 	/**
 	 * Convert nested store category into a string
 	 *
-	 * @param $catID
+	 * @param integer $catID
 	 * @param bool $reset
 	 * @return string
 	 */
@@ -302,12 +302,12 @@ class storeCategory extends expNestedNode {
 		return substr($cstr, 0, -2);
 	}
 
-	/**
-	 * Convert string into a nested store category
-	 *
-	 * @param $data nested category string with :: separators
-	 * @return string
-	 */
+    /**
+     * Convert string into a nested store category
+     *
+     * @param string $data nested category string with :: separators
+     * @return integer
+     */
 	public static function importCategoryString($data)
 	{
 		global $db;
