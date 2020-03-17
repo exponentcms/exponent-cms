@@ -1,4 +1,5 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
+Program,Version,URL,Avail version,Exponent Customization Notes:
 Swiftmailer,5.4.12/6.2.3,github.com/swiftmailer/swiftmailer,6.2.3,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
 Doctrine Lexer,1.1.0,github.com/doctrine/lexer,1.2.0,needed by swiftmailer v6
 EmailValidator,2.1.11,github.com/egulias/EmailValidator,2.1.15,needed by swiftmailer v6; add autoloader and move within folders
@@ -13,7 +14,7 @@ yui2in3,,github.com/yui/2in3,,
 recaptchalib,1.2.3,github.com/google/ReCAPTCHA,1.2.3,
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
 feedcreator.class.php,1.80exp,sourceforge.net/projects/feedcreator,1.80dev,"blog.pothoven.net/2006/01/changing-feedcreatorclassphp-for.html, also merged 1.7.3 from Drupal"
-xmlrpc.php,4.4.1,github.com/gggeek/phpxmlrpc,4.4.1,
+xmlrpc.php,4.4.2,github.com/gggeek/phpxmlrpc,4.4.2,
 Twitter model,2.3.1,github.com/tijsverkoyen/TwitterOAuth,2.3.1,placed in Twitter module with _construct tweaked & namespace deleted
 Twitter API,1.0.6,github.com/J7mbo/twitter-api-php,1.0.6,used by socialmedia module
 SimplePie,1.5.4,github.com/simplepie/simplepie,1.5.4,
@@ -38,8 +39,8 @@ Adminer,4.7.1exp,www.adminer.org,"4.7.6
 ","customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css/,8.0.1,auto included in bootstrap 3
-MediaElement.js,4.2.15,mediaelementjs.com/,4.2.15,
-MediaElement plugins,2.5.0,github.com/johndyer/mediaelement-plugins,2.5.0,
+MediaElement.js,4.2.16,mediaelementjs.com/,4.2.16,
+MediaElement plugins,2.5.1,github.com/johndyer/mediaelement-plugins,2.5.1,
 Facebook PHP SDK3,3.2.3,github.com/facebook/php-graph-sdk,5.7.0,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
@@ -88,7 +89,7 @@ select2,4.0.13,github.com/ivaynberg/select2,4.0.13,renamed select2.full.js to se
 shuffle.js,v3.1.1,github.com/Vestride/Shuffle,4.2.0/5.2.3,
 Jasny Bootstrap2,2.3.1,jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,4.0.0,jasny.github.io/bootstrap,4.0.0,only using fileinput at this time
-easypost sdk,3.4.1,github.com/EasyPost/easypost-php,3.4.1,
+easypost sdk,3.4.4,github.com/EasyPost/easypost-php,3.4.4,
 jquery.cookie.js,1.4.1,github.com/carhartl/jquery-cookie,1.4.1,
 jquery.history.js,1.8b2,github.com/browserstate/history.js/,1.8.0,
 Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
