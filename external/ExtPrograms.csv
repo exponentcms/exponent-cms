@@ -24,7 +24,7 @@ class.upload,1.0.8,github.com/verot/class.upload.php,"1.0.8/2.0.9
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.29.21,uncomment load utilities
 scssphp,1.0.8exp,github.com/scssphp/scssphp,1.0.8,hacked to compile newui
 lessphp,0.5.0,github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
-less.php,1.8.3exp,github.com/wikimedia/less.php,2.0.0,code edit to retain php v5.6 compatitility
+less.php,3.0.0exp,github.com/wikimedia/less.php,3.0.0,code edit to retain php v5.6 compatitility
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap3,3.4.1,twitter.github.com/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
 Twitter-Bootstrap4,4.4.1,twitter.github.com/bootstrap,4.4.1,patched bootstrap.scss includes swatches & exp variables
