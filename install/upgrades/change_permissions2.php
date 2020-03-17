@@ -40,7 +40,7 @@ class change_permissions2 extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In some instances the folder and file permissions are too permissive, yet world/group read=only is too restrictive. This alternate script changes all folder/file permissions to world read-only, and no execute (except /cgi-bin)!"; }
+	function description() { return "In some instances the folder and file permissions are too permissive, yet world/group read-only is too restrictive. This alternate script changes all folder/file permissions to world read-only, and no execute (except /cgi-bin)!"; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
