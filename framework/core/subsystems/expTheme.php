@@ -886,7 +886,7 @@ class expTheme
 //                $_REQUEST[$key] = expString::sanitize($param);
 //            }
 //            if (empty($_REQUEST['route_sanitized'])) {
-            if (!$user->isAdmin())
+            if (!$user->isSuperAdmin())
                 expString::sanitize($_REQUEST);
 //            } elseif (empty($_REQUEST['array_sanitized'])) {
 //                $tmp =1;  //FIXME we've already sanitized at this point
@@ -970,7 +970,7 @@ class expTheme
 ////                $_GET[$key] = $value;
 //                $_GET[$key] = expString::sanitize($value);
 //            }
-            if (!$user->isAdmin())
+            if (!$user->isSuperAdmin())
                 expString::sanitize($_GET);
         }
         //if (isset($['_common'])) $actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
@@ -1022,9 +1022,10 @@ class expTheme
      */
     public static function main()
     {
-        global $db;
+        global $db,$page_main_section;
 
         if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
+            $page_main_section = true;
             $last_section = expSession::get("last_section");
             $section = $db->selectObject("section", "id=" . $last_section);
             // View authorization will be taken care of by the runAction and mainContainer functions
@@ -1041,12 +1042,7 @@ class expTheme
                     self::mainContainer();
                 }
             }
-//        } else {
-//            if (isset($_REQUEST['module'])) {
-//                include_once(BASE."framework/modules/container/orphans_content.php");  //FIXME not sure how to convert this yet
-//            } else {
-//                echo gt('Select a module');
-//            }
+            $page_main_section = false;
         }
     }
 
@@ -1063,23 +1059,19 @@ class expTheme
 
         if (!AUTHORIZED_SECTION) {
             // Set this so that a login on an Auth Denied page takes them back to the previously Auth-Denied page
-            //			expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
             expHistory::set('manageable', $router->params);
             notfoundController::handle_not_authorized();
             return;
         }
 
         if (PUBLIC_SECTION) {
-            //			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
             expHistory::set('viewable', $router->params);
         } else {
-            //			expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
             expHistory::set('manageable', $router->params);
         }
 
         #   if (expSession::is_set("themeopt_override")) {
         #       $config = expSession::get("themeopt_override");
-//   			self::showSectionalModule("containermodule","Default","","@section",false,true);  //FIXME change to showModule call
         self::module(
             array(
                 "controller" => "container",
@@ -1089,10 +1081,6 @@ class expTheme
                 "scope"      => "sectional"
             )
         );
-
-        #   } else {
-        #       self::showSectionalModule("containermodule","Default","","@section");
-        #   }
     }
 
     /** exdoc
