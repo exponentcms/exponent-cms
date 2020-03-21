@@ -14,6 +14,17 @@
  *
  *}
 {css unique="donation" link="`$asset_path`css/eventregistration.css"}
+{if !bs()}
+    {literal}
+    .showall .events .event-image {
+        float        : left;
+    }
+
+    .showall .events .event-info {
+        float : left;
+    }
+    {/literal}
+{/if}
 {/css}
 <div class="module eventregistration showall">
     {if $moduletitle != ''}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}

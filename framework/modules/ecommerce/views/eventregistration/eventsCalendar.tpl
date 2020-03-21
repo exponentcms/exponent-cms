@@ -20,7 +20,17 @@
 {/css}
 
 {css unique="eventreg1" link="`$asset_path`css/eventregistration.css"}
+{if !bs()}
+    {literal}
+    .showall .events .event-image {
+        float        : left;
+    }
 
+    .showall .events .event-info {
+        float : left;
+    }
+    {/literal}
+{/if}
 {/css}
 
 {*{css unique="eventreg2" link="`$smarty.const.PATH_RELATIVE`framework/modules/events/assets/css/default.css"}*}

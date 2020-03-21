@@ -13,9 +13,15 @@
  *
  *}
 
+{if bs()}
+{css unique="inline-cart" link="`$asset_path`css/inline-cart-bs.css"}
+
+{/css}
+{else}
 {css unique="inline-cart" link="`$asset_path`css/inline-cart.css"}
 
 {/css}
+{/if}
 
 <div class="module cart show-inline">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}

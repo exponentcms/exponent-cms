@@ -41,13 +41,13 @@ eventsCalendar view
 /*}*/
 
 .showall .events .event-image {
-    float        : left;
+    /*float        : left;*/
     width        : 125px;
     margin-right : 20px;
 }
 
 .showall .events .event-info {
-    float : left;
+    /*float : left;*/
     width : 550px;
 }
 

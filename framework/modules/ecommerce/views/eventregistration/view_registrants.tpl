@@ -18,7 +18,15 @@
 {/css}
 
 {css unique="event-show1" link="`$asset_path`css/eventregistration.css"}
+    {literal}
+    .showall .events .event-image {
+        float        : left;
+    }
 
+    .showall .events .event-info {
+        float : left;
+    }
+    {/literal}
 {/css}
 
 <div class="store  store show event-registration">
