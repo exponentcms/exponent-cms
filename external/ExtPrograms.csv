@@ -1,14 +1,12 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-Program,Version,URL,Avail version,Exponent Customization Notes:
-Program,Version,URL,Avail version,Exponent Customization Notes:
 Swiftmailer,5.4.12/6.2.3,github.com/swiftmailer/swiftmailer,6.2.3,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
-Doctrine Lexer,1.1.0,github.com/doctrine/lexer,1.2.0,needed by swiftmailer v6
-EmailValidator,2.1.11,github.com/egulias/EmailValidator,2.1.15,needed by swiftmailer v6; add autoloader and move within folders
+Doctrine Lexer,1.2.0,github.com/doctrine/lexer,1.2.0,needed by swiftmailer v6
+EmailValidator,2.1.17,github.com/egulias/EmailValidator,2.1.17,needed by swiftmailer v6; move folder structure and add autoloader to main file
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,22.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,22.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.27/3.1.34,smarty.net,3.1.34,
 phpthumb,1.7.14-201608101311,github.com/JamesHeinrich/phpThumb,1.7.14-201608101311,phpThumb.config.php - we also allow &amp in parsing and err command
-minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.7,modify config.php
+minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.8,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
 YUI3,3.18.1,github.com/yui/yui3/releases,3.18.1,
 yui2in3,,github.com/yui/2in3,,
@@ -29,7 +27,7 @@ less.php,3.0.0exp,github.com/wikimedia/less.php,3.0.0,code edit to retain php v5
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap3,3.4.1,twitter.github.com/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
 Twitter-Bootstrap4,4.4.1,twitter.github.com/bootstrap,4.4.1,patched bootstrap.scss includes swatches & exp variables
-popper.js,1.16.0,github.com/FezVrasta/popper.js,1.16.0/2.1.0,needed by BS4 (umd)
+popper.js,1.16.0,github.com/FezVrasta/popper.js,1.16.0/2.1.1,needed by BS4 (umd)
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
 Bootswatch3,3.4.1+1,bootswatch.com/,3.4.1+1,change 1st line variables.less comment to output to .css file
 Bootswatch4,4.4.1,bootswatch.com/,4.4.1,change 1st line variables.scss comment to output to .css file
