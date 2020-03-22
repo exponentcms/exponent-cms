@@ -577,7 +577,7 @@ if (!defined('SWIFT_PATH')) {
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
     define('LEXER_VERSION', '1.2.0');
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
-    define('EMAIL_VALIDATOR_VERSION', '2.1.15');
+    define('EMAIL_VALIDATOR_VERSION', '2.1.17');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
@@ -592,7 +592,7 @@ if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.5');
 }
 if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '082');  // 084
+    define('DOMPDF8_VERSION', '082');  // 085
 }
 if (!defined('HTML2PDF5_VERSION')) {
     define('HTML2PDF5_VERSION', '5.0.1');  // 5.2.1
