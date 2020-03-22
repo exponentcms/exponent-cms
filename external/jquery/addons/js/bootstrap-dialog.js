@@ -231,9 +231,9 @@
     BootstrapDialog.BUTTON_SIZES[BootstrapDialog.SIZE_SMALL] = 'btn-small';
     BootstrapDialog.BUTTON_SIZES[BootstrapDialog.SIZE_WIDE] = 'btn-block';
     BootstrapDialog.BUTTON_SIZES[BootstrapDialog.SIZE_LARGE] = 'btn-lg';
-    BootstrapDialog.ICON_SPINNER = 'glyphicon glyphicon-asterisk';
-    BootstrapDialog.BUTTONS_ORDER_CANCEL_OK = 'btns-order-cancel-ok';
-    BootstrapDialog.BUTTONS_ORDER_OK_CANCEL = 'btns-order-ok-cancel';
+    BootstrapDialog.ICON_SPINNER = 'fa fa-spinner';
+    // BootstrapDialog.BUTTONS_ORDER_CANCEL_OK = 'btns-order-cancel-ok';
+    // BootstrapDialog.BUTTONS_ORDER_OK_CANCEL = 'btns-order-ok-cancel';
 
     /**
      * Default options.
@@ -255,7 +255,7 @@
         animate: true,
         description: '',
         tabindex: -1,
-        btnsOrder: BootstrapDialog.BUTTONS_ORDER_CANCEL_OK
+        // btnsOrder: BootstrapDialog.BUTTONS_ORDER_CANCEL_OK
     };
 
     /**
@@ -454,7 +454,7 @@
             return this.getModal();
         },
         createModalDialog: function () {
-            return $('<div class="modal-dialog"></div>');
+            return $('<div class="modal-dialog" role="document"></div>');
         },
         getModalDialog: function () {
             return this.$modalDialog;
@@ -810,6 +810,9 @@
         getNamespace: function (name) {
             return BootstrapDialog.NAMESPACE + '-' + name;
         },
+        getModalVersion:function(){
+            return BootstrapDialogModal.getModalVersion();
+        },
         createHeaderContent: function () {
             var $container = $('<div></div>');
             $container.addClass(this.getNamespace('header'));
@@ -818,20 +821,25 @@
             $container.append(this.createTitleContent());
 
             // Close button
-            $container.append(this.createCloseButton());
+            if(this.getModalVersion()!=="v4.1")
+                $container.prepend(this.createCloseButton());
+            else{
+                $container.css("width","100%");
+                $container.append(this.createCloseButton());
+            }
 
             return $container;
         },
         createTitleContent: function () {
-            var $title = $('<div></div>');
+            var $title = $('<h5></h5>');
             $title.addClass(this.getNamespace('title'));
-
+            $title.addClass("modal-title");
             return $title;
         },
         createCloseButton: function () {
             var $container = $('<div></div>');
             $container.addClass(this.getNamespace('close-button'));
-            var $icon = $('<button class="close" aria-label="close"></button>');
+            var $icon = $('<button class="close" type="button" aria-label="Close"></button>');
             $icon.append(this.options.closeIcon);
             $container.append($icon);
             $container.on('click', {dialog: this}, function (event) {
@@ -875,6 +883,11 @@
                 }
                 var $button = that.createButton(button);
                 that.indexedButtons[button.id] = $button;
+
+                if(that.getModalVersion()=="v4.1"){
+                    $button.css("margin-left","5px");
+                }
+
                 $container.append($button);
             });
 
@@ -896,23 +909,29 @@
             }
 
             // title
-            if (typeof button.title !== 'undefined') {
-                $button.attr('title', button.title);
-            }
+            // if (typeof button.title !== 'undefined') {
+            //     $button.attr('title', button.title);
+            // }
 
             // Css class
             if (typeof button.cssClass !== 'undefined' && $.trim(button.cssClass) !== '') {
                 $button.addClass(button.cssClass);
             } else {
                 $button.addClass('btn-default');
+                if(this.getModalVersion()!=="v4.1")
+                    $button.addClass('btn-default');
+                else{
+                    $button.addClass('btn-outline-secondary');
+                }
+
             }
 
             // Data attributes
-            if (typeof button.data === 'object' && button.data.constructor === {}.constructor) {
-                $.each(button.data, function (key, value) {
-                    $button.attr('data-' + key, value);
-                });
-            }
+            // if (typeof button.data === 'object' && button.data.constructor === {}.constructor) {
+            //     $.each(button.data, function (key, value) {
+            //         $button.attr('data-' + key, value);
+            //     });
+            // }
 
             // Hotkey
             if (typeof button.hotkey !== 'undefined') {
@@ -985,14 +1004,14 @@
                 var dialog = $this.dialog;
                 var $icon = $this.find('.' + dialog.getNamespace('button-icon'));
                 if (typeof spin === 'undefined') {
-                    spin = !($button.find('.icon-spin').length > 0);
+                    spin = !($button.find('.fa-spin').length > 0);
                 }
                 if (spin) {
                     $icon.hide();
-                    $button.prepend(dialog.createButtonIcon(dialog.getSpinicon()).addClass('icon-spin'));
+                    $button.prepend(dialog.createButtonIcon(dialog.getSpinicon()).addClass('fa-spin'));
                 } else {
                     $icon.show();
-                    $button.find('.icon-spin').remove();
+                    $button.find('.fa-spin').remove();
                 }
 
                 return $this;
@@ -1134,9 +1153,9 @@
                     $(this).remove();
                 }
                 BootstrapDialog.moveFocus();
-                if ($('.modal').hasClass('in')) {
-                    $('body').addClass('modal-open');
-                }
+                // if ($('.modal').hasClass('in')) {
+                //     $('body').addClass('modal-open');
+                // }
             });
 
             // Backdrop, I did't find a way to change bs3 backdrop option after the dialog is popped up, so here's a new wheel.
@@ -1152,7 +1171,7 @@
                 var dialog = event.data.dialog;
                 if (typeof dialog.registeredButtonHotkeys[event.which] !== 'undefined') {
                     var $button = $(dialog.registeredButtonHotkeys[event.which]);
-                    !$button.prop('disabled') && !$button.is(':focus') && $button.focus().trigger('click');
+                    !$button.prop('disabled') && $button.focus().trigger('click');
                 }
             });
 
@@ -1302,7 +1321,7 @@
         dialog.setData('callback', alertOptions.callback);
         dialog.addButton({
             label: alertOptions.buttonLabel,
-            hotkey: alertOptions.buttonHotkey,
+            // hotkey: alertOptions.buttonHotkey,
             action: function (dialog) {
                 if (typeof dialog.getData('callback') === 'function' && dialog.getData('callback').call(this, true) === false) {
                     return false;
@@ -1356,11 +1375,11 @@
             draggable: false,
             btnCancelLabel: BootstrapDialog.DEFAULT_TEXTS.CANCEL,
             btnCancelClass: null,
-            btnCancelHotkey: null,
+            // btnCancelHotkey: null,
             btnOKLabel: BootstrapDialog.DEFAULT_TEXTS.OK,
             btnOKClass: null,
-            btnOKHotkey: null,
-            btnsOrder: BootstrapDialog.defaultOptions.btnsOrder,
+            // btnOKHotkey: null,
+            // btnsOrder: BootstrapDialog.defaultOptions.btnsOrder,
             callback: null
         };
         if (typeof arguments[0] === 'object' && arguments[0].constructor === {}.constructor) {
@@ -1378,33 +1397,27 @@
         var dialog = new BootstrapDialog(confirmOptions);
         dialog.setData('callback', confirmOptions.callback);
 
-        var buttons = [{
+        dialog.addButton({
             label: confirmOptions.btnCancelLabel,
             cssClass: confirmOptions.btnCancelClass,
-            hotkey: confirmOptions.btnCancelHotkey,
             action: function (dialog) {
                 if (typeof dialog.getData('callback') === 'function' && dialog.getData('callback').call(this, false) === false) {
                     return false;
                 }
-
                 return dialog.close();
             }
-        }, {
-            label: confirmOptions.btnOKLabel,
-            cssClass: confirmOptions.btnOKClass,
-            hotkey: confirmOptions.btnOKHotkey,
-            action: function (dialog) {
-                if (typeof dialog.getData('callback') === 'function' && dialog.getData('callback').call(this, true) === false) {
-                    return false;
-                }
+        });
+        dialog.addButton({
+             label: confirmOptions.btnOKLabel,
+             cssClass: confirmOptions.btnOKClass,
+             action: function (dialog) {
+                 if (typeof dialog.getData('callback') === 'function' && dialog.getData('callback').call(this, true) === false) {
+                     return false;
+                 }
 
                 return dialog.close();
-            }
-        }];
-        if (confirmOptions.btnsOrder === BootstrapDialog.BUTTONS_ORDER_OK_CANCEL) {
-            buttons.reverse();
-        }
-        dialog.addButtons(buttons);
+             }
+        });
 
         return dialog.open();
 
