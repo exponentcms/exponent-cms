@@ -72,7 +72,7 @@ class expPermissions {
 	 * on the granted the given location.
 	 * Returns true if the permission is granted, false if it is not.
 	 *
-	 * @param string $permission The name of the permission to check
+	 * @param string|array $permission The name of the permission to check
 	 * @param object $location The location to check on.  This will be passed
 	 *	to getLocationHierarchy (defined by the module) for a full hierarchy
 	 *	of permissions.
