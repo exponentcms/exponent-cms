@@ -77,7 +77,7 @@ function buildHelp(dbname,username,password,target) {
 <br />
 </div>
 <br /><br />
-<hr size="1" />
+<hr>
 <img id="mysql" src="images/mysql.png" /><br />
 <strong><?php echo gt('MySQL Database Creation'); ?></strong>
 <br /><br />
@@ -96,7 +96,7 @@ tpls.push("GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, DROP to _
 </script>
 
 <br /><br />
-<hr size="1" />
+<hr>
 <img id="pgsql" src="images/pgsql.gif" /><br />
 <strong><?php echo gt('PostGreSQL Database Creation'); ?></strong>
 <br /><br />

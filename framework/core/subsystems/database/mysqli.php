@@ -44,7 +44,7 @@ class mysqli_database extends database {
      */
 
 	function __construct($username, $password, $hostname, $database, $new=false) {
-		if (strstr($hostname,':')) {
+		if (strpos($hostname, ':') !== false) {
 			list ( $host, $port ) = @explode (":", $hostname);
 		} else {
             $host = $hostname;
@@ -283,6 +283,11 @@ class mysqli_database extends database {
                       $unique[$def[DB_UNIQUE]][] = $name;
                 }
             }
+            if (!empty($def[DB_NOTNULL]) || $def[DB_FIELD_TYPE] === DB_DEF_ID || (!empty($def[DB_PRIMARY]) && $def[DB_PRIMARY] === true)) {
+                $newdatadef[$name][DB_NOTNULL] = true;
+            } else {
+                $newdatadef[$name][DB_NOTNULL] = false;
+            }
         }
 
         //Drop any old columns from the table if aggressive mode is set.
@@ -297,7 +302,6 @@ class mysqli_database extends database {
             if (is_array($newdatadef) && is_array($dd)) {
                 $oldcols = @array_diff_assoc($dd, $newdatadef);
                 if (count($oldcols)) {
-                    $modified = true;
                     $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
                     foreach ($oldcols as $name => $def) {
                         $sql .= " DROP COLUMN " . $name . ",";
@@ -329,8 +333,10 @@ class mysqli_database extends database {
             $changed = false;
             if (is_array($diff_c)) {
                 foreach ($diff_c as $name => $def) {
-                    if (!array_key_exists($name, $diff) && (isset($def[DB_FIELD_TYPE]) || isset($def[DB_FIELD_LEN]) || isset($def[DB_DEFAULT]) || isset($def[DB_INCREMENT]))) {  // wasn't a new column
-                        if ($newdatadef[$name][DB_FIELD_TYPE] == DB_DEF_STRING) {
+                    if (!array_key_exists($name, $diff) && (isset($def[DB_FIELD_TYPE]) || isset($def[DB_FIELD_LEN]) || isset($def[DB_DEFAULT]) || isset($def[DB_INCREMENT]) || isset($def[DB_NOTNULL]))) {  // wasn't a new column
+                        $diffdef = $def;
+                        unset($diffdef[DB_PRIMARY], $diffdef[DB_UNIQUE], $diffdef[DB_INDEX], $diffdef[DB_FULLTEXT]);
+                        if (count($diffdef) == 1 && $newdatadef[$name][DB_FIELD_TYPE] == DB_DEF_STRING) {
                             //check for actual lengths vs. exp placeholder lengths
                             $newlen = $newdatadef[$name][DB_FIELD_LEN];
                             $len = $dd[$name][DB_FIELD_LEN];
@@ -590,7 +596,7 @@ class mysqli_database extends database {
         }
 
         $sql .= ' FROM ' . $this->prefix . $tableA . ' a JOIN ' . $this->prefix . $tableB . ' b ';
-        $sql .= is_null($keyB) ? 'USING(' . $keyA . ')' : 'ON a.' . $keyA . ' = b.' . $keyB;
+        $sql .= $keyB === null ? 'USING(' . $keyA . ')' : 'ON a.' . $keyA . ' = b.' . $keyB;
 
         if ($where == null)
             $where = "1";
@@ -612,7 +618,7 @@ class mysqli_database extends database {
      * Select a single object by sql
      *
 	 * @param  $sql
-	 * @return null|void
+	 * @return null|object
 	 */
     function selectObjectBySql($sql) {
         //$logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
@@ -913,7 +919,7 @@ class mysqli_database extends database {
         $values = ") VALUES (";
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
-            if ($var[0] !== '_' && $val !== null) {
+            if ($var[0] !== '_' && $val !== null && $val !== '') {
                 $sql .= "`$var`,";
                 if ($values !== ") VALUES (") {
                     $values .= ",";
@@ -976,7 +982,7 @@ class mysqli_database extends database {
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
             //if($is_revisioned && $var=='revision_id') $val++;
-            if ($var[0] !== '_') {
+            if ($var[0] !== '_' && $val !== null && $val !== '') {
                 if (is_array($val) || is_object($val)) {
                     $val = serialize($val);
                     $sql .= "`$var`='".$val."',";
@@ -1004,7 +1010,7 @@ class mysqli_database extends database {
 	 *
 	 * @param string $table The name of the table to select from.
 	 * @param string $attribute The attribute name to find a maximum value for.
-	 * @param string $groupfields A comma-separated list of fields (or a single field) name, used
+	 * @param string|array $groupfields A comma-separated list of fields (or a single field) name, used
 	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
 	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return mixed
@@ -1034,7 +1040,7 @@ class mysqli_database extends database {
 	 * @internal Internal
 	 * @param string $table The name of the table to select from.
 	 * @param string $attribute The attribute name to find a minimum value for.
-	 * @param string $groupfields A comma-separated list of fields (or a single field) name, used
+	 * @param string|array $groupfields A comma-separated list of fields (or a single field) name, used
 	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
 	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return null
@@ -1213,6 +1219,10 @@ class mysqli_database extends database {
             $key = $this->getDDKey($fieldObj);
             if ($key)
                 $field[$key] = true;
+            if ($fieldObj->Null === "NO")
+                $field[DB_NOTNULL] = true;
+            else
+                $field[DB_NOTNULL] = false;
 
             $dd[$fieldObj->Field] = $field;
         }

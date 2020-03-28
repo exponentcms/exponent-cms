@@ -88,7 +88,7 @@ require_once(BASE . 'exponent_php_setup.php');
 
 if (function_exists('gd_info')) {
 	$info = gd_info();
-	define('EXPONENT_HAS_GD',($info['GD Version'] == 'Not Supported' ? 0 : 1));
+	define('EXPONENT_HAS_GD',($info['GD Version'] === 'Not Supported' ? 0 : 1));
 } else {
 	define('EXPONENT_HAS_GD', 0);
 }

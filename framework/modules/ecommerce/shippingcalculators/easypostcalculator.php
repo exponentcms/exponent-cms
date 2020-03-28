@@ -24,7 +24,7 @@
 /** @define "BASE" "../../../.." */
 class easypostcalculator extends shippingcalculator
 {
-    private static $version = '3.4.1';  // library version
+    private static $version = '3.4.4';  // library version
     /*
      * Returns the name of the shipping calculator, for use in the Shipping Administration Module
      */

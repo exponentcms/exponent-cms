@@ -183,7 +183,7 @@ class expSession {
 			}
 		}
 
-		if (isset($_SESSION[SYS_SESSION_KEY]['user']) && get_class($_SESSION[SYS_SESSION_KEY]['user']) == 'user') {
+		if (isset($_SESSION[SYS_SESSION_KEY]['user']) && get_class($_SESSION[SYS_SESSION_KEY]['user']) === 'user') {
 			$user = ($_SESSION[SYS_SESSION_KEY]['user']);
 		} else {
 			$user = new user();
@@ -323,7 +323,7 @@ class expSession {
 	 */
 	public static function loggedIn() {
 		//if ($anon){
-        if (isset($_SESSION[SYS_SESSION_KEY]['user']) && get_class($_SESSION[SYS_SESSION_KEY]['user']) != 'user') {
+        if (isset($_SESSION[SYS_SESSION_KEY]['user']) && get_class($_SESSION[SYS_SESSION_KEY]['user']) !== 'user') {
             unset($_SESSION[SYS_SESSION_KEY]['user']);
         }
 		return (isset($_SESSION[SYS_SESSION_KEY]['ticket']) && isset($_SESSION[SYS_SESSION_KEY]['user']));

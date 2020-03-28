@@ -280,7 +280,7 @@ class expLang {
    		if (is_readable($dir)) {
    			$dh = opendir($dir);
    			while (($f = readdir($dh)) !== false) {
-   				if (substr($f,-4,4) == '.php' && substr($f,-9,9) != '.info.php') {
+   				if (substr($f,-4,4) === '.php' && substr($f,-9,9) !== '.info.php') {
    					if (file_exists($dir.'/'.substr($f,0,-4).'.info.php')) {
    						$info = include($dir.'/'.substr($f,0,-4).'.info.php');
    						$langs[substr(utf8_encode($f),0,-4)] = $info['name'] . ' -- ' . $info['author'];
@@ -298,14 +298,14 @@ class expLang {
         $from = $from1[0];
         $to1 = explode('_',$to);
         $to = $to1[0];
-        if ($to == 'nb')
+        if ($to === 'nb')
             $to = 'no';  // Bing uses 'no' for norwegian
 
-        if (defined('TRANSLATE') && TRANSLATE == 'BING') {
+        if (defined('TRANSLATE') && TRANSLATE === 'BING') {
             include_once(BASE.'external/translate/BingTranslate.class.php');
             include_once(BASE.'external/translate/bingapi.php');
             $gt = new BingTranslateWrapper(BING_API);
-        } elseif (defined('TRANSLATE') && TRANSLATE == 'Azure') {
+        } elseif (defined('TRANSLATE') && TRANSLATE === 'Azure') {
             require_once(BASE.'external/translate/config.inc.php'); // remainder of settings
             require_once(BASE.'external/translate/MicrosoftTranslator.class.php');
             include_once(BASE.'external/translate/bingapi.php');

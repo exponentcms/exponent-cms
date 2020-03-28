@@ -221,7 +221,7 @@ class expLabels
             }
 
             if ($num_x == $this->labels_across) {
-                array_push($table_data, $row_table_data);
+                $table_data[] = $row_table_data;
                 $row_table_data = array();
                 $num_y++;
                 $num_x = 0;
@@ -237,8 +237,8 @@ class expLabels
                 $search_array = array("<br />", "<br>", "<BR />", "<BR>");
                 $replace_array = array("\n" . $prespace, "\n" . $prespace, "\n" . $prespace, "\n" . $prespace);
                 foreach ($address as $address_key => $address_value) {
-                    array_push($search_array, $address_key);
-                    array_push($replace_array, $address[$address_key]);
+                    $search_array[] = $address_key;
+                    $replace_array[] = $address[$address_key];
                 }
                 if ($this->pitch_horizontal - $this->label_width > 0 && $num_x > 0) {
                     $row_table_data['padding' . $num_x] = '';
@@ -255,7 +255,7 @@ class expLabels
             $num_total++;
 
         }
-        array_push($table_data, $row_table_data);
+        $table_data[] = $row_table_data;
         $CI->cezpdf->ezTable($table_data, $col_names, '', $table_options);
         $CI->cezpdf->ezStream();
     }
@@ -329,8 +329,8 @@ class expLabels
             $search_array = array();
             $replace_array = array();
             foreach ($address as $address_key => $address_value) {
-                array_push($search_array, $address_key);
-                array_push($replace_array, $address[$address_key]);
+                $search_array[] = $address_key;
+                $replace_array[] = $address[$address_key];
             }
             $address_item = str_replace($search_array, $replace_array, $this->layout);
 
@@ -457,13 +457,11 @@ class expLabels
             $search_array = array();
             $replace_array = array();
             foreach ($address as $address_key => $address_value) {
-                array_push($search_array, $address_key);
-                array_push($replace_array, $address[$address_key]);
+                $search_array[] = $address_key;
+                $replace_array[] = $address[$address_key];
             }
-            $address_item = str_replace($search_array, $replace_array, $this->layout);
-
             // replace html with WordML valid tags
-            $address_item = str_replace(array("<br />", "<br>", "<BR />", "<BR>"), "<w:br/>", $address_item);
+            $address_item = str_replace(array($search_array, "<br />", "<br>", "<BR />", "<BR>"), array($replace_array, "<w:br/>", "<w:br/>", "<w:br/>", "<w:br/>"), $this->layout);
 
             $output .= $address_item;
 

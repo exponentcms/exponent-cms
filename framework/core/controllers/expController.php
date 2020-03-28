@@ -77,10 +77,14 @@ abstract class expController {
      */
     public function __construct($src = null, $params = array()) {
         // setup some basic information about this class
-        $this->classinfo = new ReflectionClass($this);
-        $this->classname = $this->classinfo->getName();
-        $this->baseclassname = substr($this->classinfo->getName(), 0, -10);
-        $this->filepath = __realpath($this->classinfo->getFileName());
+//        $this->classinfo = new ReflectionClass($this);
+//        $this->classname = $this->classinfo->getName();
+//        $this->baseclassname = substr($this->classinfo->getName(), 0, -10);
+//        $this->filepath = __realpath($this->classinfo->getFileName());
+        $this->classname = get_class($this);
+        $this->baseclassname = substr(get_class($this), 0, -10);
+        $classinfo = new ReflectionClass($this);
+        $this->filepath = __realpath($classinfo->getFileName());
 
         // figure out which "module" we belong to and setup view path information
         $controllerpath = explode('/', $this->filepath);

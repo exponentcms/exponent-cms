@@ -255,7 +255,7 @@ class mp3file
     public static function is_mpeg10(&$mp3)  { return ($mp3['MPEG version']=='11'); }
     public static function is_mpeg20(&$mp3)  { return ($mp3['MPEG version']=='10'); }
     public static function is_mpeg25(&$mp3)  { return ($mp3['MPEG version']=='00'); }
-    public static function is_mpeg20or25(&$mp3)  { return ($mp3['MPEG version']{1}=='0'); }
+    public static function is_mpeg20or25(&$mp3)  { return ($mp3['MPEG version'][1]=='0'); }
     //-----------------------------------------------------------------------------
     public static function bitratelookup(&$mp3)
     {

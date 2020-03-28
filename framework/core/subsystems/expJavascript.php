@@ -36,7 +36,7 @@ class expJavascript {
         if (!empty($_REQUEST['apikey'])||!empty($_REQUEST['jsonp'])) {
             return 'jsonp';
         }
-        if (!empty($_REQUEST['json']) && !empty($_REQUEST['controller']) && $_REQUEST['controller'] == 'file' && !empty($_REQUEST['action']) && $_REQUEST['action'] == 'picker') {
+        if (!empty($_REQUEST['json']) && !empty($_REQUEST['controller']) && $_REQUEST['controller'] === 'file' && !empty($_REQUEST['action']) && $_REQUEST['action'] === 'picker') {
             return false;  // elFinder coming back from Pixlr editor
         }
 		return !empty($_REQUEST['json']) ? true : false;
@@ -75,7 +75,7 @@ class expJavascript {
             $srt = array();
             $srt[$i] = '';
             if (!empty($yui3js)) $srt[$i] = YUI3_RELATIVE.'yui/yui-min.js,';
-            if (!empty($jqueryjs) || $framework == 'jquery' || bs()) {
+            if (!empty($jqueryjs) || $framework === 'jquery' || bs()) {
 //                if (strlen($srt[$i])+strlen(JQUERY_SCRIPT)<= $strlen && $i <= MINIFY_MAX_FILES) {
 //                    $srt[$i] .= JQUERY_SCRIPT . ",";
 //                } else {
@@ -134,10 +134,10 @@ class expJavascript {
                 }
 
                 if (!empty($jqueryjs)) foreach ($jqueryjs as $mod) {
-                    if ($mod == 'migrate' && !OLD_BROWSER_SUPPORT) {
+                    if ($mod === 'migrate' && !OLD_BROWSER_SUPPORT) {
                         if (DEVELOPMENT)
                             flash('warning', 'jQuery Migrate v1 load prevented while using jQuery v3');
-                    } elseif ($mod == 'jqueryui') {
+                    } elseif ($mod === 'jqueryui') {
                         if (strlen($srt[$i]) + strlen(JQUERYUI_SCRIPT) <= $strlen && $i <= MINIFY_MAX_FILES) {
                             $srt[$i] .= JQUERYUI_SCRIPT . ",";
                         } else {
@@ -228,7 +228,7 @@ class expJavascript {
                 $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . 'external/minify/min/index.php?f=' . $link . '&debug"></script>' . "\r\n";
             }
         } else {
-            if (!empty($jqueryjs) || !empty($bootstrapjs) || $framework == 'jquery' || bs(true)) {
+            if (!empty($jqueryjs) || !empty($bootstrapjs) || $framework === 'jquery' || bs(true)) {
                 $scripts .= "\r\n\t" . "<!-- jQuery -->";
                 $browser = expUtil::browser_info();
                 if (OLD_BROWSER_SUPPORT) {
@@ -275,10 +275,10 @@ class expJavascript {
                 if (!empty($jqueryjs)) {
                     $scripts .= "\t" . "<!-- jQuery Addon Scripts -->" . "\r\n";
                     foreach ($jqueryjs as $mod) {
-                        if ($mod == 'migrate' && !OLD_BROWSER_SUPPORT) {
+                        if ($mod === 'migrate' && !OLD_BROWSER_SUPPORT) {
                             if (DEVELOPMENT)
                                 flash('warning', 'jQuery Migrate v1 load prevented while using jQuery v3');
-                        } elseif ($mod == 'jqueryui') {
+                        } elseif ($mod === 'jqueryui') {
                             $scripts .= "\t" . '<script type="text/javascript" src="' . JQUERYUI_SCRIPT . '"></script>' . "\r\n";
                             expCSS::pushToHead(
                                 array(
@@ -406,7 +406,7 @@ class expJavascript {
     	}
 
         // insert the yui2mods wrapper if needed
-        if (isset($params['yui2mods']) && !strstr($params['content'],"YUI(")) {
+        if (isset($params['yui2mods']) && strpos($params['content'], "YUI(") === false) {
             if (empty($params['yui3mods']))
                 $params['yui3mods'] = 1;
             $yui2mods = !empty($params['yui2mods']) ? $params['yui2mods'] : null;
@@ -417,7 +417,7 @@ class expJavascript {
             $y3wrap = "YUI(EXPONENT.YUI3_CONFIG).use(";
             $y3wrap .= "'yui2-yahoo-dom-event', ";
             foreach ($splitmods as $mod) {
-                if ($mod=="menu") {
+                if ($mod === "menu") {
                     $y3wrap .= "'yui2-container', ";
                 }
                 $y3wrap .= "'yui2-".$mod."', ";
@@ -432,7 +432,7 @@ class expJavascript {
         }
 
         // do universal yui3mods replace
-		if (isset($params['content']) && stristr($params['content'],"use('*',") && isset($params['yui3mods'])) {
+		if (isset($params['content']) && stripos($params['content'], "use('*',") !== false && isset($params['yui3mods'])) {
             $params['content'] = str_replace("use('*',",('use(\''.str_replace(',','\',\'',$params['yui3mods']).'\','),$params['content']);
             $yui3js = 1;
 		}
@@ -491,7 +491,7 @@ class expJavascript {
                 // we assume jquery is already loaded along with requested bootstrap scripts
                 $scripts = '';
                 foreach ($jqueryjs as $mod) {
-                    if ($mod == 'jqueryui') {
+                    if ($mod === 'jqueryui') {
                         $scripts .= '<script type="text/javascript" src="' . JQUERYUI_SCRIPT . '"></script>' . "\r\n";
                         expCSS::pushToHead(
                             array(
@@ -673,7 +673,7 @@ class expJavascript {
 		}
 
 		//if there have been any values
-		if($js != "new $name(") {
+		if($js !== "new $name(") {
 			//remove the useless last ", "
 			$js = substr($js, 0, -2);
 		}

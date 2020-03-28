@@ -1198,8 +1198,9 @@ class administrationController extends expController {
 			$theme = new $themeclass();
 			$theme->saveThemeConfig($this->params);
             expSession::set('force_less_compile', 1);
-            expTheme::removeSmartyCache();
+//            expTheme::removeSmartyCache();
             expSession::clearAllUsersSessionCache();
+            expHistory::back();
 		}
 	}
 
@@ -1591,7 +1592,6 @@ class theme {
 		} else {
             expSettings::saveValues($params, BASE . "themes/" . $theme . "/config.php");
 		}
-		expHistory::back();
 	}
 
 }

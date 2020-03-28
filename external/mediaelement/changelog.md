@@ -1,5 +1,40 @@
 ### Version History
 
+*4.2.16 (2020/03/16)*
+
+* fix 4.2.15 release : update version to 4.2.16, rebuild
+
+* Changed multiple urls in demo file (#2749)
+* Removed FLV and MP4 No Ext de to 404 replaced HLS due to 404 with Akamai Test stream
+* Replaced Facebook url due to not working Layout is ** up now. Change multple audio files due to not working. api.soundcloud.com has reached it limit for api request therefore not working any more
+* replaced one supplied by facebook
+* Facebook video post did not work
+
+*4.2.15 (2020/03/10)*
+
+* Do not delay starting media on key action (#2745)
+* Do not call changeRenderer() on empty media (#2743)
+  simplify condition
+  avoid pausing player without media
+* Trigger pause/play when seeking with keyboard to make analytics work (#2740)
+* Fix extracting the vimeo video id from private links (#2733) (#2741)
+* Add option to preprocess caption text before display (#2735)
+* Add option `captionTextPreprocessor` to allow preprocessing of caption texts using a given callback (#2735)
+* Improve doc formatting
+* Fix "config is undefined" when working with volumeSlider using keyboard (#2736)
+* Remove unnecessary Safari hack (#2731)
+* Fix time slider and volume slider crash on keypress (#2728)
+* Changed fullscreeneventname for resolving fullscreen issue in firefox (#2726)
+* media.seekable fallback for getDuration-method of player/default.js (#2571)
+* Add new configuration option "ignorePauseOtherPlayersOption" (useful for background(banner) players)
+* api.md: document "ignorePauseOtherPlayersOption" option
+* Remove IS_ANDROID from SUPPORTS_NATIVE_HLS (#2720) (#2719)
+* Add handling of the .play() promise errors to vimeo player (#2715) (#2716)
+* Make error event handler more robust (#2708)
+  Check if event.target.error exists before accessing it.
+  In some edge cases e.target is no <video> element or it has null as error property.
+
+
 *4.2.14 (2019/10/19)*
 
 * Update versions in src/js/core/mejs.js and package.js (had not been done for 4.2.13)

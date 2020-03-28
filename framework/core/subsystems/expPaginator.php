@@ -178,7 +178,7 @@ class expPaginator {
 		$this->order_direction = $this->dir;
 
         // allow passing of a single order/dir as stored in config
-        if (strstr($this->order," ")) {
+        if (strpos($this->order, " ") !== false) {
             $orderby = explode(" ",$this->order);
             $this->order = $orderby[0];
             $this->order_direction = $orderby[1];
@@ -515,13 +515,13 @@ class expPaginator {
     private function cleanParams($params) {
         $defaultParams = array('title'=>'','module'=>'','controller'=>'','src'=>'','id'=>'','dir'=>'','_common'=>'');
         $newParams = array();
-        $func = new ReflectionClass($this);
         foreach ($params as $pKey=>$pVal) {
             $propname = $pKey;
             if (array_key_exists($propname,$defaultParams)) {
                 $newParams[$propname] = $params[$propname];
             }
         }
+        $func = new ReflectionClass($this);
         foreach ($func->getProperties() as $p) {
             $propname = $p->name;
             if (array_key_exists($propname,$params)) {
@@ -561,7 +561,7 @@ class expPaginator {
 
                 if ($col == $current) {
                     $class  = 'current '.strtolower($this->order_direction);
-                    $params['dir'] = $this->order_direction == 'ASC' ? 'DESC' : 'ASC';
+                    $params['dir'] = $this->order_direction === 'ASC' ? 'DESC' : 'ASC';
                 }
 
                 $params['order'] = $col;
@@ -572,7 +572,7 @@ class expPaginator {
                 if (empty($col)) {
                     $this->header_columns .= '<span>'.$colname.'</span>';
                     $this->columns[$colname] = ' ';
-                } else if($colname=="actupon") {
+                } else if($colname === "actupon") {
                     $this->header_columns .= '<input type=checkbox name=selall id=selall value=1 class="select-all"/>';
 
 //                    $js = "
@@ -609,7 +609,7 @@ class expPaginator {
 
                 } else {
 					unset($params['page']);  // we want to go back to the first page on a re-sort
-                    if ($col == 'no-sort') {
+                    if ($col === 'no-sort') {
                         $this->header_columns .= $colname;
                     } else {
                         $this->header_columns .= '<a href="'.$router->makeLink($params, false, false, true).'" alt="sort by '.$colname.'" rel="nofollow">'.$colname.'</a>';
@@ -695,7 +695,7 @@ class expPaginator {
 				$params['order'] = $col;
 
 				if (!empty($col)) {
-                    if ($colname == 'Price') {
+                    if ($colname === 'Price') {
                         $params['dir'] = 'ASC';
                         $this->sort_dropdown[$router->makeLink($params, false, false, true)] = $colname . " - Lowest to Highest";
                         $params['dir'] = 'DESC';

@@ -47,13 +47,13 @@ class expModules {
 	    if (is_readable($dir)) {
 	        $dh = opendir($dir);
 	        while (($file = readdir($dh)) !== false) {
-	            if (is_dir($dir.'/'.$file) && ($file != '..' && $file != '.')) {
+	            if (is_dir($dir.'/'.$file) && ($file !== '..' && $file !== '.')) {
 	                // load controllers
 	                $dirpath = $dir.'/'.$file.'/controllers';
 	                if (file_exists($dirpath)) {
 	                    $controller_dir = opendir($dirpath);
 	                    while (($ctl_file = readdir($controller_dir)) !== false) {
-	                        if (empty($controllers[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) == ".php") {
+	                        if (empty($controllers[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) === ".php") {
 	                            include_once($dirpath.'/'.$ctl_file);
 	                            $controllers[substr($ctl_file,0,-4)] = $dirpath.'/'.$ctl_file;
 	//	                          $module->module = substr($ctl_file,0,-4);
@@ -113,7 +113,7 @@ class expModules {
    	    if (is_readable($dir)) {
    	        $dh = opendir($dir);
    	        while (($file = readdir($dh)) !== false) {
-   	            if (is_dir($dir.'/'.$file) && ($file != '..' && $file != '.')) {
+   	            if (is_dir($dir.'/'.$file) && ($file !== '..' && $file !== '.')) {
 //   	                // load controllers
 //   	                $dirpath = $dir.'/'.$file.'/controllers';
 //   	                if (file_exists($dirpath)) {
@@ -142,7 +142,7 @@ class expModules {
    	                if (file_exists($dirpath)) {
    	                    $model_dir = opendir($dirpath);
    	                    while (($ctl_file = readdir($model_dir)) !== false) {
-   	                        if (empty($models[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) == ".php") {
+   	                        if (empty($models[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) === ".php") {
    	                            include_once($dirpath.'/'.$ctl_file);
                                 $models[substr($ctl_file,0,-4)] = $dirpath.'/'.$ctl_file;
    	//                            $module->module = substr($ctl_file,0,-4);
@@ -179,7 +179,7 @@ class expModules {
     			$moduleInfo[$module]->description = $mod->description();
     			$moduleInfo[$module]->codequality = isset($mod->codequality) ? $mod->codequality : 'alpha';
                 $model = $mod->basemodel_name;
-                if (!empty($model) && $model != 'expRecord') $moduleInfo[$module]->workflow = $mod->$model->supports_revisions;
+                if (!empty($model) && $model !== 'expRecord') $moduleInfo[$module]->workflow = $mod->$model->supports_revisions;
     			$moduleInfo[$module]->active = ($modstate != null ? $modstate->active : 0);
     		}
     	}
@@ -245,7 +245,7 @@ class expModules {
     /**
      * Returns new controller object
      *
-     * @param string $controllername
+     * @param string|object $controllername
      * @param null   $param
      *
      * @return null
@@ -295,7 +295,7 @@ class expModules {
      */
     public static function getControllerClassName($controllername) {
 	    if (empty($controllername)) return null;
-	    return (substr($controllername, -10) == 'Controller') ? $controllername : $controllername.'Controller';
+	    return (substr($controllername, -10) === 'Controller') ? $controllername : $controllername.'Controller';
 	}
 
     /**
@@ -308,7 +308,7 @@ class expModules {
      */
     public static function getControllerName($controllername) {
 	    if (empty($controllername)) return null;
-        return (substr($controllername, -10) == 'Controller') ? substr($controllername, 0, -10) : $controllername;
+        return (substr($controllername, -10) === 'Controller') ? substr($controllername, 0, -10) : $controllername;
 	}
 
     /**
@@ -321,9 +321,9 @@ class expModules {
     public static function getModuleBaseName($modulename) {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
-            return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
-        } elseif (substr($modulename, -10) != 'Controller') {
-            return (substr($modulename, -6) == 'module') ? substr($modulename, 0, -6) : $modulename;
+            return (substr($modulename, -10) === 'Controller') ? substr($modulename, 0, -10) : $modulename;
+        } elseif (substr($modulename, -10) !== 'Controller') {
+            return (substr($modulename, -6) === 'module') ? substr($modulename, 0, -6) : $modulename;
         } else return $modulename;
    	}
 
@@ -338,9 +338,9 @@ class expModules {
     public static function getModuleClassName($modulename) {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
-            return (substr($modulename, -10) == 'Controller') ? $modulename : $modulename.'Controller';
-        } elseif (substr($modulename, -10) != 'Controller') {
-            return (substr($modulename, -6) == 'module') ? $modulename  : $modulename . 'module';
+            return (substr($modulename, -10) === 'Controller') ? $modulename : $modulename.'Controller';
+        } elseif (substr($modulename, -10) !== 'Controller') {
+            return (substr($modulename, -6) === 'module') ? $modulename  : $modulename . 'module';
         } else return $modulename;
    	}
 
@@ -356,9 +356,9 @@ class expModules {
     public static function getModuleName($modulename) {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
-            return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
-        } elseif (substr($modulename, -10) != 'Controller') {
-            return (substr($modulename, -6) == 'module') ? $modulename  : $modulename . 'module';
+            return (substr($modulename, -10) === 'Controller') ? substr($modulename, 0, -10) : $modulename;
+        } elseif (substr($modulename, -10) !== 'Controller') {
+            return (substr($modulename, -6) === 'module') ? $modulename  : $modulename . 'module';
         } else return $modulename;
    	}
 

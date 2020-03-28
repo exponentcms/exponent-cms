@@ -9,7 +9,8 @@
  **/
 elFinder.prototype.commands.resize = function() {
 	"use strict";
-	var losslessRotate = 0,
+	var fm = this.fm,
+		losslessRotate = 0,
 		getBounceBox = function(w, h, theta) {
 			var srcPts = [
 					{x: w/2, y: h/2},
@@ -40,13 +41,12 @@ elFinder.prototype.commands.resize = function() {
 	this.updateOnSelect = false;
 
 	this.getstate = function() {
-		var sel = this.fm.selectedFiles();
+		var sel = fm.selectedFiles();
 		return sel.length == 1 && sel[0].read && sel[0].write && sel[0].mime.indexOf('image/') !== -1 ? 0 : -1;
 	};
 
 	this.resizeRequest = function(data, f, dfrd) {
-		var fm   = this.fm,
-			file = f || fm.file(data.target),
+		var file = f || fm.file(data.target),
 			tmb  = file? file.tmb : null,
 			enabled = fm.isCommandEnabled('resize', data.target);
 
@@ -94,7 +94,6 @@ elFinder.prototype.commands.resize = function() {
 
 	this.exec = function(hashes) {
 		var self  = this,
-			fm    = this.fm,
 			files = this.files(hashes),
 			dfrd  = $.Deferred(),
 			api2  = (fm.api > 1),
@@ -106,7 +105,7 @@ elFinder.prototype.commands.resize = function() {
 			presetSize = Array.isArray(options.presetSize)? options.presetSize : [],
 			clactive = 'elfinder-dialog-active',
 			clsediting = fm.res('class', 'editing'),
-			open = function(file, id) {
+			open = function(file, id, src) {
 				var isJpeg   = (file.mime === 'image/jpeg'),
 					dialog   = $('<div class="elfinder-resize-container"/>'),
 					input    = '<input type="number" class="ui-corner-all"/>',
@@ -786,7 +785,7 @@ elFinder.prototype.commands.resize = function() {
 					img     = $('<img/>')
 						.on('load', init)
 						.on('error', function() {
-							spinner.text('Unable to load image').css('background', 'transparent');
+							spinner.html(fm.i18n('ntfsmth')).css('background', 'transparent');
 						}),
 					basec = $('<div/>'),
 					imgc = $('<img/>'),
@@ -1214,8 +1213,7 @@ elFinder.prototype.commands.resize = function() {
 					hline   = 'elfinder-resize-handle-hline',
 					vline   = 'elfinder-resize-handle-vline',
 					rpoint  = 'elfinder-resize-handle-point',
-					src     = fm.openUrl(file.hash),
-					canvSrc = fm.openUrl(file.hash, !fm.isSameOrigin(src)),
+					canvSrc = src,
 					sizeImg = quality? $('<img>').attr('crossorigin', fm.isCORS? 'use-credentials' : '').attr('src', canvSrc).on('load', function() {
 						try {
 							var canv = document.createElement('canvas');
@@ -1422,29 +1420,17 @@ elFinder.prototype.commands.resize = function() {
 					width          : dialogWidth,
 					resizable      : false,
 					buttons        : buttons,
-					flexibleHeight : true,
 					open           : function() {
-						var substituteImg = (fm.option('substituteImg', file.hash) && file.size > options.dimSubImgSize)? true : false,
-							hasSize = (file.width && file.height)? true : false;
-						dMinBtn = base.find('.ui-dialog-titlebar .elfinder-titlebar-minimize').hide();
-						fm.bind('resize', dinit);
-						img.attr('src', src);
-						imgc.attr('src', src);
-						imgr.attr('src', src);
-						if (api2) {
-							imgr.on('mousedown touchstart', rotate.start)
-								.on('touchend', rotate.stop);
-							base.on('mouseup', rotate.stop);
-						}
-						if (hasSize && !substituteImg) {
-							return init();
-						}
-						if (file.size > (options.getDimThreshold || 0)) {
+						var doDimReq = function(force) {
 							dimreq = fm.request({
-								data : {cmd : 'dim', target : file.hash, substitute : (substituteImg? 400 : '')},
+									data : {cmd : 'dim', target : file.hash, substitute : substituteImg? 400 : ''},
 								preventDefault : true
 							})
 							.done(function(data) {
+									if (!data.url && needPng) {
+										dialog.elfinderdialog('close');
+										fm.error(['errOpen', file.name]);
+									} else {
 								if (data.dim) {
 									var dim = data.dim.split('x');
 									file.width = dim[0];
@@ -1457,7 +1443,30 @@ elFinder.prototype.commands.resize = function() {
 									}
 									return init();
 								}
-							});
+									}
+								});
+							},
+							needPng = !{'image/jpeg':true,'image/png':true,'image/gif':true,}[file.mime],
+							substituteImg = fm.option('substituteImg', file.hash) && (needPng || file.size > options.dimSubImgSize)? true : false,
+							hasSize = (file.width && file.height)? true : false;
+						dMinBtn = base.find('.ui-dialog-titlebar .elfinder-titlebar-minimize').hide();
+						fm.bind('resize', dinit);
+						img.attr('src', src).one('error.dimreq', function() {
+							doDimReq(true);
+						});
+						imgc.attr('src', src);
+						imgr.attr('src', src);
+						if (api2) {
+							imgr.on('mousedown touchstart', rotate.start)
+								.on('touchend', rotate.stop);
+							base.on('mouseup', rotate.stop);
+						}
+						if (hasSize && !substituteImg) {
+							return init();
+						}
+						if (file.size > (options.getDimThreshold || 0)) {
+							img.off('error.dimreq');
+							doDimReq();
 						} else if (hasSize) {
 							return init();
 						}
@@ -1517,7 +1526,10 @@ elFinder.prototype.commands.resize = function() {
 			return dfrd.resolve();
 		}
 
-		open(files[0], id);
+
+		fm.openUrl(files[0].hash, 'sameorigin', function(src) {
+			open(files[0], id, src);
+		});
 
 		return dfrd;
 	};

@@ -608,6 +608,11 @@ class sqlsvr_database extends database {
                       $unique[$def[DB_UNIQUE]][] = $name;
                 }
             }
+            if (!empty($def[DB_NOTNULL]) || $def[DB_FIELD_TYPE] === DB_DEF_ID) {
+                $newdatadef[$name][DB_NOTNULL] = true;
+            } else {
+                $newdatadef[$name][DB_NOTNULL] = false;
+            }
         }
 
         //Drop any old columns from the table if aggressive mode is set.
@@ -638,7 +643,6 @@ class sqlsvr_database extends database {
         if (is_array($newdatadef) && is_array($dd)) {
             $diff = @array_diff_assoc($newdatadef, $dd);
             if (count($diff)) {
-                $modified = true;
                 $sql = "ALTER TABLE " . $this->tableStmt($tablename) . " ";
                 foreach ($diff as $name => $def) {
                     $sql .= " ADD " . $this->fieldSQL($name, $def) . ",";
@@ -654,8 +658,8 @@ class sqlsvr_database extends database {
             $changed = false;
             if (is_array($diff_c)) {
                 foreach ($diff_c as $name => $def) {
-                    if (!array_key_exists($name, $diff) && (isset($def[DB_FIELD_TYPE]) || isset($def[DB_FIELD_LEN]) || isset($def[DB_DEFAULT]) || isset($def[DB_INCREMENT]))) {  // wasn't a new column
-                        if ($newdatadef[$name][DB_FIELD_TYPE] == DB_DEF_STRING) {
+                    if (!array_key_exists($name, $diff) && (isset($def[DB_FIELD_TYPE]) || isset($def[DB_FIELD_LEN]) || isset($def[DB_DEFAULT]) || isset($def[DB_INCREMENT]) || isset($def[DB_NOTNULL]))) {  // wasn't a new column
+                        if (count($def) == 1 && $newdatadef[$name][DB_FIELD_TYPE] == DB_DEF_STRING) {
                             //check for actual lengths vs. exp placeholder lengths
                             $newlen = $newdatadef[$name][DB_FIELD_LEN];
                             $len = $dd[$name][DB_FIELD_LEN];
@@ -930,7 +934,7 @@ class sqlsvr_database extends database {
         }
 
         $sql .= ' FROM ' . $this->tableStmt($tableA) . ' a JOIN ' . $this->tableStmt($tableB) . ' b ';
-        $sql .= is_null($keyB) ? 'USING(' . $keyA . ')' : 'ON a.' . $keyA . ' = b.' . $keyB;
+        $sql .= $keyB === null ? 'USING(' . $keyA . ')' : 'ON a.' . $keyA . ' = b.' . $keyB;
 
         if ($where == null || $where == "1")
             $where = "1=1";
@@ -952,7 +956,7 @@ class sqlsvr_database extends database {
      * Select a single object by sql
      *
 	 * @param  $sql
-	 * @return null|void
+	 * @return null|array
 	 */
     function selectObjectBySql($sql) {
         if (strpos($sql, 'OFFSET') !== false && strpos( $sql, 'ORDER BY') === false) {
@@ -1271,7 +1275,7 @@ class sqlsvr_database extends database {
         $newinsert = false;
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
-            if ($var{0} !== '_' && $val !== null) {
+            if ($var[0] !== '_' && $val !== null && $val !== '') {
                 $sql .= "[$var],";
                 if ($values !== ") VALUES (") {
                     $values .= ",";
@@ -1344,7 +1348,7 @@ class sqlsvr_database extends database {
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
             //if($is_revisioned && $var=='revision_id') $val++;
-            if ($var{0} !== '_' && $val !== null) {
+            if ($var[0] !== '_' && $val !== null && $val !== '') {
                 if ($var != $identifier) {
                     if (is_array($val) || is_object($val)) {
                         $val = serialize($val);
@@ -1378,7 +1382,7 @@ class sqlsvr_database extends database {
 	 *
 	 * @param string $table The name of the table to select from.
 	 * @param string $attribute The attribute name to find a maximum value for.
-	 * @param string $groupfields A comma-separated list of fields (or a single field) name, used
+	 * @param string|array $groupfields A comma-separated list of fields (or a single field) name, used
 	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
 	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return mixed
@@ -1411,7 +1415,7 @@ class sqlsvr_database extends database {
 	 * @internal Internal
 	 * @param string $table The name of the table to select from.
 	 * @param string $attribute The attribute name to find a minimum value for.
-	 * @param string $groupfields A comma-separated list of fields (or a single field) name, used
+	 * @param string|array $groupfields A comma-separated list of fields (or a single field) name, used
 	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
 	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return null

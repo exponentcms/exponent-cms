@@ -88,13 +88,13 @@ function expLoadClasses($class) {
 		if (is_readable($dir)) {
 			$dh = opendir($dir);
 			while (($file = readdir($dh)) !== false) {
-				if (is_dir($dir.'/'.$file) && ($file != '..' && $file != '.')) {
+				if (is_dir($dir.'/'.$file) && ($file !== '..' && $file !== '.')) {
 					// look at controllers
 					$dirpath = $dir.'/'.$file.'/controllers';
 					if (file_exists($dirpath)) {
 						$controller_dir = opendir($dirpath);
 						while (($ctl_file = readdir($controller_dir)) !== false) {
-							if (substr($ctl_file,0,-4) == $class && substr($ctl_file,-4,4) == ".php") {
+							if (substr($ctl_file,0,-4) == $class && substr($ctl_file,-4,4) === ".php") {
 								include_once($dirpath.'/'.$ctl_file);
 								return;
 							}
@@ -105,7 +105,7 @@ function expLoadClasses($class) {
 					if (file_exists($dirpath)) {
 						$controller_dir = opendir($dirpath);
 						while (($ctl_file = readdir($controller_dir)) !== false) {
-							if (substr($ctl_file,0,-4) == $class && substr($ctl_file,-4,4) == ".php") {
+							if (substr($ctl_file,0,-4) == $class && substr($ctl_file,-4,4) === ".php") {
 								include_once($dirpath.'/'.$ctl_file);
 								return;
 							}

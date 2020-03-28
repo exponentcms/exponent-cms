@@ -157,7 +157,7 @@ class storeController extends expController {
             $default_id = null;
         }
 //        if (empty($default_id)) $default_id = 0;
-        if (!is_null($default_id))
+        if ($default_id !== null)
             expSession::set('catid', $default_id);
 
         // figure out if we need to show all categories and products or default to showing the first category.

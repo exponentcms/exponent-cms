@@ -116,7 +116,13 @@
 			customActions = [],
 			style = '',
 			hashClass = 'elfinder-font-mono elfinder-info-hash',
-			size, tmb, file, title, dcnt, rdcnt, path, getHashAlgorisms, hideItems;
+			getHashAlgorisms = [],
+			ndialog  = fm.ui.notify,
+			size, tmb, file, title, dcnt, rdcnt, path, hideItems, hashProg;
+
+		if (ndialog.is(':hidden') && ndialog.children('.elfinder-notify').length) {
+			ndialog.elfinderdialog('open').height('auto');
+		}
 
         if (!cnt) {
             return $.Deferred().reject();
@@ -235,19 +241,22 @@
 					}
 				});
 
-				reqs.push(
-					fm.getContentsHashes(file.hash, getHashAlgorisms, o.showHashOpts).progress(function(hashes) {
-						$.each(getHashAlgorisms, function(i, n) {
-							if (hashes[n]) {
-								replSpinner(hashes[n], n, hashClass);
-							}
-						});
-					}).always(function() {
-						$.each(getHashAlgorisms, function(i, n) {
-							replSpinner(msg.unknown, n);
-						});
-					})
-				);
+				if (getHashAlgorisms.length) {
+					hashProg = $('<div class="elfinder-quicklook-info-progress"/>');
+                    reqs.push(
+                            fm.getContentsHashes(file.hash, getHashAlgorisms, o.showHashOpts, { progressBar : hashProg }).progress(function(hashes) {
+                            $.each(getHashAlgorisms, function(i, n) {
+                                if (hashes[n]) {
+                                    replSpinner(hashes[n], n, hashClass);
+                                }
+                            });
+                        }).always(function() {
+                            $.each(getHashAlgorisms, function(i, n) {
+                                replSpinner(msg.unknown, n);
+                            });
+                        })
+                    );
+                }
 			}
 
 			// Add custom info fields
@@ -327,6 +336,10 @@
 		dialog.attr('id', id).one('mousedown', '.elfinder-info-path', function() {
 			$(this).html(applyZWSP($(this).html(), true));
 		});
+
+		if (getHashAlgorisms.length) {
+			hashProg.appendTo(dialog.find('.'+spclass+'-'+getHashAlgorisms[0]).parent());
+		}
 
 		if (fm.UA.Mobile && $.fn.tooltip) {
 			dialog.children('.ui-dialog-content .elfinder-info-title').tooltip({

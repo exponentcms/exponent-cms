@@ -165,7 +165,7 @@ class expVersion {
                                 if (self::compareVersion($swversion, $onlineVer, true)) {
                                     // is NOT a patch to the current version, so need a whole package
                                     $note = gt('A newer') . ' ' . gt('version of Exponent is available') . ':';
-                                    $newvers = $onlineVer->major . '.' . $onlineVer->minor . '.' . $onlineVer->revision . (!empty($onlineVer->type) && $onlineVer->type != 'patch' ? $onlineVer->type : '') . (!empty($onlineVer->iteration) && !empty($onlineVer->type) && $onlineVer->type != 'patch' ? $onlineVer->iteration : '');
+                                    $newvers = $onlineVer->major . '.' . $onlineVer->minor . '.' . $onlineVer->revision . (!empty($onlineVer->type) && $onlineVer->type !== 'patch' ? $onlineVer->type : '') . (!empty($onlineVer->iteration) && !empty($onlineVer->type) && $onlineVer->type != 'patch' ? $onlineVer->iteration : '');
                                 } else {
                                     // only difference is a patch, so only the patch file is needed
                                     $note = gt('A patch for this') . ' ' . gt('version of Exponent is available') . ':';

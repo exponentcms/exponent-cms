@@ -95,9 +95,11 @@ class expRecord {
         }
 
         // figure out the basic table info about this model
-        $this->classinfo = new ReflectionClass($this);
-        $this->classname = $this->classinfo->getName();
-        $this->tablename = isset($this->table) ? $this->table : $this->classinfo->getName();
+//        $this->classinfo = new ReflectionClass($this);
+//        $this->classname = $this->classinfo->getName();
+//        $this->tablename = isset($this->table) ? $this->table : $this->classinfo->getName();
+        $this->classname = get_class($this);
+        $this->tablename = isset($this->table) ? $this->table : get_class($this);
 
         $supports_revisions = $this->supports_revisions && ENABLE_WORKFLOW;
         $needs_approval = $this->needs_approval && ENABLE_WORKFLOW;
@@ -1103,7 +1105,8 @@ class expRecord {
                     $record_array = object2Array($record);
                     // put in the current model as an exception, otherwise the auto assoc's keep initializing instances of each other in an
                     // infinite loop
-                    $record_array['except'] = array($this->classinfo->name);
+//                    $record_array['except'] = array($this->classinfo->name);
+                    $record_array['except'] = array(get_class($this));
                     if ($cascade_except) {
                         $record_array['except']         = array_merge($record_array['except'], $except);
                         $record_array['cascade_except'] = $cascade_except;
@@ -1127,7 +1130,8 @@ class expRecord {
                     $record_array = object2Array($record);
                     // put in the current model as an exception, otherwise the auto assoc's keep initializing instances of each other in an
                     // infinite loop
-                    $record_array['except'] = array($this->classinfo->name);
+//                    $record_array['except'] = array($this->classinfo->name);
+                    $record_array['except'] = array(get_class($this));
                     $records[]              = new $assoc_object($record_array, in_array($assoc_object, $this->get_assoc_for), in_array($assoc_object, $this->get_attachable_for));
                 }
                 $this->$assoc_object = $records;

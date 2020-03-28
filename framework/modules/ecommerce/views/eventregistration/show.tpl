@@ -18,7 +18,17 @@
 {/css}
 
 {css unique="event-show1" link="`$asset_path`css/eventregistration.css"}
+{if !bs()}
+    {literal}
+    .showall .events .event-image {
+        float        : left;
+    }
 
+    .showall .events .event-info {
+        float : left;
+    }
+    {/literal}
+{/if}
 {/css}
 
 {if $product->user_message != ''}

@@ -145,7 +145,7 @@ class expUtil {
 	static function isReallyWritable($file) {
 		// Check the operating system.  isReallyWritable needs to be defined
 		// specifically for Windows, but the overhead is pointless otherwise.
-		if (strtolower(substr(PHP_OS,0,3)) == 'win') {
+		if (strtolower(substr(PHP_OS,0,3)) === 'win') {
 			// If we are not on a linux platform, we can assume nothing,
 			// Windows, for instance, has a really screwy permissions system
 			// that PHP doesn't seem to understand fully.

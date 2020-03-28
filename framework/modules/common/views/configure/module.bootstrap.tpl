@@ -28,11 +28,6 @@
 </div>
 
 {control type=hidden name=container_id value=$container->id}
-{*{control type=hidden name=existing_source value=$container->internal->src}*}
-{*{control type=hidden name=rank value=$container->rank}*}
-{*{control type=hidden name=src value=$loc->src}*}
-{*{control type=hidden name=int value=$loc->int}*}
-{*{control type=hidden name=current_section value=$current_section}*}
 
 {if ($container->internal->mod != 'container')}
     {control type=text size=31 label="Module Title"|gettext name="moduletitle" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext focus=1}

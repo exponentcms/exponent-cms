@@ -462,7 +462,7 @@ class expMail {
 		foreach ($params['to'] as $address=>$name) {
 			try {
 				$this->message->setTo(array($address=>$name));  // make sure we reset the 'to' addresses by using setTo
-				$numsent += $this->send($this->message);
+				$numsent += $this->send();
 				if (DEVELOPMENT && LOGGER) {
 					if (is_int($address))
 						$address = $name;
@@ -692,13 +692,13 @@ class expMail {
         if (is_array($email)) {
             foreach ($email as $address=>$name) {
                 if (is_int($address)) {
-                    if (strstr($name,'.') === false) {
+                    if (strpos($name, '.') === false) {
                         $email[$address] .= $name.'.net';
                     }
                 }
             }
         } else {
-            if (strstr($email,'.') === false) {
+            if (strpos($email, '.') === false) {
                 $email .= '.net';
             }
         }
@@ -735,7 +735,7 @@ class expMail {
 	 *
 	 *	$emailItem->send();
 	 *
-	 * @param string $email This is the email address for the CC.
+	 * @param string|array $email This is the email address for the CC.
 	 * @param string $name  This is the name associated with the above email address.
 	 */
 	public function addCc($email, $name = null) {
@@ -743,13 +743,13 @@ class expMail {
         if (is_array($email)) {
             foreach ($email as $address=>$nname) {
                 if (is_int($address)) {
-                    if (strstr($nname,'.') === false) {
+                    if (strpos($nname, '.') === false) {
                         $email[$address] .= $nname.'.net';
                     }
                 }
             }
         } else {
-            if (strstr($email,'.') === false) {
+            if (strpos($email, '.') === false) {
                 $email .= '.net';
             }
         }
@@ -785,7 +785,7 @@ class expMail {
 	 *
 	 *	$emailItem->send();
 	 *
-	 * @param string $email This is the email address for the BCC.
+	 * @param string|array $email This is the email address for the BCC.
 	 * @param string $name  This is the name associated with the above email address.
 	 */
 	public function addBcc($email, $name = null) {
@@ -793,13 +793,13 @@ class expMail {
         if (is_array($email)) {
             foreach ($email as $address=>$name) {
                 if (is_int($address)) {
-                    if (strstr($name,'.') === false) {
+                    if (strpos($name, '.') === false) {
                         $email[$address] .= $name.'.net';
                     }
                 }
             }
         } else {
-            if (strstr($email,'.') === false) {
+            if (strpos($email, '.') === false) {
                 $email .= '.net';
             }
         }
@@ -826,18 +826,18 @@ class expMail {
      *           $emailItem->subject('Hello World!');
      *           $emailItem->send();
      *
-     * @param string $email This is the email address you want to use as the sender.
+     * @param string|array $email This is the email address you want to use as the sender.
      */
 	public function addFrom($email = null) {
         // attempt to fix a bad from address
         if (is_array($email)) {
             foreach ($email as $address=>$name) {
-                if (strstr($address,'.') === false) {
+                if (strpos($address, '.') === false) {
                     $email[$name] .= '.net';
                 }
             }
         } else {
-            if (strstr($email,'.') === false) {
+            if (strpos($email, '.') === false) {
                 $email .= '.net';
             }
         }

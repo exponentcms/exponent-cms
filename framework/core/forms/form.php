@@ -339,7 +339,7 @@ class form extends baseform {
 //        $save = '';
         $rank = 0;
 		foreach ($this->controlIdx as $name) {
-            if ($rank && get_class($this->controls[$name]) == 'pagecontrol') {
+            if ($rank && $this->controls[$name] instanceof \pagecontrol) {
                 $html .= '</fieldset>';
             }
             if ($rank == 0) $this->controls[$name]->focus = true;  // first control gets the focus

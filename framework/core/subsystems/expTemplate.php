@@ -99,9 +99,9 @@ class expTemplate {
 				if ($d != "") $data[] = $d;
 			}
 			if (!isset($values[$data[0]])) $values[$data[0]] = 0;
-			if ($data[2] == "checkbox") {
+			if ($data[2] === "checkbox") {
 				$form->register("_viewconfig[".$data[0]."]",$data[1],new checkboxcontrol($values[$data[0]]),true,array('description'=>ucwords($view).' '.gt('View Configuration')));
-			} else if ($data[2] == 'text') {
+			} else if ($data[2] === 'text') {
 				$form->register("_viewconfig[".$data[0]."]",$data[1],new textcontrol($values[$data[0]]),true,array('description'=>ucwords($view).' '.gt('View Configuration')));
 			} else {
 				$options = array_slice($data,3);
@@ -221,7 +221,7 @@ class expTemplate {
 		$cdh = opendir(BASE."framework/core/forms/controls");
 		$list = array();
 		while (($ctl = readdir($cdh)) !== false) {
-			if (substr($ctl,-4,4) == ".php" && is_readable(BASE."framework/core/forms/controls/$ctl")) {
+			if (substr($ctl,-4,4) === ".php" && is_readable(BASE."framework/core/forms/controls/$ctl")) {
 				if (call_user_func(array(substr($ctl,0,-4),"isSimpleControl"))) {
                     if ($include_static || !call_user_func(array(substr($ctl,0,-4),"isStatic"))) {
                         $list[substr($ctl,0,-4)] = call_user_func(array(substr($ctl,0,-4),"name"));
@@ -239,7 +239,7 @@ class expTemplate {
 		$cdh = opendir(BASE."framework/core/forms/controls");
 		$list = array();
 		while (($ctl = readdir($cdh)) !== false) {
-			if (substr($ctl,-4,4) == ".php" && is_readable(BASE."framework/core/forms/controls/$ctl")) {
+			if (substr($ctl,-4,4) === ".php" && is_readable(BASE."framework/core/forms/controls/$ctl")) {
 				if (call_user_func(array(substr($ctl,0,-4),"getFieldDefinition")) === $oldctl->getFieldDefinition() && call_user_func(array(substr($ctl,0,-4),"isSimpleControl"))) {
 					$list[substr($ctl,0,-4)] = call_user_func(array(substr($ctl,0,-4),"name"));
 				}
@@ -259,7 +259,7 @@ class expTemplate {
    			if ($ddcol[DB_FIELD_TYPE] === DB_DEF_ID && $colname !== 'id') {
                    //If the id field is a foreign key reference than we need to try to scaffold
                    $field_str = array();
-                   if (stristr($colname, '_')) $field_str = explode("_id", $colname);
+                   if (stripos($colname, '_') !== false) $field_str = explode("_id", $colname);
                    if ( (count($field_str) > 0) && ($db->tableExists($field_str[0])) ) {
                        $foreign_table = $db->describeTable($field_str[0]);
                        $fcolname = "";
@@ -331,7 +331,7 @@ class expTemplate {
         // eDebug($subtype);
         // eDebug($subname);
         //once baseclasses are in place, simply lookup the baseclass name of an object
-        if ($type == "guess") {
+        if ($type === "guess") {
             // new style name processing
             //$type = array_pop(preg_split("*(?=[A-Z])*", $name));
 
@@ -351,30 +351,30 @@ class expTemplate {
 
         // convert types into paths
         $relpath = '';
-        if ($type == "modules" || $type == 'profileextension') {
+        if ($type === "modules" || $type === 'profileextension') {
             $relpath .= "framework/modules-1/";
-        } elseif ($type == "Controller" || $type == 'controllers') {
+        } elseif ($type === "Controller" || $type === 'controllers') {
             $relpath .= "framework/views/";
-        } elseif ($type == "forms") {
-            if ($name == "event/email") {
+        } elseif ($type === "forms") {
+            if ($name === "event/email") {
                 $relpath .= "framework/modules/events/views/";
 //            } elseif ($name == "forms/calendar") { //TODO  forms/calendar only used by calendarmodule
 //                $relpath .= "framework/modules-1/calendarmodule/";
             } else {
                 $relpath .= "framework/core/forms/";
             }
-        } elseif ($type == "themes" || $type == "Control" || $type == "Theme") {
+        } elseif ($type === "themes" || $type === "Control" || $type === "Theme") {
             $relpath .= "themes/";
-        } elseif ($type == "models") {
+        } elseif ($type === "models") {
             $relpath .= "models/";
-        } elseif ($type == "controls") {
+        } elseif ($type === "controls") {
 //			$relpath .= "themes/";
             $relpath .= "external/";
 //        } elseif($type == "Control") {
 //            $relpath .= "themes/";
-        } elseif ($type == "Form") {
+        } elseif ($type === "Form") {
             $relpath .= "framework/core/forms/";
-        } elseif ($type == "Module") {
+        } elseif ($type === "Module") {
             $relpath .= "modules/";
 //        } elseif($type == "Theme") {
 //            $relpath .= "themes/";
@@ -383,34 +383,34 @@ class expTemplate {
         // for later use for searching in lib/common
         $typepath = $relpath;
 //		if ($name != "" && $name != "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
-        if ($name != "" && $name != "event/email" && $name != "forms/calendar") { //TODO  forms/calendar only used by calendarmodule
+        if ($name != "" && $name !== "event/email" && $name !== "forms/calendar") { //TODO  forms/calendar only used by calendarmodule
             $relpath .= $name . "/";
         }
 
         // for later use for searching in lib/common
         $relpath2 = '';
-        if ($subtype == "css") {
+        if ($subtype === "css") {
             $relpath2 .= "css/";
-        } elseif ($subtype == "js") {
+        } elseif ($subtype === "js") {
             $relpath2 .= "js/";
-        } elseif ($subtype == "tpl") {
-            if ($type == 'Controller' || $type == 'controllers') {
+        } elseif ($subtype === "tpl") {
+            if ($type === 'Controller' || $type === 'controllers') {
                 //do nothing
-            } elseif ($name == "forms/calendar") { //TODO  forms/calendar only used by calendarmodule
+            } elseif ($name === "forms/calendar") { //TODO  forms/calendar only used by calendarmodule
                 $relpath2 .= "forms/calendar/";
-            } elseif ($name == "event/email") {
+            } elseif ($name === "event/email") {
 //				$relpath2 .= "/";
                 $relpath2 .= "event/email/";
-            } elseif ($type == 'controls' || $type == 'Control') {
+            } elseif ($type === 'controls' || $type === 'Control') {
                 $relpath2 .= 'editors/';
-            } elseif ($type == 'profileextension') {
+            } elseif ($type === 'profileextension') {
                 $relpath2 .= "extensions/";
-            } elseif ($type == 'globalviews') {
+            } elseif ($type === 'globalviews') {
                 $relpath2 .= "framework/core/views/";
             } else {
                 $relpath2 .= "views/";
             }
-        } elseif ($subtype == "form") {
+        } elseif ($subtype === "form") {
             $relpath2 .= "views/";
 //        } elseif ($subtype == "action") {  //FIXME old school actions were php files
 //            $relpath2 .= "actions/";
@@ -432,7 +432,7 @@ class expTemplate {
         $checkpaths = array();
         foreach ($locations as $location) {
             $checkpaths[] = $location . $typepath . $relpath2;
-            if (strstr($location, THEME_ABSOLUTE) && strstr($relpath, "framework/modules-1")) {
+            if (strpos($location, THEME_ABSOLUTE) !== false && strpos($relpath, "framework/modules-1") !== false) {
                 $checkpaths[] = $location . str_replace("framework/modules-1", "modules", $relpath);
             } else {
                 $checkpaths[] = $location . $relpath;
@@ -640,7 +640,7 @@ class expTemplate {
             if (is_readable($path)) {
                 $dh = opendir($path);
                 while (($file = readdir($dh)) !== false) {
-                    if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl' && substr($file, -15) != '.bootstrap3.tpl' && substr($file, -15) != '.bootstrap4.tpl' && substr($file, -10) != '.newui.tpl') {
+                    if (is_readable($path.'/'.$file) && substr($file, -4) === '.tpl' && substr($file, -14) !== '.bootstrap.tpl' && substr($file, -15) !== '.bootstrap3.tpl' && substr($file, -15) !== '.bootstrap4.tpl' && substr($file, -10) !== '.newui.tpl') {
                         $filename = substr($file, 0, -4);
                         if (!in_array($filename, $excludes)) {
                             $fileparts = explode('_', $filename);
@@ -867,7 +867,7 @@ class expTemplate {
             if (is_readable($path)) {
                 $dh = opendir($path);
                 while (($file = readdir($dh)) !== false) {
-                    if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl' && substr($file, -15) != '.bootstrap3.tpl' && substr($file, -15) != '.bootstrap4.tpl' && substr($file, -10) != '.newui.tpl') {
+                    if (is_readable($path.'/'.$file) && substr($file, -4) === '.tpl' && substr($file, -14) !== '.bootstrap.tpl' && substr($file, -15) !== '.bootstrap3.tpl' && substr($file, -15) !== '.bootstrap4.tpl' && substr($file, -10) !== '.newui.tpl') {
                         $filename = substr($file, 0, -4);
                         $fileparts = explode('_', $filename);
                         if ($fileparts[0] == $action) {
@@ -906,7 +906,7 @@ class expTemplate {
             if (is_readable($path)) {
                 $dh = opendir($path);
                 while (($file = readdir($dh)) !== false) {
-                    if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl' && substr($file, -15) != '.bootstrap3.tpl' && substr($file, -15) != '.bootstrap4.tpl' && substr($file, -10) != '.newui.tpl') {
+                    if (is_readable($path.'/'.$file) && substr($file, -4) === '.tpl' && substr($file, -14) !== '.bootstrap.tpl' && substr($file, -15) !== '.bootstrap3.tpl' && substr($file, -15) !== '.bootstrap4.tpl' && substr($file, -10) !== '.newui.tpl') {
                         $filename = substr($file, 0, -4);
                         $views[$filename] = gt($filename);
                     }

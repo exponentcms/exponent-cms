@@ -72,7 +72,7 @@ class expPermissions {
 	 * on the granted the given location.
 	 * Returns true if the permission is granted, false if it is not.
 	 *
-	 * @param string $permission The name of the permission to check
+	 * @param string|array $permission The name of the permission to check
 	 * @param object $location The location to check on.  This will be passed
 	 *	to getLocationHierarchy (defined by the module) for a full hierarchy
 	 *	of permissions.
@@ -81,7 +81,7 @@ class expPermissions {
      *
 	 * @node Subsystems:expPermissions
 	 */
-	public static function check($permission,$location) {
+	public static function check($permission, $location) {
 		global $exponent_permissions_r, $user, $db, $module_scope;
 
         if (!empty($user->id)) {
@@ -119,7 +119,7 @@ class expPermissions {
         $module_scope['error'] = false;
         if (!empty($ploc->src) && !empty($module_scope[$ploc->src][$ploc->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $ploc->src . "' AND module='" . $ploc->mod . "'");
-            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$ploc->src][$ploc->mod]->scope == 'global') {
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$ploc->src][$ploc->mod]->scope === 'global') {
                 $module_scope['error'] = true;
                 return false;
             }
@@ -151,14 +151,14 @@ class expPermissions {
         $module_scope['error'] = false;
         if (!empty($ploc->src) && !empty($module_scope[$ploc->src][$ploc->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $ploc->src . "' AND module='" . $ploc->mod . "'");
-            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$ploc->src][$ploc->mod]->scope == 'global') {
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$ploc->src][$ploc->mod]->scope === 'global') {
                 $module_scope['error'] = true;
                 return false;
             }
         }
 
         // check for inherited 'manage' permission from current page and its parents
-        if ($ploc->mod != 'navigation') {
+        if ($ploc->mod !== 'navigation') {
             global $sectionObj;
             if (in_array('view', $permission)) {
                 $page_perm = array(
@@ -232,7 +232,7 @@ class expPermissions {
         $module_scope['error'] = false;
         if (!empty($ploc->src) && !empty($module_scope[$ploc->src][$ploc->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $ploc->src . "' AND module='" . $ploc->mod . "'");
-            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$ploc->src][$ploc->mod]->scope == 'global') {
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$ploc->src][$ploc->mod]->scope === 'global') {
                 $module_scope['error'] = true;
                 return false;
             }
@@ -277,14 +277,14 @@ class expPermissions {
         $module_scope['error'] = false;
         if (!empty($ploc->src) && !empty($module_scope[$ploc->src][$ploc->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $ploc->src . "' AND module='" . $ploc->mod . "'");
-            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$ploc->src][$ploc->mod]->scope == 'global') {
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$ploc->src][$ploc->mod]->scope === 'global') {
                 $module_scope['error'] = true;
                 return false;
             }
         }
 
         // check for inherited 'manage' permission from its page
-        if ($ploc->mod != 'navigation') {
+        if ($ploc->mod !== 'navigation') {
             $tmpLoc->mod = $ploc->mod;
             $tmpLoc->src = $ploc->src;
             $tmpLoc->int = $ploc->int;
@@ -366,7 +366,7 @@ class expPermissions {
         $module_scope['error'] = false;
         if (!empty($ploc->src) && !empty($module_scope[$ploc->src][$ploc->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $ploc->src . "' AND module='" . $ploc->mod . "'");
-            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$ploc->src][$ploc->mod]->scope == 'global') {
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$ploc->src][$ploc->mod]->scope === 'global') {
                 $module_scope['error'] = true;
                 return false;
             }
@@ -411,14 +411,14 @@ class expPermissions {
         $module_scope['error'] = false;
         if (!empty($ploc->src) && !empty($module_scope[$ploc->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $ploc->src . "' AND module='" . $ploc->mod . "'");
-            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$ploc->src][$ploc->mod]->scope == 'global') {
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$ploc->src][$ploc->mod]->scope === 'global') {
                 $module_scope['error'] = true;
                 return false;
             }
         }
 
         // check for inherited 'manage' permission from its page
-        if ($ploc->mod != 'navigation') {
+        if ($ploc->mod !== 'navigation') {
             $tmpLoc->mod = $ploc->mod;
             $tmpLoc->src = $ploc->src;
             $tmpLoc->int = $ploc->int;
