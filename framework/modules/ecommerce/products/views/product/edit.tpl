@@ -21,13 +21,19 @@
 {script unique="ckeditor" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js"}
 
 {/script}
-{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
+{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || SITE_WYSIWYG_EDITOR == 'tinymce5'}
 {script unique="tinymcepu" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/plugins/quickupload/plupload.full.min.js"}
 
 {/script}
+{if $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
 {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
 
 {/script}
+{else}
+{script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce5/tinymce.min.js"}
+
+{/script}
+{/if}
 {/if}
 
 <div id="editproduct" class="module store edit yui3-skin-sam exp-skin exp-admin-skin">

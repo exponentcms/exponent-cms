@@ -39,7 +39,7 @@ class expHTMLEditorController extends expController
 
     static function description()
     {
-        return gt("Mostly for CKEditor");
+        return gt("Customize CKEditor and TinyMCE Usage");
     }
 
     static function author()

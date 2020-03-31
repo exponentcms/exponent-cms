@@ -283,11 +283,14 @@
                     <div id="alt-control-wysiwyg" class="alt-control">
                         <div class="control"><label class="label">{'WYSIWYG Editor'|gettext}</label></div>
                         <div class="alt-body">
-                            {control type=radiogroup columns=2 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE"|gettxtlist values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
+                            {control type=radiogroup columns=3 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE,TinyMCE v5"|gettxtlist values="ckeditor,tinymce,tinymce5" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
                             <div id="ckeditor-div" class="alt-item" style="display:none;">
                                 {showmodule controller=expHTMLEditor action=manage params=$paramc}
                             </div>
                             <div id="tinymce-div" class="alt-item" style="display:none;">
+                                {showmodule controller=expHTMLEditor action=manage params=$paramt}
+                            </div>
+                            <div id="tinymce5-div" class="alt-item" style="display:none;">
                                 {showmodule controller=expHTMLEditor action=manage params=$paramt}
                             </div>
                             {control type="checkbox" postfalse=1 name="sc[EDITOR_FAST_SAVE]" label="Always Save Inline Editing Changes w/o Prompt?"|gettext checked=$smarty.const.EDITOR_FAST_SAVE value=1}

@@ -199,7 +199,7 @@
                 commandsOptions : {
                     {/literal}{if $smarty.const.FM_EDITORS=="old"}{literal}  //fixme commandsOptions/edit replaced by extras/editors.default.js v 2.1.25+
                     edit : {
-                    {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR=="ckeditor"}{literal}
+                    {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
                         editors : [
                             {
                                 // CKEditor for html file
@@ -227,7 +227,7 @@
                                 }
                             }
                         ]
-                    {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR=="tinymce"}{literal}
+                    {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || SITE_WYSIWYG_EDITOR == 'tinymce5'}{literal}
                         mimes : ['text/plain', 'text/html', 'text/javascript', 'text/csv', 'text/x-comma-separated-values'],
                         editors : [
                             {

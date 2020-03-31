@@ -129,6 +129,9 @@
     {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
         {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
         {/script}
+    {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}
+        {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce5/tinymce.min.js"}
+        {/script}
     {/if}
 
     {script unique=$name jquery="jqueryui"}
@@ -141,7 +144,7 @@
 //        CKEDITOR.disableAutoInline = true;
         var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{stripSlashes($editor->data)}]{/if}{literal};
         var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
-        {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
+        {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
         var fullToolbar = {/literal}{if empty($editor->data)}'formatselect fontselect fontsizeselect forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent '+
             'link unlink image | visualblocks localautosave help'{else}[{expString::check_javascript(stripSlashes($editor->data),true)}]{/if}{literal};
         var titleToolbar = 'cut copy paste pastetext | undo redo localautosave | searchreplace selectall help';
@@ -151,7 +154,7 @@
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
             if (typeof CKEDITOR.instances[item] != 'undefined')
                 CKEDITOR.instances[item].setData(data);
-            {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
+            {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
             if (tinymce.get(item) != null)
                 tinymce.get(item).setContent(data);
             {/literal}{/if}{literal}
@@ -260,11 +263,19 @@
             if ($(node).attr('id').substr(0,5) == 'title') {
                 mytoolbar = titleToolbar;
                 tinymenu = false;
+            {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
                 tinyplugins = ['searchreplace,contextmenu,paste,link,localautosave,help'];
+            {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
+                tinyplugins = ['searchreplace,paste,link,localautosave,help'];
+            {/literal}{/if}{literal}
             } else {
                 mytoolbar = fullToolbar;
                 tinymenu = true;
+            {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
                 tinyplugins = ['image,imagetools,searchreplace,contextmenu,paste,link,textcolor,visualblocks,code,localautosave,help'];
+            {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
+                tinyplugins = ['image,imagetools,searchreplace,paste,link,visualblocks,code,localautosave,help'];
+            {/literal}{/if}{literal}
             }
 
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
@@ -330,7 +341,7 @@
                 uiColor : '#aaaaaa',
                 baseHref : EXPONENT.PATH_RELATIVE,
             });
-        {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
+        {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
             tinymce.init({
                 selector : '#'+node.id,
                 plugins : tinyplugins,
@@ -395,7 +406,7 @@
         var killEditor = function(node) {
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
             CKEDITOR.instances[node].destroy();
-            {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
+            {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
             tinymce.execCommand('mceRemoveControl', true, '#'+node.id);
             {/literal}{/if}{literal}
         };

@@ -13,8 +13,8 @@
  *
  *}
 
-{if $smarty.const.SITE_WYSIWYG_EDITOR=="ckeditor" || $smarty.const.SITE_WYSIWYG_EDITOR=="tinymce"}
-    {if $smarty.const.SITE_FILE_MANAGER=="elfinder"}
+{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor" || $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || SITE_WYSIWYG_EDITOR == 'tinymce5'}
+    {if $smarty.const.SITE_FILE_MANAGER == "elfinder"}
         {exp_include file="elfinder.tpl"}
     {else}
         {exp_include file="picker_cke.tpl"}
