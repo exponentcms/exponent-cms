@@ -27,6 +27,13 @@ class orderitem extends expRecord {
 
     public $opts = array();
 
+    /**
+     * orderitem constructor.
+     * @param array|integer $params
+     * @param bool $get_assoc
+     * @param bool $get_attached
+     * @throws ReflectionException
+     */
     function __construct($params = array(), $get_assoc = true, $get_attached = false) {
         global $db, $user;
 
@@ -73,9 +80,9 @@ class orderitem extends expRecord {
         if (isset($this->options)) {
             $this->opts = expUnserialize($this->options);
         }
-        if (!empty($this->user_input_fields)) {
+//        if (!empty($this->user_input_fields)) {
             //$this->user_input_fields = expUnserialize($this->user_input_fields);
-        }
+//        }
     }
 
     public function getCartSummary() {
@@ -90,16 +97,19 @@ class orderitem extends expRecord {
     public function getUserInputFields($style = 'br') {
         if (!empty($this->user_input_fields)) {
             //eDebug(expUnserialize($this->user_input_fields,true));
-            if ($style == 'br') $ret = ''; //$ret = '<br/>';
-            else if ($style == 'list') $ret = '<ul>';
-            foreach (expUnserialize($this->user_input_fields) as $uifarray) {
-                foreach ($uifarray as $uifkey => $uif) {
-                    if ($style == 'list') $ret .= "<li>" . $uifkey . ": " . $uif . "</li>";
-                    if ($style == 'br') $ret .= $uifkey . ": " . $uif . "<br/>";
+            if ($style === 'br') $ret = ''; //$ret = '<br/>';
+            else if ($style === 'list') $ret = '<ul>';
+            $uf = expUnserialize($this->user_input_fields);
+            if (!empty($uf)) {
+                foreach ($uf as $uifarray) {
+                    foreach ($uifarray as $uifkey => $uif) {
+                        if ($style === 'list') $ret .= "<li>" . $uifkey . ": " . $uif . "</li>";
+                        if ($style === 'br') $ret .= $uifkey . ": " . $uif . "<br/>";
+                    }
                 }
             }
-            if ($style == 'list') $ret .= '</ul>';
-            if ($ret == '<br/>') $ret = '';
+            if ($style === 'list') $ret .= '</ul>';
+            if ($ret === '<br/>') $ret = '';
             return $ret;
         }
     }
@@ -171,9 +181,9 @@ class orderitem extends expRecord {
             }
 
             $total = $this->products_price * $orig_priced;
-            if ($prod->quantity_discount_amount_mod == "$") {
+            if ($prod->quantity_discount_amount_mod === "$") {
                 $total += ($this->products_price - $prod->quantity_discount_amount) * $disc_priced;
-            } elseif ($prod->quantity_discount_amount_mod == "%") {
+            } elseif ($prod->quantity_discount_amount_mod === "%") {
                 $subtotal = $this->products_price * $disc_priced;
                 $total += ($subtotal - (($this->products_price * $disc_priced) * ($prod->quantity_discount_amount * .01)));
             }
@@ -184,7 +194,7 @@ class orderitem extends expRecord {
     public function getExtraData() {
         //eDebug($this,true);
 //        return ($this->extra_data);
-        if ($this->product_type == "product" || $this->product_type == "childProduct") {
+        if ($this->product_type === "product" || $this->product_type === "childProduct") {
             return ($this->extra_data);
         } else {
             return $this->getFormattedExtraData('list');
@@ -195,7 +205,7 @@ class orderitem extends expRecord {
 
     public function getFormattedExtraData($style = 'list') {
         $ret = '';
-        if ($style == 'list') {
+        if ($style === 'list') {
             $form = $this->product->getForm('formatExtraData');
             if ($form) {
                 $ret = $this->product->displayForm('formatExtraData', array('extra_data' => $this->extra_data, 'no_output' => true));

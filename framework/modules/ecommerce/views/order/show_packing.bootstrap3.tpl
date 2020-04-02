@@ -13,7 +13,7 @@
  *
  *}
 
-{if $printerfriendly==1}
+{if $printerfriendly}
     {$pf=1}
     {*{if $include_css == true}*}
         {*{css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/print-invoice.css"}*}

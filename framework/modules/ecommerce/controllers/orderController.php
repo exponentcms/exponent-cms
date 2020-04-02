@@ -190,10 +190,6 @@ class orderController extends expController {
             $order->billingmethod[0]->billingtransaction[0]->billingcalculator = new $calc_name();
         }
         //eDebug($order->billingmethod[0]->billingtransaction);
-        if (isset($this->params['printerfriendly']))
-            $pf = $this->params['printerfriendly'];
-        else
-            $pf = 0;
 
         $to_addresses[] = $order->billingmethod[0]->email;
 //        $s              = array_pop($order->shippingmethods);  //FIXME we don't really want to 'pop' it off the object
@@ -217,7 +213,7 @@ class orderController extends expController {
 
         assign_to_template(array(
             'css'            => $css,
-            'pf'             => $pf,
+            'printerfriendly'=> !empty($this->params['printerfriendly']),
             'order'          => $order,
             'order_user'     => new user($order->user_id),
 //            'shipping'       => $order->orderitem[0],  //FIXME what about new orders with no items??
@@ -282,8 +278,6 @@ class orderController extends expController {
         //eDebug($order,true);
 
         $order->billingmethod[0]->billingtransaction = array_reverse($order->billingmethod[0]->billingtransaction);
-        if (isset($this->params['printerfriendly'])) $pf = $this->params['printerfriendly'];
-        else $pf = 0;
         $css = file_get_contents(BASE . 'framework/modules/ecommerce/assets/css/print-invoice.css');
 
         $order->calculateGrandTotal();
@@ -308,7 +302,7 @@ class orderController extends expController {
         if (DEVELOPMENT != 0)
             $trackMe = false;
         assign_to_template(array(
-            'printerfriendly'=> $pf,
+            'printerfriendly'=> !empty($this->params['printerfriendly']),
             'css'            => $css,
             'order'          => $order,
             'shipping'       => $order->orderitem[0],

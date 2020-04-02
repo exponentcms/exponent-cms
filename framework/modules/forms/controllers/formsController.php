@@ -429,8 +429,7 @@ class formsController extends expController {
                         if ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
                             // skip it for logged on users based on config
                         } else {
-                            // include the library and show the form control
-//                            require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
+                            // show the form control
                             $antispam .= '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
                             //create unique recaptcha blocks
                             $randomNumber = mt_rand(10000000, 99999999);
