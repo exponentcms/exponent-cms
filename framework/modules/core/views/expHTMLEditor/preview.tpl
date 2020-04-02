@@ -18,6 +18,8 @@
         CKEditor
     {elseif $editor == 'tinymce'}
         TinyMCE
+    {elseif $editor == 'tinymce5'}
+        TinyMCE v5
     {/if}
     '{$demo->name}' {'Toolbar Configuration Preview'|gettext}
 </h1>

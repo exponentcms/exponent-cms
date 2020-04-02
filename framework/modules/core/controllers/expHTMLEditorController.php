@@ -72,7 +72,7 @@ class expHTMLEditorController extends expController
         global $db;
 
         expHistory::set('manageable', $this->params);
-        if (SITE_WYSIWYG_EDITOR == "FCKeditor") {
+        if (SITE_WYSIWYG_EDITOR === "FCKeditor") {
             flash('error', gt('FCKeditor is deprecated!'));
             redirect_to(array("module" => "administration", "action" => "configure_site"));
         }
@@ -128,7 +128,7 @@ class expHTMLEditorController extends expController
         $skins_dir = opendir(BASE . 'external/editors/' . $this->params['editor'] . '/skins');
         $skins = array();
         while (($skin = readdir($skins_dir)) !== false) {
-            if ($skin != '.' && $skin != '..') {
+            if ($skin !== '.' && $skin !== '..') {
                 $skins[] = $skin;
             }
         }
@@ -155,7 +155,7 @@ class expHTMLEditorController extends expController
         global $db;
 
         $db->toggle('htmleditor_' . $this->params['editor'], "active", 'active=1');
-        if ($this->params['id'] != "default") {
+        if ($this->params['id'] !== "default") {
             $active = self::getEditorSettings($this->params['id'], $this->params['editor']);
             $active->active = 1;
             $db->updateObject($active, 'htmleditor_' . $this->params['editor'], null, 'id');
@@ -169,10 +169,12 @@ class expHTMLEditorController extends expController
             $demo = new stdClass();
             $demo->id = 0;
             $demo->name = "Default";
-            if ($this->params['editor'] == 'ckeditor') {
+            if ($this->params['editor'] === 'ckeditor') {
                 $demo->skin = 'kama';
-            } elseif ($this->params['editor'] == 'tinymce') {
+            } elseif ($this->params['editor'] === 'tinymce') {
                 $demo->skin = 'lightgray';
+            } elseif ($this->params['editor'] === 'tinymce5') {
+                $demo->skin = 'oxide';
             }
         } else {
             $demo = self::getEditorSettings($this->params['id'], $this->params['editor']);

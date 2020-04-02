@@ -28,6 +28,8 @@
                 CKEditor
             {elseif $editor == 'tinymce'}
                 TinyMCE
+            {elseif $editor == 'tinymce5'}
+                TinyMCE v5
             {/if}
             {"Toolbar Manager"|gettext}
         </h2>
@@ -78,6 +80,8 @@
                         kama
                     {elseif $editor == 'tinymce'}
                         lightgray
+                    {elseif $editor == 'tinymce5'}
+                        oxide
                     {else}
                         unknown
                     {/if}

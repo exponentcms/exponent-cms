@@ -274,6 +274,7 @@
                     </div>
                     {$paramc = ["editor" => "ckeditor"]}
                     {$paramt = ["editor" => "tinymce"]}
+                    {$paramt5 = ["editor" => "tinymce5"]}
                     <div id="alt-control-wysiwyg" class="alt-control">
                         <div class="control"><label class="label">{'WYSIWYG Editor'|gettext}</label></div>
                         <div class="alt-body">
@@ -285,7 +286,7 @@
                                 {showmodule controller=expHTMLEditor action=manage params=$paramt}
                             </div>
                             <div id="tinymce5-div" class="alt-item" style="display:none;">
-                                {showmodule controller=expHTMLEditor action=manage params=$paramt}
+                                {showmodule controller=expHTMLEditor action=manage params=$paramt5}
                             </div>
                             {control type="checkbox" postfalse=1 name="sc[EDITOR_FAST_SAVE]" label="Always Save Inline Editing Changes w/o Prompt?"|gettext checked=$smarty.const.EDITOR_FAST_SAVE value=1}
                         </div>
