@@ -13,26 +13,26 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Version 2.5.2
 -------------
 ### Address issues in v2.5.1 and Prepare for v3.0.0
- - compatible with PHP 7.1.x, 7.2.x, 7.3.x, and 7.4.x
-   - deprecated support for PHP 5.6.x, and 7.0.x still exists
+ - compatible with PHP v7.1.x, v7.2.x, v7.3.x, and v7.4.x
+   - deprecated support for PHP v5.6.x, and v7.0.x still exists
  - now supports MySQL v5.7.x 'strict' mode
  - fixes and tweaks many issues in previous versions
 
 Version 2.5.1
 -------------
 ### Address issues in v2.5.0 and Prepare for v3.0.0
- - compatible with PHP 7.1.x, 7.2.x, and 7.3.x
-   - deprecated support for PHP 5.6.x, and 7.0.x still exists
-   - not yet fully compatible with PHP 7.4.x
+ - compatible with PHP v7.1.x, v7.2.x, and v7.3.x
+   - deprecated support for PHP v5.6.x, and v7.0.x still exists
+   - not yet fully compatible with PHP v7.4.x
  - robusts  support for an MS SQL Server database
  - fixes and tweaks many issues in previous versions
 
 Version 2.5.0
 -------------
 ### Address issues in v2.4.3 and Prepare for v3.0.0
- - compatible with PHP 5.6.x, 7.0.x, 7.1.x, 7.2.x, and 7.3.x
+ - compatible with PHP v5.6.x, v7.0.x, v7.1.x, v7.2.x, and v7.3.x
    - adds support for PHP v 7.3.x
-   - removed support for PHP 5.5.x
+   - removed support for PHP v5.5.x
  - adds experimental support for an MS SQL Server database
 
 Version 2.4.3
@@ -50,8 +50,8 @@ Version 2.4.3
 Version 2.4.2
 -------------
 ### Address issues in v2.4.1 and Prepare for v3.0.0
- - compatible with PHP 5.5.x, 5.6.x, 7.0.x, 7.1.x, and 7.2.x
-   - removed compatibility with PHP 5.3.x and 5.4.x
+ - compatible with PHP v5.5.x, v5.6.x, v7.0.x, v7.1.x, and v7.2.x
+   - removed compatibility with PHP v5.3.x and v5.4.x
  - optionally removes support for obsolete browsers
    - uses jQuery v3.x and doesn't load browser shims
  - adds events module showall_by_date and showall_year views
@@ -161,7 +161,7 @@ Version 2.3.8
   - !!! regression fix bootstrap 2/3 navbar on small screens may not always drop down/appear
   - !!! fix upcoming events were displayed until end of day instead of until end of event
   - !!! regression fix page crash when returning to elFinder from Pixlr editor
-  - !!! regression fix elFinder search broken under php v5.3
+  - !!! regression fix elFinder search broken under PHP v5.3
   - !!! regression fix database manager filtered table phrase not highlighted in table results
   - !!! regression fix possible errors with Simple Poll voting when time block in effect
   - !!! regression fix printer and pdf missing styling (invoice address lines run together, etc...)
@@ -258,7 +258,7 @@ Version 2.3.6 - release pulled
 ### Refine 'shipment' interface, plus address issues in v2.3.5
   * !!! adds additional security checking for XSS vulnerabilities - CVE-ID 2015-8667
   * !!! adds support for PHP v7.x
-    - compatible with PHP v5.3.x, 5.4.x, 5.5.x, 5.6.x, and 7.0.x
+    - compatible with PHP v5.3.x, v5.4.x, v5.5.x, v5.6.x, and v7.0.x
   * !!! regression fix ALL reCaptcha responses always fail since v2.3.3
   - adds new 'loading' animation (font icon) for boostrap/bootstrap3
   - cleans up some bootstrap3 views, returns option of displaying extra-small buttons in sample theme
@@ -324,7 +324,7 @@ Version 2.3.3
 -------------
 ### Address issues in v2.3.2
   * !!! Removes support for PHP v5.2.x (primarily due to included 3rd party libraries)
-    - Compatible with PHP v5.3.x, 5.4.x, 5.5.x, and 5.6.x
+    - Compatible with PHP v5.3.x, v5.4.x, v5.5.x, and v5.6.x
   - adds feature to delete multiple photo album items at one time
   - adds a 'hide links' option to events module views
   - updates elFinder to be the default file manager
@@ -390,7 +390,7 @@ Version 2.3.1
   * !!!Fixes loss of admin/super-admin status when password is changed
   * !!!Updates install/upgrade logic for greater security
   * !!!Fixes bug which could allow display of orders to non-admin users
-  - php v5.6 compatible
+  - PHP v5.6 compatible, along with v5.2, v5.3, v5.4, and v5.5
   - updates ecommerce to be more robust with non-US areas (countries w/o regions/states)
     - Much improved interface for managing sales tax and also countries/regions
   - adds many Twitter Bootstrap v3 widgets/components to that theme framework, moving away from YUI2/YUI3/jQueryUI
@@ -499,7 +499,7 @@ Version 2.2.2
 Version 2.2.1
 -------------
 ### Address issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
-  - php v5.5 compatible
+  - PHP v5.5 compatible, along with v5.2, v5.3, & v5.4
   - new facebook module to display like buttons, like boxes, and optional like button to blog articles & file downloads
   - adds optional tweet button to blog articles & file downloads, and optional twitter follow button to twitter view
   - adds paged form (wizard) feature
@@ -716,7 +716,7 @@ Version 2.0.7
 -------------
 ### This release focuses on fixing bugs and enhanced speed/size
   - incorporates all fixes from v2.0.6 patches
-  - Exponent CMS should work on servers running php v5.4.x (v5.2.1 or later required)
+  - Exponent CMS should work on servers running PHP v5.4.x (v5.2.1 or later required)
   - polishes older modules to better resemble new modules for greater interface consistency
     - all modules now use same rank reordering dialog instead of up/down arrow buttons
        - module reordering now found under container chrome menu
@@ -873,3 +873,4 @@ Version 2.0.1
 Version 2.0.0 (stable)
 -------------
 ### The first stable release
+ - compatible with PHP v5.2 and v5.3
