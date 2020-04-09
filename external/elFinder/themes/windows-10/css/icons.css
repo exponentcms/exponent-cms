@@ -6,6 +6,15 @@
   /* */
 }
 
+.elfinder-cwd-icon:before {
+  color: white;
+  background: #70787d91;
+}
+
+.elfinder-cwd-icon:before {
+  background: #ffffffa6;
+}
+
 /* If you are using CSS sprites for your icons, set the background position
    in each of the below styles */
 /* Directory */

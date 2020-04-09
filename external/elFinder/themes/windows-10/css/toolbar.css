@@ -77,6 +77,31 @@
     width: 16px;
   }
 
+  /* Root */
+  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-home {
+    background-image: url('../images/16px/root.png');
+  }
+
+  /* Preference */
+  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-preference {
+    background-image: url('../images/16px/preference.png');
+  }
+
+  /* Hide */
+  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-hide {
+    background-image: url('../images/16px/hide.png');
+  }
+
+  /* Chmod */
+  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-chmod {
+    background-image: url('../images/16px/chmod.png');
+  }
+
+  /* Fullscreen */
+  .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-fullscreen {
+    background-image: url('../images/16px/fullscreen.png');
+  }
+
   /* Back */
   .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-icon-back {
     background-image: url('../images/16px/back.png');
