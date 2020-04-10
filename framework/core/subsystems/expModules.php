@@ -44,6 +44,7 @@ class expModules {
      */
 	public static function loadModules($dir, &$controllers) {
 //		global $db;
+
 	    if (is_readable($dir)) {
 	        $dh = opendir($dir);
 	        while (($file = readdir($dh)) !== false) {
@@ -52,39 +53,31 @@ class expModules {
 	                $dirpath = $dir.'/'.$file.'/controllers';
 	                if (file_exists($dirpath)) {
 	                    $controller_dir = opendir($dirpath);
+//	                    $module = new stdClass();
 	                    while (($ctl_file = readdir($controller_dir)) !== false) {
 	                        if (empty($controllers[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) === ".php") {
 	                            include_once($dirpath.'/'.$ctl_file);
 	                            $controllers[substr($ctl_file,0,-4)] = $dirpath.'/'.$ctl_file;
-	//	                          $module->module = substr($ctl_file,0,-4);
+//                                $module->module = substr($ctl_file, 0, -4);
 //                                $controller = new $module->module();
-//                       	      if (!empty($controller->useractions)) $controllers[] = $module->user_runnable = 1;
-	//	                          $module->active = 1;
-	//	                          $module->controller = 1;
+//                                if (!empty($controller->useractions))
+//                                    $controllers[] = $module->user_runnable = 1;
+//                                $module->active = 1;
+//                                $module->controller = 1;
 //                                $module->class = $module->module;  //FIXME, not needed?
 //                                $module->name = $controller->name();
 //                                $module->author = $controller->author();
 //                                $module->description = $controller->description();
 //                                $module->codequality = isset($controller->codequality) ? $controller->codequality : 'alpha';
-	//	                          $module->path = $dirpath.'/'.$ctl_file;
-	//	                          if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
+//                                $module->path = $dirpath . '/' . $ctl_file;
+//                                if (($db->selectObject('modstate', 'module = "' . substr($ctl_file, 0, -4) . '"')) == null) {
+//                                    $db->insertObject($module, 'modstate');
+//                                } else {
+//                                    $db->updateObject($module, 'modstate');
+//                                }
 	                        }
 	                    }
 	                }
-	                // load models
-//	                $dirpath = $dir.'/'.$file.'/models';
-//	                if (file_exists($dirpath)) {
-//	                    $controller_dir = opendir($dirpath);
-//	                    while (($ctl_file = readdir($controller_dir)) !== false) {
-//	                        if (empty($controllers[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) == ".php") {
-//	                            include_once($dirpath.'/'.$ctl_file);
-//	                            $controllers[substr($ctl_file,0,-4)] = $dirpath.'/'.$ctl_file;
-//	//                            $module->module = substr($ctl_file,0,-4);
-//	//                            $module->path = $dirpath.'/'.$ctl_file;
-//	//	                          if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
-//	                        }
-//	                    }
-//	                }
 	            }
 	        }
 	    }
@@ -99,6 +92,7 @@ class expModules {
         $models = array();
 	    self::loadModels(BASE.'themes/'.DISPLAY_THEME.'/modules', $models);
 	    self::loadModels(BASE.'framework/modules', $models);
+        self::loadModels(BASE.'framework/modules/ecommerce/products', $models);
 	    return $models;
 	}
 
@@ -109,34 +103,12 @@ class expModules {
      * @param $models
      */
    	public static function loadModels($dir, &$models) {
-   //		global $db;
+//   		global $db;
+
    	    if (is_readable($dir)) {
    	        $dh = opendir($dir);
    	        while (($file = readdir($dh)) !== false) {
    	            if (is_dir($dir.'/'.$file) && ($file !== '..' && $file !== '.')) {
-//   	                // load controllers
-//   	                $dirpath = $dir.'/'.$file.'/controllers';
-//   	                if (file_exists($dirpath)) {
-//   	                    $model_dir = opendir($dirpath);
-//   	                    while (($ctl_file = readdir($model_dir)) !== false) {
-//   	                        if (empty($controllers[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) == ".php") {
-//   	                            include_once($dirpath.'/'.$ctl_file);
-//   	                            $controllers[substr($ctl_file,0,-4)] = $dirpath.'/'.$ctl_file;
-//   	//	                          $module->module = substr($ctl_file,0,-4);
-//   //                                $controller = new $module->module();
-//   //                       	      if (!empty($controller->useractions)) $controllers[] = $module->user_runnable = 1;
-//   	//	                          $module->active = 1;
-//   	//	                          $module->controller = 1;
-//   //                                $module->class = $module->module;  //FIXME, not needed?
-//   //                                $module->name = $controller->name();
-//   //                                $module->author = $controller->author();
-//   //                                $module->description = $controller->description();
-//   //                                $module->codequality = isset($controller->codequality) ? $controller->codequality : 'alpha';
-//   	//	                          $module->path = $dirpath.'/'.$ctl_file;
-//   	//	                          if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
-//   	                        }
-//   	                    }
-//   	                }
    	                // load models
    	                $dirpath = $dir.'/'.$file.'/models';
    	                if (file_exists($dirpath)) {

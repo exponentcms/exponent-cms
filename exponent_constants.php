@@ -586,10 +586,16 @@ if (USE_CDN) {
     } // cdn Bootstrap v2.x script
     if (!defined('BS3_SCRIPT')) {
         define('BS3_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>');
-    } // cdn Bootstrap v2.x script
+    } // cdn Bootstrap v3.x script
     if (!defined('BS4_SCRIPT')) {
         define('BS4_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>');
-    } // cdn Bootstrap v2.x script
+    } // cdn Bootstrap v5.x script
+    if (!defined('FA4_SCRIPT')) {
+        define('FA4_SCRIPT', 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+    } // cdn FontAwesome v4.x stylesheet
+    if (!defined('FA5_SCRIPT')) {
+        define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css');
+    } // cdn FontAwesome v5.x stylesheet
 }
 
 /**

@@ -43,8 +43,8 @@ class AdminerCKeditor {
 
     public function selectVal(&$val, $link, $field, $original) {
 		// copied from tinymce.php
-        if (preg_match("~body~", $field["field"]) && $val != '&nbsp;') {
-			$shortened = (substr($val, -10) == "<i>...</i>");
+        if (false !== strpos($field["field"], "body") && $val !== '&nbsp;') {
+			$shortened = (substr($val, -10) === "<i>...</i>");
 			if ($shortened) {
 				$val = substr($val, 0, -10);
 			}
@@ -64,11 +64,11 @@ class AdminerCKeditor {
 
 	function editInput($table, $field, $attrs, $value) {
 		static $lang = "";
-		if (!$lang && preg_match("~text~", $field["type"]) && preg_match("~body~", $field["field"])) {
+		if (!$lang && false !== strpos($field["type"], "text") && false !== strpos($field["field"], "body")) {
 			$lang = "en";
 			if (function_exists('get_lang')) { // since Adminer 3.2.0
 				$lang = get_lang();
-				$lang = ($lang == "zh" || $lang == "zh-tw" ? "zh_cn" : $lang);
+				$lang = ($lang === "zh" || $lang === "zh-tw" ? "zh_cn" : $lang);
 			}
 			return "<textarea$attrs id='fields-" . h($field["field"]) . "' rows='6' cols='50'>" . h($value) . "</textarea><script type='text/javascript' " . nonce() . ">
 CKEDITOR.replace('fields-" . js_escape($field["field"]) . "',{

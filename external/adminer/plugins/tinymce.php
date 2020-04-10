@@ -37,7 +37,7 @@ class AdminerTinymce {
 		$lang = "en";
 		if (function_exists('get_lang')) { // since Adminer 3.2.0
 			$lang = get_lang();
-			$lang = ($lang == "zh" ? "zh-cn" : ($lang == "zh-tw" ? "zh" : $lang));
+			$lang = ($lang === "zh" ? "zh-cn" : ($lang === "zh-tw" ? "zh" : $lang));
 			if (!file_exists(dirname($this->path) . "/langs/$lang.js")) {
 				$lang = "en";
 			}
@@ -90,8 +90,8 @@ tinyMCE.init({
 	}
 
     public function selectVal(&$val, $link, $field, $original) {
-        if (preg_match("~body~", $field["field"]) && $val != '&nbsp;') {
-			$shortened = (substr($val, -10) == "<i>...</i>");
+        if (false !== strpos($field["field"], "body") && $val !== '&nbsp;') {
+			$shortened = (substr($val, -10) === "<i>...</i>");
 			if ($shortened) {
 				$val = substr($val, 0, -10);
 			}
@@ -110,7 +110,7 @@ tinyMCE.init({
 	}
 
 	function editInput($table, $field, $attrs, $value) {
-        if (preg_match("~text~", $field["type"]) && preg_match("~body~", $field["field"])) {
+        if (false !== strpos($field["type"], "text") && false !== strpos($field["field"], "body")) {
 			return "<textarea$attrs id='fields-" . h($field["field"]) . "' rows='6' cols='50'>" . h($value) . "</textarea><script type='text/javascript' " . nonce() . ">
 tinyMCE.remove(tinyMCE.get('fields-" . js_escape($field["field"]) . "') || { });
 tinyMCE.execCommand('mceAddEditor', true, 'fields-" . js_escape($field["field"]) . "');
