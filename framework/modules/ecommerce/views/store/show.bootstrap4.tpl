@@ -110,6 +110,7 @@
         {/permissions}
 
         {******* IMAGES *****}
+        <div class="row">
         <div class="col-sm-6">
             <div class="large-ecom-image" style="float: none;">
                 {if $product->main_image_functionality=="iws"}
@@ -180,7 +181,7 @@
                     {/literal}
                     {/script}
 
-                    {script unique="thumbswap-shadowbox-yui" yui3mods="node-event-simulate,gallery-lightbox"}
+                    {* script unique="thumbswap-shadowbox-yui" yui3mods="node-event-simulate,gallery-lightbox"}
                     {literal}
                         EXPONENT.YUI3_CONFIG.modules = {
                             'gallery-lightbox' : {
@@ -228,7 +229,7 @@
                         // };
                         });
                     {/literal}
-                    {/script}
+                    {/script *}
                 {/if}
                 {script unique="thumbswap-shadowbox2" yui3mods="node"}
                 {literal}
@@ -390,23 +391,26 @@
                 </div>
             {/if}
         </div>
+        </div>
 
              {if $product->childProduct|@count == 0}
                  <div class="addtocart col-sm-12">
                      <div class="row">
+                     <div class="col-sm-12">
                      {form id="addtocart`$product->id`" controller=cart action=addItem}
                          {control type="hidden" name="product_id" value="`$product->id`"}
                          {control type="hidden" name="product_type" value="`$product->product_type`"}
                          {*control name="qty" type="text" value="`$product->minimum_order_quantity`" size=3 maxlength=5 class="lstng-qty"*}
 
-                     {* NOTE display product options *}
-                     <div class="col-sm-6">
-                         {if $product->show_options}
-                             {exp_include file="options.tpl"}
-                         {/if}
-                     </div>
+                         <div class="row">
+                         {* NOTE display product options *}
+                         <div class="col-sm-6">&#160;
+                             {if $product->show_options}
+                                 {exp_include file="options.tpl"}
+                             {/if}
+                         </div>
 
-                        <div class="add-to-cart-btn input col-sm-6">
+                         <div class="add-to-cart-btn input col-sm-6">
                             {if $product->availability_type == 0 && $product->active_type == 0}
                                 <input type="text" class="text form-control" size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
                                 <button type="submit" class="add-to-cart-btn {button_style color=blue size=large}" rel="nofollow">
@@ -442,8 +446,10 @@
                                 {/if}
                                 <em class="unavailable">{"Product currently unavailable for purchase"|gettext}</em>
                             {/if}
-                        </div>
+                         </div>
+                         </div>
                      {/form}
+                     </div>
                      </div>
                  </div>
              {/if}
@@ -611,7 +617,7 @@
                      {foreach name=listings from=$product->crosssellItem item=listing}
 
                          {if $smarty.foreach.listings.first || $open_row}
-                             <div class="">
+                             <div class="row">
                              {$open_row=0}
                          {/if}
 

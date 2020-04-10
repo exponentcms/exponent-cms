@@ -180,7 +180,7 @@
                     {/literal}
                     {/script}
 
-                    {script unique="thumbswap-shadowbox-yui" yui3mods="node-event-simulate,gallery-lightbox"}
+                    {* script unique="thumbswap-shadowbox-yui" yui3mods="node-event-simulate,gallery-lightbox"}
                     {literal}
                         EXPONENT.YUI3_CONFIG.modules = {
                             'gallery-lightbox' : {
@@ -228,7 +228,7 @@
                         // };
                         });
                     {/literal}
-                    {/script}
+                    {/script *}
                 {/if}
                 {script unique="thumbswap-shadowbox2" yui3mods="node"}
                 {literal}
