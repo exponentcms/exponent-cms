@@ -371,21 +371,20 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "antispam":
                 //eDebug(ANTI_SPAM_CONTROL, true);
-                if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL == 'recaptcha') {
+                if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL === 'recaptcha') {
                     // make sure we have the proper config.
                     if (!defined('RECAPTCHA_PUB_KEY') || RECAPTCHA_PUB_KEY == '') {
                         echo '<h2 style="color:red">', gt('reCaptcha configuration is missing the public key.'), '</h2>';
                         return;
                     }
-                    $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
-                    if ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
+                    if (!($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1)) {
                         // skip it for logged on users based on config
-                    } else {
+                        $re_theme = (RECAPTCHA_THEME === 'dark') ? 'dark' : 'light';
                         // show the form control
                         echo '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
                         //create unique recaptcha blocks
                         $randomNumber = mt_rand(10000000, 99999999);
-                        echo '<div class="g-recaptcha" id="recaptcha-block-'.$randomNumber.'" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
+                        echo '<div class="g-recaptcha" id="recaptcha-block-' . $randomNumber . '" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
 //                        echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=' . LOCALE . '" async defer></script>';
                         echo '<p>', gt('Fill out the above security question to submit your form.'), '</p>';
                         $content = "
@@ -400,10 +399,10 @@ function smarty_function_control($params, &$smarty) {
                                 }
                             };";
                         expJavascript::pushToFoot(array(
-                            "unique"=>'recaptcha',
-                            "content"=>$content,
-                            "src"=>"https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=" . LOCALE
-                         ));
+                            "unique" => 'recaptcha',
+                            "content" => $content,
+                            "src" => "https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=" . LOCALE
+                        ));
                     }
                     return;
                 } elseif (ANTI_SPAM_CONTROL == 0) {
