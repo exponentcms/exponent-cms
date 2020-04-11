@@ -266,27 +266,30 @@ class mysqli_database extends database {
         $fulltext = array();
         $unique = array();
         $index = array();
-        foreach ($newdatadef as $name=>$def) {
+        foreach ($newdatadef as $name => $def) {
             if ($def != null) {
-                if (!empty($def[DB_PRIMARY]))  $primary[] = $name;
+                if (!empty($def[DB_PRIMARY])) $primary[] = $name;
                 if (!empty($def[DB_FULLTEXT])) $fulltext[] = $name;
                 if (isset($def[DB_INDEX]) && ($def[DB_INDEX] > 0)) {
                     if ($def[DB_FIELD_TYPE] == DB_DEF_STRING) {
-                          $index[$name] = $def[DB_INDEX];
-                      } else {
-                          $index[$name] = 0;
-                      }
-                  }
-                  if (isset($def[DB_UNIQUE])) {
-                      if (!isset($unique[$def[DB_UNIQUE]]))
-                          $unique[$def[DB_UNIQUE]] = array();
-                      $unique[$def[DB_UNIQUE]][] = $name;
+                        $index[$name] = $def[DB_INDEX];
+                    } else {
+                        $index[$name] = 0;
+                    }
+                }
+                if (isset($def[DB_UNIQUE])) {
+                    if (!isset($unique[$def[DB_UNIQUE]]))
+                        $unique[$def[DB_UNIQUE]] = array();
+                    $unique[$def[DB_UNIQUE]][] = $name;
                 }
             }
-            if (!empty($def[DB_NOTNULL]) || $def[DB_FIELD_TYPE] === DB_DEF_ID || (!empty($def[DB_PRIMARY]) && $def[DB_PRIMARY] === true)) {
+            if (!empty($def[DB_NOTNULL]) || $def[DB_FIELD_TYPE] === DB_DEF_ID || $def[DB_FIELD_TYPE] === DB_DEF_BOOLEAN || (!empty($def[DB_PRIMARY]) && $def[DB_PRIMARY] === true)) {
                 $newdatadef[$name][DB_NOTNULL] = true;
             } else {
                 $newdatadef[$name][DB_NOTNULL] = false;
+            }
+            if ($def[DB_FIELD_TYPE] == DB_DEF_BOOLEAN) {
+                $newdatadef[$name][DB_DEFAULT] = 0;
             }
         }
 
