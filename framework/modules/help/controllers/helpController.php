@@ -59,7 +59,7 @@ class helpController extends expController {
             }
             if(!empty($params['version'])) {
                 $params['version'] = expString::escape($params['version']);
-                $version = isset($params['version']) ? (($params['version'] == 'current') ? $version : $params['version']) : $version;
+                $version = isset($params['version']) ? (($params['version'] === 'current') ? $version : $params['version']) : $version;
             }
             expSession::set('help-version',$version);
         }
@@ -120,7 +120,7 @@ class helpController extends expController {
 	public function show() {
 	    expHistory::set('viewable', $this->params);
 	    $help = new help();
-        if (empty($this->params['version']) || $this->params['version'] == 'current') {
+        if (empty($this->params['version']) || $this->params['version'] === 'current') {
             $version_id = help_version::getCurrentHelpVersionId();
 	    } else {
             $version_id = help_version::getHelpVersionId($this->params['version']);
@@ -257,7 +257,7 @@ class helpController extends expController {
 	private static function copydocs($from, $to) {
 	    $help = new help();
         $order = 'rank DESC';
-        $old_parents = $help->getHelpParents($from);
+        $old_parents = help::getHelpParents($from);
         $new_parents = array();
 
         // copy parent help docs
@@ -472,6 +472,9 @@ class helpController extends expController {
    	function addContentToSearch() {
         global $db;
 
+        // let's rebuild this help search index from scratch instead of simply updating current contents
+        $db->delete('search', "ref_module='" . $this->baseclassname . "'");
+
         // we only want the current version of help docs
         $where = 'help_version_id="'.help_version::getCurrentHelpVersionId().'"';
         $modelname = $this->basemodel_name;
@@ -528,7 +531,7 @@ class helpController extends expController {
 	    global $db;
 
         $help = new help();
-        if (empty($params['version']) || $params['version']=='current') {
+        if (empty($params['version']) || $params['version'] === 'current') {
             $version_id = help_version::getCurrentHelpVersionId();
         } else {
             $version_id = help_version::getHelpVersionId($params['version']);
