@@ -82,7 +82,7 @@ class clean_file_db extends upgradescript {
         // next remove missing attachment references in db
         foreach ($db->selectObjects('content_expFiles') as $ifile) {
             $incfile = new expFile($ifile->expfiles_id);
-            if (empty($incfile)) {  // attachment doesn't exist
+            if ($incfile === null) {  // attachment doesn't exist
                 if ($db->countObjects('content_expFiles', "expfiles_id='" . $incfile->expfiles_id . "'")) {
                     $attach_count += $db->countObjects('content_expFiles', "expfiles_id='" .  $file->id . "'");
                     $db->delete('content_expFiles', "expfiles_id='" .  $file->id . "'"); // remove missing attachments
@@ -93,7 +93,7 @@ class clean_file_db extends upgradescript {
 		// finally add existing files not in db and update existing files
 		$allfiles = expFile::listFlat(BASE.'files',true,null,array(),BASE);
 		foreach ($allfiles as $path => $file) {
-			if ($file[0] != '.') {
+			if ($file[0] !== '.') {
 			    $nfile = str_replace(array('(',')'),array('\(','\)'),$file);
 				$npath = preg_replace('/' . $nfile . '/', '', $path, 1);  //fixme doesn't account for regex characters like (1)
 				$dbfile = $db->selectObject('expFiles', "filename='" . $nfile . "' AND directory='" . $npath . "'");
@@ -108,7 +108,7 @@ class clean_file_db extends upgradescript {
 				    // update filesize, mimetype, and image size
                     $_fileInfo = expFile::getImageInfo(BASE . $file->directory . $file->filename);
                     $file->is_image = !empty($_fileInfo['is_image']) ? $_fileInfo['is_image'] : false;
-                    // check/update fule size
+                    // check/update file size
                     if (!empty($_fileInfo['fileSize']) && $file->filesize != $_fileInfo['fileSize']) {
                         $file->filesize = !empty($_fileInfo['fileSize']) ? $_fileInfo['fileSize'] : 0;
                         $changed = true;

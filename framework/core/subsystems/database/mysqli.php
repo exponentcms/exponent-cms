@@ -288,7 +288,7 @@ class mysqli_database extends database {
             } else {
                 $newdatadef[$name][DB_NOTNULL] = false;
             }
-            if ($def[DB_FIELD_TYPE] == DB_DEF_BOOLEAN) {
+            if (($def[DB_FIELD_TYPE] === DB_DEF_ID && empty($def[DB_PRIMARY])) || $def[DB_FIELD_TYPE] === DB_DEF_BOOLEAN) {
                 $newdatadef[$name][DB_DEFAULT] = 0;
             }
         }
@@ -927,7 +927,22 @@ class mysqli_database extends database {
                 if ($values !== ") VALUES (") {
                     $values .= ",";
                 }
-                $values .= "'" . $this->escapeString($val) . "'";
+                if (is_bool($val) || $val === null) {
+                    // we have to insert literals for strict mode
+                    switch ($var) {
+                        case true :
+                            $values .= "TRUE";
+                            break;
+                        case false :
+                            $values .= "FALSE";
+                            break;
+                        case null :
+                            $values .= "NULL";
+                            break;
+                    }
+                } else {
+                    $values .= "'" . $this->escapeString($val) . "'";
+                }
             }
         }
         $sql = substr($sql, 0, -1) . substr($values, 0) . ")";
@@ -990,7 +1005,22 @@ class mysqli_database extends database {
                     $val = serialize($val);
                     $sql .= "`$var`='".$val."',";
                 } else {
-                    $sql .= "`$var`='" . $this->escapeString($val) . "',";
+                    if (is_bool($val) || $val === null) {
+                        // we have to insert literals for strict mode
+                        switch ($var) {
+                            case true :
+                                $sql .= "`$var`=TRUE',";
+                                break;
+                            case false :
+                                $sql .= "`$var`=FALSE',";
+                                break;
+                            case null :
+                                $sql .= "`$var`=NULL',";
+                                break;
+                        }
+                    } else {
+                        $sql .= "`$var`='" . $this->escapeString($val) . "',";
+                    }
                 }
             }
         }

@@ -63,9 +63,12 @@ class news extends expRecord {
     }
 
 	public function beforeCreate() {
-	    if (empty($this->publish) || $this->publish == 'on') {
+	    if (empty($this->publish) || $this->publish === 'on') {
 	        $this->publish = time();
 	    }
+        if (empty($this->unpublish) || $this->unpublish === 'on') {
+   	        $this->unpublish = 0;
+   	    }
 	}
 
     public function update($params = array()) {

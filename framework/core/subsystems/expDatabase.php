@@ -1133,17 +1133,17 @@ abstract class database {
 	        return false;
 	    }
 	    $type = $def[DB_FIELD_TYPE];
-	    if ($type == DB_DEF_ID) {
+	    if ($type === DB_DEF_ID) {
 	        $sql .= " INT(11)";
-	    } else if ($type == DB_DEF_BOOLEAN) {
+	    } else if ($type === DB_DEF_BOOLEAN) {
 	        $sql .= " TINYINT(1)";
-	    } else if ($type == DB_DEF_TIMESTAMP) {
+	    } else if ($type === DB_DEF_TIMESTAMP) {
 	        $sql .= " INT(14)";
-        } else if ($type == DB_DEF_DATETIME) {
+        } else if ($type === DB_DEF_DATETIME) {
    	        $sql .= " DATETIME";
-	    } else if ($type == DB_DEF_INTEGER) {
+	    } else if ($type === DB_DEF_INTEGER) {
 	        $sql .= " INT(8)";
-	    } else if ($type == DB_DEF_STRING) {
+	    } else if ($type === DB_DEF_STRING) {
 	        if (isset($def[DB_FIELD_LEN]) && is_int($def[DB_FIELD_LEN])) {
 	            $len = $def[DB_FIELD_LEN];
 	            if ($len < 256)
@@ -1157,12 +1157,12 @@ abstract class database {
 	        } else {  // default size of 'TEXT'instead of error
                 $sql .= " TEXT";
 	        }
-	    } else if ($type == DB_DEF_DECIMAL) {
+	    } else if ($type === DB_DEF_DECIMAL) {
 	        $sql .= " DOUBLE";
 	    } else {
 	        return false; // must specify known FIELD_TYPE
 	    }
-	    if ($type == DB_DEF_ID || !empty($def[DB_NOTNULL]) || !empty($def[DB_PRIMARY])) {
+	    if ($type === DB_DEF_ID || $type === DB_DEF_BOOLEAN || !empty($def[DB_NOTNULL]) || !empty($def[DB_PRIMARY])) {
             $sql .= " NOT NULL";
         } else {
             $sql .= " NULL";

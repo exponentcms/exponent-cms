@@ -443,7 +443,7 @@ class expRecord {
                     $this->$col = $value;
                 }
             } elseif ($colDef[0] == DB_DEF_BOOLEAN) {
-                $this->$col = empty($this->$col) ? 0 : $this->$col;
+                $this->$col = !empty($this->$col) ? $this->$col : 0;
             } elseif ($colDef[0] == DB_DEF_TIMESTAMP) {
                 // yuidatetimecontrol sends in a checkbox and a date e.g., publish & publishdate
                 $datename = $col . 'date';
@@ -538,7 +538,7 @@ class expRecord {
         $saveObj = new stdClass();
         $table   = $db->getDataDefinition($this->tablename);
         foreach ($table as $col=> $colDef) {
-            $saveObj->$col = empty($this->$col) ? null : $this->$col;
+            $saveObj->$col = !isset($this->$col) ? null : $this->$col;
         }
 
         if (ENABLE_WORKFLOW && $this->supports_revisions && !$this->approved && expPermissions::check('approve', expUnserialize($this->location_data))) {

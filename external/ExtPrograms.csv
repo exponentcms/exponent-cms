@@ -56,7 +56,7 @@ jQuery Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as 
 jQuery3,3.4.1,jquery.com,3.4.1,
 jQuery3 Migrate,3.1.0,jquery.com,3.1.0,
 jQueryUI,1.12.1,jqueryui.com,1.12.1,
-stepy,1.1.0exp,github.com/wbotelhos/stepy,1.1.0,"added button class, jquery.validate option passing"
+stepy,1.1.0exp,github.com/wbotelhos/stepy,1.2.0,"added button class, jquery.validate option passing"
 validate,1.19.1exp,jqueryvalidation.org/,1.19.1,edit for 'undefined' in 'min' & 'max'
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker/,1.6.3,used by adminer
