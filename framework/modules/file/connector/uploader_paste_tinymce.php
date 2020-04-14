@@ -32,10 +32,10 @@ $url = '';
 //$message = '';
 
 if (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '' && QUICK_UPLOAD_FOLDER != 0) {
-    if (SITE_FILE_MANAGER == 'picker') {
+    if (SITE_FILE_MANAGER === 'picker') {
         $quikFolder = QUICK_UPLOAD_FOLDER;
         $destDir = null;
-    } elseif (SITE_FILE_MANAGER == 'elfinder') {
+    } elseif (SITE_FILE_MANAGER === 'elfinder') {
         $quikFolder = null;
         $destDir = UPLOAD_DIRECTORY_RELATIVE . QUICK_UPLOAD_FOLDER . '/';
         // create folder if non-existant
@@ -47,7 +47,7 @@ if (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '' && QUICK_UPLOAD_
 }
 
 //extensive suitability check before doing anything with the file...
-if ((!empty($_FILES['file']) && ($_FILES['file'] == "none")) OR (empty($_FILES['file']['name']))) {
+if ((!empty($_FILES['file']) && ($_FILES['file'] === "none")) OR (empty($_FILES['file']['name']))) {
 //    $ar = new expAjaxReply(300, gt("No file uploaded."));
     header("HTTP/1.0 500 Invalid file name.");
 } else {
