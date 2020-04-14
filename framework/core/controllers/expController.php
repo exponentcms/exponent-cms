@@ -489,7 +489,8 @@ abstract class expController {
                     $next_comment->ref = $item->title;
                     $next_comment->sef_url = $item->sef_url;
                 }
-                $all_comments = array_merge($all_comments,$more_comments);
+//                $all_comments = array_merge($all_comments,$more_comments);
+                $all_comments += $more_comments;
             }
         }
         // sort then limit all the blog comments

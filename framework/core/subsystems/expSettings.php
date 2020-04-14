@@ -105,10 +105,11 @@ class expSettings
             $dh = opendir($site_root . 'framework/conf/extensions');
             while (($file = readdir($dh)) !== false) {
                 if (substr($file, -13, 13) === '.defaults.php') {
-                    $options = array_merge(
-                        self::parseFile($site_root . 'framework/conf/extensions/' . $file),
-                        $options
-                    );
+//                    $options = array_merge(
+//                        self::parseFile($site_root . 'framework/conf/extensions/' . $file),
+//                        $options
+//                    );
+                    $options = self::parseFile($site_root . 'framework/conf/extensions/' . $file) + $options;
                 }
 //				else if (substr($file,-14,14) == '.structure.php') {
 //					$tmp = include($site_root.'framework/conf/extensions/'.$file);

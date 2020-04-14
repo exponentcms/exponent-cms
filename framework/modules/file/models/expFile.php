@@ -1642,7 +1642,8 @@ class expFile extends expRecord {
             $dh = opendir($dir);
             while (($file = readdir($dh)) !== false) {
                 if (is_dir("$dir/$file") && !in_array($file, $exclude_dirs) && $recurse && $file != "." && $file != ".." && $file != "CVS") {
-                    $files = array_merge($files, self::listFlat("$dir/$file", $recurse, $ext, $exclude_dirs, $relative));
+//                    $files = array_merge($files, self::listFlat("$dir/$file", $recurse, $ext, $exclude_dirs, $relative));
+                    $files += self::listFlat("$dir/$file", $recurse, $ext, $exclude_dirs, $relative);
                 }
                 if (is_file("$dir/$file") && ($ext == null || substr($file, -1 * strlen($ext), strlen($ext)) == $ext)) {
                     $files[str_replace($relative, "", "$dir/$file")] = $file;

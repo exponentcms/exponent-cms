@@ -73,7 +73,8 @@ class expLang {
                 if (is_dir($dir . '/' . $f)) {
                     if ((is_readable($dir . '/' . $f . '/lang/' . utf8_decode(LANGUAGE) . '.php'))) {
                         $custom_lang_m = include($dir . '/' . $f . '/lang/' . utf8_decode(LANGUAGE) . '.php');
-                        $cur_lang = array_merge($cur_lang, $custom_lang_m);
+//                        $cur_lang = array_merge($cur_lang, $custom_lang_m);
+                        $cur_lang += $custom_lang_m;
                     }
                 }
             }

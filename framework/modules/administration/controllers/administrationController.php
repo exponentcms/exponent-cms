@@ -1118,7 +1118,8 @@ class administrationController extends expController {
                         }
                     }
                     if(count($t->style_variations)>0){
-                        $t->style_variations = array_merge(array('Default'=>'Default'),$t->style_variations);
+//                        $t->style_variations = array_merge(array('Default'=>'Default'),$t->style_variations);
+                        $t->style_variations = array('Default'=>'Default') + $t->style_variations;
                     }
 
     				$t->preview = is_readable(BASE."themes/$file/preview.jpg") ? PATH_RELATIVE . "themes/$file/preview.jpg" : YUI2_RELATIVE . "yui2-skin-sam-editor/assets/skins/sam/blankimage.png";

@@ -372,7 +372,8 @@ class navigationController extends expController {
                 }
                 //$child->numChildren = $db->countObjects('section','parent='.$child->id);
                 $nodes[] = $child;
-                $nodes   = array_merge($nodes, section::levelTemplate($child->id, $depth + 1, $parents));
+//                $nodes   = array_merge($nodes, section::levelTemplate($child->id, $depth + 1, $parents));
+                $nodes   += section::levelTemplate($child->id, $depth + 1, $parents);
             }
         }
         return $nodes;
@@ -546,7 +547,8 @@ class navigationController extends expController {
             $page->first = ($i == 0 ? 1 : 0);
             $page->last  = ($i == count($kids) - 1 ? 1 : 0);
             $arr[]       = $page;
-            $arr         = array_merge($arr, self::getTemplateHierarchyFlat($page->id, $depth + 1));
+//            $arr         = array_merge($arr, self::getTemplateHierarchyFlat($page->id, $depth + 1));
+            $arr         += self::getTemplateHierarchyFlat($page->id, $depth + 1);
         }
         return $arr;
     }
@@ -736,8 +738,10 @@ class navigationController extends expController {
         $allgroups = array();
         while ($section->parent > 0) {
             //			$ploc = expCore::makeLocation('navigationController', null, $section);
-            $allusers  = array_merge($allusers, $db->selectColumn('userpermission', 'uid', "permission='manage' AND module='navigation' AND internal=" . $section->parent));
-            $allgroups = array_merge($allgroups, $db->selectColumn('grouppermission', 'gid', "permission='manage' AND module='navigation' AND internal=" . $section->parent));
+//            $allusers  = array_merge($allusers, $db->selectColumn('userpermission', 'uid', "permission='manage' AND module='navigation' AND internal=" . $section->parent));
+            $allusers  += $db->selectColumn('userpermission', 'uid', "permission='manage' AND module='navigation' AND internal=" . $section->parent);
+//            $allgroups = array_merge($allgroups, $db->selectColumn('grouppermission', 'gid', "permission='manage' AND module='navigation' AND internal=" . $section->parent));
+            $allgroups += $db->selectColumn('grouppermission', 'gid', "permission='manage' AND module='navigation' AND internal=" . $section->parent);
             $section   = $db->selectObject('section', 'id=' . $section->parent);
         }
         foreach ($branch as $section) {
