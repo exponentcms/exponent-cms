@@ -532,8 +532,8 @@ if (!defined('YUI2_RELATIVE')) {
 if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
-    define('JQUERY3_VERSION', '3.4.1');
-    define('JQUERY3_MIGRATE_VERSION', '3.1.0');
+    define('JQUERY3_VERSION', '3.5.0');
+    define('JQUERY3_MIGRATE_VERSION', '3.2.0');
     define('JQUERYUI_VERSION', '1.12.1');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
@@ -606,7 +606,7 @@ if (!defined('SMARTY_PATH')) {
     if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
     } else {
-        define('SMARTY_VERSION', '3.1.34');  //note smarty v3.1.28+ won't work properly with php < v7.1.x
+        define('SMARTY_VERSION', '3.1.36');  //note smarty v3.1.28+ won't work properly with php < v7.1.x
     }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
