@@ -50,7 +50,7 @@
             {foreach name=links from=$cat->records item=item}
                 <li class="item{if $smarty.foreach.links.last} last{/if}">
                     <div class="link">
-                        <a class="{$cat->color}{if !empty($config.websnapr_key)} websnapr{/if}" href="{$item->url}" {if $item->new_window == 1} target="_blank"{/if} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+                        <a class="{$cat->color}" href="{$item->url}" {if $item->new_window == 1} target="_blank"{/if} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
                     </div>
                     {permissions}
                         <div class="item-actions">
@@ -105,8 +105,8 @@
     {/if}
 </div>
 
-{if !empty($config.websnapr_key)}
-    {script unique=$name src="http://bubble.websnapr.com/`$config.websnapr_key`/swi/"}
+{*{if !empty($config.websnapr_key)}*}
+{*    {script unique=$name src="http://bubble.websnapr.com/`$config.websnapr_key`/swi/"}*}
 
-    {/script}
-{/if}
+{*    {/script}*}
+{*{/if}*}

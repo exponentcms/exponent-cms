@@ -512,6 +512,52 @@ class expPaginator {
 
 	}
 
+    /**
+     * Generic magic method
+     *
+     * @param $property
+     * @return null
+     */
+    public function __get($property) {
+        if (property_exists($this, $property)) {
+            return $this->$property;
+        }
+
+        return null;
+    }
+
+    /**
+     *  Generic magic method
+     *  We MUST create/set non-existing properties for Exponent code to work
+     *
+     * @param $property
+     * @param $value
+     */
+    public function __set($property, $value) {
+//        if (property_exists($this, $property)) {
+            $this->$property = $value;
+//        }
+    }
+
+    /**
+     * Generic magic method
+     *
+     * @param $property
+     * @return bool
+     */
+    public function  __isset($property) {
+        return isset($this->$property);
+    }
+
+    /**
+     * Generic magic method
+     *
+     * @param $property
+     */
+    public function __unset($property) {
+        unset($this->$property);
+    }
+
 	//From Merge
     private function cleanParams($params) {
         $defaultParams = array('title'=>'','module'=>'','controller'=>'','src'=>'','id'=>'','dir'=>'','_common'=>'');
