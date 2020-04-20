@@ -29,5 +29,7 @@
                 </div>
             {/permissions}
 		</div>
+    {foreachelse}
+        <strong><em>{'There are no Feeds'|gettext}</em></strong>
     {/foreach}
 </div>
