@@ -74,7 +74,13 @@ class expJavascript {
             $i = 0;
             $srt = array();
             $srt[$i] = '';
-            if (!empty($yui3js)) $srt[$i] = YUI3_RELATIVE.'yui/yui-min.js,';
+            if (!empty($yui3js)) {
+                if (USE_CDN) {
+                    $scripts .= '<script type="text/javascript" src="' . YUI3_RELATIVE . 'yui/yui-min.js"></script>' . "\r\n";
+                } else {
+                    $srt[$i] = YUI3_RELATIVE . 'yui/yui-min.js,';
+                }
+            }
             if (!empty($jqueryjs) || $framework === 'jquery' || bs()) {
 //                if (strlen($srt[$i])+strlen(JQUERY_SCRIPT)<= $strlen && $i <= MINIFY_MAX_FILES) {
 //                    $srt[$i] .= JQUERY_SCRIPT . ",";

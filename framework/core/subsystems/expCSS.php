@@ -264,6 +264,8 @@ class expCSS {
                         $srt[$i] = "";
                         $srt[$i] .= $file.",";
                     }
+                } else {
+                    $html .= "\t" . '<link rel="stylesheet" type="text/css" href="' . $file . '" ' . XHTML_CLOSING . '>' . "\r\n";
                 }
             }
             if ($srt[0] == "") array_shift($srt);
@@ -687,7 +689,7 @@ class expCSS {
                     if (is_file(BASE . $scss_pname) || is_file(BASE . "_" . $scss_pname)) {
                         include_once(BASE . 'external/' . $scss_compiler . '/scss.inc.php');
                         $scss = new \ScssPhp\ScssPhp\Compiler();
-                        $scss_server = new \ScssPhp\ScssPhp\Server(BASE . 'tmp/css/', BASE . 'tmp/css/', $scss);
+                        $scss_server = new \ScssPhp\Server\Server(BASE . 'tmp/css/', BASE . 'tmp/css/', $scss);
 
                         // attempt to load autoprefixer
 //                        if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php'))

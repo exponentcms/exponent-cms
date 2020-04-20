@@ -443,44 +443,56 @@ class expTheme
                         "lessvars" => $less_vars,
                     )
                 );
-//                expCSS::pushToHead(
-//                    array(
-//                        "lessprimer" => "external/font-awesome4/less/font-awesome.less",
-//                        "lessvars" => $less_vars,
-//                    )
-//                );
-                expCSS::pushToHead(
-                    array(
-                        "css_primer" => FA4_SCRIPT
-                    )
-                );
+                if (USE_CDN) {
+                    expCSS::pushToHead(
+                        array(
+                            "css_primer" => FA4_SCRIPT
+                        )
+                    );
+                } else {
+                    expCSS::pushToHead(
+                        array(
+                            "lessprimer" => "external/font-awesome4/less/font-awesome.less",
+                            "lessvars" => $less_vars,
+                        )
+                    );
+                }
             } elseif (bs4(true)) {
-                expCSS::pushToHead(array(
-           		    "scssprimer"=>"external/bootstrap4/scss/bootstrap.scss",
-                    "lessvars"=>$less_vars,
-                ));
-//                expCSS::pushToHead(array(
-////                    "scssprimer"=>"external/font-awesome4/scss/font-awesome.scss",
-//                    "scssprimer"=>"external/font-awesome5/scss/fontawesome.scss",
-//                    "lessvars"=>$less_vars,
-//                ));
                 expCSS::pushToHead(
                     array(
-                        "css_primer" => FA5_SCRIPT
+                        "scssprimer"=>"external/bootstrap4/scss/bootstrap.scss",
+                        "lessvars"=>$less_vars,
                     )
                 );
+                if (USE_CDN) {
+                    expCSS::pushToHead(
+                        array(
+                            "css_primer" => FA5_SCRIPT
+                        )
+                    );
+                } else {
+                    expCSS::pushToHead(
+                        array(
+                            "scssprimer" => "external/font-awesome5/scss/fontawesome.scss",
+                            "lessvars" => $less_vars,
+                        )
+                    );
+                }
             } elseif (newui()) {
-//                expCSS::pushToHead(
-//                    array(
-//                        "lessprimer" => "external/font-awesome4/less/font-awesome.less",
-//                        "lessvars" => $less_vars,
-//                    )
-//                );
-                expCSS::pushToHead(
-                    array(
-                        "css_primer" => FA4_SCRIPT
-                    )
-                );
+                if (USE_CDN) {
+                    expCSS::pushToHead(
+                        array(
+                            "css_primer" => FA4_SCRIPT
+                        )
+                    );
+                } else {
+                    expCSS::pushToHead(
+                        array(
+                            "lessprimer" => "external/font-awesome4/less/font-awesome.less",
+                            "lessvars" => $less_vars,
+                        )
+                    );
+                }
             }
         }
 
