@@ -943,8 +943,11 @@ class fileController extends expController {
 
 //        	include_once(BASE.'external/Tar.php');  // fixme change to PharData
 //        	$tar = new Archive_Tar($_FILES['file']['tmp_name'],'gz');
-            rename($_FILES['file']['tmp_name'], $_FILES['file']['tmp_name'] . '.tmp');
-            $tar = new PharData($_FILES['file']['tmp_name'] . '.tmp');
+            if (!strrchr($_FILES['file']['tmp_name'],'.')) {
+                rename($_FILES['file']['tmp_name'], $_FILES['file']['tmp_name'] . '.tmp');
+                $_FILES['file']['tmp_name'] .= '.tmp';
+            }
+            $tar = new PharData($_FILES['file']['tmp_name']);
             $tar->decompress();  // uncompressed and creates .tar file
         	$dest_dir = BASE.'tmp/extensionuploads/'.uniqid('');
         	@mkdir($dest_dir, octdec(DIR_DEFAULT_MODE_STR + 0));
