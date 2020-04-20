@@ -134,8 +134,8 @@ class event extends expRecord {
                 }
             }
             if (count($events) < 500) {  // magic number to not crash loop?
-//                $events = array_merge($events, $evs);
-                $events += $evs;
+                $events = array_merge($events, $evs);
+//                $events += $evs;
             } else {
 //                $evs[$key]->title = gt('Too many events to list').', '.(count($edates)-count($events)).' '.gt('not displayed!');
 //                $events = array_merge($events, $evs);

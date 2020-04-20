@@ -270,8 +270,8 @@ class tinymce5control extends formcontrol
                         " . $fontnames . ",
                     end_container_on_empty_block: true,
                     file_picker_callback: function expBrowser (callback, value, meta) {
-                        tinymce.activeEditor.windowManager.open({
-                            file: '" . makelink(
+                        tinymce.activeEditor.windowManager.openUrl({
+                            url: '" . makelink(
                                     array("controller" => "file", "action" => "picker", "ajax_action" => 1, "update" => "tiny")
                                 ) . "?filter='+meta.filetype,
                             title: '".gt('File Manager')."',

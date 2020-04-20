@@ -243,8 +243,8 @@ class expCSS {
         $css_files = array();
         foreach($head_config as $key=>$value) {
             if (!empty($value) && is_array($$key)) {
-//                 $css_files = array_merge($css_files, $$key);
-                $css_files += $$key;
+                 $css_files = array_merge($css_files, $$key);
+//                $css_files += $$key;
             };
         };
 

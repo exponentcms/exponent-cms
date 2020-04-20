@@ -157,8 +157,8 @@ class expPaginator {
 		    foreach($params['columns'] as $key=>$col){
 		        $colparse[$key] = explode('|',$col);  // check for command
 		        $column = array($key=>$colparse[$key][0]);
-//		        $this->columns = array_merge($this->columns,$column);
-                $this->columns += $column;
+		        $this->columns = array_merge($this->columns,$column);
+//                $this->columns += $column;
 		        if (!empty($colparse[$key][1])) {  // breakout commands if found
 		            $params = explode(',',$colparse[$key][1]);
 		            foreach ($params as $paramval) {
