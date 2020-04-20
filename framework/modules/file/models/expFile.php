@@ -377,23 +377,17 @@ class expFile extends expRecord {
      * @static
      * @access public
      *
-     * @uses class|method|global|variable description
-     * @requires class_name
+     * @param string $_postName The name of the _FILE upload array
+     * @param bool|string $_force Force the uploaded to overwrite existing file of same name
+     * @param bool|string $_save Save file info to database, defaults to TRUE
+     * @param string $_destFile Override the uploaded file name
+     * @param string $_destDir Override the default FILE UPLOAD location
+     * @param null $_max_width
      *
-     * @PHPUnit Not Defined|Implement|Completed
-     *
-     * @param string      $_postName  The name of the _FILE upload array
-     * @param bool|string $_force     Force the uploaded to overwrite existing file of same name
-     * @param bool|string $_save      Save file info to database, defaults to TRUE
-     * @param string      $_destFile  Override the uploaded file name
-     * @param string      $_destDir   Override the default FILE UPLOAD location
-     *
-     * @param null        $_max_width
-     *
-     * @return object $_objFile expFile Object
-     * @return object $errMsg   Error message if something failed@throws void
+     * @return object|string $_objFile expFile Object or Error message if something failed
      *
      * @TODO Have file upload overwrite make sure not to duplicate its record in the DB
+     * @throws ReflectionException
      */
     public static function fileUpload($_postName = null,
                                       $_force = false,
@@ -685,7 +679,7 @@ class expFile extends expRecord {
      *
      * @param string $filepath    direct path of the file to check against
      *
-     * @return int $newFileName   Name of the file that isn't a duplicate
+     * @return string $newFileName   Name of the file that isn't a duplicate
      * @throws void
      *
      */

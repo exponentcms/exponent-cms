@@ -147,8 +147,13 @@
 
     <!-- elfinder custom extenstions -->
     <!--<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/extensions/jplayer/elfinder.quicklook.jplayer.js"></script>-->
+
+    {if $update=='tiny'}
+    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/tinymceElfinder.js"></script>
+    {/if}
+
 </head>
-<body{if !bs3()} class="exp-skin"{/if}>
+<body{if !bs3() && !bs4()} class="exp-skin"{/if}>
 
 <div id="elfinder"></div>
 
@@ -178,6 +183,25 @@
                 top.tinymce.activeEditor.windowManager.getParams().oninsert(URL, alt, title);
                 // close popup window
                 top.tinymce.activeEditor.windowManager.close();
+            }
+        }
+
+        // Helper function to get parameters from the query string for TinyMCE
+        var FileBrowserDialogue5 = {
+            init: function() {
+                // Here goes your code for setting your custom things onLoad.
+            },
+            mySubmit: function (URL, alt, title) {
+                var windowManager = top != undefined && top.tinymce.activeEditor.windowManager != undefined ? top.tinymce.activeEditor.windowManager : '';
+                // pass selected file data to TinyMCE
+                if (windowManager != '') {
+                    window.parent.postMessage({
+                        mceAction: 'FileSelected',
+                        content: URL
+                    }, '*');
+                    // close popup window
+                    windowManager.close();
+                }
             }
         }
 
@@ -385,8 +409,10 @@
                         }
                     });
                     window.close();
-                    {/literal}{elseif $update=='tiny'}{literal}
+                    {/literal}{elseif $update=='tiny' && $smarty.const.SITE_WYSIWYG_EDITOR == 'tinymce'}{literal}
                     FileBrowserDialogue.mySubmit(EXPONENT.PATH_RELATIVE+file.url.replace(EXPONENT.URL_FULL, '')+' ', file.alt, file.title); // pass selected file data to TinyMCE
+                    {/literal}{elseif $update=='tiny' && $smarty.const.SITE_WYSIWYG_EDITOR == 'tinymce5'}{literal}
+                    FileBrowserDialogue5.mySubmit(EXPONENT.PATH_RELATIVE+file.url.replace(EXPONENT.URL_FULL, '')+' ', file.alt, file.title); // pass selected file data to TinyMCE
                     {/literal}{else}{literal}
                     if ((file.length) == 1) {
                         myfile = file[0];

@@ -620,6 +620,14 @@ class administrationController extends expController {
 				case UPLOAD_ERR_NO_FILE:
 					flash('error', gt('No file was uploaded.'));
 					break;
+                case UPLOAD_ERR_NO_TMP_DIR:
+                case UPLOAD_ERR_CANT_WRITE:
+                    flash('error', gt('Server Temp File Error.'));
+                    break;
+                case UPLOAD_ERR_EXTENSION:
+                default:
+                    return 'Unknown File Upload Error.';
+                    break;
 			}
 		} else {
 			$basename = basename($_FILES['mod_archive']['name']);

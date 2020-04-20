@@ -753,6 +753,14 @@ class fileController extends expController {
         		case UPLOAD_ERR_NO_FILE:
         			echo gt('No file was uploaded.').'<br />';
         			break;
+                case UPLOAD_ERR_NO_TMP_DIR:
+                case UPLOAD_ERR_CANT_WRITE:
+                    echo gt('Server Temp File Error.').'<br />';
+                    break;
+                case UPLOAD_ERR_EXTENSION:
+                default:
+                    return 'Unknown File Upload Error.';
+                    break;
         	}
         } else {
             $errors = array();
@@ -921,6 +929,14 @@ class fileController extends expController {
         		case UPLOAD_ERR_NO_FILE:
         			echo gt('No file was uploaded.') . '<br />';
         			break;
+                case UPLOAD_ERR_NO_TMP_DIR:
+                case UPLOAD_ERR_CANT_WRITE:
+                    echo gt('Server Temp File Error.').'<br />';
+                    break;
+                case UPLOAD_ERR_EXTENSION:
+                default:
+                    return 'Unknown File Upload Error.';
+                    break;
         	}
         } else {
         	$basename = basename($_FILES['file']['name']);
