@@ -117,7 +117,7 @@ class address extends expRecord {
             $checkUser = $db->selectObject('user','username=\'' . $user->username . '\'');
             if (isset($checkUser->id))
             {
-                expValidator::failAndReturnToForm(gt("The email address you entered already exists as a user. If you have lost your password, you may reset it here:")." <a href='/users/reset_password'>Reset Password</a>.", expString::sanitize($_POST));
+                expValidator::failAndReturnToForm(gt("The email address you entered already exists as a user. If you have lost your password, you may reset it here:")." <a href='/users/reset_password'>" . gt("Reset Password") . "</a>.", expString::sanitize($_POST));
             }
             $user->is_admin = false;
             $user->is_acting_admin = false;
