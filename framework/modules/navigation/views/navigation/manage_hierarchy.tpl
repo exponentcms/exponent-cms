@@ -463,7 +463,7 @@ var YAHOO = Y.YUI2;
 		}
 	}
 
-	if (usr.is_acting_admin==1 || usr.is_admin==1) {
+	if ((usr.is_acting_admin==1 || usr.is_admin==1) && !{/literal}{$smarty.const.SIMPLE_PERMISSIONS}{literal}) {
 		var navoptions = [
 				{ classname:"addsubpage", text: "{/literal}{"Add A Subpage"|gettext}{literal}", onclick: { fn: addSubNode },
 					submenu: {

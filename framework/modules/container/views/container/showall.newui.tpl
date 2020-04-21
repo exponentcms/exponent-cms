@@ -36,7 +36,7 @@
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu{$top.id}">
                     <li role="presentation" class="dropdown-header">({$top->scope|gettext|ucwords})</li>
                     <li class="divider"></li>
-                    {if $user->isAdmin()}
+                    {if $user->isAdmin() && !$smarty.const.SIMPLE_PERMISSIONS}
                         <li role="menuitem"><a href="{link controller=users action=userperms mod=container}"><i class="fa fa-user fa-fw"></i> {"User Permissions"|gettext}</a></li>
                         <li role="menuitem"><a href="{link controller=users action=groupperms mod=container}"><i class="fa fa-group fa-fw"></i> {"Group Permissions"|gettext}</a></li>
                     {/if}

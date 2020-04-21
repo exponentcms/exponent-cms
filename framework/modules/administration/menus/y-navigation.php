@@ -83,7 +83,7 @@ if (expPermissions::check('manage', expCore::makeLocation('navigation', '', $sec
     );
 }
 
-if ($user->isAdmin()) {
+if ($user->isAdmin() && !SIMPLE_PERMISSIONS) {
     $info['itemdata'][] = array(
         'text' => gt('Manage User Permissions'),
         'classname' => 'user',

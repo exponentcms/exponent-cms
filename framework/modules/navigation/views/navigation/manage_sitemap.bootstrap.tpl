@@ -202,8 +202,10 @@
                                                     {icon class=edit action=edit_freeform record=$section text=notext title="Edit this Page"|gettext}
                                                 {/if}
                                                 {icon class=delete action=scriptaction record=$section title='Delete'|gettext onclick="EXPONENT.deleteNode(`$section->id`,`$section->alias_type`,'`$section->name`');" text=notext title="Delete this Page"|gettext}
-                                                {icon controller=users action=userperms mod=navigation int=$section->id img='userperms.png' text=notext title='Assign user permissions for this Page'|gettext}
-                                                {icon controller=users action=groupperms mod=navigation int=$section->id img='groupperms.png' text=notext title='Assign group permissions for this Page'|gettext}
+                                                {if !$smarty.const.SIMPLE_PERMISSIONS}
+                                                    {icon controller=users action=userperms mod=navigation int=$section->id img='userperms.png' text=notext title='Assign user permissions for this Page'|gettext}
+                                                    {icon controller=users action=groupperms mod=navigation int=$section->id img='groupperms.png' text=notext title='Assign group permissions for this Page'|gettext}
+                                                {/if}
                                             </div>
                                         {/if}
                                     {/permissions}
@@ -358,8 +360,10 @@
                                                     {icon class=edit action=edit_freeform record=$section text=notext title="Edit this Page"|gettext}
                                                 {/if}
                                                 {icon action=delete record=$section title='Delete'|gettext onclick="return confirm('"|cat:("Delete this page?"|gettext)|cat:"');" text=notext title="{'Delete this Page'|gettext}" title="Delete this Page"|gettext}
-                                                {icon controller=users action=userperms mod=navigation int=$section->id img='userperms.png' text=notext title='Assign user permissions for this Page'|gettext}
-                                                {icon controller=users action=groupperms mod=navigation int=$section->id img='groupperms.png' text=notext title='Assign group permissions for this Page'|gettext}
+                                                {if !$smarty.const.SIMPLE_PERMISSIONS}
+                                                    {icon controller=users action=userperms mod=navigation int=$section->id img='userperms.png' text=notext title='Assign user permissions for this Page'|gettext}
+                                                    {icon controller=users action=groupperms mod=navigation int=$section->id img='groupperms.png' text=notext title='Assign group permissions for this Page'|gettext}
+                                                {/if}
                                             </div>
                                         {/if}
                                     {/permissions}
