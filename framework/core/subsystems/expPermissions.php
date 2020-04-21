@@ -85,7 +85,11 @@ class expPermissions {
 		global $exponent_permissions_r, $user, $db, $module_scope;
 
         if (!empty($user->id)) {
-            if ($user->isAdmin()) return true;  // admin users always have permissions
+            if ($user->isAdmin()) {
+                return true;  // admin users always have permissions
+            } elseif (SIMPLE_PERMISSIONS) {
+                return false;  // fixme shortcut process
+            }
         } else {
             return false;  // anonymous/logged-out user never has permission
         }

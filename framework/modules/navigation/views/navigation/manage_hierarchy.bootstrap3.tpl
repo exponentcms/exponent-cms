@@ -196,7 +196,7 @@
                                 obj = inst.get_node(data.reference);
                             if(inst.is_disabled(obj)) {
                                 return true;
-                            } else if (!(usr.is_acting_admin==1 || usr.is_admin==1)) {
+                            } else if (!((usr.is_acting_admin==1 || usr.is_admin==1) && !{/literal}{$smarty.const.SIMPLE_PERMISSIONS}{literal})) {
                                 return true;
                             }
                         },
@@ -214,7 +214,7 @@
                                 obj = inst.get_node(data.reference);
                             if(inst.is_disabled(obj)) {
                                 return true;
-                            } else if (!(usr.is_acting_admin==1 || usr.is_admin==1)) {
+                            } else if (!((usr.is_acting_admin==1 || usr.is_admin==1) && !{/literal}{$smarty.const.SIMPLE_PERMISSIONS}{literal})) {
                                 return true;
                             }
                         },

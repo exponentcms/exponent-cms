@@ -48,7 +48,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 	}
 
     // does it need permissions menu items?
-	if ($user->isAdmin()) {
+	if ($user->isAdmin() && !SIMPLE_PERMISSIONS) {
 //		$userlink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'userperms', '_common'=>1));
 //		$grouplink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'groupperms', '_common'=>1));
         $userlink = $router->makeLink(array('controller'=>'users', 'action'=>'userperms', 'mod'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source']));
