@@ -769,7 +769,7 @@ class expRecord {
                                 $obj->subtype      = $subtype;
                                 $obj->content_id   = $this->id;
                                 $obj->content_type = $this->classname;
-                                if ($type === 'expFile' || $type === 'expCats') $obj->rank = $item->rank + 1;
+                                if ($type === 'expFile' || $type === 'expDefinableField') $obj->rank = $item->rank + 1;
                                 $db->insertObject($obj, $itemtype->attachable_table);
                             }
                         } elseif (is_array($item)) {
@@ -779,16 +779,16 @@ class expRecord {
                                     $obj->subtype      = $subtype;
                                     $obj->content_id   = $this->id;
                                     $obj->content_type = $this->classname;
-                                    if ($type === 'expFile' || $type === 'expCats') $obj->rank = $rank + 1;
+                                    if ($type === 'expFile' || $type === 'expDefinableField') $obj->rank = $rank + 1;
                                     $db->insertObject($obj, $itemtype->attachable_table);
                                 }
                             }
                         } elseif (is_numeric($item)) {
                             $obj->$refname     = $item;
-//                            $obj->subtype      = $subtype; //note this is NOT a subtype, but the array index
+                            $obj->subtype      = '';
                             $obj->content_id   = $this->id;
                             $obj->content_type = $this->classname;
-                            if ($type === 'expFile' || $type === 'expCats') $obj->rank = $subtype + 1;
+                            if ($type === 'expFile' || $type === 'expDefinableField') $obj->rank = $subtype + 1;
                             $db->insertObject($obj, $itemtype->attachable_table);
                         }
                     }
@@ -996,7 +996,7 @@ class expRecord {
                     $sql .= " AND approved='1'";
                 }
 
-                $order = ($type === 'expFile' || $type === 'expCats' || $type === 'expDefinableField') ? ' ORDER BY rank ASC' : null;
+                $order = ($type === 'expFile' || $type === 'expDefinableField') ? ' ORDER BY rank ASC' : null;
                 $sql .= $order;
 
                 $items = $db->selectArraysBySql($sql);

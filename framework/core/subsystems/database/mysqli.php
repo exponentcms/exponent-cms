@@ -922,7 +922,7 @@ class mysqli_database extends database {
         $values = ") VALUES (";
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
-            if ($var[0] !== '_' && $val !== null && $val !== '') {
+            if ($var[0] !== '_' && $val !== null) {
                 $sql .= "`$var`,";
                 if ($values !== ") VALUES (") {
                     $values .= ",";
@@ -1000,7 +1000,7 @@ class mysqli_database extends database {
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
             //if($is_revisioned && $var=='revision_id') $val++;
-            if ($var[0] !== '_' && $val !== null && $val !== '') {
+            if ($var[0] !== '_' && $val !== null) {
                 if (is_array($val) || is_object($val)) {
                     $val = serialize($val);
                     $sql .= "`$var`='".$val."',";
