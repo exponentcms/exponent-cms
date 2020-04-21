@@ -14,7 +14,11 @@
  *}
 
 {css unique="announcement" link="`$asset_path`css/announcement.css"}
-
+{literal}
+    .close-icon {
+      cursor: pointer;
+    }
+{/literal}
 {/css}
 
 <div class="module news announcement">
@@ -49,6 +53,9 @@
         {*<div class="item announcement{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}{if $item->is_featured} featured{/if}">*}
         <div class="item card{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
             <div class="card-header bg-{if $item->is_featured}danger{else}{cycle values="info,success"}{/if}">
+                {if $config.hidefeatured && $item->is_featured}
+                    <span class="float-right clickable close-icon" data-effect="fadeOut"><i class="fas fa-times"></i></span>
+                {/if}
                 <{$config.item_level|default:'h2'} class="card-title text-white">{$item->title}</{$config.item_level|default:'h2'}>
             </div>
             <div class="card-body">
@@ -115,3 +122,13 @@
         </div>
     {/foreach}
 </div>
+
+{if $config.hidefeatured}
+    {script unique='hide_featured'}
+    {literal}
+        $('.close-icon').on('click',function() {
+            $(this).closest('.card').fadeOut();
+        })
+    {/literal}
+    {/script}
+{/if}
