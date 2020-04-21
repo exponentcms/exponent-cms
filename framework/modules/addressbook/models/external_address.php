@@ -20,6 +20,7 @@
  * @subpackage Models
  * @package Modules
  */
+
 class external_address extends expRecord {
 	public $table = 'external_addresses';
     public $validates = array(
