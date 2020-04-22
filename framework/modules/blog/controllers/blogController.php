@@ -58,7 +58,7 @@ class blogController extends expController {
             'where'=>$this->aggregateWhereClause(),
             'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] :10,
             'order'=>'publish',
-            'dir'=>empty($this->config['sort_dir']) ? 'DESC' : $this->config['sort_dir'],
+            'dir'=>'DESC', //empty($this->config['sort_dir']) ? 'DESC' : $this->config['sort_dir'],
             'categorize'=> empty($this->config['usecategories']) ? false : $this->config['usecategories'],
             'groups'=>!isset($this->params['cat']) ? array() : array($this->params['cat']),
             'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
