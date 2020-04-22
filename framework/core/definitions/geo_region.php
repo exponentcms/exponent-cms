@@ -35,7 +35,7 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
         DB_INDEX => 10),
     'rank'=>array(
-        DB_FIELD_TYPE=>DB_DEF_ID),
+        DB_FIELD_TYPE=>DB_DEF_INTEGER),
     'active'=>array(
         DB_FIELD_TYPE=>DB_DEF_BOOLEAN)
 );

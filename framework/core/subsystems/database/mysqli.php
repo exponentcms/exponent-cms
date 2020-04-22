@@ -922,14 +922,14 @@ class mysqli_database extends database {
         $values = ") VALUES (";
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
-            if ($var[0] !== '_' && $val !== null) {
+            if ($var[0] !== '_') {
                 $sql .= "`$var`,";
                 if ($values !== ") VALUES (") {
                     $values .= ",";
                 }
-                if (is_bool($val) || $val === null) {
+                if (is_bool($val) || $val === null || $val === '') {
                     // we have to insert literals for strict mode
-                    switch ($var) {
+                    switch ($val) {
                         case true :
                             $values .= "TRUE";
                             break;
@@ -938,6 +938,9 @@ class mysqli_database extends database {
                             break;
                         case null :
                             $values .= "NULL";
+                            break;
+                        case '' :
+                            $values .= "''";
                             break;
                     }
                 } else {
@@ -1000,22 +1003,25 @@ class mysqli_database extends database {
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
             //if($is_revisioned && $var=='revision_id') $val++;
-            if ($var[0] !== '_' && $val !== null) {
+            if ($var[0] !== '_') {
                 if (is_array($val) || is_object($val)) {
                     $val = serialize($val);
                     $sql .= "`$var`='".$val."',";
                 } else {
-                    if (is_bool($val) || $val === null) {
+                    if (is_bool($val) || $val === null || $val === '') {
                         // we have to insert literals for strict mode
-                        switch ($var) {
+                        switch ($val) {
                             case true :
-                                $sql .= "`$var`=TRUE',";
+                                $sql .= "`$var`=TRUE,";
                                 break;
                             case false :
-                                $sql .= "`$var`=FALSE',";
+                                $sql .= "`$var`=FALSE,";
                                 break;
                             case null :
-                                $sql .= "`$var`=NULL',";
+                                $sql .= "`$var`=NULL,";
+                                break;
+                            case '' :
+                                $sql .= "`$var`='',";
                                 break;
                         }
                     } else {

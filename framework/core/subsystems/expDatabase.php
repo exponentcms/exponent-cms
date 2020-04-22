@@ -1169,8 +1169,8 @@ abstract class database {
         }
 	    if (isset($def[DB_DEFAULT]))
 	        $sql .= " DEFAULT '" . $def[DB_DEFAULT] . "'";
-//        else if ($type == DB_DEF_BOOLEAN)
-//            $sql .= " DEFAULT 0";
+        else if ($type == DB_DEF_BOOLEAN || ($type === DB_DEF_ID && empty($def[DB_PRIMARY])))
+            $sql .= " DEFAULT 0";
 	    if (isset($def[DB_INCREMENT]) && $def[DB_INCREMENT])
 	        $sql .= " AUTO_INCREMENT";
 	    return $sql;
