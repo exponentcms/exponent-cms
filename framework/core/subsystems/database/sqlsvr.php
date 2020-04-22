@@ -1283,7 +1283,7 @@ class sqlsvr_database extends database {
                 if ($values !== ") VALUES (") {
                     $values .= ",";
                 }
-                if (is_bool($val) || $val === null || $val === '') {
+                if (is_bool($val) || $val === null) {
                     // we have to insert literals for strict mode
                     switch ($val) {
                         case true :
@@ -1295,10 +1295,10 @@ class sqlsvr_database extends database {
                         case null :
                             $values .= "NULL";
                             break;
-                        case '' :
-                            $values .= "''";
-                            break;
                     }
+                } elseif ($val === '') {
+                    // we have to insert literals for strict mode
+                    $values .= "''";
                 } else {
                     $values .= "'" . str_replace("'", "''", $val) . "'";
                 }
@@ -1374,7 +1374,7 @@ class sqlsvr_database extends database {
                         $val = serialize($val);
                         $sql .= "[$var]='" . str_replace("'", "''", $val) . "',";
                     } else {
-                        if (is_bool($val) || $val === null || $val !== '') {
+                        if (is_bool($val) || $val === null ) {
                             // we have to insert literals for strict mode
                             switch ($val) {
                                 case true :
@@ -1386,10 +1386,10 @@ class sqlsvr_database extends database {
                                 case null :
                                     $sql .= "[$var]=NULL,";
                                     break;
-                                case '' :
-                                    $sql .= "[$var]='',";
-                                    break;
                             }
+                        } elseif ($val !== '') {
+                            // we have to insert literals for strict mode
+                            $sql .= "[$var]='',";
                         } else {
                             $sql .= "[$var]='" . str_replace("'", "''", $val) . "',";
                         }

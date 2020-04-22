@@ -927,7 +927,7 @@ class mysqli_database extends database {
                 if ($values !== ") VALUES (") {
                     $values .= ",";
                 }
-                if (is_bool($val) || $val === null || $val === '') {
+                if (is_bool($val) || $val === null) {
                     // we have to insert literals for strict mode
                     switch ($val) {
                         case true :
@@ -939,10 +939,10 @@ class mysqli_database extends database {
                         case null :
                             $values .= "NULL";
                             break;
-                        case '' :
-                            $values .= "''";
-                            break;
                     }
+                } elseif ($val === '') {
+                    // we have to insert literals for strict mode
+                    $values .= "''";
                 } else {
                     $values .= "'" . $this->escapeString($val) . "'";
                 }
@@ -1008,7 +1008,7 @@ class mysqli_database extends database {
                     $val = serialize($val);
                     $sql .= "`$var`='".$val."',";
                 } else {
-                    if (is_bool($val) || $val === null || $val === '') {
+                    if (is_bool($val) || $val === null) {
                         // we have to insert literals for strict mode
                         switch ($val) {
                             case true :
@@ -1020,10 +1020,10 @@ class mysqli_database extends database {
                             case null :
                                 $sql .= "`$var`=NULL,";
                                 break;
-                            case '' :
-                                $sql .= "`$var`='',";
-                                break;
                         }
+                    } elseif ($val === '') {
+                        // we have to insert literals for strict mode
+                        $sql .= "`$var`='',";
                     } else {
                         $sql .= "`$var`='" . $this->escapeString($val) . "',";
                     }
