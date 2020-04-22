@@ -70,6 +70,7 @@
                    	{/if}
                 </div>
                 <div id="tab2" role="tabpanel" class="tab-pane fade">
+                    <h2>{'Publishing Date'|gettext}</h2>
                     {control type="yuidatetimecontrol" name="publish" label="Publish Date"|gettext edit_text="Publish Immediately" value=$record->publish}
                 </div>
                 <div id="tab3" role="tabpanel" class="tab-pane fade">

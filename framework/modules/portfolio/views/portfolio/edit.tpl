@@ -28,7 +28,7 @@
             </ul>
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
-                    <h2>{'Portfolio Piece'|gettext}</h2>
+                    <h2>{'Portfolio Piece Entry'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title focus=1}
                     {control type=html name=body label="Description"|gettext value=$record->body}
                     {control type="checkbox" name="featured" label="Feature this Portfolio Piece"|gettext|cat:"?" checked=$record->featured value=1}
@@ -41,6 +41,7 @@
                 </div>
                 {if $config.filedisplay}
                     <div id="tab2">
+                        <h2>{'Attach Files'|gettext}</h2>
                         {control type="files" name="files" label="Files"|gettext value=$record->expFile folder=$config.upload_folder}
                     </div>
                 {/if}

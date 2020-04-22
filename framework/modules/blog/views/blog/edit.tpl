@@ -64,10 +64,12 @@
                     {/if}
                 </div>
                 <div id="tab2">
+                    <h2>{'Publishing Date'|gettext}</h2>
                     {control type="yuidatetimecontrol" name="publish" label="Publish Date"|gettext edit_text="Publish Immediately" value=$record->publish}
                 </div>
                 {if $config.filedisplay}
                     <div id="tab3">
+                        <h2>{'Attach Files'|gettext}</h2>
                         {control type="files" name="files" label="Files"|gettext value=$record->expFile folder=$config.upload_folder}
                     </div>
                 {/if}
