@@ -42,7 +42,10 @@ class expComment extends expRecord {
             $obj->content_type = $content_type;
             $obj->content_id = $content_id;
             $obj->expcomments_id = $this->id;
-            if(isset($subtype)) $obj->subtype = $subtype;
+            if(isset($subtype))
+                $obj->subtype = $subtype;
+            else
+                $obj->subtype = '';
             $db->insertObject($obj, $this->attachable_table);
         }
     }
