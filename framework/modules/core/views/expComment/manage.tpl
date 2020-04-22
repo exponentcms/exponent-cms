@@ -56,7 +56,7 @@
                         </td>
                         <td>{$comment->name}</td>
                         <td>{$comment->body}</td>
-                        <td><a nohref title="{$refs[$comment->content_type][$comment->content_id]}">{$comment->content_type|capitalize}</a></td>
+                        <td><a href="{$refs[$comment->content_type][$comment->content_id]['sef_url']}" title="{$refs[$comment->content_type][$comment->content_id]['title']}">{$comment->content_type|capitalize}</a></td>
                         <td>
                             <div class="item-actions">
                                 {icon action=edit record=$comment content_id=$comment->content_id content_type=$comment->content_type title="Edit this comment"|gettext}

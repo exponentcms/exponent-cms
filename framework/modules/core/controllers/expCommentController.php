@@ -102,7 +102,8 @@ class expCommentController extends expController {
         foreach ($page->records as $record) {
             //FIXME here is where we might sanitize the comments before displaying them
             $item = new $record->content_type($record->content_id);
-            $refs[$record->content_type][$record->content_id] = $item->title;
+            $refs[$record->content_type][$record->content_id]['title'] = $item->title;
+            $refs[$record->content_type][$record->content_id]['sef_url'] = makelink(array("controller" => $record->content_type, "action" => "show", "title" => $item->sef_url));
         }
         assign_to_template(array(
             'page'=>$page,
