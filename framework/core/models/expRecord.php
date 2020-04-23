@@ -538,7 +538,11 @@ class expRecord {
         $saveObj = new stdClass();
         $table   = $db->getDataDefinition($this->tablename);
         foreach ($table as $col=> $colDef) {
-            $saveObj->$col = !isset($this->$col) ? null : $this->$col;
+            if ($colDef[DB_NOTNULL])
+                $value = 0;
+            else
+                $value = null;
+            $saveObj->$col = !isset($this->$col) ? $value : $this->$col;
         }
 
         if (ENABLE_WORKFLOW && $this->supports_revisions && !$this->approved && expPermissions::check('approve', expUnserialize($this->location_data))) {
