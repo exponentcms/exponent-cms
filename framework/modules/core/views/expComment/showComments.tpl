@@ -61,7 +61,9 @@
                                     {if $cmt->avatar->image}
                                         {img src=$cmt->avatar->image h=40 class="avatar"}
                                     {else}
-                                        {img src="`$smarty.const.PATH_RELATIVE`framework/modules/users/assets/images/avatar_not_found.jpg" h=40 class="avatar"}
+{*                                        {img src="`$smarty.const.PATH_RELATIVE`framework/modules/users/assets/images/avatar_not_found.jpg" h=40 class="avatar"}*}
+                                        {$emailMD5 = md5(strtolower(trim(email)))}
+                                        {img src="https://www.gravatar.com/avatar/"|cat:$emailMD5|cat:"?d=mp&s=40" class="avatar"}
                                     {/if}
                                     {permissions}
                                         <div class="item-actions">
