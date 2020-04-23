@@ -30,7 +30,7 @@
                         <div class="msg">
                             {icon action=manage content_id=$content_id content_type=$content_type text='Manage'|gettext|cat:' '|cat:$type|cat:'s'}
                             {if $unapproved > 0}
-                            | {'There are'|gettext} {$unapproved} {$type|plural:$unapproved} {'awaiting approval'|gettext}
+                            | {'There'|gettext} {plural count=$unapproved singular='is'|gettext plural='are'|gettext} {$unapproved} {$type|plural:$unapproved} {'awaiting approval'|gettext}
                             {/if}
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                         {foreach from=$cmts item=cmt name=comments}
                             <li class="comment">
                                 <cite>
-                                    <span class="attribution">
+                                    <span class="attribution{if !$cmt->approved} bg-warning"{/if}">
                                         {if $cmt->name != ''}
                                             {$cmt->name}
                                         {else}
@@ -62,8 +62,7 @@
                                         {img src=$cmt->avatar->image h=40 class="avatar"}
                                     {else}
 {*                                        {img src="`$smarty.const.PATH_RELATIVE`framework/modules/users/assets/images/avatar_not_found.jpg" h=40 class="avatar"}*}
-                                        {$emailMD5 = md5(strtolower(trim(email)))}
-                                        {img src="https://www.gravatar.com/avatar/"|cat:$emailMD5|cat:"?d=mp&s=40" class="avatar"}
+                                        <img src="https://www.gravatar.com/avatar/{md5(strtolower(trim($cmt->email)))}?d=mp&s=40" class="avatar"} />
                                     {/if}
                                     {permissions}
                                         <div class="item-actions">
@@ -72,6 +71,9 @@
                                             {/if}
                                             {if $permissions.delete}
                                                 {icon action=delete record=$cmt title="Delete this"|gettext|cat:' '|cat:$type onclick="return confirm('"|cat:("Are you sure you want to delete this"|gettext)|cat:$type|cat:"?');"}
+                                            {/if}
+                                            {if $permissions.approve && !$cmt->approved}
+                                                {icon action=approve_submit record=$cmt text="Approve" title="Approve this"|gettext|cat:' '|cat:$type}
                                             {/if}
                                         </div>
                                     {/permissions}

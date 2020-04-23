@@ -213,8 +213,8 @@ class expCommentController extends expController {
             /* Note: I've used 0 for top level parent, you can change this to == 'NULL' */
             if($node->parent_id=='0'){
                 $tree[] = $node;
-                unset($node);
             }
+            unset($node);
         }
 
         /* This is the recursive function that does the magic */
