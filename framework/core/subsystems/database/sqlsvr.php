@@ -1285,16 +1285,12 @@ class sqlsvr_database extends database {
                 }
                 if (is_bool($val) || $val === null) {
                     // we have to insert literals for strict mode
-                    switch ($val) {
-                        case true :
-                            $values .= "TRUE";
-                            break;
-                        case false :
-                            $values .= "FALSE";
-                            break;
-                        case null :
-                            $values .= "NULL";
-                            break;
+                    if ($val === null) {
+                        $values .= "NULL";
+                    } elseif ($val === true) {
+                        $values .= "TRUE";
+                    } elseif ($val === false) {
+                        $values .= "FALSE";
                     }
                 } elseif ($val === '') {
                     // we have to insert literals for strict mode
@@ -1376,16 +1372,12 @@ class sqlsvr_database extends database {
                     } else {
                         if (is_bool($val) || $val === null ) {
                             // we have to insert literals for strict mode
-                            switch ($val) {
-                                case true :
-                                    $sql .= "[$var]=TRUE,";
-                                    break;
-                                case false :
-                                    $sql .= "[$var]=FALSE,";
-                                    break;
-                                case null :
-                                    $sql .= "[$var]=NULL,";
-                                    break;
+                            if ($val === null) {
+                                $sql .= "[$var]=NULL,";
+                            } elseif ($val === true) {
+                                $sql .= "[$var]=TRUE,";
+                            } elseif ($val === false) {
+                                $sql .= "[$var]=FALSE,";
                             }
                         } elseif ($val !== '') {
                             // we have to insert literals for strict mode
