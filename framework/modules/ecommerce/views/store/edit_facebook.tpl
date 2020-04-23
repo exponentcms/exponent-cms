@@ -20,7 +20,7 @@
     {/if}
     <h2>{'Facebook Meta'|gettext}</h2>
     <blockquote>
-        {'Also used for Twitter, Pinterest, etc...'|gettext}
+        {'Also used by Twitter, Pinterest, etc...'|gettext}
     </blockquote>
     {*{control type="hidden" name="facebook[type]" value='product'}*}
     {control type="text" name="facebook[title]" label="Meta Title"|gettext value=$record->meta_fb.title size=88 description='Override the product title for social media'|gettext}

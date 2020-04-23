@@ -80,7 +80,7 @@
                     <div id="tab5">
                         <h2>{'Facebook Meta'|gettext}</h2>
                         <blockquote>
-                            {'Also used for Twitter, Pinterest, etc...'|gettext}
+                            {'Also used by Twitter, Pinterest, etc...'|gettext}
                         </blockquote>
                         {control type="text" name="fb[title]" label="Meta Title"|gettext value=$record->meta_fb.title size=88 description='Override the item title for social media'|gettext}
                         {control type="textarea" name="fb[description]" label="Meta Description"|gettext rows=5 cols=35 size=200 value=$record->meta_fb.description description='Override the item summary for social media'|gettext}
