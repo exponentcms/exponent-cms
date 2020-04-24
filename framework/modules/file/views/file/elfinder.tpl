@@ -24,8 +24,11 @@
     <title>{'File Manager'|gettext}  |  Exponent CMS</title>
     <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
 
+    {if $smarty.const.USE_CDN}
+    <link rel="stylesheet" href="https://code.jquery.com/ui/{$smarty.const.JQUERYUI_VERSION}/themes/smoothness/jquery-ui.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    {else}
     <link rel="stylesheet" href="{$smarty.const.JQUERY_RELATIVE}css/smoothness/jquery-ui.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
-
+    {/if}
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/commands.css" type="text/css">
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/common.css" type="text/css">
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/contextmenu.css" type="text/css">
@@ -148,7 +151,7 @@
     <!-- elfinder custom extenstions -->
     <!--<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/extensions/jplayer/elfinder.quicklook.jplayer.js"></script>-->
 </head>
-<body{if !bs3() && !bs4()} class="exp-skin"{/if}>
+<body{if !bs3()} class="exp-skin"{/if}>
 
 <div id="elfinder"></div>
 
