@@ -42,7 +42,7 @@ class photosController extends expController {
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("Photo Album"); }
-    static function description() { return gt("Displays and manages images."); }
+    static function description() { return gt("Displays and manages images and slideshows."); }
     static function isSearchable() { return true; }
 
     public function showall() {

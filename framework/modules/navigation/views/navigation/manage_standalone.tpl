@@ -70,10 +70,12 @@
 </div>
 
 {script unique="standalone"}
+{literal}
     function selectAll(val) {
         var checks = document.getElementsByName("deleteit[]");
         for (var i = 0; i < checks.length; i++) {
           checks[i].checked = val;
         }
     }
+{/literal}
 {/script}
