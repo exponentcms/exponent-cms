@@ -271,7 +271,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             mejs.i18n.language('{/literal}{substr($smarty.const.LOCALE,0,2)}{literal}'); // Setting language
             $('audio,video').mediaelementplayer({
                 // Do not forget to put a final slash (/)
-                pluginPath: 'https://cdnjs.com/libraries/mediaelement/',
+                pluginPath: '../build/',
                 // this will allow the CDN to use Flash without restrictions
                 // (by default, this is set as `sameDomain`)
                 shimScriptAccess: 'always',
