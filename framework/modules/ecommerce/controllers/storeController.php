@@ -1264,11 +1264,17 @@ class storeController extends expController {
             if (empty($group->option)) {
                 foreach ($mastergroup->option_master as $optionmaster) {
                     $opt = new option(array('title' => $optionmaster->title, 'option_master_id' => $optionmaster->id), false, false);
+                    if (!property_exists($editable_options[$group->title], "options")) {
+                        $editable_options[$group->title]->options = array();
+                    }
                     $editable_options[$group->title]->options[] = $opt;
                 }
 
             } else {
                 if (count($group->option) == count($mastergroup->option_master)) {
+                    if (!property_exists($editable_options[$group->title], "options")) {
+                        $editable_options[$group->title]->options = array();
+                    }
                     $editable_options[$group->title]->options = $group->option;
                 } else {
                     // check for any new options or deleted since the last time we edited this product
@@ -1279,7 +1285,9 @@ class storeController extends expController {
                         } else {
                             $opt = new option($opt_id);
                         }
-
+                        if (!property_exists($editable_options[$group->title], "options")) {
+                            $editable_options[$group->title]->options = array();
+                        }
                         $editable_options[$group->title]->options[] = $opt;
                     }
                 }

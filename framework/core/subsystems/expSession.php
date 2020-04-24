@@ -421,7 +421,7 @@ class expSession {
 	static function createTicket($user = null){
 		$ticket = new stdClass();
 		if (!isset($user->id)) $user = new user(0);
-		$ticket->uid = $user->id;
+		$ticket->uid = (integer)$user->id;
 		$ticket->ticket = uniqid("",true);
 		$ticket->last_active = time();
 		$ticket->start_time = time();
