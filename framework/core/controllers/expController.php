@@ -959,7 +959,7 @@ abstract class expController {
                 $container->title = $this->params['moduletitle'];
                 $container->action = $this->params['actions'];
                 $container->view = $this->params['views'];
-                $container->is_private = $this->params['is_private'];
+                $container->is_private = (bool)$this->params['is_private'];
                 $db->updateObject($container, 'container');
                 expSession::clearAllUsersSessionCache('containermodule');
             }

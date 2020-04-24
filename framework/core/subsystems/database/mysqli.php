@@ -448,11 +448,21 @@ class mysqli_database extends database {
      * @return mixed
      */
     function sql($sql, $escape = true) {
+        // attempt to circumvent strict mode
+        if (!DEVELOPMENT) {
+            if (stripos($sql, 'INSERT') === 0 || stripos($sql, 'UPDATE') === 0) {
+                if (stripos($sql, 'IGNORE') === false) {
+                    $sql = substr_replace($sql, " IGNORE", 6, 0);
+                }
+            }
+        }
 		if($escape == true) {
 			$res = @mysqli_query($this->connection, mysqli_real_escape_string($this->connection, $sql));
 		} else {
 			$res = @mysqli_query($this->connection, $sql);
 		}
+        if (DEVELOPMENT && !$res)
+            eLog($sql, 'sql Error');
         return $res;
     }
 
@@ -918,7 +928,7 @@ class mysqli_database extends database {
      */
     function insertObject($object, $table) {
         //if ($table=="text") eDebug($object,true);
-        $sql = "INSERT INTO `" . $this->prefix . "$table` (";
+        $sql = "INSERT " . (DEVELOPMENT ? "" : "IGNORE ") . "INTO `" . $this->prefix . "$table` (";
         $values = ") VALUES (";
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
@@ -951,6 +961,8 @@ class mysqli_database extends database {
             $id = mysqli_insert_id($this->connection);
             return $id;
         } else
+            if (DEVELOPMENT)
+               eLog($sql, 'insertObject Error');
             return 0;
     }
 
@@ -996,7 +1008,7 @@ class mysqli_database extends database {
             $this->trim_revisions($table, $object->$identifier, WORKFLOW_REVISION_LIMIT);
             return $res;
         }
-        $sql = "UPDATE " . $this->prefix . "$table SET ";
+        $sql = "UPDATE " . (DEVELOPMENT ? "" : "IGNORE ") . $this->prefix . "$table SET ";
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
             //if($is_revisioned && $var=='revision_id') $val++;
@@ -1033,6 +1045,8 @@ class mysqli_database extends database {
         }
         //if ($table == 'text') eDebug($sql,true);
         $res = (@mysqli_query($this->connection, $sql) != false);
+        if (DEVELOPMENT && !$res)
+            eLog($sql, 'updateObject Error');
         return $res;
     }
 
