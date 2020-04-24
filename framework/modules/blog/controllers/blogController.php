@@ -62,6 +62,7 @@ class blogController extends expController {
             'categorize'=> empty($this->config['usecategories']) ? false : $this->config['usecategories'],
             'groups'=>!isset($this->params['cat']) ? array() : array($this->params['cat']),
             'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+            'dontsortwithincat'=>true,
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
@@ -122,6 +123,9 @@ class blogController extends expController {
 	        }
 	    }
         if (!empty($blog_date)) {
+            if (!empty($this->config['yearcount'])) {
+                $blog_date = array_slice($blog_date, 0, $this->config['yearcount'], true);
+            }
             ksort($blog_date);
             $blog_date = array_reverse($blog_date,1);
             foreach ($blog_date as $key=>$val) {
