@@ -110,7 +110,7 @@
                                         {img h=16 w=16 zc=1 file_id=$section->expFile[0]->id return=1}
                                         {$image = 1}
                                     {elseif ((bs3()||bs4()) && !empty($section->glyph))}
-                                        <i class="fa fa-fw {$section->glyph}"></i>
+                                        <i class="fas fa-fw {$section->glyph}"></i>
                                         {$image = 1}
                                     {/if}
                                     {if ($image && !empty($section->glyph_only))}
@@ -126,7 +126,7 @@
                                         {img h=16 w=16 zc=1 file_id=$section->expFile[0]->id return=1 class='img_left'}
                                         {$image = 1}
                                     {elseif ((bs3()||bs4()) && !empty($section->glyph))}
-                                        <i class="fa fa-fw {$section->glyph}"></i>
+                                        <i class="fas fa-fw {$section->glyph}"></i>
                                         {$image = 1}
                                     {/if}
                                     {if ($image && !empty($section->glyph_only))}
@@ -149,34 +149,34 @@
                                 </td>
                                 <td>
                                     {if !empty($section->page_title)}
-                                        <i class="fa fa-fw fa-header" title="{$section->page_title}"></i>
+                                        <i class="fas fa-fw fa-heading" title="{$section->page_title}"></i>
                                     {else}
-                                        <i class="fa fa-fw fa-header text-warning" title="{'No page title'|gettext}"></i>
+                                        <i class="fas fa-fw fa-heading text-warning" title="{'No page title'|gettext}"></i>
                                     {/if}
                                     {if !empty($section->description)}
-                                        <i class="fa fa-fw fa-list-alt" title="{$section->description}"></i>
+                                        <i class="fas fa-fw fa-list-alt" title="{$section->description}"></i>
                                     {else}
-                                        <i class="fa fa-fw fa-list-alt text-warning" title="{'No page description'|gettext}"></i>
+                                        <i class="fas fa-fw fa-list-alt text-warning" title="{'No page description'|gettext}"></i>
                                     {/if}
                                     {if !empty($section->keywords)}
-                                        <i class="fa fa-fw fa-list-ul" title="{$section->keywords}"></i>
+                                        <i class="fas fa-fw fa-list-ul" title="{$section->keywords}"></i>
                                     {else}
-                                        <i class="fa fa-fw fa-list-ul text-warning" title="{'No page keywords'|gettext}"></i>
+                                        <i class="fas fa-fw fa-list-ul text-warning" title="{'No page keywords'|gettext}"></i>
                                     {/if}
                                     {if $section->public}
-                                        <i class="fa fa-fw fa-users" title="{'Public'|gettext}"></i>
+                                        <i class="fas fa-fw fa-users" title="{'Public'|gettext}"></i>
                                     {else}
-                                        <i class="fa fa-fw fa-user-secret text-danger" title="{'Private'|gettext}"></i>
+                                        <i class="fas fa-fw fa-user-secret text-danger" title="{'Private'|gettext}"></i>
                                     {/if}
                                     {if $section->active}
-                                        <i class="fa fa-fw fa-sign-out" title="{'Active'|gettext}"></i>
+                                        <i class="fas fa-fw fa-sign-out-alt" title="{'Active'|gettext}"></i>
                                     {else}
-                                        <i class="fa fa-fw fa-ban text-warning" title="{'Inactive'|gettext}"></i>
+                                        <i class="fas fa-fw fa-ban text-warning" title="{'Inactive'|gettext}"></i>
                                     {/if}
                                     {if $section->new_window}
-                                        <i class="fa fa-fw fa-share-square-o text-success" title="{'Open in New Window'|gettext}"></i>
+                                        <i class="fas fa-fw fa-share-square text-success" title="{'Open in New Window'|gettext}"></i>
                                     {else}
-                                        <i class="fa fa-fw fa-arrow-down" title="{'Open in-place'|gettext}"></i>
+                                        <i class="fas fa-fw fa-arrow-down" title="{'Open in-place'|gettext}"></i>
                                     {/if}
                                     {if $section->alias_type == 0}
                                         <span class="addpage" title="{'Normal page'|gettext}"></span>
@@ -201,7 +201,7 @@
                                                 {elseif $section->alias_type == 3}
                                                     {icon class=edit action=edit_freeform record=$section text=notext title="Edit this Page"|gettext}
                                                 {/if}
-                                                {icon class=delete action=scriptaction record=$section title='Delete'|gettext onclick="deleteNode(`$section->id`,`$section->alias_type`,'`$section->name`');" text=notext title="Delete this Page"|gettext}
+                                                {icon class=delete action=scriptaction record=$section title='Delete'|gettext onclick="deleteNode(`$section->id`,`$section->alias_type`,'`$section->name`');" text=notext title="Remove this Page"|gettext}
                                                 {if !$smarty.const.SIMPLE_PERMISSIONS}
                                                     {icon controller=users action=userperms mod=navigation int=$section->id img='userperms.png' text=notext title='Assign user permissions for this Page'|gettext}
                                                     {icon controller=users action=groupperms mod=navigation int=$section->id img='groupperms.png' text=notext title='Assign group permissions for this Page'|gettext}
@@ -268,7 +268,7 @@
                                         {img h=16 w=16 zc=1 file_id=$section->expFile[0]->id return=1 class='img_left'}
                                         {$image = 1}
                                     {elseif ((bs3()||bs4()) && !empty($section->glyph))}
-                                        <i class="fa fa-fw {$section->glyph}"></i>
+                                        <i class="fas fa-fw {$section->glyph}"></i>
                                         {$image = 1}
                                     {/if}
                                     {if ($image && !empty($section->glyph_only))}
@@ -284,7 +284,7 @@
                                         {img h=16 w=16 zc=1 file_id=$section->expFile[0]->id return=1 class='img_left'}
                                         {$image = 1}
                                     {elseif ((bs3()||bs4()) && !empty($section->glyph))}
-                                        <i class="fa fa-fw {$section->glyph}"></i>
+                                        <i class="fas fa-fw {$section->glyph}"></i>
                                         {$image = 1}
                                     {/if}
                                     {if ($image && !empty($section->glyph_only))}
@@ -307,34 +307,34 @@
                                 </td>
                                 <td>
                                     {if !empty($section->page_title)}
-                                        <i class="fa fa-fw fa-header" title="{$section->page_title}"></i>
+                                        <i class="fas fa-fw fa-heading" title="{$section->page_title}"></i>
                                     {else}
-                                        <i class="fa fa-fw fa-header text-warning" title="{'No page title'|gettext}"></i>
+                                        <i class="fas fa-fw fa-heading text-warning" title="{'No page title'|gettext}"></i>
                                     {/if}
                                     {if !empty($section->description)}
-                                        <i class="fa fa-fw fa-list-alt" title="{$section->description}"></i>
+                                        <i class="fas fa-fw fa-list-alt" title="{$section->description}"></i>
                                     {else}
-                                        <i class="fa fa-fw fa-list-alt text-warning" title="{'No page description'|gettext}"></i>
+                                        <i class="fas fa-fw fa-list-alt text-warning" title="{'No page description'|gettext}"></i>
                                     {/if}
                                     {if !empty($section->keywords)}
-                                        <i class="fa fa-fw fa-list-ul" title="{$section->keywords}"></i>
+                                        <i class="fas fa-fw fa-list-ul" title="{$section->keywords}"></i>
                                     {else}
-                                        <i class="fa fa-fw fa-list-ul text-warning" title="{'No page keywords'|gettext}"></i>
+                                        <i class="fas fa-fw fa-list-ul text-warning" title="{'No page keywords'|gettext}"></i>
                                     {/if}
                                     {if $section->public}
-                                        <i class="fa fa-fw fa-users" title="{'Public'|gettext}"></i>
+                                        <i class="fas fa-fw fa-users" title="{'Public'|gettext}"></i>
                                     {else}
-                                        <i class="fa fa-fw fa-user-secret text-danger" title="{'Private'|gettext}"></i>
+                                        <i class="fas fa-fw fa-user-secret text-danger" title="{'Private'|gettext}"></i>
                                     {/if}
                                     {if $section->active}
-                                        <i class="fa fa-fw fa-sign-out" title="{'Active'|gettext}"></i>
+                                        <i class="fas fa-fw fa-sign-out-alt" title="{'Active'|gettext}"></i>
                                     {else}
-                                        <i class="fa fa-fw fa-ban text-warning" title="{'Inactive'|gettext}"></i>
+                                        <i class="fas fa-fw fa-ban text-warning" title="{'Inactive'|gettext}"></i>
                                     {/if}
                                     {if $section->new_window}
-                                        <i class="fa fa-fw fa-share-square-o text-success" title="{'Open in New Window'|gettext}"></i>
+                                        <i class="fas fa-fw fa-share-square text-success" title="{'Open in New Window'|gettext}"></i>
                                     {else}
-                                        <i class="fa fa-fw fa-arrow-down" title="{'Open in-place'|gettext}"></i>
+                                        <i class="fas fa-fw fa-arrow-down" title="{'Open in-place'|gettext}"></i>
                                     {/if}
                                     {if $section->alias_type == 0}
                                         <span class="addpage" title="{'Normal page'|gettext}"></span>
@@ -386,10 +386,10 @@
 
     function deleteNode(id,alias_type,name) {
         if (alias_type==0){
-            var message = "{/literal}{"Deleting a content page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved"|gettext}{literal}";
+            var message = "{/literal}{"Removing a content page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved"|gettext}{literal}";
             var yesbtn = "{/literal}{"Move to Standalone"|gettext}{literal}";
         } else {
-            var message = "{/literal}{"Deleting an internal alias page or external link page permanently removes it from the system."|gettext}{literal}";
+            var message = "{/literal}{"Removing an internal alias page or external link page permanently removes it from the system."|gettext}{literal}";
             var yesbtn = "{/literal}{"Delete Page"|gettext}{literal}";
         }
         BootstrapDialog.show({

@@ -39,14 +39,14 @@
         {$btn_size = ''}
         {$icon_size = 'fa-lg'}
     {/if}
-    <a id="addtoicallist" class="btn btn-success {$btn_size}" href="#"><i class="fa fa-plus-circle {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
+    <a id="addtoicallist" class="btn btn-success {$btn_size}" href="#"><i class="fas fa-plus-circle {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current iCal Feeds"|gettext}</h4>
     <ul id="icalpull-feeds">
         {foreach from=$config.pull_ical item=feed name=feed}
             {if $feed!=""}
                 <li>
                     {control type="hidden" name="pull_ical[]" value=$feed}{control type=color label=$feed name="pull_ical_color[]" id="pull_ical_color`$smarty.foreach.feed.index`" value=$config.pull_ical_color[$smarty.foreach.feed.index] hide=1 flip=1}
-                    <a class="removeical btn {$btn_size} btn-danger" href="#"><i class="fa fa-times-circle {$icon_size}"></i> {"Remove"|gettext}</a>
+                    <a class="removeical btn {$btn_size} btn-danger" href="#"><i class="fas fa-times-circle {$icon_size}"></i> {"Remove"|gettext}</a>
                 </li>
             {/if}
         {/foreach}
@@ -72,7 +72,7 @@
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "removeical btn {/literal}{$btn_size}{literal} btn-danger";
-            newRemove.innerHTML = " {/literal}<i class='fa fa-times-circle {$icon_size}'></i> {'Remove'|gettext}{literal}";
+            newRemove.innerHTML = " {/literal}<i class='fas fa-times-circle {$icon_size}'></i> {'Remove'|gettext}{literal}";
 
             newli.appendChild(newLabel);
             newli.appendChild(newRemove);

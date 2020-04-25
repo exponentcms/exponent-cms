@@ -159,8 +159,8 @@
         <div class="row">
             <div class="col-sm-5 col-sm-push-5"><div class="row">{control type="dropdown" name="sortme" label="Sort By"|gettext items=$page->sort_dropdown default=$defaultSort horizontal=1}</div></div>
             <div class="btn-group pull-right list-grid">
-                <a href="#" id="list" class="btn btn-default btn-sm"><span class="fa fa-th-list"></span> {'List'|gettext}</a>
-                <a href="#" id="grid" class="btn btn-default btn-sm"><span class="fa fa-th"></span> {'Grid'|gettext}</a>
+                <a href="#" id="list" class="btn btn-default btn-sm"><span class="fas fa-th-list"></span> {'List'|gettext}</a>
+                <a href="#" id="grid" class="btn btn-default btn-sm"><span class="fas fa-th"></span> {'Grid'|gettext}</a>
             </div>
         </div>
         {script unique="sort-submit"}

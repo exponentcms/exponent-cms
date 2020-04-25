@@ -162,15 +162,15 @@
                                 return true;
                             }
                         },
-    					"label"				: "{/literal}{'Delete this Page'|gettext}{literal}",
+    					"label"				: "{/literal}{'Remove this Page'|gettext}{literal}",
     					"action"			: function (data) {
     						var inst = $.jstree.reference(data.reference),
     							obj = inst.get_node(data.reference);
                             if (obj.original.alias_type==0){
-                                var message = "{/literal}{"Deleting a content page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved"|gettext}{literal}";
+                                var message = "{/literal}{"Removing a content page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved"|gettext}{literal}";
                                 var btn = {"{/literal}{'Move to Standalone'|gettext}{literal}": true, "No": false};
                             } else {
-                                var message = "{/literal}{"Deleting an internal alias page or external link page permanently removes it from the system."|gettext}{literal}";
+                                var message = "{/literal}{"Removing an internal alias page or external link page permanently removes it from the system."|gettext}{literal}";
                                 var btn = {"{/literal}{'Delete Page'|gettext}{literal}": true, "No": false};
                             }
                             $.prompt(message, {

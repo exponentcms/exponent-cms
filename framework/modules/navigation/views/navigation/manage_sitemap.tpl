@@ -212,7 +212,7 @@
                                                 {elseif $section->alias_type == 3}
                                                     {icon class=edit action=edit_freeform record=$section text=notext img="edit.png" title="Edit this Page"|gettext}
                                                 {/if}
-                                                {icon img="delete.png" action=scriptaction record=$section title='Delete'|gettext onclick="EXPONENT.deleteNode(`$section->id`,`$section->alias_type`,'`$section->name`');" text=notext title="Delete this Page"|gettext}
+                                                {icon img="delete.png" action=scriptaction record=$section title='Delete'|gettext onclick="EXPONENT.deleteNode(`$section->id`,`$section->alias_type`,'`$section->name`');" text=notext title="Remove this Page"|gettext}
                                                 {if !$smarty.const.SIMPLE_PERMISSIONS}
                                                     {icon controller=users action=userperms mod=navigation int=$section->id img='userperms.png' text=notext title='Assign user permissions for this Page'|gettext}
                                                     {icon controller=users action=groupperms mod=navigation int=$section->id img='groupperms.png' text=notext title='Assign group permissions for this Page'|gettext}
@@ -416,10 +416,10 @@
                 this.hide();
             };
                if (alias_type == 0) {
-                var message = "{/literal}{"Deleting a content page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved"|gettext}{literal}";
+                var message = "{/literal}{"Removing a content page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved"|gettext}{literal}";
                    var yesbtn = "{/literal}{"Move to Standalone"|gettext}{literal}";
                } else {
-                   var message = "{/literal}{"Deleting an internal alias page or external link page permanently removes it from the system."|gettext}{literal}";
+                   var message = "{/literal}{"Removing an internal alias page or external link page permanently removes it from the system."|gettext}{literal}";
                    var yesbtn = "{/literal}{"Delete Page"|gettext}{literal}";
                }
 

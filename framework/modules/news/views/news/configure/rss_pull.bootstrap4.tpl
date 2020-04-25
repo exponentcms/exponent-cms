@@ -35,11 +35,11 @@
         {$btn_size = ''}
         {$icon_size = 'fa-lg'}
     {/if}
-    <a id="addtolist" class="btn btn-success {$btn_size}" href="#"><i class="fa fa-plus-circle {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
+    <a id="addtolist" class="btn btn-success {$btn_size}" href="#"><i class="fas fa-plus-circle {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current Feeds"|gettext}</h4>
     <ul id="rsspull-feeds">
         {foreach from=$config.pull_rss item=feed}
-            {if $feed!=""}<li>{control type="hidden" name="pull_rss[]" value=$feed}{$feed} <a class="removerss btn {$btn_size} btn-danger" href="#"><i class="fa fa-times-circle {$icon_size}"></i> {"Remove"|gettext}</a></li>{/if}
+            {if $feed!=""}<li>{control type="hidden" name="pull_rss[]" value=$feed}{$feed} <a class="removerss btn {$btn_size} btn-danger" href="#"><i class="fas fa-times-circle {$icon_size}"></i> {"Remove"|gettext}</a></li>{/if}
         {/foreach}
         <li id="norssfeeds">{'You don\'t have any RSS feeds configured'|gettext}</li>
     </ul>
@@ -59,7 +59,7 @@
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "removerss btn {/literal}{$btn_size}{literal} btn-danger";
-            newRemove.innerHTML = " {/literal}<i class='fa fa-times-circle {$icon_size}'></i> {'Remove'|gettext}{literal}";
+            newRemove.innerHTML = " {/literal}<i class='fas fa-times-circle {$icon_size}'></i> {'Remove'|gettext}{literal}";
             newli.appendChild(newLabel);
             newli.appendChild(newRemove);
             var list = Y.one('#rsspull-feeds');
