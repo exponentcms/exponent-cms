@@ -30,7 +30,7 @@ class user_avatar extends expRecord {
 	/**
 	 * @return string
 	 */
-	public function name() { return 'Avatars'; }
+	public function name() { return 'Avatar'; }
 
 	/**
 	 * @return string

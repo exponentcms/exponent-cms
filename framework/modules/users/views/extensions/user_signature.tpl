@@ -14,7 +14,7 @@
  *}
 
 <div class="module users extension signature">
-    {control type="editor" name="signature" label="Signature"|gettext rows=7 cols=35 value=$edit_user->signature}
+    {control type="editor" name="signature" label="Signature"|gettext rows=7 cols=35 value=$edit_user->signature description='Automatically added to end of blog posts if so configured with that blog module'|gettext}
 {*    {control type="text" name="googleplus" label="Google+ Profile Name"|gettext rows=7 cols=35 value=$edit_user->googleplus description='Also requires adding a custom link to this site in the \'Contributor To\' section of your Google+ profile'|gettext}*}
 </div>
 

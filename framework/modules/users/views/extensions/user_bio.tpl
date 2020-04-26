@@ -14,7 +14,7 @@
  *}
 
 <div class="module users extension bio">
-    {control type="textarea" name="bio" label="Biography"|gettext rows=7 cols=35 value=$edit_user->bio}
+    {control type="editor" name="bio" label="Biography"|gettext rows=7 cols=35 value=$edit_user->bio}
 </div>
 
 

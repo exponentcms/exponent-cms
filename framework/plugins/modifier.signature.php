@@ -32,11 +32,11 @@
  *
  * @return string
  */
-function smarty_modifier_signature($userid) {
+function smarty_modifier_signature($userid, $header=false) {
 	global $db;
 
     $sig = $db->selectValue('user_signature','signature','user_id='.(int)($userid));
-    if (!empty($sig)) {
+    if (!empty($sig) && $header) {
         $sig = '<h3>'.gt('About the author').'</h3>'.$sig;
     }
 //    $googleplus = $db->selectValue('user_signature','googleplus','user_id='.(int)($userid));

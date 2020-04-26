@@ -14,7 +14,7 @@
  *}
 
 <div class="module users extension subscriptions">
-    <h3>{'You are currently subscribed to receive email alerts for the following topics'|gettext}</h3>
+    <h4>{'You are currently subscribed to receive email alerts for the following topics'|gettext}</h4>
     {foreach from=$edit_user->expeAlerts item=ealert}
         {control type=checkbox name="expeAlert[]" value=$ealert->id label=$ealert->module|getcontrollerdisplayname|cat:' - '|cat:$ealert->ealert_title checked=true}
     {foreachelse}
