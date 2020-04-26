@@ -51,19 +51,33 @@ class filedownload extends expRecord {
             $this->meta_tw['twimage'][0] = new expFile($this->meta_tw['twimage'][0]);
 
         if (!empty($this->id)) {
-            include_once(BASE.'external/mp3file.php');
-            if (!empty($this->expFile['downloadable'][0]) && ($this->expFile['downloadable'][0]->mimetype == "audio/mpeg") && (file_exists(BASE.$this->expFile['downloadable'][0]->directory.$this->expFile['downloadable'][0]->filename))) {
-                $mp3 = new mp3file(BASE.$this->expFile['downloadable'][0]->directory.$this->expFile['downloadable'][0]->filename);
-                $id3 = $mp3->get_metadata();
-                if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
-                    $this->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
+            if (!empty($this->expFile['downloadable'][0]) && (file_exists(BASE . $this->expFile['downloadable'][0]->directory . $this->expFile['downloadable'][0]->filename))) {
+                $id3 = expFile::getAVInfo(BASE . $this->expFile['downloadable'][0]->directory . $this->expFile['downloadable'][0]->filename);
+                if (!empty($id3['playtime_string'])) {
+                    $this->expFile['downloadable'][0]->duration = $id3['playtime_string'];
                 }
-                if (!empty($this->meta_fb['fbimage']) && !empty($this->meta_fb['fbimage'][0]->id))
-                    $this->meta_fb['type'] = 'audio';
-            } elseif (!empty($this->expFile['downloadable'][0]) && (($this->expFile['downloadable'][0]->mimetype == "video/mp4") || ($this->expFile['downloadable'][0]->mimetype == "application/x-shockwave-flash")) && (file_exists(BASE.$this->expFile['downloadable'][0]->directory.$this->expFile['downloadable'][0]->filename))) {
-                if (!empty($this->meta_fb['fbimage']) && !empty($this->meta_fb['fbimage'][0]->id))
-                    $this->meta_fb['type'] = 'video';
+                if (!empty($this->meta_fb['fbimage']) && !empty($this->meta_fb['fbimage'][0]->id)) {
+                    if (isset($id3['video'])) {
+                        $this->meta_fb['type'] = 'video';
+                    } elseif (isset($id3['audio'])) {
+                        $this->meta_fb['type'] = 'audio';
+                    }
+                }
             }
+
+//            include_once(BASE.'external/mp3file.php');
+//            if (!empty($this->expFile['downloadable'][0]) && ($this->expFile['downloadable'][0]->mimetype === "audio/mpeg") && (file_exists(BASE.$this->expFile['downloadable'][0]->directory.$this->expFile['downloadable'][0]->filename))) {
+//                $mp3 = new mp3file(BASE.$this->expFile['downloadable'][0]->directory.$this->expFile['downloadable'][0]->filename);
+//                $id3 = $mp3->get_metadata();
+//                if (($id3['Encoding']==='VBR') || ($id3['Encoding']==='CBR')) {
+//                    $this->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
+//                }
+//                if (!empty($this->meta_fb['fbimage']) && !empty($this->meta_fb['fbimage'][0]->id))
+//                    $this->meta_fb['type'] = 'audio';
+//            } elseif (!empty($this->expFile['downloadable'][0]) && (($this->expFile['downloadable'][0]->mimetype === "video/mp4") || ($this->expFile['downloadable'][0]->mimetype === "application/x-shockwave-flash")) && (file_exists(BASE.$this->expFile['downloadable'][0]->directory.$this->expFile['downloadable'][0]->filename))) {
+//                if (!empty($this->meta_fb['fbimage']) && !empty($this->meta_fb['fbimage'][0]->id))
+//                    $this->meta_fb['type'] = 'video';
+//            }
         }
     }
 

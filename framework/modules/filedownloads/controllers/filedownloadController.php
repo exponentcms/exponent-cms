@@ -67,15 +67,21 @@ class filedownloadController extends expController {
             ),
         ));
 
-        include_once(BASE.'external/mp3file.php');
+//        include_once(BASE.'external/mp3file.php');
         foreach ($page->records as $file) {
-            if (!empty($file->expFile['downloadable'][0]) && ($file->expFile['downloadable'][0]->mimetype == "audio/mpeg") && (file_exists(BASE.$file->expFile['downloadable'][0]->directory.$file->expFile['downloadable'][0]->filename))) {
-                $mp3 = new mp3file(BASE.$file->expFile['downloadable'][0]->directory.$file->expFile['downloadable'][0]->filename);
-                $id3 = $mp3->get_metadata();
-                if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
-                    $file->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
+            if (!empty($file->expFile['downloadable'][0]) && ($file->expFile['downloadable'][0]->mimetype === "audio/mpeg" || $file->expFile['downloadable'][0]->mimetype === "video/mpeg") && (file_exists(BASE.$file->expFile['downloadable'][0]->directory.$file->expFile['downloadable'][0]->filename))) {
+                $id3 = expFile::getAVInfo(BASE . $file->expFile['downloadable'][0]->directory . $file->expFile['downloadable'][0]->filename);
+                if (!empty($id3['playtime_string'])) {
+                    $file->expFile['downloadable'][0]->duration = $id3['playtime_string'];
                 }
             }
+//            if (!empty($file->expFile['downloadable'][0]) && ($file->expFile['downloadable'][0]->mimetype == "audio/mpeg") && (file_exists(BASE.$file->expFile['downloadable'][0]->directory.$file->expFile['downloadable'][0]->filename))) {
+//                $mp3 = new mp3file(BASE.$file->expFile['downloadable'][0]->directory.$file->expFile['downloadable'][0]->filename);
+//                $id3 = $mp3->get_metadata();
+//                if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
+//                    $file->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
+//                }
+//            }
         }
 
 		assign_to_template(array(
@@ -218,7 +224,7 @@ class filedownloadController extends expController {
     }
 
     function getRSSContent($limit = 0) {
-        include_once(BASE.'external/mp3file.php');
+//        include_once(BASE.'external/mp3file.php');
 
         $fd = new filedownload();
         $items = $fd->find('all',$this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'created_at DESC', $limit);
@@ -262,19 +268,31 @@ class filedownloadController extends expController {
             if (!empty($tags)) {
                 $rss_item->itunes->keywords = $tags;
             }
-            if (($rss_item->enclosure->type == "audio/mpg") && (file_exists(BASE.$item->expFile['downloadable'][0]->directory.$item->expFile['downloadable'][0]->filename))) {
-                $mp3 = new mp3file(BASE.$item->expFile['downloadable'][0]->directory.$item->expFile['downloadable'][0]->filename);
-                $id3 = $mp3->get_metadata();
-                if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
-                    $rss_item->itunes->duration = $id3['Length mm:ss'];
+            if (($rss_item->enclosure->type === "audio/mpg" || $rss_item->enclosure->type === "video/mpg") && (file_exists(BASE.$item->expFile['downloadable'][0]->directory.$item->expFile['downloadable'][0]->filename))) {
+                $id3 = expFile::getAVInfo(BASE . $item->expFile['sermonaudio'][0]->directory . $item->expFile['sermonaudio'][0]->filename);
+                if (!empty($id3['playtime_string'])) {
+                    $rss_item->itunes->duration = $id3['playtime_string'];
                 }
-                if (!empty($id3['artist'])) {
-                    $rss_item->author = $id3['artist'];
-                    $rss_item->itunes->author = $id3['artist'];
+                if (!empty($id3['comments']['artist'])) {
+                    $rss_item->author = $id3['comments']['artist'][0];
+                    $rss_item->itunes->author = $id3['comments']['artist'][0];
                 }
-                if (!empty($id3['comment'])) {
-                    $rss_item->itunes->subtitle = $id3['comment'];
+                if (!empty($id3['comments']['comment'])) {
+                    $rss_item->itunes->subtitle = $id3['comments']['comment'][0];
                 }
+
+//                $mp3 = new mp3file(BASE.$item->expFile['downloadable'][0]->directory.$item->expFile['downloadable'][0]->filename);
+//                $id3 = $mp3->get_metadata();
+//                if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
+//                    $rss_item->itunes->duration = $id3['Length mm:ss'];
+//                }
+//                if (!empty($id3['artist'])) {
+//                    $rss_item->author = $id3['artist'];
+//                    $rss_item->itunes->author = $id3['artist'];
+//                }
+//                if (!empty($id3['comment'])) {
+//                    $rss_item->itunes->subtitle = $id3['comment'];
+//                }
             } else {
                 $rss_item->itunes->duration = 'Unknown';
             }

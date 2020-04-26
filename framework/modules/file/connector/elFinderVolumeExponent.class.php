@@ -73,7 +73,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
 
         $path = $this->decode($target);
         $file = self::_get_expFile($path);
-        $newshared = mb_strtoupper(trim($newshared)) === mb_strtoupper("true") ? true : false;
+        $newshared = mb_strtoupper(trim($newshared)) === mb_strtoupper("true");
         $shared = !empty($file->shared);
         if ($newshared != $shared && ($file->poster == $user->id || $user->isAdmin())) {
             $file->update(array('shared' => $newshared));
@@ -280,7 +280,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
             while(false !== ( $file = readdir($dir)) ) {
                 if ($file !== "." && $file !== ".." && is_dir("$npath/$file")) {
                     $this->scan_folder("$npath/$file", "$opath");
-                } elseif (substr($file, 0, 1) !== '.') {
+                } elseif ($file[0] !== '.') {
                     if (file_exists($npath . '/' . $file)) $this->_move_expFile(BASE . $opath . "/" . $file, $npath);
                 }
             }
@@ -305,11 +305,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $result = parent::stat($path);
         // we don't include directories nor dot files in expFiles
         if ($result && !empty($result['mime'])) {
-            if ($result['mime'] !== 'directory' && substr(
-                    $result['name'],
-                    0,
-                    1
-                ) != '.'
+            if ($result['mime'] !== 'directory' && strpos($result['name'], '.') !== 0
             ) {
                 $file = self::_get_expFile($path);
                 if (!$user->isAdmin() && $file->poster != $user->id) {
