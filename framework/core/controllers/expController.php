@@ -1044,7 +1044,7 @@ abstract class expController {
             $rss_item->title = expString::convertSmartQuotes($item->title);
             $rss_item->link = $rss_item->guid = makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $item->sef_url));
             $rss_item->description = expString::convertSmartQuotes($item->body);
-            $rss_item->author = user::getUserById($item->poster)->firstname . ' ' . user::getUserById($item->poster)->lastname;
+            $rss_item->author = user::getUserAttribution($item->poster);
             $rss_item->authorEmail = user::getEmailById($item->poster);
 //            $rss_item->date = isset($item->publish_date) ? date(DATE_RSS, $item->publish_date) : date(DATE_RSS, $item->created_at);
             $rss_item->date = isset($item->publish_date) ? $item->publish_date : $item->created_at;

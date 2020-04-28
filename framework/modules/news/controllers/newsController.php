@@ -251,7 +251,7 @@ class newsController extends expController {
             $rss_item->title = expString::convertSmartQuotes($item->title);
             $rss_item->link = $rss_item->guid = makeLink(array('controller'=>'news', 'action'=>'show', 'title'=>$item->sef_url));
             $rss_item->description = expString::convertSmartQuotes($item->body);
-            $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
+            $rss_item->author = user::getUserAttribution($item->poster);
             $rss_item->authorEmail = user::getEmailById($item->poster);
 //            $rss_item->date = date(DATE_RSS,$item->publish_date);
             $rss_item->date = $item->publish_date;

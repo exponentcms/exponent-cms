@@ -167,30 +167,30 @@ class blogController extends expController {
         );
 	}
 
-	public function showall_by_author() {
-	    expHistory::set('viewable', $this->params, true);
+    public function showall_by_author() {
+        expHistory::set('viewable', $this->params, true);
 
         $this->params['author'] = expString::escape($this->params['author']);
         $user = user::getUserByName($this->params['author']);
-		$page = new expPaginator(array(
-            'model'=>$this->basemodel_name,
-            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."poster=".$user->id,
-            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
-            'order'=>'publish',
-            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
-            'controller'=>$this->baseclassname,
-            'action'=>$this->params['action'],
-            'src'=>$this->loc->src,
-            'columns'=>array(
-                gt('Title')=>'title'
+        $page = new expPaginator(array(
+            'model' => $this->basemodel_name,
+            'where' => ($this->aggregateWhereClause() ? $this->aggregateWhereClause() . " AND " : "") . "poster=" . $user->id,
+            'limit' => isset($this->config['limit']) ? $this->config['limit'] : 10,
+            'order' => 'publish',
+            'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller' => $this->baseclassname,
+            'action' => $this->params['action'],
+            'src' => $this->loc->src,
+            'columns' => array(
+                gt('Title') => 'title'
             ),
         ));
 
-		assign_to_template(array(
-            'page'=>$page,
-            'moduletitle'=>gt('Blogs by author').' "'.$this->params['author'].'"'
+        assign_to_template(array(
+            'page' => $page,
+            'moduletitle' => gt('Blogs by author') . ' "' . user::getUserAttribution($user->id) . '"'
         ));
-	}
+    }
 
 	public function show() {
         expHistory::set('viewable', $this->params, true);

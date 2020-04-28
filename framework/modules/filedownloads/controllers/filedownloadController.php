@@ -257,7 +257,7 @@ class filedownloadController extends expController {
             $rss_item->itunes = new iTunes();
             $rss_item->itunes->subtitle = expString::convertSmartQuotes($item->title);
             $rss_item->itunes->summary = expString::convertSmartQuotes($item->body);
-            $rss_item->itunes->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
+            $rss_item->itunes->author = user::getUserAttribution($item->poster);
             $image = reset($item->expFile);
             if (!empty($image[0]->is_image))
                 $rss_item->itunes->image = $image[0]->url;
