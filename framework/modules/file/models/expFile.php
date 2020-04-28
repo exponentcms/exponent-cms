@@ -29,7 +29,7 @@
  * @package    Modules
  *
  */
-/** @define "BASE" "../../.." */
+/** @define "BASE" "../../../.." */
 class expFile extends expRecord {
 
 // ==========================================================

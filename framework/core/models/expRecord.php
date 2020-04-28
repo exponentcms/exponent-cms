@@ -62,6 +62,7 @@ class expRecord {
 
     // field validation settings
     public $validate = array();
+    public $validates = array();
     public $do_not_validate = array();
 
     public $supports_revisions = false;  // simple flag to turn on revisions/approval support for module

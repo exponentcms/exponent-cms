@@ -63,8 +63,8 @@ class expCommentController extends expController {
 
 	    expHistory::set('manageable', $this->params);
 
-        $order = 'approved';
-        $dir = 'ASC';
+//        $order = 'approved';
+//        $dir = 'ASC';
         /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
 //        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
@@ -85,8 +85,8 @@ class expCommentController extends expController {
 //            'model'=>'expComment',
             'sql'=>$sql,
             'limit'=>10,
-            'order'=>$order,
-            'dir'=>$dir,
+            'order'=>isset($this->params['order']) ? $this->params['order'] : 'approved',
+            'dir'=>isset($this->params['dir']) ? $this->params['dir'] : 'ASC',
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
