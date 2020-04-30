@@ -304,15 +304,15 @@ abstract class expController {
      * glue to make the view template aware of the module
      * @deprecated
      */
-    public function moduleSelfAwareness() {
-        assign_to_template(array(
-            'asset_path' => $this->asset_path,
-            'model_name' => $this->basemodel_name,
-            'table'      => $this->model_table,
-            'controller' => $this->baseclassname,
-            'config'     => $this->config
-        ));
-    }
+//    public function moduleSelfAwareness() {
+//        assign_to_template(array(
+//            'asset_path' => $this->asset_path,
+//            'model_name' => $this->basemodel_name,
+//            'table'      => $this->model_table,
+//            'controller' => $this->baseclassname,
+//            'config'     => $this->config
+//        ));
+//    }
 
     /**
      * default module view method for all items

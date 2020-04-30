@@ -579,7 +579,7 @@ class expJavascript {
        	    }
     	    if (!empty($params['src'])) {
                 if (is_array($params['src'])) {
-                    foreach ($params['src'] as$url) {
+                    foreach ($params['src'] as $url) {
                         echo '<script type="text/javascript" src="', $url, '"></script>';
                     }
                 } else {
