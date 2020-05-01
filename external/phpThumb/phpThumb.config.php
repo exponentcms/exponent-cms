@@ -11,11 +11,13 @@
 //                                                         ///
 //////////////////////////////////////////////////////////////
 
-define('phpThumbConfigFileVersion', '1.7.14');
+define('phpThumbConfigFileVersion', '1.7.15');
 ob_start();
-if (!file_exists(dirname(__FILE__).'/phpthumb.functions.php') || !include_once(dirname(__FILE__).'/phpthumb.functions.php')) {
+if (!class_exists('phpthumb_functions')) { // normally include_once should take care of this, but see https://github.com/JamesHeinrich/phpThumb/issues/94
+	if (!file_exists( __DIR__ .'/phpthumb.functions.php') || !include_once( __DIR__ .'/phpthumb.functions.php')) {
 	ob_end_flush();
-	die('failed to include_once(phpthumb.functions.php) - realpath="'.realpath(dirname(__FILE__).'/phpthumb.functions.php').'"');
+		die('failed to include_once(phpthumb.functions.php) - realpath="'.realpath( __DIR__ .'/phpthumb.functions.php').'"');
+	}
 }
 ob_end_clean();
 
@@ -23,6 +25,8 @@ ob_end_clean();
 
 /****************************************************************************************/
 /* START USER CONFIGURATION SECTION: */
+global $PHPTHUMB_CONFIG;  // declare as global to prevent scope issues (when including phpThumb.config.php inside functions inside included files, etc)
+$PHPTHUMB_CONFIG = array();
 
 // * DocumentRoot configuration
 // phpThumb() depends on $_SERVER['DOCUMENT_ROOT'] to resolve path/filenames. This value is usually correct,
@@ -32,7 +36,7 @@ ob_end_clean();
 //$PHPTHUMB_CONFIG['document_root'] = 'c:\\webroot\\example.com\\www';
 //$PHPTHUMB_CONFIG['document_root'] = $_SERVER['DOCUMENT_ROOT'];
 //$PHPTHUMB_CONFIG['document_root'] = realpath((@$_SERVER['DOCUMENT_ROOT'] && file_exists(@$_SERVER['DOCUMENT_ROOT'].$_SERVER['PHP_SELF'])) ? $_SERVER['DOCUMENT_ROOT'] : str_replace(dirname(@$_SERVER['PHP_SELF']), '', str_replace(DIRECTORY_SEPARATOR, '/', realpath('.'))));
-$PHPTHUMB_CONFIG['document_root'] = realpath((getenv('DOCUMENT_ROOT') && preg_match('#^'.preg_quote(realpath(getenv('DOCUMENT_ROOT'))).'#', realpath(__FILE__))) ? getenv('DOCUMENT_ROOT') : str_replace(dirname(@$_SERVER['PHP_SELF']), '', str_replace(DIRECTORY_SEPARATOR, '/', dirname(__FILE__))));
+$PHPTHUMB_CONFIG['document_root'] = realpath((getenv('DOCUMENT_ROOT') && preg_match('#^'.preg_quote(realpath(getenv('DOCUMENT_ROOT'))).'#', realpath(__FILE__))) ? getenv('DOCUMENT_ROOT') : str_replace(dirname(@$_SERVER['PHP_SELF']), '', str_replace(DIRECTORY_SEPARATOR, '/',  __DIR__ )));
 
 
 // * Security configuration
@@ -183,7 +187,7 @@ $PHPTHUMB_CONFIG['border_hexcolor']     = '000000'; // Default border color - us
 $PHPTHUMB_CONFIG['background_hexcolor'] = 'FFFFFF'; // Default background color when thumbnail aspect ratio does not match fixed-dimension box - usual HTML-style hex color notation (overridden with 'bg' parameter)
 
 // * Watermark configuration
-$PHPTHUMB_CONFIG['ttf_directory'] = dirname(__FILE__).'/fonts'; // Base directory for TTF font files
+$PHPTHUMB_CONFIG['ttf_directory'] =  __DIR__ .DIRECTORY_SEPARATOR.'fonts'; // Base directory for TTF font files
 //$PHPTHUMB_CONFIG['ttf_directory'] = 'c:/windows/fonts';
 
 
@@ -252,6 +256,7 @@ $PHPTHUMB_DEFAULTS_DISABLEGETPARAMS  = false; // if true, GETstring parameters w
 //   require_once('phpThumb/phpThumb.config.php');
 //   echo '<img src="'.htmlspecialchars(phpThumbURL('src=/images/pic.jpg&w=50', '/phpThumb/phpThumb.php')).'">';
 
+$GLOBALS['PHPTHUMB_CONFIG'] = $PHPTHUMB_CONFIG;
 function phpThumbURL($ParameterString, $path_to_phpThumb='phpThumb.php') {
 	global $PHPTHUMB_CONFIG;
 	if (is_array($ParameterString)) {
