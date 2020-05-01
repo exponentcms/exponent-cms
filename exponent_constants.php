@@ -661,7 +661,7 @@ if (!defined('RANDOM_VERSION')) {
  * FPDI is needed for MPDF v8+
  */
 if (!defined('FPDI_VERSION')) {
-    define('FPDI_VERSION', '2.3.2');
+    define('FPDI_VERSION', '2.3.3');
 }
 
 if (!defined('DOMPDF8_VERSION')) {
