@@ -61,17 +61,17 @@
                 {$mainimg=$product->expFile.imagesforswatches.0}
             {else}
                 {* Single Image *}
-                {if $config.enable_lightbox}
-                    <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]" id="enlarged-image-link">
-                {/if}
+{*                {if $config.enable_lightbox}*}
+{*                    <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]" id="enlarged-image-link">*}
+{*                {/if}*}
                 {if $product->expFile.mainimage[0]->id != ""}
                     {img file_id=$product->expFile.mainimage[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`"  class="large-img" id="enlarged-image" itemprop=1}
                 {else}
                     {img src="`$asset_path`images/no-image.jpg" w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image" itemprop=1}
                 {/if}
-                {if $config.enable_lightbox}
-                    </a>
-                {/if}
+{*                {if $config.enable_lightbox}*}
+{*                    </a>*}
+{*                {/if}*}
                 {$mainimg=$product->expFile.mainimage.0}
             {/if}
 
@@ -80,15 +80,15 @@
                 <div class="additional thumbnails">
                     <h3>{"Additional Images"|gettext}</h3>
                     <ul>
-                        {*<li>*}
-                            {*{if $config.enable_lightbox}*}
-                                {*<a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$mainimg->title|default:$product->title}" rel="lightbox[g{$product->id}]">*}
-                            {*{/if}*}
-                            {*{img file_id=$product->expFile.mainthumbnail[0]->id|default:$mainimg->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$mainimg->id`"}*}
-                            {*{if $config.enable_lightbox}*}
-                                {*</a>*}
-                            {*{/if}*}
-                        {*</li>*}
+                        <li>
+                            {if $config.enable_lightbox}
+                                <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$mainimg->title|default:$product->title}" rel="lightbox[g{$product->id}]">
+                            {/if}
+                            {img file_id=$product->expFile.mainthumbnail[0]->id|default:$mainimg->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$mainimg->id`"}
+                            {if $config.enable_lightbox}
+                                </a>
+                            {/if}
+                        </li>
                         {foreach from=$product->expFile.images item=thmb}
                             <li>
                                 {if $config.enable_lightbox}
@@ -155,7 +155,7 @@
                 {/literal}
                 {/script}
             {/if}
-            {script unique="thumbswap-shadowbox2" yui3mods="node"}
+            {script unique="thumbswap-shadowbox2" yui3mods="node,event-hover,transition"}
             {literal}
                 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                     var thumbs = Y.all('.thumbnails li img.thumbnail');
