@@ -415,8 +415,10 @@ class filemanagercontrol extends formcontrol {
         //$cycle = "odd";
         $html='';
         foreach($filearray as $val) {
+            $filetitle = !empty($val->title) ? $val->title : $val->filename;
             if ($val->mimetype === "image/png" || $val->mimetype === "image/gif" || $val->mimetype === "image/jpeg" || $val->mimetype === "image/pjpeg" || $val->mimetype === "image/x-png") {
                 $filepic = "<img class=\"filepic\" src=\"" . PATH_RELATIVE . "thumb.php?id=" . $val->id . "&amp;w=24&amp;h=24&amp;zc=1\">";
+                $filetitle .= " (" . $val->image_width . " x " . $val->image_height . ")";
             } elseif ($val->mimetype === "audio/mpeg") {
                 $filepic = "<img class=\"filepic\" src='" . MIMEICON_RELATIVE . "audio_22x22.png'>";
             } elseif ($val->mimetype === "video/x-flv" || $val->mimetype === "video/mp4" || $val->mimetype === "video/x-m4v" || $val->mimetype === "video/webm" || $val->mimetype === "video/ogg") {
@@ -426,7 +428,6 @@ class filemanagercontrol extends formcontrol {
             } else {
                 $filepic = "<img class=\"filepic\" src='" . MIMEICON_RELATIVE . "generic_22x22.png'>";
             }
-            $filetitle = !empty($val->title) ? $val->title : $val->filename;
             $html .= "<li data-id='".$filetitle."'>";
             $html .= "<input type=\"hidden\" name=\"".$subTypeName."\" value=\"".$val->id."\">";
             //$html .= "<div class=\"fpdrag\"></div>";

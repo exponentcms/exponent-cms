@@ -382,8 +382,10 @@ class filemanagercontrol extends formcontrol {
         //$cycle = "odd";
         $html='';
         foreach($filearray as $val) {
+            $filetitle = !empty($val->title) ? $val->title : $val->filename;
             if ($val->mimetype === "image/png" || $val->mimetype === "image/gif" || $val->mimetype === "image/jpeg" || $val->mimetype === "image/pjpeg" || $val->mimetype === "image/x-png") {
                 $filepic = "<img class=\"filepic\" src=\"" . PATH_RELATIVE . "thumb.php?id=" . $val->id . "&amp;w=24&amp;h=24&amp;zc=1\">";
+                $filetitle .= " (" . $val->image_width . " x " . $val->image_height . ")";
             } elseif ($val->mimetype === "audio/mpeg") {
                 $filepic = "<img class=\"filepic\" src='" . MIMEICON_RELATIVE . "audio_22x22.png'>";
             } elseif ($val->mimetype === "video/x-flv" || $val->mimetype === "video/mp4" || $val->mimetype === "video/x-m4v" || $val->mimetype === "video/webm" || $val->mimetype === "video/ogg") {
@@ -399,7 +401,6 @@ class filemanagercontrol extends formcontrol {
             $icon = expTheme::buttonIcon('delete');
             $html .= "<a class=\"btn btn-danger btn-sm\" rel=\"imgdiv".$val->id."\" href='javascript:{}' title=\"".gt('Remove this file')."\"><i class=\"fa fa-" . $icon->class . " " . $icon->size . "\"></i> </a>";
             $html .= $filepic;
-            $filetitle = !empty($val->title) ? $val->title : $val->filename;
             $html .= "<span class=\"filename\" title=\"".$val->filename."\">".$filetitle."</span>";
             $html .= "</li>";
             //$cycle = $cycle=="odd" ? "even" : "odd";
