@@ -52,11 +52,14 @@ class expRatingController extends expController {
 
         // attach the rating to the datatype it belongs to (blog, news, etc..);
         $obj = new stdClass();
+        $obj->expratings_id = $rating->id;
+        $obj->content_id = $this->params['content_id'];
 		$obj->content_type = $this->params['content_type'];
-		$obj->content_id = $this->params['content_id'];
-		$obj->expratings_id = $rating->id;
-		$obj->poster = $rating->poster;
-		if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
+		if(isset($this->params['subtype']))
+		    $obj->subtype = $this->params['subtype'];
+		else
+            $obj->subtype = '';
+        $obj->poster = $rating->poster;
 		$db->insertObject($obj, $rating->attachable_table);
 
         $ar = new expAjaxReply(200,$msg);

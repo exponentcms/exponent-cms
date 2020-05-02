@@ -39,9 +39,9 @@ class expComment extends expRecord {
         if ($this->id) {
             // attach the comment to the datatype it belongs to (blog, news, etc..);
             $obj = new stdClass();
-            $obj->content_type = $content_type;
-            $obj->content_id = $content_id;
             $obj->expcomments_id = $this->id;
+            $obj->content_id = $content_id;
+            $obj->content_type = $content_type;
             if(isset($subtype))
                 $obj->subtype = $subtype;
             else

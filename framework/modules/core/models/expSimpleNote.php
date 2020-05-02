@@ -44,10 +44,13 @@ class expSimpleNote extends expRecord {
         if ($this->id) {
             // attach the note to the datatype it belongs to (product, order, etc..);
             $obj = new stdClass();
-            $obj->content_type = $content_type;
-            $obj->content_id = $content_id;
             $obj->expsimplenote_id = $this->id;
-            if(isset($subtype)) $obj->subtype = $subtype;
+            $obj->content_id = $content_id;
+            $obj->content_type = $content_type;
+            if(isset($subtype))
+                $obj->subtype = $subtype;
+            else
+                $obj->subtype = '';
             $db->insertObject($obj, $this->attachable_table);
         }
     }
