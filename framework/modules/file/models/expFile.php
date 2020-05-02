@@ -321,6 +321,17 @@ class expFile extends expRecord {
         if (empty($this->posted))
             $this->posted = time();
         $this->last_accessed = time();
+
+        // reassess image file info in case it was changed externally (resized?)
+        $_fileInfo = self::getImageInfo($this->path);
+        // Assign info back to class
+        $this->is_image = !empty($_fileInfo['is_image']) ? $_fileInfo['is_image'] : false;
+        $this->filesize = !empty($_fileInfo['fileSize']) ? $_fileInfo['fileSize'] : 0;
+        if (!empty($_fileInfo['mime'])) $this->mimetype = $_fileInfo['mime'];
+        if (!empty($_fileInfo['is_image'])) {
+            $this->image_width = $_fileInfo[0];
+            $this->image_height = $_fileInfo[1];
+        }
     }
 
     public function afterDelete() {

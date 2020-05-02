@@ -288,6 +288,34 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         }
     }
 
+    /**
+     * Resize image
+     *
+     * @param  string $hash       image file
+     * @param  int    $width      new width
+     * @param  int    $height     new height
+     * @param  int    $x          X start poistion for crop
+     * @param  int    $y          Y start poistion for crop
+     * @param  string $mode       action how to mainpulate image
+     * @param  string $bg         background color
+     * @param  int    $degree     rotete degree
+     * @param  int    $jpgQuality JEPG quality (1-100)
+     *
+     * @return array|false
+     * @throws ImagickException
+     * @throws elFinderAbortException
+     * @author Dmitry (dio) Levashov
+     * @author Alexey Sukhotin
+     * @author nao-pon
+     * @author Troex Nevelin
+     */
+    public function resize($hash, $width, $height, $x, $y, $mode = 'resize', $bg = '', $degree = 0, $jpgQuality = null) {
+        $ret = parent::resize($hash, $width, $height, $x, $y, $mode, $bg, $degree, $jpgQuality);
+        $file = self::_get_expFile($this->decode($hash));
+        $file->update(); // hack to update image stats on new file
+        return $ret;
+    }
+
     /*********************** file stat *********************/
 
     /**
