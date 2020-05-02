@@ -311,8 +311,10 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      */
     public function resize($hash, $width, $height, $x, $y, $mode = 'resize', $bg = '', $degree = 0, $jpgQuality = null) {
         $ret = parent::resize($hash, $width, $height, $x, $y, $mode, $bg, $degree, $jpgQuality);
-        $file = self::_get_expFile($this->decode($hash));
-        $file->update(); // hack to update image stats on new file
+        if (count($ret) > 1) {
+            $file = self::_get_expFile($this->decode($hash));
+            $file->update(); // hack to update image stats on new file
+        }
         return $ret;
     }
 
