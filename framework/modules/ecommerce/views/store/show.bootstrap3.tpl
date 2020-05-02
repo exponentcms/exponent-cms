@@ -109,7 +109,7 @@
                     {literal}
                         $('a.colorbox').colorbox({
                             href: $(this).href,
-                            ref: $(this).rel,
+                            rel: $(this).rel,
                             photo: true,
                             maxWidth: "100%",
                             close:'<i class="fa fa-fw fa-close" aria-label="close modal"></i>',
@@ -184,6 +184,8 @@
                     {/literal}
                     {if !$config.enable_lightbox}
                         thumbs.on('click',swapimage);
+                    {else}
+                        thumbs.on('hover',swapimage);
                     {/if}
                     {literal}
                         swatches.on('click',swapimage);

@@ -57,7 +57,7 @@
 {literal}
     $('a.colorbox').colorbox({
         href: $(this).href,
-        ref: $(this).rel,
+        rel: $(this).rel,
         photo: true,
         maxWidth: "100%",
         close:'<i class="fa fa-fw fa-close" aria-label="close modal"></i>',

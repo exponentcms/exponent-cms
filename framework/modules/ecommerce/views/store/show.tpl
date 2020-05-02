@@ -170,6 +170,8 @@
                 {/literal}
                 {if !$config.enable_lightbox}
                     thumbs.on('click',swapimage);
+                {else}
+                    thumbs.on('hover',swapimage);
                 {/if}
                 {literal}
                     swatches.on('click',swapimage);
