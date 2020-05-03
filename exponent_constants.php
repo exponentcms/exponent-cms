@@ -28,7 +28,7 @@ if (!defined('USE_CDN')) {
  * to the Exponent directory.
  */
 if (!defined('BASE')) {
-    define('BASE', __realpath(dirname(__FILE__)) . '/');
+    define('BASE', __realpath(__DIR__) . '/');
 }
 
 /**
