@@ -550,7 +550,6 @@ class expWKPDF extends expHtmlToPDF
  * @package    Subsystems
  * @subpackage Subsystems
  */
-
 class expDOMPDF extends expHtmlToPDF
 {
 
@@ -725,7 +724,6 @@ class expDOMPDF extends expHtmlToPDF
  * @package    Subsystems
  * @subpackage Subsystems
  */
-
 class expDOMPDF070 extends expDOMPDF
 {
 
@@ -749,10 +747,20 @@ class expDOMPDF070 extends expDOMPDF
         if (file_exists(BASE . 'external/dompdf070/autoload.inc.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata'))
                 expFile::makeDirectory('tmp/ttfontdata');
+            /**
+             * Disable link creation
+             *
+             * If this setting is set to true, DOMPDF will not embed active links
+             *
+             * @var bool
+             */
+            define("DOMPDF_DISABLE_LINKS", true);
             require_once(BASE . 'external/dompdf070/autoload.inc.php');
             $this->pdf = new Dompdf\Dompdf();
             $this->size = strtolower($paper_size);
             $this->orient = $orientation;
+            $this->isRemoteEnabled = true;
+            $this->isJavascriptEnabled = false;
             $this->pdf->setPaper($this->size, $this->orient);
             if (!empty($html)) {
                 if ($use_file) {
@@ -834,7 +842,6 @@ class expDOMPDF070 extends expDOMPDF
  * @package    Subsystems
  * @subpackage Subsystems
  */
-
 class expDOMPDF080 extends expDOMPDF070
 {
 
@@ -859,10 +866,20 @@ class expDOMPDF080 extends expDOMPDF070
         if (file_exists(BASE . 'external/dompdf' . DOMPDF8_VERSION . '/autoload.inc.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata'))
                 expFile::makeDirectory('tmp/ttfontdata');
+            /**
+             * Disable link creation
+             *
+             * If this setting is set to true, DOMPDF will not embed active links
+             *
+             * @var bool
+             */
+            define("DOMPDF_DISABLE_LINKS", true);
             require_once(BASE . 'external/dompdf' . DOMPDF8_VERSION . '/autoload.inc.php');
             $this->pdf = new Dompdf\Dompdf();
             $this->size = $paper_size;
             $this->orient = $orientation;
+            $this->isRemoteEnabled = true;
+            $this->isJavascriptEnabled = false;
             $this->pdf->setPaper($this->size, $this->orient);
             if (!empty($html)) {
                 if ($use_file) {
@@ -882,7 +899,6 @@ class expDOMPDF080 extends expDOMPDF070
  * @package    Subsystems
  * @subpackage Subsystems
  */
-
 class expMPDF extends expHtmlToPDF
 {
 
@@ -904,7 +920,7 @@ class expMPDF extends expHtmlToPDF
     public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
         if (file_exists(BASE . 'external/MPDF57/mpdf.php')) {
-            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
+            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/cache/');
             if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", BASE . 'tmp/ttfontdata/');
             if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
             ini_set('display_errors', 0);  // warnings must be turned off to work
@@ -1075,7 +1091,6 @@ class expMPDF extends expHtmlToPDF
  * @package    Subsystems
  * @subpackage Subsystems
  */
-
 class expMPDF6 extends expMPDF
 {
 
@@ -1097,7 +1112,7 @@ class expMPDF6 extends expMPDF
     public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
         if (file_exists(BASE . 'external/mpdf61/mpdf.php')) {
-            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
+            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/cache/');
             if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", BASE . 'tmp/ttfontdata/');
             if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
             ini_set('display_errors', 0);  // warnings must be turned off to work
@@ -1122,12 +1137,11 @@ class expMPDF6 extends expMPDF
 
 /**
  * This is the class expMPDF7
- * a wrapper for using mPDF v7.0
+ * a wrapper for using mPDF v7.x
  *
  * @package    Subsystems
  * @subpackage Subsystems
  */
-
 class expMPDF7 extends expMPDF
 {
 
@@ -1135,7 +1149,10 @@ class expMPDF7 extends expMPDF
      * Return status of pdf engine being installed correctly
      */
     public static function installed() {
-        return (file_exists(BASE . 'external/mpdf-' . MPDF7_VERSION . '/src/Mpdf.php') && file_exists(BASE . 'external/log-1.0.2/autoload.php'));
+        return (
+            file_exists(BASE . 'external/mpdf-' . MPDF7_VERSION . '/src/Mpdf.php') &&
+            file_exists(BASE . 'external/log-' . LOG_VERSION . '/autoload.php')
+        );
     }
 
     /**
@@ -1148,12 +1165,15 @@ class expMPDF7 extends expMPDF
      */
     public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
-        if (file_exists(BASE . 'external/mpdf-' . MPDF7_VERSION . '/src/Mpdf.php') && file_exists(BASE . 'external/log-1.0.2/autoload.php')) {
-            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
+        if (file_exists(BASE . 'external/mpdf-' . MPDF7_VERSION . '/src/Mpdf.php') && file_exists(BASE . 'external/log-' . LOG_VERSION . '/autoload.php')) {
+            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/cache/');
             if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", BASE . 'tmp/ttfontdata/');
             if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
             ini_set('display_errors', 0);  // warnings must be turned off to work
-            require_once(BASE . 'external/log-1.0.2/autoload.php');
+            require_once(BASE . 'external/log-' . LOG_VERSION . '/autoload.php');
+            if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
+                require_once(BASE . 'external/random_compat-' . RANDOM_VERSION . '/lib/random.php');
+            }
             require_once(BASE . 'external/mpdf-' . MPDF7_VERSION . '/src/autoload.php');
             $this->size = $paper_size;
             $this->orient = strtoupper($orientation[0]);
@@ -1173,6 +1193,13 @@ class expMPDF7 extends expMPDF
 
 }
 
+/**
+ * This is the class expMPDF8
+ * a wrapper for using mPDF v8.x
+ *
+ * @package    Subsystems
+ * @subpackage Subsystems
+ */
 class expMPDF8 extends expMPDF
 {
 
@@ -1180,7 +1207,11 @@ class expMPDF8 extends expMPDF
      * Return status of pdf engine being installed correctly
      */
     public static function installed() {
-        return (file_exists(BASE . 'external/mpdf-' . MPDF8_VERSION . '/src/Mpdf.php') && file_exists(BASE . 'external/log-1.0.2/autoload.php'));
+        return (
+            file_exists(BASE . 'external/mpdf-' . MPDF8_VERSION . '/src/Mpdf.php') &&
+            file_exists(BASE . 'external/log-' . LOG_VERSION . '/autoload.php') &&
+            file_exists(BASE . 'external/FPDI-' . FPDI_VERSION . '/src/autoload.php')
+        );
     }
 
     /**
@@ -1193,12 +1224,16 @@ class expMPDF8 extends expMPDF
      */
     public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
-        if (file_exists(BASE . 'external/mpdf-' . MPDF8_VERSION . '/src/Mpdf.php') && file_exists(BASE . 'external/log-1.0.2/autoload.php')) {
-            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
+        if (file_exists(BASE . 'external/mpdf-' . MPDF8_VERSION . '/src/Mpdf.php') && file_exists(BASE . 'external/log-' . LOG_VERSION . '/autoload.php')) {
+            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/cache/');
             if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", BASE . 'tmp/ttfontdata/');
             if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
             ini_set('display_errors', 0);  // warnings must be turned off to work
-            require_once(BASE . 'external/log-1.1.2/autoload.php');
+            require_once(BASE . 'external/log-' . LOG_VERSION . '/autoload.php');
+            if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
+                require_once(BASE . 'external/random_compat-' . RANDOM_VERSION . '/lib/random.php');
+            }
+            require_once(BASE . 'external/FPDI-' . FPDI_VERSION . '/src/autoload.php');
             require_once(BASE . 'external/mpdf-' . MPDF8_VERSION . '/src/autoload.php');
             $this->size = $paper_size;
             $this->orient = strtoupper($orientation[0]);
@@ -1225,7 +1260,6 @@ class expMPDF8 extends expMPDF
  * @package    Subsystems
  * @subpackage Subsystems
  */
-
 class expHTML2PDF extends expHtmlToPDF
 {
 
@@ -1423,12 +1457,11 @@ class expHTML2PDF extends expHtmlToPDF
 
 /**
  * This is the class expHTML2PDF5
- * a wrapper for using html2pdf v5.0.x
+ * a wrapper for using html2pdf v5.x
  *
  * @package    Subsystems
  * @subpackage Subsystems
  */
-
 class expHTML2PDF5 extends expHTML2PDF
 {
 
@@ -1450,7 +1483,7 @@ class expHTML2PDF5 extends expHTML2PDF
     public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
         $html2pdf_loc = BASE . 'external/html2pdf-' . HTML2PDF5_VERSION . '/src/';
-        $tcpdf_loc = BASE . 'external/TCPDF/';
+        $tcpdf_loc = BASE . 'external/TCPDF-' . TCPDF5_VERSION . '/';
         if (file_exists($html2pdf_loc . 'Html2Pdf.php') && file_exists($tcpdf_loc . 'tcpdf.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata'))
                 expFile::makeDirectory('tmp/ttfontdata');
