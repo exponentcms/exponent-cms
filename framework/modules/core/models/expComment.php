@@ -39,10 +39,13 @@ class expComment extends expRecord {
         if ($this->id) {
             // attach the comment to the datatype it belongs to (blog, news, etc..);
             $obj = new stdClass();
-            $obj->content_type = $content_type;
-            $obj->content_id = $content_id;
             $obj->expcomments_id = $this->id;
-            if(isset($subtype)) $obj->subtype = $subtype;
+            $obj->content_id = $content_id;
+            $obj->content_type = $content_type;
+            if(isset($subtype))
+                $obj->subtype = $subtype;
+            else
+                $obj->subtype = '';
             $db->insertObject($obj, $this->attachable_table);
         }
     }

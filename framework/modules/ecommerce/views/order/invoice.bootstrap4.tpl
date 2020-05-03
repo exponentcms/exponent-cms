@@ -13,7 +13,7 @@
  *
  *}
 
-{if $printerfriendly==1}
+{if $printerfriendly}
     {$pf=1}
     {*{if $include_css == true}*}
         {*{css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/print-invoice.css"}    *}
@@ -44,7 +44,7 @@
     }
 </style>
 
-<div id="invoice row">
+<div id="invoice" class="row">
     <div class="col-sm-12">
         <div id="store-header">
             <h1>{ecomconfig var=storename} {'Invoice'|gettext}</h1>

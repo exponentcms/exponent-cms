@@ -448,6 +448,7 @@ class expTemplate {
             $tempFiles = self::glob2keyedArray(glob($checkpath));
             if ($tempFiles != false) {
                 $myFiles = array_merge($myFiles, $tempFiles);
+//                $myFiles += $tempFiles;
             }
         }
 //        eDebug($myFiles);

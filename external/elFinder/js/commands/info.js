@@ -49,11 +49,11 @@
 	}
 
 	this.tpl = {
-		main       : '<div class="ui-helper-clearfix elfinder-info-title {dirclass}"><span class="elfinder-cwd-icon {class} ui-corner-all"{style}/>{title}</div><table class="elfinder-info-tb">{content}</table>',
+		main       : '<div class="ui-helper-clearfix elfinder-info-title {dirclass}"><span class="elfinder-cwd-icon {class} ui-corner-all"{style}></span>{title}</div><table class="elfinder-info-tb">{content}</table>',
 		itemTitle  : '<strong>{name}</strong><span class="elfinder-info-kind">{kind}</span>',
 		groupTitle : '<strong>{items}: {num}</strong>',
 		row        : '<tr><td class="elfinder-info-label">{label} : </td><td class="{class}">{value}</td></tr>',
-		spinner    : '<span>{text}</span> <span class="'+spclass+' '+spclass+'-{name}"/>'
+		spinner    : '<span>{text}</span> <span class="'+spclass+' '+spclass+'-{name}"></span>'
 	};
 	
 	this.alwaysEnabled = true;
@@ -195,7 +195,7 @@
 				} else if (file.mime.indexOf('image') !== -1) {
 					if (file.width && file.height) {
 						content.push(row.replace(l, msg.dim).replace(v, file.width+'x'+file.height));
-					} else {
+					} else if (file.size && file.size !== '0') {
 						content.push(row.replace(l, msg.dim).replace(v, tpl.spinner.replace('{text}', msg.calc).replace('{name}', 'dim')));
 						reqs.push(fm.request({
 							data : {cmd : 'dim', target : file.hash},
@@ -237,7 +237,7 @@
 				});
 
 				if (getHashAlgorisms.length) {
-					hashProg = $('<div class="elfinder-quicklook-info-progress"/>');
+					hashProg = $('<div class="elfinder-quicklook-info-progress"></div>');
 					reqs.push(
 						fm.getContentsHashes(file.hash, getHashAlgorisms, o.showHashOpts, { progressBar : hashProg }).progress(function(hashes) {
 							$.each(getHashAlgorisms, function(i, n) {

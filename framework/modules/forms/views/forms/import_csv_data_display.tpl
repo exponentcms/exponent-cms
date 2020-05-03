@@ -69,10 +69,12 @@
 </div>
 
 {script unique="importrecords"}
+{literal}
     function selectAll(val) {
         var checks = document.getElementsByName("importrecord[]");
         for (var i = 0; i < checks.length; i++) {
           if (!checks[i].disabled) checks[i].checked = val;
         }
     }
+{/literal}
 {/script}

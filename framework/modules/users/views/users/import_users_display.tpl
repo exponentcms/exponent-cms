@@ -78,10 +78,12 @@
 </div>
 
 {script unique="importusers"}
+{literal}
     function selectAll(val) {
         var checks = document.getElementsByName("importuser[]");
         for (var i = 0; i < checks.length; i++) {
           if (!checks[i].disabled) checks[i].checked = val;
         }
     }
+{/literal}
 {/script}

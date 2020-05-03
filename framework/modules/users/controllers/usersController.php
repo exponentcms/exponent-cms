@@ -243,6 +243,7 @@ class usersController extends expController {
             expHistory::back();
         }
 
+        $this->params['username'] = strip_tags($this->params['username']);
         // if this is a new user account we need to check the password.
         // the password fields won't come thru on an edit. Otherwise we will
         // just update the existing account.
@@ -1488,6 +1489,11 @@ class usersController extends expController {
                     case UPLOAD_ERR_NO_FILE:
                         $this->params['_formError'] = gt('No file was uploaded.');
                         break;
+                    case UPLOAD_ERR_NO_TMP_DIR:
+                    case UPLOAD_ERR_CANT_WRITE:
+                        $this->params['_formError'] = gt('Server Temp File Error.');
+                        break;
+                    case UPLOAD_ERR_EXTENSION:
                     default:
                         $this->params['_formError'] = gt('A strange internal error has occurred.  Please contact the Exponent Developers.');
                         break;

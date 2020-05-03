@@ -81,6 +81,7 @@ class expRss extends expRecord {
                 $controller->loc = expCore::makeLocation($feed->module, $feed->src);
                 $controller->params = $this->params;
                 $items = array_merge($items, $controller->getRSSContent($limit));
+//                $items += $controller->getRSSContent($limit);
             }
         }
 

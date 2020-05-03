@@ -202,7 +202,7 @@ if ($user->isAdmin()) {
         )
     );
 
-    if (SITE_FILE_MANAGER == 'picker') {
+    if (SITE_FILE_MANAGER === 'picker') {
         $expAdminMenu['submenu']['itemdata'][count(
             $expAdminMenu['submenu']['itemdata']
         ) - 1]['submenu']['itemdata'][] = array(
@@ -234,6 +234,18 @@ if ($user->isAdmin()) {
                     array(
                         'controller' => 'forms',
                         'action'     => 'manage',
+                    )
+                )
+            ),
+            array(
+                'text'      => gt('Manage Site RSS Feeds'),
+                'icon'      => 'fa-rss',
+                'icon5'      => 'fas fa-rss',
+                'classname' => 'manage',
+                'url'       => makeLink(
+                    array(
+                        'controller' => 'rss',
+                        'action'     => 'showall',
                     )
                 )
             ),

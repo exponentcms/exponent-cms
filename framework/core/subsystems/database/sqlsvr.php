@@ -608,10 +608,13 @@ class sqlsvr_database extends database {
                       $unique[$def[DB_UNIQUE]][] = $name;
                 }
             }
-            if (!empty($def[DB_NOTNULL]) || $def[DB_FIELD_TYPE] === DB_DEF_ID) {
+            if (!empty($def[DB_NOTNULL]) || $def[DB_FIELD_TYPE] === DB_DEF_ID || $def[DB_FIELD_TYPE] === DB_DEF_BOOLEAN || (!empty($def[DB_PRIMARY]) && $def[DB_PRIMARY] === true)) {
                 $newdatadef[$name][DB_NOTNULL] = true;
             } else {
                 $newdatadef[$name][DB_NOTNULL] = false;
+            }
+            if (($def[DB_FIELD_TYPE] === DB_DEF_ID && empty($def[DB_PRIMARY])) || $def[DB_FIELD_TYPE] === DB_DEF_BOOLEAN) {
+                $newdatadef[$name][DB_DEFAULT] = 0;
             }
         }
 
@@ -1275,13 +1278,26 @@ class sqlsvr_database extends database {
         $newinsert = false;
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
-            if ($var[0] !== '_' && $val !== null && $val !== '') {
+            if ($var[0] !== '_') {
                 $sql .= "[$var],";
                 if ($values !== ") VALUES (") {
                     $values .= ",";
                 }
-//                $values .= "'" . $this->escapeString($val) . "'";
-                $values .= "'" . str_replace("'", "''", $val) . "'";
+                if (is_bool($val) || $val === null) {
+                    // we have to insert literals for strict mode
+                    if ($val === null) {
+                        $values .= "NULL";
+                    } elseif ($val === true) {
+                        $values .= "TRUE";
+                    } elseif ($val === false) {
+                        $values .= "FALSE";
+                    }
+                } elseif ($val === '') {
+                    // we have to insert literals for strict mode
+                    $values .= "''";
+                } else {
+                    $values .= "'" . str_replace("'", "''", $val) . "'";
+                }
             } elseif ($var === 'id' && $val === null) {
                 $newinsert = true;
             }
@@ -1348,14 +1364,27 @@ class sqlsvr_database extends database {
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
             //if($is_revisioned && $var=='revision_id') $val++;
-            if ($var[0] !== '_' && $val !== null && $val !== '') {
+            if ($var[0] !== '_') {
                 if ($var != $identifier) {
                     if (is_array($val) || is_object($val)) {
                         $val = serialize($val);
                         $sql .= "[$var]='" . str_replace("'", "''", $val) . "',";
                     } else {
-//                        $sql .= "[$var]='" . $this->escapeString($val) . "',";
-                        $sql .= "[$var]='" . str_replace("'", "''", $val) . "',";
+                        if (is_bool($val) || $val === null ) {
+                            // we have to insert literals for strict mode
+                            if ($val === null) {
+                                $sql .= "[$var]=NULL,";
+                            } elseif ($val === true) {
+                                $sql .= "[$var]=TRUE,";
+                            } elseif ($val === false) {
+                                $sql .= "[$var]=FALSE,";
+                            }
+                        } elseif ($val !== '') {
+                            // we have to insert literals for strict mode
+                            $sql .= "[$var]='',";
+                        } else {
+                            $sql .= "[$var]='" . str_replace("'", "''", $val) . "',";
+                        }
                     }
                 }
             }

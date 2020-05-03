@@ -183,7 +183,7 @@
       padding: 6em 0 1em;
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       background-color: #eaf1f1;
-      .fa {
+      .fas {
         margin-right: 0.2em;
       }
       p {

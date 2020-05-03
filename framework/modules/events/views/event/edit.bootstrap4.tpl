@@ -35,6 +35,7 @@
             </ul>
             <div class="tab-content yui3-skin-sam">
                 <div id="tab1" role="tabpanel" class="tab-pane fade show active">
+                    <h2>{'Event Entry'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title focus=1}
                 	{control type="editor" name="body" label="Event Details"|gettext value=$record->body}
                 	{control type="checkbox" name="is_featured" label="Feature this Event?"|gettext value=1 checked=$record->is_featured}
@@ -56,6 +57,7 @@
                     {/if}
                 </div>
                 <div id="tab2" role="tabpanel" class="tab-pane fade">
+                    <h2>{'Event Date'|gettext}</h2>
                     {control type="yuicalendarcontrol" name="eventdate" label="Event Date"|gettext value=$record->eventdate[$event_key]->date showtime=false}
                     {$jsHooks = ['onclick'=>'exponent_forms_disable_datetime(\'eventstart\',this.form,this.checked); exponent_forms_disable_datetime(\'eventend\',this.form,this.checked);']}
                   	{control type="checkbox" name="is_allday" label="All Day Event?"|gettext value=1 checked=$record->is_allday hooks=$jsHooks}
@@ -74,6 +76,7 @@
                 </div>
                 {if $config.enable_feedback}
                     <div id="tab3" role="tabpanel" class="tab-pane fade">
+                        <h2>{'Event Feedback'|gettext}</h2>
                         {control type=dropdown name=feedback_form label="Feedback Form"|gettext items=$allforms items=$allforms value=$record->feedback_form}
                         {*{control type=text name=feedback_email label="Feedback Email"|gettext value=$record->feedback_email}*}
                         {control type=email name=feedback_email label="Feedback Email"|gettext value=$record->feedback_email}
@@ -81,6 +84,7 @@
                 {/if}
                 {if $config.enable_images}
                     <div id="tab4" role="tabpanel" class="tab-pane fade">
+                        <h2>{'Attach Files'|gettext}</h2>
                         {control type=files name=images label="Attached Images"|gettext accept="image/*" value=$record->expFile folder=$config.upload_folder}
                     </div>
                 {/if}

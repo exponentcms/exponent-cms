@@ -158,6 +158,7 @@ class expPaginator {
 		        $colparse[$key] = explode('|',$col);  // check for command
 		        $column = array($key=>$colparse[$key][0]);
 		        $this->columns = array_merge($this->columns,$column);
+//                $this->columns += $column;
 		        if (!empty($colparse[$key][1])) {  // breakout commands if found
 		            $params = explode(',',$colparse[$key][1]);
 		            foreach ($params as $paramval) {
@@ -510,6 +511,52 @@ class expPaginator {
         $this->table = $table_template->render();  // table view
 
 	}
+
+    /**
+     * Generic magic method
+     *
+     * @param $property
+     * @return null
+     */
+    public function __get($property) {
+        if (property_exists($this, $property)) {
+            return $this->$property;
+        }
+
+        return null;
+    }
+
+    /**
+     *  Generic magic method
+     *  We MUST create/set non-existing properties for Exponent code to work
+     *
+     * @param $property
+     * @param $value
+     */
+    public function __set($property, $value) {
+//        if (property_exists($this, $property)) {
+            $this->$property = $value;
+//        }
+    }
+
+    /**
+     * Generic magic method
+     *
+     * @param $property
+     * @return bool
+     */
+    public function  __isset($property) {
+        return isset($this->$property);
+    }
+
+    /**
+     * Generic magic method
+     *
+     * @param $property
+     */
+    public function __unset($property) {
+        unset($this->$property);
+    }
 
 	//From Merge
     private function cleanParams($params) {

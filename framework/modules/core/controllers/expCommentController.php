@@ -63,8 +63,8 @@ class expCommentController extends expController {
 
 	    expHistory::set('manageable', $this->params);
 
-        $order = 'approved';
-        $dir = 'ASC';
+//        $order = 'approved';
+//        $dir = 'ASC';
         /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
 //        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
@@ -85,8 +85,8 @@ class expCommentController extends expController {
 //            'model'=>'expComment',
             'sql'=>$sql,
             'limit'=>10,
-            'order'=>$order,
-            'dir'=>$dir,
+            'order'=>isset($this->params['order']) ? $this->params['order'] : 'approved',
+            'dir'=>isset($this->params['dir']) ? $this->params['dir'] : 'ASC',
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
@@ -102,7 +102,8 @@ class expCommentController extends expController {
         foreach ($page->records as $record) {
             //FIXME here is where we might sanitize the comments before displaying them
             $item = new $record->content_type($record->content_id);
-            $refs[$record->content_type][$record->content_id] = $item->title;
+            $refs[$record->content_type][$record->content_id]['title'] = $item->title;
+            $refs[$record->content_type][$record->content_id]['sef_url'] = makelink(array("controller" => $record->content_type, "action" => "show", "title" => $item->sef_url));
         }
         assign_to_template(array(
             'page'=>$page,
@@ -212,8 +213,8 @@ class expCommentController extends expController {
             /* Note: I've used 0 for top level parent, you can change this to == 'NULL' */
             if($node->parent_id=='0'){
                 $tree[] = $node;
-                unset($node);
             }
+            unset($node);
         }
 
         /* This is the recursive function that does the magic */

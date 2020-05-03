@@ -33,7 +33,7 @@ class expJavascript {
 	}
 
 	public static function requiresJSON() {
-        if (!empty($_REQUEST['apikey'])||!empty($_REQUEST['jsonp'])) {
+        if (!empty($_REQUEST['apikey']) || !empty($_REQUEST['jsonp'])) {
             return 'jsonp';
         }
         if (!empty($_REQUEST['json']) && !empty($_REQUEST['controller']) && $_REQUEST['controller'] === 'file' && !empty($_REQUEST['action']) && $_REQUEST['action'] === 'picker') {
@@ -50,7 +50,7 @@ class expJavascript {
         $newexpJS = array();
         $usedJS = array();
         foreach($expJS as $eJS) {
-            if (!in_array($eJS['fullpath'],$usedJS)) {
+            if (!in_array($eJS['fullpath'], $usedJS)) {
                 $usedJS[] = $eJS['fullpath'];
                 $newexpJS[$eJS['name']] = $eJS;
             }
@@ -74,7 +74,13 @@ class expJavascript {
             $i = 0;
             $srt = array();
             $srt[$i] = '';
-            if (!empty($yui3js)) $srt[$i] = YUI3_RELATIVE.'yui/yui-min.js,';
+            if (!empty($yui3js)) {
+                if (USE_CDN) {
+                    $scripts .= '<script type="text/javascript" src="' . YUI3_RELATIVE . 'yui/yui-min.js"></script>' . "\r\n";
+                } else {
+                    $srt[$i] = YUI3_RELATIVE . 'yui/yui-min.js,';
+                }
+            }
             if (!empty($jqueryjs) || $framework === 'jquery' || bs()) {
 //                if (strlen($srt[$i])+strlen(JQUERY_SCRIPT)<= $strlen && $i <= MINIFY_MAX_FILES) {
 //                    $srt[$i] .= JQUERY_SCRIPT . ",";
@@ -103,31 +109,41 @@ class expJavascript {
                 }
 
                 if (!empty($bootstrapjs)) {
-                    if (bs2()) {
-                        $bootstrappath = 'external/bootstrap/js/bootstrap-';
-                    } elseif (bs3()) {
-                        $bootstrappath = 'external/bootstrap3/js/';
+                    if (USE_CDN) {
+                        if (bs2()) {
+                            $scripts .= BS2_SCRIPT . "\r\n";
+                        } elseif (bs3()) {
+                            $scripts .= BS3_SCRIPT . "\r\n";
+                        } else {
+                            $scripts .= BS4_SCRIPT . "\r\n";
+                        }
                     } else {
-                        $bootstrappath = 'external/bootstrap4/js/dist/';
-                    }
-                    if (bs4()) {
-                        $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'popper.js,';
-                        $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'util.js,';
-                    }
-                    foreach ($bootstrapjs as $mod) {
-                        if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
-                            if (strlen($srt[$i]) + strlen(PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js') <= $strlen && $i <= MINIFY_MAX_FILES) {
-                                $srt[$i] .= PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js' . ",";
-                            } else {
-                                $i++;
-                                $srt[$i] = PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js' . ",";
-                            }
-                        } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
-                            if (strlen($srt[$i])+strlen(PATH_RELATIVE . $bootstrappath . $mod . '.js') <= $strlen && $i <= MINIFY_MAX_FILES) {
-                                $srt[$i] .= PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
-                            } else {
-                                $i++;
-                                $srt[$i] = PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
+                        if (bs2()) {
+                            $bootstrappath = 'external/bootstrap/js/bootstrap-';
+                        } elseif (bs3()) {
+                            $bootstrappath = 'external/bootstrap3/js/';
+                        } else {
+                            $bootstrappath = 'external/bootstrap4/js/dist/';
+                        }
+                        if (bs4()) {
+                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'popper.js,';
+                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'util.js,';
+                        }
+                        foreach ($bootstrapjs as $mod) {
+                            if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
+                                if (strlen($srt[$i]) + strlen(PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js') <= $strlen && $i <= MINIFY_MAX_FILES) {
+                                    $srt[$i] .= PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js' . ",";
+                                } else {
+                                    $i++;
+                                    $srt[$i] = PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js' . ",";
+                                }
+                            } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
+                                if (strlen($srt[$i]) + strlen(PATH_RELATIVE . $bootstrappath . $mod . '.js') <= $strlen && $i <= MINIFY_MAX_FILES) {
+                                    $srt[$i] .= PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
+                                } else {
+                                    $i++;
+                                    $srt[$i] = PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
+                                }
                             }
                         }
                     }
@@ -252,22 +268,32 @@ class expJavascript {
 
                 if (!empty($bootstrapjs)) {
                     $scripts .= "\t" . "<!-- Twitter Bootstrap Scripts -->" . "\r\n";
-                    if (bs2()) {
-                        $bootstrappath = 'external/bootstrap/js/bootstrap-';
-                    } elseif (bs3()) {
-                        $bootstrappath = 'external/bootstrap3/js/';
+                    if (USE_CDN) {
+                        if (bs2()) {
+                            $scripts .= "\t" . BS2_SCRIPT . "\r\n";
+                        } elseif (bs3()) {
+                            $scripts .= "\t" . BS3_SCRIPT . "\r\n";
+                        } else {
+                            $scripts .= "\t" . BS4_SCRIPT . "\r\n";
+                        }
                     } else {
-                        $bootstrappath = 'external/bootstrap4/js/dist/';
-                    }
-                    if (bs4()) {
-                        $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'popper.js"></script>' . "\r\n";
-                        $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util.js"></script>' . "\r\n";
-                    }
-                    foreach ($bootstrapjs as $mod) {
-                        if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
-                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
-                        } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
-                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . $mod . '.js"></script>' . "\r\n";
+                        if (bs2()) {
+                            $bootstrappath = 'external/bootstrap/js/bootstrap-';
+                        } elseif (bs3()) {
+                            $bootstrappath = 'external/bootstrap3/js/';
+                        } else {
+                            $bootstrappath = 'external/bootstrap4/js/dist/';
+                        }
+                        if (bs4()) {
+                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'popper.js"></script>' . "\r\n";
+                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util.js"></script>' . "\r\n";
+                        }
+                        foreach ($bootstrapjs as $mod) {
+                            if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
+                                $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
+                            } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
+                                $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . $mod . '.js"></script>' . "\r\n";
+                            }
                         }
                     }
                 }
@@ -337,7 +363,9 @@ class expJavascript {
                 }
             }
 
-            $scripts .= (!empty($yui3js)) ? "\t" . "<!-- YUI3 Script -->" . "\r\n\t" . '<script type="text/javascript" src="' . YUI3_RELATIVE . 'yui/yui-min.js"></script>' . "\r\n" : "";
+            if (!empty($yui3js)) {
+                $scripts .=  "\t" . "<!-- YUI3 Script -->" . "\r\n\t" . '<script type="text/javascript" src="' . YUI3_RELATIVE . 'yui/yui-min.js"></script>' . "\r\n";
+            }
 
             if (!empty($expJS)) {
                 $scripts .= "\t" . "<!-- Other Scripts -->" . "\r\n";
@@ -363,7 +391,7 @@ class expJavascript {
                 $html .= $file . "\r\n";
             }
         }
-        if (MINIFY==1&&MINIFY_INLINE_JS==1) {
+        if (MINIFY == 1 && MINIFY_INLINE_JS == 1) {
             include_once(BASE.'external/minify/min/lib/JSMin.php');
             $html = JSMin::minify($html);
         }
@@ -551,7 +579,7 @@ class expJavascript {
        	    }
     	    if (!empty($params['src'])) {
                 if (is_array($params['src'])) {
-                    foreach ($params['src'] as$url) {
+                    foreach ($params['src'] as $url) {
                         echo '<script type="text/javascript" src="', $url, '"></script>';
                     }
                 } else {

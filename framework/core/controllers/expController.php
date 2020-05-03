@@ -304,15 +304,15 @@ abstract class expController {
      * glue to make the view template aware of the module
      * @deprecated
      */
-    public function moduleSelfAwareness() {
-        assign_to_template(array(
-            'asset_path' => $this->asset_path,
-            'model_name' => $this->basemodel_name,
-            'table'      => $this->model_table,
-            'controller' => $this->baseclassname,
-            'config'     => $this->config
-        ));
-    }
+//    public function moduleSelfAwareness() {
+//        assign_to_template(array(
+//            'asset_path' => $this->asset_path,
+//            'model_name' => $this->basemodel_name,
+//            'table'      => $this->model_table,
+//            'controller' => $this->baseclassname,
+//            'config'     => $this->config
+//        ));
+//    }
 
     /**
      * default module view method for all items
@@ -490,6 +490,7 @@ abstract class expController {
                     $next_comment->sef_url = $item->sef_url;
                 }
                 $all_comments = array_merge($all_comments,$more_comments);
+//                $all_comments += $more_comments;
             }
         }
         // sort then limit all the blog comments
@@ -958,7 +959,7 @@ abstract class expController {
                 $container->title = $this->params['moduletitle'];
                 $container->action = $this->params['actions'];
                 $container->view = $this->params['views'];
-                $container->is_private = $this->params['is_private'];
+                $container->is_private = (bool)$this->params['is_private'];
                 $db->updateObject($container, 'container');
                 expSession::clearAllUsersSessionCache('containermodule');
             }
@@ -1043,7 +1044,7 @@ abstract class expController {
             $rss_item->title = expString::convertSmartQuotes($item->title);
             $rss_item->link = $rss_item->guid = makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $item->sef_url));
             $rss_item->description = expString::convertSmartQuotes($item->body);
-            $rss_item->author = user::getUserById($item->poster)->firstname . ' ' . user::getUserById($item->poster)->lastname;
+            $rss_item->author = user::getUserAttribution($item->poster);
             $rss_item->authorEmail = user::getEmailById($item->poster);
 //            $rss_item->date = isset($item->publish_date) ? date(DATE_RSS, $item->publish_date) : date(DATE_RSS, $item->created_at);
             $rss_item->date = isset($item->publish_date) ? $item->publish_date : $item->created_at;

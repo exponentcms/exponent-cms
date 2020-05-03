@@ -51,6 +51,7 @@ abstract class expNestedNode extends expRecord {
 			$this->lft = $db->min($this->table, 'lft');
 			$this->rgt = $db->max($this->table, 'rgt');
 		}
+		$this->items_per_page = 0;  //note fix for strict mode, UNUSED
 	}
 
 	public function create($params) {

@@ -32,20 +32,20 @@
  *
  * @return string
  */
-function smarty_modifier_signature($userid) {
+function smarty_modifier_signature($userid, $header=false) {
 	global $db;
 
     $sig = $db->selectValue('user_signature','signature','user_id='.(int)($userid));
-    if (!empty($sig)) {
+    if (!empty($sig) && $header) {
         $sig = '<h3>'.gt('About the author').'</h3>'.$sig;
     }
-    $googleplus = $db->selectValue('user_signature','googleplus','user_id='.(int)($userid));
-    if (!empty($googleplus)) {
-        if (empty($sig)) {
-            $sig = user::getUserAttribution($userid) . ' ' . gt('is on');
-        }
-        $sig .= ' <a href="https://plus.google.com/'.$googleplus.'?rel=author" title="'.user::getUserAttribution($userid).' '.gt('on Google+').'"><img src="'.PATH_RELATIVE.'framework/core/assets/images/gplus-16.png"></a>';
-    }
+//    $googleplus = $db->selectValue('user_signature','googleplus','user_id='.(int)($userid));
+//    if (!empty($googleplus)) {
+//        if (empty($sig)) {
+//            $sig = user::getUserAttribution($userid) . ' ' . gt('is on');
+//        }
+//        $sig .= ' <a href="https://plus.google.com/'.$googleplus.'?rel=author" title="'.user::getUserAttribution($userid).' '.gt('on Google+').'"><img src="'.PATH_RELATIVE.'framework/core/assets/images/gplus-16.png"></a>';
+//    }
     return $sig;
 }
 

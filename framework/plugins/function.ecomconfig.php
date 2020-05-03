@@ -38,12 +38,12 @@ function smarty_function_ecomconfig($params,&$smarty) {
     if (empty($retval))
         return $params['default'];
     else {
-        if ($params['unescape'])
+        if (!empty($params['unescape']))
             $retval = stripcslashes($retval);
-        if ($params['json']) {
+        if (!empty($params['json'])) {
             $retval = str_replace('\r\n','', $retval = json_encode($retval));
         }
-        if ($params['assign']) {
+        if (!empty($params['assign'])) {
             $smarty->assign($params['assign'], $retval);
         } else {
             return $retval;

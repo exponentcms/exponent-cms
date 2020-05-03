@@ -46,7 +46,7 @@ class remove_bs4beta extends upgradescript {
 	 * @return bool
 	 */
 	function needed() {
-        if (expUtil::isReallyWritable(BASE. 'themes/bootstrap4theme/controls')) {
+        if (expUtil::isReallyWritable(BASE. 'themes/bootstrap4theme/framework')) {
             return true;
         }
         return false;

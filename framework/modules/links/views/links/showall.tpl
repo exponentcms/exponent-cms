@@ -119,8 +119,8 @@
     {/if}
 </div>
 
-{if !empty($config.websnapr_key)}
-    {script unique=$name src="http://bubble.websnapr.com/`$config.websnapr_key`/swi/"}
+{*{if !empty($config.websnapr_key)}*}
+{*    {script unique=$name src="http://bubble.websnapr.com/`$config.websnapr_key`/swi/"}*}
 
-    {/script}
-{/if}
+{*    {/script}*}
+{*{/if}*}

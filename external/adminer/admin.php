@@ -54,7 +54,7 @@ function adminer_object() {
         new AdminerTableIndexesStructure,
         new AdminerTableStructure
     );
-//    if (SITE_WYSIWYG_EDITOR == 'tinymce') {
+//    if (SITE_WYSIWYG_EDITOR === 'tinymce') {
         $plugins[] = new AdminerTinymce(
             PATH_RELATIVE."external/editors/tinymce/tinymce.min.js"
         );  // inserts wysiwyg editor for 'body' fields

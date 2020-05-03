@@ -425,20 +425,17 @@ class formsController extends expController {
                         if (!defined('RECAPTCHA_PUB_KEY')) {
                             $antispam .= '<h2 style="color:red">' . gt('reCaptcha configuration is missing the public key.') . '</h2>';
                         }
-                        $re_theme = (RECAPTCHA_THEME === 'dark') ? 'dark' : 'light';
-                        if ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
+                        if (!($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1)) {
                             // skip it for logged on users based on config
-                        } else {
-                            // include the library and show the form control
-//                            require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
+                            $re_theme = (RECAPTCHA_THEME === 'dark') ? 'dark' : 'light';
+                            // show the form control
                             $antispam .= '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
                             //create unique recaptcha blocks
                             $randomNumber = mt_rand(10000000, 99999999);
-                            $antispam .= '<div class="g-recaptcha" id="recaptcha-block-'.$randomNumber.'" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
+                            $antispam .= '<div class="g-recaptcha" id="recaptcha-block-' . $randomNumber . '" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
 //                            $antispam .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=' . LOCALE . '" async defer></script>';
                             $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
-                        }
-                        $content = "
+                            $content = "
                             var captcha;
                             var myCallBack = function() {
                                 var recaptchas = document.querySelectorAll('div[id^=recaptcha-block-]');
@@ -449,12 +446,14 @@ class formsController extends expController {
                                     });
                                 }
                             };";
-                        expJavascript::pushToFoot(array(
-                            "unique"=>'recaptcha',
-                            "content"=>$content,
-                            "src"=>"https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=" . LOCALE
-                         ));                    }
-                    $form->register(uniqid(''), '', new htmlcontrol($antispam));
+                            expJavascript::pushToFoot(array(
+                                "unique" => 'recaptcha',
+                                "content" => $content,
+                                "src" => "https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=" . LOCALE
+                            ));
+                            $form->register(uniqid(''), '', new htmlcontrol($antispam));
+                        }
+                    }
                 }
 
 //                if (empty($this->config['submitbtn'])) $this->config['submitbtn'] = gt('Submit');
@@ -1784,6 +1783,11 @@ class formsController extends expController {
                         case UPLOAD_ERR_NO_FILE:
                             $this->params['_formError'] = gt('No file was uploaded.');
                             break;
+                        case UPLOAD_ERR_NO_TMP_DIR:
+                        case UPLOAD_ERR_CANT_WRITE:
+                            $this->params['_formError'] = gt('Server Temp File Error.');
+                            break;
+                        case UPLOAD_ERR_EXTENSION:
                         default:
                             $this->params['_formError'] = gt('A strange internal error has occurred.  Please contact the Exponent Developers.');
                             break;
@@ -1965,6 +1969,11 @@ class formsController extends expController {
                     case UPLOAD_ERR_NO_FILE:
                         $this->params['_formError'] = gt('No file was uploaded.');
                         break;
+                    case UPLOAD_ERR_NO_TMP_DIR:
+                    case UPLOAD_ERR_CANT_WRITE:
+                        $this->params['_formError'] = gt('Server Temp File Error.');
+                        break;
+                    case UPLOAD_ERR_EXTENSION:
                     default:
                         $this->params['_formError'] = gt('A strange internal error has occurred.  Please contact the Exponent Developers.');
                         break;

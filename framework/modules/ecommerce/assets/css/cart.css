@@ -225,7 +225,7 @@ table#cart table td {
 	color     : #195908;
 }
 
-.cart.checkout .ccinfo {
+.cart.checkout #ccinfo {
 	list-style   : none;
 	border-left  : 3px solid #116c8d;
 	padding-left : 10px;

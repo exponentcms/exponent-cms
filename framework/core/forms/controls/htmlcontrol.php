@@ -24,7 +24,8 @@ if (!defined('EXPONENT')) exit('');
  *
  * @package Subsystems-Forms
  * @subpackage Control
- */class htmlcontrol extends formcontrol {
+ */
+class htmlcontrol extends formcontrol {
 
 	var $html;
 	var $span;

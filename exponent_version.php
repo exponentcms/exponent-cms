@@ -48,11 +48,11 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
         define('EXPONENT_VERSION_BUILDDATE', '1585396800');
     } else {
         // the info for the "next" version if we are a pre-release from the repository
-        define('EXPONENT_VERSION_MAJOR', '2');
-        define('EXPONENT_VERSION_MINOR', '5');
-        define('EXPONENT_VERSION_REVISION', '2');
+        define('EXPONENT_VERSION_MAJOR', 2);
+        define('EXPONENT_VERSION_MINOR', 5);
+        define('EXPONENT_VERSION_REVISION', 2);
         define('EXPONENT_VERSION_TYPE', 'develop');
-        define('EXPONENT_VERSION_ITERATION', '');
+        define('EXPONENT_VERSION_ITERATION', null);
         define('EXPONENT_VERSION_BUILDDATE', time());
     }
     // set DEVELOPMENT to 1 to debug the install process

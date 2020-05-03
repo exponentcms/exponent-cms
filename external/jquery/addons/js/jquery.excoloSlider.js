@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * Excolo Slider - A simple jquery slider
  *
  * Examples and documentation at: 

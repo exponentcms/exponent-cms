@@ -32,7 +32,7 @@
         {permissions}
             <div class="module-actions">
                 {if $permissions.create}
-                    <a class="add-body btn btn-success {$btn_size}" href="{link action=add}" title="{'Add more text at bottom'|gettext}"><i class="fa fa-plus-circle {$icon_size}"></i> {'Add more text at bottom'|gettext}</a>
+                    <a class="add-body btn btn-success {$btn_size}" href="{link action=add}" title="{'Add more text at bottom'|gettext}"><i class="fas fa-plus-circle {$icon_size}"></i> {'Add more text at bottom'|gettext}</a>
                 {/if}
                 {if $permissions.manage}
                     {ddrerank items=$items model="text" label="Text Items"|gettext}
@@ -70,13 +70,13 @@
                             {icon action=edit record=$item}
                         {/if}
                         {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
-                            <a class="delete-item btn btn-danger {$btn_size}" href="{link action=delete}" title="{'Delete this text item'|gettext}"><i class="fa fa-times-circle {$icon_size}"></i> {'Delete'|gettext}</a>
+                            <a class="delete-item btn btn-danger {$btn_size}" href="{link action=delete}" title="{'Delete this text item'|gettext}"><i class="fas fa-times-circle {$icon_size}"></i> {'Delete'|gettext}</a>
                         {/if}
                         {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                             {if $item->title}
-                                <a class="delete-title btn btn-danger {$btn_size}" id="deletetitle-{$item->id}" href="#" title="{'Delete Title'|gettext}"><i class="fa fa-times-circle {$icon_size}"></i> {'Delete Title'|gettext}</a>
+                                <a class="delete-title btn btn-danger {$btn_size}" id="deletetitle-{$item->id}" href="#" title="{'Delete Title'|gettext}"><i class="fas fa-times-circle {$icon_size}"></i> {'Delete Title'|gettext}</a>
                             {else}
-                                <a class="add-title btn btn-success {$btn_size}" id="addtitle-{$item->id}" href="#" title="{'Add Title'|gettext}"><i class="fa fa-plus-circle {$icon_size}"></i> {'Add Title'|gettext}</a>
+                                <a class="add-title btn btn-success {$btn_size}" id="addtitle-{$item->id}" href="#" title="{'Add Title'|gettext}"><i class="fas fa-plus-circle {$icon_size}"></i> {'Add Title'|gettext}</a>
                             {/if}
                         {/if}
                         {if !$item->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && ($permissions.edit || ($permissions.create && $record->poster == $user->id))}
@@ -102,7 +102,7 @@
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
-                <a class="add-body btn btn-success {$btn_size}" href="{link action=add}" title="{'Add more text here'|gettext}"><i class="fa fa-plus-circle {$icon_size}"></i> {'Add more text here'|gettext}</a>
+                <a class="add-body btn btn-success {$btn_size}" href="{link action=add}" title="{'Add more text here'|gettext}"><i class="fas fa-plus-circle {$icon_size}"></i> {'Add more text here'|gettext}</a>
             {/if}
         </div>
     {/permissions}
@@ -129,6 +129,9 @@
     {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
         {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
         {/script}
+    {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}
+        {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce5/tinymce.min.js"}
+        {/script}
     {/if}
 
     {script unique=$name jquery="bootstrap-dialog" bootstrap="modal,transition"}
@@ -141,7 +144,7 @@
 //        CKEDITOR.disableAutoInline = true;
         var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{stripSlashes($editor->data)}]{/if}{literal};
         var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
-        {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
+        {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
         var fullToolbar = {/literal}{if empty($editor->data)}'formatselect fontselect fontsizeselect forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent '+
             'link unlink image | visualblocks localautosave help'{else}[{expString::check_javascript(stripSlashes($editor->data),true)}]{/if}{literal};
         var titleToolbar = 'cut copy paste pastetext | undo redo localautosave | searchreplace selectall help';
@@ -151,7 +154,7 @@
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
             if (typeof CKEDITOR.instances[item] != 'undefined')
                 CKEDITOR.instances[item].setData(data);
-            {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
+            {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
             if (tinymce.get(item) != null)
                 tinymce.get(item).setContent(data);
             {/literal}{/if}{literal}
@@ -265,11 +268,19 @@
             if ($(node).attr('id').substr(0,5) == 'title') {
                 mytoolbar = titleToolbar;
                 tinymenu = false;
+            {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
                 tinyplugins = ['searchreplace,contextmenu,paste,link,localautosave,help'];
+            {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
+                tinyplugins = ['searchreplace,paste,link,localautosave,help'];
+            {/literal}{/if}{literal}
             } else {
                 mytoolbar = fullToolbar;
                 tinymenu = true;
+            {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
                 tinyplugins = ['image,imagetools,searchreplace,contextmenu,paste,link,textcolor,visualblocks,code,localautosave,help'];
+            {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
+                tinyplugins = ['image,imagetools,searchreplace,paste,link,visualblocks,code,localautosave,help'];
+            {/literal}{/if}{literal}
             }
 
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
@@ -335,7 +346,7 @@
                 uiColor : '#aaaaaa',
                 baseHref : EXPONENT.PATH_RELATIVE,
             });
-        {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
+        {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
             tinymce.init({
                 selector : '#'+node.id,
                 plugins : tinyplugins,
@@ -400,7 +411,7 @@
         var killEditor = function(node) {
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
             CKEDITOR.instances[node].destroy();
-            {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
+            {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
             tinymce.execCommand('mceRemoveControl', true, '#'+node.id);
             {/literal}{/if}{literal}
         };
@@ -430,9 +441,9 @@
                         if (workflow) {
                             newItem += '<span class="revisionnum approval" title="Viewing Revision #' + data.revision_id + '">' + data.revision_id + '</span>';
                         }
-                        newItem += '<a class="btn btn-default {/literal}{$btn_size}{literal}" title="{/literal}{'Edit this text item'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/edit/id/' + data.id + '/src/' + src + '"><i class="fa fa-edit {/literal}{$icon_size}{literal}"></i> {/literal}{'Edit'|gettext}{literal}</a>';
-                        newItem += '<a class="delete-item btn btn-danger {/literal}{$btn_size}{literal}" title="{/literal}{'Delete'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/delete/id/' + data.id + '/src/' + src + '"><i class="fa fa-times-circle {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete'|gettext}{literal}</a>';
-                        newItem +='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + data.id + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="fa fa-times-circle {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a></div>';
+                        newItem += '<a class="btn btn-default {/literal}{$btn_size}{literal}" title="{/literal}{'Edit this text item'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/edit/id/' + data.id + '/src/' + src + '"><i class="fas fa-edit {/literal}{$icon_size}{literal}"></i> {/literal}{'Edit'|gettext}{literal}</a>';
+                        newItem += '<a class="delete-item btn btn-danger {/literal}{$btn_size}{literal}" title="{/literal}{'Delete'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/delete/id/' + data.id + '/src/' + src + '"><i class="fas fa-times-circle {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete'|gettext}{literal}</a>';
+                        newItem +='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + data.id + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="fas fa-times-circle {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a></div>';
                         newItem += '<div class="bodycopy"><div id="body-' + data.id + '" contenteditable="true" class="editable">{/literal}{'content placeholder'|gettext}{literal}</div></div></div>';
                         $('#textcontent-{/literal}{$name}{literal}').append(newItem);
                         startEditor($('#title-' + data.id)[0]);
@@ -469,7 +480,7 @@
                         $('#text-' + data.id).prepend(newItem);
                         $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html('{/literal}{'title placeholder'|gettext}{literal}');
                         startEditor($('#title-' + data.id)[0]);
-                        chgItem ='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + data.id + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="fa fa-times-circle {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a>';
+                        chgItem ='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + data.id + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="fas fa-times-circle {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a>';
                         addparent = $('#addtitle-' + data.id).parent();
                         $('#addtitle-' + data.id).remove();
                         addparent.append(chgItem);
@@ -527,7 +538,7 @@
                             }
                             $('#title-' + data.id).parent().remove();
                             $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html('{/literal}{'Untitled'|gettext}{literal}');
-                            chgItem ='<a class="add-title btn btn-success {/literal}{$btn_size}{literal}" id="addtitle-' + data.id + '" href="#" title="{/literal}{'Add Title'|gettext}{literal}"><i class="fa fa-plus-circle {/literal}{$icon_size}{literal}"></i> {/literal}{'Add Title'|gettext}{literal}</a>';
+                            chgItem ='<a class="add-title btn btn-success {/literal}{$btn_size}{literal}" id="addtitle-' + data.id + '" href="#" title="{/literal}{'Add Title'|gettext}{literal}"><i class="fas fa-plus-circle {/literal}{$icon_size}{literal}"></i> {/literal}{'Add Title'|gettext}{literal}</a>';
                             delparent = $('#deletetitle-' + data.id).parent();
                             killEditor('title-' + data.id);
                             $('#deletetitle-' + data.id).remove();

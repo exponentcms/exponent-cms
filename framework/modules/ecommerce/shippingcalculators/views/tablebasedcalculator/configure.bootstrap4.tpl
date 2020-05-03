@@ -78,7 +78,7 @@ input.form-control,
                                 {if !($smarty.section.i.last)}
                                 <tr class="line row-{$smarty.section.i.index+1} {cycle values='odd,even'}">
                                     <td>
-                                        <a class="{expTheme::buttonStyle('red')} delete" href="#"><i class="fa fa-times-circle"></i> {'Remove'|gettext}</a>
+                                        <a class="{expTheme::buttonStyle('red')} delete" href="#"><i class="fas fa-times-circle"></i> {'Remove'|gettext}</a>
                                     </td>
                                     <td class="from amount">
                                         <label for="from-{$smarty.section.i.index}">{currency_symbol}</label><input class="form-control" type="text" size="10" id="from-{$smarty.section.i.index}" value="{$calculator->configdata.from[i]}" name="from[]}">
@@ -145,7 +145,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var rowTemplate = function (i){
     return '<tr class="line row-'+i+' '+odev+'">'+
             '<td class="from">'+
-                '<a class="{/literal}{expTheme::buttonStyle('red')}{literal} delete" href="#"><i class="fa fa-times-circle"></i> Remove</a>'+
+                '<a class="{/literal}{expTheme::buttonStyle('red')}{literal} delete" href="#"><i class="fas fa-times-circle"></i> Remove</a>'+
             '</td>'+
             '<td class="from">'+
                 '<label for="from-'+i+'">{/literal}{currency_symbol}{literal}</label>'+

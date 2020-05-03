@@ -33,7 +33,7 @@
             <div class="container-chrome">
                 <a href="#" class="trigger" title="Container">{if $container->is_private}{img src="`$smarty.const.ICON_RELATIVE`lock.png" square=12 title='Private Module'|gettext} {/if}{'Container'|gettext} ({if $top->scope == 'top-sectional'}{'Top'|gettext}{else}{$top->scope|gettext}{/if})</a>
                 <ul class="container-menu">
-                    {if $user->isAdmin()}
+                    {if $user->isAdmin() && !$smarty.const.SIMPLE_PERMISSIONS}
                         <li><a href="{link controller=users action=userperms mod=container}" class="user">{"User Permissions"|gettext}</a></li>
                         <li><a href="{link controller=users action=groupperms mod=container}" class="group">{"Group Permissions"|gettext}</a></li>
                     {/if}

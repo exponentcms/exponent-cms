@@ -544,7 +544,7 @@ class administrationController extends expController {
 			'mods'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-mods'
 		);
 
-        require_once(BASE . 'external/simplepie-1.5.4/autoloader.php');
+        require_once(BASE . 'external/simplepie-1.5.5/autoloader.php');
 		$RSS = new SimplePie();
 		$RSS->set_cache_location(BASE . 'tmp/rsscache');  // default is ./cache
 //	    $RSS->set_cache_duration(3600);  // default if 3600
@@ -620,6 +620,14 @@ class administrationController extends expController {
 				case UPLOAD_ERR_NO_FILE:
 					flash('error', gt('No file was uploaded.'));
 					break;
+                case UPLOAD_ERR_NO_TMP_DIR:
+                case UPLOAD_ERR_CANT_WRITE:
+                    flash('error', gt('Server Temp File Error.'));
+                    break;
+                case UPLOAD_ERR_EXTENSION:
+                default:
+                    return 'Unknown File Upload Error.';
+                    break;
 			}
 		} else {
 			$basename = basename($_FILES['mod_archive']['name']);
@@ -1119,6 +1127,7 @@ class administrationController extends expController {
                     }
                     if(count($t->style_variations)>0){
                         $t->style_variations = array_merge(array('Default'=>'Default'),$t->style_variations);
+//                        $t->style_variations = array('Default'=>'Default') + $t->style_variations;
                     }
 
     				$t->preview = is_readable(BASE."themes/$file/preview.jpg") ? PATH_RELATIVE . "themes/$file/preview.jpg" : YUI2_RELATIVE . "yui2-skin-sam-editor/assets/skins/sam/blankimage.png";
@@ -1497,102 +1506,6 @@ class administrationController extends expController {
             flash('error', gt("Installation files were not found"));
         }
    	}
-
-}
-
-/**
- * This is the base theme class
- *
- * @subpackage Controllers
- * @package Modules
- */
-class theme {
-	public $user_configured = false;
-    public $stock_theme = false;
-
-	function name() { return "theme"; }
-	function author() { return ""; }
-	function description() { return gt("The theme shell"); }
-
-    /**
-     * @param array $params
-     */
-    function __construct($params = array()) {
-        $this->params = $params;
-    }
-
-    /**
-     * are all prerequisites available?
-     */
-    function supported() {
-        return true;
-    }
-
-	/**
-	 * Method to Configure theme settings
-	 * This generic routine parses the theme's config.php file
-	 * and presents the values as text boxes.
-	 */
-	function configureTheme () {
-		if (isset($this->params['sv']) && $this->params['sv'] != '') {
-			if (strtolower($this->params['sv'])==='default') {
-                $this->params['sv']='';
-			}
-			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config_".$this->params['sv'].".php");
-		} else {
-			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config.php");
-		}
-		$form = new form();
-		$form->meta('controller','administration');
-		$form->meta('action','update_theme');
-		$form->meta('theme',$this->params['theme']);
-		$form->meta('sv',isset($this->params['sv'])?$this->params['sv']:'');
-		foreach ($settings as $setting=>$key) {
-			$form->register($setting,$setting.': ',new textcontrol($key,20));
-		}
-		$form->register(null,'',new htmlcontrol('<br>'));
-		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
-		assign_to_template(array(
-            'name'=>$this->name().(!empty($this->params['sv'])?' '.$this->params['sv']:''),
-            'form_html'=>$form->toHTML()
-        ));
-	}
-
-	/**
-	 * Method to save/update theme settings
-	 * This generic routine parses the passed params
-	 * and saves them to the theme's config.php file
-	 * It attempts to remove non-theme params such as analytics, etc..
-	 *
-	 * @param $params theme configuration parameters
-	 */
-	function saveThemeConfig ($params) {
-		$theme = $params['theme'];
-		unset ($params['theme']);
-		$sv = $params['sv'];
-		if (strtolower($sv) === 'default') {
-		   $sv='';
-		}
-		unset (
-            $params['sv'],
-            $params['controller'],
-            $params['action'],
-            $params['cid'],
-            $params['scayt_verLang'],
-            $params['slingbar-top'],
-            $params['XDEBUG_SESSION']
-        );
-		foreach ($params as $key=>$value) {
-			if (strpos($key, '_') === 0) {
-				unset ($params[$key]);
-			}
-		}
-		if (!empty($sv)) {
-            expSettings::saveValues($params, BASE . "themes/" . $theme . "/config_" . $sv . ".php");
-		} else {
-            expSettings::saveValues($params, BASE . "themes/" . $theme . "/config.php");
-		}
-	}
 
 }
 

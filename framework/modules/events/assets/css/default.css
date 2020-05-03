@@ -16,15 +16,15 @@
 .c-call.multi-3 {width:568px !important;_width:560px}
 .c-call {-moz-box-shadow: 2px 2px 0px #ccc;-webkit-box-shadow:2px 2px 0px #ccc;-khtml-box-shadow:2px 2px 0px #ccc;-ms-box-shadow:2px 2px 0px #ccc;box-shadow:2px 2px 0px #ccc;}
 .c-call .c-box {margin:4px;_margin:4px 2px;height:auto;width:auto;float:left;*padding-bottom:5px;_padding-bottom:3px;position:relative;}
-.c-call .c-hd {background:url('http://img04.taobaocdn.com/tps/i4/T1aqNrXbFvXXXXXXXX-10-100.gif') repeat-x 0 -41px; width:181px;height:24px;background-color:#40a6ff;position:relative;}
+.c-call .c-hd {background:url('../images/T1aqNrXbFvXXXXXXXX-10-100.gif') repeat-x 0 -41px; width:181px;height:24px;background-color:#40a6ff;position:relative;}
 .c-call .c-hd a {}
-.c-call .c-hd a.prev {overflow:hidden;text-indent:-100em;background:url('http://img04.taobaocdn.com/tps/i4/T1aqNrXbFvXXXXXXXX-10-100.gif') no-repeat 0 4px; height:1px;width:10px;float:left;position:absolute;left:3px;top:3px;/*background-color:red;*/font-size:10px;text-decoration:none;color:white;}
-.c-call .c-hd a.next {overflow:hidden;text-indent:-100em;background:url('http://img04.taobaocdn.com/tps/i4/T1aqNrXbFvXXXXXXXX-10-100.gif') no-repeat 0 -15px; height:1px;width:10px;position:absolute;right:3px;top:3px;/*background-color:red;*/font-size:10px;text-decoration:none;color:white;}
+.c-call .c-hd a.prev {overflow:hidden;text-indent:-100em;background:url('../images/T1aqNrXbFvXXXXXXXX-10-100.gif') no-repeat 0 4px; height:1px;width:10px;float:left;position:absolute;left:3px;top:3px;/*background-color:red;*/font-size:10px;text-decoration:none;color:white;}
+.c-call .c-hd a.next {overflow:hidden;text-indent:-100em;background:url('../images/T1aqNrXbFvXXXXXXXX-10-100.gif') no-repeat 0 -15px; height:1px;width:10px;position:absolute;right:3px;top:3px;/*background-color:red;*/font-size:10px;text-decoration:none;color:white;}
 
 .c-call .c-hd a.title,
 .c-call .c-hd a.title:link,
 .c-call .c-hd a.title:visited {color:white;text-decoration:none;position:relative;margin-left:auto;margin-right:auto;width:77px;height:17px;line-height:17px;display:block;top:3px;text-align:center;}
-.c-call .c-hd a.title:hover {border:1px solid #8cc6ff;top:2px;color:#f0ff00;background:url('http://img04.taobaocdn.com/tps/i4/T1aqNrXbFvXXXXXXXX-10-100.gif') repeat-x 0 -75px;}
+.c-call .c-hd a.title:hover {border:1px solid #8cc6ff;top:2px;color:#f0ff00;background:url('../images/T1aqNrXbFvXXXXXXXX-10-100.gif') repeat-x 0 -75px;}
 
 
 .c-call .c-bd {width:181px;}
@@ -79,7 +79,7 @@
 	head~body .c-call .c-ft .ct-ok {margin-left:0px;}
 	head~body .c-time .cta{}
 }
-.c-time button {width:13px;height:10px;border:0;overflow:hidden;/*text-indent:-100em;*/background:url("http://img05.taobaocdn.com/tps/i5/T1McxAXXRHXXXXXXXX-29-10.gif") no-repeat;cursor:pointer;}
+.c-time button {width:13px;height:10px;border:0;overflow:hidden;/*text-indent:-100em;*/background:url("../images/T1McxAXXRHXXXXXXXX-29-10.gif") no-repeat;cursor:pointer;}
 .c-time button.u {background-position:0 0;}
 .c-time button.d {background-position:-16px 0;}
 .c-time span {cursor:pointer;}

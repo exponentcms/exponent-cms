@@ -1322,6 +1322,7 @@ class eventController extends expController {
             }
             if (count($events) < 500) {  // magic number to not crash loop?
                 $events = array_merge($events, $evs);
+//                $events += $evs;
             } else {
 //                $evs[$key]->title = gt('Too many events to list').', '.(count($edates)-count($events)).' '.gt('not displayed!');
 //                $events = array_merge($events, $evs);
@@ -1893,6 +1894,11 @@ class eventController extends expController {
                         case UPLOAD_ERR_NO_FILE:
                             $this->params['_formError'] = gt('No file was uploaded.');
                             break;
+                        case UPLOAD_ERR_NO_TMP_DIR:
+                        case UPLOAD_ERR_CANT_WRITE:
+                            $this->params['_formError'] = gt('Server Temp File Error.');
+                            break;
+                        case UPLOAD_ERR_EXTENSION:
                         default:
                             $this->params['_formError'] = gt(
                                 'A strange internal error has occurred.  Please contact the Exponent Developers.'

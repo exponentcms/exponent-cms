@@ -17,7 +17,7 @@
 
 {messagequeue}
 
-<div id="siteconfig" class="module administration configure-site bootstrap3">
+<div id="siteconfig" class="module administration configure-site bootstrap3 bootstrap4">
 	<div class="form_header">
 		<div class="info-header">
 			<div class="related-actions">
@@ -158,7 +158,7 @@
                         {control type="dropdown" name="sc[DISPLAY_START_OF_WEEK]" label="Start of Week"|gettext items=$start_of_week default=$smarty.const.DISPLAY_START_OF_WEEK}
                     {/group}
 	                {control type="dropdown" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Default time zone for this site"|gettext|cat:(' <br />'|cat:("CAUTION: Changes may affect calendars and other features using date functions."|gettext)) items=$timezones default=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
-                    {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position" items="Top of Viewport,Bottom of Viewport"|gettxtlist values="1,0" default=$smarty.const.SLINGBAR_TOP}
+                    {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position"|gettext items="Top of Viewport,Bottom of Viewport"|gettxtlist values="1,0" default=$smarty.const.SLINGBAR_TOP}
 					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$smarty.const.THUMB_QUALITY|default:75 size="2"}
                     {control type="checkbox" name="sc[AJAX_PAGING]" label="Use ajax paging if available"|gettext value=1 checked=$smarty.const.AJAX_PAGING description='Can decrease paging loading time'|gettext}
                     {control type="checkbox" name="sc[OLD_BROWSER_SUPPORT]" label="Support Obsolete Browsers"|gettext value=1 checked=$smarty.const.OLD_BROWSER_SUPPORT description='Activate support for obsolete (non-HTML5) browsers'|gettext}
@@ -274,15 +274,19 @@
                     </div>
                     {$paramc = ["editor" => "ckeditor"]}
                     {$paramt = ["editor" => "tinymce"]}
+                    {$paramt5 = ["editor" => "tinymce5"]}
                     <div id="alt-control-wysiwyg" class="alt-control">
                         <div class="control"><label class="label">{'WYSIWYG Editor'|gettext}</label></div>
                         <div class="alt-body">
-                            {control type=radiogroup columns=2 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE"|gettxtlist values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
+                            {control type=radiogroup columns=3 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE,TinyMCE v5"|gettxtlist values="ckeditor,tinymce,tinymce5" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
                             <div id="ckeditor-div" class="alt-item" style="display:none;">
                                 {showmodule controller=expHTMLEditor action=manage params=$paramc}
                             </div>
                             <div id="tinymce-div" class="alt-item" style="display:none;">
                                 {showmodule controller=expHTMLEditor action=manage params=$paramt}
+                            </div>
+                            <div id="tinymce5-div" class="alt-item" style="display:none;">
+                                {showmodule controller=expHTMLEditor action=manage params=$paramt5}
                             </div>
                             {control type="checkbox" postfalse=1 name="sc[EDITOR_FAST_SAVE]" label="Always Save Inline Editing Changes w/o Prompt?"|gettext checked=$smarty.const.EDITOR_FAST_SAVE value=1}
                         </div>
@@ -481,7 +485,7 @@
                                    </div>
                                {/if}
                                <blockquote>
-                                   {'HTML2PDF is an optional package.  To obtain the WKHTMLtoPDF, you\'ll need to first download the appropriate binary application from'|gettext} <a href="http://wkhtmltopdf.org/downloads.html" target="_blank">{"wkhtmltopdf site"|gettext}</a>.
+                                   {'WKHTMLtoPDF is an optional package.  To obtain the WKHTMLtoPDF, you\'ll need to first download the appropriate binary application from'|gettext} <a href="http://wkhtmltopdf.org/downloads.html" target="_blank">{"wkhtmltopdf site"|gettext}</a>.
                                    {"and then install it on your server."|gettext}
                                </blockquote>
                                {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility"|gettext value=$smarty.const.HTMLTOPDF_PATH}
@@ -534,6 +538,7 @@
                         <h2>{"e-Commerce Configuration"|gettext}</h2>
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[FORCE_ECOM]" label="Activate e-Commerce?"|gettext checked=$smarty.const.FORCE_ECOM value=1}
+                    {control type="checkbox" postfalse=1 name="sc[SIMPLE_PERMISSIONS]" label="Use Simple Permissions?"|gettext checked=$smarty.const.SIMPLE_PERMISSIONS value=1 description='This will simplify and speed up the permission system to see all users as either a basic user or an admin. Any existing User and Group Permissions will not apply.'|gettext}
                     {control type="checkbox" postfalse=1 name="sc[ECOM_LARGE_DB]" label="Allow Large e-Commerce Tables?"|gettext checked=$smarty.const.ECOM_LARGE_DB value=1 description='This will prevent manage product/order problems, but disable the filter/search features'|gettext}
                     {control type="checkbox" postfalse=1 name="sc[DISABLE_SSL_WARNING]" label="Disable Unsecure Checkout Warning?"|gettext checked=$smarty.const.DISABLE_SSL_WARNING value=1 description='Normally a warning is displayed when attempting to checkout on an unsecured site.'|gettext}
                     {control type="dropdown" name="sc[ECOM_CURRENCY]" label="Default Currency"|gettext items=$currency default=$smarty.const.ECOM_CURRENCY}

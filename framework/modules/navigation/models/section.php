@@ -177,6 +177,7 @@ class section extends expRecord {
                 if ($child !== null) {
                     $nodes[] = $child;
                     $nodes   = array_merge($nodes, self::levelTemplate($child->id, $depth + 1, $parents));
+//                    $nodes   += self::levelTemplate($child->id, $depth + 1, $parents);
                 }
             }
         }

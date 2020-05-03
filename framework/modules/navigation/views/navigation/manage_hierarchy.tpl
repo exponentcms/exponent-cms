@@ -285,10 +285,10 @@ var YAHOO = Y.YUI2;
 			this.hide();
 		};
         if (currentMenuNode.data.obj.alias_type == 0) {
-		    var message = "{/literal}{"Deleting a content page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved"|gettext}{literal}";
+		    var message = "{/literal}{"Removing a content page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved"|gettext}{literal}";
             var yesbtn = "{/literal}{"Move to Standalone"|gettext}{literal}";
         } else {
-            var message = "{/literal}{"Deleting an internal alias page or external link page permanently removes it from the system."|gettext}{literal}";
+            var message = "{/literal}{"Removing an internal alias page or external link page permanently removes it from the system."|gettext}{literal}";
             var yesbtn = "{/literal}{"Delete Page"|gettext}{literal}";
         }
 
@@ -463,7 +463,7 @@ var YAHOO = Y.YUI2;
 		}
 	}
 
-	if (usr.is_acting_admin==1 || usr.is_admin==1) {
+	if ((usr.is_acting_admin==1 || usr.is_admin==1) && !{/literal}{$smarty.const.SIMPLE_PERMISSIONS}{literal}) {
 		var navoptions = [
 				{ classname:"addsubpage", text: "{/literal}{"Add A Subpage"|gettext}{literal}", onclick: { fn: addSubNode },
 					submenu: {
@@ -496,7 +496,7 @@ var YAHOO = Y.YUI2;
 				},
 				{ classname:"viewpage", text: "{/literal}{"View This Page"|gettext}{literal}", onclick: { fn: viewNode } },
 				{ classname:"editpage", text: "{/literal}{"Edit This Page"|gettext}{literal}", onclick: { fn: editNode } },
-				{ classname:"deletepage", text: "{/literal}{"Delete This Page"|gettext}{literal}", onclick: { fn: deleteNode } }
+				{ classname:"deletepage", text: "{/literal}{"Remove This Page"|gettext}{literal}", onclick: { fn: deleteNode } }
 			];
 	}
 

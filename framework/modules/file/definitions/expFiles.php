@@ -34,15 +34,18 @@ return array(
 	'title'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>250),
+    'alt'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>250),
+    'poster'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_ID),
+   	'posted'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	'shared'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'mimetype'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
-	'poster'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
-	'posted'=>array(
-		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	'filesize'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'accesscount'=>array(
@@ -50,15 +53,12 @@ return array(
 	'last_accessed'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	// IMAGES ONLY
-	'image_width'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    'is_image'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'image_height'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
-	'alt'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>250),
-	'is_image'=>array(
-		DB_FIELD_TYPE=>DB_DEF_BOOLEAN)
+    'image_width'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_INTEGER)
 );
 
 ?>

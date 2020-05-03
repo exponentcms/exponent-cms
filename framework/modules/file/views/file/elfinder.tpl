@@ -24,8 +24,11 @@
     <title>{'File Manager'|gettext}  |  Exponent CMS</title>
     <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
 
+    {if $smarty.const.USE_CDN}
+    <link rel="stylesheet" href="https://code.jquery.com/ui/{$smarty.const.JQUERYUI_VERSION}/themes/smoothness/jquery-ui.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    {else}
     <link rel="stylesheet" href="{$smarty.const.JQUERY_RELATIVE}css/smoothness/jquery-ui.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
-
+    {/if}
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/commands.css" type="text/css">
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/common.css" type="text/css">
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/contextmenu.css" type="text/css">
@@ -199,7 +202,7 @@
                 commandsOptions : {
                     {/literal}{if $smarty.const.FM_EDITORS=="old"}{literal}  //fixme commandsOptions/edit replaced by extras/editors.default.js v 2.1.25+
                     edit : {
-                    {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR=="ckeditor"}{literal}
+                    {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
                         editors : [
                             {
                                 // CKEditor for html file
@@ -227,7 +230,7 @@
                                 }
                             }
                         ]
-                    {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR=="tinymce"}{literal}
+                    {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || SITE_WYSIWYG_EDITOR == 'tinymce5'}{literal}
                         mimes : ['text/plain', 'text/html', 'text/javascript', 'text/csv', 'text/x-comma-separated-values'],
                         editors : [
                             {

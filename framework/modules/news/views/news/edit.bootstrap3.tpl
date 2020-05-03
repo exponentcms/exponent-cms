@@ -38,7 +38,7 @@
             </ul>
             <div class="tab-content yui3-skin-sam">
                 <div id="tab1" role="tabpanel" class="tab-pane fade in active">
-                    <h2>{'News Item'|gettext}</h2>
+                    <h2>{'News Entry'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title focus=1}
                 	{control type="editor" name="body" label="Body"|gettext value=$record->body}
                 	{control type="checkbox" name="is_featured" label="Feature this News Post?"|gettext value=1 checked=$record->is_featured}
@@ -56,11 +56,13 @@
                    	{/if}
                 </div>
                 <div id="tab2" role="tabpanel" class="tab-pane fade">
+                    <h2>{'Publishing Date'|gettext}</h2>
                     {control type="yuidatetimecontrol" name="publish" label="Publish Date"|gettext edit_text="Publish Immediately" value=$record->publish}
                     {control type="yuidatetimecontrol" name="unpublish" label="Un-Publish Date"|gettext edit_text="Never Un-Publish" value=$record->unpublish}
                 </div>
                 {if $config.filedisplay}
                     <div id="tab3" role="tabpanel" class="tab-pane fade">
+                        <h2>{'Attach Files'|gettext}</h2>
                         {control type=files name=images label="Attachable Files"|gettext value=$record->expFile folder=$config.upload_folder}
                     </div>
                 {/if}
@@ -78,7 +80,7 @@
                     <div id="tab5" role="tabpanel" class="tab-pane fade">
                         <h2>{'Facebook Meta'|gettext}</h2>
                         <blockquote>
-                            {'Also used for Twitter, Pinterest, etc...'|gettext}
+                            {'Also used by Twitter, Pinterest, etc...'|gettext}
                         </blockquote>
                         {control type="text" name="fb[title]" label="Meta Title"|gettext value=$record->meta_fb.title size=88 description='Override the item title for social media'|gettext}
                         {control type="textarea" name="fb[description]" label="Meta Description"|gettext rows=5 cols=35 size=200 value=$record->meta_fb.description description='Override the item summary for social media'|gettext}

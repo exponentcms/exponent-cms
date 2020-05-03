@@ -280,15 +280,19 @@
                     </div>
                     {$paramc = ["editor" => "ckeditor"]}
                     {$paramt = ["editor" => "tinymce"]}
+                    {$paramt5 = ["editor" => "tinymce5"]}
                     <div id="alt-control-wysiwyg" class="alt-control">
                         <div class="control"><label class="label">{'WYSIWYG Editor'|gettext}</label></div>
                         <div class="alt-body">
-                            {control type=radiogroup columns=2 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE"|gettxtlist values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
+                            {control type=radiogroup columns=3 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE,TinyMCE v5"|gettxtlist values="ckeditor,tinymce,tinymce5" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
                             <div id="ckeditor-div" class="alt-item" style="display:none;">
                                 {showmodule controller=expHTMLEditor action=manage params=$paramc}
                             </div>
                             <div id="tinymce-div" class="alt-item" style="display:none;">
                                 {showmodule controller=expHTMLEditor action=manage params=$paramt}
+                            </div>
+                            <div id="tinymce5-div" class="alt-item" style="display:none;">
+                                {showmodule controller=expHTMLEditor action=manage params=$paramt5}
                             </div>
                             {control type="checkbox" postfalse=1 name="sc[EDITOR_FAST_SAVE]" label="Always Save Inline Editing Changes w/o Prompt?"|gettext checked=$smarty.const.EDITOR_FAST_SAVE value=1}
                         </div>
@@ -540,6 +544,7 @@
                         <h2>{"e-Commerce Configuration"|gettext}</h2>
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[FORCE_ECOM]" label="Activate e-Commerce?"|gettext checked=$smarty.const.FORCE_ECOM value=1}
+                    {control type="checkbox" postfalse=1 name="sc[SIMPLE_PERMISSIONS]" label="Use Simple Permissions?"|gettext checked=$smarty.const.SIMPLE_PERMISSIONS value=1 description='This will simplify and speed up the permission system to see all users as either a basic user or an admin. Any existing User and Group Permissions will not apply.'|gettext}
                     {control type="checkbox" postfalse=1 name="sc[ECOM_LARGE_DB]" label="Allow Large e-Commerce Tables?"|gettext checked=$smarty.const.ECOM_LARGE_DB value=1 description='This will prevent manage product/order problems, but disable the filter/search features'|gettext}
                     {control type="checkbox" postfalse=1 name="sc[DISABLE_SSL_WARNING]" label="Disable Unsecure Checkout Warning?"|gettext checked=$smarty.const.DISABLE_SSL_WARNING value=1 description='Normally a warning is displayed when attempting to checkout on an unsecured site.'|gettext}
                     {control type="dropdown" name="sc[ECOM_CURRENCY]" label="Default Currency"|gettext items=$currency default=$smarty.const.ECOM_CURRENCY}
@@ -549,7 +554,7 @@
                             <ul>
                                 <li>{'Enter appropriate settings under the Security tab above.'|gettext}</li>
                             </ul>
-                            <li>{'Import default ecommerce information into the database'|gettext} <a href="{link action=install_ecommerce_tables}" title={'Install Default e-Commerce data'|gettext} onclick="return confirm('{'Are you sure you want to re-initialize e-Commerce data to default values?'|gettext}');">{'here'|gettext}</a></li>
+                            <li>{'Import default ecommerce information into the database'|gettext} <a href="{link action=install_ecommerce_tables}" title="{'Install Default e-Commerce data'|gettext}" onclick="return confirm('{'Are you sure you want to re-initialize e-Commerce data to default values?'|gettext}');">{'here'|gettext}</a></li>
                             <ul>
                                 <li>geo_regions</li>
                                 <li>geo_countries</li>

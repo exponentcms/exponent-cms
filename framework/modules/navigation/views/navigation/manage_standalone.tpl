@@ -30,7 +30,9 @@
                     <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" style="margin-left: 1px;" onchange="selectAll(this.checked)"></th>
                     <th><strong>{'Page Title'|gettext}</strong></th>
                     <th><strong>{'Actions'|gettext}</strong></th>
+                    {if !$smarty.const.SIMPLE_PERMISSIONS}
                     <th><strong>{'Permissions'|gettext}</strong></th>
+                    {/if}
                 </tr>
             </thead>
             <tbody>
@@ -48,12 +50,16 @@
                     </td><td>
                         {icon class=edit action=edit_contentpage record=$section title='Edit'|gettext}
                         {icon action=delete record=$section title='Delete'|gettext onclick="return confirm('"|cat:("Delete this page?"|gettext)|cat:"');"}
-                    </td><td>
+                    </td>
+                    {if !$smarty.const.SIMPLE_PERMISSIONS}
+                    <td>
                         {*{icon int=$section->id action=userperms _common=1 img='userperms.png' title='Assign user permissions for this Page'|gettext text="User"}*}
                         {*{icon int=$section->id action=groupperms _common=1 img='groupperms.png' title='Assign group permissions for this Page'|gettext text="Group"}*}
                         {icon controller=users action=userperms mod=navigation int=$section->id img='userperms.png' title='Assign user permissions for this Page'|gettext text="User"}
                         {icon controller=users action=groupperms mod=navigation int=$section->id img='groupperms.png' title='Assign group permissions for this Page'|gettext text="Group"}
-                    </td></tr>
+                    </td>
+                    {/if}
+                    </tr>
                 {foreachelse}
                     <tr><td colspan=4><em>{'No standalone pages found'|gettext}</em></td></tr>
                 {/foreach}
@@ -64,10 +70,12 @@
 </div>
 
 {script unique="standalone"}
+{literal}
     function selectAll(val) {
         var checks = document.getElementsByName("deleteit[]");
         for (var i = 0; i < checks.length; i++) {
           checks[i].checked = val;
         }
     }
+{/literal}
 {/script}

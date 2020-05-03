@@ -11,15 +11,6 @@
 		// get query of getfile
 		getfile = window.location.search.match(/getfile=([a-z]+)/),
 		useRequire = elFinder.prototype.hasRequire,
-		hasFlash = (function() {
-			var hasFlash;
-			try {
-				hasFlash = !!(new ActiveXObject('ShockwaveFlash.ShockwaveFlash'));
-			} catch (e) {
-				hasFlash = !!(typeof window.orientation === 'undefined' || (navigator && navigator.mimeTypes["application/x-shockwave-flash"]));
-			}
-			return hasFlash;
-		})(),
 		ext2mime = {
 			bmp: 'image/x-ms-bmp',
 			dng: 'image/x-adobe-dng',
@@ -98,8 +89,8 @@
 		},
 		initImgTag = function(id, file, content, fm) {
 			var node = $(this).children('img:first').data('ext', getExtention(file.mime, fm)),
-				spnr = $('<div class="elfinder-edit-spinner elfinder-edit-image"/>')
-					.html('<span class="elfinder-spinner-text">' + fm.i18n('ntfloadimg') + '</span><span class="elfinder-spinner"/>')
+				spnr = $('<div class="elfinder-edit-spinner elfinder-edit-image"></div>')
+					.html('<span class="elfinder-spinner-text">' + fm.i18n('ntfloadimg') + '</span><span class="elfinder-spinner"></span>')
 					.hide()
 					.appendTo(this),
 				setup = function() {
@@ -149,153 +140,6 @@
 			}
 			return data;
 		},
-		pixlrCallBack = function() {
-			if (!hasFlash || window.parent === window) {
-				return;
-			}
-			var pixlr = window.location.search.match(/[?&]pixlr=([^&]+)/),
-				image = window.location.search.match(/[?&]image=([^&]+)/),
-				p, ifm, url, node, ext;
-			if (pixlr) {
-				// case of redirected from pixlr.com
-				p = window.parent;
-				ifm = p.$('#'+pixlr[1]+'iframe').hide();
-				node = p.$('#'+pixlr[1]).data('resizeoff')();
-				if (image[1].substr(0, 4) === 'http') {
-					url = image[1];
-					ext = url.replace(/.+\.([^.]+)$/, '$1');
-					if (node.data('ext') !== ext) {
-						node.closest('.ui-dialog').trigger('changeType', {
-							extention: ext,
-							mime : ext2mime[ext]
-						});
-					}
-					if (window.location.protocol === 'https:') {
-						url = url.replace(/^http:/, 'https:');
-					}
-					node.on('load error', function() {
-							node.data('loading')(true);
-						})
-						.attr('src', url)
-						.data('loading')();
-				} else {
-					node.data('loading')(true);
-				}
-				ifm.trigger('destroy').remove();
-			}
-		},
-		pixlrSetup = function(opts, fm) {
-			if (!hasFlash || fm.UA.ltIE8) {
-				this.disabled = true;
-			}
-		},
-		pixlrLoad = function(mode, base) {
-			if (navigator && !navigator.mimeTypes["application/x-shockwave-flash"]) {
-				var src = 'data:application/x-shockwave-flash;base64,Q1dTCJUCAAB42kxSTW/TQBB9Xjv1hkLamoIvEeJaQBUHjvQjVEUKImnkIK7BjTapi5u1dlfQ/gJ6KjdLCHHl9/CPyszaRexhdt/sm3kzs3uJ+A+QVsCTAEfillZ3DbQmAZmD3jZZOk1ms0k+/5wvld0d5cUKt71QMOv6Nx7De2bLUp/mJZbKfVTGFnoFq9zbMrdnd3jBAOrSKbMi5nF7GK5oX+RzhXlelqiMdtpdVQoXnHd6ZZ26oKsqPy3KwhXK4kub8ClsRS7s4gXONZGPjdEGyhhgMJ0qNzG6ohKWFrWARD9Jfgm8CxgEfe+6kdxtuINXqLuIGUSBFNm3ACKt1xEJGcbcqox8QGfMds3bOEuJhpM6QgQpxwSCtAHdmy0eXLQDYb8uMq0dNlHHjYDEIVHD1AeS2L8afuK7ROcTXjJmhXtec92r3R/f1SQfxPw6VFovqzvwoL1MIDc8lpv/cSh6q+1IkGv/hyAJ9iacP8Lz9zVdDmk2iXc/HL3mbZuJMXwQnp3UG42UiII4ZIlHeykOwjd0vO4TY/RhMD2ajQbDMdxZYZtv4d/QT5pHlbaTj5tMUvj+wizFIcG/AAAA//8DAFw0fxk=';
-				$(base).empty().append('<object data="'+src+'" type="application/x-shockwave-flash" style="width:100%;height:100%"><param name="movie" value="'+src+'"></object>');
-				return;
-			}
-			var self = this,
-				fm = this.fm,
-				clPreventBack = fm.res('class', 'preventback'),
-				node = $(base).children('img:first')
-					.data('loading')()
-					.data('resizeoff', function() {
-						$(window).off('resize.'+node.attr('id'));
-						dialog.addClass(clPreventBack);
-						return node;
-					})
-					.on('click', function() {
-						launch();
-					}),
-				dialog = $(base).closest('.ui-dialog'),
-				elfNode = fm.getUI(),
-				uiToast = fm.getUI('toast'),
-				container = $('<iframe class="ui-front" allowtransparency="true">'),
-				file = this.file,
-				timeout = 15,
-				error = function(error) {
-					if (error) {
-						container.trigger('destroy').remove();
-						node.data('loading')(true);
-						fm.error(error);
-					} else {
-						uiToast.appendTo(dialog.closest('.ui-dialog'));
-						fm.toast({
-							mode: 'info',
-							msg: 'Can not launch Pixlr yet. Waiting ' + timeout + ' seconds.',
-							button: {
-								text: 'Abort',
-								click: function() {
-									container.trigger('destroy').remove();
-									node.data('loading')(true);
-								}
-							},
-							onHidden: function() {
-								uiToast.children().length === 1 && uiToast.appendTo(fm.getUI());
-							}
-						});
-						errtm = setTimeout(error, timeout * 1000);
-					}
-				},
-				launch = function() {
-					var src = 'https://pixlr.com/'+mode+'/?s=c',
-						myurl = window.location.href.toString().replace(/#.*$/, ''),
-						opts = {};
-
-					errtm = setTimeout(error, timeout * 1000);
-					myurl += (myurl.indexOf('?') === -1? '?' : '&') + 'pixlr='+node.attr('id');
-					src += '&referrer=elFinder&locktitle=true';
-					src += '&exit='+encodeURIComponent(myurl+'&image=0');
-					src += '&target='+encodeURIComponent(myurl);
-					src += '&title='+encodeURIComponent(file.name);
-					src += '&image='+encodeURIComponent(node.attr('_src'));
-					
-					opts.src = src;
-					opts.css = {
-						width: '100%',
-						height: $(window).height()+'px',
-						position: 'fixed',
-						display: 'block',
-						backgroundColor: 'transparent',
-						border: 'none',
-						top: 0,
-						right: 0
-					};
-
-					// trigger event 'editEditorPrepare'
-					self.trigger('Prepare', {
-						node: base,
-						editorObj: void(0),
-						instance: container,
-						opts: opts
-					});
-
-					container
-						.attr('id', node.attr('id')+'iframe')
-						.attr('src', opts.src)
-						.css(opts.css)
-						.one('load', function() {
-							errtm && clearTimeout(errtm);
-							setTimeout(function() {
-								if (container.is(':hidden')) {
-									error('Please disable your ad blocker.');
-								}
-							}, 1000);
-							dialog.addClass(clPreventBack);
-							fm.toggleMaximize(container, true);
-							fm.toFront(container);
-						})
-						.on('destroy', function() {
-							fm.toggleMaximize(container, false);
-						})
-						.on('error', error)
-						.appendTo(elfNode.hasClass('elfinder-fullscreen')? elfNode : 'body');
-				},
-				errtm;
-			$(base).on('saveAsFail', launch);
-			launch();
-		},
 		iframeClose = function(ifm) {
 			var $ifm = $(ifm),
 				dfd = $.Deferred().always(function() {
@@ -330,9 +174,6 @@
 			chk();
 			return dfd;
 		};
-	
-	// check callback from pixlr
-	pixlrCallBack();
 	
 	// check getfile callback function
 	if (getfile) {
@@ -405,8 +246,8 @@
 							iconsPath = opts.iconsPath,
 							tmpContainer = $('<div class="tui-image-editor-container">').appendTo(bParent),
 							tmpDiv = [
-								$('<div class="tui-image-editor-submenu"/>').appendTo(tmpContainer),
-								$('<div class="tui-image-editor-controls"/>').appendTo(tmpContainer)
+								$('<div class="tui-image-editor-submenu"></div>').appendTo(tmpContainer),
+								$('<div class="tui-image-editor-controls"></div>').appendTo(tmpContainer)
 							],
 							iEditor = new editor(base, {
 								includeUI: {
@@ -464,9 +305,9 @@
 									}
 								}
 							},
-							zup = $('<span class="ui-icon ui-icon-plusthick"/>').data('val', 10),
-							zdown = $('<span class="ui-icon ui-icon-minusthick"/>').data('val', -10),
-							per = $('<button/>').css('width', '4em').text('%').attr('title', '100%').data('val', 0),
+							zup = $('<span class="ui-icon ui-icon-plusthick"></span>').data('val', 10),
+							zdown = $('<span class="ui-icon ui-icon-minusthick"></span>').data('val', -10),
+							per = $('<button></button>').css('width', '4em').text('%').attr('title', '100%').data('val', 0),
 							quty, qutyTm, zoomTm, zoomMore;
 
 						tmpContainer.remove();
@@ -489,9 +330,9 @@
 									});
 								})
 								.val($base.data('quality'));
-							$('<div class="ui-dialog-buttonset elfinder-edit-extras elfinder-edit-extras-quality"/>')
+							$('<div class="ui-dialog-buttonset elfinder-edit-extras elfinder-edit-extras-quality"></div>')
 								.append(
-									$('<span>').html(fm.i18n('quality') + ' : '), quty, $('<span/>')
+									$('<span>').html(fm.i18n('quality') + ' : '), quty, $('<span></span>')
 								)
 								.prependTo($base.parent().next());
 						} else if (self.file.mime === 'image/svg+xml') {
@@ -502,7 +343,7 @@
 							});
 						}
 						// zoom scale controls
-						$('<div class="ui-dialog-buttonset elfinder-edit-extras"/>')
+						$('<div class="ui-dialog-buttonset elfinder-edit-extras"></div>')
 							.append(
 								zdown, per, zup
 							)
@@ -628,43 +469,6 @@
 			}
 		},
 		{
-			// Pixlr Editor
-			info : {
-				id : 'pixlreditor',
-				name : 'Pixlr Editor',
-				iconImg : 'img/editor-icons.png 0 -128',
-				urlAsContent: true,
-				schemeContent: true,
-				single: true,
-				canMakeEmpty: true,
-				integrate: {
-					title: 'PIXLR EDITOR',
-					link: 'https://pixlr.com/editor/'
-				}
-			},
-			// MIME types to accept
-			mimes : ['image/jpeg', 'image/png', 'image/gif', 'image/x-ms-bmp', 'image/x-pixlr-data'],
-			// HTML of this editor
-			html : '<div class="elfinder-edit-imageeditor"><img/></div>',
-			// called on initialization of elFinder cmd edit (this: this editor's config object)
-			setup : function(opts, fm) {
-				pixlrSetup.call(this, opts, fm);
-			},
-			// Initialization of editing node (this: this editors HTML node)
-			init : function(id, file, url, fm) {
-				initImgTag.call(this, id, file, file.size > 0? fm.convAbsUrl(url) : '', fm);
-			},
-			// Get data uri scheme (this: this editors HTML node)
-			getContent : function() {
-				return $(this).children('img:first').attr('src');
-			},
-			load : function(base) {
-				pixlrLoad.call(this, 'editor', base);
-			},
-			save : function(base) {},
-			close : function(base) {}
-		},
-		{
 			// Photopea advanced image editor
 			info : {
 				id : 'photopea',
@@ -704,8 +508,8 @@
 						}),
 					editor = this.editor,
 					confObj = editor.confObj,
-					spnr = $('<div class="elfinder-edit-spinner elfinder-edit-photopea"/>')
-						.html('<span class="elfinder-spinner-text">' + fm.i18n('nowLoading') + '</span><span class="elfinder-spinner"/>')
+					spnr = $('<div class="elfinder-edit-spinner elfinder-edit-photopea"></div>')
+						.html('<span class="elfinder-spinner-text">' + fm.i18n('nowLoading') + '</span><span class="elfinder-spinner"></span>')
 						.appendTo(ifm.parent()),
 					saveMimes = fm.arrayFlip(confObj.info.canMakeEmpty),
 					getType = function(mime) {
@@ -837,9 +641,9 @@
 							ifm.data('quality', q);
 						})
 						.val(ifm.data('quality'));
-					$('<div class="ui-dialog-buttonset elfinder-edit-extras elfinder-edit-extras-quality"/>')
+					$('<div class="ui-dialog-buttonset elfinder-edit-extras elfinder-edit-extras-quality"></div>')
 						.append(
-							$('<span>').html(fm.i18n('quality') + ' : '), quty, $('<span/>')
+							$('<span>').html(fm.i18n('quality') + ' : '), quty, $('<span></span>')
 						)
 						.prependTo(ifm.parent().next());
 				}
@@ -931,7 +735,7 @@
 						var opts;
 							
 						if (!container.length) {
-							container = $('<div id="elfinder-pixo-container" class="ui-front"/>').css({
+							container = $('<div id="elfinder-pixo-container" class="ui-front"></div>').css({
 								position: 'fixed',
 								top: 0,
 								right: 0,
@@ -1044,10 +848,10 @@
 							});
 						})
 						.val(fm.storage('jpgQuality') || fm.option('jpgQuality'));
-					qBase = $('<div class="ui-dialog-buttonset elfinder-edit-extras elfinder-edit-extras-quality"/>')
+					qBase = $('<div class="ui-dialog-buttonset elfinder-edit-extras elfinder-edit-extras-quality"></div>')
 						.hide()
 						.append(
-							$('<span>').html(fm.i18n('quality') + ' : '), quty, $('<span/>')
+							$('<span>').html(fm.i18n('quality') + ' : '), quty, $('<span></span>')
 						)
 						.prependTo($base.parent().next());
 					$base.data('quty', quty);
@@ -1146,7 +950,7 @@
 						ace.config.set('basePath', cdn);
 
 						// Base node of Ace editor
-						editorBase = $('<div id="'+id+'" style="width:100%; height:100%;"/>').text(ta.val()).insertBefore(ta.hide());
+						editorBase = $('<div id="'+id+'" style="width:100%; height:100%;"></div>').text(ta.val()).insertBefore(ta.hide());
 
 						// Editor flag
 						ta.data('ace', true);
@@ -1215,9 +1019,9 @@
 						editor.resize();
 
 						// TextArea button and Setting button
-						$('<div class="ui-dialog-buttonset"/>').css('float', 'left')
+						$('<div class="ui-dialog-buttonset"></div>').css('float', 'left')
 						.append(
-							$('<button/>').html(self.fm.i18n('TextArea'))
+							$('<button></button>').html(self.fm.i18n('TextArea'))
 							.button()
 							.on('click', function(){
 								if (ta.data('ace')) {
@@ -1371,9 +1175,9 @@
 						editorBase.height('100%');
 						
 						// TextArea button and Setting button
-						$('<div class="ui-dialog-buttonset"/>').css('float', 'left')
+						$('<div class="ui-dialog-buttonset"></div>').css('float', 'left')
 						.append(
-							$('<button/>').html(self.fm.i18n('TextArea'))
+							$('<button></button>').html(self.fm.i18n('TextArea'))
 							.button()
 							.on('click', function(){
 								if (ta.data('cm')) {
@@ -2258,8 +2062,8 @@
 				var ta = this,
 					ifm = $(this).hide(),
 					uiToast = fm.getUI('toast'),
-					spnr = $('<div class="elfinder-edit-spinner elfinder-edit-zohoeditor"/>')
-						.html('<span class="elfinder-spinner-text">' + fm.i18n('nowLoading') + '</span><span class="elfinder-spinner"/>')
+					spnr = $('<div class="elfinder-edit-spinner elfinder-edit-zohoeditor"></div>')
+						.html('<span class="elfinder-spinner-text">' + fm.i18n('nowLoading') + '</span><span class="elfinder-spinner"></span>')
 						.appendTo(ifm.parent()),
 					cdata = function() {
 						var data = '';
@@ -2515,7 +2319,7 @@
 						});
 					},
 					btns = (function() {
-						var btns = $('<div/>').on('click', 'button', function() {
+						var btns = $('<div></div>').on('click', 'button', function() {
 								var b = $(this),
 									opts = b.data('opts') || null,
 									cat = b.closest('.onlineconvert-category').data('cname'),
@@ -2555,9 +2359,9 @@
 								}
 								b.data('opts', o);
 							}),
-							ul = $('<ul/>'),
+							ul = $('<ul></ul>'),
 							oform = function(n, o) {
-								var f = $('<p/>').data('optkey', n).data('type', o.type),
+								var f = $('<p></p>').data('optkey', n).data('type', o.type),
 									checked = '',
 									disabled = '',
 									nozip = false,
@@ -2568,7 +2372,7 @@
 								if (o.pattern) {
 									f.data('pattern', o.pattern);
 								}
-								f.append($('<span/>').text(fm.i18n(n) + ' : '));
+								f.append($('<span></span>').text(fm.i18n(n) + ' : '));
 								if (o.type === 'boolean') {
 									if (o['default'] || (nozip = (n === 'allow_multiple_outputs' && !allowZip))) {
 										checked = ' checked';
@@ -2582,9 +2386,9 @@
 									}
 									f.append($('<input type="checkbox" value="true"'+checked+disabled+'/>'));
 								} else if (o['enum']){
-									elm = $('<select/>').append($('<option value=""/>').text('Select...'));
+									elm = $('<select></select>').append($('<option value=""></option>').text('Select...'));
 									$.each(o['enum'], function(i, v) {
-										elm.append($('<option value="'+v+'"/>').text(v));
+										elm.append($('<option value="'+v+'"></option>').text(v));
 									});
 									f.append(elm);
 								} else {
@@ -2594,10 +2398,10 @@
 							},
 							makeOption = function(o) {
 								var elm = this,
-									b = $('<span class="elfinder-button-icon elfinder-button-icon-preference"/>').on('click', function() {
+									b = $('<span class="elfinder-button-icon elfinder-button-icon-preference"></span>').on('click', function() {
 										f.toggle();
 									}),
-									f = $('<div class="elfinder-edit-onlinconvert-options"/>').hide();
+									f = $('<div class="elfinder-edit-onlinconvert-options"></div>').hide();
 								if (o.options) {
 									$.each(o.options, function(k, v) {
 										k !== 'download_password' && f.append(oform.call(elm, k, v));
@@ -2614,7 +2418,7 @@
 						$.each(set.conv, function(t, c) {
 							var cname = t.toLowerCase(),
 								id = 'elfinder-edit-onlineconvert-' + cname + ts,
-								type = $('<div id="' + id + '" class="onlineconvert-category onlineconvert-category-'+cname+'"/>').data('cname', t),
+								type = $('<div id="' + id + '" class="onlineconvert-category onlineconvert-category-'+cname+'"></div>').data('cname', t),
 								cext;
 							$.each(c, function(n, o) {
 								var nl = n.toLowerCase(),
@@ -2627,16 +2431,16 @@
 									}
 								}
 								if (fm.uploadMimeCheck(confObj.ext2mime[ext], file.phash)) {
-									type.append($('<div class="elfinder-edit-onlineconvert-button onlineconvert-'+nl+'"/>').on('makeoption', function(e, data) {
+									type.append($('<div class="elfinder-edit-onlineconvert-button onlineconvert-'+nl+'"></div>').on('makeoption', function(e, data) {
 										var elm = $(this);
 										if (!elm.children('.elfinder-button-icon-preference').length) {
 											makeOption.call(elm, data);
 										}
-									}).append($('<button/>').text(n).data('conv', n)));
+									}).append($('<button></button>').text(n).data('conv', n)));
 								}
 							});
 							if (type.children().length) {
-								ul.append($('<li/>').append($('<a/>').attr('href', selfUrl + '#' + id).text(t)));
+								ul.append($('<li></li>').append($('<a></a>').attr('href', selfUrl + '#' + id).text(t)));
 								btns.append(type);
 								idxs[cname] = i++;
 							}
@@ -2650,7 +2454,7 @@
 						} else {
 							$.each(set.conv, function(t) {
 								var tl = t.toLowerCase();
-								btns.append($('<fieldset class="onlineconvert-fieldset-' + tl + '"/>').append($('<legend/>').text(t)).append(btns.children('.onlineconvert-category-' + tl)));
+								btns.append($('<fieldset class="onlineconvert-fieldset-' + tl + '"></fieldset>').append($('<legend></legend>').text(t)).append(btns.children('.onlineconvert-category-' + tl)));
 							});
 						}
 						return btns;
@@ -2660,11 +2464,11 @@
 							btns,
 							(set.showLink? $(set.link) : null)
 						),
-					spnr = $('<div class="elfinder-edit-spinner elfinder-edit-onlineconvert"/>')
+					spnr = $('<div class="elfinder-edit-spinner elfinder-edit-onlineconvert"></div>')
 						.hide()
-						.html('<span class="elfinder-spinner-text">' + fm.i18n('nowLoading') + '</span><span class="elfinder-spinner"/>')
+						.html('<span class="elfinder-spinner-text">' + fm.i18n('nowLoading') + '</span><span class="elfinder-spinner"></span>')
 						.appendTo(select.parent()),
-					prog = $('<div class="elfinder-quicklook-info-progress"/>').appendTo(spnr),
+					prog = $('<div class="elfinder-quicklook-info-progress"></div>').appendTo(spnr),
 					_url = null,
 					url = function() {
 						var onetime;

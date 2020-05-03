@@ -62,6 +62,7 @@ class expRecord {
 
     // field validation settings
     public $validate = array();
+    public $validates = array();
     public $do_not_validate = array();
 
     public $supports_revisions = false;  // simple flag to turn on revisions/approval support for module
@@ -231,7 +232,7 @@ class expRecord {
      * @param array  $except
      * @param bool   $cascade_except
      *
-     * @return array|integer
+     * @return array|integer|object
      */
     public function find($range = 'all', $where = null, $order = null, $limit = null, $limitstart = 0, $get_assoc = true, $get_attached = true, $except = array(), $cascade_except = false) {
         global $db, $user;
@@ -443,7 +444,7 @@ class expRecord {
                     $this->$col = $value;
                 }
             } elseif ($colDef[0] == DB_DEF_BOOLEAN) {
-                $this->$col = empty($this->$col) ? 0 : $this->$col;
+                $this->$col = !empty($this->$col) ? $this->$col : 0;
             } elseif ($colDef[0] == DB_DEF_TIMESTAMP) {
                 // yuidatetimecontrol sends in a checkbox and a date e.g., publish & publishdate
                 $datename = $col . 'date';
@@ -538,7 +539,11 @@ class expRecord {
         $saveObj = new stdClass();
         $table   = $db->getDataDefinition($this->tablename);
         foreach ($table as $col=> $colDef) {
-            $saveObj->$col = empty($this->$col) ? null : $this->$col;
+            if ($colDef[DB_NOTNULL])
+                $value = 0;
+            else
+                $value = null;
+            $saveObj->$col = !isset($this->$col) ? $value : $this->$col;
         }
 
         if (ENABLE_WORKFLOW && $this->supports_revisions && !$this->approved && expPermissions::check('approve', expUnserialize($this->location_data))) {
@@ -769,7 +774,7 @@ class expRecord {
                                 $obj->subtype      = $subtype;
                                 $obj->content_id   = $this->id;
                                 $obj->content_type = $this->classname;
-                                if ($type === 'expFile' || $type === 'expCats') $obj->rank = $item->rank + 1;
+                                if ($type === 'expFile' || $type === 'expDefinableField') $obj->rank = $item->rank + 1;
                                 $db->insertObject($obj, $itemtype->attachable_table);
                             }
                         } elseif (is_array($item)) {
@@ -779,16 +784,16 @@ class expRecord {
                                     $obj->subtype      = $subtype;
                                     $obj->content_id   = $this->id;
                                     $obj->content_type = $this->classname;
-                                    if ($type === 'expFile' || $type === 'expCats') $obj->rank = $rank + 1;
+                                    if ($type === 'expFile' || $type === 'expDefinableField') $obj->rank = $rank + 1;
                                     $db->insertObject($obj, $itemtype->attachable_table);
                                 }
                             }
                         } elseif (is_numeric($item)) {
                             $obj->$refname     = $item;
-//                            $obj->subtype      = $subtype; //note this is NOT a subtype, but the array index
+                            $obj->subtype      = '';
                             $obj->content_id   = $this->id;
                             $obj->content_type = $this->classname;
-                            if ($type === 'expFile' || $type === 'expCats') $obj->rank = $subtype + 1;
+                            if ($type === 'expFile' || $type === 'expDefinableField') $obj->rank = $subtype + 1;
                             $db->insertObject($obj, $itemtype->attachable_table);
                         }
                     }
@@ -996,7 +1001,7 @@ class expRecord {
                     $sql .= " AND approved='1'";
                 }
 
-                $order = ($type === 'expFile' || $type === 'expCats' || $type === 'expDefinableField') ? ' ORDER BY rank ASC' : null;
+                $order = ($type === 'expFile' || $type === 'expDefinableField') ? ' ORDER BY rank ASC' : null;
                 $sql .= $order;
 
                 $items = $db->selectArraysBySql($sql);

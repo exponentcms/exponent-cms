@@ -63,9 +63,9 @@ class expCatController extends expController {
 //            $module = new $modulename(empty($this->params['src'])?null:$this->params['src']);
             $module = expModules::getController($this->params['model'], empty($this->params['src']) ? null : $this->params['src']);
             $where = $module->aggregateWhereClause();
-            if ($this->params['model'] == 'file') $where = 1;
+            if ($this->params['model'] === 'file') $where = 1;
             $page = new expPaginator(array(
-                'model'=>($this->params['model'] == 'file') ? 'expFile' : $this->params['model'],
+                'model'=>($this->params['model'] === 'file') ? 'expFile' : $this->params['model'],
 //                        'where'=>"location_data='".serialize(expCore::makeLocation($this->params['model'],$this->loc->src,''))."'",
                 'where'=>$where,
 //                        'order'=>'module,rank',
@@ -76,11 +76,11 @@ class expCatController extends expController {
 //                        'src'=>static::hasSources() == true ? $this->loc->src : null,
 //                        'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
             ));
-            if ($this->params['model'] == 'faq') {
+            if ($this->params['model'] === 'faq') {
                 foreach ($page->records as $record) {
                     $record->title = $record->question;
                 }
-            } elseif ($this->params['model'] == 'file') {
+            } elseif ($this->params['model'] === 'file') {
                 foreach ($page->records as $record) {
                     $record->title = $record->filename;
                 }
@@ -112,19 +112,20 @@ class expCatController extends expController {
                         $cats->records[$key]->attached = array();
                     $cats->records[$key]->attached[$contenttype] = $attatchedat;
                     //FIXME here is a hack to get the faq to be listed
-                    if ($contenttype == 'faq' && !empty($cats->records[$key]->attached[$contenttype][0]->question)) {
+                    if ($contenttype === 'faq' && !empty($cats->records[$key]->attached[$contenttype][0]->question)) {
                         $cats->records[$key]->attached[$contenttype][0]->title = $cats->records[$key]->attached[$contenttype][0]->question;
                     }
                 }
             }
         }
+        $cats->modules = array();
         foreach ($cats->records as $record) {
             $cats->modules[$record->module][] = $record;
         }
-        if (SITE_FILE_MANAGER == 'elfinder') {
+        if ($record->module === 'file' && SITE_FILE_MANAGER === 'elfinder') {
             unset($cats->modules['file']);  // we're not using the traditional file manager
         }
-        if (!empty($this->params['model']) && $this->params['model'] == 'file') {
+        if (!empty($this->params['model']) && $this->params['model'] === 'file') {
             $catlist[0] = gt('Root Folder');
         } else {
             $catlist[0] = gt('Uncategorized');
@@ -169,7 +170,7 @@ class expCatController extends expController {
     }
 
     function update() {
-        if ($this->params['module'] == 'expFile') $this->params['module'] = 'file';
+        if ($this->params['module'] === 'expFile') $this->params['module'] = 'file';
         parent::update();
     }
 
@@ -209,7 +210,8 @@ class expCatController extends expController {
                 $records[$key]->catrank = $cat->rank;
                 $records[$key]->cat = $cat->title;
                 $catcolor = empty($cat->color) ? null : trim($cat->color);
-                if (substr($catcolor,0,1)=='#') $catcolor = '" style="color:'.$catcolor.';';
+                if ($catcolor[0] ==='#')
+                    $catcolor = '" style="color:'.$catcolor.';';
                 $records[$key]->color = $catcolor;
                 $records[$key]->module = empty($cat->module) ? null : $cat->module;
                 break;
@@ -230,7 +232,7 @@ class expCatController extends expController {
         if (!$dontsort) {
             $orderby = explode(" ",$order);
             $order = $orderby[0];
-            $order_direction = !empty($orderby[1]) && $orderby[1] == 'DESC' ? SORT_DESC : SORT_ASC;
+            $order_direction = !empty($orderby[1]) && $orderby[1] === 'DESC' ? SORT_DESC : SORT_ASC;
             expSorter::osort($records, array('catrank',$order => $order_direction));
         }
     }

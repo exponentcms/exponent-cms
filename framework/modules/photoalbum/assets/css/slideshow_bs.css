@@ -77,7 +77,9 @@ ul.slideshow-frame-ex li.slide {
     /*background: rgba(0, 0, 0, 0.4);*/
     padding-left: 20px;
     padding-right: 20px;
-    padding-bottom: 20px;
+    /*padding-bottom: 20px;*/
+    padding-top: 12px;
+    padding-bottom: 12px;
     /*font-family: "Open Sans", sans-serif;*/
     border-radius: 12px;
 }

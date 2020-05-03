@@ -266,27 +266,30 @@ class mysqli_database extends database {
         $fulltext = array();
         $unique = array();
         $index = array();
-        foreach ($newdatadef as $name=>$def) {
+        foreach ($newdatadef as $name => $def) {
             if ($def != null) {
-                if (!empty($def[DB_PRIMARY]))  $primary[] = $name;
+                if (!empty($def[DB_PRIMARY])) $primary[] = $name;
                 if (!empty($def[DB_FULLTEXT])) $fulltext[] = $name;
                 if (isset($def[DB_INDEX]) && ($def[DB_INDEX] > 0)) {
                     if ($def[DB_FIELD_TYPE] == DB_DEF_STRING) {
-                          $index[$name] = $def[DB_INDEX];
-                      } else {
-                          $index[$name] = 0;
-                      }
-                  }
-                  if (isset($def[DB_UNIQUE])) {
-                      if (!isset($unique[$def[DB_UNIQUE]]))
-                          $unique[$def[DB_UNIQUE]] = array();
-                      $unique[$def[DB_UNIQUE]][] = $name;
+                        $index[$name] = $def[DB_INDEX];
+                    } else {
+                        $index[$name] = 0;
+                    }
+                }
+                if (isset($def[DB_UNIQUE])) {
+                    if (!isset($unique[$def[DB_UNIQUE]]))
+                        $unique[$def[DB_UNIQUE]] = array();
+                    $unique[$def[DB_UNIQUE]][] = $name;
                 }
             }
-            if (!empty($def[DB_NOTNULL]) || $def[DB_FIELD_TYPE] === DB_DEF_ID || (!empty($def[DB_PRIMARY]) && $def[DB_PRIMARY] === true)) {
+            if (!empty($def[DB_NOTNULL]) || $def[DB_FIELD_TYPE] === DB_DEF_ID || $def[DB_FIELD_TYPE] === DB_DEF_BOOLEAN || (!empty($def[DB_PRIMARY]) && $def[DB_PRIMARY] === true)) {
                 $newdatadef[$name][DB_NOTNULL] = true;
             } else {
                 $newdatadef[$name][DB_NOTNULL] = false;
+            }
+            if (($def[DB_FIELD_TYPE] === DB_DEF_ID && empty($def[DB_PRIMARY])) || $def[DB_FIELD_TYPE] === DB_DEF_BOOLEAN) {
+                $newdatadef[$name][DB_DEFAULT] = 0;
             }
         }
 
@@ -445,11 +448,21 @@ class mysqli_database extends database {
      * @return mixed
      */
     function sql($sql, $escape = true) {
+        // attempt to circumvent strict mode
+        if (!DEVELOPMENT) {
+            if (stripos($sql, 'INSERT') === 0 || stripos($sql, 'UPDATE') === 0) {
+                if (stripos($sql, 'IGNORE') === false) {
+                    $sql = substr_replace($sql, " IGNORE", 6, 0);
+                }
+            }
+        }
 		if($escape == true) {
 			$res = @mysqli_query($this->connection, mysqli_real_escape_string($this->connection, $sql));
 		} else {
 			$res = @mysqli_query($this->connection, $sql);
 		}
+        if (DEVELOPMENT && !$res)
+            eLog($sql, 'sql Error');
         return $res;
     }
 
@@ -915,16 +928,31 @@ class mysqli_database extends database {
      */
     function insertObject($object, $table) {
         //if ($table=="text") eDebug($object,true);
-        $sql = "INSERT INTO `" . $this->prefix . "$table` (";
+        $sql = "INSERT " . (DEVELOPMENT ? "" : "IGNORE ") . "INTO `" . $this->prefix . "$table` (";
         $values = ") VALUES (";
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
-            if ($var[0] !== '_' && $val !== null && $val !== '') {
+            if ($var[0] !== '_') {
                 $sql .= "`$var`,";
                 if ($values !== ") VALUES (") {
                     $values .= ",";
                 }
-                $values .= "'" . $this->escapeString($val) . "'";
+                if (is_bool($val) || $val === null) {
+                    // we have to insert literals for strict mode
+                    if ($val === null) {
+                        $values .= "NULL";
+                    } elseif ($val === true) {
+                        $values .= "TRUE";
+                       break;
+                    } elseif ($val === false) {
+                        $values .= "FALSE";
+                    }
+                } elseif ($val === '') {
+                    // we have to insert literals for strict mode
+                    $values .= "''";
+                } else {
+                    $values .= "'" . $this->escapeString($val) . "'";
+                }
             }
         }
         $sql = substr($sql, 0, -1) . substr($values, 0) . ")";
@@ -933,6 +961,8 @@ class mysqli_database extends database {
             $id = mysqli_insert_id($this->connection);
             return $id;
         } else
+            if (DEVELOPMENT)
+               eLog($sql, 'insertObject Error');
             return 0;
     }
 
@@ -978,16 +1008,30 @@ class mysqli_database extends database {
             $this->trim_revisions($table, $object->$identifier, WORKFLOW_REVISION_LIMIT);
             return $res;
         }
-        $sql = "UPDATE " . $this->prefix . "$table SET ";
+        $sql = "UPDATE " . (DEVELOPMENT ? "" : "IGNORE ") . $this->prefix . "$table SET ";
         foreach (get_object_vars($object) as $var => $val) {
             //We do not want to save any fields that start with an '_'
             //if($is_revisioned && $var=='revision_id') $val++;
-            if ($var[0] !== '_' && $val !== null && $val !== '') {
+            if ($var[0] !== '_') {
                 if (is_array($val) || is_object($val)) {
                     $val = serialize($val);
                     $sql .= "`$var`='".$val."',";
                 } else {
-                    $sql .= "`$var`='" . $this->escapeString($val) . "',";
+                    if (is_bool($val) || $val === null) {
+                        // we have to insert literals for strict mode
+                        if ($val === null) {
+                            $sql .= "`$var`=NULL,";
+                        } elseif ($val === true) {
+                            $sql .= "`$var`=TRUE,";
+                        } elseif ($val === false) {
+                            $sql .= "`$var`=FALSE,";
+                        }
+                    } elseif ($val === '') {
+                        // we have to insert literals for strict mode
+                        $sql .= "`$var`='',";
+                    } else {
+                        $sql .= "`$var`='" . $this->escapeString($val) . "',";
+                    }
                 }
             }
         }
@@ -1001,6 +1045,8 @@ class mysqli_database extends database {
         }
         //if ($table == 'text') eDebug($sql,true);
         $res = (@mysqli_query($this->connection, $sql) != false);
+        if (DEVELOPMENT && !$res)
+            eLog($sql, 'updateObject Error');
         return $res;
     }
 

@@ -74,6 +74,7 @@ class expLang {
                     if ((is_readable($dir . '/' . $f . '/lang/' . utf8_decode(LANGUAGE) . '.php'))) {
                         $custom_lang_m = include($dir . '/' . $f . '/lang/' . utf8_decode(LANGUAGE) . '.php');
                         $cur_lang = array_merge($cur_lang, $custom_lang_m);
+//                        $cur_lang += $custom_lang_m;
                     }
                 }
             }
@@ -87,6 +88,11 @@ class expLang {
 
     /**
      * Get phrase from current language library
+     *
+     * Uses three constants for creating a language library
+     * - WRITE_LANG_TEMPLATE - to create/add  phrases into the English (base) library
+     * - DEBUG_LANGUAGE - to log phrases not found in the English library
+     * - THEME_CUSTOM_LANGUAGE - to create/add phrases into a theme custom library for inclusion in custom modules
      *
      * @param $str
      * @return string
@@ -103,7 +109,8 @@ class expLang {
                 self::writeTemplate_custom($str);
             elseif (defined('WRITE_LANG_TEMPLATE') && WRITE_LANG_TEMPLATE && LANG === 'English - US')
                 self::writeTemplate($str);  // write to the system default language file
-            eLog('gt("' . trim($str) . '");', 'New phrase found');
+            if (defined('DEBUG_LANGUAGE') && DEBUG_LANGUAGE)
+                eLog('gt("' . trim($str) . '");', 'New phrase found');
         }
 		return $strt;
 	}

@@ -30,7 +30,7 @@ class user_avatar extends expRecord {
 	/**
 	 * @return string
 	 */
-	public function name() { return 'Avatars'; }
+	public function name() { return 'Avatar'; }
 
 	/**
 	 * @return string
@@ -69,7 +69,7 @@ class user_avatar extends expRecord {
         } elseif (!empty($params['use_gravatar'])) {  // if the user chose gravatar, create the link and save it!
 	            $this->use_gravatar = $params['use_gravatar'];
 	            $emailMD5 = md5(strtolower(trim(user::getEmailById($params['user_id']))));
-	            $this->image = "http://www.gravatar.com/avatar/" . $emailMD5 .  ".jpg";
+	            $this->image = "https://www.gravatar.com/avatar/" . $emailMD5 .  ".jpg";
         }
 
         parent::update();

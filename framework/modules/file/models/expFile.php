@@ -29,7 +29,7 @@
  * @package    Modules
  *
  */
-/** @define "BASE" "../../.." */
+/** @define "BASE" "../../../.." */
 class expFile extends expRecord {
 
 // ==========================================================
@@ -277,7 +277,7 @@ class expFile extends expRecord {
         // If the 'directory' is the same as the default path then a given,
         // or derived, filename can be added to pathing settings
         //if ( $this->directory == UPLOAD_DIRECTORY_RELATIVE ) {
-        if (!stristr($this->directory, BASE)) {
+        if (stripos($this->directory, BASE) === false) {
             // Place url
             $this->url = URL_FULL . $this->directory . $this->filename;
 
@@ -321,6 +321,17 @@ class expFile extends expRecord {
         if (empty($this->posted))
             $this->posted = time();
         $this->last_accessed = time();
+
+        // reassess image file info in case it was changed externally (resized?)
+        $_fileInfo = self::getImageInfo($this->path);
+        // Assign info back to class
+        $this->is_image = !empty($_fileInfo['is_image']) ? $_fileInfo['is_image'] : false;
+        $this->filesize = !empty($_fileInfo['fileSize']) ? $_fileInfo['fileSize'] : 0;
+        if (!empty($_fileInfo['mime'])) $this->mimetype = $_fileInfo['mime'];
+        if (!empty($_fileInfo['is_image'])) {
+            $this->image_width = $_fileInfo[0];
+            $this->image_height = $_fileInfo[1];
+        }
     }
 
     public function afterDelete() {
@@ -377,23 +388,18 @@ class expFile extends expRecord {
      * @static
      * @access public
      *
-     * @uses class|method|global|variable description
-     * @requires class_name
+     * @param string $_postName The name of the _FILE upload array
+     * @param bool|string $_force Force the uploaded to overwrite existing file of same name
+     * @param bool|string $_save Save file info to database, defaults to TRUE
+     * @param string $_destFile Override the uploaded file name
+     * @param string $_destDir Override the default FILE UPLOAD location
+     * @param null $_max_width
      *
-     * @PHPUnit Not Defined|Implement|Completed
-     *
-     * @param string      $_postName  The name of the _FILE upload array
-     * @param bool|string $_force     Force the uploaded to overwrite existing file of same name
-     * @param bool|string $_save      Save file info to database, defaults to TRUE
-     * @param string      $_destFile  Override the uploaded file name
-     * @param string      $_destDir   Override the default FILE UPLOAD location
-     *
-     * @param null        $_max_width
-     *
-     * @return object $_objFile expFile Object
-     * @return object $errMsg   Error message if something failed@throws void
+     * @return object|string $_objFile expFile Object
+     *                   or  $errMsg Error message if something failed
      *
      * @TODO Have file upload overwrite make sure not to duplicate its record in the DB
+     * @throws ReflectionException
      */
     public static function fileUpload($_postName = null,
                                       $_force = false,
@@ -537,23 +543,25 @@ class expFile extends expRecord {
      * @static
      * @access public
      *
+     * @param null $fileName
+     * @param bool|string $_force Force the uploaded to overwrite existing file of same name
+     * @param bool|string $_save Save file info to database, defaults to TRUE
+     * @param string $_destFile Override the uploaded file name
+     * @param string $_destDir Override the default FILE UPLOAD location
+     *
+     * @param null $_max_width
+     *
+     * @return object|string $_objFile expFile Object
+     *                   or  $errMsg   Error message if something failed
+     *
+     * @throws ReflectionException
+     *
+     * @TODO Have file upload overwrite make sure not to duplicate its record in the DB
      * @uses     class|method|global|variable description
      * @requires class_name
      *
      * @PHPUnit Not Defined|Implement|Completed
      *
-     * @param null        $fileName
-     * @param bool|string $_force     Force the uploaded to overwrite existing file of same name
-     * @param bool|string $_save      Save file info to database, defaults to TRUE
-     * @param string      $_destFile  Override the uploaded file name
-     * @param string      $_destDir   Override the default FILE UPLOAD location
-     *
-     * @param null        $_max_width
-     *
-     * @return object $_objFile expFile Object
-     * @return object $errMsg   Error message if something failed@throws void
-     *
-     * @TODO Have file upload overwrite make sure not to duplicate its record in the DB
      */
     public static function fileXHRUpload($fileName = null,
                                          $_force = false,
@@ -685,13 +693,13 @@ class expFile extends expRecord {
      *
      * @param string $filepath    direct path of the file to check against
      *
-     * @return int $newFileName   Name of the file that isn't a duplicate
+     * @return string $newFileName   Name of the file that isn't a duplicate
      * @throws void
      *
      */
     public static function resolveDuplicateFilename($filepath) {
         $extension = strrchr($filepath, "."); // grab the file extention by looking for the last dot in the string
-        $filnameWoExt = str_replace($extension, "", str_replace("/", "", strrchr($filepath, "/"))); // filename sans extention
+        $filnameWoExt = str_replace(array("/", $extension), "", strrchr($filepath, "/")); // filename sans extention
         $pathToFile = str_replace($filnameWoExt . $extension, "", $filepath); // path sans filename
 
         $i = "";
@@ -712,13 +720,14 @@ class expFile extends expRecord {
      * @static
      * @access public
      *
+     * @param \expFile|string $file Full path to file to download
+     *
+     * @return bool
      * @uses function download()    Built-in PHP method
      *
      * @PHPUnit Not Defined|Implement|Completed
      *
-     * @param string $file Full path to file to download
-     *
-     * @return bool
+     * @throws ReflectionException
      */
     public static function download($file) {
         // we are expecting an int val as a file ID or the whole file object.
@@ -742,7 +751,7 @@ class expFile extends expRecord {
         // MSIE and Opera seems to prefer 'application/octetstream'
         // It seems that other headers I've added make IE prefer octet-stream again. - RAM
 
-        $mimetype = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : $file->mimetype;
+        $mimetype = (EXPONENT_USER_BROWSER === 'IE' || EXPONENT_USER_BROWSER === 'OPERA') ? 'application/octet-stream;' : $file->mimetype;
 
         header('Content-Type: ' . $mimetype);
         header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
@@ -752,7 +761,7 @@ class expFile extends expRecord {
         $filesize = filesize($file->path);
         if ($filesize) header("Content-length: " . $filesize); // for some reason the webserver cant run stat on the files and this breaks.
         // IE need specific headers
-        if (EXPONENT_USER_BROWSER == 'IE') {
+        if (EXPONENT_USER_BROWSER === 'IE') {
             header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
             header('Pragma: public');
             header('Vary: User-Agent');
@@ -783,7 +792,7 @@ class expFile extends expRecord {
      */
     public static function fixName($name) {
         $name = preg_replace('/[^A-Za-z0-9\.]/','_',$name);
-        if ($name[0] == '.')  // attempt to upload a dot file
+        if ($name[0] === '.')  // attempt to upload a dot file
             $name[0] = '_';
         $name = str_replace('..', '_', $name);  // attempt to upload with redirection to new folder
         return $name;
@@ -888,6 +897,22 @@ class expFile extends expRecord {
         }
     }
 
+    /**
+     * Return audio/visual details for the passed filename
+     *
+     * @param string $filename
+     *
+     * @return array
+     */
+    public static function getAVInfo($filename) {
+        include_once(BASE.'external/getid3/getid3/getid3.php');
+        // Initialize getID3 engine
+        $getID3 = new getID3;
+        $fileinfo = $getID3->analyze($filename);
+        getid3_lib::CopyTagsToComments($fileinfo);
+
+        return $fileinfo;
+    }
 // ==========================================================
 // Class Image Processing Methods
 // @TODO  This collection of methods need to be placed in their own Class
@@ -907,8 +932,9 @@ class expFile extends expRecord {
      *
      * @param bool|string $_path Full path to file to pull info from
      *
-     * @return array  $_sizeinfo      An array of Image File info
-     * @return array $error message  Error message@throws void
+     * @return array|string  $_sizeinfo      An array of Image File info
+     *                    or $error message  Error message
+     * @return string
      *
      */
     public static function getImageInfo($_path = false) {
@@ -983,11 +1009,11 @@ class expFile extends expRecord {
             $sizeinfo = @getimagesize($filename);
         $info = gd_info();
 
-        if ($sizeinfo['mime'] == 'image/jpeg' && ($info['JPG Support'] == true || $info['JPEG Support'] == true)) {
+        if ($sizeinfo['mime'] === 'image/jpeg' && ($info['JPG Support'] == true || $info['JPEG Support'] == true)) {
             $img = imagecreatefromjpeg($filename);
-        } else if ($sizeinfo['mime'] == 'image/png' && $info['PNG Support'] == true) {
+        } else if ($sizeinfo['mime'] === 'image/png' && $info['PNG Support'] == true) {
             $img = imagecreatefrompng($filename);
-        } else if ($sizeinfo['mime'] == 'image/gif' && $info['GIF Read Support'] == true) {
+        } else if ($sizeinfo['mime'] === 'image/gif' && $info['GIF Read Support'] == true) {
             $img = imagecreatefromgif($filename);
         } else {
             // Either we have an unknown image type, or an unsupported image type.
@@ -1386,11 +1412,11 @@ class expFile extends expRecord {
      */
     public static function imageOutput($img, $sizeinfo, $filename = null, $quality = 75) {
         header('Content-type: ' . $sizeinfo['mime']);
-        if ($sizeinfo['mime'] == 'image/jpeg') {
+        if ($sizeinfo['mime'] === 'image/jpeg') {
             ($filename != null) ? imagejpeg($img, $filename, $quality) : imagejpeg($img, null, $quality);
-        } else if ($sizeinfo['mime'] == 'image/png') {
+        } else if ($sizeinfo['mime'] === 'image/png') {
             ($filename != null) ? imagepng($img, $filename) : imagepng($img);
-        } else if ($sizeinfo['mime'] == 'image/gif') {
+        } else if ($sizeinfo['mime'] === 'image/gif') {
             ($filename != null) ? imagegif($img, $filename) : imagegif($img);
         }
     }
@@ -1444,7 +1470,7 @@ class expFile extends expRecord {
         $dir = opendir($src);
         @mkdir($dst, octdec(DIR_DEFAULT_MODE_STR + 0));
         while (false !== ($file = readdir($dir))) {
-            if (($file != '.') && ($file != '..')) {
+            if (($file !== '.') && ($file !== '..')) {
                 if (is_dir($src . '/' . $file)) {
                     self::recurse_copy($src . '/' . $file, $dst . '/' . $file);
                 } else {
@@ -1477,7 +1503,7 @@ class expFile extends expRecord {
         array_shift($files); // remove '.' from array
         array_shift($files); // remove '..' from array
         foreach ($files as $file) {
-            if ($dot_files || substr($file, 0, 1) != '.') { // don't remove dot files
+            if ($dot_files || substr($file, 0, 1) !== '.') { // don't remove dot files
                 $file = $dir . '/' . $file;
                 if (is_dir($file)) {
                     self::removeFilesInDirectory($file);
@@ -1558,14 +1584,14 @@ class expFile extends expRecord {
         $dh = opendir($dir);
         if ($dh) {
             while (($file = readdir($dh)) !== false) {
-                if ($file != "." && $file != ".." && is_dir("$dir/$file")) {
+                if ($file !== "." && $file !== ".." && is_dir("$dir/$file")) {
                     if (self::removeDirectory("$dir/$file") == SYS_FILES_NOTDELETABLE) return SYS_FILES_NOTDELETABLE;
                 } else if (is_file("$dir/$file") || is_link(is_file("$dir/$file"))) {
                     unlink("$dir/$file");
                     if (file_exists("$dir/$file")) {
                         return SYS_FILES_NOTDELETABLE;
                     }
-                } else if ($file != "." && $file != "..") {
+                } else if ($file !== "." && $file !== "..") {
                     echo "BAD STUFF HAPPENED<br />";
                     echo "--------Don't know what to do with $dir/$file<br />";
 //					echo "<xmp>";
@@ -1641,8 +1667,9 @@ class expFile extends expRecord {
         if (is_readable($dir)) {
             $dh = opendir($dir);
             while (($file = readdir($dh)) !== false) {
-                if (is_dir("$dir/$file") && !in_array($file, $exclude_dirs) && $recurse && $file != "." && $file != ".." && $file != "CVS") {
+                if (is_dir("$dir/$file") && !in_array($file, $exclude_dirs) && $recurse && $file !== "." && $file !== ".." && $file !== "CVS") {
                     $files = array_merge($files, self::listFlat("$dir/$file", $recurse, $ext, $exclude_dirs, $relative));
+//                    $files += self::listFlat("$dir/$file", $recurse, $ext, $exclude_dirs, $relative);
                 }
                 if (is_file("$dir/$file") && ($ext == null || substr($file, -1 * strlen($ext), strlen($ext)) == $ext)) {
                     $files[str_replace($relative, "", "$dir/$file")] = $file;
@@ -1691,7 +1718,7 @@ class expFile extends expRecord {
      * @node Model:expFile
      */
     public static function canCreate($dest) {
-        if (substr($dest, 0, 1) == '/') $dest = str_replace(BASE, '', $dest);
+        if ($dest[0] === '/') $dest = str_replace(BASE, '', $dest);
         $parts = explode('/', $dest);
         $working = BASE;
         for ($i = 0, $iMax = count($parts); $i < $iMax; $i++) {
@@ -1758,7 +1785,7 @@ class expFile extends expRecord {
         if (!file_exists($dest)) mkdir($dest, fileperms($src));
         $dh = opendir($src);
         while (($file = readdir($dh)) !== false) {
-            if (is_dir("$src/$file") && !in_array($file, $exclude_dirs) && substr($file, 0, 1) != "." && $file != "CVS") {
+            if (is_dir("$src/$file") && !in_array($file, $exclude_dirs) && $file[0] !== "." && $file !== "CVS") {
                 if (!file_exists($dest."/".$file)) mkdir($dest."/".$file, fileperms($src."/".$file));
                 if (is_dir($dest."/".$file)) {
                     self::copyDirectoryStructure($src."/".$file, $dest."/".$file);
@@ -1789,7 +1816,7 @@ class expFile extends expRecord {
 
         //FIXME we need to echo and/or write to file within this method to handle large database dumps
         $dump = EQL_HEADER . "\r\n";
-        if ($type == null || $type == 'export') {
+        if ($type == null || $type === 'export') {
             $dump .= 'VERSION:' . EXPONENT . "\r\n\r\n";
         } else {
             $dump .= 'VERSION:' . EXPONENT . ':' . $type . "\r\n\r\n";
@@ -1810,20 +1837,20 @@ class expFile extends expRecord {
         uasort($tables, 'strnatcmp');
         foreach ($tables as $key=>$table) {
             $where = '1';
-            if ($type == 'Form') {
-                if ($table == 'forms') {
+            if ($type === 'Form') {
+                if ($table === 'forms') {
                     $where = 'id=' . $opts;
-                } elseif ($table == 'forms_control') {
+                } elseif ($table === 'forms_control') {
                     $where = 'forms_id=' . $opts;
                 }
-            } elseif ($type == 'export') {
+            } elseif ($type === 'export') {
                 if (is_string($opts))
                     $where = $opts;
                 elseif (is_array($opts) && !empty($opts[$key]))
                     $where = $opts[$key];
             }
             $tmp = $db->countObjects($table,$where);
-            if ($type != 'export' || $db->countObjects($table, $where)) {
+            if ($type !== 'export' || $db->countObjects($table, $where)) {
                 $tabledef = $db->getDataDefinition($table);
                 $dump .= 'TABLE:' . $table . "\r\n";
                 $dump .= 'TABLEDEF:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($tabledef)) . "\r\n";
@@ -1920,7 +1947,7 @@ class expFile extends expRecord {
                         $pair[1] = implode(':', array_slice($pair, 1));
                         $pair = array_slice($pair, 0, 2);
 
-                        if ($pair[0] == 'TABLE') {
+                        if ($pair[0] === 'TABLE') {
                             $itsoldformdata = false;  // we are on a new table set
                             $itsnewformdata = false;
                             $table = $pair[1];
@@ -1935,7 +1962,7 @@ class expFile extends expRecord {
 //                                $clear_function($db, $table);
 //                            }
                             } else {
-                                if (substr($table, 0, 12) == 'formbuilder_') {
+                                if (substr($table, 0, 12) === 'formbuilder_') {
                                     $formbuildertypes = array(
                                         'address',
                                         'control',
@@ -1946,7 +1973,7 @@ class expFile extends expRecord {
                                     if (!in_array($ttype, $formbuildertypes)) {
                                         $itsoldformdata = true;
                                     }
-                                } elseif (substr($table, 0, 6) == 'forms_' && $table != 'forms_control') {
+                                } elseif (substr($table, 0, 6) === 'forms_' && $table !== 'forms_control') {
                                     $itsnewformdata = true;
                                 }
                                 //						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
@@ -1964,7 +1991,7 @@ class expFile extends expRecord {
                                 //						}
                             }
                         } else {
-                            if ($pair[0] == 'TABLEDEF') {  // new in v2.1.4, re-create a missing table
+                            if ($pair[0] === 'TABLEDEF') {  // new in v2.1.4, re-create a missing table
                                 $pair[1] = str_replace(array('\r', '\n'), array("\r", "\n"), $pair[1]);
 //						$tabledef = expUnserialize($pair[1]);
                                 $tabledef = @unserialize($pair[1]);
@@ -1980,14 +2007,14 @@ class expFile extends expRecord {
                                 $itsoldformdata = false;  // we've recreated the table using the tabledef
                                 $itsnewformdata = false;
                             } else {
-                                if ($pair[0] == 'RECORD') {
+                                if ($pair[0] === 'RECORD') {
                                     if ($db->tableExists($table)) {
                                         // Here we need to check the conversion scripts.
                                         $pair[1] = str_replace(array('\r', '\n'), array("\r", "\n"), $pair[1]);
                                         //						$object = expUnserialize($pair[1]);
                                         $object = @unserialize($pair[1]);
-                                        if ($type == 'Form') {
-                                            if ($table == 'forms') {
+                                        if ($type === 'Form') {
+                                            if ($table === 'forms') {
                                                 $forms_id = $object->id = $db->max(
                                                         $table,
                                                         'id'
@@ -1996,10 +2023,10 @@ class expFile extends expRecord {
                                                 $spare->title = $object->title;
                                                 $spare->makeSefUrl();
                                                 $object->sef_url = $spare->sef_url;
-                                            } elseif ($table == 'forms_control') {
+                                            } elseif ($table === 'forms_control') {
                                                 $object->id = null;  // create a new record
                                                 $object->forms_id = $forms_id;  // assign to new form record
-                                            } elseif (substr($table, 6) == 'forms_') {
+                                            } elseif (substr($table, 6) === 'forms_') {
                                                 $object->id = null;  // create a new record
                                             }
                                         }
@@ -2135,7 +2162,7 @@ class expFile extends expRecord {
      *                                  variable is passed in this argument will contain all errors encountered
      *                                  during the parse/restore.
      * @param null/string/array $type   The list of tables to return, empty = entire file
-     * @return array/bool
+     * @return array|boolean
      * @node     Model:expFile
      */
     public static function parseDatabase($file, &$errors, $type = null) {
@@ -2173,16 +2200,16 @@ class expFile extends expRecord {
                     $pair[1] = implode(':', array_slice($pair, 1));
                     $pair = array_slice($pair, 0, 2);
 
-                    if ($pair[0] == 'TABLE') {
+                    if ($pair[0] === 'TABLE') {
                         $table = $pair[1];
                         $data[$table] = new stdClass();
                         $data[$table]->name = $table;
                         $data[$table]->records = array();
-                    } else if ($pair[0] == 'TABLEDEF') {  // new in v2.1.4, re-create a missing table
+                    } else if ($pair[0] === 'TABLEDEF') {  // new in v2.1.4, re-create a missing table
                         $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
                         $tabledef = @unserialize($pair[1]);
                         $data[$table]->tabledef = $tabledef;
-                    } else if ($pair[0] == 'RECORD') {
+                    } else if ($pair[0] === 'RECORD') {
                         // Here we need to check the conversion scripts.
                         $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
 //						$object = expUnserialize($pair[1]);
@@ -2264,7 +2291,7 @@ class expFile extends expRecord {
 					$object->table_name = $tablename . $index;
 				}
 
-				$tablename = 'formbuilder_'.$object->table_name;
+				$tablename = 'formbuilder_' . $object->table_name;
 
 				//If table is missing, create a new one.
 				if (!$db->tableExists($tablename)) {

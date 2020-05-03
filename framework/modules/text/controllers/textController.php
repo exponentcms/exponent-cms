@@ -51,7 +51,7 @@ class textController extends expController {
         // now the stuff for the inline editing w/ ckeditor v4
         $settings = expHTMLEditorController::getActiveEditorSettings(SITE_WYSIWYG_EDITOR);
         if (empty($settings->name)) $settings = new stdClass();
-        if (SITE_WYSIWYG_EDITOR == 'ckeditor') {
+        if (SITE_WYSIWYG_EDITOR === 'ckeditor') {
     //        if (empty($settings->data)) {
     //            $settings->data = "
     //                ['htmlsource','Source','-','Preview','-','Templates'],
@@ -106,8 +106,12 @@ class textController extends expController {
             } else {
                 $settings->formattags = "'p;h1;h2;h3;h4;h5;h6;pre;address;div'";
             }
-        } elseif (SITE_WYSIWYG_EDITOR == 'tinymce') {
-            if (empty($settings->skin)) $settings->skin = 'lightgray';
+        } elseif (SITE_WYSIWYG_EDITOR === 'tinymce' || SITE_WYSIWYG_EDITOR === 'tinymce5') {
+            if (SITE_WYSIWYG_EDITOR === 'tinymce') {
+                if (empty($settings->skin)) $settings->skin = 'lightgray';
+            } else {
+                if (empty($settings->skin)) $settings->skin = 'oxide';
+            }
             if (empty($settings->scayt_on)) $settings->scayt_on = 'false';
             // clean up (custom) plugins list from missing plugins  //FIXME we don't load any custom stuff in this view except skin & plugins
             if (!empty($settings->plugins)) {

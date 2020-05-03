@@ -13,6 +13,10 @@
  *
  *}
 
+{if $printerfriendly}
+    {$pf=1}
+{/if}
+
 {css unique="showorder" link="`$asset_path`css/ecom.css" corecss="tables"}
 
 {/css}

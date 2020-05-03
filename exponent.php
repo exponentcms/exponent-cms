@@ -44,9 +44,6 @@ $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 
 // Initialize the Modules subsystem & Create the list of available/active controllers
 $available_controllers = expModules::initializeControllers();
-//foreach ($db->selectObjects('modstate',1) as $mod) {
-//	if (!empty($mod->path)) $available_controllers[$mod->module] = $mod->path;  //FIXME test
-//}
 
 // Initialize the History (Flow) subsystem.
 $history = new expHistory(); //<--This is the new flow subsystem

@@ -286,6 +286,11 @@ function renderAction(array $parms=array()) {
         if ($meth->isPrivate()) expQueue::flashAndFlow('error', gt('The requested action could not be performed: Action not found'));*/
     } elseif ($controllerClass->hasMethod('showall')) {
         //note every invalid command gets converted to 'showall'
+        if ($parms['controller'] === 'cart' && $parms['action'] === 'cart.cgi') {
+            flash('error', gt("This action does not exist"));
+            notfoundController::handle_not_found();
+            expHistory::returnTo('viewable');
+        }
         $parms['action'] = 'showall';
         $action = 'showall';
     } else {

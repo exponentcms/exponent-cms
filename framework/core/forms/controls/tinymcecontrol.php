@@ -117,9 +117,16 @@ class tinymcecontrol extends formcontrol
             $additionalConfig = '';
         if (!empty($additionalConfig) && strpos($additionalConfig,",",-1) === false)
             $additionalConfig .= ",";  // MUST end with comma
-        if (!empty($this->plugin))
+        if (!empty($this->plugin)) {
+            $pg = explode(",", $this->plugin);
+            if (count($pg) < 6) {
+                $plugins = "advlist,autolink,lists,link,image,imagetools,charmap,print,preview,hr,anchor,pagebreak" .
+                        ",searchreplace,wordcount,visualblocks,visualchars,code,fullscreen" .
+                        ",media,nonbreaking,save,table,contextmenu,directionality" .
+                        ",emoticons,paste,textcolor,quickupload,localautosave,help";
+            }
             $plugins .= ',' . $this->plugin;
-        elseif (empty($plugins)) {
+        } elseif (empty($plugins)) {
             $plugins = "advlist,autolink,lists,link,image,imagetools,charmap,print,preview,hr,anchor,pagebreak" .
                     ",searchreplace,wordcount,visualblocks,visualchars,code,fullscreen" .
                     ",media,nonbreaking,save,table,contextmenu,directionality" .

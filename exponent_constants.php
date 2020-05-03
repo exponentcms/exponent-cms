@@ -16,6 +16,11 @@
 #
 ##################################################
 
+if (!defined('USE_CDN')) {
+    // set USE_CDN to 1 to use CDN scripts instead of local scripts
+    define("USE_CDN",'1');
+}
+
 /**
  * BASE Constant
  *
@@ -23,7 +28,7 @@
  * to the Exponent directory.
  */
 if (!defined('BASE')) {
-    define('BASE', __realpath(dirname(__FILE__)) . '/');
+    define('BASE', __realpath(__DIR__) . '/');
 }
 
 /**
@@ -501,8 +506,13 @@ if (!defined('JS_RELATIVE')) {
  */
 if (!defined('YUI3_RELATIVE')) {
     define('YUI3_VERSION', '3.18.1');
-    define('YUI3_RELATIVE', PATH_RELATIVE . 'external/yui/' . YUI3_VERSION . '/build/');
-    define('YUI3_URL', URL_FULL . 'external/yui/' . YUI3_VERSION . '/build/');
+    if (USE_CDN) {
+        define('YUI3_RELATIVE', 'https://cdnjs.cloudflare.com/ajax/libs/yui/' . YUI3_VERSION . '/');
+        define('YUI3_URL', 'https://cdnjs.cloudflare.com/ajax/libs/yui/' . YUI3_VERSION . '/');
+    } else {
+       define('YUI3_RELATIVE', PATH_RELATIVE . 'external/yui/' . YUI3_VERSION . '/build/');
+       define('YUI3_URL', URL_FULL . 'external/yui/' . YUI3_VERSION . '/build/');
+    }
 }
 
 /**
@@ -528,26 +538,64 @@ if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
     define('JQUERY_URL', URL_FULL . 'external/jquery/');
-    if (!defined('JQUERY_SCRIPT')) {
-        define('JQUERY_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY_VERSION . '.min.js');
-    } // local jQuery v1.x script
-    if (!defined('JQUERY2_SCRIPT')) {
-        define('JQUERY2_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY2_VERSION . '.min.js');
-    } // local jQuery v2.x script
-    if (!defined('JQUERY3_SCRIPT')) {
-        define('JQUERY3_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY3_VERSION . '.min.js');
-        define('JQUERY3_MIGRATE_SCRIPT', JQUERY_RELATIVE . 'js/jquery-migrate-' . JQUERY3_MIGRATE_VERSION . '.min.js');
-    } // local jQuery v3.x script
-    if (!defined('JQUERYUI_SCRIPT')) {
-//        define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
-        define('JQUERYUI_SCRIPT', JQUERY_RELATIVE . 'js/jquery-ui.min.js');
-    } // local jQueryUI script
+    if (USE_CDN) {
+        if (!defined('JQUERY_SCRIPT')) {
+            define('JQUERY_SCRIPT', 'https://code.jquery.com/jquery-' . JQUERY_VERSION . '.min.js');
+        } // cdn jQuery v1.x script
+        if (!defined('JQUERY2_SCRIPT')) {
+            define('JQUERY2_SCRIPT', 'https://code.jquery.com/jquery-' . JQUERY2_VERSION . '.min.js');
+        } // cdn jQuery v2.x script
+        if (!defined('JQUERY3_SCRIPT')) {
+            define('JQUERY3_SCRIPT', 'https://code.jquery.com/jquery-' . JQUERY3_VERSION . '.min.js');
+            define('JQUERY3_MIGRATE_SCRIPT', 'https://code.jquery.com/jquery-migrate-' . JQUERY3_MIGRATE_VERSION . '.min.js');
+        } // cdn jQuery v3.x script
+        if (!defined('JQUERYUI_SCRIPT')) {
+            define('JQUERYUI_SCRIPT', 'https://code.jquery.com/ui/' . JQUERYUI_VERSION . '/jquery-ui.min.js');
+        } // cdn jQueryUI script
+    } else {
+        if (!defined('JQUERY_SCRIPT')) {
+            define('JQUERY_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY_VERSION . '.min.js');
+        } // local jQuery v1.x script
+        if (!defined('JQUERY2_SCRIPT')) {
+            define('JQUERY2_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY2_VERSION . '.min.js');
+        } // local jQuery v2.x script
+        if (!defined('JQUERY3_SCRIPT')) {
+            define('JQUERY3_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY3_VERSION . '.min.js');
+            define('JQUERY3_MIGRATE_SCRIPT', JQUERY_RELATIVE . 'js/jquery-migrate-' . JQUERY3_MIGRATE_VERSION . '.min.js');
+        } // local jQuery v3.x script
+        if (!defined('JQUERYUI_SCRIPT')) {
+    //        define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
+            define('JQUERYUI_SCRIPT', JQUERY_RELATIVE . 'js/jquery-ui.min.js');
+        } // local jQueryUI script
+    }
     if (!defined('JQUERYUI_THEME')) {
         define('JQUERYUI_THEME', 'exponent');
     } // jQueryUI theme
     if (!defined('JQUERYUI_CSS')) {
         define('JQUERYUI_CSS', JQUERY_RELATIVE . 'css/' . JQUERYUI_THEME . '/jquery-ui.min.css');
     } // local jQueryUI stylesheet
+}
+
+/**
+ * Twitter Bootstrap CDN links
+ * Use the entire script tag to include integrity, etc...
+ */
+if (USE_CDN) {
+    if (!defined('BS2_SCRIPT')) {
+        define('BS2_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js" integrity="sha384-vOWIrgFbxIPzY09VArRHMsxned7WiY6hzIPtAIIeTFuii9y3Cr6HE6fcHXy5CFhc" crossorigin="anonymous"></script>');
+    } // cdn Bootstrap v2.x script
+    if (!defined('BS3_SCRIPT')) {
+        define('BS3_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>');
+    } // cdn Bootstrap v3.x script
+    if (!defined('BS4_SCRIPT')) {
+        define('BS4_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>');
+    } // cdn Bootstrap v5.x script
+    if (!defined('FA4_SCRIPT')) {
+        define('FA4_SCRIPT', 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+    } // cdn FontAwesome v4.x stylesheet
+    if (!defined('FA5_SCRIPT')) {
+        define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css');
+    } // cdn FontAwesome v5.x stylesheet
 }
 
 /**
@@ -558,7 +606,7 @@ if (!defined('SMARTY_PATH')) {
     if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
     } else {
-        define('SMARTY_VERSION', '3.1.34');  //note smarty v3.1.28+ won't work properly with php < v7.1.x
+        define('SMARTY_VERSION', '3.1.36');  //note smarty v3.1.28+ won't work properly with php < v7.1.x
     }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
@@ -575,8 +623,14 @@ if (!defined('SWIFT_PATH')) {
         define('SWIFT_VERSION', '6.2.3');  //note v6.x requires php v7.x
     }
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
+    /**
+     * Lexer is needed for Swiftmailer v6
+     */
     define('LEXER_VERSION', '1.2.0');
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
+    /**
+     * EmailValidator is needed for Swiftmailer v6
+     */
     define('EMAIL_VALIDATOR_VERSION', '2.1.17');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
@@ -586,16 +640,42 @@ if (!defined('SWIFT_PATH')) {
  * Changing the versions here lets Exponent adjust where to look
  */
 if (!defined('MPDF7_VERSION')) {
-    define('MPDF7_VERSION', '7.0.2'); // 7.1.9
+    define('MPDF7_VERSION', '7.1.9');  // 7.0.2
 }
 if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.5');
 }
-if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '082');  // 085
+/**
+ * Log is needed for MPDF v7+
+ */
+if (!defined('LOG_VERSION')) {
+    define('LOG_VERSION', '1.1.3');  // 1.0.2
 }
+/**
+ * random_compat is needed for MPDF v7+ under PHP v5.6
+ */
+if (!defined('RANDOM_VERSION')) {
+    define('RANDOM_VERSION', '2.0.18');
+}
+/**
+ * FPDI is needed for MPDF v8+
+ */
+if (!defined('FPDI_VERSION')) {
+    define('FPDI_VERSION', '2.3.3');
+}
+
+if (!defined('DOMPDF8_VERSION')) {
+    define('DOMPDF8_VERSION', '085');  // 082
+}
+
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.0.1');  // 5.2.1
+    define('HTML2PDF5_VERSION', '5.2.2');  // 5.0.1
+}
+/**
+ * TCPDF is needed for HTML2PDF
+ */
+if (!defined('TCPDF5_VERSION')) {
+    define('TCPDF5_VERSION', '6.3.5');
 }
 
 ?>

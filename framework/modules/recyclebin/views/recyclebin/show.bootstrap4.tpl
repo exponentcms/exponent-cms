@@ -22,7 +22,7 @@
     {css unique="newui" link="`$smarty.const.PATH_RELATIVE`external/bootstrap4/css/bootstrap.css"}
 
     {/css}
-    {css unique="fontawesome" link="`$smarty.const.PATH_RELATIVE`external/font-awesome5/scss/fontawesome.css"}
+    {css unique="fontawesome" link="`$smarty.const.PATH_RELATIVE`external/font-awesome5/css/fontawesome.css"}
 
     {/css}
     <!--[if lt IE 9]>

@@ -2,14 +2,14 @@
 /**
  * SCSSPHP
  *
- * @copyright 2012-2019 Leaf Corcoran
+ * @copyright 2012-2020 Leaf Corcoran
  *
  * @license http://opensource.org/licenses/MIT MIT
  *
  * @link http://scssphp.github.io/scssphp
  */
 
-namespace ScssPhp\ScssPhp;
+namespace ScssPhp\Server;
 
 use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\ServerException;

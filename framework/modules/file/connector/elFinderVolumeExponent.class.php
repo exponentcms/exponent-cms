@@ -73,7 +73,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
 
         $path = $this->decode($target);
         $file = self::_get_expFile($path);
-        $newshared = mb_strtoupper(trim($newshared)) === mb_strtoupper("true") ? true : false;
+        $newshared = mb_strtoupper(trim($newshared)) === mb_strtoupper("true");
         $shared = !empty($file->shared);
         if ($newshared != $shared && ($file->poster == $user->id || $user->isAdmin())) {
             $file->update(array('shared' => $newshared));
@@ -280,12 +280,42 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
             while(false !== ( $file = readdir($dir)) ) {
                 if ($file !== "." && $file !== ".." && is_dir("$npath/$file")) {
                     $this->scan_folder("$npath/$file", "$opath");
-                } elseif (substr($file, 0, 1) !== '.') {
+                } elseif ($file[0] !== '.') {
                     if (file_exists($npath . '/' . $file)) $this->_move_expFile(BASE . $opath . "/" . $file, $npath);
                 }
             }
             closedir($dir);
         }
+    }
+
+    /**
+     * Resize image
+     *
+     * @param  string $hash       image file
+     * @param  int    $width      new width
+     * @param  int    $height     new height
+     * @param  int    $x          X start poistion for crop
+     * @param  int    $y          Y start poistion for crop
+     * @param  string $mode       action how to mainpulate image
+     * @param  string $bg         background color
+     * @param  int    $degree     rotete degree
+     * @param  int    $jpgQuality JEPG quality (1-100)
+     *
+     * @return array|false
+     * @throws ImagickException
+     * @throws elFinderAbortException
+     * @author Dmitry (dio) Levashov
+     * @author Alexey Sukhotin
+     * @author nao-pon
+     * @author Troex Nevelin
+     */
+    public function resize($hash, $width, $height, $x, $y, $mode = 'resize', $bg = '', $degree = 0, $jpgQuality = null) {
+        $ret = parent::resize($hash, $width, $height, $x, $y, $mode, $bg, $degree, $jpgQuality);
+        if (count($ret) > 1) {
+            $file = self::_get_expFile($this->decode($hash));
+            $file->update(); // hack to update image stats on new file
+        }
+        return $ret;
     }
 
     /*********************** file stat *********************/
@@ -305,11 +335,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $result = parent::stat($path);
         // we don't include directories nor dot files in expFiles
         if ($result && !empty($result['mime'])) {
-            if ($result['mime'] !== 'directory' && substr(
-                    $result['name'],
-                    0,
-                    1
-                ) != '.'
+            if ($result['mime'] !== 'directory' && strpos($result['name'], '.') !== 0
             ) {
                 $file = self::_get_expFile($path);
                 if (!$user->isAdmin() && $file->poster != $user->id) {

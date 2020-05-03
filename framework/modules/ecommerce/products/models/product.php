@@ -838,6 +838,12 @@ class product extends expRecord {
     public function update($params = array()) {
         global $db;
 
+        if (empty($params['general']['companies_id'])) {
+            $params['general']['companies_id'] = 0;
+        }
+        if (empty($params['general']['parent_id'])) {
+            $params['general']['parent_id'] = 0;
+        }
         if ($this->product_type !== 'product') {
             parent::update($params);
             return;
@@ -885,8 +891,12 @@ class product extends expRecord {
             $product->expFile = $params['expFile'];
         }
 
-        if (!empty($params['shipping']['required_shipping_calculator_id']) && $params['shipping']['required_shipping_calculator_id'] > 0) {
-            $product->required_shipping_method = $params['required_shipping_methods'][$params['shipping']['required_shipping_calculator_id']];
+        if (!empty($params['shipping']['required_shipping_calculator_id'])) {
+            if ($params['shipping']['required_shipping_calculator_id'] > 0) {
+                $product->required_shipping_method = $params['required_shipping_methods'][$params['shipping']['required_shipping_calculator_id']];
+            }
+        } else {
+            $params['shipping']['required_shipping_calculator_id'] = 0;
         }
 
         if (isset($tab_loaded['userinput'])) {

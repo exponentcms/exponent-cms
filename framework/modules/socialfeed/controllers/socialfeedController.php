@@ -324,15 +324,16 @@ class socialfeedController extends expController
         $ids = explode('_',$facebook_entry->id);
         if ($facebook_entry->type === 'photo') {
             if ($this->display_pic == 1) {
-//                $message_feed['picture'] = $facebook_entry->picture;
-                $message_feed['picture'] = 'https://graph.facebook.com/'.$facebook_entry->object_id.'/picture?type=normal';
+                $message_feed['picture'] = $facebook_entry->picture;
+//                $message_feed['picture'] = 'https://graph.facebook.com/'.$facebook_entry->object_id.'/picture?type=normal';
             }
         }
         if ($facebook_entry->type === 'video') {
             if ($this->display_video == 1) {
                 if (isset($facebook_entry->source))
                     $message_feed['video'] = $facebook_entry->source;
-                $message_feed['picture'] = 'https://graph.facebook.com/'.$facebook_entry->object_id.'/picture?type=normal';
+                $message_feed['picture'] = $facebook_entry->picture;
+//                $message_feed['picture'] = 'https://graph.facebook.com/'.$facebook_entry->object_id.'/picture?type=normal';
             }
         }
         if ($facebook_entry->type === 'link') {

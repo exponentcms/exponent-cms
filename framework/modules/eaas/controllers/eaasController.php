@@ -80,6 +80,8 @@ class eaasController extends expController {
             $ar->send();  //FIXME this doesn't seem to work correctly in this scenario
         } else {
             $key = expUnserialize(base64_decode(urldecode($this->params['apikey'])));
+            preg_match('/[^a-zA-Z_][^a-zA-Z0-9_]*/', $key, $matches);
+            $key = $matches[0];
             $cfg = new expConfig($key);
             $this->config = $cfg->config;
             if(empty($cfg->id)) {
