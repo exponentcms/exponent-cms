@@ -457,7 +457,7 @@ class newsController extends expController {
         if (!isset($_REQUEST['var']) || substr( $_REQUEST['var'], 0, 6 ) !== "alert-" || !isset($_REQUEST['val'])) {
             $ar = new expAjaxReply(300, gt("The session variable doesn't exist"));
         } else {
-            expSession::set($_REQUEST['var'], (boolean)$_REQUEST['val']);
+            expSession::set($_REQUEST['var'], (bool)$_REQUEST['val']);
             $ar = new expAjaxReply(200, gt('The session variable value was set'));
         }
         $ar->send();

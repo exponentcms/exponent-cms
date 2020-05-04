@@ -39,6 +39,7 @@
             {if $config.order == 'rank'}
                 {ddrerank items=$page->records model="news" label="News Items"|gettext}
             {/if}
+            {icon class=approve action=scriptaction text='Reveal Hidden Alerts'|gettext title='Reveal Hidden Alerts'|gettext onclick="restoreNodes();"}
         {/if}
         {if $permissions.showUnpublished}
             {icon class="view" action=showUnpublished text="View Expired/Unpublished News"|gettext}
@@ -128,8 +129,15 @@
     {literal}
         $('.close-icon').on('click',function() {
             $(this).closest('.panel').fadeOut();
-            $.post(eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=news&action=setVar", { var:$(this).closest('.card').attr('id'), val:true });
+            $.post(eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=news&action=setVar", { var:$(this).closest('.card').attr('id'), val:1 });
         })
+
+        function restoreNodes() {
+            $( '.item.panel.hidden' ).each(function(  ) {
+                $( this ).attr( "style", "display: block !important;" );
+                $.post(eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=news&action=setVar", { var:$(this).attr('id'), val:0 });
+            });
+        }
     {/literal}
     {/script}
 {/if}
