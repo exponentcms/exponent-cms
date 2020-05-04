@@ -51,7 +51,7 @@
     {$myloc=serialize($__loc)}
     {foreach from=$page->records item=item}
         {*<div class="item announcement{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}{if $item->is_featured} featured{/if}">*}
-        <div class="item panel panel-{if $item->is_featured}danger{else}{cycle values="info,success"}{/if}{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
+        <div class="item panel panel-{if $item->is_featured}danger{else}{cycle values="info,success"}{/if}{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}{if newsController::getVar('alert-'|cat:$item->sef_url)} hidden{/if}">
             <div class="panel-heading">
                 {if $config.hidefeatured && $item->is_featured}
                     <span class="pull-right clickable close-icon" data-effect="fadeOut"><i class="fa fa-times"></i></span>
@@ -128,6 +128,7 @@
     {literal}
         $('.close-icon').on('click',function() {
             $(this).closest('.panel').fadeOut();
+            $.post(eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=news&action=setVar", { var:$(this).closest('.card').attr('id'), val:true });
         })
     {/literal}
     {/script}

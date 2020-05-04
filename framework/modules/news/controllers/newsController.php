@@ -431,6 +431,38 @@ class newsController extends expController {
         return $metainfo;
     }
 
+    /**
+     * Ajax call to get a session variable
+     *  Variable name must begin with 'alert-'
+     *
+     * @param string $var
+     * @return mixed|null
+     */
+    public static function getVar($var) {
+        if (substr($var, 0, 6 ) === "alert-") {
+            $val = expSession::get($var);
+            if ($val !== null) {
+                return $val;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Ajax call to set a session variable
+     *  Variable name must begin with 'alert-'
+     *  Value is (cast) to a boolean
+     */
+    public static function setVar() {
+        if (!isset($_REQUEST['var']) || substr( $_REQUEST['var'], 0, 6 ) !== "alert-" || !isset($_REQUEST['val'])) {
+            $ar = new expAjaxReply(300, gt("The session variable doesn't exist"));
+        } else {
+            expSession::set($_REQUEST['var'], (boolean)$_REQUEST['val']);
+            $ar = new expAjaxReply(200, gt('The session variable value was set'));
+        }
+        $ar->send();
+    }
+
 //    function import() {
 //        $pullable_modules = expModules::listInstalledControllers('news');
 //        $modules = new expPaginator(array(

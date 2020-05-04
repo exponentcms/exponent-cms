@@ -321,7 +321,7 @@ class filemanagercontrol extends formcontrol {
 
                         if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
-                                filetitle = filetitle + ' (' + obj.image_width + ' x ' + obj.image_height + ')';
+                            filetitle = filetitle + ' (' + obj.image_width + ' x ' + obj.image_height + ')';
                         } else if (obj.mimetype=='audio/mpeg') {
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'audio_22x22.png\">';
                         } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4' || obj.mimetype=='video/x-m4v' || obj.mimetype=='video/webm' || obj.mimetype=='video/ogg') {
