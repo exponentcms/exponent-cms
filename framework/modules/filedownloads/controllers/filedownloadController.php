@@ -269,7 +269,7 @@ class filedownloadController extends expController {
                 $rss_item->itunes->keywords = $tags;
             }
             if (($rss_item->enclosure->type === "audio/mpg" || $rss_item->enclosure->type === "video/mpg") && (file_exists(BASE.$item->expFile['downloadable'][0]->directory.$item->expFile['downloadable'][0]->filename))) {
-                $id3 = expFile::getAVInfo(BASE . $item->expFile['sermonaudio'][0]->directory . $item->expFile['sermonaudio'][0]->filename);
+                $id3 = expFile::getAVInfo(BASE . $item->expFile['downloadable'][0]->directory . $item->expFile['downloadable'][0]->filename);
                 if (!empty($id3['playtime_string'])) {
                     $rss_item->itunes->duration = $id3['playtime_string'];
                 }
