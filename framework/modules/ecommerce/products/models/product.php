@@ -275,11 +275,11 @@ class product extends expRecord {
         //$this->user_input_fields = expUnserialize($this->user_input_fields);
         //eDebug($this,true);
 //        if (!empty($this->user_input_fields)) foreach ($this->user_input_fields as $uifkey => $uif) {
+        $user_input_info = array();
         if ($this->hasUserInputFields()) {
             if (($optional_input && $needs_input) | (!$optional_input && empty($params['input_shown']))) {
                 $params['input_error'] = true;
             } else {
-                $user_input_info = array();
                 foreach ($this->user_input_fields as $uifkey => $uif) {
                     if ($uif['is_required'] || (!$uif['is_required'] && strlen($params['user_input_fields'][$uifkey]) > 0)) {
                         if (strlen($params['user_input_fields'][$uifkey]) < $uif['min_length']) {
