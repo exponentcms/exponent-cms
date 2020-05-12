@@ -561,6 +561,8 @@ class expTheme
             if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/images/logo.png')) {
                 $metainfo['fb']['image'] = URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png' . "\n";
             }
+            $metainfo['fb']['site_name'] = ORGANIZATION_NAME;
+            $metainfo['fb']['locale'] = substr(LOCALE,0,2);
         }
 
         // twitter
