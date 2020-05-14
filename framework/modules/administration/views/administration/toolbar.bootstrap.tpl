@@ -180,7 +180,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
      }
 
      var docswindow = function (){
-         var win = window.open('http://docs.exponentcms.org');
+         var win = window.open('http://docs.exponentcms.org/help/switch_version/version/{/literal}{expVersion::getVersion(true, false, false)}{literal}');
          if (!win) { err(); }
      }
 
@@ -190,7 +190,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
      }
 
      var reportbugwindow = function (){
-         var win = window.open('http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new');
+         var win = window.open('https://github.com/exponentcms/exponent-cms/issues/new');
          if (!win) { err(); }
      }
 
