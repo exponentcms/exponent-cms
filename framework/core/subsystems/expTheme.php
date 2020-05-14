@@ -1051,7 +1051,7 @@ class expTheme
      */
     public static function main()
     {
-        global $db,$page_main_section;
+        global $db, $page_main_section;
 
         if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
             $page_main_section = true;
