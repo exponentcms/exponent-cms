@@ -44,7 +44,7 @@
             }
         }
     {elseif $smarty.const.MENU_LOCATION == 'static-top'}
-        #topnavbar.navbar-static-top {
+        #topnavbar.navbar.static-top {
             margin-top: 50px;
         }
         #topnavbar.navbar-spacer {
