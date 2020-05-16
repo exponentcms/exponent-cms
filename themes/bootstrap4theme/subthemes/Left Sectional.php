@@ -26,6 +26,8 @@
                 'enable-shadows'=>(ENHANCED_STYLE2 == 1),
                 'enable-transitions'=>(ENHANCED_STYLE3 == 1),
                 'enable-rounded'=>(ENHANCED_STYLE4 == 1),
+                'enable-responsive-font-sizes'=>(ENHANCED_STYLE5 == 1),
+                'enable-validation-icons'=>(ENHANCED_STYLE6 == 1),
             ),
             "css_links"=>true,
             "css_theme"=>true

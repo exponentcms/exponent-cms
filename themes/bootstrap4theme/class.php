@@ -95,6 +95,8 @@ class bootstrap4theme extends theme {
         $form->register('enhanced_style2',gt('Add Shadow Effects'),new checkboxcontrol((!empty($settings['ENHANCED_STYLE2']))));
         $form->register('enhanced_style3',gt('Add Transition Effects'),new checkboxcontrol((!empty($settings['ENHANCED_STYLE3']))));
         $form->register('enhanced_style4',gt('Add Rounded Styles'),new checkboxcontrol((!empty($settings['ENHANCED_STYLE4']))));
+        $form->register('enhanced_style5',gt('Use Responsive Font Size'),new checkboxcontrol((!empty($settings['ENHANCED_STYLE5']))));
+        $form->register('enhanced_style6',gt('Enable Validation Icons'),new checkboxcontrol((!empty($settings['ENHANCED_STYLE6']))));
         $form->register('text2','',new customcontrol("</div><div class=\"control\" style=\"margin-top: -5px;margin-bottom: 6px;\"><small class=\"form-text text-muted\">".gt('These settings will override the Theme Style settings')."</small></div>"));
         $form->register('theme_color',gt('Browser Theme Color').': ',new colorcontrol($settings['THEME_COLOR'],'#000000'));
         $form->register('style_width',gt('Style Width Type').': ',new dropdowncontrol($settings['STYLE_WIDTH'],$style_widths));
@@ -121,10 +123,13 @@ class bootstrap4theme extends theme {
         if (empty($params['enhanced_style2'])) $params['enhanced_style2'] = '0';
         if (empty($params['enhanced_style3'])) $params['enhanced_style3'] = '0';
         if (empty($params['enhanced_style4'])) $params['enhanced_style4'] = '0';
+        if (empty($params['enhanced_style5'])) $params['enhanced_style5'] = '0';
+        if (empty($params['enhanced_style6'])) $params['enhanced_style6'] = '0';
         if (empty($params['theme_color'])) $params['theme_color'] = '#000000';
         if (empty($params['style_width'])) $params['style_width'] = "";
         if (empty($params['btn_size'])) $params['btn_size'] = "";
         if (empty($params['menu_height'])) $params['menu_height'] = "1";
+        if (empty($params['menu_width'])) $params['menu_width'] = "979";
         if (empty($params['menu_length'])) $params['menu_length'] = "2";
         if (empty($params['flyout_sidebar'])) $params['flyout_sidebar'] = '0';
         parent::saveThemeConfig($params);

@@ -5,6 +5,8 @@ define("ENHANCED_STYLE",'0');
 define("ENHANCED_STYLE2",'0');
 define("ENHANCED_STYLE3",'1');
 define("ENHANCED_STYLE4",'1');
+define("ENHANCED_STYLE5",'0');
+define("ENHANCED_STYLE6",'1');
 define("THEME_COLOR",'#0080c0');
 define("STYLE_WIDTH",'');
 define("BTN_SIZE",'small');
