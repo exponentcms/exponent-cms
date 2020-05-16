@@ -52,8 +52,17 @@ function smarty_function_module_style($params,&$smarty) {
 						$class .= 'bottom-border';
 						break;
 					case 'topbottom':
-						$class .= 'top-bottom-border';
+						$class .= 'top-border bottom-border';
 						break;
+                    case 'left':
+                        $class .= 'left-border';
+                        break;
+                    case 'right':
+                        $class .= 'right-border';
+                        break;
+                    case 'leftright':
+                        $class .= 'left-border right-border';
+                        break;
 					case 'box':
 						$class .= 'box-border';
 						break;
@@ -63,7 +72,7 @@ function smarty_function_module_style($params,&$smarty) {
 				switch ($style) {
 					case 'well':
 						if (bs4()) {
-                            $class .= 'card card-body bg-faded';
+                            $class .= 'card card-body';
                         } else {
                             $class .= 'well';
                         }
@@ -88,49 +97,65 @@ function smarty_function_module_style($params,&$smarty) {
                 break;
 				break;
 			case 'hiddenxs':
-				if (bs3())
+				if (bs4())
+                    $class .= 'd-none d-sm-block';
+                elseif (bs3())
 					$class .= 'hidden-xs';
 				elseif (bs2())
 					$class .= 'hidden-phone';
 				break;
 			case 'hiddensm':
-				if (bs3())
+				if (bs4())
+                    $class .= 'd-none d-md-block';
+                elseif (bs3())
 					$class .= 'hidden-sm';
 				elseif (bs2())
 					$class .= 'hidden-phone';
 				break;
 			case 'hiddenmd':
-				if (bs3())
+                if (bs4())
+                    $class .= 'd-none d-lg-block';
+                elseif (bs3())
 					$class .= 'hidden-md';
 				elseif (bs2())
 					$class .= 'hidden-tablet';
 				break;
 			case 'hiddenlg':
-				if (bs3())
+                if (bs4())
+                    $class .= 'd-none d-xl-block';
+                elseif (bs3())
 					$class .= 'hidden-lg';
 				elseif (bs2())
 					$class .= 'hidden-desktop';
 				break;
 			case 'visiblexs':
-				if (bs3())
+                if (bs4())
+                    $class .= 'd-block d-sm-none';
+                elseif (bs3())
 					$class .= 'visible-xs-block';
 				elseif (bs2())
 					$class .= 'visible-phone';
 				break;
 			case 'visiblesm':
-				if (bs3())
+                if (bs4())
+                    $class .= 'd-block d-md-none';
+                elseif (bs3())
 					$class .= 'visible-sm-block';
 				elseif (bs2())
 					$class .= 'visible-phone';
 				break;
 			case 'visiblemd':
-				if (bs3())
+                if (bs4())
+                    $class .= 'd-block d-lg-none';
+                elseif (bs3())
 					$class .= 'visible-md-block';
 				elseif (bs2())
 					$class .= 'visible-tablet';
 				break;
 			case 'visiblelg':
-				if (bs3())
+                if (bs4())
+                    $class .= 'd-block d-xl-none';
+                elseif (bs3())
 					$class .= 'visible-lg-block';
 				elseif (bs2())
 					$class .= 'visible-desktop';
