@@ -57,7 +57,7 @@
                 </section>
                 <!-- left column -->
                 <aside id="sidebar" class="card card-body col-sm-3 order-md-first">
-                    <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left","scope"=>"top-sectional")); ?>
+                    <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","scope"=>"top-sectional")); ?>
                 </aside>
             </section>
             <!-- footer -->
