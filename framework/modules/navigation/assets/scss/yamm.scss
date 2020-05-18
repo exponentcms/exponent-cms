@@ -1,0 +1,45 @@
+/*!
+ * Yamm! - Yet another megamenu for Bootstrap
+ * http://geedmo.github.com/yamm
+ *
+ * @geedmo - Licensed under the MIT license
+ */
+
+//-----------------------------
+//  Yamm SASS
+//-----------------------------
+
+$yamm-content-padding: 1rem !default;
+
+.yamm {
+    // reset positions
+    .collapse,
+    .dropup,
+    .dropdown {
+        position: static;
+    }
+
+    // propagate menu position under container for fullwidth navbars
+    .container {
+        position: relative;
+    }
+
+    // by default aligns menu to left
+    .dropdown-menu {
+        left: auto;
+    }
+
+    // Content with padding (presentational)
+    .yamm-content {
+        padding: $yamm-content-padding;
+    }
+
+    // Fullwidth menu
+    .dropdown,
+    .dropup {
+        &.yamm-fw .dropdown-menu {
+            left: 0;
+            right: 0;
+        }
+    }
+}
