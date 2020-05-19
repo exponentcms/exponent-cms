@@ -2802,6 +2802,10 @@ class Less_Parser{
 			return $winPath ? '' : false;
 		} else {
 			$path = realpath($path);
+            if (!empty($path[1]) && $path[1] === ':') {  //note exp hack
+                // We can't just check for C:/, because windows users may have the IIS webroot on X: or F:, etc.
+                $path = substr($path,2);
+            }
 			if ($winPath) {
 				$path = self::WinPath($path);
 			}
