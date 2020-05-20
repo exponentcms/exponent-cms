@@ -223,11 +223,17 @@ class filemanagercontrol extends formcontrol {
                     var j=0;
                     $.each(ids, function(k,obj){
                         if (j<limit) {
-
                             var df = $('#filelist".$name."');
+
+                            if (obj.title) {
+                                filetitle = obj.title;
+                            } else {
+                                filetitle = obj.filename;
+                            }
 
                             if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
                                 var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
+                                filetitle = filetitle + ' (' + obj.image_width + ' x ' + obj.image_height + ')';
                             } else if (obj.mimetype=='audio/mpeg') {
                                 var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'audio_22x22.png\">';
                             } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4' || obj.mimetype=='video/x-m4v' || obj.mimetype=='video/webm' || obj.mimetype=='video/ogg') {
@@ -243,11 +249,6 @@ class filemanagercontrol extends formcontrol {
                             html += '<a class=\" btn-danger btn-sm\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\"><i class=\"fa fa-" . $icon->class . " " . $icon->size . "\"></i> </a>';";
                             $js .= "
                             html += filepic;
-                            if (obj.title) {
-                                filetitle = obj.title;
-                            } else {
-                                filetitle = obj.filename;
-                            }
                             html += '<span class=\"filename\" title=\"'+obj.filename+'\">'+filetitle+'<\/span>';
                             html += '<\/li>';
 
@@ -289,8 +290,15 @@ class filemanagercontrol extends formcontrol {
                       if (filesAdded < limit) {
                         var df = $('#filelist".$name."');
                         var obj = o.data;
+
+                        if (obj.title) {
+                            filetitle = obj.title;
+                        } else {
+                            filetitle = obj.filename;
+                        }
                         if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
+                            filetitle = filetitle + ' (' + obj.image_width + ' x ' + obj.image_height + ')';
                         } else if (obj.mimetype=='audio/mpeg') {
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'audio_22x22.png\">';
                         } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4' || obj.mimetype=='video/x-m4v' || obj.mimetype=='video/webm' || obj.mimetype=='video/ogg') {
@@ -308,11 +316,6 @@ class filemanagercontrol extends formcontrol {
                         html += '<a class=\" btn-danger btn-sm\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\"><i class=\"fa fa-" . $icon->class . " " . $icon->size . "\"></i> </a>';";
                         $js .= "
                         html += filepic;
-                        if (obj.title) {
-                            filetitle = obj.title;
-                        } else {
-                            filetitle = obj.filename;
-                        }
                         html += '<span class=\"filename\" title=\"'+obj.filename+'\">'+filetitle+'<\/span>';
                         html += '<\/li>';
                         htmln = $(html);

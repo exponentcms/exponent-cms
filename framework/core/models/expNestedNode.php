@@ -249,7 +249,7 @@ abstract class expNestedNode extends expRecord {
         return $db->selectExpObjects($this->tablename, $where, $this->classname, $get_assoc, $get_attached);
 	}
 
-	public function getBranch() {
+	public function getBranch($get_assoc = false, $get_attached = false) {
 		global $db;
 
        /**
@@ -268,7 +268,7 @@ abstract class expNestedNode extends expRecord {
 		// Pass the table name for Tags and the current Tag ID to a DB
         // call to retrieve any children this Tag may have
 		foreach($db->selectNestedBranch($this->table, $this->id) as $child) {
-			$children[] = new $this->classname($child->id, false, false);
+			$children[] = new $this->classname($child->id, $get_assoc, $get_attached);
 		}
 
 		return $children;
@@ -290,6 +290,28 @@ abstract class expNestedNode extends expRecord {
         global $db;
 
         return $db->selectNestedTree($model_table);
+    }
+
+    /**
+     * Modification of "Build a tree from a flat array in PHP"
+     *
+     * Authors: @DSkinner, @ImmortalFirefly and @SteveEdson
+     *
+     * @link https://stackoverflow.com/a/28429487/2078474
+     */
+    public static function buildTree( array &$elements, $parentId = 0 ) {
+        $branch = array();
+        foreach ( $elements as &$element ) {
+            if ( $element->parent_id == $parentId ) {
+                $children = self::buildTree( $elements, $element->id );
+                if ( $children )
+                    $element->children = $children;
+
+                $branch[$element->id] = $element;
+                unset( $element );
+            }
+        }
+        return $branch;
     }
 
 }

@@ -64,11 +64,13 @@
 						</td>
 					</tr>
 				{foreachelse}
-					<td colspan=3>{'There is no expired news'|gettext}.</td>
+					<td colspan=5>{'There is no expired news'|gettext}.</td>
 				{/foreach}
 			</tbody>
 		</table>
-		{control class=delete type=buttongroup submit="Delete Selected Items"|gettext color=red onclick="return confirm('"|cat:("Are you sure you want to delete these items?"|gettext)|cat:"');"}
+        {if count($page->records)}
+	    	{control class=delete type=buttongroup submit="Delete Selected Items"|gettext color=red onclick="return confirm('"|cat:("Are you sure you want to delete these items?"|gettext)|cat:"');"}
+        {/if}
     {/form}
     {pagelinks paginate=$page bottom=1}
 </div>

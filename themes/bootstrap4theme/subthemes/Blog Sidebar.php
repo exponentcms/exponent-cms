@@ -26,6 +26,8 @@
                 'enable-shadows'=>(ENHANCED_STYLE2 == 1),
                 'enable-transitions'=>(ENHANCED_STYLE3 == 1),
                 'enable-rounded'=>(ENHANCED_STYLE4 == 1),
+                'enable-responsive-font-sizes'=>(ENHANCED_STYLE5 == 1),
+                'enable-validation-icons'=>(ENHANCED_STYLE6 == 1),
             ),
             "css_links"=>true,
             "css_theme"=>true
@@ -50,11 +52,11 @@
             <?php if (FLYOUT_SIDEBAR != 0) expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
             <section id="main" class="row">
                 <!-- main column wanted on top if collapsed -->
-                <section id="content" class="col-sm-9 col-sm-push-3">
+                <section id="content" class="col-md-9 order-md-last">
                     <?php expTheme::main(); ?>
                 </section>
                 <!-- left column -->
-                <aside id="sidebar" class="card card-body bg-light col-sm-3 col-sm-pull-9">
+                <aside id="sidebar" class="card card-body col-md-3 order-md-first">
                     <?php expTheme::module(array("controller"=>"blog","action"=>"tags","view"=>"cloud","source"=>"@blog-cloud","moduletitle"=>gt("Tags"),"chrome"=>true)); ?>
                     <?php expTheme::module(array("controller"=>"blog","action"=>"showall","view"=>"headlines","source"=>"@blog-recent","moduletitle"=>gt("Recent Posts"),"chrome"=>true)); ?>
                     <?php expTheme::module(array("controller"=>"blog","action"=>"comments","view"=>"list","source"=>"@blog-comments","moduletitle"=>gt("Recent Comments"),"chrome"=>true)); ?>

@@ -205,7 +205,7 @@ class AdminerSerializedPreview
 			$value .= "<tr><th><code>" . h($key) . "</code>";
 			$value .= "<td>";
 
-			if (is_array($val) && ($this->maxLevel <= 0 || $level < $this->maxLevel)) {
+			if ((is_array($val) || is_object($val)) && ($this->maxLevel <= 0 || $level < $this->maxLevel)) {
 				$value .= $this->convertSerialized($val, $level + 1);
 			} elseif (is_array($val)) {
 				$value .= "<code class='jush-js'>" . h(preg_replace('/([,:])([^\s])/', '$1 $2', json_encode($val))) . "</code>";
@@ -227,11 +227,11 @@ class AdminerSerializedPreview
 			} elseif (is_null($val)) {
 				// Handle null value.
 				$value .= "<code class='jush'>null</code>";
-			} elseif (is_string($val)) {
-                $value .= "<code class='jush'>" . h($val) . "</code>";
             } elseif (is_object($val) || is_array($val)) {
 			    //fixme here is a nested object/array
                 $value .= "<code class='jush'>" . h(serialize($val)) . "</code>";
+            } else {
+                $value .= "<code class='jush'>" . h($val) . "</code>";
 			}
 		}
 

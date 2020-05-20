@@ -22,7 +22,7 @@
         <ul>
         {foreach from=$sections item=section}
             {if $section->parent == $current->parent}
-                <li {if $section->id==$current->id || $isparent==1} class="current"{/if}>
+                <li {if $section->id==$current->id} class="current"{/if}>
                     {if $section->active == 1}
                         <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>
                     {else}
@@ -33,7 +33,7 @@
                         {if $kids}
                             <ul>
                                 {foreach from=$kids item=child}
-                                    <li {if $child->id==$current->id || $isparent==1} class="current"{/if}>
+                                    <li {if $child->id==$current->id} class="current"{/if}>
                                         {if $child->active == 1}
                                             <a href="{$child->link}" class="navlink"{if $child->new_window} target="_blank"{/if}>{$child->name}</a>
                                         {else}

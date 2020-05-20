@@ -39,6 +39,7 @@
             {if $config.order == 'rank'}
                 {ddrerank items=$page->records model="news" label="News Items"|gettext}
             {/if}
+            {icon class=view action=scriptaction text='Reveal Hidden Alerts'|gettext title='Reveal Hidden Alerts'|gettext onclick="restoreNodes();"}
         {/if}
         {if $permissions.showUnpublished}
             {icon class="view" action=showUnpublished text="View Expired/Unpublished News"|gettext}
@@ -51,7 +52,7 @@
     {$myloc=serialize($__loc)}
     {foreach from=$page->records item=item}
         {*<div class="item announcement{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}{if $item->is_featured} featured{/if}">*}
-        <div class="item card{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
+        <div id="alert-{$item->sef_url}" class="item card{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}{if newsController::getVar('alert-'|cat:$item->sef_url)} d-none{/if}">
             <div class="card-header bg-{if $item->is_featured}danger{else}{cycle values="info,success"}{/if}">
                 {if $config.hidefeatured && $item->is_featured}
                     <span class="float-right clickable close-icon" data-effect="fadeOut"><i class="fas fa-times"></i></span>
@@ -127,8 +128,16 @@
     {script unique='hide_featured'}
     {literal}
         $('.close-icon').on('click',function() {
-            $(this).closest('.card').fadeOut();
+            $(this).closest('.card').addClass('d-none');
+            $.post(eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=news&action=setVar", { var:$(this).closest('.card').attr('id'), val:1 });
         })
+
+        function restoreNodes() {
+            $( '.item.card.d-none' ).each(function(  ) {
+                $( this ).removeClass( "d-none" );
+                $.post(eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=news&action=setVar", { var:$(this).attr('id'), val:0 });
+            });
+        }
     {/literal}
     {/script}
 {/if}

@@ -26,6 +26,8 @@
                 'enable-shadows'=>(ENHANCED_STYLE2 == 1),
                 'enable-transitions'=>(ENHANCED_STYLE3 == 1),
                 'enable-rounded'=>(ENHANCED_STYLE4 == 1),
+                'enable-responsive-font-sizes'=>(ENHANCED_STYLE5 == 1),
+                'enable-validation-icons'=>(ENHANCED_STYLE6 == 1),
             ),
             "css_links"=>true,
             "css_theme"=>true
@@ -48,8 +50,8 @@
         <div class="container<?php echo (STYLE_WIDTH) ?> <?php echo (MENU_LOCATION == 'fixed-top') ? 'fixedmenu' : '' ?>">
             <!-- optional flyout sidebar container -->
             <?php if (FLYOUT_SIDEBAR != 0) expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
+            <!-- main column -->
             <section id="main" class="row">
-                <!-- main column -->
                 <section id="content" class="col-sm-12">
                     <?php expTheme::main(); ?>
                 </section>

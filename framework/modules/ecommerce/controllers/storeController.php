@@ -117,7 +117,7 @@ class storeController extends expController {
         $this->grabConfig();
 
 //        if (expTheme::inAction() && !empty($router->url_parts[1]) && ($router->url_parts[0] == "store" && $router->url_parts[1] == "showall")) {
-        if (!empty($params['action']) && ($params['controller'] == "store" && $params['action'] == "showall") ) {
+        if (!empty($params['action']) && ($params['controller'] === "store" && $params['action'] === "showall") ) {
 //            if (isset($router->url_parts[array_search('title', $router->url_parts) + 1]) && is_string($router->url_parts[array_search('title', $router->url_parts) + 1])) {
             if (isset($params['title']) && is_string($params['title'])) {
 //                $default_id = $db->selectValue('storeCategories', 'id', "sef_url='" . $router->url_parts[array_search('title', $router->url_parts) + 1] . "'");
@@ -133,7 +133,7 @@ class storeController extends expController {
                 $default_id = 0;
             }
 //        } elseif (expTheme::inAction() && !empty($router->url_parts[1]) && ($router->url_parts[0] == "store" && ($router->url_parts[1] == "show" || $router->url_parts[1] == "showByTitle"))) {
-        } elseif (!empty($params['action']) && ($params['controller'] == "store" && ($params['action'] == "show" || $params['action'] == "showByTitle" || $params['action'] == "categoryBreadcrumb"))) {
+        } elseif (!empty($params['action']) && ($params['controller'] === "store" && ($params['action'] === "show" || $params['action'] === "showByTitle" || $params['action'] === "categoryBreadcrumb"))) {
 //            if (isset($router->url_parts[array_search('id', $router->url_parts) + 1]) && ($router->url_parts[array_search('id', $router->url_parts) + 1] != 0)) {
             if (!empty($params['id'])) {
 //                $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='" . $router->url_parts[array_search('id', $router->url_parts) + 1] . "'");
@@ -569,10 +569,14 @@ class storeController extends expController {
 
         expSession::set('product_export_query', $sql);
 
+        $order = !empty($this->params['order']) ? $this->params['order'] : 'id';
+        $dir = !empty($this->params['dir']) ? $this->params['dir'] : 'ASC';
         $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
         $page = new expPaginator(array(
             'model_field' => 'product_type',
             'sql'         => $sql,
+            'order'       => $order,
+            'dir'         => $dir,
             'limit'       => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $limit,
             'page'        => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'  => $this->params['controller'],
@@ -644,10 +648,14 @@ class storeController extends expController {
 
         expSession::set('product_export_query', $sql);
 
+        $order = !empty($this->params['order']) ? $this->params['order'] : 'id';
+        $dir = !empty($this->params['dir']) ? $this->params['dir'] : 'ASC';
         $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
         $page = new expPaginator(array(
             'model_field' => 'product_type',
             'sql'         => $sql,
+            'order'       => $order,
+            'dir'         => $dir,
             'limit'       => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $limit,
             'page'        => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'  => $this->params['controller'],
@@ -810,12 +818,12 @@ class storeController extends expController {
 
         // 'application/octet-stream' is the registered IANA type but
         //        MSIE and Opera seems to prefer 'application/octetstream'
-        $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+        $mime_type = (EXPONENT_USER_BROWSER === 'IE' || EXPONENT_USER_BROWSER === 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
 
         header('Content-Type: ' . $mime_type);
         header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
         // IE need specific headers
-        if (EXPONENT_USER_BROWSER == 'IE') {
+        if (EXPONENT_USER_BROWSER === 'IE') {
             header('Content-Disposition: inline; filename="' . $filename . '"');
             header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
             header('Pragma: public');
@@ -1216,7 +1224,7 @@ class storeController extends expController {
 //        $definablefields = $expDefinableField->find('all','1','rank');
 
         //Make sure that the view is the edit.tpl and not any ajax views
-        if (isset($this->params['view']) && $this->params['view'] == 'edit') {
+        if (isset($this->params['view']) && $this->params['view'] === 'edit') {
             expHistory::set('editable', $this->params);
         }
 
@@ -1313,7 +1321,7 @@ class storeController extends expController {
 #        eDebug($shipping_services);
 #        eDebug($shipping_methods);
 
-        if (!empty($this->params['product_type']) && ($this->params['product_type'] == "product" || $this->params['product_type'] == "childProduct")) {
+        if (!empty($this->params['product_type']) && ($this->params['product_type'] === "product" || $this->params['product_type'] === "childProduct")) {
             //if new record and it's a child, then well set the child rank to be at the end
             if (empty($record->id) && $record->isChild()) {
                 $record->child_rank = $db->max('product', 'child_rank', null, 'parent_id=' . $record->parent_id) + 1;
@@ -1558,7 +1566,7 @@ class storeController extends expController {
             if (is_readable($path)) {
                 $dh = opendir($path);
                 while (($file = readdir($dh)) !== false) {
-                    if (is_readable($path . '/' . $file) && substr($file, -4) == '.php' && $file != 'childProduct.php') {
+                    if (is_readable($path . '/' . $file) && substr($file, -4) === '.php' && $file !== 'childProduct.php') {
                         $classname = substr($file, 0, -4);
                         $products[$path . '/' . $file] = $classname;
                     }
@@ -1764,7 +1772,7 @@ class storeController extends expController {
             $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->tableStmt('expFiles') .
             " AS f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
-        if ($search_type == 'products') $sql .= 'product_type = "product" AND ';
+        if ($search_type === 'products') $sql .= 'product_type = "product" AND ';
         $sql .= " MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id ";
         $sql .= "ORDER BY score DESC " . $db->limitStmt(10);
 
@@ -1781,7 +1789,7 @@ class storeController extends expController {
             $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->tableStmt('expFiles') .
             " AS f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
-        if ($search_type == 'products') $sql .= 'product_type = "product" AND ';
+        if ($search_type === 'products') $sql .= 'product_type = "product" AND ';
         $sql .= " (p.model LIKE '%" . $this->params['query'] . "%' ";
         $sql .= " OR p.title LIKE '%" . $this->params['query'] . "%') ";
         $sql .= " AND p.parent_id=0 GROUP BY p.id " . $db->limitStmt(10);
@@ -1798,7 +1806,7 @@ class storeController extends expController {
             $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->tableStmt('expFiles') .
             " AS f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
-        if ($search_type == 'products') $sql .= 'product_type = "product" AND ';
+        if ($search_type === 'products') $sql .= 'product_type = "product" AND ';
         $sql .= " (p.model LIKE '" . $this->params['query'] . "%' ";
         $sql .= " OR p.title LIKE '" . $this->params['query'] . "%') ";
         $sql .= " AND p.parent_id=0 GROUP BY p.id " . $db->limitStmt(10);
@@ -1824,7 +1832,7 @@ class storeController extends expController {
             foreach ($res as $r) {
                 $index = !empty($r->model) ? $r->model : $r->sef_url;
                 foreach ($terms as $term) {
-                    if (stristr($r->title, $term)) $res[$index]->weight = $res[$index]->weight + 1;
+                    if (stripos($r->title, $term) !== false) $res[$index]->weight = $res[$index]->weight + 1;
                 }
             }
         }
@@ -1959,11 +1967,11 @@ class storeController extends expController {
         //eDebug($data);
 //        $dataset = array();
         $carrier = '';
-        if (trim($data[0]) == 'ShipmentInformationShipmentID') {
+        if (trim($data[0]) === 'ShipmentInformationShipmentID') {
             echo "Detected UPS file...<br/>";
             $carrier = "UPS";
             $carrierTrackingLink = "http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=";
-        } elseif (trim($data[0]) == 'PIC') {
+        } elseif (trim($data[0]) === 'PIC') {
             echo "Detected United States Post Service file...<br/>";
             $carrier = "USPS";
             $carrierTrackingLink = "https://tools.usps.com/go/TrackConfirmAction_input?qtc_tLabels1=";
@@ -2022,7 +2030,7 @@ class storeController extends expController {
                 $transactionState = '';
             }
 
-            if ($transactionState == 'authorized') {
+            if ($transactionState === 'authorized') {
                 //eDebug($order,true);
                 $calc = $bm->billingcalculator->calculator;
                 $calc->config = $bm->billingcalculator->config;
@@ -2218,7 +2226,7 @@ class storeController extends expController {
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
         $checkhandle = fopen($file->path, "r");
-        if ($this->params['type_of_address'][0] == 'am') {
+        if ($this->params['type_of_address'][0] === 'am') {
             // read in the header line
             $checkdata = fgetcsv($checkhandle, 10000, "\t");
             $fieldCount = count($checkdata);
@@ -2229,7 +2237,7 @@ class storeController extends expController {
         }
 
         $count = 1;
-        if ($this->params['type_of_address'][0] == 'am') {
+        if ($this->params['type_of_address'][0] === 'am') {
             // read in the data lines
             while (($checkdata = fgetcsv($checkhandle, 10000, "\t")) !== FALSE) {
                 $count++;
@@ -2268,19 +2276,19 @@ class storeController extends expController {
 
         //mc=1, nt=2, amm=3
 
-        if ($this->params['type_of_address'][0] == 'mc') {
+        if ($this->params['type_of_address'][0] === 'mc') {
             //militaryclothing
             $db->delete('external_addresses', 'source=1');
 
-        } else if ($this->params['type_of_address'][0] == 'nt') {
+        } else if ($this->params['type_of_address'][0] === 'nt') {
             //nametapes
             $db->delete('external_addresses', 'source=2');
-        } else if ($this->params['type_of_address'][0] == 'am') {
+        } else if ($this->params['type_of_address'][0] === 'am') {
             //amazon
             $db->delete('external_addresses', 'source=3');
         }
 
-        if ($this->params['type_of_address'][0] == 'am') {
+        if ($this->params['type_of_address'][0] === 'am') {
             // read in the data lines
             while (($data = fgetcsv($handle, 10000, "\t")) !== FALSE) {
                 //eDebug($data,true);
@@ -2323,7 +2331,7 @@ class storeController extends expController {
             while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
                 eDebug($data);
                 $extAddy = new external_address();
-                if ($this->params['type_of_address'][0] == 'mc') {
+                if ($this->params['type_of_address'][0] === 'mc') {
                     $extAddy->source = 1;
                     $extAddy->user_id = 0;
                     $name = explode(' ', $data[3]);
@@ -2374,7 +2382,7 @@ class storeController extends expController {
                         $extAddy->save();
                     }
                 }
-                if ($this->params['type_of_address'][0] == 'nt') {
+                if ($this->params['type_of_address'][0] === 'nt') {
                     //eDebug($data,true);
                     $extAddy->source = 2;
                     $extAddy->user_id = 0;
@@ -2418,7 +2426,7 @@ class storeController extends expController {
             foreach ($products as $item) {
 
                 foreach ($columns as $column) {
-                    if ($column != 'body' && $column != 'summary' && $column != 'featured_body') {
+                    if ($column !== 'body' && $column !== 'summary' && $column !== 'featured_body') {
                         if (!expString::validUTF($item->$column) || strrpos($item->$column, '?')) {
                             $affected_fields[] = $column;
                         }
@@ -2465,7 +2473,7 @@ class storeController extends expController {
                 //Since body, summary, featured_body can have a ? intentionally such as a link with get parameter.
                 //TO Improved
                 foreach ($columns as $column) {
-                    if ($column != 'body' && $column != 'summary' && $column != 'featured_body') {
+                    if ($column !== 'body' && $column !== 'summary' && $column !== 'featured_body') {
                         if (!expString::validUTF($item->$column) || strrpos($item->$column, '?')) {
                             $item->$column = expString::convertUTF($item->$column);
                         }
@@ -2766,7 +2774,7 @@ class storeController extends expController {
 
         // read in the header line
         $header = fgetcsv($handle, 10000, ",");
-        if (!($header[0] == 'id' || $header[0] == 'model')) {
+        if (!($header[0] === 'id' || $header[0] === 'model')) {
             echo gt('Not a Product Import CSV File');
             return;
         }
@@ -2825,7 +2833,7 @@ class storeController extends expController {
             $data = array_combine($header, $row);
 
             //eDebug($data, true);
-            if ($header[0] == 'id') {
+            if ($header[0] === 'id') {
                 if (isset($data['id']) && $data['id'] != 0) {
                     $product = new product($data['id'], false, false);
                     if (empty($product->id)) {
@@ -2838,7 +2846,7 @@ class storeController extends expController {
                     $product = new product();
                     //$product->save(false);
                 }
-            } elseif ($header[0] == 'model') {
+            } elseif ($header[0] === 'model') {
                 if (!empty($data['model'])) {
                     $p = new product();
                     $product = $p->find('first','model=\'' . $data['model'] . '\'');
@@ -2850,7 +2858,7 @@ class storeController extends expController {
                     $product = new product();
                 }
             }
-            if ($product->product_type != 'product') {
+            if ($product->product_type !== 'product') {
                 $errorSet[$count] = gt("Existing product is wrong product type.");
                 continue;
             }
@@ -2952,7 +2960,7 @@ class storeController extends expController {
                             }
                             // attach product images expFile object
                             if (!empty($_objFile->id)) {
-                                if ($key == 'image1') {
+                                if ($key === 'image1') {
                                     $product->attachItem($_objFile, 'mainimage');
                                 } else {
                                     $product->attachItem($_objFile, 'images', false);

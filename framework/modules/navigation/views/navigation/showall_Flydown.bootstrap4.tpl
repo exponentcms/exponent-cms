@@ -20,7 +20,7 @@
     }
 {/literal}
 {/css}
-{css unique="mega" lesscss="`$asset_path`less/yamm.less"}
+{css unique="mega" scsscss="`$asset_path`scss/yamm.scss"}
 
 {/css}
 

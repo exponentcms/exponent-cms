@@ -1102,10 +1102,10 @@ abstract class expController {
             // NO buffering from here on out or things break unexpectedly. - RAM
             ob_end_clean();
 
-            header('Content-Type: ' . 'application/rss+xml');
+//            header('Content-Type: ' . 'application/rss+xml');
 //            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 //            header('Content-Transfer-Encoding: binary');
-            header('Content-Encoding:');
+//            header('Content-Encoding:');
             // IE need specific headers
             if (EXPONENT_USER_BROWSER === 'IE') {
                 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');

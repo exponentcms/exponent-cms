@@ -928,7 +928,7 @@ class navigationController extends expController {
         foreach ($navs as $i=>$nav) {
             $navs[$i]->parent = $nav->parent?$nav->parent:'#';
             $navs[$i]->text = $nav->name;
-            $navs[$i]->icon = $icons[$nav->alias_type];
+            $navs[$i]->icon = $icons[(int)$nav->alias_type];
             if (!$nav->active) {
                 $navs[$i]->icon .= ' inactive';
                 $attr = new stdClass();

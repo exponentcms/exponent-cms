@@ -64,7 +64,9 @@ return array(
     'nofollow'=>array(
    		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'alias_type'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+		DB_FIELD_TYPE=>DB_DEF_INTEGER,
+        DB_NOTNULL=>true,
+        DB_DEFAULT=>0),
 	'external_link'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>1024),
