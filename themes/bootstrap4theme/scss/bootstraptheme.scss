@@ -269,8 +269,18 @@ span.value span.spacer {
 .top-border {
 	border-top: 1px solid $hr-border-color;
 }
+.left-border {
+	border-left: 1px solid $hr-border-color;
+}
+.right-border {
+	border-right: 1px solid $hr-border-color;
+}
 .bottom-border {
 	border-bottom: 1px solid $hr-border-color;
+}
+.left-right-border {
+	border-left: 1px solid $hr-border-color;
+	border-right: 1px solid $hr-border-color;
 }
 .top-bottom-border {
 	border-top: 1px solid $hr-border-color;
