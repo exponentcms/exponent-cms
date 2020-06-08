@@ -369,10 +369,6 @@ class Compiler
      */
     protected function pushExtends($target, $origin, $block)
     {
-        if ($this->isSelfExtend($target, $origin)) {
-            return;
-        }
-
         $i = \count($this->extends);
         $this->extends[] = [$target, $origin, $block];
 
@@ -835,7 +831,7 @@ class Compiler
 
             foreach ($origin as $j => $new) {
                 // prevent infinite loop when target extends itself
-                if ($this->isSelfExtend($single, $origin)) {
+                if ($this->isSelfExtend($single, $origin) and !$initial) {
                     return false;
                 }
 
@@ -918,6 +914,7 @@ class Compiler
         }
 
         foreach ([array_reverse($base), array_reverse($other)] as $single) {
+            $rang = count($single);
             foreach ($single as $part) {
                 if (preg_match('/^[\[:]/', $part)) {
                     $out[] = $part;
@@ -925,14 +922,15 @@ class Compiler
                 } elseif (preg_match('/^[\.#]/', $part)) {
                     array_unshift($out, $part);
                     $wasTag = false;
-                } elseif (preg_match('/^[^_-]/', $part)) {
+                } elseif (preg_match('/^[^_-]/', $part) and $rang==1) {
                     $tag[] = $part;
                     $wasTag = true;
                 } elseif ($wasTag) {
                     $tag[\count($tag) - 1] .= $part;
                 } else {
-                    $out[] = $part;
+                    array_unshift($out, $part);
                 }
+                $rang--;
             }
         }
 
@@ -3117,6 +3115,11 @@ class Compiler
                             $left = $left->normalize();
                             $right = $right->normalize();
                         }
+                        else {
+                            if ($coerceUnit) {
+                                $left = new Node\Number($left[1], []);
+                            }
+                        }
                     }
 
                     $shouldEval = $inParens || $inExp;
@@ -3211,7 +3214,7 @@ class Compiler
                 return $this->fncall($value[1], $value[2]);
 
             case Type::T_SELF:
-                $selfSelector = $this->multiplySelectors($this->env);
+                $selfSelector = $this->multiplySelectors($this->env,!empty($this->env->block->selfParent) ? $this->env->block->selfParent : null);
                 $selfSelector = $this->collapseSelectors($selfSelector, true);
 
                 return $selfSelector;
@@ -4042,6 +4045,11 @@ class Compiler
 
         $selectors = array_values($selectors);
 
+        // case we are just starting a at-root : nothing to multiply but parentSelectors
+        if (!$selectors and $selfParentSelectors) {
+            $selectors = $selfParentSelectors;
+        }
+
         return $selectors;
     }
 
@@ -4222,6 +4230,7 @@ class Compiler
     {
         if (@count($this->env->parent->store) > 300)  //fixme Dave Hack
             $this->daveStore = $this->env->parent->store;  //fixme Dave Hack
+        $this->storeEnv = $this->env->parentStore;
         $this->env = $this->env->parent;
     }
 
@@ -5937,10 +5946,6 @@ class Compiler
     {
         list($list, $value) = $args;
 
-        if ($value[0] === Type::T_MAP) {
-            return static::$null;
-        }
-
         if ($list[0] === Type::T_MAP ||
             $list[0] === Type::T_STRING ||
             $list[0] === Type::T_KEYWORD ||
@@ -7142,7 +7147,9 @@ class Compiler
         static $id;
 
         if (! isset($id)) {
-            $id = mt_rand(0, pow(36, 8));
+            $id = PHP_INT_SIZE === 4
+                ? mt_rand(0, pow(36, 5)) . str_pad(mt_rand(0, pow(36, 5)) % 10000000, 7, '0', STR_PAD_LEFT)
+                : mt_rand(0, pow(36, 8));
         }
 
         $id += mt_rand(0, 10) + 1;
