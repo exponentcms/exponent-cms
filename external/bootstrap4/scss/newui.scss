@@ -8,8 +8,10 @@
   $enable-shadows: false; // default false
   $enable-gradients: false; // default false
   $enable-transitions: true; // default true
+  $enable-responsive-font-sizes: true; // default false
+  $enable-validation-icons: false; // default true
 
-  $themepath: "../../../themes/bootstrap4theme/scss";  // hack to prevent picking up theme styles
+  $themepath: "../../../themes/bootstrap4theme/scss"; // hack to prevent picking up theme styles
 
   @import "bootstrap";
 
