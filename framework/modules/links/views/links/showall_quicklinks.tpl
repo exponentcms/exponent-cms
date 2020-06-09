@@ -81,7 +81,7 @@
         <ul>
             {foreach name=items from=$items item=item name=links}
                 <li class="item{if $smarty.foreach.links.last} last{/if}">
-                    <a class="link{if !empty($config.websnapr_key)} websnapr{/if}" {if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+                    <a class="link" {if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
@@ -104,9 +104,3 @@
         </ul>
     {/if}
 </div>
-
-{*{if !empty($config.websnapr_key)}*}
-{*    {script unique=$name src="http://bubble.websnapr.com/`$config.websnapr_key`/swi/"}*}
-
-{*    {/script}*}
-{*{/if}*}
