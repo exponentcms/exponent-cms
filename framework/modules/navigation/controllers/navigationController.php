@@ -1418,6 +1418,15 @@ class navigationController extends expController {
         return $ret;
     }
 
+    /**
+     * Get a page record (section) by id and return it as JSON via Ajax
+     */
+    public function getPage() {
+        $page = new section((int)$this->params['id']);
+        $ar = new expAjaxReply(200, 'ok', $page);
+        $ar->send();
+    }
+
 }
 
 ?>

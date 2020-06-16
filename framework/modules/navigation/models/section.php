@@ -287,23 +287,26 @@ class section extends expRecord {
         if ($parent == 0 && $full) {
             $ar[0] = '&lt;' . gt('Top of Hierarchy') . '&gt;';
         }
-        if ($addinternalalias) {
+//        if ($addinternalalias) {
             $intalias = '';
-        } else {
-            $intalias = ' AND alias_type != 2';
-        }
+//        } else {
+//            $intalias = ' AND alias_type != 2';
+//        }
         $nodes = $db->selectObjects('section', 'parent=' . $parent . $intalias, 'rank');
         foreach ($nodes as $node) {
             if ((($perm == 'view' && $node->public == 1) || expPermissions::check($perm, expCore::makeLocation('navigation', '', $node->id))) && !in_array($node->id, $ignore_ids)) {
-                if ($node->active == 1) {
-                    $text = str_pad('', ($depth + ($full ? 1 : 0)) * 3, '.', STR_PAD_LEFT) . $node->name;
+                if (!$addinternalalias && $node->alias_type == 2) {
                 } else {
-                    $text = str_pad('', ($depth + ($full ? 1 : 0)) * 3, '.', STR_PAD_LEFT) . '(' . $node->name . ')';
+                    if ($node->active == 1) {
+                        $text = str_pad('', ($depth + ($full ? 1 : 0)) * 3, '.', STR_PAD_LEFT) . $node->name;
+                    } else {
+                        $text = str_pad('', ($depth + ($full ? 1 : 0)) * 3, '.', STR_PAD_LEFT) . '(' . $node->name . ')';
+                    }
+                    $ar[$node->id] = $text;
                 }
-                $ar[$node->id] = $text;
-                foreach (self::levelDropdownControlArray($node->id, $depth + 1, $ignore_ids, $full, $perm, $addstandalones, $addinternalalias) as $id => $text) {
-                    $ar[$id] = $text;
-                }
+            }
+            foreach (self::levelDropdownControlArray($node->id, $depth + 1, $ignore_ids, $full, $perm, $addstandalones, $addinternalalias) as $id => $text) {
+                $ar[$id] = $text;
             }
         }
         if ($addstandalones && $parent == 0) {
