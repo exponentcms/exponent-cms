@@ -191,7 +191,7 @@ class fakeform extends form {
                 $html .= "<label ".$for." class=\"".(bs4()||bs3()||bs2()?"control-label":"label form-check-label").($this->horizontal&&(bs4()||bs3())?' col-sm-2':'')."\" style=\"font-weight: normal;display:inline;\">";
             } else {
                 $break = $this->controls[$name]->_controltype == 'radiogroupcontrol' && $this->controls[$name]->cols != 1 ? true : false;
-                $html .= "<label class=\"".(bs4()||bs3()||bs2()?"control-label":"label").($this->horizontal&&(bs4()||bs3())?' col-sm-2':'').($break?" form-check-inline":"")."\">";
+                $html .= "<label class=\"".(bs4()||bs3()||bs2()?"control-label":"label").($this->horizontal&&(bs4()||bs3())?' col-sm-2':'')."\"".($break?" style=\"padding-right:12px\"":"").">";
             }
             if($this->controls[$name]->required)
                 $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
