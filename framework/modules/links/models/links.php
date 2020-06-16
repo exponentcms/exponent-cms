@@ -35,6 +35,11 @@ class links extends expRecord {
         )
     );
 
+    public function update($params = array()) {
+        unset ($params['page_id']);
+        parent::update($params);
+    }
+
 }
 
 ?>
