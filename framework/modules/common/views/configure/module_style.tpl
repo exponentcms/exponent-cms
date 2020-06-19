@@ -43,7 +43,7 @@
 	{control type=checkbox name="mstyle[visiblelg]" label="Visible on Desktop"|gettext value=1 checked=$config.mstyle.visiblelg}
 {/group}
 {/if}
-{if bs3() || bs4()}
+{if bs3() || bs4() || bs5()}
 {group label='Module Visibility - Hidden'|gettext}
 	{control type=checkbox name="mstyle[hiddenxs]" label="Hidden on Extra Small displays"|gettext value=1 checked=$config.mstyle.hiddenxs}
 	{control type=checkbox name="mstyle[hiddensm]" label="Hidden on Small displays"|gettext value=1 checked=$config.mstyle.hiddensm}

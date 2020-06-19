@@ -151,7 +151,7 @@
     <!-- elfinder custom extenstions -->
     <!--<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/extensions/jplayer/elfinder.quicklook.jplayer.js"></script>-->
 </head>
-<body{if !bs3()} class="exp-skin"{/if}>
+<body{if !bs3() && !bs4() && !bs5()} class="exp-skin"{/if}>
 
 <div id="elfinder"></div>
 

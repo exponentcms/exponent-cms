@@ -36,7 +36,7 @@ expSession::set("uilevel", UILEVEL_PREVIEW);
 
 $section = $router->getSection();
 $sectionObj = $router->getSectionObj($section);
-if (bs3()) {
+if (bs3()||bs4()||bs5()) {
     expCSS::pushToHead(array(
         'unique'=>"container-newui",
         'lesscss'=>PATH_RELATIVE."framework/modules/container/assets/less/container-newui.less"

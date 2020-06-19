@@ -17,7 +17,7 @@
 
 {/css}
 
-{if $config.style && !bs3() && !bs4()}
+{if $config.style}
     {css unique="formmod2" corecss="forms2col"}
 
     {/css}

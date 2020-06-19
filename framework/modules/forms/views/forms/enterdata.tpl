@@ -15,7 +15,7 @@
 
 {uniqueid prepend=$form->sef_url assign="name"}
 {if !$error}
-    {if $config.style && !bs3() && !bs4()}
+    {if $config.style && !bs3() && !bs4() && !bs5()}
         {css unique="formmod2" corecss="forms2col"}
 
         {/css}
@@ -29,7 +29,7 @@
         {/literal}
         {/css}
     {/if}
-    {if bs3() || bs4()}
+    {if bs3() || bs4() || bs5()}
         {css unique="formmod"}
         {literal}
             @media (max-width: 544px) {

@@ -15,7 +15,7 @@
 
 {if $container->info.clickable && $container->id}
 <div id="module{$container->id}" class="exp-container-module-wrapper">
-	<div class="{if bs3()}exp-container-chrome-module exp-{/if}container-chrome module-chrome">
+	<div class="{if (bs3()||bs4()||bs5())}exp-container-chrome-module exp-{/if}container-chrome module-chrome">
 		{* <a style="text-align:center;display:block;font-size:11px;padding-top:2px" href="{$dest}&ss={$container->info.source}&sm={$container->info.class}"> *}
 		<a style="text-align:center;display:block;text-decoration:none;font-weight:bold;text-transform:uppercase;font-size:11px;
 					text-shadow: 0px -1px 0px #374683;padding:1px 15px 0 5px;top:0px; left:5px;line-height:15px;color:#fff;"

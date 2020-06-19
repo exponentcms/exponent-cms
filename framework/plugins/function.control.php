@@ -500,7 +500,7 @@ function smarty_function_control($params, &$smarty) {
             $post_errors = expSession::get('last_post_errors');
             // flag this field as having errors if it failed validation
             if (is_array($post_errors) && in_array($params['name'], $post_errors)) {
-                if (bs3()) {
+                if (bs3() || bs4() || bs5()) {
                     $control->class .= ' has-error';
                 } elseif (bs2()) {
                     $control->class .= ' error';
@@ -509,7 +509,7 @@ function smarty_function_control($params, &$smarty) {
                 }
             }
 
-            if ($params['type'] == 'checkbox') {
+            if ($params['type'] === 'checkbox') {
 //                $realname         = str_replace('[]', '', $params['name']);
 //                $control->default = $params['value'];
 //                if (!empty($post[$realname])) {

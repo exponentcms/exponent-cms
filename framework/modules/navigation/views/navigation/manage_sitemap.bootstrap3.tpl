@@ -109,7 +109,7 @@
                                     {if (!empty($section->expFile[0]->id))}
                                         {img h=16 w=16 zc=1 file_id=$section->expFile[0]->id return=1}
                                         {$image = 1}
-                                    {elseif (bs3() && !empty($section->glyph))}
+                                    {elseif (!empty($section->glyph))}
                                         <i class="fa fa-fw {$section->glyph}"></i>
                                         {$image = 1}
                                     {/if}
@@ -125,7 +125,7 @@
                                     {if (!empty($section->expFile[0]->id))}
                                         {img h=16 w=16 zc=1 file_id=$section->expFile[0]->id return=1 class='img_left'}
                                         {$image = 1}
-                                    {elseif (bs3() && !empty($section->glyph))}
+                                    {elseif (!empty($section->glyph))}
                                         <i class="fa fa-fw {$section->glyph}"></i>
                                         {$image = 1}
                                     {/if}
@@ -267,7 +267,7 @@
                                     {if (!empty($section->expFile[0]->id))}
                                         {img h=16 w=16 zc=1 file_id=$section->expFile[0]->id return=1 class='img_left'}
                                         {$image = 1}
-                                    {elseif (bs3() && !empty($section->glyph))}
+                                    {elseif (!empty($section->glyph))}
                                         <i class="fa fa-fw {$section->glyph}"></i>
                                         {$image = 1}
                                     {/if}
@@ -283,7 +283,7 @@
                                     {if (!empty($section->expFile[0]->id))}
                                         {img h=16 w=16 zc=1 file_id=$section->expFile[0]->id return=1 class='img_left'}
                                         {$image = 1}
-                                    {elseif (bs3() && !empty($section->glyph))}
+                                    {elseif (!empty($section->glyph))}
                                         <i class="fa fa-fw {$section->glyph}"></i>
                                         {$image = 1}
                                     {/if}

@@ -13,7 +13,7 @@
  *
  *}
 
-{if (bs3() || bs4())}
+{if (bs3() || bs4() || bs5())}
     {$label_class = "control-label"}
 {else}
     {$label_class = "label"}
