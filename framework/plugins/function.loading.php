@@ -49,7 +49,7 @@ function smarty_function_loading($params,&$smarty) {
         expCSS::pushToHead(array(
            "corecss"=>"loading",
         ));
-    } elseif (bs4()) {
+    } elseif (bs4() || bs5()) {
         $spinner = '<i class="fas fa-lg fa-spinner fa-pulse"></i> ';
         expCSS::pushToHead(array(
            "corecss"=>"loading",

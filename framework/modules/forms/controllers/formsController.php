@@ -1086,7 +1086,7 @@ class formsController extends expController {
             $types[".break"] = gt('Static - Spacer');
             $types[".line"] = gt('Static - Horizontal Line');
             uasort($types, "strnatcmp");
-            if (!bs3() && !bs4())
+            if (!bs3() && !bs4() && !bs5())
                 array_unshift($types, '[' . gt('Please Select' . ']'));
 
             $forms_list = array();
@@ -1117,6 +1117,10 @@ class formsController extends expController {
             } elseif (bs3() || bs4()) {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap3"
+                ));
+            } elseif (bs5()) {
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms-bootstrap5"
                 ));
             } else {
                 expCSS::pushToHead(array(

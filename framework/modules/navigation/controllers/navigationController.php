@@ -1165,7 +1165,7 @@ class navigationController extends expController {
         if (bs()) {
             require_once(BASE . 'external/font-awesome.class.php');
             $fa = new Smk_FontAwesome;
-            if (bs4()) {
+            if (bs4() || bs5()) {
                 $icons = $fa->getArray(BASE . 'external/font-awesome5/metadata/icons.json');
 //                $icons = $fa->getArray(BASE . 'external/font-awesome5/metadata/icons.yml');
 //                $icons = $fa->getArray(BASE . 'external/font-awesome5/css/fontawesome.css');

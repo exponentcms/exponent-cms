@@ -114,18 +114,22 @@ class expJavascript {
                             $scripts .= BS2_SCRIPT . "\r\n";
                         } elseif (bs3()) {
                             $scripts .= BS3_SCRIPT . "\r\n";
+                        } elseif (bs4()) {
+                            $scripts .= BS3_SCRIPT . "\r\n";
                         } else {
-                            $scripts .= BS4_SCRIPT . "\r\n";
+                            $scripts .= BS5_SCRIPT . "\r\n";
                         }
                     } else {
                         if (bs2()) {
                             $bootstrappath = 'external/bootstrap/js/bootstrap-';
                         } elseif (bs3()) {
                             $bootstrappath = 'external/bootstrap3/js/';
-                        } else {
+                        } elseif (bs4()) {
                             $bootstrappath = 'external/bootstrap4/js/dist/';
+                        } else {
+                            $bootstrappath = 'external/bootstrap5/js/dist/';
                         }
-                        if (bs4()) {
+                        if (bs4() || bs5()) {
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'popper.js,';
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'util.js,';
                         }
@@ -273,18 +277,22 @@ class expJavascript {
                             $scripts .= "\t" . BS2_SCRIPT . "\r\n";
                         } elseif (bs3()) {
                             $scripts .= "\t" . BS3_SCRIPT . "\r\n";
-                        } else {
+                        } elseif (bs4()) {
                             $scripts .= "\t" . BS4_SCRIPT . "\r\n";
+                        } else {
+                            $scripts .= "\t" . BS5_SCRIPT . "\r\n";
                         }
                     } else {
                         if (bs2()) {
                             $bootstrappath = 'external/bootstrap/js/bootstrap-';
                         } elseif (bs3()) {
                             $bootstrappath = 'external/bootstrap3/js/';
-                        } else {
+                        } elseif (bs4()) {
                             $bootstrappath = 'external/bootstrap4/js/dist/';
+                        } else {
+                            $bootstrappath = 'external/bootstrap5/js/dist/';
                         }
-                        if (bs4()) {
+                        if (bs4() || bs5()) {
                             $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'popper.js"></script>' . "\r\n";
                             $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util.js"></script>' . "\r\n";
                         }

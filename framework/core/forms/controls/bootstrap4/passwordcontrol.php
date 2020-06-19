@@ -61,11 +61,11 @@ class passwordcontrol extends genericcontrol {
                 $labeltag = $label;
             }
             if(empty($this->flip)){
-                    $html .= empty($label) ? "" : "<label".$for." ".((bs3()||bs4())?"class=\"control-label\"":"").(($this->horizontal)?"col-sm-2 col-form-label":"" ).">". $labeltag."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." ".((bs3()||bs4() || bs5())?"class=\"control-label\"":"").(($this->horizontal)?"col-sm-2 col-form-label":"" ).">". $labeltag."</label>";
                     $html .= $this->controlToHTML($name, $label);
             } else {
                     $html .= $this->controlToHTML($name, $label);
-                    $html .= empty($label) ? "" : "<label".$for." ".((bs3()||bs4())?"class=\"control-label\"":"").">". $labeltag."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." ".((bs3()||bs4() || bs5())?"class=\"control-label\"":"").">". $labeltag."</label>";
             }
             $html .= "</div>";
             if ($this->meter) {

@@ -162,7 +162,7 @@ if (!function_exists('smarty_function_icon')) {
         if (!empty($params['color']) ) $icon->type = expTheme::buttonColor($params['color']);  // color was specifically set
         if (empty($icon->type)) {
             $icon->type = 'btn-default';
-            if (bs4()) {
+            if (bs4() || bs5()) {
                 $icon->type = 'btn-secondary';
             }
         }

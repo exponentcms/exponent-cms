@@ -48,7 +48,7 @@ function smarty_block_group($params,$content,&$smarty, &$repeat) {
         if (!empty($params['description'])) {
             if (bs3()) {
                 echo "<div class=\"control\"><p class=\"help-block\">", $params['description'], "</p></div>";
-            } elseif (bs4()) {
+            } elseif (bs4() || bs5()) {
                 echo "<div class=\"control\"><small class=\"form-text text-muted\">",$params['description'],"</small></div>";
             } else {
                 echo "<div class=\"control\"><div class=\"control-desc\">",$params['description'],"</div></div>";

@@ -1200,6 +1200,8 @@ class eventController extends expController {
                 $css = file_get_contents(BASE . "external/bootstrap3/css/bootstrap.css");
             elseif (bs4())
                 $css = file_get_contents(BASE . "external/bootstrap4/css/bootstrap.css");
+            elseif (bs5())
+                $css = file_get_contents(BASE . "external/bootstrap5/css/bootstrap.css");
             elseif (bs2())
                 $css = file_get_contents(BASE . "external/bootstrap/css/bootstrap.css");
             else

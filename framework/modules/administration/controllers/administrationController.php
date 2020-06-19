@@ -299,7 +299,7 @@ class administrationController extends expController {
         }
 
 		assign_to_template(array(
-            'menu'=>(bs3() || bs4()) ? $sorted : json_encode($sorted),
+            'menu'=>(bs3() || bs4() || bs5()) ? $sorted : json_encode($sorted),
             "top"=>$top
         ));
     }

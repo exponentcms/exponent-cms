@@ -88,7 +88,7 @@ class uploadcontrol extends formcontrol {
                 }
     	    "
         ));
-        if (bs4()) {
+        if (bs4() || bs5()) {
             expCSS::pushToHead(array(
                 "unique" => 'fileupload-bs4-' . $name,
                 "css" => "

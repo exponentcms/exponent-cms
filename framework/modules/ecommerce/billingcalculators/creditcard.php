@@ -90,13 +90,13 @@ class creditcard extends billingcalculator {
         //$cvvhelp = new htmlcontrol("<a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>What's this?</a>");
 
         $form .= '<div class="' . $this->calculator_name . ' credit-cards control form-group"><label class="' . (bs3()||bs4()?'control-label col-sm-2':'label') . '"></label>';
-        if (bs3()||bs4()) {
+        if (bs3()||bs4() || bs5()) {
             $form .= '<div class="col-sm-10">';
         }
         foreach ($this->getAvailableCards() as $key=>$card) {
             $form .= '<img id="' . $key . '" src="'.PATH_RELATIVE . 'framework/modules/ecommerce/billingcalculators/icons/' . $this->card_images[$key] . '" title="' . gt('Click to select this card type') . '" />';
         }
-        if (bs3()||bs4()) {
+        if (bs3()||bs4() || bs5()) {
             $form .= '</div>';
         }
         $form .= '</div>';
@@ -190,7 +190,7 @@ class creditcard extends billingcalculator {
         $opts = expUnserialize($billingmethod->billing_options);
         if (empty($opts->cc_type)) return false;
 
-        $billinginfo = '<table id="ccinfo"' . (bs3()||bs4()?' class=" table"':'') . ' border=0 cellspacing=0 cellpadding=0>';
+        $billinginfo = '<table id="ccinfo"' . ((bs3()||bs4()||bs5())?' class=" table"':'') . ' border=0 cellspacing=0 cellpadding=0>';
         $billinginfo .= '<thead><tr><th colspan="2">' . gt('Paying by') . ' ' . $this->name() . '</th></tr></thead>';
         $billinginfo .= '<tbody>';
         $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt('Type of Credit Card') . ': </td><td class="pmt-value">' . $this->cards[$opts->cc_type] . '</td></tr>';

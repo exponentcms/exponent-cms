@@ -29,7 +29,7 @@ class expCSS {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $less_vars;
 
         // normalize.css is always at the top
-        if (!empty($params['normalize']) && !bs3() && !bs4()){
+        if (!empty($params['normalize']) && !bs3() && !bs4() && !bs5()){
             $css_primer[PATH_RELATIVE."external/normalize/normalize.css"] = PATH_RELATIVE."external/normalize/normalize.css";
         }
 
@@ -320,8 +320,8 @@ class expCSS {
             $less_vars['themepath'] = '';
 
 //        // code for testing scss compiler
-//        self::auto_compile_scss('external/bootstrap-5/scss/bootstrap', 'tmp/css/bootstrap5.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap-5/scss/newui', 'tmp/css/newui5.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap5/scss/bootstrap', 'tmp/css/bootstrap5.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap5/scss/newui', 'tmp/css/newui5.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
@@ -625,8 +625,8 @@ class expCSS {
                             $file_updated = false;
                             $new_cache = $less->cachedCompile($cache, false);
                             // attempt to load autoprefixer
-                            if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php'))
-                                $new_cache['compiled'] = (new Padaliyajay\PHPAutoprefixer\Autoprefixer($new_cache['compiled']))->compile(!(MINIFY==1 && MINIFY_LESS==1));
+//                            if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php'))
+//                                $new_cache['compiled'] = (new Padaliyajay\PHPAutoprefixer\Autoprefixer($new_cache['compiled']))->compile(!(MINIFY==1 && MINIFY_LESS==1));
 
                             if (!is_array($cache) ||
                                 $new_cache['updated'] > $cache['updated']
@@ -752,8 +752,8 @@ class expCSS {
                             $file_updated = false;
                             $new_cache = $scss_server->cachedCompile($cache, false);
                             // attempt to load autoprefixer
-                            if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php'))
-                                $new_cache['compiled'] = (new Padaliyajay\PHPAutoprefixer\Autoprefixer($new_cache['compiled']))->compile(!(MINIFY==1 && MINIFY_LESS==1));
+//                            if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php'))
+//                                $new_cache['compiled'] = (new Padaliyajay\PHPAutoprefixer\Autoprefixer($new_cache['compiled']))->compile(!(MINIFY==1 && MINIFY_LESS==1));
                             if (!is_array($cache) || $new_cache['updated'] > $cache['updated']) {
                                 if (!empty($new_cache['compiled']) && $new_cache['compiled'] !== "\n") {
                                     $file_updated = true;

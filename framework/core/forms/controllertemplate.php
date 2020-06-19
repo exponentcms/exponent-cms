@@ -45,7 +45,18 @@ class controllertemplate extends basetemplate {
         $this->tpl->cache_id = md5($this->viewfile);
 
         // set up plugin search order based on framework
-        if (bs4()) {
+        if (bs5()) {
+            $this->tpl->setPluginsDir(array(
+                BASE . 'themes/' . DISPLAY_THEME . '/plugins',
+                BASE . 'framework/plugins/bootstrap5',
+                BASE . 'framework/plugins/bootstrap4',
+                BASE . 'framework/plugins/bootstrap3',
+                BASE . 'framework/plugins/bootstrap',
+                BASE . 'framework/plugins/jquery',
+                BASE . 'framework/plugins',
+                SMARTY_PATH . 'plugins',
+            ));
+        } elseif (bs4()) {
             $this->tpl->setPluginsDir(array(
                 BASE . 'themes/' . DISPLAY_THEME . '/plugins',
                 BASE . 'framework/plugins/bootstrap4',
@@ -75,7 +86,7 @@ class controllertemplate extends basetemplate {
         } elseif (newui()) {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
-                BASE.'framework/plugins/newui',  // we leave out bootstrap4 & bootstrap3 & bootstrap chain on purpose
+                BASE.'framework/plugins/newui',  // we leave out bootstrap5, bootstrap4 & bootstrap3 & bootstrap chain on purpose
                 BASE.'framework/plugins/jquery',
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',

@@ -193,16 +193,22 @@ class expTheme
                 BASE . 'framework/core/forms/controls/bootstrap'
             );
         }
-        if (bs3(true) || bs4()) {
+        if (bs3(true) || bs4() || bs5()) {
             array_unshift(
                 $auto_dirs,
                 BASE . 'framework/core/forms/controls/bootstrap3'
             );
         }
-        if (bs4()) {
+        if (bs4() || bs5()) {
             array_unshift(
                 $auto_dirs,
                 BASE . 'framework/core/forms/controls/bootstrap4'
+            );
+        }
+        if (bs5()) {
+            array_unshift(
+                $auto_dirs,
+                BASE . 'framework/core/forms/controls/bootstrap5'
             );
         }
         if (newui()) {
@@ -461,6 +467,27 @@ class expTheme
                 expCSS::pushToHead(
                     array(
                         "scssprimer"=>"external/bootstrap4/scss/bootstrap.scss",
+                        "lessvars"=>$less_vars,
+                    )
+                );
+                if (USE_CDN) {
+                    expCSS::pushToHead(
+                        array(
+                            "css_primer" => FA5_SCRIPT
+                        )
+                    );
+                } else {
+                    expCSS::pushToHead(
+                        array(
+                            "scssprimer" => "external/font-awesome5/scss/fontawesome.scss",
+                            "lessvars" => $less_vars,
+                        )
+                    );
+                }
+            } elseif (bs5(true)) {
+                expCSS::pushToHead(
+                    array(
+                        "scssprimer"=>"external/bootstrap5/scss/bootstrap.scss",
                         "lessvars"=>$less_vars,
                     )
                 );
@@ -1626,7 +1653,7 @@ class expTheme
                 $found = BTN_COLOR;
             }
         }
-        if (bs4() && $found === 'btn-default') {
+        if ((bs4() || bs5()) && $found === 'btn-default') {
             $found = 'btn-secondary';
         }
         return $found;
@@ -1650,7 +1677,7 @@ class expTheme
                 $btn_size = 'btn-small';
             }
             return $btn_size;
-        } elseif (bs3() || bs4()) {
+        } elseif (bs3() || bs4() || bs5()) {
             if (BTN_SIZE === 'large' || (!empty($size) && $size === 'large')) {
                 $btn_size = 'btn-lg';
             } elseif (BTN_SIZE === 'small' || (!empty($size) && $size === 'small')) {
@@ -1878,7 +1905,7 @@ class expTheme
             $found->size = self::iconSize($size);
             $found->prefix = 'fa fa-';
             return $found;
-        } elseif (bs4()) {
+        } elseif (bs4() || bs5()) {
             $found->prefix = 'fas fa-';
             switch ($class) {
                 case 'delete' :
@@ -2013,7 +2040,7 @@ class expTheme
                 $icon_size = 'icon-large';
             }
             return $icon_size;
-        } elseif (bs3() || bs4()) {
+        } elseif (bs3() || bs4() || bs5()) {
             if (BTN_SIZE === 'large' || (!empty($size) && $size === 'large')) {
                 $icon_size = 'fa-lg';
             } elseif (BTN_SIZE === 'small' || (!empty($size) && $size === 'small')) {

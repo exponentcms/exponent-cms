@@ -97,7 +97,7 @@ class genericcontrol extends formcontrol {
             } elseif (bs3()) {
                 $html .= '<div class="input-group">';
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
-            } elseif (bs4()) {
+            } elseif (bs4() || bs5()) {
                 $html .= '<div class="input-group">';
                 $html .= '<span class="input-group-addon"><i class="fas fa-'.$this->prepend.'"></i></span>';
             } else {

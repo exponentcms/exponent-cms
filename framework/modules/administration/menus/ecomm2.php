@@ -109,7 +109,7 @@ foreach ($events as $event) {
     }
 }
 
-if (bs3() || bs4()) {
+if (bs3() || bs4() || bs5()) {
     $items = array_merge($items1, $items2);
 } else {
     $items = array($items1, $items2);

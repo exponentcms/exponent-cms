@@ -229,6 +229,14 @@ class giftcard extends expRecord {
                 '.bootstrap',
                 '',
             );
+        } elseif (bs5(true)) {
+            $vars = array(
+                '.bootstrap5',
+                '.bootstrap4',
+                '.bootstrap3',
+                '.bootstrap',
+                '',
+            );
         } else {
             $vars = array(
                 '',

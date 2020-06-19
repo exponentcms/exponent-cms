@@ -47,7 +47,7 @@ class uploadcontrol extends formcontrol {
 
 	function controlToHTML($name,$label)
     {
-        $html = ($this->horizontal && (bs3()||bs4())) ? '<div class="col-sm-10">' : '';
+        $html = ($this->horizontal && (bs3()||bs4() || bs5())) ? '<div class="col-sm-10">' : '';
 
         if (!empty($this->default)) {
             $html .= '<div class="fileinput fileinput-exists input-group" data-provides="fileinput">';
@@ -69,7 +69,7 @@ class uploadcontrol extends formcontrol {
         $html .= '</div>';
 
         if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">" . $this->description . "</small>";
-        $html .= ($this->horizontal &&(bs3()||bs4())) ? '</div>' : '';
+        $html .= ($this->horizontal &&(bs3()||bs4() || bs5())) ? '</div>' : '';
 
         expCSS::pushToHead(array(
             "unique" => 'fileupload-' . $name,
@@ -88,7 +88,7 @@ class uploadcontrol extends formcontrol {
                 }
     	    "
         ));
-        if (bs4()) {
+        if (bs4() || bs5()) {
             expCSS::pushToHead(array(
                 "unique" => 'fileupload-bs4-' . $name,
                 "css" => "

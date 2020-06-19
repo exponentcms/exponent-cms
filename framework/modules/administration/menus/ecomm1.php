@@ -80,13 +80,13 @@ $items2 = array();
 foreach ($recent_orders as $ord) {
     $state = strtolower($ord->billingmethod[0]->transaction_state);
     if ($state === 'complete' || $state === 'paid') {
-        if (bs4()) {
+        if (bs4() || bs5()) {
             $badge = 'badge-success">';
         } else {
             $badge = 'alert-success">';
         }
     } else {
-        if (bs4()) {
+        if (bs4() || bs5()) {
             $badge = 'badge-secondary">';
         } else {
             $badge = '">';
@@ -108,7 +108,7 @@ foreach ($recent_orders as $ord) {
     );
 }
 
-if (bs3() || bs4()) {
+if (bs3() || bs4() || bs5()) {
     $items = array_merge($items1, $items2);
 } else {
     $items = array($items1, $items2);

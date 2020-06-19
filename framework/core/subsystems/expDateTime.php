@@ -66,7 +66,7 @@ class expDateTime {
 		);
 
 //		$html = '<select ' . (bs3()||bs4() ? 'class="form-control col-xs-2 col-2" ' : '') . 'name="' . $controlName . '" aria-label="' . gt('Month') . '" size="1">';
-        $html = '<select ' . (bs3()||bs4() ? 'class="form-control" ' : '') . 'name="' . $controlName . '" aria-label="' . gt('Month') . '" size="1">';
+        $html = '<select ' . ((bs3()||bs4()||bs5()) ? 'class="form-control" ' : '') . 'name="' . $controlName . '" aria-label="' . gt('Month') . '" size="1">';
 		foreach ($months as $id=>$month) {
 			$html .= '<option value="' . $id . '"';
 			if ($id == $default_month) $html .= ' selected';

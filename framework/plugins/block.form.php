@@ -63,11 +63,21 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                     $btn_size = 'btn-small';
                 }
                 $btn_class .= ' ' . $btn_size;
-            } elseif (bs3() || bs4()) {
-                expCSS::pushToHead(array(
-                    "corecss"=>"forms-bootstrap3"
-                ));
-                $btn_class = 'btn btn-default';
+            } elseif (bs3() || bs4() || bs5()) {
+                if (bs3() || bs4()) {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap3"
+                    ));
+                } else {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap5"
+                    ));
+                }
+                if (bs3()) {
+                    $btn_class = 'btn btn-default';
+                } else {
+                    $btn_class = 'btn btn-secondary';
+                }
                 if (BTN_SIZE == 'large') {
                     $btn_size = 'btn-lg';
                 } elseif (BTN_SIZE == 'small') {
@@ -120,7 +130,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 //    legend: false,
                     btnClass: '" . $btn_class . "',
                     titleClick: true,";
-            if (bs4()) {
+            if (bs4() || bs5()) {
                 $content .= "
                     validateOptions: {
 						rules: {
@@ -216,7 +226,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 )
             );
         } else {
-            if (bs4()) {
+            if (bs4() || bs5()) {
                 $content = "
                     $('#" . $id . "').validate({
 						rules: {

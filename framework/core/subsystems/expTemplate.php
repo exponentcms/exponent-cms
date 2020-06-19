@@ -523,16 +523,20 @@ class expTemplate {
         $basepath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.tpl';
 
         if (bs(true)) {
+            $basebstrap5path = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.bootstrap5.tpl';
             $basebstrap4path = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.bootstrap4.tpl';
             $basebstrap3path = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.bootstrap3.tpl';
             $basebstrappath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.bootstrap.tpl';
             if (file_exists($themepath)) {
                 return new controllertemplate($controller, $themepath);
             }
-            if (bs4() && file_exists($basebstrap4path)) {
+            if (bs5() && file_exists($basebstrap5path)) {
+                return new controllertemplate($controller, $basebstrap5path);
+            }
+            if ((bs4() || bs5()) && file_exists($basebstrap4path)) {
                 return new controllertemplate($controller, $basebstrap4path);
             }
-            if ((bs3(true) || bs4()) && file_exists($basebstrap3path)) {
+            if ((bs3(true) || bs4() || bs5()) && file_exists($basebstrap3path)) {
                 return new controllertemplate($controller, $basebstrap3path);
             }
             if (file_exists($basebstrappath)) {
@@ -641,7 +645,7 @@ class expTemplate {
             if (is_readable($path)) {
                 $dh = opendir($path);
                 while (($file = readdir($dh)) !== false) {
-                    if (is_readable($path.'/'.$file) && substr($file, -4) === '.tpl' && substr($file, -14) !== '.bootstrap.tpl' && substr($file, -15) !== '.bootstrap3.tpl' && substr($file, -15) !== '.bootstrap4.tpl' && substr($file, -10) !== '.newui.tpl') {
+                    if (is_readable($path.'/'.$file) && substr($file, -4) === '.tpl' && substr($file, -14) !== '.bootstrap.tpl' && substr($file, -15) !== '.bootstrap3.tpl' && substr($file, -15) !== '.bootstrap4.tpl' && substr($file, -15) !== '.bootstrap5.tpl' && substr($file, -10) !== '.newui.tpl') {
                         $filename = substr($file, 0, -4);
                         if (!in_array($filename, $excludes)) {
                             $fileparts = explode('_', $filename);
@@ -650,11 +654,14 @@ class expTemplate {
                             if ((bs(true)) && file_exists($path.'/'.$filename.'.bootstrap.tpl')) {
                                 $views[$filename]['file'] = $path . '/' . $filename . '.bootstrap.tpl';
                             }
-                            if ((bs3(true) || bs4()) && file_exists($path.'/'.$filename.'.bootstrap3.tpl')) {
+                            if ((bs3(true) || bs4() || bs5()) && file_exists($path.'/'.$filename.'.bootstrap3.tpl')) {
                                 $views[$filename]['file'] = $path.'/'.$filename.'.bootstrap3.tpl';
                             }
-                            if (bs4() && file_exists($path.'/'.$filename.'.bootstrap4.tpl')) {
+                            if ((bs4() || bs5()) && file_exists($path.'/'.$filename.'.bootstrap4.tpl')) {
                                 $views[$filename]['file'] = $path.'/'.$filename.'.bootstrap4.tpl';
+                            }
+                            if (bs5() && file_exists($path.'/'.$filename.'.bootstrap5.tpl')) {
+                                $views[$filename]['file'] = $path.'/'.$filename.'.bootstrap5.tpl';
                             }
                             if (newui() && file_exists($path.'/'.$filename.'.newui.tpl')) {
                                $views[$filename]['file'] = $path.'/'.$filename.'.newui.tpl';
@@ -684,19 +691,24 @@ class expTemplate {
         $rootbasepath = $controller->viewpath . '/' . $root_action[0] . '.tpl';
 
         if (bs(true)) {
+            $basebstrap5path = $controller->viewpath . '/' . $action . '.bootstrap5.tpl';
             $basebstrap4path = $controller->viewpath . '/' . $action . '.bootstrap4.tpl';
             $basebstrap3path = $controller->viewpath . '/' . $action . '.bootstrap3.tpl';
             $basebstrappath = $controller->viewpath . '/' . $action . '.bootstrap.tpl';
+            $rootbstrap5path = $controller->viewpath . '/' . $root_action[0] . '.bootstrap5.tpl';
             $rootbstrap4path = $controller->viewpath . '/' . $root_action[0] . '.bootstrap4.tpl';
             $rootbstrap3path = $controller->viewpath . '/' . $root_action[0] . '.bootstrap3.tpl';
             $rootbstrappath = $controller->viewpath . '/' . $root_action[0] . '.bootstrap.tpl';
             if (file_exists($themepath)) {
                 return new controllertemplate($controller, $themepath);
             }
-            if (bs4() && file_exists($basebstrap4path)) {
+            if (bs5() && file_exists($basebstrap5path)) {
+                return new controllertemplate($controller, $basebstrap5path);
+            }
+            if ((bs4() || bs5()) && file_exists($basebstrap4path)) {
                 return new controllertemplate($controller, $basebstrap4path);
             }
-            if ((bs3(true) || bs4()) && file_exists($basebstrap3path)) {
+            if ((bs3(true) || bs4() || bs5()) && file_exists($basebstrap3path)) {
                 return new controllertemplate($controller, $basebstrap3path);
             }
             if (file_exists($basebstrappath)) {
@@ -709,10 +721,13 @@ class expTemplate {
                 if (file_exists($rootthemepath)) {
                     return new controllertemplate($controller, $rootthemepath);
                 }
-                if (bs4() && file_exists($rootbstrap4path)) {
+                if (bs5() && file_exists($rootbstrap5path)) {
+                    return new controllertemplate($controller, $rootbstrap5path);
+                }
+                if ((bs4() || bs5()) && file_exists($rootbstrap4path)) {
                     return new controllertemplate($controller, $rootbstrap4path);
                 }
-                if ((bs3(true) || bs4()) && file_exists($rootbstrap3path)) {
+                if ((bs3(true) || bs4() || bs5()) && file_exists($rootbstrap3path)) {
                     return new controllertemplate($controller, $rootbstrap3path);
                 }
                 if (file_exists($rootbstrappath)) {
@@ -757,13 +772,16 @@ class expTemplate {
         // if we get here it means there were no views for the this action to be found.
         // we will check to see if we have a scaffolded version or else just grab a blank template.
         // we don't allow for custom theme scaffold views
-        if (bs4() && file_exists(BASE . 'framework/modules/common/views/scaffold/' . $action . '.bootstrap4.tpl')) {
+        if (bs5() && file_exists(BASE . 'framework/modules/common/views/scaffold/' . $action . '.bootstrap5.tpl')) {
+            return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/' . $action . '.bootstrap5.tpl');
+        }
+        if ((bs4() || bs5()) && file_exists(BASE . 'framework/modules/common/views/scaffold/' . $action . '.bootstrap4.tpl')) {
             return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/' . $action . '.bootstrap4.tpl');
         }
-        if ((bs3(true) || bs4()) && file_exists(BASE . 'framework/modules/common/views/scaffold/' . $action . '.bootstrap3.tpl')) {
+        if ((bs3(true) || bs4() || bs5()) && file_exists(BASE . 'framework/modules/common/views/scaffold/' . $action . '.bootstrap3.tpl')) {
             return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/' . $action . '.bootstrap3.tpl');
         }
-        if ((bs2() || bs3(true) || bs4()) && file_exists(BASE . 'framework/modules/common/views/scaffold/' . $action . '.bootstrap.tpl')) {
+        if (bs() && file_exists(BASE . 'framework/modules/common/views/scaffold/' . $action . '.bootstrap.tpl')) {
             return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/' . $action . '.bootstrap.tpl');
         }
         if (newui() && file_exists(BASE . 'framework/modules/common/views/scaffold/' . $action . '.newui.tpl')) {
@@ -824,10 +842,12 @@ class expTemplate {
         } elseif (bs(true)) {
             if (file_exists(BASE . $path . $include_file . '.bootstrap.' . $type)) {
                 $include_file = BASE . $path . $include_file . '.bootstrap.' . $type;
-            } elseif ((bs3(true) || bs4()) && file_exists(BASE . $path . $include_file . '.bootstrap3.' . $type)) {
+            } elseif ((bs3(true) || bs4() || bs5()) && file_exists(BASE . $path . $include_file . '.bootstrap3.' . $type)) {
                 $include_file = BASE . $path . $include_file . '.bootstrap3.' . $type;
-            } elseif (bs4() && file_exists(BASE . $path . $include_file . '.bootstrap4.' . $type)) {
+            } elseif ((bs4() || bs5()) && file_exists(BASE . $path . $include_file . '.bootstrap4.' . $type)) {
                 $include_file = BASE . $path . $include_file . '.bootstrap4.' . $type;
+            } elseif (bs5() && file_exists(BASE . $path . $include_file . '.bootstrap5.' . $type)) {
+                $include_file = BASE . $path . $include_file . '.bootstrap5.' . $type;
             } else {
                 $include_file = BASE . $path . $include_file . '.' . $type;
             }
@@ -868,7 +888,7 @@ class expTemplate {
             if (is_readable($path)) {
                 $dh = opendir($path);
                 while (($file = readdir($dh)) !== false) {
-                    if (is_readable($path.'/'.$file) && substr($file, -4) === '.tpl' && substr($file, -14) !== '.bootstrap.tpl' && substr($file, -15) !== '.bootstrap3.tpl' && substr($file, -15) !== '.bootstrap4.tpl' && substr($file, -10) !== '.newui.tpl') {
+                    if (is_readable($path.'/'.$file) && substr($file, -4) === '.tpl' && substr($file, -14) !== '.bootstrap.tpl' && substr($file, -15) !== '.bootstrap3.tpl' && substr($file, -15) !== '.bootstrap4.tpl' && substr($file, -15) !== '.bootstrap5.tpl' && substr($file, -10) !== '.newui.tpl') {
                         $filename = substr($file, 0, -4);
                         $fileparts = explode('_', $filename);
                         if ($fileparts[0] == $action) {
@@ -907,7 +927,7 @@ class expTemplate {
             if (is_readable($path)) {
                 $dh = opendir($path);
                 while (($file = readdir($dh)) !== false) {
-                    if (is_readable($path.'/'.$file) && substr($file, -4) === '.tpl' && substr($file, -14) !== '.bootstrap.tpl' && substr($file, -15) !== '.bootstrap3.tpl' && substr($file, -15) !== '.bootstrap4.tpl' && substr($file, -10) !== '.newui.tpl') {
+                    if (is_readable($path.'/'.$file) && substr($file, -4) === '.tpl' && substr($file, -14) !== '.bootstrap.tpl' && substr($file, -15) !== '.bootstrap3.tpl' && substr($file, -15) !== '.bootstrap4.tpl' && substr($file, -15) !== '.bootstrap5.tpl' && substr($file, -10) !== '.newui.tpl') {
                         $filename = substr($file, 0, -4);
                         $views[$filename] = gt($filename);
                     }

@@ -1051,15 +1051,30 @@ function bs4($strict = false) {
 }
 
 /**
+ * Is the current framework Bootstrap v5 based?
+ *
+ * @param bool $strict must be bootstrap5
+ * @return bool
+ */
+function bs5($strict = false) {
+    global $framework;
+
+    if ($framework === 'bootstrap5') {
+        return true;
+    }
+    return false;
+}
+
+/**
  * Is the current framework Bootstrap based?
  *
- * @param bool $strict must be bootstrap 2 or 3 or 4 and NOT newui
+ * @param bool $strict must be bootstrap 2 or 3 or 4 or 5 and NOT newui
  * @return bool
  */
 function bs($strict = false) {
     global $framework;
 
-    if ($framework === 'bootstrap4' || $framework === 'bootstrap3' || $framework === 'bootstrap') {
+    if ($framework === 'bootstrap5' || $framework === 'bootstrap4' || $framework === 'bootstrap3' || $framework === 'bootstrap') {
         return true;
     }
     if ($framework === 'newui' && !$strict) {
