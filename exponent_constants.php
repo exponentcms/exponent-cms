@@ -533,7 +533,7 @@ if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
     define('JQUERY3_VERSION', '3.5.1');
-    define('JQUERY3_MIGRATE_VERSION', '3.3.0');
+    define('JQUERY3_MIGRATE_VERSION', '3.3.1');
     define('JQUERYUI_VERSION', '1.12.1');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
@@ -597,7 +597,7 @@ if (USE_CDN) {
         define('FA4_SCRIPT', 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
     } // cdn FontAwesome v4.x stylesheet
     if (!defined('FA5_SCRIPT')) {
-        define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css');
+        define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
 }
 
