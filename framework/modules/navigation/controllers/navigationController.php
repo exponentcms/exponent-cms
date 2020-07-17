@@ -143,6 +143,7 @@ class navigationController extends expController {
     public static function navhierarchy($notyui=false) {
         global $sections;
 
+        expCore::deprecated('section::navhierarchy()', array($notyui));
         $json_array = array();
         for ($i = 0, $iMax = count($sections); $i < $iMax; $i++) {
             if ($sections[$i]->depth == 0) {
@@ -192,6 +193,7 @@ class navigationController extends expController {
      * @deprecated 2.3.4 moved to section model
      */
     public static function navtojson() {
+        expCore::deprecated('section::navtojson()');
         return json_encode(self::navhierarchy());
     }
 
@@ -205,6 +207,7 @@ class navigationController extends expController {
     public static function getChildren(&$i, $notyui=false) {
         global $sections;
 
+        expCore::deprecated('section::getChildren()', array($i, $notyui));
         //		echo "i=".$i."<br>";
         if ($i + 1 == count($sections)) { // last entry
             return array();
@@ -285,6 +288,7 @@ class navigationController extends expController {
     public static function hasChildren($i) {
         global $sections;
 
+        expCore::deprecated('section::hasChildren()', array($i));
         if (($i + 1) >= count($sections)) return false;
         return ($sections[$i]->depth < $sections[$i + 1]->depth) ? true : false;
     }
@@ -296,6 +300,7 @@ class navigationController extends expController {
      * @deprecated 2.3.4 moved to section model
      */
     public static function initializeNavigation() {
+        expCore::deprecated('section::initializeNavigation()');
         $sections = section::levelTemplate(0, 0);
         return $sections;
     }
@@ -315,6 +320,7 @@ class navigationController extends expController {
     public static function levelTemplate($parent, $depth = 0, $parents = array()) {
         global $user;
 
+        expCore::deprecated('section::levelTemplate()', array($parent, $depth, $parents));
         if ($parent != 0) $parents[] = $parent;
         $nodes = array();
         $cache = expSession::getCacheValue('navigation');
@@ -396,6 +402,7 @@ class navigationController extends expController {
     public static function levelDropdownControlArray($parent, $depth = 0, $ignore_ids = array(), $full = false, $perm = 'view', $addstandalones = false, $addinternalalias = true) {
         global $db;
 
+        expCore::deprecated('section::levelDropdownControlArray()', array($parent, $depth, $ignore_ids, $full, $perm, $addstandalones, $addinternalalias));
         $ar = array();
         if ($parent == 0 && $full) {
             $ar[0] = '&lt;' . gt('Top of Hierarchy') . '&gt;';
@@ -620,6 +627,7 @@ class navigationController extends expController {
     public static function deleteLevel($parent) {
         global $db;
 
+        expCore::deprecated('section::deleteLevel()', array($parent));
         $kids = $db->selectObjects('section', 'parent=' . $parent);
         foreach ($kids as $kid) {
             self::deleteLevel($kid->id);
@@ -655,6 +663,7 @@ class navigationController extends expController {
     public static function removeLevel($parent) {
         global $db;
 
+        expCore::deprecated('section::removeLevel()', array($parent));
         $kids = $db->selectObjects('section', 'parent=' . $parent);
         foreach ($kids as $kid) {
             $kid->parent = -1;
@@ -673,6 +682,7 @@ class navigationController extends expController {
     public static function canView($section) {
         global $db;
 
+        expCore::deprecated('section::canView()', array($section));
         if ($section == null) {
             return false;
         }
@@ -698,6 +708,7 @@ class navigationController extends expController {
      * @return bool|int
      */
     public static function isPublic($s) {
+        expCore::deprecated('section::isPublic()', array($s));
         if ($s == null) {
             return false;
         }
@@ -1356,6 +1367,7 @@ class navigationController extends expController {
     public static function rebuild_sectionrefs() {
         global $db;
 
+        expCore::deprecated('sectionref::rebuild_sectionrefs()');
         // recursive run though all the nested containers
         function scan_container($container_id, $page_id) {
             global $db;

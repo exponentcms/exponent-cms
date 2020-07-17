@@ -563,6 +563,7 @@ function get_model_for_controller($controller_name) {
  * @return controllertemplate
  */
 function get_common_template($view, $loc, $controllername='') {
+    expCore::deprecated('expTemplate::get_common_template()', array($view, $loc, $controllername));
     return expTemplate::get_common_template($view, $loc, $controllername);
 
     $controller = new stdClass();
@@ -610,6 +611,7 @@ function get_common_template($view, $loc, $controllername='') {
  * @return array
  */
 function get_config_templates($controller, $loc) {
+    expCore::deprecated('expTemplate::get_config_templates()', array($controller, $loc));
     return expTemplate::get_config_templates($controller, $loc);
 
 //    global $db;
@@ -680,6 +682,7 @@ function get_config_templates($controller, $loc) {
  * @return array
  */
 function find_config_views($paths=array(), $excludes=array()) {
+    expCore::deprecated('expTemplate::find_config_views()', array($paths, $excludes));
     return expTemplate::find_config_views($paths, $excludes);
 
     $views = array();
@@ -720,6 +723,7 @@ function find_config_views($paths=array(), $excludes=array()) {
  * @return controllertemplate
  */
 function get_template_for_action($controller, $action, $loc=null) {
+    expCore::deprecated('expTemplate::get_template_for_action()', array($controller, $action, $loc));
     expTemplate::get_template_for_action($controller, $action, $loc);
 
     // set paths we will search in for the view
@@ -798,6 +802,7 @@ function get_template_for_action($controller, $action, $loc=null) {
  * @return array
  */
 function get_action_views($ctl, $action, $human_readable) {
+    expCore::deprecated('expTemplate::get_action_views()', array($ctl, $action, $human_readable));
     expTemplate::get_action_views($ctl, $action, $human_readable);
 
     // setup the controller
@@ -844,6 +849,7 @@ function get_action_views($ctl, $action, $human_readable) {
  * @deprecated 2.3.3 moved to expTemplate subsystem
  */
 function get_filedisplay_views() {
+    expCore::deprecated('expTemplate::get_filedisplay_views()');
     expTemplate::get_filedisplay_views();
 
     $paths = array(

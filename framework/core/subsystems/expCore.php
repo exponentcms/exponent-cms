@@ -588,6 +588,43 @@ class expCore
         return $str;
     }
 
+    /**
+     * Warn admin of obsolete methods
+     *
+     * @param string $newcall
+     * @param array $params
+     */
+    public static function deprecated($newcall = "expTheme::module()", $params = array())
+    {
+        global $user;
+
+        if ($user->isAdmin() && DEVELOPMENT) {
+            $trace = debug_backtrace();
+            $caller = $trace[1];
+            if (substr($caller['file'], -16, 6) === 'compat') {
+                $caller = $trace[2];
+            }
+            $oldcall = $caller['function'];
+//            if ($caller['class'] === 'expTheme') {
+            if (!empty($caller['class'])) {
+                $oldcall = $caller['class'] . '::' . $oldcall;
+            }
+            $message = '<strong>' . $oldcall . '</strong> ' . gt(
+                    'is deprecated and should be replaced by'
+                ) . ' <strong>' . $newcall . '</strong>';
+            if (!empty($params)) {
+//                $message .= '<br>' . gt(
+//                        'for hard coded module'
+//                    ) . ' - <strong>' . $controller . ' / ' . $actionview . '</strong>';
+            }
+            $message .= '<br>' . gt('line') . ' #' . $caller['line'] . ' ' . gt('of') . $caller['file'];
+//            $message .= ' <a class="helplink" title="' . gt('Get Theme Update Help') . '" href="' . help::makeHelpLink(
+//                    'theme_update'
+//                ) . '" target="_blank">' . gt('Help') . '</a>';
+            flash('notice', $message);
+        }
+    }
+
 }
 
 ?>

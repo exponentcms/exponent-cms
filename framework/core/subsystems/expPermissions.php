@@ -537,6 +537,7 @@ class expPermissions {
      * @deprecated 2.3.3 moved into expSession
 	 */
 	public static function triggerRefresh() {
+        expCore::deprecated('expSession::triggerRefresh()');
 		global $db;
 		$obj = new stdClass();
 		$obj->refresh = 1;
