@@ -36,7 +36,7 @@ function smarty_function_breadcrumb($params,&$smarty) {
     $active = isset($params['active']) ? $params['active'] : 1;
     $items = !empty($params['items']) ? $params['items'] : array();
 
-    $html = '<div class="cart-breadcrumb ' . (!empty($params['style'])?$params['style']:'') . '">';
+    $html = '<div class="cart-breadcrumb col-sm-12 ' . (!empty($params['style'])?$params['style']:'') . '">';
     $i = 0;
     foreach ($items as $key=>$item) {
         if (is_array($item)) {
