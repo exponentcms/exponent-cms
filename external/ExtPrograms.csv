@@ -26,11 +26,11 @@ lessphp,0.5.0,github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
 less.php,3.0.0exp,github.com/wikimedia/less.php,3.0.0,code edit to retain php v5.6 compatitility
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap3,3.4.1,twitter.github.com/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
-Twitter-Bootstrap4,4.5.1,twitter.github.com/bootstrap,4.5.1,patched bootstrap.scss includes swatches & exp variables
+Twitter-Bootstrap4,4.5.2,twitter.github.com/bootstrap,4.5.2,patched bootstrap.scss includes swatches & exp variables
 popper.js,1.16.0,github.com/FezVrasta/popper.js,1.16.0/2.4.2,needed by BS4 (umd)
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
 Bootswatch3,3.4.1+1,bootswatch.com/,3.4.1+1,change 1st line variables.less comment to output to .css file
-Bootswatch4,4.5.1,bootswatch.com/,4.5.0,change 1st line variables.scss comment to output to .css file
+Bootswatch4,4.5.2,bootswatch.com/,4.5.2,change 1st line variables.scss comment to output to .css file
 Font-Awesome3,3.2.1,fontawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.14.0,fontawesome.com,5.14.0,add import all 'fonts' sheets into main sheet
