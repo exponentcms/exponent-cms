@@ -89,7 +89,7 @@ class creditcard extends billingcalculator {
 
         //$cvvhelp = new htmlcontrol("<a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>What's this?</a>");
 
-        $form .= '<div class="' . $this->calculator_name . ' credit-cards control form-group"><label class="' . ((bs3()||bs4()||bs5()?'control-label col-sm-2':'label') . '"></label>';
+        $form .= '<div class="' . $this->calculator_name . ' credit-cards control form-group"><label class="' . ((bs3()||bs4()||bs5())?'control-label col-sm-2':'label') . '"></label>';
         if (bs3()||bs4() || bs5()) {
             $form .= '<div class="col-sm-10">';
         }
