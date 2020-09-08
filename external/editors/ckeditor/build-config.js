@@ -13,10 +13,10 @@
  * (1) https://ckeditor.com/cke4/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) https://ckeditor.com/cke4/builder/f6c41cb4fd13f9124e5ef14966032bc4
+ * (2) https://ckeditor.com/cke4/builder/7bf0eec09adab2e3e5b61a322e2a8bc4
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) https://ckeditor.com/cke4/builder/download/f6c41cb4fd13f9124e5ef14966032bc4
+ * (3) https://ckeditor.com/cke4/builder/download/7bf0eec09adab2e3e5b61a322e2a8bc4
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -48,6 +48,7 @@ var CKBUILDER_CONFIG = {
 		'gruntfile.js',
 		'less',
 		'node_modules',
+		'package-lock.json',
 		'package.json',
 		'tests'
 	],
