@@ -503,7 +503,9 @@ class expRecord {
 //        $refname = strtolower($item->classname).'s_id';  //FIXME plural vs single?
 //        $refname = strtolower($item->classname) . '_id'; //FIXME plural vs single?
         $refname = strtolower($item->tablename) . '_id';
-        if ($replace) $db->delete($item->attachable_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id . ' AND ' . $refname . '=' . $item->id);
+//        if ($replace) $db->delete($item->attachable_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id . ' AND ' . $refname . '=' . $item->id);
+        if ($replace)
+            $db->delete($item->attachable_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id . ' AND subtype=' . $subtype);
         $obj               = new stdClass();
         $obj->$refname     = $item->id;
         $obj->content_id   = $this->id;
