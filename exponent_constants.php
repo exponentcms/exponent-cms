@@ -588,7 +588,7 @@ if (USE_CDN) {
         define('BS3_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v3.x script
     if (!defined('BS4_SCRIPT')) {
-        define('BS4_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>');
+        define('BS4_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v4.x script
     if (!defined('BS5_SCRIPT')) {
         define('BS5_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js" integrity="sha384-DBjhmceckmzwrnMMrjI7BvG2FmRuxQVaTfFYHgfnrdfqMhxKt445b7j3KBQLolRl" crossorigin="anonymous"></script>');
@@ -597,7 +597,7 @@ if (USE_CDN) {
         define('FA4_SCRIPT', 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
     } // cdn FontAwesome v4.x stylesheet
     if (!defined('FA5_SCRIPT')) {
-        define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css');
+        define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
 }
 

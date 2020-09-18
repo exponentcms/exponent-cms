@@ -115,7 +115,7 @@ class expJavascript {
                         } elseif (bs3()) {
                             $scripts .= BS3_SCRIPT . "\r\n";
                         } elseif (bs4()) {
-                            $scripts .= BS3_SCRIPT . "\r\n";
+                            $scripts .= BS4_SCRIPT . "\r\n";
                         } else {
                             $scripts .= BS5_SCRIPT . "\r\n";
                         }
