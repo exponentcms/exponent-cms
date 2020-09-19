@@ -519,6 +519,9 @@ function smarty_function_control($params, &$smarty) {
 //                        $control->checked = true;
 //                    }
 //                }
+            } elseif ($params['type'] === 'countryregion') {
+                if (!empty($post['country'])) $control->country_default = $post['country'];
+                if (!empty($post['state'])) $control->region_default = $post['state'];
             } elseif (isset($params['multiple'])) {
                 $realname = str_replace('[]', '', $params['name']);
                 if (!empty($post[$realname])) $control->default = $post[$realname];
