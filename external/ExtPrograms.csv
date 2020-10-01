@@ -1,5 +1,6 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
 Program,Version,URL,Avail version,Exponent Customization Notes:
+Program,Version,URL,Avail version,Exponent Customization Notes:
 Swiftmailer,5.4.12/6.2.3,github.com/swiftmailer/swiftmailer,6.2.3,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
 Doctrine Lexer,1.2.0,github.com/doctrine/lexer,1.2.1,needed by swiftmailer v6
 EmailValidator,2.1.17,github.com/egulias/EmailValidator,2.1.18,needed by swiftmailer v6; move folder structure and add autoloader to main file
@@ -34,7 +35,7 @@ Bootswatch3,3.4.1+1,bootswatch.com/,3.4.1+1,change 1st line variables.less comme
 Bootswatch4,4.5.2,bootswatch.com/,4.5.2,change 1st line variables.scss comment to output to .css file
 Font-Awesome3,3.2.1,fontawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
-Font-Awesome5,5.14.0,fontawesome.com,5.14.0,add import all 'fonts' sheets into main sheet
+Font-Awesome5,5.15.0,fontawesome.com,5.15.0,add import all 'fonts' sheets into main sheet
 Adminer,4.7.1exp,www.adminer.org,4.7.7,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css/,8.0.1,auto included in bootstrap 3
