@@ -131,7 +131,11 @@ class expJavascript {
                         }
                         if (bs4() || bs5()) {
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'popper.js,';
-                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'util.js,';
+                            if (bs4()) {
+                                $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'util.js,';
+                            } else {
+
+                            }
                         }
                         foreach ($bootstrapjs as $mod) {
                             if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
@@ -294,7 +298,11 @@ class expJavascript {
                         }
                         if (bs4() || bs5()) {
                             $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'popper.js"></script>' . "\r\n";
-                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util.js"></script>' . "\r\n";
+                            if (bs4()) {
+                                $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util.js"></script>' . "\r\n";
+                            } else {
+
+                            }
                         }
                         foreach ($bootstrapjs as $mod) {
                             if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
