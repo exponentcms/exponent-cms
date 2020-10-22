@@ -144,7 +144,7 @@ class expRouter {
                         $key = trim($key);
                         if ($value != "") {
                             if ($key !== 'module' && $key !== 'action' && $key !== 'controller') {
-                                if ($key !== 'src') {
+                                if ($key !== 'src' && $key !== 'search_string') {
                                     $link .= urlencode($key)."/".urlencode($value)."/";
                                 } else {
                                     $link .= $key."/".$value."/";
@@ -165,7 +165,7 @@ class expRouter {
                     $value = trim($value);
                     $key = trim($key);
                     if ($value != "") {
-                        if ($key !== 'src') {
+                        if ($key !== 'src' && $key !== 'search_string') {
                             $link .= urlencode($key)."=".urlencode($value)."&";
                         } else {
                             $link .= $key."=".$value."&";
