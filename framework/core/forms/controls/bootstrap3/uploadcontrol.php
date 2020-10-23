@@ -60,12 +60,12 @@ class uploadcontrol extends formcontrol {
             $fi_file = '';
         }
         $html .= '  <div class="form-control" data-trigger="fileinput"><i class="fa fa-file fileinput-exists"></i> ';
-        $html .= '<span class="fileinput-filename">' . $fi_file . '</span></div>';
-        $html .= '  <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"';
+        $html .= '<span class="fileinput-filename with-icon">' . $fi_file . '</span></div>';
+        $html .= '  <span class="input-group-btn"><span class="btn btn-default btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"';
         if (!empty($this->accept))
             $html .= ' accept="' . $this->accept . '"';
         $html .= '></span>';
-        $html .= '  <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</a>';
+        $html .= '  <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</a></span>';
         $html .= '</div>';
 
         if (!empty($this->description)) $html .= "<div class=\"" . (bs3() ? "help-block" : "control-desc") . "\">" . $this->description . "</div>";

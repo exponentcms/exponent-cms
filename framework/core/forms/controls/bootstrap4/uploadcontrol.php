@@ -60,13 +60,14 @@ class uploadcontrol extends formcontrol {
             $fi_file = '';
         }
         $html .= '  <div class="form-control" data-trigger="fileinput"><i class="fas fa-file fileinput-exists"></i> ';
-        $html .= '<span class="fileinput-filename">' . $fi_file . '</span></div>';
-        $html .= '  <span class="input-group-append input-group-text btn btn-default btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"';
+        $html .= '<span class="fileinput-filename with-icon">' . $fi_file . '</span></div>';
+        $html .= '<span class="input-group-append">';
+        $html .= '<span class="input-group-text fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</span>';
+        $html .= '<span class="input-group-text btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"';
         if (!empty($this->accept))
             $html .= ' accept="' . $this->accept . '"';
         $html .= '></span>';
-        $html .= '  <a href="#" class="input-group-append input-group-text btn btn-default fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</a>';
-        $html .= '</div>';
+        $html .= '</span></div>';
 
         if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">" . $this->description . "</small>";
         $html .= ($this->horizontal &&(bs3()||bs4() || bs5())) ? '</div>' : '';
