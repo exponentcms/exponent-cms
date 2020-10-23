@@ -1680,7 +1680,7 @@ class eventController extends expController {
                         $body = nl2br(str_replace(array("\\n", "\n", '==0A','=0A','=C2=A0')," <br>",$body));
 //                        $body = str_replace("\n"," <br>",$body);
 //                        $body = str_replace(array('==0A','=0A','=C2=A0')," <br>\n",$body);
-                        $body = str_replace("<br>","<br>\\n",$body);
+//                        $body = str_replace("<br>","<br>\\n",$body);
                         $extevents[$eventdate][$dy]->body = $body;
                         $extevents[$eventdate][$dy]->location_data = 'icalevent' . $key;
                         $extevents[$eventdate][$dy]->color = !empty($this->config['pull_ical_color'][$key]) ? $this->config['pull_ical_color'][$key] : null;
