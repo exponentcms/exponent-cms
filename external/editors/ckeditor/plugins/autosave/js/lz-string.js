@@ -493,9 +493,3 @@ var LZString = {
 };
   return LZString;
 })();
-
-if (typeof define === 'function' && define.amd) {
-  define(function () { return LZString; });
-} else if( typeof module !== 'undefined' && module != null ) {
-  module.exports = LZString
-}
