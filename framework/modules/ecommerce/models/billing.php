@@ -54,6 +54,9 @@ class billing extends expRecord {
         {
             // since this is a new billingmethod object, lets initialize it with the users billing address.
             global $order;   //FIXME we do NOT want the global $order
+            if (!is_object($order)) {
+                $order = new stdClass();
+            }
             $address = new address();
             //FJD $defaultaddy = $address->find('first', 'user_id='.$user->id.' AND is_default=1');
             if (empty($order->billingmethod)) {

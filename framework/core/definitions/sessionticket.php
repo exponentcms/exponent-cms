@@ -30,7 +30,8 @@ return array(
 	'last_active'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	'refresh'=>array(
-		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN,
+        DB_DEFAULT=>0),
 	'referrer'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>1000),

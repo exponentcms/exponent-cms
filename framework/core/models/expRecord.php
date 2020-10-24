@@ -438,8 +438,14 @@ class expRecord {
                 $value = is_array($params) ? $params[$col] : $params->$col;
                 if ($colDef[0] == DB_DEF_INTEGER || $colDef[0] == DB_DEF_ID) {
                     $this->$col = preg_replace("/[^0-9-]/", "", $value);
+                    if (empty($this->$col)) {
+                        $this->$col = 0;
+                    }
                 } elseif ($colDef[0] == DB_DEF_DECIMAL) {
                     $this->$col = preg_replace("/[^0-9.-]/", "", $value);
+                    if (empty($this->$col)) {
+                        $this->$col = 0;
+                    }
                 } else {
                     $this->$col = $value;
                 }
