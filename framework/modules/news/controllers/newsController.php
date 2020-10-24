@@ -271,7 +271,7 @@ class newsController extends expController {
      */
     private function mergeRssData($items) {
         if (!empty($this->config['pull_rss'])) {
-            require_once(BASE . 'external/simplepie-1.5.5/autoloader.php');
+            require_once(BASE . 'external/simplepie-1.5.6/autoloader.php');
             $RSS = new SimplePie();
 	        $RSS->set_cache_location(BASE.'tmp/rsscache');  // default is ./cache
 //	        $RSS->set_cache_duration(3600);  // default is 3600

@@ -597,7 +597,7 @@ if (USE_CDN) {
         define('FA4_SCRIPT', 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
     } // cdn FontAwesome v4.x stylesheet
     if (!defined('FA5_SCRIPT')) {
-        define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css');
+        define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
 }
 
@@ -629,12 +629,12 @@ if (!defined('SWIFT_PATH')) {
     /**
      * Lexer is needed for Swiftmailer v6
      */
-    define('LEXER_VERSION', '1.2.0');
+    define('LEXER_VERSION', '1.2.1');
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '2.1.17');
+    define('EMAIL_VALIDATOR_VERSION', '2.1.22');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
