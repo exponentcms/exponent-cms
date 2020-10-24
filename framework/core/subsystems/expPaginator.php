@@ -96,6 +96,7 @@ class expPaginator {
 	public $records = array();
     public $cats = array();
     public $sort_dropdown = array();
+    public $linkables = array();
 
     /**
      * expPaginator Constructor
