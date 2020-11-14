@@ -21,7 +21,7 @@ pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily 
 class.upload,1.0.8,github.com/verot/class.upload.php,"1.0.8/2.0.9
 ",Correct flip operation where flip vertical & horizontal were inverted/swapped
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.29.29,uncomment load utilities
-scssphp,1.2.1exp,github.com/scssphp/scssphp,1.2.1,includes example server; hack to compile newui
+scssphp,1.4.0exp,github.com/scssphp/scssphp,1.4.0,includes example server; hack to compile newui
 lessphp,0.5.0,github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
 less.php,3.0.0exp,github.com/wikimedia/less.php,3.0.0,code edit to retain php v5.6 compatitility
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
@@ -44,7 +44,7 @@ Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
-CKEditor,4.15.0,ckeditor.com,4.15.0/23.0.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
+CKEditor,4.15.1,ckeditor.com,4.15.1/23.1.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 TinyMCE v5,5.5.1,tiny.cloud,5.5.1,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.6,github.com/moxiecode/plupload,2.3.6/3.1.2,"needed for TinyMCE Quick Upload, placed in that plugin folder"
