@@ -6,6 +6,7 @@ ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,22.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,22.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.27/3.1.36,smarty.net,3.1.36,
 phpthumb,1.7.15,github.com/JamesHeinrich/phpThumb,1.7.15,phpThumb.config.php - we also allow &amp in parsing and err command
+getid3,1.9.20,github.com/JamesHeinrich/getID3,1.9.20,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.10,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
 YUI3,3.18.1,github.com/yui/yui3/releases,3.18.1,
