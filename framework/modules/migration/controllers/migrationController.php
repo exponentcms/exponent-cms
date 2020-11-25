@@ -2475,7 +2475,7 @@ class migrationController extends expController {
      * @var \mysqli_database $db the exponent database object
      * @return void
      */
-	private function add_container($iloc,$m,$linked=false,$newconfig) {
+	private function add_container($iloc=null,$m=null,$linked=false,$newconfig=null) {
 //        global $db;
 
         // first the container

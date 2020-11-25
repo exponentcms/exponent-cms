@@ -937,13 +937,11 @@ function expUnserialize($serial_str) {
  *  callback when the buffer gets flushed. Any processing on the page output
  * just before it gets rendered to the screen should happen here.
  * @param $buffer
- * @param null $mode
  * @return mixed
  */
-function expProcessBuffer($buffer, $mode=null) {
-     global $jsForHead, $cssForHead;
+function expProcessBuffer($buffer) {
+     global $cssForHead;
 
-//     return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead.$jsForHead, $buffer));
     return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead, $buffer));
 }
 

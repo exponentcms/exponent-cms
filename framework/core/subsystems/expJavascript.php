@@ -623,7 +623,7 @@ class expJavascript {
      *
      * @return string
      */
-	public static function ajaxReply($replyCode=200, $replyText='Ok', $data) {
+	public static function ajaxReply($replyCode=200, $replyText='Ok', $data='') {
         expCore::deprecated('expAjaxReply::');
         $ajaxObj['replyCode'] = $replyCode;
 		$ajaxObj['replyText'] = $replyText;

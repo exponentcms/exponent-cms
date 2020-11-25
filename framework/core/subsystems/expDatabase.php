@@ -1507,7 +1507,7 @@ abstract class database {
      * @param null $where
      * @param null $orderby
      */
-	function selectAndJoinObjects($colsA=null, $colsB=null, $tableA, $tableB, $keyA, $keyB=null, $where = null, $orderby = null) {  //FIXME never used
+	function selectAndJoinObjects($colsA=null, $colsB=null, $tableA=null, $tableB=null, $keyA=null, $keyB=null, $where = null, $orderby = null) {  //FIXME never used
 
 	}
 
@@ -2109,7 +2109,7 @@ abstract class database {
      *
      * @return array
      */
-	abstract function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false, $user=null);
+	abstract function selectExpObjects($table=null, $where=null, $classname=null, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false, $user=null);
 
     /**
      * Instantiate objects from selected records from the database

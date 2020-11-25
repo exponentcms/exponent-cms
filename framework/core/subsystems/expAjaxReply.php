@@ -53,7 +53,7 @@ class expAjaxReply {
 		}
 	}
 
-	public static function makePacket($replyCode=200, $replyText='Ok', $data) {
+	public static function makePacket($replyCode=200, $replyText='Ok', $data='') {
         $ajaxObj['replyCode'] = $replyCode;
     	$ajaxObj['replyText'] = $replyText;
     	$ajaxObj['data'] = $data;

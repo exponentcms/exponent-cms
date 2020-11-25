@@ -1362,7 +1362,7 @@ class Twitter
      * @return array
      */
     public function directMessagesNew(
-        $userId = null, $screenName = null, $text
+        $userId = null, $screenName = null, $text = ''
     )
     {
         // validate
@@ -2980,10 +2980,10 @@ class Twitter
 
 // OAuth resources
     /**
-     * Allows a Consumer application to use an OAuth request_token to request user authorization. 
-     * This method is a replacement fulfills Secion 6.2 of the OAuth 1.0 authentication flow for 
-     * applications using the Sign in with Twitter authentication flow. The method will use the 
-     * currently logged in user as the account to for access authorization unless the force_login 
+     * Allows a Consumer application to use an OAuth request_token to request user authorization.
+     * This method is a replacement fulfills Secion 6.2 of the OAuth 1.0 authentication flow for
+     * applications using the Sign in with Twitter authentication flow. The method will use the
+     * currently logged in user as the account to for access authorization unless the force_login
      * parameter is set to true
      *
      * @param string $token The token.

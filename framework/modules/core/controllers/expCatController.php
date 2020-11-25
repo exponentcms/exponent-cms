@@ -210,7 +210,7 @@ class expCatController extends expController {
                 $records[$key]->catrank = $cat->rank;
                 $records[$key]->cat = $cat->title;
                 $catcolor = empty($cat->color) ? null : trim($cat->color);
-                if ($catcolor[0] ==='#')
+                if (!is_null($catcolor) && $catcolor[0] ==='#')
                     $catcolor = '" style="color:'.$catcolor.';';
                 $records[$key]->color = $catcolor;
                 $records[$key]->module = empty($cat->module) ? null : $cat->module;

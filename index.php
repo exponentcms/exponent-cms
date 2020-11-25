@@ -27,7 +27,7 @@ define('SCRIPT_FILENAME','index.php');
  */
 function epb($buffer, $mode) {
 //    @ob_gzhandler($buffer, $mode);
-    @ob_gzhandler($buffer);
+//    @ob_gzhandler($buffer);
 //    return $buffer; // uncomment if you're messing with output buffering so errors show. ~pb
     return expProcessBuffer($buffer);  // add/process css & jscript for page
 }

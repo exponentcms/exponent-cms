@@ -342,7 +342,7 @@ class expRecord {
      *
      * @return array|bool
      */
-    public function findValue($range = 'all', $column, $where=null, $order=null, $distinct=false) {
+    public function findValue($range = 'all', $column=null, $where=null, $order=null, $distinct=false) {
         global $db;
 
         if (strcasecmp($range, 'all') == 0) {  // return all items matching request

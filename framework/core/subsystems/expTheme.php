@@ -408,7 +408,7 @@ class expTheme
     public static function footerInfo($params = array())
     {
         // checks to see if the theme is calling footerInfo.
-        global $validateTheme, $user, $jsForHead, $less_vars;
+        global $validateTheme, $user, $less_vars;
 
         $validateTheme['footerinfo'] = true;
 

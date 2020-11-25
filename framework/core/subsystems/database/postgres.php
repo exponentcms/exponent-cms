@@ -577,7 +577,7 @@ ENDSQL;
 		return $objects;
 	}
 
-	function selectAndJoinObjects($colsA=null, $colsB=null, $tableA, $tableB, $keyA, $keyB=null, $where = null,$orderby = null) {
+	function selectAndJoinObjects($colsA=null, $colsB=null, $tableA=null, $tableB=null, $keyA=null, $keyB=null, $where = null,$orderby = null) {
 		$sql = 'SELECT ';
 		if ($colsA != null) {
 			if (!is_array($colsA)) {

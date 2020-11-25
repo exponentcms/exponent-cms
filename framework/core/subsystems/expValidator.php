@@ -484,7 +484,7 @@ class expValidator {
 	 * @param $msg
 	 * @param null $post
 	 */
-	public static function flashAndReturnToForm($queue='message', $msg, $post=null) {
+	public static function flashAndReturnToForm($queue='message', $msg='', $post=null) {
         if (!is_array($msg))
             $msg = array($msg);
         flash($queue, $msg);
