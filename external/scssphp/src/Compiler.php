@@ -4746,7 +4746,7 @@ class Compiler
      */
     protected function popEnv()
     {
-        if (!is_null($this->env->parent->store) && @count($this->env->parent->store) > 300)  //fixme Dave Hack
+        if (!@is_null($this->env->parent->store) && @count($this->env->parent->store) > 300)  //fixme Dave Hack
             $this->daveStore = $this->env->parent->store;  //fixme Dave Hack
         $this->storeEnv = $this->env->parentStore;
         $this->env = $this->env->parent;
