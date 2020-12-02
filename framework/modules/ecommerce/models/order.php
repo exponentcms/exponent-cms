@@ -382,6 +382,8 @@ class order extends expRecord {
                 //(eDebug($db->selectValue('shippingcalculator','id','is_default=1'),true));
 //                $sm->shippingcalculator_id = $db->selectValue('shippingcalculator', 'id', 'is_default=1');
                 $sm->shippingcalculator_id = shippingcalculator::getDefault();
+                if (is_array($sm->shipping_options))
+                    $sm->shipping_options = serialize($sm->shipping_options);
                 $sm->save();
                 //$this->setActiveShippingMethod($sm);
                 $this->shippingmethods_id = $sm->id;
