@@ -23,6 +23,7 @@
     }
     .siblings-and-parents .parent {
         font-size: 130%;
+        font-weight: bold;
     }
     .siblings-and-parents .current a {
         color: black;
