@@ -2,7 +2,7 @@
 
 ----------
 
-Copyright (c) 2004-2020 OIC Group, Inc.
+Copyright (c) 2004-2021 OIC Group, Inc.
 
 ## Changes
 
@@ -14,12 +14,13 @@ Version 2.5.2
 -------------
 ### Address issues in v2.5.1 and Prepare for v3.0.0
  - compatible with PHP v7.1.x, v7.2.x, v7.3.x, and v7.4.x
+   - adds support for PHP v7.4
    - deprecated support for PHP v5.6.x, and v7.0.x still exists
  - initial support for PHP v8.x
  - initial support for Twitter Bootstrap v5
  - now supports MySQL v5.7+ 'strict' mode
  - adds optional CDN usage for main libraries (jquery, bootstrap, font-awesome, & yui)
- - adds optional simplified permissions system for faster response
+ - adds optional simplified permissions system for faster response on large systems
  - fixes and tweaks many issues in previous versions
 
 Version 2.5.1
@@ -27,7 +28,7 @@ Version 2.5.1
 ### Address issues in v2.5.0 and Prepare for v3.0.0
  - compatible with PHP v7.1.x, v7.2.x, and v7.3.x
    - deprecated support for PHP v5.6.x, and v7.0.x still exists
-   - not yet fully compatible with PHP v7.4.x
+ - not yet fully compatible with PHP v7.4.x
  - robusts support for an MS SQL Server database
  - fixes and tweaks many issues in previous versions
 
