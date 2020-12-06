@@ -12,6 +12,7 @@ Version 2.6.0 - Specific changes from previous version
 ###v260 fixes these issues in v251 and previous patches:
 - regression fix (v2.5.1p2) EAAS won't properly decode apikey and fails on all calls
 - regression fix (v2.5.1p1) mysql strict mode (sessionticket/billingmethods records)
+- regression fix (v2.5.1p1) mysql strict mode can't update blog, news, or filedownload items
 - fix display of bs4 radio groups
 - fix list of pages available for internal alias pages
 - regression fix attachItem() function to actually replace existing attachments
