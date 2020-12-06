@@ -10,12 +10,12 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ----------
 
-Version 2.5.2
+Version 2.6.0
 -------------
 ### Address issues in v2.5.1 and Prepare for v3.0.0
- - compatible with PHP v7.1.x, v7.2.x, v7.3.x, and v7.4.x
+ - compatible with PHP v7.3.x, and v7.4.x
    - adds support for PHP v7.4
-   - deprecated support for PHP v5.6.x, and v7.0.x still exists
+   - deprecated support for PHP v5.6.x, v7.0.x, v7.1.x, and v7.2.x still exists
  - initial support for PHP v8.x
  - initial support for Twitter Bootstrap v5
  - now supports MySQL v5.7+ 'strict' mode

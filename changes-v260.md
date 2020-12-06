@@ -1,15 +1,15 @@
-Version 2.5.2 - Specific changes from previous version
+Version 2.6.0 - Specific changes from previous version
 ------------------------------------------------------
 
-## v252
+## v260
 
-###v252 adds these features to v251 and previous patches:
+###v260 adds these features to v251 and previous patches:
 - add initial support for PHP v8 (removes ob_gzhandler processing and deprecated code)
 - add ability to select web pages for more easy internal link item creation
 - add optional .less/.scss auto-prefixer support (requires php-autoprefixer installation)
 - add initial support for bootstrap5 framework (requires optional package)
 
-###v252 fixes these issues in v251 and previous patches:
+###v260 fixes these issues in v251 and previous patches:
 - regression fix (v2.5.1p2) EAAS won't properly decode apikey and fails on all calls
 - regression fix (v2.5.1p1) mysql strict mode (sessionticket/billingmethods records)
 - fix display of bs4 radio groups
@@ -22,7 +22,7 @@ Version 2.5.2 - Specific changes from previous version
 - fix display of bs3/bs4 file uploader widget
 - regression fix ups/fedex shipping configuration of shipping methods not properly redisplayed
 
-###v252 updates these 3rd party libraries in v251 and previous patches:
+###v260 updates these 3rd party libraries in v251 and previous patches:
 - datatables to v1.10.22
 - datatables checkboxes to v1.2.12
 - tinymce v5 to v5.6.1
