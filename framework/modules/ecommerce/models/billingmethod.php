@@ -51,9 +51,6 @@ class billingmethod extends expRecord {
 		$address = is_numeric($address) ? new address($address) : $address;
 		$this->addresses_id = isset($address->id) ? $address->id : '';
 		unset($address->id);
-		if (is_object($address)) {
-		    $address = object2Array($address);
-        }
 		$this->update($address);
 	}
 }

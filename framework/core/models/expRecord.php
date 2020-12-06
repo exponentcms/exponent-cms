@@ -125,6 +125,9 @@ class expRecord {
             }
         } else {
             // Otherwise we assume that in inbound is an array or Object to be processed as is.
+            if (is_object($params)) {
+                $params = object2Array($params);
+            }
             $this->build($params);
         }
 
@@ -359,6 +362,9 @@ class expRecord {
      * @param array|object $params
      */
     public function update($params = array()) {
+        if (is_object($params)) {
+            $params = object2Array($params);
+        }
         if (is_array($params) && isset($params['current_revision_id'])) {
             $params['revision_id'] = $params['current_revision_id'];
             unset($params['current_revision_id']);
