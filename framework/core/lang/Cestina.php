@@ -1654,9 +1654,6 @@ return array(
 	        účet u Authorize.net dříve, než můžete použít ke zpracování kreditních karet.",
 	"Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It requires a PayPal Payflow Merchant Account before you can use it to process credit cards."=>"Povolením této možnosti platby umožní svým zákazníkům používat jejich kreditní kartu k nákupům na vašem webu.  To vyžaduje účet PayPal Payflow obchodníka před použitím zpracování kreditních karet.",
 	"Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  The credit card number
-	        will be split with part of it being stored in the database and the other part getting emailed to site administrator."=>"Povolení tohoto způsobu platby umožní zákazníkům používat svou kreditní kartu k nákupům na vašem webu.  Číslo kreditní karty
-	        bude rozdělena s částí, která je uložena v databázi a druhá část bude zaslána e-mailem správci webu.",
-	"Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  The credit card number
 	        will be split with part of it being stored in the database and the other part getting emailed to site administrator."=>"Povolením této možnosti platby umožní svým zákazníkům používat jejich kreditní karty k nákupu na webu.  Číslo kreditní karty
 	        rozdělí se jeho část je uložena v databázi a na straně druhé se e-mailem na správce webu.",
 	"Enabling this payment option will allow your customers to use their worldpay account to make purchases."=>"Povolením této možnosti platby umožní svým zákazníkům používat jejich worldpay účet k nákupům.",

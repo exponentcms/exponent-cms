@@ -1653,9 +1653,6 @@ return array(
 	        uma conta com Authorize.net antes que você pode usá-lo para processar cartões de crédito.",
 	"Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It requires a PayPal Payflow Merchant Account before you can use it to process credit cards."=>"Ativar esta opção de pagamento permitirá que seus clientes a usar o seu cartão de crédito para fazer compras em seu site.  Requer uma conta de comerciante Payflow PayPal antes que você pode usá-lo para processar cartões de crédito.",
 	"Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  The credit card number
-	        will be split with part of it being stored in the database and the other part getting emailed to site administrator."=>"Habilitar essa opção de pagamento permitirá que seus clientes usem seu cartão de crédito para fazer compras em seu site.  O número do cartão de crédito
-	        será dividido com parte dele sendo armazenado no banco de dados e a outra parte sendo enviada por e-mail para o administrador do site.",
-	"Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  The credit card number
 	        will be split with part of it being stored in the database and the other part getting emailed to site administrator."=>"Ativar esta opção de pagamento permitirá que seus clientes a usar o seu cartão de crédito para fazer compras em seu site.  O número de cartão de crédito
 	        será dividida com parte sendo armazenada no banco de dados e a outra parte ficando por e-mail ao administrador do site.",
 	"Enabling this payment option will allow your customers to use their worldpay account to make purchases."=>"Ativar esta opção de pagamento permitirá que seus clientes a usar sua conta do worldpay para fazer compras.",
