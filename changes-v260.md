@@ -41,7 +41,7 @@ Version 2.6.0 - Specific changes from previous version
 - EmailValidator to v2.1.22
 - lexer to v1.2.1
 - getid3 to v1.9.20
-- codemirror cdn to v5.58.2
+- codemirror cdn to v5.58.3
 - aceeditor cdn to v1.4.12
 - (fix) bootstrap4 cdn for v4.5.3
 - bootstrap/bootswatch to v4.5.3
