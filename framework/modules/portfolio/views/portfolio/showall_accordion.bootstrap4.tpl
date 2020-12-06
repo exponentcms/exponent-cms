@@ -60,7 +60,7 @@
                 <div class="card-header" role="tab">
                     <div class="card-title"><a data-toggle="collapse" data-parent="#portfolio-{$id}" href="#collapse-{$catid}" title="{'Collapse/Expand'|gettext}"><{$config.item_level|default:'h2'}>{if $cat->name ==""}{if $config.uncat == ""}{'The List'|gettext}{else}{$config.uncat}{/if}{else}{$cat->name}{/if}</{$config.item_level|default:'h2'}></a></div>
                 </div>
-                <div id="collapse-{$catid}" class="card-collapse collapse{if ($smarty.foreach.items.iteration==1 && $config.initial_view == '3') || $config.initial_view == '2'} in{/if}">
+                <div id="collapse-{$catid}" class="card-collapse collapse{if ($smarty.foreach.items.iteration==1 && $config.initial_view == '3') || $config.initial_view == '2'} show{/if}">
                     <div class="piece card-body">
                         <ul>
                             {foreach from=$cat->records item=item}

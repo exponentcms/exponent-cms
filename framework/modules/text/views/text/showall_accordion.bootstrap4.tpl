@@ -41,7 +41,7 @@
                 <div class="card-header" role="tab">
                     <div class="card-title"><a data-toggle="collapse" data-parent="#text-{$id}" href="#collapse-{$textid}" title="{'Collapse/Expand'|gettext}"><{$config.item_level|default:'h2'}>{if $item->title ==""}&#160;{else}{$item->title}{/if}</{$config.item_level|default:'h2'}></a></div>
                 </div>
-                <div id="collapse-{$textid}" class="card-collapse collapse{if ($smarty.foreach.items.iteration==1 && $config.initial_view == '3') || $config.initial_view == '2'} in{/if}">
+                <div id="collapse-{$textid}" class="card-collapse collapse{if ($smarty.foreach.items.iteration==1 && $config.initial_view == '3') || $config.initial_view == '2'} show{/if}">
                     <div class="piece card-body">
                         {permissions}
                             <div class="item-actions">
