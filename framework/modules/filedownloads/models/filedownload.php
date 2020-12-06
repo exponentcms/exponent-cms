@@ -81,7 +81,7 @@ class filedownload extends expRecord {
         }
     }
 
-    public function beforeCreate() {
+    public function beforeSave() {
    	    if (empty($this->publish) || $this->publish === 'on') {
    	        $this->publish = time();
    	    }

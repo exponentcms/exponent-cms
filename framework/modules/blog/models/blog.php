@@ -64,7 +64,7 @@ class blog extends expRecord {
             $this->meta_tw['twimage'][0] = new expFile($this->meta_tw['twimage'][0]);
     }
 
-    public function beforeCreate() {
+    public function beforeSave() {
    	    if (empty($this->publish) || $this->publish === 'on') {
    	        $this->publish = time();
    	    }
