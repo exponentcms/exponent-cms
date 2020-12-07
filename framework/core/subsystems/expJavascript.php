@@ -134,7 +134,11 @@ class expJavascript {
                             if (bs4()) {
                                 $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'util.js,';
                             } else {
-
+                                $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/data.js,';
+                                $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js,';
+                                $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js,';
+                                $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/polyfill.js,';
+                                $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js,';
                             }
                         }
                         foreach ($bootstrapjs as $mod) {
@@ -301,7 +305,11 @@ class expJavascript {
                             if (bs4()) {
                                 $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util.js"></script>' . "\r\n";
                             } else {
-
+                                $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/data.js"></script>' . "\r\n";
+                                $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js"></script>' . "\r\n";
+                                $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js"></script>' . "\r\n";
+                                $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/polyfill.js"></script>' . "\r\n";
+                                $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js"></script>' . "\r\n";
                             }
                         }
                         foreach ($bootstrapjs as $mod) {
