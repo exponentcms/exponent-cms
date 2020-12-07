@@ -199,6 +199,7 @@ switch ($page) {
         $page_text = gt(
             'Your theme is your site\'s look and feel. Select what you\'d like your site to look like from the list of themes. You may also give your site some sample content.'
         );
+        $use_cdn = ($_REQUEST['use_cdn']);
         break;
     case 'install-6':
         $masthead = gt("New Installation");

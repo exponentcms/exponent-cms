@@ -20,6 +20,12 @@ if (!defined('EXPONENT')) {
     exit('');
 }
 
+if (!$use_cdn) {
+    $fh = fopen(BASE . 'overrides.php', 'w');
+    fwrite($fh, "<?php\r\n\r\ndefine('USE_CDN','0');\r\n\r\n?>\r\n");
+    fclose($fh);
+}
+
 ?>
     <h1><?php
         echo gt('Pick Your Theme');

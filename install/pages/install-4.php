@@ -53,34 +53,45 @@ if (!defined('EXPONENT')) {
         <div class="control checkbox">
             <table border="0" cellpadding="0" cellspacing="0">
                 <tbody>
-                <tr>
-                    <td class="input">
-                        <?php
-                        if (strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !== false ||
-                            strpos($_SERVER['SERVER_SOFTWARE'],'Apache') !== false ||
-                            strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') !== false)
-                        {
-                            $sefurl = true;
-                        } else {
-                            $sefurl = false;
-                        }
-                        ?>
-                        <input type="hidden" name="sc[SEF_URLS]" value="0">
-                        <input type="checkbox" name="sc[SEF_URLS]"
-                               value="1"<?php
-                                   if ($sefurl) {
-                                       echo ' checked="checked"';
-                                   } ?>
-                               class="checkbox">
-                    </td>
-                    <td>
-                        <label class="label "><?php
-                            echo gt('Enable Search Engine Friendly URLs');
-                            if (!$sefurl) {
-                                echo '<br>' . gt('Your web server doesn\'t support SEF URLs') . '!';
-                            } ?></label>
-                    </td>
-                </tr>
+                    <tr>
+                        <td class="input">
+                            <?php
+                            if (strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !== false ||
+                                strpos($_SERVER['SERVER_SOFTWARE'],'Apache') !== false ||
+                                strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') !== false)
+                            {
+                                $sefurl = true;
+                            } else {
+                                $sefurl = false;
+                            }
+                            ?>
+                            <input type="hidden" name="sc[SEF_URLS]" value="0">
+                            <input type="checkbox" name="sc[SEF_URLS]"
+                                   value="1"<?php
+                                       if ($sefurl) {
+                                           echo ' checked="checked"';
+                                       } ?>
+                                   class="checkbox">
+                        </td>
+                        <td>
+                            <label class="label "><?php
+                                echo gt('Enable Search Engine Friendly URLs');
+                                if (!$sefurl) {
+                                    echo '<br>' . gt('Your web server doesn\'t support SEF URLs') . '!';
+                                } ?></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="input">
+                            <input type="hidden" name="use_cdn" value="0">
+                            <input type="checkbox" name="use_cdn" value="1" checked="checked" class="checkbox">
+                        </td>
+                        <td>
+                            <label class="label ">
+                                <?php echo gt('Enable CDN for loading major libraries'); ?>
+                            </label>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
