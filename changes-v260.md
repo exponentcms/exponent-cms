@@ -39,7 +39,8 @@ Version 2.6.0 - Specific changes from previous version
 - jstree to v3.3.10
 - jquery migrate to v3.3.1
 - simplepie to v1.5.6
-- EmailValidator to v2.1.22
+- ReCaptcha to v1.2.4  
+- EmailValidator to v2.1.24
 - lexer to v1.2.1
 - getid3 to v1.9.20
 - codemirror cdn to v5.58.3

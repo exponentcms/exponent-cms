@@ -16,6 +16,7 @@
 #
 ##################################################
 
+define("USE_CDN",'0');
 if (!defined('USE_CDN')) {
     // set USE_CDN to 1 to use CDN scripts instead of local scripts
     define("USE_CDN",'1');
@@ -591,7 +592,8 @@ if (USE_CDN) {
         define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v4.x script
     if (!defined('BS5_SCRIPT')) {
-        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-popRpmFF9JQgExhfw5tZT4I9/CI5e2QcuUZPOVXb1m7qUmeR2b50u+YFEYe1wgzy" crossorigin="anonymous"></script>');
+        define('BS5_SCRIPT', '<!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v5.x script
     if (!defined('FA4_SCRIPT')) {
         define('FA4_SCRIPT', 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
@@ -634,7 +636,7 @@ if (!defined('SWIFT_PATH')) {
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '2.1.22');
+    define('EMAIL_VALIDATOR_VERSION', '2.1.24');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
@@ -646,7 +648,7 @@ if (!defined('MPDF7_VERSION')) {
     define('MPDF7_VERSION', '7.1.9');  // 7.0.2
 }
 if (!defined('MPDF8_VERSION')) {
-    define('MPDF8_VERSION', '8.0.5');
+    define('MPDF8_VERSION', '8.0.8');
 }
 /**
  * Log is needed for MPDF v7+
@@ -658,13 +660,13 @@ if (!defined('LOG_VERSION')) {
  * random_compat is needed for MPDF v7+ under PHP v5.6
  */
 if (!defined('RANDOM_VERSION')) {
-    define('RANDOM_VERSION', '2.0.18');
+    define('RANDOM_VERSION', '2.0.19');
 }
 /**
  * FPDI is needed for MPDF v8+
  */
 if (!defined('FPDI_VERSION')) {
-    define('FPDI_VERSION', '2.3.3');
+    define('FPDI_VERSION', '2.3.5');
 }
 
 if (!defined('DOMPDF8_VERSION')) {

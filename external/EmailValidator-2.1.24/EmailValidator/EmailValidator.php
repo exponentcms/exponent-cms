@@ -65,6 +65,7 @@ class EmailValidator
         return $this->error;
     }
 
+
     public static $initialized = false;
     public static $inits = array();
 
@@ -124,5 +125,4 @@ class EmailValidator
         }
         spl_autoload_register(array('Egulias\EmailValidator\EmailValidator', 'autoload'));
     }
-
 }
