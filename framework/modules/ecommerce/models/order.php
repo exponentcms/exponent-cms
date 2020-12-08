@@ -169,7 +169,7 @@ class order extends expRecord {
             //eDebug($usercart);
 
             //enter here if we have NO ACTIVE SESSION CART -OR- We're awaiting a potential cart retore
-            if (empty($sessioncart->id) || $sessAr['awaiting_choice'] == true) {
+            if (empty($sessioncart->id) || (isset($sessAr['awaiting_choice']) && $sessAr['awaiting_choice'] == true)) {
                 if (empty($usercart->id)) {
                     // no SESSION cart was found and user is not logged in...
                     //let's see if they have a cart_id cookie set and we'll snag that if so
