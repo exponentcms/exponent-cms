@@ -30,7 +30,7 @@
     {/if}
     {*<table>*}
         <div class="row">
-            <div class="col-sm-3">{img class="center-block" file_id=$product->expFile.mainimage[0]->id square=120}</div>
+            <div class="col-sm-3">{img class="img-responsive" file_id=$product->expFile.mainimage[0]->id square=120}</div>
             <div class="col-sm-6">
                 <h3>{$product->title}</h3>
                 {permissions}

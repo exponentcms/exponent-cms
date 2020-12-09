@@ -31,7 +31,7 @@
     {*<table>*}
         {foreach from=$causes item=cause}
             <div class="row">
-                <div class="col-sm-3">{img class="center-block" file_id=$cause->expFile.mainimage[0]->id square=120}</div>
+                <div class="col-sm-3">{img class="img-responsive" file_id=$cause->expFile.mainimage[0]->id square=120}</div>
                 <div class="col-sm-6">
                     <h3>{$cause->title}</h3>
                     {permissions}
