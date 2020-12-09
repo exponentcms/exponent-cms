@@ -168,41 +168,46 @@
                             for ( instance in CKEDITOR.instances )
                                 CKEDITOR.instances[instance].updateElement();
                         }
-                        $.ajax({
-                            type: "POST",
-                            headers: { 'X-Transaction': 'Delete Form Control'},
-                            url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=save_control&ajax_action=1',
-                            dataType: 'json',
-                            data: $(".forms.edit.edit-control form").serialize(),
-                            success:function(msg) {
-                                $.ajax({
-                                    type: "POST",
-                                    headers: { 'X-Transaction': 'Build Form Control'},
-                                    url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=build_control&ajax_action=1&style={/literal}{$style==1}{literal}',
-                                    data: 'id=' + msg,
-                                    success:function(msg) {
-                                        // get the (fake) control html and display it to the page
-                                        $(ctl).closest('.item').replaceWith(msg);  //  update control in the displayed form
-                                        // if ($('#toggle_grid').hasClass('active')) {
-                                        //     $(ctl).closest('.item').addClass('clean');
-                                        // }
-                                        // we need to run javascript and push the css to head
-                                        $(ctl).closest('.item').find('script').each(function(k, n){
-                                            if(!$(n).attr('src')){
-                                                eval($(n).html);
-                                            } else {
-                                                $.getScript($(n).attr('src'));
-                                            };
-                                        });
-                                        $(ctl).closest('.item').find('link').each(function(k, n){
-                                            $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
-                                        });
-                                        $('#fakeform .delete').attr('onClick', '');  // remove delete button non-ajax onClick action
-                                    }
-                                });
-                            }
-                        });
-                        dialog.close();
+                        var valid = $('#design_form').valid();
+                        if (!valid) {
+                            return false;
+                        } else {
+                            $.ajax({
+                                type: "POST",
+                                headers: { 'X-Transaction': 'Delete Form Control'},
+                                url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=save_control&ajax_action=1',
+                                dataType: 'json',
+                                data: $(".forms.edit.edit-control form").serialize(),
+                                success:function(msg) {
+                                    $.ajax({
+                                        type: "POST",
+                                        headers: { 'X-Transaction': 'Build Form Control'},
+                                        url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=build_control&ajax_action=1&style={/literal}{$style==1}{literal}',
+                                        data: 'id=' + msg,
+                                        success:function(msg) {
+                                            // get the (fake) control html and display it to the page
+                                            $(ctl).closest('.item').replaceWith(msg);  //  update control in the displayed form
+                                            // if ($('#toggle_grid').hasClass('active')) {
+                                            //     $(ctl).closest('.item').addClass('clean');
+                                            // }
+                                            // we need to run javascript and push the css to head
+                                            $(ctl).closest('.item').find('script').each(function(k, n){
+                                                if(!$(n).attr('src')){
+                                                    eval($(n).html);
+                                                } else {
+                                                    $.getScript($(n).attr('src'));
+                                                };
+                                            });
+                                            $(ctl).closest('.item').find('link').each(function(k, n){
+                                                $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
+                                            });
+                                            $('#fakeform .delete').attr('onClick', '');  // remove delete button non-ajax onClick action
+                                        }
+                                    });
+                                }
+                            });
+                            dialog.close();
+                        }
                     }
                 }, {
                     label: '{/literal}{'Cancel'|gettext}{literal}',
@@ -315,59 +320,64 @@
                                 for ( instance in CKEDITOR.instances )
                                     CKEDITOR.instances[instance].updateElement();
                             }
-                            var data = $(".forms.edit.edit-control form").serializeArray();
-                            //Add in additional data to the original form data:
-                            data.push(
-                                {name: 'rank', value: evt.newIndex + 1}
-                            );
-                            $.ajax({
-                                type: "POST",
-                                headers: { 'X-Transaction': 'Add Form Control'},
-                                url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=save_control&ajax_action=1',
-                                dataType: 'json',
-                                data: data,
-                                success:function(msg) {
-                                    // we get a control id after save to then build the control
-                                    $.ajax({
-                                        type: "POST",
-                                        headers: { 'X-Transaction': 'Build Form Control'},
-                                        url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=build_control&ajax_action=1&style={/literal}{$style==1}{literal}',
-                                        data: 'id=' + msg,
-                                        success:function(msg) {
-                                            // auto-reload design form if a page control was added
-                                            if ($(msg).hasClass('ispaged')) {
-                                                $.ajax({
-                                                    type: "POST",
-                                                    headers: { 'X-Transaction': 'Change Form Style'},
-                                                    url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=design_form&ajax_action=1&id={/literal}{$form->id}{literal}',
-                                                    data: 'style={/literal}{$style==1}{literal}',
-                                                    success:function(msg) {
-                                                        // get the (fake) control html and display it to the page
-                                                        $('.module.forms.design-form').replaceWith(msg);  //  update control in the displayed form
-                                                    }
+                            var valid = $('#design_form').valid();
+                            if (!valid) {
+                                return false;
+                            } else {
+                                var data = $(".forms.edit.edit-control form").serializeArray();
+                                //Add in additional data to the original form data:
+                                data.push(
+                                    {name: 'rank', value: evt.newIndex + 1}
+                                );
+                                $.ajax({
+                                    type: "POST",
+                                    headers: { 'X-Transaction': 'Add Form Control'},
+                                    url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=save_control&ajax_action=1',
+                                    dataType: 'json',
+                                    data: data,
+                                    success:function(msg) {
+                                        // we get a control id after save to then build the control
+                                        $.ajax({
+                                            type: "POST",
+                                            headers: { 'X-Transaction': 'Build Form Control'},
+                                            url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=build_control&ajax_action=1&style={/literal}{$style==1}{literal}',
+                                            data: 'id=' + msg,
+                                            success:function(msg) {
+                                                // auto-reload design form if a page control was added
+                                                if ($(msg).hasClass('ispaged')) {
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        headers: { 'X-Transaction': 'Change Form Style'},
+                                                        url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=design_form&ajax_action=1&id={/literal}{$form->id}{literal}',
+                                                        data: 'style={/literal}{$style==1}{literal}',
+                                                        success:function(msg) {
+                                                            // get the (fake) control html and display it to the page
+                                                            $('.module.forms.design-form').replaceWith(msg);  //  update control in the displayed form
+                                                        }
+                                                    });
+                                                }
+                                                // get the (fake) control html and display it to the page
+                                                $(evt.item).replaceWith(msg);  //  add control to the displayed form
+                                                // we need to run javascript and push the css to head
+                                                $(evt.item).find('script').each(function(k, n){
+                                                    if(!$(n).attr('src')){
+                                                        eval($(n).html);
+                                                    } else {
+                                                        $.getScript($(n).attr('src'));
+                                                    };
                                                 });
+                                                $(evt.item).find('link').each(function(k, n){
+                                                    $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
+                                                });
+                                                $('#fakeform .delete').attr('onClick', '');
+                                                // we need to check if there is an empty item on the fakeform form and if so delete it
+                                                $('#fakeform .item.empty').remove();
                                             }
-                                            // get the (fake) control html and display it to the page
-                                            $(evt.item).replaceWith(msg);  //  add control to the displayed form
-                                            // we need to run javascript and push the css to head
-                                            $(evt.item).find('script').each(function(k, n){
-                                                if(!$(n).attr('src')){
-                                                    eval($(n).html);
-                                                } else {
-                                                    $.getScript($(n).attr('src'));
-                                                };
-                                            });
-                                            $(evt.item).find('link').each(function(k, n){
-                                                $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
-                                            });
-                                            $('#fakeform .delete').attr('onClick', '');
-                                            // we need to check if there is an empty item on the fakeform form and if so delete it
-                                            $('#fakeform .item.empty').remove();
-                                        }
-                                    });
-                                }
-                            });
-                            dialog.close();
+                                        });
+                                    }
+                                });
+                                dialog.close();
+                            }
                         }
                     }, {
                         label: '{/literal}{'Cancel'|gettext}{literal}',

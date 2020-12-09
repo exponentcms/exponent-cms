@@ -125,7 +125,7 @@ class radiocontrol extends formcontrol {
             $object->default = false;
             $object->flip = false;
         }
-        $form->register("groupname",gt('Group Name'),new textcontrol($object->groupname));
+        $form->register("groupname",gt('Group Name'),new textcontrol($object->groupname),true, array('required'=>true));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
         $form->register("flip",gt('Caption on Right'), new checkboxcontrol($object->flip,false));

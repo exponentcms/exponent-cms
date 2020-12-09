@@ -166,7 +166,7 @@ class htmleditorcontrol extends htmleditor
             $object->is_hidden = false;
         }
         if (empty($object->description)) $object->description = "";
-        $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
+        $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
 //        $form->register("default", gt('Default value'), new texteditorcontrol($object->default));

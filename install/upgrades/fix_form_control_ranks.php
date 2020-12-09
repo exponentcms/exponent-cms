@@ -27,7 +27,7 @@
 class fix_form_control_ranks extends upgradescript
 {
     protected $from_version = '2.3.9';
-	protected $to_version = '2.4.2';
+//	protected $to_version = '2.4.2';
 //    public $optional = true;
 //    public $priority = 52;
 
@@ -46,7 +46,7 @@ class fix_form_control_ranks extends upgradescript
      */
     function description()
     {
-        return "The Bootstrap 3 WYSIWYG Form Designer drag/drop control reordering logic was flawed.  This script corrects that.";
+        return "The Form Designer control reordering logic was flawed.  This script corrects that.";
     }
 
     /**
@@ -55,8 +55,21 @@ class fix_form_control_ranks extends upgradescript
      */
     function needed()
     {
+        $f = new forms();
         $fc = new forms_control();
-        return $fc->find('count') > 0;  // are there any form controls?
+        $fixed = 0;
+        foreach ($f->findValue('all', 'id') as $form_id) {
+            $controls = $fc->find('all', "forms_id=" . $form_id, 'rank');
+            $rank = 1;
+            foreach ($controls as $control) {
+                if ($control->rank != $rank) {
+                    $fixed++;
+                }
+                $rank++;
+            }
+        }
+
+        return $fixed > 0;  // are there any form controls?
     }
 
     /**
@@ -66,8 +79,6 @@ class fix_form_control_ranks extends upgradescript
      */
     function upgrade()
     {
-        global $db;
-
         $f = new forms();
         $fc = new forms_control();
         $fixed = 0;

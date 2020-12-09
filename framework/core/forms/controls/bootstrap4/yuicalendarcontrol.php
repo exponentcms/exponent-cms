@@ -139,6 +139,16 @@ class yuicalendarcontrol extends formcontrol
                 });
             });
         ";
+
+        global $less_vars;
+
+        if (empty($less_vars['themepath'])) {
+            $less_vars = array_merge($less_vars, array(
+                'swatch' => SWATCH,
+                'themepath' => '../../../themes/' . DISPLAY_THEME . '/less'
+            ));
+        }
+
         expJavascript::pushToFoot(
             array(
                 "unique"    => '00yuical-' . $idname,
@@ -196,7 +206,7 @@ class yuicalendarcontrol extends formcontrol
 //            $object->is_hidden  = false;
         }
         if (empty($object->description)) $object->description = "";
-        $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
+        $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));

@@ -208,6 +208,9 @@ class form extends baseform {
      * @return string The HTML code use to display the form to the browser.
      */
 	function toHTML($form_id = null) {
+	    if ($this->id == null) {
+	        $this->id = 'design_form';
+        }
 		// Form validation script
 		if ($this->validationScript != "") {
 			$this->scripts[] = $this->validationScript;
