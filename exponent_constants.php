@@ -16,7 +16,6 @@
 #
 ##################################################
 
-define("USE_CDN",'0');
 if (!defined('USE_CDN')) {
     // set USE_CDN to 1 to use CDN scripts instead of local scripts
     define("USE_CDN",'1');
