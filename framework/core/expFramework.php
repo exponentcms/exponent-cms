@@ -1177,15 +1177,15 @@ function eDebug($var, $halt=false, $disable_log=false){
 //            echo("<script>YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {Y.log('".json_encode($pvar)."','info','exp')});;</script>");
             eLog($var, gt('DEBUG'));
         } else {
-            if (file_exists(BASE . 'external/kint/Kint.class.php')) {
-                require_once BASE . 'external/kint/Kint.class.php';
-                d($var);  // kint v1
-            } elseif (expCore::is_php('7.0') && file_exists(BASE . 'external/kint3/build/kint.phar')) {
-                require_once BASE . 'external/kint3/build/kint.phar';
+            if (expCore::is_php('7.0') && file_exists(BASE . 'external/kint-3.3/build/kint.phar')) {
+                require_once BASE . 'external/kint-3.3/build/kint.phar';
                 d($var);  // kint v3
             } elseif (file_exists(BASE . 'external/kint/build/kint.php')) {
-                require_once BASE . 'external/kint/build/kint.php';
+                require_once BASE . 'external/kint-2.2/build/kint.php';
                 d($var);  // kint v2
+            } elseif (file_exists(BASE . 'external/kint/Kint.class.php')) {
+                require_once BASE . 'external/kint/Kint.class.php';
+                d($var);  // kint v1
             } else {
                 echo "<pre>";
                 print_r($var);
