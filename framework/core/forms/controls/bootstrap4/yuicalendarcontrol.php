@@ -145,7 +145,8 @@ class yuicalendarcontrol extends formcontrol
         if (empty($less_vars['themepath'])) {
             $less_vars = array_merge($less_vars, array(
                 'swatch' => SWATCH,
-                'themepath' => '../../../themes/' . DISPLAY_THEME . '/less'
+                'themepath' => '../../../themes/' . DISPLAY_THEME . '/less',
+                'menu_width' => MENU_WIDTH,
             ));
         }
 
