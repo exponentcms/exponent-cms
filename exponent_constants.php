@@ -645,7 +645,7 @@ if (!defined('SWIFT_PATH')) {
  * Changing the versions here lets Exponent adjust where to look
  */
 if (!defined('MPDF7_VERSION')) {
-    define('MPDF7_VERSION', '7.0.2');
+    define('MPDF7_VERSION', '7.1.9');
 }
 if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.8');
@@ -654,7 +654,7 @@ if (!defined('MPDF8_VERSION')) {
  * Log is needed for MPDF v7+
  */
 if (!defined('LOG_VERSION')) {
-    define('LOG_VERSION', '1.0.2');
+    define('LOG_VERSION', '1.1.3');
 }
 /**
  * random_compat is needed for MPDF v7+ under PHP v5.6
@@ -670,17 +670,17 @@ if (!defined('FPDI_VERSION')) {
 }
 
 if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '082');
+    define('DOMPDF8_VERSION', '086');
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.0.1');
+    define('HTML2PDF5_VERSION', '5.2.2');
 }
 /**
  * TCPDF is needed for HTML2PDF
  */
 if (!defined('TCPDF5_VERSION')) {
-    define('TCPDF5_VERSION', '');  //fixme needs a '-' with current code
+    define('TCPDF5_VERSION', '6.3.5');
 }
 
 ?>

@@ -1469,7 +1469,7 @@ class expHTML2PDF5 extends expHTML2PDF
      * Return status of pdf engine being installed correctly
      */
     public static function installed() {
-        return file_exists(BASE . 'external/html2pdf-' . HTML2PDF5_VERSION . '/src/Html2Pdf.php') && file_exists(BASE . 'external/TCPDF' . TCPDF5_VERSION . '/tcpdf.php');
+        return file_exists(BASE . 'external/html2pdf-' . HTML2PDF5_VERSION . '/src/Html2Pdf.php') && file_exists(BASE . 'external/TCPDF-' . TCPDF5_VERSION . '/tcpdf.php');
     }
 
     /**
@@ -1483,7 +1483,7 @@ class expHTML2PDF5 extends expHTML2PDF
     public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
     {
         $html2pdf_loc = BASE . 'external/html2pdf-' . HTML2PDF5_VERSION . '/src/';
-        $tcpdf_loc = BASE . 'external/TCPDF' . TCPDF5_VERSION . '/';
+        $tcpdf_loc = BASE . 'external/TCPDF-' . TCPDF5_VERSION . '/';
         if (file_exists($html2pdf_loc . 'Html2Pdf.php') && file_exists($tcpdf_loc . 'tcpdf.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata'))
                 expFile::makeDirectory('tmp/ttfontdata');
