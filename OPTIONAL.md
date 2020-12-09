@@ -23,6 +23,7 @@ and must be extracted to the root folder, or installed from within Exponent
 (install extension) as a 'Patch' . Your choice of library will depend on the desired
 speed or accuracy of the output. You may choose to not activate this feature and
 simply require the user to locally create a PDF file on their end from printable output.
+If you are running an older version of PHP, you may need to use an older PDF Library.
 
 #### mPDF
 

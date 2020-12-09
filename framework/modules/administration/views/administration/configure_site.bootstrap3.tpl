@@ -380,7 +380,7 @@
                                    </div>
                                {/if}
                                <blockquote>
-                                   {'MPDF v7 is an optional package, but the preferred generator.  To obtain it, you must first download the customized version of the library'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf7.zip/download" target="_blank">mpdf7.zip</a>.
+                                   {'MPDF v7 is an optional package, but the preferred generator.  To obtain it, you must first download the customized version of the library'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf7v260.zip/download" target="_blank">mpdf7v260.zip</a>.
                                    {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
                                </blockquote>
                            </div>
@@ -395,7 +395,7 @@
                                    </div>
                                {/if}
                                <blockquote>
-                                   {'MPDF v8 is an optional package, but the preferred generator.  To obtain it, you must first download the customized version of the library'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf8.zip/download" target="_blank">mpdf8.zip</a>.
+                                   {'MPDF v8 is an optional package, but the preferred generator.  To obtain it, you must first download the customized version of the library'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf8v260.zip/download" target="_blank">mpdf8v260.zip</a>.
                                    {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
                                </blockquote>
                            </div>
@@ -440,7 +440,7 @@
                                    </div>
                                {/if}
                                <blockquote>
-                                   {'DOMPDF v0.8 is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf082.zip/download" target="_blank">dompdf082.zip</a>.
+                                   {'DOMPDF v0.8 is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf08v260.zip/download" target="_blank">dompdf08v260.zip</a>.
                                    {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
                                </blockquote>
                            </div>
@@ -470,7 +470,7 @@
                                    </div>
                                {/if}
                                <blockquote>
-                                   {'HTML2PDF v5 is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/html2pdf5.zip/download" target="_blank">html2pdf5.zip</a>.
+                                   {'HTML2PDF v5 is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/html2pdf5v260.zip/download" target="_blank">html2pdf5v260.zip</a>.
                                    {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
                                </blockquote>
                            </div>

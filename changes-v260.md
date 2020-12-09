@@ -8,6 +8,7 @@ Version 2.6.0 - Specific changes from previous version
 - add ability to select web pages for more easy internal link item creation
 - add optional .less/.scss auto-prefixer support (requires php-autoprefixer installation)
 - add initial support for bootstrap5 framework (requires optional package)
+- update exportPDF support to include latest PDF libraries (optional addons)
 
 ###v260 fixes these issues in v251 and previous patches:
 - regression fix (v2.5.1p2) EAAS won't properly decode apikey and fails on all calls
