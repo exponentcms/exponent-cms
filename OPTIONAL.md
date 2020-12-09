@@ -13,6 +13,7 @@ These optional features include:
 - PDF Export
 - Enhanced Debugging Output
 - Alternate .less Stylesheet Compiler
+- .less/.scss Auto-prefixer
 
 ### PDF Export
 
@@ -27,7 +28,7 @@ simply require the user to locally create a PDF file on their end from printable
 
 **mPDF is the preferred library.** We currently support three (3) versions:
 
-v7.0.2 is the newest version supported (v7.1.9/8.0.5 is the newest release)
+v7.0.2 is the newest version supported (v7.1.9/8.0.8 is the newest release)
 - [mpdf7.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf7.zip/download)
 This uses the mPDF v7.0.2 library which has been customized for Exponent.
 This requires Exponent CMS v2.4.2 or later.
@@ -46,7 +47,7 @@ package requires Exponent CMS v2.2.3 or later.
 
 domPDF was the first supported PHP based library. We currently support three (3) versions:
 
-v0.8.2 is the newest version supported (v0.8.5 is the newest release)
+v0.8.2 is the newest version supported (v0.8.6 is the newest release)
 - [dompdf082.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf082.zip/download)
 This uses the domPDF v0.8.2 library which has been customized for Exponent with a fix for thumbnails.
 This package requires Exponent CMS v2.4.2 and later.
@@ -111,3 +112,19 @@ slower than less.php, though it will compile Bootstrap v3. Simply extract a rele
 the /external folder which creates an subfolder named 'iless'. You must also manually edit the 
 /framework/conf/config.php file and change the LESS_COMPILER entry to 'iless'.
 - v2.2 is the newest version
+
+### .less/.scss Auto-prefixer
+
+#### php-autoprefixer
+
+Exponent CMS includes built-in .less and .scss stylesheet compiling support. Stylesheet library developers
+often expect their stylesheets to be pre-compiled on the server then run through a binary post-css processor. 
+Our PHP based solution allows this to take place within Exponent. Adding this option will cause the compiler 
+to run much slower than without it, but will add prefixes needed by older browsers.This option can be 
+implemented by installing the [php-autoprefixer](https://github.com/padaliyajay/php-autoprefixer) package. 
+This library also requires the [PHP-CSS-Parser](https://github.com/sabberworm/PHP-CSS-Parser) PHP
+library.  Simply extract the package into the / (root) folder and it will be automatically recognized.
+- [php-autoprefixer.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/php-autoprefixer.zip/download)
+This uses the php-autoprefixer v1.3 library with PHP-CSS-Parser v8.3.0 library which has been customized 
+for Exponent due to the unique file structure required. This requires Exponent CMS v2.6.0 or later.
+- v1.3 is the newest version, with PHP-CSS-Parser v8.3.0 as the latest support library
