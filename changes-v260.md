@@ -23,6 +23,7 @@ Version 2.6.0 - Specific changes from previous version
 - fix import ics events adds 'n' on new lines
 - fix display of bs3/bs4 file uploader widget
 - regression fix ups/fedex shipping configuration of shipping methods not properly redisplayed
+- prevent accidently breaking form during design by requiring control id (input validation)
 
 ###v260 updates these 3rd party libraries in v251 and previous patches:
 - datatables to v1.10.22
