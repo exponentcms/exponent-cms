@@ -55,9 +55,9 @@ class searchController extends expController {
         $terms = $this->params['search_string'];
 
         // If magic quotes is on and the user uses modifiers like " (quotes) they get escaped. We don't want that in this case.
-        if (get_magic_quotes_gpc()) {
-            $terms = stripslashes($terms);
-        }
+//        if (get_magic_quotes_gpc()) {
+//            $terms = stripslashes($terms);
+//        }
         $terms = expString::escape(htmlspecialchars($terms));
 
         if ($router->current_url == substr(URL_FULL, 0, -1)) {  // give us a user friendly url
@@ -342,8 +342,8 @@ class searchController extends expController {
             ),
         ));
 
-        $uname['id'] = implode($uname['id'],',');
-        $uname['name'] = implode($uname['name'],',');
+        $uname['id'] = implode(',', $uname['id']);
+        $uname['name'] = implode(',', $uname['name']);
         assign_to_template(array(
             'page'=>$page,
             'users'=>$uname,

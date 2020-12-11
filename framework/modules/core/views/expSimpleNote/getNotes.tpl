@@ -39,7 +39,7 @@
                     {$simplenotes->links}
                 </td>
             </tr>
-            {if !$hidenotes && $simplenotes|@count > 0}
+            {if !$hidenotes && $simplenotes->records|@count > 0}
                 {foreach from=$simplenotes->records item=note name=simplenote}
                     <tr class="note {cycle values="odd,even"}">
                         <td>

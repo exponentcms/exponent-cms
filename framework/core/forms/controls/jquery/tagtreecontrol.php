@@ -123,6 +123,9 @@ class tagtreecontrol extends formcontrol {
 		<div id="' . $this->id . '-checks"></div>';
 
         foreach ($this->tags as $i=> $val) {
+            if (!property_exists($this->tags[$i], 'state')) {
+                $this->tags[$i]->state = new stdClass();
+            }
             if (!empty($this->values) && in_array($val->id, $this->values)) {
                 $this->tags[$i]->value = true;
                 $this->tags[$i]->state->selected = true;

@@ -98,8 +98,12 @@ class product extends expRecord {
         }
         if (!empty($this->meta_tw))
             $this->meta_tw = expUnserialize($this->meta_tw);
+        else
+            $this->meta_fb = array();
         if (!empty($this->meta_tw['twimage']) && !empty($this->meta_tw['twimage'][0]))
             $this->meta_tw['twimage'][0] = new expFile($this->meta_tw['twimage'][0]);
+        else
+            $this->meta_tw = array();
 
         //sort the children by child_rank
         if ($this->hasChildren()) {

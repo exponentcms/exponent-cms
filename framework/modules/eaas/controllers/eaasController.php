@@ -373,11 +373,15 @@ class eaasController extends expController {
                     'dir'=>$dir,
                     'columns'=>array(gt('Title')=>'title',gt('Page')=>'section'),
                 ));
+
+                if (@is_null($this->config[$tab . '_aggregate'])) {
+                    $this->config[$tab . '_aggregate'] = array();
+                }
+
             }
 
             $this->configImage($tab);  // fix attached files for proper display of file manager control
         }
-        // edebug($this->config['expFile']);
 
         assign_to_template(array(
             'config'=>$this->config, // though already assigned in controllertemplate, we need to update expFiles

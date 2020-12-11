@@ -437,10 +437,16 @@ class expCore
         if ($destination === null) {
             return $destination;
         }
+
+        return unserialize(sprintf('O:%d:"%s"%s', \strlen($destinationtype), $destinationtype, strstr(strstr(serialize($source), '"'), ':')));
+
+        // old code incompatible with PHP v8
         $sourceReflection = new ReflectionObject($source);
         $sourceProperties = $sourceReflection->getProperties();
         foreach ($sourceProperties as $sourceProperty) {
             $name = $sourceProperty->getName();
+            $tmp1=$destination->{$name};
+            $tmp2=$source->$name;
             $destination->{$name} = $source->$name;
         }
         return $destination;

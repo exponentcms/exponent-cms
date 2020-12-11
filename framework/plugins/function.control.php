@@ -531,7 +531,7 @@ function smarty_function_control($params, &$smarty) {
         } elseif (isset($params['value'])) {
             // if this field is filtered than lets go ahead and format the data before we stick it in the field.
             if (!empty($params['filter']) && $params['filter'] == 'money') {
-                $params['value'] = expCore::getCurrencySymbol() . number_format($params['value'], 2, '.', ',');
+                $params['value'] = expCore::getCurrencySymbol() . number_format((float)$params['value'], 2, '.', ',');
             } elseif (!empty($params['filter']) && $params['filter'] == 'integer') {
                 $params['value'] = number_format($params['value'], 0, '.', ',');
             }

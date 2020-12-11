@@ -54,6 +54,7 @@ function smarty_function_rating($params,&$smarty) {
         $total_average = number_format($total_rating/$rating_count,1);
     } else {
         if (empty($params['record'])) {
+            $params['record'] = new stdClass();
             //FIXME we need to be able to get a expRating record based on:
             $myRatingcnt = $db->selectObject('content_expRatings',"content_type='".$params['content_type']."' AND subtype='".$params['subtype']."' AND content_id=".$params['content_id']." AND poster=".$params['user']);
             if (empty($myRatingcnt)) {

@@ -374,7 +374,7 @@ class ecomconfigController extends expController {
         assign_to_template(array(
             'countries'=>$countries,
             'regions'=>$regions,
-            'upcharge'=>!empty($this->config['upcharge'])?$this->config['upcharge']:''
+            'upcharge'=>!empty($this->config['upcharge'])?$this->config['upcharge']:array()
         ));
 	 }
 

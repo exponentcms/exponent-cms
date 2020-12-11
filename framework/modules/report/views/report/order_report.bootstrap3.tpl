@@ -137,14 +137,14 @@
                     </tr>
                     <tr class="even">
                         <td>
-                            {control type=radiogroup label='By Zip code:'|gettext columns=2 name="bl-sp-zip" items="Billing,or Shipping:"|gettxtlist values="b,s"  default=$record->bl-sp-zip|default:"s"}
+                            {control type=radiogroup label='By Zip code:'|gettext columns=2 name="bl-sp-zip" items="Billing,or Shipping:"|gettxtlist values="b,s"  default="s"}
                             {*{control type="text" name="zip" size=7 value=$record->zip class="collapse"}*}
                             {control type="text" name="zip" size=7 value=$record->zip class="align"}
                         </td>
                     </tr>
                     <tr class="odd">
                         <td>
-                            {control type=radiogroup label='By State:'|gettext columns=2 name="bl-sp-state" items="Billing,or Shipping:"|gettxtlist values="b,s" default=$record->bl-sp-zip|default:"s"}
+                            {control type=radiogroup label='By State:'|gettext columns=2 name="bl-sp-state" items="Billing,or Shipping:"|gettxtlist values="b,s" default="s"}
                             {*control type="dropdown" name="state" size=4 multiple=true items=$states class="collapse" includeblank=true*}
                             {*{control type=state name="state" all_us_territories=true exclude="6,8,10,17,30,46,50" size=4 multiple=true class="collapse" includeblank=true}*}
                             {control type=state name="state" exclude="6,8,10,17,30,46,50" size=4 multiple=true class="" default="-1"}
