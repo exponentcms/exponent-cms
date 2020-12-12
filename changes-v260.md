@@ -24,7 +24,7 @@ Version 2.6.0 - Specific changes from previous version
 - fix import ics events adds 'n' on new lines
 - fix display of bs3/bs4 file uploader widget
 - regression fix ups/fedex shipping configuration of shipping methods not properly redisplayed
-- prevent accidently breaking form during design by requiring control id (input validation)
+- prevent accidently breaking form during design by now requiring control id (input validation)
 
 ###v260 updates these 3rd party libraries in v251 and previous patches:
 - datatables to v1.10.22
@@ -35,6 +35,7 @@ Version 2.6.0 - Specific changes from previous version
 - moment.js to v2.29.1
 - validate to v1.19.2
 - scssphp to v1.4.0
+- less.php to v3.1.0 for up to php 8 compatibility
 - elFinder to v2.1.57
 - fontawesome v5 to v5.15.1
 - popper.js to v1.16.1
@@ -48,7 +49,7 @@ Version 2.6.0 - Specific changes from previous version
 - codemirror cdn to v5.58.3
 - aceeditor cdn to v1.4.12
 - (fix) bootstrap4 cdn for v4.5.3
-- bootstrap/bootswatch to v4.5.3
+- bootstrap/bootswatch v4 to v4.5.3
 
 
 ###v251patch3 adds these features to v251 and previous patches:
