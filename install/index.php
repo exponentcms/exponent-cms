@@ -117,6 +117,7 @@ if (isset($_REQUEST['install_sample'])) {
 //            $tar = new Archive_Tar($files);
 //            $return = $tar->extract(BASE);
             $tar = new PharData($files);
+            @unlink(substr($files, 0, -3)); // remove any existing intermediary .tar file
             $tar->decompress();  // creates .tar file
             $tar = new PharData(substr($files, 0, -3));
             $return = $tar->extractTo(BASE, null, true);

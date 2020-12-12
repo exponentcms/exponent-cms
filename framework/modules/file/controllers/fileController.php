@@ -966,6 +966,7 @@ class fileController extends expController {
                 $_FILES['file']['tmp_name'] .= '.tmp';
             }
             $tar = new PharData($_FILES['file']['tmp_name']);
+            @unlink(substr($_FILES['file']['tmp_name'], 0, -3) . 'tar'); // remove any existing intermediary .tar file
             $tar->decompress();  // uncompressed and creates .tar file
         	$dest_dir = BASE.'tmp/extensionuploads/'.uniqid('');
         	@mkdir($dest_dir, octdec(DIR_DEFAULT_MODE_STR + 0));
