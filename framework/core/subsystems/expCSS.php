@@ -49,7 +49,7 @@ class expCSS {
                 }
                 $less_path = ltrim($less_path, '/');
                 $css_path = str_replace("/less/", "/css/", $less_path);
-                $css_path = substr($css_path, 0, -4)."css";
+                $css_path = self::generate_filename($css_path);
                 //indexing the array by the filename
                 if (!isset($css_primer[$path_rel.$css_path]))
                     if (self::auto_compile_less($less_path, $css_path, $lless_vars))
@@ -70,7 +70,7 @@ class expCSS {
                 }
                 $scss_path = ltrim($scss_path, '/');
                 $css_path = str_replace("/scss/", "/css/", $scss_path);
-                $css_path = substr($css_path, 0, -4)."css";
+                $css_path = self::generate_filename($css_path);
                 //indexing the array by the filename
                 if (!isset($css_primer[$path_rel.$css_path]))
                     if (self::auto_compile_scss($scss_path, $css_path, $lless_vars))
@@ -101,7 +101,7 @@ class expCSS {
                 }
                 $less_path = ltrim($less_path, '/');
                 $css_path = str_replace("/less/", "/css/", $less_path);
-                $css_path = substr($css_path, 0, -4)."css";
+                $css_path = self::generate_filename($css_path);
                 //indexing the array by the filename
                 if (!isset($css_links[$path_rel.$css_path]))
                     if (self::auto_compile_less($less_path, $css_path, $lless_vars))
@@ -122,7 +122,7 @@ class expCSS {
                 }
                 $scss_path = ltrim($scss_path, '/');
                 $css_path = str_replace("/scss/", "/css/", $scss_path);
-                $css_path = substr($css_path, 0, -4)."css";
+                $css_path = self::generate_filename($css_path);
                 //indexing the array by the filename
                 if (!isset($css_links[$path_rel.$css_path]))
                     if (self::auto_compile_scss($scss_path, $css_path, $lless_vars))
@@ -320,7 +320,6 @@ class expCSS {
             $less_vars['themepath'] = '';
 
 //        // code for testing scss compiler
-//        self::auto_compile_scss('external/bootstrap5/scss/bootstrap', 'tmp/css/bootstrap5.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap5/scss/newui', 'tmp/css/newui5.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
@@ -339,7 +338,7 @@ class expCSS {
                         }
                         if (is_file($filename)) {
                             $css_dir = str_replace("/less/","/css/", $lessdir);
-                            $css_file = substr($lessfile,0, -4) . "css";
+                            $css_file = self::generate_filename($lessfile);
                             self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
                         }
                     }
@@ -351,7 +350,7 @@ class expCSS {
                         $filename = $lessdir . $lessfile;
                         if (is_file($filename) && substr($filename,-5,5) === ".less" && basename($filename) !== 'variables.less') {
                             $css_dir = str_replace("/less/","/css/", $lessdir);
-                            $css_file = substr($lessfile,0, -4)."css";
+                            $css_file = self::generate_filename($lessfile);
                             self::auto_compile_less($lessdir . $lessfile,$css_dir . $css_file, $less_vars);
                         }
                     }
@@ -374,7 +373,7 @@ class expCSS {
                         }
                         if (is_file($filename) || is_file("_" . $filename)) {
                             $css_dir = str_replace("/scss/","/css/", $scssdir);
-                            $css_file = substr($scssfile,0, -4) . "css";
+                            $css_file = self::generate_filename($scssfile);
                             self::auto_compile_scss($scssdir . $scssfile,$css_dir . $css_file, $less_vars);
                         }
                     }
@@ -386,7 +385,7 @@ class expCSS {
                         $filename = $scssdir . $scssfile;
                         if (is_file($filename) && substr($filename,-5,5) === ".scss" && basename($filename) !== '_variables.scss') {
                             $css_dir = str_replace("/scss/","/css/",$scssdir);
-                            $css_file = substr($scssfile,0, -4) . "css";
+                            $css_file = self::generate_filename($scssfile);
                             self::auto_compile_scss($scssdir . $scssfile,$css_dir.$css_file, $less_vars);
                         }
                     }
@@ -795,6 +794,19 @@ class expCSS {
         } else {
             return true;  // the .css file already exists and we're not in development
         }
+    }
+
+    /**
+     * Generate an output .css filename from the input filename
+     *   we assume the input filename has a .less, .scss, or no extension
+     */
+    public static function generate_filename($filename) {
+        if (substr($filename, -5, 1) == ".") {
+            $new_filename = substr($filename, 0, -4) . "css";
+        } else {
+            $new_filename = $filename . "css";
+        }
+        return $new_filename;
     }
 
     /**

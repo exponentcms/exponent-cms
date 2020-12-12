@@ -505,6 +505,12 @@ class expTheme
                         )
                     );
                 }
+//                expCSS::pushToHead(
+//                    array(
+//                        "scssprimer" => "external/bootstrap-icons-1.2.0/scss/bootstrapicons.scss",
+//                        "lessvars" => $less_vars,
+//                    )
+//                );
             } elseif (newui()) {
                 if (USE_CDN) {
                     expCSS::pushToHead(
