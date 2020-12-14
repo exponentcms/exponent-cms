@@ -114,6 +114,10 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
             if ($framework === 'bootstrap5') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap5');
             if (newui()) array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
             array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
+            if (!defined('XHTML')) {
+                define('XHTML', 1);
+                define('XHTML_CLOSING', "/"); //default
+            }
 
 			expTheme::runAction();
 		}
