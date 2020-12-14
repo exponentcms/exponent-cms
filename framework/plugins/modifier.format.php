@@ -45,7 +45,7 @@ function smarty_modifier_format($string, $format=null) {
         case 'currency' :
             $string = ($string=="") ? 0 : $string;
             if (is_numeric($string)) {
-                return expCore::getCurrencySymbol() . number_format($string, 2, ".", ",");
+                return expCore::getCurrencySymbol() . number_format((float)$string, 2, ".", ",");
             } else {
                 return $string;
             }

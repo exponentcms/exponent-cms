@@ -20,6 +20,10 @@
 <div class="module store showall-uncategorized">
     <div style="float:right; margin-top:15px;"><a href="{link controller=report action=batch_export applytoall=true}">{'Export This Data'|gettext}</a></div>
     <h1>{'Improperly Categorized Products'|gettext}</h1>
+    <blockquote>
+        {'These products are NOT assigned to an end-node category and therefore will NOT appear in any listing.'|gettext}
+        {'They MUST be asssgned to a store category which doesn\'t have sub-categories in order to appear in any listing.'|gettext}
+    </blockquote>
     {permissions}
     <div class="module-actions">
         {if $permissions.create}

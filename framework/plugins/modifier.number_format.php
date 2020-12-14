@@ -36,7 +36,7 @@
  */
 function smarty_modifier_number_format($number,$decimals) {
     $number = ($number=="") ? 0 : $number;
-	return number_format($number,$decimals,".",",");
+	return number_format((float)$number,$decimals,".",",");
 }
 
 ?>

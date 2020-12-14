@@ -341,7 +341,7 @@ class expCore
      */
     public static function getCurrency($amount, $currency_type = ECOM_CURRENCY)
     {
-        return self::getCurrencySymbol() . number_format($amount,2,".",",");
+        return self::getCurrencySymbol() . number_format((float)$amount,2,".",",");
     }
 
     /**

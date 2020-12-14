@@ -533,7 +533,7 @@ function smarty_function_control($params, &$smarty) {
             if (!empty($params['filter']) && $params['filter'] == 'money') {
                 $params['value'] = expCore::getCurrencySymbol() . number_format((float)$params['value'], 2, '.', ',');
             } elseif (!empty($params['filter']) && $params['filter'] == 'integer') {
-                $params['value'] = number_format($params['value'], 0, '.', ',');
+                $params['value'] = number_format((float)$params['value'], 0, '.', ',');
             }
             if ($params['type'] != 'checkbox' && $params['type'] != 'radio' && $params['type'] != 'radiogroup') $control->default = $params['value']; //FIXME is value always == default?
         }
