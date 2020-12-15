@@ -48,7 +48,7 @@ if ($db->havedb) {
 }
 
 // define whether or not ecom is enabled &initialize this users cart if they have ecom installed.
-if (ecom_active()) {
+if ($db->havedb && ecom_active()) {
     define('ECOM',1);
     $order = order::getUserCart();  // set global store $order
 } else {
