@@ -98,6 +98,9 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
 	}
 
 	if (is_readable($page)) {
+        define('PREVIEW_READONLY',0); // for mods
+//      	define('SELECTOR',0);
+
 		if (!expJavascript::inAjaxAction()) {
 			include($page);
 			expTheme::satisfyThemeRequirements();

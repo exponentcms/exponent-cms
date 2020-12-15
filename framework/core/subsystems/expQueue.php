@@ -57,6 +57,9 @@ class expQueue {
     public static function show($name=null) {
         $html = '';
         $queues = expSession::get('flash');
+        if (is_null($queues)) {
+            $queues = array();
+        }
         if (empty($name)) {
 //            $template = new template('common','_msg_queue',null,false,'globalviews');
             $template = new standalonetemplate('_msg_queue');
