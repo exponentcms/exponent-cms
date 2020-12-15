@@ -9,4 +9,5 @@ Version 2.6.0
  - now supports MySQL v5.7+ 'strict' mode
  - adds optional CDN usage for main libraries (jquery, bootstrap, font-awesome, & yui)
  - adds optional simplified permissions system for faster response on large systems
+ - changed login.php to logmein.php to prevent autoloading as a loginController class
  - fixes and tweaks many issues in previous versions

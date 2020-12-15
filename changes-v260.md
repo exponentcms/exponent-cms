@@ -9,6 +9,7 @@ Version 2.6.0 - Specific changes from previous version
 - add optional .less/.scss auto-prefixer support (requires php-autoprefixer installation)
 - add initial support for bootstrap5 framework (requires optional package)
 - update exportPDF support to include latest PDF libraries (optional addons)
+- changed sample db snippet module to use javascript instead of flash example
 
 ###v260 fixes these issues in v251 and previous patches:
 - regression fix (v2.5.1p2) EAAS won't properly decode apikey and fails on all calls
@@ -26,6 +27,8 @@ Version 2.6.0 - Specific changes from previous version
 - regression fix ups/fedex shipping configuration of shipping methods not properly redisplayed
 - prevent accidently breaking form during design by now requiring control id (input validation)
 - regression fix ajax javascript load didn't load bs4/bs5 version nor cdn which caused errors/anomalies
+- renamed login.php to logmein.php to prevent autoloading as a loginController module
+- regressioin fix ajax call loaded bootstrap v3 modules instead of bootstrap v4 scripts
 
 ###v260 updates these 3rd party libraries in v251 and previous patches:
 - datatables to v1.10.22
