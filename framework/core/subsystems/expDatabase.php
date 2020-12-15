@@ -53,8 +53,13 @@ class expDatabase {
 		if ($dbclass == '' || $dbclass == null) $dbclass = DB_ENGINE;
 		(include_once(BASE.'framework/core/subsystems/database/'.$dbclass.'.php')) or exit(gt('The specified database backend').'  ('.$dbclass.') '.gt('is not supported by Exponent'));
 		$dbclass .= '_database';
-		$newdb = new $dbclass($username,$password,$hostname,$database,$new,$log);
-        if (!$newdb->tableExists('user')) {
+		if ($username !== 'not_configured') {
+            $newdb = new $dbclass($username,$password,$hostname,$database,$new,$log);
+            if (!$newdb->tableExists('user')) {
+                $newdb->havedb = false;
+            }
+        } else {
+            $newdb = new stdClass();
             $newdb->havedb = false;
         }
 		return $newdb;

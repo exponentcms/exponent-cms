@@ -158,7 +158,7 @@ class expVersion {
 //                    $jsondata = json_decode(expCore::loadData('http://www.exponentcms.org/' . 'getswversion.php'));
                     $jsondata = json_decode(expCore::loadData('https://www.seindianabaptist.org/' . 'getswversion.php'));  //FIXME substitute until git fixed on exponent servers
                     expSession::set('update-check', '1');
-                    if (!empty($jsondata->data)) {
+                    if (!empty($jsondata->data->major)) {
                         $onlineVer = $jsondata->data;
                         if (!empty($onlineVer)) {
                             if (self::compareVersion($swversion, $onlineVer)) {
