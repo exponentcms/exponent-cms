@@ -38,7 +38,8 @@
  *
  * @return string
  */
-function smarty_modifier_contrast($hexcolor, $dark = '#000000', $light = '#FFFFFF', $yiq = false) {
+function smarty_modifier_contrast($hexcolor, $dark = '000000', $light = 'FFFFFF', $yiq = false) {
+    $hexcolor = str_replace('#', '', $hexcolor);
     if (!$yiq) {
         return (hexdec($hexcolor) > 0xffffff / 2) ? $dark : $light;
     } else {
