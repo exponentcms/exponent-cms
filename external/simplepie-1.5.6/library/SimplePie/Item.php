@@ -2790,7 +2790,7 @@ class SimplePie_Item
 					}
 					if (isset($link['attribs']['']['length']))
 					{
-						$length = ceil($link['attribs']['']['length']);
+						$length = ceil((int)$link['attribs']['']['length']);
 					}
 					if (isset($link['attribs']['']['title']))
 					{
@@ -2833,7 +2833,7 @@ class SimplePie_Item
 					}
 					if (isset($link['attribs']['']['length']))
 					{
-						$length = ceil($link['attribs']['']['length']);
+						$length = ceil((int)$link['attribs']['']['length']);
 					}
 
 					// Since we don't have group or content for these, we'll just pass the '*_parent' variables directly to the constructor
@@ -2868,7 +2868,7 @@ class SimplePie_Item
 					}
 					if (isset($enclosure[0]['attribs']['']['length']))
 					{
-						$length = ceil($enclosure[0]['attribs']['']['length']);
+						$length = ceil((int)$enclosure[0]['attribs']['']['length']);
 					}
 
 					// Since we don't have group or content for these, we'll just pass the '*_parent' variables directly to the constructor
