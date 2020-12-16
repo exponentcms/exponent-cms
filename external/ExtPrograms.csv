@@ -1,13 +1,11 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-Program,Version,URL,Avail version,Exponent Customization Notes:
-Program,Version,URL,Avail version,Exponent Customization Notes:
 Swiftmailer,5.4.12/6.2.3,github.com/swiftmailer/swiftmailer,6.2.3,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
 Doctrine Lexer,1.2.1,github.com/doctrine/lexer,1.2.1,needed by swiftmailer v6
 EmailValidator,2.1.22,github.com/egulias/EmailValidator,2.1.24,needed by swiftmailer v6; move folder structure and add autoloader to main file
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,22.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,22.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.27/3.1.36,smarty.net,3.1.36,
-phpthumb,1.7.15,github.com/JamesHeinrich/phpThumb,1.7.15,phpThumb.config.php - we also allow &amp in parsing and err command; php 8 fix
+phpthumb,16-202012161551,github.com/JamesHeinrich/phpThumb,16-202012161551,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.20,github.com/JamesHeinrich/getID3,1.9.20,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.10,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
@@ -19,14 +17,14 @@ feedcreator.class.php,1.80exp,sourceforge.net/projects/feedcreator,1.80dev,"blog
 xmlrpc.php,4.4.2,github.com/gggeek/phpxmlrpc,4.4.2,
 Twitter model,2.3.1,github.com/tijsverkoyen/TwitterOAuth,2.3.1,placed in Twitter module with _construct tweaked & namespace deleted
 Twitter API,1.0.6,github.com/J7mbo/twitter-api-php,1.0.6,used by socialmedia module
-SimplePie,1.5.6,github.com/simplepie/simplepie,1.5.6,
+SimplePie,1.5.6,github.com/simplepie/simplepie,1.5.6,php 8 fix
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,1.0.8,github.com/verot/class.upload.php,"1.0.8/2.0.9
 ","Correct flip operation where flip vertical & horizontal were inverted/swapped, php 8 fix"
-iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.29.29,uncomment load utilities
+iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.29.30,uncomment load utilities; php 8 fix
 scssphp,1.4.0exp,github.com/scssphp/scssphp,1.4.0,includes example server; hack to compile newui
 lessphp,0.5.0,github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
-less.php,3.1.0exp,github.com/wikimedia/less.php,3.1.0,code edit to fix IIS compatitility
+less.php,3.1.0exp,github.com/wikimedia/less.php,3.1.0,code edit to fix IIS compatitility' php v5.6 fix
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap3,3.4.1,twitter.github.com/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
 Twitter-Bootstrap4,4.5.3,twitter.github.com/bootstrap,4.5.3,patched bootstrap.scss includes swatches & exp variables
