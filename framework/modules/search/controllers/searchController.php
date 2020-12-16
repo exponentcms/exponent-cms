@@ -329,7 +329,7 @@ class searchController extends expController {
             'records' => $records,
             'where'=>1,
             'model'=>'search_queries',
-            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? 10 : $this->config['limit'],
+            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
             'order'=>empty($this->config['order']) ? 'timestamp' : $this->config['order'],
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,

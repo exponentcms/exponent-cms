@@ -364,6 +364,8 @@ class expCore
         curl_setopt($chImg, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0) Gecko/20100101 Firefox/4.0");
         if ($auth !== false) {
             curl_setopt($chImg, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $auth));
+        } else {
+            curl_setopt($chImg, CURLOPT_SSL_VERIFYPEER, false);
         }
         if ($post !== false) {
             $payload = json_encode($post);
@@ -406,6 +408,7 @@ class expCore
         curl_setopt($chImg, CURLOPT_BINARYTRANSFER, 1);
         curl_setopt($chImg, CURLOPT_CONNECTTIMEOUT, 30);
 //    	curl_setopt($chImg, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0) Gecko/20100101 Firefox/4.0");
+        curl_setopt($chImg, CURLOPT_SSL_VERIFYPEER, false);
         if ($post) {
             curl_setopt($chImg, CURLOPT_POST, true);
         }

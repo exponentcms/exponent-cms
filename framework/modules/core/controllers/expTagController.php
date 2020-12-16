@@ -75,6 +75,7 @@ class expTagController extends expController {
         }
 
 //        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+        $record->attached = array();
         foreach (expTag::selectAllTagContentType() as $contenttype) {
             $attatchedat = $record->findWhereAttachedTo($contenttype);
             if (!empty($attatchedat)) {
