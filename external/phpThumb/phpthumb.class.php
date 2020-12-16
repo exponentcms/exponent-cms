@@ -1256,9 +1256,9 @@ class phpthumb {
 
 		// http://stackoverflow.com/questions/21421569
 		$newfilename = preg_replace('#[\\/]+#', DIRECTORY_SEPARATOR, $filename);
-		if (!preg_match('#^'.DIRECTORY_SEPARATOR.'#', $newfilename)) {
-			$newfilename =  __DIR__ .DIRECTORY_SEPARATOR.$newfilename;
-		}
+//		if (!preg_match('#^'.preg_quote(DIRECTORY_SEPARATOR).'#', $newfilename)) {
+//			$newfilename =  __DIR__ .DIRECTORY_SEPARATOR.$newfilename;
+//		}
 		do {
 			$beforeloop = $newfilename;
 
