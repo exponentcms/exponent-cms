@@ -50,6 +50,7 @@ Version 2.6.0 - Specific changes from previous version
 - EmailValidator to v2.1.24
 - lexer to v1.2.1
 - getid3 to v1.9.20
+- phpThumb to pre-release v1.7.16-202012161551  
 - codemirror cdn to v5.58.3
 - aceeditor cdn to v1.4.12
 - (fix) bootstrap4 cdn for v4.5.3
