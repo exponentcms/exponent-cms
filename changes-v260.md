@@ -16,6 +16,7 @@ Version 2.6.0 - Specific changes from previous version
 - regression fix (v2.5.1p1) mysql strict mode (sessionticket/billingmethods records)
 - regression fix (v2.5.1p1) mysql strict mode can't update blog, news, or filedownload items
 - regression fix (v2.5.1p1) mysql strict mode ecommerce unable to add items to the cart
+- regression fix (v2.5.1p1) mysql strict mode prevents restore db (section) with error reporting on
 - fix display of bs4 radio groups
 - fix list of pages available for internal alias pages
 - regression fix attachItem() function to actually replace existing attachments
@@ -29,6 +30,7 @@ Version 2.6.0 - Specific changes from previous version
 - regression fix ajax javascript load didn't load bs4/bs5 version nor cdn which caused errors/anomalies
 - renamed login.php to logmein.php to prevent autoloading as a loginController module
 - regressioin fix ajax call loaded bootstrap v3 modules instead of bootstrap v4 scripts
+- regression fix bs4 install extensions fails
 
 ###v260 updates these 3rd party libraries in v251 and previous patches:
 - datatables to v1.10.22

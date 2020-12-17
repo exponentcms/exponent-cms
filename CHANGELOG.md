@@ -17,7 +17,7 @@ Version 2.6.0
    - adds support for PHP v7.4
    - deprecated support for PHP v5.6.x, v7.0.x, v7.1.x, and v7.2.x still exists
  - initial support for PHP v8.x
- - initial support for Twitter Bootstrap v5
+ - initial support for Twitter Bootstrap v5, requires optional package
  - now supports MySQL v5.7+ 'strict' mode
  - adds optional CDN usage for main libraries (jquery, bootstrap, font-awesome, & yui)
  - adds optional simplified permissions system for faster response on large systems
