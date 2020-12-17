@@ -107,7 +107,9 @@ abstract class upgradescript {
      * @return bool
      */
     public static function prioritize($a, $b) {
-        return $a->priority > $b->priority;
+        if ($a->priority == $b->priority)
+            return 0;
+        return ($a->priority > $b->priority) ? +1 : -1;
     }
 
 }
