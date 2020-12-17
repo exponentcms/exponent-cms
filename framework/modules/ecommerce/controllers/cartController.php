@@ -295,7 +295,7 @@ class cartController extends expController {
         //eDebug(new expHistory);
         expHistory::set('viewable', $this->params);
         //eDebug($order,true);
-        if (isset($order)) {
+        if (get_class($order) == "order") {
             //this triggers creation/updating of the shippingmethod and setting
             //default rate if user has not yet chosen one.
 //            $shipping = new shipping();
