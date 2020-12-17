@@ -200,58 +200,6 @@
                 //     'resize', 'sort', 'netmount', 'netunmount', 'places', 'chmod', 'links'
                 // ],
                 commandsOptions : {
-                    {/literal}{if $smarty.const.FM_EDITORS=="old"}{literal}  //fixme commandsOptions/edit replaced by extras/editors.default.js v 2.1.25+
-                    edit : {
-                    {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
-                        editors : [
-                            {
-                                // CKEditor for html file
-                                mimes : ['text/html'],
-                                exts  : ['htm', 'html', 'xhtml'],
-                                load : function(textarea) {
-                                    $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ckeditor/ckeditor.js'));
-                                    return CKEDITOR.replace( textarea.id, {
-                                        startupFocus : true,
-                                        fullPage: true,
-//                                        allowedContent: true,
-                                        toolbarCanCollapse : true,
-                                        toolbarStartupExpanded : false,
-                                        extraPlugins : 'image2',
-                                    });
-                                },
-                                close : function(textarea, instance) {
-                                    instance.destroy();
-                                },
-                                save : function(textarea, instance) {
-                                    textarea.value = instance.getData();
-                                },
-                                focus : function(textarea, instance) {
-                                    instance && instance.focus();
-                                }
-                            }
-                        ]
-                    {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || SITE_WYSIWYG_EDITOR == 'tinymce5'}{literal}
-                        mimes : ['text/plain', 'text/html', 'text/javascript', 'text/csv', 'text/x-comma-separated-values'],
-                        editors : [
-                            {
-                                mimes : ['text/html'],
-                                exts  : ['htm', 'html', 'xhtml'],
-                                load : function(textarea) {
-                                    $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/tinymce/tinymce.min.js'));
-                                    tinyMCE.execCommand('mceAddEditor', true, textarea.id);
-                                },
-                                close : function(textarea, instance) {
-                                    tinyMCE.execCommand('mceRemoveEditor', false, textarea.id);
-                                },
-                                save : function(textarea, editor) {
-                                    textarea.value = tinyMCE.get(textarea.id).getContent({format : 'html'});
-                                    tinyMCE.execCommand('mceRemoveEditor', false, textarea.id);
-                                }
-                            }
-                        ]
-                    {/literal}{/if}{literal}
-                    },
-                    {/literal}{/if}{literal}  // fixme editors.default.js
                     getfile : {
                         // allow to return multiple files info
                         multiple : {/literal}{if $smarty.get.update!='noupdate' && $smarty.get.update!='ck' && $smarty.get.update!='tiny'}true{else}false{/if}{literal},
