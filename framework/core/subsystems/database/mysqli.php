@@ -462,7 +462,7 @@ class mysqli_database extends database {
 			$res = @mysqli_query($this->connection, $sql);
 		}
         if (DEVELOPMENT && !$res)
-            eLog($sql, 'sql Error');
+            eLog($sql . ' - ' . mysqli_error ( $this->connection ), 'sql Error');
         return $res;
     }
 
@@ -962,7 +962,7 @@ class mysqli_database extends database {
             return $id;
         } else
             if (DEVELOPMENT)
-               eLog($sql, 'insertObject Error');
+               eLog($sql . ' - ' . mysqli_error ( $this->connection ), 'insertObject Error');
             return 0;
     }
 
@@ -1046,7 +1046,7 @@ class mysqli_database extends database {
         //if ($table == 'text') eDebug($sql,true);
         $res = (@mysqli_query($this->connection, $sql) != false);
         if (DEVELOPMENT && !$res)
-            eLog($sql, 'updateObject Error');
+            eLog($sql . ' - ' . mysqli_error ( $this->connection ), 'updateObject Error');
         return $res;
     }
 
