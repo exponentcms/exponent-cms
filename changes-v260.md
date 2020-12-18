@@ -33,7 +33,7 @@ Version 2.6.0 - Specific changes from previous version
 - regression fix bs4 install extensions fails
 
 ###v260 updates these 3rd party libraries in v251 and previous patches:
-- datatables to v1.10.22
+- datatables to v1.10.23
 - datatables checkboxes to v1.2.12
 - tinymce v5 to v5.6.2
 - tinymce v4 to v4.9.11
@@ -53,6 +53,7 @@ Version 2.6.0 - Specific changes from previous version
 - lexer to v1.2.1
 - getid3 to v1.9.20
 - phpThumb to pre-release v1.7.16-202012161551  
+- xmlrpc-php to v4.4.3
 - codemirror cdn to v5.58.3
 - aceeditor cdn to v1.4.12
 - (fix) bootstrap4 cdn for v4.5.3
