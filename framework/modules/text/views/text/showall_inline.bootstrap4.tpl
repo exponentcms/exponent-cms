@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -134,7 +134,7 @@
         {/script}
     {/if}
 
-    {script unique=$name jquery="bootstrap-dialog" bootstrap="modal,transition"}
+    {script unique=$name jquery="bootstrap-dialog" bootstrap="modal"}
     {literal}
     $(document).ready(function(){
         var src = '{/literal}{$__loc->src}{literal}';

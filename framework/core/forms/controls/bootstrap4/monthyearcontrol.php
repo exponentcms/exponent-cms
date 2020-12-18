@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,7 +36,7 @@ class monthyearcontrol extends formcontrol {
         $this->id = (empty($this->id)) ? $name : $this->id;
         $html     = "<div id=\"" . $this->id . "Control\" class=\"monthyear control row form-group";
         $html .= (!empty($this->required)) ? ' required">' : '">';
-        $html .= "<label class=\"".(bs4()?"control-label col-form-label":"") . (($this->horizontal == 1)?' col-sm-2':'') ."\"><span class=\"".(bs4()?"control-label col-form-label":"label")."\">" . $label . "</span></label>";
+        $html .= "<label class=\"".((bs4() || bs5())?"control-label col-form-label":"") . (($this->horizontal == 1)?' col-sm-2':'') ."\"><span class=\"".((bs4() || bs5())?"control-label col-form-label":"label")."\">" . $label . "</span></label>";
         $html .= ($this->horizontal) ? '<div class="col-sm-10">' : '';
         $html .= $this->controlToHTML($name, $label);
         $html .= ($this->horizontal) ? '</div>' : '';
@@ -45,7 +45,7 @@ class monthyearcontrol extends formcontrol {
     }
 
 	function controlToHTML($name,$label=null) {
-		$html = '<select ' . (bs4() ? 'class="form-control" ' : '') . (($this->horizontal == 1)?'style="display:inline;" ':'') . 'id="' . $name . '_month" name="' . $name . '_month">';
+		$html = '<select ' . ((bs4() || bs5()) ? 'class="form-control" ' : '') . (($this->horizontal == 1)?'style="display:inline;" ':'') . 'id="' . $name . '_month" name="' . $name . '_month">';
 		for ($i = 1; $i <= 12; $i++) {
 			$s = ((strlen($i) == 1)?"0".$i:$i);
 			$html .= '<option value="' . $s . '"';
@@ -54,7 +54,7 @@ class monthyearcontrol extends formcontrol {
 		}
 		$html .= '</select>';
 		$html .= "/";
-		$html .= '<select ' . (bs4() ? 'class="form-control" ' : '') . (($this->horizontal == 1)?'style="display:inline;" ':'') . 'id="' . $name . '_year" name="' . $name . '_year">';
+		$html .= '<select ' . ((bs4() || bs5()) ? 'class="form-control" ' : '') . (($this->horizontal == 1)?'style="display:inline;" ':'') . 'id="' . $name . '_year" name="' . $name . '_year">';
 		for ($i = date("Y"); $i <= (date("Y") + 15); $i++) {
 			$html .= '<option value="' . $i . '"';
 			if ($i == $this->default_year) $html .= " selected";

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -53,8 +53,13 @@ class expDatabase {
 		if ($dbclass == '' || $dbclass == null) $dbclass = DB_ENGINE;
 		(include_once(BASE.'framework/core/subsystems/database/'.$dbclass.'.php')) or exit(gt('The specified database backend').'  ('.$dbclass.') '.gt('is not supported by Exponent'));
 		$dbclass .= '_database';
-		$newdb = new $dbclass($username,$password,$hostname,$database,$new,$log);
-        if (!$newdb->tableExists('user')) {
+		if ($username !== 'not_configured') {
+            $newdb = new $dbclass($username,$password,$hostname,$database,$new,$log);
+            if (!$newdb->tableExists('user')) {
+                $newdb->havedb = false;
+            }
+        } else {
+            $newdb = new stdClass();
             $newdb->havedb = false;
         }
 		return $newdb;
@@ -250,10 +255,20 @@ class expDatabase {
 
 				// Is there a formatter?
 				if ( isset( $column['formatter'] ) ) {
+                    if(empty($column['db'])){
+                        $row[ $column['dt'] ] = $column['formatter']( $data[$i] );
+                    }
+                    else{
 					$row[ $column['dt'] ] = $column['formatter']( $data[$i][ $column['db'] ], $data[$i] );
 				}
+				}
 				else {
+                    if(!empty($column['db'])){
 					$row[ $column['dt'] ] = $data[$i][ $columns[$j]['db'] ];
+				}
+                    else{
+                        $row[ $column['dt'] ] = "";
+                    }
 				}
 			}
 
@@ -710,7 +725,12 @@ class expDatabase {
 		$out = array();
 
 		for ( $i=0, $len=count($a) ; $i<$len ; $i++ ) {
-			$out[] = $a[$i][$prop];
+            if(empty($a[$i][$prop])){
+                continue;
+			}
+			//removing the $out array index confuses the filter method in doing proper binding,
+			//adding it ensures that the array data are mapped correctly
+			$out[$i] = $a[$i][$prop];
 		}
 
 		return $out;
@@ -1492,7 +1512,7 @@ abstract class database {
      * @param null $where
      * @param null $orderby
      */
-	function selectAndJoinObjects($colsA=null, $colsB=null, $tableA, $tableB, $keyA, $keyB=null, $where = null, $orderby = null) {  //FIXME never used
+	function selectAndJoinObjects($colsA=null, $colsB=null, $tableA=null, $tableB=null, $keyA=null, $keyB=null, $where = null, $orderby = null) {  //FIXME never used
 
 	}
 
@@ -2094,7 +2114,7 @@ abstract class database {
      *
      * @return array
      */
-	abstract function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false, $user=null);
+	abstract function selectExpObjects($table=null, $where=null, $classname=null, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false, $user=null);
 
     /**
      * Instantiate objects from selected records from the database

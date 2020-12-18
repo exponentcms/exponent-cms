@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="{$smarty.const.YUI3_RELATIVE}yui/yui-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
 </head>
-<body{if !bs3() && !bs4()} class="exp-skin"{/if}>
+<body{if !bs3() && !bs4() && !bs5()} class="exp-skin"{/if}>
 <div id="exp-adder">
     <h1>{"Add Existing Files"|gettext}</h1>
     <div id="actionbar">

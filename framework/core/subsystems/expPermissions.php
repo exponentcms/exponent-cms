@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -537,6 +537,7 @@ class expPermissions {
      * @deprecated 2.3.3 moved into expSession
 	 */
 	public static function triggerRefresh() {
+        expCore::deprecated('expSession::triggerRefresh()');
 		global $db;
 		$obj = new stdClass();
 		$obj->refresh = 1;

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -108,7 +108,7 @@ class tagpickercontrol extends formcontrol {
 
             $('#" . $this->id . "').attr('data-role', 'tagsinput').tagsinput({
         ";
-        if (bs4())
+        if (bs4() || bs5())
             $script .= "    tagClass: 'badge badge-info',";
         $script .= "
                 typeaheadjs: {

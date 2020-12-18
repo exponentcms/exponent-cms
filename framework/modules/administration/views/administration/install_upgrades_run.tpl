@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -45,7 +45,7 @@
     <ol>
         {foreach from=$scripts item=upgradescript key=name}
             <li>
-                <label {if !bs3()}class="label"{/if}><h3>{$upgradescript->name()}</h3></label>
+                <label {if !bs3() && !bs4() && ! bs5()}class="label"{/if}><h3>{$upgradescript->name()}</h3></label>
                 {if !empty($upgradescript->results)}
                     <p class="success">{$upgradescript->results}</p>
                 {else}

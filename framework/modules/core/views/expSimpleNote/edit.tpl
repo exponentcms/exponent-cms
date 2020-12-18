@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -31,7 +31,7 @@
 			{if $user->id == 0}
 				{control type=text name=email label="Email (required)"|gettext value=$simplenote->email}
 			{else}
-				<strong>{'Email:'|gettext} {$user->email}{br}
+                <strong>{'Email:'|gettext} {$user->email}</strong>{br}
 			{/if}
 			{*{control type=textarea name=body label="Note"|gettext|cat:":" rows=6 cols=35 value=$simplenote->body}*}
 			{control type="editor" name=body label="Note"|gettext value=$simplenote->body toolbar='basic'}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -147,14 +147,20 @@ class fileController extends expController {
                         $view = $bstrapview;
                     }
                 }
-                if (bs3(true) || bs4()) {
+                if (bs3(true) || bs4() || bs5()) {
                     $bstrapview = $path.'/'.$this->params['view'].'.bootstrap3.tpl';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
                 }
-                if (bs4()) {
+                if (bs4() || bs5()) {
                     $bstrapview = $path.'/'.$this->params['view'].'.bootstrap4.tpl';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
+                if (bs5()) {
+                    $bstrapview = $path.'/'.$this->params['view'].'.bootstrap5.tpl';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
@@ -197,14 +203,20 @@ class fileController extends expController {
                         $view = $bstrapview;
                     }
                 }
-                if (bs3(true) || bs4()) {
+                if (bs3(true) || bs4() || b5()) {
                     $bstrapview = $path.'/'.$this->params['view'].'.bootstrap3.config';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
                 }
-                if (bs4()) {
+                if (bs4() || bs5()) {
                     $bstrapview = $path.'/'.$this->params['view'].'.bootstrap4.config';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
+                if (bs5()) {
+                    $bstrapview = $path.'/'.$this->params['view'].'.bootstrap5.config';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
@@ -224,14 +236,20 @@ class fileController extends expController {
                             $actview = $bstrapview;
                         }
                     }
-                    if (bs3(true) || bs4()) {
+                    if (bs3(true) || bs4() || bs5()) {
                         $bstrapview = $path . '/' . $actview . '.bootstrap3.config';
                         if (file_exists($bstrapview)) {
                             $actview = $bstrapview;
                         }
                     }
-                    if (bs4()) {
+                    if (bs4() || bs5()) {
                         $bstrapview = $path . '/' . $actview . '.bootstrap4.config';
+                        if (file_exists($bstrapview)) {
+                            $actview = $bstrapview;
+                        }
+                    }
+                    if (bs5()) {
+                        $bstrapview = $path . '/' . $actview . '.bootstrap5.config';
                         if (file_exists($bstrapview)) {
                             $actview = $bstrapview;
                         }
@@ -948,6 +966,7 @@ class fileController extends expController {
                 $_FILES['file']['tmp_name'] .= '.tmp';
             }
             $tar = new PharData($_FILES['file']['tmp_name']);
+            @unlink(substr($_FILES['file']['tmp_name'], 0, -3) . 'tar'); // remove any existing intermediary .tar file
             $tar->decompress();  // uncompressed and creates .tar file
         	$dest_dir = BASE.'tmp/extensionuploads/'.uniqid('');
         	@mkdir($dest_dir, octdec(DIR_DEFAULT_MODE_STR + 0));

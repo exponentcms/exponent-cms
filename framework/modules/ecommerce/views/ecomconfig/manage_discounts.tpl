@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -30,7 +30,7 @@
 
         {icon class=add controller="ecomconfig" action="edit_discount" text="Create a New Store Discount"|gettext}
 
-        {if $page|@count > 0}
+        {if $page->records|@count > 0}
             <h3>{"Modify existing store discounts"|gettext}</h3>
            {pagelinks paginate=$page top=1}
 			<table id="discounts" class="exp-skin-table">

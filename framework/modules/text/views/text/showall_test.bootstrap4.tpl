@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -331,8 +331,8 @@
 {edebug var=$items}
 <div class="module text showall">
 
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
-    <{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
+{if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
+<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
 {permissions}
     <div class="module-actions">
         {if $permissions.create}
@@ -416,7 +416,7 @@
 
                 <div class="bs-component">
                     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-                        <a class="navbar-brand" href="#">Navbar</a>
+                        <a class="navbar-brand" href="#">Navbar Dk Pri</a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
                                 aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
@@ -447,7 +447,7 @@
 
                 <div class="bs-component">
                     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                        <a class="navbar-brand" href="#">Navbar</a>
+                        <a class="navbar-brand" href="#">Navbar Dk</a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
                                 aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
@@ -478,7 +478,7 @@
 
                 <div class="bs-component">
                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                        <a class="navbar-brand" href="#">Navbar</a>
+                        <a class="navbar-brand" href="#">Navbar Lt</a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
                                 aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>

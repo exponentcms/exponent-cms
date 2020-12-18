@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,7 +13,7 @@
  *
  *}
 
-{if (bs3() || bs4())}
+{if (bs3() || bs4() || bs5())}
     {$label_class = "control-label"}
 {else}
     {$label_class = "label"}

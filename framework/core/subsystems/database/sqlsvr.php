@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -906,7 +906,7 @@ class sqlsvr_database extends database {
 	 * @param null $orderby
 	 * @return array'
 	 */
-    function selectAndJoinObjects($colsA=null, $colsB=null, $tableA, $tableB, $keyA, $keyB=null, $where = null, $orderby = null) {
+    function selectAndJoinObjects($colsA=null, $colsB=null, $tableA=null, $tableB=null, $keyA=null, $keyB=null, $where = null, $orderby = null) {
         $sql = 'SELECT ';
         if ($colsA != null) {
             if (!is_array($colsA)) {
@@ -1944,7 +1944,7 @@ class sqlsvr_database extends database {
      *
      * @return array
      */
-    function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false, $user=null) {
+    function selectExpObjects($table=null, $where=null, $classname=null, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false, $user=null) {
         if ($where == null || $where == "1")
             $where = "1=1";
         else

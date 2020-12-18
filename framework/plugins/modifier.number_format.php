@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,7 +36,7 @@
  */
 function smarty_modifier_number_format($number,$decimals) {
     $number = ($number=="") ? 0 : $number;
-	return number_format($number,$decimals,".",",");
+	return number_format((float)$number,$decimals,".",",");
 }
 
 ?>

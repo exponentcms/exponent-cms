@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -389,7 +389,7 @@
                             <strong class="selected-info">{$billing->selectable_calculators[$cviews.id]}</strong>
                         {/foreach}
                         {foreach from=$billing->calculator_views key=key item=cviews name=calcs}
-                            <div id="tab{$smarty.foreach.calcs.iteration}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.calcs.first} in active{/if}">
+                            <div id="tab{$smarty.foreach.calcs.iteration}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.calcs.first} show active{/if}">
                                 {include file=$cviews.view calcid=$cviews.id}
                             </div>
                         {/foreach}

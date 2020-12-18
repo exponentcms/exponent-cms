@@ -9,7 +9,7 @@ Disallow: /exponent_constants.php
 Disallow: /exponent_php_setup.php
 Disallow: /exponent_version.php
 Disallow: /getswversion.php
-Disallow: /login.php
+Disallow: /logmein.php
 Disallow: /overrides.php
 Disallow: /phpdoc.xml
 Disallow: /reset.php

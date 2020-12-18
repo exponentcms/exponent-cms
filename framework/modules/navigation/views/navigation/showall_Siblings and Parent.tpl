@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,23 +13,26 @@
  *
  *}
 
-{css unique="sidenav"}
+{css unique="siblings-and-parents"}
 {literal}
-    .siblings-and-children li {
+    .siblings-and-parents li {
         list-style: none;
         line-height: 3rem;
+        margin-bottom: 10px;
+        font-size: 120%;
     }
-    .siblings-and-children .parent {
+    .siblings-and-parents .parent {
         font-size: 130%;
+        font-weight: bold;
     }
-    .siblings-and-children .current a {
+    .siblings-and-parents .current a {
         color: black;
         font-weight: bolder;
     }
 {/literal}
 {/css}
 
-<div class="module navigation siblings-and-children">
+<div class="module navigation siblings-and-parents">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}

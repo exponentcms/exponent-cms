@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -731,6 +731,14 @@ class eventregistration extends expRecord {
             );
         } elseif (bs4(true)) {
             $vars = array(
+                '.bootstrap4',
+                '.bootstrap3',
+                '.bootstrap',
+                '',
+            );
+        } elseif (bs5(true)) {
+            $vars = array(
+                '.bootstrap5',
                 '.bootstrap4',
                 '.bootstrap3',
                 '.bootstrap',

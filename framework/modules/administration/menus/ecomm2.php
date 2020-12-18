@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -109,7 +109,7 @@ foreach ($events as $event) {
     }
 }
 
-if (bs3() || bs4()) {
+if (bs3() || bs4() || bs5()) {
     $items = array_merge($items1, $items2);
 } else {
     $items = array($items1, $items2);

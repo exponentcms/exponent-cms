@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -1469,7 +1469,7 @@ class expHTML2PDF5 extends expHTML2PDF
      * Return status of pdf engine being installed correctly
      */
     public static function installed() {
-        return file_exists(BASE . 'external/html2pdf-' . HTML2PDF5_VERSION . '/src/Html2Pdf.php') && file_exists(BASE . 'external/TCPDF/tcpdf.php');
+        return file_exists(BASE . 'external/html2pdf-' . HTML2PDF5_VERSION . '/src/Html2Pdf.php') && file_exists(BASE . 'external/TCPDF-' . TCPDF5_VERSION . '/tcpdf.php');
     }
 
     /**

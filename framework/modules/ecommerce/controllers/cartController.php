@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -295,7 +295,7 @@ class cartController extends expController {
         //eDebug(new expHistory);
         expHistory::set('viewable', $this->params);
         //eDebug($order,true);
-        if (isset($order)) {
+        if (get_class($order) == "order") {
             //this triggers creation/updating of the shippingmethod and setting
             //default rate if user has not yet chosen one.
 //            $shipping = new shipping();
@@ -385,7 +385,7 @@ class cartController extends expController {
 //            flashAndFlow('error',gt("Note: Thank you for your decision to purchase. However, our minimum order for merchandise is ").expCore::getCurrencySymbol() . number_format($config->config['min_order'], 2, ".", ",") . ". ".gt("Please increase your quantity or continue shopping."));
 //        }
         if ($order->total < (int)(ecomconfig::getConfig('min_order'))) {
-            flashAndFlow('error',gt("Note: Thank you for your decision to purchase. However, our minimum order for merchandise is ").expCore::getCurrencySymbol() . number_format(ecomconfig::getConfig('min_order'), 2, ".", ",") . ". ".gt("Please increase your quantity or continue shopping."));
+            flashAndFlow('error',gt("Note: Thank you for your decision to purchase. However, our minimum order for merchandise is ").expCore::getCurrencySymbol() . number_format((float)ecomconfig::getConfig('min_order'), 2, ".", ",") . ". ".gt("Please increase your quantity or continue shopping."));
         }
 
         if (empty($order->orderitem)) flashAndFlow('error',gt('There are no items in your cart.'));

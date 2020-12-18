@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -117,6 +117,7 @@ if (isset($_REQUEST['install_sample'])) {
 //            $tar = new Archive_Tar($files);
 //            $return = $tar->extract(BASE);
             $tar = new PharData($files);
+            @unlink(substr($files, 0, -3)); // remove any existing intermediary .tar file
             $tar->decompress();  // creates .tar file
             $tar = new PharData(substr($files, 0, -3));
             $return = $tar->extractTo(BASE, null, true);
@@ -199,6 +200,7 @@ switch ($page) {
         $page_text = gt(
             'Your theme is your site\'s look and feel. Select what you\'d like your site to look like from the list of themes. You may also give your site some sample content.'
         );
+        $use_cdn = ($_REQUEST['use_cdn']);
         break;
     case 'install-6':
         $masthead = gt("New Installation");

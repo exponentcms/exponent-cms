@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -47,7 +47,7 @@ class uploadcontrol extends formcontrol {
 
 	function controlToHTML($name,$label)
     {
-        $html = ($this->horizontal && (bs3()||bs4())) ? '<div class="col-sm-10">' : '';
+        $html = ($this->horizontal && (bs3()||bs4() || bs5())) ? '<div class="col-sm-10">' : '';
 
         if (!empty($this->default)) {
             $html .= '<div class="fileinput fileinput-exists input-group" data-provides="fileinput">';
@@ -60,16 +60,17 @@ class uploadcontrol extends formcontrol {
             $fi_file = '';
         }
         $html .= '  <div class="form-control" data-trigger="fileinput"><i class="fas fa-file fileinput-exists"></i> ';
-        $html .= '<span class="fileinput-filename">' . $fi_file . '</span></div>';
-        $html .= '  <span class="input-group-append input-group-text btn btn-default btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"';
+        $html .= '<span class="fileinput-filename with-icon">' . $fi_file . '</span></div>';
+        $html .= '<span class="input-group-append">';
+        $html .= '<span class="input-group-text fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</span>';
+        $html .= '<span class="input-group-text btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"';
         if (!empty($this->accept))
             $html .= ' accept="' . $this->accept . '"';
         $html .= '></span>';
-        $html .= '  <a href="#" class="input-group-append input-group-text btn btn-default fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</a>';
-        $html .= '</div>';
+        $html .= '</span></div>';
 
         if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">" . $this->description . "</small>";
-        $html .= ($this->horizontal &&(bs3()||bs4())) ? '</div>' : '';
+        $html .= ($this->horizontal &&(bs3()||bs4() || bs5())) ? '</div>' : '';
 
         expCSS::pushToHead(array(
             "unique" => 'fileupload-' . $name,
@@ -88,7 +89,7 @@ class uploadcontrol extends formcontrol {
                 }
     	    "
         ));
-        if (bs4()) {
+        if (bs4() || bs5()) {
             expCSS::pushToHead(array(
                 "unique" => 'fileupload-bs4-' . $name,
                 "css" => "
@@ -98,6 +99,15 @@ class uploadcontrol extends formcontrol {
                     }
         	    "
             ));
+            global $less_vars;
+
+            if (empty($less_vars['themepath'])) {
+                $less_vars = array_merge($less_vars, array(
+                    'swatch' => SWATCH,
+                    'themepath' => '../../../themes/' . DISPLAY_THEME . '/less',
+                    'menu_width' => MENU_WIDTH,
+                ));
+            }
         }
 
         expJavascript::pushToFoot(array(
@@ -139,7 +149,7 @@ class uploadcontrol extends formcontrol {
             $object->accept = "";
 		}
         if (empty($object->description)) $object->description = "";
-		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("default",gt('Default'), new textcontrol($object->default));

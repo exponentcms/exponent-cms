@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -484,7 +484,7 @@ class expValidator {
 	 * @param $msg
 	 * @param null $post
 	 */
-	public static function flashAndReturnToForm($queue='message', $msg, $post=null) {
+	public static function flashAndReturnToForm($queue='message', $msg='', $post=null) {
         if (!is_array($msg))
             $msg = array($msg);
         flash($queue, $msg);

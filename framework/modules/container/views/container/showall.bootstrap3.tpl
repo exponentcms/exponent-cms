@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -66,7 +66,7 @@
 
 {foreach key=key name=c from=$containers item=container}
     {$i=$smarty.foreach.c.iteration}
-	{if $smarty.const.SELECTOR == 1}
+	{if defined('SELECTOR') && $smarty.const.SELECTOR == 1}
 		{include file=$viewfile}
 	{else}
 		<div name="mod_{$container->id}" id="mod_{$container->id}"></div>

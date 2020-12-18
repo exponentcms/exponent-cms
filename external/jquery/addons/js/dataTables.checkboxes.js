@@ -1,19 +1,12 @@
-/*! Checkboxes 1.2.11
- *  Copyright (c) Gyrocode (www.gyrocode.com)
- *  License: MIT License
+/*! 
+ * jQuery DataTables Checkboxes (https://www.gyrocode.com/projects/jquery-datatables-checkboxes/)
+ * Checkboxes extension for jQuery DataTables
+ *
+ * @version     1.2.12
+ * @author      Gyrocode LLC (https://www.gyrocode.com)
+ * @copyright   (c) Gyrocode LLC
+ * @license     MIT
  */
-
-/**
- * @summary     Checkboxes
- * @description Checkboxes extension for jQuery DataTables
- * @version     1.2.11
- * @file        dataTables.checkboxes.js
- * @author      Gyrocode (http://www.gyrocode.com/projects/jquery-datatables-checkboxes/)
- * @contact     http://www.gyrocode.com/contacts
- * @copyright   Copyright (c) Gyrocode
- * @license     MIT License
- */
-
 (function( factory ){
 /* eslint-disable */
    if ( typeof define === 'function' && define.amd ) {
@@ -150,7 +143,7 @@
 
                if(ctx.aoColumns[i].mRender === null){
                   colOptions['render'] = function(){
-                     return '<input type="checkbox" class="dt-checkboxes">';
+                     return '<input type="checkbox" class="dt-checkboxes" autocomplete="off">';
                   };
                }
 
@@ -258,16 +251,20 @@
                $table.on('select.dt.dtCheckboxes deselect.dt.dtCheckboxes', function(e, api, type, indexes){
                   self.onDataTablesSelectDeselect(e, type, indexes);
                });
-               // Disable Select extension information display
-               dt.select.info(false);
 
-               // Update the table information element with selected item summary
-               //
-               // NOTE: Needed to display correct count of selected rows
-               // when using server-side processing mode
-               $table.on('draw.dt.dtCheckboxes select.dt.dtCheckboxes deselect.dt.dtCheckboxes', function(){
-                  self.showInfoSelected();
-               });
+               // If displaying of Select extension information is enabled
+               if(ctx._select.info){
+                  // Disable Select extension information display
+                  dt.select.info(false);
+
+                  // Update the table information element with selected item summary
+                  //
+                  // NOTE: Needed to display correct count of selected rows
+                  // when using server-side processing mode
+                  $table.on('draw.dt.dtCheckboxes select.dt.dtCheckboxes deselect.dt.dtCheckboxes', function(){
+                     self.showInfoSelected();
+                  });
+               }
             }
 
             // Handle table draw event
@@ -329,7 +326,12 @@
 
             // Handle table initialization event
             $table.on('init.dt.dtCheckboxes', function(){
-               self.onDataTablesInit();
+               // Use delay to handle initialization event
+               // because certain extensions (FixedColumns) are initialized
+               // only when initialization event is triggered.
+               setTimeout(function(){
+                   self.onDataTablesInit();
+               }, 0);
             });
 
             // Handle state saving event
@@ -469,7 +471,7 @@
 
          $.each(self.s.columns, function(index, colIdx){
             self.updateSelectAll(colIdx);
-         });
+         });         
       },
 
       // Handles DataTables Ajax request completion event
@@ -572,12 +574,22 @@
       // Update table state
       updateState: function(){
          var self = this;
+         var dt = self.s.dt;
+         var ctx = self.s.ctx;
 
          self.updateStateCheckboxes({ page: 'all', search: 'none' });
 
-         $.each(self.s.columns, function(index, colIdx){
-            self.updateSelectAll(colIdx);
-         });
+         // If FixedColumns extension is enabled
+         if(ctx._oFixedColumns){                   
+            // Use delay to let FixedColumns construct the header
+            // before we update the "Select all" checkbox
+            setTimeout(function(){
+               // For every column where checkboxes are enabled
+               $.each(self.s.columns, function(index, colIdx){
+                  self.updateSelectAll(colIdx);
+               });
+            }, 0);
+         }
       },
 
       // Updates state of multiple checkboxes
@@ -801,7 +813,9 @@
                $checkboxesSelectAll.data('is-changed', false);
 
                $checkboxesSelectAll.prop({
-                  'checked': isSelected,
+                  // NOTE: If checkbox has indeterminate state, 
+                  // "checked" property must be set to false.
+                  'checked': isIndeterminate ? false : isSelected,
                   'indeterminate': isIndeterminate
                });
 
@@ -924,8 +938,19 @@
          if(ctx._oFixedColumns){
             var leftCols = ctx._oFixedColumns.s.iLeftColumns;
             var rightCols = ctx.aoColumns.length - ctx._oFixedColumns.s.iRightColumns - 1;
+
             if (colIdx < leftCols || colIdx > rightCols){
+               // Update the data shown in the fixed column
                dt.fixedColumns().update();
+
+               // Use delay to let FixedColumns construct the header
+               // before we update the "Select all" checkbox
+               setTimeout(function(){
+                  // For every column where checkboxes are enabled
+                  $.each(self.s.columns, function(index, colIdx){
+                     self.updateSelectAll(colIdx);
+                  });
+               }, 0);
             }
          }
       }
@@ -994,7 +1019,7 @@
       * @type {mixed}
       * @default `<input type="checkbox">`
       */
-      selectAllRender: '<input type="checkbox">'
+      selectAllRender: '<input type="checkbox" autocomplete="off">'
    };
 
 
@@ -1044,15 +1069,7 @@
                ctx.checkboxes.updateSelect(rowsSelectableIdx, state);
             }
 
-            // If FixedColumns extension is enabled
-            if(ctx._oFixedColumns){
-               // Use timeout to let FixedColumns construct the header
-               // before we update the "Select all" checkbox
-               setTimeout(function(){ ctx.checkboxes.updateSelectAll(colIdx); }, 0);
-
-            } else {
-               ctx.checkboxes.updateSelectAll(colIdx);
-            }
+            ctx.checkboxes.updateSelectAll(colIdx);
 
             ctx.checkboxes.updateFixedColumn(colIdx);
          }
@@ -1078,15 +1095,7 @@
                   ctx.checkboxes.updateSelect(rowIdx, state);
                }
 
-               // If FixedColumns extension is enabled
-               if(ctx._oFixedColumns){
-                  // Use timeout to let FixedColumns construct the header
-                  // before we update the "Select all" checkbox
-                  setTimeout(function(){ ctx.checkboxes.updateSelectAll(colIdx); }, 0);
-
-               } else {
-                  ctx.checkboxes.updateSelectAll(colIdx);
-               }
+               ctx.checkboxes.updateSelectAll(colIdx);
 
                ctx.checkboxes.updateFixedColumn(colIdx);
             }
@@ -1212,12 +1221,12 @@
 
 
    /**
-   * Version information
-   *
-   * @name Checkboxes.version
-   * @static
-   */
-   Checkboxes.version = '1.2.11';
+    * Version information
+    *
+    * @name Checkboxes.version
+    * @static
+    */
+   Checkboxes.version = '1.2.12';
 
 
 

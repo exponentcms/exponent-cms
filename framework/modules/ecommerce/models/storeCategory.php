@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -215,6 +215,7 @@ class storeCategory extends expNestedNode {
 			$tree_copy[$key]->id = $node->id;
 			$tree_copy[$key]->depth = $node->depth;
             $tree_copy[$key]->active = $node->is_active;
+            $tree_copy[$key]->sef_url = $node->sef_url;
 			$tree_copy[$key]->href = makeLink(array('controller'=>'store','action'=>'showall','title'=>$node->sef_url));
 			$tree_copy[$key]->parent = $node->parent_id ? $node->parent_id : '#';
 			$tree_copy[$key]->parent_id = $node->parent_id;

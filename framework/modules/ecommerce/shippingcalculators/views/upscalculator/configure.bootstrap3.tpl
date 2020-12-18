@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -36,18 +36,21 @@
 	            {control type="checkbox" name="testmode" label="Enable Test Mode"|gettext value=1 checked=$calculator->configdata.testmode}
 	        </div>
 	        <div id="tab2" role="tabpanel" class="tab-pane fade">
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Next Day Air"|gettext value="01" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Second Day Air"|gettext value="02" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Ground"|gettext value="03" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Worldwide Express"|gettext value="07" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Worldwide Expedited"|gettext value="08" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Standard"|gettext value="11" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Three-Day Select"|gettext value="12" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="Next Day Air Saver"|gettext value="13" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Next Day Air Early AM"|gettext value="14" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Worldwide Express Plus"|gettext value="54" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Second Day Air AM"|gettext value="59" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Saver"|gettext value="65" checked=$calculator->configdata.shipping_methods}
+                {foreach $calculator->configdata.shipping_methods as $key=>$method}
+                    {$shipping_methods[$method] = true}
+                {/foreach}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Next Day Air"|gettext value="01" checked=$shipping_methods['01']}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Second Day Air"|gettext value="02" checked=$shipping_methods['02']}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Ground"|gettext value="03" checked=$shipping_methods['03']}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Worldwide Express"|gettext value="07" checked=$shipping_methods['07']}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Worldwide Expedited"|gettext value="08" checked=$shipping_methods['08']}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Standard"|gettext value="11" checked=$shipping_methods['11']}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Three-Day Select"|gettext value="12" checked=$shipping_methods['12']}
+                {control type="checkbox" name="shipping_methods[]" label="Next Day Air Saver"|gettext value="13" checked=$shipping_methods['13']}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Next Day Air Early AM"|gettext value="14" checked=$shipping_methods['14']}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Worldwide Express Plus"|gettext value="54" checked=$shipping_methods['54']}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Second Day Air AM"|gettext value="59" checked=$shipping_methods['59']}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Saver"|gettext value="65" checked=$calculator->shipping_methods['65']}
 	        </div>
 	        <div id="tab3" role="tabpanel" class="tab-pane fade">
                 {ecomconfig var=store assign=store}

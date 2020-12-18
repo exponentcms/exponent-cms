@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -74,11 +74,11 @@ class genericcontrol extends formcontrol {
                 $labeltag = $label;
             }
             if(empty($this->flip)){
-                    $html .= empty($label) ? "" : "<label".$for." ".((bs3()||bs4())?"class=\"control-label\"":"").(($this->horizontal)?"col-sm-2 col-form-label":"" ).">". $labeltag."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." ".((bs3()||bs4() || bs5())?"class=\"control-label\"":"").(($this->horizontal)?"col-sm-2 col-form-label":"" ).">". $labeltag."</label>";
                     $html .= $this->controlToHTML($name, $label);
             } else {
                     $html .= $this->controlToHTML($name, $label);
-                    $html .= empty($label) ? "" : "<label".$for." ".((bs3()||bs4())?"class=\"control-label\"":"").">". $labeltag."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." ".((bs3()||bs4() || bs5())?"class=\"control-label\"":"").">". $labeltag."</label>";
             }
             $html .= "</div>";
         } else {
@@ -100,7 +100,7 @@ class genericcontrol extends formcontrol {
             } elseif (bs3()) {
                 $html .= '<div class="input-group">';
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
-            } elseif (bs4()) {
+            } elseif (bs4() || bs5()) {
                 $html .= '<div class="input-group input-group-sm">';
                 $html .= '<span class="input-group-prepend"><i class="input-group-text fas fa-'.$this->prepend.'"></i></span>';
             }
@@ -108,7 +108,7 @@ class genericcontrol extends formcontrol {
         if (!empty($this->append) && bs()) {
             if (bs2()) {
                 $html .= '<div class="input-append">';
-            } elseif (bs3() || bs4()) {
+            } elseif (bs3() || bs4() || bs5()) {
                 $html .= '<div class="input-group input-group-sm">';
             }
         }
@@ -153,7 +153,7 @@ class genericcontrol extends formcontrol {
                 $html .= '<span class="add-on"><i class="icon-'.$this->append.'"></i></span>';
             } elseif (bs3()) {
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->append.'"></i></span>';
-            } elseif (bs4()) {
+            } elseif (bs4() || bs5()) {
                 $html .= '<span class="input-group-append"><i class="input-group-text fas fa-'.$this->append.'"></i></span>';
             }
             $html .= '</div>';
@@ -181,7 +181,7 @@ class genericcontrol extends formcontrol {
             $object->required = false;
         }
 
-        $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+        $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
         $form->register("flip",gt('Caption on Right'), new checkboxcontrol($object->flip,false));

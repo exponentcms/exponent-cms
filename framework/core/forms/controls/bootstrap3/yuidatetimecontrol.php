@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -127,6 +127,16 @@ class yuidatetimecontrol extends formcontrol
                 });
             });
         ";
+
+        global $less_vars;
+
+        if (empty($less_vars['themepath'])) {
+            $less_vars = array_merge($less_vars, array(
+                'swatch' => SWATCH,
+                'themepath' => '../../../themes/' . DISPLAY_THEME . '/less'
+            ));
+        }
+
         expJavascript::pushToFoot(
             array(
                 "unique"    => "000-datetime-" . $idname,

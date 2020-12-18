@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -75,7 +75,7 @@ class textcontrol extends formcontrol {
         if (!empty($this->append) && bs()) {
             if (bs2()) {
                 $html .= '<div class="input-append">';
-            } elseif (bs3() || bs4()) {
+            } elseif (bs3() || bs4() || bs5()) {
                 $html .= '<div class="input-group">';
             }
         }
@@ -107,12 +107,12 @@ class textcontrol extends formcontrol {
                 $html .= '<span class="add-on"><i class="icon-'.$this->append.'"></i></span>';
             } elseif (bs3()) {
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->append.'"></i></span>';
-            } elseif (bs4()) {
+            } elseif (bs4() || bs5()) {
                 $html .= '<span class="input-group-addon"><i class="fas fa-'.$this->append.'"></i></span>';
             }
             $html .= '</div>';
         }
-        if (!empty($this->description)) $html .= "<div class=\"".((bs3() || bs4())?"help-block":"control-desc")."\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"".((bs3() || bs4() || bs5())?"help-block":"control-desc")."\">".$this->description."</div>";
         $html .= ($this->horizontal) ? '</div>' : '';
         return $html;
     }
@@ -132,7 +132,7 @@ class textcontrol extends formcontrol {
             $object->required = false;
         }
         if (empty($object->description)) $object->description = "";
-        $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+        $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
         $form->register("default",gt('Default'), new textcontrol($object->default));

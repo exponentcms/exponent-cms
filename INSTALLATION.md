@@ -2,7 +2,7 @@
 
 ----------
 
-Copyright (c) 2004-2020 OIC Group, Inc.
+Copyright (c) 2004-2021 OIC Group, Inc.
 
 Installation of Exponent CMS 2.0
 --------------------------------
@@ -12,7 +12,7 @@ Requirements
   - or Windows-based web host
 - Apache 2.0 or greater (recommended)
   - or Microsoft IIS, nginx, or lighttpd
-- PHP 5.5.x or greater (v7.0.x or greater recommended)
+- PHP 7.1.x or greater (v5.6.x & v7.0.x deprecated support)
 - MySQL or MariaDB database
 
 ---------------------

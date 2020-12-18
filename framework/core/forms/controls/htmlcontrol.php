@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -41,15 +41,15 @@ class htmlcontrol extends formcontrol {
 
 	function toHTML($label,$name) {
 		if ($this->span) {
-			return '<div class="htmlcontrol control form-group">' . ($this->horizontal&&bs3()?'<div class="col-sm-offset-2 col-sm-10">':'') . $this->html . ($this->horizontal&&bs3()?'</div>':'') . '</div>';
+			return '<div class="htmlcontrol control form-group">' . ($this->horizontal&&(bs3()||bs4()||bs5())?'<div class="col-sm-offset-2 col-sm-10">':'') . $this->html . ($this->horizontal&&(bs3()||bs4()||bs5())?'</div>':'') . '</div>';
 		} else {
-            if ($this->horizontal&&bs3()) $this->html = '<div class="col-sm-offset-2 col-sm-10">' . $this->html . '</div>';
+            if ($this->horizontal&&(bs3()||bs4()||bs5())) $this->html = '<div class="col-sm-offset-2 col-sm-10">' . $this->html . '</div>';
 			return parent::toHTML($label,$name);
 		}
 	}
 
 	function controlToHTML($name,$label) {
-        if ($this->horizontal&&bs3()) return '<div class="col-sm-offset-2 col-sm-10">' . $this->html . '</div>';
+        if ($this->horizontal&&(bs3()||bs4()||bs5())) return '<div class="col-sm-offset-2 col-sm-10">' . $this->html . '</div>';
 		return $this->html;
 	}
 

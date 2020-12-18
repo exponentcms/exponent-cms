@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -56,7 +56,7 @@ function smarty_function_grouplistcontrol($params, &$smarty) {
     } else {
         $class = '';
         if (!empty($params['class'])) $class = ' '.$params['class'];
-        echo '<div class="control' . $class . '"><label class="' . (bs4()||bs3()?"control-label":"label") . '">' . $params['label'] . '</label>: <strong>' . gt('No User Group Accounts have been created!') . '</strong></div>';
+        echo '<div class="control' . $class . '"><label class="' . ((bs5()||bs4()||bs3())?"control-label":"label") . '">' . $params['label'] . '</label>: <strong>' . gt('No User Group Accounts have been created!') . '</strong></div>';
     }
 }
 

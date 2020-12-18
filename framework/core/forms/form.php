@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -208,6 +208,9 @@ class form extends baseform {
      * @return string The HTML code use to display the form to the browser.
      */
 	function toHTML($form_id = null) {
+	    if ($this->id == null) {
+	        $this->id = 'design_form';
+        }
 		// Form validation script
 		if ($this->validationScript != "") {
 			$this->scripts[] = $this->validationScript;
@@ -254,7 +257,7 @@ class form extends baseform {
             expCSS::pushToHead(array(
                 "corecss"=>"forms-bootstrap3"
             ));
-            $btn_class = 'btn btn-default btn-primary';
+            $btn_class = 'btn btn-primary';
             if (BTN_SIZE == 'large') {
                 $btn_size = 'btn-lg';
             } elseif (BTN_SIZE == 'small') {
@@ -267,11 +270,17 @@ class form extends baseform {
             $btn_class .= ' ' . $btn_size;
             $back = '<i class="fa fa-step-backward"></i> ' . gt('Back');
             $next = gt('Next') . ' <i class="fa fa-step-forward"></i>';
-        } elseif (bs4()) {
-            expCSS::pushToHead(array(
-                "corecss"=>"forms-bootstrap3"
-            ));
-            $btn_class = 'btn btn-default btn-primary';
+        } elseif (bs4() || bs5()) {
+            if (bs4()) {
+                expCSS::pushToHead(array(
+                    "corecss" => "forms-bootstrap3"
+                ));
+            } else {
+                expCSS::pushToHead(array(
+                    "corecss" => "forms-bootstrap5"
+                ));
+            }
+            $btn_class = 'btn btn-primary';
             if (BTN_SIZE == 'large') {
                 $btn_size = 'btn-lg';
             } elseif (BTN_SIZE == 'small') {
@@ -363,7 +372,7 @@ class form extends baseform {
                     backLabel: '" . $back . "',
                     nextLabel: '" . $next . "',
                     titleClick: true,";
-            if (bs4()) {
+            if (bs4() || bs5()) {
                 $content .= "
                     validateOptions: {
 						rules: {
@@ -459,7 +468,7 @@ class form extends baseform {
                 )
             );
         } else {
-            if (bs4()) {
+            if (bs4() || bs5()) {
                 $content = "
                     $('#" . $this->id . "').validate({
 						rules: {

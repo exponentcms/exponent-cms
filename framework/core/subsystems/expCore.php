@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -341,7 +341,7 @@ class expCore
      */
     public static function getCurrency($amount, $currency_type = ECOM_CURRENCY)
     {
-        return self::getCurrencySymbol() . number_format($amount,2,".",",");
+        return self::getCurrencySymbol() . number_format((float)$amount,2,".",",");
     }
 
     /**
@@ -364,6 +364,8 @@ class expCore
         curl_setopt($chImg, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0) Gecko/20100101 Firefox/4.0");
         if ($auth !== false) {
             curl_setopt($chImg, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $auth));
+        } else {
+            curl_setopt($chImg, CURLOPT_SSL_VERIFYPEER, false);
         }
         if ($post !== false) {
             $payload = json_encode($post);
@@ -406,6 +408,7 @@ class expCore
         curl_setopt($chImg, CURLOPT_BINARYTRANSFER, 1);
         curl_setopt($chImg, CURLOPT_CONNECTTIMEOUT, 30);
 //    	curl_setopt($chImg, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0) Gecko/20100101 Firefox/4.0");
+        curl_setopt($chImg, CURLOPT_SSL_VERIFYPEER, false);
         if ($post) {
             curl_setopt($chImg, CURLOPT_POST, true);
         }
@@ -437,10 +440,16 @@ class expCore
         if ($destination === null) {
             return $destination;
         }
+
+        return unserialize(sprintf('O:%d:"%s"%s', \strlen($destinationtype), $destinationtype, strstr(strstr(serialize($source), '"'), ':')));
+
+        // old code incompatible with PHP v8
         $sourceReflection = new ReflectionObject($source);
         $sourceProperties = $sourceReflection->getProperties();
         foreach ($sourceProperties as $sourceProperty) {
             $name = $sourceProperty->getName();
+            $tmp1=$destination->{$name};
+            $tmp2=$source->$name;
             $destination->{$name} = $source->$name;
         }
         return $destination;
@@ -586,6 +595,43 @@ class expCore
             $str .= "\r\n";
         } //end of foreach loop
         return $str;
+    }
+
+    /**
+     * Warn admin of obsolete methods
+     *
+     * @param string $newcall
+     * @param array $params
+     */
+    public static function deprecated($newcall = "expTheme::module()", $params = array())
+    {
+        global $user;
+
+        if ($user->isAdmin() && DEVELOPMENT) {
+            $trace = debug_backtrace();
+            $caller = $trace[1];
+            if (substr($caller['file'], -16, 6) === 'compat') {
+                $caller = $trace[2];
+            }
+            $oldcall = $caller['function'];
+//            if ($caller['class'] === 'expTheme') {
+            if (!empty($caller['class'])) {
+                $oldcall = $caller['class'] . '::' . $oldcall;
+            }
+            $message = '<strong>' . $oldcall . '</strong> ' . gt(
+                    'is deprecated and should be replaced by'
+                ) . ' <strong>' . $newcall . '</strong>';
+            if (!empty($params)) {
+//                $message .= '<br>' . gt(
+//                        'for hard coded module'
+//                    ) . ' - <strong>' . $controller . ' / ' . $actionview . '</strong>';
+            }
+            $message .= '<br>' . gt('line') . ' #' . $caller['line'] . ' ' . gt('of') . $caller['file'];
+//            $message .= ' <a class="helplink" title="' . gt('Get Theme Update Help') . '" href="' . help::makeHelpLink(
+//                    'theme_update'
+//                ) . '" target="_blank">' . gt('Help') . '</a>';
+            flash('notice', $message);
+        }
     }
 
 }

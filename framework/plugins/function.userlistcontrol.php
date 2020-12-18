@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -38,7 +38,7 @@ function smarty_function_userlistcontrol($params, &$smarty) {
 
     $users = $db->selectObjects("user", null, "username");
 
-    $selected = isset($params['items']) ? $params['items'] : null;
+    $selected = isset($params['items']) ? $params['items'] : array();
     foreach ($users as $user) {
         if (!in_array($user->id, $selected)) {
             //TODO should we display username w/ first/last name in parens or first/last name?

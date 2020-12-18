@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -27,7 +27,7 @@ define('SCRIPT_FILENAME','index.php');
  */
 function epb($buffer, $mode) {
 //    @ob_gzhandler($buffer, $mode);
-    @ob_gzhandler($buffer);
+//    @ob_gzhandler($buffer);
 //    return $buffer; // uncomment if you're messing with output buffering so errors show. ~pb
     return expProcessBuffer($buffer);  // add/process css & jscript for page
 }
@@ -48,7 +48,7 @@ if ($db->havedb) {
 }
 
 // define whether or not ecom is enabled &initialize this users cart if they have ecom installed.
-if (ecom_active()) {
+if ($db->havedb && ecom_active()) {
     define('ECOM',1);
     $order = order::getUserCart();  // set global store $order
 } else {
@@ -98,6 +98,9 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
 	}
 
 	if (is_readable($page)) {
+        define('PREVIEW_READONLY',0); // for mods
+//      	define('SELECTOR',0);
+
 		if (!expJavascript::inAjaxAction()) {
 			include($page);
 			expTheme::satisfyThemeRequirements();
@@ -107,12 +110,17 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
             if (empty($framework)) {
                 $framework = expSession::get('framework');
             }
-            if ($framework === 'jquery' || $framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
-            if ($framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
-            if ($framework === 'bootstrap3' || $framework === 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
-            if ($framework === 'bootstrap4') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap4');
+            if ($framework === 'jquery' || $framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
+            if ($framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
+            if ($framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
+            if ($framework === 'bootstrap4' || $framework === 'bootstrap5') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap4');
+            if ($framework === 'bootstrap5') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap5');
             if (newui()) array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
             array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
+            if (!defined('XHTML')) {
+                define('XHTML', 1);
+                define('XHTML_CLOSING', "/"); //default
+            }
 
 			expTheme::runAction();
 		}

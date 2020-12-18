@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -210,7 +210,7 @@ class expCatController extends expController {
                 $records[$key]->catrank = $cat->rank;
                 $records[$key]->cat = $cat->title;
                 $catcolor = empty($cat->color) ? null : trim($cat->color);
-                if ($catcolor[0] ==='#')
+                if (!is_null($catcolor) && $catcolor[0] ==='#')
                     $catcolor = '" style="color:'.$catcolor.';';
                 $records[$key]->color = $catcolor;
                 $records[$key]->module = empty($cat->module) ? null : $cat->module;

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="{$smarty.const.JS_RELATIVE}exp-flashdetector.js"></script>
     <script src="{$smarty.const.JQUERY_SCRIPT}"></script>
 </head>
-<body{if !bs3() && !bs4()} class="exp-skin"{/if}>
+<body{if !bs3() && !bs4() && !bs5()} class="exp-skin"{/if}>
     <div id="exp-uploader">
         <h1>{"Upload Files"|gettext}</h1>
         <div id="actionbar">

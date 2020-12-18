@@ -25,7 +25,7 @@ Options -ExecCGI
     order deny,allow
     allow from all
     ForceType application/octet-stream
-    Header set Content-Disposition attachment
+#    Header set Content-Disposition attachment
 </FilesMatch>
 
 <FilesMatch "\.(php|phps|php3|php4|php5|php7|pl|py|jsp|asp|htm|html|shtml|sh|cgi|txt)$">

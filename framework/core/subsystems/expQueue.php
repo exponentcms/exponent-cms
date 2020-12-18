@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -57,6 +57,9 @@ class expQueue {
     public static function show($name=null) {
         $html = '';
         $queues = expSession::get('flash');
+        if (is_null($queues)) {
+            $queues = array();
+        }
         if (empty($name)) {
 //            $template = new template('common','_msg_queue',null,false,'globalviews');
             $template = new standalonetemplate('_msg_queue');

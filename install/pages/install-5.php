@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -18,6 +18,12 @@
 
 if (!defined('EXPONENT')) {
     exit('');
+}
+
+if (!$use_cdn) {
+    $fh = fopen(BASE . 'overrides.php', 'w');
+    fwrite($fh, "<?php\r\n\r\ndefine('USE_CDN','0');\r\n\r\n?>\r\n");
+    fclose($fh);
 }
 
 ?>

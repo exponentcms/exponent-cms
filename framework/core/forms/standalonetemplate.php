@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -40,17 +40,24 @@ class standalonetemplate extends basetemplate {
                 $this->viewfile = $bstrpview;
                 $this->view = substr(basename($viewfile), 0, -4);
             }
-            if (bs3(true) || bs4()) {
+            if (bs3(true) || bs4() || bs5()) {
                 $bstrpview = substr($viewfile, 0, -4) . '.bootstrap3.tpl';
                 if (file_exists($bstrpview) && !strpos($viewfile, THEME_ABSOLUTE)) {
                     $this->viewfile = $bstrpview;
                     $this->view = substr(basename($viewfile), 0, -4);
                 }
-                if (bs4()) {
+                if (bs4() || bs5()) {
                    $bstrpview = substr($viewfile, 0, -4) . '.bootstrap4.tpl';
                    if (file_exists($bstrpview) && !strpos($viewfile, THEME_ABSOLUTE)) {
                        $this->viewfile = $bstrpview;
                        $this->view = substr(basename($viewfile), 0, -4);
+                   }
+                    if (bs5()) {
+                       $bstrpview = substr($viewfile, 0, -4) . '.bootstrap5.tpl';
+                       if (file_exists($bstrpview) && !strpos($viewfile, THEME_ABSOLUTE)) {
+                           $this->viewfile = $bstrpview;
+                           $this->view = substr(basename($viewfile), 0, -4);
+                       }
                    }
                }
             }

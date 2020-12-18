@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -79,7 +79,7 @@ class datetimecontrol extends formcontrol {
 
         $minute = $default_date['minutes'] . "";
         if ($minute < 10) $minute = "0" . $minute;
-        $html = ($this->horizontal && (bs3()||bs4())) ? '<div class="col-sm-10">' : '';
+        $html = ($this->horizontal && (bs3()||bs4() || bs5())) ? '<div class="col-sm-10">' : '';
         $html .= "<input type='hidden' id='__" . $name . "' name='__" . $name . "' value='" . ($this->showdate ? "1" : "0") . ($this->showtime ? "1" : "0") . "' />";
         $html .= "<div class=\"row\">";
         if ($this->showdate) {
@@ -118,7 +118,7 @@ class datetimecontrol extends formcontrol {
         }
         $html .= "</div>";
         if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">" . $this->description . "</small>";
-        $html .= ($this->horizontal && (bs3()||bs4())) ? '</div>' : '';
+        $html .= ($this->horizontal && (bs3()||bs4() || bs5())) ? '</div>' : '';
         return $html;
     }
 
@@ -191,7 +191,7 @@ class datetimecontrol extends formcontrol {
             $object->showtime    = true;
         }
         if (empty($object->description)) $object->description = "";
-        $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
+        $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showdate", gt('Show Date'), new checkboxcontrol($object->showdate, false));

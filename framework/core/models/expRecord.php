@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -125,6 +125,9 @@ class expRecord {
             }
         } else {
             // Otherwise we assume that in inbound is an array or Object to be processed as is.
+            if (is_object($params)) {
+                $params = object2Array($params);
+            }
             $this->build($params);
         }
 
@@ -342,7 +345,7 @@ class expRecord {
      *
      * @return array|bool
      */
-    public function findValue($range = 'all', $column, $where=null, $order=null, $distinct=false) {
+    public function findValue($range = 'all', $column=null, $where=null, $order=null, $distinct=false) {
         global $db;
 
         if (strcasecmp($range, 'all') == 0) {  // return all items matching request
@@ -359,6 +362,9 @@ class expRecord {
      * @param array|object $params
      */
     public function update($params = array()) {
+        if (is_object($params)) {
+            $params = object2Array($params);
+        }
         if (is_array($params) && isset($params['current_revision_id'])) {
             $params['revision_id'] = $params['current_revision_id'];
             unset($params['current_revision_id']);
@@ -438,8 +444,14 @@ class expRecord {
                 $value = is_array($params) ? $params[$col] : $params->$col;
                 if ($colDef[0] == DB_DEF_INTEGER || $colDef[0] == DB_DEF_ID) {
                     $this->$col = preg_replace("/[^0-9-]/", "", $value);
+                    if (empty($this->$col)) {
+                        $this->$col = 0;
+                    }
                 } elseif ($colDef[0] == DB_DEF_DECIMAL) {
                     $this->$col = preg_replace("/[^0-9.-]/", "", $value);
+                    if (empty($this->$col)) {
+                        $this->$col = 0;
+                    }
                 } else {
                     $this->$col = $value;
                 }
@@ -503,7 +515,9 @@ class expRecord {
 //        $refname = strtolower($item->classname).'s_id';  //FIXME plural vs single?
 //        $refname = strtolower($item->classname) . '_id'; //FIXME plural vs single?
         $refname = strtolower($item->tablename) . '_id';
-        if ($replace) $db->delete($item->attachable_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id . ' AND ' . $refname . '=' . $item->id);
+//        if ($replace) $db->delete($item->attachable_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id . ' AND ' . $refname . '=' . $item->id);
+        if ($replace)
+            $db->delete($item->attachable_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id . ' AND subtype=' . $subtype);
         $obj               = new stdClass();
         $obj->$refname     = $item->id;
         $obj->content_id   = $this->id;

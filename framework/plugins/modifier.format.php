@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -45,7 +45,7 @@ function smarty_modifier_format($string, $format=null) {
         case 'currency' :
             $string = ($string=="") ? 0 : $string;
             if (is_numeric($string)) {
-                return expCore::getCurrencySymbol() . number_format($string, 2, ".", ",");
+                return expCore::getCurrencySymbol() . number_format((float)$string, 2, ".", ",");
             } else {
                 return $string;
             }

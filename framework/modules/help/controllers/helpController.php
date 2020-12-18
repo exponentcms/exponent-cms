@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -282,7 +282,7 @@ class helpController extends expController {
 
 	        foreach($doc->expFile as $subtype=>$files) {
 	            foreach($files as $file) {
-	                $doc->attachItem($file, $subtype);
+	                $doc->attachItem($file, $subtype, false);
 	            }
 	        }
 	    }
@@ -296,7 +296,7 @@ class helpController extends expController {
    	        $doc->save();
    	        foreach($doc->expFile as $subtype=>$files) {
    	            foreach($files as $file) {
-   	                $doc->attachItem($file, $subtype);
+   	                $doc->attachItem($file, $subtype, false);
    	            }
 
    	        }

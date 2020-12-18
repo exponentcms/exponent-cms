@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,7 +25,7 @@
 {/css}
 {/if}
 
-{if $style && !bs3() && !bs4()}
+{if $style}
     {css unique="formmod2" corecss="forms2col"}
 
     {/css}
@@ -63,7 +63,7 @@
         <table cellpadding="5" cellspacing="0" border="0">
             <tr>
                 <td style="border:none;">
-                    <form role="form" method="post" action="{$smarty.const.PATH_RELATIVE}index.php"{if !bs3()} class="exp-skin"{/if}>
+                    <form role="form" method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
                         <input type="hidden" name="controller" value="forms"/>
                         <input type="hidden" name="action" value="edit_control"/>
                         <input type="hidden" name="forms_id" value="{$form->id}"/>
@@ -94,7 +94,7 @@
             {'Use the drop down to add fields to this form.'|gettext}
             <em>{'The first/top-most page break control will always be pushed to the top!'|gettext}</em>
         </blockquote>
-        <p{if bs3()} class="exp-skin"{/if}>
+        <p>
             {*<a class="{button_style}" href="{$backlink}">{'Done'|gettext}</a>*}
             {icon button=true class=reply link=$backlink text='Done'|gettext}
         </p>

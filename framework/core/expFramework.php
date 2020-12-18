@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -563,6 +563,7 @@ function get_model_for_controller($controller_name) {
  * @return controllertemplate
  */
 function get_common_template($view, $loc, $controllername='') {
+    expCore::deprecated('expTemplate::get_common_template()', array($view, $loc, $controllername));
     return expTemplate::get_common_template($view, $loc, $controllername);
 
     $controller = new stdClass();
@@ -610,6 +611,7 @@ function get_common_template($view, $loc, $controllername='') {
  * @return array
  */
 function get_config_templates($controller, $loc) {
+    expCore::deprecated('expTemplate::get_config_templates()', array($controller, $loc));
     return expTemplate::get_config_templates($controller, $loc);
 
 //    global $db;
@@ -680,6 +682,7 @@ function get_config_templates($controller, $loc) {
  * @return array
  */
 function find_config_views($paths=array(), $excludes=array()) {
+    expCore::deprecated('expTemplate::find_config_views()', array($paths, $excludes));
     return expTemplate::find_config_views($paths, $excludes);
 
     $views = array();
@@ -720,6 +723,7 @@ function find_config_views($paths=array(), $excludes=array()) {
  * @return controllertemplate
  */
 function get_template_for_action($controller, $action, $loc=null) {
+    expCore::deprecated('expTemplate::get_template_for_action()', array($controller, $action, $loc));
     expTemplate::get_template_for_action($controller, $action, $loc);
 
     // set paths we will search in for the view
@@ -798,6 +802,7 @@ function get_template_for_action($controller, $action, $loc=null) {
  * @return array
  */
 function get_action_views($ctl, $action, $human_readable) {
+    expCore::deprecated('expTemplate::get_action_views()', array($ctl, $action, $human_readable));
     expTemplate::get_action_views($ctl, $action, $human_readable);
 
     // setup the controller
@@ -844,6 +849,7 @@ function get_action_views($ctl, $action, $human_readable) {
  * @deprecated 2.3.3 moved to expTemplate subsystem
  */
 function get_filedisplay_views() {
+    expCore::deprecated('expTemplate::get_filedisplay_views()');
     expTemplate::get_filedisplay_views();
 
     $paths = array(
@@ -931,13 +937,11 @@ function expUnserialize($serial_str) {
  *  callback when the buffer gets flushed. Any processing on the page output
  * just before it gets rendered to the screen should happen here.
  * @param $buffer
- * @param null $mode
  * @return mixed
  */
-function expProcessBuffer($buffer, $mode=null) {
-     global $jsForHead, $cssForHead;
+function expProcessBuffer($buffer) {
+     global $cssForHead;
 
-//     return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead.$jsForHead, $buffer));
     return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead, $buffer));
 }
 
@@ -1051,15 +1055,30 @@ function bs4($strict = false) {
 }
 
 /**
+ * Is the current framework Bootstrap v5 based?
+ *
+ * @param bool $strict must be bootstrap5
+ * @return bool
+ */
+function bs5($strict = false) {
+    global $framework;
+
+    if ($framework === 'bootstrap5') {
+        return true;
+    }
+    return false;
+}
+
+/**
  * Is the current framework Bootstrap based?
  *
- * @param bool $strict must be bootstrap 2 or 3 or 4 and NOT newui
+ * @param bool $strict must be bootstrap 2 or 3 or 4 or 5 and NOT newui
  * @return bool
  */
 function bs($strict = false) {
     global $framework;
 
-    if ($framework === 'bootstrap4' || $framework === 'bootstrap3' || $framework === 'bootstrap') {
+    if ($framework === 'bootstrap5' || $framework === 'bootstrap4' || $framework === 'bootstrap3' || $framework === 'bootstrap') {
         return true;
     }
     if ($framework === 'newui' && !$strict) {
@@ -1158,15 +1177,15 @@ function eDebug($var, $halt=false, $disable_log=false){
 //            echo("<script>YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {Y.log('".json_encode($pvar)."','info','exp')});;</script>");
             eLog($var, gt('DEBUG'));
         } else {
-            if (file_exists(BASE . 'external/kint/Kint.class.php')) {
-                require_once BASE . 'external/kint/Kint.class.php';
-                d($var);  // kint v1
-            } elseif (expCore::is_php('7.0') && file_exists(BASE . 'external/kint3/build/kint.phar')) {
-                require_once BASE . 'external/kint3/build/kint.phar';
+            if (expCore::is_php('7.0') && file_exists(BASE . 'external/kint-3.3/build/kint.phar')) {
+                require_once BASE . 'external/kint-3.3/build/kint.phar';
                 d($var);  // kint v3
             } elseif (file_exists(BASE . 'external/kint/build/kint.php')) {
-                require_once BASE . 'external/kint/build/kint.php';
+                require_once BASE . 'external/kint-2.2/build/kint.php';
                 d($var);  // kint v2
+            } elseif (file_exists(BASE . 'external/kint/Kint.class.php')) {
+                require_once BASE . 'external/kint/Kint.class.php';
+                d($var);  // kint v1
             } else {
                 echo "<pre>";
                 print_r($var);

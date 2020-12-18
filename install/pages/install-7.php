@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -40,7 +40,7 @@ if ($user->username == '') {
     $errorstr = gt('Your passwords do not match. Please check your entries.');
     $errorflag = '&errpassword=true';
     echo $errorstr;
-} elseif (strcasecmp($user->username, $password) == 0) {
+} elseif (strcasecmp($user->username, $_REQUEST['password']) == 0) {
     $error = true;
     $errorstr = gt('The password cannot be the same as the username.');
     $errorflag = '&errpwusername=true';

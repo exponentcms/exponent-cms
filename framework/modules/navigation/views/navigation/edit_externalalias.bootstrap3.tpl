@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -64,11 +64,7 @@
                     {control type="checkbox" name="public" label="Public"|gettext|cat:"?" checked=$section->public|default:1 value=1 description='Should this page and menu item be visible to all users regardless of permissions?'|gettext}
                     {group label='Menu Item Icon'|gettext}
                         {control type="files" name="files" label="Graphic Icon"|gettext accept="image/*" value=$section->expFile limit=1 description='Select an icon to use with this menu item'|gettext}
-                        {if bs3()}
                         {control type="dropdown" name="glyph" select2=$callback label="Font Icon"|gettext items=$glyphs includeblank='No Font Icon'|gettext style="font-family: 'FontAwesome', Helvetica;" value=$section->glyph description='or Select a font icon to use with this menu item'|gettext}
-                        {elseif bs4()}
-                        {control type="dropdown" name="glyph" select2=$callback label="Font Icon"|gettext items=$glyphs includeblank='No Font Icon'|gettext style="font-family: 'Font Awesome 5 Free', Helvetica;" value=$section->glyph description='or Select a font icon to use with this menu item'|gettext}
-                        {/if}
                         {control type="checkbox" name="glyph_only" label="Display Icon Alone"|gettext checked=$section->glyph_only value=1 description='Should the menu only display the icon without the page name?'|gettext}
                     {/group}
                 </div>

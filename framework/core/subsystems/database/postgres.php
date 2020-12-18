@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -577,7 +577,7 @@ ENDSQL;
 		return $objects;
 	}
 
-	function selectAndJoinObjects($colsA=null, $colsB=null, $tableA, $tableB, $keyA, $keyB=null, $where = null,$orderby = null) {
+	function selectAndJoinObjects($colsA=null, $colsB=null, $tableA=null, $tableB=null, $keyA=null, $keyB=null, $where = null,$orderby = null) {
 		$sql = 'SELECT ';
 		if ($colsA != null) {
 			if (!is_array($colsA)) {

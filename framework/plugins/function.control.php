@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -500,7 +500,7 @@ function smarty_function_control($params, &$smarty) {
             $post_errors = expSession::get('last_post_errors');
             // flag this field as having errors if it failed validation
             if (is_array($post_errors) && in_array($params['name'], $post_errors)) {
-                if (bs3()) {
+                if (bs3() || bs4() || bs5()) {
                     $control->class .= ' has-error';
                 } elseif (bs2()) {
                     $control->class .= ' error';
@@ -509,7 +509,7 @@ function smarty_function_control($params, &$smarty) {
                 }
             }
 
-            if ($params['type'] == 'checkbox') {
+            if ($params['type'] === 'checkbox') {
 //                $realname         = str_replace('[]', '', $params['name']);
 //                $control->default = $params['value'];
 //                if (!empty($post[$realname])) {
@@ -519,6 +519,9 @@ function smarty_function_control($params, &$smarty) {
 //                        $control->checked = true;
 //                    }
 //                }
+            } elseif ($params['type'] === 'countryregion') {
+                if (!empty($post['country'])) $control->country_default = $post['country'];
+                if (!empty($post['state'])) $control->region_default = $post['state'];
             } elseif (isset($params['multiple'])) {
                 $realname = str_replace('[]', '', $params['name']);
                 if (!empty($post[$realname])) $control->default = $post[$realname];
@@ -528,9 +531,9 @@ function smarty_function_control($params, &$smarty) {
         } elseif (isset($params['value'])) {
             // if this field is filtered than lets go ahead and format the data before we stick it in the field.
             if (!empty($params['filter']) && $params['filter'] == 'money') {
-                $params['value'] = expCore::getCurrencySymbol() . number_format($params['value'], 2, '.', ',');
+                $params['value'] = expCore::getCurrencySymbol() . number_format((float)$params['value'], 2, '.', ',');
             } elseif (!empty($params['filter']) && $params['filter'] == 'integer') {
-                $params['value'] = number_format($params['value'], 0, '.', ',');
+                $params['value'] = number_format((float)$params['value'], 0, '.', ',');
             }
             if ($params['type'] != 'checkbox' && $params['type'] != 'radio' && $params['type'] != 'radiogroup') $control->default = $params['value']; //FIXME is value always == default?
         }

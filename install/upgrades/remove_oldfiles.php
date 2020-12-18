@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -183,6 +183,7 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/js/jquery-migrate-3.0.1.min.js',
             'external/jquery/js/jquery-migrate-3.1.0.min.js',
             'external/jquery/js/jquery-migrate-3.2.0.min.js',
+            'external/jquery/js/jquery-migrate-3.3.0.min.js',
             'external/jquery/js/jquery-ui-1.9.1.custom.js',
             'external/jquery/js/jquery-ui-1.9.1.custom.min.js',
             'external/jquery/js/jquery-ui-1.10.0.custom.js',
@@ -565,6 +566,10 @@ class remove_oldfiles extends upgradescript {
 			// other obsolete & mis-placed views
 			'framework/core/views/popup_general.tpl',
 			'framework/core/views/popup_printerfriendly.tpl',
+            'framework/modules/eaas/views/eaas/YouTube.tpl',
+            'framework/modules/events/views/event/pull_google.tpl',
+            'framework/modules/events/views/event/pull_google.bootstrap.tpl',
+            'framework/modules/events/views/event/pull_google.bootstrap3.tpl',
 			'framework/modules/blog/views/blog/showall_test.tpl',
 			'framework/modules/news/views/news/show_Expired.tpl',
 			'framework/modules/news/views/news/showall_summary.tpl',
@@ -674,6 +679,7 @@ class remove_oldfiles extends upgradescript {
             'external/EmailValidator-2.1.4/',
             'external/EmailValidator-2.1.11/',
             'external/EmailValidator-2.1.15/',
+            'external/EmailValidator-2.1.17/',
             'external/facebook-php-sdk-3.2.2/',
             'external/fedex-php/',
             'external/fedex-phpv13/',
@@ -693,6 +699,7 @@ class remove_oldfiles extends upgradescript {
             'external/less.php/bin/',
             'external/lesshat/',
             'external/lexer-1.0.1/',
+            'external/lexer-1.2.0/',
             'external/minify/lib/',
             'external/minify/min/lib/Solar/',
             'external/minify/min_extras/',
@@ -708,6 +715,7 @@ class remove_oldfiles extends upgradescript {
             'external/simplepie-1.5.2/',
             'external/simplepie-1.5.3/',
             'external/simplepie-1.5.4/',
+            'external/simplepie-1.5.5/',
             'external/Smarty/',
             'external/Smarty-2/',
             'external/Smarty-3.1.4/',

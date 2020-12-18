@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -74,7 +74,7 @@ function smarty_compiler_exp_include($_params, &$compiler)
 
     foreach ($_params as $arg_name => $arg_value) {
         // look for specific arguments: file, else, or assign
-        if ($arg_name == 'file') {
+        if ($arg_name === 'file') {
             $include_file = str_replace(array('\'', '"'), '', $arg_value);
             if (strpos($include_file, '$') === false) {  // we don't want to process smarty variables, just pass them through
                 if (strpos($include_file, '/') === false) { // we don't want to process paths, just pass them through
@@ -100,7 +100,7 @@ function smarty_compiler_exp_include($_params, &$compiler)
                     //                }
 
                     //FIXME we assume the file is only a filename and NOT a path?
-                    if (PATH_RELATIVE != '/') {
+                    if (PATH_RELATIVE !== '/') {
                         $path = str_replace(PATH_RELATIVE, '', $compiler->tpl_vars['asset_path']->value);
                     } else {
                         $path = $compiler->tpl_vars['asset_path']->value;
@@ -112,7 +112,7 @@ function smarty_compiler_exp_include($_params, &$compiler)
                         ) . 'views/' . $compiler->tpl_vars['controller']->value . '/'; // strip relative path for links coming from templates
 
                     $themepath = THEME_RELATIVE . str_replace('framework/', '', $path);
-                    if (PATH_RELATIVE != '/') $themepath = str_replace(PATH_RELATIVE, '', $themepath);
+                    if (PATH_RELATIVE !== '/') $themepath = str_replace(PATH_RELATIVE, '', $themepath);
 
                     // see if there's an framework appropriate template variation
                     //FIXME we need to check for custom views and add full path for system views if coming from custom view
@@ -125,12 +125,16 @@ function smarty_compiler_exp_include($_params, &$compiler)
                             $include_file = BASE . $path . $include_file . '.bootstrap.' . $type;  // bootstrap3 falls back to bootstrap
                             $bs_file_found = true;
                         }
-                        if ((bs3(true) || bs4()) && file_exists(BASE . $path . $tmp_include . '.bootstrap3.' . $type)) {
+                        if ((bs3(true) || bs4() || bs5()) && file_exists(BASE . $path . $tmp_include . '.bootstrap3.' . $type)) {
                             $include_file = BASE . $path . $tmp_include . '.bootstrap3.' . $type;
                             $bs_file_found = true;
                         }
-                        if (bs4() && file_exists(BASE . $path . $tmp_include . '.bootstrap4.' . $type)) {
+                        if ((bs4() || bs5()) && file_exists(BASE . $path . $tmp_include . '.bootstrap4.' . $type)) {
                             $include_file = BASE . $path . $tmp_include . '.bootstrap4.' . $type;
+                            $bs_file_found = true;
+                        }
+                        if (bs5() && file_exists(BASE . $path . $tmp_include . '.bootstrap5.' . $type)) {
+                            $include_file = BASE . $path . $tmp_include . '.bootstrap5.' . $type;
                             $bs_file_found = true;
                         }
                         if (!$bs_file_found) {
@@ -151,7 +155,7 @@ function smarty_compiler_exp_include($_params, &$compiler)
                 $include_file = '"' . $include_file . '"'; // add quotes for string
             }
             continue;
-        } elseif ($arg_name == 'else') {
+        } elseif ($arg_name === 'else') {
             // the fallback view
             $include_file_else = $arg_value;
             // tack on a default file type if one is missing
@@ -160,7 +164,7 @@ function smarty_compiler_exp_include($_params, &$compiler)
                 $include_file_else .= '.tpl';
             }
             continue;
-        } elseif ($arg_name == 'assign') {
+        } elseif ($arg_name === 'assign') {
             // assign the output to a variable instead of displaying
             $assign_var = $arg_value;
             continue;

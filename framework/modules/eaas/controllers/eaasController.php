@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -80,10 +80,14 @@ class eaasController extends expController {
             $ar->send();  //FIXME this doesn't seem to work correctly in this scenario
         } else {
             $key = expUnserialize(base64_decode(urldecode($this->params['apikey'])));
-            preg_match('/[^a-zA-Z_][^a-zA-Z0-9_]*/', $key, $matches);
-            $key = $matches[0];
-            $cfg = new expConfig($key);
-            $this->config = $cfg->config;
+            if (is_object($key) && $key->mod === "eaas") {
+                preg_match('/[a-zA-Z0-9_@]*/', $key->src, $matches);
+                $key->src = $matches[0];
+                $cfg = new expConfig($key);
+                $this->config = $cfg->config;
+                $cfg = new expConfig($key);
+                $this->config = $cfg->config;
+            }
             if(empty($cfg->id)) {
                 $ar = new expAjaxReply(550, 'Permission Denied', 'Incorrect API key or Exponent as a Service module configuration missing', null);
                 $ar->send();
@@ -369,11 +373,15 @@ class eaasController extends expController {
                     'dir'=>$dir,
                     'columns'=>array(gt('Title')=>'title',gt('Page')=>'section'),
                 ));
+
+                if (@is_null($this->config[$tab . '_aggregate'])) {
+                    $this->config[$tab . '_aggregate'] = array();
+                }
+
             }
 
             $this->configImage($tab);  // fix attached files for proper display of file manager control
         }
-        // edebug($this->config['expFile']);
 
         assign_to_template(array(
             'config'=>$this->config, // though already assigned in controllertemplate, we need to update expFiles

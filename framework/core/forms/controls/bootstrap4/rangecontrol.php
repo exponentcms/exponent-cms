@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -42,7 +42,7 @@ class rangecontrol extends textcontrol {
         } else {
             $extra_class = '';
         }
-        $html = ($this->horizontal && (bs3()||bs4())) ? '<div class="col-sm-10">' : '';
+        $html = ($this->horizontal && (bs3()||bs4() || bs5())) ? '<div class="col-sm-10">' : '';
         $html .= '<input' . $idname . ' class="text form-control' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
         $html .= " value=\"" . str_replace('"',"&quot;",$this->default) . "\"";
         $html .= $this->size ? " size=\"".$this->size."\"" : "";
@@ -67,7 +67,7 @@ class rangecontrol extends textcontrol {
         if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'"';
         $html .= "/>";
         if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">".$this->description."</small>";
-        $html .= ($this->horizontal && (bs3()||bs4())) ? '</div>' : '';
+        $html .= ($this->horizontal && (bs3()||bs4() || bs5())) ? '</div>' : '';
         return $html;
     }
 

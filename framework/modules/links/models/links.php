@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -34,6 +34,11 @@ class links extends expRecord {
             'url'=>array('message'=>"you didn't provide a link...  Do so now."),
         )
     );
+
+    public function update($params = array()) {
+        unset ($params['page_id']);
+        parent::update($params);
+    }
 
 }
 

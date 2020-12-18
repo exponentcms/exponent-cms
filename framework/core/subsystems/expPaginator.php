@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -96,6 +96,7 @@ class expPaginator {
 	public $records = array();
     public $cats = array();
     public $sort_dropdown = array();
+    public $linkables = array();
 
     /**
      * expPaginator Constructor

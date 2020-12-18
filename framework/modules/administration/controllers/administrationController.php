@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -299,7 +299,7 @@ class administrationController extends expController {
         }
 
 		assign_to_template(array(
-            'menu'=>(bs3() || bs4()) ? $sorted : json_encode($sorted),
+            'menu'=>(bs3() || bs4() || bs5()) ? $sorted : json_encode($sorted),
             "top"=>$top
         ));
     }
@@ -541,10 +541,11 @@ class administrationController extends expController {
 		$modsurl =array(
 			'themes'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-themes',
 			'fixes'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-fixes',
-			'mods'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-mods'
+            'addons'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-addons',
+			'mods'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-mods',
 		);
 
-        require_once(BASE . 'external/simplepie-1.5.5/autoloader.php');
+        require_once(BASE . 'external/simplepie-1.5.6/autoloader.php');
 		$RSS = new SimplePie();
 		$RSS->set_cache_location(BASE . 'tmp/rsscache');  // default is ./cache
 //	    $RSS->set_cache_duration(3600);  // default if 3600
@@ -552,7 +553,8 @@ class administrationController extends expController {
 //	    $RSS->set_output_encoding('UTF-8');  // which is the default
 		$items['themes'] = array();
 		$items['fixes'] = array();
-		$items['mods'] = array();
+		$items['addons'] = array();
+        $items['mods'] = array();
 		foreach($modsurl as $type=>$url) {
 		    $RSS->set_feed_url($url);
 		    $feed = $RSS->init();
@@ -573,7 +575,12 @@ class administrationController extends expController {
 					$rssObject->enclosure = $enclosure->get_link();
                     $rssObject->length = $enclosure->get_length();
 				}
-		        $items[$type][] = $rssObject;
+				if ($type !== "fixes") {
+                    $items[$type][] = $rssObject;
+                } elseif (strpos($rssObject->title, EXPONENT_VERSION_MAJOR . '.' . EXPONENT_VERSION_MINOR . '.' . EXPONENT_VERSION_REVISION) !== false) {
+				    // we only want patches for our current version
+                    $items[$type][] = $rssObject;
+                }
 		    }
 		}
 
@@ -588,6 +595,7 @@ class administrationController extends expController {
 		assign_to_template(array(
             'themes'=>$items['themes'],
             'fixes'=>$items['fixes'],
+            'addons'=>$items['addons'],
             'mods'=>$items['mods'],
 //            'form_html'=>$form->toHTML()
         ));
@@ -598,7 +606,8 @@ class administrationController extends expController {
             foreach ($this->params['files'] as $title=>$url) {
                 $filename = tempnam("tmp/extensionuploads/",'tmp');
                 expCore::saveData($url,$filename);
-                $_FILES['mod_archive']['name'] = end(explode("/", $url));
+                $nurl = explode("/", $url);
+                $_FILES['mod_archive']['name'] = end($nurl);
 //                $finfo = finfo_open(FILEINFO_MIME);
 //                $mimetype = finfo_file($finfo, $filename);
 //                finfo_close($finfo);

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -64,7 +64,7 @@ class hiddenfieldcontrol extends formcontrol {
 			$object->required = false;
 		}
 
-		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
 		$form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
 		$form->register("flip",gt('Caption on Right'), new checkboxcontrol($object->flip,false));

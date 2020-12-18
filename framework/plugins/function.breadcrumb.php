@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,7 +36,7 @@ function smarty_function_breadcrumb($params,&$smarty) {
     $active = isset($params['active']) ? $params['active'] : 1;
     $items = !empty($params['items']) ? $params['items'] : array();
 
-    $html = '<div class="cart-breadcrumb ' . (!empty($params['style'])?$params['style']:'') . '">';
+    $html = '<div class="cart-breadcrumb col-sm-12 ' . (!empty($params['style'])?$params['style']:'') . '">';
     $i = 0;
     foreach ($items as $key=>$item) {
         if (is_array($item)) {
@@ -57,7 +57,7 @@ function smarty_function_breadcrumb($params,&$smarty) {
         $html .= 'title="' . $title . ' ' . gt('Step') . '">';
 //        if ($i != $active) {
 //            $title = '&#160;<span class="breadcrumb-title">' .$title . '</span>';
-            if (bs3()||bs4()) {
+            if (bs3()||bs4()||bs5()) {
                 $title = '&#160;<span class="hidden-xs hidden-sm d-none d-sm-inline">' . $title . '</span>';
             }
 //        }

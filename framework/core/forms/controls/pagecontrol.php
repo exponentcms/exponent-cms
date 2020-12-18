@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -62,13 +62,13 @@ class pagecontrol extends formcontrol {
     function toHTML($label,$name) {
         $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
         $description = !empty($this->description) ? $this->description : $caption;
-        $html  = '<fieldset '.($this->horizontal&&bs3()&&$this->design_time?'class="col-sm-10" ':'').'title="'.$caption.'">
+        $html  = '<fieldset '.($this->horizontal&&(bs3()||bs4()||bs5())&&$this->design_time?'class="col-sm-10" ':'').'title="'.$caption.'">
                   <legend>'.$description.'</legend>';
         return $html;
 	}
 
     function controlToHTML($name, $label) {
-        $html = "<label class=\"".(bs3()?"control-label":"label").($this->horizontal&&bs3()&&$this->design_time?' col-sm-2':'')."\">".$label."</label>";
+        $html = "<label class=\"".((bs3()||bs4()||bs5())?"control-label":"label").($this->horizontal&&(bs3()||bs4()||bs5())&&$this->design_time?' col-sm-2':'')."\">".$label."</label>";
         $html .= $this->toHTML($name, $label);
         return $html . '</fieldset>';
     }
@@ -106,7 +106,7 @@ class pagecontrol extends formcontrol {
 //            $object->required = false;
         }
         if (empty($object->description)) $object->description = "";
-        $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+        $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 //        $form->register("default",gt('Default'), new textcontrol($object->default));

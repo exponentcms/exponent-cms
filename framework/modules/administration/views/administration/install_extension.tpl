@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,10 +22,11 @@
     </div>
 	<div id="extension-tabs" class="yui-navset exp-skin-tabview hide">
 		<ul class="yui-nav">
-		<li class="selected"><a href="#tab1"><em>{"Themes"|gettext}</em></a></li>
-		<li><a href="#tab2"><em>{"Fixes"|gettext}</em></a></li>
-		<li><a href="#tab3"><em>{"Mods"|gettext}</em></a></li>
-		<li><a href="#tab4"><em>{"Upload Extension"|gettext}</em></a></li>
+            <li class="selected"><a href="#tab1"><em>{"Themes"|gettext}</em></a></li>
+            <li><a href="#tab2"><em>{"Fixes"|gettext}</em></a></li>
+            <li><a href="#tab3"><em>{"Addons"|gettext}</em></a></li>
+            <li><a href="#tab4"><em>{"Mods"|gettext}</em></a></li>
+            <li><a href="#tab5"><em>{"Upload Extension"|gettext}</em></a></li>
 		</ul>
 		<div class="yui-content">
 			<div id="tab1">
@@ -76,38 +77,65 @@
                             </div>
                         </div>
                     {foreachelse}
-                        <h4>{'There Are No Fixes or Patches Available'|gettext}</h4>
+                        <h4>{'There Are No Fixes or Patches Available for this Version'|gettext}</h4>
                     {/foreach}
                     {if_elements array=$fixes}{control type="buttongroup" submit="Install Selected Patches"|gettext}{/if_elements}
                 {/form}
 			</div>
 			<div id="tab3">
-				<h2>{"Modifications"|gettext}</h2>
+				<h2>{"Addons"|gettext}</h2>
                 {form action=install_extension_confirm}
-                    {foreach from=$mods item=mod name=mods}
+                    {control type=hidden name=patch value=1}
+                    {foreach from=$addons item=addon name=addons}
                         <div class="item" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 1px; border-bottom-color: black; border-bottom-style: dashed;">
-                            <div style="float: left;">{control type="checkbox" name="files[`$mod->name`]" label=" " value="`$mod->enclosure`"}</div>
-                            <a href="{$mod->rss_link}" title="More Information"|gettext target="_blank"><h4>{$mod->title}</h4></a>
+                            <div style="float: left;">{control type="checkbox" name="files[`$addon->name`]" label=" " value="`$addon->enclosure`"}</div>
+                            <a href="{$addon->rss_link}" title="More Information"|gettext target="_blank"><h4>{$addon->title}</h4></a>
                             <em class="date">
-                                {'Dated'|gettext}: {$mod->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                                {'Dated'|gettext}: {$addon->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
                             </em>
                             <em class="date">
-                                {'Size'|gettext}: {$mod->length|bytes}
+                                {'Size'|gettext}: {$addon->length|bytes}
                             </em>
                             <div class="bodycopy">
-                                {*{$mod->body|summarize:"html":"paralinks"}*}
-                                {$mod->body|summarize:"html":"parahtml"}
+                                {*{addon->body|summarize:"html":"paralinks"}*}
+                                {$addon->body|summarize:"html":"parahtml"}
                                 {br}
-                                <a href="{$mod->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
+                                <a href="{$addon->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
                             </div>
                         </div>
                         {foreachelse}
-                        <h4>{'There Are No Modifications Available'|gettext}</h4>
+                        <h4>{'There Are No Addons Available'|gettext}</h4>
                     {/foreach}
-                    {if_elements array=$mods}{control type="buttongroup" submit="Install Selected Modifications"|gettext}{/if_elements}
+                    {if_elements array=$addons}{control type="buttongroup" submit="Install Selected Addons"|gettext}{/if_elements}
                 {/form}
 			</div>
-			<div id="tab4">
+            <div id="tab4">
+                <h2>{"Modifications"|gettext}</h2>
+                 {form action=install_extension_confirm}
+                     {foreach from=$mods item=mod name=mods}
+                         <div class="item" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 1px; border-bottom-color: black; border-bottom-style: dashed;">
+                             <div style="float: left;">{control type="checkbox" name="files[`$mod->name`]" label=" " value="`$mod->enclosure`"}</div>
+                             <a href="{$mod->rss_link}" title="More Information"|gettext target="_blank"><h4>{$mod->title}</h4></a>
+                             <em class="date">
+                                 {'Dated'|gettext}: {$mod->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                             </em>
+                             <em class="date">
+                                 {'Size'|gettext}: {$mod->length|bytes}
+                             </em>
+                             <div class="bodycopy">
+                                 {*{$mod->body|summarize:"html":"paralinks"}*}
+                                 {$mod->body|summarize:"html":"parahtml"}
+                                 {br}
+                                 <a href="{$mod->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
+                             </div>
+                         </div>
+                         {foreachelse}
+                         <h4>{'There Are No Modifications Available'|gettext}</h4>
+                     {/foreach}
+                     {if_elements array=$mods}{control type="buttongroup" submit="Install Selected Modifications"|gettext}{/if_elements}
+                 {/form}
+            </div>
+			<div id="tab5">
                 <h2>{"Extension File Upload"|gettext}</h2>
                 <div class="form_header">{'This form allows you to upload custom modules, themes, and views to the website, or patch the installation.  After you upload an archive containing an extension you will be shown a pre-installation summary page outlining exactly what files will be installed where, and what each file contains (for security reasons)'|gettext}</div>
                 <p><h4>{'It is NOT intended to be used to perform a full version upgrade!'|gettext}</h4></p>

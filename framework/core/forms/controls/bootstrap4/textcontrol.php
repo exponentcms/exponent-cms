@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -70,7 +70,7 @@ class textcontrol extends formcontrol {
             } elseif (bs3()) {
                 $html .= '<div class="input-group">';
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
-            } elseif (bs4()) {
+            } elseif (bs4() || bs5()) {
                 $html .= '<div class="input-group input-group-sm">';
                 $html .= '<span class="input-group-prepend"><i class="input-group-text fas fa-'.$this->prepend.'"></i></span>';
             }
@@ -78,7 +78,7 @@ class textcontrol extends formcontrol {
         if (!empty($this->append) && bs()) {
             if (bs2()) {
                 $html .= '<div class="input-append">';
-            } elseif (bs3() || bs4()) {
+            } elseif (bs3() || bs4() || bs5()) {
                 $html .= '<div class="input-group input-group-sm">';
             }
         }
@@ -110,7 +110,7 @@ class textcontrol extends formcontrol {
                 $html .= '<span class="add-on"><i class="icon-'.$this->append.'"></i></span>';
             } elseif (bs3()) {
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->append.'"></i></span>';
-            } elseif (bs4()) {
+            } elseif (bs4() || bs5()) {
                 $html .= '<span class="input-group-append"><i class="input-group-text fas fa-'.$this->append.'"></i></span>';
             }
             $html .= '</div>';
@@ -135,7 +135,7 @@ class textcontrol extends formcontrol {
             $object->required = false;
         }
         if (empty($object->description)) $object->description = "";
-        $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+        $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true,array('required'=>true));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
         $form->register("default",gt('Default'), new textcontrol($object->default));

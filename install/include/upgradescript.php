@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -107,7 +107,9 @@ abstract class upgradescript {
      * @return bool
      */
     public static function prioritize($a, $b) {
-        return $a->priority > $b->priority;
+        if ($a->priority == $b->priority)
+            return 0;
+        return ($a->priority > $b->priority) ? +1 : -1;
     }
 
 }

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -55,9 +55,9 @@ class searchController extends expController {
         $terms = $this->params['search_string'];
 
         // If magic quotes is on and the user uses modifiers like " (quotes) they get escaped. We don't want that in this case.
-        if (get_magic_quotes_gpc()) {
-            $terms = stripslashes($terms);
-        }
+//        if (get_magic_quotes_gpc()) {
+//            $terms = stripslashes($terms);
+//        }
         $terms = expString::escape(htmlspecialchars($terms));
 
         if ($router->current_url == substr(URL_FULL, 0, -1)) {  // give us a user friendly url
@@ -329,7 +329,7 @@ class searchController extends expController {
             'records' => $records,
             'where'=>1,
             'model'=>'search_queries',
-            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? 10 : $this->config['limit'],
+            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
             'order'=>empty($this->config['order']) ? 'timestamp' : $this->config['order'],
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
@@ -342,8 +342,8 @@ class searchController extends expController {
             ),
         ));
 
-        $uname['id'] = implode($uname['id'],',');
-        $uname['name'] = implode($uname['name'],',');
+        $uname['id'] = implode(',', $uname['id']);
+        $uname['name'] = implode(',', $uname['name']);
         assign_to_template(array(
             'page'=>$page,
             'users'=>$uname,

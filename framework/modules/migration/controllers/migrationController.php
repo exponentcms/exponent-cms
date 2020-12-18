@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -2475,7 +2475,7 @@ class migrationController extends expController {
      * @var \mysqli_database $db the exponent database object
      * @return void
      */
-	private function add_container($iloc,$m,$linked=false,$newconfig) {
+	private function add_container($iloc=null,$m=null,$linked=false,$newconfig=null) {
 //        global $db;
 
         // first the container

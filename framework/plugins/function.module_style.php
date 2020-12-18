@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -71,7 +71,7 @@ function smarty_function_module_style($params,&$smarty) {
 			case 'background':
 				switch ($style) {
 					case 'well':
-						if (bs4()) {
+						if (bs4() || bs5()) {
                             $class .= 'card card-body';
                         } else {
                             $class .= 'well';
@@ -89,7 +89,7 @@ function smarty_function_module_style($params,&$smarty) {
 				}
 				break;
 			case 'styled':
-                if (bs4()) {
+                if (bs4() || bs5()) {
                     $class .= 'card card-body bg-faded';
                 } else {
                     $class .= 'well';
@@ -97,7 +97,7 @@ function smarty_function_module_style($params,&$smarty) {
                 break;
 				break;
 			case 'hiddenxs':
-				if (bs4())
+				if (bs4() || bs5())
                     $class .= 'd-none d-sm-block';
                 elseif (bs3())
 					$class .= 'hidden-xs';
@@ -105,7 +105,7 @@ function smarty_function_module_style($params,&$smarty) {
 					$class .= 'hidden-phone';
 				break;
 			case 'hiddensm':
-				if (bs4())
+				if (bs4() || bs5())
                     $class .= 'd-none d-md-block';
                 elseif (bs3())
 					$class .= 'hidden-sm';
@@ -113,7 +113,7 @@ function smarty_function_module_style($params,&$smarty) {
 					$class .= 'hidden-phone';
 				break;
 			case 'hiddenmd':
-                if (bs4())
+                if (bs4() || bs5())
                     $class .= 'd-none d-lg-block';
                 elseif (bs3())
 					$class .= 'hidden-md';
@@ -121,7 +121,7 @@ function smarty_function_module_style($params,&$smarty) {
 					$class .= 'hidden-tablet';
 				break;
 			case 'hiddenlg':
-                if (bs4())
+                if (bs4() || bs5())
                     $class .= 'd-none d-xl-block';
                 elseif (bs3())
 					$class .= 'hidden-lg';
@@ -129,7 +129,7 @@ function smarty_function_module_style($params,&$smarty) {
 					$class .= 'hidden-desktop';
 				break;
 			case 'visiblexs':
-                if (bs4())
+                if (bs4() || bs5())
                     $class .= 'd-block d-sm-none';
                 elseif (bs3())
 					$class .= 'visible-xs-block';
@@ -137,7 +137,7 @@ function smarty_function_module_style($params,&$smarty) {
 					$class .= 'visible-phone';
 				break;
 			case 'visiblesm':
-                if (bs4())
+                if (bs4() || bs5())
                     $class .= 'd-block d-md-none';
                 elseif (bs3())
 					$class .= 'visible-sm-block';
@@ -145,7 +145,7 @@ function smarty_function_module_style($params,&$smarty) {
 					$class .= 'visible-phone';
 				break;
 			case 'visiblemd':
-                if (bs4())
+                if (bs4() || bs5())
                     $class .= 'd-block d-lg-none';
                 elseif (bs3())
 					$class .= 'visible-md-block';
@@ -153,7 +153,7 @@ function smarty_function_module_style($params,&$smarty) {
 					$class .= 'visible-tablet';
 				break;
 			case 'visiblelg':
-                if (bs4())
+                if (bs4() || bs5())
                     $class .= 'd-block d-xl-none';
                 elseif (bs3())
 					$class .= 'visible-lg-block';

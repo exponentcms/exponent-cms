@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -58,9 +58,9 @@ class notfoundController extends expController {
 	        )
 	    );
         // If magic quotes is on and the user uses modifiers like " (quotes) they get escaped. We don't want that in this case.
-        if (get_magic_quotes_gpc()) {
-            $terms = stripslashes($terms);
-        }
+//        if (get_magic_quotes_gpc()) {
+//            $terms = stripslashes($terms);
+//        }
         $terms = expString::escape(htmlspecialchars($terms));
 
         // check for server requested error documents here instead of treating them as a search request

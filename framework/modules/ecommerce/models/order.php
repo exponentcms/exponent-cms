@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -157,19 +157,19 @@ class order extends expRecord {
             $orig_referrer = $db->selectValue('sessionticket', 'referrer', "ticket='" . $ticket . "'");
 
             //see if we have a LIVE and ACTIVE session w/ cart and grab it if so
-            $sessioncart = $order->find('first', "invoice_id='' AND sessionticket_ticket='" . $ticket . "'");
+            $sessioncart = $order->find('first', "invoice_id=''OR `invoice_id` IS NULL AND sessionticket_ticket='" . $ticket . "'");
 
             //check to see if the user is logged in, and if so grab their existing cart
             $usercart = null;
             if (!empty($user->id) && $user->isLoggedIn()) {
-                $usercart = $order->find('first', "invoice_id='' AND user_id=" . $user->id);
+                $usercart = $order->find('first', "invoice_id=''OR `invoice_id` IS NULL AND user_id=" . $user->id);
             }
 
             //eDebug($sessioncart);
             //eDebug($usercart);
 
             //enter here if we have NO ACTIVE SESSION CART -OR- We're awaiting a potential cart retore
-            if (empty($sessioncart->id) || $sessAr['awaiting_choice'] == true) {
+            if (empty($sessioncart->id) || (isset($sessAr['awaiting_choice']) && $sessAr['awaiting_choice'] == true)) {
                 if (empty($usercart->id)) {
                     // no SESSION cart was found and user is not logged in...
                     //let's see if they have a cart_id cookie set and we'll snag that if so
@@ -382,6 +382,8 @@ class order extends expRecord {
                 //(eDebug($db->selectValue('shippingcalculator','id','is_default=1'),true));
 //                $sm->shippingcalculator_id = $db->selectValue('shippingcalculator', 'id', 'is_default=1');
                 $sm->shippingcalculator_id = shippingcalculator::getDefault();
+                if (is_array($sm->shipping_options))
+                    $sm->shipping_options = serialize($sm->shipping_options);
                 $sm->save();
                 //$this->setActiveShippingMethod($sm);
                 $this->shippingmethods_id = $sm->id;

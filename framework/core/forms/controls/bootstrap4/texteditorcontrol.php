@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -49,11 +49,11 @@ class texteditorcontrol extends formcontrol {
 	}
 
 	function controlToHTML($name,$label) {
-        $html = ($this->horizontal && (bs3()||bs4())) ? '<div class="col-sm-10">' : '';
+        $html = ($this->horizontal && (bs3()||bs4() || bs5())) ? '<div class="col-sm-10">' : '';
         $idname  = (!empty($this->id)) ? $this->id : $this->name;
         if (empty($idname))
             $idname = $name;
-		$html .= "<textarea class=\"textarea" . ((bs3()||bs4()) ? " form-control" : "") . "\" id=\"$idname\" name=\"$name\"";
+		$html .= "<textarea class=\"textarea" . ((bs3()||bs4() || bs5()) ? " form-control" : "") . "\" id=\"$idname\" name=\"$name\"";
         if ($this->focus) $html .= " autofocus";
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
         $html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");
@@ -73,7 +73,7 @@ class texteditorcontrol extends formcontrol {
 		$html .= htmlentities($this->default,ENT_COMPAT,LANG_CHARSET);
 		$html .= "</textarea>";
         if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">".$this->description."</small>";
-        $html .= ($this->horizontal && (bs3()||bs4())) ? '</div>' : '';
+        $html .= ($this->horizontal && (bs3()||bs4() || bs5())) ? '</div>' : '';
 		return $html;
 	}
 
@@ -93,7 +93,7 @@ class texteditorcontrol extends formcontrol {
             $object->is_hidden = false;
 		}
         if (empty($object->description)) $object->description = "";
-		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("default",gt('Default value'),  new texteditorcontrol($object->default));

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -75,6 +75,7 @@ class expTagController extends expController {
         }
 
 //        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+        $record->attached = array();
         foreach (expTag::selectAllTagContentType() as $contenttype) {
             $attatchedat = $record->findWhereAttachedTo($contenttype);
             if (!empty($attatchedat)) {

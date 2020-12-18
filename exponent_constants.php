@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -533,7 +533,7 @@ if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
     define('JQUERY3_VERSION', '3.5.1');
-    define('JQUERY3_MIGRATE_VERSION', '3.3.0');
+    define('JQUERY3_MIGRATE_VERSION', '3.3.1');
     define('JQUERYUI_VERSION', '1.12.1');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
@@ -588,13 +588,17 @@ if (USE_CDN) {
         define('BS3_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v3.x script
     if (!defined('BS4_SCRIPT')) {
-        define('BS4_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>');
+        define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>');
+    } // cdn Bootstrap v4.x script
+    if (!defined('BS5_SCRIPT')) {
+        define('BS5_SCRIPT', '<!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v5.x script
     if (!defined('FA4_SCRIPT')) {
         define('FA4_SCRIPT', 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
     } // cdn FontAwesome v4.x stylesheet
     if (!defined('FA5_SCRIPT')) {
-        define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css');
+        define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
 }
 
@@ -606,7 +610,7 @@ if (!defined('SMARTY_PATH')) {
     if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
     } else {
-        define('SMARTY_VERSION', '3.1.36');  //note smarty v3.1.28+ won't work properly with php < v7.1.x
+        define('SMARTY_VERSION', '3.1.36');  //note smarty v3.1.28+ won't work properly with php < v7.1+
     }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
@@ -626,12 +630,12 @@ if (!defined('SWIFT_PATH')) {
     /**
      * Lexer is needed for Swiftmailer v6
      */
-    define('LEXER_VERSION', '1.2.0');
+    define('LEXER_VERSION', '1.2.1');
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '2.1.17');
+    define('EMAIL_VALIDATOR_VERSION', '2.1.24');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
@@ -640,36 +644,36 @@ if (!defined('SWIFT_PATH')) {
  * Changing the versions here lets Exponent adjust where to look
  */
 if (!defined('MPDF7_VERSION')) {
-    define('MPDF7_VERSION', '7.1.9');  // 7.0.2
+    define('MPDF7_VERSION', '7.1.9');
 }
 if (!defined('MPDF8_VERSION')) {
-    define('MPDF8_VERSION', '8.0.5');
+    define('MPDF8_VERSION', '8.0.8');
 }
 /**
  * Log is needed for MPDF v7+
  */
 if (!defined('LOG_VERSION')) {
-    define('LOG_VERSION', '1.1.3');  // 1.0.2
+    define('LOG_VERSION', '1.1.3');
 }
 /**
  * random_compat is needed for MPDF v7+ under PHP v5.6
  */
 if (!defined('RANDOM_VERSION')) {
-    define('RANDOM_VERSION', '2.0.18');
+    define('RANDOM_VERSION', '2.0.19');
 }
 /**
  * FPDI is needed for MPDF v8+
  */
 if (!defined('FPDI_VERSION')) {
-    define('FPDI_VERSION', '2.3.3');
+    define('FPDI_VERSION', '2.3.5');
 }
 
 if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '085');  // 082
+    define('DOMPDF8_VERSION', '086');
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.2');  // 5.0.1
+    define('HTML2PDF5_VERSION', '5.2.2');
 }
 /**
  * TCPDF is needed for HTML2PDF

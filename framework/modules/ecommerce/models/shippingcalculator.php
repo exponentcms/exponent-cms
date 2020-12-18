@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -64,9 +64,11 @@ class shippingcalculator extends expRecord {
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/configure.tpl')) {
             return BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/configure.tpl';
         } else {
-            if (bs4() && file_exists(BASE . 'framework/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/' . 'configure.bootstrap4.tpl')) {
+            if (bs5() && file_exists(BASE . 'framework/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/' . 'configure.bootstrap5.tpl')) {
+                $tpl = 'configure.bootstrap5.tpl';
+            } elseif ((bs4() || bs5()) && file_exists(BASE . 'framework/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/' . 'configure.bootstrap4.tpl')) {
                 $tpl = 'configure.bootstrap4.tpl';
-            } elseif ((bs3(true) || bs4()) && file_exists(BASE . 'framework/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/' . 'configure.bootstrap3.tpl')) {
+            } elseif ((bs3(true) || bs4() || bs5()) && file_exists(BASE . 'framework/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/' . 'configure.bootstrap3.tpl')) {
                 $tpl = 'configure.bootstrap3.tpl';
             } else {
                 $tpl = 'configure.tpl';

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -46,6 +46,9 @@ class expConfig extends expRecord {
             // parent::__construct($db->selectValue($this->table, 'id'));
             //}
 		$this->config = expUnserialize($this->config);
+        if (!is_array($this->config)) {
+            $this->config = array();
+        }
         // now to artificially attach any file objects to the config
         if (!empty($this->config['expFile'])) {
             foreach ($this->config['expFile'] as $type=>$file) {

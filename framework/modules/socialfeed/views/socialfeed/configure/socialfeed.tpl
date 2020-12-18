@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2020 OIC Group, Inc.
+ * Copyright (c) 2004-2021 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -29,7 +29,7 @@
 {control type=text name='socialfeed_cache_refresh' label='Feed cache refresh time limit'|gettext size=60 max=60 filter=integer value=$config.socialfeed_cache_refresh|default:120 description='How often to update social feed cache in minutes'|gettext}
 {control type=text name='socialfeed_trim_length' label='Trim Description Length'|gettext size=60 max=60 filter=integer value=$config.socialfeed_trim_length|default:120 description='Maximum length of descriptions'|gettext}
 {control type=checkbox name="socialfeed_time_stamp" value=1 label="Show Posted Date/Time"|gettext checked=$config.socialfeed_time_stamp|default:false}
-{if bs3()||bs4()}
+{if bs3()||bs4()||bs5()}
 {control type=dropdown name="socialfeed_display_type" items="Collapsing Columns,Fluid,Pinboard"|gettxtlist values="columns,fluid,pinboard" label="Display style"|gettext value=$config.socialfeed_display_type|default:'fluid'}
 {/if}
 {control type=checkbox name="socialfeed_facebook_use" value=1 label="Get Facebook Feed"|gettext checked=$config.socialfeed_facebook_use}

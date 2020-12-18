@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -80,7 +80,7 @@ class cash extends billingcalculator {
 //        }
 //        return $billinginfo;
 
-        $billinginfo = '<table id="ccinfo"' . (bs3()||bs4()?' class="table"':'') . ' border=0 cellspacing=0 cellpadding=0>';
+        $billinginfo = '<table id="ccinfo"' . ((bs3()||bs4()||bs5())?' class="table"':'') . ' border=0 cellspacing=0 cellpadding=0>';
         $billinginfo .= '<thead><tr><th colspan="2">' . gt("Paying by") . ' ' . $this->name() . '</th></tr></thead>';
         $billinginfo .= '<tbody>';
         $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Method") . '</td><td class="pmt-value">' . $this->getPaymentMethod($billingmethod) . '</td></tr>';

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -62,7 +62,7 @@ class news extends expRecord {
             $this->meta_tw['twimage'][0] = new expFile($this->meta_tw['twimage'][0]);
     }
 
-	public function beforeCreate() {
+	public function beforeSave() {
 	    if (empty($this->publish) || $this->publish === 'on') {
 	        $this->publish = time();
 	    }

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -145,7 +145,7 @@ function build_menu($page,$params) {
             $menu .= '<div class="row"><div class="col-sm-12">';
         elseif (bs2())
             $menu .= '<div class="row-fluid"><div class="span12">';
-        if (SELECTOR == 1) {
+        if (defined('SELECTOR') && SELECTOR == 1) {
             $menu .= '<h5 style="color:red">' . gt("Free form menu items are not displayed in selector view") . '</h5>';
         } else {
             $menu .= expTheme::module(array("module"=>"container","action"=>"showall","view"=>$view,"source"=>"menuitem-" . $page->id,"params"=>array("no_output"=>true)));

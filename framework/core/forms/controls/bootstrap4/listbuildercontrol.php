@@ -82,7 +82,7 @@ class listbuildercontrol extends formcontrol {
 				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;); return false;' ><i class='fas fa-fw fa-arrow-left' style='display:inline;'></i>&nbsp;<i class='fas fa-fw fa-arrow-left' style='display:inline;'></i></button>";
 			}
 			$html .= "</td>";
-			$html .= "<td width='40%' valign='top' style='border:none;'><small class=\"form-text text-muted\">".gt('Selected')."</small><select " . ((bs3()||bs4()) ? "class=\"form-control\" " : "") . "id='dest_$name' size='".$this->size."'>";
+			$html .= "<td width='40%' valign='top' style='border:none;'><small class=\"form-text text-muted\">".gt('Selected')."</small><select " . ((bs3()||bs4() || bs5()) ? "class=\"form-control\" " : "") . "id='dest_$name' size='".$this->size."'>";
 			foreach ($this->default as $key=>$value) {
 				if (isset($this->source[$key])) $value = $this->source[$key];
 				$html .= "<option value='$key'>$value</option>";
@@ -118,11 +118,11 @@ class listbuildercontrol extends formcontrol {
         }
 		$process = empty($this->process) ? null : $this->process;
 		if(empty($this->flip)){
-			$html .= (!empty($label)) ? "<label".$for." class=\"".((bs3()||bs4())?"control-label":"label")."\">".$labeltag."</label>" : "";
+			$html .= (!empty($label)) ? "<label".$for." class=\"".((bs3()||bs4() || bs5())?"control-label":"label")."\">".$labeltag."</label>" : "";
 			$html .= $this->controlToHTML($name, $label, $process);
 		} else {
 			$html .= $this->controlToHTML($name, $label, $process);
-			$html .= (!empty($label)) ? "<label".$for." class=\"".((bs3()||bs4())?"control-label":"label")."\">".$labeltag."</label>" : "";
+			$html .= (!empty($label)) ? "<label".$for." class=\"".((bs3()||bs4() || bs5())?"control-label":"label")."\">".$labeltag."</label>" : "";
 		}
 		//$html .= "</label>";
 		$html .= "</div>";
@@ -220,7 +220,7 @@ class listbuildercontrol extends formcontrol {
 			$object->identifier = "";
 			$object->caption = "";
 		}
-		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
 		if (!expJavascript::inAjaxAction())
 			$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));

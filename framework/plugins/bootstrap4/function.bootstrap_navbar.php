@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -69,7 +69,7 @@ function build_menu($page, $params) {
     if (!empty($page->expFile[0]->id)) {
         $img_parm = array("h"=>16,"w"=>16,"zc"=>1,"file_id"=>$page->expFile[0]->id,"return"=>1,"class"=>'img_left',"alt"=>$page->text);
         $img = smarty_function_img($img_parm,$smarty);
-    } elseif (bs4() && !empty($page->glyph)) {
+    } elseif ((bs4() || bs5()) && !empty($page->glyph)) {
         $img = '<i class="fa-fw ' . $page->glyph . '" aria-hidden="true"></i> ';
     } elseif (bs3() && !empty($page->glyph)) {
         $img = '<i class="fa fa-fw ' . $page->glyph . '" aria-hidden="true"></i> ';
@@ -91,7 +91,7 @@ function build_menu($page, $params) {
         if ($sectionObj->id == $page->id) {
             $active = " nav-item active";
             $menu .= ' class="nav-item active';
-        } elseif ($page->url == "#")
+        } elseif ($page->url === "#")
             $menu .= ' class="nav-item disabled';
         else
             $menu .= ' class="nav-item';
@@ -115,8 +115,8 @@ function build_menu($page, $params) {
             $menu .= '"><a href="'.$page->url.'" data-target="dropdownMenu' . $page->id . '" class="nav-link dropdown-toggle" href="'.$page->url.'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'.($page->new_window?' target="_blank"':'').' title="'. $page->title .'">' . $menu_item;
         if (empty($page->depth))
             $menu .= '<b class="caret"></b>';
-        $menu .= '</a>'."\n".'<ul class="dropdown-menu'.($params['menualign']=='right'?' float-right':'').'" role="menu" id="dropdownMenu' . $page->id . ' aria-labelledby="dropdownMenu' . $page->id . '">'."\n";
-        if ($page->url != "#") {  // we also need a 'menu item' for active parent pages
+        $menu .= '</a>'."\n".'<ul class="dropdown-menu'.($params['menualign']==='right'?' float-right':'').'" role="menu" id="dropdownMenu' . $page->id . ' aria-labelledby="dropdownMenu' . $page->id . '">'."\n";
+        if ($page->url !== "#") {  // we also need a 'menu item' for active parent pages
             $topmenu = new stdClass();
             $topmenu->id = $page->id;
             $topmenu->text = $page->text;
@@ -151,16 +151,16 @@ function build_menu($page, $params) {
             $view = 'showall';
         }
         $menu = '
-        <li class="dropdown' . (empty($page->width) ? ' yamm-fw' : '') . ($page->class == "right" ? ' float-right ' : '') . '">';
+        <li class="dropdown' . (empty($page->width) ? ' yamm-fw' : '') . ($page->class === "right" ? ' float-right ' : '') . '">';
         $menu .= '<a href="#" id="dropdownMenu' . $page->id . '" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="'. $page->title .'">'. $menu_item . '<b class="caret"></b></a>';
         $menu .= '<ul class="dropdown-menu" style="right:0;" role="menu" aria-labelledby="dropdownMenu' . $page->id . '"><li role="menuitem"><div class="yamm-content">';
-        if (bs4())
+        if (bs4() || bs5())
             $menu .= '<div class="row"><div class="col-sm-12">';
         elseif (bs3())
             $menu .= '<div class="row"><div class="col-sm-12">';
         elseif (bs2())
             $menu .= '<div class="row-fluid"><div class="span12">';
-        if (SELECTOR == 1) {
+        if (defined('SELECTOR') && SELECTOR == 1) {
             $menu .= '<h5 style="color:red">' . gt("Free form menu items are not displayed in selector view") . '</h5>';
         } else {
             $menu .= expTheme::module(array("module"=>"container","action"=>"showall","view"=>$view,"source"=>"menuitem-" . $page->id,"params"=>array("no_output"=>true)));

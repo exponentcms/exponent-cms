@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -49,7 +49,7 @@ function smarty_function_loading($params,&$smarty) {
         expCSS::pushToHead(array(
            "corecss"=>"loading",
         ));
-    } elseif (bs4()) {
+    } elseif (bs4() || bs5()) {
         $spinner = '<i class="fas fa-lg fa-spinner fa-pulse"></i> ';
         expCSS::pushToHead(array(
            "corecss"=>"loading",

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -41,7 +41,7 @@ function smarty_function_pagelinks($params, &$smarty) {
             $text  = !empty($params['text']) ? $params['text'] : 'More ...';
             $title = !empty($params['title']) ? $params['title'] : $text;
         if (bs()) {
-            if (bs4()) {
+            if (bs4() ||bs5()) {
             echo '<a href="' . $params['paginate']->morelink . '" title="' . $title . '" class="'.expTheme::buttonStyle().'">'. expTheme::iconStyle('view', $text) . '</a>';
             } else {
                 echo '<a href="' . $params['paginate']->morelink . '" title="' . $title . '" class="showall '.expTheme::buttonStyle().'">' . $text . '</a>';

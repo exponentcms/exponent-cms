@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -400,14 +400,16 @@ class orderController extends expController {
 
         $invoice = '<!DOCTYPE HTML><HTML><HEAD>';
         // the basic styles
-        if (!bs3() && !bs4())
+        if (!bs3() && !bs4() && !bs5())
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/normalize/normalize.css" >';
         if (bs2())
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap/css/bootstrap.css" >';
         elseif (bs3())
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap3/css/bootstrap.css" >';
-        elseif (bs4())
+        elseif (bs4() || bs5())
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap4/css/bootstrap.css" >';
+        elseif (bs5())
+            $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap5/css/bootstrap.css" >';
         $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'framework/modules/ecommerce/assets/css/print-invoice.css">
         <style>
             html{background:none;}
@@ -2201,7 +2203,7 @@ exit();
                 'formatter' => function( $d, $row ) {
         	        $paid = strtolower($row['paid']);
         	        if ($paid === 'complete' || $paid === 'paid') {
-        	            if (bs4()) {
+        	            if (bs4() || bs5()) {
                             $class = 'badge-success';
                         } else {
                             $class = 'alert-success';
@@ -2209,7 +2211,7 @@ exit();
                         $title = gt('Paid');
                         $color = 'darkseagreen';
                     } else {
-                        if (bs4()) {
+                        if (bs4() || bs5()) {
                             $class = 'badge-secondary';
                         } else {
                             $class = 'alert-secondary';
@@ -2247,14 +2249,14 @@ exit();
                         $class = 'success';
                         $color = 'darkseagreen';
                     } else {
-                        if (bs4()) {
+                        if (bs4() || bs5()) {
                             $class = 'secondary';
                         } else {
                             $class = 'default';
                         }
                         $color = 'lightgray';
                     }
-                    if (bs4()) {
+                    if (bs4() || bs5()) {
                         return '<span class="badge badge-' . $class . '">' . $d . '</span>';
                     } elseif (bs()) {
                         return '<span class="badge alert-' . $class . '">' . $d . '</span>';

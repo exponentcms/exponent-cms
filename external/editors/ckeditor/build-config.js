@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/license
  */
@@ -13,10 +13,10 @@
  * (1) https://ckeditor.com/cke4/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) https://ckeditor.com/cke4/builder/79a405b28a4ac6dc5685bded3f3bd04e
+ * (2) https://ckeditor.com/cke4/builder/492ddaa663b056ba381fc202dff0cb7c
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) https://ckeditor.com/cke4/builder/download/79a405b28a4ac6dc5685bded3f3bd04e
+ * (3) https://ckeditor.com/cke4/builder/download/492ddaa663b056ba381fc202dff0cb7c
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -39,6 +39,7 @@ var CKBUILDER_CONFIG = {
 		'.jshintrc',
 		'.mailmap',
 		'.npm',
+		'.nvmrc',
 		'.travis.yml',
 		'bender-err.log',
 		'bender-out.log',
@@ -48,6 +49,7 @@ var CKBUILDER_CONFIG = {
 		'gruntfile.js',
 		'less',
 		'node_modules',
+		'package-lock.json',
 		'package.json',
 		'tests'
 	],
@@ -55,6 +57,7 @@ var CKBUILDER_CONFIG = {
 		'a11yhelp' : 1,
 		'about' : 1,
 		'autocomplete' : 1,
+		'autogrow' : 1,
 		'autolink' : 1,
 		'balloonpanel' : 1,
 		'basicstyles' : 1,
@@ -67,6 +70,7 @@ var CKBUILDER_CONFIG = {
 		'copyformatting' : 1,
 		'dialogadvtab' : 1,
 		'div' : 1,
+		'editorplaceholder' : 1,
 		'elementspath' : 1,
 		'emoji' : 1,
 		'enterkey' : 1,
@@ -99,6 +103,7 @@ var CKBUILDER_CONFIG = {
 		'pastefromword' : 1,
 		'pastetext' : 1,
 		'pastetools' : 1,
+		'placeholder' : 1,
 		'preview' : 1,
 		'print' : 1,
 		'quicktable' : 1,

@@ -4977,7 +4977,9 @@ class upload {
                     }
                     if ($this->processed) {
                         if (is_resource($image_src)) imagedestroy($image_src);
+                        if (is_object($image_src) && $image_src instanceOf \GdImage) unset($image_src);
                         if (is_resource($image_dst)) imagedestroy($image_dst);
+                        if (is_object($image_dst) && $image_dst instanceOf \GdImage) unset($image_dst);
                         $this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;image objects destroyed<br />';
                     }
                 }

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -67,7 +67,7 @@ function smarty_function_scaffold($params,&$smarty) {
             		switch ($col[FORM_FIELD_FILTER]) {
 		            	case MONEY:
                			case DECIMAL_MONEY:
-            	    		$ctl['value'] = expCore::getCurrencySymbol('USD') . number_format($ctl['value'],2,'.',',');
+            	    		$ctl['value'] = expCore::getCurrencySymbol('USD') . number_format((float)$ctl['value'],2,'.',',');
               	    		$ctl['filter'] = 'money';
                			break;
            			}

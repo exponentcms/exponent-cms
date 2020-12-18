@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -114,20 +114,28 @@ class expJavascript {
                             $scripts .= BS2_SCRIPT . "\r\n";
                         } elseif (bs3()) {
                             $scripts .= BS3_SCRIPT . "\r\n";
-                        } else {
+                        } elseif (bs4()) {
                             $scripts .= BS4_SCRIPT . "\r\n";
+                        } else {
+                            $scripts .= BS5_SCRIPT . "\r\n";
                         }
                     } else {
                         if (bs2()) {
                             $bootstrappath = 'external/bootstrap/js/bootstrap-';
                         } elseif (bs3()) {
                             $bootstrappath = 'external/bootstrap3/js/';
-                        } else {
+                        } elseif (bs4()) {
                             $bootstrappath = 'external/bootstrap4/js/dist/';
-                        }
-                        if (bs4()) {
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'popper.js,';
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'util.js,';
+                        } else {
+                            $bootstrappath = 'external/bootstrap5/js/dist/';
+                            $scripts .= "\t" . '<script src="https://unpkg.com/@popperjs/core@2"></script>' . "\r\n";
+                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/data.js,';
+                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js,';
+                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js,';
+                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/polyfill.js,';
+                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js,';
                         }
                         foreach ($bootstrapjs as $mod) {
                             if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
@@ -273,20 +281,28 @@ class expJavascript {
                             $scripts .= "\t" . BS2_SCRIPT . "\r\n";
                         } elseif (bs3()) {
                             $scripts .= "\t" . BS3_SCRIPT . "\r\n";
-                        } else {
+                        } elseif (bs4()) {
                             $scripts .= "\t" . BS4_SCRIPT . "\r\n";
+                        } else {
+                            $scripts .= "\t" . BS5_SCRIPT . "\r\n";
                         }
                     } else {
                         if (bs2()) {
                             $bootstrappath = 'external/bootstrap/js/bootstrap-';
                         } elseif (bs3()) {
                             $bootstrappath = 'external/bootstrap3/js/';
-                        } else {
+                        } elseif (bs4()) {
                             $bootstrappath = 'external/bootstrap4/js/dist/';
-                        }
-                        if (bs4()) {
                             $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'popper.js"></script>' . "\r\n";
                             $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util.js"></script>' . "\r\n";
+                        } else {
+                            $bootstrappath = 'external/bootstrap5/js/dist/';
+                            $scripts .= "\t" . '<script src="https://unpkg.com/@popperjs/core@2"></script>' . "\r\n";
+                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/data.js"></script>' . "\r\n";
+                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js"></script>' . "\r\n";
+                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js"></script>' . "\r\n";
+                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/polyfill.js"></script>' . "\r\n";
+                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js"></script>' . "\r\n";
                         }
                         foreach ($bootstrapjs as $mod) {
                             if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
@@ -501,16 +517,40 @@ class expJavascript {
             if (!empty($params['bootstrap'])) {
                 // we assume jquery is already loaded
                 $scripts = '';
-                if (bs2()) {
-                    $bootstrappath = 'external/bootstrap/js/bootstrap-';
+                if (USE_CDN) {
+                    if (bs2()) {
+                        $scripts .= "\t" . BS2_SCRIPT . "\r\n";
+                    } elseif (bs3()) {
+                        $scripts .= "\t" . BS3_SCRIPT . "\r\n";
+                    } elseif (bs4()) {
+                        $scripts .= "\t" . BS4_SCRIPT . "\r\n";
+                    } else {
+                        $scripts .= "\t" . BS5_SCRIPT . "\r\n";
+                    }
                 } else {
-                    $bootstrappath = 'external/bootstrap3/js/';
-                }
-                foreach ($bootstrapjs as $mod) {
-                    if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
-                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
-                    } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
-                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . $mod . '.js"></script>' . "\r\n";
+                    if (bs2()) {
+                        $bootstrappath = 'external/bootstrap/js/bootstrap-';
+                    } elseif (bs3()) {
+                        $bootstrappath = 'external/bootstrap3/js/';
+                    } elseif (bs4()) {
+                        $bootstrappath = 'external/bootstrap4/js/dist/';
+                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'popper.js"></script>' . "\r\n";
+                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util.js"></script>' . "\r\n";
+                    } else {
+                        $bootstrappath = 'external/bootstrap5/js/dist/';
+                        $scripts .= '<script src="https://unpkg.com/@popperjs/core@2"></script>' . "\r\n";
+                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/data.js"></script>' . "\r\n";
+                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js"></script>' . "\r\n";
+                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js"></script>' . "\r\n";
+                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/polyfill.js"></script>' . "\r\n";
+                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js"></script>' . "\r\n";
+                    }
+                    foreach ($bootstrapjs as $mod) {
+                        if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
+                            $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
+                        } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
+                            $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . $mod . '.js"></script>' . "\r\n";
+                        }
                     }
                 }
                 echo $scripts;
@@ -607,8 +647,9 @@ class expJavascript {
      *
      * @return string
      */
-	public static function ajaxReply($replyCode=200, $replyText='Ok', $data) {
-		$ajaxObj['replyCode'] = $replyCode;
+	public static function ajaxReply($replyCode=200, $replyText='Ok', $data='') {
+        expCore::deprecated('expAjaxReply::');
+        $ajaxObj['replyCode'] = $replyCode;
 		$ajaxObj['replyText'] = $replyText;
 		if (isset($data)) {
 			$ajaxObj['data'] = $data;

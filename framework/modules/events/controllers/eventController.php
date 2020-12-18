@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -1200,6 +1200,8 @@ class eventController extends expController {
                 $css = file_get_contents(BASE . "external/bootstrap3/css/bootstrap.css");
             elseif (bs4())
                 $css = file_get_contents(BASE . "external/bootstrap4/css/bootstrap.css");
+            elseif (bs5())
+                $css = file_get_contents(BASE . "external/bootstrap5/css/bootstrap.css");
             elseif (bs2())
                 $css = file_get_contents(BASE . "external/bootstrap/css/bootstrap.css");
             else
@@ -1506,10 +1508,10 @@ class eventController extends expController {
 
     public function get_ical_events($exticalurl, $startdate=null, $enddate=null, &$dy=0, $key=0, $multiday=false) {
         $extevents = array();
-//        require_once BASE . 'external/iCalcreator-2.26.8/autoload.php';
         require_once BASE . 'external/iCalcreator-2.28.2/autoload.php';
+//        require_once BASE . 'external/iCalcreator-2.29.30/autoload.php';
         $v = new Kigkonsult\Icalcreator\Vcalendar(); // initiate new CALENDAR
-        if (stripos($exticalurl, 'http') === 0) {
+        if (stripos($exticalurl, 'http') === 0 || stripos($exticalurl, 'webcal') === 0) {
             $v->setConfig('url', $exticalurl);
         } else {
             $v->setConfig('directory', dirname($exticalurl));
@@ -1678,7 +1680,7 @@ class eventController extends expController {
                         $body = nl2br(str_replace(array("\\n", "\n", '==0A','=0A','=C2=A0')," <br>",$body));
 //                        $body = str_replace("\n"," <br>",$body);
 //                        $body = str_replace(array('==0A','=0A','=C2=A0')," <br>\n",$body);
-                        $body = str_replace("<br>","<br>\\n",$body);
+//                        $body = str_replace("<br>","<br>\\n",$body);
                         $extevents[$eventdate][$dy]->body = $body;
                         $extevents[$eventdate][$dy]->location_data = 'icalevent' . $key;
                         $extevents[$eventdate][$dy]->color = !empty($this->config['pull_ical_color'][$key]) ? $this->config['pull_ical_color'][$key] : null;

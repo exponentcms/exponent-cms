@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -60,12 +60,12 @@ class uploadcontrol extends formcontrol {
             $fi_file = '';
         }
         $html .= '  <div class="form-control" data-trigger="fileinput"><i class="fa fa-file fileinput-exists"></i> ';
-        $html .= '<span class="fileinput-filename">' . $fi_file . '</span></div>';
-        $html .= '  <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"';
+        $html .= '<span class="fileinput-filename with-icon">' . $fi_file . '</span></div>';
+        $html .= '  <span class="input-group-btn"><span class="btn btn-default btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"';
         if (!empty($this->accept))
             $html .= ' accept="' . $this->accept . '"';
         $html .= '></span>';
-        $html .= '  <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</a>';
+        $html .= '  <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</a></span>';
         $html .= '</div>';
 
         if (!empty($this->description)) $html .= "<div class=\"" . (bs3() ? "help-block" : "control-desc") . "\">" . $this->description . "</div>";
@@ -88,7 +88,7 @@ class uploadcontrol extends formcontrol {
                 }
     	    "
         ));
-        if (bs4()) {
+        if (bs4() || bs5()) {
             expCSS::pushToHead(array(
                 "unique" => 'fileupload-bs4-' . $name,
                 "css" => "
@@ -139,7 +139,7 @@ class uploadcontrol extends formcontrol {
             $object->accept = "";
 		}
         if (empty($object->description)) $object->description = "";
-		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("default",gt('Default'), new textcontrol($object->default));

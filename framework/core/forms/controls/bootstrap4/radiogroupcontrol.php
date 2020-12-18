@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2020 OIC Group, Inc.
+# Copyright (c) 2004-2021 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -55,7 +55,7 @@ class radiogroupcontrol extends formcontrol {
 		$this->id  = (empty($this->id)) ? $name : $this->id;
 		$html = "<div role=\"radiogroup\" id=\"".$this->id."Control\" class=\"radiogroup control form-group";
 		$html .= (!empty($this->required)) ? ' required">' : '">';
-        $html .= (!empty($label))?"<label class=\"label".($this->horizontal?' col-sm-2':'').($this->cols!=1?" form-check-inline":"")."\">".$label."</label>":"";
+        $html .= (!empty($label))?"<label class=\"label".($this->horizontal?' col-sm-2':'')."\"".($this->cols!=1?" style=\"padding-right:12px\"":"").">".$label."</label>":"";
 		$html .= $this->controlToHTML($name, $label);
         $html .= "</div>";
 		return $html;
@@ -105,7 +105,7 @@ class radiogroupcontrol extends formcontrol {
 			$object->items = array();
 		}
         if (empty($object->description)) $object->description = "";
-		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
