@@ -35,7 +35,7 @@ Version 2.6.0 - Specific changes from previous version
 ###v260 updates these 3rd party libraries in v251 and previous patches:
 - datatables to v1.10.22
 - datatables checkboxes to v1.2.12
-- tinymce v5 to v5.6.1
+- tinymce v5 to v5.6.2
 - tinymce v4 to v4.9.11
 - ckeditor to v4.15.1
 - moment.js to v2.29.1
