@@ -14,7 +14,11 @@
  *}
 
 <div class="module module action">
-    <h1>{'Create User Group'|gettext}</h1>
+    {if $record->id == ""}
+        <h1>{'Create User Group'|gettext}</h1>
+    {else}
+        <h2>{'Edit User Group'|gettext} - '{$record->name}'</h2>
+    {/if}
     {form action=update_group}
         {control type="hidden" name="id" value=$record->id}
         {control type="text" name="name" label="Name"|gettext value=$record->name}
