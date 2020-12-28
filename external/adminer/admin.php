@@ -79,32 +79,32 @@ function adminer_object() {
 		}
 
         /** Get key used for permanent login
-         * @param bool
-         * @return string cryptic string which gets combined with password or false in case of an error
-         */
+       	* @param bool
+       	* @return string cryptic string which gets combined with password or false in case of an error
+       	*/
 //		function permanentLogin() { // key used for permanent login
 //			return "";
 //		}
 
         /** Connection parameters
-         * @return array ($server, $username, $password)
-         */
+       	* @return array ($server, $username, $password)
+       	*/
 		function credentials() { // server, username and password for connecting to database
 			return array(DB_HOST, DB_USER , DB_PASS);
 		}
 
         /** Identifier of selected database
-         * @return string
-         */
+       	* @return string
+       	*/
 		function database() { // database name, will be escaped by Adminer
 			return DB_NAME;
 		}
 
         /** Authorize the user
-         * @param string
-         * @param string
-         * @return bool
-         */
+       	* @param string
+       	* @param string
+       	* @return mixed true for success, string for error message, false for unknown error
+       	*/
 		function login($login, $password) { // validate user submitted credentials
             global $user;
 
@@ -116,28 +116,33 @@ function adminer_object() {
 		}
 
         /** Get cached list of databases
-         * @param bool
-         * @return array
-         */
+       	* @param bool
+       	* @return array
+       	*/
 		function databases($flush = true) {
 			return array(DB_NAME);
 		}
 
         /** Print login form
-         * @return null
-         */
-        function loginForm() {
-            ?>
-           <h3><?php echo gt('You must already be logged into Exponent!'); ?></h3>
-            <?php
-            global $user;
-            if (!empty($user->id) && !$user->isSuperAdmin()) {
-                return false;
-            }
-            ?>
-       <?php
-       		return true;
-       	}
+       	* @return null
+       	*/
+//        function loginForm() {
+//            global $drivers, $user;
+//
+//            if (empty($user->id) || !($user->isLoggedIn() && $user->isSuperAdmin())) {
+//                echo '<h3>' . gt('You must already be logged into Exponent!') . '</h3>';
+//            } else {
+//                echo "<table cellspacing='0' class='layout'>\n";
+//                echo $this->loginFormField('driver', '<tr><th>' . lang('System') . '<td>', html_select("auth[driver]", $drivers, DRIVER, "loginDriver(this);") . "\n");
+//                echo $this->loginFormField('server', '<tr><th>' . lang('Server') . '<td>', '<input name="auth[server]" value="' . DB_HOST . '" title="hostname[:port]" placeholder="localhost" autocapitalize="off">' . "\n");
+//                echo $this->loginFormField('username', '<tr><th>' . lang('Username') . '<td>', '<input name="auth[username]" id="username" value="' . DB_USER . '" autocomplete="username" autocapitalize="off">' . script("focus(qs('#username')); qs('#username').form['auth[driver]'].onchange();"));
+//                echo $this->loginFormField('password', '<tr><th>' . lang('Password') . '<td>', '<input type="password" name="auth[password]" autocomplete="current-password">' . "\n");
+//                echo $this->loginFormField('db', '<tr><th>' . lang('Database') . '<td>', '<input name="auth[db]" value="' . DB_NAME . '" autocapitalize="off">' . "\n");
+//                echo "</table>\n";
+//                echo "<p><input type='submit' value='" . lang('Login') . "'>\n";
+//                echo checkbox("auth[permanent]", 1, $_COOKIE["adminer_permanent"], lang('Permanent login')) . "\n";
+//            }
+//       	}
 
         /** Get Content Security Policy headers
         * @return array of arrays with directive name in key, allowed sources in value
@@ -163,7 +168,7 @@ function adminer_object() {
 
 // include original Adminer or Adminer Editor
 //include "./adminer-4.7.1-mysql.php";
-include "./adminer-4.7.1.php";
+include "./adminer-4.7.8.php";
 
 //if (SITE_WYSIWYG_EDITOR != 'tinymce') {
 //?>
