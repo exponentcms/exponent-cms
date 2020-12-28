@@ -40,7 +40,7 @@ function smarty_function_grouplistcontrol($params, &$smarty) {
     if (!empty($groups)) {
         $selected = isset($params['items']) ? $params['items'] : null;
        foreach ($groups as $group) {
-           if (!in_array($group->id, $selected)) {
+           if (empty($selected) || !in_array($group->id, $selected)) {
                $allgroups[$group->id] = "$group->name";
            } else {
                $selectedgroups[$group->id] = "$group->name";
