@@ -229,8 +229,12 @@ class expPaginator {
             } else {
                 $this->total_records = count($db->selectObjectsBySql($this->sql));
             }
-			if (!empty($this->limit))
-			    $this->sql .= ' ' . $db->limitStmt($this->limit, $this->start);
+            if (!empty($this->limit)) {
+                if ($this->start >= $this->total_records) {
+                    $this->start = $this->total_records - $this->limit;
+                }
+                $this->sql .= ' ' . $db->limitStmt($this->limit, $this->start);
+            }
 
 			$this->records = array();
 			if (isset($this->model) || isset($params['model_field'])) {
@@ -431,8 +435,8 @@ class expPaginator {
 		if ($this->page > $this->total_pages) {
 			$this->page = $this->total_pages;
             //FIXME return 404 error for infinite page scroll plugin
-//            if (!empty($this->total_pages)) header(':', true, 404);
-            if (!empty($this->total_pages)) notfoundController::send_http_response(404);
+            if (!empty($this->total_pages))
+                notfoundController::send_http_response(404);
 		}
 
         // setup the previous link
