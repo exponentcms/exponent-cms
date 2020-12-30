@@ -170,7 +170,8 @@ class expModules {
 	    $controllers = array();
 	    foreach($available_controllers as $name=>$path) {
 	        $controller = new $name();  // we want both models and controllers to filter out models
-	        if (!empty($controller->useractions)) $controllers[] = self::getControllerClassName($name);
+	        if (!empty($controller->useractions))
+	            $controllers[] = self::getControllerClassName($name);
 	    }
 
 	    return $controllers;
