@@ -221,16 +221,17 @@ class expModules {
      * @param string|object $controllername
      * @param null   $param
      *
-     * @return null
+     * @return object|string
      */
     public static function getController($controllername='', $param=null) {
-        if (is_object($controllername)) return $controllername;  // just in case we were passed an object already
+        if (is_object($controllername))
+            return $controllername;  // just in case we were passed an object already
 
 	    $fullname = self::getControllerClassName($controllername);
 	    if (self::controllerExists($controllername))  {
             return new $fullname($param);
 	    } else {
-	        return null;
+	        return '';
 	    }
 	}
 
