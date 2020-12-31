@@ -23,7 +23,7 @@
  */
 /** @define "BASE" "../../../" */
 
-class expHtmlToPDF
+class expHtmlToPDF extends expSubsystem
 {
     /**
      * Private use variables.

@@ -507,7 +507,7 @@ class expTheme
                 }
 //                expCSS::pushToHead(
 //                    array(
-//                        "scssprimer" => "external/bootstrap-icons-1.2.0/scss/bootstrapicons.scss",
+//                        "scssprimer" => "external/bootstrap-icons-1.2.2/scss/bootstrap-icons.scss",
 //                        "lessvars" => $less_vars,
 //                    )
 //                );

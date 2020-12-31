@@ -30,7 +30,7 @@
  */
 /** @define "BASE" "../../.." */
 
-class expTimer {
+class expTimer extends expSubsystem {
 
     var $starttime   = 0;
     var $endtime     = 0;

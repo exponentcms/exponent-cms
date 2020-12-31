@@ -22,7 +22,7 @@
  * @subpackage Subsystems
  */
 
-class expBot {
+class expBot extends expSubsystem {
 
     public $url = '';
     public $method = 'GET';
