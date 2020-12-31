@@ -18,11 +18,11 @@
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
-                {icon class=add action=edit text="Add a Help Doc"|gettext}{br}
+                {icon class=add action=edit text="Add a Help Doc"|gettext}
             {/if}
             {if $permissions.manage}
-                {icon action=manage version=$current_version->id text="Manage Help Docs for version"|gettext|cat:" `$current_version->version`"}{br}
-                {icon class=manage action=manage_versions text="Manage Help Versions"|gettext}{br}
+                {icon action=manage version=$current_version->id text="Manage Help Docs for version"|gettext|cat:" `$current_version->version`"}
+                {icon class=manage action=manage_versions text="Manage Help Versions"|gettext}
                 {*{if $rank == 1}*}
                 {if $rank}
                     {ddrerank items=$page->records only="help_version_id=`$current_version->id`" model="help" label="Help Docs"|gettext}
@@ -44,35 +44,34 @@
             </dt>
 
             <dd>
-            {permissions}
-            <div class="item-actions">
-                {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
-                    {if $myloc != $item->location_data}
-                        {if $permissions.manage}
-                            {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
-                        {else}
-                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                {permissions}
+                <div class="item-actions">
+                    {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                        {if $myloc != $item->location_data}
+                            {if $permissions.manage}
+                                {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
+                            {else}
+                                {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                            {/if}
                         {/if}
+                        {icon action=edit record=$item}
+                        {icon action=copy record=$item}
                     {/if}
-                    {icon action=edit record=$item}
-                    {icon action=copy record=$item}
-                {/if}
-                {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
-                    {icon action=delete record=$item}
-                {/if}
-            </div>
-            {/permissions}
+                    {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+                        {icon action=delete record=$item}
+                    {/if}
+                </div>
+                {/permissions}
 
-            <div class="bodycopy">
-                {*{$item->summary}*}
-                {*{$item->body|summarize:"html":"paralinks"}*}
-                {$item->body|summarize:"html":"parahtml"}
-            </div>
+                <div class="bodycopy">
+                    {$item->body|summarize:"html":"parahtml"}
+                </div>
 
-            {if $item->children}
-                {$params.parent = $item->id}
-                {showmodule controller=help action=showall view=side_childview source=$item->loc->src params=$params}
-            {/if}
+                {if $item->children}
+                    {$params.parent = $item->id}
+                    {showmodule controller=help action=showall view=side_childview source=$item->loc->src params=$params}
+                {/if}
+            </dd>
         </div>
     {/foreach}
     </dl>

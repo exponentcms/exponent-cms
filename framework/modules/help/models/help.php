@@ -33,8 +33,10 @@ class help extends expRecord {
      */
     public function __construct($params=array()) {
         parent::__construct($params);
-        if (!empty($this->location_data)) $this->loc = expUnserialize($this->location_data);
-        if (!empty($this->help_version_id)) $this->grouping_sql = " AND help_version_id='".$this->help_version_id."'";
+        if (!empty($this->location_data))
+            $this->loc = expUnserialize($this->location_data);
+        if (!empty($this->help_version_id))
+            $this->grouping_sql = " AND help_version_id='".$this->help_version_id."'";
     }
 
     // public function beforeSave($params=array()) {
@@ -286,6 +288,15 @@ class help extends expRecord {
         return $db->selectColumn('help', 'parent', 'help_version_id="'.$version_id.'" AND parent!=0',null,true);
     }
 
+    public function addChildren() {
+        $this->children = $this->find('all', 'parent=' . $this->id);
+        // look for grandchildren
+        if (count($this->children)) {
+            foreach ($this->children as $index=>$child) {
+                $this->children[$index]->children = $this->find('count', 'parent=' . $child->id);
+            }
+        }
+    }
 
 }
 
