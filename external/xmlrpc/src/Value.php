@@ -40,7 +40,10 @@ class Value implements \Countable, \IteratorAggregate, \ArrayAccess
     /// @todo: do these need to be public?
     /** @var Value[]|mixed */
     public $me = array();
-    /** @var int $mytype */
+    /**
+     * @var int $mytype
+     * @internal
+     */
     public $mytype = 0;
     /** @var string|null $_php_class */
     public $_php_class = null;
@@ -261,7 +264,7 @@ class Value implements \Countable, \IteratorAggregate, \ArrayAccess
                         // sprintf('%F') could be most likely ok but it fails eg. on 2e-14.
                         // The code below tries its best at keeping max precision while avoiding exp notation,
                         // but there is of course no limit in the number of decimal places to be used...
-                        $rs .= "<${typ}>" . preg_replace('/\\.?0+$/', '', number_format((double)$val, 128, '.', '')) . "</${typ}>";
+                        $rs .= "<${typ}>" . preg_replace('/\\.?0+$/', '', number_format((double)$val, PhpXmlRpc::$xmlpc_double_precision, '.', '')) . "</${typ}>";
                         break;
                     case static::$xmlrpcDateTime:
                         if (is_string($val)) {
@@ -499,7 +502,8 @@ class Value implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return \ArrayIterator
      */
-    public function getIterator() {
+    public function getIterator()
+    {
         switch ($this->mytype) {
             case 3:
                 return new \ArrayIterator($this->me['struct']);
@@ -512,8 +516,14 @@ class Value implements \Countable, \IteratorAggregate, \ArrayAccess
         }
     }
 
-    public function offsetSet($offset, $value) {
-
+    /**
+     * @internal required to be public to implement an Interface
+     * @param mixed $offset
+     * @param mixed $value
+     * @throws \Exception
+     */
+    public function offsetSet($offset, $value)
+    {
         switch ($this->mytype) {
             case 3:
                 if (!($value instanceof \PhpXmlRpc\Value)) {
@@ -552,7 +562,13 @@ class Value implements \Countable, \IteratorAggregate, \ArrayAccess
         }
     }
 
-    public function offsetExists($offset) {
+    /**
+     * @internal required to be public to implement an Interface
+     * @param mixed $offset
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
         switch ($this->mytype) {
             case 3:
                 return isset($this->me['struct'][$offset]);
@@ -566,7 +582,13 @@ class Value implements \Countable, \IteratorAggregate, \ArrayAccess
         }
     }
 
-    public function offsetUnset($offset) {
+    /**
+     * @internal required to be public to implement an Interface
+     * @param mixed $offset
+     * @throws \Exception
+     */
+    public function offsetUnset($offset)
+    {
         switch ($this->mytype) {
             case 3:
                 unset($this->me['struct'][$offset]);
@@ -582,7 +604,14 @@ class Value implements \Countable, \IteratorAggregate, \ArrayAccess
         }
     }
 
-    public function offsetGet($offset) {
+    /**
+     * @internal required to be public to implement an Interface
+     * @param mixed $offset
+     * @return mixed|Value|null
+     * @throws \Exception
+     */
+    public function offsetGet($offset)
+    {
         switch ($this->mytype) {
             case 3:
                 return isset($this->me['struct'][$offset]) ? $this->me['struct'][$offset] : null;

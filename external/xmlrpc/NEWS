@@ -1,3 +1,27 @@
+XML-RPC for PHP version 4.5.0 - 2020/12/31
+
+* new: it is now possible to control the precision used when serializing DOUBLE values via usage of
+  `PhpXmlRpc::$xmlpc_double_precision`
+
+* fixed: `Encoder::encode` would not correctly encode DateTime and DateTimeImmutable objects
+
+* improvements to to the Helper\Date class in rejecting invalid date strings
+
+* improvements to the Wrapper class in identifying the required arguments types from phpdoc: support 'array[]',
+  'DateTime' and 'DateTimeImmutable'
+
+* improvements to the support of the XMLRPC extension emulation (as provided by the phpxmlrpc/polyfill-xmlrpc package)
+
+* improvements in the inline phpdoc: tagged many methods and class member as for internal usage only
+
+* minor improvements in the debugger to allow easier integration of phpxmlrpc/jsonrpc and friends
+
+* reorganized the test suite to be more manageable
+
+* removed obsolete files from the 'extras' folder; updated and moved to the 'demo' folders the perl and python
+  client scripts; moved benchmark.php and verify_compat.php to the 'extras' folder
+
+
 XML-RPC for PHP version 4.4.3 - 2020/12/17
 
 * fixed: compatibility with PHP 8.0 (fixes to the debugger, to the server's 'system.methodHelp' method and to the

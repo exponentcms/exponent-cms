@@ -2,8 +2,8 @@
 
 namespace PhpXmlRpc;
 
-use PhpXmlRpc\Helper\Logger;
 use PhpXmlRpc\Helper\Charset;
+use PhpXmlRpc\Helper\Logger;
 use PhpXmlRpc\Helper\XMLParser;
 
 /**
@@ -20,6 +20,7 @@ class Server
      * Defines how functions in dmap will be invoked: either using an xmlrpc request object
      * or plain php values.
      * Valid strings are 'xmlrpcvals', 'phpvals' or 'epivals'
+     * @todo create class constants for these
      */
     public $functions_parameters_type = 'xmlrpcvals';
 
@@ -296,6 +297,8 @@ class Server
      * @param array $sig the array of valid method signatures
      * @param string $doc method documentation
      * @param array $sigDoc the array of valid method signatures docs (one string per param, one for return type)
+     *
+     * @todo raise a warning if the user tries to register a 'system.' method
      */
     public function add_to_map($methodName, $function, $sig = null, $doc = false, $sigDoc = false)
     {
@@ -317,7 +320,7 @@ class Server
      * @param array|Request $in array of either xmlrpc value objects or xmlrpc type definitions
      * @param array $sigs array of known signatures to match against
      *
-     * @return array
+     * @return array int, string
      */
     protected function verifySignature($in, $sigs)
     {
@@ -572,7 +575,7 @@ class Server
         } else {
             $methName = $req;
         }
-        $sysCall = $this->allow_system_funcs && (strpos($methName, "system.") === 0);
+        $sysCall = $this->isSyscall($methName);
         $dmap = $sysCall ? $this->getSystemDispatchMap() : $this->dmap;
 
         if (!isset($dmap[$methName]['function'])) {
@@ -664,7 +667,7 @@ class Server
                     if ($this->functions_parameters_type == 'epivals') {
                         $r = call_user_func_array($func, array($methName, $params, $this->user_data));
                         // mimic EPI behaviour: if we get an array that looks like an error, make it
-                        // an eror response
+                        // an error response
                         if (is_array($r) && array_key_exists('faultCode', $r) && array_key_exists('faultString', $r)) {
                             $r = new Response(0, (integer)$r['faultCode'], (string)$r['faultString']);
                         } else {
@@ -741,13 +744,26 @@ class Server
         }
     }
 
+    /**
+     * @param string $methName
+     * @return bool
+     */
+    protected function isSyscall($methName)
+    {
+        return (strpos($methName, "system.") === 0);
+    }
+
     /* Functions that implement system.XXX methods of xmlrpc servers */
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getSystemDispatchMap()
     {
+        if (!$this->allow_system_funcs) {
+            return array();
+        }
+
         return array(
             'system.listMethods' => array(
                 'function' => 'PhpXmlRpc\Server::_xmlrpcs_listMethods',
@@ -778,14 +794,14 @@ class Server
             'system.getCapabilities' => array(
                 'function' => 'PhpXmlRpc\Server::_xmlrpcs_getCapabilities',
                 'signature' => array(array(Value::$xmlrpcStruct)),
-                'docstring' => 'This method lists all the capabilites that the XML-RPC server has: the (more or less standard) extensions to the xmlrpc spec that it adheres to',
+                'docstring' => 'This method lists all the capabilities that the XML-RPC server has: the (more or less standard) extensions to the xmlrpc spec that it adheres to',
                 'signature_docs' => array(array('list of capabilities, described as structs with a version number and url for the spec')),
             ),
         );
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getCapabilities()
     {
@@ -841,10 +857,8 @@ class Server
         foreach ($server->dmap as $key => $val) {
             $outAr[] = new Value($key, 'string');
         }
-        if ($server->allow_system_funcs) {
-            foreach ($server->getSystemDispatchMap() as $key => $val) {
-                $outAr[] = new Value($key, 'string');
-            }
+        foreach ($server->getSystemDispatchMap() as $key => $val) {
+            $outAr[] = new Value($key, 'string');
         }
 
         return new Response(new Value($outAr, 'array'));
@@ -864,7 +878,7 @@ class Server
         } else {
             $methName = $req;
         }
-        if (strpos($methName, "system.") === 0) {
+        if ($server->isSyscall($methName)) {
             $dmap = $server->getSystemDispatchMap();
         } else {
             $dmap = $server->dmap;
@@ -906,7 +920,7 @@ class Server
         } else {
             $methName = $req;
         }
-        if (strpos($methName, "system.") === 0) {
+        if ($server->isSyscall($methName)) {
             $dmap = $server->getSystemDispatchMap();
         } else {
             $dmap = $server->dmap;
@@ -1014,12 +1028,17 @@ class Server
             return static::_xmlrpcs_multicall_error('notarray');
         }
 
-        // this is a real dirty and simplistic hack, since we might have received a
+        // this is a simplistic hack, since we might have received
         // base64 or datetime values, but they will be listed as strings here...
         $pt = array();
         $wrapper = new Wrapper();
         foreach ($call['params'] as $val) {
-            $pt[] = $wrapper->php2XmlrpcType(gettype($val));
+            // support EPI-encoded base64 and datetime values
+            if ($val instanceof \stdClass && isset($val->xmlrpc_type)) {
+                $pt[] = $val->xmlrpc_type == 'datetime' ? Value::$xmlrpcDateTime : $val->xmlrpc_type;
+            } else {
+                $pt[] = $wrapper->php2XmlrpcType(gettype($val));
+            }
         }
 
         $result = $server->execute($call['methodName'], $call['params'], $pt);
