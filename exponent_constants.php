@@ -624,7 +624,7 @@ if (!defined('SWIFT_PATH')) {
     if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
         define('SWIFT_VERSION', '5.4.12');
     } else {
-        define('SWIFT_VERSION', '6.2.3');  //note v6.x requires php v7.x
+        define('SWIFT_VERSION', '6.2.4');  //note v6.x requires php v7.x
     }
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
     /**
@@ -635,7 +635,7 @@ if (!defined('SWIFT_PATH')) {
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '2.1.24');
+    define('EMAIL_VALIDATOR_VERSION', '3.0.0');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
