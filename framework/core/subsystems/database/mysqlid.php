@@ -15,6 +15,7 @@
 #
 ##################################################
 
+/** @define "BASE" "../.." */
 /**
  * This is the class mysqlid_database
  *
@@ -22,8 +23,6 @@
  * @package Subsystems
  * @subpackage Database
  */
-/** @define "BASE" "../.." */
-
 require_once('mysqli.php');
 
 class mysqlid_database {

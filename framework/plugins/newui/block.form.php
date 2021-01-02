@@ -16,25 +16,22 @@
 #
 ##################################################
 
-/**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Block
- */
-
-/**
- * Smarty {form} block plugin
- *
- * Type:     block<br>
- * Name:     form<br>
- * Purpose:  Set up a form block
- *
- * @param $params
- * @param $content
- * @param \Smarty $smarty
- * @param $repeat
- */
 if (!function_exists('smarty_block_form')) {
+    /**
+     * Smarty {form} block plugin
+     *
+     * Type:     block<br>
+     * Name:     form<br>
+     * Purpose:  Set up a form block
+     *
+     * @param $params
+     * @param $content
+     * @param \Smarty $smarty
+     * @param $repeat
+     *
+     * @package    Smarty-Plugins
+     * @subpackage Block
+     */
     function smarty_block_form($params,$content,&$smarty, &$repeat) {
         if(empty($content)){
             $name = isset($params['name']) ? $params['name'] : 'form';

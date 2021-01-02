@@ -15,14 +15,13 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../" */
 /**
  * This is the class expHtmlToPDF
  *
  * @package    Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../../" */
-
 class expHtmlToPDF extends expSubsystem
 {
     /**
@@ -212,6 +211,9 @@ $GLOBALS['WKPDF_BASE_SITE'] = 'http://' . $_SERVER['SERVER_NAME'] . '/';
  * <b>Features/Bugs/Contact</b><br>
  * Found a bug? Want a modification? Contact me at <a href="mailto:uuf6429@gmail.com">uuf6429@gmail.com</a> or <a href="mailto:contact@covac-software.com">contact@covac-software.com</a>...
  *   guaranteed to get a reply within 2 hours at most (daytime GMT+1).
+ *
+ * @package    Subsystems
+ * @subpackage Subsystems
  */
 class expWKPDF extends expHtmlToPDF
 {

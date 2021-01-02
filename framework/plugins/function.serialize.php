@@ -17,13 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- *
- * @package    Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {serialize} function plugin
  * -------------------------------------------------------------
  * Type:     function<br>
@@ -38,6 +31,9 @@
  *                     to $var without output
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_serialize($params, &$smarty)
 {

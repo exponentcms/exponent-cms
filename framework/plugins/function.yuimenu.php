@@ -16,13 +16,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- * @deprecated Not used
- */
-
-/**
  * Smarty {yuimenu} function plugin
  *
  * Type:     function<br>
@@ -31,6 +24,9 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_yuimenu($params,&$smarty) {
 //FIXME convert to yui3

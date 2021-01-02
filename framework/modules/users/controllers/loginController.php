@@ -16,11 +16,11 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../.." */
 /**
  * @subpackage Controllers
  * @package Modules
  */
-/** @define "BASE" "../../../.." */
 
 class loginController extends expController {
 	public $remove_configs = array(

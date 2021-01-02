@@ -17,13 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- *
- * @package    Smarty-Plugins
- * @subpackage Output Filter
- */
-
-/**
  * Smarty trim outputfilter plugin
  *
  * Trim unnecessary whitespace from from the beginning and end of output.
@@ -33,6 +26,9 @@
  * @param Smarty_Internal_Template $smarty Smarty object
  * @return string filtered output
  * @todo substr_replace() is not overloaded by mbstring.func_overload - so this function might fail!
+ *
+ * @package    Smarty-Plugins
+ * @subpackage Output Filter
  */
 function smarty_outputfilter_trim($source, Smarty_Internal_Template $smarty)
 {

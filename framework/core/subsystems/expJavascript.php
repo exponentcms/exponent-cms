@@ -15,14 +15,13 @@
 #
 ##################################################
 
+/** @define "BASE" "../../.." */
 /**
  * This is the class expJavascript
  *
  * @package Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
-
 class expJavascript {
 
 	public static function inAjaxAction() {

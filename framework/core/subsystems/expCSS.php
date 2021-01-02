@@ -14,15 +14,14 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../../../" */
 
+/** @define "BASE" "../../../" */
 /**
  * This is the class expCSS
  *
  * @package Subsystems
  * @subpackage Subsystems
  */
-
 class expCSS {
 
     public static function pushToHead($params) {

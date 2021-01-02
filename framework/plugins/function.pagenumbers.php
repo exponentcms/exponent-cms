@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {pagenumbers} function plugin
  *
  * Type:     function<br>
@@ -31,6 +25,9 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_pagenumbers($params,&$smarty) {
 	// initialize a couple of variables

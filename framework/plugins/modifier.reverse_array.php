@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {reverse_array} modifier plugin
  *
  * Type:     modifier<br>
@@ -32,6 +26,9 @@
  * @param array
  *
  * @return array
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_reverse_array($array)
 {

@@ -16,14 +16,6 @@
 #
 ##################################################
 
-/**
- * @subpackage Controllers
- * @package    Modules
- * @param $x
- * @param $y
- *
- * @return int
- */
 function compare($x, $y) {
     if ($x->eventdate == $y->eventdate)
         return 0;
@@ -33,6 +25,14 @@ function compare($x, $y) {
         return 1;
 }
 
+/**
+ * @package    Modules
+ * @subpackage Controllers
+ * @param $x
+ * @param $y
+ *
+ * @return int
+ */
 class eventregistrationController extends expController {
     public $basemodel_name = 'eventregistration';
     public $useractions = array(

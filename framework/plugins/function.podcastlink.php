@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {podcastlink} function plugin
  *
  * Type:     function<br>
@@ -31,6 +25,9 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_podcastlink($params,&$smarty) {
 	$loc = $smarty->getTemplateVars('__loc');

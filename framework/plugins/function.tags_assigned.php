@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {tags_assigned} function plugin
  *
  * Type:     function<br>
@@ -31,6 +25,9 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_tags_assigned($params,&$smarty) {
     if (empty($params['item']) && empty($params['record'])) return;  // no item to work with

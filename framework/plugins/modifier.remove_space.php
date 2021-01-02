@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {remove_space} modifier plugin
  *
  * Type:     modifier<br>
@@ -32,6 +26,9 @@
  * @param array
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_remove_space($string) {
     return str_replace(' ', '_', $string);

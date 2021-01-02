@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {address} modifier plugin
  *
  * Type:     modifier<br>
@@ -32,6 +26,9 @@
  * @param        array
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_address($address) {
 	$addyid = is_numeric($address) ? $address : $address->id;

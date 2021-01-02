@@ -17,13 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- *
- * @package    Smarty-Plugins
- * @subpackage Block
- */
-
-/**
  * Smarty {assocarray} block plugin
  * Type:     block<br>
  * Name:     assocarray<br>
@@ -67,6 +60,9 @@
  *           $test4  [= array("test1", "test2", "test3")]
  *           $test5  [= array('key1'=>PATH_RELATIVE, 'key2'=>"value2")]
  *           $test6  [= array('key1'=>"value1", 'key2'=>array('subkey1'=>"value", 'subkey2'=>"subvalue2"))]
+ *
+ * @package    Smarty-Plugins
+ * @subpackage Block
  */
 function smarty_block_assocarray($params, $content, &$smarty, &$repeat)
 {

@@ -16,29 +16,26 @@
 #
 ##################################################
 
-/**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
- * Smarty {message} function plugin
- *
- * Type:     function<br>
- * Name:     message<br>
- * Purpose:  create message styled text
- *
- * (default) - green
- * 'error' - red
- * 'notice' - yellow
- * 'info' - blue
- *
- * @param         $params
- * @param \Smarty $smarty
- * @return bool
- */
 if (!function_exists('smarty_function_message')) {
+    /**
+     * Smarty {message} function plugin
+     *
+     * Type:     function<br>
+     * Name:     message<br>
+     * Purpose:  create message styled text
+     *
+     * (default) - green
+     * 'error' - red
+     * 'notice' - yellow
+     * 'info' - blue
+     *
+     * @param         $params
+     * @param \Smarty $smarty
+     * @return bool
+     *
+     * @package    Smarty-Plugins
+     * @subpackage Function
+     */
     function smarty_function_message($params, &$smarty)
     {
         $text = empty($params['text']) ? '&#160;' : $params['text'];

@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Block
- */
-
-/**
  * Smarty {if_elements} block plugin
  *
  * Type:     block<br>
@@ -34,6 +28,9 @@
  * @param \Smarty $smarty
  * @param $repeat
  * @return string
+ *
+ * @package    Smarty-Plugins
+ * @subpackage Block
  */
 function smarty_block_if_elements($params,$content,&$smarty, &$repeat) {
 	if ($content) {

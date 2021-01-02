@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Block
- */
-
-/**
  * Smarty {css} block plugin
  *
  * Type:     block<br>
@@ -33,6 +27,9 @@
  * @param $content
  * @param \Smarty $smarty
  * @param $repeat
+  *
+ * @package    Smarty-Plugins
+ * @subpackage Block
  */
 function smarty_block_css($params,$content,&$smarty, &$repeat) {
 	if ($content) {

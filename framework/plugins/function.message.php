@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {message} function plugin
  *
  * Type:     function<br>
@@ -36,6 +30,9 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_message($params,&$smarty) {
     $text = empty($params['text']) ? '&#160;' : $params['text'];

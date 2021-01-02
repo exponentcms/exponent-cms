@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class invert_news_items_rank
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class invert_news_items_rank extends upgradescript {
 	protected $from_version = '0.0.0';

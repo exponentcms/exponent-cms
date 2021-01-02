@@ -15,12 +15,11 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../.." */
 /**
  * @subpackage Calculators
  * @package    Modules
  */
-/** @define "BASE" "../../../.." */
-
 class passthru extends billingcalculator {
 
     function name() {

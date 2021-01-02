@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {editorinclude} function plugin
  *
  * Type:     function<br>
@@ -31,6 +25,9 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_editorinclude($params,&$smarty) {
 	if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/editors/'.$params['filename'])) {

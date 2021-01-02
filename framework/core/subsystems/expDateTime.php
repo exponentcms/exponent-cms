@@ -15,6 +15,7 @@
 #
 ##################################################
 
+/** @define "BASE" "../../.." */
 /**
  * This is the class expDateTime
  * These methods do NOT take timezones into consideration unless documented otherwise
@@ -22,8 +23,6 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
-
 class expDateTime {
 
     public static function is_date($str){

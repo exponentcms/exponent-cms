@@ -15,14 +15,13 @@
 #
 ##################################################
 
+define('ECOM_AUTHORIZENET_AUTH_CAPTURE', 0);
+define('ECOM_AUTHORIZENET_AUTH_ONLY', 1);
+
 /**
  * @subpackage Calculators
  * @package    Modules
  */
-
-define('ECOM_AUTHORIZENET_AUTH_CAPTURE', 0);
-define('ECOM_AUTHORIZENET_AUTH_ONLY', 1);
-
 class authorizedotnet extends creditcard {
 
     const APPROVED = 1;

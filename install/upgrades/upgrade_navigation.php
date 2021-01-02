@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class upgrade_navigation
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class upgrade_navigation extends upgradescript {
 	protected $from_version = '0.0.0';

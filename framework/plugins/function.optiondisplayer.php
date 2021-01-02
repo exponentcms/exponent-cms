@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {optiondisplayer} function plugin
  *
  * Type:     function<br>
@@ -34,6 +28,9 @@
  *
  * @return bool
  * @throws ReflectionException
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_optiondisplayer($params,&$smarty) {
     global $db;

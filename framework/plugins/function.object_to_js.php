@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {object_to_js} function plugin
  *
  * Type:     function<br>
@@ -32,6 +26,9 @@
  * @param         $params
  * @param \Smarty $smarty
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_object_to_js($params,&$smarty) {
 	echo "var ".$params['name']." = new Array();\n";

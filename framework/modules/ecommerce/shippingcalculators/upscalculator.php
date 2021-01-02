@@ -16,12 +16,11 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../.." */
 /**
  * @subpackage Calculators
  * @package Modules
  */
-/** @define "BASE" "../../../.." */
-
 class upscalculator extends shippingcalculator {
 	/*
 	 * Returns the name of the shipping calculator, for use in the Shipping Administration Module

@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {is_logged_in} modifier plugin
  *
  * Type:     modifier<br>
@@ -32,6 +26,9 @@
  * @param array
  *
  * @return boolean
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_is_logged_in($string) {
 	if(expSession::loggedIn()) {

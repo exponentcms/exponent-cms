@@ -16,26 +16,23 @@
 #
 ##################################################
 
-/**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Block
- */
-
-/**
- * Smarty {permissions} block plugin
- *
- * Type:     block<br>
- * Name:     permissions<br>
- * Purpose:  Set up a permissions block
- *
- * @param $params
- * @param $content
- * @param \Smarty $smarty
- * @param $repeat
- * @return string
- */
 if (!function_exists('smarty_block_permissions')) {
+    /**
+     * Smarty {permissions} block plugin
+     *
+     * Type:     block<br>
+     * Name:     permissions<br>
+     * Purpose:  Set up a permissions block
+     *
+     * @param $params
+     * @param $content
+     * @param \Smarty $smarty
+     * @param $repeat
+     * @return string
+     *
+     * @package    Smarty-Plugins
+     * @subpackage Block
+     */
     function smarty_block_permissions($params,$content,&$smarty, &$repeat) {
         if ($content) {
             global $user, $css_core;

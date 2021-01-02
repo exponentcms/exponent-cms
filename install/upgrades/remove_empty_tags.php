@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class remove_empty_tags
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class remove_empty_tags extends upgradescript {
 	protected $from_version = '2.3.0';

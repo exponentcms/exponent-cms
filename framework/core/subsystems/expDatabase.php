@@ -763,7 +763,6 @@ class expDatabase {
 * @subpackage Database
 * @package Subsystems
 */
-
 abstract class database {
 
 	/**

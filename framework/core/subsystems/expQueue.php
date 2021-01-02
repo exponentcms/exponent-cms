@@ -21,7 +21,6 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
-
 class expQueue extends expSubsystem {
 
 	public $name = "";

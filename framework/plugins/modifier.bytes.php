@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {bytes} modifier plugin
  *
  * Type:     modifier<br>
@@ -32,6 +26,9 @@
  * @param array
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_bytes($bytes) {
     if ($bytes >= 1048576) {

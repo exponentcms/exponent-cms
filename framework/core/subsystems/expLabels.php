@@ -77,12 +77,14 @@
  *    Create Labels in HTML or Word .xml Format
  *
  * @category   PHP
- * @package    Labels
  * @author     Steve Marks <info@biostall.com>
  * @copyright  2011 Steve Marks
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    1.0
  * @link       info@biostall.com
+ *
+ * @package    Subsystems
+ * @subpackage Subsystems
  */
 class expLabels
 {

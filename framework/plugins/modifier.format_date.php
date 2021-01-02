@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {format_date} modifier plugin
  *
  * Type:     modifier<br>
@@ -33,6 +27,9 @@
  * @param string $format
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_format_date($timestamp,$format=DISPLAY_DATE_FORMAT) {
 	// Do some sort of mangling of the format for windows.

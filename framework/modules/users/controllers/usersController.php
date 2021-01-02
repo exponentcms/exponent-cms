@@ -16,11 +16,11 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../.." */
 /**
  * @subpackage Controllers
  * @package    Modules
  */
-/** @define "BASE" "../../../.." */
 
 class usersController extends expController {
     public $basemodel_name = 'user';

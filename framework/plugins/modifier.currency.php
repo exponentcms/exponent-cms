@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {currency} modifier plugin
  *
  * Type:     modifier<br>
@@ -33,6 +27,9 @@
  * @param $decimals
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_currency($number,$decimals=2) {
     $number = ($number=="") ? 0 : $number;

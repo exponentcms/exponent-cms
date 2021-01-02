@@ -17,13 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- *
- * @package    Smarty-Plugins
- * @subpackage Compiler
- */
-
-/**
  * Smarty {exp_include} compiler plugin
  * Author: Liu Song - loosen.copen@gmail.com
  * File: compiler.include_if_exists.php
@@ -55,6 +48,9 @@
  * @param $compiler
  *
  * @return string
+ *
+ * @package    Smarty-Plugins
+ * @subpackage Compiler
  */
 function smarty_compiler_exp_include($_params, &$compiler)
 {

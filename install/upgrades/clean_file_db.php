@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class clean_file_db
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class clean_file_db extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0

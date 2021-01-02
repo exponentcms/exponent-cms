@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {nbsp} function plugin
  *
  * Type:     function<nbsp>
@@ -31,6 +25,9 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_nbsp($params,&$smarty) {
     if (empty($params['count'])) {

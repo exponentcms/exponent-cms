@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {showmodule} function plugin
  *
  * Type:     function<br>
@@ -31,6 +25,9 @@
  *
  * @param array $params
  * @param mixed $smarty
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_showmodule($params,&$smarty) {
     if (isset($params['module']) && expModules::controllerExists($params['module'])) {

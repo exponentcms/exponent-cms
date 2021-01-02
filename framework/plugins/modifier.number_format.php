@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {number_format} modifier plugin
  *
  * Type:     modifier<br>
@@ -33,6 +27,9 @@
  * @param $decimals
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_number_format($number,$decimals) {
     $number = ($number=="") ? 0 : $number;

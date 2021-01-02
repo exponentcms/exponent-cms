@@ -17,12 +17,10 @@
 ##################################################
 
 /**
+ * This is the abstract class upgradescript
+ *
  * @package    Installation
  * @subpackage Upgrade
- */
-
-/**
- * This is the abstract class upgradescript
  */
 abstract class upgradescript {
     protected $from_version = '9999.99.99'; // set default ridiculously high so that it NEVER runs

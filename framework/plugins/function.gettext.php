@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {gettext} function plugin
  *
  * Type:     function<br>
@@ -31,6 +25,9 @@
  *
  * @param $params
  * @param $smarty
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_gettext($params,&$smarty) {
     echo expLang::gettext($params['str']);

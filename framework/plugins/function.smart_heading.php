@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {smart_heading} function plugin
  *
  * Type:     function<br>
@@ -31,6 +25,9 @@
  *
  * @param $params
  * @param \Smarty $smarty
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_smart_heading($params, &$smarty) {
     global $page_heading_top;

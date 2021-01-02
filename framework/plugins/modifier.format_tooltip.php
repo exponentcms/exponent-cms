@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {format_tooltip} modifier plugin
  *
  * Type:     modifier<br>
@@ -33,6 +27,9 @@
  * @param int    $length
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_format_tooltip($text='', $length=77) {
 	$text = strip_tags($text);

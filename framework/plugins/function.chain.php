@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {chain} function plugin
  *
  * Type:     function<br>
@@ -32,6 +26,10 @@
  * @param         $params
  * @param \Smarty $smarty
  * @return bool
+ *
+ * @deprecated
+ * @package Smarty-Plugins
+ * @subpackage Function
  */  //FIXME old school way of calling?
 function smarty_function_chain($params,&$smarty) {
     if (empty($params['module']) && empty($params['controller']))  return false;

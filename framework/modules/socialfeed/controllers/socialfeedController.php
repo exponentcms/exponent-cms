@@ -15,12 +15,6 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../../../../" */
-
-/**
- * @subpackage Controllers
- * @package    Modules
- */
 
 // needed for Facebook SDK v4
 use Facebook\Facebook;
@@ -29,7 +23,11 @@ use Facebook\FacebookSession;
 use Facebook\GraphObject;
 use Facebook\FacebookRequestException;
 
-
+/** @define "BASE" "../../../../" */
+/**
+ * @package    Modules
+ * @subpackage Controllers
+ */
 class socialfeedController extends expController
 {
     public $useractions = array(

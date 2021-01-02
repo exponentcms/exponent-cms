@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {username} modifier plugin
  * Type:     modifier<br>
  * Name:     username<br>
@@ -32,6 +26,9 @@
  * @param boolean $type if true return user name instead of record
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_username($userid,$type=null) {
 	global $db;

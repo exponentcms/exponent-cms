@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class remove_oldfiles
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class remove_oldfiles extends upgradescript {
 	protected $from_version = '0.0.0';

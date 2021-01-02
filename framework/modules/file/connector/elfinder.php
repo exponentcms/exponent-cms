@@ -135,6 +135,9 @@ function logger($cmd, $result, $args, $elfinder)
  *
  * @package elFinder
  * @author  Dmitry (dio) Levashov
+ *
+ * @package    elFinder
+ * @subpackage Utility
  **/
 class elFinderSimpleLogger
 {
@@ -256,6 +259,9 @@ function access($attr, $path, $data, $volume, $isDir, $relpath) {
  * example accessControl class
  *
  * @author Dmitry (dio) Levashov
+ *
+ * @package    elFinder
+ * @subpackage Utility
  **/
 class elFinderTestACL
 {

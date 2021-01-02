@@ -16,12 +16,11 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../.." */
 /**
  * @subpackage Calculators
  * @package Modules
  */
-
-/** @define "BASE" "../../../.." */
 class easypostcalculator extends shippingcalculator
 {
     private static $version = '3.4.5';  // library version

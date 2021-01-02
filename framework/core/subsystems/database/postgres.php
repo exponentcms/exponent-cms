@@ -15,6 +15,7 @@
 #
 ##################################################
 
+/** @define "BASE" "../.." */
 /**
  * This is the class postgres_database
  *
@@ -22,8 +23,6 @@
  * @package Subsystems
  * @subpackage Database
  */
-/** @define "BASE" "../.." */
-
 class postgres_database extends database {
 	var $error = "";
 	var $in_error = false;

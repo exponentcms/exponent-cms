@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {help} function plugin
  *
  * Type:     function<br>
@@ -33,6 +27,9 @@
  * @param \Smarty $smarty
  *
  * @return void
+ *
+ * @package    Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_help($params, &$smarty) {
 

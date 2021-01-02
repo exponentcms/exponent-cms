@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class fix_forms
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class fix_forms extends upgradescript {
 	protected $from_version = '2.1.1';  // version number lower than first released version, 2.0.0

@@ -21,7 +21,6 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
-
 class expBot extends expSubsystem {
 
     public $url = '';

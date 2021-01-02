@@ -17,13 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- *
- * @package    Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {userlistcontrol} function plugin
  *
  * Type:     function<br>
@@ -32,6 +25,9 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_userlistcontrol($params, &$smarty) {
     global $db;

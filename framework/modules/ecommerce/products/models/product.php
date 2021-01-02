@@ -16,12 +16,11 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../../.." */
 /**
  * @subpackage Models
  * @package    Modules
  */
-/** @define "BASE" "../../../../.." */
-
 class product extends expRecord {
     public $table = 'product';
 

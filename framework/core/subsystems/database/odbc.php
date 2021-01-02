@@ -15,6 +15,7 @@
 #
 ##################################################
 
+/** @define "BASE" "../.." */
 /**
  * This is the class odbc_database
  *
@@ -22,8 +23,6 @@
  * @package Subsystems
  * @subpackage Database
  */
-/** @define "BASE" "../.." */
-
 class odbc_database extends database {
 
     /**

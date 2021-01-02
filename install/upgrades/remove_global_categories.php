@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class remove_global_categories
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class remove_global_categories extends upgradescript {
 	protected $from_version = '2.0.5';  // categories were introduced in version, 2.0.5

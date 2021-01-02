@@ -21,7 +21,6 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
-
 class expSorter extends expSubsystem {
 
     public $sort_array = array();

@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class remove_headlinecontroller
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class remove_headlinecontroller extends upgradescript {
 	protected $from_version = '0.0.0';

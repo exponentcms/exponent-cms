@@ -21,7 +21,6 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
-
 class expAjaxReply extends expSubsystem {
 
 	public $packet = array('replyCode'=>'','replyText'=>'','data'=>'');

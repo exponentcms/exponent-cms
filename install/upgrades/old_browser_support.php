@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class old_browser_support
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class old_browser_support extends upgradescript {
 	protected $from_version = '0.0.0';

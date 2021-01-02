@@ -42,7 +42,6 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
-
 class expPaginator extends expSubsystem {
     /**#@+
      * @access public

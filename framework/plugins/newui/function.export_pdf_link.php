@@ -16,23 +16,20 @@
 #
 ##################################################
 
-/**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
- * Smarty {export_pdf_link} function plugin
- *
- * Type:     function<br>
- * Name:     export_pdf_link<br>
- * Purpose:  format a link for exporting a PDF version of the page
- *
- * @param         $params
- * @param \Smarty $smarty
- */
 if (!function_exists('smarty_function_export_pdf_link')) {
+    /**
+     * Smarty {export_pdf_link} function plugin
+     *
+     * Type:     function<br>
+     * Name:     export_pdf_link<br>
+     * Purpose:  format a link for exporting a PDF version of the page
+     *
+     * @param         $params
+     * @param \Smarty $smarty
+     *
+     * @package    Smarty-Plugins
+     * @subpackage Function
+     */
     function smarty_function_export_pdf_link($params, &$smarty)
     {
         global $router;

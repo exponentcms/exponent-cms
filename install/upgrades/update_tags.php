@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class update_tags
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class update_tags extends upgradescript {
 	protected $from_version = '2.5.0';  // version number introduced

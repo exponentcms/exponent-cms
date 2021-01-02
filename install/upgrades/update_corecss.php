@@ -17,14 +17,10 @@
 ##################################################
 
 /**
- * Upgrade Script
+ * This is the class update_corecss
  *
  * @package Installation
  * @subpackage Upgrade
- */
-
-/**
- * This is the class update_corecss
  */
 class update_corecss extends upgradescript {
 	protected $from_version = '0.0.0';

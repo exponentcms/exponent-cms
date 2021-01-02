@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {relative_date} modifier plugin
  * Type:     modifier<br>
  * Name:     relative_date<br>
@@ -31,6 +25,9 @@
  * @param        array
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_relative_date($timestamp) {
     return expDateTime::relativeDate($timestamp);
