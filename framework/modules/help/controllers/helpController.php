@@ -483,7 +483,7 @@ class helpController extends expController {
         // we only want the current version of help docs
         $where = 'help_version_id="'.help_version::getCurrentHelpVersionId().'"';
         $modelname = $this->basemodel_name;
-        $where .= (!empty($this->$modelname->id)) ? ' AND id=' . $this->$modelname->id : null;
+//        $where .= (!empty($this->$modelname->id)) ? ' AND id=' . $this->$modelname->id : null;
         $total = $db->countObjects($this->$modelname->tablename, $where);
         $count = 0;
         for ($i = 0; $i < $total; $i += 100) {
