@@ -95,6 +95,7 @@ class expPaginator extends expSubsystem {
 	public $records = array();
     public $cats = array();
     public $sort_dropdown = array();
+    public $format = array();
     public $linkables = array();
 
     /**
