@@ -50,7 +50,9 @@
                 {control type="checkbox" name="shipping_methods[]" label="UPS Next Day Air Early AM"|gettext value="14" checked=$shipping_methods['14']}
                 {control type="checkbox" name="shipping_methods[]" label="UPS Worldwide Express Plus"|gettext value="54" checked=$shipping_methods['54']}
                 {control type="checkbox" name="shipping_methods[]" label="UPS Second Day Air AM"|gettext value="59" checked=$shipping_methods['59']}
-                {control type="checkbox" name="shipping_methods[]" label="UPS Saver"|gettext value="65" checked=$calculator->shipping_methods['65']}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Saver"|gettext value="65" checked=$shipping_methods['65']}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Access Point Economy"|gettext value="65" checked=$shipping_methods['70']}
+                {control type="checkbox" name="shipping_methods[]" label="UPS Sure Post"|gettext value="65" checked=$shipping_methods['93']}
 	        </div>
 	        <div id="tab3">
                 {ecomconfig var=store assign=store}
