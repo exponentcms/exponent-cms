@@ -712,6 +712,9 @@ class expCSS {
                         $scss_cname = str_replace("/", "_", $scss_pname);
                         $cache_fname = BASE . 'tmp/css/' . $scss_cname . ".cache";
                         $cache = BASE . $scss_pname;
+                        if (empty($vars['swatch'])) {
+                            $vars['swatch'] = '.';
+                        }
                         if (file_exists($cache_fname)) {
                             $cache = unserialize(file_get_contents($cache_fname));
                             if (!empty($cache['vars']) && $vars != $cache['vars'] && !expJavascript::inAjaxAction()) {
