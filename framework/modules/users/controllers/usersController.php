@@ -1106,7 +1106,7 @@ class usersController extends expController {
            		        ';
                     }
            		    $return .= '
-                    <a class="'.$eclass.'" href="' . makeLink(array('controller'=>'user', 'action'=>'edituser', 'id'=>$d)) . '" title="'.gt('Edit User').'">' .
+                    <a class="'.$eclass.'" href="' . makeLink(array('controller'=>'users', 'action'=>'edituser', 'id'=>$d)) . '" title="'.gt('Edit User').'">' .
                         $eicon.'</a>'.'
                     <a class="'.$cclass.'" href="' . makeLink(array('controller'=>'users', 'action'=>'change_password', 'id'=>$d)) . '" title="'.gt('Change User Password').'">' .
                         $cicon.'</a>'.'
