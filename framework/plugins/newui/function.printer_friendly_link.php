@@ -37,7 +37,7 @@ if (!function_exists('smarty_function_printer_friendly_link')) {
         $config = $smarty->getTemplateVars('config');
         if (is_object($config)) {
             $print = !empty($config->printlink);
-        } elseif (is_array($config)) {
+        } elseif (is_array($config) && !empty($config)) {
             $print = !empty($config['printlink']);
         } elseif (isset($params['show'])) { // force display of link
             $print = isset($params['show']) ? $params['show'] : null;
