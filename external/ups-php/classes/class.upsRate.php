@@ -5,19 +5,19 @@ class upsRate {
 	var $shipmentXML;
 	var $rateInformationXML;
 	var $shipperXML;
-	var $shipToXML;	
-	var $packageXML;	
-	var $packageDimensionsXML;	
-	var $packageWeightXML;	
+	var $shipToXML;
+	var $packageXML;
+	var $packageDimensionsXML;
+	var $packageWeightXML;
 
 	var $xmlSent;
 	var $rateResponse;
-	
+
 	function __construct($upsObj) {
 		// Must pass the UPS object to this class for it to work
 		$this->ups = $upsObj;
 	}
-	
+
 	// Main function that puts together all the XML builder function variables.  Builds the final XML for Rate calculation
 	function sendRateRequest() {
 		// First part of XML is the access part,
@@ -26,7 +26,7 @@ class upsRate {
 
 
 		$content .= $this->shipmentXML;
-		
+
 		$xml .= $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_Main.xml', array('{CONTENT}'), array($content));
 
 		# Put the xml send to UPS into a variable so we can call it later for debugging purposes
@@ -36,7 +36,7 @@ class upsRate {
 		#$xmlParser = new XML2Array();
 		#$fromUPS = $xmlParser->parse($responseXML);
 		$xmlParser = new upsxmlParser();
-		$fromUPS = $xmlParser->xmlparser($responseXML);
+		$xmlParser->xmlparser($responseXML);
 		$fromUPS = $xmlParser->getData();
 
 		$this->rateResponse = $fromUPS;
@@ -46,9 +46,9 @@ class upsRate {
 	// Build Request XML
 	function request($params) {
 		if (!empty($params['Shop'])) {
-			$request = $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_Request.xml', array('{RATE_OPTION}'), array('Shop')); 
+			$request = $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_Request.xml', array('{RATE_OPTION}'), array('Shop'));
 		} else {
-			$request = $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_Request.xml', array('{RATE_OPTION}'), array('Rate')); 
+			$request = $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_Request.xml', array('{RATE_OPTION}'), array('Rate'));
 		}
 		$this->requestXML = $request;
 		return $request;
@@ -57,7 +57,7 @@ class upsRate {
 	// Build the shipment XML
 	function shipment($params) {
 		$shipment = $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_Shipment.xml', array('{SHIPMENT_DESCRIPTION}','{SHIPPING_CODE}','{SHIPMENT_CONTENT}'), array($params['description'],$params['serviceType'],$this->shipperXML. $this->shipToXML. $this->packageXML. $this->rateInformationXML));
-		
+
 		$this->shipmentXML = $shipment;
 		return $shipment;
 	}
@@ -180,7 +180,7 @@ class upsRate {
 		return $packageWeight;
 	}
 
-	
+
 
 	// Output the entire array of XML returned by UPS
 	function returnResponseArray() {
@@ -213,7 +213,7 @@ class upsRate {
 	// Find out if there are multiple rates in a response (user is shoping for rates)
 	function isMultipleRates() {
 		$rateResponse = $this->rateResponse;
-		
+
 		if ($rateResponse['RatingServiceSelectionResponse']['RatedShipment'][0] == null) { //If there is a value here there are multiple rates
 			return false;
 		} else {
@@ -221,6 +221,6 @@ class upsRate {
 		}
 	}
 
-		
+
 }
 ?>
