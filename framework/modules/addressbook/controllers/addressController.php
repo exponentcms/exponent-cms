@@ -140,9 +140,9 @@ class addressController extends expController {
 			// if this is first address save for this user we'll make this the default
 			if ($count == 0)
             {
-                $this->params['is_default'] = 1;
-                $this->params['is_billing'] = 1;
-                $this->params['is_shipping'] = 1;
+                $this->params['is_default'] = true;
+                $this->params['is_billing'] = true;
+                $this->params['is_shipping'] = true;
             }
 			// associate this address with the current user.
 			$this->params['user_id'] = $user->id;
@@ -152,9 +152,9 @@ class addressController extends expController {
         else { //if (ecomconfig::getConfig('allow_anonymous_checkout')){
             //user is not logged in, but allow anonymous checkout is enabled so we'll check
             //a few things that we don't check in the parent 'stuff and create a user account.
-            $this->params['is_default'] = 1;
-            $this->params['is_billing'] = 1;
-            $this->params['is_shipping'] = 1;
+            $this->params['is_default'] = true;
+            $this->params['is_billing'] = true;
+            $this->params['is_shipping'] = true;
             $this->address->update($this->params);
         }
 		expHistory::back();
@@ -226,7 +226,7 @@ class addressController extends expController {
 
         //eDebug($this->params,true);
         //countries
-        $db->columnUpdate('geo_country','active',0,'active=1');
+        $db->columnUpdate('geo_country','active',0,'active=true');
         foreach($this->params['country'] as $country_id=>$is_active)
         {
             $gc = new geoCountry($country_id);
@@ -234,7 +234,7 @@ class addressController extends expController {
             $gc->save();
         }
         //country default
-        $db->columnUpdate('geo_country','is_default',0,'is_default=1');
+        $db->columnUpdate('geo_country','is_default',0,'is_default=true');
         if(isset($this->params['country_default']))
         {
             $gc = new geoCountry((int)($this->params['country_default']));
@@ -242,7 +242,7 @@ class addressController extends expController {
             $gc->refresh();
         }
         //regions
-        $db->columnUpdate('geo_region','active',0,'active=1');
+        $db->columnUpdate('geo_region','active',0,'active=true');
         foreach($this->params['region'] as $region_id=>$is_active)
         {
             $gr = new geoRegion($region_id);
