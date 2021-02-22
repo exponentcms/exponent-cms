@@ -942,7 +942,6 @@ class mysqli_database extends database {
                         $values .= "NULL";
                     } elseif ($val === true) {
                         $values .= "TRUE";
-                       break;
                     } elseif ($val === false) {
                         $values .= "FALSE";
                     }
