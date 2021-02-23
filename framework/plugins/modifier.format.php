@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {format} modifier plugin
  *
  * Type:     modifier<br>
@@ -33,6 +27,9 @@
  * @param string $format
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_format($string, $format=null) {
     switch ($format) {

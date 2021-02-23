@@ -16,12 +16,11 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../.." */
 /**
  * @subpackage Controllers
  * @package Modules
  */
-/** @define "BASE" "../../../.." */
-
 class ecomconfigController extends expController {
     protected $add_permissions = array(
         'show'=>'View Admin Options'

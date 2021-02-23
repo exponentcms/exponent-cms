@@ -17,13 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- *
- * @package    Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {brightness} modifier plugin
  *
  * Type:     modifier<br>
@@ -35,6 +28,9 @@
  * @param int        $steps
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_brightness($colourstr, $steps = 20) {
     $colourstr = str_replace('#', '', $colourstr);

@@ -15,13 +15,13 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../" */
 /**
  * This is the class expRss
  *
  * @subpackage Models
  * @package Modules
  */
-/** @define "BASE" "../../../" */
 
 class expRss extends expRecord {
     public $table = 'expRss';

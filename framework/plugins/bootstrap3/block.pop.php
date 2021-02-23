@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Block
- */
-
-/**
  * Smarty {pop} block plugin
  *
  * Type:     block<br>
@@ -47,6 +41,9 @@
  * @param $content
  * @param \Smarty $smarty
  * @param $repeat
+ *
+ * @package    Smarty-Plugins
+ * @subpackage Block
  */
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){

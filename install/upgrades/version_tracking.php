@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class version_tracking
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class version_tracking extends upgradescript {
 	protected $from_version = '0.0.0';

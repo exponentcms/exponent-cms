@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class update_page_ranks
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class update_page_ranks extends upgradescript
 {

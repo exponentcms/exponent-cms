@@ -16,13 +16,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- *
- * @package    Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Turn all URLs into clickable links.
  *
  * @param string $value
@@ -32,6 +25,9 @@
  * @internal param string $mode normal or all
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_linkify(
     $value,

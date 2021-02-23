@@ -16,12 +16,11 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../.." */
 /**
  * @subpackage Controllers
  * @package Modules
  */
-/** @define "BASE" "../../../.." */
-
 class administrationController extends expController {
     public $basemodel_name = 'expRecord';
     protected $manage_permissions = array(

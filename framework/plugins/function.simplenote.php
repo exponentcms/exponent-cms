@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {simplenote} function plugin
  *
  * Type:     function<br>
@@ -34,6 +28,9 @@
  * @param array $params
  * @param mixed $smarty
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_simplenote($params,&$smarty) {
     if (!empty($params['content_id'])) {

@@ -15,14 +15,13 @@
 #
 ##################################################
 
+/** @define "BASE" "../../.." */
 /**
  * This is the class expPermissions
  *
  * @package Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
-
 class expPermissions {
 
 	/** exdoc

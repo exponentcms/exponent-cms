@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class fix_help_sections
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class fix_help_sections extends upgradescript
 {

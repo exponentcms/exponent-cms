@@ -15,6 +15,7 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../.." */
 /**
  * Class to handle files at the File System Level and updating
  * the record for each file.
@@ -29,7 +30,6 @@
  * @package    Modules
  *
  */
-/** @define "BASE" "../../../.." */
 class expFile extends expRecord {
 
 // ==========================================================

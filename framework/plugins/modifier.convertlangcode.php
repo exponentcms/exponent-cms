@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {convertlangcode} modifier plugin
  *
  * Type:     modifier<br>
@@ -33,6 +27,9 @@
  * @param string $target
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_convertlangcode($lang_code, $target = "iso639-1") {
 	return $lang_code; //FIXME this plugin isn't used, but this will at least return something

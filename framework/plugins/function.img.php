@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {img} function plugin
  *
  * Type:     function<br>
@@ -32,6 +26,9 @@
  * @param         $params
  * @param \Smarty $smarty
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_img($params,&$smarty)
 {

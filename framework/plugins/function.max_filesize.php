@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {max_filesize} function plugin
  *
  * Type:     function<br>
@@ -32,6 +26,9 @@
  * @param         $params
  * @param \Smarty $smarty
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_max_filesize($params,&$smarty) {
 //    $size = ini_get("upload_max_filesize");

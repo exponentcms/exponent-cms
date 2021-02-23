@@ -16,12 +16,11 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../.." */
 /**
  * @subpackage Calculators
  * @package    Modules
  */
-/** @define "BASE" "../../../.." */
-
 class fedexcalculator extends shippingcalculator {
     /*
       * Returns the name of the shipping calculator, for use in the Shipping Administration Module
@@ -41,26 +40,41 @@ class fedexcalculator extends shippingcalculator {
     );
 
     public function getRates($order) {
+// Copyright 2009, FedEx Corporation. All rights reserved.
+// Version 12.0.0
+
 //        require_once(BASE . 'external/fedex-php/fedex-common.php');
 
         //The WSDL is not included with the sample code.
         //Please include and reference in $path_to_wsdl variable.
-//        $path_to_wsdl = BASE . 'external/fedex-phpv16/wsdl/RateService_v16.wsdl';
-        $path_to_wsdl = BASE . 'external/fedex-phpv22/wsdl/RateService_v24.wsdl';
+        $path_to_wsdl = BASE . 'external/fedex-phpv28/wsdl/RateService_v28.wsdl';
 
         ini_set("soap.wsdl_cache_enabled", "0");
 
         $client = new SoapClient($path_to_wsdl, array('trace' => 1)); // Refer to http://us3.php.net/manual/en/ref.soap.php for more information
 
-        $request['WebAuthenticationDetail'] = array('UserCredential' =>
-                                                    array('Key'      => $this->configdata['fedex_key'],
-                                                          'Password' => $this->configdata['fedex_password']
-                                                    )
+        $request['WebAuthenticationDetail'] = array(
+//            'ParentCredential' => array(
+//           		'Key' => getProperty('parentkey'),
+//           		'Password' => getProperty('parentpassword')
+//           	),
+            'UserCredential' => array(
+                'Key'      => $this->configdata['fedex_key'],
+                'Password' => $this->configdata['fedex_password']
+            )
         );
-        $request['ClientDetail']            = array('AccountNumber' => $this->configdata['fedex_account_number'], 'MeterNumber' => $this->configdata['fedex_meter_number']);
+        $request['ClientDetail'] = array(
+            'AccountNumber' => $this->configdata['fedex_account_number'],
+            'MeterNumber' => $this->configdata['fedex_meter_number']
+        );
         $request['TransactionDetail'] = array('CustomerTransactionId' => ' *** Rate Available Services Request using PHP ***');
 //        $request['TransactionDetail']                  = array('CustomerTransactionId' => md5("Probody " . date('c')));
-        $request['Version']                            = array('ServiceId' => 'crs', 'Major' => '24', 'Intermediate' => '0', 'Minor' => '0');
+        $request['Version']                            = array(
+            'ServiceId' => 'crs',
+            'Major' => '28',
+            'Intermediate' => '0',
+            'Minor' => '0'
+        );
         $request['ReturnTransitAndCommit']             = true;
         $request['RequestedShipment']['DropoffType']   = 'REGULAR_PICKUP'; // valid values REGULAR_PICKUP, REQUEST_COURIER, ...
         $request['RequestedShipment']['ShipTimestamp'] = date('c');
@@ -91,12 +105,16 @@ class fedexcalculator extends shippingcalculator {
         // get the current shippingmethod and format the address for ups
         $currentmethod                                          = $order->getCurrentShippingMethod();
         $request['RequestedShipment']['Recipient']              = array('Address'=> $this->formatAddress($currentmethod));
-        $request['RequestedShipment']['ShippingChargesPayment'] = array('PaymentType' => 'SENDER',
-                                                                        'Payor'       => array( 'AccountNumber' => $this->configdata['fedex_account_number'], // Replace 'XXX' with payor's account number
-                                                                                                'Contact' => null,
-                                                                                                'Address' => array(
-                                                                         				            'CountryCode' => $this->configdata['shipfrom']['CountryCode']
-                                                                                                )));
+        $request['RequestedShipment']['ShippingChargesPayment'] = array(
+            'PaymentType' => 'SENDER',
+            'Payor'       => array(
+                'AccountNumber' => $this->configdata['fedex_account_number'], // Replace 'XXX' with payor's account number
+                'Contact' => null,
+                'Address' => array(
+                    'CountryCode' => $this->configdata['shipfrom']['CountryCode']
+                )
+            )
+        );
 //        $request['RequestedShipment']['RateRequestTypes']       = 'ACCOUNT';
 //        $request['RequestedShipment']['RateRequestTypes']       = 'LIST';
 //        $request['RequestedShipment']['PackageDetail']          = 'INDIVIDUAL_PACKAGES';
@@ -251,15 +269,16 @@ class fedexcalculator extends shippingcalculator {
                 //);
 //             eDebug($this->configdata['shipping_methods']);
 //             eDebug($response->RateReplyDetails);
-                if (!empty($response->RateReplyDetails)) foreach ($response->RateReplyDetails as $rateReply) {
-                    if (in_array($rateReply->ServiceType, $this->configdata['shipping_methods'])) {
-                        $rates[$rateReply->ServiceType] = array(
-                            "id"   => $rateReply->ServiceType,
-                            "title"=> $this->shippingmethods[$rateReply->ServiceType],
-                            "cost" => number_format($rateReply->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount, 2, ".", ",")
-                        );
+                if (is_array($response->RateReplyDetails)) {
+                    foreach ($response->RateReplyDetails as $rateReply) {
+                        if (in_array($rateReply->ServiceType, $this->configdata['shipping_methods'])) {
+                            $rates[$rateReply->ServiceType] = array(
+                                "id"   => $rateReply->ServiceType,
+                                "title"=> $this->shippingmethods[$rateReply->ServiceType],
+                                "cost" => number_format($rateReply->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount, 2, ".", ",")
+                            );
+                        }
                     }
-
                     /* $amount = '<td>$' . number_format($rateReply->RatedShipmentDetails[0]->ShipmentRateDetail->TotalNetCharge->Amount,2,".",",") . '</td>';
                    if(array_key_exists('DeliveryTimestamp',$rateReply)){
                        $deliveryDate= '<td>' . $rateReply->DeliveryTimestamp . '</td>';
@@ -268,6 +287,12 @@ class fedexcalculator extends shippingcalculator {
                    }
                    echo $serviceType . $amount. $deliveryDate;
                    echo '</tr>';*/
+                } else {
+                    $rates[$response->RateReplyDetails->ServiceType] = array(
+                        "id"   => $response->RateReplyDetails->ServiceType,
+                        "title"=> $this->shippingmethods[$response->RateReplyDetails->ServiceType],
+                        "cost" => number_format($response->RateReplyDetails->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount, 2, ".", ",")
+                    );
                 }
                 //eDebug($rates,true);
                 return array_reverse($rates);

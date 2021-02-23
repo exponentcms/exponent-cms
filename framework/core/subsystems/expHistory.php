@@ -73,7 +73,7 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
-class expHistory {
+class expHistory extends expSubsystem {
     /**
      * @access public
      * @var array

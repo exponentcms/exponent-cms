@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {getcontrollerdisplayname} modifier plugin
  *
  * Type:     modifier<br>
@@ -32,6 +26,9 @@
  * @param string $str
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_getcontrollerdisplayname($str) {
 	return expModules::getControllerDisplayName($str);

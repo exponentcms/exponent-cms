@@ -15,6 +15,7 @@
 #
 ##################################################
 
+/** @define "BASE" "../../.." */
 /**
  * This is the class expMail
  * expMail is an integrator class, bringing the flexibility of SwiftMail into Exponent gracefully.
@@ -22,11 +23,6 @@
  *
  * @package Subsystems
  * @subpackage Subsystems
- */
-/** @define "BASE" "../../.." */
-
-/**
- * The expMail class
  */
 class expMail {
 

@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {rss_link} function plugin
  *
  * Type:     function<br>
@@ -31,7 +25,10 @@
  *
  * @param         $params
  * @param \Smarty $smarty
- */
+ *
+ * @package    Smarty-Plugins
+ * @subpackage Function
+*/
 function smarty_function_rss_link($params,&$smarty) {
     $config = $smarty->getTemplateVars('config');
     $rss_on = false;

@@ -16,12 +16,11 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../.." */
 /**
  * @subpackage Controllers
  * @package    Modules
  */
-/** @define "BASE" "../../../.." */
-
 class storeController extends expController {
     public $basemodel_name = 'product';
     public $useractions = array(

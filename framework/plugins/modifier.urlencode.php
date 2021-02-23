@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {urlencode} modifier plugin
  *
  * Type:     modifier<br>
@@ -33,6 +27,9 @@
  * @param $ignore_whitespace
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_urlencode($string,$ignore_whitespace=false) {
 	if ($ignore_whitespace) $string = trim($string);

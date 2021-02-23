@@ -17,12 +17,11 @@
 ##################################################
 
 /**
+ * We must subclass the photosController due to a plural/singular naming issue
+ *
  * @subpackage Controllers
  * @package Modules
- */
-
-/**
- * We must subclass the photosController due to a plural/singular naming issue
+ * @deprecated
  */
 class photoController extends photosController {
     public $useractions = array(

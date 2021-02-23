@@ -16,6 +16,17 @@
 {uniqueid assign="id"}
 
 <div id="showhelp" class="module help show">
+    {permissions}
+        <div class="module-actions">
+            {if $permissions.create}
+                {icon class=add action=edit text="Add a Help Doc"|gettext}
+            {/if}
+            {if $permissions.manage}
+                {icon action=manage version=$current_version->id text="Manage Help Docs for version"|gettext|cat:" `$current_version->version`"}
+                {icon class=manage action=manage_versions text="Manage Help Versions"|gettext}
+            {/if}
+        </div>
+    {/permissions}
     <{$config.heading_level|default:'h1'}>{$doc->title}</{$config.heading_level|default:'h1'}>
     {$myloc=serialize($__loc)}
     {permissions}
@@ -76,7 +87,6 @@
 			{/if}
 		</div>
 	</div>
-	{*<div class="loadingdiv">{"Loading Help"|gettext}</div>*}
 	{loading title="Loading Help"|gettext}
 </div>
 {if $children}
@@ -94,21 +104,21 @@
             </dt>
 
             <dd>
-            {permissions}
-            <div class="item-actions">
-                {if $permissions.edit || ($permissions.create && $parent->poster == $user->id)}
-                    {icon action=edit record=$parent}
-                    {icon action=copy record=$parent}
-                {/if}
-                {if $permissions.delete || ($permissions.create && $parent->poster == $user->id)}
-                    {icon action=delete record=$parent}
-                {/if}
-            </div>
-            {/permissions}
-            <div class="bodycopy">
-                {*{$parent->body|summarize:"html":"paralinks"}*}
-            </div>
-                {$parent->body|summarize:"html":"parahtml"}
+                {permissions}
+                <div class="item-actions">
+                    {if $permissions.edit || ($permissions.create && $parent->poster == $user->id)}
+                        {icon action=edit record=$parent}
+                        {icon action=copy record=$parent}
+                    {/if}
+                    {if $permissions.delete || ($permissions.create && $parent->poster == $user->id)}
+                        {icon action=delete record=$parent}
+                    {/if}
+                </div>
+                {/permissions}
+                <div class="bodycopy">
+                    {$parent->body|summarize:"html":"parahtml"}
+                </div>
+            </dd>
         </dl>
     </div>
 {/if}

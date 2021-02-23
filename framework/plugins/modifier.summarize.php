@@ -17,13 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- *
- * @package    Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {summarize} modifier plugin
  *
  * Type:     modifier<br>
@@ -36,7 +29,7 @@
  * @param string $more
  *
  * @return string
- */
+v */
 function smarty_modifier_summarize($string, $strtype, $type, $more='...') {
     return expString::summarize($string, $strtype, $type, $more);
 

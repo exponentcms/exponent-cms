@@ -56,7 +56,7 @@ domPDF was the first supported PHP based library. We currently support three (3)
 v0.8.6 is the newest version supported
 - [dompdf08v260.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf08v260.zip/download)
 This uses the domPDF v0.8.6 library which has been customized for Exponent with a fix for thumbnails.
-This package requires Exponent CMS v2.6.0 and later.
+This package requires Exponent CMS v2.6.0 and later and PHP v7.1 or later (0.8.3+).
 
 v0.7.0 is the previous stable version
 - [dompdf070.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf070.zip/download)

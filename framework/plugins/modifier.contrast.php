@@ -17,13 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- *
- * @package    Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {contrast} modifier plugin
  *
  * Type:     modifier<br>
@@ -37,6 +30,9 @@
  * @param bool   $yiq
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_contrast($hexcolor, $dark = '000000', $light = 'FFFFFF', $yiq = false) {
     $hexcolor = str_replace('#', '', $hexcolor);

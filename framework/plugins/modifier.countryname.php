@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {countryname} modifier plugin
  *
  * Type:     modifier<br>
@@ -33,6 +27,9 @@
  * @param string $col
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_countryname($country,$col='name') {
 	global $db;

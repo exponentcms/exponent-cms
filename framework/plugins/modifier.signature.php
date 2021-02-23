@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {signature} modifier plugin
  * Type:     modifier<br>
  * Name:     signature<br>
@@ -31,6 +25,9 @@
  * @param  integer $userid
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_signature($userid, $header=false) {
 	global $db;

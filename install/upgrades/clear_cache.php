@@ -17,14 +17,10 @@
 ##################################################
 
 /**
- * Upgrade Script
+ * This is the class clear_cache
  *
  * @package Installation
  * @subpackage Upgrade
- */
-
-/**
- * This is the class clear_cache
  */
 class clear_cache extends upgradescript {
 	protected $from_version = '0.0.0';

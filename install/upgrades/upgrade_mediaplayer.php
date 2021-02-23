@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class upgrade_mediaplayer
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class upgrade_mediaplayer extends upgradescript {
 	protected $from_version = '0.0.0';

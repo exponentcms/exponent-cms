@@ -21,7 +21,6 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
-
 class expModules {
 
     /**
@@ -170,7 +169,8 @@ class expModules {
 	    $controllers = array();
 	    foreach($available_controllers as $name=>$path) {
 	        $controller = new $name();  // we want both models and controllers to filter out models
-	        if (!empty($controller->useractions)) $controllers[] = self::getControllerClassName($name);
+	        if (!empty($controller->useractions))
+	            $controllers[] = self::getControllerClassName($name);
 	    }
 
 	    return $controllers;
@@ -220,16 +220,17 @@ class expModules {
      * @param string|object $controllername
      * @param null   $param
      *
-     * @return null
+     * @return object|string
      */
     public static function getController($controllername='', $param=null) {
-        if (is_object($controllername)) return $controllername;  // just in case we were passed an object already
+        if (is_object($controllername))
+            return $controllername;  // just in case we were passed an object already
 
 	    $fullname = self::getControllerClassName($controllername);
 	    if (self::controllerExists($controllername))  {
             return new $fullname($param);
 	    } else {
-	        return null;
+	        return '';
 	    }
 	}
 

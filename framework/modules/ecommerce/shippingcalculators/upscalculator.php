@@ -16,12 +16,11 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../.." */
 /**
  * @subpackage Calculators
  * @package Modules
  */
-/** @define "BASE" "../../../.." */
-
 class upscalculator extends shippingcalculator {
 	/*
 	 * Returns the name of the shipping calculator, for use in the Shipping Administration Module
@@ -43,6 +42,8 @@ class upscalculator extends shippingcalculator {
         "54"=>"UPS Worldwide Express Plus",
         "59"=>"UPS Second Day Air AM",
         "65"=>"UPS Saver",
+        '70'=>'UPS Access Point Economy',
+        "93"=>"UPS Sure Post",
     );
 
     public function getRates($order) {
@@ -193,6 +194,10 @@ class upscalculator extends shippingcalculator {
             }
         }
 
+        if ($this->configdata['negotiated_rate']) {
+            $upsRate->rateInformation(array('NegotiatedRatesIndicator'=>'yes'));
+        }
+
 	    $upsRate->shipment(array('description' => 'my description','serviceType' => '03'));
 
 	    $rateFromUPS = $upsRate->sendRateRequest();
@@ -206,12 +211,19 @@ class upscalculator extends shippingcalculator {
 	        $available_methods = $this->availableMethods();
 	        foreach ($rateFromUPS['RatingServiceSelectionResponse']['RatedShipment'] as $rate) {
 	            if (array_key_exists($rate['Service']['Code']['VALUE'], $available_methods)) {
-//	                $rates[$rate['Service']['Code']['VALUE']] = $rate['TotalCharges']['MonetaryValue']['VALUE'];
-	                $rates[$rate['Service']['Code']['VALUE']] = array(
-                        'id' => $rate['Service']['Code']['VALUE'],
-                        'title' => $this->shippingmethods[$rate['Service']['Code']['VALUE']],
-				        'cost' => $rate['TotalCharges']['MonetaryValue']['VALUE'] + $handling
-                    );
+                    if ($this->configdata['negotiated_rate']) {
+                        $rates[$rate['Service']['Code']['VALUE']] = array(
+                               'id' => $rate['Service']['Code']['VALUE'],
+                               'title' => $this->shippingmethods[$rate['Service']['Code']['VALUE']],
+                               'cost' => $rate['NegotiatedRates']['NetSummaryCharges']['GrandTotal']['MonetaryValue']['VALUE'] + $handling
+                           );
+                    } else {
+                        $rates[$rate['Service']['Code']['VALUE']] = array(
+                               'id' => $rate['Service']['Code']['VALUE'],
+                               'title' => $this->shippingmethods[$rate['Service']['Code']['VALUE']],
+                               'cost' => $rate['TotalCharges']['MonetaryValue']['VALUE'] + $handling
+                           );
+                    }
 	            }
 	        }
 	        return $rates;
@@ -231,6 +243,7 @@ class upscalculator extends shippingcalculator {
             'username',
             'accessnumber',
             'password',
+            'negotiated_rate',
             'shipping_methods',
             'shipfrom',
             'default_width',

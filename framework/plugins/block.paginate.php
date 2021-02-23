@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Block
- */
-
-/**
  * Smarty {paginate} block plugin
  *
  * Type:     block<br>
@@ -32,7 +26,10 @@
  * @param         $params
  * @param         $content
  * @param \Smarty $smarty
- */
+ *
+ * @package    Smarty-Plugins
+ * @subpackage Block
+*/
 function smarty_block_paginate($params,$content,&$smarty) {
 	if ($content) {
 ?>

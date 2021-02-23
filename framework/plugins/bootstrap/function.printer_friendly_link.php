@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {printer_friendly_link} function plugin
  *
  * Type:     function<br>
@@ -31,6 +25,9 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ *
+ * @package    Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_printer_friendly_link($params,&$smarty) {
 	global $router;
@@ -38,7 +35,7 @@ function smarty_function_printer_friendly_link($params,&$smarty) {
     $config = $smarty->getTemplateVars('config');
     if (is_object($config)) {
         $print = !empty($config->printlink);
-    } elseif (is_array($config)) {
+    } elseif (is_array($config) && !empty($config)) {
         $print = !empty($config['printlink']);
     } elseif (isset($params['show'])) {  // force display of link
         $print = isset($params['show']) ? $params['show'] : null;

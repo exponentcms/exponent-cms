@@ -17,13 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- * @deprecated only used by old school?
- */
-
-/**
  * Smarty {showaction} function plugin
  *
  * Type:     function<br>
@@ -32,7 +25,10 @@
  *
  * @param array $params
  * @param mixed $smarty
-  */
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
 function smarty_function_showaction($params,&$smarty) {
     expTheme::showAction($params['module'], $params['action'], $params['source'], $params['params']);
 }

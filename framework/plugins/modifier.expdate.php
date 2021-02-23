@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {expdate} modifier plugin
  *
  * Type:     modifier<br>
@@ -33,6 +27,9 @@
  * @param $format
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_expdate($timestamp,$format) {
 	return date($format, $timestamp);

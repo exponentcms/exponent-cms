@@ -13,6 +13,7 @@ class AdminerTheme
 {
     const CSS_VERSION = 5;
     const ICONS_VERSION = 3;
+    const SERVER = 3;
 
     /** @var string */
     private $themeName;
@@ -28,7 +29,8 @@ class AdminerTheme
     {
         define("PMTN_ADMINER_THEME", true);
 
-        $this->themeName = isset($_GET["username"]) && isset($themes[SERVER]) ? $themes[SERVER] : $defaultTheme;
+//        $this->themeName = isset($_GET["username"]) && isset($themes[SERVER]) ? $themes[SERVER] : $defaultTheme;
+        $this->themeName = $defaultTheme;
     }
 
     /**

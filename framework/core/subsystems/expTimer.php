@@ -15,6 +15,7 @@
 #
 ##################################################
 
+/** @define "BASE" "../../.." */
 /**
  * This is the class expTimer
  * This class allows a user to to determine execution
@@ -28,9 +29,7 @@
  * @package    Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
-
-class expTimer {
+class expTimer extends expSubsystem {
 
     var $starttime   = 0;
     var $endtime     = 0;

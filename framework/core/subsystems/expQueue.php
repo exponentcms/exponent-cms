@@ -21,8 +21,7 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
-
-class expQueue {
+class expQueue extends expSubsystem {
 
 	public $name = "";
 	public function __construct($name) {

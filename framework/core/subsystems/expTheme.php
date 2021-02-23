@@ -15,14 +15,13 @@
 #
 ##################################################
 
+/** @define "BASE" "../../.." */
 /**
  * This is the class expTheme
  *
  * @package    Subsystems
  * @subpackage Subsystems
  */
-
-/** @define "BASE" "../../.." */
 class expTheme
 {
 
@@ -507,7 +506,7 @@ class expTheme
                 }
 //                expCSS::pushToHead(
 //                    array(
-//                        "scssprimer" => "external/bootstrap-icons-1.2.0/scss/bootstrapicons.scss",
+//                        "scssprimer" => "external/bootstrap-icons-1.2.2/scss/bootstrap-icons.scss",
 //                        "lessvars" => $less_vars,
 //                    )
 //                );
@@ -2253,8 +2252,8 @@ class expTheme
 /**
  * This is the base theme class
  *
- * @subpackage Controllers
- * @package Modules
+ * @package Subsystems
+ * @subpackage Subsystems
  */
 class theme {
 	public $user_configured = false;

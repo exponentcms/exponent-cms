@@ -15,18 +15,18 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
+/** @define "BASE" "../../.." */
 
-/**
- * HTML Editor Control - displays wysiwyg editor widget
- *
- * @package Subsystems-Forms
- * @subpackage Control
- */
 if (SITE_WYSIWYG_EDITOR === "ckeditor") {
 
+    /**
+     * HTML Editor Control - displays wysiwyg editor widget
+     *
+     * @package Subsystems-Forms
+     * @subpackage Control
+     */
     class htmleditor extends ckeditorcontrol
     {
 
@@ -34,6 +34,12 @@ if (SITE_WYSIWYG_EDITOR === "ckeditor") {
 
 } elseif (SITE_WYSIWYG_EDITOR === "ckeditor5") {
 
+    /**
+     * HTML Editor Control - displays wysiwyg editor widget
+     *
+     * @package Subsystems-Forms
+     * @subpackage Control
+     */
     class htmleditor extends ckeditor5control
     {
 
@@ -41,6 +47,12 @@ if (SITE_WYSIWYG_EDITOR === "ckeditor") {
 
 } elseif (SITE_WYSIWYG_EDITOR === "tinymce") {
 
+    /**
+     * HTML Editor Control - displays wysiwyg editor widget
+     *
+     * @package Subsystems-Forms
+     * @subpackage Control
+     */
     class htmleditor extends tinymcecontrol
     {
 
@@ -48,6 +60,12 @@ if (SITE_WYSIWYG_EDITOR === "ckeditor") {
 
 } elseif (SITE_WYSIWYG_EDITOR === "tinymce5") {
 
+    /**
+     * HTML Editor Control - displays wysiwyg editor widget
+     *
+     * @package Subsystems-Forms
+     * @subpackage Control
+     */
     class htmleditor extends tinymce5control
     {
 
@@ -55,6 +73,12 @@ if (SITE_WYSIWYG_EDITOR === "ckeditor") {
 
 } else {
 
+    /**
+     * HTML Editor Control - displays wysiwyg editor widget
+     *
+     * @package Subsystems-Forms
+     * @subpackage Control
+     */
     class htmleditor extends texteditorcontrol
     {
         var $module = "";
@@ -133,6 +157,12 @@ if (SITE_WYSIWYG_EDITOR === "ckeditor") {
 
 }
 
+/**
+ * HTML Editor Control - displays wysiwyg editor widget
+ *
+ * @package Subsystems-Forms
+ * @subpackage Control
+ */
 class htmleditorcontrol extends htmleditor
 {
     static function name() { return "Text Area - WYSIWYG"; }

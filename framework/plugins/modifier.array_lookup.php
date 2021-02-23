@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {array_lookup} modifier plugin
  *
  * Type:     modifier<br>
@@ -34,6 +28,9 @@
  * @param int    $index
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_array_lookup($value='', $from=array(), $index=0) {
     if (array_key_exists($value, $from)) {

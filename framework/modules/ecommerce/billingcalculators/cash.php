@@ -15,12 +15,11 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../.." */
 /**
  * @subpackage Calculators
  * @package    Modules
  */
-/** @define "BASE" "../../../.." */
-
 class cash extends billingcalculator {
 
     function name() {

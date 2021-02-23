@@ -16,24 +16,20 @@
 #
 ##################################################
 
-/**
- * Smarty plugin
- *
- * @package    Smarty-Plugins
- * @subpackage Function
- */
-
-/**
- * Smarty {ddrerank} function plugin
- *
- * Type:     function<br>
- * Name:     ddrerank<br>
- * Purpose:  display item re-ranking popup
- *
- * @param         $params
- * @param \Smarty $smarty
- */
 if (!function_exists('smarty_function_ddrerank')) {
+    /**
+     * Smarty {ddrerank} function plugin
+     *
+     * Type:     function<br>
+     * Name:     ddrerank<br>
+     * Purpose:  display item re-ranking popup
+     *
+     * @param         $params
+     * @param \Smarty $smarty
+     *
+     * @package    Smarty-Plugins
+     * @subpackage Function
+     */
     function smarty_function_ddrerank($params, &$smarty) {
         global $db;
 

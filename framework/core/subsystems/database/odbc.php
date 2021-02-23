@@ -15,6 +15,7 @@
 #
 ##################################################
 
+/** @define "BASE" "../.." */
 /**
  * This is the class odbc_database
  *
@@ -22,8 +23,6 @@
  * @package Subsystems
  * @subpackage Database
  */
-/** @define "BASE" "../.." */
-
 class odbc_database extends database {
 
     /**
@@ -1644,6 +1643,10 @@ class odbc_database extends database {
             $key = $this->getDDKey($fieldObj);
             if ($key)
                 $field[$key] = true;
+            if ($fieldObj->Null === "NO")
+                $field[DB_NOTNULL] = true;
+            else
+                $field[DB_NOTNULL] = false;
 
             $dd[$fieldObj->Field] = $field;
         }

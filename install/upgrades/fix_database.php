@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class fix_database
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class fix_database extends upgradescript {
 	protected $from_version = '0.0.0';

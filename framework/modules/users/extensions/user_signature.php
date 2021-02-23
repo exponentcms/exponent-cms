@@ -17,7 +17,7 @@
 ##################################################
 
 /**
- * @subpackage Profile-Extensions
+ * @subpackage Profile Extensions
  * @package Modules
  */
 

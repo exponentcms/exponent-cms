@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class fix_text_tabbedview
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class fix_text_tabbedview extends upgradescript {
 	protected $from_version = '0.0.0';

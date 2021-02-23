@@ -16,24 +16,21 @@
 #
 ##################################################
 
-/**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
- * Smarty {help} function plugin
- *
- * Type:     function<br>
- * Name:     help<br>
- * Purpose:  create a help link
- *
- * @param         $params
- * @param \Smarty $smarty
- * @return bool
- */
 if (!function_exists('smarty_function_help')) {
+    /**
+     * Smarty {help} function plugin
+     *
+     * Type:     function<br>
+     * Name:     help<br>
+     * Purpose:  create a help link
+     *
+     * @param         $params
+     * @param \Smarty $smarty
+     * @return bool
+     *
+     * @package    Smarty-Plugins
+     * @subpackage Function
+     */
     function smarty_function_help($params, &$smarty)
     {
         if (HELP_ACTIVE) {

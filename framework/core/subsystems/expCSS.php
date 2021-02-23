@@ -14,15 +14,14 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../../../" */
 
+/** @define "BASE" "../../../" */
 /**
  * This is the class expCSS
  *
  * @package Subsystems
  * @subpackage Subsystems
  */
-
 class expCSS {
 
     public static function pushToHead($params) {
@@ -321,6 +320,7 @@ class expCSS {
 
 //        // code for testing scss compiler
 //        self::auto_compile_scss('external/bootstrap5/scss/newui', 'tmp/css/newui5.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap-icons-1.2.2/scss/bootstrap-icons', 'tmp/css/bootstrap-icons.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
@@ -712,6 +712,9 @@ class expCSS {
                         $scss_cname = str_replace("/", "_", $scss_pname);
                         $cache_fname = BASE . 'tmp/css/' . $scss_cname . ".cache";
                         $cache = BASE . $scss_pname;
+                        if (empty($vars['swatch'])) {
+                            $vars['swatch'] = '.';
+                        }
                         if (file_exists($cache_fname)) {
                             $cache = unserialize(file_get_contents($cache_fname));
                             if (!empty($cache['vars']) && $vars != $cache['vars'] && !expJavascript::inAjaxAction()) {

@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class fix_form_control_ranks
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class fix_form_control_ranks extends upgradescript
 {

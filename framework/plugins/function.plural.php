@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {plural} function plugin
  *
  * Type:     function<br>
@@ -33,6 +27,9 @@
  * @param \Smarty $smarty
  *
  * @return mixed
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_plural($params,&$smarty) {
 	if ($params['count'] == 1) return $params['singular'];

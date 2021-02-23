@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class add_blog_published
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class add_blog_published extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0

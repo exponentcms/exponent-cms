@@ -42,8 +42,7 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
-
-class expPaginator {
+class expPaginator extends expSubsystem {
     /**#@+
      * @access public
      * @var string
@@ -96,6 +95,7 @@ class expPaginator {
 	public $records = array();
     public $cats = array();
     public $sort_dropdown = array();
+    public $format = array();
     public $linkables = array();
 
     /**
@@ -229,8 +229,12 @@ class expPaginator {
             } else {
                 $this->total_records = count($db->selectObjectsBySql($this->sql));
             }
-			if (!empty($this->limit))
-			    $this->sql .= ' ' . $db->limitStmt($this->limit, $this->start);
+            if (!empty($this->limit)) {
+                if ($this->start >= $this->total_records) {
+                    $this->start = $this->total_records - $this->limit;
+                }
+                $this->sql .= ' ' . $db->limitStmt($this->limit, $this->start);
+            }
 
 			$this->records = array();
 			if (isset($this->model) || isset($params['model_field'])) {
@@ -431,8 +435,8 @@ class expPaginator {
 		if ($this->page > $this->total_pages) {
 			$this->page = $this->total_pages;
             //FIXME return 404 error for infinite page scroll plugin
-//            if (!empty($this->total_pages)) header(':', true, 404);
-            if (!empty($this->total_pages)) notfoundController::send_http_response(404);
+            if (!empty($this->total_pages))
+                notfoundController::send_http_response(404);
 		}
 
         // setup the previous link
@@ -512,52 +516,6 @@ class expPaginator {
         $this->table = $table_template->render();  // table view
 
 	}
-
-    /**
-     * Generic magic method
-     *
-     * @param $property
-     * @return null
-     */
-    public function __get($property) {
-        if (property_exists($this, $property)) {
-            return $this->$property;
-        }
-
-        return null;
-    }
-
-    /**
-     *  Generic magic method
-     *  We MUST create/set non-existing properties for Exponent code to work
-     *
-     * @param $property
-     * @param $value
-     */
-    public function __set($property, $value) {
-//        if (property_exists($this, $property)) {
-            $this->$property = $value;
-//        }
-    }
-
-    /**
-     * Generic magic method
-     *
-     * @param $property
-     * @return bool
-     */
-    public function  __isset($property) {
-        return isset($this->$property);
-    }
-
-    /**
-     * Generic magic method
-     *
-     * @param $property
-     */
-    public function __unset($property) {
-        unset($this->$property);
-    }
 
 	//From Merge
     private function cleanParams($params) {

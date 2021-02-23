@@ -17,9 +17,17 @@
 <div class="module help side-column childview">
     <ul>
         {foreach from=$page->records item=item name=docs}
-            <li{if $item->sef_url==$smarty.get.title} class="current"{/if}>
-                <a href={link action=show version=$item->help_version->version title=$item->sef_url src=$item->loc->src}>{$item->title}</a>
-            </li>
+            {if $item->children}
+                <li{if $item->sef_url==$smarty.get.title} class="current"{/if}>
+                    <a href={link action=show version=$item->help_version->version title=$item->sef_url src=$item->loc->src}>{$item->title}</a>
+                    {$params.parent = $item->id}
+                    {showmodule controller=help action=showall view=side_childview source=$item->loc->src params=$params}
+                </li>
+            {else}
+                <li{if $item->sef_url==$smarty.get.title} class="current"{/if}>
+                    <a href={link action=show version=$item->help_version->version title=$item->sef_url src=$item->loc->src}>{$item->title}</a>
+                </li>
+            {/if}
         {/foreach}
     </ul>
 </div>

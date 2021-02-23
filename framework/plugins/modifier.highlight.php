@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {highlight} modifier plugin
  *
  * Type:     modifier<br>
@@ -34,6 +28,9 @@
  * @param string $highlight type of highlight (style/class) to place inside <span> tag
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_highlight($text='', $word='', $highlight='html5') {
    if(strlen($text) > 0 && strlen($word) > 0) {

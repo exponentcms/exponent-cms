@@ -103,10 +103,11 @@ class helpController extends expController {
                 gt('Version')=>'help_version_id'
             ),
         ));
-        $help = new help();
-	    foreach ($page->records as $key=>$doc) {
-            $page->records[$key]->children = $help->find('count','parent='.$doc->id);
+
+        foreach ($page->records as $key=>$doc) {
+            $doc->addChildren();
         }
+
 	    assign_to_template(array(
             'current_version'=>$ref_version,
             'page'=>$page,
@@ -130,10 +131,10 @@ class helpController extends expController {
 	    }
 	    $this->params['title'] = expString::escape($this->params['title']);  // escape title to prevent sql injection
 	    $doc = $help->find('first', 'help_version_id='.$version_id.' AND sef_url=\''.$this->params['title'].'\'');
-        $children = $help->find('count','parent='.$doc->id);
         if (empty($doc)) {
             redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));
         }
+        $children = $help->find('count','parent='.$doc->id);
         $config = expConfig::getConfig($doc->location_data);
 
 	    assign_to_template(array(
@@ -153,7 +154,11 @@ class helpController extends expController {
 	    expHistory::set('editable', $this->params);
 	    $id = empty($this->params['id']) ? null : $this->params['id'];
 	    $help = new help($id);
-        if (!empty($this->params['copy'])) $help->id = null;
+        if (!empty($this->params['copy'])) {
+            $help->id = null;
+            if (isset($help->sef_url))
+                $help->sef_url = null;
+        }
 
 	    // get the id of the current version and use it if we need to.
         if (expSession::is_set('help-version')) {
@@ -478,7 +483,7 @@ class helpController extends expController {
         // we only want the current version of help docs
         $where = 'help_version_id="'.help_version::getCurrentHelpVersionId().'"';
         $modelname = $this->basemodel_name;
-        $where .= (!empty($this->$modelname->id)) ? ' AND id=' . $this->$modelname->id : null;
+//        $where .= (!empty($this->$modelname->id)) ? ' AND id=' . $this->$modelname->id : null;
         $total = $db->countObjects($this->$modelname->tablename, $where);
         $count = 0;
         for ($i = 0; $i < $total; $i += 100) {

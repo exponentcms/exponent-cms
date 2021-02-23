@@ -21,8 +21,7 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
-
-class expSorter {
+class expSorter extends expSubsystem {
 
     public $sort_array = array();
     public $sort_object_property = null;

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gaetano Giunta
- * @copyright (C) 2006-2020 G. Giunta
+ * @copyright (C) 2006-2021 G. Giunta
  * @license code licensed under the BSD License: see file license.txt
  */
 
@@ -16,6 +16,8 @@ use PhpXmlRpc\Helper\Logger;
  * @todo use some better templating system for code generation?
  * @todo implement method wrapping with preservation of php objs in calls
  * @todo when wrapping methods without obj rebuilding, use return_type = 'phpvals' (faster)
+ * @todo add support for 'epivals' mode
+ * @todo allow setting custom namespace for generated wrapping code
  */
 class Wrapper
 {
@@ -28,12 +30,14 @@ class Wrapper
      * Notes:
      * - for php 'resource' types returns empty string, since resources cannot be serialized;
      * - for php class names returns 'struct', since php objects can be serialized as xmlrpc structs
-     * - for php arrays always return array, even though arrays sometimes serialize as json structs
+     * - for php arrays always return array, even though arrays sometimes serialize as structs...
      * - for 'void' and 'null' returns 'undefined'
      *
      * @param string $phpType
      *
      * @return string
+     *
+     * @todo support notation `something[]` as 'array'
      */
     public function php2XmlrpcType($phpType)
     {
@@ -53,6 +57,7 @@ class Wrapper
             case 'true':
                 return Value::$xmlrpcBoolean;
             case Value::$xmlrpcArray: // 'array':
+            case 'array[]';
                 return Value::$xmlrpcArray;
             case 'object':
             case Value::$xmlrpcStruct: // 'struct'
@@ -63,6 +68,9 @@ class Wrapper
                 return '';
             default:
                 if (class_exists($phpType)) {
+                    if (is_a($phpType, 'DateTimeInterface')) {
+                        return Value::$xmlrpcDateTime;
+                    }
                     return Value::$xmlrpcStruct;
                 } else {
                     // unknown: might be any 'extended' xmlrpc type
@@ -953,7 +961,7 @@ class Wrapper
             $mDesc .= "* @param int \$debug when 1 (or 2) will enable debugging of the underlying {$prefix} call (defaults to 0)\n";
         }
         $plist = implode(', ', $plist);
-        $mDesc .= '* @return ' . $this->xmlrpc2PhpType($mSig[0]) . " (or an {$namespace}Response obj instance if call fails)\n*/\n";
+        $mDesc .= '* @return {$namespace}Response|' . $this->xmlrpc2PhpType($mSig[0]) . " (an {$namespace}Response obj instance if call fails)\n*/\n";
 
         $innerCode .= "\$res = \${$this_}client->send(\$req, $timeout, '$protocol');\n";
         if ($decodeFault) {

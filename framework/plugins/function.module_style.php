@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {module_style} function plugin
  *
  * Type:     function<br>
@@ -33,6 +27,9 @@
  * @param \Smarty $smarty
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_module_style($params,&$smarty) {
 	if (empty($params['style']))

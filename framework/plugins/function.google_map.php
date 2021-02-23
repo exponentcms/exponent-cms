@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {google_map} function plugin
  *
  * Type:     function<br>
@@ -32,6 +26,9 @@
  * @param         $params
  * @param \Smarty $smarty
  * @throws ReflectionException
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_google_map($params,&$smarty) {
     global $db;

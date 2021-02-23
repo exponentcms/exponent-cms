@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Block
- */
-
-/**
  * Smarty {toggle} block plugin
  *
  * Type:     block<br>
@@ -33,6 +27,9 @@
  * @param $content
  * @param \Smarty $smarty
  * @param $repeat
+ *
+ * @package    Smarty-Plugins
+ * @subpackage Block
  */
 function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
     if (empty($params['unique'])) die("<strong style='color:red'>".gt("The 'unique' parameter is required for the {toggle} plugin.")."</strong>");

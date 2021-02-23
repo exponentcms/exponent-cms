@@ -16,11 +16,12 @@
 #
 ##################################################
 
-/**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Compiler
- */
+//Register the post and pre filters as they are not auto-registered.
+if (version_compare(SMARTY_VERSION, '3.1.28', 'lt')) {
+    $this->registerFilter('post', 'smarty_postfilter_switch');  // for v3.1.27
+} else {
+    $smarty->registerFilter('post', 'smarty_postfilter_switch');  // for v3.1.28+
+}
 
 /**
  * Switch statement plugin for smarty.
@@ -113,15 +114,10 @@
  *    {default}
  * {/switch}
  * </code>
+ *
+ * @package Smarty-Plugins
+ * @subpackage Compiler
  */
-
-//Register the post and pre filters as they are not auto-registered.
-if (version_compare(SMARTY_VERSION, '3.1.28', 'lt')) {
-    $this->registerFilter('post', 'smarty_postfilter_switch');  // for v3.1.27
-} else {
-    $smarty->registerFilter('post', 'smarty_postfilter_switch');  // for v3.1.28+
-}
-
 class Smarty_Compiler_Switch extends Smarty_Internal_CompileBase {
     public $required_attributes = array('var');
     public $optional_attributes = array();
@@ -154,6 +150,12 @@ class Smarty_Compiler_Switch extends Smarty_Internal_CompileBase {
     }
 }
 
+/**
+ * Switch case statement plugin for smarty.
+ *
+ * @package Smarty-Plugins
+ * @subpackage Compiler
+ */
 class Smarty_Compiler_Case extends Smarty_Internal_CompileBase {
     public $required_attributes = array('value');
     public $optional_attributes = array('break');
@@ -195,6 +197,12 @@ class Smarty_Compiler_Case extends Smarty_Internal_CompileBase {
     }
 }
 
+/**
+ * Switch default statement plugin for smarty.
+ *
+ * @package Smarty-Plugins
+ * @subpackage Compiler
+ */
 class Smarty_Compiler_Default extends Smarty_Internal_CompileBase {
     public $required_attributes = array();
     public $optional_attributes = array('break');
@@ -230,7 +238,12 @@ class Smarty_Compiler_Default extends Smarty_Internal_CompileBase {
     }
 }
 
-
+/**
+ * Switch break statement plugin for smarty.
+ *
+ * @package Smarty-Plugins
+ * @subpackage Compiler
+ */
 class Smarty_Compiler_Break extends Smarty_Internal_CompileBase {
     public $required_attributes = array();
     public $optional_attributes = array();
@@ -255,6 +268,12 @@ class Smarty_Compiler_Break extends Smarty_Internal_CompileBase {
     }
 }
 
+/**
+ * Switch (case) close statement plugin for smarty.
+ *
+ * @package Smarty-Plugins
+ * @subpackage Compiler
+ */
 class Smarty_Compiler_Caseclose extends Smarty_Internal_CompileBase {
     public $required_attributes = array();
     public $optional_attributes = array();
@@ -279,6 +298,12 @@ class Smarty_Compiler_Caseclose extends Smarty_Internal_CompileBase {
     }
 }
 
+/**
+ * Switch (switch) close statement plugin for smarty.
+ *
+ * @package Smarty-Plugins
+ * @subpackage Compiler
+ */
 class Smarty_Compiler_Switchclose extends Smarty_Internal_CompileBase {
     public $required_attributes = array();
     public $optional_attributes = array();
@@ -315,7 +340,7 @@ class Smarty_Compiler_Switchclose extends Smarty_Internal_CompileBase {
  * @return string
  */
 function smarty_postfilter_switch($compiled, &$smarty) {
-        // Remove the extra spaces after the start of the switch tag and before the first case statement.
-        return preg_replace('/({ ?\?>)\s+(<\?php case)/', "$1\n$2", $compiled);
+    // Remove the extra spaces after the start of the switch tag and before the first case statement.
+    return preg_replace('/({ ?\?>)\s+(<\?php case)/', "$1\n$2", $compiled);
 }
 ?>

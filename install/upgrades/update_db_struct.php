@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class update_db_struct
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class update_db_struct extends upgradescript {
 	protected $from_version = '2.5.0';  // version number introduced

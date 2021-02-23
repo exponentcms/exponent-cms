@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class remove_oldfiles
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class remove_oldfiles extends upgradescript {
 	protected $from_version = '0.0.0';
@@ -680,10 +678,12 @@ class remove_oldfiles extends upgradescript {
             'external/EmailValidator-2.1.11/',
             'external/EmailValidator-2.1.15/',
             'external/EmailValidator-2.1.17/',
+            'external/EmailValidator-2.1.24/',
             'external/facebook-php-sdk-3.2.2/',
             'external/fedex-php/',
             'external/fedex-phpv13/',
             'external/fedex-phpv16/',
+            'external/fedex-phpv22/',
             'external/flowplayer3/',
             'external/flowplayer-3.2.12/',
             'external/flowplayer-3.2.15/',
@@ -731,6 +731,7 @@ class remove_oldfiles extends upgradescript {
             'external/Smarty-3.1.21/',
             'external/smarty-3.1.33/',
             'external/smarty-3.1.34/',
+            'external/smarty-3.1.36/',
             'external/swfobject/',
             'external/Swift/',
             'external/Swift-4/',
@@ -763,6 +764,8 @@ class remove_oldfiles extends upgradescript {
             'external/swiftmailer-6.0.2/',
             'external/swiftmailer-6.1.2/',
             'external/swiftmailer-6.2.0/',
+            'external/swiftmailer-6.2.3/',
+            'external/swiftmailer-6.2.4/',
             'external/webshim-1.15.10/',
             'external/yui3/',
             'external/lissa/',

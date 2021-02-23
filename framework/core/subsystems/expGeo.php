@@ -15,14 +15,13 @@
 #
 ##################################################
 
+/** @define "BASE" "../../.." */
 /**
  * This is the class expGeo
  *
  * @package    Subsystems
  * @subpackage Subsystems
  */
-
-/** @define "BASE" "../../.." */
 class expGeo
 {
 

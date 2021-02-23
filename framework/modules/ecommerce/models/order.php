@@ -157,12 +157,12 @@ class order extends expRecord {
             $orig_referrer = $db->selectValue('sessionticket', 'referrer', "ticket='" . $ticket . "'");
 
             //see if we have a LIVE and ACTIVE session w/ cart and grab it if so
-            $sessioncart = $order->find('first', "invoice_id=''OR `invoice_id` IS NULL AND sessionticket_ticket='" . $ticket . "'");
+            $sessioncart = $order->find('first', "(invoice_id=''OR `invoice_id` IS NULL) AND sessionticket_ticket='" . $ticket . "'");
 
             //check to see if the user is logged in, and if so grab their existing cart
             $usercart = null;
             if (!empty($user->id) && $user->isLoggedIn()) {
-                $usercart = $order->find('first', "invoice_id=''OR `invoice_id` IS NULL AND user_id=" . $user->id);
+                $usercart = $order->find('first', "(invoice_id=''OR `invoice_id` IS NULL) AND user_id=" . $user->id);
             }
 
             //eDebug($sessioncart);

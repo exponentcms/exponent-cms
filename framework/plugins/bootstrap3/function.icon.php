@@ -16,24 +16,20 @@
 #
 ##################################################
 
-/**
- * Smarty plugin
- *
- * @package    Smarty-Plugins
- * @subpackage Function
- */
-
-/**
- * Smarty {icon} function plugin
- *
- * Type:     function<br>
- * Name:     icon<br>
- * Purpose:  create an icon type link
- *
- * @param         $params
- * @param \Smarty $smarty
- */
 if (!function_exists('smarty_function_icon')) {
+    /**
+     * Smarty {icon} function plugin
+     *
+     * Type:     function<br>
+     * Name:     icon<br>
+     * Purpose:  create an icon type link
+     *
+     * @param         $params
+     * @param \Smarty $smarty
+     *
+     * @package    Smarty-Plugins
+     * @subpackage Function
+     */
     function smarty_function_icon($params, &$smarty) {
         $loc = $smarty->getTemplateVars('__loc');
         if (isset($params['record'])) {

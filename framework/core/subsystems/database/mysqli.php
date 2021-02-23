@@ -15,6 +15,7 @@
 #
 ##################################################
 
+/** @define "BASE" "../.." */
 /**
  * This is the class mysqli_database
  *
@@ -22,8 +23,6 @@
  * @package Subsystems
  * @subpackage Database
  */
-/** @define "BASE" "../.." */
-
 class mysqli_database extends database {
 
     /**
@@ -943,7 +942,6 @@ class mysqli_database extends database {
                         $values .= "NULL";
                     } elseif ($val === true) {
                         $values .= "TRUE";
-                       break;
                     } elseif ($val === false) {
                         $values .= "FALSE";
                     }

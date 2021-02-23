@@ -16,12 +16,11 @@
 #
 ##################################################
 
+/** @define "BASE" "../../../.." */
 /**
  * @subpackage Controllers
  * @package Modules
  */
-/** @define "BASE" "../../../.." */
-
 class motdController extends expController {
     public $useractions = array(
         'show'=>'Show Todays Message'

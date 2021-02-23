@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {chainbytags} function plugin
  *
  * Type:     function<br>
@@ -32,6 +26,9 @@
  * @param         $params
  * @param \Smarty $smarty
  * @return bool
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_chainbytags($params,&$smarty) {
 	if (empty($params['controller'])) return false;

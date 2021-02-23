@@ -17,13 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- *
- * @package    Smarty-Plugins
- * @subpackage Modifier
- */
-
-/**
  * Smarty {plural} modifier plugin
  *
  * Type:     modifier<br>
@@ -34,6 +27,9 @@
  * @param int    $counter
  *
  * @return string
+ *
+ * @package Smarty-Plugins
+ * @subpackage Modifier
  */
 function smarty_modifier_plural($word = '', $counter = 0) {
     # What to append to the word to make it plural?

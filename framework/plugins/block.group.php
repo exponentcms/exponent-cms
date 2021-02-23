@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Block
- */
-
-/**
  * Smarty {group} block plugin
  *
  * Type:     block<br>
@@ -33,6 +27,9 @@
  * @param $content
  * @param \Smarty $smarty
  * @param $repeat
+ *
+ * @package    Smarty-Plugins
+ * @subpackage Block
  */
 function smarty_block_group($params,$content,&$smarty, &$repeat) {
 	if(empty($content)) {

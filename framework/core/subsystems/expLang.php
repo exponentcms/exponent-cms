@@ -15,14 +15,13 @@
 #
 ##################################################
 
+/** @define "BASE" "../../.." */
 /**
  * This is the class expLang
  *
  * @package Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
-
 class expLang {
 
     public static function initialize() {

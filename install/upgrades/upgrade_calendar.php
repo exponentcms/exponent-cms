@@ -17,12 +17,10 @@
 ##################################################
 
 /**
- * @subpackage Upgrade
- * @package Installation
- */
-
-/**
  * This is the class upgrade_calendar
+ *
+ * @package Installation
+ * @subpackage Upgrade
  */
 class upgrade_calendar extends upgradescript {
 	protected $from_version = '0.0.0';

@@ -17,12 +17,6 @@
 ##################################################
 
 /**
- * Smarty plugin
- * @package Smarty-Plugins
- * @subpackage Function
- */
-
-/**
  * Smarty {selectvalue} function plugin
  *
  * Type:     function<br>
@@ -32,6 +26,9 @@
  * @param         $params
  * @param \Smarty $smarty
  * @return bool|null
+ *
+ * @package Smarty-Plugins
+ * @subpackage Function
  */
 function smarty_function_selectvalue($params,&$smarty) {
 	global $db;
