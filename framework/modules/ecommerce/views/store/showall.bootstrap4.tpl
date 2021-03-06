@@ -81,13 +81,12 @@
         {/permissions}
     {/if}
     {* current category description *}
-    {if $current_category->body}
+{if $categories|@count > 0 && !empty(trim($current_category->body))}
         <div class="bodycopy">
             {$current_category->body}
         </div>
-    {/if}
     {* current category's sub-categories *}
-    {if $categories|@count > 0}
+    {elseif $categories|@count > 0}
         <div class="cats">
             <h2>{'Categories'|gettext}{if $current_category->id} {'Under'|gettext} {$current_category->title}{/if}</h2>
 
