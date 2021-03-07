@@ -33,6 +33,7 @@ $items = array(
         'text'      => gt("File Manager"),
         'icon'      => 'fa-archive',
         'icon5'      => 'fas fa-archive',
+        'iconbs'      => 'bi-archive',
         'classname' => 'filemanager',
         'url'       => '#',
         'id'        => 'filemanager-toolbar',
@@ -43,6 +44,7 @@ if (!$user->globalPerm('prevent_uploads') && SITE_FILE_MANAGER != 'elfinder') {
         'text'      => gt("Upload Files"),
         'icon'      => 'fa-upload',
         'icon5'      => 'fas fa-upload',
+        'iconbs'      => 'bi-upload',
         'classname' => 'fileuploader',
         'url'       => '#',
         'id'        => 'fileuploader-toolbar',
@@ -53,6 +55,7 @@ if ($user->isSuperAdmin()) {
         'text'      => gt('Import Files'),
         'icon'      => 'fa-sign-in',
         'icon5'      => 'fas fa-sign-in-alt',
+        'iconbs'      => 'bi-upload',
         'classname' => 'import',
         'url'       => makeLink(
             array(
@@ -65,6 +68,7 @@ if ($user->isSuperAdmin()) {
         'text'      => gt('Export Files'),
         'icon'      => 'fa-sign-out',
         'icon5'      => 'fas fa-sign-out-alt',
+        'iconbs'      => 'bi-download',
         'classname' => 'export',
         'url'       => makeLink(
             array(
@@ -79,6 +83,7 @@ return array(
     'text'      => gt('Files'),
     'icon' => 'fa-camera-retro',
     'icon5' => 'fas fa-camera-retro',
+    'iconbs' => 'bi-camera',
     'classname' => 'files',
     'submenu'   => array(
         'id'       => 'events',

@@ -54,6 +54,7 @@ $items1[] = array(
         ) . ")</em>",
     'icon' => 'fa-search',
     'icon5' => 'fas fa-search',
+    'iconbs' => 'bi-search',
     'classname' => 'search',
     'url' => makeLink(
         array(
@@ -66,6 +67,7 @@ $items1[] = array(
     'text' => gt("Create an Order"),
     'icon' => 'fa-plus-circle',
     'icon5' => 'fas fa-plus-circle',
+    'iconbs' => 'bi-plus-circle',
     'classname' => 'add',
     'url' => makeLink(
         array(
@@ -97,6 +99,7 @@ foreach ($recent_orders as $ord) {
             ' <span class="badge ' . $badge . expCore::getCurrency($ord->grand_total) . '</span>',
         'icon' => 'fa-file text-success',
         'icon5' => 'fas fa-file text-success',
+        'iconbs' => 'bi-file-earmark text-success',
         'classname' => 'search',
         'url' => makeLink(
             array(
@@ -117,6 +120,7 @@ return array(
     'text' => ' <span class="orders '.(bs4()?'badge badge':'label label').'-success">' . $new_orders . '</span>',
     'icon' => 'fa-list-ul',
     'icon5' => 'fas fa-list-ul',
+    'iconbs' => 'bi-card-list',
     'classname' => 'order',
     'submenu' => array(
         'id' => 'orders2',

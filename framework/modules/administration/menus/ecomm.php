@@ -29,6 +29,7 @@ $ecom = array(
     'text'      => gt('E-commerce'),
     'icon'      => 'fa-dollar',
     'icon5'      => 'fas fa-dollar-sign',
+    'iconbs'      => 'bi-cash-stack',
     'classname' => 'ecom',
     'submenu'   => array(
         'id'       => 'ecomm',
@@ -37,6 +38,7 @@ $ecom = array(
                 'text'      => gt("Dashboard"),
                 'icon'      => 'fa-dashboard',
                 'icon5'      => 'fas fa-tachometer-alt',
+                'iconbs'      => 'bi-speedometer',
                 'classname' => 'dashboard',
                 'url'       => makeLink(
                     array(
@@ -49,6 +51,7 @@ $ecom = array(
                 'text'      => gt('Customers'),
                 'icon'      => 'fa-user',
                 'icon5'      => 'fas fa-user',
+                'iconbs'      => 'bi-person',
                 'classname' => 'euser',
                 'url'       => makeLink(
                     array(
@@ -61,6 +64,7 @@ $ecom = array(
                 'text'      => gt("Orders"),
                 'icon'      => 'fa-list-ul',
                 'icon5'      => 'fas fa-list-ul',
+                'iconbs'      => 'bi-list-ul',
                 'classname' => 'orders',
                 'submenu'   => array(
                     'id'       => 'ordermenu',
@@ -69,6 +73,7 @@ $ecom = array(
                             'text'      => gt("Manage Orders"),
                             'icon'      => 'fa-search',
                             'icon5'      => 'fas fa-search',
+                            'iconbs'      => 'bi-search',
                             'classname' => 'search',
                             'url'       => makeLink(
                                 array(
@@ -81,6 +86,7 @@ $ecom = array(
                             'text'      => gt("Batch Process Orders"),
                             'icon'      => 'fa-cogs',
                             'icon5'      => 'fas fa-cogs',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'config',
                             'url'       => makeLink(
                                 array(
@@ -93,6 +99,7 @@ $ecom = array(
                             'text'      => gt("Manage Order Status Codes"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -105,6 +112,7 @@ $ecom = array(
                             'text'      => gt("Manage Order Types"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -117,6 +125,7 @@ $ecom = array(
                             'text'      => gt("Manage Order Status Email Messages"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -132,6 +141,7 @@ $ecom = array(
                 'text'      => gt("Products"),
                 'icon'      => 'fa-tag',
                 'icon5'      => 'fas fa-tag',
+                'iconbs'      => 'bi-tag',
                 'classname' => 'products',
                 'submenu'   => array(
                     'id'       => 'prodscats',
@@ -140,6 +150,7 @@ $ecom = array(
                             'text'      => gt("Manage Products"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -152,6 +163,7 @@ $ecom = array(
                             'text'      => gt("Add a Product"),
                             'icon'      => 'fa-plus-circle',
                             'icon5'      => 'fas fa-plus-circle',
+                            'iconbs'      => 'bi-plus-circle',
                             'classname' => 'add',
                             'url'       => makeLink(
                                 array(
@@ -177,6 +189,7 @@ $ecom = array(
                             'text'      => gt("Import Products"),
                             'icon'      => 'fa-upload',
                             'icon5'      => 'fas fa-upload',
+                            'iconbs'      => 'bi-upload',
                             'classname' => 'import',
 //                            'url'       => makeLink(array('controller' => 'importexport', 'action' => 'manage')),
                             'url'       => makeLink(
@@ -190,6 +203,7 @@ $ecom = array(
                             'text'      => gt("Manage Store Categories"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bs-cog',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -202,6 +216,7 @@ $ecom = array(
                             'text'      => gt("Manage Manufacturers"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
 //                            'url'=>makeLink(array('controller'=>'company','action'=>'manage')),
                             'url'       => makeLink(
@@ -215,6 +230,7 @@ $ecom = array(
                             'text'      => gt("Manage Product Statuses"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -227,6 +243,7 @@ $ecom = array(
                             'text'      => gt("Manage Product Options"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -239,6 +256,7 @@ $ecom = array(
                             'text'      => gt('Manage Definable Fields'),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -254,6 +272,7 @@ $ecom = array(
                 'text'      => gt("Reports"),
                 'icon'      => 'fa-bar-chart-o',
                 'icon5'      => 'far fa-chart-bar',
+                'iconbs'      => 'bi-file-bar-graph',
                 'classname' => 'reports',
                 'submenu'   => array(
                     'id'       => 'reports',
@@ -262,6 +281,7 @@ $ecom = array(
                             'text' => gt("View Uncategorized Products"),
                             'icon' => 'fa-search',
                             'icon5' => 'fas fa-search',
+                            'iconbs' => 'bi-search',
                             'url'  => makeLink(
                                 array(
                                     'controller' => 'store',
@@ -273,6 +293,7 @@ $ecom = array(
                             'text' => gt("View Improperly Categorized Products"),
                             'icon' => 'fa-search',
                             'icon5' => 'fas fa-search',
+                            'iconbs' => 'bi-search',
                             'url'  => makeLink(
                                 array(
                                     'controller' => 'store',
@@ -284,6 +305,7 @@ $ecom = array(
                             'text' => gt("View Products with Data Issues"),
                             'icon' => 'fa-search',
                             'icon5' => 'fas fa-search',
+                            'iconbs' => 'bi-search',
                             'url'  => makeLink(
                                 array(
                                     'controller' => 'store',
@@ -295,6 +317,7 @@ $ecom = array(
                             'text'      => gt("Build an Order Report"),
                             'icon'      => 'fa-cogs',
                             'icon5'      => 'fas fa-cogs',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'development',
                             'url'       => makeLink(
                                 array(
@@ -307,6 +330,7 @@ $ecom = array(
                             'text'      => gt("Build a Product Report"),
                             'icon'      => 'fa-cogs',
                             'icon5'      => 'fas fa-cogs',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'development',
                             'url'       => makeLink(
                                 array(
@@ -347,6 +371,7 @@ $ecom = array(
                 'text'      => gt("Store Setup"),
                 'icon'      => 'fa-gear',
                 'icon5'      => 'fas fa-cog',
+                'iconbs'      => 'bi-gear',
                 'classname' => 'configure',
                 'submenu'   => array(
                     'id'       => 'store',
@@ -355,6 +380,7 @@ $ecom = array(
                             'text'      => gt("Store General Settings"),
                             'icon'      => 'fa-cogs',
                             'icon5'      => 'fas fa-cogs',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'configure',
                             'url'       => makeLink(
                                 array(
@@ -367,6 +393,7 @@ $ecom = array(
                             'text'      => gt("Manage Locations"),
                             'icon'      => 'fa-cogs',
                             'icon5'      => 'fas fa-cogs',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -379,6 +406,7 @@ $ecom = array(
                             'text'      => gt("Manage Location Up-Charge Rates"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -391,6 +419,7 @@ $ecom = array(
                             'text'      => gt("Manage Taxes"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -403,6 +432,7 @@ $ecom = array(
                             'text'      => gt("Manage Sales Reps"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -415,6 +445,7 @@ $ecom = array(
                             'text'      => gt("Manage Payment Options"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -427,6 +458,7 @@ $ecom = array(
                             'text'      => gt("Manage Shipping Options"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -439,6 +471,7 @@ $ecom = array(
                             'text'      => gt("Manage Discounts"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
@@ -451,6 +484,7 @@ $ecom = array(
                             'text'      => gt("Import External Addresses"),
                             'icon'      => 'fa-upload',
                             'icon5'      => 'fas fa-upload',
+                            'iconbs'      => 'bi-upload',
                             'classname' => 'import',
 //                            'url'       => makeLink(array('controller' => 'store', 'action' => 'import_external_addresses')),
                             'url'       => makeLink(

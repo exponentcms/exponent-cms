@@ -277,7 +277,11 @@ class fakeform extends form {
             }
             if (BTN_SIZE == 'large') {
                 $this->btn_size = 'btn-lg';
-                $icon_size = 'fa-lg';
+                if (bs5() && USE_BOOTSTRAP_ICONS) {
+                    $icon_size = 'bi-lg';
+                } else {
+                    $icon_size = 'fa-lg';
+                }
             } elseif (BTN_SIZE == 'small') {
                 $this->btn_size = 'btn-sm';
                 $icon_size = '';
@@ -286,12 +290,21 @@ class fakeform extends form {
                 $icon_size = '';
             } else {
                 $this->btn_size = '';
-                $icon_size = 'fa-lg';
+                if (bs5() && USE_BOOTSTRAP_ICONS) {
+                    $icon_size = 'bi-lg';
+                } else {
+                    $icon_size = 'fa-lg';
+                }
             }
             $this->edit_class = ' class="btn btn-secondary '.$this->btn_size.' edit"';
-            $this->edit_icon_class = '<i class="far fa-edit '.$icon_size.'"></i>';
             $this->delete_class = ' class="btn btn-danger '.$this->btn_size.' delete"';
-            $this->delete_icon_class = '<i class="fas fa-times-circle '.$icon_size.'"></i>';
+            if (bs5() && USE_BOOTSTRAP_ICONS) {
+                $this->edit_icon_class = '<i class="bi-edit '.$icon_size.'"></i>';
+                $this->delete_icon_class = '<i class="bi-x-circle '.$icon_size.'"></i>';
+            } else {
+                $this->edit_icon_class = '<i class="far fa-edit '.$icon_size.'"></i>';
+                $this->delete_icon_class = '<i class="fas fa-times-circle '.$icon_size.'"></i>';
+            }
         } else {
             $this->edit_class = ' class="edit"';
             $this->delete_class = ' class="delete"';

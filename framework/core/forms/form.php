@@ -291,8 +291,13 @@ class form extends baseform {
                 $btn_size = '';
             }
             $btn_class .= ' ' . $btn_size;
-            $back = '<i class="fas fa-step-backward"></i> ' . gt('Back');
-            $next = gt('Next') . ' <i class="fas fa-step-forward"></i>';
+            if (bs5() && USE_BOOTSTRAP_ICONS) {
+                $back = '<i class="bi-chevron-double-left"></i> ' . gt('Back');
+                $next = gt('Next') . ' <i class="bi-chevron-double-right"></i>';
+            } else {
+                $back = '<i class="fas fa-step-backward"></i> ' . gt('Back');
+                $next = gt('Next') . ' <i class="fas fa-step-forward"></i>';
+            }
         } else {
             expCSS::pushToHead(array(
                 "corecss"=>"forms"

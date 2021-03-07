@@ -320,7 +320,7 @@ class expCSS {
 
 //        // code for testing scss compiler
 //        self::auto_compile_scss('external/bootstrap5/scss/newui', 'tmp/css/newui5.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap-icons-1.2.2/scss/bootstrap-icons', 'tmp/css/bootstrap-icons.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap-icons-1.4.0/scss/bootstrap-icons', 'tmp/css/bootstrap-icons.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();

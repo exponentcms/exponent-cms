@@ -34,5 +34,6 @@ if (!defined('DISPLAY_DEFAULT_TIMEZONE')) define('DISPLAY_DEFAULT_TIMEZONE','UTC
 if (!defined('SLINGBAR_TOP')) define('SLINGBAR_TOP','1');
 if (!defined('THUMB_QUALITY')) define('THUMB_QUALITY','75');
 if (!defined('NEWUI')) define('NEWUI','0');
+if (!defined('USE_BOOTSTRAP_ICONS')) define('USE_BOOTSTRAP_ICONS','0');
 
 ?>
