@@ -113,7 +113,7 @@ if (!function_exists('smarty_function_getchromemenu')) {
         if (!empty($module->id) && expPermissions::check('delete', $cloc)) {
     //		$deletelink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>$rerank));
             $deletelink = $router->makeLink(array('controller'=>'container', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>$rerank));
-            $list .= '<li role="menuitem"><a href="'.$deletelink.'" class="dropdown-item" onclick="return confirm(\''.gt("Remove this module and send the content to the Recycle Bin to be recovered later?").'\')"><i class="fas fa-times fa-fw"></i> '.gt("Remove Module").'</a></li>';
+            $list .= '<li role="menuitem"><a href="'.$deletelink.'" class="dropdown-item" onclick="return confirm(\''.gt("Remove this module and send the content to the Recycle Bin to be recovered later?").'\')"><i class="fas fa-times-circle fa-fw text-danger"></i> '.gt("Remove Module").'</a></li>';
         }
 
         // does it need a help menu item?
