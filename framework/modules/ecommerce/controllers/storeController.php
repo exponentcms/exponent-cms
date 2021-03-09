@@ -183,7 +183,7 @@ class storeController extends expController {
         if (empty($this->category->is_events)) {
             $count_sql_start = 'SELECT COUNT(DISTINCT p.id) AS c FROM ' . $db->tableStmt('product') . ' p ';
 
-            $sql_start = 'SELECT DISTINCT p.*, IF(base_price > special_price AND use_special_price=1,special_price, base_price) AS price FROM ' . $db->tableStmt('product') . ' p ';
+            $sql_start = 'SELECT DISTINCT p.* FROM ' . $db->tableStmt('product') . ' p ';
             $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ON p.id = sc.product_id ';
             $sql .= 'WHERE ';
             if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
@@ -238,7 +238,7 @@ class storeController extends expController {
                     'columns' => array(
                         gt('Model #') => 'model',
                         gt('Product Name') => 'title',
-                        gt('Price') => 'price'
+                        gt('Price') => 'base_price'
                     ),
                 ));
             } else {
@@ -257,7 +257,7 @@ class storeController extends expController {
 //                'columns'     => array(
 //                    gt('Model #')      => 'model',
 //                    gt('Product Name') => 'title',
-//                    gt('Price')        => 'price'
+//                    gt('Price')        => 'base_price'
 //                ),
 //            ));
             $page = new expPaginator(array(
@@ -273,7 +273,7 @@ class storeController extends expController {
                 'columns' => array(
                     gt('Model #') => 'model',
                     gt('Product Name') => 'title',
-                    gt('Price') => 'price'
+                    gt('Price') => 'base_price'
                 ),
             ));
         }
