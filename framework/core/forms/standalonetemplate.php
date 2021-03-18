@@ -38,25 +38,25 @@ class standalonetemplate extends basetemplate {
             $bstrpview = substr($viewfile, 0, -4) . '.bootstrap.tpl';
             if (file_exists($bstrpview) && !strpos($viewfile, THEME_ABSOLUTE)) {
                 $this->viewfile = $bstrpview;
-                $this->view = substr(basename($viewfile), 0, -4);
+                $this->view = substr(basename($this->viewfile), 0, -4);
             }
             if (bs3(true) || bs4() || bs5()) {
                 $bstrpview = substr($viewfile, 0, -4) . '.bootstrap3.tpl';
                 if (file_exists($bstrpview) && !strpos($viewfile, THEME_ABSOLUTE)) {
                     $this->viewfile = $bstrpview;
-                    $this->view = substr(basename($viewfile), 0, -4);
+                    $this->view = substr(basename($this->viewfile), 0, -4);
                 }
                 if (bs4() || bs5()) {
                    $bstrpview = substr($viewfile, 0, -4) . '.bootstrap4.tpl';
                    if (file_exists($bstrpview) && !strpos($viewfile, THEME_ABSOLUTE)) {
                        $this->viewfile = $bstrpview;
-                       $this->view = substr(basename($viewfile), 0, -4);
+                       $this->view = substr(basename($this->viewfile), 0, -4);
                    }
                     if (bs5()) {
                        $bstrpview = substr($viewfile, 0, -4) . '.bootstrap5.tpl';
                        if (file_exists($bstrpview) && !strpos($viewfile, THEME_ABSOLUTE)) {
                            $this->viewfile = $bstrpview;
-                           $this->view = substr(basename($viewfile), 0, -4);
+                           $this->view = substr(basename($this->viewfile), 0, -4);
                        }
                    }
                }
@@ -65,7 +65,7 @@ class standalonetemplate extends basetemplate {
             $bstrpview = substr($viewfile, 0, -4) . '.newui.tpl';
             if (file_exists($bstrpview) && !strpos($viewfile, THEME_ABSOLUTE)) {
                 $this->viewfile = $bstrpview;
-                $this->view = substr(basename($viewfile), 0, -4);
+                $this->view = substr(basename($this->viewfile), 0, -4);
             }
         }
 	}
