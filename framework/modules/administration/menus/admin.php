@@ -613,7 +613,7 @@ if ($user->isSuperAdmin()) {
                     'text'    => gt('Extensions'),
                     'icon'    => 'fa-magic',
                     'icon5'    => 'fas fa-magic',
-                    'iconbs'    => 'bi-magic',
+                    'iconbs'    => 'bi-award',
                     'submenu' => array(
                         'id'       => 'extensions',
                         'itemdata' => array(

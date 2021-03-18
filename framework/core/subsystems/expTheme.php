@@ -1914,7 +1914,7 @@ class expTheme
             $found->prefix = 'fa fa-';
             return $found;
         } elseif (bs5() && USE_BOOTSTRAP_ICONS) {
-            $found->prefix = 'bi-';
+            $found->prefix = 'bi bi-';
             switch ($class) {
                 case 'delete' :
                 case 'delete-title' :
@@ -2010,6 +2010,15 @@ class expTheme
                     break;
                 case 'users' :
                     $class = "people";
+                    break;
+                case 'refresh' :
+                    $class = "arrow-repeat";
+                    break;
+                case 'expand' :
+                    $class = "arrows-angle-expand";
+                    break;
+                case 'compress' :
+                    $class = "arrows-angle-contract";
                     break;
             }
             $found->type = $btn_type;

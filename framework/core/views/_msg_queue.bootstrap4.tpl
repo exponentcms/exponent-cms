@@ -36,8 +36,6 @@
 {/foreach}
 
 {script unique="alert" jquery=1 bootstrap="alert"}
-{literal}
-    $(".alert").alert();
-{/literal}
+
 {/script}
 {/if}

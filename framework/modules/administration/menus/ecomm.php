@@ -203,7 +203,7 @@ $ecom = array(
                             'text'      => gt("Manage Store Categories"),
                             'icon'      => 'fa-cog',
                             'icon5'      => 'fas fa-cog',
-                            'iconbs'      => 'bs-cog',
+                            'iconbs'      => 'bi-gear',
                             'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
