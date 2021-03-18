@@ -76,6 +76,7 @@ if (expJavascript::requiresJSON()) {
 //if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login') && !expJavascript::inAjaxAction()) {
 if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !(!empty($_REQUEST['controller']) && $_REQUEST['controller'] === 'login' && !empty($_REQUEST['action']) && $_REQUEST['action'] === 'login')) {
 	//only admins/acting_admins are allowed to get to the site, all others get the maintenance view
+    $framework = expSession::get('framework');
 	$template = new standalonetemplate('_maintenance');
     if (!empty($_REQUEST['controller']) && $_REQUEST['controller'] === 'login') {
         $template->assign("login", true);
@@ -84,11 +85,11 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
 } else {
 	if (MAINTENANCE_MODE > 0) flash('error', gt('Maintenance Mode is Enabled'));
 
-	// check to see if we need to install or upgrade the system
-	expVersion::checkVersion();
-
 	// Handle sub themes
 	$page = expTheme::getTheme();
+
+    // check to see if we need to install or upgrade the system
+   	expVersion::checkVersion();
 
 	// If we are in a printer friendly request then we need to change to our printer friendly subtheme
 	if (PRINTER_FRIENDLY == 1 || EXPORT_AS_PDF == 1) {
