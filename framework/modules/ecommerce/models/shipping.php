@@ -23,6 +23,7 @@
 class shipping extends expRecord {
 //	public $table = 'shipping';
 	public $available_calculators = array();
+    public $selectable_calculators = array();
 	public $calculator = null;
 	public $shippingmethod = null;
 	public $options = null;
