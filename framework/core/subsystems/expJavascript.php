@@ -129,7 +129,7 @@ class expJavascript {
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'util.js,';
                         } else {
                             $bootstrappath = 'external/bootstrap5/js/dist/';
-                            $scripts .= "\t" . '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>' . "\r\n";
+                            $scripts .= "\t" . '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>' . "\r\n";
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/data.js,';
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js,';
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js,';
@@ -296,7 +296,7 @@ class expJavascript {
                             $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util.js"></script>' . "\r\n";
                         } else {
                             $bootstrappath = 'external/bootstrap5/js/dist/';
-                            $scripts .= "\t" . '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>' . "\r\n";
+                            $scripts .= "\t" . '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>' . "\r\n";
                             $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/data.js"></script>' . "\r\n";
                             $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js"></script>' . "\r\n";
                             $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js"></script>' . "\r\n";
@@ -537,7 +537,7 @@ class expJavascript {
                         $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util.js"></script>' . "\r\n";
                     } else {
                         $bootstrappath = 'external/bootstrap5/js/dist/';
-                        $scripts .= '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>' . "\r\n";
+                        $scripts .= '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>' . "\r\n";
                         $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/data.js"></script>' . "\r\n";
                         $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js"></script>' . "\r\n";
                         $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js"></script>' . "\r\n";
