@@ -32,9 +32,14 @@ class standalonetemplate extends basetemplate {
 
 	function __construct($view) {
 		parent::__construct("globalviews", "", $view);
+        $themefile = BASE . 'themes/' . DISPLAY_THEME . '/views/' . $view . '.tpl';
         // substitute a framework variation if available
         $viewfile = $this->viewfile;
-        if (bs(true)) {
+
+        if (file_exists($themefile)) {
+            $this->viewfile = $bstrpview;
+            $this->view = substr(basename($this->viewfile), 0, -4);
+        } elseif (bs(true)) {
             $bstrpview = substr($viewfile, 0, -4) . '.bootstrap.tpl';
             if (file_exists($bstrpview) && !strpos($viewfile, THEME_ABSOLUTE)) {
                 $this->viewfile = $bstrpview;
