@@ -77,8 +77,6 @@ class expTheme
 
         // add our theme folder into autoload to prioritize custom (theme) modules
         array_unshift($auto_dirs2, BASE . 'themes/' . DISPLAY_THEME . '/modules');
-//        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/billingcalculators');
-//        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/shippingcalculators');
         if (DEVELOPMENT) {  // allow for custom/modified subsystems and form templates for development
             array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/forms');
             array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/subsystems');

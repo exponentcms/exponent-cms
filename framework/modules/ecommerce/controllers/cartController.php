@@ -1270,6 +1270,13 @@ class cartController extends expController {
         return $metainfo;
     }
 
+    public static function get_cart() {
+        global $order;
+
+        $oicount = !empty($order->item_count) ? $order->item_count : 0;
+        return $oicount;
+    }
+
 }
 
 ?>

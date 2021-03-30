@@ -54,35 +54,41 @@ class billingController extends expController {
 
 	    expHistory::set('manageable', $this->params);
 
-//	    $classes = array();
-        $dir = BASE."framework/modules/ecommerce/billingcalculators";
-        if (is_readable($dir)) {
-            $dh = opendir($dir);
-            while (($file = readdir($dh)) !== false) {
-                if (is_file("$dir/$file") && substr("$dir/$file", -4) === ".php") {
-                    include_once("$dir/$file");
-                    $classname = substr($file, 0, -4);
-                    $id = $db->selectValue('billingcalculator', 'id', 'calculator_name=\''.$classname.'\'');
-                    if (empty($id)) {
-                        // update list of calculators in db
-//                        $calobj = null;
-                        $calcobj = new $classname();
-                        if ($calcobj->isSelectable() == true) {
-                            $obj = new billingcalculator(array(
-                                'title'=>$calcobj->name(),
-//                                'user_title'=>$calcobj->title,
-                                'body'=>$calcobj->description(),
-                                'calculator_name'=>$classname,
-                                'enabled'=>false));
-                            $obj->save();
+        $calculators = array();
+        $calc_dirs = array(
+            THEME_ABSOLUTE . "modules/ecommerce/billingcalculators",
+            BASE . "framework/modules/ecommerce/billingcalculators",
+        );
+        foreach ($calc_dirs as $dir) {
+            if (is_readable($dir)) {
+                $dh = opendir($dir);
+                while (($file = readdir($dh)) !== false) {
+                    if (is_file("$dir/$file") && substr("$dir/$file", -4) === ".php") {
+                        if (array_key_exists(substr($file, 0, -4), $calculators)) {
+                            continue;
                         }
+                        include_once("$dir/$file");
+                        $classname = substr($file, 0, -4);
+                        $id = $db->selectValue('billingcalculator', 'id', 'calculator_name=\'' . $classname . '\'');
+                        if (empty($id)) {
+                            // update list of calculators in db
+                            $calcobj = new $classname();
+                            if ($calcobj->isSelectable() == true) {
+                                $calcobj->update(array(
+                                    'title' => $calcobj->name(),
+                                    'body' => $calcobj->description(),
+                                    'calculator_name' => $classname,
+                                    'enabled' => false));
+                            }
+                        } else {
+                            $calcobj = new $classname($id);
+                        }
+                        $calculators[$calcobj->classname] = $calcobj;
                     }
                 }
             }
         }
 
-        $bcalc = new billingcalculator();
-        $calculators = $bcalc->find('all');
         assign_to_template(array(
             'calculators'=>$calculators
         ));

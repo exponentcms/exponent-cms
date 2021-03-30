@@ -47,9 +47,12 @@ if ($db->havedb) {
     $router->routeRequest();
 }
 
-// define whether or not ecom is enabled &initialize this users cart if they have ecom installed.
+// define whether or not ecom is enabled & initialize this users cart if they have ecom installed.
 if ($db->havedb && ecom_active()) {
     define('ECOM',1);
+    // allow custom billing & shipping calculators
+    array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/billingcalculators');
+    array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/shippingcalculators');
     $order = order::getUserCart();  // set global store $order
 } else {
     define('ECOM',0);
