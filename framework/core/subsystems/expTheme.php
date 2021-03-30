@@ -506,7 +506,7 @@ class expTheme
                 } else {
                     expCSS::pushToHead(
                         array(
-                            "scssprimer" => "external/bootstrap-icons-1.4.0/scss/bootstrap-icons.scss",
+                            "scssprimer" => "external/bootstrap-icons/scss/bootstrap-icons.scss",
                             "lessvars" => $less_vars,
                         )
                     );
