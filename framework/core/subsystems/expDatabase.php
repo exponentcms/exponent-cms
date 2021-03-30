@@ -171,9 +171,9 @@ class expDatabase {
 
    		// then search for module definitions
    		$moddefs = array(
-   			BASE.'themes/'.DISPLAY_THEME.'/modules',
    			BASE."framework/modules",
-   			);
+            BASE.'themes/'.DISPLAY_THEME.'/modules',
+        );
         $models = expModules::initializeModels();
    		foreach ($moddefs as $moddef) {
    			if (is_readable($moddef)) {
