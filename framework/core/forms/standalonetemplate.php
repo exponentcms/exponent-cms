@@ -37,7 +37,7 @@ class standalonetemplate extends basetemplate {
         $viewfile = $this->viewfile;
 
         if (file_exists($themefile)) {
-            $this->viewfile = $bstrpview;
+            $this->viewfile = $themefile;
             $this->view = substr(basename($this->viewfile), 0, -4);
         } elseif (bs(true)) {
             $bstrpview = substr($viewfile, 0, -4) . '.bootstrap.tpl';
