@@ -180,20 +180,23 @@ class storeController extends expController {
 
         expHistory::set('viewable', $this->params);
 
+        // build sql statements
         if (empty($this->category->is_events)) {
             $count_sql_start = 'SELECT COUNT(DISTINCT p.id) AS c FROM ' . $db->tableStmt('product') . ' p ';
-
             $sql_start = 'SELECT DISTINCT p.* FROM ' . $db->tableStmt('product') . ' p ';
-            $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ON p.id = sc.product_id ';
+            $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' psc ON p.id = psc.product_id ';
+            $sql .= 'JOIN ' . $db->tableStmt('storeCategories') . ' sc ON psc.storecategories_id = sc.id ';
             $sql .= 'WHERE ';
-            if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
-            $sql .= 'sc.storecategories_id IN (';
-            $sql .= 'SELECT id FROM ' . $db->tableStmt('storeCategories') . ' WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
+            if (!$user->isAdmin())
+                $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+//            $sql .= 'psc.storecategories_id IN (';
+//            $sql .= 'SELECT id FROM ' . $db->tableStmt('storeCategories') . ' WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
+            $sql .= 'rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt;
 
             $count_sql = $count_sql_start . $sql;
             $sql = $sql_start . $sql;
 
-//            $order = 'title'; // $order = 'sc.rank'; //$this->config['orderby'];
+//            $order = 'title'; // $order = 'psc.rank'; //$this->config['orderby'];
 //            $dir = 'ASC'; //$this->config['orderby_dir'];
             $order = !empty($this->params['order']) ? $this->params['order'] : $this->config['orderby'];
             $dir = !empty($this->params['dir']) ? $this->params['dir'] : $this->config['orderby_dir'];
@@ -202,10 +205,12 @@ class storeController extends expController {
         } else { // this is an event category
             $sql_start = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . $db->tableStmt('product') . ' p ';
             $count_sql_start = 'SELECT COUNT(DISTINCT p.id) AS c, er.event_starttime, er.signup_cutoff FROM ' . $db->tableStmt('product') . ' p ';
-            $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ON p.id = sc.product_id ';
+            $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' psc ON p.id = psc.product_id ';
+            $sql .= 'JOIN ' . $db->tableStmt('storeCategories') . ' sc ON psc.storecategories_id = sc.id ';
             $sql .= 'JOIN ' . $db->tableStmt('eventregistration') . ' er ON p.product_type_id = er.id ';
-            $sql .= 'WHERE sc.storecategories_id IN (';
-            $sql .= 'SELECT id FROM ' . $db->tableStmt('storeCategories') . ' WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
+//            $sql .= 'WHERE psc.storecategories_id IN (';
+//            $sql .= 'SELECT id FROM ' . $db->tableStmt('storeCategories') . ' WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
+            $sql .= 'rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt;
             if ($this->category->hide_closed_events) {
                 $sql .= ' AND er.signup_cutoff > ' . time();
             }
@@ -223,7 +228,7 @@ class storeController extends expController {
 
         $categories = ($this->parent == 0) ? $this->category->getTopLevel(null, false, true) : $this->category->getChildren(null, false, true);
         if (count($categories)) { // there are categories
-            // do we want to get products?
+            // do we want to also get products?
             if (!empty($this->config['show_products'])) {
                 $page = new expPaginator(array(
                     'model_field' => 'product_type',
@@ -279,7 +284,7 @@ class storeController extends expController {
         }
 
 //        $ancestors = $this->category->pathToNode();
-        $rerankSQL = "SELECT DISTINCT p.* FROM " . $db->tableStmt('product') . " p JOIN " . $db->tableStmt('product_storeCategories') . " sc ON p.id = sc.product_id WHERE sc.storecategories_id=" . $this->category->id . " ORDER BY rank ASC";
+        $rerankSQL = "SELECT DISTINCT p.* FROM " . $db->tableStmt('product') . " p JOIN " . $db->tableStmt('product_storeCategories') . " psc ON p.id = psc.product_id WHERE psc.storecategories_id=" . $this->category->id . " ORDER BY rank ASC";
         //eDebug($router);
         $defaultSort = $router->current_url;
 
