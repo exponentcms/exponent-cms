@@ -466,7 +466,7 @@ if ($user->isSuperAdmin()) {
                         'id'       => 'database',
                         'itemdata' => array(
                             array(
-                                'text'      => gt("Manage Database"),
+                                'text'      => gt("Manage Database") . ' (' . DB_NAME . ')',
                                 'icon'      => 'fa-cog',
                                 'icon5'      => 'fas fa-cog',
                                 'iconbs'      => 'bi-gear',
