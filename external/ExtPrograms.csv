@@ -45,7 +45,7 @@ Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
-CKEditor,4.16.0,ckeditor.com,4.16.0/26.0.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
+CKEditor,4.16.0,ckeditor.com,4.16.0/27.0.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 TinyMCE v5,5.7.1,tiny.cloud,5.7.1,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.6,github.com/moxiecode/plupload,2.3.6/3.1.2,"needed for TinyMCE Quick Upload, placed in that plugin folder"
@@ -61,7 +61,7 @@ validate,1.19.3exp,jqueryvalidation.org/,1.19.3,edit for 'undefined' in 'min' & 
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker/,1.6.3,used by adminer
 TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
-DataTables,1.10.23,www.datatables.net,1.10.23,includes boostrap2 integration w/ renamed 1.10.7 version
+DataTables,1.10.24,www.datatables.net,1.10.24,includes boostrap2 integration w/ renamed 1.10.7 version
 DataTables Checkboxes,1.2.12,github.com/gyrocode/jquery-datatables-checkboxes,1.2.12,
 DataTables Tabletools,2.2.4,www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,github.com/Comanche/datatables-responsive,0.2.0,replaced by 'Responsive' in 1.10.8
@@ -102,13 +102,13 @@ DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.10.2,"optional, suggested by mPDF v
 random_compat,2.0.19,github.com/paragonie/random_compat,2.0.19,"optional, required by mPDF v7+"
 FPDI,2.3.5,github.com/Setasign/FPDI,2.3.6,"optional, required by mPDF v7+"
 HTML2PDF,5.2.2/4.6.1,github.com/spipu/html2pdf,5.2.2,"optional, we tweak tcpdfConfig.php"
-TCPDF,6.3.5,sourceforge.net/projects/tcpdf,6.3.5,"optional, used by HTML2PDF"
+TCPDF,6.3.5,sourceforge.net/projects/tcpdf,6.4.1,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
 Kint,2.2.0/3.3.0,github.com/kint-php/kint,3.3.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
-DataTables Buttons,,www.datatables.net,1.6.4,
-DataTables Responsive,,www.datatables.net,2.2.6,
+DataTables Buttons,,www.datatables.net,1.7.0,
+DataTables Responsive,,www.datatables.net,2.2.7,
 ,,,,
 No longer included,,,,
 pwstrength-bootstrap,2.0.0,github.com/ablanco/jquery.pwstrength.bootstrap,,
