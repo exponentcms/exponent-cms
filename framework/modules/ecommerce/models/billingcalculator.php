@@ -52,6 +52,11 @@ class billingcalculator extends expRecord {
         $this->configdata = empty($this->config) ? array() : unserialize($this->config);
     }
 
+    //Called for checkout screen.
+    function checkout($method, $opts, $params, $order) {
+        return;
+    }
+
     /**
      * Called for billing method selection screen, return true if it's a valid billing method.
      *

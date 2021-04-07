@@ -51,8 +51,10 @@ if ($db->havedb) {
 if ($db->havedb && ecom_active()) {
     define('ECOM',1);
     // allow custom billing & shipping calculators
-    array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/billingcalculators');
-    array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/shippingcalculators');
+    if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/')) {
+        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/billingcalculators');
+        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/shippingcalculators');
+    }
     $order = order::getUserCart();  // set global store $order
 } else {
     define('ECOM',0);

@@ -458,6 +458,15 @@ class cartController extends expController {
         //$shipping->shippingmethod->setAddress($shipAddress);
         if (count($shipping->available_calculators) < 1) {
             flashAndFlow('error', gt('This store is not yet fully configured to allow checkouts.')."<br>".gt('You Must Activate a Shipping Option').' <a href="'.expCore::makeLink(array('controller'=>'shipping','action'=>'manage')).'">'.gt('Here').'</a>');
+        } else {
+            // initialize billing calculators for checkout
+            foreach($billing->available_calculators as $key => $item) {
+                $calc  = new $item($key);
+                $result = $calc->checkout($billing->billingmethod, null, $this->params, $order);
+                if (!empty($result->errorCode)) {
+                    flash('error', gt('An error was encountered initializing payment method') . ' ' . $calc->name() . ': ' . $result->message);
+                }
+            }
         }
 
         // we need to get the current shipping method rates
