@@ -102,9 +102,10 @@ class expJavascript {
     <!--<![endif]-->' . "\r\n";
                     }
                 } else {
-                    $scripts .= '
-    <script type="text/javascript" src="' . JQUERY3_SCRIPT . '"></script>
-    <script type="text/javascript" src="' . JQUERY3_MIGRATE_SCRIPT . '"></script>' . "\r\n";
+                    $scripts .= '<script type="text/javascript" src="' . JQUERY3_SCRIPT . '"></script>' . "\r\n";
+                    if (LOAD_MIGRATE3) {
+                        $scripts .= '<script type="text/javascript" src="' . JQUERY3_MIGRATE_SCRIPT . '"></script>' . "\r\n";
+                    }
                 }
 
                 if (!empty($bootstrapjs)) {
@@ -180,7 +181,7 @@ class expJavascript {
                                 $i++;
                                 $srt[$i] = PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js' . ",";
                             }
-                            if (bs4() && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.scss')) {
+                            if ((bs4() || bs5()) && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.scss')) {
                                 expCSS::pushToHead(array(
 //                           		    "unique"=>$mod,
                                         "scssprimer" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.scss',
@@ -206,7 +207,7 @@ class expJavascript {
                                 $i++;
                                 $srt[$i] = JQUERY_RELATIVE . 'addons/js/'.$mod.'.js' . ",";
                             }
-                            if (bs4() && file_exists(JQUERY_PATH . 'addons/scss/' . $mod . '.scss')) {
+                            if ((bs4() || bs5()) && file_exists(JQUERY_PATH . 'addons/scss/' . $mod . '.scss')) {
                                 expCSS::pushToHead(array(
                                         "scssprimer" => JQUERY_RELATIVE . 'addons/scss/' . $mod . '.scss',
                                     )
@@ -268,9 +269,10 @@ class expJavascript {
     <!--<![endif]-->' . "\r\n";
                     }
                 } else {
-                    $scripts .= '
-    <script type="text/javascript" src="' . JQUERY3_SCRIPT . '"></script>
-    <script type="text/javascript" src="' . JQUERY3_MIGRATE_SCRIPT . '"></script>' . "\r\n";
+                    $scripts .= '<script type="text/javascript" src="' . JQUERY3_SCRIPT . '"></script>' . "\r\n";
+                    if (LOAD_MIGRATE3) {
+                        $scripts .= '<script type="text/javascript" src="' . JQUERY3_MIGRATE_SCRIPT . '"></script>' . "\r\n";
+                    }
                 }
 
                 if (!empty($bootstrapjs)) {
@@ -329,7 +331,7 @@ class expJavascript {
                         } else {
                             if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
                                 $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
-                                if (bs4() && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.scss')) {
+                                if ((bs4() || bs5()) && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.scss')) {
                                     expCSS::pushToHead(
                                         array(
 //                           		    "unique"=>$mod,
@@ -353,7 +355,7 @@ class expJavascript {
                                 }
                             } elseif (file_exists(JQUERY_PATH . 'addons/js/' . $mod . '.js')) {
                                 $scripts .= "\t" . '<script type="text/javascript" src="' . JQUERY_RELATIVE . 'addons/js/' . $mod . '.js"></script>' . "\r\n";
-                                if (bs4() && file_exists(JQUERY_PATH . 'addons/scss/' . $mod . '.scss')) {
+                                if ((bs4() || bs5()) && file_exists(JQUERY_PATH . 'addons/scss/' . $mod . '.scss')) {
                                     expCSS::pushToHead(
                                         array(
                                             "scssprimer" => JQUERY_RELATIVE . 'addons/scss/' . $mod . '.scss',
@@ -568,7 +570,7 @@ class expJavascript {
                     } else {
                         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
                             $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
-                            if (bs4() && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.scss')) {
+                            if ((bs4() || bs5()) && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.scss')) {
                                 expCSS::pushToHead(
                                     array(
 //                           		    "unique"=>$mod,
