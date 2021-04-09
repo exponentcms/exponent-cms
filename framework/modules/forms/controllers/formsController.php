@@ -959,7 +959,11 @@ class formsController extends expController {
         $cols = array();
 
         if (!empty($f->column_names_list)) {
-            $cols = explode('|!|', $f->column_names_list);
+            if (is_string($f->column_names_list)){
+                $cols = expUnserialize($f->column_names_list);
+            } else {
+                $cols = explode('|!|', $f->column_names_list);
+            }
         }
         $fc = new forms_control();
         foreach ($fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0','rank') as $control) {
@@ -1398,8 +1402,12 @@ class formsController extends expController {
         if (empty($this->config)) { // NEVER overwrite an existing config
             $this->config = array();
             $config = get_object_vars($form);
-            if (!empty($config['column_names_list'])) {
-                $config['column_names_list'] = explode('|!|', $config['column_names_list']);  //fixme $form->column_names_list is a serialized array?
+            if (!empty($config['column_names_list']) && is_string($config['column_names_list'])) {
+                if (stripos($config['column_names_list'], '|!|') !== false) {
+                    $config['column_names_list'] = explode('|!|', $config['column_names_list']);
+                } else {
+                    $config['column_names_list'] = expUnserialize($config['column_names_list']);
+                }
             }
             unset ($config['forms_control']);
             $this->config = $config;
