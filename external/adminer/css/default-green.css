@@ -17,3 +17,36 @@ p.filter:before{
 b, strong {
 	font-weight: bold;
 }
+a.serialize-icon {
+    background: 0 0;
+    text-indent: 0
+}
+a.serialize-icon:hover {
+    background: 0 0
+}
+a.serialize-icon:before {
+    display: inline-block;
+    width: 20px;
+    height: 18px;
+    line-height: 18px;
+    font-family: entypo, sans-serif;
+    font-size: 24pt;
+    vertical-align: -3px;
+    content: "▸"
+}
+a.serialize-icon.serialize-up {
+    background: 0 0;
+    text-indent: 0
+}
+a.serialize-icon.serialize-up:before {
+    content: "▾"
+}
+a.serialize-link {
+    padding-left: 0
+}
+a.serialize-link:before {
+    width: 10px
+}
+a.serialize-link span {
+    color: inherit
+}

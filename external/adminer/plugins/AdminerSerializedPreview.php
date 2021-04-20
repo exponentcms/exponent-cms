@@ -88,7 +88,7 @@ class AdminerSerializedPreview
 			}
 
 			/* Togglers */
-			a.json-icon {
+			a.serialize-icon {
 				display: inline-block;
 				padding: 0;
 				overflow: hidden;
@@ -99,24 +99,24 @@ class AdminerSerializedPreview
 				vertical-align: middle;
 			}
 
-			a.json-link {
+			a.serialize-link {
 				width: auto;
 				padding-left: 18px;
 				background-position: left center;
 				text-indent: 0;
 			}
 
-			a.json-link span {
+			a.serialize-link span {
 				color: #fff;
 				padding: 0 5px;
 			}
 
-			a.json-icon.json-up {
+			a.serialize-icon.serialize-up {
                 background-image: url("<?php echo ME; ?>file=up.gif");
 			}
 
 			/* No javascript support */
-			.nojs .json-icon, .nojs .json-link {
+			.nojs .serialize-icon, .nojs .serialize-link {
 				display: none;
 			}
 
@@ -132,28 +132,28 @@ class AdminerSerializedPreview
                 document.addEventListener("DOMContentLoaded", init, false);
 
                 function init() {
-                    var links = document.querySelectorAll('a.json-icon');
+                    var links = document.querySelectorAll('a.serialize-icon');
 
                     for (var i = 0; i < links.length; i++) {
                         links[i].addEventListener("click", function(event) {
                             event.preventDefault();
-                            toggleJson(this);
+                            toggleSerial(this);
                         }, false);
                     }
                 }
 
-                function toggleJson(button) {
+                function toggleSerial(button) {
                     var index = button.dataset.index;
 
-                    var obj = document.getElementById("json-code-" + index);
+                    var obj = document.getElementById("serialize-code-" + index);
 				if (!obj)
 					return;
 
 				if (obj.style.display === "none") {
-					button.className += " json-up";
+					button.className += " serialize-up";
 					obj.style.display = "";
 				} else {
-					button.className = button.className.replace(" json-up", "");
+					button.className = button.className.replace(" serialize-up", "");
 					obj.style.display = "none";
 				}
 			}
@@ -172,7 +172,7 @@ class AdminerSerializedPreview
 		}
 
 		if (is_string($original) && $this->is_serialized($original)) {
-			$val = "<a class='icon json-icon' href='#' title='Serialized Data' data-index='$counter'>Serialized</a> " . $val;
+			$val = "<a class='icon serialize-icon' href='#' title='Serialized Data' data-index='$counter'>Serialized</a> " . $val;
 			$val .= $this->convertSerialized($this->expUnserialize($original), 1, $counter++);
 		}
 	}
@@ -186,7 +186,7 @@ class AdminerSerializedPreview
 		}
 
 		if (is_string($value) && $this->is_serialized($value)) {
-			echo "<a class='icon json-icon json-link' href='#' title='Serialized Data' data-index='$counter'><span>Serialized</span></a><br/>";
+			echo "<a class='icon serialize-icon serialize-link' href='#' title='Serialized Data' data-index='$counter'><span>Serialized</span></a><br/>";
 			echo $this->convertSerialized($this->expUnserialize($value), 1, $counter++);
 		}
 	}
@@ -197,7 +197,7 @@ class AdminerSerializedPreview
 
 		$value .= "<table class='json'";
 		if ($level === 1 && $id > 0) {
-			$value .= "style='display: none' id='json-code-$id'";
+			$value .= "style='display: none' id='serialize-code-$id'";
 		}
 		$value .= ">";
 
@@ -210,17 +210,23 @@ class AdminerSerializedPreview
 			} elseif (is_array($val)) {
 				$value .= "<code class='jush-js'>" . h(preg_replace('/([,:])([^\s])/', '$1 $2', json_encode($val))) . "</code>";
 			} elseif (is_string($val)) {
-				// Shorten string to max. length.
-                if (mb_strlen($val, "UTF-8") > self::MAX_TEXT_LENGTH) {
-                    $val = mb_substr($val, 0, self::MAX_TEXT_LENGTH - 3, "UTF-8") . "...";
-                }
+                if (!empty($val) && $this->is_json($val)) {
+                    $val = json_decode(str_replace('\"', '"', $val));
+                    // it is now a nested object
+                    $value .= $this->convertSerialized($val, $level + 1);
+                } else {
+                    // Shorten string to max. length.
+                    if (mb_strlen($val, "UTF-8") > self::MAX_TEXT_LENGTH) {
+                        $val = mb_substr($val, 0, self::MAX_TEXT_LENGTH - 3, "UTF-8") . "...";
+                    }
 
-				// Add extra new line to make it visible in HTML output.
-				if (preg_match("@\n$@", $val)) {
-                    $val .= "\n";
-                }
+                    // Add extra new line to make it visible in HTML output.
+    				if (preg_match("@\n$@", $val)) {
+                        $val .= "\n";
+                    }
 
-				$value .= "<code>" . nl2br(h($val)) . "</code>";
+                    $value .= "<code>" . nl2br(h($val)) . "</code>";
+                }
 			} elseif (is_bool($val)) {
 				// Handle boolean values.
 				$value .= "<code class='jush'>" . h($val ? "true" : "false") . "</code>";
@@ -228,7 +234,7 @@ class AdminerSerializedPreview
 				// Handle null value.
 				$value .= "<code class='jush'>null</code>";
             } elseif (is_object($val) || is_array($val)) {
-			    //fixme here is a nested object/array
+			    //fixme here is a deep nested object/array
                 $value .= "<code class='jush'>" . h(serialize($val)) . "</code>";
             } else {
                 $value .= "<code class='jush'>" . h($val) . "</code>";
@@ -249,6 +255,11 @@ class AdminerSerializedPreview
                 return "s:".strlen($m_new).':"'.$m_new.'";';
             }, $data );
         return (@unserialize($out) !== false);
+    }
+
+    public function is_json($data)
+    {
+        return (is_object(@json_decode(str_replace('\"', '"', $data))));
     }
 
     public function expUnserialize($serial_str)

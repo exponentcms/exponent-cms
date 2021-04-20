@@ -44,6 +44,7 @@ function adminer_object() {
         new AdminerEnumOption,  // turns enum fields into select input
         new AdminerTablesFilter,  // adds filter input to tables list
         new AdminerSerializedPreview,  // displays unserialized data as a table
+        new AdminerJsonPreview,  // displays json data as a table
         new AdminerEditTextSerializedarea,  // displays unserialized data as a tooltip
         //new AdminerEmailTable,
         new AdminerEditForeign,
@@ -167,7 +168,6 @@ function adminer_object() {
 }
 
 // include original Adminer or Adminer Editor
-//include "./adminer-4.7.1-mysql.php";
 include "./adminer-4.8.0.php";
 
 //if (SITE_WYSIWYG_EDITOR != 'tinymce') {
