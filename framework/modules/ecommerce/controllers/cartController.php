@@ -374,8 +374,10 @@ class cartController extends expController {
         $order->calculateGrandTotal();
         $order->validateDiscounts(array('controller'=> 'cart', 'action'=> 'checkout'));
 
+        // set a flow waypoint
+        expHistory::set('viewable', $this->params);
+
         if (!expSession::get('customer-signup') && !$user->isLoggedin()) {  // give opportunity to login or sign up
-            expHistory::set('viewable', $this->params);
             expSession::set('customer-login', true);
             flash('message', gt("Please select how you would like to continue with the checkout process."));
             expHistory::redirecto_login(makeLink(array('module'=> 'cart', 'action'=> 'checkout'), 'secure'),true);
@@ -401,9 +403,15 @@ class cartController extends expController {
         //eDebug($billing,true);
         if (count($billing->available_calculators) < 1) {
             flashAndFlow('error', gt('This store is not yet fully configured to allow checkouts.')."<br>".gt('You Must Activate a Payment Option').' <a href="'.expCore::makeLink(array('controller'=>'billing','action'=>'manage')).'">'.gt('Here').'</a>');
+        } else {
+            foreach($billing->available_calculators as $key => $item) {
+                $calc  = new $item($key);
+                $result = $calc->checkout($billing->billingmethod, null, $this->params, $order);
+                if (!empty($result->errorCode)) {
+                    flash('error', gt('An error was encountered initializing payment method') . ' ' . $calc->name() . ': ' . $result->message);
+                }
+            }
         }
-        // set a flow waypoint
-        expHistory::set('viewable', $this->params);
 
         //this validate the discount codes already applied to make sure they are still OK
         //if they are not it will remove them and redirect back to checkout w/ a message flash
