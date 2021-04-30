@@ -37,7 +37,8 @@ class cash extends billingcalculator {
 
     //Called for billing method selection screen, return true if it's a valid billing method.
     function preprocess($billingmethod, $opts, $params, $order) {
-        if ($opts->cash_amount < $order->grand_total) $opts->payment_due = $order->grand_total - $opts->cash_amount;
+        if ($opts->cash_amount < $order->grand_total)
+            $opts->payment_due = $order->grand_total - $opts->cash_amount;
         //just save the opts
         $billingmethod->update(array('billing_options' => serialize($opts)));
     }
@@ -71,7 +72,8 @@ class cash extends billingcalculator {
     //Should return html to display user data.
     function userView($billingmethod) {
         $opts = expUnserialize($billingmethod->billing_options);
-        if (empty($opts)) return false;
+        if (empty($opts))
+            return false;
         $cash = !empty($opts->cash_amount) ? $opts->cash_amount : 0;
 //        $billinginfo = gt("Paying by") . ' ' . $this->name() . ": " . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",");
 //        if (!empty($opts->payment_due)) {

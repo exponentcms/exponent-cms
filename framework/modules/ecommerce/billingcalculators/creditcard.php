@@ -165,8 +165,10 @@ class creditcard extends billingcalculator {
         //eDebug($params);
         if (!$this->validate_card_number($params['cc_number']) || !$this->validate_card_type($params['cc_number'], $params['cc_type']))
             expValidator::failAndReturnToForm(gt("Either the card number you entered is not a") . " " . $this->cards[$params['cc_type']] . ", " . gt("or the credit card you entered is not a valid credit card number. Please select the proper credit card type and verify the number entered and try again.") . "<br/>" . gt("For your security, your previously entered credit card information has been cleared."));
-        if (!$this->validate_card_expire($params['expiration_month'] . substr($params['expiration_year'], 2, 2))) expValidator::failAndReturnToForm(gt("Please enter a valid expiration data.") . "<br/>" . gt("For your security, your previously entered credit card information has been cleared."));
-        if (!$this->validate_cvv($params['cvv'])) expValidator::failAndReturnToForm(gt("Please enter a valid CVV number.") . "<br/>" . gt("For your security, your previously entered credit card information has been cleared."));
+        if (!$this->validate_card_expire($params['expiration_month'] . substr($params['expiration_year'], 2, 2)))
+            expValidator::failAndReturnToForm(gt("Please enter a valid expiration data.") . "<br/>" . gt("For your security, your previously entered credit card information has been cleared."));
+        if (!$this->validate_cvv($params['cvv']))
+            expValidator::failAndReturnToForm(gt("Please enter a valid CVV number.") . "<br/>" . gt("For your security, your previously entered credit card information has been cleared."));
 
         //eDebug(debug_backtrace(), true);
         //eDebug($params);
@@ -188,7 +190,8 @@ class creditcard extends billingcalculator {
     //Should return html to display user data.
     function userView($billingmethod) {
         $opts = expUnserialize($billingmethod->billing_options);
-        if (empty($opts->cc_type)) return false;
+        if (empty($opts->cc_type))
+            return false;
 
         $billinginfo = '<table id="ccinfo"' . ((bs3()||bs4()||bs5())?' class=" table"':'') . ' border=0 cellspacing=0 cellpadding=0>';
         $billinginfo .= '<thead><tr><th colspan="2">' . gt('Paying by') . ' ' . $this->name() . '</th></tr></thead>';
@@ -315,7 +318,6 @@ class creditcard extends billingcalculator {
         $newCreditCard = substr($cc, -4);
 
         for ($i = $cc_length - 5; $i >= 0; $i--) {
-
             if ((($i + 1) - $cc_length) % 4 == 0)
                 $newCreditCard = '-' . $newCreditCard;
 

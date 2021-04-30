@@ -43,7 +43,8 @@ class paylater extends billingcalculator {
 
     //Called for billing method selection screen, return true if it's a valid billing method.
     function preprocess($billingmethod, $opts, $params, $order) {
-        if ($opts->cash_amount < $order->grand_total) $opts->payment_due = $order->grand_total - $opts->cash_amount;
+        if ($opts->cash_amount < $order->grand_total)
+            $opts->payment_due = $order->grand_total - $opts->cash_amount;
         //just save the opts
         $billingmethod->update(array('billing_options' => serialize($opts)));
     }
@@ -60,7 +61,8 @@ class paylater extends billingcalculator {
         $opts->result->payment_status = gt("complete");
         $opts->result->transId = '';
         $opts->result->message = "User will pay later";
-        if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
+        if ($opts->cash_amount < $order->grand_total)
+            $opts->result->payment_status = gt("payment due");
 //        $billingmethod->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result, $opts->result->payment_status));
         $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $opts->result->payment_status));
         $this->createBillingTransaction($billingmethod, number_format(0, 2, '.', ''), $opts->result, $opts->result->payment_status);
@@ -83,7 +85,8 @@ class paylater extends billingcalculator {
     //Should return html to display user data.
     function userView($billingmethod) {
         $opts = expUnserialize($billingmethod->billing_options);
-        if (empty($opts)) return false;
+        if (empty($opts))
+            return false;
         $cash = !empty($opts->cash_amount) ? $opts->cash_amount : 0;
 //        $billinginfo = gt("Paying Later") . ": " . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",");
 //        if (!empty($opts->payment_due)) {
