@@ -83,9 +83,7 @@ class eaasController extends expController {
             if (is_object($key) && $key->mod === "eaas") {
                 preg_match('/[a-zA-Z0-9_@]*/', $key->src, $matches);
                 $key->src = $matches[0];
-                $cfg = new expConfig($key);
-                $this->config = $cfg->config;
-                $cfg = new expConfig($key);
+                $cfg = new expConfig(expCore::makeLocation($key->mod, $key->src));
                 $this->config = $cfg->config;
             }
             if(empty($cfg->id)) {
