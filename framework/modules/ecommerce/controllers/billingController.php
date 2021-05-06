@@ -55,6 +55,8 @@ class billingController extends expController {
 	    expHistory::set('manageable', $this->params);
 
         $calculators = array();
+        $default = false;
+        $on = false;
         $calc_dirs = array(
             THEME_ABSOLUTE . "modules/ecommerce/billingcalculators",
             BASE . "framework/modules/ecommerce/billingcalculators",
@@ -79,13 +81,27 @@ class billingController extends expController {
                                     'body' => $calcobj->description(),
                                     'calculator_name' => $classname,
                                     'enabled' => false));
+                                $calculators[$calcobj->classname] = $calcobj;
                             }
                         } else {
                             $calcobj = new $classname($id);
+                            $calculators[$calcobj->classname] = $calcobj;
                         }
-                        $calculators[$calcobj->classname] = $calcobj;
+                        if (!$default)
+                            $default = $calcobj->is_default;
+                        if (!$on && $calcobj->enabled)
+                            $on = $calcobj->id;
                     }
                 }
+            }
+        }
+
+        // ensure there is a single default shipping calculator and it is enabled
+        if (!$default && $on) {
+            $db->toggle('shippingcalculator', 'is_default', 'id=' . $on);
+            foreach ($calculators as $idx => $calc) {
+                if ($calc->id == $on)
+                    $calculators[$idx]->is_default = 1;
             }
         }
 

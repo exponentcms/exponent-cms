@@ -172,21 +172,27 @@ class shippingController extends expController {
                                     'body' => $calcobj->description(),
                                     'calculator_name' => $classname,
                                     'enabled' => false));
+                                $calculators[$calcobj->classname] = $calcobj;
                             }
                         } else {
                             $calcobj = new $classname($id);
+                            $calculators[$calcobj->classname] = $calcobj;
                         }
-                        $calculators[$calcobj->classname] = $calcobj;
-                        if (!$default) $default = $calcobj->is_default;
-                        if (!$on && $calcobj->enabled) $on = $calcobj->id;
+                        if (!$default)
+                            $default = $calcobj->is_default;
+                        if (!$on && $calcobj->enabled)
+                            $on = $calcobj->id;
                     }
                 }
             }
         }
+
+        // ensure there is a single default shipping calculator and it is enabled
         if (!$default && $on) {
             $db->toggle('shippingcalculator', 'is_default', 'id=' . $on);
             foreach ($calculators as $idx => $calc) {
-                if ($calc->id == $on) $calculators[$idx]->is_default = 1;
+                if ($calc->id == $on)
+                    $calculators[$idx]->is_default = 1;
             }
         }
         assign_to_template(array(

@@ -182,7 +182,7 @@ class fedexcalculator extends shippingcalculator {
 #                    eDebug('dimensions: height: '.$pi->h." width: ".$pi->w." length: ".$pi->l);
 #                    echo "<hr>";
                     $box_count++;
-                    $weight = $pi->weight > 1 ? $pi->weight : 1;
+                    $weight = !empty($pi->weight) ? $pi->weight : $this->configdata['default_max_weight'];
                     $fedexItemArray[] = array(
                        'SequenceNumber'    => $box_count,
                        'GroupPackageCount' => 1,

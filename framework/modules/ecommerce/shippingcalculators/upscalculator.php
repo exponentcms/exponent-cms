@@ -145,7 +145,7 @@ class upscalculator extends shippingcalculator {
 #                    eDebug('created OVERSIZED package with weight of '.$pi->weight);
 #                    eDebug('dimensions: height: '.$pi->h." width: ".$pi->w." length: ".$pi->l);
 #                    echo "<hr>";
-                    $weight = $pi->weight > 1 ? $pi->weight : 1;
+                    $weight = !empty($pi->weight) ? $pi->weight : $this->configdata['default_max_weight'];
                     $upsRate->package(array(
                         'description'=>'shipment',
                         'weight'=>$weight,
