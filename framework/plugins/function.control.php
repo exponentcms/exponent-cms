@@ -168,6 +168,7 @@ function smarty_function_control($params, &$smarty) {
                 $control            = new checkboxcontrol($default);
                 $control->postfalse = isset($params['postfalse']) ? 1 : 0;
                 $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
+                $control->switch = (isset($params['switch'])) ? 1 : 0;
                 $control->newschool = true;
                 $control->value     = isset($params['value']) ? $params['value'] : 1;
                 $control->jsHooks   = isset($params['hooks']) ? $params['hooks'] : null;
