@@ -325,7 +325,7 @@ if ($user->isAdmin() || !empty($groups)) {
                     'text'      => gt('User Accounts'),
                     'icon'      => 'fa-user',
                     'icon5'      => 'fas fa-user',
-                    'iconbs'      => 'bi-people',
+                    'iconbs'      => 'bi-person',
                     'classname' => 'euser',
                     'url'       => makeLink(
                         array(
