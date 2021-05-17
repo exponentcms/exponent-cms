@@ -186,6 +186,8 @@ class Compiler
      */
     protected $rootBlock;
 
+    protected $daveStore;  //fixme Dave Hack
+
     /**
      * @var \ScssPhp\ScssPhp\Compiler\Environment
      */
