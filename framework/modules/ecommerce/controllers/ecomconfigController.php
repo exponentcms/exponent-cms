@@ -361,20 +361,26 @@ class ecomconfigController extends expController {
     /*****************************************************************/
 
 	 function manage_upcharge() {
-		$this->loc->src = "@globalstoresettings";
-        $config = new expConfig($this->loc);
-		$this->config = $config->config;
+         $this->loc->src = "@globalstoresettings";
+         $config = new expConfig($this->loc);
+         $this->config = $config->config;
+         $all_locations = ecomconfig::getConfig('address_allow_admins_all');
+         if ($all_locations) {
+             $where = null;
+         } else {
+             $where = 'active=1';
+         }
 
-		$gc = new geoCountry();
-        $countries = $gc->find('all');
+         $gc = new geoCountry();
+         $countries = $gc->find('all', $where);
 
-        $gr = new geoRegion();
-        $regions = $gr->find('all',null,'rank asc,name asc');
-        assign_to_template(array(
-            'countries'=>$countries,
-            'regions'=>$regions,
-            'upcharge'=>!empty($this->config['upcharge'])?$this->config['upcharge']:array()
-        ));
+         $gr = new geoRegion();
+         $regions = $gr->find('all',$where,'rank asc,name asc');
+         assign_to_template(array(
+             'countries' => $countries,
+             'regions' => $regions,
+             'upcharge' => !empty($this->config['upcharge']) ? $this->config['upcharge'] : array()
+         ));
 	 }
 
 	 function update_upcharge() {

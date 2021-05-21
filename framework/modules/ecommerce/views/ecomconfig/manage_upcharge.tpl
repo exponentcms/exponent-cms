@@ -26,9 +26,13 @@
 {/css}
 <div id="storeconfig" class="module upcharge manage">
     <h1>{"Location Up-Charge Rate Settings"|gettext}</h1>
+    <blockquote>
+        If you do NOT see the desired country/region, you will need to activate it <a href="{link controller=address action=manage}">here</a>.
+    </blockquote>
 
 	{form action=update_upcharge}
 		{'Select the configuration of the Up charge Rate for the Countries and States/Provinces:'|gettext}
+        {'Note: the state upcharge rate will be added to the country upcharge rate!'|gettext}
         <table class="exp-skin-table">
             <thead>
                 <tr>
@@ -50,7 +54,7 @@
                         </td>
                         <td>
                             {$key="country_`$country->id`"}
-                            {control type="text" name="upcharge[country_`$country->id`]" label="Rate:"|gettext size="5" value="`$upcharge.$key`"}
+                            {control type="text" name="upcharge[country_`$country->id`]" label="" size="5" value="`$upcharge.$key`"}
                         </td>
                     </tr>
                     {foreach from=$regions item=region}
@@ -60,7 +64,7 @@
                                 <td><strong>{$region->name}</strong></td>
                                 <td>
                                     {$key="region_`$region->id`"}
-                                    {control type="text" name="upcharge[region_`$region->id`]" label="Rate:"|gettext size="5" value="`$upcharge.$key`"}
+                                    {control type="text" name="upcharge[region_`$region->id`]" label="" size="5" value="`$upcharge.$key`"}
                                 </td>
                             </tr>
                         {/if}
