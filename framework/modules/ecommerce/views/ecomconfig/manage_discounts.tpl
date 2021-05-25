@@ -65,7 +65,7 @@
                                     {if $listing->never_expires}
                                         {"Never Expires"|gettext}
                                     {else}
-                                        {$listing->enddate|format_date:"%m/%d/%y"} - {$listing->enddate_time|format_date:"%l:%M %P"}
+                                        {$listing->enddate_time|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
                                     {/if}
                                 </td>
                                 <td>
