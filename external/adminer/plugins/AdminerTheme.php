@@ -29,8 +29,9 @@ class AdminerTheme
     {
         define("PMTN_ADMINER_THEME", true);
 
-//        $this->themeName = isset($_GET["username"]) && isset($themes[SERVER]) ? $themes[SERVER] : $defaultTheme;
-        $this->themeName = $defaultTheme;
+        $this->themeName = isset($_GET["username"]) && isset($_GET["server"]) && isset($themes[$_GET["server"]])
+            ? $themes[$_GET["server"]]
+            : $defaultTheme;
     }
 
     /**
@@ -99,31 +100,5 @@ class AdminerTheme
         // Return false to disable linking of adminer.css and original favicon.
         // Warning! This will stop executing head() function in all plugins defined after AdminerTheme.
         return false;
-    }
-
-    /**
-     * Returns Content Security Policy headers.
-     * @note This is just workaround for Adminer version 4.4.0.
-     *
-     * @return array Array of arrays with directive name in key, allowed sources in value.
-     */
-    public function csp()
-    {
-        $csp = csp();
-
-        if (isset($csp[0]["default-src"])) {
-            unset($csp[0]["default-src"]);
-        }
-        if (isset($csp[0]["img-src"])) {
-            unset($csp[0]["img-src"]);
-        }
-        if (!isset($csp[0]["object-src"])) {
-            $csp[0]["object-src"] = "'none'";
-        }
-        if (!isset($csp[0]["base-uri"])) {
-            $csp[0]["base-uri"] = "'none'";
-        }
-
-        return $csp;
     }
 }

@@ -53,7 +53,8 @@ function adminer_object() {
         new AdminerVersionNoverify,  // disable adminer version check/notify
 //        new AdminerStructComments,
         new AdminerTableIndexesStructure,
-        new AdminerTableStructure
+        new AdminerTableStructure,
+//        new AdminerTreeViewer(PATH_RELATIVE . 'external/adminer/plugins/script.js')
     );
 //    if (SITE_WYSIWYG_EDITOR === 'tinymce') {
         $plugins[] = new AdminerTinymce(
@@ -168,7 +169,7 @@ function adminer_object() {
 }
 
 // include original Adminer or Adminer Editor
-include "./adminer-4.8.0.php";
+include "./adminer-4.8.1.php";
 
 //if (SITE_WYSIWYG_EDITOR != 'tinymce') {
 //?>
