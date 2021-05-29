@@ -1998,7 +1998,7 @@ class expTheme
                     $class = "arrow-repeat bi-spin";
                     break;
                 case 'file-pdf' :
-                    $class = "file-earmark-post-fill";
+                    $class = "file-earmark-pdf-fill";
                     break;
                 case 'exchange-alt' :
                     $class = "arrow-left-right";
