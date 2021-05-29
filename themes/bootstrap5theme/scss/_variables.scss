@@ -1,0 +1,37 @@
+// bootstrap5theme Theme SCSS Variables
+//   override bootstrap main and swatch variables
+// --------------------------------------------------
+
+// Grid breakpoints
+//
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+
+// scss-docs-start grid-breakpoints
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: ($menu_width + 0px),  // default is 768px
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+) !default;
+// scss-docs-end grid-breakpoints
+// Options
+//
+// Quickly modify global styling by enabling or disabling optional features.
+
+//$spacer:                    1rem;  // default 1rem
+
+//$enable-caret:                                true !default;
+//$enable-rounded:                              true !default;   //note this is set in our theme template
+//$enable-shadows:                              false !default;  //note this is set in our theme template
+//$enable-gradients:                            false !default;  //note this is set in our theme template
+//$enable-transitions:                          true !default;   //note this is set in our theme template
+//$enable-reduced-motion:                       true !default;
+//$enable-smooth-scroll:                        true !default;
+//$enable-grid-classes:                         true !default;
+//$enable-button-pointers:                      true !default;  //note this is set in our theme template
+//$enable-rfs:                                  true !default;  //note this is set in our theme template
+//$enable-validation-icons:                     true !default;   //note this is set in our theme template
+//$enable-negative-margins:                     false !default;

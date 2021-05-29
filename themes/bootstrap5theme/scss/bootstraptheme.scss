@@ -1,0 +1,320 @@
+@import "../../../external/bootstrap5/scss/functions";
+@import "variables";
+@import "../../../external/bootstrap5/scss/#{$swatch}/variables";
+@import "../../../external/bootstrap5/scss/variables";
+@import "../../../external/bootstrap5/scss/mixins";
+
+// Exponent theme template level styles which (must) override stock bootstrap5 styles
+/* override some conflicts between exponent classes and bootstrap */
+
+span.required {
+	color : #ff0000;
+}
+
+.fa.valid-feedback,
+.fa.invalid-feedback,
+.fas.valid-feedback,
+.fas.invalid-feedback {
+    position: absolute;
+    right: 25px;
+    margin-top: -50px;
+    z-index: 2;
+    display: block;
+    pointer-events: none;
+}
+
+.fa.valid-feedback,
+.fas.valid-feedback {
+    margin-top: -28px;
+}
+
+label.form-check-inline {
+    display: block;
+}
+
+input[type="radio"].form-check-input,
+input[type="checkbox"].form-check-input {
+	margin-left: 0;
+    margin-top: 6px;
+}
+
+.datetime.date .form-control,
+.datetime.time .form-control {
+	display: inline-block;
+}
+
+.was-validated label.valid-feedback,
+.was-validated label.invalid-feedback {
+    font-size: inherit;
+    display: block;
+}
+
+.fixedmenu {
+	margin-top : ($menu_height + 0px);
+}
+
+//.container.main-menu {
+//    margin-bottom:15px;
+//}
+
+.btn {
+	margin-bottom: 2px;
+}
+
+.input-group-btn.btn {
+	margin: 0;
+}
+
+//hr {
+//	color            : $gray-800;
+//	background-color : $gray-800;
+//	height           : 3px;
+//}
+
+#sidebar h2 {
+	font-size-adjust : 0.30;
+}
+
+a.addmodule span.addtext {
+    background-position: 8px -592px;
+}
+
+/* datatables */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+	margin: 0;
+	padding: 0;
+}
+
+div.DTTT .btn {
+	margin: 0;
+}
+
+/* accordion */
+.showall-accordion .dashboard .hd a.collapse {
+	height : 34px;
+}
+
+.showall-accordion .dashboard .hd h2 {
+	height  : 34px;
+	padding : 0 0 0 33px;
+}
+
+/* ecommerce */
+#qtyrControl  .label {
+	display : inline;
+}
+
+/* card styles */
+.report.dashboard .hd h2,
+.card .hd h2 {
+    padding: 0 0 0 33px;
+	line-height: 36px;
+}
+
+.card .hd h2 {
+	line-height: 30px;
+}
+
+.card .hd .collapse {
+	height: 30px;
+}
+
+.card-title h2 {
+	margin: 0;
+}
+
+/* other */
+.show .add-to-cart-btn input[type="text"] {
+	margin-left: 13px;
+//	height: 25px;
+	font-size: inherit;
+}
+
+.show .ecom-hover .add-to-cart-btn input[type="text"] {
+	margin-left:inherit;
+}
+
+.options-partial table.options .checkbox input {
+	margin-top: 3px;
+}
+
+.eql-tablelist .row:before,
+.eql-tablelist .row:after,
+.manage-questions .row:before,
+.manage-questions .row:after {
+	content : normal;
+}
+
+/* centered navbar support */
+@if ($menu_align_center == 1) {
+	@media (min-width: ($menu_width + 0px)) {
+		#topnavbar.navbar .navbar-nav {
+			display: inline-block;
+			float: none;
+		}
+
+		#topnavbar.navbar .navbar-collapse {
+			text-align: center;
+		}
+	}
+}
+
+/* remove page url on printout in browser */
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+}
+
+/* set rss icon color to orange */
+i.fa-rss,
+i.bi-rss {
+	color: orange;
+}
+
+/* set size on all font-awesome icons used in main menu/navbar */
+#topnavbar .nav.navbar-nav i.fas,
+#topnavbar .nav.navbar-nav i.far,
+#topnavbar .nav.navbar-nav i.fab {
+	font-size: 18px;
+}
+
+// text input placeholder style
+.form-control::-webkit-input-placeholder { /* Safari, Chrome and Opera */
+	font-style: italic;
+}
+
+.form-control:-moz-placeholder { /* Firefox 18- */
+	font-style: italic;
+}
+
+.form-control::-moz-placeholder { /* Firefox 19+ */
+	font-style: italic;
+}
+
+.form-control:-ms-input-placeholder { /* IE 10+ */
+	font-style: italic;
+}
+
+.form-control::-ms-input-placeholder { /* Edge */
+	font-style: italic;
+}
+
+.form-control:placeholder-shown { /* Standard one last! */
+	font-style: italic;
+}
+
+/* fancy tags */
+span.value span {
+	display: inline-block;
+	margin: 0 0 .3em 1em;
+	padding: 0;
+}
+span.value span.tag a {
+	position: relative;
+	display: inline-block;
+	height: 20px;
+	line-height: 20px;
+	padding: 0 1em 0 .75em;
+	background-color: $primary;
+	-webkit-border-radius: 0 3px 3px 0;
+    -moz-border-radius: 0 3px 3px 0;
+	border-radius: 0 3px 3px 0;
+	color: $body-bg;
+	font-size: 13px;
+	text-decoration: none;
+	@include transition(2s);
+    z-index: 3;
+}
+span.value span.tag a::before {
+	position: absolute;
+	top: 0;
+	left: -10px;
+	z-index: -1;
+	content: '';
+	width: 20px;
+	height: 20px;
+	background-color: $primary;
+	-webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+	border-radius: 50%;
+	@include transition(2s);
+}
+span.value span.tag a::after {
+	position: absolute;
+	top: 50%;
+	left: -6px;
+	z-index: 2;
+	display: block;
+	content: '';
+	width: 6px;
+	height: 6px;
+	margin-top: -3px;
+	background-color: $body-bg;
+	-webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+	border-radius: 100%;
+}
+span.value span.tag a:hover {
+	background-color: $gray-500;
+	color: $body-bg;
+}
+span.value span.tag a:hover::before {
+	background-color: $gray-500;
+}
+span.value span.spacer {
+	display: none;
+}
+
+/* module styles */
+.top-border {
+	border-top: 1px solid $hr-color;
+}
+.left-border {
+	border-left: 1px solid $hr-color;
+}
+.right-border {
+	border-right: 1px solid $hr-color;
+}
+.bottom-border {
+	border-bottom: 1px solid $hr-color;
+}
+.left-right-border {
+	border-left: 1px solid $hr-color;
+	border-right: 1px solid $hr-color;
+}
+.top-bottom-border {
+	border-top: 1px solid $hr-color;
+	border-bottom: 1px solid $hr-color;
+}
+.box-border {
+	border: 1px solid $hr-color;
+}
+
+.light-background {
+	background-color: darken($body-bg, 5%);
+}
+.medium-background {
+	background-color: darken($body-bg, 10%);
+}
+.dark-background {
+	background-color: darken($body-bg, 15%);
+}
+
+/* form designer */
+// - uncomment if using left sidebar instead of right sidebar
+//div#trash.trash,
+//ul#controls.controls {
+//    left: 20px!important;
+//	right: inherit!important;
+//}
+
+/* correct exp style conflict with form labels */
+label.label,
+span.label {
+	color: $gray-800;
+}
+
+a.showall {
+    color: black;
+}
