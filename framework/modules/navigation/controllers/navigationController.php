@@ -1177,7 +1177,7 @@ class navigationController extends expController {
             require_once(BASE . 'external/font-awesome.class.php');
             $fa = new Smk_FontAwesome;
             if (bs5() & USE_BOOTSTRAP_ICONS) {
-                $icons = $fa->getArray(BASE . 'external/bootstrap-icons-1.4.0/bootstrap-icons.json', 'bi-');
+                $icons = $fa->getArray(BASE . 'external/bootstrap-icons/bootstrap-icons.json', 'bi-');
                 $icons = $fa->sortByName($icons);
                 return $fa->readableName($icons, 'bi-');
             } elseif (bs4() || bs5()) {
