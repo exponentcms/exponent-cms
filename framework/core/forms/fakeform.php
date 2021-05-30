@@ -299,7 +299,7 @@ class fakeform extends form {
             $this->edit_class = ' class="btn btn-secondary '.$this->btn_size.' edit"';
             $this->delete_class = ' class="btn btn-danger '.$this->btn_size.' delete"';
             if (bs5() && USE_BOOTSTRAP_ICONS) {
-                $this->edit_icon_class = '<i class="bi-edit '.$icon_size.'"></i>';
+                $this->edit_icon_class = '<i class="bi-pencil-square '.$icon_size.'"></i>';
                 $this->delete_icon_class = '<i class="bi-x-circle '.$icon_size.'"></i>';
             } else {
                 $this->edit_icon_class = '<i class="far fa-edit '.$icon_size.'"></i>';
