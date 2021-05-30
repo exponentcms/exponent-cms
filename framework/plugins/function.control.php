@@ -177,9 +177,9 @@ function smarty_function_control($params, &$smarty) {
                 $control = new radiogroupcontrol();
                 // differentiate it from the old school forms
                 $control->newschool = true;
-                if (!empty($params['default']))
+                if (isset($params['default']))
                     $control->default = $params['default'];
-                elseif (!empty($params['value']))
+                elseif (isset($params['value']))
                     $control->default = $params['value'];
                 $control->cols      = $params['columns'];
 
