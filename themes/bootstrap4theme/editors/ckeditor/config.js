@@ -22,231 +22,242 @@ CKEDITOR.editorConfig = function( config ) {
     config.protectedSource.push( /<\/i>/g );
 
     /* CKEditor Twitter Bootstrap 4 Styles */
-    CKEDITOR.stylesSet.add( 'default', [
-      /* Typography */
-        {
-            name: "Paragraph Lead" ,
-            element: "p" ,
-            attributes: {
-                "class": "lead"
+    if (CKEDITOR.stylesSet.get( 'default') === null) {
+        CKEDITOR.stylesSet.add('default', [
+            /* Typography */
+            {
+                name: "Paragraph Lead",
+                element: "p",
+                attributes: {
+                    "class": "lead"
+                }
             }
-        }
-        ,
-      /* Blockquotes */
-        {
-            name: "Blockquote" ,
-            element: "blockquote" ,
-        }
-        ,
-        {
-            name: "Blockquote Center" ,
-            element: "blockquote text-center" ,
-        }
-        ,
-        {
-            name: "Blockquote Right" ,
-            element: "blockquote" ,
-            attributes: {
-                "class": "blockquote text-right"
+            ,
+            /* Blockquotes */
+            {
+                name: "Blockquote",
+                element: "blockquote",
             }
-        }
-        ,
-      /* Lists */
-        {
-            name: "Unstyled List" ,
-            element: "ul" ,
-            attributes: {
-                "class": "list-unstyled"
+            ,
+            {
+                name: "Blockquote Center",
+                element: "blockquote text-center",
             }
-        }
-        ,
-        {
-            name: "List inline" ,
-            element: "ul" ,
-            attributes: {
-                "class": "list-inline"
+            ,
+            {
+                name: "Blockquote Right",
+                element: "blockquote",
+                attributes: {
+                    "class": "blockquote text-right"
+                }
             }
-        }
-        ,
-      /* Tables */
-        {
-            name: "Table" ,
-            element: "table" ,
-            attributes: {
-                "class": "table"
+            ,
+            /* Lists */
+            {
+                name: "Unstyled List",
+                element: "ul",
+                attributes: {
+                    "class": "list-unstyled"
+                }
             }
-        }
-        ,
-        {
-            name: "Table Dark" ,
-            element: "table" ,
-            attributes: {
-                "class": "table table-dark"
+            ,
+            {
+                name: "List inline",
+                element: "ul",
+                attributes: {
+                    "class": "list-inline"
+                }
             }
-        }
-        ,
-        {
-            name: "Table Striped rows" ,
-            element: "table" ,
-            attributes: {
-                "class": "table table-striped"
+            ,
+            /* Tables */
+            {
+                name: "Table",
+                element: "table",
+                attributes: {
+                    "class": "table"
+                }
             }
-        }
-        ,
-        {
-            name: "Table Bordered" ,
-            element: "table" ,
-            attributes: {
-                "class": "table table-bordered"
+            ,
+            {
+                name: "Table Dark",
+                element: "table",
+                attributes: {
+                    "class": "table table-dark"
+                }
             }
-        }
-        ,
-        {
-            name: "Table Borderless" ,
-            element: "table" ,
-            attributes: {
-                "class": "table table-borderless "
+            ,
+            {
+                name: "Table Striped rows",
+                element: "table",
+                attributes: {
+                    "class": "table table-striped"
+                }
             }
-        }
-        ,
-        {
-            name: "Table Hover rows" ,
-            element: "table" ,
-            attributes: {
-                "class": "table table-hover"
+            ,
+            {
+                name: "Table Bordered",
+                element: "table",
+                attributes: {
+                    "class": "table table-bordered"
+                }
             }
-        }
-        ,
-        {
-            name: "Table Condensed" ,
-            element: "table" ,
-            attributes: {
-                "class": "table table-sm"
+            ,
+            {
+                name: "Table Borderless",
+                element: "table",
+                attributes: {
+                    "class": "table table-borderless "
+                }
             }
-        }
-        ,
-      /* Images */
-        {
-            name: "Image responsive" ,
-            type: 'widget',
-            widget: 'image',
-            attributes: {
-                "class": "img-fluid"
+            ,
+            {
+                name: "Table Hover rows",
+                element: "table",
+                attributes: {
+                    "class": "table table-hover"
+                }
             }
-        }
-        ,
-        {
-            name: "Image rounded shape" ,
-            type: 'widget',
-            widget: 'image',
-            attributes: {
-                "class": "rounded"
+            ,
+            {
+                name: "Table Condensed",
+                element: "table",
+                attributes: {
+                    "class": "table table-sm"
+                }
             }
-        }
-        ,
-        {
-            name: "Image circle shape" ,
-            type: 'widget',
-            widget: 'image',
-            attributes: {
-                "class": "rounded-circle"
+            ,
+            /* Images */
+            {
+                name: "Image responsive",
+                type: 'widget',
+                widget: 'image',
+                attributes: {
+                    "class": "img-fluid"
+                }
             }
-        }
-        ,
-        {
-            name: "Image thumbnail shape" ,
-            type: 'widget',
-            widget: 'image',
-            attributes: {
-                "class": "img-thumbnail"
+            ,
+            {
+                name: "Image rounded shape",
+                type: 'widget',
+                widget: 'image',
+                attributes: {
+                    "class": "rounded"
+                }
             }
-        },
+            ,
+            {
+                name: "Image circle shape",
+                type: 'widget',
+                widget: 'image',
+                attributes: {
+                    "class": "rounded-circle"
+                }
+            }
+            ,
+            {
+                name: "Image thumbnail shape",
+                type: 'widget',
+                widget: 'image',
+                attributes: {
+                    "class": "img-thumbnail"
+                }
+            },
 
-        /* CKEditor Default Styles */
-        { name: 'Marker',			element: 'mark' },
+            /* CKEditor Default Styles */
+            {name: 'Marker', element: 'mark'},
 
-       	{ name: 'Big',				element: 'big' },
-       	{ name: 'Small',			element: 'small' },
-       	{ name: 'Typewriter',		element: 'tt' },
+            {name: 'Big', element: 'big'},
+            {name: 'Small', element: 'small'},
+            {name: 'Typewriter', element: 'tt'},
 
-       	{ name: 'Computer Code',	element: 'code' },
-       	{ name: 'Keyboard Phrase',	element: 'kbd' },
-       	{ name: 'Sample Text',		element: 'samp' },
-       	{ name: 'Variable',			element: 'var' },
+            {name: 'Computer Code', element: 'code'},
+            {name: 'Keyboard Phrase', element: 'kbd'},
+            {name: 'Sample Text', element: 'samp'},
+            {name: 'Variable', element: 'var'},
 
-       	{ name: 'Deleted Text',		element: 'del' },
-       	{ name: 'Inserted Text',	element: 'ins' },
+            {name: 'Deleted Text', element: 'del'},
+            {name: 'Inserted Text', element: 'ins'},
 
-       	{ name: 'Cited Work',		element: 'cite' },
-       	{ name: 'Inline Quotation',	element: 'q' },
+            {name: 'Cited Work', element: 'cite'},
+            {name: 'Inline Quotation', element: 'q'},
 
-       	//{ name: 'Language: RTL',	element: 'span', attributes: { 'dir': 'rtl' } },
-       	//{ name: 'Language: LTR',	element: 'span', attributes: { 'dir': 'ltr' } },
+            //{ name: 'Language: RTL',	element: 'span', attributes: { 'dir': 'rtl' } },
+            //{ name: 'Language: LTR',	element: 'span', attributes: { 'dir': 'ltr' } },
 
-       	/* Object styles */
+            /* Object styles */
 
-       	{
-       		name: 'Styled image (left)',
-       		type: 'widget',
-       		widget: 'image',
-       		attributes: { 'class': 'image-left' }
-       	},
+            {
+                name: 'Styled image (left)',
+                type: 'widget',
+                widget: 'image',
+                attributes: {'class': 'image-left'}
+            },
 
-       	{
-       		name: 'Styled image (right)',
-       		type: 'widget',
-       		widget: 'image',
-       		attributes: { 'class': 'image-right' }
-       	},
+            {
+                name: 'Styled image (right)',
+                type: 'widget',
+                widget: 'image',
+                attributes: {'class': 'image-right'}
+            },
 
-       	{
-       		name: 'Styled image (center)',
-       		type: 'widget',
-       		widget: 'image',
-       		attributes: { 'class': 'image-center' }
-       	},
+            {
+                name: 'Styled image (center)',
+                type: 'widget',
+                widget: 'image',
+                attributes: {'class': 'image-center'}
+            },
 
-       	{
-       		name: 'Compact Table',
-       		element: 'table',
-       		attributes: {
-       			cellpadding: '5',
-       			cellspacing: '0',
-       			border: '1',
-       			bordercolor: '#ccc'
-       		},
-       		styles: {
-       			'border-collapse': 'collapse'
-       		}
-       	},
+            {
+                name: 'Compact Table',
+                element: 'table',
+                attributes: {
+                    cellpadding: '5',
+                    cellspacing: '0',
+                    border: '1',
+                    bordercolor: '#ccc'
+                },
+                styles: {
+                    'border-collapse': 'collapse'
+                }
+            },
 
-       	{ name: 'Borderless Table',		element: 'table',	styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
-       	{ name: 'Square Bulleted List',	element: 'ul',		styles: { 'list-style-type': 'square' } },
+            {
+                name: 'Borderless Table',
+                element: 'table',
+                styles: {'border-style': 'hidden', 'background-color': '#E6E6FA'}
+            },
+            {name: 'Square Bulleted List', element: 'ul', styles: {'list-style-type': 'square'}},
 
-       	/* Widget styles */
+            /* Widget styles */
 
-       	{ name: 'Clean Image', type: 'widget', widget: 'image', attributes: { 'class': 'image-clean' } },
-       	{ name: 'Grayscale Image', type: 'widget', widget: 'image', attributes: { 'class': 'image-grayscale' } },
+            {name: 'Clean Image', type: 'widget', widget: 'image', attributes: {'class': 'image-clean'}},
+            {name: 'Grayscale Image', type: 'widget', widget: 'image', attributes: {'class': 'image-grayscale'}},
 
-       	{ name: 'Featured Snippet', type: 'widget', widget: 'codeSnippet', attributes: { 'class': 'code-featured' } },
+            {name: 'Featured Snippet', type: 'widget', widget: 'codeSnippet', attributes: {'class': 'code-featured'}},
 
-       	{ name: 'Featured Formula', type: 'widget', widget: 'mathjax', attributes: { 'class': 'math-featured' } },
+            {name: 'Featured Formula', type: 'widget', widget: 'mathjax', attributes: {'class': 'math-featured'}},
 
-       	{ name: '240p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-240p' }, group: 'size' },
-       	{ name: '360p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-360p' }, group: 'size' },
-       	{ name: '480p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-480p' }, group: 'size' },
-       	{ name: '720p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-720p' }, group: 'size' },
-       	{ name: '1080p', type: 'widget', widget: 'embedSemantic', attributes: { 'class': 'embed-1080p' }, group: 'size' },
+            {name: '240p', type: 'widget', widget: 'embedSemantic', attributes: {'class': 'embed-240p'}, group: 'size'},
+            {name: '360p', type: 'widget', widget: 'embedSemantic', attributes: {'class': 'embed-360p'}, group: 'size'},
+            {name: '480p', type: 'widget', widget: 'embedSemantic', attributes: {'class': 'embed-480p'}, group: 'size'},
+            {name: '720p', type: 'widget', widget: 'embedSemantic', attributes: {'class': 'embed-720p'}, group: 'size'},
+            {
+                name: '1080p',
+                type: 'widget',
+                widget: 'embedSemantic',
+                attributes: {'class': 'embed-1080p'},
+                group: 'size'
+            },
 
-       	// Adding space after the style name is an intended workaround. For now, there
-       	// is no option to create two styles with the same name for different widget types. See https://dev.ckeditor.com/ticket/16664.
-       	{ name: '240p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-240p' }, group: 'size' },
-       	{ name: '360p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-360p' }, group: 'size' },
-       	{ name: '480p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-480p' }, group: 'size' },
-       	{ name: '720p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-720p' }, group: 'size' },
-       	{ name: '1080p ', type: 'widget', widget: 'embed', attributes: { 'class': 'embed-1080p' }, group: 'size' }
-    ] );
-    // config.stylesSet = 'bootstrap4';
+            // Adding space after the style name is an intended workaround. For now, there
+            // is no option to create two styles with the same name for different widget types. See https://dev.ckeditor.com/ticket/16664.
+            {name: '240p ', type: 'widget', widget: 'embed', attributes: {'class': 'embed-240p'}, group: 'size'},
+            {name: '360p ', type: 'widget', widget: 'embed', attributes: {'class': 'embed-360p'}, group: 'size'},
+            {name: '480p ', type: 'widget', widget: 'embed', attributes: {'class': 'embed-480p'}, group: 'size'},
+            {name: '720p ', type: 'widget', widget: 'embed', attributes: {'class': 'embed-720p'}, group: 'size'},
+            {name: '1080p ', type: 'widget', widget: 'embed', attributes: {'class': 'embed-1080p'}, group: 'size'}
+        ]);
+    }
 
     CKEDITOR.dtd.$removeEmpty['span'] = false;
     CKEDITOR.dtd.$removeEmpty['i'] = false;
