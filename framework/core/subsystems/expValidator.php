@@ -641,7 +641,7 @@ class expValidator {
         // build the base password of all lower-case letters
         $out = '';
         for ($i = 0; $i < $len; $i++) {
-            $out .= $chars[mt_rand(0, strlen($chars) - 1)];
+            $out .= $chars[random_int(0, strlen($chars) - 1)];
         }
 
         // create arrays if special character(s) required
@@ -652,13 +652,13 @@ class expValidator {
 
             // add required special character(s) to second array
             for ($i = 0; $i < $cap; $i++) {
-                $tmp2[] = $caps[mt_rand(0, strlen($caps) - 1)];
+                $tmp2[] = $caps[random_int(0, strlen($caps) - 1)];
             }
             for ($i = 0; $i < $num; $i++) {
-                $tmp2[] = $nums[mt_rand(0, strlen($nums) - 1)];
+                $tmp2[] = $nums[random_int(0, strlen($nums) - 1)];
             }
             for ($i = 0; $i < $sym; $i++) {
-                $tmp2[] = $syms[mt_rand(0, strlen($syms) - 1)];
+                $tmp2[] = $syms[random_int(0, strlen($syms) - 1)];
             }
 
             // hack off a chunk of the base password array that's as big as the special chars array
