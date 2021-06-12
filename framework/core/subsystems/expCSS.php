@@ -569,6 +569,9 @@ class expCSS {
 //                            $less_compiler = 'less.php';
                         include_once(BASE . 'external/' . $less_compiler . '/lessc.inc.php');
                         $less = new lessc;
+                        $less->setOptions(array(
+                            'cache_dir'         => BASE . 'tmp/css/'
+                        ));
 
                         // attempt to load autoprefixer
                         if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php'))
