@@ -2,7 +2,7 @@
  * English translation
  * @author Troex Nevelin <troex@fury.scancode.ru>
  * @author Naoki Sawada <hypweb+elfinder@gmail.com>
- * @version 2020-01-16
+ * @version 2021-06-02
  */
 // elfinder.en.js is integrated into elfinder.(full|min).js by jake build
 if (typeof elFinder === 'function' && elFinder.prototype.i18) {
@@ -109,6 +109,7 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'errServerError'       : 'Error occurred on the server side.', // from v2.1.25 added 16.6.2017
 			'errEmpty'             : 'Unable to empty folder "$1".', // from v2.1.25 added 22.6.2017
 			'moreErrors'           : 'There are $1 more errors.', // from v2.1.44 added 9.12.2018
+			'errMaxMkdirs'         : 'You can create up to $1 folders at one time.', // from v2.1.58 added 20.6.2021
             'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
 
 			/******************************* commands names ********************************/
@@ -157,7 +158,7 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'cmdselectall' : 'Select all', // from v2.1.28 added 15.08.2017
 			'cmdselectnone': 'Select none', // from v2.1.28 added 15.08.2017
 			'cmdselectinvert': 'Invert selection', // from v2.1.28 added 15.08.2017
-            'cmdopennew'   : 'Open in new window', // from v2.1.38 added 3.4.2018
+			'cmdopennew'   : 'Open in new window', // from v2.1.38 added 3.4.2018
 			'cmdhide'      : 'Hide (Preference)', // from v2.1.41 added 24.7.2018
             'cmdpixlr'     : 'Edit on Pixlr',
             'cmdlinks'     : 'Switch to Page/Module Selector',
@@ -421,7 +422,7 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'8pxgrid'         : '8px Grid', // from v2.1.16 added 4.10.2016
 			'enabled'         : 'Enabled', // from v2.1.16 added 4.10.2016
 			'disabled'        : 'Disabled', // from v2.1.16 added 4.10.2016
-			'emptyIncSearch'  : 'Search results is empty in current view.\\APress [Enter] to expand search target.', // from v2.1.16 added 5.10.2016
+			'emptyIncSearch'  : 'Search results is empty in current view.\\A Press [Enter] to expand search target.', // from v2.1.16 added 5.10.2016
 			'emptyLetSearch'  : 'First letter search results is empty in current view.', // from v2.1.23 added 24.3.2017
 			'textLabel'       : 'Text label', // from v2.1.17 added 13.10.2016
 			'minsLeft'        : '$1 mins left', // from v2.1.17 added 13.11.2016
