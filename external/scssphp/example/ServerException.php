@@ -10,15 +10,15 @@
  * @link http://scssphp.github.io/scssphp
  */
 
-namespace ScssPhp\ScssPhp\Exception;
+namespace ScssPhp\Server;
+
+use ScssPhp\ScssPhp\Exception\SassException;
 
 /**
- * Range exception
+ * Server Exception
  *
  * @author Anthon Pang <anthon.pang@gmail.com>
- *
- * @internal
  */
-class RangeException extends \Exception implements SassException
+class ServerException extends \Exception implements SassException
 {
 }

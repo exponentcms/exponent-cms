@@ -12,7 +12,6 @@
 namespace ScssPhp\Server;
 
 use ScssPhp\ScssPhp\Compiler;
-use ScssPhp\ScssPhp\Exception\ServerException;
 use ScssPhp\ScssPhp\Version;
 
 /**
@@ -130,7 +129,7 @@ class Server
      */
     protected function needsCompile($out, &$etag)
     {
-        if (! is_file($out)) {
+        if (!is_file($out)) {
             return true;
         }
 
@@ -210,7 +209,9 @@ class Server
     protected function compile($in, $out)
     {
         $start   = microtime(true);
-        $css     = $this->scss->compile(file_get_contents($in), $in);
+        $result  = $this->scss->compileString(file_get_contents($in), $in);
+
+        $css = $result->getCss();
         $elapsed = round((microtime(true) - $start), 4);
 
         $v    = Version::VERSION;
@@ -223,12 +224,34 @@ class Server
             $this->metadataName($out),
             serialize([
                 'etag'    => $etag,
-                'imports' => $this->scss->getParsedFiles(),
+                'imports' => $this->makeParsedFilesFromIncludeFiles($result->getIncludedFiles()),
                 'vars'    => crc32(serialize($this->scss->getVariables())),
             ])
         );
 
         return [$css, $etag];
+    }
+
+    /**
+     * Adds to list of parsed files
+     *
+     * @internal
+     *
+     * @param array|null $paths
+     *
+     * @return array
+     */
+    protected function makeParsedFilesFromIncludeFiles($paths)
+    {
+        $parsedFiles = array();
+        if (!\is_null($paths) && !empty($paths)) {
+            foreach ($paths as $path) {
+                if (!\is_null($path) && is_file($path)) {
+                    $parsedFiles[realpath($path)] = filemtime($path);
+                }
+            }
+        }
+        return $parsedFiles;
     }
 
     /**
@@ -275,13 +298,13 @@ class Server
      * @param string $in  Input file (.scss)
      * @param string $out Output file (.css) optional
      *
-     * @return string|bool
+     * @return array|bool
      *
-     * @throws \ScssPhp\ScssPhp\Exception\ServerException
+     * @throws \ScssPhp\Server\ServerException
      */
     public function compileFile($in, $out = null)
     {
-        if (! is_readable($in)) {
+        if (!is_readable($in)) {
             throw new ServerException('load error: failed to find ' . $in);
         }
 
@@ -289,10 +312,12 @@ class Server
 
         $this->scss->addImportPath($pi['dirname'] . '/');
 
-        $compiled = $this->scss->compile(file_get_contents($in), $in);
+        $result  = $this->scss->compileString(file_get_contents($in), $in);
+
+        $compiled = $result->getCss();
 
         if (is_null($out)) {
-            return $compiled;
+            return array('compiled' => $compiled, 'files' => $this->makeParsedFilesFromIncludeFiles($result->getIncludedFiles()),);
         }
 
         return file_put_contents($out, $compiled);
@@ -306,11 +331,11 @@ class Server
      *
      * @return bool
      *
-     * @throws \ScssPhp\ScssPhp\Exception\ServerException
+     * @throws \ScssPhp\Server\ServerException
      */
     public function checkedCompile($in, $out)
     {
-        if (! is_file($out) || filemtime($in) > filemtime($out)) {
+        if (!is_file($out) || filemtime($in) > filemtime($out)) {
             $this->compileFile($in, $out);
 
             return true;
@@ -404,15 +429,15 @@ class Server
      *
      * @return string Compiled CSS results
      *
-     * @throws \ScssPhp\ScssPhp\Exception\ServerException
+     * @throws \ScssPhp\Server\ServerException
      */
     public function checkedCachedCompile($in, $out, $force = false)
     {
-        if (! is_file($in) || ! is_readable($in)) {
+        if (!is_file($in) || !is_readable($in)) {
             throw new ServerException('Invalid or unreadable input file specified.');
         }
 
-        if (is_dir($out) || ! is_writable(file_exists($out) ? $out : dirname($out))) {
+        if (is_dir($out) || !is_writable(file_exists($out) ? $out : dirname($out))) {
             throw new ServerException('Invalid or unwritable output file specified.');
         }
 
@@ -446,7 +471,7 @@ class Server
      *
      * @return array scssphp cache structure
      *
-     * @throws \ScssPhp\ScssPhp\Exception\ServerException
+     * @throws \ScssPhp\Server\ServerException
      */
     public function cachedCompile($in, $force = false)
     {
@@ -456,14 +481,14 @@ class Server
         if (is_string($in)) {
             $root = $in;
         } elseif (is_array($in) and isset($in['root'])) {
-            if ($force or ! isset($in['files'])) {
+            if ($force or !isset($in['files'])) {
                 // If we are forcing a recompile or if for some reason the
                 // structure does not contain any file information we should
                 // specify the root to trigger a rebuild.
                 $root = $in['root'];
             } elseif (isset($in['files']) and is_array($in['files'])) {
                 foreach ($in['files'] as $fname => $ftime) {
-                    if (! file_exists($fname) or filemtime($fname) > $ftime) {
+                    if (!file_exists($fname) or filemtime($fname) > $ftime) {
                         // One of the files we knew about previously has changed
                         // so we should look at our incoming root again.
                         $root = $in['root'];
@@ -484,10 +509,8 @@ class Server
         }
 
         // If we have a root value which means we should rebuild.
-        $out = [];
+        $out = $this->compileFile($root);
         $out['root'] = $root;
-        $out['compiled'] = $this->compileFile($root);
-        $out['files'] = $this->scss->getParsedFiles();
         $out['updated'] = time();
 
         return $out;
@@ -500,23 +523,23 @@ class Server
      * @param string                         $cacheDir Cache directory
      * @param \ScssPhp\ScssPhp\Compiler|null $scss     SCSS compiler instance
      *
-     * @throws \ScssPhp\ScssPhp\Exception\ServerException
+     * @throws \ScssPhp\Server\ServerException
      */
     public function __construct($dir, $cacheDir = null, $scss = null)
     {
         $this->dir = $dir;
 
-        if (! isset($cacheDir)) {
+        if (!isset($cacheDir)) {
             $cacheDir = $this->join($dir, 'scss_cache');
         }
 
         $this->cacheDir = $cacheDir;
 
-        if (! is_dir($this->cacheDir)) {
+        if (!is_dir($this->cacheDir)) {
             throw new ServerException('Cache directory doesn\'t exist: ' . $cacheDir);
         }
 
-        if (! isset($scss)) {
+        if (!isset($scss)) {
             $scss = new Compiler();
             $scss->setImportPaths($this->dir);
         }
