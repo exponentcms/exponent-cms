@@ -579,7 +579,8 @@ class expCSS {
                         include_once(BASE . 'external/' . $less_compiler . '/lessc.inc.php');
                         $less = new lessc;
                         $less->setOptions(array(
-                            'cache_dir'         => BASE . 'tmp/css/'
+                            'cache_dir'         => BASE . 'tmp/css/',
+                            'prefix'            => '_less_'
                         ));
 
                         // load the cache
