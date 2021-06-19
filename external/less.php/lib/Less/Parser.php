@@ -142,6 +142,10 @@ class Less_Parser {
 					Less_Cache::CheckCacheDir();
 				}
 			return;
+
+            case 'prefix':  // exp hack
+                Less_Cache::$prefix = $value;
+            return;
 		}
 
 		Less_Parser::$options[$option] = $value;
