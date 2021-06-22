@@ -1,4 +1,5 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
+Program,Version,URL,Avail version,Exponent Customization Notes:
 Swiftmailer,5.4.12/6.2.7,github.com/swiftmailer/swiftmailer,6.2.7,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
 Doctrine Lexer,1.2.1,github.com/doctrine/lexer,1.2.1,needed by swiftmailer v6
 EmailValidator,3.1.1,github.com/egulias/EmailValidator,3.1.1,needed by swiftmailer v6; move folder structure and add autoloader to main file
@@ -22,12 +23,12 @@ pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily 
 class.upload,1.0.8,github.com/verot/class.upload.php,"1.0.8/2.1.0
 ","Correct flip operation where flip vertical & horizontal were inverted/swapped, php 8 fix"
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.30.5,uncomment load utilities; php 8 fix
-scssphp,1.4.1exp,github.com/scssphp/scssphp,1.5.1,includes example server; hack to compile newui
+scssphp,1.5.2exp,github.com/scssphp/scssphp,1.5.2,includes example server; hack to compile newui
 lessphp,0.5.0exp,github.com/leafo/lessphp,0.5.0,"will not compile bootstrap v3+, hack to allow prefix"
 less.php,3.1.0exp,github.com/wikimedia/less.php,3.1.0,"code edit to fix IIS compatibility, php v5.6 fix"
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap3,3.4.1,twitter.github.com/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
-Twitter-Bootstrap4,4.6.0,twitter.github.com/bootstrap,4.6.0,patched bootstrap.scss includes swatches & exp variables
+Twitter-Bootstrap4,4.6.0,twitter.github.com/bootstrap,4.6.0,"patched bootstrap.scss includes swatches & exp variables, remove @page"
 popper.js,1.16.1,github.com/FezVrasta/popper.js,1.16.1/2.9.2,needed by BS4 (umd)
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
 Bootswatch3,3.4.1+1,bootswatch.com/,3.4.1+1,change 1st line variables.less comment to output to .css file
