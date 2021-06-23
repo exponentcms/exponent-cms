@@ -108,8 +108,6 @@ function smarty_function_rating($params,&$smarty) {
                     <input type="hidden" name="content_id" value="' . $params['record']->id . '" />';
 
         $control = new radiogroupcontrol();
-        // differentiate it from the old school forms
-        $control->newschool = true;
         $control->cols = 0;
         $control->default = $rated_val;
         $control->items = array_combine(explode(',', "1,2,3,4,5"), explode(',', "1,2,3,4,5"));

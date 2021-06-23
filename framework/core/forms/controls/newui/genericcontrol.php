@@ -57,9 +57,9 @@ class genericcontrol extends formcontrol {
             $divID  = ' id="'.$this->id.'Control"';
             $for = ' for="'.$this->id.'"';
         } else {
-            $divID  = ' id="'.$name.'Control"';
+            $divID  = ' id="'.createValidId($name).'Control"';
 //            $for = '';
-            $for = ' for="' . $name . '"';
+            $for = ' for="' . createValidId($name) . '"';
         }
 //        if ($this->required) $label = "*" . $label;
         $disabled = $this->disabled == true ? "disabled" : "";

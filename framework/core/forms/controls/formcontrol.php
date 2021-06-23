@@ -140,11 +140,11 @@ abstract class formcontrol {
         } else {
             if (!empty($this->id)) {
                 $divID = ' id="' . $this->id . 'Control"';
-                $for = ' for="' . $this->id . '"';
+                $for = ' for="' . createValidId($this->id) . '"';
             } else {
                 $divID = ' id="' . $name . 'Control"';
 //                $for = '';
-                $for = ' for="' . $name . '"';
+                $for = ' for="' . createValidId($name) . '"';
             }
 
             $disabled = $this->disabled != 0 ? "disabled='disabled'" : "";

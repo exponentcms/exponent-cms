@@ -270,10 +270,10 @@ class form extends baseform {
             $btn_class .= ' ' . $btn_size;
             $back = '<i class="fa fa-step-backward"></i> ' . gt('Back');
             $next = gt('Next') . ' <i class="fa fa-step-forward"></i>';
-        } elseif (bs4() || bs5()) {
+        } elseif (bs()) {
             if (bs4()) {
                 expCSS::pushToHead(array(
-                    "corecss" => "forms-bootstrap3"
+                    "corecss" => "forms-bootstrap4"
                 ));
             } else {
                 expCSS::pushToHead(array(

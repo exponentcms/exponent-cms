@@ -53,11 +53,11 @@ class genericcontrol extends formcontrol {
     function toHTML($label,$name) {
         if (!empty($this->id)) {
             $divID  = ' id="'.$this->id.'Control"';
-            $for = ' for="'.$this->id.'"';
+            $for = ' for="'.createValidId($this->id).'"';
         } else {
             $divID  = ' id="'.$name.'Control"';
 //            $for = '';
-            $for = ' for="' . $name . '"';
+            $for = ' for="' . createValidId($name) . '"';
         }
 //        if ($this->required) $label = "*" . $label;
         $disabled = $this->disabled == true ? "disabled" : "";

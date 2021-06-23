@@ -81,7 +81,7 @@ class radiogroupcontrol extends formcontrol {
 
 			$radio = new radiocontrol($checked, $rvalue, $name, $this->flip, $this->onclick);
 
-			$radio->newschool = !empty($this->newschool) ? $this->newschool : false;
+//			$radio->newschool = !empty($this->newschool) ? $this->newschool : false;
 			$radio->value = $rvalue;
 
 			$radio->checked = (isset($this->default) && $this->default==$radio->value) ? true : false;

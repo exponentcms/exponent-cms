@@ -31,7 +31,7 @@ class checkboxcontrol extends formcontrol {
 
     var $default = false;
     var $value = "1";
-    var $newschool = false;
+//    var $newschool = false;
     var $postfalse = false;
     var $filter = '';
     var $caption = '';
@@ -71,11 +71,11 @@ class checkboxcontrol extends formcontrol {
                 $for = $this->id;
             } else {
                 $divID = $name . 'Control';
-                if (substr($name, -2) == '[]') {
-                    $for   = $name . $this->value;
-                } else {
+//                if (substr($name, -2) === '[]') {
+//                    $for   = $name . $this->value;
+//                } else {
                     $for   = $name;
-                }
+//                }
             }
             $divID = createValidId($divID, $this->value);
             $for = ' for="' . createValidId($for, $this->value) . '"';
@@ -86,16 +86,12 @@ class checkboxcontrol extends formcontrol {
             $html .= (!empty($this->required)) ? ' required">' : '">';
             if (!empty($this->flip)) {
                 $html .= "<label " . $for . " class=\"label\" style=\"display:inline;\">" . $label . "</label>";
-                $html .= !empty($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
-                    $name
-                );
+                $html .= $this->controlToHTML($name);
                 $flip = '';
             } else {
                 $html .= "<label class=\"label spacer\" style=\"background: transparent;\"></label>";
-                $html .= !empty($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
-                    $name
-                );
-                if ($label != ' ' && !empty($label)) {
+                $html .= $this->controlToHTML($name);
+                if ($label !== ' ' && !empty($label)) {
 //                $html .= "<label" . $for . " class=\"label\" style=\"text-align:left; white-space:nowrap; display:inline; width:auto;\">" . $label . "</label>";
 //                $html .= "<div class=\"label\" style=\"width:auto; display:inline;\">";
                     $html .= "<label" . $for . " class=\"label\" style=\"width:auto; display:inline;\">";
@@ -114,11 +110,11 @@ class checkboxcontrol extends formcontrol {
         }
     }
 
-    function controlToHTML($name, $label = null) {
+    function controlToHTML_oldschool($name, $label = null) {
         $this->value = isset($this->value) ? $this->value : 1;
 //        $idname     = (!empty($this->id)) ? ' id="' . $this->id . '"' : "";
         $idname     = (!empty($this->id)) ? $this->id  : $name;
-        if (substr($this->name,-2) == '[]') {
+        if (substr($this->name,-2) === '[]') {
             $idname .= $this->value;
         }
         $idname = createValidId($idname, $this->value);
@@ -144,11 +140,11 @@ class checkboxcontrol extends formcontrol {
 
     //FIXME:  this is just here until we completely deprecate the old school checkbox
     //control calls in the old school forms
-    function controlToHTML_newschool($name, $label) {
+    function controlToHTML($name, $label = null) {
         $this->value = isset($this->value) ? $this->value : 1;
 
         $idname     = (!empty($this->id)) ? $this->id  : $name;
-        if (substr($this->name,-2) == '[]') {
+        if (substr($this->name,-2) === '[]') {
             $idname .= $this->value;
         }
         $idname = createValidId($idname, $this->value);
@@ -199,9 +195,9 @@ class checkboxcontrol extends formcontrol {
 
     static function convertData($name,$values) {
         if (empty($values[$name])) return false;
-        if (strtolower($values[$name]) == 'no') return false;
-        if (strtolower($values[$name]) == 'off') return false;
-        if (strtolower($values[$name]) == 'false') return false;
+        if (strtolower($values[$name]) === 'no') return false;
+        if (strtolower($values[$name]) === 'off') return false;
+        if (strtolower($values[$name]) === 'false') return false;
 		return true;
 	}
 
