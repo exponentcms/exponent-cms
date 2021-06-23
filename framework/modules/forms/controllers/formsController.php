@@ -1118,9 +1118,13 @@ class formsController extends expController {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap"
                 ));
-            } elseif (bs3() || bs4()) {
+            } elseif (bs3()) {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap3"
+                ));
+            } elseif (bs4()) {
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms-bootstrap4"
                 ));
             } elseif (bs5()) {
                 expCSS::pushToHead(array(
