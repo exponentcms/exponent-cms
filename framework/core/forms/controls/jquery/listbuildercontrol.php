@@ -100,7 +100,7 @@ class listbuildercontrol extends formcontrol {
     function toHTML($label,$name) {
 		if (!empty($this->id)) {
 		    $divID  = ' id="'.$this->id.'Control"';
-		    $for = ' for="'.$this->id.'"';
+		    $for = ' for="'.createValidId($this->id).'"';
 		} else {
 		    $divID  = '';
 		    $for = '';

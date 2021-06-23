@@ -31,7 +31,7 @@ class checkboxcontrol extends formcontrol {
 
     var $default = false;
     var $value = "1";
-    var $newschool = false;
+//    var $newschool = false;
     var $postfalse = false;
     var $filter = '';
     var $caption = '';
@@ -62,20 +62,18 @@ class checkboxcontrol extends formcontrol {
         if (!empty($this->_ishidden)) {
             $this->name = empty($this->name) ? $name : $this->name;
             $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
-    		$html = '<input type="hidden"' . $idname . ' name="' . $this->name . '" value="'.(int)$this->default.'"';
-    		$html .= ' />';
-    		return $html;
+            return '<input type="hidden"' . $idname . ' name="' . $this->name . '" value="' . (int)$this->default . '"' . ' />';
         } else {
             if (!empty($this->id)) {
                 $divID = $this->id . 'Control';
                 $for = $this->id;
             } else {
                 $divID = $name . 'Control';
-                if (substr($name, -2) == '[]') {
-                    $for   = $name . $this->value;
-                } else {
+//                if (substr($name, -2) === '[]') {
+//                    $for   = $name . $this->value;
+//                } else {
                     $for   = $name;
-                }
+//                }
             }
             $divID = createValidId($divID, $this->value);
             $for = ' for="' . createValidId($for, $this->value) . '"';
@@ -85,25 +83,32 @@ class checkboxcontrol extends formcontrol {
             $html = '<div id="' . $divID . '"' . (($this->horizontal) ? ' style="width:100%;"' : '') . ' class="checkbox control form-group form-check';
             $html .= (!empty($this->class)) ? ' ' . $this->class : '';
             $html .= (!empty($this->required)) ? ' required">' : '">';
-            $html .= ($this->horizontal) ? '<div class="offset-sm-2 col-sm-10">' : '';
 
-//            $html .= "<div class=\"checkbox\"><label class=\"control-label\">".$label;
-            $html .= "<label" . $for . " class=\"form-check-label label\">";
-            if (!$this->horizontal) $html .= $label;
-            $html .= $this->controlToHTML($name, $label);
-            if ($this->horizontal) $html .= $label;
-//            $html .= "</label></div>";
-            $html .= "</label>";
+            $labelwrap = "<label" . $for . " class=\"form-check-label label\">" . $label . "</label>";
+            if (!$this->horizontal) {
+                if (!$this->flip) {
+                    $html .= $this->controlToHTML($name, $label) . $labelwrap;
+                } else {
+                    $html .= $labelwrap . $this->controlToHTML($name, $label);
+                }
+            } else {  // horizontal form
+                if (!$this->flip) {
+                    $html .= '<div class="offset-sm-2 col-sm-10">' . $this->controlToHTML($name, $label) . $labelwrap . "</div>";
+                } else {
+                    $labelwrap = "<label" . $for . " class=\"col-sm-2 form-check-label label\">" . $label . "</label>";
+                    $html .= $labelwrap . '<div class="col-sm-10">' . $this->controlToHTML($name, $label) . "</div>";
+                }
+            }
 
             if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">" . $this->description . "</small>";
-            $html .= ($this->horizontal) ? '</div>' : '';
+//            $html .= ($this->horizontal) ? '</div>' : '';
             $html .= "</div>";
             return $html;
         }
     }
 
     //control calls in the old school forms
-    function controlToHTML($name, $label) {
+    function controlToHTML($name, $label = null) {
         $this->value = isset($this->value) ? $this->value : 1;
 
         $idname     = (!empty($this->id)) ? $this->id  : $name;
@@ -150,19 +155,15 @@ class checkboxcontrol extends formcontrol {
         return $html;
     }
 
-    function controlToHTML_newschool($name, $label) {
-        return $this->controlToHTML($name, $label);
-    }
-
     static function parseData($name, $values, $for_db = false) {
         return (isset($values[$name]) && !empty($values[$name])) ? 1 : 0;
     }
 
     static function convertData($name,$values) {
         if (empty($values[$name])) return false;
-        if (strtolower($values[$name]) == 'no') return false;
-        if (strtolower($values[$name]) == 'off') return false;
-        if (strtolower($values[$name]) == 'false') return false;
+        if (strtolower($values[$name]) === 'no') return false;
+        if (strtolower($values[$name]) === 'off') return false;
+        if (strtolower($values[$name]) === 'false') return false;
 		return true;
 	}
 

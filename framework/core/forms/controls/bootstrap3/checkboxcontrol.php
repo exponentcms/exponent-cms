@@ -31,7 +31,7 @@ class checkboxcontrol extends formcontrol {
 
     var $default = false;
     var $value = "1";
-    var $newschool = false;
+//    var $newschool = false;
     var $postfalse = false;
     var $filter = '';
     var $caption = '';
@@ -71,11 +71,11 @@ class checkboxcontrol extends formcontrol {
                 $for = $this->id;
             } else {
                 $divID = $name . 'Control';
-                if (substr($name, -2) == '[]') {
-                    $for   = $name . $this->value;
-                } else {
+//                if (substr($name, -2) === '[]') {
+//                    $for   = $name . $this->value;
+//                } else {
                     $for   = $name;
-                }
+//                }
             }
             $divID = createValidId($divID, $this->value);
             $for = ' for="' . createValidId($for, $this->value) . '"';
@@ -103,7 +103,7 @@ class checkboxcontrol extends formcontrol {
     }
 
     //control calls in the old school forms
-    function controlToHTML($name, $label) {
+    function controlToHTML($name, $label = null) {
         $this->value = isset($this->value) ? $this->value : 1;
 
         $idname     = (!empty($this->id)) ? $this->id  : $name;
@@ -150,19 +150,15 @@ class checkboxcontrol extends formcontrol {
         return $html;
     }
 
-    function controlToHTML_newschool($name, $label) {
-        return $this->controlToHTML($name, $label);
-    }
-
     static function parseData($name, $values, $for_db = false) {
         return (isset($values[$name]) && !empty($values[$name])) ? 1 : 0;
     }
 
     static function convertData($name,$values) {
         if (empty($values[$name])) return false;
-        if (strtolower($values[$name]) == 'no') return false;
-        if (strtolower($values[$name]) == 'off') return false;
-        if (strtolower($values[$name]) == 'false') return false;
+        if (strtolower($values[$name]) === 'no') return false;
+        if (strtolower($values[$name]) === 'off') return false;
+        if (strtolower($values[$name]) === 'false') return false;
 		return true;
 	}
 

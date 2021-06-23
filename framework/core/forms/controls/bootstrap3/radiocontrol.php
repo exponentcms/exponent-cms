@@ -54,7 +54,7 @@ class radiocontrol extends formcontrol {
         $html .= (!empty($this->required)) ? ' required">' : '">';
         $html .= '<label for="' . $for . '" class="control-label">';
         if ($this->flip) $html .= $label;
-        $html .= !empty($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
+        $html .= $this->controlToHTML($name);
         if (!$this->flip) $html .= $label;
         $html .= "</label>";
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
@@ -63,7 +63,7 @@ class radiocontrol extends formcontrol {
         return $html;
     }
 
-    function controlToHTML($name, $label=null) {
+    function controlToHTML_oldschool($name, $label=null) {
         $idname = createValidId($this->groupname. '_' . $this->value);
         $html = '<input class="radiobutton" type="radio" value="' . $this->value .'" id="' . $idname . '"' .'" name="' . $this->groupname . '"';
         if ($this->default) $html .= ' checked="checked"';
@@ -74,7 +74,7 @@ class radiocontrol extends formcontrol {
         return $html;
     }
 
-    function controlToHTML_newschool($name, $label) {
+    function controlToHTML($name, $label = null) {
 //        $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
         $this->name = empty($this->name) ? $name : $this->name;
         $this->id = empty($this->id) ? $name. '_' . $this->value : $this->id. '_' . $this->value;
