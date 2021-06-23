@@ -20,7 +20,7 @@
     {/if}
 	{icon class="manage" controller="storeCategory" action="manage" text="Manage Store Categories"|gettext}
 	{br}
-	{control type="tagtree" name="managecats" id="managecats" controller="store" model="storeCategory" draggable=false addable=false menu=true checkable=true values=$record->storeCategory expandonstart=true }
+	{control type="tagtree" name="managecats" id="managecats" controller="storeCategory" model="storeCategory" draggable=false addable=false menu=true checkable=true values=$record->storeCategory expandonstart=true }
 {else}
 	<h4><em>({'Categories'|gettext} {'are inherited from this product\'s parent.'|gettext})</em></h4>
 {/if}
