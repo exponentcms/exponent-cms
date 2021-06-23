@@ -92,8 +92,7 @@ label.form-check-inline {
 	//height: inherit;
 	//width: inherit;
 //	margin-top: 0;
-/*  bootstrap 3.2.0 fix */
-	float: left;
+    float: none;
 	display: inline-block;
 	position: relative;
 	//margin-top: 0;
@@ -194,8 +193,8 @@ a.fa-sort,
 .control.checkbox label {
 	margin-bottom: 0px !important;
 	margin-right: 5px;
-	padding-top: 10px;
-	padding-left: 0;
+	//padding-top: 10px;
+	//padding-left: 0;
 }
 
 .radio.radio-inline {
@@ -249,6 +248,11 @@ a.fa-sort,
 .text-control select[multiple] {
 	height: 200px;
 	//	width  : 500px;
+}
+
+.fileinput.input-group,
+.file-input {
+    display: flex;
 }
 
 //.text-control {

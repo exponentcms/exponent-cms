@@ -60,10 +60,14 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                     $btn_size = 'btn-small';
                 }
                 $btn_class .= ' ' . $btn_size;
-            } elseif (bs3() || bs4() || bs5()) {
-                if (bs3() || bs4()) {
+            } elseif (bs()) {
+                if (bs3()) {
                     expCSS::pushToHead(array(
                         "corecss" => "forms-bootstrap3"
+                    ));
+                } elseif (bs4()) {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap4"
                     ));
                 } else {
                     expCSS::pushToHead(array(

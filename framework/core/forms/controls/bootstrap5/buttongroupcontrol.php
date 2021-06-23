@@ -65,11 +65,11 @@ class buttongroupcontrol extends formcontrol {
 		if ($this->submit . $this->reset . $this->cancel == "") return "";
 		if (empty($this->id)) $this->id = $name;
         $html = '';
+        if ($this->wide) {
+            $html .= '<div class="d-grid gap-2">';
+        }
 		if ($this->submit != "") {
             $btn_size = expTheme::buttonSize($this->size);
-            if ($this->wide) {
-                $btn_size .= ' btn-block';
-            }
             $btn_color = expTheme::buttonColor($this->color);
             $icon_size = expTheme::iconSize($this->size);
             if (USE_BOOTSTRAP_ICONS) {
@@ -123,6 +123,9 @@ class buttongroupcontrol extends formcontrol {
 			$html .= $this->cancel;
 			$html .= '</button>';
 		}
+        if ($this->wide) {
+            $html .= '</div>';
+        }
 
 //		expCSS::pushToHead(array(
 ////		    "unique"=>"button",
