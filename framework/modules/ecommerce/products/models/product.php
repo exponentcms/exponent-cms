@@ -673,16 +673,19 @@ class product extends expRecord {
     public function hasChildren() {
         global $db;
         if (isset($this->childProduct)) {
-            if (!empty($this->childProduct) && count($this->childProduct) == 0) return false;
-            else return true;
-        } else {
+            if (!empty($this->childProduct) && count($this->childProduct) == 0)
+                return false;
+            else
+                return true;
+        } elseif (!empty($this->id)) {
             //$sql = "SELECT id from " . $db->prefix . "product WHERE parent_id=" . $this->id;
             $count = $db->countObjects("product", "parent_id=" . $this->id);
             //eDebug($count);
             //$count = $db->queryRows($sql);
-            if ($count > 0) return true;
-            else return false;
-        }
+            if ($count > 0)
+                return true;
+        } else
+            return false;
     }
 
     static function sortChildren($a, $b) {

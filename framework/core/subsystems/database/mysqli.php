@@ -1132,8 +1132,10 @@ class mysqli_database extends database {
      * @return bool
      */
     function tableExists($table) {
-        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` LIMIT 0,1");
-        return ($res != null);
+//        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` LIMIT 0,1");
+//        return ($res != null);
+        $res = @mysqli_query($this->connection, "SHOW TABLES LIKE \"" . $this->prefix . "$table\"");
+        return (mysqli_num_rows($res) != 0);
     }
 
     /**
