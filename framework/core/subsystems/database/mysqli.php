@@ -475,6 +475,10 @@ class mysqli_database extends database {
 	 * @return void
 	 */
     function columnUpdate($table, $col, $val, $where=1) {
+        // does the column exist?
+        $result = @mysqli_query($this->connection, "SHOW COLUMNS FROM `" . $this->prefix . "$table` LIKE '$col'");
+        if (!@mysqli_num_rows($result))
+            return;
         $res = @mysqli_query($this->connection, "UPDATE `" . $this->prefix . "$table` SET `$col`='" . $val . "' WHERE $where");
         /*if ($res == null)
             return array();
@@ -668,6 +672,10 @@ class mysqli_database extends database {
 	 * @return array
 	 */
     function selectColumn($table, $col, $where = null, $orderby = null, $distinct=false) {
+        // does the column exist?
+        $result = @mysqli_query($this->connection, "SHOW COLUMNS FROM `" . $this->prefix . "$table` LIKE '$col'");
+        if (!@mysqli_num_rows($result))
+            return array();
         if ($where == null)
             $where = "1";
         if ($orderby == null)
@@ -694,6 +702,10 @@ class mysqli_database extends database {
 	 * @return int
 	 */
     function selectSum($table, $col, $where = null) {
+        // does the column exist?
+        $result = @mysqli_query($this->connection, "SHOW COLUMNS FROM `" . $this->prefix . "$table` LIKE '$col'");
+        if (!@mysqli_num_rows($result))
+            return 0;
         if ($where == null)
             $where = "1";
 
@@ -716,6 +728,10 @@ class mysqli_database extends database {
 	 * @return array
 	 */
     function selectDropdown($table, $col, $where = null, $orderby = null) {
+        // does the column exist?
+        $result = @mysqli_query($this->connection, "SHOW COLUMNS FROM `" . $this->prefix . "$table` LIKE '$col'");
+        if (!@mysqli_num_rows($result))
+            return array();
         if ($where == null)
             $where = "1";
         if ($orderby == null)
@@ -741,6 +757,10 @@ class mysqli_database extends database {
 	 * @return null
 	 */
     function selectValue($table, $col, $where=null) {
+        // does the column exist?
+        $result = @mysqli_query($this->connection, "SHOW COLUMNS FROM `" . $this->prefix . "$table` LIKE '$col'");
+        if (!@mysqli_num_rows($result))
+            return null;
         if ($where == null)
             $where = "1";
         $sql = "SELECT " . $col . " FROM `" . $this->prefix . "$table` WHERE $where LIMIT 0,1";

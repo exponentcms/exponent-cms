@@ -1260,7 +1260,8 @@ class storeController extends expController {
         foreach ($mastergroups as $mastergroup) {
             // if this optiongroup_master has already been made into an option group for this product
             // then we will grab that record now..if not, we will make a new one.
-            $grouprec = $db->selectArray('optiongroup', 'optiongroup_master_id=' . $mastergroup->id . ' AND product_id=' . $record->id);
+            if ($record->id !== null)
+                $grouprec = $db->selectArray('optiongroup', 'optiongroup_master_id=' . $mastergroup->id . ' AND product_id=' . $record->id);
             //if ($mastergroup->id == 9) eDebug($grouprec,true);
             //eDebug($grouprec);
             if (empty($grouprec)) {
