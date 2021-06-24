@@ -60,8 +60,10 @@ abstract class basetemplate {
 
         $this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
-        $this->tpl->setCaching(Smarty::CACHING_OFF);
-//        $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
+        if (SMARTY_CACHING)
+            $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
+        else
+            $this->tpl->setCaching(Smarty::CACHING_OFF);
         $this->tpl->setCacheDir(BASE . 'tmp/cache');
         $this->tpl->cache_id = md5($this->viewfile);
 
@@ -112,7 +114,7 @@ abstract class basetemplate {
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
             ));
-        } elseif (framework() == 'jquery') {
+        } elseif (framework() === 'jquery') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
                 BASE.'framework/plugins/jquery',

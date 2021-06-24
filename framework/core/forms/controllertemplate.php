@@ -39,8 +39,10 @@ class controllertemplate extends basetemplate {
 
 		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
-        $this->tpl->setCaching(Smarty::CACHING_OFF);
-//        $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
+        if (SMARTY_CACHING)
+            $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
+        else
+            $this->tpl->setCaching(Smarty::CACHING_OFF);
         $this->tpl->setCacheDir(BASE.'tmp/cache');
         $this->tpl->cache_id = md5($this->viewfile);
 
@@ -91,7 +93,7 @@ class controllertemplate extends basetemplate {
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
             ));
-        } elseif (framework() == 'jquery') {
+        } elseif (framework() === 'jquery') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
                 BASE.'framework/plugins/jquery',
@@ -116,7 +118,7 @@ class controllertemplate extends basetemplate {
 		$this->module = $controller->baseclassname;
 
         // strip file type
-        if (substr($viewfile, -7) == '.config') {
+        if (substr($viewfile, -7) === '.config') {
             $this->file_is_a_config = true;
             $this->view = substr(basename($this->viewfile),0,-7);
         } else $this->view = substr(basename($this->viewfile),0,-4);
@@ -132,7 +134,7 @@ class controllertemplate extends basetemplate {
 		$this->tpl->assign("__loc",$controller->loc);
 		$this->tpl->assign("__name", $controller->baseclassname);  //FIXME probably not used in 2.0?
         $this->tpl->assign("controller", $controller->baseclassname);
-        if ($controller->baseclassname != 'common') {
+        if ($controller->baseclassname !== 'common') {
             $this->tpl->assign("asset_path", $controller->asset_path);
             $this->tpl->assign("model_name", $controller->basemodel_name);
             $this->tpl->assign("model_table", $controller->model_table);

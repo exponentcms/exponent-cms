@@ -613,7 +613,7 @@ if (!defined('SMARTY_PATH')) {
         define('SMARTY_VERSION', '3.1.39');  //note smarty v3.1.28+ won't work properly with php < v7.1+
     }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
-    define('SMARTY_DEVELOPMENT', false);
+//    define('SMARTY_DEVELOPMENT', false);
 }
 
 /**
