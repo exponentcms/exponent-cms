@@ -226,7 +226,7 @@ class storeController extends expController {
             $router->params['title'] = $this->category->sef_url;
         $limit = !empty($this->config['limit']) ? $this->config['limit'] : (!empty($this->config['pagination_default']) ? $this->config['pagination_default'] : 10);
 
-        $categories = ($this->parent == 0) ? $this->category->getTopLevel(null, false, true) : $this->category->getChildren(null, false, true);
+        $categories = (empty($this->parent)) ? $this->category->getTopLevel(null, false, true) : $this->category->getChildren(null, false, true);
         if (count($categories)) { // there are categories
             // do we want to also get products?
             if (!empty($this->config['show_products'])) {
