@@ -200,7 +200,7 @@
 </div>
 
 {if $table_filled}
-{script unique="view-registrants" jquery='jquery.dataTables,dataTables.bootstrap4'}
+{script unique="view-registrants" jquery='jquery.dataTables,dataTables.bootstrap5'}
 {literal}
     $(document).ready(function() {
         // var responsiveHelper;
