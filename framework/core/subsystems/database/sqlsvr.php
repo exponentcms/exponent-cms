@@ -1499,6 +1499,23 @@ class sqlsvr_database extends database {
     }
 
     /**
+   	* Check to see if the named column within a table exists in the database.
+   	* Returns true if the column exists, and false if it doesn't.
+   	*
+   	* @param string $table Name of the table to look in.
+    * @param string $col Name of the column to look for.
+   	* @return bool
+   	*/
+   	 function columnExists($table, $col) {
+         // does the column exist?
+//         $result = @mysqli_query($this->connection, "SHOW COLUMNS FROM `" . $this->prefix . "$table` LIKE '$col'");
+//         if (!@mysqli_num_rows($result))
+//             return false;
+//         else
+//             return true;
+     }
+
+    /**
      * Get a list of all tables in the database.  Optionally, only the tables
      * in the current logical database (tables with the same prefix) can
      * be retrieved.

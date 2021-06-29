@@ -355,6 +355,23 @@ class postgres_database extends database {
 		} else return false;
 	}
 
+    /**
+   	* Check to see if the named column within a table exists in the database.
+   	* Returns true if the column exists, and false if it doesn't.
+   	*
+   	* @param string $table Name of the table to look in.
+    * @param string $col Name of the column to look for.
+   	* @return bool
+   	*/
+   	 function columnExists($table, $col) {
+         // does the column exist?
+//         $result = @mysqli_query($this->connection, "SHOW COLUMNS FROM `" . $this->prefix . "$table` LIKE '$col'");
+//         if (!@mysqli_num_rows($result))
+//             return false;
+//         else
+//             return true;
+     }
+
 	function getTables($prefixed_only=true) {
 		$sql = "SELECT relname as tablename FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON (relnamespace = pg_namespace.oid) WHERE relkind IN ('r') AND nspname = 'public'";
 		$res = pg_query($this->connection,$sql);
