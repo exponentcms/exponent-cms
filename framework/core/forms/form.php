@@ -100,7 +100,7 @@ class form extends baseform {
 	 * @return boolean Returns true if the Control was unregistered.
 	 */
 	function unregister($name) {
-		if (in_array($name,$this->controlIdx)) {
+		if (in_array($name, $this->controlIdx)) {
 			$control = $this->controls[$name];
 			unset(
                 $this->controls[$name],
@@ -112,8 +112,8 @@ class form extends baseform {
 
 			// Regenerate indices
 			$this->controlIdx = array();
-			foreach ($tmp as $name=>$rank) {
-				$this->controlIdx[] = $name;
+			foreach ($tmp as $name2=>$rank) {
+				$this->controlIdx[] = $name2;
 			}
             if (method_exists($control,'onUnRegister'))
 				$control->onUnregister($this);
@@ -141,8 +141,8 @@ class form extends baseform {
         if ($this->horizontal)
 			$control->horizontal = true;
 		if (!empty($params)) {
-			foreach ($params as $name => $value) {
-				$control->$name = $value;
+			foreach ($params as $name2 => $value) {
+				$control->$name2 = $value;
 			}
 		}
 		$this->controls[$name] = $control;
@@ -180,8 +180,8 @@ class form extends baseform {
         if ($this->horizontal)
 			$control->horizontal = true;
 		if (!empty($params)) {
-			foreach ($params as $name => $value) {
-				$control->$name = $value;
+			foreach ($params as $name2 => $value) {
+				$control->$name2 = $value;
 			}
 		}
 		$this->controls[$name] = $control;
@@ -243,9 +243,9 @@ class form extends baseform {
                 "corecss"=>"forms-bootstrap"
             ));
             $btn_class = 'btn  btn-primary';
-            if (BTN_SIZE == 'large') {
+            if (BTN_SIZE === 'large') {
                 $btn_size = '';  // actually default size, NOT true bootstrap large
-            } elseif (BTN_SIZE == 'small') {
+            } elseif (BTN_SIZE === 'small') {
                 $btn_size = 'btn-mini';
             } else { // medium
                 $btn_size = 'btn-small';
@@ -258,11 +258,11 @@ class form extends baseform {
                 "corecss"=>"forms-bootstrap3"
             ));
             $btn_class = 'btn btn-primary';
-            if (BTN_SIZE == 'large') {
+            if (BTN_SIZE === 'large') {
                 $btn_size = 'btn-lg';
-            } elseif (BTN_SIZE == 'small') {
+            } elseif (BTN_SIZE === 'small') {
                 $btn_size = 'btn-sm';
-			} elseif (BTN_SIZE == 'extrasmall') {
+			} elseif (BTN_SIZE === 'extrasmall') {
 		       $btn_size = 'btn-xs';
             } else { // medium
                 $btn_size = '';
@@ -281,11 +281,11 @@ class form extends baseform {
                 ));
             }
             $btn_class = 'btn btn-primary';
-            if (BTN_SIZE == 'large') {
+            if (BTN_SIZE === 'large') {
                 $btn_size = 'btn-lg';
-            } elseif (BTN_SIZE == 'small') {
+            } elseif (BTN_SIZE === 'small') {
                 $btn_size = 'btn-sm';
-			} elseif (BTN_SIZE == 'extrasmall') {
+			} elseif (BTN_SIZE === 'extrasmall') {
 		       $btn_size = 'btn-sm';
             } else { // medium
                 $btn_size = '';

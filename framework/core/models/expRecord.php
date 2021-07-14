@@ -622,9 +622,10 @@ class expRecord {
 
         // safeguard again loc data not being pass via forms...sometimes this happens when you're in a router
         // mapped view and src hasn't been passed in via link to the form
-        if (isset($this->id) && empty($this->location_data)) {
+        if (isset($this->id) && isset($this->location_data) && empty($this->location_data)) {
             $loc = $db->selectValue($this->tablename, 'location_data', 'id=' . $this->id);
-            if (!empty($loc)) $this->location_data = $loc;
+            if (!empty($loc))
+                $this->location_data = $loc;
         }
 
         // run the validation as defined in the models
@@ -1081,8 +1082,10 @@ class expRecord {
         foreach ($this->has_many as $assoc_object) {
             if (!in_array($assoc_object, $except)) {
                 $assoc_obj = new $assoc_object();
-
-                $ret       = $db->selectArrays($assoc_obj->tablename, $this->tablename . '_id=' . $this->id, $assoc_obj->default_sort_field != '' ? $assoc_obj->default_sort_field . " " . $assoc_obj->default_sort_direction : null);
+                if ($this->id !==null)
+                    $ret       = $db->selectArrays($assoc_obj->tablename, $this->tablename . '_id=' . $this->id, $assoc_obj->default_sort_field != '' ? $assoc_obj->default_sort_field . " " . $assoc_obj->default_sort_direction : null);
+                else
+                    $ret = array();
                 $records   = array();
                 if ($cascade_except) {
                     $record['except']         = $except;

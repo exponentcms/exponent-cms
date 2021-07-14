@@ -23,6 +23,8 @@ if (!defined('MAINTENANCE_RETURN_TEXT')) define('MAINTENANCE_RETURN_TEXT','The w
 if (!defined('MAINTENANCE_RETURN_TIME')) define('MAINTENANCE_RETURN_TIME','0');
 
 if (!defined('DEVELOPMENT')) define('DEVELOPMENT','0');
+if (!defined('SMARTY_DEVELOPMENT')) define('SMARTY_DEVELOPMENT','0');
+if (!defined('SMARTY_CACHING')) define('SMARTY_CACHING','0');
 if (!defined('LOGGER')) define('LOGGER','0');
 if (!defined('DEBUG_HISTORY')) define('DEBUG_HISTORY','0');
 if (!defined('UPLOAD_LOGGER')) define('UPLOAD_LOGGER','0');

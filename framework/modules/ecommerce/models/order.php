@@ -400,7 +400,7 @@ class order extends expRecord {
     }*/
 
     public function setReferencingIds() {
-        $ref_orders = $this->find('all', 'reference_id=' . $this->id, null, null, null, false, false);
+        $ref_orders = $this->find('all', 'order_references=' . $this->id, null, null, null, false, false);
         $this->referencing_ids = array();
         foreach ($ref_orders as $ref_id) {
             $this->referencing_ids[] = $ref_id->id;

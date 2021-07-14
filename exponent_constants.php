@@ -592,7 +592,7 @@ if (USE_CDN) {
     } // cdn Bootstrap v4.x script
     if (!defined('BS5_SCRIPT')) {
         define('BS5_SCRIPT', '<!-- JavaScript Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>');
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v5.x script
     if (!defined('FA4_SCRIPT')) {
         define('FA4_SCRIPT', 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
@@ -613,7 +613,7 @@ if (!defined('SMARTY_PATH')) {
         define('SMARTY_VERSION', '3.1.39');  //note smarty v3.1.28+ won't work properly with php < v7.1+
     }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
-    define('SMARTY_DEVELOPMENT', false);
+//    define('SMARTY_DEVELOPMENT', false);
 }
 
 /**
@@ -635,7 +635,7 @@ if (!defined('SWIFT_PATH')) {
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '3.1.0');
+    define('EMAIL_VALIDATOR_VERSION', '3.1.1');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 

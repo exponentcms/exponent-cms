@@ -214,7 +214,7 @@ class expPaginator extends expSubsystem {
 //		} elseif (!empty($this->where)) { //from Merge....where clause  //fixme this breaks since you need a $class here and we've already handled that above
 //			$this->total_records = $class->find('count', $this->where);
 //            $this->records = $class->find('all', $this->where, $sort, $limit, $this->start);
-		} else { //sql clause  //FIXME we don't get attachments in this approach
+		} elseif (!empty($this->sql)) { //sql clause  //FIXME we don't get attachments in this approach
 			//$records = $db->selectObjectsBySql($this->sql);
 			//$this->total_records = count($records);
             //this is MUCH faster if you supply a proper count_sql param using a COUNT() function; if not,
@@ -223,7 +223,8 @@ class expPaginator extends expSubsystem {
 
 //			$this->total_records =  $db->countObjectsBySql($this->count_sql); //$db->queryRows($this->sql); //From most current Trunk
 
-            if (!empty($sort)) $this->sql .= ' ORDER BY '.$sort;
+            if (!empty($sort))
+                $this->sql .= ' ORDER BY '.$sort;
             if (!empty($this->count_sql)) {
                 $this->total_records = $db->countObjectsBySql($this->count_sql);
             } else {
@@ -231,7 +232,7 @@ class expPaginator extends expSubsystem {
             }
             if (!empty($this->limit)) {
                 if ($this->start >= $this->total_records) {
-                    $this->start = $this->total_records - $this->limit;
+                    $this->start = max($this->total_records - $this->limit, 0);
                 }
                 $this->sql .= ' ' . $db->limitStmt($this->limit, $this->start);
             }

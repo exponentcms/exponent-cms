@@ -342,6 +342,8 @@ class user extends expRecord {
     public function customerInfo() {
         global $db;
 
+        if ($this->id == null)
+            return new stdClass();
         // build out a SQL query that gets all the data we need and is sortable.
         $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as gtotal, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
         $sql .= 'FROM ' . $db->tableStmt('orders') . ' o, ' . $db->tableStmt('billingmethods') . ' b, ';

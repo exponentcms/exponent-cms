@@ -243,7 +243,7 @@ abstract class expNestedNode extends expRecord {
 	public function getChildren($childName = "", $get_assoc=false, $get_attached=false) {
 		global $db;
 
-       /**
+        /**
         * Create an empty array to hold any "child" tags, or to just send
         * back to indicate this Tag does not have children.
         *
@@ -254,7 +254,10 @@ abstract class expNestedNode extends expRecord {
         * @PHPUnit Not Defined
         *
         */
-        $where = 'parent_id='.$this->id;
+        if (!empty($this->id))
+            $where = 'parent_id='.$this->id;
+        else
+            $where = '1';
         if ($childName != "")
             $where.=" AND sef_url='" . $childName . "'";
         $where .= " ORDER BY rgt ASC";
