@@ -55,9 +55,9 @@ function smarty_block_pop($params, $content, &$smarty, &$repeat)
         }
         echo '<a class="' . expTheme::buttonStyle() . '" href="#" id="' . $params['id'] . '">' . expTheme::iconStyle($icon, $params['text']) . '</a>';
         if (isset($params['type'])) {
-            if ($params['type'] == 'warning') {
+            if ($params['type'] === 'warning') {
                 $type = 'bg-warning';
-            } elseif ($params['type'] == 'danger') {
+            } elseif ($params['type'] === 'danger') {
                 $type = 'bg-danger';
             } else {
                 $type = 'bg-info';
