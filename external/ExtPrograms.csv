@@ -21,7 +21,7 @@ SimplePie,1.5.6,github.com/simplepie/simplepie,1.5.6,php 8 fix
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,1.0.8,github.com/verot/class.upload.php,"1.0.8/2.1.0
 ","Correct flip operation where flip vertical & horizontal were inverted/swapped, php 8 fix"
-iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.30.5,uncomment load utilities; php 8 fix
+iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.30.5/2.39.2,uncomment load utilities; php 8 fix
 scssphp,1.6.0exp,github.com/scssphp/scssphp,1.6.0,includes example server; hack to compile newui
 lessphp,0.5.0exp,github.com/leafo/lessphp,0.5.0,"will not compile bootstrap v3+, hack to allow prefix"
 less.php,3.1.0exp,github.com/wikimedia/less.php,3.1.0,"code edit to fix IIS compatibility, php v5.6 fix"
@@ -38,7 +38,7 @@ Font-Awesome5,5.15.3,fontawesome.com,5.15.3,add import all 'fonts' sheets into m
 Adminer,4.8.1exp,www.adminer.org,4.8.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css/,8.0.1,auto included in bootstrap 3
-MediaElement.js,4.2.16,mediaelementjs.com/,4.2.16,
+MediaElement.js,4.2.17,mediaelementjs.com/,4.2.17,
 MediaElement plugins,2.5.1,github.com/johndyer/mediaelement-plugins,2.5.1,
 Facebook PHP SDK3,3.2.3,github.com/facebook/php-graph-sdk,5.7.0,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
@@ -96,7 +96,7 @@ Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
 dompdf,0.8.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,1.0.2,"optional, patched to display our images and not break on bad tables and disable links"
-mPDF,8.0.8/7.1.9/6.1.4/5.7.4a,github.com/mpdf/mpdf,8.0.11,optional
+mPDF,8.0.8/7.1.9/6.1.4/5.7.4a,github.com/mpdf/mpdf,8.0.12,optional
 log,1.1.3,github.com/php-fig/log,1.1.4,"optional, required by mPDF v7+"
 DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.10.2,"optional, suggested by mPDF v7"
 random_compat,2.0.19,github.com/paragonie/random_compat,2.0.20,"optional, required by mPDF v7+"

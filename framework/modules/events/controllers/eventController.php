@@ -1509,7 +1509,7 @@ class eventController extends expController {
     public function get_ical_events($exticalurl, $startdate=null, $enddate=null, &$dy=0, $key=0, $multiday=false) {
         $extevents = array();
         require_once BASE . 'external/iCalcreator-2.28.2/autoload.php';
-//        require_once BASE . 'external/iCalcreator-2.29.30/autoload.php';
+//        require_once BASE . 'external/iCalcreator-2.30.5/autoload.php';
         $v = new Kigkonsult\Icalcreator\Vcalendar(); // initiate new CALENDAR
         if (stripos($exticalurl, 'http') === 0 || stripos($exticalurl, 'webcal') === 0) {
             $v->setConfig('url', $exticalurl);
