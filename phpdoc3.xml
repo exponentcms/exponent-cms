@@ -12,6 +12,7 @@
                 <path>.</path>
                 <path>themes/bootstrap3theme</path>
                 <path>themes/bootstrap4theme</path>
+                <path>themes/bootstrap5theme</path>
                 <path>themes/simpletheme</path>
             </source>
             <ignore hidden="true" symlinks="true">
@@ -23,6 +24,7 @@
                 <path>framework/conf/data/extra_phrases.php</path>
                 <path>framework/core/subsystems/database/adodb.php</path>
                 <path>framework/core/subsystems/database/mysqlid.php</path>
+                <path>framework/core/subsystems/database/postgres.php</path>
                 <path>framework/core/lang/**/*</path>
                 <path>framework/modules/pixidou/**/*</path>
                 <path>framework/modules/twitter/models/Twitter.php</path>
