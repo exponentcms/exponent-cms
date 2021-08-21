@@ -36,6 +36,7 @@
         <ignore>framework/conf/data/extra_phrases.php</ignore>
         <ignore>framework/core/subsystems/database/adodb.php</ignore>
         <ignore>framework/core/subsystems/database/mysqlid.php</ignore>
+        <ignore>framework/core/subsystems/database/postgres.php</ignore>
         <ignore>framework/core/lang/*</ignore>
         <ignore>framework/modules/pixidou/*</ignore>
         <ignore>framework/modules/twitter/models/Twitter.php</ignore>
@@ -45,6 +46,7 @@
         <ignore>framework/modules/ecommerce/billingcalculators/ezic/*</ignore>
         <directory>themes/bootstrap3theme/*</directory>
         <directory>themes/bootstrap4theme/*</directory>
+        <directory>themes/bootstrap5theme/*</directory>
         <directory>themes/simpletheme/*</directory>
     </files>
 </phpdoc>

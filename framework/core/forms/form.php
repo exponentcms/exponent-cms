@@ -377,7 +377,47 @@ class form extends baseform {
                     backLabel: '" . $back . "',
                     nextLabel: '" . $next . "',
                     titleClick: true,";
-            if (bs4() || bs5()) {
+            if (bs5()) {
+                $content .= "
+                    validateOptions: {
+						rules: {
+							'hiddenRecaptcha': {
+								required: function() {
+									if(grecaptcha.getResponse() == '') {
+										return true;
+									} else {
+										return false;
+									}
+								}
+							}
+						},
+                        highlight: function(element, errorClass, validClass) {
+                            // mark form as validated
+                            $(element).closest('form').addClass('was-validated');
+                            // move backward to label and set to invalid
+//                            $(element).parent().find('label').removeClass('is-valid').addClass('is-invalid');
+                        },
+                        unhighlight: function(element, errorClass, validClass) {
+                            // mark form as validated
+                            $(element).closest('form').addClass('was-validated');
+                            // move backward to label and set to valid
+//                            $(element).parent().find('label').removeClass('is-invalid').addClass('is-valid');
+                        },
+                        errorElement: 'small',
+                        errorClass: 'form-text invalid-feedback',
+                        errorPlacement: function(error, element) {
+                            if (element.parent('.input-group').length) {
+                                error.insertAfter(element.parent());
+                            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                                error.insertAfter(element.parent().parent());
+                            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                                error.appendTo(element.parent().parent());
+                            } else {
+                                error.insertAfter(element);
+                            }
+                        }
+                    }";
+            } elseif (bs4()) {
                 $content .= "
                     validateOptions: {
 						rules: {
@@ -473,7 +513,48 @@ class form extends baseform {
                 )
             );
         } else {
-            if (bs4() || bs5()) {
+            if (bs5()) {
+                $content = "
+                    $('#" . $this->id . "').validate({
+						rules: {
+							'hiddenRecaptcha': {
+								required: function() {
+									if(grecaptcha.getResponse() == '') {
+										return true;
+									} else {
+										return false;
+									}
+								}
+							}
+						},
+                        highlight: function(element, errorClass, validClass) {
+                            // mark form as validated
+                            $(element).closest('form').addClass('was-validated');
+                            // move backward to label and set to invalid
+//                            $(element).parent().find('label').removeClass('is-valid').addClass('is-invalid');
+                        },
+                        unhighlight: function(element, errorClass, validClass) {
+                            // mark form as validated
+                            $(element).closest('form').addClass('was-validated');
+                            // move backward to label and set to valid
+//                            $(element).parent().find('label').removeClass('is-invalid').addClass('is-valid');
+                        },
+                        errorElement: 'small',
+                        errorClass: 'form-text invalid-feedback',
+                        errorPlacement: function(error, element) {
+                            if (element.parent('.input-group').length) {
+                                error.insertAfter(element.parent());
+                            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                                error.insertAfter(element.parent().parent());
+                            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                                error.appendTo(element.parent().parent());
+                            } else {
+                                error.insertAfter(element);
+                            }
+                        }
+                     });
+                ";
+            } elseif (bs4()) {
                 $content = "
                     $('#" . $this->id . "').validate({
 						rules: {
