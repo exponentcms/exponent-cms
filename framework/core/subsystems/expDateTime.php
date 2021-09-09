@@ -741,6 +741,77 @@ class expDateTime {
     public static function sameDay($date1, $date2) {
         return (date("Y-m-d",$date1) == date("Y-m-d",$date2));
     }
+
+    /**
+     * Convert date/time format between `date()` and `strftime()`
+     *
+     * Timezone conversion is done for Unix. Windows users must exchange %z and %Z.
+     *
+     * Unsupported date formats : S, n, t, L, B, G, u, e, I, P, Z, c, r
+     * Unsupported strftime formats : %U, %W, %C, %g, %r, %R, %T, %X, %c, %D, %F, %x
+     *
+     * @example Convert `%A, %B %e, %Y, %l:%M %P` to `l, F j, Y, g:i a`, and vice versa for "Saturday, March 10, 2001, 5:16 pm"
+     * @link http://php.net/manual/en/function.strftime.php#96424
+     *
+     * @param string $format The format to parse.
+     * @param string $syntax The format's syntax. Either 'strf' for `strtime()` or 'date' for `date()`.
+     * @return bool|string Returns a string formatted according $syntax using the given $format or `false`.
+     */
+    public static function date_format_to( $format, $syntax ) {
+    	// http://php.net/manual/en/function.strftime.php
+    	$strf_syntax = [
+    		// Day - no strf eq : S (created one called %O)
+    		'%O', '%d', '%a', '%e', '%A', '%u', '%w', '%j',
+    		// Week - no date eq : %U, %W
+    		'%V',
+    		// Month - no strf eq : n, t
+    		'%B', '%m', '%b', '%-m',
+    		// Year - no strf eq : L; no date eq : %C, %g
+    		'%G', '%Y', '%y',
+    		// Time - no strf eq : B, G, u; no date eq : %r, %R, %T, %X
+    		'%P', '%p', '%l', '%I', '%H', '%M', '%S',
+    		// Timezone - no strf eq : e, I, P, Z
+    		'%z', '%Z',
+    		// Full Date / Time - no strf eq : c, r; no date eq : %c, %D, %F, %x
+    		'%s'
+    	];
+
+    	// http://php.net/manual/en/function.date.php
+    	$date_syntax = [
+    		'S', 'd', 'D', 'j', 'l', 'N', 'w', 'z',
+    		'W',
+    		'F', 'm', 'M', 'n',
+    		'o', 'Y', 'y',
+    		'a', 'A', 'g', 'h', 'H', 'i', 's',
+    		'O', 'T',
+    		'U'
+    	];
+
+    	switch ( $syntax ) {
+    		case 'date':
+    			$from = $strf_syntax;
+    			$to   = $date_syntax;
+    			break;
+
+    		case 'strf':
+    			$from = $date_syntax;
+    			$to   = $strf_syntax;
+    			break;
+
+    		default:
+    			return false;
+    	}
+
+    	$pattern = array_map(
+    		function ( $s ) {
+    			return '/(?<!\\\\|\%)' . $s . '/';
+    		},
+    		$from
+    	);
+
+    	return preg_replace( $pattern, $to, $format );
+    }
+
 }
 
 ?>
