@@ -1999,6 +1999,9 @@ abstract class database {
 	* @return int|mixed
 	*/
 	function getDDDefault($fieldObj) {
+        if (is_null($fieldObj->Default)) {
+            return null;
+        }
 		return strtolower($fieldObj->Default);
 	}
 

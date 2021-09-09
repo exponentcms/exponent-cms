@@ -885,8 +885,10 @@ function object2Array($object=null) {
 }
 
 function expUnserialize($serial_str) {
-    if ($serial_str === 'Array') return null;  // empty array string??
-    if (is_array($serial_str) || is_object($serial_str)) return $serial_str;  // already unserialized
+    if ($serial_str === 'Array' || is_null($serial_str))
+        return null;  // empty array string??
+    if (is_array($serial_str) || is_object($serial_str))
+        return $serial_str;  // already unserialized
 //    $out1 = @preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $serial_str );
 //    $out1 = preg_replace_callback(
 //        '!s:(\d+):"(.*?)";!s',
@@ -1251,6 +1253,26 @@ function get_thumbnail($src) {
  */
 function isSSL() {
     return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+}
+
+/**
+ * Equivalent to `date_format_to( $format, 'date' )`
+ *
+ * @param string $strf_format A `strftime()` date/time format
+ * @return string
+ */
+function strftime_to_date_format( $strf_format ) {
+	return expDateTime::date_format_to( $strf_format, 'date' );
+}
+
+/**
+ * Equivalent to `convert_datetime_format_to( $format, 'strf' )`
+ *
+ * @param string $date_format A `date()` date/time format
+ * @return string
+ */
+function date_to_strftime_format( $date_format ) {
+	return expDateTime::date_format_to( $date_format, 'strf' );
 }
 
 ?>

@@ -1,5 +1,4 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-Program,Version,URL,Avail version,Exponent Customization Notes:
 Swiftmailer,5.4.12/6.2.7,github.com/swiftmailer/swiftmailer,6.2.7,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
 Doctrine Lexer,1.2.1,github.com/doctrine/lexer,1.2.1,needed by swiftmailer v6
 EmailValidator,3.1.1,github.com/egulias/EmailValidator,3.1.1,needed by swiftmailer v6; move folder structure and add autoloader to main file
@@ -62,7 +61,7 @@ validate,1.19.3exp,jqueryvalidation.org,1.19.3,edit for 'undefined' in 'min' & '
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker/,1.6.3,used by adminer
 TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
-DataTables,1.10.25,www.datatables.net,1.10.25,includes boostrap2 integration w/ renamed 1.10.7 version
+DataTables,1.11.2,www.datatables.net,1.11.2,includes boostrap2 integration w/ renamed 1.10.7 version
 DataTables Checkboxes,1.2.12,github.com/gyrocode/jquery-datatables-checkboxes,1.2.12,
 DataTables Tabletools,2.2.4,www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,github.com/Comanche/datatables-responsive,0.2.0,replaced by 'Responsive' in 1.10.8
@@ -79,7 +78,7 @@ Tempus Dominus Bootstrap 4,5.1.2,github.com/tempusdominus/bootstrap-4,5.1.2,"pla
 moment.js,2.29.1,github.com/moment/moment,2.29.1,needed for Bootstrap DateTimePicker; min/moment-with-locales.js renamed
 strength-meter,1.1.4,github.com/kartik-v/strength-meter,1.1.4,
 Sortable,1.13.0,github.com/SortableJS/Sortable,1.14.0,
-jstree,3.3.11,github.com/vakata/jstree,3.3.11,added nav menu icons to stylesheet
+jstree,3.3.12,github.com/vakata/jstree,3.3.12,added nav menu icons to stylesheet
 bootstrap3-dialog,1.35.4,github.com/nakupanda/bootstrap3-dialog,1.35.4,use /src .less file and add our .less variable imports; w/ bs4 fixes
 impromptu,6.2.3,trentrichardson.com/Impromptu,6.2.3,add some colors to .css
 bootstrap-touch-carousel,0.8.0exp,github.com/ixisio/bootstrap-touch-carousel,0.8.0,patched with vertical drag fix
@@ -108,7 +107,7 @@ iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v
 Kint,2.2.0/3.3.0,github.com/kint-php/kint,3.3.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
-DataTables Buttons,,www.datatables.net,1.7.1,
+DataTables Buttons,,www.datatables.net,2.0.0,
 DataTables Responsive,,www.datatables.net,2.2.9,
 ,,,,
 No longer included,,,,

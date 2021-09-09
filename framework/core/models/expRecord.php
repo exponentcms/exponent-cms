@@ -442,7 +442,9 @@ class expRecord {
             // in an existing record.
             if (array_key_exists($col, $params)) {
                 $value = is_array($params) ? $params[$col] : $params->$col;
-                if ($colDef[0] == DB_DEF_INTEGER || $colDef[0] == DB_DEF_ID) {
+                if (is_null($value)) {
+                    $this->$col = $value;
+                } elseif ($colDef[0] == DB_DEF_INTEGER || $colDef[0] == DB_DEF_ID) {
                     $this->$col = preg_replace("/[^0-9-]/", "", $value);
                     if (empty($this->$col)) {
                         $this->$col = 0;

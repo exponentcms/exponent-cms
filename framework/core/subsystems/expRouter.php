@@ -136,9 +136,11 @@ class expRouter {
                     $link .= $params['action'].'/';
                 foreach ($params as $key=>$value) {
                     if(!is_array($value) && strpos($key,'__') !== 0 && $key !== 'PHPSESSID') {
-                        $value = trim($value);
-                        if (expDateTime::is_date($value)) {
-                            $value = strtotime($value);
+                        if (!is_null($value)) {
+                            $value = trim($value);
+                            if (expDateTime::is_date($value)) {
+                                $value = strtotime($value);
+                            }
                         }
                         $key = trim($key);
                         if ($value != "") {

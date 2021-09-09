@@ -1343,6 +1343,9 @@ class mysqli_database extends database {
 	 * @return string
 	 */
 	function escapeString($string) {
+        if (is_null($string)) {
+            return null;
+        }
 	    return (mysqli_real_escape_string($this->connection, $string));
 	}
 
