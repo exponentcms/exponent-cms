@@ -1011,7 +1011,7 @@ class eventregistrationController extends expController {
                         }
                     } elseif ($column_name == "timestamp") {
                         foreach ($registrants as $key => $item) {
-                            $item->$column_name = date(strftime_to_date_format("%m/%d/%y %T"), $item->$column_name);  // needs to be in a machine readable format
+                            $item->$column_name = date('m/d/y H:i:s', $item->$column_name);  // needs to be in a machine readable format
                             $registrants[$key] = $item;
                         }
                     } else {

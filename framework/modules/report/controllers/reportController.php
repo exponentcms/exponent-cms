@@ -76,11 +76,11 @@ class reportController extends expController {
         $this->tend = time();
 //        $this->prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
 //        $this->now_date = strftime("%A, %d %B %Y");
-        $this->prev_month = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), mktime(0, 0, 0, (date(strftime_to_date_format("%m")) - 1), 1, date(strftime_to_date_format("%Y"))));
+        $this->prev_month = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), mktime(0, 0, 0, (date('m') - 1), 1, date('Y')));
         $this->now_date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT));
-        $this->now_hour = date(strftime_to_date_format("%I"));
-        $this->now_min = date(strftime_to_date_format("%M"));
-        $this->now_ampm = date(strftime_to_date_format("%p"));
+        $this->now_hour = date('h');
+        $this->now_min = date('i');
+        $this->now_ampm = date('A');
     }
 
     /**
@@ -544,11 +544,11 @@ class reportController extends expController {
 //        $prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
         //eDebug(strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y"))));
 //        $now_date = strftime("%A, %d %B %Y");
-        $prev_month = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), mktime(0, 0, 0, (date(strftime_to_date_format("%m")) - 1), 1, date(strftime_to_date_format("%Y"))));
+        $prev_month = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), mktime(0, 0, 0, (date('') - 1), 1, date('Y')));
         $now_date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT));
-        $now_hour = date(strftime_to_date_format("%I"));
-        $now_min = date(strftime_to_date_format("%M"));
-        $now_ampm = date(strftime_to_date_format("%p"));
+        $now_hour = date('h');
+        $now_min = date('i');
+        $now_ampm = date('A');
 
         assign_to_template(array(
             'prev_month'      => $prev_month,

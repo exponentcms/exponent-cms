@@ -181,12 +181,12 @@ class popupdatetimecontrol extends formcontrol {
 		if ($ctl->showtime) {
 //			return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
             $datetime = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $db_data);
-            if (!$datetime) $datetime = date(strftime_to_date_format('%m/%d/%y %I:%M%p'), $db_data);
+            if (!$datetime) $datetime = date('m/d/y h:ma', $db_data);
             return $datetime;
 		} else {
 //			return strftime(DISPLAY_DATE_FORMAT, $db_data);
             $date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $db_data);
-            if (!$date) $date = date(strftime_to_date_format('%m/%d/%y'), $db_data);
+            if (!$date) $date = date('m/d/y', $db_data);
             return $date;
 		}
 	}
