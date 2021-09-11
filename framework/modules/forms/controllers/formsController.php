@@ -147,7 +147,7 @@ class formsController extends expController {
                         $columns['user_id'] = gt('Posted by');
                     } elseif ($column_name === "timestamp") {
                         foreach ($items as $key => $item) {
-                            $item[$column_name] = strftime(DISPLAY_DATETIME_FORMAT, $item[$column_name]);
+                            $item[$column_name] = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $item[$column_name]);
                             $items[$key] = $item;
                         }
 //                        $columns[gt('Timestamp')] = 'timestamp';
@@ -269,7 +269,7 @@ class formsController extends expController {
                     $captions['user_id'] = gt('Posted by');
                     $fields['ip'] = $data->ip;
                     $fields['sef_url'] = $data->sef_url;
-                    $fields['timestamp'] = strftime(DISPLAY_DATETIME_FORMAT, $data->timestamp);
+                    $fields['timestamp'] = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $data->timestamp);
                     $locUser = user::getUserById($data->user_id);
                     $fields['user_id'] = !empty($locUser->username) ? $locUser->username : '';
 
@@ -1515,7 +1515,7 @@ class formsController extends expController {
 //                    $srt = $column_name . "_srt";
                     foreach ($items as $key => $item) {
 //                        $item->$srt = $item->$column_name;
-                        $item->$column_name = strftime("%m/%d/%y %T", $item->$column_name);  // needs to be in a machine readable format
+                        $item->$column_name = date(strftime_to_date_format("%m/%d/%y %T"), $item->$column_name);  // needs to be in a machine readable format
                         $items[$key] = $item;
                     }
                 } else {

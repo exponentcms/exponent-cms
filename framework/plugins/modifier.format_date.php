@@ -47,7 +47,7 @@ function smarty_modifier_format_date($timestamp,$format=DISPLAY_DATE_FORMAT) {
 		}
 		$format = implode('%%',$toks);
 	}
-	return strftime($format,$timestamp);
+	return date(strftime_to_date_format($format),$timestamp);
 }
 
 ?>

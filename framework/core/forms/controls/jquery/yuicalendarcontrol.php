@@ -189,9 +189,9 @@ class yuicalendarcontrol extends formcontrol
 //        } else {
 //            return strftime(DISPLAY_DATE_FORMAT, $db_data);
 //        return gmstrftime(DISPLAY_DATE_FORMAT, $db_data);
-        $date = strftime(DISPLAY_DATE_FORMAT, $db_data);
+        $date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $db_data);
         if (!$date) {
-            $date = strftime('%m/%d/%y', $db_data);
+            $date = date(strftime_to_date_format('%m/%d/%y'), $db_data);
         }
         return $date;
 //        }
