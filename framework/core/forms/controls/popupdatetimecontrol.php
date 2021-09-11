@@ -89,8 +89,8 @@ class popupdatetimecontrol extends formcontrol {
 			$html .= '&lt;'.gt('No Date Selected').'&gt;';
 		} else {
 			if ($this->showtime) {
-                $html .= strftime(DISPLAY_DATE_FORMAT,$this->default).' '.strftime(DISPLAY_TIME_FORMAT,$this->default);
-            } else $html .= strftime(DISPLAY_DATE_FORMAT,$this->default);
+                $html .= date(strftime_to_date_format(DISPLAY_DATE_FORMAT),$this->default).' '.date(strftime_to_date_format(DISPLAY_TIME_FORMAT),$this->default);
+            } else $html .= date(strftime_to_date_format(DISPLAY_DATE_FORMAT),$this->default);
 		}
 		$html .= '</span>';
 		$html .= "\n";
@@ -180,13 +180,13 @@ class popupdatetimecontrol extends formcontrol {
             return gt('No Date Set');
 		if ($ctl->showtime) {
 //			return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
-            $datetime = strftime(DISPLAY_DATETIME_FORMAT, $db_data);
-            if (!$datetime) $datetime = strftime('%m/%d/%y %I:%M%p', $db_data);
+            $datetime = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $db_data);
+            if (!$datetime) $datetime = date(strftime_to_date_format('%m/%d/%y %I:%M%p'), $db_data);
             return $datetime;
 		} else {
 //			return strftime(DISPLAY_DATE_FORMAT, $db_data);
-            $date = strftime(DISPLAY_DATE_FORMAT, $db_data);
-            if (!$date) $date = strftime('%m/%d/%y', $db_data);
+            $date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $db_data);
+            if (!$date) $date = date(strftime_to_date_format('%m/%d/%y'), $db_data);
             return $date;
 		}
 	}

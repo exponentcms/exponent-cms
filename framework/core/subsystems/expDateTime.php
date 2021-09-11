@@ -727,7 +727,7 @@ class expDateTime {
     		}
     		$format = implode('%%',$toks);
     	}
-    	return strftime($format,$timestamp);
+    	return date(strftime_to_date_format($format),$timestamp);
     }
 
     /**

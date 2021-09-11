@@ -35,7 +35,7 @@ function smarty_modifier_format($string, $format=null) {
     switch ($format) {
         case 'date':
             if (!empty($string))
-                return strftime(DISPLAY_DATETIME_FORMAT, $string);
+                return date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $string);
             else
                 return ''; // 0 isn't really a date
             break;

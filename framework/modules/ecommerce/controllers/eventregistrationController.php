@@ -1011,7 +1011,7 @@ class eventregistrationController extends expController {
                         }
                     } elseif ($column_name == "timestamp") {
                         foreach ($registrants as $key => $item) {
-                            $item->$column_name = strftime("%m/%d/%y %T", $item->$column_name);  // needs to be in a machine readable format
+                            $item->$column_name = date(strftime_to_date_format("%m/%d/%y %T"), $item->$column_name);  // needs to be in a machine readable format
                             $registrants[$key] = $item;
                         }
                     } else {
@@ -1034,7 +1034,7 @@ class eventregistrationController extends expController {
                     'payment' => gt('Paid?'),
                 );
                 foreach ($registrants as $key=>$registrant) {
-                    $registrants[$key]->registered_date = strftime(DISPLAY_DATETIME_FORMAT, $registrants[$key]->registered_date);
+                    $registrants[$key]->registered_date = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $registrants[$key]->registered_date);
                 }
             }
 //            $header   = array();  //FIXME reset & pulled from above
