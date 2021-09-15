@@ -159,17 +159,17 @@ class datetimecontrol extends formcontrol {
         if ($ctl->showdate && $ctl->showtime) {
 //            return gmstrftime(DISPLAY_DATETIME_FORMAT, $db_data);
             $datetime = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $db_data);
-            if (!$datetime) $datetime = date(strftime_to_date_format('%m/%d/%y %I:%M%p'), $db_data);
+            if (!$datetime) $datetime = date('m/d/y h:ma', $db_data);
             return $datetime;
         } elseif ($ctl->showdate) {
 //            return gmstrftime(DISPLAY_DATE_FORMAT, $db_data);
             $date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $db_data);
-            if (!$date) $date = date(strftime_to_date_format('%m/%d/%y'), $db_data);
+            if (!$date) $date = date('m/d/y', $db_data);
             return $date;
         } elseif ($ctl->showtime) {
 //            return gmstrftime(DISPLAY_TIME_FORMAT, $db_data);
             $time = date(strftime_to_date_format(DISPLAY_TIME_FORMAT), $db_data);
-            if (!$time) $time = date(strftime_to_date_format('%I:%M%p'), $db_data);
+            if (!$time) $time = date('h:ma', $db_data);
             return $time;
         } else {
             return "";

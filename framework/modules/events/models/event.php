@@ -250,9 +250,9 @@ class event extends expRecord {
     public static function dayNames() {
         $days = array();
         for ($i=0; $i < 7; $i++) {
-            $days['short'][$i] = substr(date(strftime_to_date_format("%a"), mktime(0, 0, 0, 6, $i+2, 2013)), 0, 1);
-            $days['med'][$i] = date(strftime_to_date_format("%a"), mktime(0, 0, 0, 6, $i+2, 2013));
-            $days['long'][$i] = date(strftime_to_date_format('%A '), mktime(0, 0, 0, 6, $i+2, 2013));
+            $days['short'][$i] = substr(date('D', mktime(0, 0, 0, 6, $i+2, 2013)), 0, 1);
+            $days['med'][$i] = date('D', mktime(0, 0, 0, 6, $i+2, 2013));
+            $days['long'][$i] = date('l ', mktime(0, 0, 0, 6, $i+2, 2013));
         }
         return $days;
     }

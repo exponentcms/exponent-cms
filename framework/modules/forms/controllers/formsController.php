@@ -1515,7 +1515,7 @@ class formsController extends expController {
 //                    $srt = $column_name . "_srt";
                     foreach ($items as $key => $item) {
 //                        $item->$srt = $item->$column_name;
-                        $item->$column_name = date(strftime_to_date_format("%m/%d/%y %T"), $item->$column_name);  // needs to be in a machine readable format
+                        $item->$column_name = date('m/d/y H:i:s', $item->$column_name);  // needs to be in a machine readable format
                         $items[$key] = $item;
                     }
                 } else {
