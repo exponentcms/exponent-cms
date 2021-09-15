@@ -63,8 +63,8 @@ class rangecontrol extends textcontrol {
             $html .= " onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\"";
         }
 
-        $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
-        if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'"';
+//        $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
+        if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" ';
         if (!empty($this->description))
             $html .= ' aria-describedby="'. $name . 'HelpBlock "';
         $html .= "/>";

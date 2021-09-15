@@ -769,7 +769,7 @@ class expDateTime {
     		// Year - no strf eq : L; no date eq : %C, %g
     		'%G', '%Y', '%y',
     		// Time - no strf eq : B, G, u; no date eq : %r, %R, %T, %X
-    		'%P', '%p', '%l', '%I', '%H', '%M', '%S',
+    		'%P', '%p', '%l', '%I', '%H', '%M', '%S', '%T',
     		// Timezone - no strf eq : e, I, P, Z
     		'%z', '%Z',
     		// Full Date / Time - no strf eq : c, r; no date eq : %c, %D, %F, %x
@@ -782,7 +782,7 @@ class expDateTime {
     		'W',
     		'F', 'm', 'M', 'n',
     		'o', 'Y', 'y',
-    		'a', 'A', 'g', 'h', 'H', 'i', 's',
+    		'a', 'A', 'g', 'h', 'H', 'i', 's', 'H:i:s',
     		'O', 'T',
     		'U'
     	];
