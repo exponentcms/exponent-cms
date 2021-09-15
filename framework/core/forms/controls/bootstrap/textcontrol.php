@@ -96,8 +96,8 @@ class textcontrol extends formcontrol {
             $html .= " onpaste=\"return " . $this->filter . "_filter.onpaste(this, event);\"";
         }
 
-        $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
-        if (!empty($this->required)) $html .= ' required="required" caption="'.$caption.'"';
+//        $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
+        if (!empty($this->required)) $html .= ' required="required" ';
         $html .= "/>";
         if (!empty($this->prepend) && bs()) {
             $html .= '</div>';

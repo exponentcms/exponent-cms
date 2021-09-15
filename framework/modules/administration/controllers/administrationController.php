@@ -1386,7 +1386,7 @@ class administrationController extends expController {
                 if (!empty($zone['timezone_id']) && !in_array($zone['timezone_id'],$added) && in_array($zone['timezone_id'],$idents)) {
                     try{
                         $z = new DateTimeZone($zone['timezone_id']);
-                        $c = new DateTime(null, $z);
+                        $c = new DateTime("now", $z);
                         $zone['time'] = $c->format('H:i a');
                         $data[] = $zone;
                         $offset[] = $z->getOffset($c);

@@ -92,7 +92,7 @@ function smarty_function_icon($params, &$smarty) {
     }
     $text = (empty($params['text'])) ? '' : $params['text'];
     if (empty($params['title'])) {
-        $params['title'] = (empty($text) ? gt(ucfirst($params['action'])) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') : $text);
+        $params['title'] = (empty($text) ? (!is_null($params['action'])?gt(ucfirst($params['action'])):'') . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') : $text);
     } else {
         $params['title'] = gt($params['title']);
     }
