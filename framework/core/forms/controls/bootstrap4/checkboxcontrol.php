@@ -145,8 +145,8 @@ class checkboxcontrol extends formcontrol {
             $html .= ' ' . $type . '="' . $val . '"';
         }
 
-        $caption = isset($this->caption) ? $this->caption : str_replace(array(":", "*"), "", ucwords($label));
-        if (!empty($this->required)) $html .= ' required="' . rawurlencode($this->value) . '" caption="' . $caption . '"';
+//        $caption = isset($this->caption) ? $this->caption : str_replace(array(":", "*"), "", ucwords($label));
+        if (!empty($this->required)) $html .= ' required="' . rawurlencode($this->value) . '" ';
         if (!empty($this->onclick)) $html .= ' onclick="' . $this->onclick . '"';
         if (!empty($this->onchange)) $html .= ' onchange="' . $this->onchange . '"';
 

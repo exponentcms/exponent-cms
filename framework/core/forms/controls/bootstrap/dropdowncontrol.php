@@ -62,7 +62,7 @@ class dropdowncontrol extends formcontrol {
             $html .= " $hook=\"$action\"";
         }
         if (@$this->required) {
-            $html .= 'required="required" caption="'.rawurlencode($this->caption).'" ';
+            $html .= 'required="required" ';
         }
         if (!empty($this->multiple)) $html .= ' multiple';
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'" ';

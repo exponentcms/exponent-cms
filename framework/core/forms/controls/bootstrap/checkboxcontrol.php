@@ -127,7 +127,7 @@ class checkboxcontrol extends formcontrol {
             $html .= ' ' . $type . '="' . $val . '"';
         }
         if (@$this->required) {
-            $html .= 'required="' . rawurlencode($this->value) . '" caption="' . rawurlencode($this->caption) . '" ';
+            $html .= 'required="' . rawurlencode($this->value) . '" ';
         }
         $html .= ' />';
 //        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
@@ -183,8 +183,8 @@ class checkboxcontrol extends formcontrol {
         }
         //if (!empty($this->readonly)) $html .= ' disabled="disabled"';
 
-        $caption = isset($this->caption) ? $this->caption : str_replace(array(":", "*"), "", ucwords($label));
-        if (!empty($this->required)) $html .= ' required="' . rawurlencode($this->value) . '" caption="' . $caption . '"';
+//        $caption = isset($this->caption) ? $this->caption : str_replace(array(":", "*"), "", ucwords($label));
+        if (!empty($this->required)) $html .= ' required="' . rawurlencode($this->value) . '" ';
         if (!empty($this->onclick)) $html .= ' onclick="' . $this->onclick . '"';
         if (!empty($this->onchange)) $html .= ' onchange="' . $this->onchange . '"';
 

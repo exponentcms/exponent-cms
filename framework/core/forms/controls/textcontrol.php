@@ -79,8 +79,8 @@ class textcontrol extends formcontrol {
             $html .= " onfocus=\"" . $this->filter . "_filter.onfocus(this);\"";
             $html .= " onpaste=\"return " . $this->filter . "_filter.onpaste(this, event);\"";
         }
-        $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
-        if (!empty($this->required)) $html .= ' required="required" caption="'.$caption.'"';
+//        $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
+        if (!empty($this->required)) $html .= ' required="required" ';
         $html .= " />";
         if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
         return $html;
