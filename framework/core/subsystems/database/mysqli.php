@@ -154,7 +154,7 @@ class mysqli_database extends database {
      * @return string
      */
     function wrapStmt($sql) {
-        return $sql;
+        return str_ireplace('rank', '`rank`', $sql);
     }
 
     /**
@@ -459,7 +459,7 @@ class mysqli_database extends database {
             }
         }
 		if($escape == true) {
-			$res = @mysqli_query($this->connection, mysqli_real_escape_string($this->connection, $sql));
+			$res = @mysqli_query($this->connection, mysqli_real_escape_string($this->connection, $this->wrapStmt($sql)));
 		} else {
 			$res = @mysqli_query($this->connection, $sql);
 		}
@@ -532,7 +532,7 @@ class mysqli_database extends database {
         else
             $orderby = "ORDER BY " . $orderby;
 
-        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table`" . $as . " WHERE $where $orderby");
+        $res = @mysqli_query($this->connection, $this->wrapStmt("SELECT * FROM `" . $this->prefix . "$table`" . $as . " WHERE $where $orderby"));
         if ($res == null)
             return array();
         $objects = array();
@@ -562,7 +562,7 @@ class mysqli_database extends database {
         $sql .= "MATCH (title, body, keywords) AGAINST ('" . $terms . "*' IN BOOLEAN MODE) ";
 //        $sql = "SELECT *, MATCH (s.title, s.body) AGAINST ('" . $terms . "*') AS score FROM " . $this->prefix . "search AS s ";
 //        $sql .= "WHERE MATCH (title, body) AGAINST ('" . $terms . "*' IN BOOLEAN MODE) ORDER BY score DESC";
-        $res = @mysqli_query($this->connection, $sql);
+        $res = @mysqli_query($this->connection, $this->wrapStmt($sql));
         if ($res == null)
             return array();
         $objects = array();
@@ -622,7 +622,7 @@ class mysqli_database extends database {
         else
             $orderby = "ORDER BY " . $orderby;
 
-        $res = @mysqli_query($this->connection, $sql . " WHERE $where $orderby");
+        $res = @mysqli_query($this->connection, $this->wrapStmt($sql . " WHERE $where $orderby"));
         if ($res == null)
             return array();
         $objects = array();
@@ -642,7 +642,7 @@ class mysqli_database extends database {
         //$lfh = fopen($logFile, 'a');
         //fwrite($lfh, $sql . "\n");
         //fclose($lfh);
-        $res = @mysqli_query($this->connection, $this->injectProof($sql));
+        $res = @mysqli_query($this->connection, $this->injectProof($this->wrapStmt($sql)));
         if ($res == null)
             return null;
         return mysqli_fetch_object($res);
@@ -655,7 +655,7 @@ class mysqli_database extends database {
 	 * @return array
 	 */
     function selectObjectsBySql($sql) {
-        $res = @mysqli_query($this->connection, $this->injectProof($sql));
+        $res = @mysqli_query($this->connection, $this->injectProof($this->wrapStmt($sql)));
         if ($res == null)
             return array();
         $objects = array();
@@ -683,7 +683,7 @@ class mysqli_database extends database {
             $orderby = "ORDER BY " . $orderby;
         $dist = empty($distinct) ? '' : 'DISTINCT ';
 
-        $res = @mysqli_query($this->connection, "SELECT " . $dist . $col . " FROM `" . $this->prefix . "$table` WHERE $where $orderby");
+        $res = @mysqli_query($this->connection, $this->wrapStmt("SELECT " . $dist . $col . " FROM `" . $this->prefix . "$table` WHERE $where $orderby"));
         if ($res == null)
             return array();
         $resarray = array();
@@ -706,7 +706,7 @@ class mysqli_database extends database {
         if ($where == null)
             $where = "1";
 
-        $res = @mysqli_query($this->connection, "SELECT SUM(" . $col . ") FROM `" . $this->prefix . "$table` WHERE $where");
+        $res = @mysqli_query($this->connection, $this->wrapStmt("SELECT SUM(" . $col . ") FROM `" . $this->prefix . "$table` WHERE $where"));
         if ($res == null)
             return 0;
         $resarray = array();
@@ -734,7 +734,7 @@ class mysqli_database extends database {
         else
             $orderby = "ORDER BY " . $orderby;
 
-        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where $orderby");
+        $res = @mysqli_query($this->connection, $this->wrapStmt("SELECT * FROM `" . $this->prefix . "$table` WHERE $where $orderby"));
         if ($res == null)
             return array();
         $resarray = array();
@@ -757,7 +757,7 @@ class mysqli_database extends database {
         if ($where == null)
             $where = "1";
         $sql = "SELECT " . $col . " FROM `" . $this->prefix . "$table` WHERE $where LIMIT 0,1";
-        $res = @mysqli_query($this->connection, $sql);
+        $res = @mysqli_query($this->connection, $this->wrapStmt($sql));
 
         if ($res == null)
             return null;
@@ -774,7 +774,7 @@ class mysqli_database extends database {
 	 * @return null
 	 */
     function selectValueBySql($sql) {
-        $res = $this->sql($sql);
+        $res = $this->sql($this->wrapStmt($sql));
         if ($res == null)
             return null;
         $r = mysqli_fetch_row($res);
@@ -810,7 +810,7 @@ class mysqli_database extends database {
             $orderby = '';
         else
             $orderby = "ORDER BY " . $orderby;
-        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where $orderby");
+        $res = @mysqli_query($this->connection, $this->wrapStmt("SELECT * FROM `" . $this->prefix . "$table` WHERE $where $orderby"));
 
         if ($res == null)
             return array();
@@ -850,7 +850,7 @@ class mysqli_database extends database {
             $where .= ")";
             $as = ' AS rev';
         }
-        $res = @mysqli_query($this->connection, "SELECT COUNT(*) as c FROM `" . $this->prefix . "$table`" . $as . " WHERE $where");
+        $res = @mysqli_query($this->connection, $this->wrapStmt("SELECT COUNT(*) as c FROM `" . $this->prefix . "$table`" . $as . " WHERE $where"));
         if ($res == null)
             return 0;
         $obj = mysqli_fetch_object($res);
@@ -864,7 +864,7 @@ class mysqli_database extends database {
      * @return int
      */
     function countObjectsBySql($sql) {
-        $res = @mysqli_query($this->connection, $sql);
+        $res = @mysqli_query($this->connection, $this->wrapStmt($sql));
         if ($res == null)
             return 0;
         $obj = mysqli_fetch_object($res);
@@ -878,7 +878,7 @@ class mysqli_database extends database {
      * @return int|void
      */
     function queryRows($sql) {
-        $res = @mysqli_query($this->connection, $sql);
+        $res = @mysqli_query($this->connection, $this->wrapStmt($sql));
         return empty($res) ? 0 : mysqli_num_rows($res);
     }
 
@@ -897,7 +897,7 @@ class mysqli_database extends database {
      * @return object/null|void
      */
     function selectObject($table, $where) {
-        $where = $this->injectProof($where);
+        $where = $this->injectProof($this->wrapStmt($where));
         $res = mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where LIMIT 0,1");
         if ($res == null)
             return null;
@@ -968,7 +968,7 @@ class mysqli_database extends database {
         }
         $sql = substr($sql, 0, -1) . substr($values, 0) . ")";
         //if($table=='text')eDebug($sql,true);
-        if (@mysqli_query($this->connection, $sql) != false) {
+        if (@mysqli_query($this->connection, $this->wrapStmt($sql)) != false) {
             $id = mysqli_insert_id($this->connection);
             return $id;
         } else
@@ -986,7 +986,7 @@ class mysqli_database extends database {
      */
     function delete($table, $where = null) {
         if ($where != null) {
-            $res = @mysqli_query($this->connection, "DELETE FROM `" . $this->prefix . "$table` WHERE $where");
+            $res = @mysqli_query($this->connection, $this->wrapStmt("DELETE FROM `" . $this->prefix . "$table` WHERE $where"));
             return $res;
         } else {
             $res = @mysqli_query($this->connection, "TRUNCATE TABLE `" . $this->prefix . "$table`");
@@ -1055,7 +1055,7 @@ class mysqli_database extends database {
             $sql .= ' AND revision_id=' . $object->revision_id;
         }
         //if ($table == 'text') eDebug($sql,true);
-        $res = (@mysqli_query($this->connection, $sql) != false);
+        $res = (@mysqli_query($this->connection, $this->wrapStmt($sql)) != false);
         if (DEVELOPMENT && !$res)
             eLog($sql . ' - ' . mysqli_error ( $this->connection ), 'updateObject Error');
         return $res;
@@ -1081,7 +1081,7 @@ class mysqli_database extends database {
         if ($groupfields != null)
             $sql .= " GROUP BY $groupfields";
 
-        $res = @mysqli_query($this->connection, $sql);
+        $res = @mysqli_query($this->connection, $this->wrapStmt($sql));
 
         if ($res != null)
             $res = mysqli_fetch_object($res);
@@ -1111,7 +1111,7 @@ class mysqli_database extends database {
         if ($groupfields != null)
             $sql .= " GROUP BY $groupfields";
 
-        $res = @mysqli_query($this->connection, $sql);
+        $res = @mysqli_query($this->connection, $this->wrapStmt($sql));
 
         if ($res != null)
             $res = mysqli_fetch_object($res);
@@ -1134,7 +1134,7 @@ class mysqli_database extends database {
         if ($where == null)
             $where = "1";
         $sql = "UPDATE `" . $this->prefix . "$table` SET `$field`=`$field`+$step WHERE $where";
-        return @mysqli_query($this->connection, $sql);
+        return @mysqli_query($this->connection, $this->wrapStmt($sql));
     }
 
     /**
@@ -1161,7 +1161,7 @@ class mysqli_database extends database {
    	*/
    	 function columnExists($table, $col) {
          // does the column exist?
-         $result = @mysqli_query($this->connection, "SHOW COLUMNS FROM `" . $this->prefix . "$table` LIKE '$col'");
+         $result = @mysqli_query($this->connection, $this->wrapStmt("SHOW COLUMNS FROM `" . $this->prefix . "$table` LIKE '$col'"));
          if (!@mysqli_num_rows($result))
              return false;
          else
@@ -1392,7 +1392,7 @@ class mysqli_database extends database {
         else
             $orderby = "ORDER BY " . $orderby;
 
-        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table`" . $as . " WHERE $where $orderby");
+        $res = @mysqli_query($this->connection, $this->wrapStmt("SELECT * FROM `" . $this->prefix . "$table`" . $as . " WHERE $where $orderby"));
         if ($res == null)
             return array();
         $arrays = array();
@@ -1413,7 +1413,7 @@ class mysqli_database extends database {
      * @return array
      */
     function selectArraysBySql($sql) {
-        $res = @mysqli_query($this->connection, $this->injectProof($sql));
+        $res = @mysqli_query($this->connection, $this->injectProof($this->wrapStmt($sql)));
         if ($res == null)
             return array();
         $arrays = array();
@@ -1461,7 +1461,7 @@ class mysqli_database extends database {
         }
         $orderby = empty($orderby) ? '' : "ORDER BY " . $orderby;
         $sql = "SELECT * FROM `" . $this->prefix . "$table`" . $as . " WHERE $where $orderby LIMIT 0,1";
-        $res = @mysqli_query($this->connection, $sql);
+        $res = @mysqli_query($this->connection, $this->wrapStmt($sql));
         if ($res == null)
             return array();
         return mysqli_fetch_assoc($res);
@@ -1509,7 +1509,7 @@ class mysqli_database extends database {
         $sql = "SELECT * FROM `" . $this->prefix . "$table`" . $as . " WHERE $where";
         $sql .= empty($order) ? '' : ' ORDER BY ' . $order;
         $sql .= empty($limitsql) ? '' : $limitsql;
-        $res = @mysqli_query($this->connection, $sql);
+        $res = @mysqli_query($this->connection, $this->wrapStmt($sql));
         if ($res == null)
             return array();
         $arrays = array();
@@ -1534,7 +1534,7 @@ class mysqli_database extends database {
      * @return array
      */
     function selectExpObjectsBySql($sql, $classname, $get_assoc=true, $get_attached=true) {
-        $res = @mysqli_query($this->connection, $this->injectProof($sql));
+        $res = @mysqli_query($this->connection, $this->injectProof($this->wrapStmt($sql)));
         if ($res == null)
             return array();
         $arrays = array();
