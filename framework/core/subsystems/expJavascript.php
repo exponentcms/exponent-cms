@@ -130,7 +130,7 @@ class expJavascript {
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'util.js,';
                         } else {
                             $bootstrappath = 'external/bootstrap5/js/dist/';
-                            $scripts .= "\t" . '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>' . "\r\n";
+                            $scripts .= "\t" . '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>' . "\r\n";
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/data.js,';
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js,';
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js,';
@@ -537,7 +537,7 @@ class expJavascript {
                         $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util.js"></script>' . "\r\n";
                     } else {
                         $bootstrappath = 'external/bootstrap5/js/dist/';
-                        $scripts .= '<<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>' . "\r\n";
+                        $scripts .= '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>' . "\r\n";
                         $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/data.js"></script>' . "\r\n";
                         $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js"></script>' . "\r\n";
                         $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js"></script>' . "\r\n";
