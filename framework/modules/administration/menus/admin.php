@@ -351,7 +351,7 @@ if ($user->isAdmin() || !empty($groups)) {
                     'text' => gt('User Profile Extensions'),
                     'icon' => 'fa-magic',
                     'icon5' => 'fas fa-magic',
-                    'iconbs' => 'bi-brush',
+                    'iconbs' => 'bi-magic',
                     'url'  => makeLink(
                         array(
                             'controller' => 'users',
@@ -613,7 +613,7 @@ if ($user->isSuperAdmin()) {
                     'text'    => gt('Extensions'),
                     'icon'    => 'fa-magic',
                     'icon5'    => 'fas fa-magic',
-                    'iconbs'    => 'bi-award',
+                    'iconbs'    => 'bi-magic',
                     'submenu' => array(
                         'id'       => 'extensions',
                         'itemdata' => array(
