@@ -1,4 +1,20 @@
-### Version History
+# Version History
+*5.0.1 (2021/10/05)*
+* Fix for fullscreen video not centering in mobile view (#2881)
+* Fix for volume-current and volume-total becoming non-distinguishable with custom high-contrast settings enabled (#2878)
+
+*5.0.0 (2021/09/13)*
+## The WCAG update
+To be WCAG 2.1 compliant we had to introduce breaking changes. We had to create a new solution to improve user defined values for colors and text size in the browser.
+We also improved the semantics and aria attributes for the control bar. By using inline svgs for the control elements we simplified customization with css properties because now `fill:color` and `stroke:color` can be used.
+
+
+* Change default value for fakeNodeName to `div` (#2800)
+* Copy all files from `/demo` folder to `/build` folder with grunt task
+* Replace background sprite for controls with svg icon sprite
+* New option `iconSprite`: path where the svg icon sprite is located, see [standalone documentation](docs/api.md#standalone)
+* Change `px` to `rem` values in styles
+* Add attribute `aria-describedby` to volume button
 
 *4.2.17 (2021/07/05)*
 
