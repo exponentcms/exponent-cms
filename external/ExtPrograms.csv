@@ -19,9 +19,9 @@ Twitter model,2.3.1,github.com/tijsverkoyen/TwitterOAuth,2.3.1,placed in Twitter
 Twitter API,1.0.6,github.com/J7mbo/twitter-api-php,1.0.6,used by socialmedia module
 SimplePie,1.5.6,github.com/simplepie/simplepie,1.5.6,php 8 fix
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
-class.upload,1.0.8,github.com/verot/class.upload.php,"1.0.8/2.1.0
+class.upload,2.1.0,github.com/verot/class.upload.php,"2.1.0
 ","Correct flip operation where flip vertical & horizontal were inverted/swapped, php 8 fix"
-iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.30.5/2.40.0,uncomment load utilities; php 8 fix
+iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.40.0,uncomment load utilities; php 8 fix
 scssphp,1.8.1exp,github.com/scssphp/scssphp,1.8.1,includes example server; hack to compile newui
 lessphp,0.5.0exp,github.com/leafo/lessphp,0.5.0,"will not compile bootstrap v3+, hack to allow prefix"
 less.php,3.1.0exp,github.com/wikimedia/less.php,3.1.0,"code edit to fix IIS compatibility, php v5.6 fix"
