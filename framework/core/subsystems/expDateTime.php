@@ -722,7 +722,7 @@ class expDateTime {
 			for ($i = 0, $iMax = count($toks); $i < $iMax; $i++) {
     			$toks[$i] = str_replace(
     				array('%D','%e','%g','%G','%h','%r','%R','%T','%l'),
-    				array('%m/%d/%y','%#d','%y','%Y','%b','%I:%M:%S %p','%H:%M','%H:%M:%S','%#I'),
+    				array('%m/%d/%y','%d','%y','%Y','%b','%I:%M:%S %p','%H:%M','%H:%M:%S','%I'),
     				$toks[$i]);
     		}
     		$format = implode('%%',$toks);
