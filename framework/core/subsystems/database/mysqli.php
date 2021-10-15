@@ -154,7 +154,7 @@ class mysqli_database extends database {
      * @return string
      */
     function wrapStmt($sql) {
-        return str_ireplace('rank', '`rank`', $sql);
+        return preg_replace('/\w*rank(?<!_rank)/', '`rank`', $sql);
     }
 
     /**
