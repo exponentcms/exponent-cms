@@ -55,15 +55,6 @@
       page-break-inside: avoid;
     }
 
-    //
-    // Printing Tables:
-    // https://web.archive.org/web/20180815150934/http://css-discuss.incutio.com/wiki/Printing_Tables
-    //
-
-    thead {
-      display: table-header-group;
-    }
-
     tr,
     img {
       page-break-inside: avoid;
@@ -86,9 +77,9 @@
     // Specify a size and min-width to make printing closer across browsers.
     // We don't set margin here because it breaks `size` in Chrome. We also
     // don't use `!important` on `size` as it breaks in Chrome.
-    //@page {
-    //  size: $print-page-size;
-    //}
+    @page {
+      size: $print-page-size;
+    }
     body {
       min-width: $print-body-min-width !important;
     }
