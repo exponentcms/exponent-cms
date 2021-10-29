@@ -623,7 +623,7 @@ if (!defined('SWIFT_PATH')) {
     if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
         define('SWIFT_VERSION', '5.4.12');
     } else {
-        define('SWIFT_VERSION', '6.2.7');  //note v6.x requires php v7.x
+        define('SWIFT_VERSION', '6.3.0');  //note v6.x requires php v7.x
     }
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
     /**
@@ -672,7 +672,7 @@ if (!defined('DOMPDF8_VERSION')) {
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.2');
+    define('HTML2PDF5_VERSION', '5.2.2');  // 5.2.3
 }
 /**
  * TCPDF is needed for HTML2PDF
