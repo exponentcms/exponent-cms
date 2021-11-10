@@ -766,13 +766,11 @@ var MediaElement = function MediaElement(idOrNode, options, sources) {
 	};
 
 	var mediaFiles = void 0;
-
 	if (sources !== null) {
 		mediaFiles = sources;
 	} else if (t.mediaElement.originalNode !== null) {
 
 		mediaFiles = [];
-
 		switch (t.mediaElement.originalNode.nodeName.toLowerCase()) {
 			case 'iframe':
 				mediaFiles.push({
@@ -814,7 +812,6 @@ var MediaElement = function MediaElement(idOrNode, options, sources) {
 	t.mediaElement.rendererName = null;
 
 	t.mediaElement.changeRenderer = function (rendererName, mediaFiles) {
-
 		var t = _this,
 		    media = Object.keys(mediaFiles[0]).length > 2 ? mediaFiles[0] : mediaFiles[0].src;
 
@@ -906,7 +903,6 @@ var MediaElement = function MediaElement(idOrNode, options, sources) {
 	},
 	    assignGettersSetters = function assignGettersSetters(propName) {
 		if (propName !== 'src') {
-
 			var capName = '' + propName.substring(0, 1).toUpperCase() + propName.substring(1),
 			    getFn = function getFn() {
 				return t.mediaElement.renderer !== undefined && t.mediaElement.renderer !== null && typeof t.mediaElement.renderer['get' + capName] === 'function' ? t.mediaElement.renderer['get' + capName]() : null;
@@ -927,7 +923,6 @@ var MediaElement = function MediaElement(idOrNode, options, sources) {
 	},
 	    setSrc = function setSrc(value) {
 		var mediaFiles = [];
-
 		if (typeof value === 'string') {
 			mediaFiles.push({
 				src: value,
@@ -950,7 +945,6 @@ var MediaElement = function MediaElement(idOrNode, options, sources) {
 					src: _src2,
 					type: (_type3 === '' || _type3 === null || _type3 === undefined) && _src2 ? (0, _media2.getTypeFromFile)(_src2) : _type3
 				});
-
 				mediaFiles.push(_media);
 			}
 		}
@@ -1025,9 +1019,9 @@ var MediaElement = function MediaElement(idOrNode, options, sources) {
 	};
 
 	addProperty(t.mediaElement, 'src', getSrc, setSrc);
+
 	t.mediaElement.getSrc = getSrc;
 	t.mediaElement.setSrc = setSrc;
-
 	for (var _i3 = 0, total = props.length; _i3 < total; _i3++) {
 		assignGettersSetters(props[_i3]);
 	}
@@ -1132,7 +1126,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mejs = {};
 
-mejs.version = '5.0.2';
+mejs.version = '5.0.4';
 
 mejs.html5media = {
 	properties: ['volume', 'src', 'currentTime', 'muted', 'duration', 'paused', 'ended', 'buffered', 'error', 'networkState', 'readyState', 'seeking', 'seekable', 'currentSrc', 'preload', 'bufferedBytes', 'bufferedTime', 'initialTime', 'startOffsetTime', 'defaultPlaybackRate', 'playbackRate', 'played', 'autoplay', 'loop', 'controls'],
@@ -1218,6 +1212,7 @@ var Renderer = function () {
 
 				if (_renderer !== null && _renderer !== undefined) {
 					for (var j = 0, jl = mediaFiles.length; j < jl; j++) {
+
 						if (typeof _renderer.canPlayType === 'function' && typeof mediaFiles[j].type === 'string' && _renderer.canPlayType(mediaFiles[j].type)) {
 							return {
 								rendererName: _renderer.name,

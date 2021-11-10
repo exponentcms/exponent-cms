@@ -766,13 +766,11 @@ var MediaElement = function MediaElement(idOrNode, options, sources) {
 	};
 
 	var mediaFiles = void 0;
-
 	if (sources !== null) {
 		mediaFiles = sources;
 	} else if (t.mediaElement.originalNode !== null) {
 
 		mediaFiles = [];
-
 		switch (t.mediaElement.originalNode.nodeName.toLowerCase()) {
 			case 'iframe':
 				mediaFiles.push({
@@ -814,7 +812,6 @@ var MediaElement = function MediaElement(idOrNode, options, sources) {
 	t.mediaElement.rendererName = null;
 
 	t.mediaElement.changeRenderer = function (rendererName, mediaFiles) {
-
 		var t = _this,
 		    media = Object.keys(mediaFiles[0]).length > 2 ? mediaFiles[0] : mediaFiles[0].src;
 
@@ -906,7 +903,6 @@ var MediaElement = function MediaElement(idOrNode, options, sources) {
 	},
 	    assignGettersSetters = function assignGettersSetters(propName) {
 		if (propName !== 'src') {
-
 			var capName = '' + propName.substring(0, 1).toUpperCase() + propName.substring(1),
 			    getFn = function getFn() {
 				return t.mediaElement.renderer !== undefined && t.mediaElement.renderer !== null && typeof t.mediaElement.renderer['get' + capName] === 'function' ? t.mediaElement.renderer['get' + capName]() : null;
@@ -927,7 +923,6 @@ var MediaElement = function MediaElement(idOrNode, options, sources) {
 	},
 	    setSrc = function setSrc(value) {
 		var mediaFiles = [];
-
 		if (typeof value === 'string') {
 			mediaFiles.push({
 				src: value,
@@ -950,7 +945,6 @@ var MediaElement = function MediaElement(idOrNode, options, sources) {
 					src: _src2,
 					type: (_type3 === '' || _type3 === null || _type3 === undefined) && _src2 ? (0, _media2.getTypeFromFile)(_src2) : _type3
 				});
-
 				mediaFiles.push(_media);
 			}
 		}
@@ -1025,9 +1019,9 @@ var MediaElement = function MediaElement(idOrNode, options, sources) {
 	};
 
 	addProperty(t.mediaElement, 'src', getSrc, setSrc);
+
 	t.mediaElement.getSrc = getSrc;
 	t.mediaElement.setSrc = setSrc;
-
 	for (var _i3 = 0, total = props.length; _i3 < total; _i3++) {
 		assignGettersSetters(props[_i3]);
 	}
@@ -1132,7 +1126,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mejs = {};
 
-mejs.version = '5.0.2';
+mejs.version = '5.0.4';
 
 mejs.html5media = {
 	properties: ['volume', 'src', 'currentTime', 'muted', 'duration', 'paused', 'ended', 'buffered', 'error', 'networkState', 'readyState', 'seeking', 'seekable', 'currentSrc', 'preload', 'bufferedBytes', 'bufferedTime', 'initialTime', 'startOffsetTime', 'defaultPlaybackRate', 'playbackRate', 'played', 'autoplay', 'loop', 'controls'],
@@ -1218,6 +1212,7 @@ var Renderer = function () {
 
 				if (_renderer !== null && _renderer !== undefined) {
 					for (var j = 0, jl = mediaFiles.length; j < jl; j++) {
+
 						if (typeof _renderer.canPlayType === 'function' && typeof mediaFiles[j].type === 'string' && _renderer.canPlayType(mediaFiles[j].type)) {
 							return {
 								rendererName: _renderer.name,
@@ -3179,7 +3174,7 @@ Object.assign(_player2.default.prototype, {
 		    mute = _document2.default.createElement('div');
 
 		mute.className = t.options.classPrefix + 'button ' + t.options.classPrefix + 'volume-button ' + t.options.classPrefix + 'mute';
-		mute.innerHTML = mode === 'horizontal' ? (0, _generate.generateControlButton)(t.id, muteText, muteText, '' + t.media.options.iconSprite, ['icon-mute', 'icon-unmute'], '' + t.options.classPrefix, '', t.options.classPrefix + 'volume-slider') : (0, _generate.generateControlButton)(t.id, muteText, muteText, '' + t.media.options.iconSprite, ['icon-mute', 'icon-unmute'], '' + t.options.classPrefix, '', t.options.classPrefix + 'volume-slider') + ('<a class="' + t.options.classPrefix + 'volume-slider" ') + ('aria-label="' + _i18n2.default.t('mejs.volume-slider') + '" aria-valuemin="0" aria-valuemax="100" role="slider" ') + 'aria-orientation="vertical">' + ('<span class="' + t.options.classPrefix + 'offscreen" id="' + t.options.classPrefix + 'volume-slider">' + volumeControlText + '</span>') + ('<div class="' + t.options.classPrefix + 'volume-total">') + ('<div class="' + t.options.classPrefix + 'volume-current"></div>') + ('<div class="' + t.options.classPrefix + 'volume-handle"></div>') + '</div>' + '</a>';
+		mute.innerHTML = mode === 'horizontal' ? (0, _generate.generateControlButton)(t.id, muteText, muteText, '' + t.media.options.iconSprite, ['icon-mute', 'icon-unmute'], '' + t.options.classPrefix, '', t.options.classPrefix + 'horizontal-volume-slider') : (0, _generate.generateControlButton)(t.id, muteText, muteText, '' + t.media.options.iconSprite, ['icon-mute', 'icon-unmute'], '' + t.options.classPrefix, '', t.options.classPrefix + 'volume-slider') + ('<a class="' + t.options.classPrefix + 'volume-slider" ') + ('aria-label="' + _i18n2.default.t('mejs.volume-slider') + '" aria-valuemin="0" aria-valuemax="100" role="slider" ') + 'aria-orientation="vertical">' + ('<span class="' + t.options.classPrefix + 'offscreen" id="' + t.options.classPrefix + 'volume-slider">' + volumeControlText + '</span>') + ('<div class="' + t.options.classPrefix + 'volume-total">') + ('<div class="' + t.options.classPrefix + 'volume-current"></div>') + ('<div class="' + t.options.classPrefix + 'volume-handle"></div>') + '</div>' + '</a>';
 
 		t.addControlElement(mute, 'volume');
 
@@ -3249,7 +3244,7 @@ Object.assign(_player2.default.prototype, {
 			anchor.setAttribute('aria-valuemax', 100);
 			anchor.setAttribute('aria-valuenow', 100);
 			anchor.setAttribute('role', 'slider');
-			anchor.innerHTML += '<span class="' + t.options.classPrefix + 'offscreen">' + volumeControlText + '</span>' + ('<div class="' + t.options.classPrefix + 'horizontal-volume-total">') + ('<div class="' + t.options.classPrefix + 'horizontal-volume-current"></div>') + ('<div class="' + t.options.classPrefix + 'horizontal-volume-handle"></div>') + '</div>';
+			anchor.innerHTML += '<span class="' + t.options.classPrefix + 'offscreen" id="' + t.options.classPrefix + 'horizontal-volume-slider">' + volumeControlText + '</span>' + ('<div class="' + t.options.classPrefix + 'horizontal-volume-total">') + ('<div class="' + t.options.classPrefix + 'horizontal-volume-current"></div>') + ('<div class="' + t.options.classPrefix + 'horizontal-volume-handle"></div>') + '</div>';
 			mute.parentNode.insertBefore(anchor, mute.nextSibling);
 		}
 
@@ -3738,19 +3733,7 @@ var config = exports.config = {
 
 	customError: null,
 
-	keyActions: [{
-		keys: [32, 179],
-		action: function action(player) {
-
-			if (!_constants.IS_FIREFOX) {
-				if (player.paused || player.ended) {
-					player.play();
-				} else {
-					player.pause();
-				}
-			}
-		}
-	}]
+	keyActions: []
 };
 
 _mejs2.default.MepDefaults = config;
@@ -8185,7 +8168,7 @@ function generateControlButton(playerId, ariaLabel, title, iconSprite, icons, cl
 		return '<svg xmlns="http://www.w3.org/2000/svg" id="' + playerId + '-' + icon + '" class="' + classPrefix + icon + '" aria-hidden="true" focusable="false">\n\t\t\t\t<use xlink:href="' + iconSprite + '#' + icon + '"></use>\n\t\t\t</svg>\n';
 	});
 
-	return '<button ' + className + ' aria-controls="' + playerId + '" title="' + title + '" aria-label="' + ariaLabel + '" ' + ariaDescribedbyAttr + ' ' + ariaPressedAttr + '>\n\t\t\t' + iconHtml.join('') + '\n\t\t</button>';
+	return '<button ' + className + ' type="button" aria-controls="' + playerId + '" title="' + title + '" aria-label="' + ariaLabel + '" ' + ariaDescribedbyAttr + ' ' + ariaPressedAttr + '>\n\t\t\t' + iconHtml.join('') + '\n\t\t</button>';
 }
 
 _mejs2.default.Utils = _mejs2.default.Utils || {};

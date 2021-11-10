@@ -1,5 +1,4 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-Program,Version,URL,Avail version,Exponent Customization Notes:
 Swiftmailer,5.4.12/6.2.7,github.com/swiftmailer/swiftmailer,6.3.0,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
 Doctrine Lexer,1.2.1,github.com/doctrine/lexer,1.2.1,needed by swiftmailer v6
 EmailValidator,3.1.2,github.com/egulias/EmailValidator,3.1.2,needed by swiftmailer v6; move folder structure and add autoloader to main file
@@ -39,8 +38,8 @@ Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into m
 Adminer,4.8.1exp,www.adminer.org,4.8.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css/,8.0.1,auto included in bootstrap 3
-MediaElement.js,5.0.2,mediaelementjs.com/,5.0.2,
-MediaElement plugins,2.6.1,github.com/johndyer/mediaelement-plugins,2.6.1,
+MediaElement.js,5.0.4,mediaelementjs.com/,5.0.4,
+MediaElement plugins,2.6.2,github.com/johndyer/mediaelement-plugins,2.6.2,
 Facebook PHP SDK3,3.2.3,github.com/facebook/php-graph-sdk,5.7.0,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
@@ -97,7 +96,7 @@ Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
 dompdf,0.8.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,1.0.2,"optional, patched to display our images and not break on bad tables and disable links"
-mPDF,8.0.8/7.1.9/6.1.4/5.7.4a,github.com/mpdf/mpdf,8.0.13,optional
+mPDF,8.0.8/7.1.9/6.1.4/5.7.4a,github.com/mpdf/mpdf,8.0.15,optional
 log,1.1.3,github.com/php-fig/log,1.1.4,"optional, required by mPDF v7+"
 DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.10.2,"optional, suggested by mPDF v7"
 random_compat,2.0.19,github.com/paragonie/random_compat,2.0.20,"optional, required by mPDF v7+"
