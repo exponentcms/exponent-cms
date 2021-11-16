@@ -60,86 +60,135 @@ class reportController extends expController {
     protected $oneday = 86400;
     protected $tstart;
     protected $tend;
-    protected $prev_month;
-    protected $prev_hour = '12';
-    protected $prev_min = '00';
-    protected $prev_ampm = 'AM';
+    protected $prev_date;
+    protected $prev_hour;
+    protected $prev_min;
+    protected $prev_ampm;
     protected $now_date;
     protected $now_hour;
     protected $now_min;
     protected $now_ampm;
+    protected $quickrange = array();
+
+    // quick range constants
+    const PAST_24_HOURS = 0;
+    const PAST_7_DAYS = 1;
+    const PAST_30_DAYS = 2;
+    const LAST_MONTH = 3;
+    const PAST_60_DAYS = 4;
+    const PAST_90_DAYS = 5;
+    const PAST_365_DAYS = 6;
+    const LAST_YEAR = 7;
+    const FOREVER = 8;
+    const CUSTOM = 9;
 
     function __construct($src = null, $params = array()) {
         parent::__construct($src, $params);
         $this->o = new order();
         $this->tstart = time() - $this->oneday;
         $this->tend = time();
-//        $this->prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
+//        $this->prev_date = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
 //        $this->now_date = strftime("%A, %d %B %Y");
-        $this->prev_month = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), mktime(0, 0, 0, (date('m') - 1), 1, date('Y')));
-        $this->now_date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT));
+        $this->prev_date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $this->tstart);
+        $this->prev_hour = date('h', $this->tstart);
+        $this->prev_min = date('i', $this->tstart);
+        $this->prev_ampm = date('A', $this->tstart);
+
+        $this->now_date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $this->tend);
         $this->now_hour = date('h');
         $this->now_min = date('i');
         $this->now_ampm = date('A');
+        $this->quickrange = array(
+            $this::PAST_24_HOURS => gt('Past 24 Hours'),
+            $this::PAST_7_DAYS => gt('Past 7 Days'),
+            $this::PAST_30_DAYS => gt('Past 30 Days'),
+            $this::LAST_MONTH => gt('Last Month'),
+            $this::PAST_60_DAYS => gt('Past 60 Days'),
+            $this::PAST_90_DAYS => gt('Past 90 Days'),
+            $this::PAST_365_DAYS => gt('Past 365 Days'),
+            $this::LAST_YEAR => gt('Last Year'),
+            $this::FOREVER => gt('Forever'),
+            $this::CUSTOM => gt('Custom Range'),
+        );
     }
 
     /**
      * Help parse quick range input
-     *
-     * @param $params
      */
-    private function setDateParams($params) {
-        //eDebug($params,true);
-        if (!empty($params['quickrange'])) {
-            if ($params['quickrange'] == 1) {
-                $this->tstart = time() - $this->oneday * 7;
-            } else if ($params['quickrange'] == 2) {
-                $this->tstart = time() - $this->oneday * 30;
-            } else if ($params['quickrange'] == 3) {
-                $this->tstart = time() - $this->oneday * 60;
-            } else if ($params['quickrange'] == 4) {
-                $this->tstart = time() - $this->oneday * 90;
-            } else if ($params['quickrange'] == 5) {
-                $this->tstart = time() - $this->oneday * 365;
-            } else if ($params['quickrange'] == 6) {
-                $this->tstart = 0;
-            } else if ($params['quickrange'] == 0) {
+    private function setDateParams() {
+        if (isset($this->params['quickrange'])) {
+            if ($this->params['quickrange'] == $this::LAST_MONTH) {
+                $this->tstart = strtotime('first day of last month');
+                $this->tstart = strtotime('today', $this->tstart);
+                $this->tend = strtotime('first day of this month');
+                $this->tend = strtotime('midnight', $this->tend);
+            } elseif ($this->params['quickrange'] == $this::PAST_24_HOURS) {
                 $this->tstart = time() - $this->oneday;
+            } elseif ($this->params['quickrange'] == $this::PAST_7_DAYS) {
+                $this->tstart = time() - $this->oneday * 7;
+            } else if ($this->params['quickrange'] == $this::PAST_30_DAYS) {
+                $this->tstart = time() - $this->oneday * 30;
+            } elseif ($this->params['quickrange'] == $this::LAST_MONTH) {
+                $this->tstart = strtotime('first day of last month');
+                $this->tstart = strtotime('today', $this->tstart);
+                $this->tend = strtotime('first day of this month');
+                $this->tend = strtotime('midnight', $this->tend);
+            } else if ($this->params['quickrange'] == $this::PAST_60_DAYS) {
+                $this->tstart = time() - $this->oneday * 60;
+            } else if ($this->params['quickrange'] == $this::PAST_90_DAYS) {
+                $this->tstart = time() - $this->oneday * 90;
+            } else if ($this->params['quickrange'] == $this::PAST_365_DAYS) {
+                $this->tstart = time() - $this->oneday * 365;
+            } else if ($this->params['quickrange'] == $this::LAST_YEAR) {
+                $this->tstart = expDateTime::startOfYearTimestamp(strtotime("-1 year"));
+                $this->tend = expDateTime::endOfYearTimestamp(strtotime("-1 year"));
+            } else if ($this->params['quickrange'] == $this::FOREVER) {
+                $this->tstart = 0;
             }
-            $this->prev_month = date(strftime_to_date_format(DISPLAY_DATE_FORMAT),$this->tstart);
-        } elseif (isset($params['date-starttime'])) {  //FIXME OLD calendar control format
-            $formatedStart = $params['date-starttime'] . ' ' . $params['time-h-starttime'] . ":" . $params['time-m-starttime'] . ' ' . $params['ampm-starttime'];
+            $this->prev_date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT),$this->tstart);
+            $this->now_date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $this->tend);
+            $this->prev_hour = date('h', $this->tstart);
+            $this->prev_min = date('i', $this->tstart);
+            $this->prev_ampm = date('a', $this->tstart);
+            $this->now_hour = date('h', $this->tend);
+            $this->now_min = date('i', $this->tend);
+            $this->now_ampm = date('a', $this->tend);
+        } elseif (isset($this->params['date-starttime'])) {  //FIXME OLD calendar control format
+            $formatedStart = $this->params['date-starttime'] . ' ' . $this->params['time-h-starttime'] . ":" . $this->params['time-m-starttime'] . ' ' . $this->params['ampm-starttime'];
             $this->tstart = strtotime($formatedStart);
-            $this->tend = strtotime($params['date-endtime'] . ' ' . $params['time-h-endtime'] . ":" . $params['time-m-endtime'] . ' ' . $params['ampm-endtime']);
+            $this->tend = strtotime($this->params['date-endtime'] . ' ' . $this->params['time-h-endtime'] . ":" . $this->params['time-m-endtime'] . ' ' . $this->params['ampm-endtime']);
 
             // parse out date into calendarcontrol fields
-            $this->prev_month = $formatedStart;
-            $this->prev_hour = $params['time-h-starttime'];
-            $this->prev_min = $params['time-m-starttime'];
-            $this->prev_ampm = $params['ampm-starttime'];
+            $this->prev_date = $formatedStart;
+            $this->prev_hour = $this->params['time-h-starttime'];
+            $this->prev_min = $this->params['time-m-starttime'];
+            $this->prev_ampm = $this->params['ampm-starttime'];
 
             // parse out date into calendarcontrol fields
-            $this->now_date = $params['date-endtime'];
-            $this->now_hour = $params['time-h-endtime'];
-            $this->now_min = $params['time-m-endtime'];
-            $this->now_ampm = $params['ampm-endtime'];
-        } elseif (isset($params['starttime'])) {
-            $this->tstart = strtotime($params['starttime']);
-            $this->tend = strtotime($params['endtime']);
+            $this->now_date = $this->params['date-endtime'];
+            $this->now_hour = $this->params['time-h-endtime'];
+            $this->now_min = $this->params['time-m-endtime'];
+            $this->now_ampm = $this->params['ampm-endtime'];
+            $this->params['quickrange'] = $this::CUSTOM;
+        } elseif (isset($this->params['starttime'])) {
+            $this->tstart = strtotime($this->params['starttime']);
+            $this->tend = strtotime($this->params['endtime']);
 
             // parse out date into calendarcontrol fields
-            $this->prev_month = date('m/d/Y', $this->tstart);
+            $this->prev_date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $this->tstart);
             $this->prev_hour = date('h', $this->tstart);
             $this->prev_min = date('i', $this->tstart);
             $this->prev_ampm = date('a', $this->tstart);
 
             // parse out date into calendarcontrol fields
-            $this->now_date = date('m/d/Y', $this->tend);
+            $this->now_date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $this->tend);
             $this->now_hour = date('h', $this->tend);
             $this->now_min = date('i', $this->tend);
             $this->now_ampm = date('a', $this->tend);
+            $this->params['quickrange'] = $this::CUSTOM;
         } else {
             $this->tstart = time() - $this->oneday;
+            $this->params['quickrange'] = $this::PAST_24_HOURS;
         }
         return;
     }
@@ -174,11 +223,10 @@ class reportController extends expController {
     function stats() {
         global $db;
 
-        $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'), 3 => gt('Last 60 Days'), 4 => gt('Last 90 Days'), 5 => gt('Last 365 Days'), 6 => gt('Forever'));
-        $this->setDateParams($this->params);
-        if (!isset($this->params['quickrange'])) {
-            $this->params['quickrange'] = 0;
-        }
+//        if (!isset($this->params['quickrange']) && !isset($this->params['date-starttime']) && !isset($this->params['starttime'])) {
+//            $this->params['quickrange'] = $this::LAST_MONTH;
+//        }
+        $this->setDateParams();
 
         // get number of online customers in period
         $u = new user();
@@ -217,9 +265,9 @@ class reportController extends expController {
         assign_to_template(array(
             'orders'             => $oar,
             'new'                => $new_customers,
-            'quickrange'         => $quickrange,
+            'quickrange'         => $this->quickrange,
             'quickrange_default' => $this->params['quickrange'],
-            'prev_month'         => $this->prev_month,
+            'prev_date'          => $this->prev_date,
             'now_date'           => $this->now_date,
             'now_hour'           => $this->now_hour,
             'now_min'            => $this->now_min,
@@ -236,11 +284,10 @@ class reportController extends expController {
     function cart_summary() {
         global $db;
 
-        $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'), 3 => gt('Last 60 Days'), 4 => gt('Last 90 Days'), 5 => gt('Last 365 Days'), 6 => gt('Forever'));
-        $this->setDateParams($this->params);
-        if (!isset($this->params['quickrange'])) {
-            $this->params['quickrange'] = 0;
-        }
+//        if (!isset($this->params['quickrange']) && !isset($this->params['date-starttime']) && !isset($this->params['starttime'])) {
+//            $this->params['quickrange'] = $this::LAST_MONTH;
+//        }
+        $this->setDateParams();
 
         $p = $this->params;
         $sql = "SELECT DISTINCT(o.id), o.invoice_id, " . $db->datetimeStmt('o.purchased') . " AS purchased_date, b.firstname AS bfirst, b.lastname AS blast, " . $db->currencyStmt('o.grand_total') . " AS grand_total, os.title AS status_title FROM ";
@@ -490,7 +537,7 @@ class reportController extends expController {
             'export_odbc'  => 'Export Shipping Data to CSV'
         );
         assign_to_template(array(
-            'quickrange'         => $quickrange,
+            'quickrange'         => $this->quickrange,
             'quickrange_default' => $this->params['quickrange'],
             'page'               => $page,
             'action_items'       => $action_items
@@ -541,17 +588,17 @@ class reportController extends expController {
         //array('-1'=>'', 'V'=>'Visa','MC'=>'Mastercard','D'=>'Discover','AMEX'=>'American Express','PP'=>'PayPal','GC'=>'Google Checkout','Other'=>'Other');
 
         //eDebug(mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
-//        $prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
+//        $prev_date = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
         //eDebug(strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y"))));
 //        $now_date = strftime("%A, %d %B %Y");
-        $prev_month = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), mktime(0, 0, 0, (date('') - 1), 1, date('Y')));
+        $prev_date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), mktime(0, 0, 0, date('m'), 1, date('Y')));
         $now_date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT));
         $now_hour = date('h');
         $now_min = date('i');
         $now_ampm = date('A');
 
         assign_to_template(array(
-            'prev_month'      => $prev_month,
+            'prev_date'       => $prev_date,
             'now_date'        => $now_date,
             'now_hour'        => $now_hour,
             'now_min'         => $now_min,
@@ -1633,11 +1680,10 @@ class reportController extends expController {
         $summary = array();
         $valueproducts = '';
 
-        $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'), 3 => gt('Last 60 Days'), 4 => gt('Last 90 Days'), 5 => gt('Last 365 Days'), 6 => gt('Forever'));
-        $this->setDateParams($this->params);
-        if (!isset($this->params['quickrange'])) {
-            $this->params['quickrange'] = 0;
-        }
+//        if (!isset($this->params['quickrange']) && !isset($this->params['date-starttime']) && !isset($this->params['starttime'])) {
+//            $this->params['quickrange'] = $this::LAST_MONTH;
+//        }
+        $this->setDateParams();
 
         // purchased == 0 or invoice_id == 0 on unsubmitted orders
         $sql = "SELECT * FROM " . $db->tableStmt('orders') . " WHERE purchased = 0 AND edited_at >= " . $this->tstart . " AND edited_at <= " . $this->tend . " AND sessionticket_ticket NOT IN ";
@@ -1695,7 +1741,7 @@ class reportController extends expController {
         $summary['cartsWithItemsAndInfo'] = round(($allCarts['count'] ? $cartsWithItemsAndInfo['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
 
         assign_to_template(array(
-            'quickrange'            => $quickrange,
+            'quickrange'            => $this->quickrange,
             'quickrange_default'    => $this->params['quickrange'],
             'summary'               => $summary,
             'cartsWithoutItems'     => $cartsWithoutItems,
@@ -1716,11 +1762,10 @@ class reportController extends expController {
         $summary = array();
         $valueproducts = '';
 
-        $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'), 3 => gt('Last 60 Days'), 4 => gt('Last 90 Days'), 5 => gt('Last 365 Days'), 6 => gt('Forever'));
-        $this->setDateParams($this->params);
-        if (!isset($this->params['quickrange'])) {
-            $this->params['quickrange'] = 0;
-        }
+//        if (!isset($this->params['quickrange']) && !isset($this->params['date-starttime']) && !isset($this->params['starttime'])) {
+//            $this->params['quickrange'] = $this::LAST_MONTH;
+//        }
+        $this->setDateParams();
 
         // purchased == 0 or invoice_id == 0 on unsubmitted orders
         $sql = "SELECT * FROM " . $db->tableStmt('orders') . " WHERE purchased = 0 AND edited_at >= " . $this->tstart . " AND edited_at <= " . $this->tend . " AND sessionticket_ticket NOT IN ";
@@ -1759,7 +1804,7 @@ class reportController extends expController {
         $summary['cartsWithItemsAndInfo'] = round(($allCarts['count'] ? $cartsWithItemsAndInfo['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
 
         assign_to_template(array(
-            'quickrange'            => $quickrange,
+            'quickrange'            => $this->quickrange,
             'quickrange_default'    => $this->params['quickrange'],
             'summary'               => $summary,
             'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo
@@ -1857,7 +1902,7 @@ class reportController extends expController {
             'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo
         ));
         /*
-        $this->setDateParams($this->params);
+        $this->setDateParams();
         $except = array('order_discounts', 'billingmethod', 'order_status_changes', 'billingmethod','order_discounts');
         //$orders = $this->o->find('all','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend,null,null,null,true,false,$except,true);
         // $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m-%d') AS formattedDate FROM orders WHERE created_at
@@ -1899,10 +1944,9 @@ class reportController extends expController {
 
 
 
-        $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'), 3 => gt('Last 60 Days'), 4 => gt('Last 90 Days'), 5 => gt('Last 365 Days'), 6 => gt('Forever'));
-        $quickrange_default = isset($this->params['quickrange']) ? $this->params['quickrange'] : 0;
-        assign_to_template(array('orders'=>$oar,'quickrange'=>$quickrange,'quickrange_default'=>$quickrange_default));
-        assign_to_template(array('prev_month'=>$this->prev_month, 'now_date'=>$this->now_date, 'now_hour'=>$this->now_hour, 'now_min'=>$this->now_min, 'now_ampm'=>$this->now_ampm, 'prev_hour'=>$this->prev_hour, 'prev_min'=>$this->prev_min, 'prev_ampm'=>$this->prev_ampm));
+        $quickrange_default = isset($this->params['quickrange']) ? $this->params['quickrange'] : $this::LAST_MONTH;
+        assign_to_template(array('orders'=>$oar,'quickrange'=>$this->quickrange,'quickrange_default'=>$quickrange_default));
+        assign_to_template(array('prev_date'=>$this->prev_date, 'now_date'=>$this->now_date, 'now_hour'=>$this->now_hour, 'now_min'=>$this->now_min, 'now_ampm'=>$this->now_ampm, 'prev_hour'=>$this->prev_hour, 'prev_min'=>$this->prev_min, 'prev_ampm'=>$this->prev_ampm));
         */
     }
 
