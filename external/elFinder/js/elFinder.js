@@ -814,6 +814,14 @@ var elFinder = function(elm, opts, bootCallback) {
 	this.i18nBaseUrl = '';
 
 	/**
+	 * Base URL of worker js files
+	 * baseUrl + "js/worker/" when empty value
+	 * 
+	 * @type String
+	 */
+	this.workerBaseUrl = '';
+
+	/**
 	 * Is elFinder CSS loaded
 	 * 
 	 * @type Boolean
@@ -1132,6 +1140,7 @@ var elFinder = function(elm, opts, bootCallback) {
 	})();
 	
 	this.i18nBaseUrl = (this.options.i18nBaseUrl || this.baseUrl + 'js/i18n').replace(/\/$/, '') + '/';
+	this.workerBaseUrl = (this.options.workerBaseUrl || this.baseUrl + 'js/worker').replace(/\/$/, '') + '/';
 
 	this.options.maxErrorDialogs = Math.max(1, parseInt(this.options.maxErrorDialogs || 5));
 
@@ -8937,6 +8946,11 @@ elFinder.prototype = {
 			} else {
 				kind = this.kinds[mime];
 			}
+		} else if (this.mimeTypes[mime]) {
+			kind = this.mimeTypes[mime].toUpperCase();
+			if (!this.messages['kind'+kind]) {
+				kind = null;
+			}
 		}
 		if (! kind) {
 			if (mime.indexOf('text') === 0) {
@@ -10168,7 +10182,7 @@ elFinder.prototype = {
 	 * @return     {<type>}  The worker url.
 	 */
 	getWorkerUrl : function(filename) {
-		return this.convAbsUrl(this.baseUrl + 'js/worker/' + filename);
+		return this.convAbsUrl(this.workerBaseUrl + filename);
 	},
 
 	/**

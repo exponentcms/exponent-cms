@@ -44,7 +44,7 @@
                     </tr>
                     <tr class="odd">
                         <td>
-                            {control type="calendar" name="pstartdate" label="Purchased Between"|gettext default_date=$prev_month default_hour='12' default_min='00' default_ampm='AM'}
+                            {control type="calendar" name="pstartdate" label="Purchased Between"|gettext default_date=$prev_date default_hour='12' default_min='00' default_ampm='AM'}
                         </td>
                     </tr>
                     <tr class="odd">
@@ -64,7 +64,7 @@
                     </tr>
                     <tr class="odd">
                         <td>
-                            {control type="calendar" name="sstartdate" label="Status Changed Between"|gettext default_date=$prev_month default_hour='12' default_min='00' default_ampm='AM'}
+                            {control type="calendar" name="sstartdate" label="Status Changed Between"|gettext default_date=$prev_date default_hour='12' default_min='00' default_ampm='AM'}
                         </td>
                     </tr>
                     <tr class="odd">
