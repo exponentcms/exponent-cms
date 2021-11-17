@@ -143,7 +143,7 @@ if (DEBUG_HISTORY && $user->isAdmin() && !expJavascript::inAjaxAction())
 	eDebug(expHistory::print_history());
 //write page build/load time if in DEVELOPMENT mode with logging
 if (DEVELOPMENT && LOGGER)
-	eLog($timer->mark() . ' - ' . $section . '/' . $sectionObj->sef_name, gt('LOAD TIME'));
+	eLog(expDateTime::duration(0, $timer->mark(), true) . ' - ' . $section . '/' . $sectionObj->sef_name, gt('LOAD TIME'));
 
 if (EXPORT_AS_PDF == 1) {
     $content = ob_get_clean();
