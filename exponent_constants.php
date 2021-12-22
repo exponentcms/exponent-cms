@@ -646,7 +646,7 @@ if (!defined('MPDF7_VERSION')) {
     define('MPDF7_VERSION', '7.1.9');
 }
 if (!defined('MPDF8_VERSION')) {
-    define('MPDF8_VERSION', '8.0.8');  // 8.0.13
+    define('MPDF8_VERSION', '8.0.8');  // 8.0.15
 }
 /**
  * Log is needed for MPDF v7+
@@ -668,11 +668,11 @@ if (!defined('FPDI_VERSION')) {
 }
 
 if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '086');  // 102
+    define('DOMPDF8_VERSION', '086');  // 111
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.2');  // 5.2.3
+    define('HTML2PDF5_VERSION', '5.2.2');  // 5.2.4
 }
 /**
  * TCPDF is needed for HTML2PDF
