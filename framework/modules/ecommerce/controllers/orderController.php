@@ -579,14 +579,14 @@ exit();
             $pdf->writeHTMLCell($w=0, $h=0, $x='', $y='', $invoice, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
             $pdf->Output($org_name . "_Invoice" . ".pdf", 'I');
             exit();*/
-            eDebug("Done rendering invoice html. Starting PDF Generation: " . $timer->mark());
+            eDebug("Done rendering invoice html. Starting PDF Generation: " . expDateTime::duration(0, $timer->mark(), true));
             $pdfer = new expHtmlToPDF(HTMLTOPDF_PAPER, 'Portrait', $invoice);
 //            $pdfer->set_html($invoice);
 //            $pdfer->set_orientation('Portrait');
 //            $pdfer->set_page_size('Letter');
             $pdfer->set_grayscale(true);
 //            $pdfer->render();
-            eDebug("Done rendering PDF " . $timer->mark());
+            eDebug("Done rendering PDF " . expDateTime::duration(0, $timer->mark(), true));
 //            exit();
             ob_clean();
             $pdfer->createpdf('D', $org_name . "_Invoice" . ".pdf");
