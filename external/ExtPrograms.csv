@@ -103,7 +103,7 @@ FPDI,2.3.5,github.com/Setasign/FPDI,2.3.6,"optional, required by mPDF v7+"
 HTML2PDF,5.2.2/4.6.1,github.com/spipu/html2pdf,5.2.3,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.3.5,sourceforge.net/projects/tcpdf,6.4.2,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
-Kint,2.2.0/3.3.0,github.com/kint-php/kint,3.3.0,"optional, for formatted edebug output"
+Kint,2.2.0/3.3.0/4.0.0,github.com/kint-php/kint,4.0.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
 DataTables Buttons,,www.datatables.net,2.0.1,
