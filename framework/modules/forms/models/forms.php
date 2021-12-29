@@ -188,7 +188,7 @@ class forms extends expRecord {
     public function countRecords($where="1") {
         global $db;
 
-        if ($db->tableExists($this->table_name)) {
+        if ($db->tableExists("forms_" . $this->table_name)) {
             return $db->countObjects("forms_" . $this->table_name, $where);
         } else {
             return 0;
