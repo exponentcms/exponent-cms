@@ -76,19 +76,27 @@
                         <tr>
                             {foreach $page->columns as $field=>$caption}
                                 <td>
-                                    {if $field|lower == 'email' && stripos($value, '<a ') === false}
+                                    {if $field|lower == 'email' && !is_null($value) && stripos($value, '<a ') === false}
                                         <a href="mailto:{$fields.$field}">
                                     {elseif $caption@iteration == 1 && !$config.hide_view}
                                         <a href={link action=show forms_id=$f->id id=$fields.id}>
                                     {/if}
-                                    {if $field|lower == 'image'}
+                                    {if $field|lower == 'image' && !empty($fields.$field)}
                                         {$matches = array()}
                                         {$tmp = preg_match_all('~<a(.*?)href="([^"]+)"(.*?)>~', $fields.$field, $matches)}
                                         {$filename1 = $matches.2.0}
-                                        {$filename2 = str_replace(URL_BASE, '/', $filename1)}
-                                        {$base = str_replace(PATH_RELATIVE, '', BASE)}
+                                        {if !empty($filename1)}
+                                            {$filename2 = str_replace(array(URL_BASE, "//"), '/', $filename1)}
+                                        {else}
+                                            {$filename2 = $fields.$field}
+                                        {/if}
+                                        {if strlen(PATH_RELATIVE) > 1}
+                                            {$base = str_replace(PATH_RELATIVE, '', BASE)}
+                                        {else}
+                                            {$base = rtrim(BASE, "\\/")}
+                                        {/if}
                                         {$fileinfo = expFile::getImageInfo($base|cat:$filename2)}
-                                        {if $fileinfo.is_image == 1}
+                                        {if is_array($fileinfo) && $fileinfo.is_image == 1}
                                             {img src=$filename1 w=64}
                                         {else}
                                             {$fields.$field}

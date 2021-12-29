@@ -116,12 +116,19 @@ class uploadcontrol extends formcontrol {
      * @return string
      */
     static function templateFormat($db_data, $ctl) {
-        $base = str_replace(PATH_RELATIVE, '', BASE);
+        if (strlen(PATH_RELATIVE) > 1) {
+            $base = str_replace(PATH_RELATIVE, '', BASE);
+        } else {
+            $base = rtrim(BASE, "\\/");
+        }
         if (empty($db_data)) {
             return $db_data;
         } elseif (file_exists($base . $db_data)) {
             // if the file exists return a link
-            $baseurl = str_replace(PATH_RELATIVE, '', URL_BASE);
+            if (PATH_RELATIVE !== '/')
+                $baseurl = str_replace(PATH_RELATIVE, '', URL_BASE);
+            else
+                $baseurl = URL_BASE;
             return isset($db_data) ? ('<a href="' . $baseurl . $db_data . '">' . basename($db_data) . '</a>') : "";
         } else
             // file missing return filename
@@ -202,7 +209,7 @@ class uploadcontrol extends formcontrol {
      * @return string   The full directory and filename of the uploaded file
      */
     static function parseData($name, $values, $for_db = false) {
-        if (!isset($values[$name])) {
+        if (!isset($values[$name]) && empty($_FILES[$name]['name'])) {
             return null;
         } elseif (is_array($values[$name])) {
             $file = $values[$name]['name'];

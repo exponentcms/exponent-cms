@@ -386,11 +386,15 @@ class easypostcalculator extends shippingcalculator
             }
             foreach ($rates as $rate) {
                 if (isset($available_methods[$rate['carrier']])) {
+                    if (!is_null($rate['delivery_date']))
+                        $date = strtotime($rate['delivery_date']);
+                    else
+                        $date = "";
                     $eprates[$rate['carrier']][$rate['service']] = array(
                         'id' => $rate['carrier'] . ':' . $rate['service'],
                         'title' => $available_methods[$rate['carrier']][$rate['service']],
                         'cost' => $rate['rate'] + $handling,
-                        'delivery' => strtotime($rate['delivery_date']),
+                        'delivery' => $date,
                     );
                 }
             }
