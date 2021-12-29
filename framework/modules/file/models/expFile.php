@@ -934,11 +934,9 @@ class expFile extends expRecord {
      *
      * @return array|string  $_sizeinfo      An array of Image File info
      *                    or $error message  Error message
-     * @return string
      *
      */
     public static function getImageInfo($_path = false) {
-
         $_path = __realpath($_path);
 
         if (!file_exists($_path)) return self::IMAGE_ERR_FILENOTFOUND;
@@ -960,6 +958,7 @@ class expFile extends expRecord {
 //                if (array_key_exists($_fileData['extension'], $_types)) $_sizeinfo['mime'] = $_types[$_fileData['extension']];
 //            }
         } else {
+            $_sizeinfo = array();
             $_sizeinfo['is_image'] = false;
 //            if (!isset($_sizeinfo['mime'])) {
 //                // In case this implementation of getimagesize doesn't discover

@@ -40,16 +40,20 @@
                     {$captions.$fieldname}
                 </td>
                 <td>
-                    {if $fieldname|lower == 'email' && stripos($value, '<a ') === false}
+                    {if $fieldname|lower == 'email' && !is_null($value) && stripos($value, '<a ') === false}
                         <a href="mailto:{$value}">{$value}</a>
                     {elseif $fieldname|lower == 'image'}
                         {$matches = array()}
                         {$tmp = preg_match_all('~<a(.*?)href="([^"]+)"(.*?)>~', $value, $matches)}
                         {$filename1 = $matches.2.0}
-                        {$filename2 = str_replace(URL_BASE, '/', $filename1)}
+                        {if !empty($filename1)}
+                            {$filename2 = str_replace(array(URL_BASE, "//"), '/', $filename1)}
+                        {else}
+                            {$filename2 = $fields.$field}
+                        {/if}
                         {$base = str_replace(PATH_RELATIVE, '', BASE)}
                         {$fileinfo = expFile::getImageInfo($base|cat:$filename2)}
-                        {if $fileinfo.is_image == 1}
+                        {if is_array($fileinfo) && $fileinfo.is_image == 1}
                             {img src=$filename1 w=64 fulllink=1}
                         {else}
                             {$value}
