@@ -107,12 +107,16 @@
                                         <td>
                                             {if $fieldname|lower == 'email' && stripos($value, '<a ') === false}
                                                 <a href="mailto:{$value}">{$value}</a>
-                                            {elseif $fieldname|lower == 'image'}
+                                            {elseif $fieldname|lower == 'image' && !empty($fields.$field)}
                                                 {$matches = array()}
                                                 {$tmp = preg_match_all('~<a(.*?)href="([^"]+)"(.*?)>~', $value, $matches)}
                                                 {$filename1 = $matches.2.0}
-                                                {$filename2 = str_replace(URL_BASE, '/', $filename1)}
-                                                {$base = str_replace(PATH_RELATIVE, '', BASE)}
+                                                {$filename2 = str_replace(array(URL_BASE, "//"), '/', $filename1)}
+                                                {if strlen(PATH_RELATIVE) > 1}
+                                                    {$base = str_replace(PATH_RELATIVE, '', BASE)}
+                                                {else}
+                                                    {$base = rtrim(BASE, "\\/")}
+                                                {/if}
                                                 {$fileinfo = expFile::getImageInfo($base|cat:$filename2)}
                                                 {if $fileinfo.is_image == 1}
                                                     {img src=$filename1 w=64}

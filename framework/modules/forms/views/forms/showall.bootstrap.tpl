@@ -88,12 +88,16 @@
                                     {elseif $caption@iteration == 1 && !$config.hide_view}
                                         <a href={link action=show forms_id=$f->id id=$fields.id}>
                                     {/if}
-                                    {if $field|lower == 'image'}
+                                    {if $field|lower == 'image' && !empty($fields.$field)}
                                         {$matches = array()}
                                         {$tmp = preg_match_all('~<a(.*?)href="([^"]+)"(.*?)>~', $fields.$field, $matches)}
                                         {$filename1 = $matches.2.0}
-                                        {$filename2 = str_replace(URL_BASE, '/', $filename1)}
-                                        {$base = str_replace(PATH_RELATIVE, '', BASE)}
+                                        {$filename2 = str_replace(array(URL_BASE, "//"), '/', $filename1)}
+                                        {if strlen(PATH_RELATIVE) > 1}
+                                            {$base = str_replace(PATH_RELATIVE, '', BASE)}
+                                        {else}
+                                            {$base = rtrim(BASE, "\\/")}
+                                        {/if}
                                         {$fileinfo = expFile::getImageInfo($base|cat:$filename2)}
                                         {if $fileinfo.is_image == 1}
                                             {img src=$filename1 w=64}

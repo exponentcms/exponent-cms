@@ -465,6 +465,11 @@ class expCSS {
                             } else {
                                 $map_write_to = BASE . 'tmp/css/' . $less_cname . ".map";
                             }
+                            if (strlen(PATH_RELATIVE) != 1) {
+                                $basePath = rtrim(realpath(str_replace(PATH_RELATIVE, '', BASE)), "\\/");
+                            } else {
+                                $basePath = rtrim(realpath(BASE), '\\/');
+                            }
                             $iless_options = array(
                                 'sourceMap'         => true,  // output .map file?
                                 'sourceMapOptions' => array(
@@ -478,7 +483,7 @@ class expCSS {
                                     // output source contents?
                                     'source_contents' => false,
                                     // base path for filename normalization
-                                    'base_path' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
+                                    'base_path' => $basePath,  // base (difference between) file & url locations, removed from ALL source files in .map
                                 ),
                             );
                         }
@@ -605,9 +610,9 @@ class expCSS {
                                 $map_filename = PATH_RELATIVE . $css_fname;
                             }
                             if (strlen(PATH_RELATIVE) != 1) {
-                                $basePath = rtrim(realpath(str_replace(PATH_RELATIVE, '', BASE)), '/');
+                                $basePath = rtrim(realpath(str_replace(PATH_RELATIVE, '', BASE)), "\\/");
                             } else {
-                                $basePath = rtrim(realpath(BASE), '/');
+                                $basePath = rtrim(realpath(BASE), '\\/');
                             }
                             $less->setOptions(array(
 //                                'outputSourceFiles' => true,  // include css source in .map file?
@@ -738,9 +743,9 @@ class expCSS {
                         if (DEVELOPMENT && LESS_COMPILER_MAP && $scss_compiler === 'scssphp') {
                             $scss->setSourceMap((int)LESS_COMPILER_MAP);  // output .map file?
                             if (strlen(PATH_RELATIVE) != 1) {
-                                $basePath = rtrim(realpath(str_replace(PATH_RELATIVE, '', BASE)), '/');
+                                $basePath = rtrim(realpath(str_replace(PATH_RELATIVE, '', BASE)), "\\/");
                             } else {
-                                $basePath = rtrim(realpath(BASE), '/');
+                                $basePath = rtrim(realpath(BASE), '\\/');
                             }
                             $scss->setSourceMapOptions(array(
 //                                'outputSourceFiles' => true,  // include css source in .map file?
