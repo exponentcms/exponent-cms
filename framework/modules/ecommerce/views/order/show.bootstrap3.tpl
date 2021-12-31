@@ -524,6 +524,7 @@
                                         {$bt->getPoster()}
                                     </td>
                                     <td>
+                                        {permissions}
                                         {if $permissions.manage && $smarty.foreach.foo.first}
                                             {* fixme this is where we'd do reAuthorize() or authorize() *}
                                             {if $bt->transaction_state == "authorized" || ($bt->billing_options->pending_reason == "authorization" && $bt->transaction_state == "error") || 1}
@@ -558,6 +559,7 @@
                                                 {/if}
                                             {/if}
                                         {/if}
+                                        {/permissions}
                                     </td>
                                 </tr>
                             {foreachelse}
@@ -750,7 +752,7 @@
                                                 <select class="form-control" id="order_status_messages" name="order_status_messages" size="1">
                                                     <option value="0" selected>{'-- Select a predefined message --'|gettext}</option>
                                                     {foreach from=$messages item=msg}
-                                                        <option value="{$msg->body|escape:"all"}">{$msg->body|truncate:80}</option>
+                                                        <option value="{$msg->body|escape:"htmlall"}">{$msg->body|truncate:80}</option>
                                                     {/foreach}
                                                 </select>
                                                 {control id=email_message type="editor" name="email_message" label="or enter a Message"|gettext height=250 toolbar=basic tb_collapsed=1}

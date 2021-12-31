@@ -154,7 +154,7 @@ class mysqli_database extends database {
      * @return string
      */
     function wrapStmt($sql) {
-        return preg_replace('/\w*rank(?<!_rank)/', '`rank`', $sql);
+        return preg_replace('/\w*rank(?<!_rank)(?<!`rank)/', '`rank`', $sql);
     }
 
     /**
@@ -464,7 +464,7 @@ class mysqli_database extends database {
 			$res = @mysqli_query($this->connection, $sql);
 		}
         if (DEVELOPMENT && !$res)
-            eLog($sql . ' - ' . mysqli_error ( $this->connection ), 'sql Error');
+            eLog($this->wrapStmt($sql) . ' - ' . mysqli_error ( $this->connection ), 'sql Error');
         return $res;
     }
 
@@ -834,6 +834,8 @@ class mysqli_database extends database {
      * @return int
      */
     function countObjects($table, $where = null, $is_revisioned=false, $needs_approval=false, $user=null) {
+        if (!$this->tableExists($table))
+            return 0;
         if ($where == null)
             $where = "1";
         $as = '';
@@ -973,7 +975,7 @@ class mysqli_database extends database {
             return $id;
         } else
             if (DEVELOPMENT)
-               eLog($sql . ' - ' . mysqli_error ( $this->connection ), 'insertObject Error');
+               eLog($this->wrapStmt($sql) . ' - ' . mysqli_error ( $this->connection ), 'insertObject Error');
             return 0;
     }
 
@@ -1057,7 +1059,7 @@ class mysqli_database extends database {
         //if ($table == 'text') eDebug($sql,true);
         $res = (@mysqli_query($this->connection, $this->wrapStmt($sql)) != false);
         if (DEVELOPMENT && !$res)
-            eLog($sql . ' - ' . mysqli_error ( $this->connection ), 'updateObject Error');
+            eLog($this->wrapStmt($sql) . ' - ' . mysqli_error ( $this->connection ), 'updateObject Error');
         return $res;
     }
 
@@ -1488,6 +1490,8 @@ class mysqli_database extends database {
      * @return array
      */
     function selectExpObjects($table=null, $where=null, $classname=null, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false, $user=null) {
+        if (!$this->tableExists($table))
+            return array();
         if ($where == null)
             $where = "1";
         else
