@@ -178,11 +178,26 @@ abstract class expNestedNode extends expRecord {
 		return $db->selectPathToNestedNode($this->table, $this->id);
 	}
 
-	public function getTopLevel($name = "", $get_assoc=false, $get_attached=false) {
+    /**
+     * Returns an array of individual Top Level Tag Objects.
+     *
+     * @param string $name  sef_url
+     * @param bool $get_assoc
+     * @param bool $get_attached
+     *
+     * @return array $children   array of Top Level Tag Objects, empty if no objects
+     * @category nested_nodes
+     *
+     * @access public
+     *
+     * @global object $db
+     */
+    public function getTopLevel($name = "", $get_assoc=false, $get_attached=false) {
 		global $db;
 
         $where = 'parent_id=0';
-        if ($name != "") $where.=" AND title='" . $name . "'";
+        if ($name != "")
+            $where.=" AND sef_url='" . $name . "'";
         $where .= ' ORDER BY lft ASC';
 
       /* if ($name != "" )
@@ -214,7 +229,7 @@ abstract class expNestedNode extends expRecord {
      * <p>
      * This will *not* return "grandchildren", it is a single level query.
      *
-     * @param string $childName
+     * @param string $childName  sef_url
      * @param bool $get_assoc
      * @param bool $get_attached
      *
@@ -222,17 +237,13 @@ abstract class expNestedNode extends expRecord {
      * @category nested_nodes
      *
      * @access public
-     * @PHPUnit Not Defined|Implement|Completed
-     *
      *
      * @global object $db
-     *
-     * @internal param $none
      */
 	public function getChildren($childName = "", $get_assoc=false, $get_attached=false) {
 		global $db;
 
-       /**
+        /**
         * Create an empty array to hold any "child" tags, or to just send
         * back to indicate this Tag does not have children.
         *
@@ -243,8 +254,12 @@ abstract class expNestedNode extends expRecord {
         * @PHPUnit Not Defined
         *
         */
-        $where = 'parent_id='.$this->id;
-        if ($childName != "") $where.=" AND title='" . $childName . "'";
+        if (!empty($this->id))
+            $where = 'parent_id='.$this->id;
+        else
+            $where = '1';
+        if ($childName != "")
+            $where.=" AND sef_url='" . $childName . "'";
         $where .= " ORDER BY rgt ASC";
         return $db->selectExpObjects($this->tablename, $where, $this->classname, $get_assoc, $get_attached);
 	}

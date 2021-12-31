@@ -1,8 +1,49 @@
-### Version History
+# Version History
+*5.0.4 (2021/11/04)*
+* Switch data-src to src (PR #2893 Fixed #2891)
+
+*5.0.3 (2021/10/29)*
+* Add attribute `aria-describedby` to horizontal-volume button
+* Reinclude `type="button"` to the button, to prevent submit in forms. 
+* Consistent usage of space and return keys in all browsers (PR #2889 Fixed #2888)
+
+*5.0.2 (2021/10/18)*
+* Reflect correct aria-pressed status of overlay play button when clicked for the first time
+* Reflect toggling aria-pressed status of the overlay play button correctly
+*Minimizing necessary tabs for Firefox by setting audio/video-element to tabindex="-1"
+
+*5.0.1 (2021/10/05)*
+* Fix for fullscreen video not centering in mobile view (#2881)
+* Fix for volume-current and volume-total becoming non-distinguishable with custom high-contrast settings enabled (#2878)
+
+*5.0.0 (2021/09/13)*
+## The WCAG update
+To be WCAG 2.1 compliant we had to introduce breaking changes. We had to create a new solution to improve user defined values for colors and text size in the browser.
+We also improved the semantics and aria attributes for the control bar. By using inline svgs for the control elements we simplified customization with css properties because now `fill:color` and `stroke:color` can be used.
+
+
+* Change default value for fakeNodeName to `div` (#2800)
+* Copy all files from `/demo` folder to `/build` folder with grunt task
+* Replace background sprite for controls with svg icon sprite
+* New option `iconSprite`: path where the svg icon sprite is located, see [standalone documentation](docs/api.md#standalone)
+* Change `px` to `rem` values in styles
+* Add attribute `aria-describedby` to volume button
+
+*4.2.17 (2021/07/05)*
+
+* Fix player.options.startVolume overwritten by 0 (#2783)
+* Fix some html comments typos, Strip out old 404 sources (#2772)
+* Fix issues with fullscreen under Safari (#2762)
+* Get correct mime type for mov files (#2766)
+* Fix enableAutosize:false bug see #2753
+* Fix rare issue with offscreen.remove() #2752
+* Fix DFXP parsing: remove remnants of jQuery use (#2760)
+* Use the same rendererName variable when calculating isNative (#2759)
+* Improve formatting of the release.md docs
 
 *4.2.16 (2020/03/16)*
 
-* fix 4.2.15 release : update version to 4.2.16, rebuild
+* Fix 4.2.15 release : update version to 4.2.16, rebuild
 
 * Changed multiple urls in demo file (#2749)
 * Removed FLV and MP4 No Ext de to 404 replaced HLS due to 404 with Akamai Test stream

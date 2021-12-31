@@ -146,35 +146,53 @@ class shippingController extends expController {
 	    expHistory::set('manageable', $this->params);
 
 	    $calculators = array();
-        $dir = BASE."framework/modules/ecommerce/shippingcalculators";
         $default = false;
         $on = false;
-        if (is_readable($dir)) {
-            $dh = opendir($dir);
-            while (($file = readdir($dh)) !== false) {
-                if (is_file("$dir/$file") && substr("$dir/$file", -4) === ".php") {
-                    include_once("$dir/$file");
-                    $classname = substr($file, 0, -4);
-                    $id = $db->selectValue('shippingcalculator', 'id', 'calculator_name=\''.$classname.'\'');
-                    if (empty($id)) {
-                        // update list of calculators in db
-                        $calcobj = new $classname($this->params);
-                        if ($calcobj->isSelectable() == true) {
-                            $calcobj->update(array('title'=>$calcobj->name(),'body'=>$calcobj->description(),'calculator_name'=>$classname,'enabled'=>false));
+        $calc_dirs = array(
+            THEME_ABSOLUTE . "modules/ecommerce/shippingcalculators",
+            BASE . "framework/modules/ecommerce/shippingcalculators",
+        );
+        foreach ($calc_dirs as $dir) {
+            if (is_readable($dir)) {
+                $dh = opendir($dir);
+                while (($file = readdir($dh)) !== false) {
+                    if (is_file("$dir/$file") && substr("$dir/$file", -4) === ".php") {
+                        if (array_key_exists(substr($file, 0, -4), $calculators)) {
+                            continue;
                         }
-                    } else {
-                        $calcobj = new $classname($id);
+                        include_once("$dir/$file");
+                        $classname = substr($file, 0, -4);
+                        $id = $db->selectValue('shippingcalculator', 'id', 'calculator_name=\'' . $classname . '\'');
+                        if (empty($id)) {
+                            // update list of calculators in db
+                            $calcobj = new $classname();
+                            if ($calcobj->isSelectable() == true) {
+                                $calcobj->update(array(
+                                    'title' => $calcobj->name(),
+                                    'body' => $calcobj->description(),
+                                    'calculator_name' => $classname,
+                                    'enabled' => false));
+                                $calculators[$calcobj->classname] = $calcobj;
+                            }
+                        } else {
+                            $calcobj = new $classname($id);
+                            $calculators[$calcobj->classname] = $calcobj;
+                        }
+                        if (!$default)
+                            $default = $calcobj->is_default;
+                        if (!$on && $calcobj->enabled)
+                            $on = $calcobj->id;
                     }
-                    $calculators[] = $calcobj;
-                    if (!$default) $default = $calcobj->is_default;
-                    if (!$on && $calcobj->enabled) $on = $calcobj->id;
                 }
             }
-            if (!$default && $on) {
-                $db->toggle('shippingcalculator', 'is_default', 'id='.$on);
-                foreach ($calculators as $idx=>$calc) {
-                    if ($calc->id == $on) $calculators[$idx]->is_default = 1;
-                }
+        }
+
+        // ensure there is a single default shipping calculator and it is enabled
+        if (!$default && $on) {
+            $db->toggle('shippingcalculator', 'is_default', 'id=' . $on);
+            foreach ($calculators as $idx => $calc) {
+                if ($calc->id == $on)
+                    $calculators[$idx]->is_default = 1;
             }
         }
         assign_to_template(array(

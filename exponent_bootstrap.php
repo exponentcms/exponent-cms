@@ -54,11 +54,14 @@ if (!function_exists('__realpath')) {
 	 * @return string
 	 */
 	function __realpath($path) {
-		$path = str_replace('\\','/',realpath($path));
-		if (!empty($path[1]) && $path[1] === ':') {
-			// We can't just check for C:/, because windows users may have the IIS webroot on X: or F:, etc.
-			$path = substr($path,2);
-		}
+        $realpath = realpath($path);
+        if ($realpath) {  // allow for relative paths accidently passed
+            $path = str_replace('\\', '/', $realpath);
+            if (!empty($path[1]) && $path[1] === ':') {
+                // We can't just check for C:/, because windows users may have the IIS webroot on X: or F:, etc.
+                $path = substr($path, 2);
+            }
+        }
 		return $path;
 	}
 }
@@ -82,6 +85,12 @@ define('EXPONENT', EXPONENT_VERSION_MAJOR);
 
 // load the constants from the global config and then default config settings
 require_once(BASE . 'framework/core/subsystems/expSettings.php');  // we don't have our autoloader loaded yet
+
+// check to ensure the request is coming from our server
+if (!isset($_SERVER['HTTP_HOST']) || ($_SERVER['HTTP_HOST'] != SITE_URL && SITE_URL !== '0')) {
+    header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request');
+    exit;
+}
 
 // Process PHP-wrapper settings (ini_sets and settings, and autoloader)
 require_once(BASE . 'exponent_php_setup.php');

@@ -885,8 +885,10 @@ function object2Array($object=null) {
 }
 
 function expUnserialize($serial_str) {
-    if ($serial_str === 'Array') return null;  // empty array string??
-    if (is_array($serial_str) || is_object($serial_str)) return $serial_str;  // already unserialized
+    if ($serial_str === 'Array' || is_null($serial_str))
+        return null;  // empty array string??
+    if (is_array($serial_str) || is_object($serial_str))
+        return $serial_str;  // already unserialized
 //    $out1 = @preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $serial_str );
 //    $out1 = preg_replace_callback(
 //        '!s:(\d+):"(.*?)";!s',
@@ -1177,10 +1179,10 @@ function eDebug($var, $halt=false, $disable_log=false){
 //            echo("<script>YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {Y.log('".json_encode($pvar)."','info','exp')});;</script>");
             eLog($var, gt('DEBUG'));
         } else {
-            if (expCore::is_php('7.0') && file_exists(BASE . 'external/kint-3.3/build/kint.phar')) {
-                require_once BASE . 'external/kint-3.3/build/kint.phar';
-                d($var);  // kint v3
-            } elseif (file_exists(BASE . 'external/kint/build/kint.php')) {
+            if (file_exists(BASE . 'external/kint.phar')) {
+                require_once BASE . 'external/kint.phar';
+                d($var);  // kint v3 & v4
+            } elseif (file_exists(BASE . 'external/kint-2.2/build/kint.php')) {
                 require_once BASE . 'external/kint-2.2/build/kint.php';
                 d($var);  // kint v2
             } elseif (file_exists(BASE . 'external/kint/Kint.class.php')) {
@@ -1251,6 +1253,26 @@ function get_thumbnail($src) {
  */
 function isSSL() {
     return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+}
+
+/**
+ * Equivalent to `date_format_to( $format, 'date' )`
+ *
+ * @param string $strf_format A `strftime()` date/time format
+ * @return string
+ */
+function strftime_to_date_format( $strf_format ) {
+	return expDateTime::date_format_to( $strf_format, 'date' );
+}
+
+/**
+ * Equivalent to `convert_datetime_format_to( $format, 'strf' )`
+ *
+ * @param string $date_format A `date()` date/time format
+ * @return string
+ */
+function date_to_strftime_format( $date_format ) {
+	return expDateTime::date_format_to( $date_format, 'strf' );
 }
 
 ?>

@@ -46,7 +46,7 @@ class passthru extends billingcalculator {
     }
 
     //Called for billing medthod seletion screen, return true if it's a valid billing method.
-//    function pre_process($config_object, $order, $billaddress, $shippingaddress) {
+//    function preprocess($config_object, $order, $billaddress, $shippingaddress) {
 //        return true;
 //    }
 

@@ -32,7 +32,7 @@
 function smarty_function_control($params, &$smarty) {
     global $db, $user;
 
-    if ((isset($params['type']) && isset($params['name'])) || $params['type'] == 'buttongroup' || $params['type'] == 'antispam' || $params['type'] == 'tags') {
+    if ((isset($params['type']) && isset($params['name'])) || $params['type'] === 'buttongroup' || $params['type'] === 'antispam' || $params['type'] === 'tags') {
 //    || $params['type'] == 'captcha' || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
 
         // if a label wasn't passed in then we need to set one.
@@ -50,27 +50,32 @@ function smarty_function_control($params, &$smarty) {
         switch ($params['type']) {
             case "popupdatetimecontrol":
             case "popupdatetime":
-                if (empty($params['value'])) $params['value'] = time();
+                if (empty($params['value']))
+                    $params['value'] = time();
                 $disabletext = isset($params['disable_text']) ? $params['disable_text'] : '';
                 $control = new popupdatetimecontrol($params['value'], $disabletext, $showtime);
                 break;
             case "yuidatetimecontrol":
             case "yuidatetime":
-                if (empty($params['value'])) $params['checked'] = true;
-                if (empty($params['value'])) $params['value'] = time();
+                if (empty($params['value']))
+                    $params['checked'] = true;
+                if (empty($params['value']))
+                    $params['value'] = time();
                 $edittext = isset($params['edit_text']) ? $params['edit_text'] : 'Change Date/Time';
                 $control = new yuidatetimecontrol($params['value'], $edittext, $showdate, $showtime);
                 break;
             case "yuicalendarcontrol":
             case "yuicalendar":
-                if (empty($params['value'])) $params['value'] = time();
+                if (empty($params['value']))
+                    $params['value'] = time();
 //                $disabletext = isset($params['disable_text']) ? $params['disable_text'] : 'Change Date/Time';
 //                $control = new yuicalendarcontrol($params['value'], $disabletext, $showtime);
                 $control = new yuicalendarcontrol($params['value'], $showdate, $showtime);
                 break;
             case "datetimecontrol":
             case "datetime":
-                if (empty($params['value'])) $params['value'] = time();
+                if (empty($params['value']))
+                    $params['value'] = time();
                 $control  = new datetimecontrol($params['value'], $showdate, $showtime);
                 break;
             case "calendarcontrol":
@@ -87,11 +92,13 @@ function smarty_function_control($params, &$smarty) {
                 $returntype = isset($params['returntype']) ? $params['returntype'] : null;
                 $control    = new buttongroupcontrol($submit, $reset, $cancel, null, $returntype);
                 $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
-                if (!empty($params['wide'])) $control->wide = $params['wide'];
+                if (!empty($params['wide']))
+                    $control->wide = $params['wide'];
                 break;
             case "uploader":
                 $control = new uploadcontrol();
-                if (!empty($params['accept'])) $control->accept = $params['accept'];
+                if (!empty($params['accept']))
+                    $control->accept = $params['accept'];
                 $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
                 break;
             case "files":
@@ -101,10 +108,13 @@ function smarty_function_control($params, &$smarty) {
                     $subtype        = isset($params['subtype']) ? $params['subtype'] : null;
                     $control        = new filemanagercontrol($subtype);
                     $control->limit = isset($params['limit']) ? $params['limit'] : 10;
-                    if (!empty($params['value'])) $control->value = $params['value'];
+                    if (!empty($params['value']))
+                        $control->value = $params['value'];
                 }
-                if (!empty($params['folder'])) $control->folder = $params['folder'];
-                if (!empty($params['accept'])) $control->accept = $params['accept'];
+                if (!empty($params['folder']))
+                    $control->folder = $params['folder'];
+                if (!empty($params['accept']))
+                    $control->accept = $params['accept'];
                 break;
             case "filedisplay-types":
                 $control                = new dropdowncontrol();
@@ -114,9 +124,11 @@ function smarty_function_control($params, &$smarty) {
             case "dropdown":
                 $control                = new dropdowncontrol(!empty($params['default'])?$params['default']:null);
                 $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
-                if (isset($params['default'])) $control->default = $params['default'];
+                if (isset($params['default']))
+                    $control->default = $params['default'];
                 $control->type          = "select";
-                if (isset($params['style'])) $control->style = $params['style'];
+                if (isset($params['style']))
+                    $control->style = $params['style'];
                 $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
                 $control->multiple      = isset($params['multiple']) ? true : false;
                 $control->select2      = isset($params['select2']) ? $params['select2'] : false;
@@ -138,7 +150,8 @@ function smarty_function_control($params, &$smarty) {
                         $control->items[$item->$key] = $item->$display;
                     }
                     $noitems = gt("-- No items found --");
-                    if (count($control->items) < 1 && empty($control->include_blank)) $control->items = array(0=> $noitems);
+                    if (count($control->items) < 1 && empty($control->include_blank))
+                        $control->items = array(0=> $noitems);
                 } else {
                     if (is_array($params['items'])) {
                         $control->items = $params['items'];
@@ -168,17 +181,15 @@ function smarty_function_control($params, &$smarty) {
                 $control            = new checkboxcontrol($default);
                 $control->postfalse = isset($params['postfalse']) ? 1 : 0;
                 $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
-                $control->newschool = true;
+                $control->switch = (isset($params['switch'])) ? 1 : 0;
                 $control->value     = isset($params['value']) ? $params['value'] : 1;
                 $control->jsHooks   = isset($params['hooks']) ? $params['hooks'] : null;
                 break;
             case "radiogroup":
                 $control = new radiogroupcontrol();
-                // differentiate it from the old school forms
-                $control->newschool = true;
-                if (!empty($params['default']))
+                if (isset($params['default']))
                     $control->default = $params['default'];
-                elseif (!empty($params['value']))
+                elseif (isset($params['value']))
                     $control->default = $params['value'];
                 $control->cols      = $params['columns'];
 
@@ -192,19 +203,23 @@ function smarty_function_control($params, &$smarty) {
                 } else {
                     $control->items = $items; //array_combine($items, $items);
                 }
-                if (!empty($params['item_descriptions'])) $control->item_descriptions = $params['item_descriptions'];
+                if (!empty($params['item_descriptions']))
+                    $control->item_descriptions = $params['item_descriptions'];
                 break;
             case "radio":
                 $control            = new radiocontrol();
-                if (!empty($params['value'])) $control->value = $params['value'];
-                $control->newschool = true;
+                if (!empty($params['value']))
+                    $control->value = $params['value'];
                 $control->cols      = $params['columns'];
                 break;
             case "textarea":
                 $control = new texteditorcontrol();
-                if (isset($params['module'])) $control->module = $params['module'];
-                if (isset($params['rows'])) $control->rows = $params['rows'];
-                if (isset($params['cols'])) $control->cols = $params['cols'];
+                if (isset($params['module']))
+                    $control->module = $params['module'];
+                if (isset($params['rows']))
+                    $control->rows = $params['rows'];
+                if (isset($params['cols']))
+                    $control->cols = $params['cols'];
                 //if (isset($params['toolbar'])) $control->toolbar = $params['toolbar'];
                 break;
             case "editor":
@@ -237,11 +252,15 @@ function smarty_function_control($params, &$smarty) {
                     $control->additionalConfig = empty($params['additionalConfig']) ? '' : $params['additionalConfig'];
                 } else {
                     $control = new htmleditorcontrol();
-                    if (isset($params['module'])) $control->module = $params['module'];
-                    if (isset($params['rows'])) $control->rows = $params['rows'];
-                    if (isset($params['cols'])) $control->cols = $params['cols'];
+                    if (isset($params['module']))
+                        $control->module = $params['module'];
+                    if (isset($params['rows']))
+                        $control->rows = $params['rows'];
+                    if (isset($params['cols']))
+                        $control->cols = $params['cols'];
                     $control->height = !empty($params['height']) ? $params['height'] : "600px";
-                    if (isset($params['toolbar'])) $control->toolbar = $params['toolbar'];
+                    if (isset($params['toolbar']))
+                        $control->toolbar = $params['toolbar'];
                 }
                 break;
             case "listbuilder":
@@ -262,8 +281,10 @@ function smarty_function_control($params, &$smarty) {
             case "color":
             case "colorpicker":
                 $control = new colorcontrol();
-                if (!empty($params['value'])) $control->value = $params['value'];
-                if (!empty($params['hide'])) $control->hide = $params['hide'];
+                if (!empty($params['value']))
+                    $control->value = $params['value'];
+                if (!empty($params['hide']))
+                    $control->hide = $params['hide'];
                 break;
             case "state":
                 //old use:  if (empty($params['all_us_territories'])) {
@@ -277,8 +298,10 @@ function smarty_function_control($params, &$smarty) {
 
                 if ($db->tableExists('geo_region')) {
                     $c = $db->selectObject('geo_country', 'is_default=1');
-                    if (empty($c->id)) $country = 223;  //FIXME this is the US in sample db
-                    else $country = $c->id;
+                    if (empty($c->id))
+                        $country = 223;  //FIXME this is the US in sample db
+                    else
+                        $country = $c->id;
 
                     $control = new dropdowncontrol();
 
@@ -307,8 +330,8 @@ function smarty_function_control($params, &$smarty) {
                     // sanitize the default value. can accept as id, code abbrv or full name,
                     if (!empty($params['default']) && !is_numeric($params['default']) && !is_array($params['default'])) {
                         $params['default'] = $db->selectValue('geo_region', 'id', 'name="' . $params['default'] . '" OR code="' . $params['default'] . '"');
-                    } elseif (is_numeric($params['default'])) {
-                        $params['default'];
+//                    } elseif (is_numeric($params['default'])) {
+//                        $params['default'];
                     }
                     if (isset($params['default']))
                         $control->default = $params['default'];
@@ -330,8 +353,10 @@ function smarty_function_control($params, &$smarty) {
                         //$control->items[-1] = 'ALL United States';
                     }
 
-                    if ($params['show_all']) $countries = $db->selectObjects('geo_country', null, 'name ASC');
-                    else $countries = $db->selectObjects('geo_country', 'active=1', 'name ASC');
+                    if ($params['show_all'])
+                        $countries = $db->selectObjects('geo_country', null, 'name ASC');
+                    else
+                        $countries = $db->selectObjects('geo_country', 'active=1', 'name ASC');
 
                     foreach ($countries as $country) {
                         //if (!in_array($country->id, $not_countries)) {
@@ -467,8 +492,10 @@ function smarty_function_control($params, &$smarty) {
 
         //eDebug($smarty->getTemplateVars('formError'));
         //Add the optional params in specified
-        if (isset($params['class'])) $control->class = $params['class'];
-        if (isset($params['required'])) $control->required = true;
+        if (isset($params['class']))
+            $control->class = $params['class'];
+        if (isset($params['required']))
+            $control->required = true;
 
         // Let see if this control should be checked
         if (isset($params['checked'])) {
@@ -479,7 +506,8 @@ function smarty_function_control($params, &$smarty) {
                     $control->checked = true;
                 } elseif (is_object(current($params['checked']))) {
                     foreach ($params['checked'] as $obj) {
-                        if ($obj->id == $params['value']) $control->checked = true;
+                        if ($obj->id == $params['value'])
+                            $control->checked = true;
                     }
                 }
             } elseif ($params['value'] == $params['checked']) {
@@ -516,50 +544,78 @@ function smarty_function_control($params, &$smarty) {
 //                    }
 //                }
             } elseif ($params['type'] === 'countryregion') {
-                if (!empty($post['country'])) $control->country_default = $post['country'];
-                if (!empty($post['state'])) $control->region_default = $post['state'];
+                if (!empty($post['country']))
+                    $control->country_default = $post['country'];
+                if (!empty($post['state']))
+                    $control->region_default = $post['state'];
             } elseif (isset($params['multiple'])) {
                 $realname = str_replace('[]', '', $params['name']);
-                if (!empty($post[$realname])) $control->default = $post[$realname];
+                if (!empty($post[$realname]))
+                    $control->default = $post[$realname];
             } else {
-                if (!empty($post[$params['name']])) $control->default = $post[$params['name']];
+                if (!empty($post[$params['name']]))
+                    $control->default = $post[$params['name']];
             }
         } elseif (isset($params['value'])) {
             // if this field is filtered than lets go ahead and format the data before we stick it in the field.
-            if (!empty($params['filter']) && $params['filter'] == 'money') {
+            if (!empty($params['filter']) && $params['filter'] === 'money') {
                 $params['value'] = expCore::getCurrencySymbol() . number_format((float)$params['value'], 2, '.', ',');
-            } elseif (!empty($params['filter']) && $params['filter'] == 'integer') {
+            } elseif (!empty($params['filter']) && $params['filter'] === 'integer') {
                 $params['value'] = number_format((float)$params['value'], 0, '.', ',');
             }
-            if ($params['type'] != 'checkbox' && $params['type'] != 'radio' && $params['type'] != 'radiogroup') $control->default = $params['value']; //FIXME is value always == default?
+            if ($params['type'] !== 'checkbox' && $params['type'] !== 'radio' && $params['type'] !== 'radiogroup') $control->default = $params['value']; //FIXME is value always == default?
         }
 
         //if (isset($params['value'])) $control->default = $params['value'];
-        if (isset($params['caption'])) $control->caption = $params['caption'];
-        if (isset($params['description'])) $control->description = $params['description'];
-        if (isset($params['color'])) $control->color = $params['color'];
-        if (isset($params['cancel_color'])) $control->cancel_color = $params['cancel_color'];
+        if (isset($params['caption']))
+            $control->caption = $params['caption'];
+        if (isset($params['description']))
+            $control->description = $params['description'];
+        if (isset($params['color']))
+            $control->color = $params['color'];
+        if (isset($params['cancel_color']))
+            $control->cancel_color = $params['cancel_color'];
         if (isset($params['size'])) $control->size = $params['size'];
-        if (isset($params['nowrap'])) $control->nowrap = "nowrap";
-        if (isset($params['flip'])) $control->flip = $params['flip'];
-        if (isset($params['disabled']) && $params['disabled'] != false) $control->disabled = true;
-        if (isset($params['focus']) && $params['focus'] != false) $control->focus = true;
-        if (isset($params['maxlength'])) $control->maxlength = $params['maxlength'];
-        if (isset($params['tabindex'])) $control->tabindex = $params['tabindex'];
-        if (isset($params['accesskey'])) $control->accesskey = $params['accesskey'];
-        if (isset($params['filter'])) $control->filter = $params['filter'];
-        if (isset($params['onclick'])) $control->onclick = $params['onclick'];
-        if (isset($params['onchange'])) $control->onchange = $params['onchange'];
-        if (isset($params['readonly']) && $params['readonly'] != false) $control->readonly = true;
-        if (isset($params['ajaxaction'])) $control->ajaxaction = $params['ajaxaction'];
-        if (isset($params['loadjsfile'])) $control->loadjsfile = $params['loadjsfile'];
-        if (isset($params['default_date'])) $control->default_date = $params['default_date'];
-        if (isset($params['default_hour'])) $control->default_hour = $params['default_hour'];
-        if (isset($params['default_min'])) $control->default_min = $params['default_min'];
-        if (isset($params['default_ampm'])) $control->default_ampm = $params['default_ampm'];
-        if (isset($params['min'])) $control->min = $params['min'];
-        if (isset($params['max'])) $control->max = $params['max'];
-        if (isset($params['step'])) $control->step = $params['step'];
+        if (isset($params['nowrap']))
+            $control->nowrap = "nowrap";
+        if (isset($params['flip']))
+            $control->flip = $params['flip'];
+        if (isset($params['disabled']) && $params['disabled'] != false)
+            $control->disabled = true;
+        if (isset($params['focus']) && $params['focus'] != false)
+            $control->focus = true;
+        if (isset($params['maxlength']))
+            $control->maxlength = $params['maxlength'];
+        if (isset($params['tabindex']))
+            $control->tabindex = $params['tabindex'];
+        if (isset($params['accesskey']))
+            $control->accesskey = $params['accesskey'];
+        if (isset($params['filter']))
+            $control->filter = $params['filter'];
+        if (isset($params['onclick']))
+            $control->onclick = $params['onclick'];
+        if (isset($params['onchange']))
+            $control->onchange = $params['onchange'];
+        if (isset($params['readonly']) && $params['readonly'] != false)
+            $control->readonly = true;
+        if (isset($params['ajaxaction']))
+            $control->ajaxaction = $params['ajaxaction'];
+        if (isset($params['loadjsfile']))
+            $control->loadjsfile = $params['loadjsfile'];
+        if (isset($params['default_date']))
+            $control->default_date = $params['default_date'];
+        if (isset($params['default_hour']))
+            $control->default_hour = $params['default_hour'];
+        if (isset($params['default_min']))
+            $control->default_min = $params['default_min'];
+        if (isset($params['default_ampm']))
+            $control->default_ampm = $params['default_ampm'];
+        if (isset($params['min']))
+            $control->min = $params['min'];
+        if (isset($params['max']))
+            $control->max = $params['max'];
+        if (isset($params['step']))
+            $control->step = $params['step'];
 
         $params['name'] = !empty($params['name']) ? $params['name'] : '';
         $control->name  = $params['name'];
@@ -569,10 +625,12 @@ function smarty_function_control($params, &$smarty) {
 //        $control->id  = createValidId(isset($params['id']) && $params['id'] != "" ? $params['id'] : "");
         $control->id  = $params['id'];
         //echo $control->id;
-        if ($params['type'] != 'radio') {
+        if ($params['type'] !== 'radio') {
             // auto-create an 'id' from the name param and 'name' from the id param if needed
-            if (empty($control->id)) $control->id = createValidId($params['name'], $params['value']);
-            if (empty($control->name)) $control->name = $params['id'];
+            if (empty($control->id))
+                $control->id = createValidId($params['name'], $params['value']);
+            if (empty($control->name))
+                $control->name = $params['id'];
         }
 
         /*$labelclass = isset($params['labelclass']) ? ' '.$params['labelclass'] : '';

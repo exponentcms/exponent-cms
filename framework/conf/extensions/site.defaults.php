@@ -19,6 +19,7 @@
 if (!defined('ORGANIZATION_NAME')) define('ORGANIZATION_NAME',URL_BASE);
 if (!defined('SITE_TITLE')) define('SITE_TITLE','My New Exponent Site');
 if (!defined('SITE_HEADER')) define('SITE_HEADER','My New Exponent Header');
+if (!defined('SITE_URL')) define('SITE_URL','0');
 if (!defined('SEF_URLS')) define('SEF_URLS','0');
 if (!defined('ADVERTISE_RSS')) define('ADVERTISE_RSS','0');
 if (!defined('SKIP_VERSION_CHECK')) define('SKIP_VERSION_CHECK','0');

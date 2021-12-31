@@ -30,7 +30,7 @@ return array(
 		DB_FIELD_LEN=>255),
 	'password'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>128),
+		DB_FIELD_LEN=>512),
 	'is_admin'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'is_acting_admin'=>array(

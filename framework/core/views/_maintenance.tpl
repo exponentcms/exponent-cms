@@ -14,12 +14,16 @@
  *}
 
 <!DOCTYPE HTML>
-<html>
-    <head>
-        {*<meta http-equiv="Content-Type" content="text/html; charset={$smarty.const.LANG_CHARSET}"/>*}
-        <meta charset="{$smarty.const.LANG_CHARSET}">
-        <title>{$smarty.const.SITE_TITLE} :: {'Down for Maintenance.'|gettext}</title>
-        <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
+<html lang="{substr($smarty.const.LOCALE,0,2)}">
+<head>
+    <meta charset="{$smarty.const.LANG_CHARSET}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{$smarty.const.SITE_TITLE} :: {'Down for Maintenance.'|gettext}</title>
+    <meta http-equiv="Content-Language" content="{strtolower(str_replace('_', '-', $smarty.const.LOCALE))}">
+    <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <style type="text/css" media="screen">
             html {
                 background : #397993;

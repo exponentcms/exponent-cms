@@ -45,7 +45,7 @@ class splitcreditcard extends creditcard {
 
     //TODO: I don't think this is used any more but i don't have a clue
     //Called for billing method selection screen, return true if it's a valid billing method.
-//    function pre_process() {
+//    function preprocess() {
 //        return true;
 //    }
 

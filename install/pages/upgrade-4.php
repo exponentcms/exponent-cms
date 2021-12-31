@@ -24,6 +24,9 @@ global $db;
 
 $db_version = expVersion::dbVersion();
 
+array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/billingcalculators');
+array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/shippingcalculators');
+
 ?>
 <h2><?php echo gt('Upgrade Scripts'); ?></h2>
 <p>

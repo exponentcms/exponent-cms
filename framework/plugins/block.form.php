@@ -60,10 +60,14 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                     $btn_size = 'btn-small';
                 }
                 $btn_class .= ' ' . $btn_size;
-            } elseif (bs3() || bs4() || bs5()) {
-                if (bs3() || bs4()) {
+            } elseif (bs()) {
+                if (bs3()) {
                     expCSS::pushToHead(array(
                         "corecss" => "forms-bootstrap3"
+                    ));
+                } elseif ( bs4()) {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap4"
                     ));
                 } else {
                     expCSS::pushToHead(array(
@@ -127,7 +131,47 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 //    legend: false,
                     btnClass: '" . $btn_class . "',
                     titleClick: true,";
-            if (bs4() || bs5()) {
+            if (bs5()) {
+                $content .= "
+                    validateOptions: {
+						rules: {
+							'hiddenRecaptcha': {
+								required: function() {
+									if(grecaptcha.getResponse() == '') {
+										return true;
+									} else {
+										return false;
+									}
+								}
+							}
+						},
+                        highlight: function(element, errorClass, validClass) {
+                            // mark form as validated
+                            $(element).closest('form').addClass('was-validated');
+                            // move backward to label and set to invalid
+//                            $(element).parent().find('label').removeClass('is-valid').addClass('is-invalid');
+                        },
+                        unhighlight: function(element, errorClass, validClass) {
+                            // mark form as validated
+                            $(element).closest('form').addClass('was-validated');
+                            // move backward to label and set to valid
+//                            $(element).parent().find('label').removeClass('is-invalid').addClass('is-valid');
+                        },
+                        errorElement: 'small',
+                        errorClass: 'form-text invalid-feedback',
+                        errorPlacement: function(error, element) {
+                            if (element.parent('.input-group').length) {
+                                error.insertAfter(element.parent());
+                            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                                error.insertAfter(element.parent().parent());
+                            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                                error.appendTo(element.parent().parent());
+                            } else {
+                                error.insertAfter(element);
+                            }
+                        }
+                    }";
+            } elseif (bs4()) {
                 $content .= "
                     validateOptions: {
 						rules: {
@@ -173,8 +217,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             }
                         }
                     }";
-            } elseif (bs3()) {
-                $content .= "
+            } elseif (bs3()) {                $content .= "
                     validateOptions: {
 						rules: {
 							'hiddenRecaptcha': {
@@ -223,7 +266,48 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 )
             );
         } else {
-            if (bs4() || bs5()) {
+            if (bs5()) {
+                $content = "
+                    $('#" . $id . "').validate({
+						rules: {
+							'hiddenRecaptcha': {
+								required: function() {
+									if(grecaptcha.getResponse() == '') {
+										return true;
+									} else {
+										return false;
+									}
+								}
+							}
+						},
+                        highlight: function(element, errorClass, validClass) {
+                            // mark form as validated
+                            $(element).closest('form').addClass('was-validated');
+                            // move backward to label and set to invalid
+//                            $(element).parent().find('label').removeClass('is-valid').addClass('is-invalid');
+                        },
+                        unhighlight: function(element, errorClass, validClass) {
+                            // mark form as validated
+                            $(element).closest('form').addClass('was-validated');
+                            // move backward to label and set to valid
+//                            $(element).parent().find('label').removeClass('is-invalid').addClass('is-valid');
+                        },
+                        errorElement: 'small',
+                        errorClass: 'form-text invalid-feedback',
+                        errorPlacement: function(error, element) {
+                            if (element.parent('.input-group').length) {
+                                error.insertAfter(element.parent());
+                            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                                error.insertAfter(element.parent().parent());
+                            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                                error.appendTo(element.parent().parent());
+                            } else {
+                                error.insertAfter(element);
+                            }
+                        }
+                     });
+                ";
+            } elseif (bs4()) {
                 $content = "
                     $('#" . $id . "').validate({
 						rules: {

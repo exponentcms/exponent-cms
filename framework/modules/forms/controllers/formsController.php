@@ -147,7 +147,7 @@ class formsController extends expController {
                         $columns['user_id'] = gt('Posted by');
                     } elseif ($column_name === "timestamp") {
                         foreach ($items as $key => $item) {
-                            $item[$column_name] = strftime(DISPLAY_DATETIME_FORMAT, $item[$column_name]);
+                            $item[$column_name] = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $item[$column_name]);
                             $items[$key] = $item;
                         }
 //                        $columns[gt('Timestamp')] = 'timestamp';
@@ -269,7 +269,7 @@ class formsController extends expController {
                     $captions['user_id'] = gt('Posted by');
                     $fields['ip'] = $data->ip;
                     $fields['sef_url'] = $data->sef_url;
-                    $fields['timestamp'] = strftime(DISPLAY_DATETIME_FORMAT, $data->timestamp);
+                    $fields['timestamp'] = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $data->timestamp);
                     $locUser = user::getUserById($data->user_id);
                     $fields['user_id'] = !empty($locUser->username) ? $locUser->username : '';
 
@@ -959,7 +959,11 @@ class formsController extends expController {
         $cols = array();
 
         if (!empty($f->column_names_list)) {
-            $cols = explode('|!|', $f->column_names_list);
+            if (is_string($f->column_names_list)){
+                $cols = expUnserialize($f->column_names_list);
+            } else {
+                $cols = explode('|!|', $f->column_names_list);
+            }
         }
         $fc = new forms_control();
         foreach ($fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0','rank') as $control) {
@@ -1114,9 +1118,13 @@ class formsController extends expController {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap"
                 ));
-            } elseif (bs3() || bs4()) {
+            } elseif (bs3()) {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap3"
+                ));
+            } elseif (bs4()) {
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms-bootstrap4"
                 ));
             } elseif (bs5()) {
                 expCSS::pushToHead(array(
@@ -1398,8 +1406,12 @@ class formsController extends expController {
         if (empty($this->config)) { // NEVER overwrite an existing config
             $this->config = array();
             $config = get_object_vars($form);
-            if (!empty($config['column_names_list'])) {
-                $config['column_names_list'] = explode('|!|', $config['column_names_list']);  //fixme $form->column_names_list is a serialized array?
+            if (!empty($config['column_names_list']) && is_string($config['column_names_list'])) {
+                if (stripos($config['column_names_list'], '|!|') !== false) {
+                    $config['column_names_list'] = explode('|!|', $config['column_names_list']);
+                } else {
+                    $config['column_names_list'] = expUnserialize($config['column_names_list']);
+                }
             }
             unset ($config['forms_control']);
             $this->config = $config;
@@ -1503,7 +1515,7 @@ class formsController extends expController {
 //                    $srt = $column_name . "_srt";
                     foreach ($items as $key => $item) {
 //                        $item->$srt = $item->$column_name;
-                        $item->$column_name = strftime("%m/%d/%y %T", $item->$column_name);  // needs to be in a machine readable format
+                        $item->$column_name = date('m/d/y H:i:s', $item->$column_name);  // needs to be in a machine readable format
                         $items[$key] = $item;
                     }
                 } else {

@@ -145,7 +145,7 @@ class upscalculator extends shippingcalculator {
 #                    eDebug('created OVERSIZED package with weight of '.$pi->weight);
 #                    eDebug('dimensions: height: '.$pi->h." width: ".$pi->w." length: ".$pi->l);
 #                    echo "<hr>";
-                    $weight = $pi->weight > 1 ? $pi->weight : 1;
+                    $weight = !empty($pi->weight) ? $pi->weight : $this->configdata['default_max_weight'];
                     $upsRate->package(array(
                         'description'=>'shipment',
                         'weight'=>$weight,
@@ -211,7 +211,7 @@ class upscalculator extends shippingcalculator {
 	        $available_methods = $this->availableMethods();
 	        foreach ($rateFromUPS['RatingServiceSelectionResponse']['RatedShipment'] as $rate) {
 	            if (array_key_exists($rate['Service']['Code']['VALUE'], $available_methods)) {
-                    if ($this->configdata['negotiated_rate']) {
+                    if ($this->configdata['negotiated_rate'] && isset($rate['NegotiatedRates']['NetSummaryCharges']['GrandTotal']['MonetaryValue']['VALUE'])) {
                         $rates[$rate['Service']['Code']['VALUE']] = array(
                                'id' => $rate['Service']['Code']['VALUE'],
                                'title' => $this->shippingmethods[$rate['Service']['Code']['VALUE']],

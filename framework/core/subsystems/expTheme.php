@@ -77,8 +77,6 @@ class expTheme
 
         // add our theme folder into autoload to prioritize custom (theme) modules
         array_unshift($auto_dirs2, BASE . 'themes/' . DISPLAY_THEME . '/modules');
-//        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/billingcalculators');
-//        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/shippingcalculators');
         if (DEVELOPMENT) {  // allow for custom/modified subsystems and form templates for development
             array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/forms');
             array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/subsystems');
@@ -490,26 +488,29 @@ class expTheme
                         "lessvars"=>$less_vars,
                     )
                 );
-                if (USE_CDN) {
-                    expCSS::pushToHead(
-                        array(
-                            "css_primer" => FA5_SCRIPT
-                        )
-                    );
+                if (!USE_BOOTSTRAP_ICONS) {
+                    if (USE_CDN) {
+                        expCSS::pushToHead(
+                            array(
+                                "css_primer" => FA5_SCRIPT
+                            )
+                        );
+                    } else {
+                        expCSS::pushToHead(
+                            array(
+                                "scssprimer" => "external/font-awesome5/scss/fontawesome.scss",
+                                "lessvars" => $less_vars,
+                            )
+                        );
+                    }
                 } else {
                     expCSS::pushToHead(
                         array(
-                            "scssprimer" => "external/font-awesome5/scss/fontawesome.scss",
+                            "scssprimer" => "external/bootstrap-icons/scss/bootstrap-icons.scss",
                             "lessvars" => $less_vars,
                         )
                     );
                 }
-//                expCSS::pushToHead(
-//                    array(
-//                        "scssprimer" => "external/bootstrap-icons-1.2.2/scss/bootstrap-icons.scss",
-//                        "lessvars" => $less_vars,
-//                    )
-//                );
             } elseif (newui()) {
                 if (USE_CDN) {
                     expCSS::pushToHead(
@@ -1909,6 +1910,118 @@ class expTheme
             $found->class = $class;
             $found->size = self::iconSize($size);
             $found->prefix = 'fa fa-';
+            return $found;
+        } elseif (bs5() && USE_BOOTSTRAP_ICONS) {
+            $found->prefix = 'bi bi-';
+            switch ($class) {
+                case 'delete' :
+                case 'delete-title' :
+                    $class = "x-circle";
+                    $btn_type = "btn-danger";  // red
+                    break;
+                case 'add' :
+                case 'add-title' :
+                case 'add-body' :
+                case 'switchtheme add' :
+                    $class = "plus-circle";
+                    $btn_type = "btn-success";  // green
+                    break;
+                case 'copy' :
+                    $class = "clipboard";
+                    break;
+                case 'edit' :
+                    $class = "pencil-square";
+                    break;
+                case 'downloadfile' :
+                case 'export' :
+                    $class = "download";
+                    break;
+                case 'uploadfile' :
+                case 'import' :
+                    $class = "upload";
+                    break;
+                case 'manage' :
+                    $class = "briefcase";
+                    break;
+                case 'merge' :
+                case 'arrow_merge' :
+                    $class = "box-arrow-in-right";
+                    break;
+                case 'reranklink' :
+                case 'alphasort' :
+                    $class = "sort-alpha-down";
+                    break;
+                case 'configure' :
+                    $class = "wrench";
+                    break;
+                case 'view' :
+                    $class = "search";
+                    break;
+                case 'page_next' :
+                    $class = 'chevron-double-right';
+                    break;
+                case 'page_prev' :
+                    $class = 'chevron-double-left';
+                    break;
+                case 'password' :
+                case 'change_password' :
+                    $class = 'key';
+                    break;
+                case 'clean' :
+                    $class = 'check-square';
+                    break;
+                case 'trash' :
+                    $class = "trash-fill";
+                    break;
+                case 'userperms' :
+                    $class = 'person';
+                    break;
+                case 'groupperms' :
+                    $class = 'people';
+                    break;
+                case 'dayviewlink' :
+                case 'monthviewlink' :
+                case 'weekviewlink' :
+                    $class = 'calendar3';
+                    break;
+                case 'listviewlink' :
+                    $class = 'card-list';
+                    break;
+                case 'adminviewlink' :
+                    $class = 'gear';
+                    break;
+                case 'approve' :
+                    $class = "check";
+                    $btn_type = "btn-success"; // green
+                    break;
+                case 'ajax' :
+                    $class = "arrow-repeat bi-spin";
+                    break;
+                case 'file-pdf' :
+                    $class = "file-earmark-pdf-fill";
+                    break;
+                case 'exchange-alt' :
+                    $class = "arrow-left-right";
+                    break;
+                case 'user' :
+                    $class = "person";
+                    break;
+                case 'users' :
+                    $class = "people";
+                    break;
+                case 'refresh' :
+                    $class = "arrow-repeat";
+                    break;
+                case 'expand' :
+                    $class = "arrows-angle-expand";
+                    break;
+                case 'compress' :
+                    $class = "arrows-angle-contract";
+                    break;
+            }
+            $found->type = $btn_type;
+            $found->class = $class;
+            $found->size = self::iconSize($size);
             return $found;
         } elseif (bs4() || bs5()) {
             $found->prefix = 'fas fa-';

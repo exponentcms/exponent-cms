@@ -1530,7 +1530,7 @@ abstract class expController {
         if (isset($request['month'])) {
             $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
             $mk = mktime(0, 0, 0, $request['month'], 01, $request['year']);
-            $ts = strftime('%B, %Y', $mk);
+            $ts = date('F, Y', $mk);
             // set the meta info
             $metainfo['title'] = ucwords($this->basemodel_name) . ' ' . gt('items') . ' ' . gt('dated') . ': ' . $ts;
 //            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object not set

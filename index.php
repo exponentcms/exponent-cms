@@ -47,9 +47,14 @@ if ($db->havedb) {
     $router->routeRequest();
 }
 
-// define whether or not ecom is enabled &initialize this users cart if they have ecom installed.
+// define whether or not ecom is enabled & initialize this users cart if they have ecom installed.
 if ($db->havedb && ecom_active()) {
     define('ECOM',1);
+    // allow custom billing & shipping calculators
+    if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/')) {
+        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/billingcalculators');
+        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/shippingcalculators');
+    }
     $order = order::getUserCart();  // set global store $order
 } else {
     define('ECOM',0);
@@ -76,6 +81,7 @@ if (expJavascript::requiresJSON()) {
 //if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login') && !expJavascript::inAjaxAction()) {
 if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !(!empty($_REQUEST['controller']) && $_REQUEST['controller'] === 'login' && !empty($_REQUEST['action']) && $_REQUEST['action'] === 'login')) {
 	//only admins/acting_admins are allowed to get to the site, all others get the maintenance view
+    $framework = expSession::get('framework');
 	$template = new standalonetemplate('_maintenance');
     if (!empty($_REQUEST['controller']) && $_REQUEST['controller'] === 'login') {
         $template->assign("login", true);
@@ -84,11 +90,11 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
 } else {
 	if (MAINTENANCE_MODE > 0) flash('error', gt('Maintenance Mode is Enabled'));
 
-	// check to see if we need to install or upgrade the system
-	expVersion::checkVersion();
-
 	// Handle sub themes
 	$page = expTheme::getTheme();
+
+    // check to see if we need to install or upgrade the system
+   	expVersion::checkVersion();
 
 	// If we are in a printer friendly request then we need to change to our printer friendly subtheme
 	if (PRINTER_FRIENDLY == 1 || EXPORT_AS_PDF == 1) {
@@ -137,7 +143,7 @@ if (DEBUG_HISTORY && $user->isAdmin() && !expJavascript::inAjaxAction())
 	eDebug(expHistory::print_history());
 //write page build/load time if in DEVELOPMENT mode with logging
 if (DEVELOPMENT && LOGGER)
-	eLog($timer->mark() . ' - ' . $section . '/' . $sectionObj->sef_name, gt('LOAD TIME'));
+	eLog(expDateTime::duration(0, $timer->mark(), true) . ' - ' . $section . '/' . $sectionObj->sef_name, gt('LOAD TIME'));
 
 if (EXPORT_AS_PDF == 1) {
     $content = ob_get_clean();

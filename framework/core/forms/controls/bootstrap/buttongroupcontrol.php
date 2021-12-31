@@ -58,7 +58,7 @@ class buttongroupcontrol extends formcontrol {
 		return $html;
 	}
 
-	function controlToHTML($name,$label=null) {
+	function controlToHTML($name,$label = null) {
 		if ($this->submit . $this->reset . $this->cancel == "") return "";
 		if (empty($this->id)) $this->id = $name;
         $html = "<div class='form-actions'>";

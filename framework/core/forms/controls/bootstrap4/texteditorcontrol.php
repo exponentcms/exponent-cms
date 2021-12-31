@@ -67,7 +67,7 @@ class texteditorcontrol extends formcontrol {
 		}
 		if ($this->disabled) $html .= " disabled";
 		if (@$this->required) {
-			$html .= ' required="'.rawurlencode($this->default).'" caption="'.rawurlencode($this->caption).'" ';
+			$html .= ' required="'.rawurlencode($this->default).'" ';
 		}
 		$html .= ">";
 		$html .= htmlentities($this->default,ENT_COMPAT,LANG_CHARSET);

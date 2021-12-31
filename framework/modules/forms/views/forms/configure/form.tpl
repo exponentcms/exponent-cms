@@ -32,5 +32,5 @@
 {group label='Form Display Settings'|gettext}
     {control type=text name='submitbtn' label='Submit Button Text'|gettext value=$config.submitbtn|default:"Submit"|gettext}
     {control type=text name='resetbtn' label='Reset Button Text'|gettext value=$config.resetbtn|default:"Reset"|gettext}
-    {control type=radiogroup name='style' label='Style'|gettext default=$config.style|default:0 items='Labels on Top, Labels on Side'|gettxtlist values='0,1'}
+    {control type=radiogroup name='style' label='Control Label Style'|gettext default=$config.style|default:0 items='Labels on Top, Labels on Side'|gettxtlist values='0,1'}
 {/group}

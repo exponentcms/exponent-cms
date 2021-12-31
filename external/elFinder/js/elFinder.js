@@ -814,6 +814,14 @@ var elFinder = function(elm, opts, bootCallback) {
 	this.i18nBaseUrl = '';
 
 	/**
+	 * Base URL of worker js files
+	 * baseUrl + "js/worker/" when empty value
+	 * 
+	 * @type String
+	 */
+	this.workerBaseUrl = '';
+
+	/**
 	 * Is elFinder CSS loaded
 	 * 
 	 * @type Boolean
@@ -1105,7 +1113,7 @@ var elFinder = function(elm, opts, bootCallback) {
 			baseUrl = '';
 			myTag = null;
 			$('head > script').each(function() {
-				if (this.src && this.src.match(/js\/elfinder(?:-[a-z0-9_-]+)?\.(?:min|full)\.js$/i)) {
+				if (this.src && this.src.match(/js\/elfinder(?:-[a-z0-9_-]+)?\.(?:min|full)\.js(?:$|\?)/i)) {
 					myTag = $(this);
 					return false;
 				}
@@ -1132,6 +1140,7 @@ var elFinder = function(elm, opts, bootCallback) {
 	})();
 	
 	this.i18nBaseUrl = (this.options.i18nBaseUrl || this.baseUrl + 'js/i18n').replace(/\/$/, '') + '/';
+	this.workerBaseUrl = (this.options.workerBaseUrl || this.baseUrl + 'js/worker').replace(/\/$/, '') + '/';
 
 	this.options.maxErrorDialogs = Math.max(1, parseInt(this.options.maxErrorDialogs || 5));
 
@@ -3448,40 +3457,43 @@ var elFinder = function(elm, opts, bootCallback) {
 			clearTimeout(heightBase.data('resizeTm'));
 		}
 		
-		if (typeof h === 'string') {
-			if (mt = h.match(/^([0-9.]+)%$/)) {
-				// setup heightBase
-				if (! heightBase || ! heightBase.length) {
-					heightBase = $(window);
+		if (! self.options.noResizeBySelf) {
+			if (typeof h === 'string') {
+				if (mt = h.match(/^([0-9.]+)%$/)) {
+					// setup heightBase
+					if (! heightBase || ! heightBase.length) {
+						heightBase = $(window);
+					}
+					if (! heightBase.data('marginToMyNode')) {
+						heightBase.data('marginToMyNode', getMargin());
+					}
+					if (! heightBase.data('fitToBaseFunc')) {
+						heightBase.data('fitToBaseFunc', function(e) {
+							var tm = heightBase.data('resizeTm');
+							e.preventDefault();
+							e.stopPropagation();
+							tm && cancelAnimationFrame(tm);
+							if (! node.hasClass('elfinder-fullscreen') && (!self.UA.Mobile || heightBase.data('rotated') !== self.UA.Rotated)) {
+								heightBase.data('rotated', self.UA.Rotated);
+								heightBase.data('resizeTm', requestAnimationFrame(function() {
+									self.restoreSize();
+								}));
+							}
+						});
+					}
+					if (typeof heightBase.data('rotated') === 'undefined') {
+						heightBase.data('rotated', self.UA.Rotated);
+					}
+					h = heightBase.height() * (mt[1] / 100) - heightBase.data('marginToMyNode');
+					
+					heightBase.off('resize.' + self.namespace, heightBase.data('fitToBaseFunc'));
+					fit && heightBase.on('resize.' + self.namespace, heightBase.data('fitToBaseFunc'));
 				}
-				if (! heightBase.data('marginToMyNode')) {
-					heightBase.data('marginToMyNode', getMargin());
-				}
-				if (! heightBase.data('fitToBaseFunc')) {
-					heightBase.data('fitToBaseFunc', function(e) {
-						var tm = heightBase.data('resizeTm');
-						e.preventDefault();
-						e.stopPropagation();
-						tm && cancelAnimationFrame(tm);
-						if (! node.hasClass('elfinder-fullscreen') && (!self.UA.Mobile || heightBase.data('rotated') !== self.UA.Rotated)) {
-							heightBase.data('rotated', self.UA.Rotated);
-							heightBase.data('resizeTm', requestAnimationFrame(function() {
-								self.restoreSize();
-							}));
-						}
-					});
-				}
-				if (typeof heightBase.data('rotated') === 'undefined') {
-					heightBase.data('rotated', self.UA.Rotated);
-				}
-				h = heightBase.height() * (mt[1] / 100) - heightBase.data('marginToMyNode');
-				
-				heightBase.off('resize.' + self.namespace, heightBase.data('fitToBaseFunc'));
-				fit && heightBase.on('resize.' + self.namespace, heightBase.data('fitToBaseFunc'));
 			}
+			
+			node.css({ width : w, height : parseInt(h) });
 		}
-		
-		node.css({ width : w, height : parseInt(h) });
+
 		size.w = Math.round(node.width());
 		size.h = Math.round(node.height());
 		node.data('resizeSize', size);
@@ -4971,7 +4983,8 @@ var elFinder = function(elm, opts, bootCallback) {
 		 * @return     String  The column name.
 		 */
 		self.getColumnName = function(key) {
-			return columnNames[key] || self.i18n(key);
+			var res = columnNames[key] || self.i18n(key);
+			return typeof res === 'function'? res() : res;
 		};
 
 		/**
@@ -5178,12 +5191,14 @@ var elFinder = function(elm, opts, bootCallback) {
 					}
 					
 					$(document).on(keyEvt, function(e){
-						var chk = (e.shiftKey||e.ctrlKey||e.metaKey);
-						if (ctr !== chk) {
-							ctr = chk;
-							if (helper.is(':visible') && helper.data('dropover') && ! helper.data('droped')) {
-								helper.toggleClass('elfinder-drag-helper-plus', helper.data('locked')? true : ctr);
-								self.trigger(ctr? 'unlockfiles' : 'lockfiles', {files : hashes, helper: helper});
+						if (self._commands.copy) {
+							var chk = (e.shiftKey||e.ctrlKey||e.metaKey);
+							if (ctr !== chk) {
+								ctr = chk;
+								if (helper.is(':visible') && helper.data('dropover') && ! helper.data('droped')) {
+									helper.toggleClass('elfinder-drag-helper-plus', helper.data('locked')? true : ctr);
+									self.trigger(ctr? 'unlockfiles' : 'lockfiles', {files : hashes, helper: helper});
+								}
 							}
 						}
 					});
@@ -5810,14 +5825,7 @@ elFinder.prototype = {
 	 * 
 	 * @type Boolean
 	 */
-	cookieEnabled : (function() {
-		var res = false,
-			test = 'elftest=';
-		document.cookie = test + '1';
-		res = document.cookie.split(test).length === 2;
-		document.cookie = test + ';max-age=0';
-		return res;
-	})(),
+	cookieEnabled : window.navigator.cookieEnabled,
 
 	/**
 	 * Has RequireJS?
@@ -7821,7 +7829,7 @@ elFinder.prototype = {
 			d.setTime(d.getTime()+(o.expires * 86400000));
 			o.expires = d;
 		}
-		document.cookie = name+'='+encodeURIComponent(value)+'; expires='+o.expires.toUTCString()+(o.path ? '; path='+o.path : '')+(o.domain ? '; domain='+o.domain : '')+(o.secure ? '; secure' : '');
+		document.cookie = name+'='+encodeURIComponent(value)+'; expires='+o.expires.toUTCString()+(o.path ? '; path='+o.path : '')+(o.domain ? '; domain='+o.domain : '')+(o.secure ? '; secure' : '')+(o.samesite ? '; samesite='+o.samesite : '');
 		if (value && (value.substr(0,1) === '{' || value.substr(0,1) === '[')) {
 			try {
 				return JSON.parse(value);
@@ -8937,6 +8945,11 @@ elFinder.prototype = {
 				kind = 'Root';
 			} else {
 				kind = this.kinds[mime];
+			}
+		} else if (this.mimeTypes[mime]) {
+			kind = this.mimeTypes[mime].toUpperCase();
+			if (!this.messages['kind'+kind]) {
+				kind = null;
 			}
 		}
 		if (! kind) {
@@ -10169,7 +10182,7 @@ elFinder.prototype = {
 	 * @return     {<type>}  The worker url.
 	 */
 	getWorkerUrl : function(filename) {
-		return this.convAbsUrl(this.baseUrl + 'js/worker/' + filename);
+		return this.convAbsUrl(this.workerBaseUrl + filename);
 	},
 
 	/**

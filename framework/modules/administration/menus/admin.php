@@ -36,17 +36,20 @@ if (bs3() || bs4() || bs5()) {
     $admin_text = 'Admin';
     $admin_icon = 'fa-star';
     $admin_icon5 = 'fas fa-star';
+    $admin_iconbs = 'bi-star';
 } else {
     $admin_text = '<img src="' . $this->asset_path . 'images/admintoolbar/expbar.png" alt="' . gt('Exponent') . '">';
     $admin_icon = '';
     $admin_icon5 = '';
+    $admin_iconbs = '';
 }
 
 if ($user->isAdmin()) {
     $expAdminMenu = array(
         'text'      => $admin_text,
         'icon'      => $admin_icon,
-        'icon5'      => $admin_icon5,
+        'icon5'     => $admin_icon5,
+        'iconbs'    => $admin_iconbs,
         'classname' => 'site',
         'submenu'   => array(
             'id'       => 'admin',
@@ -55,6 +58,7 @@ if ($user->isAdmin()) {
                     'classname' => 'info',
                     'icon'      => 'fa-info-circle',
                     'icon5'      => 'fas fa-info-circle',
+                    'iconbs'      => 'bi-info-circle',
                     'text'      => gt('About ExponentCMS'),
                     "submenu"   => array(
                         'id'       => 'ver',
@@ -71,6 +75,7 @@ if ($user->isAdmin()) {
                                 'text'      => gt("Exponent Documentation"),
                                 'icon'      => 'fa-book',
                                 'icon5'      => 'fas fa-book',
+                                'iconbs'      => 'bi-book',
                                 'classname' => 'docs',
                                 'url'       => '#',
                                 'id'        => 'docs-toolbar',
@@ -79,6 +84,7 @@ if ($user->isAdmin()) {
                                 'text'      => gt("Discuss Exponent"),
                                 'icon'      => 'fa-comments',
                                 'icon5'      => 'fas fa-comments',
+                                'iconbs'      => 'bi-chat-left-text',
                                 'classname' => 'forums',
                                 'url'       => '#',
                                 'id'        => 'forums-toolbar',
@@ -87,6 +93,7 @@ if ($user->isAdmin()) {
                                 'text'      => gt("Report a bug"),
                                 'icon'      => 'fa-bug',
                                 'icon5'      => 'fas fa-bug',
+                                'iconbs'      => 'bi-bug',
                                 'classname' => 'reportbug',
                                 'url'       => '#',
                                 'id'        => 'reportabug-toolbar',
@@ -102,6 +109,7 @@ if ($user->isAdmin()) {
         'text'      => gt("Configure Website"),
         'icon'      => 'fa-gears',
         'icon5'      => 'fas fa-cogs',
+        'iconbs'      => 'bi-gear',
         'classname' => 'configure',
         'url'       => makeLink(
             array(
@@ -133,6 +141,7 @@ if ($user->isAdmin()) {
                                 'text'      => gt("Exponent Documentation"),
                                 'icon'      => 'fa-book',
                                 'icon5'      => 'fas fa-book',
+                                'iconbs'      => 'bi-book',
                                 'classname' => 'docs',
                                 'url'       => '#',
                                 'id'        => 'docs-toolbar',
@@ -141,6 +150,7 @@ if ($user->isAdmin()) {
                                 'text'      => gt("Discuss Exponent"),
                                 'icon'      => 'fa-comments',
                                 'icon5'      => 'fas fa-comments',
+                                'iconbs'      => 'bi-chat-left-text',
                                 'classname' => 'forums',
                                 'url'       => '#',
                                 'id'        => 'forums-toolbar',
@@ -158,6 +168,7 @@ if ($user->isAdmin()) {
         'text'      => gt("Site Management"),
         'icon'      => 'fa-cog',
         'icon5'      => 'fas fa-cog',
+        'iconbs'      => 'bi-gear',
         'classname' => 'manage',
         'submenu'   => array(
             'id'       => 'manage',
@@ -166,6 +177,7 @@ if ($user->isAdmin()) {
                     'text'      => gt('Manage Site Comments'),
                     'icon'      => 'fa-comment',
                     'icon5'      => 'fas fa-comment',
+                    'iconbs'      => 'bi-chat-left-text',
                     'classname' => 'manage',
                     'url'       => makeLink(
                         array(
@@ -178,6 +190,7 @@ if ($user->isAdmin()) {
                     'text'      => gt('Manage Site Tags'),
                     'icon'      => 'fa-tags',
                     'icon5'      => 'fas fa-tags',
+                    'iconbs'      => 'bi-tags',
                     'classname' => 'manage',
                     'url'       => makeLink(
                         array(
@@ -190,6 +203,7 @@ if ($user->isAdmin()) {
                     'text'      => gt('Manage Site Categories'),
                     'icon'      => 'fa-sitemap',
                     'icon5'      => 'fas fa-sitemap',
+                    'iconbs'      => 'bi-diagram-3',
                     'classname' => 'manage',
                     'url'       => makeLink(
                         array(
@@ -209,6 +223,7 @@ if ($user->isAdmin()) {
             'text'      => gt('Manage File Folders'),
             'icon'      => 'fa-folder-open',
             'icon5'      => 'fas fa-folder-open',
+            'iconbs'      => 'bi-folder2-open',
             'classname' => 'manage',
             'url'       => makeLink(
                 array(
@@ -229,6 +244,7 @@ if ($user->isAdmin()) {
                 'text'      => gt('Manage Site Forms'),
                 'icon'      => 'fa-list-alt',
                 'icon5'      => 'fas fa-list-alt',
+                'iconbs'      => 'bi-card-list',
                 'classname' => 'manage',
                 'url'       => makeLink(
                     array(
@@ -241,6 +257,7 @@ if ($user->isAdmin()) {
                 'text'      => gt('Manage Site RSS Feeds'),
                 'icon'      => 'fa-rss',
                 'icon5'      => 'fas fa-rss',
+                'iconbs'      => 'bi-rss',
                 'classname' => 'manage',
                 'url'       => makeLink(
                     array(
@@ -253,6 +270,7 @@ if ($user->isAdmin()) {
                 'text'      => gt('View Top Searches'),
                 'icon'      => 'fa-signal',
                 'icon5'      => 'fas fa-signal',
+                'iconbs'      => 'bi-signpost-2',
                 'classname' => 'search',
                 'url'       => makeLink(
                     array(
@@ -265,6 +283,7 @@ if ($user->isAdmin()) {
                 'text'      => gt('View Search Queries'),
                 'icon'      => 'fa-search',
                 'icon5'      => 'fas fa-search',
+                'iconbs'      => 'bi-search',
                 'classname' => 'search',
                 'url'       => makeLink(
                     array(
@@ -277,6 +296,7 @@ if ($user->isAdmin()) {
                 'text'      => gt('Regenerate Search Index'),
                 'icon'      => 'fa-search-plus',
                 'icon5'      => 'fas fa-search-plus',
+                'iconbs'      => 'bi-search',
                 'classname' => 'search',
                 'url'       => makeLink(
                     array(
@@ -296,6 +316,7 @@ if ($user->isAdmin() || !empty($groups)) {
         'text'      => gt('User Management'),
         'icon'      => 'fa-group',
         'icon5'      => 'fas fa-users',
+        'iconbs'      => 'bi-people',
         'classname' => 'users',
         'submenu'   => array(
             'id'       => 'usermanagement',
@@ -304,6 +325,7 @@ if ($user->isAdmin() || !empty($groups)) {
                     'text'      => gt('User Accounts'),
                     'icon'      => 'fa-user',
                     'icon5'      => 'fas fa-user',
+                    'iconbs'      => 'bi-person',
                     'classname' => 'euser',
                     'url'       => makeLink(
                         array(
@@ -316,6 +338,7 @@ if ($user->isAdmin() || !empty($groups)) {
                     'text'      => gt('Group Accounts'),
                     'icon'      => 'fa-group',
                     'icon5'      => 'fas fa-users',
+                    'iconbs'      => 'bi-people',
                     'classname' => 'egroup',
                     'url'       => makeLink(
                         array(
@@ -328,6 +351,7 @@ if ($user->isAdmin() || !empty($groups)) {
                     'text' => gt('User Profile Extensions'),
                     'icon' => 'fa-magic',
                     'icon5' => 'fas fa-magic',
+                    'iconbs' => 'bi-magic',
                     'url'  => makeLink(
                         array(
                             'controller' => 'users',
@@ -339,6 +363,7 @@ if ($user->isAdmin() || !empty($groups)) {
                     'text' => gt('User Sessions'),
                     'icon' => 'fa-group',
                     'icon5' => 'fas fa-users',
+                    'iconbs' => 'bi-people',
                     'url'  => makeLink(
                         array(
                             'controller' => 'users',
@@ -350,6 +375,7 @@ if ($user->isAdmin() || !empty($groups)) {
                     'text'      => gt('Import Users'),
                     'icon'      => 'fa-upload',
                     'icon5'      => 'fas fa-upload',
+                    'iconbs'      => 'bi-upload',
                     'classname' => 'import',
                     'url'       => makeLink(
                         array(
@@ -372,6 +398,7 @@ if ($user->isSuperAdmin()) {
             'text' => gt('Sync LDAP Users'),
             'icon' => 'fa-rotate-left',
             'icon5' => 'fas fa-rotate-left',
+            'iconbs' => 'bi-arrow-clockwise',
             'url'  => makeLink(
                 array(
                     'controller' => 'users',
@@ -386,6 +413,7 @@ if ($user->isSuperAdmin()) {
         'text'      => gt('Mass Mailer'),
         'icon'      => 'fa-envelope',
         'icon5'      => 'fas fa-envelope',
+        'iconbs'      => 'bi-envelope-open',
         'url'       => makeLink(
             array(
                 'controller' => 'administration',
@@ -398,6 +426,7 @@ if ($user->isSuperAdmin()) {
         'text'      => gt('Super-Admin Tools'),
         'icon'      => 'fa-asterisk',
         'icon5'      => 'fas fa-asterisk',
+        'iconbs'      => 'bi-asterisk',
         'classname' => 'development',
         'submenu'   => array(
             'id'       => 'development',
@@ -406,6 +435,7 @@ if ($user->isSuperAdmin()) {
                     'text'      => (DEVELOPMENT) ? gt('Turn Error Reporting off') : gt('Turn Error Reporting on'),
                     'icon'      => (DEVELOPMENT) ? 'fa-list text-danger' : 'fa-list',
                     'icon5'      => (DEVELOPMENT) ? 'fas fa-list text-danger' : 'fas fa-list',
+                    'iconbs'      => (DEVELOPMENT) ? 'bi-list text-danger' : 'bi-list',
                     'classname' => (DEVELOPMENT) ? 'develop_on_red' : 'develop_off',
                     'url'       => makeLink(
                         array(
@@ -418,6 +448,7 @@ if ($user->isSuperAdmin()) {
                     'text'      => (LOGGER) ? gt('Turn Logger off') : gt('Turn Logger on'),
                     'icon'      => (LOGGER) ? 'fa-indent text-danger' : 'fa-indent',
                     'icon5'      => (LOGGER) ? 'fas fa-indent text-danger' : 'fas fa-indent',
+                    'iconbs'      => (LOGGER) ? 'bi-text-indentleft text-danger' : 'bi-text-indent-left',
                     'classname' => (LOGGER) ? 'develop_on_red' : 'develop_off',
                     'url'       => makeLink(
                         array(
@@ -430,13 +461,15 @@ if ($user->isSuperAdmin()) {
                     'text'    => gt('Database'),
                     'icon'    => 'fa-briefcase',
                     'icon5'    => 'fas fa-briefcase',
+                    'iconbs'    => 'bi-briefcase',
                     'submenu' => array(
                         'id'       => 'database',
                         'itemdata' => array(
                             array(
-                                'text'      => gt("Manage Database"),
+                                'text'      => gt("Manage Database") . ' (' . DB_NAME . ')',
                                 'icon'      => 'fa-cog',
                                 'icon5'      => 'fas fa-cog',
+                                'iconbs'      => 'bi-gear',
                                 'classname' => 'manage',
                                 'url'       => '#',
                                 'id'        => 'manage-db',
@@ -445,6 +478,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt('Restore Database'),
                                 'icon'      => 'fa-download',
                                 'icon5'      => 'fas fa-download',
+                                'iconbs'      => 'bi-download',
                                 'classname' => 'import',
                                 'url'       => makeLink(
                                     array(
@@ -457,6 +491,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt('Backup Database'),
                                 'icon'      => 'fa-upload',
                                 'icon5'      => 'fas fa-upload',
+                                'iconbs'      => 'bi-upload',
                                 'classname' => 'export',
                                 'url'       => makeLink(
                                     array(
@@ -469,6 +504,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt("Import/Export Data"),
                                 'icon'      => 'fa-exchange',
                                 'icon5'      => 'fas fa-exchange-alt',
+                                'iconbs'      => 'bi-arrow-left-right',
                                 'classname' => 'import',
                                 'url'       => makeLink(
                                     array(
@@ -481,6 +517,7 @@ if ($user->isSuperAdmin()) {
                                 'text' => gt('Update Tables'),
                                 'icon' => 'fa-toggle-up',
                                 'icon5' => 'fas fa-caret-square-up',
+                                'iconbs' => 'bi-caret-up-square',
                                 'url'  => makeLink(
                                     array(
                                         'controller' => 'administration',
@@ -492,6 +529,7 @@ if ($user->isSuperAdmin()) {
                                 'text' => gt('Optimize Database'),
                                 'icon' => 'fa-wrench',
                                 'icon5' => 'fas fa-wrench',
+                                'iconbs' => 'bi-wrench',
                                 'url'  => makeLink(
                                     array(
                                         'controller' => 'administration',
@@ -503,6 +541,7 @@ if ($user->isSuperAdmin()) {
                                 'text' => gt('Repair Database'),
                                 'icon' => 'fa-wrench',
                                 'icon5' => 'fas fa-wrench',
+                                'iconbs' => 'bi-wrench',
                                 'url'  => makeLink(
                                     array(
                                         'controller' => 'administration',
@@ -514,6 +553,7 @@ if ($user->isSuperAdmin()) {
                                 'text' => gt('Fix Table Names'),
                                 'icon' => 'fa-wrench',
                                 'icon5' => 'fas fa-wrench',
+                                'iconbs' => 'bi-wrench',
                                 'url'  => makeLink(
                                     array(
                                         'controller' => 'administration',
@@ -532,6 +572,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt('Remove Unneeded Table Columns'),
                                 'icon'      => 'fa-wrench',
                                 'icon5'      => 'fas fa-wrench',
+                                'iconbs'      => 'bi-wrench',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
@@ -544,6 +585,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt('Remove Unused Tables'),
                                 'icon'      => 'fa-wrench',
                                 'icon5'      => 'fas fa-wrench',
+                                'iconbs'      => 'bi-wrench',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
@@ -559,6 +601,7 @@ if ($user->isSuperAdmin()) {
                     'text' => gt('Migrate 0.9x Site'),
                     'icon' => 'fa-angle-double-right',
                     'icon5' => 'fas fa-angle-double-right',
+                    'iconbs' => 'bi-chevron-double-right',
                     'url'  => makeLink(
                         array(
                             'controller' => 'migration',
@@ -570,6 +613,7 @@ if ($user->isSuperAdmin()) {
                     'text'    => gt('Extensions'),
                     'icon'    => 'fa-magic',
                     'icon5'    => 'fas fa-magic',
+                    'iconbs'    => 'bi-magic',
                     'submenu' => array(
                         'id'       => 'extensions',
                         'itemdata' => array(
@@ -577,6 +621,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt('Install Extension'),
                                 'icon'      => 'fa-upload',
                                 'icon5'      => 'fas fa-upload',
+                                'iconbs'      => 'bi-upload',
                                 'classname' => 'fileuploader',
                                 'url'       => makeLink(
                                     array(
@@ -589,6 +634,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt('Manage Modules'),
                                 'icon'      => 'fa-cog',
                                 'icon5'      => 'fas fa-cog',
+                                'iconbs'      => 'bi-gear',
                                 'classname' => 'manage',
                                 'url'       => makeLink(
                                     array(
@@ -601,6 +647,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt('Manage Translations'),
                                 'icon'      => 'fa-cog',
                                 'icon5'      => 'fas fa-cog',
+                                'iconbs'      => 'bi-gear',
                                 'classname' => 'manage',
                                 'url'       => makeLink(
                                     array(
@@ -613,6 +660,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt('Manage Themes'),
                                 'icon'      => 'fa-cog',
                                 'icon5'      => 'fas fa-cog',
+                                'iconbs'      => 'bi-gear',
                                 'classname' => 'manage',
                                 'url'       => makeLink(
                                     array(
@@ -625,6 +673,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => (MOBILE) ? gt('Turn Mobile View off') : gt('Turn Mobile View on'),
                                 'icon'      => (MOBILE) ? 'fa-tablet text-success' : 'fa-tablet',
                                 'icon5'      => (MOBILE) ? 'fas fa-tablet text-success' : 'fas fa-tablet',
+                                'iconbs'      => (MOBILE) ? 'bi-tablet text-success' : 'bi-tablet',
                                 'classname' => (MOBILE) ? 'develop_on_green' : 'develop_off',
                                 'url'       => makeLink(
                                     array(
@@ -637,6 +686,7 @@ if ($user->isSuperAdmin()) {
                                 'text' => gt('Run Upgrade Scripts'),
                                 'icon' => 'fa-share',
                                 'icon5' => 'fas fa-share',
+                                'iconbs' => 'bi-share',
                                 'url'  => makeLink(
                                     array(
                                         'controller' => 'administration',
@@ -651,6 +701,7 @@ if ($user->isSuperAdmin()) {
                     'text'    => gt('System Cache'),
                     'icon'    => 'fa-save',
                     'icon5'    => 'fas fa-save',
+                    'iconbs'    => 'bi-save',
                     'submenu' => array(
                         'id'       => 'cache',
                         'itemdata' => array(
@@ -658,6 +709,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => (MINIFY) ? gt('Turn Minification off') : gt('Turn Minification on'),
                                 'icon'      => (MINIFY) ? 'fa-paperclip text-success' : 'fa-paperclip',
                                 'icon5'      => (MINIFY) ? 'fas fa-paperclip text-success' : 'fas fa-paperclip',
+                                'iconbs'      => (MINIFY) ? 'bi-paperclip text-success' : 'bi-paperclip',
                                 'classname' => (MINIFY) ? 'develop_on_green' : 'develop_off',
                                 'url'       => makeLink(
                                     array(
@@ -670,6 +722,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt('Clear Smarty Cache'),
                                 'icon'      => 'fa-ban',
                                 'icon5'      => 'fas fa-ban',
+                                'iconbs'      => 'bi-slash-circle',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
@@ -682,6 +735,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt('Clear CSS/Minify Cache'),
                                 'icon'      => 'fa-ban',
                                 'icon5'      => 'fas fa-ban',
+                                'iconbs'      => 'bi-slash-circle',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
@@ -694,6 +748,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt('Clear Image Cache'),
                                 'icon'      => 'fa-ban',
                                 'icon5'      => 'fas fa-ban',
+                                'iconbs'      => 'bi-slash-circle',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
@@ -706,6 +761,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt('Clear RSS/Podcast Cache'),
                                 'icon'      => 'fa-ban',
                                 'icon5'      => 'fas fa-ban',
+                                'iconbs'      => 'bi-slash-circle',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
@@ -718,6 +774,7 @@ if ($user->isSuperAdmin()) {
                                 'text'      => gt('Clear All Caches'),
                                 'icon'      => 'fa-ban',
                                 'icon5'      => 'fas fa-ban',
+                                'iconbs'      => 'bi-slash-circle',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
@@ -732,7 +789,8 @@ if ($user->isSuperAdmin()) {
                 array(
                     'text'      => gt('View Recycle Bin'),
                     'icon'      => 'fa-trash-o',
-                    'icon5'      => 'far fa-trash-alt',
+                    'icon5'      => 'far fa-recycle',
+                    'iconbs'      => 'bi-recycle',
                     'classname' => 'manage',
                     'url'       => makeLink(
                         array(
@@ -745,6 +803,7 @@ if ($user->isSuperAdmin()) {
                     'text'      => (ENABLE_WORKFLOW) ? gt('Turn Workflow off') : gt('Turn Workflow on'),
                     'icon'      => (ENABLE_WORKFLOW) ? 'fa-shield text-success' : 'fa-shield',
                     'icon5'      => (ENABLE_WORKFLOW) ? 'fas fa-shield-alt text-success' : 'fas fa-shield-alt',
+                    'iconbs'      => (ENABLE_WORKFLOW) ? 'bi-shield text-success' : 'bi-shield',
                     'classname' => (ENABLE_WORKFLOW) ? 'develop_on_green' : 'develop_off',
                     'url'       => makeLink(
                         array(
@@ -760,6 +819,7 @@ if ($user->isSuperAdmin()) {
                     ),
                     'icon'      => (MAINTENANCE_MODE) ? 'fa-warning text-danger' : 'fa-warning',
                     'icon5'      => (MAINTENANCE_MODE) ? 'fas fa-exclamation-triangle text-danger' : 'fas fa-exclamation-triangle',
+                    'iconbs'      => (MAINTENANCE_MODE) ? 'bi-exclamation-triangle text-danger' : 'bi-exclamation-triangle',
                     'classname' => (MAINTENANCE_MODE) ? 'develop_on_red' : 'develop_off',
                     'url'       => makeLink(
                         array(
@@ -772,6 +832,7 @@ if ($user->isSuperAdmin()) {
                     'text' => gt('Check for updated version'),
                     'icon' => 'fa-toggle-up',
                     'icon5' => 'fas fa-caret-square-up',
+                    'iconbs' => 'bi-caret-up-square',
                     'url'  => makeLink(
                         array(
                             'controller' => 'administration',
@@ -790,6 +851,7 @@ if ($user->isSuperAdmin()) {
             'text'      => gt('Test SMTP Mail Server Settings'),
             'icon'      => 'fa-check',
             'icon5'      => 'fas fa-check',
+            'iconbs'      => 'bi-check',
             'classname' => 'configure',
             'url'       => makeLink(
                 array(

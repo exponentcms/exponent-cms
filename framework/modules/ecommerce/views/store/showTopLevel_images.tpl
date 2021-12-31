@@ -96,7 +96,9 @@
                         </a>
                         <h3>
                             <a href="{link controller=store action=showall title=$cat->sef_url}">
+                                {if !$cat->is_active}<em>{/if}
                                 {$cat->title}
+                                {if !$cat->is_active}</em>{/if}
                             </a>
                         </h3>
                     </div>

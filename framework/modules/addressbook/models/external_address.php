@@ -122,7 +122,7 @@ class external_address extends expRecord {
             $user->is_system_user = false;
             $user->created_on = time();
             $user->save(true);
-            $user->login($user->username,$password);
+            $user::login($user->username,$password);
             $this->user_id = $user->id;
             $this->is_default = true;
             //eDebug($user,true);

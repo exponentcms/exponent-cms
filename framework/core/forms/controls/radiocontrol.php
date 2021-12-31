@@ -56,13 +56,13 @@ class radiocontrol extends formcontrol {
 
         if(empty($this->flip)){
             $html .= "<td class=\"input\">";
-            $html .= !empty($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
+            $html .= $this->controlToHTML($name);
             $html .="</td>";
             $html .= "<td nowrap><label".$for." class='label'>".$label."</label></td>";
         } else {
             $html .= "<td nowrap><label".$for." class='label'>".$label."</label></td>";
             $html .= "<td class=\"input\">";
-            $html .= !empty($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
+            $html .= $this->controlToHTML($name);
             $html .="</td>";
         }
         if (!empty($this->description)) $html .= "</tr><tr><td></td><td><div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div></td>";
@@ -71,7 +71,7 @@ class radiocontrol extends formcontrol {
         return $html;
     }
 
-    function controlToHTML($name,$label=null) {
+    function controlToHTML_oldschool($name,$label=null) {
         $idname = createValidId($this->groupname . $this->value);
         $html = '<input class="radiobutton" type="radio" value="' . $this->value .'" id="' . $idname . '" name="' . $this->groupname . '"';
         if ($this->default) $html .= ' checked="checked"';
@@ -83,7 +83,7 @@ class radiocontrol extends formcontrol {
         return $html;
     }
 
-    function controlToHTML_newschool($name, $label) {
+    function controlToHTML($name, $label = null) {
 //        $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
         $this->name = empty($this->name) ? $name : $this->name;
         $this->id = empty($this->id) ? $name.$this->value : $this->id;
@@ -106,8 +106,8 @@ class radiocontrol extends formcontrol {
 
         if (!empty($this->readonly)) $html .= ' readonly="readonly"';
 
-        $caption = isset($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
-        if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'"';
+//        $caption = isset($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
+        if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" ';
         if ($this->focus) $html .= " autofocus";
         if (!empty($this->onclick)) $html .= ' onclick="'.$this->onclick.'"';
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'"';

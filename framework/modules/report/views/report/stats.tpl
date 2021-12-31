@@ -45,7 +45,7 @@
                 <td>
                     {form action="stats"}
                         {"Purchased Between"|gettext}:
-                        {control type="calendar" name="starttime" label="" default_date=$prev_month default_hour=$prev_hour default_min=$prev_min default_ampm=$prev_ampm}
+                        {control type="calendar" name="starttime" label="" default_date=$prev_date default_hour=$prev_hour default_min=$prev_min default_ampm=$prev_ampm}
                         {"And"|gettext}
                         {control type="calendar" name="endtime" label="" default_date=$now_date default_hour=$now_hour default_min=$now_min default_ampm=$now_ampm}
                         {control type="buttongroup" submit="Apply Filter"|gettext}

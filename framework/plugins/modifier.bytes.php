@@ -32,11 +32,11 @@
  */
 function smarty_modifier_bytes($bytes) {
     if ($bytes >= 1048576) {
-        return round($bytes/1048576, 2) . ' ' . gt('mb');
+        return number_format(round($bytes/1048576, 2)) . ' ' . gt('mb');
     } elseif ($bytes >= 1024) {
-        return round($bytes/1024, 2) . ' ' . gt('kb');
+        return number_format(round($bytes/1024, 2)) . ' ' . gt('kb');
     } else {
-        return $bytes . ' ' . gt('bytes');
+        return number_format($bytes) . ' ' . gt('bytes');
     }
 
 }

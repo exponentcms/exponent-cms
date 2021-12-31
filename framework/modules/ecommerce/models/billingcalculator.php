@@ -38,7 +38,6 @@ class billingcalculator extends expRecord {
     public function creditEnabled() {return false; }
     public function isRestricted() { return false; }
 
-//    public $use_title = '';
     public $payment_type = '';
 
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {
@@ -53,6 +52,20 @@ class billingcalculator extends expRecord {
     }
 
     /**
+     * Called for checkout screen
+     *
+     * @param billingmethod $method
+     * @param mixed $opts
+     * @param array $params
+     * @param order $order
+     *
+     * @return object
+     */
+    function checkout($method, $opts, $params, $order) {
+        return new stdClass();
+    }
+
+    /**
      * Called for billing method selection screen, return true if it's a valid billing method.
      *
      * @param billingmethod $method
@@ -63,11 +76,11 @@ class billingcalculator extends expRecord {
      * @return object
      */
     function preprocess($method, $opts, $params, $order) {
-        return;
+        return new stdClass();
     }
 
     /**
-     * Process the transaction
+     * Called to Process (complete) the transaction
      *
      * @param billingmethod $method
      * @param mixed $opts
@@ -77,12 +90,16 @@ class billingcalculator extends expRecord {
      * @return object
      */
     function process($method, $opts, $params, $order) {
-        return null;
+        return new stdClass();
     }
 
-    function postProcess($order,$params)
-    {
-         return true;
+    /**
+     * Perform any post process actions after the order has been finalized
+     *
+     * @param order $order
+     * @param array $params
+     */
+    function postProcess($order, $params) {
     }
 
     /**
@@ -94,8 +111,8 @@ class billingcalculator extends expRecord {
      *
      * @return object
      */
-    function delayed_capture($billingmethod, $amount , $order)
-    {
+    function delayed_capture($billingmethod, $amount , $order) {
+        return new stdClass();
     }
 
     /**
@@ -106,8 +123,8 @@ class billingcalculator extends expRecord {
      *
      * @return object
      */
-    function void_transaction($billingmethod, $order)
-    {
+    function void_transaction($billingmethod, $order) {
+        return new stdClass();
     }
 
     /**
@@ -119,10 +136,18 @@ class billingcalculator extends expRecord {
      *
      * @return object
      */
-    function credit_transaction($method, $amount, $order)
-    {
+    function credit_transaction($method, $amount, $order) {
+        return new stdClass();
     }
 
+    /**
+     * Build user input form
+     *
+     * @param null $config_object
+     * @param null $user_data
+     *
+     * @return string
+     */
     function userForm($config_object = null, $user_data = null) {
         $form = '<h3>' . gt('Additional Order Information') . '</h3>';
         $form .= ecomconfig::getConfig('additional_info');
@@ -135,15 +160,13 @@ class billingcalculator extends expRecord {
     }
 
     /**
-     * Should return html to display user data.
+     * Returns html to display user data.
      *
      * @param $billingmethod
      *
      * @return string
      */
     function userView($billingmethod) {
-//        return '';
-
         // create a generic table of data
         $billinginfo = '<table id="ccinfo"' . ((bs3()||bs4()||bs5())?' class="table"':'') . ' border=0 cellspacing=0 cellpadding=0>';
         $billinginfo .= '<thead><tr><th colspan="2">' . gt('Paying by') . ' ' . $this->name() . '</th></tr></thead>';
@@ -164,15 +187,23 @@ class billingcalculator extends expRecord {
     }
 
     /**
-     * process user input. This function should return an object of the user input.
+     * Process user input. This function should return an object of the user input.
      * the returned object will be saved in the session and passed to post_process.
      * If need be this could use another method of data storage, as long post_process can get the data.
      *
      * @param $params
+     *
+     * @return object
      */
     function userFormUpdate($params) {
+        return new stdClass();
     }
 
+    /**
+     * Return path to calculator configuration form template
+     *
+     * @return string
+     */
     function configForm() {
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/configure.tpl')) {
             return BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/configure.tpl';
@@ -190,42 +221,108 @@ class billingcalculator extends expRecord {
         }
     }
 
+    /**
+     * Parse configuration data into an array
+     * @param $values
+     *
+     * @return array
+     */
     function parseConfig($values) {
         return array();
     }
 
+    /**
+     * Return the stored payment authorization number
+     *
+     * @param $billingmethod
+     *
+     * @return string
+     */
     function getPaymentAuthorizationNumber($billingmethod) {
         return '';
     }
 
+    /**
+     * Return the stored payment reference number
+     *
+     * @param $billingmethod
+     *
+     * @return string
+     */
     function getPaymentReferenceNumber($billingmethod) {
         return '';
     }
 
+    /**
+     * Return the payment status
+     *
+     * @param $billingmethod
+     *
+     * @return string
+     */
     function getPaymentStatus($billingmethod) {
         return '';
     }
 
+    /**
+     * Return the payment method, normally the calculator name
+     *
+     * @param $billingmethod
+     *
+     * @return string|null
+     */
     function getPaymentMethod($billingmethod) {
         return $this->name();
     }
 
+    /**
+     * Return AVS Address Verified code
+     *
+     * @param $billingmethod
+     *
+     * @return string
+     */
     function getAVSAddressVerified($billingmethod) {
         return '';
     }
 
+    /**
+     * Return AVS Zip Verified code
+     *
+     * @param $billingmethod
+     *
+     * @return string
+     */
     function getAVSZipVerified($billingmethod) {
         return '';
     }
 
+    /**
+     * Return CVV Matched code
+     *
+     * @param $billingmethod
+     *
+     * @return string
+     */
     function getCVVMatched($billingmethod) {
         return '';
     }
 
+    /**
+     * @deprecated
+     */
     function showOptions() {
         return;
     }
 
+    /**
+     * Generate a new billing transaction record
+     *
+     * @param $method
+     * @param $amount
+     * @param $result
+     * @param $trax_state
+     */
     function createBillingTransaction($method, $amount, $result, $trax_state)
     {
         $bt = new billingtransaction();
@@ -243,14 +340,17 @@ class billingcalculator extends expRecord {
     /**
      * Return default billing calculator
      *
+     * @return int
      */
     public static function getDefault() {
         global $db;
 
         $calc = $db->selectObject('billingcalculator','is_default=1');
         if (empty($calc)) $calc = $db->selectObject('billingcalculator','enabled=1');
-        if ($calc->id) return $calc->id;
-        else return false;
+        if ($calc->id)
+            return $calc->id;
+        else
+            return false;
     }
 
     /**
@@ -258,7 +358,7 @@ class billingcalculator extends expRecord {
      *
      * @param $calc_id
      *
-     * @return null
+     * @return string
      */
     public static function getCalcName($calc_id) {
         global $db;
@@ -271,7 +371,7 @@ class billingcalculator extends expRecord {
      *
      * @param $calc_id
      *
-     * @return null
+     * @return string
      */
     public static function getCalcTitle($calc_id) {
         global $db;

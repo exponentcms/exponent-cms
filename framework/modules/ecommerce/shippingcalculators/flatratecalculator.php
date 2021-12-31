@@ -33,11 +33,25 @@ class flatratecalculator extends shippingcalculator {
     public $shippingmethods = array("01"=>"Flat Rate");
 
     public function getRates($order) {
+        $location_upcharge = 0;
+        //if certain states, add $$ from config
+        $currentMethod = $order->getCurrentShippingMethod();
+        //Get the config and parse to get the states/regions only
+        $upcharges = ecomconfig::getConfig('upcharge');
+        $countryUpcharge = ecomconfig::splitConfigUpCharge($upcharges, 'country');
+        if (array_key_exists($currentMethod->country, $countryUpcharge)) {
+            $location_upcharge += $countryUpcharge[$currentMethod->country]; // $c[$i] += $stateUpcharge[$currentMethod->state]; Commented this though i'm not sure if this is done intentionally
+        }
+        $stateUpcharge = ecomconfig::splitConfigUpCharge($upcharges, 'region');
+        if (array_key_exists($currentMethod->state, $stateUpcharge)) {
+            $location_upcharge += $stateUpcharge[$currentMethod->state]; // $c[$i] += $stateUpcharge[$currentMethod->state]; Commented this though i'm not sure if this is done intentionally
+        }
+
 	    $rates = array(
             '01'=>array(
                 'id'=>'01',
                 'title'=>$this->shippingmethods['01'],
-                'cost'=>$this->configdata['rate']
+                'cost'=>$this->configdata['rate'] + $location_upcharge
             )
         );
 	    return $rates;

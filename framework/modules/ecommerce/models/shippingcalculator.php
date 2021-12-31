@@ -50,15 +50,34 @@ class shippingcalculator extends expRecord {
 
     }
 
+    /**
+     * Does calculator meet criteria
+     *
+     * @param $shippingmethod
+     *
+     * @return bool
+     */
     public function meetsCriteria($shippingmethod) { //FIXME probably needs to be passed order object
         return true;
     }
 
+    /**
+     * Main function to return (all possible) shipping rates for order
+     *
+     * @param $order
+     *
+     * @return array
+     */
     public function getRates($order)
     {
         return array();
     }
 
+    /**
+     * Return path to calculator configuration form template
+     *
+     * @return string
+     */
     public function configForm()
     {
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/configure.tpl')) {
@@ -77,15 +96,33 @@ class shippingcalculator extends expRecord {
         }
     }
 
+    /**
+     * Parse configuration data into an array
+     * @param $values
+     *
+     * @return array
+     */
     function parseConfig($values)
     {
         return array();
     }
 
+    /**
+     * Return array of available shipping method names
+     *
+     * @return array
+     */
     function availableMethods() {
    	    return array();
    	}
 
+    /**
+     * Return array of packages
+     *
+     * @param $carrier
+     *
+     * @return array
+     */
     function getPackages($carrier) {
         return array();
     }
@@ -102,14 +139,17 @@ class shippingcalculator extends expRecord {
     /**
      * Return default shipping calculator
      *
+     * @return int
      */
     public static function getDefault() {
         global $db;
 
         $calc = $db->selectObject('shippingcalculator','is_default=1');
         if (empty($calc)) $calc = $db->selectObject('shippingcalculator','enabled=1');
-        if (!empty($calc->id)) return $calc->id;
-        else return false;
+        if (!empty($calc->id))
+            return $calc->id;
+        else
+            return false;
     }
 
     /**
@@ -117,7 +157,7 @@ class shippingcalculator extends expRecord {
      *
      * @param $calc_id
      *
-     * @return null
+     * @return string
      */
     public static function getCalcName($calc_id) {
         global $db;
@@ -130,7 +170,7 @@ class shippingcalculator extends expRecord {
      *
      * @param $calc_id
      *
-     * @return null
+     * @return string
      */
     public static function getCalcTitle($calc_id) {
         global $db;
@@ -142,7 +182,7 @@ class shippingcalculator extends expRecord {
     //  primarily for easypost shipping calculator
 
     function createLabel($shippingmethod) {
-        return false;
+        return;
     }
 
     function buyLabel($shippingmethod) {
@@ -158,7 +198,7 @@ class shippingcalculator extends expRecord {
     }
 
     function createPickup($shippingmethod, $pickupdate, $pickupenddate, $instructions) {
-        return false;
+
     }
 
     function buyPickup($shippingmethod, $type) {
@@ -174,7 +214,7 @@ class shippingcalculator extends expRecord {
     }
 
     function getPackageDetails($shippingmethod, $tracking_only=false) {
-
+        return '';
     }
 
 }

@@ -100,10 +100,13 @@ v0.12.6 is the newest version which can be downloaded from [wkhtmltopdf.org](htt
 #### Kint
 
 Exponent CMS includes built-in Developer Debugging support, but this feature can be extended by
-installing the [Kint](https://github.com/kint-php/kint) PHP library. Simply extract a release into
-the /external folder. The feature is auto-activated by this installation.
-- v3.3.0 (/external/kint-3.3) is the most recent release; v2.2 (/external/kint-2.2) is the newest 2.x version, 
-but v1.1 (/external/kint) is also supported
+installing the [Kint](https://github.com/kint-php/kint) PHP library. Simply place the kint.phar file
+into the /external folder (for v1 & v2 extract into the /external folder to create a subfolder).
+The feature is auto-activated by this installation.
+- v4.0.0 (/external/kint.phar) is the most recent release; (requires Exponent CMS v2.6.0patch2 or later)
+- v3.3.0 (/external/kint.phar) is the last 3.x release; 
+- v2.2 (/external/kint-2.2/) is the last 2.x version, 
+- but v1.1 (/external/kint/) is also supported
 
 ### Alternate .less Compiler
 

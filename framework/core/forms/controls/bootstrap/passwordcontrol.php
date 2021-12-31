@@ -38,7 +38,7 @@ class passwordcontrol extends genericcontrol {
     function toHTML($label,$name) {
         if (!empty($this->id)) {
             $divID  = ' id="'.$this->id.'Control"';
-            $for = ' for="'.$this->id.'"';
+            $for = ' for="'.createValidId($this->id).'"';
         } else {
             $divID  = ' id="'.$name.'Control"';
             $for = '';

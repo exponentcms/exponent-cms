@@ -102,10 +102,12 @@ class discounts extends expRecord {
         //serialized, and then we can handle it all in expRecord.
         $params['group_ids'] = serialize($params['group_ids']);
 
-        $this->startdate = datetimecontrol::parseData('startdate', $params);
-        $this->startdate_time = datetimecontrol::parseData('startdate_time', $params) + $this->startdate;
-        $this->enddate = datetimecontrol::parseData('enddate', $params);
-        $this->enddate_time = datetimecontrol::parseData('enddate_time', $params) + $this->enddate;
+        if (isset($params['startdate_month'])) {
+            $this->startdate = datetimecontrol::parseData('startdate', $params);
+            $this->startdate_time = datetimecontrol::parseData('startdate_time', $params) + $this->startdate;
+            $this->enddate = datetimecontrol::parseData('enddate', $params);
+            $this->enddate_time = datetimecontrol::parseData('enddate_time', $params) + $this->enddate;
+        }
         //                   eDebug($_POST);
         //eDebug($params);
         //eDebug($this, true);

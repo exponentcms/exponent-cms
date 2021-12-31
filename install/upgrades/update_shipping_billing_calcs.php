@@ -58,46 +58,65 @@ class update_shipping_billing_calcs extends upgradescript {
 	function upgrade() {
         global $db;
 
-        $dir = BASE."framework/modules/ecommerce/billingcalculators";
-        if (is_readable($dir)) {
-            $dh = opendir($dir);
-            while (($file = readdir($dh)) !== false) {
-                if (is_file("$dir/$file") && substr("$dir/$file", -4) == ".php") {
-                    include_once("$dir/$file");
-                    $classname = substr($file, 0, -4);
-                    $id = $db->selectValue('billingcalculator', 'id', 'calculator_name=\''.$classname.'\'');
-                    $calcobj = new $classname($id);
-                    if ((method_exists($calcobj,'isSelectable')) && $calcobj->isSelectable() == true) {
-                        $calcobj->update(
-                            array(
-                                'title'=>$calcobj->name(),
-//                                'user_title'=>$calcobj->name(),
-                                'body'=>$calcobj->description(),
-                                'calculator_name'=>$classname,
-                            )
-                        );
+        $calculators = array();
+        $calc_dirs = array(
+            THEME_ABSOLUTE . "modules/ecommerce/billingcalculators",
+            BASE . "framework/modules/ecommerce/billingcalculators",
+        );
+        foreach ($calc_dirs as $dir) {
+            if (is_readable($dir)) {
+                $dh = opendir($dir);
+                while (($file = readdir($dh)) !== false) {
+                    if (is_file("$dir/$file") && substr("$dir/$file", -4) == ".php") {
+                        if (array_key_exists(substr($file, 0, -4), $calculators)) {
+                            continue;
+                        }
+                        include_once("$dir/$file");
+                        $classname = substr($file, 0, -4);
+                        $id = $db->selectValue('billingcalculator', 'id', 'calculator_name=\'' . $classname . '\'');
+                        $calcobj = new $classname($id);
+                        if ((method_exists($calcobj, 'isSelectable')) && $calcobj->isSelectable() == true) {
+                            $calcobj->update(
+                                array(
+                                    'title' => $calcobj->name(),
+                                    'body' => $calcobj->description(),
+                                    'calculator_name' => $classname,
+                                )
+                            );
+                        }
+                        $calculators[$calcobj->classname] = $calcobj;
                     }
                 }
             }
         }
 
-        $dir = BASE."framework/modules/ecommerce/shippingcalculators";
-        if (is_readable($dir)) {
-            $dh = opendir($dir);
-            while (($file = readdir($dh)) !== false) {
-                if (is_file("$dir/$file") && substr("$dir/$file", -4) == ".php") {
-                    include_once("$dir/$file");
-                    $classname = substr($file, 0, -4);
-                    $id = $db->selectValue('shippingcalculator', 'id', 'calculator_name=\'' . $classname . '\'');
-                    $calcobj = new $classname($id);
-                    if ($calcobj->isSelectable() == true) {
-                        $calcobj->update(
-                            array(
-                                'title' => $calcobj->name(),
-                                'body' => $calcobj->description(),
-                                'calculator_name' => $classname
-                            )
-                        );
+        $calculators = array();
+        $calc_dirs = array(
+            THEME_ABSOLUTE . "modules/ecommerce/shippingcalculators",
+            BASE . "framework/modules/ecommerce/shippingcalculators",
+        );
+        foreach ($calc_dirs as $dir) {
+            if (is_readable($dir)) {
+                $dh = opendir($dir);
+                while (($file = readdir($dh)) !== false) {
+                    if (is_file("$dir/$file") && substr("$dir/$file", -4) == ".php") {
+                        if (array_key_exists(substr($file, 0, -4), $calculators)) {
+                            continue;
+                        }
+                        include_once("$dir/$file");
+                        $classname = substr($file, 0, -4);
+                        $id = $db->selectValue('shippingcalculator', 'id', 'calculator_name=\'' . $classname . '\'');
+                        $calcobj = new $classname($id);
+                        if ($calcobj->isSelectable() == true) {
+                            $calcobj->update(
+                                array(
+                                    'title' => $calcobj->name(),
+                                    'body' => $calcobj->description(),
+                                    'calculator_name' => $classname
+                                )
+                            );
+                        }
+                        $calculators[$calcobj->classname] = $calcobj;
                     }
                 }
             }

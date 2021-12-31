@@ -544,7 +544,7 @@ class administrationController extends expController {
 			'mods'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-mods',
 		);
 
-        require_once(BASE . 'external/simplepie-1.5.6/autoloader.php');
+        require_once(BASE . 'external/simplepie-1.5.8/autoloader.php');
 		$RSS = new SimplePie();
 		$RSS->set_cache_location(BASE . 'tmp/rsscache');  // default is ./cache
 //	    $RSS->set_cache_duration(3600);  // default if 3600
@@ -1386,7 +1386,7 @@ class administrationController extends expController {
                 if (!empty($zone['timezone_id']) && !in_array($zone['timezone_id'],$added) && in_array($zone['timezone_id'],$idents)) {
                     try{
                         $z = new DateTimeZone($zone['timezone_id']);
-                        $c = new DateTime(null, $z);
+                        $c = new DateTime("now", $z);
                         $zone['time'] = $c->format('H:i a');
                         $data[] = $zone;
                         $offset[] = $z->getOffset($c);

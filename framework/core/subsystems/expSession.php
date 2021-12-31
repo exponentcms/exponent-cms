@@ -49,9 +49,7 @@ class expSession {
 	* @node Subsystems:Sessions
 	*/
     public static function get($var) {
-		if (isset($_SESSION[SYS_SESSION_KEY]['vars'][$var])) {
-			return $_SESSION[SYS_SESSION_KEY]['vars'][$var];
-		} else return null;
+        return isset($_SESSION[SYS_SESSION_KEY]['vars'][$var]) ? $_SESSION[SYS_SESSION_KEY]['vars'][$var] : null;
     }
 
     public static function exists($var) {
@@ -115,12 +113,9 @@ class expSession {
 //			$sessid =  $_POST['expid'];
 //		}
 //		else
-        if (!isset($_COOKIE[SYS_SESSION_COOKIE]))
-		{
+        if (!isset($_COOKIE[SYS_SESSION_COOKIE])) {
 			$sessid = md5(uniqid(mt_rand(), true));
-		}
-		else
-		{
+		} else {
 			$sessid = $_COOKIE[SYS_SESSION_COOKIE];
 		}
 		session_name(SYS_SESSION_COOKIE);
@@ -129,24 +124,19 @@ class expSession {
 		session_set_cookie_params(60*60*24*100); // This sets the cookie to expire in 100 days - ||seconds*minutes*hours*days||
 
 		session_start();
-		if (!isset($_SESSION[SYS_SESSION_KEY]))
-		{
+		if (!isset($_SESSION[SYS_SESSION_KEY])) {
 			$_SESSION[SYS_SESSION_KEY] = array();
 		}
-		if (!isset($_SESSION[SYS_SESSION_KEY]['vars']))
-		{
+		if (!isset($_SESSION[SYS_SESSION_KEY]['vars'])) {
 			$_SESSION[SYS_SESSION_KEY]['vars'] = array();
 		}
-		if (isset($_SESSION[SYS_SESSION_KEY]['vars']['display_theme']))
-		{
+		if (isset($_SESSION[SYS_SESSION_KEY]['vars']['display_theme'])) {
 			define('DISPLAY_THEME',$_SESSION[SYS_SESSION_KEY]['vars']['display_theme']);
 		}
-		if (isset($_SESSION[SYS_SESSION_KEY]['vars']['theme_style']))
-		{
+		if (isset($_SESSION[SYS_SESSION_KEY]['vars']['theme_style'])) {
 			define('THEME_STYLE',$_SESSION[SYS_SESSION_KEY]['vars']['theme_style']);
 		}
-		if (isset($_SESSION[SYS_SESSION_KEY]['vars']['mobile']))
-		{
+		if (isset($_SESSION[SYS_SESSION_KEY]['vars']['mobile'])) {
 			define('MOBILE',$_SESSION[SYS_SESSION_KEY]['vars']['mobile']);
 		}
 	}
@@ -165,19 +155,24 @@ class expSession {
 		} else {
 			$ticket = $db->selectObject('sessionticket',"ticket='".$_SESSION[SYS_SESSION_KEY]['ticket']."'");
 		}
-        if (empty($ticket))
+        if (empty($ticket)) {
             $ticket = self::createTicket();
+        }
 
 		//if we don't have a ticket here, that means the browser passed the cookie, the session is still
 		// active, but the DATABASE tickets table was cleared.
 
 		if(SESSION_TIMEOUT_ENABLE == true){
 			$timeoutval = SESSION_TIMEOUT;
-			if ($timeoutval < 300) $timeoutval = 300;
+			if ($timeoutval < 300) {
+                $timeoutval = 300;
+            }
 			if ($ticket == null || $ticket->last_active < time() - $timeoutval) {
 				define('SITE_403_HTML',SESSION_TIMEOUT_HTML);
 				self::logout();
-                if (defined('ECOM') && !ECOM) flash('notice',gt('Your user session has expired.').' <a href="'.expCore::makeLink(array("controller"=>"login","action"=>"showlogin")).'">'.gt("Please log in again").'</a>');
+                if (defined('ECOM') && !ECOM) {
+                    flash('notice', gt('Your user session has expired.') . ' <a href="' . expCore::makeLink(array("controller" => "login", "action" => "showlogin")) . '">' . gt("Please log in again") . '</a>');
+                }
 				return;
 			}
 		}
@@ -190,14 +185,17 @@ class expSession {
 		}
 
 		if (!empty($ticket->refresh)) {  // clear user session cache and reload permissions
-			if (isset($user)) expPermissions::load($user);
+			if (isset($user)) {
+                expPermissions::load($user);
+            }
 			self::clearCurrentUserSessionCache();
 			$ticket->refresh = 0;
 		}
 
 		self::updateTicket($ticket, $user);
-        if (SESSION_TIMEOUT_ENABLE == true)
-            $db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));  // Clean out old sessions from the sessionticket table.
+        if (SESSION_TIMEOUT_ENABLE == true) {
+            $db->delete('sessionticket', 'last_active < ' . (time() - SESSION_TIMEOUT));  // Clean out old sessions from the sessionticket table.
+        }
 
 		define('SITE_403_HTML', SITE_403_REAL_HTML);
 	}
@@ -214,7 +212,7 @@ class expSession {
 	public static function updateTicket($ticket, $user){
 		global $db;
 
-		if (!empty($ticket->ticket)){
+		if (!empty($ticket->ticket)) {
 			$ticket->uid = isset($user->id) ? $user->id : 0;
 			$ticket->last_active = time();
 			$db->updateObject($ticket,'sessionticket',"ticket='" . $ticket->ticket . "'");
@@ -238,8 +236,7 @@ class expSession {
 
 	public static function getCacheValue($module){
 		//returns array or null
-		if (isset($_SESSION[SYS_SESSION_KEY]['cache'][$module])) return($_SESSION[SYS_SESSION_KEY]['cache'][$module]);
-		else return null;
+        return isset($_SESSION[SYS_SESSION_KEY]['cache'][$module]) ? ($_SESSION[SYS_SESSION_KEY]['cache'][$module]) : null;
 	}
 
 	public static function getTicketString() {
@@ -279,7 +276,9 @@ class expSession {
 	 */
 	public static function login($user) {
 		$ticket = self::getTicketString();
-		if (!isset($ticket)) $ticket = self::createTicket($user);
+		if (!isset($ticket)) {
+            $ticket = self::createTicket($user);
+        }
 		$_SESSION[SYS_SESSION_KEY]['user'] = $user;
 		self::updateTicket($ticket, $user);
 		expPermissions::load($user);
@@ -389,13 +388,16 @@ class expSession {
 		if (isset($modules)){
 			if (is_array($modules)){
 				foreach ($modules as $mod){
-					if (isset($_SESSION[SYS_SESSION_KEY]['cache'][$mod])) unset($_SESSION[SYS_SESSION_KEY]['cache'][$mod]);
+					if (isset($_SESSION[SYS_SESSION_KEY]['cache'][$mod]))
+					    unset($_SESSION[SYS_SESSION_KEY]['cache'][$mod]);
 				}
 			} else {
-				if (isset($_SESSION[SYS_SESSION_KEY]['cache'][$modules])) unset($_SESSION[SYS_SESSION_KEY]['cache'][$modules]);
+				if (isset($_SESSION[SYS_SESSION_KEY]['cache'][$modules]))
+				    unset($_SESSION[SYS_SESSION_KEY]['cache'][$modules]);
 			}
 		} else {
-			if (isset($_SESSION[SYS_SESSION_KEY]['cache'])) unset($_SESSION[SYS_SESSION_KEY]['cache']);
+			if (isset($_SESSION[SYS_SESSION_KEY]['cache']))
+			    unset($_SESSION[SYS_SESSION_KEY]['cache']);
 		}
 	}
 
@@ -419,7 +421,9 @@ class expSession {
 	 */
 	static function createTicket($user = null){
 		$ticket = new stdClass();
-		if (!isset($user->id)) $user = new user(0);
+		if (!isset($user->id)) {
+            $user = new user(0);
+        }
 		$ticket->uid = (integer)$user->id;
 		$ticket->ticket = uniqid("",true);
 		$ticket->last_active = time();

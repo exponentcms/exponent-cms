@@ -52,6 +52,7 @@ $info = array(
             'text'      => gt('Information'),
             'icon' => 'fa-info-circle',
             'icon5' => 'fas fa-info-circle',
+            'iconbs' => 'bi-info-circle',
             'classname' => 'info',
             "submenu"   => array(
                 'id'       => 'pginfo',
@@ -73,6 +74,7 @@ if (expPermissions::check('manage', expCore::makeLocation('navigation', '', $sec
         'classname' => 'edit',
         'icon' => 'fa-edit',
         'icon5' => 'fas fa-edit',
+        'iconbs' => 'bi-pencil-square',
         'url' => makeLink(
             array(
                 'module' => 'navigation',
@@ -89,6 +91,7 @@ if ($user->isAdmin() && !SIMPLE_PERMISSIONS) {
         'classname' => 'user',
         'icon' => 'fa-user',
         'icon5' => 'fas fa-user',
+        'iconbs' => 'bi-person',
         'url' => makeLink(
             array(
                 'controller' => 'users',
@@ -103,6 +106,7 @@ if ($user->isAdmin() && !SIMPLE_PERMISSIONS) {
         'classname' => 'group',
         'icon' => 'fa-group',
         'icon5' => 'fas fa-users',
+        'iconbs' => 'bi-people',
         'url' => makeLink(
             array(
                 'controller' => 'users',
@@ -137,6 +141,7 @@ if ($manageperms) {
         'text' => gt('Manage all pages'),
         'icon' => 'fa-leaf',
         'icon5' => 'fas fa-leaf',
+        'iconbs' => 'bi-diagram-3',
         'classname' => 'sitetree',
         'url' => makeLink(
             array(
@@ -151,6 +156,7 @@ return array(
     'text'      => gt('Pages'),
     'icon' => 'fa-file-text-o',
     'icon5' => 'far fa-file-alt',
+    'iconbs' => 'bi-file-earmark',
     'classname' => 'thispage',
     'submenu'   => $info
 );

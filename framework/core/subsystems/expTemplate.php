@@ -829,10 +829,15 @@ class expTemplate {
         }
 
         //FIXME we assume the file is only a filename and NOT a path?
-        $path = substr(str_replace(PATH_RELATIVE, '', $controller->asset_path), 0, -7) . 'views/' . $controller . '/';  // strip relative path for links coming from templates
+        if (PATH_RELATIVE !== '/')
+            $path_rel = str_replace(PATH_RELATIVE, '', $controller->asset_path);
+        else
+            $path_rel = $controller->asset_path;
+        $path = substr($path_rel, 0, -7) . 'views/' . $controller . '/';  // strip relative path for links coming from templates
 
         $themepath = THEME_RELATIVE . str_replace('framework/', '', $path);
-        $themepath = str_replace(PATH_RELATIVE, '', $themepath);
+        if (PATH_RELATIVE !== '/')
+            $themepath = str_replace(PATH_RELATIVE, '', $themepath);
 
         // see if there's an framework appropriate template variation
         //FIXME we need to check for custom views and add full path for system views if coming from custom view

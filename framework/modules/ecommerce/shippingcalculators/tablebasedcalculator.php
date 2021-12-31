@@ -63,23 +63,24 @@ class tablebasedcalculator extends shippingcalculator {
 				}
 			}
 		}
-		 //if certain states, add $$ from config
+        $location_upcharge = 0;
+        //if certain states, add $$ from config
         $currentMethod = $order->getCurrentShippingMethod();
+        //Get the config and parse to get the states/regions only
+        $upcharges = ecomconfig::getConfig('upcharge');
+        $countryUpcharge = ecomconfig::splitConfigUpCharge($upcharges, 'country');
+        if (array_key_exists($currentMethod->country, $countryUpcharge)) {
+            $location_upcharge += $countryUpcharge[$currentMethod->country]; // $c[$i] += $stateUpcharge[$currentMethod->state]; Commented this though i'm not sure if this is done intentionally
+        }
+        $stateUpcharge = ecomconfig::splitConfigUpCharge($upcharges, 'region');
+        if (array_key_exists($currentMethod->state, $stateUpcharge)) {
+            $location_upcharge += $stateUpcharge[$currentMethod->state]; // $c[$i] += $stateUpcharge[$currentMethod->state]; Commented this though i'm not sure if this is done intentionally
+        }
 
-		//Get the config and parse to get the states/regions only
-		$upcharge = ecomconfig::getConfig('upcharge');
-		$stateUpcharge = ecomconfig::splitConfigUpCharge($upcharge, 'region');
-
-        //2 - alaska
-        //21 - hawaii
-        //52 - PuertoRico
-        // $stateUpcharge = array('2','21','52');
         $rates = array();
 	    if(!empty($c)) {
             for ($i = 0, $iMax = count($c); $i < $iMax; $i++) {
-				if (array_key_exists($currentMethod->state, $stateUpcharge)) {
-					$c[$i] += $stateUpcharge[$currentMethod->state]; // $c[$i] += $stateUpcharge[$currentMethod->state]; Commented this though i'm not sure if this is done intentionally
-				}
+                $c[$i] += $location_upcharge;
                 if($i > 9) $rates[($i+1)] = array(
                     'id' => 0 . ($i+1),
                     'title' => @$this->shippingspeeds[$i]->speed,

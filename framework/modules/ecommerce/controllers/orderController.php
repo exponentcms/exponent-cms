@@ -579,14 +579,14 @@ exit();
             $pdf->writeHTMLCell($w=0, $h=0, $x='', $y='', $invoice, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
             $pdf->Output($org_name . "_Invoice" . ".pdf", 'I');
             exit();*/
-            eDebug("Done rendering invoice html. Starting PDF Generation: " . $timer->mark());
+            eDebug("Done rendering invoice html. Starting PDF Generation: " . expDateTime::duration(0, $timer->mark(), true));
             $pdfer = new expHtmlToPDF(HTMLTOPDF_PAPER, 'Portrait', $invoice);
 //            $pdfer->set_html($invoice);
 //            $pdfer->set_orientation('Portrait');
 //            $pdfer->set_page_size('Letter');
             $pdfer->set_grayscale(true);
 //            $pdfer->render();
-            eDebug("Done rendering PDF " . $timer->mark());
+            eDebug("Done rendering PDF " . expDateTime::duration(0, $timer->mark(), true));
 //            exit();
             ob_clean();
             $pdfer->createpdf('D', $org_name . "_Invoice" . ".pdf");
@@ -1305,8 +1305,8 @@ exit();
         $newOrder                  = new order();
         $newOrder->order_status_id = $this->params['order_status_id'];
         $newOrder->order_type_id   = $this->params['order_type_id'];
-        //$newOrder->order_references = $order->id;
-        $newOrder->reference_id    = $order->id;
+        $newOrder->order_references = $order->id;
+//        $newOrder->reference_id    = $order->id;
         $newOrder->user_id         = $order->user_id;
         $newOrder->purchased       = time();
         $newOrder->updated         = time();
@@ -1442,8 +1442,8 @@ exit();
         $newOrder                  = new order();
         $newOrder->order_status_id = $this->params['order_status_id'];
         $newOrder->order_type_id   = $this->params['order_type_id'];
-        //$newOrder->order_references = $order->id;
-        $newOrder->reference_id    = 0;
+        $newOrder->order_references = 0;
+//        $newOrder->reference_id    = 0;
         $newOrder->user_id         = $newAddy->user_id;
         $newOrder->purchased       = time();
         $newOrder->updated         = time();
@@ -2309,7 +2309,11 @@ exit();
         // DB table to use
         // build out a SQL query that gets all the data we need and is sortable.
         $sql = 'SELECT o.*, b.firstname AS firstname, b.billing_cost AS gtotal, b.transaction_state AS paid, b.middlename AS middlename, b.lastname AS lastname, os.title AS status, ot.title AS order_type, bc.title AS calc, CONCAT_WS(\', \', b.lastname, b.firstname) AS name ';
-        $sql .= 'FROM ' . $db->tableStmt('orders') . ' o, ' . $db->tableStmt('billingmethods') . ' b, ' . $db->tableStmt('order_status') . ' os, ' . $db->tableStmt('order_type') . ' ot, ' . $db->tableStmt('billingcalculator') . ' bc ';
+        $sql .= 'FROM ' . $db->tableStmt('orders') . ' o, ' .
+            $db->tableStmt('billingmethods') . ' b, ' .
+            $db->tableStmt('order_status') . ' os, ' .
+            $db->tableStmt('order_type') . ' ot, ' .
+            $db->tableStmt('billingcalculator') . ' bc ';
         $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND b.billingcalculator_id = bc.id AND o.purchased > 0';
         $sql .= $status_where;
 //        $table = $db->prefix . $this->model_table;
@@ -2322,7 +2326,7 @@ exit();
 
         //for populating filter lists
         $dbs = expDatabase::sql_connect();
-        //note for customer name list, but can take some time
+        //note for customer name list, but can take quite some time
 //        $stmt0 = $dbs->prepare( 'SELECT DISTINCT(user_id) FROM ' . $db->prefix . 'orders' );
 //        $stmt0->execute();
 //        $data['yadcf_data_0'] = $stmt0->fetchAll(PDO::FETCH_COLUMN, 0);

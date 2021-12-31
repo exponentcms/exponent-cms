@@ -58,10 +58,14 @@ abstract class basetemplate {
         $this->tpl->debugging = SMARTY_DEVELOPMENT; // Opens up the debug console
         $this->tpl->error_unassigned = true; // display notice when accessing unassigned variable, if warnings turned on
 
-        $this->tpl->php_handling = SMARTY::PHP_REMOVE;
+        if (version_compare(SMARTY_VERSION, '4.0.0', 'lt')) {
+            $this->tpl->php_handling = SMARTY::PHP_REMOVE;  //fixme remove for smarty v4
+        }
 
-        $this->tpl->setCaching(Smarty::CACHING_OFF);
-//        $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
+        if (SMARTY_CACHING)
+            $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
+        else
+            $this->tpl->setCaching(Smarty::CACHING_OFF);
         $this->tpl->setCacheDir(BASE . 'tmp/cache');
         $this->tpl->cache_id = md5($this->viewfile);
 
@@ -112,7 +116,7 @@ abstract class basetemplate {
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
             ));
-        } elseif (framework() == 'jquery') {
+        } elseif (framework() === 'jquery') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
                 BASE.'framework/plugins/jquery',

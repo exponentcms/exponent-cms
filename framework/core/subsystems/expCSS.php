@@ -50,7 +50,7 @@ class expCSS {
                 $css_path = str_replace("/less/", "/css/", $less_path);
                 $css_path = self::generate_filename($css_path);
                 //indexing the array by the filename
-                if (!isset($css_primer[$path_rel.$css_path]))
+                if (!isset($css_primer[$path_rel . $css_path]))
                     if (self::auto_compile_less($less_path, $css_path, $lless_vars))
                         $css_primer[$path_rel.$css_path] = $path_rel.$css_path;
             }
@@ -71,7 +71,7 @@ class expCSS {
                 $css_path = str_replace("/scss/", "/css/", $scss_path);
                 $css_path = self::generate_filename($css_path);
                 //indexing the array by the filename
-                if (!isset($css_primer[$path_rel.$css_path]))
+                if (!isset($css_primer[$path_rel . $css_path]))
                     if (self::auto_compile_scss($scss_path, $css_path, $lless_vars))
                         $css_primer[$path_rel.$css_path] = $path_rel.$css_path;
             }
@@ -102,7 +102,7 @@ class expCSS {
                 $css_path = str_replace("/less/", "/css/", $less_path);
                 $css_path = self::generate_filename($css_path);
                 //indexing the array by the filename
-                if (!isset($css_links[$path_rel.$css_path]))
+                if (!isset($css_links[$path_rel . $css_path]))
                     if (self::auto_compile_less($less_path, $css_path, $lless_vars))
                         $css_links[$path_rel.$css_path] = $path_rel.$css_path;
             }
@@ -123,7 +123,7 @@ class expCSS {
                 $css_path = str_replace("/scss/", "/css/", $scss_path);
                 $css_path = self::generate_filename($css_path);
                 //indexing the array by the filename
-                if (!isset($css_links[$path_rel.$css_path]))
+                if (!isset($css_links[$path_rel . $css_path]))
                     if (self::auto_compile_scss($scss_path, $css_path, $lless_vars))
                         $css_links[$path_rel.$css_path] = $path_rel.$css_path;
             }
@@ -285,7 +285,7 @@ class expCSS {
             foreach ($css_inline as $key=>$val) {
                 $styles .= $val;
             }
-            trim($styles);
+            $styles = trim($styles);
             if (!empty($styles)) {
                 $htmlcss .= "\t" . '<style type="text/css">' . "\r\n";
                 $htmlcss .= "\t" . $styles . "\r\n";
@@ -320,7 +320,7 @@ class expCSS {
 
 //        // code for testing scss compiler
 //        self::auto_compile_scss('external/bootstrap5/scss/newui', 'tmp/css/newui5.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap-icons-1.2.2/scss/bootstrap-icons', 'tmp/css/bootstrap-icons.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap-icons-1.4.0/scss/bootstrap-icons', 'tmp/css/bootstrap-icons.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
@@ -465,6 +465,11 @@ class expCSS {
                             } else {
                                 $map_write_to = BASE . 'tmp/css/' . $less_cname . ".map";
                             }
+                            if (strlen(PATH_RELATIVE) != 1) {
+                                $basePath = rtrim(realpath(str_replace(PATH_RELATIVE, '', BASE)), "\\/");
+                            } else {
+                                $basePath = rtrim(realpath(BASE), '\\/');
+                            }
                             $iless_options = array(
                                 'sourceMap'         => true,  // output .map file?
                                 'sourceMapOptions' => array(
@@ -478,7 +483,7 @@ class expCSS {
                                     // output source contents?
                                     'source_contents' => false,
                                     // base path for filename normalization
-                                    'base_path' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
+                                    'base_path' => $basePath,  // base (difference between) file & url locations, removed from ALL source files in .map
                                 ),
                             );
                         }
@@ -519,6 +524,15 @@ class expCSS {
                             if ($rebuild) {
                                 $less->parseFile(BASE . $less_pname);
                                 $css = $less->getCSS();
+                                if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php')) {
+                                    include_once(BASE . 'external/php-autoprefixer/autoload.inc.php');
+                                    // save map info
+                                    $map = explode("\n/*# sourceMappingURL=", $css);
+                                    $css = (new Padaliyajay\PHPAutoprefixer\Autoprefixer($css))->compile(!(MINIFY == 1 && MINIFY_LESS == 1));
+                                    if (!empty($map[1])) {
+                                        $css .= "/*# sourceMappingURL=" . $map[1];
+                                    }
+                                }
                                 // what files have been imported?
                                 $importedFiles = array();
                                 foreach ($importer->getImportedFiles() as $importedFile) {
@@ -569,10 +583,10 @@ class expCSS {
 //                            $less_compiler = 'less.php';
                         include_once(BASE . 'external/' . $less_compiler . '/lessc.inc.php');
                         $less = new lessc;
-
-                        // attempt to load autoprefixer
-                        if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php'))
-                            include_once(BASE . 'external/php-autoprefixer/autoload.inc.php');
+                        $less->setOptions(array(
+                            'cache_dir'         => BASE . 'tmp/css/',
+                            'prefix'            => '_less_'
+                        ));
 
                         // load the cache
                         $less_cname = str_replace("/", "_", $less_pname);
@@ -596,9 +610,9 @@ class expCSS {
                                 $map_filename = PATH_RELATIVE . $css_fname;
                             }
                             if (strlen(PATH_RELATIVE) != 1) {
-                                $basePath = rtrim(realpath(str_replace(PATH_RELATIVE, '', BASE)), '/');
+                                $basePath = rtrim(realpath(str_replace(PATH_RELATIVE, '', BASE)), "\\/");
                             } else {
-                                $basePath = BASE;
+                                $basePath = rtrim(realpath(BASE), '\\/');
                             }
                             $less->setOptions(array(
 //                                'outputSourceFiles' => true,  // include css source in .map file?
@@ -624,8 +638,15 @@ class expCSS {
                             $file_updated = false;
                             $new_cache = $less->cachedCompile($cache, false);
                             // attempt to load autoprefixer
-//                            if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php'))
-//                                $new_cache['compiled'] = (new Padaliyajay\PHPAutoprefixer\Autoprefixer($new_cache['compiled']))->compile(!(MINIFY==1 && MINIFY_LESS==1));
+                            if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php')) {
+                                include_once(BASE . 'external/php-autoprefixer/autoload.inc.php');
+                                // save map info
+                                $map = explode("\n/*# sourceMappingURL=", $new_cache['compiled']);
+                                $new_cache['compiled'] = (new Padaliyajay\PHPAutoprefixer\Autoprefixer($new_cache['compiled']))->compile(!(MINIFY == 1 && MINIFY_LESS == 1));
+                                if (!empty($map[1])) {
+                                    $new_cache['compiled'] .= "/*# sourceMappingURL=" . $map[1];
+                                }
+                            }
 
                             if (!is_array($cache) ||
                                 $new_cache['updated'] > $cache['updated']
@@ -701,12 +722,9 @@ class expCSS {
                     // we need to account for leading _ with filename and missing filetype suffix
                     if (is_file(BASE . $scss_pname) || is_file(BASE . "_" . $scss_pname)) {
                         include_once(BASE . 'external/' . $scss_compiler . '/scss.inc.php');
-                        $scss = new \ScssPhp\ScssPhp\Compiler();
+//                        $scss = new \ScssPhp\ScssPhp\Compiler(array('cacheDir'=>BASE . 'tmp/css/','prefix'=>'_scss_','forceRefresh'=>true,'checkImportResolutions'=>true));
+                        $scss = new \ScssPhp\ScssPhp\Compiler(array('cacheDir'=>BASE . 'tmp/css/','prefix'=>'_scss_'));
                         $scss_server = new \ScssPhp\Server\Server(BASE . 'tmp/css/', BASE . 'tmp/css/', $scss);
-
-                        // attempt to load autoprefixer
-                        if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php'))
-                            include_once(BASE . 'external/php-autoprefixer/autoload.inc.php');
 
                         // load the cache
                         $scss_cname = str_replace("/", "_", $scss_pname);
@@ -725,9 +743,9 @@ class expCSS {
                         if (DEVELOPMENT && LESS_COMPILER_MAP && $scss_compiler === 'scssphp') {
                             $scss->setSourceMap((int)LESS_COMPILER_MAP);  // output .map file?
                             if (strlen(PATH_RELATIVE) != 1) {
-                                $basePath = rtrim(realpath(str_replace(PATH_RELATIVE, '', BASE)), '/');
+                                $basePath = rtrim(realpath(str_replace(PATH_RELATIVE, '', BASE)), "\\/");
                             } else {
-                                $basePath = BASE;
+                                $basePath = rtrim(realpath(BASE), '\\/');
                             }
                             $scss->setSourceMapOptions(array(
 //                                'outputSourceFiles' => true,  // include css source in .map file?
@@ -741,29 +759,37 @@ class expCSS {
                         }
 
                         if (MINIFY==1 && MINIFY_LESS==1 && $scss_compiler === 'scssphp') {
-//                            $scss->setFormatter('ScssPhp\ScssPhp\Formatter\Compressed');  // with comments
-                            $scss->setFormatter('ScssPhp\ScssPhp\Formatter\Crunched');  // without comments
+                            $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::COMPRESSED);
                         } else {
-                            $scss->setFormatter('ScssPhp\ScssPhp\Formatter\Expanded');  // scss_formatter_nested is default
+                            $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::EXPANDED);
                         }
 
-                        $scss->setVariables($vars);
-//                        $scss->setNumberPrecision(8);  //FIXME docs recommends, but dist only has 6 digits of precision
+//                        $scss->setVariables($vars);  // scssphp 1.4
+                        $scss->addVariables($vars);  // scssphp 1.5+
 
                         try {
                             $file_updated = false;
                             $new_cache = $scss_server->cachedCompile($cache, false);
-                            // attempt to load autoprefixer
-//                            if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php'))
-//                                $new_cache['compiled'] = (new Padaliyajay\PHPAutoprefixer\Autoprefixer($new_cache['compiled']))->compile(!(MINIFY==1 && MINIFY_LESS==1));
+
                             if (!is_array($cache) || $new_cache['updated'] > $cache['updated']) {
                                 if (!empty($new_cache['compiled']) && $new_cache['compiled'] !== "\n") {
+                                    // attempt to load and run the autoprefixer
+                                    if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php')) {
+                                        include_once(BASE . 'external/php-autoprefixer/autoload.inc.php');
+                                        // save map info
+                                        $map = explode("\n/*# sourceMappingURL=", $new_cache['compiled']);
+                                        $new_cache['compiled'] = (new Padaliyajay\PHPAutoprefixer\Autoprefixer($new_cache['compiled']))->compile(!(MINIFY == 1 && MINIFY_LESS == 1));
+                                        if (!empty($map[1])) {
+                                            $new_cache['compiled'] .= "/*# sourceMappingURL=" . $map[1];
+                                        }
+                                    }
                                     $file_updated = true;
                                     // store compiler cache file
                                     $new_cache['vars'] = !empty($vars) ? $vars : null;
                                     file_put_contents($cache_fname, serialize($new_cache));
                                 }
                             }
+
                             if ($file_updated || (!empty($new_cache['compiled']) && $new_cache['compiled'] !== "\n" && !file_exists(BASE . $css_fname))) {
                                 // write compiled css file
                                 $css_loc = pathinfo(BASE . $css_fname);
@@ -804,7 +830,7 @@ class expCSS {
      *   we assume the input filename has a .less, .scss, or no extension
      */
     public static function generate_filename($filename) {
-        if (substr($filename, -5, 1) == ".") {
+        if (substr($filename, -5, 1) === ".") {
             $new_filename = substr($filename, 0, -4) . "css";
         } else {
             $new_filename = $filename . "css";

@@ -79,7 +79,7 @@
 </div>
 
 {if $table_filled}
-{script unique="manage-groups" jquery='jquery.dataTables,dataTables.bootstrap4,datatables.responsive'}
+{script unique="manage-groups" jquery='jquery.dataTables,dataTables.bootstrap4'}
 {literal}
     $(document).ready(function() {
         // var responsiveHelper;

@@ -89,7 +89,11 @@ class billing extends expRecord {
         }
 
 	    if ($number_of_calculators > 0 && $order->billingmethod[0]->billingcalculator_id != -1) {
-            $calcname = $this->available_calculators[$order->billingmethod[0]->billingcalculator_id];
+            if (isset($this->available_calculators[$order->billingmethod[0]->billingcalculator_id])) {
+                $calcname = $this->available_calculators[$order->billingmethod[0]->billingcalculator_id];
+            } else {
+                $calcname = null;
+            }
 
             if (!empty($calcname)) {
                 $this->calculator = new $calcname($order->billingmethod[0]->billingcalculator_id);

@@ -64,7 +64,7 @@ class radiogroupcontrol extends formcontrol {
 	function controlToHTML($name, $label) {
         //eDebug($this->items);
         $html = '';
-        $html .= ($this->horizontal) ? '<div class="offset-sm-2 col-sm-10">' : '';
+        $html .= ($this->horizontal) ? '<div class="col-sm-10">' : '';
 		foreach ($this->items as $rvalue=>$rlabel) {  //FJD
 			$radio = null;
 
@@ -75,7 +75,7 @@ class radiogroupcontrol extends formcontrol {
 
 			$radio = new radiocontrol($checked, $rvalue, $name, $this->flip, $this->onclick);
 
-            $radio->newschool = isset($this->newschool) ? $this->newschool : true;
+//            $radio->newschool = isset($this->newschool) ? $this->newschool : true;
 			$radio->value = $rvalue;
 
 			$radio->checked = (isset($this->default) && $this->default==$radio->value) ? true : false;
@@ -110,7 +110,7 @@ class radiogroupcontrol extends formcontrol {
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
 		$form->register("default",gt('Default'), new textcontrol($object->default));
-		$form->register("flip","Caption on Left", new checkboxcontrol($object->flip,false));
+		$form->register("flip","Item Caption on Left", new checkboxcontrol($object->flip,false));
 //		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4,false,2,"integer"));
         $form->register("cols","Stacked Controls", new checkboxcontrol($object->cols,false));
 //		$form->register(null,"", new htmlcontrol(gt('Setting Number of Columns to zero will put all items on one row.')));

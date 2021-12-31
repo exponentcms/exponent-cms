@@ -171,9 +171,9 @@ class expDatabase {
 
    		// then search for module definitions
    		$moddefs = array(
-   			BASE.'themes/'.DISPLAY_THEME.'/modules',
    			BASE."framework/modules",
-   			);
+            BASE.'themes/'.DISPLAY_THEME.'/modules',
+        );
         $models = expModules::initializeModels();
    		foreach ($moddefs as $moddef) {
    			if (is_readable($moddef)) {
@@ -1798,6 +1798,16 @@ abstract class database {
 	*/
 	abstract function tableExists($table);
 
+    /**
+   	* Check to see if the named column within a table exists in the database.
+   	* Returns true if the column exists, and false if it doesn't.
+   	*
+   	* @param string $table Name of the table to look in.
+    * @param string $col Name of the column to look for.
+   	* @return bool
+   	*/
+   	abstract function columnExists($table, $col);
+
 	/**
 	* Get a list of all tables in the database.  Optionally, only the tables
 	* in the current logical database (tables with the same prefix) can
@@ -1989,6 +1999,9 @@ abstract class database {
 	* @return int|mixed
 	*/
 	function getDDDefault($fieldObj) {
+        if (is_null($fieldObj->Default)) {
+            return null;
+        }
 		return strtolower($fieldObj->Default);
 	}
 

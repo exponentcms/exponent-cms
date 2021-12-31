@@ -25,6 +25,7 @@
 // | This script is free to use, don't abuse.                               |
 // +------------------------------------------------------------------------+
 
+namespace Verot\Upload;
 
 if (!defined('IMG_WEBP')) define('IMG_WEBP', 32);
 
@@ -35,7 +36,7 @@ if (!defined('IMG_WEBP')) define('IMG_WEBP', 32);
  * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
  * @copyright Colin Verot
  */
-class upload {
+class Upload {
 
 
     /**
@@ -2092,7 +2093,7 @@ class upload {
      */
     function upload($file, $lang = 'en_GB') {
 
-        $this->version            = '02/08/2019';
+        $this->version            = '03/08/2019';
 
         $this->file_src_name      = '';
         $this->file_src_name_body = '';

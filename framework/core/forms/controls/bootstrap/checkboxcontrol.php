@@ -31,7 +31,7 @@ class checkboxcontrol extends formcontrol {
 
     var $default = false;
     var $value = "1";
-    var $newschool = false;
+//    var $newschool = false;
     var $postfalse = false;
     var $filter = '';
     var $caption = '';
@@ -79,11 +79,11 @@ class checkboxcontrol extends formcontrol {
                 $for = $this->id;
             } else {
                 $divID = $name . 'Control';
-                if (substr($name, -2) == '[]') {
-                    $for   = $name . $this->value;
-                } else {
+//                if (substr($name, -2) === '[]') {
+//                    $for   = $name . $this->value;
+//                } else {
                     $for   = $name;
-                }
+//                }
             }
             $divID = createValidId($divID, $this->value);
             $for = ' for="' . createValidId($for, $this->value) . '"';
@@ -95,9 +95,7 @@ class checkboxcontrol extends formcontrol {
             $html .= (!empty($this->required)) ? ' required">' : '">';
             $html .= "<label" . $for . " class=\" ".(bs3()?"control-label ":"")."checkbox control\" style=\"display:inline;\">";
             if (!empty($this->flip)) $html .= $label;
-            $html .= !empty($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
-                $name
-            );
+            $html .= $this->controlToHTML($name);
             if (empty($this->flip)) $html .= $label;
             $html .= "</label>";
             if (!empty($this->description)) $html .= "<span class=\"help-block\">" . $this->description . "</span>";
@@ -106,7 +104,7 @@ class checkboxcontrol extends formcontrol {
         }
     }
 
-    function controlToHTML($name, $label = null) {
+    function controlToHTML_oldschool($name, $label = null) {
         $this->value = isset($this->value) ? $this->value : 1;
 
 //        $idname     = (!empty($this->id)) ? ' id="' . $this->id . '"' : "";
@@ -129,7 +127,7 @@ class checkboxcontrol extends formcontrol {
             $html .= ' ' . $type . '="' . $val . '"';
         }
         if (@$this->required) {
-            $html .= 'required="' . rawurlencode($this->value) . '" caption="' . rawurlencode($this->caption) . '" ';
+            $html .= 'required="' . rawurlencode($this->value) . '" ';
         }
         $html .= ' />';
 //        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
@@ -147,11 +145,11 @@ class checkboxcontrol extends formcontrol {
      *
      * @return string
      */
-    function controlToHTML_newschool($name, $label) {
+    function controlToHTML($name, $label = null) {
         $this->value = isset($this->value) ? $this->value : 1;
 
         $idname     = (!empty($this->id)) ? $this->id  : $name;
-        if (substr($this->name,-2) == '[]') {
+        if (substr($this->name,-2) === '[]') {
             $idname .= $this->value;
         }
         $idname = createValidId($idname, $this->value);
@@ -185,8 +183,8 @@ class checkboxcontrol extends formcontrol {
         }
         //if (!empty($this->readonly)) $html .= ' disabled="disabled"';
 
-        $caption = isset($this->caption) ? $this->caption : str_replace(array(":", "*"), "", ucwords($label));
-        if (!empty($this->required)) $html .= ' required="' . rawurlencode($this->value) . '" caption="' . $caption . '"';
+//        $caption = isset($this->caption) ? $this->caption : str_replace(array(":", "*"), "", ucwords($label));
+        if (!empty($this->required)) $html .= ' required="' . rawurlencode($this->value) . '" ';
         if (!empty($this->onclick)) $html .= ' onclick="' . $this->onclick . '"';
         if (!empty($this->onchange)) $html .= ' onchange="' . $this->onchange . '"';
 
@@ -201,9 +199,9 @@ class checkboxcontrol extends formcontrol {
 
     static function convertData($name,$values) {
         if (empty($values[$name])) return false;
-        if (strtolower($values[$name]) == 'no') return false;
-        if (strtolower($values[$name]) == 'off') return false;
-        if (strtolower($values[$name]) == 'false') return false;
+        if (strtolower($values[$name]) === 'no') return false;
+        if (strtolower($values[$name]) === 'off') return false;
+        if (strtolower($values[$name]) === 'false') return false;
 		return true;
 	}
 

@@ -81,13 +81,12 @@
         {/permissions}
     {/if}
     {* current category description *}
-    {if $current_category->body}
+{if $categories|@count > 0 && !empty(trim($current_category->body))}
         <div class="bodycopy">
             {$current_category->body}
         </div>
-    {/if}
     {* current category's sub-categories *}
-    {if $categories|@count > 0}
+    {elseif $categories|@count > 0}
         <div class="cats">
             <h2>{'Categories'|gettext}{if $current_category->id} {'Under'|gettext} {$current_category->title}{/if}</h2>
 
@@ -129,7 +128,9 @@
 
                         <h3>
                             {*<a href="{link controller=store action=showall title=$cat->sef_url}">*}
+                            {if !$cat->is_active}<em>{/if}
                                 {$cat->title}
+                            {if !$cat->is_active}</em>{/if}
                             {*</a>*}
                         </h3>
                         {*<div class="body-copy">*}
@@ -157,7 +158,7 @@
     {if !$categories|@count || $config.show_products}
         <{$config.item_level|default:'h2'}>{"All Products"|gettext} {if $current_category->id}{"Under"|gettext} {$current_category->title}{/if}</{$config.item_level|default:'h2'}>
         <div class="row">
-            <div class="col-sm-5 col-sm-push-5"><div class="row">{control type="dropdown" name="sortme" label="Sort By"|gettext items=$page->sort_dropdown default=$defaultSort horizontal=1}</div></div>
+            <div class="col-sm-5 col-sm-push-5"><div class="">{control type="dropdown" name="sortme" label="Sort By"|gettext items=$page->sort_dropdown default=$defaultSort horizontal=1}</div></div>
             <div class="btn-group pull-right list-grid">
                 <a href="#" id="list" class="btn btn-default btn-sm"><span class="fa fa-th-list"></span> {'List'|gettext}</a>
                 <a href="#" id="grid" class="btn btn-default btn-sm"><span class="fa fa-th"></span> {'Grid'|gettext}</a>
