@@ -2,13 +2,13 @@
 
 ----------
 
-Copyright (c) 2004-2022 OIC Group, Inc.
+Copyright (c) 2004-2021 OIC Group, Inc.
 
 ## Release Information
 
 For a complete list of the changes made from release to release, see the [CHANGELOG.md](CHANGELOG.md)
 
-## 2.6.1 - December 2021
+## 2.6.0 - December 2020
 
 ----------
 
