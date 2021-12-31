@@ -19,6 +19,7 @@ Version 2.6.1
  - adds support for Twitter Bootstrap v5
  - adds optional support for Twitter Bootstrap Icons under Bootstrap v5
  - fix possible sql injection vulnerability reported by pang0lin
+ - fix issue with MySQL v8 'rank' now a keyword
  - fix possible Host Header Injection vulnerability reported by dumpling-soup CVE-2021-38751
  - fixes and tweaks many issues in previous versions
 
