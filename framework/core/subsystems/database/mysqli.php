@@ -154,7 +154,7 @@ class mysqli_database extends database {
      * @return string
      */
     function wrapStmt($sql) {
-        return preg_replace('/\w*rank(?<!_rank)/', '`rank`', $sql);
+        return preg_replace('/\w*rank(?<!_rank)(?<!`rank)/', '`rank`', $sql);
     }
 
     /**
@@ -464,7 +464,7 @@ class mysqli_database extends database {
 			$res = @mysqli_query($this->connection, $sql);
 		}
         if (DEVELOPMENT && !$res)
-            eLog($sql . ' - ' . mysqli_error ( $this->connection ), 'sql Error');
+            eLog($this->wrapStmt($sql) . ' - ' . mysqli_error ( $this->connection ), 'sql Error');
         return $res;
     }
 
@@ -975,7 +975,7 @@ class mysqli_database extends database {
             return $id;
         } else
             if (DEVELOPMENT)
-               eLog($sql . ' - ' . mysqli_error ( $this->connection ), 'insertObject Error');
+               eLog($this->wrapStmt($sql) . ' - ' . mysqli_error ( $this->connection ), 'insertObject Error');
             return 0;
     }
 
@@ -1059,7 +1059,7 @@ class mysqli_database extends database {
         //if ($table == 'text') eDebug($sql,true);
         $res = (@mysqli_query($this->connection, $this->wrapStmt($sql)) != false);
         if (DEVELOPMENT && !$res)
-            eLog($sql . ' - ' . mysqli_error ( $this->connection ), 'updateObject Error');
+            eLog($this->wrapStmt($sql) . ' - ' . mysqli_error ( $this->connection ), 'updateObject Error');
         return $res;
     }
 
