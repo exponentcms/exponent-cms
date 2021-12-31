@@ -102,7 +102,7 @@ function smarty_function_google_map($params,&$smarty) {
     var " . $params['unique'] . "_map;
 
     $(document).ready(function() {
-        L.mapquest.key = '" . ecomconfig::getConfig('map_apikey') ."';  'YkoZbxnJFcXUZCE3Zjd6WEBkd4PCC2rX';
+        L.mapquest.key = '" . ecomconfig::getConfig('map_apikey') ."';
 
         L.mapquest.geocoding().geocode('" . expString::escape($address_string) . "', createMap" . $params['unique'] . ");
 
@@ -125,10 +125,10 @@ function smarty_function_google_map($params,&$smarty) {
         expJavascript::pushToFoot(array(
             "unique"=>'0-gmaps',
             "jquery"=>1,
-            "src"=>'https://api.mqcdn.com/sdk/mapquest-js/v1.3.1/mapquest.js'
+            "src"=>'https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js'
          ));
         expCSS::pushToHead(array(
-            "link"=>"https://api.mqcdn.com/sdk/mapquest-js/v1.3.1/mapquest.css"
+            "link"=>"https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"
         ));
     }
 
