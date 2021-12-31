@@ -834,6 +834,8 @@ class mysqli_database extends database {
      * @return int
      */
     function countObjects($table, $where = null, $is_revisioned=false, $needs_approval=false, $user=null) {
+        if (!$this->tableExists($table))
+            return 0;
         if ($where == null)
             $where = "1";
         $as = '';
@@ -1488,6 +1490,8 @@ class mysqli_database extends database {
      * @return array
      */
     function selectExpObjects($table=null, $where=null, $classname=null, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false, $user=null) {
+        if (!$this->tableExists($table))
+            return array();
         if ($where == null)
             $where = "1";
         else
