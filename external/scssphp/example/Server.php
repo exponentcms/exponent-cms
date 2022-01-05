@@ -224,7 +224,7 @@ class Server
             $this->metadataName($out),
             serialize([
                 'etag'    => $etag,
-                'imports' => $this->makeParsedFilesFromIncludeFiles($result->getIncludedFiles()),
+                'imports' => $this->makeParsedFilesFromIncludeFiles(array_merge([$in], $result->getIncludedFiles())),
                 'vars'    => crc32(serialize($this->scss->getVariables())),
             ])
         );
@@ -317,7 +317,10 @@ class Server
         $compiled = $result->getCss();
 
         if (is_null($out)) {
-            return array('compiled' => $compiled, 'files' => $this->makeParsedFilesFromIncludeFiles($result->getIncludedFiles()),);
+            return array(
+                'compiled' => $compiled,
+                'files' => $this->makeParsedFilesFromIncludeFiles(array_merge([$in], $result->getIncludedFiles())),
+            );
         }
 
         return file_put_contents($out, $compiled);
@@ -495,6 +498,10 @@ class Server
                         break;
                     }
                 }
+//                if (!file_exists($in['root']) or filemtime($in['root']) > $in['updated']) {
+//                    // The main file has changed so we should compile.
+//                    $root = $in['root'];
+//                }
             }
         } else {
             // TODO: Throw an exception? We got neither a string nor something
