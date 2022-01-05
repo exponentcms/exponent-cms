@@ -543,8 +543,8 @@ class Compiler
 
                     case self::SOURCE_MAP_FILE:
                         if (isset($this->sourceMapOptions['sourceMapURL'])) {
-//                            $sourceMapUrl = $this->sourceMapOptions['sourceMapURL'];
-                            $sourceMapUrl = $sourceMapGenerator->saveMap($sourceMap);  //fixme Dave Hack
+                            $sourceMapUrl = $this->sourceMapOptions['sourceMapURL'];
+//                            $sourceMapUrl = $sourceMapGenerator->saveMap($sourceMap);  //fixme Dave Hack
                         }
                         break;
                 }

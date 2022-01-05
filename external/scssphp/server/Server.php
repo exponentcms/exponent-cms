@@ -320,6 +320,7 @@ class Server
             return array(
                 'compiled' => $compiled,
                 'files' => $this->makeParsedFilesFromIncludeFiles(array_merge([$in], $result->getIncludedFiles())),
+                'map' => $result->getSourceMap()
             );
         }
 
