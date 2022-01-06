@@ -1,52 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<phpdoc>
+<phpdocumentor configVersion="3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://www.phpdoc.org"
+               xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd">
     <title>Exponent v2.6.1</title>
-    <parser>
-        <default-package-name>Framework</default-package-name>
-        <target>../exponent-api/phpdoc</target>
-        <markers>
-            <item>TODO</item>
-            <item>FIXME</item>
-        </markers>
-        <extensions>
-            <extension>php</extension>
-        </extensions>
-        <visibility></visibility>
-    </parser>
-    <transformer>
-        <target>../exponent-api</target>
-    </transformer>
-    <logging>
-        <level>warn</level>
-        <paths>
-            <default>../exponent-api/phpdoc/log/{DATE}.log</default>
-            <errors>../exponent-api/phpdoc/log/{DATE}.errors.log</errors>
-        </paths>
-    </logging>
-    <transformations>
-         <template name="responsive-twig" />
-    </transformations>
-    <files>
-        <directory>.</directory>
-        <ignore>cron/*</ignore>
-        <ignore>external/*</ignore>
-        <ignore>files/*</ignore>
-        <ignore>tmp/*</ignore>
-        <ignore>themes/*</ignore>
-        <ignore>framework/conf/data/extra_phrases.php</ignore>
-        <ignore>framework/core/subsystems/database/adodb.php</ignore>
-        <ignore>framework/core/subsystems/database/mysqlid.php</ignore>
-        <ignore>framework/core/subsystems/database/postgres.php</ignore>
-        <ignore>framework/core/lang/*</ignore>
-        <ignore>framework/modules/pixidou/*</ignore>
-        <ignore>framework/modules/twitter/models/Twitter.php</ignore>
-        <ignore>framework/modules/sharedcore/*</ignore>
-        <ignore>framework/modules/ecommerce/shippingcalculators/tablewithcharges.php</ignore>
-        <ignore>framework/modules/ecommerce/billingcalculators/ezic.php</ignore>
-        <ignore>framework/modules/ecommerce/billingcalculators/ezic/*</ignore>
-        <directory>themes/bootstrap3theme/*</directory>
-        <directory>themes/bootstrap4theme/*</directory>
-        <directory>themes/bootstrap5theme/*</directory>
-        <directory>themes/simpletheme/*</directory>
-    </files>
-</phpdoc>
+    <paths>
+        <output>../exponent-api3</output>
+        <cache>../exponent-api3/cache</cache>
+    </paths>
+    <version number="2.6.1">
+        <api format="php">
+            <source dsn=".">
+                <path>.</path>
+                <path>themes/bootstrap3theme</path>
+                <path>themes/bootstrap4theme</path>
+                <path>themes/bootstrap5theme</path>
+                <path>themes/simpletheme</path>
+            </source>
+            <ignore hidden="true" symlinks="true">
+                <path>cron/**/*</path>
+                <path>external/**/*</path>
+                <path>files/**/*</path>
+                <path>tmp/**/*</path>
+                <path>themes/**/*</path>
+                <path>framework/conf/data/extra_phrases.php</path>
+                <path>framework/core/subsystems/database/adodb.php</path>
+                <path>framework/core/subsystems/database/mysqlid.php</path>
+                <path>framework/core/subsystems/database/postgres.php</path>
+                <path>framework/core/lang/**/*</path>
+                <path>framework/modules/pixidou/**/*</path>
+                <path>framework/modules/twitter/models/Twitter.php</path>
+                <path>framework/modules/sharedcore/**/*</path>
+                <path>framework/modules/ecommerce/shippingcalculators/tablewithcharges.php</path>
+                <path>framework/modules/ecommerce/billingcalculators/ezic.php</path>
+                <path>framework/modules/ecommerce/billingcalculators/ezic/**/*</path>
+            </ignore>
+            <extensions>
+                <extension>php</extension>
+            </extensions>
+            <default-package-name>Framework</default-package-name>
+            <markers>
+                <marker>TODO</marker>
+                <marker>FIXME</marker>
+            </markers>
+        </api>
+    </version>
+</phpdocumentor>

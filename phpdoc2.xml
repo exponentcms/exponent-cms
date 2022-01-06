@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title>Exponent v2.6.1</title>
+    <parser>
+        <default-package-name>Framework</default-package-name>
+        <target>../exponent-api/phpdoc</target>
+        <markers>
+            <item>TODO</item>
+            <item>FIXME</item>
+        </markers>
+        <extensions>
+            <extension>php</extension>
+        </extensions>
+        <visibility></visibility>
+    </parser>
+    <transformer>
+        <target>../exponent-api</target>
+    </transformer>
+    <logging>
+        <level>warn</level>
+        <paths>
+            <default>../exponent-api/phpdoc/log/{DATE}.log</default>
+            <errors>../exponent-api/phpdoc/log/{DATE}.errors.log</errors>
+        </paths>
+    </logging>
+    <transformations>
+         <template name="responsive-twig" />
+    </transformations>
+    <files>
+        <directory>.</directory>
+        <ignore>cron/*</ignore>
+        <ignore>external/*</ignore>
+        <ignore>files/*</ignore>
+        <ignore>tmp/*</ignore>
+        <ignore>themes/*</ignore>
+        <ignore>framework/conf/data/extra_phrases.php</ignore>
+        <ignore>framework/core/subsystems/database/adodb.php</ignore>
+        <ignore>framework/core/subsystems/database/mysqlid.php</ignore>
+        <ignore>framework/core/subsystems/database/postgres.php</ignore>
+        <ignore>framework/core/lang/*</ignore>
+        <ignore>framework/modules/pixidou/*</ignore>
+        <ignore>framework/modules/twitter/models/Twitter.php</ignore>
+        <ignore>framework/modules/sharedcore/*</ignore>
+        <ignore>framework/modules/ecommerce/shippingcalculators/tablewithcharges.php</ignore>
+        <ignore>framework/modules/ecommerce/billingcalculators/ezic.php</ignore>
+        <ignore>framework/modules/ecommerce/billingcalculators/ezic/*</ignore>
+        <directory>themes/bootstrap3theme/*</directory>
+        <directory>themes/bootstrap4theme/*</directory>
+        <directory>themes/bootstrap5theme/*</directory>
+        <directory>themes/simpletheme/*</directory>
+    </files>
+</phpdoc>
