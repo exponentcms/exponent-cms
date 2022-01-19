@@ -89,10 +89,14 @@ class expConfig extends expRecord {
             $params['config']['__utmc'],
             $params['config']['__utmt'],
             $params['config']['__utmv'],
+            $params['config']['__utmz'],
             $params['config']['__utmli'],
             $params['config']['__utmz'],
             $params['config']['__zlcmid'],
-            $params['config']['__cfduid']
+            $params['config']['__cfduid'],
+            $params['config']['_gid'],
+            $params['config']['ckCsrfToken'],
+            $params['config']['scayt_verLang']
         );
 
         if(is_array($params['config']))
