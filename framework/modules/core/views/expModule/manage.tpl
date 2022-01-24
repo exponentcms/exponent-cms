@@ -69,7 +69,7 @@
         {*</ul>            *}
         <div class="yui-content">
             <div id="tab1">
-                <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                <table class="exp-skin-table">
                     <thead>
                         <tr>
                             <th>
@@ -104,7 +104,7 @@
                 </table>
             </div>
             {*<div id="tab2">*}
-                {*<table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">*}
+                {*<table class="exp-skin-table">*}
                     {*<thead>*}
                         {*<tr>*}
                             {*<th>*}

@@ -27,7 +27,7 @@
             <div class="yui-content">
                 <div id="tab1" class="exp-ecom-table">
                     {control type="dropdown" name="filter" label="Range"|gettext|cat:": " items=$quickrange}
-                    <table border="0" cellspacing="0" cellpadding="0">
+                    <table>
                         <tbody>
                             <tr class="even">
                                 <td>{'Carts Started (visits)'|gettext}

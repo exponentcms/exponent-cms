@@ -389,7 +389,7 @@
                 {/if}
 
                 <div id="child-products" class="exp-ecom-table">
-                    <table border="0" cellspacing="0" cellpadding="0">
+                    <table>
                         <thead>
                             <tr>
                                 <th>&#160;</th>

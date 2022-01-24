@@ -258,7 +258,7 @@ class fedexcalculator extends shippingcalculator {
             //eDebug($response,true);
             if ($response->HighestSeverity != 'FAILURE' && $response->HighestSeverity != 'ERROR') {
                 //echo 'Rates for following service type(s) were returned.'. Newline. Newline;
-                //echo '<table border="1">';
+                //echo '<table>';
                 //echo '<tr><td>Service Type</td><td>Amount</td><td>Delivery Date</td>';
 
                 $rates = array();

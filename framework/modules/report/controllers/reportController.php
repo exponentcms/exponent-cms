@@ -618,6 +618,7 @@ class reportController extends expController {
         global $db;
 
         $p = $this->params;
+        expSession::set('order_print_params', $p);
 
         //build
         $start_sql = "SELECT DISTINCT(o.id), ";
@@ -963,7 +964,7 @@ class reportController extends expController {
             'controller' => $this->baseclassname,
             'action'     => $this->params['action'],
             'columns'    => array(
-                'actupon'                 => true,
+                'actupon'                    => true,
                 gt('Order #')             => 'invoice_id|controller=order,action=show,showby=id',
                 gt('Purchased Date')      => 'purchased_date|FORMAT=date',
                 gt('First')               => 'bfirst',
@@ -979,13 +980,13 @@ class reportController extends expController {
         //$d_month_previous = date('n', mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
 
         $action_items = array(
-            'print_orders' => 'Print Orders',
-            'export_odbc' => 'Export Shipping Data to CSV',
-            'export_status_report' => 'Export Order Status Data to CSV',
-            'export_inventory' => 'Export Inventory Data to CSV',
+            'print_orders'             => 'Print Orders',
+            'export_odbc'              => 'Export Shipping Data to CSV',
+            'export_status_report'     => 'Export Order Status Data to CSV',
+            'export_inventory'         => 'Export Inventory Data to CSV',
             'export_user_input_report' => 'Export User Input Data to CSV',
-            'export_order_items' => 'Export Order Items Data to CSV',
-            'show_payment_summary' => 'Show Payment & Tax Summary'
+            'export_order_items'       => 'Export Order Items Data to CSV',
+            'show_payment_summary'     => 'Show Payment & Tax Summary'
         );
         assign_to_template(array(
             'page'         => $page,
@@ -1016,6 +1017,7 @@ class reportController extends expController {
         $order_ids = array_unique($order_ids);
         $orders_string = implode(',', $order_ids);
 
+        $payment_total = 0;
         $payment_summary = array();
         $payments_key_arr = array();
         $payment_values_arr = array();
@@ -1047,6 +1049,7 @@ class reportController extends expController {
                             }
                             @$payment_summary[$type] += $item->billing_cost;
                         }
+                        $payment_total += $item->billing_cost;
                     }
                 }
             }
@@ -1078,15 +1081,23 @@ class reportController extends expController {
                     $tname = $tt->taxzones[$key]->name;
                     if (!isset($taxes[$key]['format'])) {
                         $taxes[$key] = array();
+                        $taxes[$key]['format'] = $tname . ' - ' . $tt->taxzones[$key]->rate . '%';
                         $taxes[$key]['total'] = 0;
                     }
-                    $taxes[$key]['format'] = $tname . ' - ' . $tt->taxzones[$key]->rate . '%';
                     $taxes[$key]['total'] += $tt->tax;
                 }
             }
         }
 
+        $p = expSession::get('order_print_params');
+        $date = '';
+        if (!empty($p['include_purchased_date'])) {
+            $date = gt('Purchased between') . ' ' . $p['pstartdate'] . ' ' . gt('and') . ' ' . $p['penddate'];
+        }
         assign_to_template(array(
+            'total'           => $total,
+            'date'            => $date,
+            'payment_total'   => $payment_total,
             'payment_summary' => $payment_summary,
             'payments_key'    => $payments_key,
             'payment_values'  => $payment_values,
@@ -1228,6 +1239,8 @@ class reportController extends expController {
         global $db;
 
         $p = $this->params;
+        expSession::set('product_print_params', $p);
+
         $sqlids = "SELECT DISTINCT(p.id) FROM ";
         $count_sql = "SELECT COUNT(DISTINCT(p.id)) AS c FROM ";
         $sqlstart = "SELECT DISTINCT(p.id), p.title, p.model, base_price"; //, ps.title AS status FROM ";

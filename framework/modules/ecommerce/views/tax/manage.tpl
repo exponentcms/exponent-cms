@@ -25,7 +25,7 @@
     {icon action=manage_zones class="manage" text="Manage Tax Zones"|gettext}
 </div>
 {br}
-<table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+<table class="exp-skin-table">
     <thead>
         <tr>
             <th>

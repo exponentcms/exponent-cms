@@ -22,7 +22,7 @@
 
 <div class="module report build-report">
     <div id="report-form" class="exp-ecom-table">
-        <table border="0" width="50%" align="center" cellspacing="0" cellpadding="0">
+        <table width="50%" align="center">
             <thead>
                 <tr>
                     <th colspan="2">
