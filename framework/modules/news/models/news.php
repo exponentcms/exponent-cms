@@ -69,6 +69,7 @@ class news extends expRecord {
         if (empty($this->unpublish) || $this->unpublish === 'on') {
    	        $this->unpublish = 0;
    	    }
+        parent::beforeSave();
 	}
 
     public function update($params = array()) {

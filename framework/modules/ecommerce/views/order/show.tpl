@@ -285,7 +285,7 @@
         {if $permissions.manage}
             <div id="addinfo">
                 <h2>{'Sales Reps and Referrers'|gettext}</h2>
-                <table border="0" cellspacing="0" cellpadding="0">
+                <table>
                     <thead>
                         <tr>
                             <th>
@@ -307,7 +307,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <table border="0" cellspacing="0" cellpadding="0">
+                <table>
                     <thead>
                         <tr>
                             <th>

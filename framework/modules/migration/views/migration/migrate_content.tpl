@@ -32,7 +32,7 @@
     	{/if}
     </div>
 
-	<table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+	<table class="exp-skin-table">
 		<tbody>
 			<tr><td>{'Migrated'|gettext} {if $msg.sectionref}{$msg.sectionref} {'total locations and'|gettext} {/if}{if $msg.container}{$msg.container} {'total containers'|gettext}{/if} {'which included'|gettext}:</td></tr>
 			{foreach from=$msg.migrated item=val key=key}

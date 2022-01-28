@@ -49,6 +49,10 @@ class expConfig extends expRecord {
         if (!is_array($this->config)) {
             $this->config = array();
         }
+        // fix mysqli issue with keyword 'rank'
+        if (isset($this->config['order']) && $this->config['order']=== '`rank`') {
+            $this->config['order']= 'rank';
+        }
         // now to artificially attach any file objects to the config
         if (!empty($this->config['expFile'])) {
             foreach ($this->config['expFile'] as $type=>$file) {
@@ -85,10 +89,14 @@ class expConfig extends expRecord {
             $params['config']['__utmc'],
             $params['config']['__utmt'],
             $params['config']['__utmv'],
+            $params['config']['__utmz'],
             $params['config']['__utmli'],
             $params['config']['__utmz'],
             $params['config']['__zlcmid'],
-            $params['config']['__cfduid']
+            $params['config']['__cfduid'],
+            $params['config']['_gid'],
+            $params['config']['ckCsrfToken'],
+            $params['config']['scayt_verLang']
         );
 
         if(is_array($params['config']))

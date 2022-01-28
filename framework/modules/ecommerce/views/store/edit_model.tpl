@@ -24,7 +24,7 @@
     {else}
         {icon class="add" controller="store" action="edit_model_alias" product_id=$record->id text='Add Model Alias'|gettext}
     {/if}
-    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+    <table class="exp-skin-table">
         <thead>
             <tr>
                 <th style="width:50px">

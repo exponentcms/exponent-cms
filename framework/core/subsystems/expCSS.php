@@ -776,7 +776,7 @@ class expCSS {
                                     // attempt to load and run the autoprefixer
                                     if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php')) {
                                         include_once(BASE . 'external/php-autoprefixer/autoload.inc.php');
-                                        // save map info
+                                        // temporarily save any inline sourcemap info
                                         $map = explode("\n/*# sourceMappingURL=", $new_cache['compiled']);
                                         $new_cache['compiled'] = (new Padaliyajay\PHPAutoprefixer\Autoprefixer($new_cache['compiled']))->compile(!(MINIFY == 1 && MINIFY_LESS == 1));
                                         if (!empty($map[1])) {
@@ -805,6 +805,11 @@ class expCSS {
                                 if (file_put_contents(BASE . $css_fname, $new_cache['compiled']) === false) {
                                     flash('error', gt('SCSS compiler') . ': ' . gt('unable to write') . ': ' . $css_fname);
                                     return false;
+                                }
+                                // save sourcemap file if needed
+                                if (DEVELOPMENT && LESS_COMPILER_MAP == $scss::SOURCE_MAP_FILE && $scss_compiler === 'scssphp') {
+                                    $scss_opts = $scss->getCompileOptions();
+                                    file_put_contents($scss_opts['sourceMapOptions']['sourceMapWriteTo'], $new_cache['map']);
                                 }
                             }
                             return true;

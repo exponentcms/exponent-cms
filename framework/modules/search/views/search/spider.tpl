@@ -19,7 +19,7 @@
 
 <div class="module search spider">
     <h1>{"Regenerating Search Index"|gettext}</h1>
-    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+    <table class="exp-skin-table">
         <thead>
             <tr>
                 <th>{"Type of Content"|gettext}</th>

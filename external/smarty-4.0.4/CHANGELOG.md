@@ -6,6 +6,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.4] - 2022-01-18
+
+### Fixed
+- Fixed illegal characters bug in math function security check [#702](https://github.com/smarty-php/smarty/issues/702)
+
+## [4.0.3] - 2022-01-10
+
+### Security
+- Prevent evasion of the `static_classes` security policy. This addresses CVE-2021-21408
+
+## [4.0.2] - 2022-01-10
+
+### Security
+- Prevent arbitrary PHP code execution through maliciously crafted expression for the math function. This addresses CVE-2021-29454
+
+## [4.0.1] - 2022-01-09
+
+### Security
+- Rewrote the mailto function to not use `eval` when encoding with javascript
+
 ## [4.0.0] - 2021-11-25
 
 ## [4.0.0-rc.0] - 2021-10-13

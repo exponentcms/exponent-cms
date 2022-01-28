@@ -29,7 +29,7 @@
         {icon class="import" action="import_csv" text="Import Data"|gettext title="Import Form Data from CSV"|gettext}
         {icon class="import" action="import_eql" text="Import Form"|gettext title="Import Form Design from EQL"|gettext}
     </div>
-    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+    <table class="exp-skin-table">
         <thead>
             <tr>
                 {if $select}

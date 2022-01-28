@@ -24,7 +24,7 @@
         <div class="module report current_carts">
             {*{br}*}
             <div class="exp-skin-table exp-ecom-table">
-                <table border="0" cellspacing="0" cellpadding="0" width="50%">
+                <table width="50%">
                     <thead>
                         <tr>
                             <th colspan="2">
@@ -67,7 +67,7 @@
                             <a href="#" class="expand" title="{'Collapse/Expand'|gettext}">{'The List'|gettext}</a>
                         </div>
                         <div class="bd" id="yuievtautoid-0" style="height: 0px;">
-                            <table border="0" cellspacing="0" cellpadding="0" width="50%">
+                            <table width="50%">
                                 <thead>
                                     <tr>
                                         <th>{'Length of Time'|gettext}</th>
@@ -101,7 +101,7 @@
                             <a href="#" class="expand" title="{'Collapse/Expand'|gettext}">{'The List'|gettext}</a>
                         </div>
                         <div class="bd" id="yuievtautoid-0" style="height: 0px;">
-                            <table border="0" cellspacing="0" cellpadding="0" width="50%">
+                            <table width="50%">
                                 <thead>
                                     <tr>
                                         <th>{'Length of Time'|gettext}</th>
@@ -163,7 +163,7 @@
                             <a href="#" class="expand" title="{'Collapse/Expand'|gettext}">{'The List'|gettext}</a>
                         </div>
                         <div class="bd" id="yuievtautoid-0" style="height: 0px;">
-                            <table border="0" cellspacing="0" cellpadding="0" width="50%">
+                            <table width="50%">
                                 <thead>
                                     <tr>
                                         <th>{'Name'|gettext}</th>

@@ -51,7 +51,7 @@ if (!defined('EXPONENT')) {
                       cols="38">exponent</textarea>
         </div>
         <div class="control checkbox">
-            <table border="0" cellpadding="0" cellspacing="0">
+            <table>
                 <tbody>
                     <tr>
                         <td class="input">

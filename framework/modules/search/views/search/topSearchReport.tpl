@@ -129,6 +129,16 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     };
 
     columnchart = new Y.Chart({
+        axes: {
+            category: {
+                type: "category",
+                styles: {
+                    label: {
+                        rotation: -75
+                    }
+                }
+            }
+        },
         dataProvider: myDataValues,
     //            render: "#columnchart",
         type: "column",

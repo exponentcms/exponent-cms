@@ -64,7 +64,7 @@
                     {form action=change_cats}
                         {control type=hidden name=mod value=$page->model}
                         {$page->links}
-                        <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                        <table class="exp-skin-table">
                             <thead>
                                 <tr>
                                     <th>
@@ -110,7 +110,7 @@
                         {/if}
                     </div>
                     {*{$cats->links}*}
-                    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                    <table class="exp-skin-table">
                         <thead>
                             <tr>
                                 <th>

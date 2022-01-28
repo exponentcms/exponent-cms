@@ -33,7 +33,7 @@
 
     <div class="rightcol exp-ecom-table">
         <h1>{'Current Order Stats'|gettext}</h1>
-        <table border="0" cellspacing="0" cellpadding="0">
+        <table>
             <thead>
                 <tr>
                     <th>
@@ -78,7 +78,7 @@
     <div class="rightcol exp-ecom-table">
 
         <h3>{'Last Five Orders'|gettext}</h3>
-        <table border="0" cellspacing="0" cellpadding="0">
+        <table>
             <thead>
             <tr class="{cycle values="even,odd"}" style="font-weight:bold; font-size:120%">
                 <th>{'Customer'|gettext}</th>

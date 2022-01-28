@@ -68,7 +68,7 @@
             {$billinginfo}
         </div>
         <div class="address-info">
-            <table border="0" cellspacing="0" cellpadding="0">
+            <table>
                 <thead>
                     <tr>
                         <th>
@@ -125,7 +125,7 @@
             <hr>
         {/foreach*}
         {else}
-            <table border="0" cellspacing="0" cellpadding="0">
+            <table>
                 <thead>
                     <tr>
                         <th>

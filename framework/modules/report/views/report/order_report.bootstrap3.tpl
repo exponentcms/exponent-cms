@@ -23,7 +23,7 @@
 <div class="module report build-report">
     <div id="report-form" class="exp-ecom-table">
         {form controller="report" action="generateOrderReport" id="reportform" name="reportform"}
-            <table border="0" cellspacing="0" cellpadding="0">
+            <table>
                 <thead>
                     <tr>
                         <th>

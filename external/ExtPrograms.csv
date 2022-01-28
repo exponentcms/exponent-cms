@@ -4,7 +4,7 @@ Doctrine Lexer,1.2.1,github.com/doctrine/lexer,1.2.1,needed by swiftmailer v6
 EmailValidator,3.1.2,github.com/egulias/EmailValidator,3.1.2,needed by swiftmailer v6; move folder structure and add autoloader to main file
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,28.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,28.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
-Smarty,3.1.27/4.0.0,smarty.net,4.0.0,
+Smarty,3.1.27/4.0.4,smarty.net,4.0.4,
 phpthumb,1.7.17exp,github.com/JamesHeinrich/phpThumb,1.7.17,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.21,github.com/JamesHeinrich/getID3,1.9.21,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.11,modify config.php
@@ -22,7 +22,7 @@ pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily 
 class.upload,2.1.0,github.com/verot/class.upload.php,"2.1.0
 ","Correct flip operation where flip vertical & horizontal were inverted/swapped, php 8 fix"
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.40.10,uncomment load utilities; php 8 fix
-scssphp,1.8.1exp,github.com/scssphp/scssphp,1.9.0,includes example server; hack to compile newui
+scssphp,1.10.0exp,github.com/scssphp/scssphp,1.10.0,includes example server; hack to compile newui
 lessphp,0.5.0exp,github.com/leafo/lessphp,0.5.0,"will not compile bootstrap v3+, hack to allow prefix"
 less.php,3.1.0exp,github.com/wikimedia/less.php,3.1.0,"code edit to fix IIS compatibility, php v5.6 fix"
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
@@ -61,7 +61,7 @@ validate,1.19.3exp,jqueryvalidation.org,1.19.3,edit for 'undefined' in 'min' & '
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker/,1.6.3,used by adminer
 TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
-DataTables,1.11.3,www.datatables.net,1.11.3,includes boostrap2 integration w/ renamed 1.10.7 version
+DataTables,1.11.4,www.datatables.net,1.11.4,includes boostrap2 integration w/ renamed 1.10.7 version
 DataTables Checkboxes,1.2.13,github.com/gyrocode/jquery-datatables-checkboxes,1.2.13,
 DataTables Tabletools,2.2.4,www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,github.com/Comanche/datatables-responsive,0.2.0,replaced by 'Responsive' in 1.10.8
@@ -101,12 +101,12 @@ DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.10.2,"optional, suggested by mPDF v
 random_compat,2.0.19,github.com/paragonie/random_compat,2.0.20,"optional, required by mPDF v7+"
 FPDI,2.3.5,github.com/Setasign/FPDI,2.3.6,"optional, required by mPDF v7+"
 HTML2PDF,5.2.2/4.6.1,github.com/spipu/html2pdf,5.2.4,"optional, we tweak tcpdfConfig.php"
-TCPDF,6.3.5,sourceforge.net/projects/tcpdf,6.4.3,"optional, used by HTML2PDF"
+TCPDF,6.3.5,sourceforge.net/projects/tcpdf,6.4.4,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
 Kint,2.2.0/3.3.0/4.0.0,github.com/kint-php/kint,4.0.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
-DataTables Buttons,,www.datatables.net,2.0.1,
+DataTables Buttons,,www.datatables.net,2.2.2,
 DataTables Responsive,,www.datatables.net,2.2.9,
 ,,,,
 No longer included,,,,

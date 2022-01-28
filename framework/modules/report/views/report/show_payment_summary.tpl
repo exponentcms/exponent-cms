@@ -23,23 +23,29 @@
 
 {css unique="show-payment"}
 {literal}
-    .fullbody #centercol {
-        width: 422px;
-    }
+    /*.fullbody #centercol {*/
+    /*    width: 422px;*/
+    /*}*/
 
-    .exp-skin-table {
-        width:400px;
-    }
+    /*.exp-skin-table {*/
+    /*    width:400px;*/
+    /*}*/
     .exp-skin-table tbody tr.odd th,
     .exp-skin-table tbody tr.odd td {
         border-color:#EBE5D9;
         background:#F7F4EE;
     }
+    .exp-skin-table .number {
+        text-align: right;
+    }
+    .exp-skin-table tfoot td {
+        font-weight: bolder;
+    }
 
     #areachart, #barchart, #columnchart, #combochart, #linechart, #piechart {
         margin:10px 10px 10px 10px;
         width:90%;
-        max-width: 400px;
+        max-width: 100%;
         height:400px;
     }
 {/literal}
@@ -47,6 +53,7 @@
 
 <div id="payment-summary" class="module report show-payment-summary">
     <h1>{'Payment Summary'|gettext}</h1>
+    <div>{$total} {'Orders'|gettext} {$date}</div>
 	<div id="payments" class="yui-navset exp-skin-tabview hide">
 		<ul class="yui-nav">
             <li class="selected"><a href="#tab1">{"Payment Summary"|gettext}</a></li>
@@ -59,7 +66,7 @@
 		</ul>
 		<div class="yui-content">
 			<div id="tab1" class="exp-ecom-table exp-skin-table">
-                <table border="0" cellspacing="0" cellpadding="0">
+                <table>
                     <thead>
                         <tr>
                             <th colspan="2">
@@ -70,7 +77,7 @@
                             <th>
                                 {"Type"|gettext}
                             </th>
-                            <th>
+                            <th class="number">
                                 {"Amount"|gettext}
                             </th>
                         </tr>
@@ -79,10 +86,16 @@
                         {foreach from=$payment_summary key=key item=item}
                             <tr class="{cycle values='odd,even'}">
                                 <td>{$key}</td>
-                                <td>{$item|currency}</td>
+                                <td class="number">{$item|currency}</td>
                             </tr>
                         {/foreach}
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>{'Total'|gettext}</td>
+                            <td class="number">{$payment_total|currency}</td>
+                        </tr>
+                    </tfoot>
                 </table>
 			</div>
             <div id="tab2">
@@ -110,7 +123,7 @@
 <div id="tax-summary" class="module administration configure-site">
     <h1>{'Tax Summary'|gettext}</h1>
     <div class="exp-ecom-table exp-skin-table">
-        <table border="0" cellspacing="0" cellpadding="0">
+        <table>
             <thead>
                 <tr>
                     <th colspan="2">
@@ -121,7 +134,7 @@
                     <th>
                         {"Tax Zone"|gettext}
                     </th>
-                    <th>
+                    <th class="number">
                         {"Amount"|gettext}
                     </th>
                 </tr>
@@ -130,7 +143,7 @@
                 {foreach $taxes as $tax}
                     <tr class="{cycle values='odd,even'}">
                         <td>{$tax.format}</td>
-                        <td>{$tax.total|currency}</td>
+                        <td class="number">{$tax.total|currency}</td>
                     </tr>
                 {/foreach}
             </tbody>
@@ -139,7 +152,7 @@
     {loading}
 </div>
 
-{script unique="payment-summary" yui3mods="charts,exptabs"}
+{script unique="payment-summary" yui3mods="charts,charts-legend,exptabs"}
 {literal}
 EXPONENT.YUI3_CONFIG.modules.exptabs = {
     fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
@@ -198,16 +211,95 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     };
 
     var columnchart   = new Y.Chart({
+        axes: {
+            category: {
+                type: "category",
+                styles: {
+                    label: {
+                        rotation: -45
+                    }
+                }
+            }
+        },
         dataProvider:myDataValues,
     //        render:"#columnchart",
         type:"column",
         tooltip: myTooltip
     });
-    var areachart     = new Y.Chart({dataProvider:myDataValues, type:"area", tooltip: myTooltip});
-    var barchart      = new Y.Chart({dataProvider:myDataValues, type:"bar", tooltip: myTooltip});
-    var combochart    = new Y.Chart({dataProvider:myDataValues, type:"combo", tooltip: myTooltip});
-    var linechart     = new Y.Chart({dataProvider:myDataValues, type:"line", tooltip: myTooltip});
-    var piechart      = new Y.Chart({dataProvider:myDataValues, type:"pie", tooltip: myTooltip});
+    var areachart     = new Y.Chart({
+        axes: {
+            category: {
+                type: "category",
+                styles: {
+                    label: {
+                        rotation: -45
+                    }
+                }
+            }
+        },
+        dataProvider:myDataValues,
+        type:"area",
+        tooltip: myTooltip
+    });
+    var barchart      = new Y.Chart({
+        axes: {
+            category: {
+                type: "category",
+                styles: {
+                    label: {
+                        rotation: -45
+                    }
+                }
+            }
+        },
+        dataProvider:myDataValues,
+        type:"bar",
+        tooltip: myTooltip
+    });
+    var combochart    = new Y.Chart({
+        axes: {
+            category: {
+                type: "category",
+                styles: {
+                    label: {
+                        rotation: -75
+                    }
+                }
+            }
+        },
+        dataProvider:myDataValues,
+        type:"combo",
+        tooltip: myTooltip
+    });
+    var linechart     = new Y.Chart({
+        axes: {
+            category: {
+                type: "category",
+                styles: {
+                    label: {
+                        rotation: -75
+                    }
+                }
+            }
+        },
+        dataProvider:myDataValues,
+        type:"line",
+        tooltip: myTooltip
+    });
+    var piechart      = new Y.Chart({
+        legend: {
+            position: "right",
+            width: 300,
+            height: 300,
+            styles: {
+                hAlign: "center",
+                hSpacing: 4
+            }
+        },
+        dataProvider:myDataValues,
+        type:"pie",
+        tooltip: myTooltip
+    });
 
     Y.Global.on("exptab:switch", function(e){
         if (tabhistory.tabs.indexOf(e.currentTarget)==1) {

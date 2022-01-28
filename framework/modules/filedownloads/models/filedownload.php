@@ -85,6 +85,7 @@ class filedownload extends expRecord {
    	    if (empty($this->publish) || $this->publish === 'on') {
    	        $this->publish = time();
    	    }
+        parent::beforeSave();
    	}
 
     public function update($params = array()) {

@@ -157,6 +157,8 @@ class addressController extends expController {
             $this->params['is_shipping'] = true;
             $this->address->update($this->params);
         }
+        $billing = new billing(); // refresh order billing address
+        $shipping = new shipping(); // refresh order shipping address
 		expHistory::back();
 	}
 
@@ -202,6 +204,8 @@ class addressController extends expController {
             $db->setUniqueFlag($object, 'addresses', expString::escape($this->params['is_what']), "user_id=" . $user->id);
             flash("message", gt("Successfully updated address."));
         }
+        $billing = new billing(); // refresh order billing address
+        $shipping = new shipping(); // refresh order shipping address
         expHistory::back();
     }
 

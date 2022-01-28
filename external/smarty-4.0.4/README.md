@@ -4,7 +4,7 @@ Smarty is a template engine for PHP, facilitating the separation of presentation
 ![CI](https://github.com/smarty-php/smarty/workflows/CI/badge.svg)
 
 ## Documentation
-Read the [documentation](https://www.smarty.net/docs/en/) to find out how to use it. 
+Read the [documentation](https://smarty-php.github.io/smarty/) to find out how to use it. 
 
 ## Requirements
 Smarty can be run with PHP 7.1 to PHP 8.0.
@@ -17,12 +17,4 @@ To get the latest stable version of Smarty use:
 composer require smarty/smarty
 ````
 
-To get the latest, unreleased version, use:
-```bash
-composer require smarty/smarty:dev-master
-````
-
-To get the previous stable version of Smarty, Smarty 3, use:
-```bash
-composer require smarty/smarty:^3
-````
+More in the [Getting Started](./docs/getting-started.md) section of the docs.

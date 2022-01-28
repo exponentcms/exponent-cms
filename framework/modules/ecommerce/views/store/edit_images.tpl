@@ -27,7 +27,7 @@
             {*{control type=files name=mainthumb label="Product Thumbnail Image"|gettext subtype="mainthumbnail" accept="image/*" value=$record->expFile limit=1 folder=$config.upload_folder description="If no image is provided to use as a thumbnail, one will be generated from the main image. This image will only show if additional images are provided"|gettext}*}
         </div>
         <div id="iws-div" class="imngfuncbody" style="display:none;">
-            <table border="0" cellspacing="0" cellpadding="1" width="100%">
+            <table width="100%">
                 <tr>
                     <th width="50%">{"Image"|gettext}</th>
                     <th width="50%">{"Color/Pattern Swatch"|gettext}</th>
