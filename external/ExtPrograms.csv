@@ -1,6 +1,6 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
 Swiftmailer,5.4.12/6.3.0,github.com/swiftmailer/swiftmailer,6.3.0,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
-Doctrine Lexer,1.2.1,github.com/doctrine/lexer,1.2.1,needed by swiftmailer v6
+Doctrine Lexer,1.2.1,github.com/doctrine/lexer,1.2.2,needed by swiftmailer v6
 EmailValidator,3.1.2,github.com/egulias/EmailValidator,3.1.2,needed by swiftmailer v6; move folder structure and add autoloader to main file
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,28.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,28.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
@@ -103,7 +103,7 @@ FPDI,2.3.5,github.com/Setasign/FPDI,2.3.6,"optional, required by mPDF v7+"
 HTML2PDF,5.2.2/4.6.1,github.com/spipu/html2pdf,5.2.4,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.3.5,sourceforge.net/projects/tcpdf,6.4.4,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
-Kint,2.2.0/3.3.0/4.0.0,github.com/kint-php/kint,4.0.0,"optional, for formatted edebug output"
+Kint,2.2.0/3.3.0/4.1.1,github.com/kint-php/kint,4.1.1,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
 DataTables Buttons,,www.datatables.net,2.2.2,
