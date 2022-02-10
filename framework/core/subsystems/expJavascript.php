@@ -135,6 +135,7 @@ class expJavascript {
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js,';
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js,';
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js,';
+                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'base-component.js,';
                         }
                         foreach ($bootstrapjs as $mod) {
                             if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
@@ -302,6 +303,7 @@ class expJavascript {
                             $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js"></script>' . "\r\n";
                             $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js"></script>' . "\r\n";
                             $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js"></script>' . "\r\n";
+                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'base-component.js"></script>' . "\r\n";
                         }
                         foreach ($bootstrapjs as $mod) {
                             if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
