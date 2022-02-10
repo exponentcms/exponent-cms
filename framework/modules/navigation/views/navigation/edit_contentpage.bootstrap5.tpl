@@ -66,7 +66,7 @@
                     {if $section->parent != -1}
                     {group label='Menu Item Icon'|gettext}
                         {control type="files" name="files" label="Graphic Icon"|gettext accept="image/*" value=$section->expFile limit=1 description='Select an icon to use with this menu item'|gettext}
-                        {control type="dropdown" name="glyph" select2=$callback label="Font Icon"|gettext items=$glyphs includeblank='No Font Icon'|gettext style="font-family: 'Font Awesome 5 Free', Helvetica;" value=$section->glyph description='or Select a font icon to use with this menu item'|gettext}
+                        {control type="dropdown" name="glyph" select2=$callback label="Font Icon"|gettext items=$glyphs includeblank='No Font Icon'|gettext style="font-family: 'Font Awesome 6 Free', Helvetica;" value=$section->glyph description='or Select a font icon to use with this menu item'|gettext}
                         {control type="checkbox" name="glyph_only" label="Display Icon Alone"|gettext checked=$section->glyph_only value=1 description='Should the menu only display the icon without the page name?'|gettext}
                     {/group}
                     {else}

@@ -111,14 +111,14 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 
         $css = '
         .card.toggle .card-title a:after {
-            font-family:"Font Awesome 5 Free";
+            font-family:"Font Awesome 6 Free";
             content:\'\f102\';
             float:right;
             font-size:18px;
             font-weight:700;
         }
         .card.toggle .card-title a.collapsed:after  {
-            font-family:"Font Awesome 5 Free";
+            font-family:"Font Awesome 6 Free";
             content:\'\f103\';
         }
         ';
