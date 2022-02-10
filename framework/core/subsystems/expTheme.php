@@ -492,13 +492,13 @@ class expTheme
                     if (USE_CDN) {
                         expCSS::pushToHead(
                             array(
-                                "css_primer" => FA5_SCRIPT
+                                "css_primer" => FA6_SCRIPT
                             )
                         );
                     } else {
                         expCSS::pushToHead(
                             array(
-                                "scssprimer" => "external/font-awesome5/scss/fontawesome.scss",
+                                "scssprimer" => "external/font-awesome6/scss/fontawesome.scss",
                                 "lessvars" => $less_vars,
                             )
                         );
