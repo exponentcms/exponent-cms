@@ -406,7 +406,7 @@ class orderController extends expController {
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap/css/bootstrap.css" >';
         elseif (bs3())
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap3/css/bootstrap.css" >';
-        elseif (bs4() || bs5())
+        elseif (bs4())
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap4/css/bootstrap.css" >';
         elseif (bs5())
             $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap5/css/bootstrap.css" >';
