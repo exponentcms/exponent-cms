@@ -629,7 +629,7 @@ if (!defined('SWIFT_PATH')) {
     /**
      * Lexer is needed for Swiftmailer v6
      */
-    define('LEXER_VERSION', '1.2.1');
+    define('LEXER_VERSION', '1.2.2');
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
     /**
      * EmailValidator is needed for Swiftmailer v6
