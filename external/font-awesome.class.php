@@ -114,7 +114,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 			if( ! is_array($array) )
 				return false;//Do not proceed if is not array
 
-            if (bs4() || (bs5() && !USE_BOOTSTRAP_ICONS)) {
+            if (bs4()) {
                 uksort($array, array($this, "cmp"));
             } else {
                 ksort( $array );
@@ -181,9 +181,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 
 			$temp = array();
 			foreach ($array as $class => $unicode) {
-			    if (bs5() && USE_BOOTSTRAP_ICONS) {
-                    $temp[$class] = ucwords( str_ireplace(array('bi-' , '-'), array('', ' '), $class) );
-                } elseif (bs4()  || (bs5() && !USE_BOOTSTRAP_ICONS)) {
+                if (bs4()) {
                     $temp[$class] = ucwords( str_ireplace(array('fas fa-', 'far fa-', 'fab fa-' , '-'), array('', '', '', ' '), $class) );
                 } else {
                     $temp[$class] = ucwords( str_ireplace(array($class_prefix, '-'), array('', ' '), $class) );
