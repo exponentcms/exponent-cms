@@ -1180,15 +1180,38 @@ class navigationController extends expController {
                 $icons = $fa->getArray(BASE . 'external/bootstrap-icons/bootstrap-icons.json', 'bi-');
                 $icons = $fa->sortByName($icons);
                 return $fa->readableName($icons, 'bi-');
-            } elseif (bs4() || bs5()) {
+            } elseif (bs5()) {
+                if (USE_CDN) {
+                    expCSS::auto_compile_scss(
+                        'external/font-awesome6/scss/fontawesome.scss',
+                        'external/font-awesome6/css/fontawesome.css'
+                   );
+                }
+                $icons = $fa->getArray(BASE . 'external/font-awesome6/css/fontawesome.css');
+                $icons = $fa->sortByName($icons);
+//                return $fa->nameGlyph($icons);
+                return $fa->readableName($icons);
+            } elseif (bs4()) {
                 $icons = $fa->getArray(BASE . 'external/font-awesome5/metadata/icons.json');
 //                $icons = $fa->getArray(BASE . 'external/font-awesome5/metadata/icons.yml');
+//                if (USE_CDN) {
+//                    expCSS::auto_compile_scss(
+//                        'external/font-awesome5/scss/fontawesome.scss',
+//                        'external/font-awesome5/css/fontawesome.css'
+//                    );
+//                }
 //                $icons = $fa->getArray(BASE . 'external/font-awesome5/css/fontawesome.css');
                 $icons = $fa->sortByName($icons);
 //                return $fa->nameGlyph($icons);
                 return $fa->readableName($icons);
             } elseif (bs3()) {
 //                $icons = $fa->getArray(BASE . 'external/font-awesome4/src/icons.yml');
+                if (USE_CDN) {
+                    expCSS::auto_compile_less(
+                        'external/font-awesome4/less/font-awesome.less',
+                        'external/font-awesome4/css/font-awesome.css'
+                    );
+                }
                 $icons = $fa->getArray(BASE . 'external/font-awesome4/css/font-awesome.css');
                 $icons = $fa->sortByName($icons);
 //                return $fa->nameGlyph($icons);
@@ -1197,7 +1220,7 @@ class navigationController extends expController {
                 expCSS::auto_compile_less(
                     'external/font-awesome/less/font-awesome.less',
                     'external/font-awesome/css/font-awesome.css'
-                ); // font-awesome is included within bootstrap2, but not as a separate .css file
+                ); // font-awesome is included within bootstrap2 compile, but not as a separate .css file
 //                $icons = $fa->getArray(BASE . 'external/font-awesome/src/icons.yml', 'icon-');
                 $icons = $fa->getArray(BASE . 'external/font-awesome/css/font-awesome.css', 'icon-');
 //                return $fa->nameGlyph($icons, 'icon-');
