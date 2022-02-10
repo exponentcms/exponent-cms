@@ -32,7 +32,7 @@ class bootstrap5theme extends theme {
         if (USE_BOOTSTRAP_ICONS) {
             $ret .= "<a href=\"https://icons.getbootstrap.com/\" target=\"_blank\">Bootstrap Icons</a>";
         } else {
-            $ret .= "<a href=\"https://fontawesome.com/\" target=\"_blank\">Font Awesome v5</a>";
+            $ret .= "<a href=\"https://fontawesome.com/\" target=\"_blank\">Font Awesome v6</a>";
         }
         if ($settings['SWATCH'] !== 'default')
             $ret .= " using the <strong>" . ucfirst($settings['SWATCH']) . "</strong> Swatch.";
@@ -43,7 +43,7 @@ class bootstrap5theme extends theme {
      * are all prerequisites available?
      */
     function supported() {
-        return (is_file(BASE . 'external/bootstrap5/scss/newui.scss') && is_file(BASE . 'external/font-awesome5/scss/fontawesome.scss'));
+        return (is_file(BASE . 'external/bootstrap5/scss/newui.scss') && is_file(BASE . 'external/font-awesome6/scss/fontawesome.scss'));
     }
 
     function configureTheme() {
