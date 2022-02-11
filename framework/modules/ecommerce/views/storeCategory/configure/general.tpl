@@ -21,7 +21,7 @@
 {group label='Product Listing Pages'|gettext}
     {control type="number" name="images_per_row" label="Products per Row"|gettext value=$config.images_per_row|default:3 min=0 max=6 description='0 will use default'|gettext}
     {control type="text" name="pagination_default" label="Default # of products to show per page"|gettext size=3 filter=integer value=$config.pagination_default}
-    {control type="checkbox" name="show_products" label="Show all products with the category?"|gettext value=1 checked=$node->show_products description='Show all products under category when displaying categories'|gettext}
+    {control type="checkbox" name="show_products" label="Show all products with the category?"|gettext value=1 checked=$config.show_products description='Show all products under category when displaying categories'|gettext}
     {control type="text" name="productheight" label="Product Height"|gettext value=$config.productheight|default:200 description='0 will not set a height'|gettext}
 {/group}
 {group label="Product Sorting"|gettext}
