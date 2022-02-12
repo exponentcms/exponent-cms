@@ -67,6 +67,7 @@
                         {group label="Product Listing Pages"|gettext}
                             {control type="number" name="images_per_row" label="Products per Row"|gettext size="3" value=$config.images_per_row|default:3 min=0 max=6 description='0 will use default'|gettext}
                             {control type="text" name="pagination_default" label="Default # of products to show per page"|gettext size=3 filter=integer value=$config.pagination_default}
+                            {control type="checkbox" name="hide_categories" label="Hide sub-categories if category description avaiable?"|gettext value=1 checked=$config.hide_categories description='Display category description in place of sub-categories'|gettext}
                             {control type="checkbox" name="show_products" label="Show all products with the category?"|gettext value=1 checked=$config.show_products description='Show all products under category when displaying categories'|gettext}
                             {control type="checkbox" name="show_first_category" label="Show the first category in your store by default?"|gettext value=1 checked=$config.show_first_category description='Show first top-level category instead of all top level categories'|gettext}
                         {/group}
@@ -78,7 +79,7 @@
                             {control type="dropdown" name="orderby" label="Default sort order"|gettext items="Name, Price, Rank"|gettxtlist values="title,base_price,rank" value=$config.orderby}
                             {control type="dropdown" name="orderby_dir" label="Sort direction"|gettext items="Ascending, Descending"|gettxtlist values="ASC, DESC" value=$config.orderby_dir}
                         {/group}
-                        {control type="dropdown" name="ecom_search_results" label="Search Results"|gettext includeblank="All"|gettext items="Limit to eCommerce,Limit to Products"|gettxtlist values="ecom,products" value=$config.ecom_search_results description='Optionally Limit search results to eCommerce related items'|gettext}
+                        {control type="dropdown" name="ecom_search_results" label="Site Search Results"|gettext includeblank="All"|gettext items="Limit to eCommerce,Limit to Products"|gettxtlist values="ecom,products" value=$config.ecom_search_results description='Optionally Limit site search results to eCommerce related items'|gettext}
                         {*
                         <h2>Sub Category Display</h2>
                         drop down coming soon...
