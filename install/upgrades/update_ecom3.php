@@ -37,7 +37,7 @@ class update_ecom3 extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "(Use only with a very recent DB backup!) An orders table record is added as the shopping cart for each site visitor which can make it huge.  This script prunes abandoned orders older than 7 days from the orders table and associated orphan records from other ecommerce tables."; }
+	function description() { return "(CAUTION! Use only with a very recent DB backup!) An orders table record is added as the shopping cart for each site visitor which can make it huge.  This script prunes abandoned orders older than 7 days from the orders table and associated orphan records from other ecommerce tables."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
