@@ -20,293 +20,300 @@
     /*}*/
 
     pre {
-    background: #f7f7f9
+        background: #f7f7f9
     }
 
     @media (min-width: 768px) {
-    body > .navbar-transparent {
-    box-shadow: none
-    }
+        body > .navbar-transparent {
+            box-shadow: none
+        }
 
-    body > .navbar-transparent .navbar-nav > .open > a {
-    box-shadow: none
-    }
+        body > .navbar-transparent .navbar-nav > .open > a {
+            box-shadow: none
+        }
     }
 
     .navbar .fa, .navbar .fab {
-    margin-right: .25rem;
-    font-size: 1rem
+        margin-right: .25rem;
+        font-size: 1rem
     }
 
     #home .navbar, #help .navbar {
-    background: #375ee3;
-    background: linear-gradient(145deg, #375ee3 0%, #6543e0 80%);
-    transition: box-shadow 200ms ease-in
+        background: #375ee3;
+        background: linear-gradient(145deg, #375ee3 0%, #6543e0 80%);
+        transition: box-shadow 200ms ease-in
     }
 
     #home .navbar-brand .nav-link, #help .navbar-brand .nav-link {
-    display: inline-block;
-    margin-right: -30px
+        display: inline-block;
+        margin-right: -30px
     }
 
     #home {
-    padding-top: 0
+        padding-top: 0
     }
 
     #home .btn {
-    padding: .5rem .9rem
+        padding: .5rem .9rem
     }
 
     .bs-docs-section {
-    margin-top: 4em
+        margin-top: 4em
     }
 
     .bs-docs-section .page-header h1 {
-    padding: 2rem 0;
-    font-size: 3rem
+        padding: 2rem 0;
+        font-size: 3rem
     }
 
     .dropdown-menu.show[aria-labelledby="themes"] {
-    display: -ms-flexbox;
-    display: flex;
-    width: 420px;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap
+        display: -ms-flexbox;
+        display: flex;
+        width: 420px;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap
     }
 
     .dropdown-menu.show[aria-labelledby="themes"] .dropdown-item {
-    width: 33.333%
+        width: 33.333%
     }
 
     .dropdown-menu.show[aria-labelledby="themes"] .dropdown-item:first-child {
-    width: 100%
+        width: 100%
     }
 
     .bs-component {
-    position: relative
+        position: relative
     }
 
     .bs-component + .bs-component {
-    margin-top: 1rem
+        margin-top: 1rem
     }
 
     .bs-component .card {
-    margin-bottom: 1rem
+        margin-bottom: 1rem
     }
 
     .bs-component .modal {
-    position: relative;
-    top: auto;
-    right: auto;
-    left: auto;
-    bottom: auto;
-    z-index: 1;
-    display: block
+        position: relative;
+        top: auto;
+        right: auto;
+        left: auto;
+        bottom: auto;
+        z-index: 1;
+        display: block
     }
 
     .bs-component .modal-dialog {
-    width: 90%
+        width: 90%
     }
 
     .bs-component .popover {
-    position: relative;
-    display: inline-block;
-    width: 220px;
-    margin: 20px
+        position: relative;
+        display: inline-block;
+        width: 220px;
+        margin: 20px
     }
 
     .source-button {
-    display: none;
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 100;
-    font-weight: 700
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 100;
+        font-weight: 700
     }
 
     .source-button:hover {
-    cursor: pointer
+        cursor: pointer
     }
 
     .bs-component:hover .source-button {
-    display: block
+        display: block
     }
 
     #source-modal pre {
-    max-height: calc(100vh - 11rem)
+        max-height: calc(100vh - 11rem)
     }
 
     .nav-tabs {
-    margin-bottom: 15px
+        margin-bottom: 15px
     }
 
     .progress {
-    margin-bottom: 10px
+        margin-bottom: 10px
     }
 
     #footer {
-    margin: 5em 0
+        margin: 5em 0
     }
 
     #footer li {
-    float: left;
-    margin-right: 1.5em;
-    margin-bottom: 1.5em
+        float: left;
+        margin-right: 1.5em;
+        margin-bottom: 1.5em
     }
 
     #footer p {
-    clear: left;
-    margin-bottom: 0
+        clear: left;
+        margin-bottom: 0
     }
 
     .splash {
-    position: relative;
-    padding: 12em 0 6em;
-    background-color: #375ee3;
-    background-image: url("../img/splash.svg"), linear-gradient(145deg, #375ee3 0%, #6543e0 80%);
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: #fff;
-    text-align: center
+        position: relative;
+        padding: 12em 0 6em;
+        background-color: #375ee3;
+        background-image: url("../img/splash.svg"), linear-gradient(145deg, #375ee3 0%, #6543e0 80%);
+        background-size: cover;
+        background-repeat: no-repeat;
+        color: #fff;
+        text-align: center
     }
 
     .splash .logo {
-    width: 160px
+        width: 160px
     }
 
     .splash h1 {
-    font-size: 3em;
-    color: #fff
+        font-size: 3em;
+        color: #fff
     }
 
     .splash #social {
-    margin: 2em 0 3em
+        margin: 2em 0 3em
     }
 
     .splash .alert {
-    margin: 2em 0;
-    border: none
+        margin: 2em 0;
+        border: none
     }
 
     .splash .sponsor a {
-    color: #fff
+        color: #fff
     }
 
     .section-tout {
-    padding: 6em 0 1em;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    background-color: #eaf1f1;
-    text-align: center
+        padding: 6em 0 1em;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        background-color: #eaf1f1;
+        text-align: center
     }
 
     .section-tout .icon {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -ms-flex-align: center;
-    align-items: center;
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 1rem;
-    background: #375ee3;
-    background: linear-gradient(145deg, #375ee3 0%, #6543e0 80%);
-    border-radius: 50%;
-    font-size: 2rem;
-    color: rgba(255, 255, 255, 0.9)
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -ms-flex-align: center;
+        align-items: center;
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 1rem;
+        background: #375ee3;
+        background: linear-gradient(145deg, #375ee3 0%, #6543e0 80%);
+        border-radius: 50%;
+        font-size: 2rem;
+        color: rgba(255, 255, 255, 0.9)
     }
 
     .section-tout p {
-    margin-bottom: 5em
+        margin-bottom: 5em
     }
 
     .section-preview {
-    padding: 4em 0
+        padding: 4em 0
     }
 
     .section-preview .preview {
-    margin-bottom: 4em;
-    background-color: #eaf1f1
+        margin-bottom: 4em;
+        background-color: #eaf1f1
     }
 
     .section-preview .preview .image {
-    position: relative
+        position: relative
     }
 
     .section-preview .preview .image img {
-    width: 100%;
-    height: auto
+        width: 100%;
+        height: auto
     }
 
     .section-preview .preview .options {
-    padding: 2em;
-    border-top: 1px solid rgba(0, 0, 0, 0.125);
-    text-align: center
+        padding: 2em;
+        border-top: 1px solid rgba(0, 0, 0, 0.125);
+        text-align: center
     }
 
     .section-preview .preview .options p {
-    margin-bottom: 2em
+        margin-bottom: 2em
     }
 
     .section-preview .dropdown-menu {
-    text-align: left
+        text-align: left
     }
 
     .section-preview .lead {
-    margin-bottom: 2em
+        margin-bottom: 2em
     }
 
     .sponsor a {
-    text-decoration: none
+        text-decoration: none
     }
 
     .sponsor #carbonads {
-    max-width: 240px;
-    margin: 0 auto
+        max-width: 240px;
+        margin: 0 auto
     }
 
     .sponsor .carbon-text {
-    display: block;
-    margin-top: 1em;
-    font-size: 12px
+        display: block;
+        margin-top: 1em;
+        font-size: 12px
     }
 
     .sponsor .carbon-poweredby {
-    float: right;
-    margin-top: 1em;
-    font-size: 10px
+        float: right;
+        margin-top: 1em;
+        font-size: 10px
     }
 
     @media (max-width: 767px) {
-    .splash {
-    padding-top: 8em
-    }
+        .splash {
+            padding-top: 8em
+        }
 
-    .splash .logo {
-    width: 100px
-    }
+        .splash .logo {
+            width: 100px
+        }
 
-    .splash h1 {
-    font-size: 2em
-    }
+        .splash h1 {
+            font-size: 2em
+        }
 
-    #banner {
-    margin-bottom: 2em;
-    text-align: center
-    }
+        #banner {
+            margin-bottom: 2em;
+            text-align: center
+        }
     }
 
     @media (max-width: 991px) {
-    .navbar .fa {
-    display: none
-    }
+        .navbar .fa {
+        display: none
+        }
     }
 
     @media (min-width: 992px) {
-    .navbar-transparent {
-    background: none !important;
-    box-shadow: none
+        .navbar-transparent {
+        background: none !important;
+        box-shadow: none
+        }
     }
+    input[type="radio"].form-check-input,
+    input[type="checkbox"].form-check-input {
+    	margin-left: -1.5em;
+    }
+    .form-switch input[type="checkbox"].form-check-input {
+        margin-left: -2.5em;
     }
 
 {/literal}
