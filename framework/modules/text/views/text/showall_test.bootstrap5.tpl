@@ -1962,17 +1962,29 @@
 
       var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
       var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl)
+        if (typeof bootstrap == "undefined") {
+              return new Popover(popoverTriggerEl)
+          } else {
+              return new bootstrap.Popover(popoverTriggerEl)
+          }
       })
 
       var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
       var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
+        if (typeof bootstrap == "undefined") {
+              return new Tooltip(tooltipTriggerEl)
+          } else {
+              return new bootstrap.Tooltip(tooltipTriggerEl)
+          }
       })
 
       var sourceModalElem = document.getElementById('source-modal');
       if (sourceModalElem) {
-        var sourceModal = new bootstrap.Modal(document.getElementById('source-modal'));
+        if (typeof bootstrap == "undefined") {
+              var sourceModal = new Modal(document.getElementById('source-modal'));
+          } else {
+              var sourceModal = new bootstrap.Modal(document.getElementById('source-modal'));
+          }
       }
 
       $('body').on('click', '.source-button', function (event) {
