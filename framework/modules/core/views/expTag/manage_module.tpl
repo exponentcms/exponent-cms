@@ -30,7 +30,7 @@
     {$page->links}
     {form action=change_tags}
     {control type=hidden name=mod value=$page->model}
-    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+    <table class="exp-skin-table">
         <thead>
             <tr>
                 <th>

@@ -68,6 +68,7 @@ class blog extends expRecord {
    	    if (empty($this->publish) || $this->publish === 'on') {
    	        $this->publish = time();
    	    }
+        parent::beforeSave();
    	}
 
 //    public function find($range='all', $where=null, $order=null, $limit=null, $limitstart=0, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except = false) {

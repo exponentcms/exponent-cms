@@ -249,11 +249,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                                 '</td></tr><tr class="odd"><td><span>{/literal}{"Image Width"|gettext}{literal}:</span>{/literal}{"Not an image"|gettext}{literal}';
             }
 
-            infopanel.setBody('<table class="wrapper" border="0" cellspacing="0" cellpadding="5" style="100%;">'+
+            infopanel.setBody('<table class="wrapper" style="100%;">'+
                 '<tr><td class="file"><div>'+
                         oFile +
                 '</div></td><td class="info">'+
-                '<table border="0" cellspacing="0" cellpadding="2" style="width:100%;">'+
+                '<table style="width:100%;">'+
                         '<tr class="odd"><td><span>{/literal}{"Title"|gettext}{literal}:</span>'+oRecordData.title+
                         '</td></tr><tr class="even"><td><span>{/literal}{"Alt"|gettext}{literal}:</span>'+oRecordData.alt+
                         '</td></tr><tr class="odd"><td><span>{/literal}{"File Type"|gettext}{literal}:</span>'+oRecordData.mimetype+

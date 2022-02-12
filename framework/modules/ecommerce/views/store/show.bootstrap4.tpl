@@ -420,7 +420,7 @@
                     {/if}
 
                     <div id="child-products">
-                        <table border="0" cellspacing="0" cellpadding="0" class="table table-striped">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>&#160;</th>

@@ -62,7 +62,7 @@
                     {form action=change_cats}
                         {control type=hidden name=mod value=$page->model}
                         {$page->links}
-                        <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                        <table class="exp-skin-table">
                             <thead>
                                 <tr>
                                     <th>
@@ -106,7 +106,7 @@
                         {ddrerank id=$moduleid items=$module model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:$catnames}
                     {/if}
                     {*{$cats->links}*}
-                    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                    <table class="exp-skin-table">
                         <thead>
                             <tr>
                                 <th>

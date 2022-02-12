@@ -20,5 +20,5 @@ if (! class_exists('ScssPhp\ScssPhp\Version')) {
     });
 }
 
-include_once __DIR__ . '/example/Server.php';  //exp
-include_once __DIR__ . '/example/ServerException.php';  //exp
+include_once __DIR__ . '/server/Server.php';  //exp
+include_once __DIR__ . '/server/ServerException.php';  //exp

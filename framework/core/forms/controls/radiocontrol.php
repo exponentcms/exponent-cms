@@ -52,7 +52,7 @@ class radiocontrol extends formcontrol {
         $for = ' for="' . createValidId($for) . '"';
         $html = '<div'.$divID.' class="radio control';
         $html .= (!empty($this->required)) ? ' required">' : '">';
-        $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
+        $html .= "<table><tr>";
 
         if(empty($this->flip)){
             $html .= "<td class=\"input\">";

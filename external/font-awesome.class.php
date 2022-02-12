@@ -25,7 +25,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		 * @param string $class_prefix change this if the class names does not start with `fa-`
 		 * @return array|boolean
 		 */
-		public static function getArray($path, $class_prefix = 'fa-'){
+		public function getArray($path, $class_prefix = 'fa-'){
 
 			if( ! file_exists($path) )
 				return false;//if path is incorrect or file does not exist, stop.
@@ -60,7 +60,7 @@ if( ! class_exists('Smk_FontAwesome') ){
                     }
                     break;
                 case 'yml':
-                    require_once(BASE . 'external/spyc-0.6.2/Spyc.php');
+                    require_once(BASE . 'external/spyc-0.6.3/Spyc.php');
                     $matches = spyc_load($file);
                     foreach ($matches as $name=>$match) {
                         if (bs4() || (bs5() && !USE_BOOTSTRAP_ICONS)) {
@@ -114,7 +114,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 			if( ! is_array($array) )
 				return false;//Do not proceed if is not array
 
-            if (bs4() || (bs5() && !USE_BOOTSTRAP_ICONS)) {
+            if (bs4()) {
                 uksort($array, array($this, "cmp"));
             } else {
                 ksort( $array );
@@ -181,9 +181,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 
 			$temp = array();
 			foreach ($array as $class => $unicode) {
-			    if (bs5() && USE_BOOTSTRAP_ICONS) {
-                    $temp[$class] = ucwords( str_ireplace(array('bi-' , '-'), array('', ' '), $class) );
-                } elseif (bs4()  || (bs5() && !USE_BOOTSTRAP_ICONS)) {
+                if (bs4()) {
                     $temp[$class] = ucwords( str_ireplace(array('fas fa-', 'far fa-', 'fab fa-' , '-'), array('', '', '', ' '), $class) );
                 } else {
                     $temp[$class] = ucwords( str_ireplace(array($class_prefix, '-'), array('', ' '), $class) );

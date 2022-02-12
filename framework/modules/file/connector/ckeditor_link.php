@@ -197,7 +197,7 @@
 <!--	<body onload="__dlg_translate(eXp._TR);">-->
     <body>
 		<div class="title"><?PHP echo gt('Insert/Modify Link'); ?></div>
-		<table border="0" style="width: 100%;">
+		<table style="width: 100%;">
 			<tbody>
 				<tr valign="top">
 					<td>

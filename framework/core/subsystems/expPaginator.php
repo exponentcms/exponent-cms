@@ -368,10 +368,14 @@ class expPaginator extends expSubsystem {
             $page_params['__utmc'],
             $page_params['__utmt'],
             $page_params['__utmv'],
+            $page_params['__utmz'],
             $page_params['__utmli'],
             $page_params['__utmz'],
             $page_params['__zlcmid'],
-            $page_params['__cfduid']
+            $page_params['__cfduid'],
+            $page_params['_gid'],
+            $page_params['ckCsrfToken'],
+            $page_params['scayt_verLang']
         );
 
         if (!empty($page_params['search_string']))

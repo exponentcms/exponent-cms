@@ -35,7 +35,7 @@
 		<h2>{"Theme Manager"|gettext}</h2>
     </div>
 
-    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+    <table class="exp-skin-table">
         <thead>
             <tr>
                 <th>

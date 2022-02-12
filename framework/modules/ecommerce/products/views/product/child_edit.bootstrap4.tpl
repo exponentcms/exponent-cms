@@ -101,7 +101,7 @@
                                 {*{control type=files name=mainthumb label="Product Thumbnail Images"|gettext subtype="mainthumbnail" accept="image/*" value=$record->expFile description="If no image is provided to use as a thumbnail, one will be generated from the main image."|gettext}*}
                             {*</div>*}
                             {*<div id="iws-div" class="imngfuncbody" style="display:none;">*}
-                                {*<table border="0" cellspacing="0" cellpadding="1" width="100%">*}
+                                {*<table width="100%">*}
                                     {*<tr>*}
                                         {*<th width="50%">{"Image"|gettext}</th>*}
                                         {*<th width="50%">{"Color/Pattern Swatch"|gettext}</th>*}

@@ -14,7 +14,7 @@
  *}
 
 <div class="module simplenote get-notes">
-    <table border="0" cellspacing="0" cellpadding="0">
+    <table>
         <thead>
             <tr>
                 <th>

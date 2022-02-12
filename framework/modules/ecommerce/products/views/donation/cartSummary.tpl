@@ -13,7 +13,7 @@
  *
  *}
 
-<table border="0" cellspacing="0" cellpadding="0" class="cart-item">
+<table class="cart-item">
     <tr>
         <td class="cart-image">
             {if $item->product->expFile.mainimage[0]->id}

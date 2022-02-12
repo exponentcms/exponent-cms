@@ -97,7 +97,7 @@
                         {eval var=$config.report_def}
                         {clear}
                     {else}
-                        <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                        <table class="exp-skin-table">
                             <tbody>
                                 {foreach from=$fields key=fieldname item=value}
                                     <tr class="{cycle values="even,odd"}">

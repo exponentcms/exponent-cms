@@ -70,7 +70,7 @@
                 {/literal}
              {/script}
             <div id="child-products" class="exp-ecom-table">
-               <table border="0" cellspacing="0" cellpadding="0" width="100%">
+               <table width="100%">
                     <thead>
                         <tr>
                             <th>&#160;</th>
