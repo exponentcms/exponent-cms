@@ -38,7 +38,7 @@ $warning = array();
 
     function echoStart($msg)
     {
-        echo '<tr><td valign="top" class="bodytext">' . $msg . '</td><td valign="top" class="bodytext">';
+        echo '<tr><td class="bodytext">' . $msg . '</td><td class="bodytext">';
     }
 
     function echoSuccess($msg = "")

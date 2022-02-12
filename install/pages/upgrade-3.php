@@ -31,7 +31,7 @@ ksort($tables);
 
 ?>
 
-<table cellpadding="2" cellspacing="0" width="100%" border="0" class="exp-skin-table">
+<table class="exp-skin-table">
     <thead>
     <tr>
         <th>

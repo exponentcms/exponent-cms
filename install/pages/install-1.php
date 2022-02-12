@@ -35,7 +35,7 @@ $warncount = 0; // No warnings with permissions
 
 ?>
     <h1><?php echo gt('System Requirements Check'); ?></h1>
-<table cellspacing="0" cellpadding="0" rules="all" border="0" width="100%" class="exp-skin-table">
+<table class="exp-skin-table">
     <thead>
     <tr>
         <th colspan="2">
@@ -76,7 +76,7 @@ $warncount = 0; // No warnings with permissions
     }
     ?>
     </tbody>
-    <table cellspacing="0" cellpadding="0" rules="all" border="0" width="100%" class="exp-skin-table">
+    <table class="exp-skin-table">
         <thead>
         <tr>
             <th colspan="2">
