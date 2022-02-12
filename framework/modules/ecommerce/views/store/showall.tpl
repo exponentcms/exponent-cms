@@ -77,12 +77,13 @@
         {/permissions}
     {/if}
     {* current category description *}
-    {if $categories|@count > 0 && !empty(trim($current_category->body))}
+{*    {if $categories|@count > 0 && !empty(trim($current_category->body))}*}
         <div class="bodycopy">
             {$current_category->body}
         </div>
     {* current category's sub-categories *}
-    {elseif $categories|@count > 0}
+{*    {elseif $categories|@count > 0}*}
+    {if $categories|@count > 0 && !($config.hide_categories && !empty(trim($current_category->body)))}
         <div class="cats">
             <h2>{'Categories'|gettext}{if $current_category->id} {'Under'|gettext} {$current_category->title}{/if}</h2>
 
