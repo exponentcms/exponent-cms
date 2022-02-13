@@ -315,7 +315,7 @@ class expRouter {
         $trackingObject->user_id = $user->id;
         $trackingObject->timestamp = time();
         $trackingObject->user_address = $_SERVER['REMOTE_ADDR'];
-        $trackingObject->user_agent = $_SERVER['HTTP_USER_AGENT'];
+        $trackingObject->user_agent = expString::sanitize($_SERVER['HTTP_USER_AGENT']);
         $trackingObject->session_id = $_COOKIE['PHPSESSID'];
         $db->insertObject($trackingObject,'tracking_rawdata');
     }
@@ -474,7 +474,7 @@ class expRouter {
                     $redirectObject->cookieUID = (empty($_COOKIE['UserUID'])) ? expSession::getTicketString() : $_COOKIE['UserUID'];
                     $redirectObject->user_id = $user->id;
                     $redirectObject->user_address = $_SERVER['REMOTE_ADDR'];
-                    $redirectObject->user_agent = $_SERVER['HTTP_USER_AGENT'];
+                    $redirectObject->user_agent =expString::sanitize($_SERVER['HTTP_USER_AGENT']);
                     $redirectObject->session_id = $_COOKIE['PHPSESSID'];
                     if (!empty($page_redirect)) {
                         if (empty($page_redirect->type) || $page_redirect->type === 'url') {
