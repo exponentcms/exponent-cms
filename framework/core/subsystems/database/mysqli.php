@@ -1164,7 +1164,7 @@ class mysqli_database extends database {
    	 function columnExists($table, $col) {
          // does the column exist?
          $result = @mysqli_query($this->connection, $this->wrapStmt("SHOW COLUMNS FROM `" . $this->prefix . "$table` LIKE '$col'"));
-         if (!@mysqli_num_rows($result))
+         if ($result === false || !@mysqli_num_rows($result))
              return false;
          else
              return true;
