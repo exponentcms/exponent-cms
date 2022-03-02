@@ -1,0 +1,9518 @@
+{
+	"0": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "30"
+	},
+	"1": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "31"
+	},
+	"2": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "32"
+	},
+	"3": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "33"
+	},
+	"4": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "34"
+	},
+	"42-group": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e080"
+	},
+	"5": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "35"
+	},
+	"500px": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f26e"
+	},
+	"6": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "36"
+	},
+	"7": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "37"
+	},
+	"8": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "38"
+	},
+	"9": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "39"
+	},
+	"a": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "41"
+	},
+	"accessible-icon": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f368"
+	},
+	"accusoft": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f369"
+	},
+	"address-book": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2b9"
+	},
+	"address-card": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2bb"
+	},
+	"adn": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f170"
+	},
+	"adversal": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f36a"
+	},
+	"affiliatetheme": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f36b"
+	},
+	"airbnb": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f834"
+	},
+	"algolia": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f36c"
+	},
+	"align-center": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f037"
+	},
+	"align-justify": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f039"
+	},
+	"align-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f036"
+	},
+	"align-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f038"
+	},
+	"alipay": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f642"
+	},
+	"amazon": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f270"
+	},
+	"amazon-pay": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f42c"
+	},
+	"amilia": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f36d"
+	},
+	"anchor": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f13d"
+	},
+	"android": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f17b"
+	},
+	"angellist": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f209"
+	},
+	"angle-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f107"
+	},
+	"angle-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f104"
+	},
+	"angle-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f105"
+	},
+	"angle-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f106"
+	},
+	"angles-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f103"
+	},
+	"angles-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f100"
+	},
+	"angles-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f101"
+	},
+	"angles-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f102"
+	},
+	"angrycreative": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f36e"
+	},
+	"angular": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f420"
+	},
+	"ankh": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f644"
+	},
+	"app-store": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f36f"
+	},
+	"app-store-ios": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f370"
+	},
+	"apper": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f371"
+	},
+	"apple": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f179"
+	},
+	"apple-pay": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f415"
+	},
+	"apple-whole": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5d1"
+	},
+	"archway": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f557"
+	},
+	"arrow-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f063"
+	},
+	"arrow-down-1-9": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f162"
+	},
+	"arrow-down-9-1": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f886"
+	},
+	"arrow-down-a-z": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f15d"
+	},
+	"arrow-down-long": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f175"
+	},
+	"arrow-down-short-wide": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f884"
+	},
+	"arrow-down-wide-short": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f160"
+	},
+	"arrow-down-z-a": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f881"
+	},
+	"arrow-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f060"
+	},
+	"arrow-left-long": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f177"
+	},
+	"arrow-pointer": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f245"
+	},
+	"arrow-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f061"
+	},
+	"arrow-right-arrow-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0ec"
+	},
+	"arrow-right-from-bracket": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f08b"
+	},
+	"arrow-right-long": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f178"
+	},
+	"arrow-right-to-bracket": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f090"
+	},
+	"arrow-rotate-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0e2"
+	},
+	"arrow-rotate-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f01e"
+	},
+	"arrow-trend-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e097"
+	},
+	"arrow-trend-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e098"
+	},
+	"arrow-turn-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f149"
+	},
+	"arrow-turn-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f148"
+	},
+	"arrow-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f062"
+	},
+	"arrow-up-1-9": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f163"
+	},
+	"arrow-up-9-1": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f887"
+	},
+	"arrow-up-a-z": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f15e"
+	},
+	"arrow-up-from-bracket": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e09a"
+	},
+	"arrow-up-long": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f176"
+	},
+	"arrow-up-right-from-square": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f08e"
+	},
+	"arrow-up-short-wide": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f885"
+	},
+	"arrow-up-wide-short": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f161"
+	},
+	"arrow-up-z-a": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f882"
+	},
+	"arrows-left-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f07e"
+	},
+	"arrows-rotate": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f021"
+	},
+	"arrows-up-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f07d"
+	},
+	"arrows-up-down-left-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f047"
+	},
+	"artstation": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f77a"
+	},
+	"asterisk": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "2a"
+	},
+	"asymmetrik": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f372"
+	},
+	"at": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "40"
+	},
+	"atlassian": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f77b"
+	},
+	"atom": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5d2"
+	},
+	"audible": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f373"
+	},
+	"audio-description": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f29e"
+	},
+	"austral-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e0a9"
+	},
+	"autoprefixer": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f41c"
+	},
+	"avianex": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f374"
+	},
+	"aviato": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f421"
+	},
+	"award": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f559"
+	},
+	"aws": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f375"
+	},
+	"b": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "42"
+	},
+	"baby": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f77c"
+	},
+	"baby-carriage": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f77d"
+	},
+	"backward": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f04a"
+	},
+	"backward-fast": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f049"
+	},
+	"backward-step": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f048"
+	},
+	"bacon": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7e5"
+	},
+	"bacteria": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e059"
+	},
+	"bacterium": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e05a"
+	},
+	"bag-shopping": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f290"
+	},
+	"bahai": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f666"
+	},
+	"baht-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e0ac"
+	},
+	"ban": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f05e"
+	},
+	"ban-smoking": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f54d"
+	},
+	"bandage": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f462"
+	},
+	"bandcamp": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2d5"
+	},
+	"barcode": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f02a"
+	},
+	"bars": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0c9"
+	},
+	"bars-progress": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f828"
+	},
+	"bars-staggered": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f550"
+	},
+	"baseball": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f433"
+	},
+	"baseball-bat-ball": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f432"
+	},
+	"basket-shopping": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f291"
+	},
+	"basketball": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f434"
+	},
+	"bath": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2cd"
+	},
+	"battery-empty": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f244"
+	},
+	"battery-full": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f240"
+	},
+	"battery-half": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f242"
+	},
+	"battery-quarter": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f243"
+	},
+	"battery-three-quarters": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f241"
+	},
+	"battle-net": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f835"
+	},
+	"bed": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f236"
+	},
+	"bed-pulse": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f487"
+	},
+	"beer-mug-empty": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0fc"
+	},
+	"behance": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1b4"
+	},
+	"behance-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1b5"
+	},
+	"bell": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0f3"
+	},
+	"bell-concierge": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f562"
+	},
+	"bell-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1f6"
+	},
+	"bezier-curve": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f55b"
+	},
+	"bicycle": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f206"
+	},
+	"bilibili": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e3d9"
+	},
+	"bimobject": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f378"
+	},
+	"binoculars": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1e5"
+	},
+	"biohazard": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f780"
+	},
+	"bitbucket": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f171"
+	},
+	"bitcoin": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f379"
+	},
+	"bitcoin-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e0b4"
+	},
+	"bity": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f37a"
+	},
+	"black-tie": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f27e"
+	},
+	"blackberry": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f37b"
+	},
+	"blender": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f517"
+	},
+	"blender-phone": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6b6"
+	},
+	"blog": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f781"
+	},
+	"blogger": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f37c"
+	},
+	"blogger-b": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f37d"
+	},
+	"bluetooth": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f293"
+	},
+	"bluetooth-b": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f294"
+	},
+	"bold": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f032"
+	},
+	"bolt": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0e7"
+	},
+	"bolt-lightning": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e0b7"
+	},
+	"bomb": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1e2"
+	},
+	"bone": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5d7"
+	},
+	"bong": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f55c"
+	},
+	"book": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f02d"
+	},
+	"book-atlas": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f558"
+	},
+	"book-bible": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f647"
+	},
+	"book-journal-whills": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f66a"
+	},
+	"book-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7e6"
+	},
+	"book-open": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f518"
+	},
+	"book-open-reader": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5da"
+	},
+	"book-quran": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f687"
+	},
+	"book-skull": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6b7"
+	},
+	"bookmark": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f02e"
+	},
+	"bootstrap": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f836"
+	},
+	"border-all": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f84c"
+	},
+	"border-none": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f850"
+	},
+	"border-top-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f853"
+	},
+	"bots": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e340"
+	},
+	"bowling-ball": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f436"
+	},
+	"box": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f466"
+	},
+	"box-archive": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f187"
+	},
+	"box-open": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f49e"
+	},
+	"box-tissue": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e05b"
+	},
+	"boxes-stacked": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f468"
+	},
+	"braille": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2a1"
+	},
+	"brain": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5dc"
+	},
+	"brazilian-real-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e46c"
+	},
+	"bread-slice": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7ec"
+	},
+	"briefcase": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0b1"
+	},
+	"briefcase-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f469"
+	},
+	"broom": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f51a"
+	},
+	"broom-ball": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f458"
+	},
+	"brush": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f55d"
+	},
+	"btc": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f15a"
+	},
+	"buffer": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f837"
+	},
+	"bug": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f188"
+	},
+	"bug-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e490"
+	},
+	"building": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1ad"
+	},
+	"building-columns": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f19c"
+	},
+	"bullhorn": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0a1"
+	},
+	"bullseye": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f140"
+	},
+	"burger": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f805"
+	},
+	"buromobelexperte": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f37f"
+	},
+	"bus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f207"
+	},
+	"bus-simple": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f55e"
+	},
+	"business-time": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f64a"
+	},
+	"buy-n-large": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f8a6"
+	},
+	"buysellads": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f20d"
+	},
+	"c": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "43"
+	},
+	"cake-candles": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1fd"
+	},
+	"calculator": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1ec"
+	},
+	"calendar": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f133"
+	},
+	"calendar-check": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f274"
+	},
+	"calendar-day": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f783"
+	},
+	"calendar-days": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f073"
+	},
+	"calendar-minus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f272"
+	},
+	"calendar-plus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f271"
+	},
+	"calendar-week": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f784"
+	},
+	"calendar-xmark": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f273"
+	},
+	"camera": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f030"
+	},
+	"camera-retro": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f083"
+	},
+	"camera-rotate": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e0d8"
+	},
+	"campground": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6bb"
+	},
+	"canadian-maple-leaf": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f785"
+	},
+	"candy-cane": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f786"
+	},
+	"cannabis": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f55f"
+	},
+	"capsules": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f46b"
+	},
+	"car": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1b9"
+	},
+	"car-battery": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5df"
+	},
+	"car-crash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5e1"
+	},
+	"car-rear": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5de"
+	},
+	"car-side": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5e4"
+	},
+	"caravan": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f8ff"
+	},
+	"caret-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0d7"
+	},
+	"caret-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0d9"
+	},
+	"caret-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0da"
+	},
+	"caret-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0d8"
+	},
+	"carrot": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f787"
+	},
+	"cart-arrow-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f218"
+	},
+	"cart-flatbed": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f474"
+	},
+	"cart-flatbed-suitcase": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f59d"
+	},
+	"cart-plus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f217"
+	},
+	"cart-shopping": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f07a"
+	},
+	"cash-register": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f788"
+	},
+	"cat": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6be"
+	},
+	"cc-amazon-pay": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f42d"
+	},
+	"cc-amex": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1f3"
+	},
+	"cc-apple-pay": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f416"
+	},
+	"cc-diners-club": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f24c"
+	},
+	"cc-discover": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1f2"
+	},
+	"cc-jcb": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f24b"
+	},
+	"cc-mastercard": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1f1"
+	},
+	"cc-paypal": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1f4"
+	},
+	"cc-stripe": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1f5"
+	},
+	"cc-visa": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1f0"
+	},
+	"cedi-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e0df"
+	},
+	"cent-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e3f5"
+	},
+	"centercode": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f380"
+	},
+	"centos": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f789"
+	},
+	"certificate": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0a3"
+	},
+	"chair": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6c0"
+	},
+	"chalkboard": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f51b"
+	},
+	"chalkboard-user": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f51c"
+	},
+	"champagne-glasses": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f79f"
+	},
+	"charging-station": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5e7"
+	},
+	"chart-area": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1fe"
+	},
+	"chart-bar": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f080"
+	},
+	"chart-column": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e0e3"
+	},
+	"chart-gantt": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e0e4"
+	},
+	"chart-line": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f201"
+	},
+	"chart-pie": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f200"
+	},
+	"check": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f00c"
+	},
+	"check-double": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f560"
+	},
+	"check-to-slot": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f772"
+	},
+	"cheese": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7ef"
+	},
+	"chess": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f439"
+	},
+	"chess-bishop": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f43a"
+	},
+	"chess-board": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f43c"
+	},
+	"chess-king": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f43f"
+	},
+	"chess-knight": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f441"
+	},
+	"chess-pawn": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f443"
+	},
+	"chess-queen": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f445"
+	},
+	"chess-rook": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f447"
+	},
+	"chevron-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f078"
+	},
+	"chevron-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f053"
+	},
+	"chevron-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f054"
+	},
+	"chevron-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f077"
+	},
+	"child": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1ae"
+	},
+	"chrome": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f268"
+	},
+	"chromecast": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f838"
+	},
+	"church": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f51d"
+	},
+	"circle": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f111"
+	},
+	"circle-arrow-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0ab"
+	},
+	"circle-arrow-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0a8"
+	},
+	"circle-arrow-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0a9"
+	},
+	"circle-arrow-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0aa"
+	},
+	"circle-check": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f058"
+	},
+	"circle-chevron-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f13a"
+	},
+	"circle-chevron-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f137"
+	},
+	"circle-chevron-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f138"
+	},
+	"circle-chevron-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f139"
+	},
+	"circle-dollar-to-slot": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4b9"
+	},
+	"circle-dot": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f192"
+	},
+	"circle-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f358"
+	},
+	"circle-exclamation": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f06a"
+	},
+	"circle-h": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f47e"
+	},
+	"circle-half-stroke": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f042"
+	},
+	"circle-info": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f05a"
+	},
+	"circle-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f359"
+	},
+	"circle-minus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f056"
+	},
+	"circle-notch": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1ce"
+	},
+	"circle-pause": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f28b"
+	},
+	"circle-play": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f144"
+	},
+	"circle-plus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f055"
+	},
+	"circle-question": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f059"
+	},
+	"circle-radiation": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7ba"
+	},
+	"circle-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f35a"
+	},
+	"circle-stop": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f28d"
+	},
+	"circle-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f35b"
+	},
+	"circle-user": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2bd"
+	},
+	"circle-xmark": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f057"
+	},
+	"city": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f64f"
+	},
+	"clapperboard": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e131"
+	},
+	"clipboard": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f328"
+	},
+	"clipboard-check": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f46c"
+	},
+	"clipboard-list": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f46d"
+	},
+	"clock": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f017"
+	},
+	"clock-rotate-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1da"
+	},
+	"clone": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f24d"
+	},
+	"closed-captioning": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f20a"
+	},
+	"cloud": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0c2"
+	},
+	"cloud-arrow-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0ed"
+	},
+	"cloud-arrow-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0ee"
+	},
+	"cloud-meatball": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f73b"
+	},
+	"cloud-moon": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6c3"
+	},
+	"cloud-moon-rain": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f73c"
+	},
+	"cloud-rain": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f73d"
+	},
+	"cloud-showers-heavy": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f740"
+	},
+	"cloud-sun": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6c4"
+	},
+	"cloud-sun-rain": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f743"
+	},
+	"cloudflare": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e07d"
+	},
+	"cloudscale": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f383"
+	},
+	"cloudsmith": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f384"
+	},
+	"cloudversify": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f385"
+	},
+	"clover": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e139"
+	},
+	"cmplid": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e360"
+	},
+	"code": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f121"
+	},
+	"code-branch": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f126"
+	},
+	"code-commit": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f386"
+	},
+	"code-compare": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e13a"
+	},
+	"code-fork": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e13b"
+	},
+	"code-merge": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f387"
+	},
+	"code-pull-request": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e13c"
+	},
+	"codepen": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1cb"
+	},
+	"codiepie": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f284"
+	},
+	"coins": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f51e"
+	},
+	"colon-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e140"
+	},
+	"comment": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f075"
+	},
+	"comment-dollar": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f651"
+	},
+	"comment-dots": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4ad"
+	},
+	"comment-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7f5"
+	},
+	"comment-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4b3"
+	},
+	"comment-sms": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7cd"
+	},
+	"comments": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f086"
+	},
+	"comments-dollar": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f653"
+	},
+	"compact-disc": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f51f"
+	},
+	"compass": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f14e"
+	},
+	"compass-drafting": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f568"
+	},
+	"compress": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f066"
+	},
+	"computer-mouse": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f8cc"
+	},
+	"confluence": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f78d"
+	},
+	"connectdevelop": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f20e"
+	},
+	"contao": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f26d"
+	},
+	"cookie": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f563"
+	},
+	"cookie-bite": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f564"
+	},
+	"copy": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0c5"
+	},
+	"copyright": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1f9"
+	},
+	"cotton-bureau": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f89e"
+	},
+	"couch": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4b8"
+	},
+	"cpanel": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f388"
+	},
+	"creative-commons": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f25e"
+	},
+	"creative-commons-by": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4e7"
+	},
+	"creative-commons-nc": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4e8"
+	},
+	"creative-commons-nc-eu": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4e9"
+	},
+	"creative-commons-nc-jp": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4ea"
+	},
+	"creative-commons-nd": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4eb"
+	},
+	"creative-commons-pd": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4ec"
+	},
+	"creative-commons-pd-alt": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4ed"
+	},
+	"creative-commons-remix": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4ee"
+	},
+	"creative-commons-sa": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4ef"
+	},
+	"creative-commons-sampling": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4f0"
+	},
+	"creative-commons-sampling-plus": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4f1"
+	},
+	"creative-commons-share": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4f2"
+	},
+	"creative-commons-zero": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4f3"
+	},
+	"credit-card": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f09d"
+	},
+	"critical-role": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f6c9"
+	},
+	"crop": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f125"
+	},
+	"crop-simple": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f565"
+	},
+	"cross": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f654"
+	},
+	"crosshairs": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f05b"
+	},
+	"crow": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f520"
+	},
+	"crown": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f521"
+	},
+	"crutch": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7f7"
+	},
+	"cruzeiro-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e152"
+	},
+	"css3": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f13c"
+	},
+	"css3-alt": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f38b"
+	},
+	"cube": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1b2"
+	},
+	"cubes": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1b3"
+	},
+	"cuttlefish": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f38c"
+	},
+	"d": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "44"
+	},
+	"d-and-d": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f38d"
+	},
+	"d-and-d-beyond": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f6ca"
+	},
+	"dailymotion": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e052"
+	},
+	"dashcube": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f210"
+	},
+	"database": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1c0"
+	},
+	"deezer": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e077"
+	},
+	"delete-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f55a"
+	},
+	"delicious": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1a5"
+	},
+	"democrat": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f747"
+	},
+	"deploydog": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f38e"
+	},
+	"deskpro": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f38f"
+	},
+	"desktop": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f390"
+	},
+	"dev": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f6cc"
+	},
+	"deviantart": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1bd"
+	},
+	"dharmachakra": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f655"
+	},
+	"dhl": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f790"
+	},
+	"diagram-next": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e476"
+	},
+	"diagram-predecessor": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e477"
+	},
+	"diagram-project": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f542"
+	},
+	"diagram-successor": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e47a"
+	},
+	"diamond": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f219"
+	},
+	"diamond-turn-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5eb"
+	},
+	"diaspora": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f791"
+	},
+	"dice": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f522"
+	},
+	"dice-d20": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6cf"
+	},
+	"dice-d6": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6d1"
+	},
+	"dice-five": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f523"
+	},
+	"dice-four": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f524"
+	},
+	"dice-one": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f525"
+	},
+	"dice-six": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f526"
+	},
+	"dice-three": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f527"
+	},
+	"dice-two": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f528"
+	},
+	"digg": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1a6"
+	},
+	"digital-ocean": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f391"
+	},
+	"discord": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f392"
+	},
+	"discourse": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f393"
+	},
+	"disease": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7fa"
+	},
+	"divide": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f529"
+	},
+	"dna": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f471"
+	},
+	"dochub": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f394"
+	},
+	"docker": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f395"
+	},
+	"dog": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6d3"
+	},
+	"dollar-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "24"
+	},
+	"dolly": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f472"
+	},
+	"dong-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e169"
+	},
+	"door-closed": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f52a"
+	},
+	"door-open": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f52b"
+	},
+	"dove": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4ba"
+	},
+	"down-left-and-up-right-to-center": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f422"
+	},
+	"down-long": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f309"
+	},
+	"download": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f019"
+	},
+	"draft2digital": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f396"
+	},
+	"dragon": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6d5"
+	},
+	"draw-polygon": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5ee"
+	},
+	"dribbble": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f17d"
+	},
+	"dribbble-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f397"
+	},
+	"dropbox": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f16b"
+	},
+	"droplet": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f043"
+	},
+	"droplet-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5c7"
+	},
+	"drum": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f569"
+	},
+	"drum-steelpan": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f56a"
+	},
+	"drumstick-bite": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6d7"
+	},
+	"drupal": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1a9"
+	},
+	"dumbbell": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f44b"
+	},
+	"dumpster": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f793"
+	},
+	"dumpster-fire": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f794"
+	},
+	"dungeon": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6d9"
+	},
+	"dyalog": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f399"
+	},
+	"e": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "45"
+	},
+	"ear-deaf": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2a4"
+	},
+	"ear-listen": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2a2"
+	},
+	"earlybirds": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f39a"
+	},
+	"earth-africa": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f57c"
+	},
+	"earth-americas": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f57d"
+	},
+	"earth-asia": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f57e"
+	},
+	"earth-europe": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7a2"
+	},
+	"earth-oceania": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e47b"
+	},
+	"ebay": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4f4"
+	},
+	"edge": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f282"
+	},
+	"edge-legacy": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e078"
+	},
+	"egg": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7fb"
+	},
+	"eject": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f052"
+	},
+	"elementor": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f430"
+	},
+	"elevator": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e16d"
+	},
+	"ellipsis": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f141"
+	},
+	"ellipsis-vertical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f142"
+	},
+	"ello": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f5f1"
+	},
+	"ember": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f423"
+	},
+	"empire": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1d1"
+	},
+	"envelope": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0e0"
+	},
+	"envelope-open": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2b6"
+	},
+	"envelope-open-text": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f658"
+	},
+	"envelopes-bulk": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f674"
+	},
+	"envira": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f299"
+	},
+	"equals": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "3d"
+	},
+	"eraser": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f12d"
+	},
+	"erlang": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f39d"
+	},
+	"ethereum": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f42e"
+	},
+	"ethernet": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f796"
+	},
+	"etsy": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2d7"
+	},
+	"euro-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f153"
+	},
+	"evernote": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f839"
+	},
+	"exclamation": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "21"
+	},
+	"expand": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f065"
+	},
+	"expeditedssl": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f23e"
+	},
+	"eye": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f06e"
+	},
+	"eye-dropper": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1fb"
+	},
+	"eye-low-vision": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2a8"
+	},
+	"eye-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f070"
+	},
+	"f": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "46"
+	},
+	"face-angry": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f556"
+	},
+	"face-dizzy": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f567"
+	},
+	"face-flushed": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f579"
+	},
+	"face-frown": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f119"
+	},
+	"face-frown-open": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f57a"
+	},
+	"face-grimace": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f57f"
+	},
+	"face-grin": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f580"
+	},
+	"face-grin-beam": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f582"
+	},
+	"face-grin-beam-sweat": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f583"
+	},
+	"face-grin-hearts": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f584"
+	},
+	"face-grin-squint": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f585"
+	},
+	"face-grin-squint-tears": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f586"
+	},
+	"face-grin-stars": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f587"
+	},
+	"face-grin-tears": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f588"
+	},
+	"face-grin-tongue": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f589"
+	},
+	"face-grin-tongue-squint": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f58a"
+	},
+	"face-grin-tongue-wink": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f58b"
+	},
+	"face-grin-wide": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f581"
+	},
+	"face-grin-wink": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f58c"
+	},
+	"face-kiss": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f596"
+	},
+	"face-kiss-beam": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f597"
+	},
+	"face-kiss-wink-heart": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f598"
+	},
+	"face-laugh": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f599"
+	},
+	"face-laugh-beam": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f59a"
+	},
+	"face-laugh-squint": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f59b"
+	},
+	"face-laugh-wink": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f59c"
+	},
+	"face-meh": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f11a"
+	},
+	"face-meh-blank": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5a4"
+	},
+	"face-rolling-eyes": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5a5"
+	},
+	"face-sad-cry": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5b3"
+	},
+	"face-sad-tear": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5b4"
+	},
+	"face-smile": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f118"
+	},
+	"face-smile-beam": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5b8"
+	},
+	"face-smile-wink": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4da"
+	},
+	"face-surprise": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5c2"
+	},
+	"face-tired": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5c8"
+	},
+	"facebook": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f09a"
+	},
+	"facebook-f": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f39e"
+	},
+	"facebook-messenger": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f39f"
+	},
+	"facebook-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f082"
+	},
+	"fan": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f863"
+	},
+	"fantasy-flight-games": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f6dc"
+	},
+	"faucet": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e005"
+	},
+	"fax": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1ac"
+	},
+	"feather": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f52d"
+	},
+	"feather-pointed": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f56b"
+	},
+	"fedex": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f797"
+	},
+	"fedora": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f798"
+	},
+	"figma": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f799"
+	},
+	"file": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f15b"
+	},
+	"file-arrow-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f56d"
+	},
+	"file-arrow-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f574"
+	},
+	"file-audio": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1c7"
+	},
+	"file-code": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1c9"
+	},
+	"file-contract": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f56c"
+	},
+	"file-csv": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6dd"
+	},
+	"file-excel": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1c3"
+	},
+	"file-export": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f56e"
+	},
+	"file-image": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1c5"
+	},
+	"file-import": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f56f"
+	},
+	"file-invoice": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f570"
+	},
+	"file-invoice-dollar": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f571"
+	},
+	"file-lines": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f15c"
+	},
+	"file-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f477"
+	},
+	"file-pdf": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1c1"
+	},
+	"file-powerpoint": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1c4"
+	},
+	"file-prescription": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f572"
+	},
+	"file-signature": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f573"
+	},
+	"file-video": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1c8"
+	},
+	"file-waveform": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f478"
+	},
+	"file-word": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1c2"
+	},
+	"file-zipper": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1c6"
+	},
+	"fill": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f575"
+	},
+	"fill-drip": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f576"
+	},
+	"film": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f008"
+	},
+	"filter": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0b0"
+	},
+	"filter-circle-dollar": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f662"
+	},
+	"filter-circle-xmark": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e17b"
+	},
+	"fingerprint": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f577"
+	},
+	"fire": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f06d"
+	},
+	"fire-extinguisher": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f134"
+	},
+	"fire-flame-curved": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7e4"
+	},
+	"fire-flame-simple": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f46a"
+	},
+	"firefox": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f269"
+	},
+	"firefox-browser": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e007"
+	},
+	"first-order": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2b0"
+	},
+	"first-order-alt": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f50a"
+	},
+	"firstdraft": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3a1"
+	},
+	"fish": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f578"
+	},
+	"flag": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f024"
+	},
+	"flag-checkered": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f11e"
+	},
+	"flag-usa": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f74d"
+	},
+	"flask": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0c3"
+	},
+	"flickr": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f16e"
+	},
+	"flipboard": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f44d"
+	},
+	"floppy-disk": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0c7"
+	},
+	"florin-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e184"
+	},
+	"fly": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f417"
+	},
+	"folder": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f07b"
+	},
+	"folder-minus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f65d"
+	},
+	"folder-open": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f07c"
+	},
+	"folder-plus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f65e"
+	},
+	"folder-tree": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f802"
+	},
+	"font": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f031"
+	},
+	"font-awesome": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2b4"
+	},
+	"fonticons": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f280"
+	},
+	"fonticons-fi": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3a2"
+	},
+	"football": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f44e"
+	},
+	"fort-awesome": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f286"
+	},
+	"fort-awesome-alt": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3a3"
+	},
+	"forumbee": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f211"
+	},
+	"forward": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f04e"
+	},
+	"forward-fast": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f050"
+	},
+	"forward-step": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f051"
+	},
+	"foursquare": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f180"
+	},
+	"franc-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e18f"
+	},
+	"free-code-camp": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2c5"
+	},
+	"freebsd": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3a4"
+	},
+	"frog": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f52e"
+	},
+	"fulcrum": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f50b"
+	},
+	"futbol": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1e3"
+	},
+	"g": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "47"
+	},
+	"galactic-republic": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f50c"
+	},
+	"galactic-senate": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f50d"
+	},
+	"gamepad": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f11b"
+	},
+	"gas-pump": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f52f"
+	},
+	"gauge": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f624"
+	},
+	"gauge-high": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f625"
+	},
+	"gauge-simple": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f629"
+	},
+	"gauge-simple-high": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f62a"
+	},
+	"gavel": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0e3"
+	},
+	"gear": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f013"
+	},
+	"gears": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f085"
+	},
+	"gem": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3a5"
+	},
+	"genderless": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f22d"
+	},
+	"get-pocket": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f265"
+	},
+	"gg": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f260"
+	},
+	"gg-circle": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f261"
+	},
+	"ghost": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6e2"
+	},
+	"gift": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f06b"
+	},
+	"gifts": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f79c"
+	},
+	"git": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1d3"
+	},
+	"git-alt": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f841"
+	},
+	"git-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1d2"
+	},
+	"github": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f09b"
+	},
+	"github-alt": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f113"
+	},
+	"github-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f092"
+	},
+	"gitkraken": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3a6"
+	},
+	"gitlab": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f296"
+	},
+	"gitter": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f426"
+	},
+	"glasses": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f530"
+	},
+	"glide": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2a5"
+	},
+	"glide-g": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2a6"
+	},
+	"globe": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0ac"
+	},
+	"gofore": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3a7"
+	},
+	"golang": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e40f"
+	},
+	"golf-ball-tee": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f450"
+	},
+	"goodreads": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3a8"
+	},
+	"goodreads-g": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3a9"
+	},
+	"google": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1a0"
+	},
+	"google-drive": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3aa"
+	},
+	"google-pay": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e079"
+	},
+	"google-play": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3ab"
+	},
+	"google-plus": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2b3"
+	},
+	"google-plus-g": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f0d5"
+	},
+	"google-plus-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f0d4"
+	},
+	"google-wallet": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1ee"
+	},
+	"gopuram": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f664"
+	},
+	"graduation-cap": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f19d"
+	},
+	"gratipay": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f184"
+	},
+	"grav": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2d6"
+	},
+	"greater-than": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "3e"
+	},
+	"greater-than-equal": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f532"
+	},
+	"grip": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f58d"
+	},
+	"grip-lines": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7a4"
+	},
+	"grip-lines-vertical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7a5"
+	},
+	"grip-vertical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f58e"
+	},
+	"gripfire": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3ac"
+	},
+	"grunt": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3ad"
+	},
+	"guarani-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e19a"
+	},
+	"guilded": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e07e"
+	},
+	"guitar": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7a6"
+	},
+	"gulp": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3ae"
+	},
+	"gun": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e19b"
+	},
+	"h": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "48"
+	},
+	"hacker-news": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1d4"
+	},
+	"hacker-news-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3af"
+	},
+	"hackerrank": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f5f7"
+	},
+	"hammer": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6e3"
+	},
+	"hamsa": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f665"
+	},
+	"hand": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f256"
+	},
+	"hand-back-fist": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f255"
+	},
+	"hand-dots": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f461"
+	},
+	"hand-fist": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6de"
+	},
+	"hand-holding": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4bd"
+	},
+	"hand-holding-dollar": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4c0"
+	},
+	"hand-holding-droplet": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4c1"
+	},
+	"hand-holding-heart": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4be"
+	},
+	"hand-holding-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e05c"
+	},
+	"hand-lizard": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f258"
+	},
+	"hand-middle-finger": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f806"
+	},
+	"hand-peace": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f25b"
+	},
+	"hand-point-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0a7"
+	},
+	"hand-point-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0a5"
+	},
+	"hand-point-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0a4"
+	},
+	"hand-point-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0a6"
+	},
+	"hand-pointer": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f25a"
+	},
+	"hand-scissors": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f257"
+	},
+	"hand-sparkles": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e05d"
+	},
+	"hand-spock": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f259"
+	},
+	"hands": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2a7"
+	},
+	"hands-asl-interpreting": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2a3"
+	},
+	"hands-bubbles": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e05e"
+	},
+	"hands-clapping": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e1a8"
+	},
+	"hands-holding": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4c2"
+	},
+	"hands-praying": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f684"
+	},
+	"handshake": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2b5"
+	},
+	"handshake-angle": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4c4"
+	},
+	"handshake-simple-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e05f"
+	},
+	"handshake-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e060"
+	},
+	"hanukiah": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6e6"
+	},
+	"hard-drive": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0a0"
+	},
+	"hashnode": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e499"
+	},
+	"hashtag": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "23"
+	},
+	"hat-cowboy": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f8c0"
+	},
+	"hat-cowboy-side": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f8c1"
+	},
+	"hat-wizard": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6e8"
+	},
+	"head-side-cough": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e061"
+	},
+	"head-side-cough-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e062"
+	},
+	"head-side-mask": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e063"
+	},
+	"head-side-virus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e064"
+	},
+	"heading": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1dc"
+	},
+	"headphones": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f025"
+	},
+	"headphones-simple": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f58f"
+	},
+	"headset": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f590"
+	},
+	"heart": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f004"
+	},
+	"heart-crack": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7a9"
+	},
+	"heart-pulse": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f21e"
+	},
+	"helicopter": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f533"
+	},
+	"helmet-safety": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f807"
+	},
+	"highlighter": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f591"
+	},
+	"hippo": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6ed"
+	},
+	"hips": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f452"
+	},
+	"hire-a-helper": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3b0"
+	},
+	"hive": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e07f"
+	},
+	"hockey-puck": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f453"
+	},
+	"holly-berry": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7aa"
+	},
+	"hooli": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f427"
+	},
+	"hornbill": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f592"
+	},
+	"horse": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6f0"
+	},
+	"horse-head": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7ab"
+	},
+	"hospital": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0f8"
+	},
+	"hospital-user": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f80d"
+	},
+	"hot-tub-person": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f593"
+	},
+	"hotdog": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f80f"
+	},
+	"hotel": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f594"
+	},
+	"hotjar": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3b1"
+	},
+	"hourglass": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f254"
+	},
+	"hourglass-empty": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f252"
+	},
+	"hourglass-end": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f253"
+	},
+	"hourglass-start": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f251"
+	},
+	"house": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f015"
+	},
+	"house-chimney": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e3af"
+	},
+	"house-chimney-crack": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6f1"
+	},
+	"house-chimney-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7f2"
+	},
+	"house-chimney-user": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e065"
+	},
+	"house-chimney-window": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e00d"
+	},
+	"house-crack": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e3b1"
+	},
+	"house-laptop": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e066"
+	},
+	"house-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e3b2"
+	},
+	"house-user": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e1b0"
+	},
+	"houzz": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f27c"
+	},
+	"hryvnia-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6f2"
+	},
+	"html5": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f13b"
+	},
+	"hubspot": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3b2"
+	},
+	"i": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "49"
+	},
+	"i-cursor": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f246"
+	},
+	"ice-cream": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f810"
+	},
+	"icicles": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7ad"
+	},
+	"icons": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f86d"
+	},
+	"id-badge": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2c1"
+	},
+	"id-card": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2c2"
+	},
+	"id-card-clip": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f47f"
+	},
+	"ideal": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e013"
+	},
+	"igloo": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7ae"
+	},
+	"image": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f03e"
+	},
+	"image-portrait": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3e0"
+	},
+	"images": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f302"
+	},
+	"imdb": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2d8"
+	},
+	"inbox": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f01c"
+	},
+	"indent": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f03c"
+	},
+	"indian-rupee-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e1bc"
+	},
+	"industry": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f275"
+	},
+	"infinity": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f534"
+	},
+	"info": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f129"
+	},
+	"instagram": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f16d"
+	},
+	"instagram-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e055"
+	},
+	"instalod": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e081"
+	},
+	"intercom": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f7af"
+	},
+	"internet-explorer": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f26b"
+	},
+	"invision": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f7b0"
+	},
+	"ioxhost": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f208"
+	},
+	"italic": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f033"
+	},
+	"itch-io": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f83a"
+	},
+	"itunes": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3b4"
+	},
+	"itunes-note": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3b5"
+	},
+	"j": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "4a"
+	},
+	"java": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4e4"
+	},
+	"jedi": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f669"
+	},
+	"jedi-order": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f50e"
+	},
+	"jenkins": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3b6"
+	},
+	"jet-fighter": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0fb"
+	},
+	"jira": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f7b1"
+	},
+	"joget": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3b7"
+	},
+	"joint": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f595"
+	},
+	"joomla": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1aa"
+	},
+	"js": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3b8"
+	},
+	"js-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3b9"
+	},
+	"jsfiddle": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1cc"
+	},
+	"k": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "4b"
+	},
+	"kaaba": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f66b"
+	},
+	"kaggle": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f5fa"
+	},
+	"key": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f084"
+	},
+	"keybase": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4f5"
+	},
+	"keyboard": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f11c"
+	},
+	"keycdn": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3ba"
+	},
+	"khanda": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f66d"
+	},
+	"kickstarter": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3bb"
+	},
+	"kickstarter-k": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3bc"
+	},
+	"kip-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e1c4"
+	},
+	"kit-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f479"
+	},
+	"kiwi-bird": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f535"
+	},
+	"korvue": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f42f"
+	},
+	"l": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "4c"
+	},
+	"landmark": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f66f"
+	},
+	"language": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1ab"
+	},
+	"laptop": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f109"
+	},
+	"laptop-code": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5fc"
+	},
+	"laptop-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f812"
+	},
+	"laravel": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3bd"
+	},
+	"lari-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e1c8"
+	},
+	"lastfm": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f202"
+	},
+	"lastfm-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f203"
+	},
+	"layer-group": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5fd"
+	},
+	"leaf": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f06c"
+	},
+	"leanpub": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f212"
+	},
+	"left-long": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f30a"
+	},
+	"left-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f337"
+	},
+	"lemon": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f094"
+	},
+	"less": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f41d"
+	},
+	"less-than": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "3c"
+	},
+	"less-than-equal": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f537"
+	},
+	"life-ring": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1cd"
+	},
+	"lightbulb": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0eb"
+	},
+	"line": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3c0"
+	},
+	"link": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0c1"
+	},
+	"link-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f127"
+	},
+	"linkedin": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f08c"
+	},
+	"linkedin-in": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f0e1"
+	},
+	"linode": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2b8"
+	},
+	"linux": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f17c"
+	},
+	"lira-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f195"
+	},
+	"list": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f03a"
+	},
+	"list-check": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0ae"
+	},
+	"list-ol": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0cb"
+	},
+	"list-ul": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0ca"
+	},
+	"litecoin-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e1d3"
+	},
+	"location-arrow": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f124"
+	},
+	"location-crosshairs": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f601"
+	},
+	"location-dot": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3c5"
+	},
+	"location-pin": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f041"
+	},
+	"lock": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f023"
+	},
+	"lock-open": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3c1"
+	},
+	"lungs": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f604"
+	},
+	"lungs-virus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e067"
+	},
+	"lyft": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3c3"
+	},
+	"m": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "4d"
+	},
+	"magento": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3c4"
+	},
+	"magnet": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f076"
+	},
+	"magnifying-glass": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f002"
+	},
+	"magnifying-glass-dollar": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f688"
+	},
+	"magnifying-glass-location": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f689"
+	},
+	"magnifying-glass-minus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f010"
+	},
+	"magnifying-glass-plus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f00e"
+	},
+	"mailchimp": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f59e"
+	},
+	"manat-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e1d5"
+	},
+	"mandalorian": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f50f"
+	},
+	"map": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f279"
+	},
+	"map-location": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f59f"
+	},
+	"map-location-dot": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5a0"
+	},
+	"map-pin": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f276"
+	},
+	"markdown": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f60f"
+	},
+	"marker": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5a1"
+	},
+	"mars": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f222"
+	},
+	"mars-and-venus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f224"
+	},
+	"mars-double": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f227"
+	},
+	"mars-stroke": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f229"
+	},
+	"mars-stroke-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f22b"
+	},
+	"mars-stroke-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f22a"
+	},
+	"martini-glass": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f57b"
+	},
+	"martini-glass-citrus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f561"
+	},
+	"martini-glass-empty": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f000"
+	},
+	"mask": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6fa"
+	},
+	"mask-face": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e1d7"
+	},
+	"masks-theater": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f630"
+	},
+	"mastodon": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4f6"
+	},
+	"maxcdn": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f136"
+	},
+	"maximize": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f31e"
+	},
+	"mdb": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f8ca"
+	},
+	"medal": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5a2"
+	},
+	"medapps": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3c6"
+	},
+	"medium": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f23a"
+	},
+	"medrt": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3c8"
+	},
+	"meetup": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2e0"
+	},
+	"megaport": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f5a3"
+	},
+	"memory": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f538"
+	},
+	"mendeley": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f7b3"
+	},
+	"menorah": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f676"
+	},
+	"mercury": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f223"
+	},
+	"message": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f27a"
+	},
+	"meteor": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f753"
+	},
+	"microblog": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e01a"
+	},
+	"microchip": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2db"
+	},
+	"microphone": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f130"
+	},
+	"microphone-lines": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3c9"
+	},
+	"microphone-lines-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f539"
+	},
+	"microphone-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f131"
+	},
+	"microscope": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f610"
+	},
+	"microsoft": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3ca"
+	},
+	"mill-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e1ed"
+	},
+	"minimize": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f78c"
+	},
+	"minus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f068"
+	},
+	"mitten": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7b5"
+	},
+	"mix": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3cb"
+	},
+	"mixcloud": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f289"
+	},
+	"mixer": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e056"
+	},
+	"mizuni": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3cc"
+	},
+	"mobile": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3ce"
+	},
+	"mobile-button": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f10b"
+	},
+	"mobile-screen-button": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3cd"
+	},
+	"modx": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f285"
+	},
+	"monero": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3d0"
+	},
+	"money-bill": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0d6"
+	},
+	"money-bill-1": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3d1"
+	},
+	"money-bill-1-wave": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f53b"
+	},
+	"money-bill-wave": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f53a"
+	},
+	"money-check": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f53c"
+	},
+	"money-check-dollar": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f53d"
+	},
+	"monument": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5a6"
+	},
+	"moon": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f186"
+	},
+	"mortar-pestle": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5a7"
+	},
+	"mosque": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f678"
+	},
+	"motorcycle": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f21c"
+	},
+	"mountain": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6fc"
+	},
+	"mug-hot": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7b6"
+	},
+	"mug-saucer": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0f4"
+	},
+	"music": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f001"
+	},
+	"n": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "4e"
+	},
+	"naira-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e1f6"
+	},
+	"napster": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3d2"
+	},
+	"neos": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f612"
+	},
+	"network-wired": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6ff"
+	},
+	"neuter": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f22c"
+	},
+	"newspaper": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1ea"
+	},
+	"nimblr": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f5a8"
+	},
+	"node": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f419"
+	},
+	"node-js": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3d3"
+	},
+	"not-equal": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f53e"
+	},
+	"note-sticky": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f249"
+	},
+	"notes-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f481"
+	},
+	"npm": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3d4"
+	},
+	"ns8": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3d5"
+	},
+	"nutritionix": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3d6"
+	},
+	"o": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "4f"
+	},
+	"object-group": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f247"
+	},
+	"object-ungroup": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f248"
+	},
+	"octopus-deploy": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e082"
+	},
+	"odnoklassniki": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f263"
+	},
+	"odnoklassniki-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f264"
+	},
+	"oil-can": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f613"
+	},
+	"old-republic": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f510"
+	},
+	"om": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f679"
+	},
+	"opencart": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f23d"
+	},
+	"openid": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f19b"
+	},
+	"opera": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f26a"
+	},
+	"optin-monster": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f23c"
+	},
+	"orcid": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f8d2"
+	},
+	"osi": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f41a"
+	},
+	"otter": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f700"
+	},
+	"outdent": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f03b"
+	},
+	"p": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "50"
+	},
+	"padlet": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e4a0"
+	},
+	"page4": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3d7"
+	},
+	"pagelines": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f18c"
+	},
+	"pager": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f815"
+	},
+	"paint-roller": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5aa"
+	},
+	"paintbrush": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1fc"
+	},
+	"palette": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f53f"
+	},
+	"palfed": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3d8"
+	},
+	"pallet": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f482"
+	},
+	"panorama": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e209"
+	},
+	"paper-plane": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1d8"
+	},
+	"paperclip": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0c6"
+	},
+	"parachute-box": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4cd"
+	},
+	"paragraph": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1dd"
+	},
+	"passport": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5ab"
+	},
+	"paste": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0ea"
+	},
+	"patreon": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3d9"
+	},
+	"pause": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f04c"
+	},
+	"paw": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1b0"
+	},
+	"paypal": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1ed"
+	},
+	"peace": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f67c"
+	},
+	"pen": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f304"
+	},
+	"pen-clip": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f305"
+	},
+	"pen-fancy": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5ac"
+	},
+	"pen-nib": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5ad"
+	},
+	"pen-ruler": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5ae"
+	},
+	"pen-to-square": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f044"
+	},
+	"pencil": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f303"
+	},
+	"people-arrows-left-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e068"
+	},
+	"people-carry-box": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4ce"
+	},
+	"pepper-hot": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f816"
+	},
+	"perbyte": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e083"
+	},
+	"percent": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "25"
+	},
+	"periscope": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3da"
+	},
+	"person": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f183"
+	},
+	"person-biking": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f84a"
+	},
+	"person-booth": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f756"
+	},
+	"person-dots-from-line": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f470"
+	},
+	"person-dress": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f182"
+	},
+	"person-hiking": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6ec"
+	},
+	"person-praying": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f683"
+	},
+	"person-running": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f70c"
+	},
+	"person-skating": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7c5"
+	},
+	"person-skiing": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7c9"
+	},
+	"person-skiing-nordic": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7ca"
+	},
+	"person-snowboarding": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7ce"
+	},
+	"person-swimming": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5c4"
+	},
+	"person-walking": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f554"
+	},
+	"person-walking-with-cane": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f29d"
+	},
+	"peseta-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e221"
+	},
+	"peso-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e222"
+	},
+	"phabricator": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3db"
+	},
+	"phoenix-framework": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3dc"
+	},
+	"phoenix-squadron": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f511"
+	},
+	"phone": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f095"
+	},
+	"phone-flip": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f879"
+	},
+	"phone-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3dd"
+	},
+	"phone-volume": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2a0"
+	},
+	"photo-film": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f87c"
+	},
+	"php": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f457"
+	},
+	"pied-piper": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2ae"
+	},
+	"pied-piper-alt": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1a8"
+	},
+	"pied-piper-hat": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4e5"
+	},
+	"pied-piper-pp": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1a7"
+	},
+	"pied-piper-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e01e"
+	},
+	"piggy-bank": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4d3"
+	},
+	"pills": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f484"
+	},
+	"pinterest": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f0d2"
+	},
+	"pinterest-p": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f231"
+	},
+	"pinterest-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f0d3"
+	},
+	"pix": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e43a"
+	},
+	"pizza-slice": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f818"
+	},
+	"place-of-worship": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f67f"
+	},
+	"plane": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f072"
+	},
+	"plane-arrival": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5af"
+	},
+	"plane-departure": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5b0"
+	},
+	"plane-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e069"
+	},
+	"play": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f04b"
+	},
+	"playstation": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3df"
+	},
+	"plug": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1e6"
+	},
+	"plus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "2b"
+	},
+	"plus-minus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e43c"
+	},
+	"podcast": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2ce"
+	},
+	"poo": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2fe"
+	},
+	"poo-storm": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f75a"
+	},
+	"poop": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f619"
+	},
+	"power-off": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f011"
+	},
+	"prescription": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5b1"
+	},
+	"prescription-bottle": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f485"
+	},
+	"prescription-bottle-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f486"
+	},
+	"print": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f02f"
+	},
+	"product-hunt": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f288"
+	},
+	"pump-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e06a"
+	},
+	"pump-soap": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e06b"
+	},
+	"pushed": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3e1"
+	},
+	"puzzle-piece": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f12e"
+	},
+	"python": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3e2"
+	},
+	"q": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "51"
+	},
+	"qq": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1d6"
+	},
+	"qrcode": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f029"
+	},
+	"question": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "3f"
+	},
+	"quinscape": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f459"
+	},
+	"quora": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2c4"
+	},
+	"quote-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f10d"
+	},
+	"quote-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f10e"
+	},
+	"r": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "52"
+	},
+	"r-project": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4f7"
+	},
+	"radiation": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7b9"
+	},
+	"rainbow": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f75b"
+	},
+	"raspberry-pi": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f7bb"
+	},
+	"ravelry": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2d9"
+	},
+	"react": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f41b"
+	},
+	"reacteurope": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f75d"
+	},
+	"readme": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4d5"
+	},
+	"rebel": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1d0"
+	},
+	"receipt": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f543"
+	},
+	"record-vinyl": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f8d9"
+	},
+	"rectangle-ad": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f641"
+	},
+	"rectangle-list": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f022"
+	},
+	"rectangle-xmark": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f410"
+	},
+	"recycle": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1b8"
+	},
+	"red-river": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3e3"
+	},
+	"reddit": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1a1"
+	},
+	"reddit-alien": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f281"
+	},
+	"reddit-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1a2"
+	},
+	"redhat": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f7bc"
+	},
+	"registered": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f25d"
+	},
+	"renren": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f18b"
+	},
+	"repeat": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f363"
+	},
+	"reply": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3e5"
+	},
+	"reply-all": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f122"
+	},
+	"replyd": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3e6"
+	},
+	"republican": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f75e"
+	},
+	"researchgate": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4f8"
+	},
+	"resolving": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3e7"
+	},
+	"restroom": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7bd"
+	},
+	"retweet": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f079"
+	},
+	"rev": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f5b2"
+	},
+	"ribbon": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4d6"
+	},
+	"right-from-bracket": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2f5"
+	},
+	"right-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f362"
+	},
+	"right-long": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f30b"
+	},
+	"right-to-bracket": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2f6"
+	},
+	"ring": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f70b"
+	},
+	"road": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f018"
+	},
+	"robot": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f544"
+	},
+	"rocket": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f135"
+	},
+	"rocketchat": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3e8"
+	},
+	"rockrms": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3e9"
+	},
+	"rotate": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2f1"
+	},
+	"rotate-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2ea"
+	},
+	"rotate-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2f9"
+	},
+	"route": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4d7"
+	},
+	"rss": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f09e"
+	},
+	"ruble-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f158"
+	},
+	"ruler": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f545"
+	},
+	"ruler-combined": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f546"
+	},
+	"ruler-horizontal": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f547"
+	},
+	"ruler-vertical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f548"
+	},
+	"rupee-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f156"
+	},
+	"rupiah-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e23d"
+	},
+	"rust": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e07a"
+	},
+	"s": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "53"
+	},
+	"safari": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f267"
+	},
+	"sailboat": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e445"
+	},
+	"salesforce": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f83b"
+	},
+	"sass": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f41e"
+	},
+	"satellite": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7bf"
+	},
+	"satellite-dish": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7c0"
+	},
+	"scale-balanced": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f24e"
+	},
+	"scale-unbalanced": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f515"
+	},
+	"scale-unbalanced-flip": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f516"
+	},
+	"schlix": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3ea"
+	},
+	"school": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f549"
+	},
+	"scissors": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0c4"
+	},
+	"screwdriver": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f54a"
+	},
+	"screwdriver-wrench": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7d9"
+	},
+	"scribd": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f28a"
+	},
+	"scroll": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f70e"
+	},
+	"scroll-torah": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6a0"
+	},
+	"sd-card": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7c2"
+	},
+	"searchengin": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3eb"
+	},
+	"section": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e447"
+	},
+	"seedling": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4d8"
+	},
+	"sellcast": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2da"
+	},
+	"sellsy": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f213"
+	},
+	"server": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f233"
+	},
+	"servicestack": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3ec"
+	},
+	"shapes": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f61f"
+	},
+	"share": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f064"
+	},
+	"share-from-square": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f14d"
+	},
+	"share-nodes": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1e0"
+	},
+	"shekel-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f20b"
+	},
+	"shield": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f132"
+	},
+	"shield-blank": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3ed"
+	},
+	"shield-virus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e06c"
+	},
+	"ship": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f21a"
+	},
+	"shirt": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f553"
+	},
+	"shirtsinbulk": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f214"
+	},
+	"shoe-prints": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f54b"
+	},
+	"shop": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f54f"
+	},
+	"shop-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e070"
+	},
+	"shopify": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e057"
+	},
+	"shopware": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f5b5"
+	},
+	"shower": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2cc"
+	},
+	"shrimp": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e448"
+	},
+	"shuffle": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f074"
+	},
+	"shuttle-space": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f197"
+	},
+	"sign-hanging": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4d9"
+	},
+	"signal": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f012"
+	},
+	"signature": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5b7"
+	},
+	"signs-post": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f277"
+	},
+	"sim-card": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7c4"
+	},
+	"simplybuilt": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f215"
+	},
+	"sink": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e06d"
+	},
+	"sistrix": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3ee"
+	},
+	"sitemap": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0e8"
+	},
+	"sith": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f512"
+	},
+	"sitrox": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e44a"
+	},
+	"sketch": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f7c6"
+	},
+	"skull": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f54c"
+	},
+	"skull-crossbones": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f714"
+	},
+	"skyatlas": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f216"
+	},
+	"skype": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f17e"
+	},
+	"slack": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f198"
+	},
+	"slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f715"
+	},
+	"sleigh": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7cc"
+	},
+	"sliders": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1de"
+	},
+	"slideshare": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1e7"
+	},
+	"smog": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f75f"
+	},
+	"smoking": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f48d"
+	},
+	"snapchat": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2ab"
+	},
+	"snapchat-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2ad"
+	},
+	"snowflake": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2dc"
+	},
+	"snowman": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7d0"
+	},
+	"snowplow": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7d2"
+	},
+	"soap": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e06e"
+	},
+	"socks": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f696"
+	},
+	"solar-panel": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5ba"
+	},
+	"sort": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0dc"
+	},
+	"sort-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0dd"
+	},
+	"sort-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0de"
+	},
+	"soundcloud": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1be"
+	},
+	"sourcetree": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f7d3"
+	},
+	"spa": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5bb"
+	},
+	"spaghetti-monster-flying": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f67b"
+	},
+	"speakap": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3f3"
+	},
+	"speaker-deck": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f83c"
+	},
+	"spell-check": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f891"
+	},
+	"spider": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f717"
+	},
+	"spinner": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f110"
+	},
+	"splotch": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5bc"
+	},
+	"spoon": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2e5"
+	},
+	"spotify": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1bc"
+	},
+	"spray-can": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5bd"
+	},
+	"spray-can-sparkles": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5d0"
+	},
+	"square": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0c8"
+	},
+	"square-arrow-up-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f14c"
+	},
+	"square-caret-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f150"
+	},
+	"square-caret-left": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f191"
+	},
+	"square-caret-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f152"
+	},
+	"square-caret-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f151"
+	},
+	"square-check": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f14a"
+	},
+	"square-envelope": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f199"
+	},
+	"square-font-awesome": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f425"
+	},
+	"square-font-awesome-stroke": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f35c"
+	},
+	"square-full": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f45c"
+	},
+	"square-h": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0fd"
+	},
+	"square-minus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f146"
+	},
+	"square-parking": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f540"
+	},
+	"square-pen": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f14b"
+	},
+	"square-phone": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f098"
+	},
+	"square-phone-flip": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f87b"
+	},
+	"square-plus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0fe"
+	},
+	"square-poll-horizontal": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f682"
+	},
+	"square-poll-vertical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f681"
+	},
+	"square-root-variable": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f698"
+	},
+	"square-rss": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f143"
+	},
+	"square-share-nodes": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1e1"
+	},
+	"square-up-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f360"
+	},
+	"square-xmark": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2d3"
+	},
+	"squarespace": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f5be"
+	},
+	"stack-exchange": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f18d"
+	},
+	"stack-overflow": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f16c"
+	},
+	"stackpath": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f842"
+	},
+	"stairs": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e289"
+	},
+	"stamp": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5bf"
+	},
+	"star": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f005"
+	},
+	"star-and-crescent": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f699"
+	},
+	"star-half": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f089"
+	},
+	"star-half-stroke": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5c0"
+	},
+	"star-of-david": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f69a"
+	},
+	"star-of-life": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f621"
+	},
+	"staylinked": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3f5"
+	},
+	"steam": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1b6"
+	},
+	"steam-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1b7"
+	},
+	"steam-symbol": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3f6"
+	},
+	"sterling-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f154"
+	},
+	"stethoscope": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0f1"
+	},
+	"sticker-mule": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3f7"
+	},
+	"stop": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f04d"
+	},
+	"stopwatch": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2f2"
+	},
+	"stopwatch-20": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e06f"
+	},
+	"store": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f54e"
+	},
+	"store-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e071"
+	},
+	"strava": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f428"
+	},
+	"street-view": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f21d"
+	},
+	"strikethrough": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0cc"
+	},
+	"stripe": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f429"
+	},
+	"stripe-s": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f42a"
+	},
+	"stroopwafel": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f551"
+	},
+	"studiovinari": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3f8"
+	},
+	"stumbleupon": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1a4"
+	},
+	"stumbleupon-circle": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1a3"
+	},
+	"subscript": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f12c"
+	},
+	"suitcase": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0f2"
+	},
+	"suitcase-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0fa"
+	},
+	"suitcase-rolling": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5c1"
+	},
+	"sun": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f185"
+	},
+	"superpowers": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2dd"
+	},
+	"superscript": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f12b"
+	},
+	"supple": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3f9"
+	},
+	"suse": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f7d6"
+	},
+	"swatchbook": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5c3"
+	},
+	"swift": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f8e1"
+	},
+	"symfony": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f83d"
+	},
+	"synagogue": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f69b"
+	},
+	"syringe": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f48e"
+	},
+	"t": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "54"
+	},
+	"table": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0ce"
+	},
+	"table-cells": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f00a"
+	},
+	"table-cells-large": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f009"
+	},
+	"table-columns": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0db"
+	},
+	"table-list": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f00b"
+	},
+	"table-tennis-paddle-ball": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f45d"
+	},
+	"tablet": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3fb"
+	},
+	"tablet-button": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f10a"
+	},
+	"tablet-screen-button": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3fa"
+	},
+	"tablets": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f490"
+	},
+	"tachograph-digital": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f566"
+	},
+	"tag": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f02b"
+	},
+	"tags": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f02c"
+	},
+	"tape": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4db"
+	},
+	"taxi": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1ba"
+	},
+	"teamspeak": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f4f9"
+	},
+	"teeth": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f62e"
+	},
+	"teeth-open": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f62f"
+	},
+	"telegram": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2c6"
+	},
+	"temperature-empty": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2cb"
+	},
+	"temperature-full": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2c7"
+	},
+	"temperature-half": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2c9"
+	},
+	"temperature-high": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f769"
+	},
+	"temperature-low": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f76b"
+	},
+	"temperature-quarter": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2ca"
+	},
+	"temperature-three-quarters": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2c8"
+	},
+	"tencent-weibo": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1d5"
+	},
+	"tenge-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7d7"
+	},
+	"terminal": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f120"
+	},
+	"text-height": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f034"
+	},
+	"text-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f87d"
+	},
+	"text-width": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f035"
+	},
+	"the-red-yeti": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f69d"
+	},
+	"themeco": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f5c6"
+	},
+	"themeisle": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2b2"
+	},
+	"thermometer": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f491"
+	},
+	"think-peaks": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f731"
+	},
+	"thumbs-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f165"
+	},
+	"thumbs-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f164"
+	},
+	"thumbtack": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f08d"
+	},
+	"ticket": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f145"
+	},
+	"ticket-simple": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3ff"
+	},
+	"tiktok": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e07b"
+	},
+	"timeline": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e29c"
+	},
+	"toggle-off": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f204"
+	},
+	"toggle-on": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f205"
+	},
+	"toilet": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7d8"
+	},
+	"toilet-paper": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f71e"
+	},
+	"toilet-paper-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e072"
+	},
+	"toolbox": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f552"
+	},
+	"tooth": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5c9"
+	},
+	"torii-gate": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6a1"
+	},
+	"tower-broadcast": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f519"
+	},
+	"tractor": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f722"
+	},
+	"trade-federation": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f513"
+	},
+	"trademark": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f25c"
+	},
+	"traffic-light": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f637"
+	},
+	"trailer": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e041"
+	},
+	"train": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f238"
+	},
+	"train-subway": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f239"
+	},
+	"train-tram": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7da"
+	},
+	"transgender": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f225"
+	},
+	"trash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1f8"
+	},
+	"trash-arrow-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f829"
+	},
+	"trash-can": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2ed"
+	},
+	"trash-can-arrow-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f82a"
+	},
+	"tree": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1bb"
+	},
+	"trello": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f181"
+	},
+	"triangle-exclamation": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f071"
+	},
+	"trophy": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f091"
+	},
+	"truck": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0d1"
+	},
+	"truck-fast": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f48b"
+	},
+	"truck-medical": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0f9"
+	},
+	"truck-monster": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f63b"
+	},
+	"truck-moving": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4df"
+	},
+	"truck-pickup": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f63c"
+	},
+	"truck-ramp-box": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4de"
+	},
+	"tty": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1e4"
+	},
+	"tumblr": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f173"
+	},
+	"tumblr-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f174"
+	},
+	"turkish-lira-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e2bb"
+	},
+	"turn-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3be"
+	},
+	"turn-up": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f3bf"
+	},
+	"tv": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f26c"
+	},
+	"twitch": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1e8"
+	},
+	"twitter": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f099"
+	},
+	"twitter-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f081"
+	},
+	"typo3": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f42b"
+	},
+	"u": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "55"
+	},
+	"uber": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f402"
+	},
+	"ubuntu": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f7df"
+	},
+	"uikit": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f403"
+	},
+	"umbraco": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f8e8"
+	},
+	"umbrella": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0e9"
+	},
+	"umbrella-beach": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5ca"
+	},
+	"uncharted": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e084"
+	},
+	"underline": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0cd"
+	},
+	"uniregistry": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f404"
+	},
+	"unity": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e049"
+	},
+	"universal-access": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f29a"
+	},
+	"unlock": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f09c"
+	},
+	"unlock-keyhole": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f13e"
+	},
+	"unsplash": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e07c"
+	},
+	"untappd": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f405"
+	},
+	"up-down": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f338"
+	},
+	"up-down-left-right": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0b2"
+	},
+	"up-long": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f30c"
+	},
+	"up-right-and-down-left-from-center": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f424"
+	},
+	"up-right-from-square": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f35d"
+	},
+	"upload": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f093"
+	},
+	"ups": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f7e0"
+	},
+	"usb": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f287"
+	},
+	"user": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f007"
+	},
+	"user-astronaut": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4fb"
+	},
+	"user-check": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4fc"
+	},
+	"user-clock": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4fd"
+	},
+	"user-doctor": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0f0"
+	},
+	"user-gear": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4fe"
+	},
+	"user-graduate": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f501"
+	},
+	"user-group": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f500"
+	},
+	"user-injured": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f728"
+	},
+	"user-large": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f406"
+	},
+	"user-large-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4fa"
+	},
+	"user-lock": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f502"
+	},
+	"user-minus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f503"
+	},
+	"user-ninja": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f504"
+	},
+	"user-nurse": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f82f"
+	},
+	"user-pen": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4ff"
+	},
+	"user-plus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f234"
+	},
+	"user-secret": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f21b"
+	},
+	"user-shield": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f505"
+	},
+	"user-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f506"
+	},
+	"user-tag": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f507"
+	},
+	"user-tie": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f508"
+	},
+	"user-xmark": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f235"
+	},
+	"users": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0c0"
+	},
+	"users-gear": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f509"
+	},
+	"users-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e073"
+	},
+	"usps": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f7e1"
+	},
+	"ussunnah": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f407"
+	},
+	"utensils": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2e7"
+	},
+	"v": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "56"
+	},
+	"vaadin": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f408"
+	},
+	"van-shuttle": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5b6"
+	},
+	"vault": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e2c5"
+	},
+	"vector-square": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5cb"
+	},
+	"venus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f221"
+	},
+	"venus-double": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f226"
+	},
+	"venus-mars": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f228"
+	},
+	"vest": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e085"
+	},
+	"vest-patches": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e086"
+	},
+	"viacoin": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f237"
+	},
+	"viadeo": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2a9"
+	},
+	"viadeo-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2aa"
+	},
+	"vial": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f492"
+	},
+	"vials": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f493"
+	},
+	"viber": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f409"
+	},
+	"video": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f03d"
+	},
+	"video-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4e2"
+	},
+	"vihara": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6a7"
+	},
+	"vimeo": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f40a"
+	},
+	"vimeo-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f194"
+	},
+	"vimeo-v": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f27d"
+	},
+	"vine": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1ca"
+	},
+	"virus": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e074"
+	},
+	"virus-covid": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e4a8"
+	},
+	"virus-covid-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e4a9"
+	},
+	"virus-slash": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e075"
+	},
+	"viruses": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e076"
+	},
+	"vk": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f189"
+	},
+	"vnv": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f40b"
+	},
+	"voicemail": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f897"
+	},
+	"volleyball": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f45f"
+	},
+	"volume-high": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f028"
+	},
+	"volume-low": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f027"
+	},
+	"volume-off": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f026"
+	},
+	"volume-xmark": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6a9"
+	},
+	"vr-cardboard": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f729"
+	},
+	"vuejs": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f41f"
+	},
+	"w": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "57"
+	},
+	"wallet": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f555"
+	},
+	"wand-magic": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0d0"
+	},
+	"wand-magic-sparkles": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "e2ca"
+	},
+	"wand-sparkles": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f72b"
+	},
+	"warehouse": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f494"
+	},
+	"watchman-monitoring": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e087"
+	},
+	"water": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f773"
+	},
+	"water-ladder": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5c5"
+	},
+	"wave-square": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f83e"
+	},
+	"waze": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f83f"
+	},
+	"weebly": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f5cc"
+	},
+	"weibo": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f18a"
+	},
+	"weight-hanging": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5cd"
+	},
+	"weight-scale": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f496"
+	},
+	"weixin": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1d7"
+	},
+	"whatsapp": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f232"
+	},
+	"whatsapp-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f40c"
+	},
+	"wheelchair": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f193"
+	},
+	"whiskey-glass": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f7a0"
+	},
+	"whmcs": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f40d"
+	},
+	"wifi": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f1eb"
+	},
+	"wikipedia-w": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f266"
+	},
+	"wind": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f72e"
+	},
+	"window-maximize": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2d0"
+	},
+	"window-minimize": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2d1"
+	},
+	"window-restore": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f2d2"
+	},
+	"windows": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f17a"
+	},
+	"wine-bottle": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f72f"
+	},
+	"wine-glass": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f4e3"
+	},
+	"wine-glass-empty": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f5ce"
+	},
+	"wirsindhandwerk": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e2d0"
+	},
+	"wix": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f5cf"
+	},
+	"wizards-of-the-coast": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f730"
+	},
+	"wodu": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "e088"
+	},
+	"wolf-pack-battalion": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f514"
+	},
+	"won-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f159"
+	},
+	"wordpress": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f19a"
+	},
+	"wordpress-simple": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f411"
+	},
+	"wpbeginner": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f297"
+	},
+	"wpexplorer": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2de"
+	},
+	"wpforms": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f298"
+	},
+	"wpressr": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f3e4"
+	},
+	"wrench": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f0ad"
+	},
+	"x": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "58"
+	},
+	"x-ray": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f497"
+	},
+	"xbox": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f412"
+	},
+	"xing": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f168"
+	},
+	"xing-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f169"
+	},
+	"xmark": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f00d"
+	},
+	"y": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "59"
+	},
+	"y-combinator": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f23b"
+	},
+	"yahoo": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f19e"
+	},
+	"yammer": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f840"
+	},
+	"yandex": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f413"
+	},
+	"yandex-international": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f414"
+	},
+	"yarn": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f7e3"
+	},
+	"yelp": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f1e9"
+	},
+	"yen-sign": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f157"
+	},
+	"yin-yang": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "f6ad"
+	},
+	"yoast": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f2b1"
+	},
+	"youtube": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f167"
+	},
+	"youtube-square": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f431"
+	},
+	"z": {
+		"styles": [
+			"solid"
+		],
+		"unicode": "5a"
+	},
+	"zhihu": {
+		"styles": [
+			"brands"
+		],
+		"unicode": "f63f"
+	}
+}
