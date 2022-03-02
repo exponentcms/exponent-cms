@@ -1176,18 +1176,19 @@ class navigationController extends expController {
         if (bs()) {
             require_once(BASE . 'external/font-awesome.class.php');
             $fa = new Smk_FontAwesome;
-            if (bs5() & USE_BOOTSTRAP_ICONS) {
+            if (bs5() && USE_BOOTSTRAP_ICONS) {
                 $icons = $fa->getArray(BASE . 'external/bootstrap-icons/bootstrap-icons.json', 'bi-');
                 $icons = $fa->sortByName($icons);
                 return $fa->readableName($icons, 'bi-');
             } elseif (bs5()) {
-                if (USE_CDN) {
-                    expCSS::auto_compile_scss(
-                        'external/font-awesome6/scss/fontawesome.scss',
-                        'external/font-awesome6/css/fontawesome.css'
-                   );
-                }
-                $icons = $fa->getArray(BASE . 'external/font-awesome6/css/fontawesome.css');
+                $icons = $fa->getArray(BASE . 'external/font-awesome6/metadata/icons.json');
+//                if (USE_CDN) {
+//                    expCSS::auto_compile_scss(
+//                        'external/font-awesome6/scss/fontawesome.scss',
+//                        'external/font-awesome6/css/fontawesome.css'
+//                   );
+//                }
+//                $icons = $fa->getArray(BASE . 'external/font-awesome6/css/fontawesome.css');
                 $icons = $fa->sortByName($icons);
 //                return $fa->nameGlyph($icons);
                 return $fa->readableName($icons);

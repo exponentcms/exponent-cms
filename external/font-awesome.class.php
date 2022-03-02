@@ -77,6 +77,19 @@ if( ! class_exists('Smk_FontAwesome') ){
 
             }
 
+            //fixme code to create our fa6 json metafile since it's not being shipped
+//            $icons6 = array();
+//            $matches = json_decode(file_get_contents(BASE . 'external/font-awesome6/metadata/icons.json'));
+//            foreach ($matches as $name=>$match) {
+//                foreach ($match->styles as $style) {
+//                    $icons6[$name] = $match;
+//                    $icons6[$name]->unicode = dechex(mb_ord($icons['fa-' . $name], 'UTF-8'));
+//                }
+//            }
+//            $file=fopen("file.json","w");
+//            fclose($file);
+//            file_put_contents('file.json', json_encode($icons6));
+
 			return $icons;
 		}
 
@@ -181,7 +194,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 
 			$temp = array();
 			foreach ($array as $class => $unicode) {
-                if (bs4()) {
+                if (bs4() || (bs5() && !USE_BOOTSTRAP_ICONS)) {
                     $temp[$class] = ucwords( str_ireplace(array('fas fa-', 'far fa-', 'fab fa-' , '-'), array('', '', '', ' '), $class) );
                 } else {
                     $temp[$class] = ucwords( str_ireplace(array($class_prefix, '-'), array('', ' '), $class) );
