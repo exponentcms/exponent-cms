@@ -22,7 +22,7 @@
 </div>
 <div id="bd">
     <p><?php echo gt('Here is the list of changes from your current version'); ?></p>
-    <table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%" class="exp-skin-table">
+    <table style="border:1px solid grey;" class="exp-skin-table">
         <?php
             $swversion = expVersion::swVersion();
             $dbversion = expVersion::dbVersion();
@@ -51,13 +51,13 @@
                                 <?php
                             } elseif ($key == 1) {
                                 ?>
-                                <tr><td colspan="2" class="bodytext" valign="top"><?php echo $line; ?></td></tr>
+                                <tr><td colspan="2" class="bodytext"><?php echo $line; ?></td></tr>
                                 <?php
                             } else {
                                 if (substr($line,0,1)=='*') $class = ' class="critical"'; else $class = '';
                                 ?>
-                                <tr<?php echo $class; ?>><td class="bodytext" style="font-weight: bold;" valign="top">&#160;&#160;</td>
-                                    <td class="bodytext" valign="top"><?php echo $line; ?></td></tr>
+                                <tr<?php echo $class; ?>><td class="bodytext" style="font-weight: bold;">&#160;&#160;</td>
+                                    <td class="bodytext"><?php echo $line; ?></td></tr>
                                 <?php
                             }
                         }

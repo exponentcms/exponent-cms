@@ -372,7 +372,7 @@ function renderAction(array $parms=array()) {
     if (($parms['action'] === 'edit' || $parms['action'] === 'update' || $parms['action'] === 'delete' ||
         $common_action === 'edit' || $common_action === 'update' || $common_action === 'delete') && !empty($parms['id'])) {
         $theaction = !empty($common_action) ? $common_action : $parms['action'];
-        $owner = $db->selectValue($model, 'poster', 'id=' . $parms['id']);
+        $owner = $db->selectValue($controller->model_table, 'poster', 'id=' . $parms['id']);
         if ($owner == $user->id && !expPermissions::check($theaction, $controller->loc) && expPermissions::check('create', $controller->loc)) {
             $perm_action = 'create';
         }

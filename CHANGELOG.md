@@ -16,11 +16,12 @@ Version 2.6.1
  - compatible with PHP v7.3.x, v7.4.x, and v8.0.x
    - deprecated support for PHP v5.6.x, v7.0.x, v7.1.x, and v7.2.x still exists
    - initial support for PHP v8.1.x
- - adds support for Twitter Bootstrap v5
+ - adds support for Twitter Bootstrap v5 with Font Awesome v6
  - adds optional support for Twitter Bootstrap Icons under Bootstrap v5
  - fix possible sql injection vulnerability reported by pang0lin
  - fix issue with MySQL v8 'rank' now a keyword
  - fix possible Host Header Injection vulnerability reported by dumpling-soup CVE-2021-38751
+ - Fix XSS User Agent vulnerability reported by Oscar Uribe, CVE-2022-23049
  - fixes and tweaks many issues in previous versions
 
 Version 2.6.0
