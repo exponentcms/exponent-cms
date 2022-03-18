@@ -708,6 +708,7 @@ class remove_oldfiles extends upgradescript {
             'external/lexer-1.0.1/',
             'external/lexer-1.2.0/',
             'external/lexer-1.2.1/',
+            'external/lexer-1.2.2/',
             'external/minify/lib/',
             'external/minify/min/lib/Solar/',
             'external/minify/min_extras/',
