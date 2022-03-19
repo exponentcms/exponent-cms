@@ -1275,4 +1275,17 @@ function date_to_strftime_format( $date_format ) {
 	return expDateTime::date_format_to( $date_format, 'strf' );
 }
 
+/**
+ * PHP v8.1+ friendly stripslashes() command
+ *
+ * @param $str string to strip slashes from
+ * @return mixed|string
+ */
+function expStripSlashes($str) {
+    if (empty($str)) {
+        return $str;
+    }
+    return stripslashes($str);
+}
+
 ?>

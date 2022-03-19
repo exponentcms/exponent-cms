@@ -84,7 +84,7 @@ class textController extends expController {
                 $settings->plugins = implode(',',$plugs);
             }
             if (!empty($settings->fontnames)) {
-                $settings->fontnames  = stripSlashes($settings->fontnames);
+                $settings->fontnames  = expStripSlashes($settings->fontnames);
             } else {
                 $settings->fontnames = "'Arial/Arial, Helvetica, sans-serif;' +
                     'Comic Sans MS/Comic Sans MS, cursive;' +
@@ -97,12 +97,12 @@ class textController extends expController {
                     'Verdana/Verdana, Geneva, sans-serif'";
             }
             if (!empty($settings->stylesset)) {
-                $settings->stylesset  = stripSlashes($settings->stylesset);
+                $settings->stylesset  = expStripSlashes($settings->stylesset);
             } else {
                 $settings->stylesset = "'default'";
             }
             if (!empty($settings->formattags)) {
-                $settings->formattags = stripSlashes($settings->formattags);
+                $settings->formattags = expStripSlashes($settings->formattags);
             } else {
                 $settings->formattags = "'p;h1;h2;h3;h4;h5;h6;pre;address;div'";
             }
@@ -122,7 +122,7 @@ class textController extends expController {
                 $settings->plugins = implode(',',$plugs);
             }
             if (!empty($settings->fontnames)) {
-                $settings->fontnames  = stripSlashes($settings->fontnames);
+                $settings->fontnames  = expStripSlashes($settings->fontnames);
             } else {
                 $settings->fontnames = "'Andale Mono=andale mono,times;'+
                     'Arial=arial,helvetica,sans-serif;'+
@@ -144,7 +144,7 @@ class textController extends expController {
             ";
             }
             if (!empty($settings->stylesset)) {
-                $settings->stylesset  = stripSlashes($settings->stylesset);
+                $settings->stylesset  = expStripSlashes($settings->stylesset);
             } else {
                 $settings->stylesset = "{title: 'Inline', items: [
                         {title: 'Strikethrough', inline: 'span', styles : {textDecoration : 'line-through'}, icon: 'strikethrough'},
@@ -188,7 +188,7 @@ class textController extends expController {
                 ";
             }
             if (!empty($settings->formattags)) {
-                $settings->formattags = stripSlashes($settings->formattags);
+                $settings->formattags = expStripSlashes($settings->formattags);
             } else {
                 $settings->formattags = "'Normal=p;Heading 1=h1;Heading 2=h2;Heading 3=h3;Heading 4=h4;Heading 5=h5;Heading 6=h6;Formatted=pre;Address=address;Normal (DIV)=div'";
             }

@@ -94,15 +94,15 @@ class expHTMLEditorController extends expController
 
         $obj = self::getEditorSettings($this->params['id'], $this->params['editor']);
         $obj->name = $this->params['name'];
-        $obj->data = stripSlashes($this->params['data']);
+        $obj->data = expStripSlashes($this->params['data']);
         $obj->skin = $this->params['skin'];
         $obj->scayt_on = $this->params['scayt_on'];
         $obj->paste_word = $this->params['paste_word'];
-        $obj->plugins = stripSlashes($this->params['plugins']);
-        $obj->stylesset = stripSlashes($this->params['stylesset']);
-        $obj->formattags = stripSlashes($this->params['formattags']);
-        $obj->fontnames = stripSlashes($this->params['fontnames']);
-        $obj->additionalconfig = stripSlashes($this->params['additionalconfig']);
+        $obj->plugins = expStripSlashes($this->params['plugins']);
+        $obj->stylesset = expStripSlashes($this->params['stylesset']);
+        $obj->formattags = expStripSlashes($this->params['formattags']);
+        $obj->fontnames = expStripSlashes($this->params['fontnames']);
+        $obj->additionalconfig = expStripSlashes($this->params['additionalconfig']);
         if (empty($this->params['id'])) {
             $this->params['id'] = $db->insertObject($obj, 'htmleditor_' . $this->params['editor']);
         } else {
@@ -119,12 +119,12 @@ class expHTMLEditorController extends expController
         expHistory::set('editable', $this->params);
         $tool = self::getEditorSettings(!empty($this->params['id'])?$this->params['id']:null, $this->params['editor']);
         if ($tool == null) $tool = new stdClass();
-        $tool->data = !empty($tool->data) ? @stripSlashes($tool->data) : '';
-        $tool->plugins = !empty($tool->plugins) ? @stripSlashes($tool->plugins) : '';
-        $tool->stylesset = !empty($tool->stylesset) ? @stripSlashes($tool->stylesset) : '';
-        $tool->formattags = !empty($tool->formattags) ? @stripSlashes($tool->formattags) : '';
-        $tool->fontnames = !empty($tool->fontnames) ? @stripSlashes($tool->fontnames) : '';
-        $tool->additionalconfig = !empty($tool->additionalconfig) ? @stripSlashes($tool->additionalconfig) : '';
+        $tool->data = !empty($tool->data) ? @expStripSlashes($tool->data) : '';
+        $tool->plugins = !empty($tool->plugins) ? @expStripSlashes($tool->plugins) : '';
+        $tool->stylesset = !empty($tool->stylesset) ? @expStripSlashes($tool->stylesset) : '';
+        $tool->formattags = !empty($tool->formattags) ? @expStripSlashes($tool->formattags) : '';
+        $tool->fontnames = !empty($tool->fontnames) ? @expStripSlashes($tool->fontnames) : '';
+        $tool->additionalconfig = !empty($tool->additionalconfig) ? @expStripSlashes($tool->additionalconfig) : '';
         $skins_dir = opendir(BASE . 'external/editors/' . $this->params['editor'] . '/skins');
         $skins = array();
         while (($skin = readdir($skins_dir)) !== false) {
