@@ -379,6 +379,9 @@ class eaasController extends expController {
             }
 
             $this->configImage($tab);  // fix attached files for proper display of file manager control
+            if (!isset($this->config[$tab . '_aggregate'])) {
+                $this->config[$tab . '_aggregate'] = array();
+            }
         }
 
         assign_to_template(array(
