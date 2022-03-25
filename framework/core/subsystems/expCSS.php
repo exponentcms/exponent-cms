@@ -637,22 +637,20 @@ class expCSS {
                         try {
                             $file_updated = false;
                             $new_cache = $less->cachedCompile($cache, false);
-                            // attempt to load autoprefixer
-                            if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php')) {
-                                include_once(BASE . 'external/php-autoprefixer/autoload.inc.php');
-                                // save map info
-                                $map = explode("\n/*# sourceMappingURL=", $new_cache['compiled']);
-                                $new_cache['compiled'] = (new Padaliyajay\PHPAutoprefixer\Autoprefixer($new_cache['compiled']))->compile(!(MINIFY == 1 && MINIFY_LESS == 1));
-                                if (!empty($map[1])) {
-                                    $new_cache['compiled'] .= "/*# sourceMappingURL=" . $map[1];
-                                }
-                            }
 
-                            if (!is_array($cache) ||
-                                $new_cache['updated'] > $cache['updated']
-                            ) {
+                            if (!is_array($cache) || $new_cache['updated'] > $cache['updated']) {
                                 if (!empty($new_cache['compiled']) && $new_cache['compiled'] !== "\n") {
                                     $file_updated = true;
+                                    // attempt to load autoprefixer
+                                    if (file_exists(BASE . 'external/php-autoprefixer/autoload.inc.php')) {
+                                        include_once(BASE . 'external/php-autoprefixer/autoload.inc.php');
+                                        // save map info
+                                        $map = explode("\n/*# sourceMappingURL=", $new_cache['compiled']);
+                                        $new_cache['compiled'] = (new Padaliyajay\PHPAutoprefixer\Autoprefixer($new_cache['compiled']))->compile(!(MINIFY == 1 && MINIFY_LESS == 1));
+                                        if (!empty($map[1])) {
+                                            $new_cache['compiled'] .= "/*# sourceMappingURL=" . $map[1];
+                                        }
+                                    }
                                     // store compiler cache file
                                     $new_cache['vars'] = !empty($vars) ? $vars : null;
                                     file_put_contents($cache_fname, serialize($new_cache));

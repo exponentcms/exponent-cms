@@ -28,7 +28,7 @@ less.php,3.1.0exp,github.com/wikimedia/less.php,3.1.0,"code edit to fix IIS comp
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap3,3.4.1,twitter.github.com/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
 Twitter-Bootstrap4,4.6.1,twitter.github.com/bootstrap,4.6.1,"patched bootstrap.scss includes swatches & exp variables, remove @page"
-popper.js,1.16.1,github.com/FezVrasta/popper.js,1.16.1/2.10.2,needed by BS4 (umd)
+popper.js/floating-ui,1.16.1,github.com/FezVrasta/popper.js,1.16.1/2.10.2,needed by BS4/BS5 (umd)
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
 Bootswatch3,3.4.1+1,bootswatch.com/,3.4.1+1,change 1st line variables.less comment to output to .css file
 Bootswatch4,4.6.1,bootswatch.com/,4.6.1,change 1st line variables.scss comment to output to .css file
@@ -77,7 +77,7 @@ Bootstrap DateTimePicker,4.17.47,github.com/Eonasdan/bootstrap-datetimepicker,4.
 Tempus Dominus Bootstrap 4,5.1.2,github.com/tempusdominus/bootstrap-4,5.1.2,"placed in bootstrap4theme, but not yet used"
 moment.js,2.29.1,github.com/moment/moment,2.29.1,needed for Bootstrap DateTimePicker; min/moment-with-locales.js renamed
 strength-meter,1.1.4,github.com/kartik-v/strength-meter,1.1.4,
-Sortable,1.14.0,github.com/SortableJS/Sortable,1.14.0,
+Sortable,1.15.0,github.com/SortableJS/Sortable,1.15.0,
 jstree,3.3.12,github.com/vakata/jstree,3.3.12,added nav menu icons to stylesheet
 bootstrap3-dialog,1.35.4,github.com/nakupanda/bootstrap3-dialog,1.35.4,use /src .less file and add our .less variable imports; w/ bs4 fixes
 impromptu,6.2.3,trentrichardson.com/Impromptu,6.2.3,add some colors to .css

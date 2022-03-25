@@ -944,6 +944,12 @@ abstract class expController {
             'folders'           => $folders,
         ));
 
+        if (!isset($this->config['aggregate'])) {
+            $this->config['aggregate'] = array();
+            assign_to_template(array(
+                'config' => $this->config,
+            ));
+        }
     }
 
     /**
