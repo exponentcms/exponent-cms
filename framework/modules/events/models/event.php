@@ -111,22 +111,21 @@ class event extends expRecord {
         foreach ($edates as $edate) {
             $evs = $this->find('all', "id=" . $edate->event_id . $featuresql);
             foreach ($evs as $key=>$event) {
+                $evs[$key]->eventstart += $edate->date;
+                $evs[$key]->eventend += $edate->date;
+                $evs[$key]->date_id = $edate->id;
                 if ($condense) {
-                    //fixme we're leaving events which ended earlier in the day which won't be displayed, which therefore cancels out tomorrow's event
                     $eventid = $event->id;
 //                    $multiday_event = array_filter($events, create_function('$event', 'global $eventid; return $event->id === $eventid;'));
                     $multiday_event = array_filter($events, function($event) {
                         global $eventid;
                         return $event->id === $eventid;
                     });
-                    if (!empty($multiday_event)) {
+                    if (!empty($multiday_event) || (!$event->is_allday && $event->eventend < time())) {
                         unset($evs[$key]);
                         continue;
                     }
                 }
-                $evs[$key]->eventstart += $edate->date;
-                $evs[$key]->eventend += $edate->date;
-                $evs[$key]->date_id = $edate->id;
                 if (!empty($event->expCat)) {
                     $catcolor = empty($event->expCat[0]->color) ? null : trim($event->expCat[0]->color);
 //                    if (substr($catcolor,0,1)=='#') $catcolor = '" style="color:'.$catcolor.';';
