@@ -26,11 +26,11 @@
      {'The specific styles applied, if any are fully dependent on the theme\'s styling implementation!'|gettext}
  </blockquote>
 </div>
-{control type=radiogroup name="mstyle[border]" label="Module Borders"|gettext value=$config.mstyle.border|default:0 items="None,Top,Bottom,Top and Bottom,Left,Right,Both Sides,Box"|gettxtlist values="0,top,bottom,topbottom,left,right,leftright,box"}
+{control type=radiogroup name="mstyle[border]" label="Module Borders"|gettext value=$config.mstyle.border|default:'0' items="None,Top,Bottom,Top and Bottom,Left,Right,Both Sides,Box"|gettxtlist values="0,top,bottom,topbottom,left,right,leftright,box"}
 {if bs()}
 {control type=checkbox name="mstyle[styled]" label="Module Emphasis"|gettext value=1 checked=$config.mstyle.styled description='Add \'well\' type styling'|gettext}
 {/if}
-{control type=radiogroup name="mstyle[background]" label="Module Background"|gettext value=$config.mstyle.background|default:0 items="None,Light,Medium,Dark"|gettxtlist values="0,light,medium,dark"}
+{control type=radiogroup name="mstyle[background]" label="Module Background"|gettext value=$config.mstyle.background|default:'0' items="None,Light,Medium,Dark"|gettxtlist values="0,light,medium,dark"}
 {if bs2()}
 {group label='Module Visibility - Hidden'|gettext}
 	{control type=checkbox name="mstyle[hiddensm]" label="Hidden on Phone"|gettext value=1 checked=$config.mstyle.hiddensm}
