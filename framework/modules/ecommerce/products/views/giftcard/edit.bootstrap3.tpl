@@ -53,9 +53,3 @@
         {control type="buttongroup" submit="Save Gift Card"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
-
-{script unique="tabload" jquery=1 bootstrap="tab,transition"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

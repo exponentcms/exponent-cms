@@ -211,9 +211,3 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 });
 {/literal}
 {/script}
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

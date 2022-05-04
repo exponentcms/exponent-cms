@@ -63,6 +63,19 @@ function smarty_function_loading($params,&$smarty) {
     } else {
         echo '<div class="loadingdiv">', $spinner, $title, '</div>';
     }
+
+    if (bs()) {
+        expJavascript::pushToFoot(
+            array(
+                'unique' => 'loadingremove',
+                'jquery' => 1,
+                'content'=> "
+            $('.loadingdiv').remove();
+                ",
+                'bootstrap' => 'tab,transition'
+            )
+        );
+    }
 }
 
 ?>

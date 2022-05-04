@@ -137,10 +137,9 @@
 {/literal}
 {/script}
 
-{script unique="tabload" jquery=1 bootstrap="tab"}
+{script unique="tabload" jquery=1}
 {literal}
     $(document).ready(function(){
-        $('.loadingdiv').remove();
         $("#never_expires").click(function(){
             if (this.checked) {
                 $("#validity").hide("slow");

@@ -72,12 +72,6 @@
     {loading}
 </div>
 
-{script unique="tabload" jquery=1 bootstrap="tab,transition"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}
-
 {if $config.show_player}
     {script unique="mediaelement-src" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
 

@@ -44,9 +44,3 @@
 	{*<div class="loadingdiv">{'Loading Pages'|gettext}</div>*}
 	{loading title='Loading Pages'|gettext}
 </div>
-
-{script unique="tabload" jquery=1 bootstrap="tab,transition"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

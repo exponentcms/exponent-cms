@@ -111,12 +111,6 @@
     {/form}
 </div>
 
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}
-
 {script unique="file-type" jquery=1}
 {literal}
 $(document).ready(function(){

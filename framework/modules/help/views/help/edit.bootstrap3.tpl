@@ -69,9 +69,3 @@
         {control type=buttongroup submit="Save Help Doc"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
-
-{script unique="tabload" jquery=1 bootstrap="tab,transition"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

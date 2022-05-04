@@ -649,7 +649,7 @@ if (!defined('MPDF7_VERSION')) {
     define('MPDF7_VERSION', '7.1.9');
 }
 if (!defined('MPDF8_VERSION')) {
-    define('MPDF8_VERSION', '8.0.8');  // 8.0.17
+    define('MPDF8_VERSION', '8.0.8');  // 8.1.1
 }
 /**
  * Log is needed for MPDF v7+
@@ -671,7 +671,7 @@ if (!defined('FPDI_VERSION')) {
 }
 
 if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '086');  // -1.2.0
+    define('DOMPDF8_VERSION', '086');  // -1.2.2
 }
 
 if (!defined('HTML2PDF5_VERSION')) {

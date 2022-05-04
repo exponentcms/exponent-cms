@@ -122,9 +122,3 @@
         </dl>
     </div>
 {/if}
-
-{script unique="tabload" jquery=1 bootstrap="tab,transition"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

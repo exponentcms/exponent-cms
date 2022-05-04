@@ -169,9 +169,3 @@ if ($('#invoice_email').is(':checked') == false)
     $("#email_settings").hide("slow");
 {/literal}
 {/script}
-
-{script unique="tabload" jquery=1 bootstrap="tab,transition"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

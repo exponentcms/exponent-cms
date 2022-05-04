@@ -56,9 +56,3 @@
         {control type=buttongroup submit="Save Photo"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}
