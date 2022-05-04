@@ -718,8 +718,6 @@ $(document).ready(function(){
 
 {script unique="tabload" jquery=1 bootstrap="tab"}
 {literal}
-    $('.loadingdiv').remove();
-
     $(document).ready(() => {
       let url = location.href.replace(/\/$/, "");
 
@@ -733,7 +731,7 @@ $(document).ready(function(){
         }, 400);
       }
 
-      $('a[data-toggle="tab"]').on("click", function() {
+      $('a[data-bs-toggle="tab"]').on("click", function() {
         let newUrl;
         const hash = $(this).attr("href");
         if(hash == "#home") {

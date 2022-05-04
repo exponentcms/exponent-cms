@@ -158,10 +158,8 @@
 </div>
 {clear}
 
-{script unique="managecats" jquery=1 bootstrap="tab"}
+{script unique="managecats" jquery=1}
 {literal}
-    $('.loadingdiv').remove();
-
     function selectAllp(val) {
         var checks = document.getElementsByName("change_cat[]");
         for (var i = 0; i < checks.length; i++) {

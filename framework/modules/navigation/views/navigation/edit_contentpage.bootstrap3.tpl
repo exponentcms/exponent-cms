@@ -91,10 +91,4 @@
         {loading title='Loading Pages'|gettext}
         {control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
     {/form}
-
-{script unique="tabload" jquery=1 bootstrap="tab,transition"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}
 </div>

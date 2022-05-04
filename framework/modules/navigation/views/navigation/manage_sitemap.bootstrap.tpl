@@ -380,7 +380,7 @@
    	{loading title='Loading Pages'|gettext}
 </div>
 
-{script unique="tabload" yui3mods="node,yui2-yahoo-dom-event,yui2-container" bootstrap="tab,transition"}
+{script unique="tabload" yui3mods="node,yui2-yahoo-dom-event,yui2-container"}
 {literal}
     YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var YAHOO = Y.YUI2;
@@ -424,7 +424,5 @@
             delpage.show();
         }
     });
-
-    $('.loadingdiv').remove();
 {/literal}
 {/script}

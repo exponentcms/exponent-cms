@@ -413,9 +413,3 @@
             </div-->
     </div>
 </div>
-
-{script unique="tabload" jquery=1}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}
