@@ -147,6 +147,5 @@
 			</div>
 		</div>
 	</div>
+    {loading}
 </div>
-{*<div class="loadingdiv">{'Loading'|gettext}</div>*}
-{loading}

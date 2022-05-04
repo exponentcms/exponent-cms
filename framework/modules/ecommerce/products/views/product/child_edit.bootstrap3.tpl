@@ -233,7 +233,6 @@
                     </div>
                 </div>
             </div>
-            {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
             {loading}
             {control type="buttongroup" submit="Save Product"|gettext cancel="Cancel"|gettext}
         {/form}

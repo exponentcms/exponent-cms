@@ -104,7 +104,6 @@
             {/foreach}
         </div>
     </div>
-    {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
     {loading}
 </div>
 

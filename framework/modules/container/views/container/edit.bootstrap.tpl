@@ -79,14 +79,6 @@
             {control type=buttongroup submit="Save"|gettext disabled=1 cancel="Cancel"|gettext name="buttons"}
         {/form}
     </div>
-    {if $is_edit}
-        {*<div class="loadingdiv">{'Loading Module Configuration Form'|gettext}</div>*}
-        {loading title='Loading Module Configuration Form'|gettext}
-    {else}
-        {*<div class="loadingdiv">{'Loading Module Creation Form'|gettext}</div>*}
-        {loading title='Loading Module Creation Form'|gettext}
-    {/if}
-    {* src="$smarty.const.PATH_RELATIVE|cat:'js/ContainerSourceControl.js'" *}
 
     {script unique="addmodule" yui3mods="node,event,io,json-parse"}
     {literal}

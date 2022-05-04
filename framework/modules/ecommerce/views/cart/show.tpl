@@ -221,7 +221,6 @@
         {/if}
     </div>
 </div>
-{*<div class="loadingdiv">{"Loading Cart"|gettext}</div>*}
 {loading title="Loading Cart"|gettext}
 
 {script unique="editform" yui3mods="node"}
