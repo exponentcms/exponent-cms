@@ -620,7 +620,6 @@
                 {/if}
             </div>
         </div>
-	    {*<div class="loadingdiv">{"Loading Site Configuration"|gettext}</div>*}
         {loading title="Loading Site Configuration"|gettext}
         {control type="buttongroup" submit="Save Website Configuration"|gettext cancel="Cancel"|gettext returntype="viewable"}
     {/form}
@@ -716,11 +715,5 @@ $(document).ready(function(){
         }
     });
 });
-{/literal}
-{/script}
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
 {/literal}
 {/script}

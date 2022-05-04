@@ -129,7 +129,6 @@ input.form-control,
             </div>
         </div>
     </div>
-    {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
     {loading}
 </div>
 
@@ -209,11 +208,5 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
     addrange.on({'click':addNewRow});
 });
-{/literal}
-{/script}
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
 {/literal}
 {/script}

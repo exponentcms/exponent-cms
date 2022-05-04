@@ -70,15 +70,8 @@
                     {/if}
                 </div>
             </div>
-            {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
             {loading}
             {control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
         {/form}
     </div>
 </div>
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

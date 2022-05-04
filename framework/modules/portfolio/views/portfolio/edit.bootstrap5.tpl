@@ -57,14 +57,7 @@
                 </div>
             </div>
         </div>
-	    {*<div class="loadingdiv">{'Loading Portfolio Item'|gettext}</div>*}
         {loading title='Loading Portfolio Item'|gettext}
         {control type=buttongroup submit="Save Portfolio Piece"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

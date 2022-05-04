@@ -130,7 +130,6 @@
 	            {/foreach}
 	        </div>
 	    </div>
-	    {*<div class="loadingdiv">{'Loading User Profile'|gettext}</div>*}
         {loading title='Loading User Profile'|gettext}
 	    {if $user->isAdmin() == 0}
 			{control type=antispam}
@@ -138,9 +137,3 @@
 	    {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 	{/form}
 </div>
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

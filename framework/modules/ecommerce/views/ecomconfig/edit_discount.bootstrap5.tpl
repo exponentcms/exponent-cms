@@ -80,7 +80,6 @@
                     </div>
                 </div>
             </div>
-            {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
             {loading}
             {control type=buttongroup submit="Save Discount"|gettext cancel="Cancel"|gettext}
         {/form}
@@ -137,10 +136,9 @@
 {/literal}
 {/script}
 
-{script unique="tabload" jquery=1 bootstrap="tab"}
+{script unique="tabload" jquery=1}
 {literal}
     $(document).ready(function(){
-        $('.loadingdiv').remove();
         $("#never_expires").click(function(){
             if (this.checked) {
                 $("#validity").hide("slow");

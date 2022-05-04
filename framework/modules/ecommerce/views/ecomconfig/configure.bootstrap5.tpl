@@ -146,7 +146,6 @@
                     </div>
                 </div>
             </div>
-            {*<div class="loadingdiv">{'Loading Settings'|gettext}</div>*}
             {loading title='Loading Settings'|gettext}
             {control type=buttongroup submit="Save Config"|gettext cancel="Cancel"|gettext}
         {/form}
@@ -164,11 +163,5 @@ $('#invoice_email').change(function() {
 });
 if ($('#invoice_email').is(':checked') == false)
     $("#email_settings").hide("slow");
-{/literal}
-{/script}
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
 {/literal}
 {/script}

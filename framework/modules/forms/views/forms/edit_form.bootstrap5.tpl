@@ -84,15 +84,8 @@
                 </div>
             </div>
         </div>
-        {*<div class="loadingdiv">{'Loading Form'|gettext}</div>*}
         {loading title='Loading Form'|gettext}
         {control type=buttongroup submit="Save Form"|gettext cancel="Cancel"|gettext}
         {/form}
     </div>
 </div>
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

@@ -148,11 +148,4 @@
 		</div>
 	</div>
 </div>
-{*<div class="loadingdiv">{'Loading'|gettext}</div>*}
 {loading}
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}
