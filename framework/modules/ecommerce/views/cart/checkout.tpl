@@ -387,7 +387,6 @@
                         {/foreach}
                     </div>
                 {/if}
-                {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
                 {loading}
             {else}
                 <div class="billing-method">

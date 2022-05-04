@@ -90,7 +90,6 @@
                 {/if}
             </div>
         </div>
-	    {*<div class="loadingdiv">{"Loading Event"|gettext}</div>*}
         {loading title="Loading Event"|gettext}
         {control type=buttongroup submit="Save Event"|gettext cancel="Cancel"|gettext}
      {/form}

@@ -41,7 +41,6 @@
             {if $smarty.const.HANDLE_PAGE_REDIRECTION}<div id="tab3">{exp_include file="manage_redirection.tpl"}</div>{/if}
 	    </div>
 	</div>
-	{*<div class="loadingdiv">{'Loading Pages'|gettext}</div>*}
 	{loading title='Loading Pages'|gettext}
 </div>
 

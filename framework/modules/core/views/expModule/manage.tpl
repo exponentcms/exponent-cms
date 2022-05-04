@@ -131,7 +131,6 @@
             {*</div>*}
         </div>
     </div>
-    {*<div class="loadingdiv">{"Loading Modules"|gettext}</div>*}
     {control type="buttongroup" submit="Update Active Modules"|gettext}
     {/form}
 </div>

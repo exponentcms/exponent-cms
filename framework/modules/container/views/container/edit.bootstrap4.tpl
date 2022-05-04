@@ -72,11 +72,6 @@
             {control type=buttongroup submit="Save"|gettext disabled=1 cancel="Cancel"|gettext name="buttons"}
         {/form}
     </div>
-    {*{if $is_edit}*}
-        {*<div class="loadingdiv">{'Loading Module Configuration Form'|gettext}</div>*}
-    {*{else}*}
-        {*<div class="loadingdiv">{'Loading Module Creation Form'|gettext}</div>*}
-    {*{/if}*}
 
     {script unique="addmodule" jquery=1}
     {literal}

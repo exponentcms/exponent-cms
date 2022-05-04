@@ -87,7 +87,6 @@
                 </div>
             </div>
         </div>
-        {*<div class="loadingdiv">{'Loading Pages'|gettext}</div>*}
         {loading title='Loading Pages'|gettext}
         {control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
     {/form}
