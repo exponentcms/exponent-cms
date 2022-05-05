@@ -264,6 +264,9 @@ class expString {
                 $s = '<div style="page-break-after: always';
                 $para = explode($s, $string);
                 $string = $para[0];
+                if (strlen($string) < strlen($origstring)) {
+                    $string .= " " . $more;
+                }
                 return expString::convertSmartQuotes($string);
                 break;
             case "parahtml":
@@ -361,6 +364,9 @@ class expString {
                             }
                         }
                     }
+                }
+                if (strlen($string) < strlen($origstring)) {
+                    $string .= " " . $more;
                 }
                 return expString::convertSmartQuotes($string);
                 break;
