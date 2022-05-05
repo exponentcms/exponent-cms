@@ -46,6 +46,11 @@ function smarty_function_loading($params,&$smarty) {
         expCSS::pushToHead(array(
            "corecss"=>"loading",
         ));
+    } elseif (bs5() && USE_BOOTSTRAP_ICONS) {
+        $spinner = '<i class="bi bi-lg bi-arrow-clockwise bi-pulse"></i> ';
+        expCSS::pushToHead(array(
+           "corecss"=>"loading",
+        ));
     } elseif (bs4() || bs5()) {
         $spinner = '<i class="fas fa-lg fa-spinner fa-pulse"></i> ';
         expCSS::pushToHead(array(
