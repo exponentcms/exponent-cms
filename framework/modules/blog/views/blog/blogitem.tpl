@@ -104,7 +104,7 @@
                 {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
             {/if}
             {$record->body}
-            {if !$config.displayauthor}
+            {if $config.displayauthor}
                 {$record->poster|signature}
             {/if}
             {if $config.ffloat == "Below"}

@@ -119,7 +119,7 @@
                     {else}
                         {$item->body}
                     {/if}
-                    {if !$config.displayauthor}
+                    {if $config.displayauthor}
                         {$item->poster|signature}
                     {/if}
                     {if $config.ffloat == "Below"}
