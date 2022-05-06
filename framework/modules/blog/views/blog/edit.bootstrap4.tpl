@@ -41,6 +41,7 @@
                     <h2>{'Blog Entry'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title focus=1}
                     {control type=html name=body label="Post Content"|gettext value=$record->body}
+                    {control type=dropdown name="poster" label="Post Author"|gettext items=$users value=$record->poster}
                     {control type="checkbox" name="private" label="Save as draft/private"|gettext value=1 checked=$record->private}
                     {if !$config.disabletags}
                         {control type="tags" value=$record}
