@@ -485,7 +485,7 @@ class usersController extends expController {
         // set history
         expHistory::set('manageable', $this->params);
 
-        // Lets find all the user profiles availabe and then see if they are
+        // Lets find all the user profiles available and then see if they are
         // in the database yet.  If not we will add them.
         $ext_dirs = array(
             'framework/modules/users/extensions',
