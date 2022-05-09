@@ -86,8 +86,8 @@ define('EXPONENT', EXPONENT_VERSION_MAJOR);
 // load the constants from the global config and then default config settings
 require_once(BASE . 'framework/core/subsystems/expSettings.php');  // we don't have our autoloader loaded yet
 
-// check to ensure the request is coming from our server
-if (!isset($_SERVER['HTTP_HOST']) || ($_SERVER['HTTP_HOST'] != SITE_URL && SITE_URL !== '0')) {
+// check to ensure the request is coming from our server if not a cli/script call
+if (php_sapi_name() !== 'cli' && (!isset($_SERVER['HTTP_HOST']) || ($_SERVER['HTTP_HOST'] != SITE_URL && SITE_URL !== '0'))) {
     header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request');
     exit;
 }
