@@ -632,6 +632,8 @@ abstract class expController {
      * edit item in module, also used to copy items
      */
     public function edit() {
+        global $user;
+
         expHistory::set('editable', $this->params);
         $taglist = expTag::getAllTags();
         $modelname = $this->basemodel_name;
@@ -654,8 +656,23 @@ abstract class expController {
             if (isset($record->publish)) $record->publish = null;
             if (isset($record->unpublish)) $record->unpublish = null;
         }
+
+        $allusers = array();
+        $users = user::getAllUsers();
+        foreach ($users as $usr) {
+            if (empty($usr->lastname) && empty($usr->firstname)) {
+                $allusers[$usr->id] = "($usr->username)";
+            } else {
+                $allusers[$usr->id] = "$usr->lastname, $usr->firstname ($usr->username)";
+            }
+        }
+        $me = array($user->id => $allusers[$user->id]);
+        unset($allusers[$user->id]);
+        $allusers = $me + $allusers;
+
         assign_to_template(array(
             'record'     => $record,
+            'users'      => $allusers,
 //            'table'      => $this->$modelname->tablename,
 //            'controller' => $this->params['controller'],
             'taglist'    => $taglist

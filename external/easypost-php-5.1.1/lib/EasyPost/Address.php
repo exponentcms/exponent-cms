@@ -58,43 +58,23 @@ class Address extends EasypostResource
      */
     public static function create($params = null, $apiKey = null)
     {
-        $urlMod = "";
+        $wrapped_params = [];
 
-        if ((isset($params['verify']) && is_array($params['verify'])) || (isset($params['verify_strict']) && is_array($params['verify_strict']))) {
-            $verify = "";
-            if (isset($params['verify'])) {
-                $verify = $params['verify'];
-                unset($params['verify']);
-            }
-
-            $verify_strict = "";
-            if (isset($params['verify_strict'])) {
-                $verify_strict = $params['verify_strict'];
-                unset($params['verify_strict']);
-            }
-
-            $urlMod = "?";
-
-            if (is_array($verify)) {
-                foreach ($verify as $verification) {
-                    $urlMod .= "verify[]=" . $verification . "&";
-                }
-            }
-
-            if (is_array($verify_strict)) {
-                foreach ($verify_strict as $verification_strict) {
-                    $urlMod .= "verify_strict[]=" . $verification_strict . "&";
-                }
-            }
+        if (isset($params['verify']) && is_array($params['verify'])) {
+            $verify = $params['verify'];
+            unset($params['verify']);
+            $wrapped_params['verify'] = $verify;
         }
 
-        if (!isset($params['address']) || !is_array($params['address'])) {
-            $clone = $params;
-            unset($params);
-            $params['address'] = $clone;
+        if (isset($params['verify_strict']) && is_array($params['verify_strict'])) {
+            $verify_strict = $params['verify_strict'];
+            unset($params['verify_strict']);
+            $wrapped_params['verify_strict'] = $verify_strict;
         }
 
-        return self::_create(get_class(), $params, $apiKey, $urlMod);
+        $wrapped_params["address"] = $params;
+
+        return self::_create(get_class(), $wrapped_params, $apiKey);
     }
 
     /**
@@ -119,10 +99,6 @@ class Address extends EasypostResource
 
         if (isset($response['address'])) {
             $verified_address = Util::convertToEasyPostObject($response['address'], $apiKey);
-            if (!empty($response['message'])) {
-                $verified_address->message = $response['message'];
-                $verified_address->_immutableValues[] = 'message';
-            }
 
             return $verified_address;
         } else {
@@ -133,21 +109,17 @@ class Address extends EasypostResource
     /**
      * Verify an address.
      *
-     * @param mixed $params
      * @return mixed
      * @throws \EasyPost\Error
      */
-    public function verify($params = null)
+    public function verify()
     {
         $requestor = new Requestor($this->_apiKey);
         $url = $this->instanceUrl() . '/verify';
-        list($response, $apiKey) = $requestor->request('get', $url, $params);
+        list($response, $apiKey) = $requestor->request('get', $url, null);
+
         if (isset($response['address'])) {
             $verified_address = Util::convertToEasyPostObject($response['address'], $apiKey);
-            if (!empty($response['message'])) {
-                $verified_address->message = $response['message'];
-                $verified_address->_immutableValues[] = 'message';
-            }
 
             return $verified_address;
         } else {

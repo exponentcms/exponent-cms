@@ -17,6 +17,9 @@
 <div class="module motd show">
     {if !empty($message)}
     {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle|default:"Message of the Day"|gettext}</{$config.heading_level|default:'h1'}>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {$myloc=serialize($__loc)}
     <div class="motd-message">
         {if $config.datetag}

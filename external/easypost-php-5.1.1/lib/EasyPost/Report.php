@@ -69,17 +69,15 @@ class Report extends EasypostResource
     {
         if (!isset($params['type'])) {
             throw new Error('Undetermined Report Type');
-        } else {
-            $type = $params['type'];
-
-            self::_validate($params, $apiKey);
-            $requestor = new Requestor($apiKey);
-
-            $url = self::reportUrl($type);
-
-            list($response, $apiKey) = $requestor->request('post', $url, $params, true);
-            return Util::convertToEasyPostObject($response, $apiKey);
         }
+
+        $url = self::reportUrl($params['type']);
+
+        self::_validate($params, $apiKey);
+        $requestor = new Requestor($apiKey);
+
+        list($response, $apiKey) = $requestor->request('post', $url, $params, true);
+        return Util::convertToEasyPostObject($response, $apiKey);
     }
 
     /**

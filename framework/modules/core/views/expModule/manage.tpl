@@ -35,7 +35,7 @@
 .exp-skin-table td label span {
     position:absolute;
     right:0px;
-    top:0px;
+    /*top:0px;*/
     text-transform:uppercase;
     font-size:10px;
 }
@@ -96,6 +96,9 @@
                                 <em>
                                     {$module->description}
                                 </em>
+                                <span class="float-right">
+                                {icon button=true module=$module->class action=configure text='Default Config'|gettext icon=cog}
+                                </span>
                             </label>
                             </td>
                         </tr>

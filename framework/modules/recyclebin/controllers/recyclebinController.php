@@ -101,7 +101,7 @@ class recyclebinController extends expController
         $this->params['src'] = expString::escape($this->params['src']);
         $mod = expModules::getController($this->params['mod'], $this->params['src']);
         if ($mod != null) {
-            $mod->delete_instance();  // delete all assoc items
+            $mod->delete_instance(expCore::makeLocation($this->params['mod'], $this->params['src']));  // delete all assoc items
             $db->delete(
                 'sectionref',
                 "source='" . $this->params['src'] . "' and module='" . $this->params['mod'] . "'"
@@ -124,7 +124,7 @@ class recyclebinController extends expController
         foreach ($orphans as $orphan) {
             $mod = expModules::getController($orphan->module, $orphan->source);
             if ($mod != null) {
-                $mod->delete_instance();  // delete all assoc items
+                $mod->delete_instance(expCore::makeLocation($orphan->module, $orphan->source));  // delete all assoc items
                 $db->delete(
                     'sectionref',
                     "source='" . $orphan->source . "' and module='" . $orphan->module . "'"

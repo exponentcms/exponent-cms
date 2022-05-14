@@ -672,6 +672,7 @@ class remove_oldfiles extends upgradescript {
             'external/easypost-php-3.4.4/',
             'external/easypost-php-3.4.5/',
             'external/easypost-php-4.0.2/',
+            'external/easypost-php-5.0.0/',
             'external/editors/connector/',
             'external/editors/FCKeditor/',
             'external/editors/ckeditor/images',

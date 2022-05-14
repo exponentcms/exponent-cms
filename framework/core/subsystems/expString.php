@@ -253,26 +253,27 @@ class expString {
                     $para = explode($s, $string);
                     $string = $para[0];
                 }
+                $string = strip_tags($string, '<a>');
                 if (strlen($string) < strlen($origstring)) {
                     $string .= " " . $more;
                 }
     //			return str_replace("&#160;"," ",htmlspecialchars_decode(htmlentities(expString::convertSmartQuotes(strip_tags($string,'<a>')),ENT_QUOTES)));
-                return expString::convertSmartQuotes(strip_tags($string, '<a>'));
+                return expString::convertSmartQuotes($string);
                 break;
             case "parapaged":
 //               $s = '<div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div>';
                 $s = '<div style="page-break-after: always';
                 $para = explode($s, $string);
                 $string = $para[0];
+                if (strlen($string) < strlen($origstring)) {
+                    $string .= " " . $more;
+                }
                 return expString::convertSmartQuotes($string);
                 break;
             case "parahtml":
                 foreach ($sep as $s) {
                     $para = explode($s, $string);
                     $string = $para[0];
-                }
-                if (strlen($string) < strlen($origstring)) {
-                    $string .= " " . $more;
                 }
                 if (!empty($string)) {
                     $isText = true;
@@ -361,6 +362,9 @@ class expString {
                             }
                         }
                     }
+                }
+                if (strlen($string) < strlen($origstring)) {
+                    $string .= " " . $more;
                 }
                 return expString::convertSmartQuotes($string);
                 break;

@@ -6,8 +6,10 @@ Version 2.6.1
    - initial support for PHP v8.1.x
  - adds support for Twitter Bootstrap v5 with Font Awesome v6
  - adds optional support for Twitter Bootstrap Icons under Bootstrap v5
- - fix possible sql injection vulnerability reported by pang0lin
- - fix issue with MySQL v8 'rank' now a keyword
- - fix possible Host Header Injection vulnerability reported by dumpling-soup CVE-2021-38751
- - Fix XSS User Agent vulnerability reported by Oscar Uribe, CVE-2022-23049
+ - adds support for default module configurations
+ - adds blog post author selection
+ - fixes possible sql injection vulnerability reported by pang0lin
+ - fixes issue with MySQL v8 'rank' now a keyword
+ - fixes possible Host Header Injection vulnerability reported by dumpling-soup CVE-2021-38751
+ - fixes XSS User Agent vulnerability reported by Oscar Uribe, CVE-2022-23049
  - fixes and tweaks many issues in previous versions

@@ -789,7 +789,7 @@ if ($user->isSuperAdmin()) {
                 array(
                     'text'      => gt('View Recycle Bin'),
                     'icon'      => 'fa-trash-o',
-                    'icon5'      => 'far fa-recycle',
+                    'icon5'      => 'fas fa-recycle',
                     'iconbs'      => 'bi-recycle',
                     'classname' => 'manage',
                     'url'       => makeLink(

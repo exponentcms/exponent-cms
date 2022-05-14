@@ -81,7 +81,7 @@ class yuidatetimecontrol extends formcontrol
         $html = "<div" . $divID . " class=\"datetime-control control form-group";
         $html .= (!empty($this->required)) ? ' required">' : '">';
         if (empty($this->flip)) {
-            $html .= "<label" . $for . " class=\"\">" . $label . "</label>";
+            $html .= "<label" . $for . " class=\"\">" . $label . ":</label>";
             $html .= $this->controlToHTML($name);
         } else {
             $html .= $this->controlToHTML($name);

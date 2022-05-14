@@ -269,6 +269,8 @@ class textController extends expController {
                 $text->location_data = serialize(expCore::makeLocation('text',$this->params['src'],''));
             }
             $text->update();
+            $nav = new navigationController();
+            $nav->addContentToSearch();
             $text->refresh();  // need to get updated database info
         }
         $ar = new expAjaxReply(200, gt('The text item was saved'), json_encode($text));

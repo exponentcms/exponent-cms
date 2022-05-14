@@ -243,7 +243,9 @@ class usersController extends expController {
             expHistory::back();
         }
 
-        $this->params['username'] = strip_tags($this->params['username']);
+        if (!empty($this->params['username'])) {
+            $this->params['username'] = strip_tags($this->params['username']);
+        }
         // if this is a new user account we need to check the password.
         // the password fields won't come thru on an edit. Otherwise we will
         // just update the existing account.
@@ -485,7 +487,7 @@ class usersController extends expController {
         // set history
         expHistory::set('manageable', $this->params);
 
-        // Lets find all the user profiles availabe and then see if they are
+        // Lets find all the user profiles available and then see if they are
         // in the database yet.  If not we will add them.
         $ext_dirs = array(
             'framework/modules/users/extensions',
