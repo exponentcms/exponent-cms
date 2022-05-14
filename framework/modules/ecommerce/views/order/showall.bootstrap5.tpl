@@ -135,11 +135,11 @@
                     <td>
                         <a href="{link action=show id=$listing->id}">{$listing->invoice_id}</a>
                     </td>
-                    <td style="text-align:right;"><span class="badge {if $listing->paid|lower == 'complete' || $listing->paid|lower == 'paid'}badge-success{else}badge-secondary{/if}" title="{if $listing->paid|lower == 'complete' ||  $listing->paid|lower == 'paid'}{'Paid'|gettext}{else}{'Payment Due'|gettext}{/if}">{$listing->grand_total|currency}</span></td>
+                    <td style="text-align:right;"><span class="badge {if $listing->paid|lower == 'complete' || $listing->paid|lower == 'paid'}bg-success{else}bg-secondary{/if}" title="{if $listing->paid|lower == 'complete' ||  $listing->paid|lower == 'paid'}{'Paid'|gettext}{else}{'Payment Due'|gettext}{/if}">{$listing->grand_total|currency}</span></td>
                     <td>{billingcalculator::getCalcTitle($listing->method)}</td>
                     <td data-order="{$listing->purchased}" data-search="{$listing->purchased|format_date:"%m/%d/%Y %I:%M%p"}">{$listing->purchased|format_date:"%m/%d/%Y %I:%M%p"}</td>
                     <td>{$listing->order_type}</td>
-                    <td><span class="badge badge-{if $listing->order_status_id == $new_order}success{else}secondary{/if}">{$listing->status}</span></td>
+                    <td><span class="badge bg-{if $listing->order_status_id == $new_order}success{else}secondary{/if}">{$listing->status}</span></td>
                     <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png" color=green}</a>{/if}</td>
                 </tr>
             {/foreach}
