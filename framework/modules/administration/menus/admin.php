@@ -570,9 +570,9 @@ if ($user->isSuperAdmin()) {
 //                            ),
                             array(
                                 'text'      => gt('Remove Unneeded Table Columns'),
-                                'icon'      => 'fa-wrench',
-                                'icon5'      => 'fas fa-wrench',
-                                'iconbs'      => 'bi-wrench',
+                                'icon'      => 'fa-wrench text-danger',
+                                'icon5'      => 'fas fa-wrench text-danger',
+                                'iconbs'      => 'bi-wrench text-danger',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
@@ -583,9 +583,9 @@ if ($user->isSuperAdmin()) {
                             ),
                             array(
                                 'text'      => gt('Remove Unused Tables'),
-                                'icon'      => 'fa-wrench',
-                                'icon5'      => 'fas fa-wrench',
-                                'iconbs'      => 'bi-wrench',
+                                'icon'      => 'fa-wrench text-danger',
+                                'icon5'      => 'fas fa-wrench text-danger',
+                                'iconbs'      => 'bi-wrench text-danger',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
@@ -720,9 +720,9 @@ if ($user->isSuperAdmin()) {
                             ),
                             array(
                                 'text'      => gt('Clear Smarty Cache'),
-                                'icon'      => 'fa-ban',
-                                'icon5'      => 'fas fa-ban',
-                                'iconbs'      => 'bi-slash-circle',
+                                'icon'      => 'fa-ban text-danger',
+                                'icon5'      => 'fas fa-ban text-danger',
+                                'iconbs'      => 'bi-slash-circle text-danger',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
@@ -733,9 +733,9 @@ if ($user->isSuperAdmin()) {
                             ),
                             array(
                                 'text'      => gt('Clear CSS/Minify Cache'),
-                                'icon'      => 'fa-ban',
-                                'icon5'      => 'fas fa-ban',
-                                'iconbs'      => 'bi-slash-circle',
+                                'icon'      => 'fa-ban text-danger',
+                                'icon5'      => 'fas fa-ban text-danger',
+                                'iconbs'      => 'bi-slash-circle text-danger',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
@@ -746,9 +746,9 @@ if ($user->isSuperAdmin()) {
                             ),
                             array(
                                 'text'      => gt('Clear Image Cache'),
-                                'icon'      => 'fa-ban',
-                                'icon5'      => 'fas fa-ban',
-                                'iconbs'      => 'bi-slash-circle',
+                                'icon'      => 'fa-ban text-danger',
+                                'icon5'      => 'fas fa-ban text-danger',
+                                'iconbs'      => 'bi-slash-circle text-danger',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
@@ -759,9 +759,9 @@ if ($user->isSuperAdmin()) {
                             ),
                             array(
                                 'text'      => gt('Clear RSS/Podcast Cache'),
-                                'icon'      => 'fa-ban',
-                                'icon5'      => 'fas fa-ban',
-                                'iconbs'      => 'bi-slash-circle',
+                                'icon'      => 'fa-ban text-danger',
+                                'icon5'      => 'fas fa-ban text-danger',
+                                'iconbs'      => 'bi-slash-circle text-danger',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
@@ -772,9 +772,9 @@ if ($user->isSuperAdmin()) {
                             ),
                             array(
                                 'text'      => gt('Clear All Caches'),
-                                'icon'      => 'fa-ban',
-                                'icon5'      => 'fas fa-ban',
-                                'iconbs'      => 'bi-slash-circle',
+                                'icon'      => 'fa-ban text-danger',
+                                'icon5'      => 'fas fa-ban text-danger',
+                                'iconbs'      => 'bi-slash-circle text-danger',
                                 'classname' => 'remove',
                                 'url'       => makeLink(
                                     array(
