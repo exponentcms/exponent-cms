@@ -198,7 +198,7 @@ class event extends expRecord {
        		$start_recur = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$params));
        		$stop_recur  = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("untildate",$params));
 
-       		if (!empty($params['recur']) && $params['recur'] != "recur_none") {  // recurring event
+       		if (!empty($params['recur']) && $params['recur'] !== "recur_none") {  // recurring event
        			// Do recurrence
                 $freq = $params['recur_freq_'.$params['recur']];
 

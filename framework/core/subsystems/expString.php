@@ -255,7 +255,7 @@ class expString {
                 }
                 $string = strip_tags($string, '<a>');
                 if (strlen($string) < strlen($origstring)) {
-                    $string .= " " . $more;
+                    $string .= "<span> " . $more . "</span>";
                 }
     //			return str_replace("&#160;"," ",htmlspecialchars_decode(htmlentities(expString::convertSmartQuotes(strip_tags($string,'<a>')),ENT_QUOTES)));
                 return expString::convertSmartQuotes($string);
@@ -266,7 +266,7 @@ class expString {
                 $para = explode($s, $string);
                 $string = $para[0];
                 if (strlen($string) < strlen($origstring)) {
-                    $string .= " " . $more;
+                    $string .= "<span> " . $more . "</span>";
                 }
                 return expString::convertSmartQuotes($string);
                 break;
@@ -364,7 +364,7 @@ class expString {
                     }
                 }
                 if (strlen($string) < strlen($origstring)) {
-                    $string .= " " . $more;
+                    $string .= "<span> " . $more . "</span>";
                 }
                 return expString::convertSmartQuotes($string);
                 break;

@@ -16,8 +16,10 @@
 <div id="editevent" class="events calendar edit">
     {if $record->id != ""}<h1>{'Editing'|gettext} '{$record->title}'</h1>{else}<h1>{'New'|gettext} {$model_name|capitalize}</h1>{/if}
     <div class="form_header">
-        <blockquote>{'Enter the information about the calendar event (the date and times) below.'|gettext}</blockquote>
-        <blockquote>{'Note: multiple day events are not supported.'|gettext}</blockquote>
+        <blockquote>
+            {'Enter the information about the calendar event (the date and times) below.'|gettext}{br}{br}
+            {'Note: multiple day events are not supported.'|gettext}
+        </blockquote>
     </div>
     {form action=update}
 	    {control type=hidden name=id value=$record->id}
@@ -67,11 +69,7 @@
                         {exp_include file="_recurring.tpl"}
                     {elseif ($record->is_recurring == 1) }
                         {$dates=$record->eventdate}
-                        {control type=hidden name=is_recurring value=$record->is_recurring}
-                        {'This event is a recurring event, and occurs on the dates below.  Select which dates you wish to apply these edits to.'|gettext}
-                        <table cellspacing="0" cellpadding="2" width="100%" class="exp-skin-table">
-                            {exp_include file='_recur_dates.tpl'}
-                        </table>
+                        {exp_include file='_recur_dates.tpl'}
                     {/if}
                 </div>
                 {if $config.enable_feedback}
