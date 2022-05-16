@@ -133,7 +133,7 @@
 				</td>
 			</tr>
 		{foreachelse}
-			<tr><td colspan="2" align="center"><em>{'No past events.'|gettext}</em></td></tr>
+			<tr><td colspan="3" align="center"><em>{'No past events.'|gettext}</em></td></tr>
 		{/foreach}
 		</tbody>
 	</table>

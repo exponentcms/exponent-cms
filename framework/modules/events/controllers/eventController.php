@@ -541,14 +541,14 @@ class eventController extends expController {
                         $end = null;
                 }
 //                $items = $this->getEventsForDates($dates, $sort_asc, isset($this->config['only_featured']) ? true : false, true);
-                $items = $this->event->getEventsForDates($dates, $sort_asc, isset($this->config['only_featured']) ? true : false, true);
-                if ($viewrange != 'past') {
+                $items = $this->event->getEventsForDates($dates, $sort_asc, isset($this->config['only_featured']) ? true : false, ($viewrange !== 'past'));
+                if ($viewrange !== 'past') {
                     $extitems = $this->getExternalEvents($begin, $end);
                     // we need to flatten these down to simple array of events
                     $extitem = array();
                     foreach ($extitems as $days) {
                         foreach ($days as $event) {
-                            if (empty($event->eventdate->date) || ($viewrange == 'upcoming' && $event->eventdate->date < time()))
+                            if (empty($event->eventdate->date) || ($viewrange === 'upcoming' && $event->eventdate->date < time()))
                                 break;
                             if (empty($event->eventstart))
                                 $event->eventstart = $event->eventdate->date;
@@ -569,7 +569,7 @@ class eventController extends expController {
                     $items = array_merge($items, $regitem);
 
                     // remove today's events that have already ended
-                    if ($viewtype == 'default' && $viewrange == 'upcoming') {
+                    if ($viewtype === 'default' && $viewrange === 'upcoming') {
                         foreach ($items as $key=>$item) {
                             if (!$item->is_allday && $item->eventend < time()) {
                                 //fixme we've left events ending earlier in the day, but already cancelled out tomorrow's event

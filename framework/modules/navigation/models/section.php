@@ -428,6 +428,7 @@ class section extends expRecord {
                 $obj->expFile = $sections[$i]->expFile;
                 $obj->glyph = $sections[$i]->glyph;
                 $obj->glyph_only = $sections[$i]->glyph_only;
+//                $obj->depth = $sections[$i]->depth;  //fixme should be included, but causes menu display anomalies
                 $obj->type = $sections[$i]->alias_type;
                 if ($sections[$i]->active == 1) {
                     $obj->url = $sections[$i]->link;
