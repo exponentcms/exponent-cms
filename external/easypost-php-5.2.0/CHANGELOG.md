@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v5.2.0 (2022-05-19)
+
+- Adds the `EndShipper` Beta class with `create`, `retrieve`, `all`, and `save` functions
+
 ## v5.1.1 (2022-05-09)
 
 - Adds present but unimported supplemental EasyPost object classes such as `TrackingDetails` to the lib (closes #164)

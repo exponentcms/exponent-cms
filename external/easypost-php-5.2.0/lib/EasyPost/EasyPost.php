@@ -19,6 +19,13 @@ abstract class EasyPost
     public static $apiBase = 'https://api.easypost.com/v2';
 
     /**
+     * The base beta url to use for all requests.
+     *
+     * @var string
+     */
+    public static $betaApiBase = 'https://api.easypost.com/beta';
+
+    /**
      * The API version used in requests.
      *
      * @var string
@@ -48,7 +55,7 @@ abstract class EasyPost
      *
      * @var string
      */
-    const VERSION = '5.1.1';
+    const VERSION = '5.2.0';
 
     /**
      * Get the API key.
