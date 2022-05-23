@@ -1,11 +1,11 @@
-/*! DataTables 1.12.0
+/*! DataTables 1.12.1
  * ©2008-2022 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     DataTables
  * @description Paginate, search and order HTML tables
- * @version     1.12.0
+ * @version     1.12.1
  * @author      SpryMedia Ltd
  * @contact     www.datatables.net
  * @copyright   SpryMedia Ltd.
@@ -5336,6 +5336,7 @@
 			footerCopy = footer.clone().prependTo( table );
 			footerTrgEls = footer.find('tr'); // the original tfoot is in its own table and must be sized
 			footerSrcEls = footerCopy.find('tr');
+			footerCopy.find('[id]').removeAttr('id');
 		}
 	
 		// Clone the current header and footer elements and then place it into the inner table
@@ -5343,6 +5344,7 @@
 		headerTrgEls = header.find('tr'); // original header is in its own table
 		headerSrcEls = headerCopy.find('tr');
 		headerCopy.find('th, td').removeAttr('tabindex');
+		headerCopy.find('[id]').removeAttr('id');
 	
 	
 		/*
@@ -9656,7 +9658,7 @@
 	 *  @type string
 	 *  @default Version number
 	 */
-	DataTable.version = "1.12.0";
+	DataTable.version = "1.12.1";
 	
 	/**
 	 * Private data store, containing all of the settings objects that are
@@ -15291,14 +15293,26 @@
 	}
 	
 	// Based on locale, determine standard number formatting
-	var __thousands = '';
-	var __decimal = '';
+	// Fallback for legacy browsers is US English
+	var __thousands = ',';
+	var __decimal = '.';
 	
 	if (Intl) {
-		var num = new Intl.NumberFormat().formatToParts(1000.1);
-	
-		__thousands = num[1].value;
-		__decimal = num[3].value;
+		try {
+			var num = new Intl.NumberFormat().formatToParts(100000.1);
+		
+			for (var i=0 ; i<num.length ; i++) {
+				if (num[i].type === 'group') {
+					__thousands = num[i].value;
+				}
+				else if (num[i].type === 'decimal') {
+					__decimal = num[i].value;
+				}
+			}
+		}
+		catch (e) {
+			// noop
+		}
 	}
 	
 	// Formatted date time detection - use by declaring the formats you are going to use
@@ -15364,6 +15378,10 @@
 			return {
 				display: function ( d ) {
 					if ( typeof d !== 'number' && typeof d !== 'string' ) {
+						return d;
+					}
+	
+					if (d === '' || d === null) {
 						return d;
 					}
 	

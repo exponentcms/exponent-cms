@@ -375,8 +375,8 @@ class newsController extends expController {
         $metainfo['url'] = empty($object->meta_fb['url']) ? $canonical : $object->meta_fb['url'];
         $metainfo['image'] = empty($object->meta_fb['fbimage'][0]) ? '' : $object->meta_fb['fbimage'][0]->url;
         if (empty($metainfo['image'])) {
-            if (!empty($object->expFile['images'][0]->is_image)) {
-                $metainfo['image'] = $object->expFile['images'][0]->url;
+            if (!empty($object->expFile[0]->is_image)) {
+                $metainfo['image'] = $object->expFile[0]->url;
             } else {
                 $config = expConfig::getConfig($object->location_data);
                 if (!empty($config['expFile']['fbimage'][0]))
@@ -417,8 +417,8 @@ class newsController extends expController {
         $metainfo['description'] = substr(empty($object->meta_tw['description']) ? $desc : $object->meta_tw['description'], 0, 199);
         $metainfo['image'] = empty($object->meta_tw['twimage'][0]) ? '' : $object->meta_tw['twimage'][0]->url;
         if (empty($metainfo['image'])) {
-            if (!empty($object->expFile['images'][0]->is_image)) {
-                $metainfo['image'] = $object->expFile['images'][0]->url;
+            if (!empty($object->expFile[0]->is_image)) {
+                $metainfo['image'] = $object->expFile[0]->url;
             } else {
                 if (!empty($config['expFile']['twimage'][0]))
                     $file = new expFile($config['expFile']['twimage'][0]);

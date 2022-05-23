@@ -4,7 +4,7 @@ Doctrine Lexer,1.2.3,github.com/doctrine/lexer,1.2.3,needed by swiftmailer v6
 EmailValidator,3.1.2,github.com/egulias/EmailValidator,3.1.2,needed by swiftmailer v6; move folder structure and add autoloader to main file
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,28.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,28.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
-Smarty,3.1.27/4.1.0,smarty.net,4.1.0,
+Smarty,3.1.27/4.1.1,smarty.net,4.1.1,
 phpthumb,1.7.17exp,github.com/JamesHeinrich/phpThumb,1.7.17,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.21,github.com/JamesHeinrich/getID3,1.9.21,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.11,modify config.php
@@ -22,7 +22,7 @@ pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily 
 class.upload,2.1.0,github.com/verot/class.upload.php,"2.1.0
 ","Correct flip operation where flip vertical & horizontal were inverted/swapped, php 8 fix"
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.41.49,uncomment load utilities; php 8 fix
-scssphp,1.10.2exp,github.com/scssphp/scssphp,1.10.2,includes example server; hack to compile newui
+scssphp,1.10.3exp,github.com/scssphp/scssphp,1.10.3,includes example server; hack to compile newui
 lessphp,0.5.0exp,github.com/leafo/lessphp,0.5.0,"will not compile bootstrap v3+, hack to allow prefix"
 less.php,3.1.0exp,github.com/wikimedia/less.php,3.1.0,"code edit to fix IIS compatibility, php v5.6 fix"
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
@@ -47,7 +47,7 @@ html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 CKEditor,4.18.0,ckeditor.com,4.18.0/34.0.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
-TinyMCE v5,5.10.3,tiny.cloud,5.10.3/6.0.2,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
+TinyMCE v5,5.10.4,tiny.cloud,5.10.4/6.0.2,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.9,github.com/moxiecode/plupload,2.3.9/3.1.5,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 elFinder,2.1.60,elfinder.org,2.1.60,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
@@ -61,11 +61,11 @@ validate,1.19.3exp,jqueryvalidation.org,1.19.3,edit for 'undefined' in 'min' & '
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker/,1.6.3,used by adminer
 TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
-DataTables,1.12.0,www.datatables.net,1.12.0,includes boostrap2 integration w/ renamed 1.10.7 version
+DataTables,1.12.0,www.datatables.net,1.12.1,includes boostrap2 integration w/ renamed 1.10.7 version
 DataTables Checkboxes,1.2.13,github.com/gyrocode/jquery-datatables-checkboxes,1.2.13,
 DataTables Tabletools,2.2.4,www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,github.com/Comanche/datatables-responsive,0.2.0,replaced by 'Responsive' in 1.10.8
-yadcf,0.9.3,github.com/vedmack/yadcf,0.9.3,
+yadcf,0.9.4b45,github.com/vedmack/yadcf,0.9.4b45,
 tag-it,2,aehlke.github.io/tag-it/,2,renamed css file to same as js file for our loader
 multiselect,2,mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.1.0,excolo.github.io/Excolo-Slider/,1.1.0,
@@ -88,7 +88,7 @@ select2,4.0.13,github.com/ivaynberg/select2,4.0.13,renamed select2.full.js to se
 shuffle.js,v3.1.1,github.com/Vestride/Shuffle,4.2.0/5.4.1/6.0.0,
 Jasny Bootstrap2,2.3.1,jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,4.0.0,jasny.github.io/bootstrap,4.0.0,only using fileinput at this time
-easypost sdk,5.1.1,github.com/EasyPost/easypost-php,5.1.1,
+easypost sdk,5.2.0,github.com/EasyPost/easypost-php,5.2.0,
 jquery.cookie.js,1.4.1,github.com/carhartl/jquery-cookie,1.4.1,
 jquery.history.js,1.8b2,github.com/browserstate/history.js/,1.8.0,
 Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
