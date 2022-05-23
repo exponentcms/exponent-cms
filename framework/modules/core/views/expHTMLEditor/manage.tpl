@@ -13,9 +13,14 @@
  *
  *}
 
-{css unique="managehtml1" corecss="admin-global,tables"}
+{css unique="managehtml1" corecss="tables"}
 
 {/css}
+{if (!bs3() && !bs4() && !bs5())}
+    {css unique="admin-global" corecss="admin-global"}
+
+    {/css}
+{/if}
 
 <div class="module administration htmleditor">
     <div class="info-header">
