@@ -499,6 +499,7 @@ $opts = array(
             // 'copyOverwrite' => false,
             'copyJoin'        => true,
 //            'mimeDetect'      => 'internal',
+            'mimeDetect'      => 'mime_content_type',
 //            'tmpPath'         => BASE . 'tmp',
             'tmbCrop'         => false,
 //            'imgLib'          => 'gd',  // 'auto' doesn't seem to work on some servers
