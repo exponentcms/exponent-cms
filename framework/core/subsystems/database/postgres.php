@@ -72,6 +72,8 @@ class postgres_database extends database {
 			@trigger_error( $this->connection );
 
 			$this->prefix = DB_TABLE_PREFIX . '_';
+            $server_info = pg_version($this->connection);
+            $this->version = 'PostgreSQL ' . $server_info['server'];
 		}
 	}
 

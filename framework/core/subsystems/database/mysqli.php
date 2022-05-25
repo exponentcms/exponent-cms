@@ -67,6 +67,7 @@ class mysqli_database extends database {
 		}
 
 		$this->prefix = DB_TABLE_PREFIX . '_';
+        $this->version = 'MySQL ' . mysqli_get_server_info($this->connection);
 
 		if (!DEVELOPMENT)
             mysqli_report(MYSQLI_REPORT_OFF);  // php v8.1 help

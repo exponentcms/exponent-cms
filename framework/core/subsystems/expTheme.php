@@ -283,7 +283,7 @@ class expTheme
         if ($config['meta']['generator']) {
             $str .= "\t" . '<meta name="Generator" content="Exponent Content Management System - v' . expVersion::getVersion(
                     true
-                ) . self::getThemeDetails() . '" ' . XHTML_CLOSING . '>' . "\n";
+                ) . ' ' . gt('using') . ' ' . self::getThemeDetails() . '" ' . XHTML_CLOSING . '>' . "\n";
         }
         if ($config['meta']['keywords']) {
             $str .= "\t" . '<meta name="Keywords" content="' . $metainfo['keywords'] . '" ' . XHTML_CLOSING . '>' . "\n";
@@ -1618,7 +1618,7 @@ class expTheme
             if (class_exists($theme_file)) {
                 // Need to avoid instantiating non-existent classes.
                 $theme = new $theme_file();
-                return ' ' . gt('using') . ' ' . $theme->name() . ' ' . gt('by') . ' ' . $theme->author();
+                return $theme->name() . ' ' . gt('by') . ' ' . $theme->author();
             }
         }
         return '';

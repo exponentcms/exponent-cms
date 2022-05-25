@@ -51,6 +51,7 @@ class odbc_database extends database {
 			$this->havedb = true;
 		}
 		$this->prefix = DB_TABLE_PREFIX . '_';
+        $this->version = 'ODBC';
 	}
 
     /** Begin SSP Methods */
