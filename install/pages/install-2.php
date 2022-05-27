@@ -60,6 +60,9 @@ $config = array(
 </script>
 
 <h1><?php echo gt('Configure Database'); ?></h1>
+<span style="color: red; font-weight: bold; padding-top: 8px;" id="errorMessage">
+    <?php echo isset($_REQUEST['errconnect']) == 'true' ? gt('Unable to connect to database') . ": " . $_REQUEST['errmessage'] : ''; ?>
+</span>
 <form role="form" method="post" action="index.php">
     <input type="hidden" name="page" value="install-3"/>
     <div class="control">

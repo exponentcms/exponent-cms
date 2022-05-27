@@ -103,6 +103,12 @@ $warning = array();
             1
         );
 
+        if ($db->error_code) {
+            flash('error', $db->error_code);
+            header('Location: index.php?page=install-2&errconnect=true&errmessage=' . urlencode($db->error_code));
+            exit();
+        }
+
         $db->prefix = $config['db_table_prefix'] . '_';
 
         $status = array();
