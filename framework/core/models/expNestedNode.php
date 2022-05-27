@@ -48,8 +48,10 @@ abstract class expNestedNode extends expRecord {
 		// if this object is empty we'll treat it like a top level'
 		if (empty($this->id)) {
 			global $db;
-			$this->lft = $db->min($this->table, 'lft');
-			$this->rgt = $db->max($this->table, 'rgt');
+            if ($this->havedb == true) {
+                $this->lft = $db->min($this->table, 'lft');
+                $this->rgt = $db->max($this->table, 'rgt');
+            }
 		}
 		$this->items_per_page = 0;  //note fix for strict mode, UNUSED
 	}

@@ -171,6 +171,8 @@ class postgres_database extends database {
 	}
 
 	function alterTable($tablename,$newdatadef,$info,$aggressive = false) {
+        if ($this->havedb == true)
+            expSession::clearAllUsersSessionCache();
 		$dd = $this->getDataDefinition($tablename);
 		$modified = false;
 

@@ -38,7 +38,7 @@ class expDatabase {
      * @param bool $new
      * @param null $log
      *
-     * @return \database the database object
+     * @return _database|database|stdClass
      */
 	public static function connect($username,$password,$hostname,$database,$dbclass = '',$new=false,$log=null) {
 		if (!defined('DB_ENGINE')) {
@@ -137,7 +137,8 @@ class expDatabase {
     public static function install_dbtables($aggressive=false, $workflow=ENABLE_WORKFLOW) {
    	    global $db;
 
-   		expSession::clearAllUsersSessionCache();
+        if ($db->havedb == true)
+            expSession::clearAllUsersSessionCache();
    		$tables = array();
 
    		// first the core definitions

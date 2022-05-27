@@ -592,7 +592,8 @@ class odbc_database extends database {
      * @return array
      */
     function alterTable($tablename, $newdatadef, $info, $aggressive = false) {
-        expSession::clearAllUsersSessionCache();
+        if ($this->havedb == true)
+            expSession::clearAllUsersSessionCache();
         $dd = $this->getDataDefinition($tablename);
         $modified = false;
 
