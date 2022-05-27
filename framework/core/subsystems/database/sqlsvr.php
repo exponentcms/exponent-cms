@@ -51,6 +51,8 @@ class sqlsvr_database extends database {
 			$this->havedb = true;
 		}
 		$this->prefix = DB_TABLE_PREFIX . '_';
+        $server_info = sqlsrv_server_info($this->connection);
+        $this->version = 'SQL Server ' . $server_info['SQLServerVersion'];
 	}
 
     /** Begin SSP Methods */
@@ -581,7 +583,8 @@ class sqlsvr_database extends database {
      * @return array
      */
     function alterTable($tablename, $newdatadef, $info, $aggressive = false) {
-        expSession::clearAllUsersSessionCache();
+        if ($this->havedb == true)
+            expSession::clearAllUsersSessionCache();
         $dd = $this->getDataDefinition($tablename);
         $modified = false;
 

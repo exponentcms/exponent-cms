@@ -67,8 +67,11 @@ if ($user->isAdmin()) {
                                 'classname' => 'moreinfo',
                                 'info'      => '1',
                                 'text'      => $my_version . $my_type . $my_releasedate . "<br />" .
+                                    gt("Framework") . " : " . framework() . "<br />" .
+                                    gt("Theme") . " : " . expTheme::getThemeDetails() . "<br />" .
                                     gt("PHP Version") . " : " . phpversion() . "<br />" .
-                                    gt("Max Upload") . " : " . expCore::maxUploadSize(),
+                                    gt("Max Upload") . " : " . expCore::maxUploadSize() . "<br />" .
+                                    gt("DB Version") . " : " . $db->version,
                                 "disabled"  => true
                             ),
                             array(
