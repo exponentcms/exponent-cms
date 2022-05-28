@@ -162,6 +162,15 @@
 {script unique="z-admin2" bootstrap="dropdown,collapse,transition"}
 {literal}
     jQuery(document).ready(function($) {
+        var err = function () {
+            alert("{/literal}{"Your popup blocker has prevented the file manager from opening"|gettext}{literal}");
+        }
+
+        var phpwindow = function (){
+            var win = window.open('{/literal}{link controller=administration action=phpinfo ajax_action=1}{literal}');
+            if (!win) { err(); }
+        }
+
         var adminerwindow = function (){
             var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?{/literal}{$db_driver}{literal}={/literal}{$smarty.const.DB_HOST|escape:"url"}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}{/literal}{$ns}{literal}');
             if (!win) { err(); }
@@ -199,6 +208,7 @@
             }
         }
 
+        $('#phpinfo-toolbar').on('click', phpwindow);
         $('#reportabug-toolbar').on('click', reportbugwindow);
         $('#manage-db').on('click', adminerwindow);
         $('#docs-toolbar').on('click',docswindow);
