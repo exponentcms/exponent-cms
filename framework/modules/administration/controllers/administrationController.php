@@ -303,6 +303,15 @@ class administrationController extends expController {
         ));
     }
 
+    public function phpinfo() {
+        global $user;
+
+        if ($user->isAdmin()) {
+            echo phpinfo();
+        } else {
+            echo gt("Command is NOT available!");
+        }
+    }
 //    public function index() {
 //        redirect_to(array('controller'=>'administration', 'action'=>'toolbar'));
 ////        $this->toolbar();
