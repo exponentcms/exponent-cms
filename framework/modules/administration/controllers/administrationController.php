@@ -306,7 +306,7 @@ class administrationController extends expController {
     public function phpinfo() {
         global $user;
 
-        if (!$user->isAdmin()) {
+        if ($user->isAdmin()) {
             echo phpinfo();
         } else {
             echo gt("Command is NOT available!");
