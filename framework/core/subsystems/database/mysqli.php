@@ -246,6 +246,62 @@ class mysqli_database extends database {
     }
 
     /**
+   	* This is an internal function for use only within the database class
+   	* @internal Internal
+   	* @param  $name
+   	* @param  $def
+   	* @return bool|string
+   	*/
+   	function fieldSQL($name, $def) {
+   	    $sql = "`$name`";
+   	    if (!isset($def[DB_FIELD_TYPE])) {
+   	        return false;
+   	    }
+   	    $type = $def[DB_FIELD_TYPE];
+   	    if ($type === DB_DEF_ID) {
+   	        $sql .= " INT";
+   	    } else if ($type === DB_DEF_BOOLEAN) {
+   	        $sql .= " TINYINT(1)";
+   	    } else if ($type === DB_DEF_TIMESTAMP) {
+   	        $sql .= " BIGINT";
+        } else if ($type === DB_DEF_DATETIME) {
+            $sql .= " DATETIME";
+   	    } else if ($type === DB_DEF_INTEGER) {
+   	        $sql .= " MEDIUMINT";
+   	    } else if ($type === DB_DEF_STRING) {
+   	        if (isset($def[DB_FIELD_LEN]) && is_int($def[DB_FIELD_LEN])) {
+   	            $len = $def[DB_FIELD_LEN];
+   	            if ($len < 256)
+   	                $sql .= " VARCHAR($len)";
+   	            else if ($len < 65536)
+   	                $sql .= " TEXT";
+   	            else if ($len < 16777216)
+   	                $sql .= " MEDIUMTEXT";
+   	            else
+   	                $sql .= " LONGTEXT";
+   	        } else {  // default size of 'TEXT'instead of error
+                   $sql .= " TEXT";
+   	        }
+   	    } else if ($type === DB_DEF_DECIMAL) {
+   	        $sql .= " DOUBLE";
+   	    } else {
+   	        return false; // must specify known FIELD_TYPE
+   	    }
+   	    if ($type === DB_DEF_ID || $type === DB_DEF_BOOLEAN || !empty($def[DB_NOTNULL]) || !empty($def[DB_PRIMARY])) {
+               $sql .= " NOT NULL";
+           } else {
+               $sql .= " NULL";
+           }
+   	    if (isset($def[DB_DEFAULT]))
+   	        $sql .= " DEFAULT '" . $def[DB_DEFAULT] . "'";
+           else if ($type == DB_DEF_BOOLEAN || ($type === DB_DEF_ID && empty($def[DB_PRIMARY])))
+               $sql .= " DEFAULT 0";
+   	    if (isset($def[DB_INCREMENT]) && $def[DB_INCREMENT])
+   	        $sql .= " AUTO_INCREMENT";
+   	    return $sql;
+   	}
+
+    /**
      * Alter an existing table
      *
      * Alters the structure of an existing database table to conform to the passed
@@ -1321,6 +1377,36 @@ class mysqli_database extends database {
         expSession::setTableCache($table, $dd);
         return $dd;
     }
+
+    /**
+   	* This is an internal function for use only within the database class
+   	* @internal Internal
+   	* @param  $fieldObj
+   	* @return int
+   	*/
+   	function getDDFieldType($fieldObj) {
+   	    $type = strtolower($fieldObj->Type);
+
+   	    if ($type === "int")
+   	        return DB_DEF_ID;
+   	    elseif ($type === "mediumint")
+   	        return DB_DEF_INTEGER;
+   	    elseif ($type === "tinyint(1)")
+   	        return DB_DEF_BOOLEAN;
+   	    elseif ($type === "bigint")
+   	        return DB_DEF_TIMESTAMP;
+        elseif ($type === "datetime")
+            return DB_DEF_TIMESTAMP;
+   	    //else if (substr($type,5) == "double")
+               //return DB_DEF_DECIMAL;
+   	    elseif ($type === "double")
+   	        return DB_DEF_DECIMAL;
+   	    // Strings
+   	    elseif ($type === "text" || $type === "mediumtext" || $type === "longtext" || strpos($type, "varchar(") !== false)
+   	        return DB_DEF_STRING;
+   	    else
+            return DB_DEF_INTEGER;
+   	}
 
     /**
      * Returns an error message from the database server.  This is intended to be
