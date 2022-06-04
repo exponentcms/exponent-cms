@@ -64,7 +64,7 @@ class mysqli_database extends database {
 		// for using this feature to 4.1.2, although isam tables got the support for utf8 already in 4.1
 		//anything else would result in an inconsistent user experience
 
-		list($major, $minor, $micro) = sscanf(@mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
+		list($major, $minor, $micro, $variant) = sscanf(@mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
 		if(defined('DB_ENCODING')) {
 			//SET NAMES is possible since version 4.1
 			if(($major > 4) OR (($major == 4) AND ($minor >= 1))) {
@@ -73,7 +73,12 @@ class mysqli_database extends database {
 		}
 
 		$this->prefix = DB_TABLE_PREFIX . '_';
-        $this->version = 'MySQL ' . mysqli_get_server_info($this->connection);
+        $this->version = 'MySQL ' . $major . '.' . $minor . '.' .  $micro . '.' . $variant;
+        if ($major >= 8 && $minor >= 0 && $micro >= 19) {
+            $this->mysql8 = true;
+        } else {
+            $this->mysql8 = false;
+        }
 	}
 
     /**
@@ -253,6 +258,9 @@ class mysqli_database extends database {
    	* @return bool|string
    	*/
    	function fieldSQL($name, $def) {
+        if (!$this->mysql8) {
+            return parent::fieldSQL($name, $def);
+        }
    	    $sql = "`$name`";
    	    if (!isset($def[DB_FIELD_TYPE])) {
    	        return false;
@@ -1385,6 +1393,9 @@ class mysqli_database extends database {
    	* @return int
    	*/
    	function getDDFieldType($fieldObj) {
+        if (!$this->mysql8) {
+            return parent::getDDFieldType($fieldObj);
+        }
    	    $type = strtolower($fieldObj->Type);
 
    	    if ($type === "int")
