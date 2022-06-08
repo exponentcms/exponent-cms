@@ -1521,6 +1521,7 @@ class eventController extends expController {
             $v->parse();
         }
         catch( Exception $e ) {
+            flash('error', $e->getMessage());
             return array();
         }
         if ($startdate === null) {
