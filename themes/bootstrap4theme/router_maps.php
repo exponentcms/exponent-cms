@@ -119,6 +119,25 @@ $maps = array();
 //    ),
 //);
 
+//// Use Portfolio as a Directory.  URL would look like directory/my-entry
+//$maps[] = array('controller' => 'portfolio',
+//                'action'     => 'show',
+//                'url_parts'  => array(
+//                    'controller' => 'directory',
+//                    'title'      => '(.*)'
+//                ),
+//);
+
+//// Use Forms as a Directory.  Form MUST have sef_url of 'directory' or edit as needed.  URL would look like directory/my-entry
+//$maps[] = array('controller' => 'forms',
+//                'action'     => 'show',
+//                'title'      => 'directory',
+//                'url_parts'  => array(
+//                    'controller' => 'directory',
+//                    'item'       => '(.*)'
+//                ),
+//);
+
 //// Find products by the category title .  URL would look like browse-store/my-product-category-title
 //$maps[] = array(
 //    'controller' => 'store',
