@@ -178,7 +178,7 @@ if (!function_exists('smarty_function_icon')) {
                 $icon->type = 'btn-secondary';
             }
         }
-        if (strpos($icon->class, ' ') !== false) {
+        if (!empty($icon->class) && strpos($icon->class, ' ') !== false) {
             $icon->type .= ' ' . $icon->class;
         }
         if (!empty($params['wide']) ) $icon->type .= ' btn-block';
