@@ -32,7 +32,7 @@
 function smarty_function_userlistcontrol($params, &$smarty) {
     global $db;
 
-    $users = $db->selectObjects("user", null, "username");
+    $users = $db->selectObjects("user", null, "username LIMIT 2500");
 
     $selected = isset($params['items']) ? $params['items'] : array();
     foreach ($users as $user) {
