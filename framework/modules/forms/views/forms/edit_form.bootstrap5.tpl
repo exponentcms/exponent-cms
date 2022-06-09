@@ -77,7 +77,7 @@
                         {control type="listbuilder" name="column_names_list" label="Columns for Export CSV" values=$column_names source=$fields description='Selecting NO columns is equal to selecting first five columns'|gettext}
                     {/group}
                     {group label='Custom View Configuration'|gettext}
-                    {control type=editor name='report_def' label='Custom E-Mail, Single and Portfolio View Template'|gettext value=$config.report_def rows=10 cols=60
+                    {control type=editor name='report_def' label='Custom E-Mail, Single and Portfolio View Template'|gettext value=$form.report_def rows=10 cols=60
                         plugin="fieldinsert" additionalConfig="fieldinsert_list : `$fieldlist`"
                         description='Leave blank to display all fields.  Use \'Fields\' dropdown to insert fields'}
                     {/group}
