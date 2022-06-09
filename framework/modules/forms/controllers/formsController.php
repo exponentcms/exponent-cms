@@ -102,18 +102,18 @@ class formsController extends expController {
                     $where = $this->config['report_filter'];
                 }
                 $fc = new forms_control();
-                if (empty($this->config['column_names_list'])) {
+                //fixme account for portfolio view & column list
+                $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
+                if ($this->params['view'] === 'showall_portfolio') {
+                    $this->config['column_names_list'] = array();
+                    foreach ($controls as $control) {  // we need to output all columns for portfolio view
+                        $this->config['column_names_list'][] = $control->name;
+                    }
+                } elseif (empty($this->config['column_names_list'])) {
                     $this->config['column_names_list'] = array();
                     //define some default columns...
-                    $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
-                    if (!empty($this->params['view']) && $this->params['view'] === 'showall_portfolio') {
-                        foreach ($controls as $control) {  // we need to output all columns for portfolio view
-                            $this->config['column_names_list'][] = $control->name;
-                        }
-                    } else {
-                        foreach (array_slice($controls, 0, 5) as $control) {  // default to only first 5 columns
-                            $this->config['column_names_list'][] = $control->name;
-                        }
+                    foreach (array_slice($controls, 0, 5) as $control) {  // default to only first 5 columns
+                        $this->config['column_names_list'][] = $control->name;
                     }
                 }
 
