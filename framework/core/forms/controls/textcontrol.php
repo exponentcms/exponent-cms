@@ -63,6 +63,8 @@ class textcontrol extends formcontrol {
             $extra_class = '';
         }
         $html  = '<input id="' . $idname . '" class="text form-control' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
+        if (is_null($this->default))
+            $this->default = '';
         $html .= " value=\"" . str_replace('"', "&quot;", $this->default) . "\"";
         $html .= $this->size ? " size=\"" . $this->size . "\"" : "";
         $html .= $this->multiple ? ' multiple="multiple"' : "";
