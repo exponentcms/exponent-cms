@@ -221,7 +221,7 @@ class fileController extends expController {
                         $view = $bstrapview;
                     }
                 }
-                $template = new controllertemplate($this, $view);
+                $template = new controllertemplate($controller, $view);
                 $config_found = true;
             }
         }
@@ -254,7 +254,7 @@ class fileController extends expController {
                             $actview = $bstrapview;
                         }
                     }
-                    $template = new controllertemplate($this, $actview);
+                    $template = new controllertemplate($controller, $actview);
                     $config_found = true;
                 }
             }
