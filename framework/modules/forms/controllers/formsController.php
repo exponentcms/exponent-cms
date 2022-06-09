@@ -102,18 +102,18 @@ class formsController extends expController {
                     $where = $this->config['report_filter'];
                 }
                 $fc = new forms_control();
-                if (empty($this->config['column_names_list'])) {
+                //fixme account for portfolio view & column list
+                $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
+                if ($this->params['view'] === 'showall_portfolio') {
+                    $this->config['column_names_list'] = array();
+                    foreach ($controls as $control) {  // we need to output all columns for portfolio view
+                        $this->config['column_names_list'][] = $control->name;
+                    }
+                } elseif (empty($this->config['column_names_list'])) {
                     $this->config['column_names_list'] = array();
                     //define some default columns...
-                    $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
-                    if (!empty($this->params['view']) && $this->params['view'] === 'showall_portfolio') {
-                        foreach ($controls as $control) {  // we need to output all columns for portfolio view
-                            $this->config['column_names_list'][] = $control->name;
-                        }
-                    } else {
-                        foreach (array_slice($controls, 0, 5) as $control) {  // default to only first 5 columns
-                            $this->config['column_names_list'][] = $control->name;
-                        }
+                    foreach (array_slice($controls, 0, 5) as $control) {  // default to only first 5 columns
+                        $this->config['column_names_list'][] = $control->name;
                     }
                 }
 
@@ -187,6 +187,15 @@ class formsController extends expController {
                     $this->params['view'] = null;
                 if ($this->params['view'] !== 'showall_portfolio')
                     $limit = 0;
+                // presort the items if using a second column to sort
+                if (!empty($this->config['order2'])) {
+                    usort($items, function ($a, $b): int {
+                        if ($a[$this->config['order']] === $b[$this->config['order']]) {
+                            return $b[$this->config['order2']] <=> $a[$this->config['order2']];
+                        }
+                        return $a[$this->config['order']] <=> $b[$this->config['order']];
+                    });
+                }
 
                 $page = new expPaginator(
                     array(
@@ -937,7 +946,12 @@ class formsController extends expController {
         if (!empty($f->response)) $this->config['response'] = $f->response;
         if (!empty($f->report_name)) $this->config['report_name'] = $f->report_name;
         if (!empty($f->report_desc)) $this->config['report_desc'] = $f->report_desc;
-        if (!empty($f->column_names_list)) $this->config['column_names_list'] = $f->column_names_list;
+        if (!empty($f->column_names_list)) {
+            if (is_string($f->column_names_list)){
+                $f->column_names_list = expUnserialize($f->column_names_list);
+            }
+            $this->config['column_names_list'] = $f->column_names_list;
+        }
         if (!empty($f->report_def)) $this->config['report_def'] = $f->report_def;
 
         // setup and save the config

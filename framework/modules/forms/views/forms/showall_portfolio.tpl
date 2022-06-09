@@ -29,6 +29,9 @@
         	background-color: #fcf4ce;
         	padding-left: 4px;
         }
+        .forms.showall .item .item-actions {
+            border-top: 1px dashed black;
+        }
     {/literal}
     {/css}
     <div class="module forms showall">
