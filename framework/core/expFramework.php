@@ -907,24 +907,21 @@ function expUnserialize($serial_str) {
 //        eDebug('problem:<br>'.$out.'<br>'.$out1);
 //    }
     $out2 = @unserialize($out);
+    // list of fields with links requiring cleaning
+    $stripList = array(
+        'moduledescription',
+        'description',
+        'report_desc',
+        'report_def',
+        'report_def_showall',
+        'response',
+        'auto_respond_body'
+    );
     if (is_array($out2)) {
-        if (!empty($out2['moduledescription'])) {  // work-around for links in module descriptions
-            $out2['moduledescription'] = stripslashes($out2['moduledescription']);
-        }
-        if (!empty($out2['description'])) {  // work-around for links in forms descriptions
-            $out2['description'] = stripslashes($out2['description']);
-        }
-        if (!empty($out2['report_desc'])) {  // work-around for links in forms report descriptions
-            $out2['report_desc'] = stripslashes($out2['report_desc']);
-        }
-        if (!empty($out2['report_def_showall'])) {  // work-around for links in forms report descriptions
-            $out2['report_def_showall'] = stripslashes($out2['report_def_showall']);
-        }
-        if (!empty($out2['response'])) {  // work-around for links in forms response
-            $out2['response'] = stripslashes($out2['response']);
-        }
-        if (!empty($out2['auto_respond_body'])) {  // work-around for links in forms auto respond
-            $out2['auto_respond_body'] = stripslashes($out2['auto_respond_body']);
+        foreach ($stripList as $strip) {
+            if (!empty($out2[$strip])) {  // work-around for links in rich text
+                $out2[$strip] = stripslashes($out2[$strip]);
+            }
         }
     } elseif (is_object($out2) && $out2 instanceof \htmlcontrol) {
         $out2->html = stripslashes($out2->html);

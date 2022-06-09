@@ -937,7 +937,12 @@ class formsController extends expController {
         if (!empty($f->response)) $this->config['response'] = $f->response;
         if (!empty($f->report_name)) $this->config['report_name'] = $f->report_name;
         if (!empty($f->report_desc)) $this->config['report_desc'] = $f->report_desc;
-        if (!empty($f->column_names_list)) $this->config['column_names_list'] = $f->column_names_list;
+        if (!empty($f->column_names_list)) {
+            if (is_string($f->column_names_list)){
+                $f->column_names_list = expUnserialize($f->column_names_list);
+            }
+            $this->config['column_names_list'] = $f->column_names_list;
+        }
         if (!empty($f->report_def)) $this->config['report_def'] = $f->report_def;
 
         // setup and save the config
