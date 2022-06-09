@@ -187,6 +187,15 @@ class formsController extends expController {
                     $this->params['view'] = null;
                 if ($this->params['view'] !== 'showall_portfolio')
                     $limit = 0;
+                // presort the items if using a second column to sort
+                if (!empty($this->config['order2'])) {
+                    usort($items, function ($a, $b): int {
+                        if ($a[$this->config['order']] === $b[$this->config['order']]) {
+                            return $b[$this->config['order2']] <=> $a[$this->config['order2']];
+                        }
+                        return $a[$this->config['order']] <=> $b[$this->config['order']];
+                    });
+                }
 
                 $page = new expPaginator(
                     array(
