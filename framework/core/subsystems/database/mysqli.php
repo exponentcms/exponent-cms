@@ -64,7 +64,7 @@ class mysqli_database extends database {
 		// for using this feature to 4.1.2, although isam tables got the support for utf8 already in 4.1
 		//anything else would result in an inconsistent user experience
 
-		list($major, $minor, $micro) = sscanf(@mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
+		list($major, $minor, $micro, $variant) = sscanf(@mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
 		if(defined('DB_ENCODING')) {
 			//SET NAMES is possible since version 4.1
 			if(($major > 4) OR (($major == 4) AND ($minor >= 1))) {
@@ -73,7 +73,12 @@ class mysqli_database extends database {
 		}
 
 		$this->prefix = DB_TABLE_PREFIX . '_';
-        $this->version = 'MySQL ' . mysqli_get_server_info($this->connection);
+        $this->version = 'MySQL ' . $major . '.' . $minor . '.' .  $micro . '.' . $variant;
+        if ($major >= 8 && $minor >= 0 && $micro >= 19) {
+            $this->mysql8 = true;
+        } else {
+            $this->mysql8 = false;
+        }
 	}
 
     /**
@@ -244,6 +249,65 @@ class mysqli_database extends database {
 
         return $return;
     }
+
+    /**
+   	* This is an internal function for use only within the database class
+   	* @internal Internal
+   	* @param  $name
+   	* @param  $def
+   	* @return bool|string
+   	*/
+   	function fieldSQL($name, $def) {
+        if (!$this->mysql8) {
+            return parent::fieldSQL($name, $def);
+        }
+   	    $sql = "`$name`";
+   	    if (!isset($def[DB_FIELD_TYPE])) {
+   	        return false;
+   	    }
+   	    $type = $def[DB_FIELD_TYPE];
+   	    if ($type === DB_DEF_ID) {
+   	        $sql .= " INT";
+   	    } else if ($type === DB_DEF_BOOLEAN) {
+   	        $sql .= " TINYINT(1)";
+   	    } else if ($type === DB_DEF_TIMESTAMP) {
+   	        $sql .= " BIGINT";
+        } else if ($type === DB_DEF_DATETIME) {
+            $sql .= " DATETIME";
+   	    } else if ($type === DB_DEF_INTEGER) {
+   	        $sql .= " MEDIUMINT";
+   	    } else if ($type === DB_DEF_STRING) {
+   	        if (isset($def[DB_FIELD_LEN]) && is_int($def[DB_FIELD_LEN])) {
+   	            $len = $def[DB_FIELD_LEN];
+   	            if ($len < 256)
+   	                $sql .= " VARCHAR($len)";
+   	            else if ($len < 65536)
+   	                $sql .= " TEXT";
+   	            else if ($len < 16777216)
+   	                $sql .= " MEDIUMTEXT";
+   	            else
+   	                $sql .= " LONGTEXT";
+   	        } else {  // default size of 'TEXT'instead of error
+                   $sql .= " TEXT";
+   	        }
+   	    } else if ($type === DB_DEF_DECIMAL) {
+   	        $sql .= " DOUBLE";
+   	    } else {
+   	        return false; // must specify known FIELD_TYPE
+   	    }
+   	    if ($type === DB_DEF_ID || $type === DB_DEF_BOOLEAN || !empty($def[DB_NOTNULL]) || !empty($def[DB_PRIMARY])) {
+               $sql .= " NOT NULL";
+           } else {
+               $sql .= " NULL";
+           }
+   	    if (isset($def[DB_DEFAULT]))
+   	        $sql .= " DEFAULT '" . $def[DB_DEFAULT] . "'";
+           else if ($type == DB_DEF_BOOLEAN || ($type === DB_DEF_ID && empty($def[DB_PRIMARY])))
+               $sql .= " DEFAULT 0";
+   	    if (isset($def[DB_INCREMENT]) && $def[DB_INCREMENT])
+   	        $sql .= " AUTO_INCREMENT";
+   	    return $sql;
+   	}
 
     /**
      * Alter an existing table
@@ -1321,6 +1385,39 @@ class mysqli_database extends database {
         expSession::setTableCache($table, $dd);
         return $dd;
     }
+
+    /**
+   	* This is an internal function for use only within the database class
+   	* @internal Internal
+   	* @param  $fieldObj
+   	* @return int
+   	*/
+   	function getDDFieldType($fieldObj) {
+        if (!$this->mysql8) {
+            return parent::getDDFieldType($fieldObj);
+        }
+   	    $type = strtolower($fieldObj->Type);
+
+   	    if ($type === "int")
+   	        return DB_DEF_ID;
+   	    elseif ($type === "mediumint")
+   	        return DB_DEF_INTEGER;
+   	    elseif ($type === "tinyint(1)")
+   	        return DB_DEF_BOOLEAN;
+   	    elseif ($type === "bigint")
+   	        return DB_DEF_TIMESTAMP;
+        elseif ($type === "datetime")
+            return DB_DEF_TIMESTAMP;
+   	    //else if (substr($type,5) == "double")
+               //return DB_DEF_DECIMAL;
+   	    elseif ($type === "double")
+   	        return DB_DEF_DECIMAL;
+   	    // Strings
+   	    elseif ($type === "text" || $type === "mediumtext" || $type === "longtext" || strpos($type, "varchar(") !== false)
+   	        return DB_DEF_STRING;
+   	    else
+            return DB_DEF_INTEGER;
+   	}
 
     /**
      * Returns an error message from the database server.  This is intended to be

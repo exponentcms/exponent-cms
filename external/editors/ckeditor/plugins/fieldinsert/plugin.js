@@ -21,16 +21,17 @@ CKEDITOR.plugins.add('fieldinsert' ,
             var fields = editor.config.fieldinsert_list;
 
             // add the menu to the editor
-            editor.ui.addRichCombo('fieldinsert' ,
-                {
+            editor.ui.addRichCombo('fieldinsert' ,{
                     label : 'Fields' ,
                     title : 'Fields' ,
-//                    voiceLabel : 'Fields' ,
-//                    className : 'cke_format' ,
+                    voiceLabel : 'Fields' ,
+                    className : 'cke_format' ,
                     multiSelect : false ,
                     panel : {
-                        css : [ editor.config.contentsCss, CKEDITOR.skin.getPath('editor') ] ,
-//                        voiceLabel : editor.lang.panelVoiceLabel
+                        css : []
+                            .concat(editor.config.contentsCss)
+                            .concat(CKEDITOR.skin.getPath("editor")),
+                        voiceLabel : 'Fields' ,
                     } ,
 
                     init : function () {
