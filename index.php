@@ -140,7 +140,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
 }
 
 if (DEBUG_HISTORY && $user->isAdmin() && !expJavascript::inAjaxAction())
-	eDebug(expHistory::print_history());
+	echo expHistory::print_history();
 //write page build/load time if in DEVELOPMENT mode with logging
 if (DEVELOPMENT && LOGGER)
 	eLog(expDateTime::duration(0, $timer->mark(), true) . ' - ' . $section . '/' . $sectionObj->sef_name, gt('LOAD TIME'));

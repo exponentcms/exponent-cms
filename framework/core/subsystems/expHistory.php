@@ -305,7 +305,8 @@ class expHistory extends expSubsystem {
 		global $history;
 
 		$types = array('viewable', 'editable', 'manageable');
-		$ret = "<h2>Current expHistory</h2>";
+        $ret = "<div class='exphistory'>";
+		$ret .= "<h2>Current expHistory</h2>";
 		foreach ($types as $type) {
 			$ret .= "<strong>" . $type . ":</strong><br>";
 			$hist_type = array_reverse($history->history[$type], true);
@@ -318,6 +319,9 @@ class expHistory extends expSubsystem {
 			}
 		}
 		$ret .= "<strong>expHistory Lasts:</strong> (not editable) " . $history->history['lasts']['not_editable'] . ' - (type) ' . $history->history['lasts']['type'];
+        $ret .= "<br><br>";
+        $ret .= '<a href="' . makeLink(array('controller'=>'administration', 'action'=>'clear_history')) . '">' . gt('Purge History') . '</a>';
+        $ret .= "</div>";
 		return $ret;
 	}
 
