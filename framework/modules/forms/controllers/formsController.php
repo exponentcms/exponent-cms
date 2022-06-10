@@ -339,7 +339,7 @@ class formsController extends expController {
 
             global $user;
 
-            expHistory::set('viewable', $this->params);
+            expHistory::set('editable', $this->params);
             $f = null;
             if (!empty($this->config)) {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
