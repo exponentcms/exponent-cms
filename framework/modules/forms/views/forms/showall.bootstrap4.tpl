@@ -44,7 +44,7 @@
 
     <div class="module forms showall">
         {if !empty($title)}
-        <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
+        <{$config.heading_level|default:'h1'}>{$title}</{$config.heading_level|default:'h1'}>
         {/if}
         {if $description != ""}
             {$description}

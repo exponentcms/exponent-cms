@@ -55,7 +55,7 @@ class uploadcontrol extends formcontrol {
             $fi_name = '';
             $fi_file = $this->default;
         } else {
-            $html .= '<div class="fileinput fileinput-new input-group" data-provides="fileinput">';
+            $html .= '<div class="fileinput fileinput-new input-group" data-provides="fileinput" style="width:82%">';
             $fi_name = $name;
             $fi_file = '';
         }
