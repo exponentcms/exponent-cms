@@ -1925,7 +1925,7 @@ class expFile extends expRecord {
                     //			}
                 }
 
-                // make sure the database tables are up to date
+                // make sure the database tables are up to date with the system definitions
                 expDatabase::install_dbtables();
 
                 $table = '';
@@ -2001,7 +2001,13 @@ class expFile extends expRecord {
                                         $table
                                     );
                                 } else {
-                                    $db->alterTable($table, $tabledef, array(), true);
+                                    if ($db->alterTable($table, $tabledef, array(), true) === TABLE_ALTER_SUCCEEDED) {
+                                        $errors[] = sprintf(
+                                            gt("Table structure '%s' was modified in the database (line %d)"),
+                                            $table,
+                                            $line_number
+                                        );
+                                    }
                                 }
                                 $itsoldformdata = false;  // we've recreated the table using the tabledef
                                 $itsnewformdata = false;
@@ -2036,7 +2042,14 @@ class expFile extends expRecord {
                                             $table_function($db, $object);
                                         } else {
                                             if (is_object($object)) {
-                                                $db->insertObject($object, $table);
+                                                if (!$db->insertObject($object, $table) && property_exists($object, 'id')) {
+                                                    $errors[] = sprintf(
+                                                        gt("Unable to insert '%s' record in Table '%s' (line %d)"),
+                                                        $pair[1],
+                                                        $table,
+                                                        $line_number
+                                                    );
+                                                }
                                             } else {
                                                 $errors[] = sprintf(
                                                     gt("Unable to decipher '%s' record (line %d)"),
