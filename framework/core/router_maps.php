@@ -1,4 +1,5 @@
 <?php
+
 ##################################################
 #
 # Copyright (c) 2004-2021 OIC Group, Inc.
@@ -15,11 +16,11 @@
 #
 ##################################################
 
-// we do not ship any system router maps at this time, these are the examples we also supply with shipped themes
+// these are examples which replace the system router map /framework/core/router_maps.php
 
 $maps = array();
 
-//// Find news by the date of the news post.  URL would look like news/2013/10/18 to find all the posts on Oct 18, 2013
+// Find news by the date of the news post. URL would look like news/2013/10/18 to find all the posts on Oct 18, 2013
 //$maps[] = array(
 //    'controller' => 'news',
 //    'action' => 'showall_by_date',
@@ -30,7 +31,7 @@ $maps = array();
 //        'day' => '[0-3]?\d'
 //    ),
 //);
-//// Find news by the date of the news post.  year/month URL would look like news/2013/10 to find all the posts in Oct, 2013
+// Find news by the date of the news post, year/month. URL would look like news/2013/10 to find all the posts in Oct, 2013
 //$maps[] = array(
 //    'controller' => 'news',
 //    'action' => 'showall_by_date',
@@ -40,7 +41,7 @@ $maps = array();
 //        'month' => '[01]?\d',
 //    ),
 //);
-//// Find news by the date of the news post.  year URL would look like news/2013 to find all the posts in  2013
+// Find news by the date of the news post, year. URL would look like news/2013 to find all the posts in  2013
 //$maps[] = array(
 //    'controller' => 'news',
 //    'action' => 'showall_by_date',
@@ -49,7 +50,7 @@ $maps = array();
 //        'year' => '(19|20)\d\d'
 //    ),
 //);
-//// Find news by the title.  URL would look like news/my-news-title
+// Find news by the title. URL would look like news/my-news-title
 //$maps[] = array(
 //    'controller' => 'news',
 //    'action' => 'show',
@@ -58,8 +59,8 @@ $maps = array();
 //        'title' => '(.*)'
 //    ),
 //);
-//
-//// Find blog post by the title.  URL would look like blog/my-post-title
+
+// Find blog post by the title. URL would look like blog/my-post-title
 //$maps[] = array(
 //    'controller' => 'blog',
 //    'action' => 'show',
@@ -68,7 +69,7 @@ $maps = array();
 //        'title' => '(.*)'
 //    ),
 //);
-//// Find blog posts by the tag.  URL would look like view-blogs-by-tag/my-tag
+// Find blog posts by the tag. URL would look like view-blogs-by-tag/my-tag
 //$maps[] = array(
 //    'controller' => 'blog',
 //    'action' => 'showall_by_tags',
@@ -77,7 +78,7 @@ $maps = array();
 //        'title' => '(.*)'
 //    ),
 //);
-//// Find blog posts by date.  URL would look like blog/2013/05
+// Find blog posts by date. URL would look like blog/2013/05
 //$maps[] = array(
 //    'controller' => 'blog',
 //    'action' => 'showall_by_date',
@@ -87,7 +88,7 @@ $maps = array();
 //        'month' => '[01]?\d',
 //    ),
 //);
-//// Find blog posts by author.  URL would look like view-blogs-by-author/author-username
+// Find blog posts by author. URL would look like view-blogs-by-author/author-username
 //$maps[] = array(
 //    'controller' => 'blog',
 //    'action' => 'showall_by_author',
@@ -96,8 +97,8 @@ $maps = array();
 //        'author' => '(.*)'
 //    ),
 //);
-//
-//// Find filedownloads by the title.  URL would look like file/my-file-title
+
+// Find filedownloads by the title. URL would look like file/my-file-title
 //$maps[] = array(
 //    'controller' => 'filedownload',
 //    'action' => 'show',
@@ -106,8 +107,8 @@ $maps = array();
 //        'title' => '(.*)'
 //    ),
 //);
-//
-//// Search by url.  URL would look like find/my-search-string
+
+// Search by url. URL would look like find/my-search-string
 //$maps[] = array(
 //    'controller' => 'search',
 //    'action' => 'search',
@@ -116,24 +117,29 @@ $maps = array();
 //        'search_string' => '(.*)'
 //    ),
 //);
-//
-//// Find products by the category title .  URL would look like /my-product-category-title
+
+// Use Portfolio as a Directory. URL would look like directory/my-entry
 //$maps[] = array(
-//    'controller' => 'store',
-//    'action' => 'showall',
-//    'url_parts' => array(
-//        'title' => '(.*)'  // note, if active will attempt to display ALL single parm urls as pages or store categories
+//    'controller' => 'portfolio',
+//    'action'     => 'show',
+//    'url_parts'  => array(
+//        'controller' => 'directory',
+//        'title'      => '(.*)'
 //    ),
 //);
-//// Find product by the title .  URL would look like /my-product-title
+
+// Use Forms as a Directory. Form MUST have sef_url of 'directory' or edit as needed. URL would look like directory/my-entry
 //$maps[] = array(
-//    'controller' => 'store',
-//    'action' => 'show',
-//    'url_parts' => array(
-//        'title' => '(.*)'  // note, if active will attempt to display ALL single parm urls as pages or store products
+//    'controller' => 'forms',
+//    'action'     => 'show',
+//    'title'      => 'directory',
+//    'url_parts'  => array(
+//        'controller' => 'directory',
+//        'item'       => '(.*)'
 //    ),
 //);
-//// Find products by the category title .  URL would look like browse-store/my-product-category-title
+
+// Find products by the category title. URL would look like browse-store/my-product-category-title
 //$maps[] = array(
 //    'controller' => 'store',
 //    'action' => 'showall',
@@ -142,7 +148,7 @@ $maps = array();
 //        'title' => '(.*)'
 //    ),
 //);
-//// Find product by the title .  URL would look like store/my-product-title
+// Find product by the title. URL would look like store/my-product-title
 //$maps[] = array(
 //    'controller' => 'store',
 //    'action' => 'show',
@@ -151,8 +157,8 @@ $maps = array();
 //        'title' => '(.*)'
 //    ),
 //);
-//
-//// Find help by the version and title.  URL would look like docs/2.0.1/my-help-title
+
+// Find help by the version and title. URL would look like docs/2.0.1/my-help-title
 //$maps[] = array(
 //    'controller' => 'help',
 //    'action' => 'show',
@@ -163,7 +169,7 @@ $maps = array();
 //        'title' => '(.*)'
 //    ),
 //);
-//// Find current help doc by the title.  URL would look like docs/my-help-title
+// Find current help doc by the title. URL would look like docs/my-help-title
 //$maps[] = array(
 //    'controller' => 'help',
 //    'action' => 'show',

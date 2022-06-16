@@ -51,6 +51,7 @@
                     {else}
                         {control type="checkbox" name="is_saved" label="Save Form Submissions to the Database?"|gettext value=1 checked=$form->is_saved description='Forms not saved to the database, are required to send an email on submission'|gettext}
                     {/if}
+                    {control type="checkbox" name="is_searchable" label="Return as Search Results?"|gettext value=1 checked=$form->is_searchable description='Add form records imto search index to appear as search results'|gettext}
                     {if !empty($form->table_name)}
                         {control type=text name='table_name' label='Table Name'|gettext value=$form->table_name disabled=true}
                         {control type=hidden name='table_name' value=$form->table_name}
