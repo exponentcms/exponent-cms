@@ -61,7 +61,7 @@ class formsController extends expController {
     }
 
     static function isSearchable() {
-        return false;
+        return true; // implemented v2.6.1
     }
 
     function searchName() {
@@ -711,7 +711,7 @@ class formsController extends expController {
                         $location_data = expCore::makeLocation($mod,$this->params['src'],$this->params['int']);
                     }
                     $db_data->location_data = serialize($location_data);
-                    $db_data->id = $f->insertRecord($db_data);
+                    $this->params['data_id'] = $f->insertRecord($db_data);
                 }
                 if ($f->is_searchable) {
                     $this->forms = $f;
@@ -1445,101 +1445,38 @@ class formsController extends expController {
     public function addContentToSearch() {
         global $db;
 
-        //fixme first find all the saved forms
-        //next find each forms items as needed
-        $tablename = $this->forms->table_name;
+        // first find if it's a single item or all the searchable forms
         if (isset($this->params['data_id'])) {
-            $cnt = $this->forms->getRecord($this->params['data_id']);
-            if (!empty($cnt->id)) {
-                $origid = $cnt->id;
-                unset($cnt->id);
-                $cnt->location_data = expCore::makeLocation($this->baseclassname, null, $this->forms->id);
-               //build the search record and save it.
-                $sql = "original_id=" . $origid . " AND location_data=" . $this->forms->id . " AND ref_module='" . $this->baseclassname . "'";
-                $oldindex = $db->selectObject('search', $sql);
-                if (!empty($oldindex)) {
-                    $search_record = new search($oldindex->id, false, false);
-                    $search_record->update($cnt);
-                } else {
-                    $search_record = new search($cnt, false, false);
+            // single record
+            $content = array($this->forms->getRecord($this->params['data_id']));
+            // next add/update searchable form items to search index
+            $count = $this->add_search_record($content, $this->forms);
+        } else {
+            // all records
+            $forms = $this->forms->find('all', 'is_searchable=1');
+            $count = 0;
+            foreach ($forms as $form) {
+                $content = array();
+                foreach ($form->getRecords() as $record) {
+                    $content[] = $record;
+                    // next add/update searchable form items to search index
+                    $count += $this->add_search_record($content, $form);
                 }
-
-                // get a title
-                $needles = array(
-                    'name',
-                    'title',
-                    'last',
-                    'first',
-                    'email'
-                );
-                $search_record->title = 'Untitled';
-                foreach ($needles as $needle) {
-                    foreach (get_object_vars($cnt) as $key => $value) {
-                        if (false !== stripos($key, $needle)) {
-                            if (empty($value))
-                                continue;
-                            $search_record->title = $value;
-                            break;
-                        }
-                    }
-                }
-
-                // get some body
-                $needles = array(
-                    'body',
-                    'detail',
-                    'note',
-                    'desc',
-                );
-                $search_record->body = '';
-                foreach ($needles as $needle) {
-                    foreach (get_object_vars($cnt) as $key => $value) {
-                        if (false !== stripos($key, $needle)) {
-                            if (empty($value))
-                                continue;
-                            $search_record->body .= $value . ', ';
-                        }
-                    }
-                }
-
-                //build the search record and save it.
-                $search_record->original_id = $origid;
-                $search_record->posted = empty($cnt->timestamp) ? null : $cnt->timestamp;
-                if (!empty($cnt->sef_url)) {
-                    $link = str_replace(URL_FULL, '', makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $this->forms->sef_url, 'item' => $cnt->sef_url)));
-                } else {
-                    $link = str_replace(URL_FULL, '', makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'id' => $origid, 'src' => $src)));
-                }
-                $search_record->view_link = $link;
-    //            $search_record->ref_module = $this->classname;
-                $search_record->ref_module = $this->baseclassname;
-                $search_record->category = $this->searchName();
-                $search_record->ref_type = $this->searchCategory();
-                $search_record->save();
-                return 1;
             }
         }
-        $where = (!empty($this->$modelname->id)) ? 'id=' . $this->$modelname->id : null;
-        $supports_revisions = $this->$modelname->supports_revisions && ENABLE_WORKFLOW;
-        $needs_approval = true;
-        $content = $db->selectArrays($this->$modelname->tablename, $where, null, $supports_revisions, $needs_approval);
+        return $count;
+    }
+
+    function add_search_record($content, $form) {
+        global $db;
+
         $count = 0;
         foreach ($content as $cnt) {
-            // get the location data for this content
-            if (isset($cnt['location_data']))
-                $loc = expUnserialize($cnt['location_data']);
-            $src = isset($loc->src) ? $loc->src : null;
-            // we don't want stuff in the recycle bin
-            if (!$db->selectObjects('sectionref', "module='" . $loc->mod . "' AND source='" . $loc->src . "' AND refcount!=0")) {
-                if ($this::hasSources())
-                    continue; // this module is in the recycle bin and isn't automatically picked up by other modules
-            }
-
-            $origid = $cnt['id'];
-            unset($cnt['id']);
+            $origid = $cnt->id;
+            unset($cnt->id);
+            $cnt->location_data = expCore::makeLocation($this->baseclassname, null, $this->forms->id);
            //build the search record and save it.
-//            $sql = "original_id=" . $origid . " AND ref_module='" . $this->classname . "'";
-            $sql = "original_id=" . $origid . " AND ref_module='" . $this->baseclassname . "'";
+            $sql = "original_id=" . $origid . " AND location_data=" . $this->forms->id . " AND ref_module='" . $this->baseclassname . "'";
             $oldindex = $db->selectObject('search', $sql);
             if (!empty($oldindex)) {
                 $search_record = new search($oldindex->id, false, false);
@@ -1548,24 +1485,59 @@ class formsController extends expController {
                 $search_record = new search($cnt, false, false);
             }
 
+            // get a title
+            $needles = array(
+                'name',
+                'title',
+                'last',
+                'first',
+                'email'
+            );
+            $search_record->title = 'Untitled';
+            foreach ($needles as $needle) {
+                foreach (get_object_vars($cnt) as $key => $value) {
+                    if (false !== stripos($key, $needle)) {
+                        if (empty($value))
+                            continue;
+                        $search_record->title = $value;
+                        break;
+                    }
+                }
+            }
+
+            // get some body
+            $needles = array(
+                'body',
+                'detail',
+                'note',
+                'desc',
+            );
+            $search_record->body = '';
+            foreach ($needles as $needle) {
+                foreach (get_object_vars($cnt) as $key => $value) {
+                    if (false !== stripos($key, $needle)) {
+                        if (empty($value))
+                            continue;
+                        $search_record->body .= $value . ', ';
+                    }
+                }
+            }
+
             //build the search record and save it.
             $search_record->original_id = $origid;
-            $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
-            if (!empty($cnt['sef_url'])) {
-                $link = str_replace(URL_FULL, '', makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
+            $search_record->posted = empty($cnt->timestamp) ? null : $cnt->timestamp;
+            if (!empty($cnt->sef_url)) {
+                $link = str_replace(URL_FULL, '', makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $form->sef_url, 'item' => $cnt->sef_url)));
             } else {
-                $link = str_replace(URL_FULL, '', makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'id' => $origid, 'src' => $src)));
+                $link = str_replace(URL_FULL, '', makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'forms_id' => $form->id, 'id' => $cnt->id)));
             }
-//	        if (empty($search_record->title)) $search_record->title = 'Untitled';
             $search_record->view_link = $link;
-//            $search_record->ref_module = $this->classname;
             $search_record->ref_module = $this->baseclassname;
             $search_record->category = $this->searchName();
             $search_record->ref_type = $this->searchCategory();
             $search_record->save();
             $count++;
         }
-
         return $count;
     }
 
