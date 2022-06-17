@@ -1069,6 +1069,9 @@ class formsController extends expController {
             $this->params['table_name'] = $this->forms->updateTable();
 //            $this->params['_validate'] = false;  // we don't want a check for unique sef_name
 //            parent::update();  // now with a form tablename
+            if (!empty($this->params['is_searchable'])) {
+                $this->addContentToSearch();
+            }
         }
         expHistory::back();
     }
