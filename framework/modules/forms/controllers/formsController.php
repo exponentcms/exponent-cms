@@ -102,7 +102,7 @@ class formsController extends expController {
                     $where = $this->config['report_filter'];
                 }
                 $fc = new forms_control();
-                //fixme account for portfolio view & column list
+                // account for portfolio view & column list
                 $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
                 if (isset($this->params['view']) && $this->params['view'] === 'showall_portfolio') {
                     $this->config['column_names_list'] = array();
@@ -133,16 +133,12 @@ class formsController extends expController {
                 $columns = array();
                 foreach ($this->config['column_names_list'] as $column_name) {
                     if ($column_name === "ip") {
-//                        $columns[gt('IP Address')] = 'ip';
                         $columns['ip'] = gt('IP Address');
                     } elseif ($column_name === "sef_url") {
-//                        $columns[gt('Referrer')] = 'referrer';
                         $columns['sef_url'] = gt('SEF URL');
                     } elseif ($column_name === "referrer") {
-//                        $columns[gt('Referrer')] = 'referrer';
                         $columns['referrer'] = gt('Referrer');
                     } elseif ($column_name === "location_data") {
-//                        $columns[gt('Entry Point')] = 'location_data';
                         $columns['location_data'] = gt('Entry Point');
                     } elseif ($column_name === "user_id") {
                         foreach ($items as $key => $item) {
@@ -154,14 +150,12 @@ class formsController extends expController {
                             }
                             $items[$key] = $item;
                         }
-//                        $columns[gt('Posted by')] = 'user_id';
                         $columns['user_id'] = gt('Posted by');
                     } elseif ($column_name === "timestamp") {
                         foreach ($items as $key => $item) {
                             $item[$column_name] = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $item[$column_name]);
                             $items[$key] = $item;
                         }
-//                        $columns[gt('Timestamp')] = 'timestamp';
                         $columns['timestamp'] = gt('Timestamp');
                     } else {
                         $control = $fc->find('first', "name='" . $column_name . "' AND forms_id=" . $f->id, 'rank');
@@ -182,8 +176,8 @@ class formsController extends expController {
                         }
                     }
                 }
+                // create a show link
                 foreach ($items as $key => $item) {
-                    // create a show link
                     $items[$key]['link'] = makeLink(array(
                         'controller'=>'forms',
                         'action'=>'show',
@@ -988,6 +982,8 @@ class formsController extends expController {
                 $cols = explode('|!|', $f->column_names_list);
             }
         }
+        $fieldlist = '[';
+        // build fields, column_names, and fieldlist
         $fc = new forms_control();
         foreach ($fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0','rank') as $control) {
             $ctl = expUnserialize($control->data);
@@ -999,16 +995,26 @@ class formsController extends expController {
                     $column_names[$control->name] = $control->caption;
                 }
             }
+            if ($control_type !== 'pagecontrol' && $control_type !== 'htmlcontrol') {
+                $fieldlist .= '["{\$fields[\'' . $control->name . '\']}","' . $control->caption . '","' . gt('Insert') . ' ' . $control->caption . ' ' . gt('Field') . '"],';
+            }
         }
-        $fields['ip'] = gt('IP Address');
-        if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
-        $fields['sef_url'] = gt('SEF URL');
-        if (in_array('sef_url', $cols)) $column_names['sef_url'] = gt('SEF URL');
-        $fields['user_id'] = gt('Posted by');
-        if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
-        $fields['timestamp'] = gt('Timestamp');
-        if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
-//        if (in_array('location_data', $cols)) $column_names['location_data'] = gt('Entry Point');
+        $list = array(
+            'ip' => gt('IP Address'),
+            'sef_url' => gt('SEF URL'),
+            'user_id' => gt('Posted by'),
+            'timestamp' => gt('Timestamp')
+        );
+        foreach ($list as $name=>$caption) {
+            $fields[$name] = $caption;
+            if (in_array('ip', $cols)) {
+                $column_names[$name] = $caption;
+            }
+            $fieldlist .= '["{\$fields[\'' . $name . '\']}","' . $caption . '","' . gt('Insert') . ' ' . $caption . ' ' . gt('Field') . '"],';
+        }
+        // add link field
+        $fieldlist .= '["{\$fields[\'' . 'link' . '\']}","' . gt('Link to Record') . '","' . gt('Insert') . ' ' . gt('Link to Record') . ' ' . gt('Field') . '"],';
+        $fieldlist .= ']';
 
         if (!empty($this->params['copy'])) {
             $f->old_id = $f->id;
@@ -1017,32 +1023,6 @@ class formsController extends expController {
             $f->is_saved = false;
             $f->table_name = null;
         }
-        $fieldlist = '[';
-        if (isset($f->id)) {
-            $fc = new forms_control();
-            foreach ($fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0','rank') as $control) {
-                $ctl = expUnserialize($control->data);
-                $control_type = get_class($ctl);
-                $def = call_user_func(array($control_type, 'getFieldDefinition'));
-                if ($def != null) {
-                    $fields[$control->name] = $control->caption;
-                    if (in_array($control->name, $cols)) {
-                        $column_names[$control->name] = $control->caption;
-                    }
-                }
-                if ($control_type !== 'pagecontrol' && $control_type !== 'htmlcontrol') {
-                    $fieldlist .= '["{\$fields[\'' . $control->name . '\']}","' . $control->caption . '","' . gt('Insert') . ' ' . $control->caption . ' ' . gt('Field') . '"],';
-                }
-            }
-            $fields['ip'] = gt('IP Address');
-            if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
-            $fields['user_id'] = gt('Posted by');
-            if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
-            $fields['timestamp'] = gt('Timestamp');
-            if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
-//            if (in_array('location_data', $cols)) $column_names['location_data'] = gt('Entry Point');
-        }
-        $fieldlist .= ']';
 
         assign_to_template(array(
             'column_names' => $column_names,
@@ -1380,6 +1360,7 @@ class formsController extends expController {
         }
         $fieldlist = '[';
         if (isset($this->config['forms_id'])) {
+            // build fields, column_names, and fieldlist
             $fc = new forms_control();
             foreach ($fc->find('all', 'forms_id=' . $this->config['forms_id'] . ' AND is_readonly=0','rank') as $control) {
                 $ctl = expUnserialize($control->data);
@@ -1395,17 +1376,24 @@ class formsController extends expController {
                     $fieldlist .= '["{\$fields[\'' . $control->name . '\']}","' . $control->caption . '","' . gt('Insert') . ' ' . $control->caption . ' ' . gt('Field') . '"],';
                 }
             }
-            $fields['ip'] = gt('IP Address');
-            if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
-            $fields['sef_url'] = gt('SEF URL');
-            if (in_array('sef_url', $cols)) $column_names['sef_url'] = gt('SEF URL');
-            $fields['user_id'] = gt('Posted by');
-            if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
-            $fields['timestamp'] = gt('Timestamp');
-            if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
-//            if (in_array('location_data', $cols)) $column_names['location_data'] = gt('Entry Point');
+            $list = array(
+                'ip' => gt('IP Address'),
+                'sef_url' => gt('SEF URL'),
+                'user_id' => gt('Posted by'),
+                'timestamp' => gt('Timestamp')
+            );
+            foreach ($list as $name=>$caption) {
+                $fields[$name] = $caption;
+                if (in_array('ip', $cols)) {
+                    $column_names[$name] = $caption;
+                }
+                $fieldlist .= '["{\$fields[\'' . $name . '\']}","' . $caption . '","' . gt('Insert') . ' ' . $caption . ' ' . gt('Field') . '"],';
+            }
+            // add link field
+            $fieldlist .= '["{\$fields[\'' . 'link' . '\']}","' . gt('Record Link') . '","' . gt('Insert') . ' ' . gt('Record Link') . ' ' . gt('Field') . '"],';
         }
         $fieldlist .= ']';
+
         $title = gt('No Form Assigned Yet!');
         if (!empty($this->config['forms_id'])) {
             $form = $this->forms->find('first', 'id=' . $this->config['forms_id']);
