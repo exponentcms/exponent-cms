@@ -309,7 +309,9 @@ class expHistory extends expSubsystem {
 		$ret .= "<h2>Current expHistory</h2>";
 		foreach ($types as $type) {
 			$ret .= "<strong>" . $type . ":</strong><br>";
-			$hist_type = array_reverse($history->history[$type], true);
+            $hist_type = array_reverse($history->history[$type], true);
+            if (!empty($hist_type))
+                $ret .= '<a href="' . expHistory::getLast($type) . '">' . gt('Return to Last') . ' ' . $type . '</a><br>';
 			foreach ($hist_type as $index=>$hist) {
 				$ret .= "&#160;&#160;" . $index ." - " . $hist['url_type'] . ' : ';
 				foreach ($hist['params'] as $key=>$value) {
@@ -318,7 +320,7 @@ class expHistory extends expSubsystem {
 				$ret .= "<br>";
 			}
 		}
-		$ret .= "<strong>expHistory Lasts:</strong> (not editable) " . $history->history['lasts']['not_editable'] . ' - (type) ' . $history->history['lasts']['type'];
+		$ret .= "<br><strong>expHistory Lasts:</strong> (not editable) " . $history->history['lasts']['not_editable'] . ' - (type) ' . $history->history['lasts']['type'];
         $ret .= "<br><br>";
         $ret .= '<a href="' . makeLink(array('controller'=>'administration', 'action'=>'clear_history')) . '">' . gt('Purge History') . '</a>';
         $ret .= "</div>";
