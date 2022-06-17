@@ -104,7 +104,7 @@ class formsController extends expController {
                 $fc = new forms_control();
                 //fixme account for portfolio view & column list
                 $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
-                if ($this->params['view'] === 'showall_portfolio') {
+                if (isset($this->params['view']) && $this->params['view'] === 'showall_portfolio') {
                     $this->config['column_names_list'] = array();
                     foreach ($controls as $control) {  // we need to output all columns for portfolio view
                         $this->config['column_names_list'][] = $control->name;
@@ -875,8 +875,8 @@ class formsController extends expController {
                 ));
             } else {
                 flash('message', gt('Record was updated!'));
-        //        expHistory::back();
-                expHistory::returnTo('editable');
+                expHistory::back();
+//                expHistory::returnTo('editable');
             }
         }
     }
