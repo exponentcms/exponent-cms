@@ -21,7 +21,9 @@
     {literal}
         .forms.showall .item {
             margin-left: 10px;
+            margin-right: 10px;
             padding-left: 10px;
+            padding-right: 10px;
         }
         .forms.showall .category {
         	border-top: 1px black solid;
@@ -29,12 +31,9 @@
         	background-color: #fcf4ce;
         	padding-left: 4px;
         }
-        .forms.showall .item .item-actions {
-            border-top: 1px dashed black;
-        }
     {/literal}
     {/css}
-    <div class="module forms showall">
+    <div class="module forms showall portfolio">
         {if !empty($title)}
         <{$config.heading_level|default:'h1'}>{$title}</{$config.heading_level|default:'h1'}>
         {/if}

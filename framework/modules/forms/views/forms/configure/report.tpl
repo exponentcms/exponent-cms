@@ -29,8 +29,13 @@
     {control type="listbuilder" name="column_names_list" label="Columns for View Data" values=$column_names source=$fields description='Selecting NO columns is equal to selecting first five columns'|gettext}
 {/group}
 {group label='Custom View Configuration'|gettext}
+    {if !empty($fieldlist)}
+        {$addconf = "fieldinsert_list : $fieldlist"}
+    {else}
+        {$addconf = "fieldinsert_list : ''"}
+    {/if}
     {control type=editor name='report_def' label='Custom E-Mail and Single Item View Template'|gettext value=$config.report_def rows=10 cols=60
-        plugin="fieldinsert" additionalConfig="fieldinsert_list : `$fieldlist`"
+        plugin="fieldinsert" additionalConfig=$addconf
         description='Leave blank to display all fields.  Use \'Fields\' dropdown to insert fields'}
     {control type="dropdown" name="order" label="Sort records by"|gettext items=$fields value=$config.order|default:'id'}
     {control type=radiogroup name='dir' label='Sorting Direction'|gettext default=$config.dir|default:'ASC' items='Ascending, Descending'|gettxtlist values='ASC,DESC'}

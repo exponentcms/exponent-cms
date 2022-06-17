@@ -118,7 +118,18 @@ class formsController extends expController {
                 }
 
                 // pre-process records
+                if (!empty($this->config['order']))
+                    $where .= ' ORDER BY ' . $this->config['order'];
                 $items = $f->selectRecordsArray($where);
+                // resort the items if using a second column to sort
+                if (!empty($this->config['order2'])) {
+                    usort($items, function ($a, $b): int {
+                        if ($a[$this->config['order']] === $b[$this->config['order']]) {
+                            return $a[$this->config['order2']] <=> $b[$this->config['order2']];
+                        }
+                        return $a[$this->config['order']] <=> $b[$this->config['order']];
+                    });
+                }
                 $columns = array();
                 foreach ($this->config['column_names_list'] as $column_name) {
                     if ($column_name === "ip") {
@@ -172,12 +183,14 @@ class formsController extends expController {
                     }
                 }
                 foreach ($items as $key => $item) {
-                    //We have to create a show link
+                    // create a show link
                     $items[$key]['link'] = makeLink(array(
                         'controller'=>'forms',
                         'action'=>'show',
-                        'forms_id'=>$f->id,
-                        'id'=>$items[$key]['id'],
+//                        'forms_id'=>$f->id,
+                        'title'=>$f->sef_url,
+//                        'id'=>$items[$key]['id'],
+                        'item'=>$items[$key]['sef_url'],
                         'src'=>$this->loc->src
                     ));
                 }
@@ -187,23 +200,15 @@ class formsController extends expController {
                     $this->params['view'] = null;
                 if ($this->params['view'] !== 'showall_portfolio')
                     $limit = 0;
-                // presort the items if using a second column to sort
-                if (!empty($this->config['order2'])) {
-                    usort($items, function ($a, $b): int {
-                        if ($a[$this->config['order']] === $b[$this->config['order']]) {
-                            return $b[$this->config['order2']] <=> $a[$this->config['order2']];
-                        }
-                        return $a[$this->config['order']] <=> $b[$this->config['order']];
-                    });
-                }
 
                 $page = new expPaginator(
                     array(
                         'records' => $items,
                         'where' => 1,
                         'limit'   => $limit,
-                        'order' => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : (!empty($this->config['order']) ? $this->config['order'] : 'id'),
-                        'dir' => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : (!empty($this->config['dir']) ? $this->config['dir'] : 'ASC'),
+//                        'order' => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : (!empty($this->config['order']) ? $this->config['order'] : 'id'),
+//                        'dir' => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : (!empty($this->config['dir']) ? $this->config['dir'] : 'ASC'),
+                        'dontsort' => true,  // we've already sorted them
                         'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
                         'controller' => $this->baseclassname,
                         'action' => $this->params['action'],
@@ -1406,6 +1411,7 @@ class formsController extends expController {
             $form = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             $this->config['is_saved'] = $form->is_saved;
             $this->config['table_name'] = $form->table_name;
+            $this->config['is_searchable'] = $form->is_searchable;
             $title = $form->title;
         }
         assign_to_template(array(
@@ -1488,7 +1494,7 @@ class formsController extends expController {
                 $search_record = new search($cnt, false, false);
             }
 
-            // get a title
+            // get a title from 1st matching field
             $needles = array(
                 'name',
                 'title',
@@ -1503,17 +1509,19 @@ class formsController extends expController {
                         if (empty($value))
                             continue;
                         $search_record->title = $value;
-                        break;
+                        break 2;
                     }
                 }
             }
 
-            // get some body
+            // get some body from all matching fields
             $needles = array(
                 'body',
                 'detail',
                 'note',
                 'desc',
+                'name',
+                'title',
             );
             $search_record->body = '';
             foreach ($needles as $needle) {
