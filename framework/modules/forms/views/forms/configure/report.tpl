@@ -25,10 +25,12 @@
 {control type=text name='report_name' label='Report Title'|gettext value=$config.report_name}
 {control type=html name='report_desc' label='Report Description'|gettext value=$config.report_desc}
 {control type=text name='report_filter' label='Report Filter'|gettext value=$config.report_filter description='SQL Statement to limit records returned. Empty returns all records.'|gettext}
+{control type="dropdown" name="order" label="Sort records by"|gettext items=$fields value=$config.order|default:'id'}
+{control type=radiogroup name='dir' label='Sorting Direction'|gettext default=$config.dir|default:'ASC' items='Ascending, Descending'|gettxtlist values='ASC,DESC'}
 {group label='Multi-Record Tabular View Configuration'|gettext}
-    {control type="listbuilder" name="column_names_list" label="Columns for View Data" values=$column_names source=$fields description='Selecting NO columns is equal to selecting first five columns'|gettext}
+    {control type="listbuilder" name="column_names_list" label="Columns for Display and Export CSV" values=$column_names source=$fields description='Selecting NO columns is equal to selecting first five columns'|gettext}
 {/group}
-{group label='Custom View Configuration'|gettext}
+{group label='Custom Single Record View Configuration'|gettext}
     {if !empty($fieldlist)}
         {$addconf = "fieldinsert_list : $fieldlist"}
     {else}
@@ -37,6 +39,4 @@
     {control type=editor name='report_def' label='Custom E-Mail and Single Item View Template'|gettext value=$config.report_def rows=10 cols=60
         plugin="fieldinsert" additionalConfig=$addconf
         description='Leave blank to display all fields.  Use \'Fields\' dropdown to insert fields'}
-    {control type="dropdown" name="order" label="Sort records by"|gettext items=$fields value=$config.order|default:'id'}
-    {control type=radiogroup name='dir' label='Sorting Direction'|gettext default=$config.dir|default:'ASC' items='Ascending, Descending'|gettxtlist values='ASC,DESC'}
 {/group}
