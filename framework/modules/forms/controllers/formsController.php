@@ -1390,7 +1390,7 @@ class formsController extends expController {
                 $fieldlist .= '["{\$fields[\'' . $name . '\']}","' . $caption . '","' . gt('Insert') . ' ' . $caption . ' ' . gt('Field') . '"],';
             }
             // add link field
-            $fieldlist .= '["{\$fields[\'' . 'link' . '\']}","' . gt('Record Link') . '","' . gt('Insert') . ' ' . gt('Record Link') . ' ' . gt('Field') . '"],';
+            $fieldlist .= '["{\$fields[\'' . 'link' . '\']}","' . gt('Link to Record') . '","' . gt('Insert') . ' ' . gt('Link to Record') . ' ' . gt('Field') . '"],';
         }
         $fieldlist .= ']';
 
