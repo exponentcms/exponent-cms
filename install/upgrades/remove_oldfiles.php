@@ -74,6 +74,7 @@ class remove_oldfiles extends upgradescript {
             'exponent_version.php.orig',
             'iconspopup.php',
             'login_redirect.php',
+            'login.php',
             'manifest.php',
             'mod_preview.php',
             'module_preview.php',
