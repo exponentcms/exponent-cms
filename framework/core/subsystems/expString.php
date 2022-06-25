@@ -139,6 +139,7 @@ class expString {
         $find[] = '…';  // ellipsis
         $find[] = '—';  // em dash
         $find[] = '–';  // en dash
+        $find[] = " ";
 
         $replace[] = '"';
         $replace[] = '"';
@@ -147,6 +148,7 @@ class expString {
         $replace[] = "...";
         $replace[] = "-";
         $replace[] = "-";
+        $replace[] = " ";
 
 //        $find[] = chr(145);
 //        $find[] = chr(146);
