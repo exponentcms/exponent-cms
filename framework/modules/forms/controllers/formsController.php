@@ -329,6 +329,12 @@ class formsController extends expController {
         }
     }
 
+    /**
+     * Old entry point
+     * @deprecated
+     *
+     * @return void
+     */
     public function enter_data() {
         $this->enterdata();
     }
@@ -1464,6 +1470,14 @@ class formsController extends expController {
         return $count;
     }
 
+    /**
+     * Create a Search record from a Form record
+     *
+     * @param $content
+     * @param $form
+     * @return int
+     * @throws ReflectionException
+     */
     function add_search_record($content, $form) {
         global $db;
 
@@ -1483,7 +1497,7 @@ class formsController extends expController {
             }
 
             // get a title from 1st matching field
-            $needles = array(
+            $needles = array(  // fields we use to develop an sef_url
                 'name',
                 'title',
                 'last',
@@ -1502,14 +1516,16 @@ class formsController extends expController {
                 }
             }
 
-            // get some body from all matching fields
+            // build some search body content from all matching fields
             $needles = array(
                 'body',
                 'detail',
                 'note',
                 'desc',
-                'name',
+                'name',  // we only add the first needed to the title...
                 'title',
+                'address',
+                'city',
             );
             $search_record->body = '';
             foreach ($needles as $needle) {
