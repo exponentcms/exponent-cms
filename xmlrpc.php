@@ -98,7 +98,7 @@ function exp_getModuleInstancesByType($type = null)
             $modules[$ref->source][] = $mod;
         }
     }
-    eLog($modules, 'Modules');
+//    eLog($modules, 'Modules');
     return $modules;
 }
 
@@ -144,7 +144,7 @@ function getUsersBlogs($xmlrpcmsg)
                 );
             }
         }
-eLog($structArray, 'getUsersBlogs');
+//eLog($structArray, 'getUsersBlogs');
         return new xmlrpcresp(new xmlrpcval($structArray, 'array'));
     } else {
         return new xmlrpcresp(0, 1, "Login Failed");
