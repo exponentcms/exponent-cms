@@ -121,7 +121,17 @@ class expRouter {
                                     $link .= urlencode($params[$key])."/";
                                 }
                             }
-                            break;  // if this hits then we've found a match
+                            // account for new multi-parameter router_maps
+                            if (count($this->maps[$i]) > 3) {
+                                foreach ($this->maps[$i] as $key2=>$value2) {
+                                    if ($key2 !== "url_parts" && isset($params[$key2]) && $params[$key2] != $this->maps[$i][$key2]) {
+                                        $link = '';
+                                        continue 2;
+                                    }
+                                }
+                            } else {
+                                break;  // if this hits then we've found a traditional controller/action match
+                            }
                         }
                     }
                 }

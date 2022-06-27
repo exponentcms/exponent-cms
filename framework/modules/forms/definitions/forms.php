@@ -33,6 +33,8 @@ return array(
         DB_FIELD_LEN  => 200),
     'is_saved'          => array(
         DB_FIELD_TYPE => DB_DEF_BOOLEAN),
+    'is_searchable'          => array(
+        DB_FIELD_TYPE => DB_DEF_BOOLEAN),
     'table_name'        => array(
         DB_FIELD_TYPE => DB_DEF_STRING,
         DB_FIELD_LEN  => 100),

@@ -495,9 +495,15 @@ class administrationController extends expController {
    		expHistory::back();
    	}
 
+    public function clear_history() {
+        expHistory::flush();
+        flash('message',gt("History has been cleared"));
+        expHistory::back();
+    }
+
 	public function clear_smarty_cache() {
-		expTheme::clearSmartyCache();
         expSession::clearAllUsersSessionCache();
+		expTheme::clearSmartyCache();
     }
 
 	public function clear_css_cache() {

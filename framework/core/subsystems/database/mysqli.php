@@ -288,7 +288,7 @@ class mysqli_database extends database {
    	                $sql .= " MEDIUMTEXT";
    	            else
    	                $sql .= " LONGTEXT";
-   	        } else {  // default size of 'TEXT'instead of error
+   	        } else {  // default size of 'TEXT' instead of error
                    $sql .= " TEXT";
    	        }
    	    } else if ($type === DB_DEF_DECIMAL) {
@@ -1408,9 +1408,7 @@ class mysqli_database extends database {
    	    elseif ($type === "bigint")
    	        return DB_DEF_TIMESTAMP;
         elseif ($type === "datetime")
-            return DB_DEF_TIMESTAMP;
-   	    //else if (substr($type,5) == "double")
-               //return DB_DEF_DECIMAL;
+            return DB_DEF_DATETIME;
    	    elseif ($type === "double")
    	        return DB_DEF_DECIMAL;
    	    // Strings

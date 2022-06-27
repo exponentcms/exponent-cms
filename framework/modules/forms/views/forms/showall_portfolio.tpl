@@ -21,7 +21,9 @@
     {literal}
         .forms.showall .item {
             margin-left: 10px;
+            margin-right: 10px;
             padding-left: 10px;
+            padding-right: 10px;
         }
         .forms.showall .category {
         	border-top: 1px black solid;
@@ -29,14 +31,11 @@
         	background-color: #fcf4ce;
         	padding-left: 4px;
         }
-        .forms.showall .item .item-actions {
-            border-top: 1px dashed black;
-        }
     {/literal}
     {/css}
-    <div class="module forms showall">
+    <div class="module forms showall portfolio">
         {if !empty($title)}
-        <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
+        <{$config.heading_level|default:'h1'}>{$title}</{$config.heading_level|default:'h1'}>
         {/if}
         {if $description != ""}
             {$description}
@@ -82,7 +81,7 @@
             {$sort=$config.order}
             {foreach from=$page->records item=fields key=key name=fields}
                 {if $cat !== $fields.$sort && $config.usecategories}
-                    <h2 class="category">{if $fields.$sort!= ""}{$fields.$sort}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
+                    <{$config.item_level|default:'h2'} class="category">{if $fields.$sort!= ""}{$fields.$sort}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</{$config.item_level|default:'h2'}>
                 {/if}
                 <div class="item">
                     <div class="item-actions">

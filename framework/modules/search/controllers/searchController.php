@@ -176,7 +176,7 @@ class searchController extends expController {
     function cloud() {
         global $db;
 
-        expHistory::set('manageable', $this->params);
+        expHistory::set('viewable', $this->params);
         $page = new expPaginator(array(
             'model'=>'expTag',
             'where'=>null,

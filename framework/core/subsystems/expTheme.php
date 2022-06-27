@@ -1128,8 +1128,8 @@ class expTheme
 
         if (PUBLIC_SECTION) {
             expHistory::set('viewable', $router->params);
-        } else {
-            expHistory::set('manageable', $router->params);
+//        } else {
+//            expHistory::set('manageable', $router->params);
         }
 
         #   if (expSession::is_set("themeopt_override")) {

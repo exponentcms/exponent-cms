@@ -637,7 +637,7 @@ if (!defined('SWIFT_PATH')) {
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '3.2');
+    define('EMAIL_VALIDATOR_VERSION', '3.2.1');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 

@@ -61,7 +61,7 @@
             {clear}
         {/if}
         {if !empty($config.report_def)}
-            <{$config.heading_level|default:'h2'}>{$title}</{$config.heading_level|default:'h2'}>
+            <{$config.heading_level|default:'h1'}>{$title}</{$config.heading_level|default:'h1'}>
             {eval var=$config.report_def}
             {clear}{br}
         {else}
@@ -69,7 +69,7 @@
                 <thead>
                     <tr>
                         <th colspan="2">
-                            <{$config.heading_level|default:'h2'}>{$title}</{$config.heading_level|default:'h2'}>
+                            <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
                         </th>
                     </tr>
                 </thead>

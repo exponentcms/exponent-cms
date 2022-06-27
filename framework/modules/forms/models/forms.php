@@ -133,7 +133,7 @@ class forms extends expRecord {
     }
 
     /**
-     * Returns form records as objects
+     * Returns form records as array of objects
      *
      * @param string $where
      *

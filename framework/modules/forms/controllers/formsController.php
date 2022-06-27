@@ -61,7 +61,7 @@ class formsController extends expController {
     }
 
     static function isSearchable() {
-        return false;
+        return true; // implemented v2.6.1
     }
 
     function searchName() {
@@ -102,9 +102,9 @@ class formsController extends expController {
                     $where = $this->config['report_filter'];
                 }
                 $fc = new forms_control();
-                //fixme account for portfolio view & column list
+                // account for portfolio view & column list
                 $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
-                if ($this->params['view'] === 'showall_portfolio') {
+                if (isset($this->params['view']) && $this->params['view'] === 'showall_portfolio') {
                     $this->config['column_names_list'] = array();
                     foreach ($controls as $control) {  // we need to output all columns for portfolio view
                         $this->config['column_names_list'][] = $control->name;
@@ -118,20 +118,27 @@ class formsController extends expController {
                 }
 
                 // pre-process records
+                if (!empty($this->config['order']))
+                    $where .= ' ORDER BY ' . $this->config['order'];
                 $items = $f->selectRecordsArray($where);
+                // resort the items if using a second column to sort
+                if (!empty($this->config['order2'])) {
+                    usort($items, function ($a, $b): int {
+                        if ($a[$this->config['order']] === $b[$this->config['order']]) {
+                            return $a[$this->config['order2']] <=> $b[$this->config['order2']];
+                        }
+                        return $a[$this->config['order']] <=> $b[$this->config['order']];
+                    });
+                }
                 $columns = array();
                 foreach ($this->config['column_names_list'] as $column_name) {
                     if ($column_name === "ip") {
-//                        $columns[gt('IP Address')] = 'ip';
                         $columns['ip'] = gt('IP Address');
                     } elseif ($column_name === "sef_url") {
-//                        $columns[gt('Referrer')] = 'referrer';
                         $columns['sef_url'] = gt('SEF URL');
                     } elseif ($column_name === "referrer") {
-//                        $columns[gt('Referrer')] = 'referrer';
                         $columns['referrer'] = gt('Referrer');
                     } elseif ($column_name === "location_data") {
-//                        $columns[gt('Entry Point')] = 'location_data';
                         $columns['location_data'] = gt('Entry Point');
                     } elseif ($column_name === "user_id") {
                         foreach ($items as $key => $item) {
@@ -143,14 +150,12 @@ class formsController extends expController {
                             }
                             $items[$key] = $item;
                         }
-//                        $columns[gt('Posted by')] = 'user_id';
                         $columns['user_id'] = gt('Posted by');
                     } elseif ($column_name === "timestamp") {
                         foreach ($items as $key => $item) {
                             $item[$column_name] = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $item[$column_name]);
                             $items[$key] = $item;
                         }
-//                        $columns[gt('Timestamp')] = 'timestamp';
                         $columns['timestamp'] = gt('Timestamp');
                     } else {
                         $control = $fc->find('first', "name='" . $column_name . "' AND forms_id=" . $f->id, 'rank');
@@ -171,13 +176,15 @@ class formsController extends expController {
                         }
                     }
                 }
+                // create a show link
                 foreach ($items as $key => $item) {
-                    //We have to create a show link
                     $items[$key]['link'] = makeLink(array(
                         'controller'=>'forms',
                         'action'=>'show',
-                        'forms_id'=>$f->id,
-                        'id'=>$items[$key]['id'],
+//                        'forms_id'=>$f->id,
+                        'title'=>$f->sef_url,
+//                        'id'=>$items[$key]['id'],
+                        'item'=>$items[$key]['sef_url'],
                         'src'=>$this->loc->src
                     ));
                 }
@@ -187,23 +194,15 @@ class formsController extends expController {
                     $this->params['view'] = null;
                 if ($this->params['view'] !== 'showall_portfolio')
                     $limit = 0;
-                // presort the items if using a second column to sort
-                if (!empty($this->config['order2'])) {
-                    usort($items, function ($a, $b): int {
-                        if ($a[$this->config['order']] === $b[$this->config['order']]) {
-                            return $b[$this->config['order2']] <=> $a[$this->config['order2']];
-                        }
-                        return $a[$this->config['order']] <=> $b[$this->config['order']];
-                    });
-                }
 
                 $page = new expPaginator(
                     array(
                         'records' => $items,
                         'where' => 1,
                         'limit'   => $limit,
-                        'order' => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : (!empty($this->config['order']) ? $this->config['order'] : 'id'),
-                        'dir' => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : (!empty($this->config['dir']) ? $this->config['dir'] : 'ASC'),
+//                        'order' => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : (!empty($this->config['order']) ? $this->config['order'] : 'id'),
+//                        'dir' => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : (!empty($this->config['dir']) ? $this->config['dir'] : 'ASC'),
+                        'dontsort' => true,  // we've already sorted them
                         'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
                         'controller' => $this->baseclassname,
                         'action' => $this->params['action'],
@@ -330,6 +329,12 @@ class formsController extends expController {
         }
     }
 
+    /**
+     * Old entry point
+     * @deprecated
+     *
+     * @return void
+     */
     public function enter_data() {
         $this->enterdata();
     }
@@ -339,7 +344,7 @@ class formsController extends expController {
 
             global $user;
 
-            expHistory::set('viewable', $this->params);
+            expHistory::set('editable', $this->params);
             $f = null;
             if (!empty($this->config)) {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
@@ -711,7 +716,11 @@ class formsController extends expController {
                         $location_data = expCore::makeLocation($mod,$this->params['src'],$this->params['int']);
                     }
                     $db_data->location_data = serialize($location_data);
-                    $f->insertRecord($db_data);
+                    $this->params['data_id'] = $f->insertRecord($db_data);
+                }
+                if ($f->is_searchable) {
+                    $this->forms = $f;
+                    $this->addContentToSearch();
                 }
 
 //                if (empty($db_data->sef_url)) {
@@ -871,8 +880,8 @@ class formsController extends expController {
                 ));
             } else {
                 flash('message', gt('Record was updated!'));
-        //        expHistory::back();
-                expHistory::returnTo('editable');
+                expHistory::back();
+//                expHistory::returnTo('editable');
             }
         }
     }
@@ -979,6 +988,8 @@ class formsController extends expController {
                 $cols = explode('|!|', $f->column_names_list);
             }
         }
+        $fieldlist = '[';
+        // build fields, column_names, and fieldlist
         $fc = new forms_control();
         foreach ($fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0','rank') as $control) {
             $ctl = expUnserialize($control->data);
@@ -990,16 +1001,26 @@ class formsController extends expController {
                     $column_names[$control->name] = $control->caption;
                 }
             }
+            if ($control_type !== 'pagecontrol' && $control_type !== 'htmlcontrol') {
+                $fieldlist .= '["{\$fields[\'' . $control->name . '\']}","' . $control->caption . '","' . gt('Insert') . ' ' . $control->caption . ' ' . gt('Field') . '"],';
+            }
         }
-        $fields['ip'] = gt('IP Address');
-        if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
-        $fields['sef_url'] = gt('SEF URL');
-        if (in_array('sef_url', $cols)) $column_names['sef_url'] = gt('SEF URL');
-        $fields['user_id'] = gt('Posted by');
-        if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
-        $fields['timestamp'] = gt('Timestamp');
-        if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
-//        if (in_array('location_data', $cols)) $column_names['location_data'] = gt('Entry Point');
+        $list = array(
+            'ip' => gt('IP Address'),
+            'sef_url' => gt('SEF URL'),
+            'user_id' => gt('Posted by'),
+            'timestamp' => gt('Timestamp')
+        );
+        foreach ($list as $name=>$caption) {
+            $fields[$name] = $caption;
+            if (in_array('ip', $cols)) {
+                $column_names[$name] = $caption;
+            }
+            $fieldlist .= '["{\$fields[\'' . $name . '\']}","' . $caption . '","' . gt('Insert') . ' ' . $caption . ' ' . gt('Field') . '"],';
+        }
+        // add link field
+        $fieldlist .= '["{\$fields[\'' . 'link' . '\']}","' . gt('Link to Record') . '","' . gt('Insert') . ' ' . gt('Link to Record') . ' ' . gt('Field') . '"],';
+        $fieldlist .= ']';
 
         if (!empty($this->params['copy'])) {
             $f->old_id = $f->id;
@@ -1008,32 +1029,6 @@ class formsController extends expController {
             $f->is_saved = false;
             $f->table_name = null;
         }
-        $fieldlist = '[';
-        if (isset($f->id)) {
-            $fc = new forms_control();
-            foreach ($fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0','rank') as $control) {
-                $ctl = expUnserialize($control->data);
-                $control_type = get_class($ctl);
-                $def = call_user_func(array($control_type, 'getFieldDefinition'));
-                if ($def != null) {
-                    $fields[$control->name] = $control->caption;
-                    if (in_array($control->name, $cols)) {
-                        $column_names[$control->name] = $control->caption;
-                    }
-                }
-                if ($control_type !== 'pagecontrol' && $control_type !== 'htmlcontrol') {
-                    $fieldlist .= '["{\$fields[\'' . $control->name . '\']}","' . $control->caption . '","' . gt('Insert') . ' ' . $control->caption . ' ' . gt('Field') . '"],';
-                }
-            }
-            $fields['ip'] = gt('IP Address');
-            if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
-            $fields['user_id'] = gt('Posted by');
-            if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
-            $fields['timestamp'] = gt('Timestamp');
-            if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
-//            if (in_array('location_data', $cols)) $column_names['location_data'] = gt('Entry Point');
-        }
-        $fieldlist .= ']';
 
         assign_to_template(array(
             'column_names' => $column_names,
@@ -1065,6 +1060,9 @@ class formsController extends expController {
             $this->params['table_name'] = $this->forms->updateTable();
 //            $this->params['_validate'] = false;  // we don't want a check for unique sef_name
 //            parent::update();  // now with a form tablename
+            if (!empty($this->params['is_searchable'])) {
+                $this->addContentToSearch();
+            }
         }
         expHistory::back();
     }
@@ -1368,6 +1366,7 @@ class formsController extends expController {
         }
         $fieldlist = '[';
         if (isset($this->config['forms_id'])) {
+            // build fields, column_names, and fieldlist
             $fc = new forms_control();
             foreach ($fc->find('all', 'forms_id=' . $this->config['forms_id'] . ' AND is_readonly=0','rank') as $control) {
                 $ctl = expUnserialize($control->data);
@@ -1383,22 +1382,30 @@ class formsController extends expController {
                     $fieldlist .= '["{\$fields[\'' . $control->name . '\']}","' . $control->caption . '","' . gt('Insert') . ' ' . $control->caption . ' ' . gt('Field') . '"],';
                 }
             }
-            $fields['ip'] = gt('IP Address');
-            if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
-            $fields['sef_url'] = gt('SEF URL');
-            if (in_array('sef_url', $cols)) $column_names['sef_url'] = gt('SEF URL');
-            $fields['user_id'] = gt('Posted by');
-            if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
-            $fields['timestamp'] = gt('Timestamp');
-            if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
-//            if (in_array('location_data', $cols)) $column_names['location_data'] = gt('Entry Point');
+            $list = array(
+                'ip' => gt('IP Address'),
+                'sef_url' => gt('SEF URL'),
+                'user_id' => gt('Posted by'),
+                'timestamp' => gt('Timestamp')
+            );
+            foreach ($list as $name=>$caption) {
+                $fields[$name] = $caption;
+                if (in_array('ip', $cols)) {
+                    $column_names[$name] = $caption;
+                }
+                $fieldlist .= '["{\$fields[\'' . $name . '\']}","' . $caption . '","' . gt('Insert') . ' ' . $caption . ' ' . gt('Field') . '"],';
+            }
+            // add link field
+            $fieldlist .= '["{\$fields[\'' . 'link' . '\']}","' . gt('Link to Record') . '","' . gt('Insert') . ' ' . gt('Link to Record') . ' ' . gt('Field') . '"],';
         }
         $fieldlist .= ']';
+
         $title = gt('No Form Assigned Yet!');
         if (!empty($this->config['forms_id'])) {
             $form = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             $this->config['is_saved'] = $form->is_saved;
             $this->config['table_name'] = $form->table_name;
+            $this->config['is_searchable'] = $form->is_searchable;
             $title = $form->title;
         }
         assign_to_template(array(
@@ -1430,6 +1437,123 @@ class formsController extends expController {
             unset ($config['forms_control']);
             $this->config = $config;
         }
+    }
+
+    /**
+     * add saved form item or all saved form items to search index
+     *
+     * @return int number of items added to search index
+     * @throws ReflectionException
+     */
+    public function addContentToSearch() {
+        global $db;
+
+        // first find if it's a single item or all the searchable forms
+        if (isset($this->params['data_id'])) {
+            // single record
+            $content = array($this->forms->getRecord($this->params['data_id']));
+            // next add/update searchable form items to search index
+            $count = $this->add_search_record($content, $this->forms);
+        } else {
+            // all records
+            $forms = $this->forms->find('all', 'is_searchable=1');
+            $count = 0;
+            foreach ($forms as $form) {
+                $content = array();
+                foreach ($form->getRecords() as $record) {
+                    $content[] = $record;
+                    // next add/update searchable form items to search index
+                    $count += $this->add_search_record($content, $form);
+                }
+            }
+        }
+        return $count;
+    }
+
+    /**
+     * Create a Search record from a Form record
+     *
+     * @param $content
+     * @param $form
+     * @return int
+     * @throws ReflectionException
+     */
+    function add_search_record($content, $form) {
+        global $db;
+
+        $count = 0;
+        foreach ($content as $cnt) {
+            $origid = $cnt->id;
+            unset($cnt->id);
+            $cnt->location_data = expCore::makeLocation($this->baseclassname, null, $this->forms->id);
+           //build the search record and save it.
+            $sql = "original_id=" . $origid . " AND location_data=" . $this->forms->id . " AND ref_module='" . $this->baseclassname . "'";
+            $oldindex = $db->selectObject('search', $sql);
+            if (!empty($oldindex)) {
+                $search_record = new search($oldindex->id, false, false);
+                $search_record->update($cnt);
+            } else {
+                $search_record = new search($cnt, false, false);
+            }
+
+            // get a title from 1st matching field
+            $needles = array(  // fields we use to develop an sef_url
+                'name',
+                'title',
+                'last',
+                'first',
+                'email'
+            );
+            $search_record->title = 'Untitled';
+            foreach ($needles as $needle) {
+                foreach (get_object_vars($cnt) as $key => $value) {
+                    if (false !== stripos($key, $needle)) {
+                        if (empty($value))
+                            continue;
+                        $search_record->title = $value;
+                        break 2;
+                    }
+                }
+            }
+
+            // build some search body content from all matching fields
+            $needles = array(
+                'body',
+                'detail',
+                'note',
+                'desc',
+                'name',  // we only add the first needed to the title...
+                'title',
+                'address',
+                'city',
+            );
+            $search_record->body = '';
+            foreach ($needles as $needle) {
+                foreach (get_object_vars($cnt) as $key => $value) {
+                    if (false !== stripos($key, $needle)) {
+                        if (empty($value))
+                            continue;
+                        $search_record->body .= $value . ', ';
+                    }
+                }
+            }
+
+            //build the search record and save it.
+            $search_record->original_id = $origid;
+            $search_record->posted = empty($cnt->timestamp) ? null : $cnt->timestamp;
+            if (!empty($cnt->sef_url)) {
+                $link = str_replace(URL_FULL, '', makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $form->sef_url, 'item' => $cnt->sef_url)));
+            } else {
+                $link = str_replace(URL_FULL, '', makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'forms_id' => $form->id, 'id' => $cnt->id)));
+            }
+            $search_record->view_link = $link;
+            $search_record->ref_module = $this->baseclassname;
+            $search_record->category = $this->searchName();
+            $search_record->ref_type = $this->searchCategory();
+            $search_record->save();
+            $count++;
+        }
+        return $count;
     }
 
     /**
