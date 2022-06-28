@@ -1084,10 +1084,9 @@ class expTheme
      */
     public static function main()
     {
-        global $db, $page_main_section;
+        global $db;
 
         if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
-            $page_main_section = true;
             $last_section = expSession::get("last_section");
             $section = $db->selectObject("section", "id=" . $last_section);
             // View authorization will be taken care of by the runAction and mainContainer functions
@@ -1104,7 +1103,6 @@ class expTheme
                     self::mainContainer();
                 }
             }
-            $page_main_section = false;
         }
     }
 
@@ -1141,7 +1139,8 @@ class expTheme
                 "view"       => "showall",
                 "source"     => "@section",
                 "scope"      => "sectional"
-            )
+            ),
+            true
         );
     }
 
@@ -1321,9 +1320,11 @@ class expTheme
      *
      * @return bool
      */
-    public static function module($params)
+    public static function module($params, $main=false)
     {
-        global $db, $module_scope, $sectionObj;
+        global $db, $module_scope, $sectionObj, $page_main_section;
+
+        $page_main_section = $main;
 
         if (empty($params)) {
             return false;

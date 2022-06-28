@@ -252,7 +252,7 @@ $timer = null;
  */
 $order = null;
 
-// page header level
+// page header level for smart headings
 const HEADER_LEVEL = ['h1' => 'h1', 'h2' => 'h2', 'h3' => 'h3', 'h4' => 'h4', 'h5' => 'h5', 'h6' => 'h6'];
 $page_heading_top = false;
 $page_main_section = false;
