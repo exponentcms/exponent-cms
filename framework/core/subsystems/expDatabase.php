@@ -1954,11 +1954,12 @@ abstract class database {
 	    $key = strtolower($fieldObj->Key);
 	    if ($key === "pri")
 	        return DB_PRIMARY;
-	    else if ($key === "uni") {
+	    else if ($key === "uni")
 	        return DB_UNIQUE;
-	    } else {
+//        else if ($key === "mul")  // could be regular or fulltext index
+//   	        return DB_INDEX;
+	    else
             return false;
-        }
 	}
 
 	/**
