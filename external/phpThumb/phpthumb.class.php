@@ -1010,6 +1010,7 @@ class phpthumb {
 		$AvailableImageOutputFormats = array_unique($AvailableImageOutputFormats);
 		$this->DebugMessage('$AvailableImageOutputFormats = array('.implode(';', $AvailableImageOutputFormats).')', __FILE__, __LINE__);
 
+        $this->f = (!empty($this->f) ? $this->f : '');
 		$this->f = preg_replace('#[^a-z]#', '', strtolower($this->f));
 		if (strtolower($this->config_output_format) == 'jpg') {
 			$this->config_output_format = 'jpeg';
@@ -1467,11 +1468,12 @@ class phpthumb {
 					$this->DebugMessage('Leaving $this->config_imagemagick_path as ('.$this->config_imagemagick_path.') because !is_execuatable($this->realPathSafe($this->config_imagemagick_path)) ('.$this->realPathSafe($this->config_imagemagick_path).')', __FILE__, __LINE__);
 				}
 			}
-			$this->DebugMessage('                  file_exists('.$this->config_imagemagick_path.') = '. (int) (@file_exists($this->config_imagemagick_path)), __FILE__, __LINE__);
-			$this->DebugMessage('file_exists_ignoreopenbasedir('.$this->config_imagemagick_path.') = '. (int) $this->file_exists_ignoreopenbasedir($this->config_imagemagick_path), __FILE__, __LINE__);
-			$this->DebugMessage('                      is_file('.$this->config_imagemagick_path.') = '. (int) (@is_file($this->config_imagemagick_path)), __FILE__, __LINE__);
-			$this->DebugMessage('                is_executable('.$this->config_imagemagick_path.') = '. (int) (@is_executable($this->config_imagemagick_path)), __FILE__, __LINE__);
-
+            if (!empty($this->config_imagemagick_path)) {
+                $this->DebugMessage('                  file_exists('.$this->config_imagemagick_path.') = '. (int) (@file_exists($this->config_imagemagick_path)), __FILE__, __LINE__);
+                $this->DebugMessage('file_exists_ignoreopenbasedir('.$this->config_imagemagick_path.') = '. (int) $this->file_exists_ignoreopenbasedir($this->config_imagemagick_path), __FILE__, __LINE__);
+                $this->DebugMessage('                      is_file('.$this->config_imagemagick_path.') = '. (int) (@is_file($this->config_imagemagick_path)), __FILE__, __LINE__);
+                $this->DebugMessage('                is_executable('.$this->config_imagemagick_path.') = '. (int) (@is_executable($this->config_imagemagick_path)), __FILE__, __LINE__);
+            }
 			if ($this->file_exists_ignoreopenbasedir($this->config_imagemagick_path)) {
 
 				$this->DebugMessage('using ImageMagick path from $this->config_imagemagick_path ('.$this->config_imagemagick_path.')', __FILE__, __LINE__);
@@ -3518,8 +3520,7 @@ if (false) {
 
 		}
 
-        $this->DebugMessage('EXIF thumbnail extraction: (size='.(!empty($this->exif_thumbnail_data) ? strlen($this->exif_thumbnail_data) : 0).'; type="'.$this->exif_thumbnail_type.'"; '. (int) $this->exif_thumbnail_width .'x'. (int) $this->exif_thumbnail_height .')', __FILE__, __LINE__);
-		// see if EXIF thumbnail can be used directly with no processing
+        $this->DebugMessage('EXIF thumbnail extraction: (size='.(!empty($this->exif_thumbnail_data) ? strlen((string) $this->exif_thumbnail_data) : 0).'; type="'.$this->exif_thumbnail_type.'"; '. (int) $this->exif_thumbnail_width .'x'. (int) $this->exif_thumbnail_height .')', __FILE__, __LINE__);		// see if EXIF thumbnail can be used directly with no processing
 		if ($this->config_use_exif_thumbnail_for_speed && $this->exif_thumbnail_data) {
 			while (true) {
 				if (!$this->xto) {
@@ -4144,8 +4145,7 @@ if (false) {
 		$DebugOutput[] = '';
 
         $DebugOutput[] = 'get_magic_quotes_gpc()         = '.(function_exists('get_magic_quotes_gpc') ? $this->phpThumbDebugVarDump(@get_magic_quotes_gpc()) : false);
-        $DebugOutput[] = 'get_magic_quotes_runtime()     = '.(function_exists('get_magic_quotes_runtime') ? $this->phpThumbDebugVarDump(@get_magic_quotes_runtime()) : false);
-		$DebugOutput[] = 'error_reporting()              = '.$this->phpThumbDebugVarDump(error_reporting());
+        $DebugOutput[] = 'get_magic_quotes_runtime()     = '.(function_exists('get_magic_quotes_runtime') ? $this->phpThumbDebugVarDump(@get_magic_quotes_runtime()) : false);		$DebugOutput[] = 'error_reporting()              = '.$this->phpThumbDebugVarDump(error_reporting());
 		$DebugOutput[] = 'ini_get(error_reporting)       = '.$this->phpThumbDebugVarDump(@ini_get('error_reporting'));
 		$DebugOutput[] = 'ini_get(display_errors)        = '.$this->phpThumbDebugVarDump(@ini_get('display_errors'));
 		$DebugOutput[] = 'ini_get(allow_url_fopen)       = '.$this->phpThumbDebugVarDump(@ini_get('allow_url_fopen'));
@@ -4193,9 +4193,9 @@ if (false) {
 			$value = $this->$varname;
 			$DebugOutput[] = '$this->'.str_pad($varname, 27, ' ', STR_PAD_RIGHT).' = '.$this->phpThumbDebugVarDump($value);
 		}
-		$DebugOutput[] = 'strlen($this->rawImageData)        = '.strlen(@$this->rawImageData);
-		$DebugOutput[] = 'strlen($this->exif_thumbnail_data) = '.strlen(@$this->exif_thumbnail_data);
-		$DebugOutput[] = '';
+        $DebugOutput[] = 'strlen($this->rawImageData)        = '.(!empty($this->rawImageData)        ? strlen($this->rawImageData)        : '');
+        $DebugOutput[] = 'strlen($this->exif_thumbnail_data) = '.(!empty($this->exif_thumbnail_data) ? strlen($this->exif_thumbnail_data) : '');
+        $DebugOutput[] = '';
 
 		foreach ($ParameterNames as $varname) {
 			$value = $this->$varname;
@@ -4475,7 +4475,15 @@ if (false) {
 	}
 
 	public function ImageResizeFunction(&$dst_im, &$src_im, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH) {
-		$this->DebugMessage('ImageResizeFunction($o, $s, '.$dstX.', '.$dstY.', '.$srcX.', '.$srcY.', '.$dstW.', '.$dstH.', '.$srcW.', '.$srcH.')', __FILE__, __LINE__);
+        $dstX = (int) round($dstX);
+        $dstY = (int) round($dstY);
+        $srcX = (int) round($srcX);
+        $srcY = (int) round($srcY);
+        $dstW = (int) round($dstW);
+        $dstH = (int) round($dstH);
+        $srcW = (int) round($srcW);
+        $srcH = (int) round($srcH);
+        $this->DebugMessage('ImageResizeFunction($o, $s, '.$dstX.', '.$dstY.', '.$srcX.', '.$srcY.', '.$dstW.', '.$dstH.', '.$srcW.', '.$srcH.')', __FILE__, __LINE__);
 		if (($dstW == $srcW) && ($dstH == $srcH)) {
 			return imagecopy($dst_im, $src_im, $dstX, $dstY, $srcX, $srcY, $srcW, $srcH);
 		}

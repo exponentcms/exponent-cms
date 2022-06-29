@@ -753,7 +753,7 @@ class phpthumb_filters {
 
 
     public static function ImprovedImageRotate(&$gdimg_source, $rotate_angle, $config_background_hexcolor, $bg, &$phpThumbObject) {
-		while ($rotate_angle < 0) {
+        while ($rotate_angle < 0) {
 			$rotate_angle += 360;
 		}
 		$rotate_angle %= 360;
