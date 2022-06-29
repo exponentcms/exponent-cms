@@ -853,6 +853,93 @@ class fileController extends expController {
         return $tables;
     }
 
+    public static function getUnneeded() {
+        $list = array(
+            'expeAlerts_temp',
+            'mimetype',
+            'passreset_token',
+            'sessionticket',
+            'search',
+            'search_extension',
+            'search_queries',
+            'redirect',
+            'tracking_rawdata'
+        );
+        if (!ecom_active()) {
+            $list = array_merge($list,
+                array(
+                    'addresses',
+                    'banner',
+                    'billingcalculator',
+                    'billingmethods',
+                    'billingtransactions',
+                    'bing_product_types',
+                    'bing_product_types_storeCategories',
+                    'companies',
+                    'content_expDefinableFields',
+                    'content_expDefinableFields_value',
+                    'content_expRatings',
+                    'content_expSimpleNote',
+                    'crosssellItem_product',
+                    'discounts',
+                    'eventregistration',
+                    'eventregistration_registrants',
+                    'expDefinableFields',
+                    'expRatings',
+                    'expSimpleNote',
+                    'external_addresses',
+                    'geo_country',
+                    'geo_region',
+                    'google_product_types',
+                    'google_product_types_storeCategories',
+                    'groupdiscounts',
+                    'help',
+                    'help_version',
+                    'model_aliases',
+                    'model_aliases_tmp',
+                    'nextag_product_types',
+                    'nextag_product_types_storeCategories',
+                    'option',
+                    'option_master',
+                    'optiongroup',
+                    'optiongroup_master',
+                    'order_discounts',
+                    'order_payments',
+                    'order_status',
+                    'order_status_changes',
+                    'order_status_messages',
+                    'order_type',
+                    'orderitems',
+                    'orders',
+                    'orders_next_invoice_id',
+                    'pricegrabber_product_types',
+                    'pricegrabber_product_types_storeCategories',
+                    'product',
+                    'product_notes',
+                    'product_status',
+                    'product_storeCategories',
+                    'promocodes',
+                    'purchase_order',
+                    'sales_reps',
+                    'shippingcalculator',
+                    'shippingmethods',
+                    'shippingspeeds',
+                    'shopping_product_types',
+                    'shopping_product_types_storeCategories',
+                    'shopzilla_product_types',
+                    'shopzilla_product_types_storeCategories',
+                    'storeCategories',
+                    'tax_class',
+                    'tax_geo',
+                    'tax_rate',
+                    'tax_zone',
+                    'vendor'
+                )
+            );
+        }
+        return $list;
+    }
+
     public function export_eql() {
 //        global $db, $user;
         global $user;
@@ -872,6 +959,7 @@ class fileController extends expController {
         assign_to_template(array(
             'user' => $user,
             'tables' => self::getTables(),
+            'unneeded' => self::getUnneeded()
         ));
     }
 
