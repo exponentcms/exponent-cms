@@ -2001,7 +2001,8 @@ class expFile extends expRecord {
                                         $table
                                     );
                                 } else {
-                                    if ($db->alterTable($table, $tabledef, array(), true) === TABLE_ALTER_SUCCEEDED) {
+                                    $ret = $db->alterTable($table, $tabledef, array(), true);
+                                    if ($ret[$table] === TABLE_ALTER_SUCCEEDED) {
                                         $errors[] = sprintf(
                                             gt("Table structure '%s' was modified in the database (line %d)"),
                                             $table,
