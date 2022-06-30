@@ -14,6 +14,9 @@
  *}
 
 <div class="module importexport manage">
+    <blockquote>
+        {"Additional Form Import/Export methods available in"|gettext}&#160;<a href="{link controller=forms action=manage}">{'Site Forms Manager'|gettext}</a>
+    </blockquote>
     <div class="info-header">
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Importing Data"|gettext) module="import-data"}
