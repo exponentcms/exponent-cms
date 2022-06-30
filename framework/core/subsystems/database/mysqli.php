@@ -370,7 +370,7 @@ class mysqli_database extends database {
             //update primary keys to 'release' columns
             $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
             if (count($primary)) {
-                if ($this->primaryIndexExists($tablename)) {
+                if ($this->indexExists($tablename, 'PRIMARY')) {
                     $sql .= " DROP PRIMARY KEY,";
                 }
                 $sql .= " ADD PRIMARY KEY ( `" . implode("` , `", $primary) . "` )";
@@ -446,7 +446,7 @@ class mysqli_database extends database {
 
         $sep = false;
         if (count($primary)) {
-            if ($this->primaryIndexExists($tablename)) {
+            if ($this->indexExists($tablename, 'PRIMARY')) {
                 $sql .= " DROP PRIMARY KEY,";
             }
             $sql .= " ADD PRIMARY KEY ( `" . implode("` , `", $primary) . "` )";
@@ -1689,22 +1689,6 @@ class mysqli_database extends database {
     function indexExists($table, $index) {
         $e = false;
         if ($result = mysqli_query($this->connection,"SHOW INDEX FROM  $this->prefix$table WHERE Key_name = '$index'")) {
-            if($result->num_rows >= 1) {
-                $e = true;
-            }
-        }
-        mysqli_free_result($result);
-        return $e;
-    }
-
-    /**
-     * Check if a Primary INDEX exists in a specific table
-     * @param string $table The table name
-     * @return bool
-     */
-    function primaryIndexExists($table) {
-        $e = false;
-        if ($result = mysqli_query($this->connection,"SHOW INDEXES FROM  $this->prefix$table WHERE Key_name = 'PRIMARY'")) {
             if($result->num_rows >= 1) {
                 $e = true;
             }
