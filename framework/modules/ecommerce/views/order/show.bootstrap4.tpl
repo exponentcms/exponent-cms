@@ -969,7 +969,7 @@
                                                     // title
                                                     template += ' <strong class="title">'+result.title+'</strong>';
                                                     // model/SKU
-                                                    if (result.model) template += ' <em class="title">SKU: '+result.model+'</em>';
+                                                    if (result.model) template += ' <em class="title">{/literal}{'SKU'|gettext}{literal}: '+result.model+'</em>';
                                                     //template += '<div style="clear:both;">';
                                                     template += '</pre>';
 
