@@ -77,11 +77,11 @@ class countryregioncontrol extends formcontrol {
 			$html .= "	}\n";
 			$html .= "  var count = 0;\n";
 			$html .= "	for (i = 0; i < geo_regions.length; i++) {\n";
-			$html .= "		if (geo_regions[i].var_parent_id == country) {\n";
+			$html .= "		if (geo_regions[i].parent_id == country) {\n";
 			$html .= "			count++;\n";
 			$html .= "			var o = document.createElement('option');\n";
-			$html .= "			o.setAttribute('value',	geo_regions[i].var_id);\n";
-			$html .= "			o.appendChild(document.createTextNode(geo_regions[i].var_name));\n";
+			$html .= "			o.setAttribute('value',	geo_regions[i].id);\n";
+			$html .= "			o.appendChild(document.createTextNode(geo_regions[i].name));\n";
 			$html .= "			r_select.appendChild(o);\n";
 			$html .= "		}\n";
 			$html .= "	}\n";
