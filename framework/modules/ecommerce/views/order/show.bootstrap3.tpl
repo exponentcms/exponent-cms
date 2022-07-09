@@ -363,8 +363,10 @@
                                                                     {elseif $sm->shipping_options.shipment_status == 'created' && $sm->calculator->labelsEnabled()}
                                                                         {icon class=edit action=edit_label id=$sm->id text='Purchase Label'|gettext}
                                                                     {elseif $sm->shipping_options.shipment_status == 'purchased' && $sm->calculator->labelsEnabled()}
+                                                                        <div>
                                                                         {icon class=downloadfile action=download_label id=$sm->id text='Print Label'|gettext}
                                                                         {icon class=delete action=delete_label id=$sm->id text='Cancel Label'|gettext}
+                                                                        </div>
                                                                         {'Tracking'|gettext}: {$sm->shipping_options.shipment_tracking_number}
                                                                         {if $sm->calculator->pickupEnabled() && $sm->carrier != 'USPS'}
                                                                             {if ($sm->shipping_options.pickup_status != 'purchased')} {* FIXME *}
@@ -377,9 +379,11 @@
                                                                     {if $sm->calculator != null}
                                                                         {$msg = $sm->calculator->getPackageDetails($sm)}
                                                                         {if $msg}
+                                                                            <div>
                                                                             {pop id="pkg_details`$sm->id`" text="Package Details"|gettext title="Package Details"|gettext buttons="Close"|gettext}
                                                                                 {$msg}
                                                                             {/pop}
+                                                                            </div>
                                                                         {/if}
                                                                     {/if}
                                                                 </div>
@@ -993,7 +997,7 @@
                                                     // title
                                                     template += ' <strong class="title">'+result.title+'</strong>';
                                                     // model/SKU
-                                                    if (result.model) template += ' <em class="title">SKU: '+result.model+'</em>';
+                                                    if (result.model) template += ' <em class="title">{/literal}{'SKU'|gettext}{literal}: '+result.model+'</em>';
                                                     //template += '<div style="clear:both;">';
                                                     template += '</pre>';
 

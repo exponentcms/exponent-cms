@@ -21,7 +21,7 @@
  *
  * Type:     function<br>
  * Name:     smart_heading<br>
- * Purpose:  Apply heading level smartly
+ * Purpose:  Apply heading level smartly, e.g. only one H1 per page and sidebar content is lower heading level
  *
  * @param $params
  * @param \Smarty $smarty

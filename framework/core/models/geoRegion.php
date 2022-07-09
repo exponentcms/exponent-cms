@@ -38,7 +38,7 @@ class geoRegion extends expRecord {
      * Get state id from state name or state code
      *
      * @param $state
-     * @return null
+     * @return string
      */
     public static function getRegionId($state) {
         global $db;
@@ -50,7 +50,7 @@ class geoRegion extends expRecord {
      * Get state abbreviation from state id
      *
      * @param $id
-     * @return null
+     * @return string
      */
     public static function getAbbrev($id) {
         global $db;
@@ -62,7 +62,7 @@ class geoRegion extends expRecord {
      * Get state name from state id
      *
      * @param $id
-     * @return null
+     * @return string
      */
     public static function getName($id) {
         global $db;
@@ -74,7 +74,7 @@ class geoRegion extends expRecord {
      * Get country 2 letter iso code from country id
      *
      * @param $id
-     * @return null
+     * @return string
      */
     public static function getCountryCode($id) {
         global $db;
@@ -88,7 +88,7 @@ class geoRegion extends expRecord {
      * Get country name from country id
      *
      * @param $id
-     * @return null
+     * @return string
      */
     public static function getCountryName($id) {
         global $db;
@@ -102,7 +102,7 @@ class geoRegion extends expRecord {
      * Get country id from country name or iso code
      *
      * @param $country
-     * @return null
+     * @return string
      */
     public static function getCountryId($country) {
         global $db;

@@ -370,7 +370,10 @@ class mysqli_database extends database {
             //update primary keys to 'release' columns
             $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
             if (count($primary)) {
-                $sql .= " DROP PRIMARY KEY, ADD PRIMARY KEY ( `" . implode("` , `",$primary) . "` )";
+                if ($this->indexExists($tablename, 'PRIMARY')) {
+                    $sql .= " DROP PRIMARY KEY,";
+                }
+                $sql .= " ADD PRIMARY KEY ( `" . implode("` , `", $primary) . "` )";
             }
             @mysqli_query($this->connection, $sql);
 
@@ -443,7 +446,10 @@ class mysqli_database extends database {
 
         $sep = false;
         if (count($primary)) {
-            $sql .= " DROP PRIMARY KEY, ADD PRIMARY KEY ( `" . implode("` , `",$primary) . "` )";
+            if ($this->indexExists($tablename, 'PRIMARY')) {
+                $sql .= " DROP PRIMARY KEY,";
+            }
+            $sql .= " ADD PRIMARY KEY ( `" . implode("` , `", $primary) . "` )";
             $sep = true;
         }
         if (count($fulltext)) {

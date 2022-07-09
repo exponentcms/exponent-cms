@@ -42,7 +42,7 @@ class ecomconfig extends expConfig {
 
 	public static function splitConfigUpCharge($upcharge = array(), $type = 'region') {
 		$upchargeRate = array();
-        if(count($upcharge))
+        if(is_array($upcharge) && count($upcharge))
         {
 		    foreach($upcharge as $key => $item) {
 			    $tmp = explode('_', $key);
