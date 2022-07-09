@@ -43,7 +43,7 @@
                         {"Country"|gettext}
                     </th>
                     <th>
-                        {"State"|gettext}
+                        {"Region"|gettext}
                     </th>
                     <th>
                         {"Default / Rank"|gettext}
