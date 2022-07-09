@@ -175,19 +175,19 @@ class easypostcalculator extends shippingcalculator
 
     public function getRates($order)
     {
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
 
-        $from_address = self::ep_set_from_address();
+        $from_address = $this->ep_set_from_address();
         if (is_string($from_address)) {
             return $from_address;
         }  // error
 
         // get the current shippingmethod and format the address for easypost
         $currentmethod = $order->getCurrentShippingMethod();  // pulls in the 'to' address
-        $to_address = self::ep_set_to_address($currentmethod);
+        $to_address =$this->ep_set_to_address($currentmethod);
         if (is_string($to_address)) {
             return $to_address;
         }  // error
@@ -489,17 +489,17 @@ class easypostcalculator extends shippingcalculator
 
     function createLabel($shippingmethod)
     {
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
 
-        $from_address = self::ep_set_from_address();
+        $from_address = $this->ep_set_from_address();
         if (is_string($from_address)) {
             return $from_address;
         }  // error
 
-        $to_address = self::ep_set_to_address($shippingmethod);
+        $to_address = $this->ep_set_to_address($shippingmethod);
         if (is_string($to_address)) {
             return $to_address;
         }  // error
@@ -577,13 +577,13 @@ class easypostcalculator extends shippingcalculator
     function buyLabel($shippingmethod)
     {
         // here's where we buy a 'shipment'
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
 
         try {
-            $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
+            $shipment = \EasyPost\Shipment::retrieve($shippingmethod->shipping_options['shipment_id']);
         } catch (Exception $e) {
             return $this->easypost_error($e, gt('retrieve shipment'));
         }
@@ -613,13 +613,13 @@ class easypostcalculator extends shippingcalculator
     function cancelLabel($shippingmethod)
     {
         // here's where we refund a 'shipment'
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
 
         try {
-            $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
+            $shipment = \EasyPost\Shipment::retrieve($shippingmethod->shipping_options['shipment_id']);
         } catch (Exception $e) {
             return $this->easypost_error($e, gt('retrieve shipment'));
         }
@@ -637,7 +637,7 @@ class easypostcalculator extends shippingcalculator
     function createPickup($shippingmethod, $pickupdate, $pickupenddate, $instructions = '')
     {
         // here's where we create a 'pickup'
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
@@ -647,7 +647,7 @@ class easypostcalculator extends shippingcalculator
 //            return $from_address;  // error
 
         try {
-            $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
+            $shipment = \EasyPost\Shipment::retrieve($shippingmethod->shipping_options['shipment_id']);
         } catch (Exception $e) {
             return $this->easypost_error($e, gt('retrieve shipment'));
         }
@@ -698,7 +698,7 @@ class easypostcalculator extends shippingcalculator
     function buyPickup($shippingmethod, $type)
     {
         // here's where we optionally buy a 'pickup'
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
@@ -732,7 +732,7 @@ class easypostcalculator extends shippingcalculator
 //        }
 
         try {
-            $pickup = \EasyPost\Pickup::retrieve(array('id' => $shippingmethod->shipping_options['pickup_id']));
+            $pickup = \EasyPost\Pickup::retrieve($shippingmethod->shipping_options['pickup_id']);
         } catch (Exception $e) {
             return $this->easypost_error($e, gt('retrieve pickup'));
         }
@@ -755,13 +755,13 @@ class easypostcalculator extends shippingcalculator
     function cancelPickup($shippingmethod)
     {
         // here's where we cancel a 'pickup'
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
 
         try {
-            $pickup = \EasyPost\Pickup::retrieve(array('id' => $shippingmethod->shipping_options['pickup_id']));
+            $pickup = \EasyPost\Pickup::retrieve($shippingmethod->shipping_options['pickup_id']);
         } catch (Exception $e) {
             return $this->easypost_error($e, gt('retrieve pickup'));
         }
@@ -778,7 +778,7 @@ class easypostcalculator extends shippingcalculator
 
     function handleTracking() {
         $inputJSON = file_get_contents('php://input');
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if (!empty($inputJSON)) {
             $event = \EasyPost\Event::receive($inputJSON);
             if($event->description === 'tracker.updated') {
