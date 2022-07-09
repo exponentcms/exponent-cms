@@ -658,8 +658,8 @@ class easypostcalculator extends shippingcalculator
                     "address" => $shipment->from_address,
                     "shipment" => $shipment,
                     "reference" => $shipment->id,
-                    "max_datetime" => date("Y-m-d H:i:s", $pickupdate),
-                    "min_datetime" => date("Y-m-d H:i:s", $pickupenddate),
+                    "min_datetime" => date("Y-m-d H:i:s", $pickupdate),
+                    "max_datetime" => date("Y-m-d H:i:s", $pickupenddate),
                     "is_account_address" => false,
                     "instructions" => $instructions
                 )
