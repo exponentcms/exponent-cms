@@ -307,18 +307,19 @@ class expLang {
         if ($to === 'nb')
             $to = 'no';  // Bing uses 'no' for norwegian
 
+        include_once(BASE.'external/translate/bingapi.php');
         if (defined('TRANSLATE') && TRANSLATE === 'BING') {
             include_once(BASE.'external/translate/BingTranslate.class.php');
-            include_once(BASE.'external/translate/bingapi.php');
             $gt = new BingTranslateWrapper(BING_API);
         } elseif (defined('TRANSLATE') && TRANSLATE === 'Azure') {
             require_once(BASE.'external/translate/config.inc.php'); // remainder of settings
             require_once(BASE.'external/translate/MicrosoftTranslator.class.php');
-            include_once(BASE.'external/translate/bingapi.php');
             $gt = new MicrosoftTranslator(ACCOUNT_KEY);
+//        } elseif (defined('TRANSLATE') && TRANSLATE === 'Google') {
+//            require_once(BASE.'external/translate/class.translator.php');
+//            $gt = new Translator();
         } else {
             require_once(BASE.'external/translate/mstranslation.class.php');
-            include_once(BASE.'external/translate/bingapi.php');
             $gt = new TranslateMe(ACCOUNT_KEY);
         }
 

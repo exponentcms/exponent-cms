@@ -36,7 +36,7 @@
            	            {control type="text" name="store[address1]" label="Address"|gettext value=$config.store.address1 required=1}
            	            {control type="text" name="store[address2]" label=" " value=$config.store.address2}
            	            {control type="text" name="store[city]" label="City"|gettext value=$config.store.city required=1}
-                        {control type="countryregion" name="store[address]" label="Country/State"|gettext country_default=$config.store.country|default:223 region_default=$config.store.state includeblank="-- Choose a State --"|gettext required=1}
+                        {control type="countryregion" name="store[address]" label="Country/REgion"|gettext country_default=$config.store.country|default:223 region_default=$config.store.state includeblank="-- Choose a State --"|gettext required=1}
            	            {control type="text" name="store[postalCode]" label="Zip Code"|gettext size=10 value=$config.store.postalCode required=1}
                         {*{control type=tel name="store[phone]" label="Phone Number"|gettext value=$calculator->configdata.store.phone}*}
                     </div>
