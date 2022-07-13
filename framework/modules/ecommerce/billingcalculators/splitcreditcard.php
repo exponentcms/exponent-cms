@@ -24,7 +24,8 @@ class splitcreditcard extends creditcard {
 
     function description() {
         return gt("Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  The credit card number
-	        will be split with part of it being stored in the database and the other part getting emailed to site administrator.");
+	        will be split with part of it being stored in the database and the other part getting emailed to site administrator.") .
+            gt('This method requires processing credit cards outside of eCommerce!');
     }
 
     function isSelectable() {

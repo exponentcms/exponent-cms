@@ -30,7 +30,7 @@ class passthru extends billingcalculator {
     public $payment_type = 'Passthru';
 
     function description() {
-        return gt("Enabling this payment option will allow an Admin to bypass payment processing at the cart and allow payment methods after the order is processed, such as cash, check, pay in store, or manually process via credit card.") . "<br>** " . gt("This is a restricted payment option and only accessible by site admins.");
+        return gt("Enabling this payment option will allow an Admin to bypass normal payment processing at checkout. It might allow payment methods after the order is processed, such as cash, check, pay in store, or manually process via credit card.");
     }
 
     function hasConfig() {
