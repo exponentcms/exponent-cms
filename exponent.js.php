@@ -39,6 +39,8 @@ EXPONENT.YUI2_VERSION = "<?php echo YUI2_VERSION; ?>";
 EXPONENT.YUI2_RELATIVE = "<?php echo YUI2_RELATIVE; ?>";
 EXPONENT.YUI2_URL = "<?php echo YUI2_URL; ?>";
 
+EXPONENT.ECOM_CURRENCY_SYMBOL = "<?php echo expCore::getCurrencySymbol(); ?>";
+
 // Helper function to kill console logging so it won't kill IE7-9
 //if (typeof console == "undefined" || typeof console.log == "undefined") {
 //   var console = { log: function() {} };
