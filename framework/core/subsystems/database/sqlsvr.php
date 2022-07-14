@@ -632,7 +632,6 @@ class sqlsvr_database extends database {
             if (is_array($newdatadef) && is_array($dd)) {
                 $oldcols = @array_diff_assoc($dd, $newdatadef);
                 if (count($oldcols)) {
-                    $modified = true;
                     $sql = "ALTER TABLE " . $this->tableStmt($tablename) . " ";
                     foreach ($oldcols as $name => $def) {
                         $sql .= " DROP COLUMN " . $name . ",";
@@ -684,9 +683,9 @@ class sqlsvr_database extends database {
                 }
             }
             if ($changed) {
-                $modified = true;
                 $sql = substr($sql, 0, -1);
                 @sqlsrv_query($this->connection, $sql);
+                $modified = true;
             }
         }
 
