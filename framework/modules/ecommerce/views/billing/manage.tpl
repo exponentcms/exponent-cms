@@ -45,7 +45,12 @@
                 {/permissions}
             </td>
             <td>{$calc->title}</td>
-            <td>{$calc->body}</td>
+            <td>
+                {$calc->body}
+                {if $calc->isRestricted()}
+                    <br>** {"This is a restricted payment option and only accessible by site admins."|gettext}
+                {/if}
+            </td>
             <td>
                 {permissions}
 					<div class="item-actions">

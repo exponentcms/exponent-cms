@@ -88,7 +88,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>* {'Country/State'|gettext}:</td>
+			<td>* {'Country/Region'|gettext}:</td>
 			<td class="state_field">
 				{control type=country name="address[country]" default="`$record.address.country`"}
 			</td>
