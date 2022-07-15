@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -907,7 +907,7 @@ function expUnserialize($serial_str) {
 //        eDebug('problem:<br>'.$out.'<br>'.$out1);
 //    }
     $out2 = @unserialize($out);
-    // list of fields with links requiring cleaning
+    // list of fields with rich text
     $stripList = array(
         'moduledescription',
         'description',
@@ -915,7 +915,13 @@ function expUnserialize($serial_str) {
         'report_def',
         'report_def_showall',
         'response',
-        'auto_respond_body'
+        'auto_respond_body',
+        'ecomheader',
+        'ecomfooter',
+        'cart_description_text',
+        'policy',
+        'checkout_message_top',
+        'checkout_message_bottom',
     );
     if (is_array($out2)) {
         foreach ($stripList as $strip) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -57,11 +57,13 @@ function money_filter_class() {
 	this.isValueIllegal = function(strValue) {
 		var bIsIllegal = false;
 		var temp = strValue.replace(/,/g, "");
-		if (strValue.match(/[^s]\$/)) bIsIllegal = true;
+        var regex = new RegExp("[^s]\\" + EXPONENT.ECOM_CURRENCY_SYMBOL);
+        var regex1 = new RegExp(EXPONENT.ECOM_CURRENCY_SYMBOL, 'g');
+		if (strValue.match(regex)) bIsIllegal = true;
 		else if (strValue.match(/\..*\./) != null) bIsIllegal = true;
 		else if (strValue.match(/\.+\d{3}/) != null) bIsIllegal = true;
 		else if (parseInt(temp.substr(1)) > 9999999999) bIsIllegal = true;
-		else if (IsNotNumber(strValue.replace(/\$/g, "").replace(/,/g, ""))) bIsIllegal = true;
+		else if (IsNotNumber(strValue.replace(regex1, "").replace(/,/g, ""))) bIsIllegal = true;
 
 		return bIsIllegal;
 	}
@@ -74,9 +76,10 @@ function money_filter_class() {
 		if (iDPPosition == -1) iDPPosition = strValue.length;
 		for (i = iDPPosition -3; i > 0; i -= 3) strValue = strValue.substr(0, i) + "," + strValue.substr(i);
 
-		strValue = "$" + strValue.replace(/\$/g, "");
+        var regex = new RegExp(EXPONENT.ECOM_CURRENCY_SYMBOL, "g");
+		strValue = EXPONENT.ECOM_CURRENCY_SYMBOL + strValue.replace(regex, "");
 
-		strValue = strValue.replace("$,","$");
+		strValue = strValue.replace(EXPONENT.ECOM_CURRENCY_SYMBOL + ",", EXPONENT.ECOM_CURRENCY_SYMBOL);
 
 		if (bIncludeDP) {
 			var iDP = strValue.length - strValue.indexOf(".");
@@ -84,7 +87,7 @@ function money_filter_class() {
 			else if (iDP == 1) strValue += "00";
 			else if (iDP == 2) strValue += "0";
 
-			if (strValue == "$.00") strValue = "$0.00";
+			if (strValue == EXPONENT.ECOM_CURRENCY_SYMBOL + ".00") strValue = EXPONENT.ECOM_CURRENCY_SYMBOL + "0.00";
 		}
 		return strValue;
 	}
@@ -92,14 +95,15 @@ function money_filter_class() {
 	this.SetCaretPosition = function(strOld, strNew, ptObject) {
 		var i = -1;
 		strOld = strOld.replace(/,/g, "");
-		strOld = strOld.replace(/\$/g, "");
+        var regex = new RegExp(EXPONENT.ECOM_CURRENCY_SYMBOL, "g");
+		strOld = strOld.replace(regex, "");
 		var strTemp = strNew.replace(/,/g, "");
-		strTemp = strTemp.replace(/\$/g, "");
+		strTemp = strTemp.replace(regex, "");
 		var newCount = (((strTemp.length - strOld.length)<0)?1:(strTemp.length - strOld.length));
 		var iInsertPoint = strNew.length;
 
 		for (var x = 0; x < strNew.length; x++) {
-			if ((strNew.substr(x,1) != "$") && (strNew.substr(x,1) != ",")) {
+			if ((strNew.substr(x,1) != EXPONENT.ECOM_CURRENCY_SYMBOL) && (strNew.substr(x,1) != ",")) {
 				i++;
 				if (strNew.substr(x,1) != strOld.substr(i,1)) {
 					iInsertPoint = x + newCount;
