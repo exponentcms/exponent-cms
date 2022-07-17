@@ -211,7 +211,8 @@ class storeCategory extends expNestedNode {
 		$tree = parent::getFullTree();
 		$tree_copy = array();
 		foreach($tree as $key=>$node) {  // add link and image
-			$tree_copy[$key] = new stdClass();
+//			$tree_copy[$key] = new stdClass();
+            $tree_copy[$key] = new storeCategory();
 			$tree_copy[$key]->id = $node->id;
 			$tree_copy[$key]->depth = $node->depth;
             $tree_copy[$key]->active = $node->is_active;
