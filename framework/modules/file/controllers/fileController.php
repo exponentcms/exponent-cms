@@ -203,7 +203,7 @@ class fileController extends expController {
                         $view = $bstrapview;
                     }
                 }
-                if (bs3(true) || bs4() || b5()) {
+                if (bs3(true) || bs4() || bs5()) {
                     $bstrapview = $path.'/'.$this->params['view'].'.bootstrap3.config';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
