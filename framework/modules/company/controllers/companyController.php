@@ -76,7 +76,7 @@ class companyController extends expController {
         $sql_start  = 'SELECT DISTINCT p.* FROM ' . $db->tableStmt('product') . ' p ';
         //$sql = 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
         $sql = 'WHERE ';
-        if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=NULL OR p.active_type=1) AND ' ;
+        if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type IS NULL OR p.active_type=1) AND ' ;
         //$sql .= 'sc.storecategories_id IN (';
         //$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')';
         $sql .=  'p.companies_id=' . $this->params['id'];
@@ -133,7 +133,7 @@ class companyController extends expController {
         $sql_start  = 'SELECT DISTINCT p.* FROM ' . $db->tableStmt('product') . ' p ';
         //$sql = 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
         $sql = 'WHERE ';
-        if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=NULL OR p.active_type=1) AND ' ;
+        if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type IS NULL OR p.active_type=1) AND ' ;
         //$sql .= 'sc.storecategories_id IN (';
         //$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')';
         $sql .=  'p.companies_id=' . $this->params['id'];

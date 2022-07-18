@@ -58,7 +58,7 @@
         p.id = psc.product_id
     LEFT JOIN '.$this->tableStmt('storeCategories').' sc ON
         psc.storeCategories_id = sc.id
-    WHERE p.parent_id=0 AND (availability_type=0 OR availability_type=1 OR availability_type=2) AND(active_type=0 OR active_type=NULL OR active_type=1) AND p.sef_url != "" AND cf.subtype="mainimage" ORDER BY p.title ASC';
+    WHERE p.parent_id=0 AND (availability_type=0 OR availability_type=1 OR availability_type=2) AND(active_type=0 OR active_type IS NULL OR active_type=1) AND p.sef_url != "" AND cf.subtype="mainimage" ORDER BY p.title ASC';
 
     $products = $db->selectObjectsBySql($sql);
     $counter = array();
