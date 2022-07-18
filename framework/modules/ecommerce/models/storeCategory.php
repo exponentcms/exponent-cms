@@ -132,7 +132,7 @@ class storeCategory extends expNestedNode {
         $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ON p.id = sc.product_id ';
         $sql .= 'WHERE ';
         if (!($user->is_admin || $user->is_acting_admin))
-            $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+            $sql .= '(p.active_type=0 OR p.active_type=NULL OR p.active_type=1) AND ';
         $sql .= 'sc.storecategories_id = ' . $this->id;
         $sql  = $sql_start . $sql . $order;
         //echo $sql;
@@ -154,7 +154,7 @@ class storeCategory extends expNestedNode {
         $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ON p.id = sc.product_id ';
         $sql .= 'WHERE ';
         if (!($user->is_admin || $user->is_acting_admin))
-            $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+            $sql .= '(p.active_type=0 OR p.active_type=NULL OR p.active_type=1) AND ';
         $sql .= 'sc.storecategories_id = ' . $this->id;
         $sql  = $sql_start . $sql . $order;
         //echo $sql;

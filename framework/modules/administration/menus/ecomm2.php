@@ -53,7 +53,7 @@ if (!$db->selectValue('modstate', 'active', 'module=\'eventregistration\''))
     return false;
 
 $ev = new eventregistration();
-$allevents = $ev->find('all', 'product_type=\'eventregistration\' AND active_type=0');
+$allevents = $ev->find('all', 'product_type=\'eventregistration\' AND (active_type=0 OR active_type=NULL)');
 $events = array();
 foreach ($allevents as $event) {
     if ($event->eventenddate > time()) {
