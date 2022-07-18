@@ -91,7 +91,7 @@ class update_ecom2 extends upgradescript {
 
         // copy product summary into body if no body exists, summary deprecated
         $prod = new product();
-        $prods = $prod->find('all','body=null AND summary!=null');
+        $prods = $prod->find('all','body IS NULL AND summary IS NOT NULL');
         foreach ($prods as $product) {
             $product->body = $product->summary;
             $product->update();
