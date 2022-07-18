@@ -88,7 +88,7 @@ class eventregistrationController extends expController {
             if ($user->isAdmin()) {
                 $events = $this->eventregistration->find('all', 'product_type=\'eventregistration\'', "title ASC", $limit);
             } else {
-                $events = $this->eventregistration->find('all', 'product_type=\'eventregistration\' AND active_type=0', "title ASC", $limit);
+                $events = $this->eventregistration->find('all', 'product_type=\'eventregistration\' AND (active_type=0 OR active_type=NULL)', "title ASC", $limit);
             }
             foreach ($events as $event) {
 //                if ($user->isAdmin()) {
@@ -195,7 +195,7 @@ class eventregistrationController extends expController {
             if ($user->isAdmin()) {
                 $events = $er->find('all', 'product_type=\'eventregistration\'', "title ASC");
             } else {
-                $events = $er->find('all', 'product_type=\'eventregistration\' && active_type=0', "title ASC");
+                $events = $er->find('all', 'product_type=\'eventregistration\' && (active_type=0 OR active_type=NULL)', "title ASC");
             }
             $dates = array();
 
@@ -382,7 +382,7 @@ class eventregistrationController extends expController {
             if ($user->isAdmin()) {
                 $events = $this->eventregistration->find('all', 'product_type=\'eventregistration\'', "title ASC", $limit);
             } else {
-                $events = $this->eventregistration->find('all', 'product_type=\'eventregistration\' AND active_type=0', "title ASC", $limit);
+                $events = $this->eventregistration->find('all', 'product_type=\'eventregistration\' AND (active_type=0 OR active_type=NULL)', "title ASC", $limit);
             }
             foreach ($events as $event) {
                 // $this->signup_cutoff > time()
@@ -1219,7 +1219,7 @@ class eventregistrationController extends expController {
      */
     static function getRegEventsForDates($startdate, $enddate, $color="#FFFFFF") {
         $er = new eventregistration();
-        $events      = $er->find('all', 'product_type=\'eventregistration\' && active_type=0');
+        $events      = $er->find('all', 'product_type=\'eventregistration\' && (active_type=0 OR active_type=NULL)');
         $pass_events = array();
         foreach ($events as $event) {
             if ($event->eventdate >= $startdate && $event->eventdate <= $enddate) {

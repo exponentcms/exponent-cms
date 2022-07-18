@@ -188,7 +188,7 @@ class storeController extends expController {
             $sql .= 'JOIN ' . $db->tableStmt('storeCategories') . ' sc ON psc.storecategories_id = sc.id ';
             $sql .= 'WHERE ';
             if (!$user->isAdmin())
-                $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+                $sql .= '(p.active_type=0 OR p.active_type=NULL OR p.active_type=1) AND ';
 //            $sql .= 'psc.storecategories_id IN (';
 //            $sql .= 'SELECT id FROM ' . $db->tableStmt('storeCategories') . ' WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
             $sql .= 'rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt;
@@ -433,7 +433,7 @@ class storeController extends expController {
             if ($user->isAdmin()) {
                 $events = $er->find('all', 'product_type=\'eventregistration\'', "title ASC");
             } else {
-                $events = $er->find('all', 'product_type="\'eventregistration\' && active_type=0', "title ASC");
+                $events = $er->find('all', 'product_type="\'eventregistration\' && (active_type=0 OR p.active_type=NULL)', "title ASC");
             }
             $dates = array();
 
@@ -1129,7 +1129,7 @@ class storeController extends expController {
         $sql_start = 'SELECT DISTINCT p.* FROM ' . $db->tableStmt('product') . ' p ';
         $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ON p.id = sc.product_id ';
         $sql .= 'WHERE ';
-        if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1)'; //' AND ' ;
+        if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=NULL OR p.active_type=1)'; //' AND ' ;
         //$sql .= 'sc.storecategories_id IN (';
         //$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')';
 
@@ -1728,7 +1728,7 @@ class storeController extends expController {
         global $db, $user;
 
         $sql = "SELECT DISTINCT(p.id) AS id, p.title, model FROM " . $db->tableStmt('product') . " AS p WHERE ";
-        if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=NULL OR p.active_type=1) AND ';
 
         //if first character of search is a -, then we do a wild card, else from beginning
         $this->params['query'] = expString::escape($this->params['query']);
@@ -1776,7 +1776,7 @@ class storeController extends expController {
         $sql .= "  FROM " . $db->tableStmt('product') . " AS p LEFT JOIN " .
             $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->tableStmt('expFiles') .
             " AS f ON cef.expFiles_id = f.id WHERE ";
-        if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=NULL OR p.active_type=1) AND ';
         if ($search_type === 'products') $sql .= 'product_type = "product" AND ';
         $sql .= " MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id ";
         $sql .= "ORDER BY score DESC " . $db->limitStmt(10);
@@ -1793,7 +1793,7 @@ class storeController extends expController {
         $sql = "SELECT DISTINCT(p.id) AS id, p.title, model, sef_url, f.id AS fileid  FROM " . $db->tableStmt('product') . " AS p LEFT JOIN " .
             $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->tableStmt('expFiles') .
             " AS f ON cef.expFiles_id = f.id WHERE ";
-        if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=NULL OR p.active_type=1) AND ';
         if ($search_type === 'products') $sql .= 'product_type = "product" AND ';
         $sql .= " (p.model LIKE '%" . $this->params['query'] . "%' ";
         $sql .= " OR p.title LIKE '%" . $this->params['query'] . "%') ";
@@ -1810,7 +1810,7 @@ class storeController extends expController {
         $sql = "SELECT DISTINCT(p.id) AS id, p.title, model, sef_url, f.id AS fileid  FROM " . $db->tableStmt('product') . " AS p LEFT JOIN " .
             $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->tableStmt('expFiles') .
             " AS f ON cef.expFiles_id = f.id WHERE ";
-        if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=NULL OR p.active_type=1) AND ';
         if ($search_type === 'products') $sql .= 'product_type = "product" AND ';
         $sql .= " (p.model LIKE '" . $this->params['query'] . "%' ";
         $sql .= " OR p.title LIKE '" . $this->params['query'] . "%') ";
@@ -1863,7 +1863,7 @@ class storeController extends expController {
         $sql .= "FROM " . $db->tableStmt('product') . " AS p INNER JOIN " .
             $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage'  INNER JOIN " . $db->tableStmt('expFiles') .
             " AS f ON cef.expFiles_id = f.id WHERE ";
-        if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=NULL OR p.active_type=1) AND ';
         $sql .= " MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0 ";
         $sql .= " HAVING relevance > 0 ";
         //$sql .= "GROUP BY p.id ";
