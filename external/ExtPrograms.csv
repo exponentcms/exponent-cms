@@ -45,7 +45,7 @@ Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
-CKEditor,4.19.0,ckeditor.com,4.19.0/34.2.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
+CKEditor,4.19.1,ckeditor.com,4.19.1/34.2.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 TinyMCE v5,5.10.5,tiny.cloud,5.10.5/6.1.0,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.9,github.com/moxiecode/plupload,2.3.9/3.1.5,"needed for TinyMCE Quick Upload, placed in that plugin folder"
@@ -57,7 +57,7 @@ jQuery3,3.6.0,jquery.com,3.6.0,
 jQuery3 Migrate,3.3.2,jquery.com,3.3.2,
 jQueryUI,1.13.0,jqueryui.com,1.13.0,
 stepy,1.1.0exp,github.com/wbotelhos/stepy,1.2.0,"added button class, jquery.validate option passing"
-validate,1.19.3exp,jqueryvalidation.org,1.19.3,edit for 'undefined' in 'min' & 'max'
+validate,1.19.5exp,jqueryvalidation.org,1.19.5,edit for 'undefined' in 'min' & 'max'
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker/,1.6.3,used by adminer
 TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
