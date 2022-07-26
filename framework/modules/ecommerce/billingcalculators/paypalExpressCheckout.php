@@ -193,17 +193,26 @@ class paypalExpressCheckout extends billingcalculator {
                 'PAYMENTREQUEST_0_SHIPTOZIP'         => $shippingaddress->zip
             );
 
-            for ($n = 0, $nMax = count($order->orderitem); $n < $nMax; $n++) {
-                $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
-                $desc = strip_tags($order->orderitem[$n]->product->body);
-                $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
-                $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
-                $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
-//                $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');  // note: will cause failure when using taxed shipping
-                $data['L_PAYMENTREQUEST_0_AMT' . $n] = number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '');
-                //$it += number_format(($order->orderitem[$n]->products_tax), 2, '.', '') * $order->orderitem[$n]->quantity;
-                //$tt += number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '') * $order->orderitem[$n]->quantity;
-            }
+//            for ($n = 0, $nMax = count($order->orderitem); $n < $nMax; $n++) {
+//                $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
+//                $desc = strip_tags($order->orderitem[$n]->product->body);
+//                $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
+//                $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
+//                $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
+////                $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');  // note: will cause failure when using taxed shipping
+//                $data['L_PAYMENTREQUEST_0_AMT' . $n] = number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '');
+//                //$it += number_format(($order->orderitem[$n]->products_tax), 2, '.', '') * $order->orderitem[$n]->quantity;
+//                //$tt += number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '') * $order->orderitem[$n]->quantity;
+//            }
+            //factor in a non-shipping discount
+//            if ($order->total_discounts) {
+//                $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->order_discounts[0]->title) > 127 ? substr($order->order_discounts[0]->title, 0, 124) . "..." : $order->order_discounts[0]->title;
+//                $desc = strip_tags($order->order_discounts[0]->body);
+//                $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
+////                $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
+//                $data['L_PAYMENTREQUEST_0_QTY' . $n] = 1;
+//                $data['L_PAYMENTREQUEST_0_AMT' . $n] = -number_format(($order->total_discounts), 2, '.', '');
+//            }
             //eDebug($data, true);
             /* eDebug($shippingaddress);
           eDebug($shipping_state);
@@ -212,6 +221,7 @@ class paypalExpressCheckout extends billingcalculator {
             $nvpResArray = $this->paypalApiCall($data);
 
 //            $object = new stdClass();
+            $opts->result = new stdClass();
             if (!empty($nvpResArray['curl_error'])) {
                 //curl error
                 $opts->result->errorCode = $nvpResArray['curl_errno']; //Response reason code

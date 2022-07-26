@@ -130,6 +130,9 @@ class discounts extends expRecord {
         //-1 = 'ALL LOGGED IN USERS'
         //-2 => 'ALL NON-LOGGED IN USERS'
         $required_groups = expUnserialize($this->group_ids);
+        if (is_null($required_groups)) {
+            $required_groups = array();
+        }
 
         if (count($required_groups)) {
             $users_groups = $user->getGroupMemberships();
