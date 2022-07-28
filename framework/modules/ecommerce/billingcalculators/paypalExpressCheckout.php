@@ -193,30 +193,23 @@ class paypalExpressCheckout extends billingcalculator {
                 'PAYMENTREQUEST_0_SHIPTOZIP'         => $shippingaddress->zip
             );
 
-//            for ($n = 0, $nMax = count($order->orderitem); $n < $nMax; $n++) {
-//                $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
-//                $desc = strip_tags($order->orderitem[$n]->product->body);
-//                $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
-//                $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
-//                $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
-////                $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');  // note: will cause failure when using taxed shipping
-//                $data['L_PAYMENTREQUEST_0_AMT' . $n] = number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '');
-//                //$it += number_format(($order->orderitem[$n]->products_tax), 2, '.', '') * $order->orderitem[$n]->quantity;
-//                //$tt += number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '') * $order->orderitem[$n]->quantity;
-//            }
+            for ($n = 0, $nMax = count($order->orderitem); $n < $nMax; $n++) {
+                $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
+                $desc = strip_tags($order->orderitem[$n]->product->body);
+                $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
+                $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
+                $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
+//                $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');  // note: will cause failure when using taxed shipping
+                $data['L_PAYMENTREQUEST_0_AMT' . $n] = number_format(($order->orderitem[$n]->products_price), 2, '.', '');
+            }
             //factor in a non-shipping discount
-//            if ($order->total_discounts) {
-//                $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->order_discounts[0]->title) > 127 ? substr($order->order_discounts[0]->title, 0, 124) . "..." : $order->order_discounts[0]->title;
-//                $desc = strip_tags($order->order_discounts[0]->body);
-//                $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
-////                $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
-//                $data['L_PAYMENTREQUEST_0_QTY' . $n] = 1;
-//                $data['L_PAYMENTREQUEST_0_AMT' . $n] = -number_format(($order->total_discounts), 2, '.', '');
-//            }
-            //eDebug($data, true);
-            /* eDebug($shippingaddress);
-          eDebug($shipping_state);
-          eDebug($shipping_country, true); */
+            if ($order->total_discounts) {
+                $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->order_discounts[0]->title) > 127 ? substr($order->order_discounts[0]->title, 0, 124) . "..." : $order->order_discounts[0]->title;
+                $desc = strip_tags($order->order_discounts[0]->body);
+                $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
+                $data['L_PAYMENTREQUEST_0_QTY' . $n] = 1;
+                $data['L_PAYMENTREQUEST_0_AMT' . $n] = -number_format(($order->total_discounts), 2, '.', '');
+            }
 
             $nvpResArray = $this->paypalApiCall($data);
 
@@ -229,7 +222,7 @@ class paypalExpressCheckout extends billingcalculator {
 
 //                $opts->result = $object;
                 $billingmethod->update(array('billing_options' => serialize($opts)));
-            } elseif ($nvpResArray['ACK'] == 'Error' || $nvpResArray['ACK'] == 'Failure' || $nvpResArray['ACK'] == 'FailureWithWarning' || $nvpResArray['ACK'] == 'Warning') {
+            } elseif ($nvpResArray['ACK'] === 'Error' || $nvpResArray['ACK'] === 'Failure' || $nvpResArray['ACK'] === 'FailureWithWarning' || $nvpResArray['ACK'] === 'Warning') {
                 // paypal error
                 $opts->result->errorCode = "";
                 $opts->result->message = gt("The following errors occurred") . ": ";
@@ -365,7 +358,7 @@ class paypalExpressCheckout extends billingcalculator {
             //$opts->result = $object;
             $transaction_state = "Temporary Failure";
             $trax_state = "error";
-        } else if ($nvpResArray['ACK'] == 'Success' || $nvpResArray['ACK'] == 'SuccessWithWarning') {
+        } else if ($nvpResArray['ACK'] === 'Success' || $nvpResArray['ACK'] === 'SuccessWithWarning') {
             /*
             [TOKEN] => EC-7YW97132PA0236148 [TIMESTAMP] => 2010-01-16T21:49:15Z [CORRELATIONID] => 7f49bba2eac7e
             [ACK] => Success [VERSION] => 59.0 [BUILD] => 1152253 [TRANSACTIONID] => 1AA09727DG247464P [TRANSACTIONTYPE] => cart
@@ -375,7 +368,7 @@ class paypalExpressCheckout extends billingcalculator {
             */
             $opts->result->status = $nvpResArray['ACK'];
             $opts->result->errorCode = 0;
-            if ($nvpResArray['ACK'] == 'SuccessWithWarning') {
+            if ($nvpResArray['ACK'] === 'SuccessWithWarning') {
                 $opts->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
 //                $billing_options->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['L_SHORTMESSAGE0'] . ": " . $nvpResArray[0]['L_LONGMESSAGE0']; ;
             } else {
@@ -396,10 +389,10 @@ class paypalExpressCheckout extends billingcalculator {
 //            $transaction_state = $nvpResArray['PAYMENTINFO_0_PAYMENTSTATUS'];
 //            $trax_state = "complete";//FIXME only true if mode is 'sale'
             $trax_state = $opts->result->payment_status;
-            if ($trax_state == 'Pending' && $opts->result->pending_reason == 'authorization') {
+            if ($trax_state === 'Pending' && $opts->result->pending_reason === 'authorization') {
                 $trax_state = 'authorized';  // authorized awaiting capture
                 $billingcost = 0;
-            } elseif ($trax_state == 'Completed') {
+            } elseif ($trax_state === 'Completed') {
                 $trax_state = 'complete';  // captured
                 $billingcost = $order->grand_total;
             }
@@ -472,10 +465,10 @@ class paypalExpressCheckout extends billingcalculator {
 
             $transaction_state = "Temporary Failure";
             $trax_state = "error";
-        } else if ($nvpResArray['ACK'] == 'Success' || $nvpResArray['ACK'] == 'SuccessWithWarning') {
+        } else if ($nvpResArray['ACK'] === 'Success' || $nvpResArray['ACK'] === 'SuccessWithWarning') {
             $opts->result->status = $nvpResArray['ACK'];
             $opts->result->errorCode = 0;
-            if ($nvpResArray['ACK'] == 'SuccessWithWarning') {
+            if ($nvpResArray['ACK'] === 'SuccessWithWarning') {
                 $opts->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
             } else {
                 $opts->result->message = $nvpResArray['ACK'];
@@ -491,7 +484,7 @@ class paypalExpressCheckout extends billingcalculator {
             $opts->result->pending_reason = $nvpResArray['PENDINGREASON'];
             $transaction_state = $nvpResArray['PAYMENTSTATUS'];
             $trax_state = $opts->result->payment_status;
-            if ($trax_state == 'Completed') {
+            if ($trax_state === 'Completed') {
                 if ($amount != $order->grand_total) { //FIXME what about multiple captures?
                     $trax_state = 'authorized';  // awaiting additional capture
                 } else {
@@ -562,10 +555,10 @@ class paypalExpressCheckout extends billingcalculator {
 
             $transaction_state = "Temporary Failure";
             $trax_state = "error";
-        } else if ($nvpResArray['ACK'] == 'Success' || $nvpResArray['ACK'] == 'SuccessWithWarning') {
+        } else if ($nvpResArray['ACK'] === 'Success' || $nvpResArray['ACK'] === 'SuccessWithWarning') {
             $opts->result->status = $nvpResArray['ACK'];
             $opts->result->errorCode = 0;
-            if ($nvpResArray['ACK'] == 'SuccessWithWarning') {
+            if ($nvpResArray['ACK'] === 'SuccessWithWarning') {
                 $opts->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
             } else {
                 $opts->result->message = $nvpResArray['ACK'];
@@ -653,10 +646,10 @@ class paypalExpressCheckout extends billingcalculator {
 
             $transaction_state = "Temporary Failure";
             $trax_state = "error";
-        } else if ($nvpResArray['ACK'] == 'Success' || $nvpResArray['ACK'] == 'SuccessWithWarning') {
+        } else if ($nvpResArray['ACK'] === 'Success' || $nvpResArray['ACK'] === 'SuccessWithWarning') {
             $opts->result->status = $nvpResArray['ACK'];
             $opts->result->errorCode = 0;
-            if ($nvpResArray['ACK'] == 'SuccessWithWarning') {
+            if ($nvpResArray['ACK'] === 'SuccessWithWarning') {
                 $opts->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
             } else {
                 $opts->result->message = $nvpResArray['ACK'];
@@ -938,7 +931,7 @@ class paypalExpressCheckout extends billingcalculator {
         // array_merge_recursive() needed a string index to work. now we don't actually want an array index of "L_0, L_1... L_n" we just wan the number
         foreach ($multiArr as $k => $v) {
             if (preg_match('/L_/', $k, $matches)) {
-                $multiArr[preg_replace('/L_/', "", $k)] = $v;
+                $multiArr[str_replace("L_", "", $k)] = $v;
                 unset($multiArr[$k]);
             }
         }
