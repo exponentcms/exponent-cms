@@ -10,7 +10,7 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ----------
 
-Version 2.6.1
+Version 2.7.0
 -------------
 ### Address issues in v2.6.0 and Prepare for v3.0.0
  - compatible with PHP v7.4.x, v8.0.x and v8.1.x

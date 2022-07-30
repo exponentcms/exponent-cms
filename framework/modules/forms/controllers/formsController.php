@@ -61,7 +61,7 @@ class formsController extends expController {
     }
 
     static function isSearchable() {
-        return true; // implemented v2.6.1
+        return true; // implemented v2.7.0
     }
 
     function searchName() {
