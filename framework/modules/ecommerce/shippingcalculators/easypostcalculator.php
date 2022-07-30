@@ -102,7 +102,7 @@ class easypostcalculator extends shippingcalculator
             'SmallFlatRateEnvelope' => 'Small Flat Rat eEnvelope',
             'Parcel' => 'Parcel',
             'LargeParcel' => 'Large Parcel',
-            'IrregularParcel' => 'Irregular Parcel',
+//            'IrregularParcel' => 'Irregular Parcel',
             'SoftPack' => 'Soft Pack',
             'SmallFlatRateBox' => 'Small Flat Rate Box',
             'MediumFlatRateBox' => 'Medium Flat Rate Box',
@@ -272,16 +272,6 @@ class easypostcalculator extends shippingcalculator
 #                    eDebug('dimensions: height: '.$pi->h." width: ".$pi->w." length: ".$pi->l);
 #                    echo "<hr>";
                     $weight = !empty($pi->weight) ? $pi->weight : $this->configdata['default_max_weight'];
-//                    $upsRate->package(array(
-//                        'description'=>'shipment',
-//                        'weight'=>$weight,
-//                        'weight_type'=>'LBS',  //FIXME we need to be able to set this
-//                        'code'=>'02',
-//                        'length'=>$pi->l,
-//                        'width'=>$pi->w,
-//                        'height'=>$pi->h,
-//                        'measure_type'=>'IN',  //FIXME we need to be able to set this
-//                    ));
                     $parcels[] = array(
                         "parcel" => array(
                             "length" => $pi->l,
@@ -317,16 +307,6 @@ class easypostcalculator extends shippingcalculator
                 $pkg_weight_oz = $pkg_weight_oz > 1 ? $pkg_weight_oz : 1;
 #                eDebug('created standard sized package with weight of '.$pkg_weight_oz);
 #                echo "<hr>";
-//                $upsRate->package(array(
-//                    'description'=>'shipment',
-//                    'weight'=>$pkg_weight_oz,
-//                    'weight_type'=>'LBS',  //FIXME we need to be able to set this
-//                    'code'=>'02',
-//                    'length'=>$box_length,
-//                    'width'=>$box_width,
-//                    'height'=>$box_height,
-//                    'measure_type'=>'IN',  //FIXME we need to be able to set this
-//                ));
                 $parcels[] = array(
                     "parcel" => array(
                         "length" => $box_length,
@@ -334,6 +314,9 @@ class easypostcalculator extends shippingcalculator
                         "height" => $box_height,
                         "weight" => $pkg_weight_oz * 16,  // convert to oz
                         'predefined_package' => null,
+                    ),
+                    "options" => array(
+                        "currency" => ECOM_CURRENCY
                     ),
                 );
                 $total_weight += $pkg_weight_oz * 16;
