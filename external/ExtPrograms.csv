@@ -47,7 +47,7 @@ html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 CKEditor,4.19.1,ckeditor.com,4.19.1/34.2.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
-TinyMCE v5,5.10.5,tiny.cloud,5.10.5/6.1.0,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
+TinyMCE v5,5.10.5,tiny.cloud,5.10.5/6.1.2,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.9,github.com/moxiecode/plupload,2.3.9/3.1.5,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 elFinder,2.1.60,elfinder.org,2.1.60,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
