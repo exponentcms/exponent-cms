@@ -350,7 +350,7 @@ class easypostcalculator extends shippingcalculator
         foreach ($messages as $message) {
             //note we definitely get errors if USPS used for over 70 lbs
             if (!($message['carrier'] === 'USPS' && $total_weight > 1120))
-                flash('error', 'easypost: ' . $message['carrier'] . ': ' . $message['message']);
+                flash('info', 'easypost: ' . $message['carrier'] . ': ' . $message['message']);
         }
 
         try {
