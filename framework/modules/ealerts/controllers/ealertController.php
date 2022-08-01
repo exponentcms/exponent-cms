@@ -136,7 +136,7 @@ class ealertController extends expController {
 //        $bot->fire();
 
         //fixme since bots aren't working
-        redirect_to(array('controller'=>'ealert','action'=>'send','id'=>$id, 'ealert_id'=>$this->params['id']));
+        redirect_to(array('controller'=>'ealert','action'=>'send','id'=>$id, 'ealert_id'=>$ealert->id));
 
         flash('message', gt("E-Alerts are being sent to subscribers."));
         expHistory::back();

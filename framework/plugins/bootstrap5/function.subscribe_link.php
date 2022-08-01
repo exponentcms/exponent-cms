@@ -66,9 +66,10 @@ function smarty_function_subscribe_link($params,&$smarty) {
                     $action = 'un' . $action;
                 }
                 // spit out the link
+                $button = expTheme::buttonIcon($iclass);
                 $link = '<a class="' . $class . '" href="' . $router->makelink(
                         array('controller' => 'ealert', 'action' => $action, 'id' => $ealert->id)
-                    ) . '"><i class="' . expTheme::buttonIcon($iclass)->class . ' ' . expTheme::iconSize() . '"></i> ' . $text . '</a>';
+                    ) . '"><i class="' . $button->prefix . $button->class . ' ' . expTheme::iconSize() . '"></i> ' . $text . '</a>';
                 echo $prepend, $link;
             }
         }
