@@ -57,9 +57,9 @@
         padding: .5rem .9rem
     }
 
-    .bs-docs-section {
-        margin-top: 4em
-    }
+    /*.bs-docs-section {*/
+    /*    margin-top: 4em*/
+    /*}*/
 
     .bs-docs-section .page-header h1 {
         padding: 2rem 0;
