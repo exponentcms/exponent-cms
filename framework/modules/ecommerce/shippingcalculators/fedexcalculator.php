@@ -47,7 +47,7 @@ class fedexcalculator extends shippingcalculator {
 
         //The WSDL is not included with the sample code.
         //Please include and reference in $path_to_wsdl variable.
-        $path_to_wsdl = BASE . 'external/fedex-phpv28/wsdl/RateService_v28.wsdl';
+        $path_to_wsdl = BASE . 'external/fedex-phpv31/wsdl/RateService_v31.wsdl';
 
         ini_set("soap.wsdl_cache_enabled", "0");
 
@@ -71,7 +71,7 @@ class fedexcalculator extends shippingcalculator {
 //        $request['TransactionDetail']                  = array('CustomerTransactionId' => md5("Probody " . date('c')));
         $request['Version']                            = array(
             'ServiceId' => 'crs',
-            'Major' => '28',
+            'Major' => '31',
             'Intermediate' => '0',
             'Minor' => '0'
         );

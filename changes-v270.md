@@ -13,7 +13,7 @@ Version 2.7.0 - Specific changes from previous version
 - add error trapping to installation for unable to connect to database
 - add examples to router_maps for using portfolio or forms as a directory
 - add optional add form records to search results
-- add non-US currency support to ecommerce settings
+- add non-US currency support to ecommerce settings, except for external shipping calculations
 
 ### v270 fixes these issues in v260 and previous patches:
 - fix XSS User Agent vulnerability reported by Oscar Uribe, CVE-2022-23049
@@ -39,13 +39,17 @@ Version 2.7.0 - Specific changes from previous version
 - fix unable to save complex wysiwyg entries in general store settings
 - fix region/state dropdown control population after changing country selection
 - quick fix PayPalExpress checkout error with discount and multiple items
+- fix paged form error when controls have help text
+- fix auto ealerts aren't being sent
 
 ### v270 updates/adds these 3rd party libraries in v260 and previous patches:
 - Twitter Bootstrap v5.1.3
 - Bootswatches v5.1.3
 - FontAwesome v6.1.2
 - Bootstrap Icons v1.9.1
-- smarty v4.1.1
+- Twitter Bootstrap to v4.6.2
+- Bootswatch to v4.6.2
+- smarty v4.2.0
 - easypost sdk v4.0.3
 - datatables v1.12.1
 - yadcf v0.9.4beta45
@@ -61,8 +65,8 @@ Version 2.7.0 - Specific changes from previous version
 - moment.js v2.29.4
 - tinymce v5.10.5
 - emailvalidator to v3.2.1
-- twitter bootstrap/bootswatch to v4.6.2
 - jquery validation 1.19.5
+- FedEx WSDL to v31
 
 ## v2.6.0patch3
 
