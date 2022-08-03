@@ -43,12 +43,12 @@ Version 2.7.0 - Specific changes from previous version
 - fix auto ealerts aren't being sent
 
 ### v270 updates/adds these 3rd party libraries in v260 and previous patches:
-- Twitter Bootstrap v5.1.3
-- Bootswatches v5.1.3
+- Twitter Bootstrap5 v5.1.3
+- Bootswatches5 v5.1.3
 - FontAwesome v6.1.2
 - Bootstrap Icons v1.9.1
-- Twitter Bootstrap to v4.6.2
-- Bootswatch to v4.6.2
+- Twitter Bootstrap4 to v4.6.2
+- Bootswatch4 to v4.6.2
 - smarty v4.2.0
 - easypost sdk v4.0.3
 - datatables v1.12.1
