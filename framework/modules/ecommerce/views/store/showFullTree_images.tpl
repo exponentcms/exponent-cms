@@ -64,7 +64,7 @@
         <div class="cats">
             <{$config.item_level|default:'h2'}>{'Browse Our Store'|gettext}:</{$config.item_level|default:'h2'}>
             {counter assign="ipcr" name="ipcr" start=1}
-            {foreach name="cats" from=$categories item="cat"}{$cat->is_active}
+            {foreach name="cats" from=$categories item="cat"}
                 {if $cat->is_active==1 || $user->isAdmin()}
 
                     {if $smarty.foreach.cats.first || $open_c_row}
