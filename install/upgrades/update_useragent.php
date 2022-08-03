@@ -25,7 +25,7 @@
 class update_useragent extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
 	protected $to_version = '2.7.0';  // issue was fixed in v2.7.0
-    public $optional = true;
+//    public $optional = true;
 
 	/**
 	 * name/title of upgrade script
