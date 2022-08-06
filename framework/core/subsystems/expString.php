@@ -235,7 +235,7 @@ class expString {
      * @return string
      */
     public static function summarize($string, $strtype='html', $type='para', $more='...') {
-        $sep = ($strtype === "html" ? array("</p>", "</div>") : array("\r\n", "\n", "\r"));
+        $sep = ($strtype === "html" ? array("</div>", "</p>") : array("\r\n", "\n", "\r"));
         $origstring = $string;
 
         switch ($type) {
@@ -249,7 +249,7 @@ class expString {
                 }
     //			return str_replace("&amp;#160;"," ",htmlentities(expString::convertSmartQuotes(strip_tags($string)),ENT_QUOTES));
                 return expString::convertSmartQuotes(strip_tags($string));
-                break;
+//                break;
             case "paralinks":
                 foreach ($sep as $s) {
                     $para = explode($s, $string);
@@ -261,22 +261,35 @@ class expString {
                 }
     //			return str_replace("&#160;"," ",htmlspecialchars_decode(htmlentities(expString::convertSmartQuotes(strip_tags($string,'<a>')),ENT_QUOTES)));
                 return expString::convertSmartQuotes($string);
-                break;
+//                break;
             case "parapaged":
 //               $s = '<div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div>';
                 $s = '<div style="page-break-after: always';
                 $para = explode($s, $string);
-                $string = $para[0];
-                if (strlen($string) < strlen($origstring)) {
-                    $string .= "<span> " . $more . "</span>";
+                if (count($para) > 1) {  // we have a page break
+                    $string = $para[0];
+                    if (strlen($string) < strlen($origstring)) {
+                        $string .= "<span> " . $more . "</span>";
+                    }
+                    return expString::convertSmartQuotes($string);
                 }
-                return expString::convertSmartQuotes($string);
-                break;
+                // if there's no page break, fall through to simple html paragraph
+//                break;
             case "parahtml":
+                // strip first <div> to first <p>
                 foreach ($sep as $s) {
                     $para = explode($s, $string);
                     $string = $para[0];
                 }
+                // summaries probably shouldn't include quotes
+//                if (stripos($string, "<blockquote") !== false) {
+//                    foreach ($para as $p) {
+//                        if (stripos($p, "<blockquote") === false) {
+//                            $string = $p;
+//                            break;
+//                        }
+//                    }
+//                }
                 if (!empty($string)) {
                     $isText = true;
                     $ret = "";
@@ -369,7 +382,7 @@ class expString {
                     $string .= "<span> " . $more . "</span>";
                 }
                 return expString::convertSmartQuotes($string);
-                break;
+//                break;
             default:
                 $words = explode(" ", strip_tags($string));
                 $string = implode(" ", array_slice($words, 0, (int)$type + 0));
@@ -378,7 +391,7 @@ class expString {
                 }
     //			return str_replace("&amp;#160;"," ",htmlentities(expString::convertSmartQuotes($string),ENT_QUOTES));
                 return expString::convertSmartQuotes($string);
-                break;
+//                break;
         }
     }
 
