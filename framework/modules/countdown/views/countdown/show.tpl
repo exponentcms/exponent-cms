@@ -50,7 +50,7 @@
 {literal}
     $(function(){
     	var note = $('#note'),
-    		ts = new Date("{/literal}{$config['date-count']} {$config['time-h-count']}:{$config['time-m-count']} {$config['ampm-count']}{literal}");
+    		ts = new Date("{/literal}{$config.date-count} {$config.time-h-count.}:{$config.time-m-count} {$config.ampm-count}{literal}");
 
     	$('#countdown').countdown({
     		timestamp	: ts,
@@ -65,8 +65,8 @@
                 {/literal}{if $config.displaydate}{literal}
                 message += "{/literal}{'Until'|gettext} {literal}";
                 message += ts.toLocaleString() + " <br />";
-//                message += "{/literal}{$config['date-count']} "{literal};
-//                message += "{/literal}{$config['time-h-count']}:{$config['time-m-count']} {$config['ampm-count']}{literal}" + " <br />";
+//                message += "{/literal}{$config.date-count} "{literal};
+//                message += "{/literal}{$config.time-h-count}:{$config.time-m-count} {$config.ampm-count}{literal}" + " <br />";
                 {/literal}{/if}{literal}
                 message += "{/literal}{$config.body|trim}{literal}";
     			note.html(message);

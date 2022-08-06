@@ -15,7 +15,7 @@
 
 <h2>{"Media"|gettext}</h2>
 
-{control type="files" name="media_image" subtype="media_image" label="Media Banner Image"|gettext accept="image/*" value=$config['expFile'] limit='1'}
+{control type="files" name="media_image" subtype="media_image" label="Media Banner Image"|gettext accept="image/*" value=$config.expFile limit='1'}
 {control type="editor" name="media_body" label="Media HTML"|gettext value=$config.media_body}
 
 <table class="exp-skin-table">
