@@ -24,6 +24,15 @@
 
 {/css}
 
+{if !empty($config.enable_facebook_like) || !empty($config.displayfbcomments)}
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v14.0&appId={$config.app_id}&autoLogAppEvents=1" nonce="9wKafjYh"></script>
+{/if}
+
+{if $config.enable_tweet}
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+{/if}
+
 <div class="module filedownload showall showall-tabbed">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{/if}
     {rss_link}

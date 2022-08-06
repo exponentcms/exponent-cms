@@ -44,7 +44,7 @@
 {/group}
 {group label='Tweet Button'|gettext}
     {control type="checkbox" name="enable_tweet" label="Enable Tweet Button"|gettext value=1 checked=$config.enable_tweet description='Displays the \'Tweet\' button with each item'|gettext}
-    {control type="dropdown" name="layout" items="Standard,Horizontal,Vertical"|gettxtlist values=",horizontal,vertical" label="Layout Style"|gettext value=$config.layout|default:""}
-    {control type="dropdown" name="size" items="Medium,Large"|gettxtlist values=",large" label="Button Size"|gettext value=$config.size|default:""}
+    {control type="dropdown" name="twlayout" items="Standard,Horizontal,Vertical"|gettxtlist values=",horizontal,vertical" label="Layout Style"|gettext value=$config.twlayout|default:""}
+    {control type="dropdown" name="twsize" items="Medium,Large"|gettxtlist values=",large" label="Button Size"|gettext value=$config.twsize|default:""}
     {*{control type="text" name="default_text" label="Default Tweet Text"|gettext value=$config.default_text}*}
 {/group}

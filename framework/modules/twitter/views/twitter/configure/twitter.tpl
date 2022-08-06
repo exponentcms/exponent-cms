@@ -49,5 +49,5 @@
     {control type="checkbox" name="enable_follow" label="Enable Follow Button"|gettext value=1 checked=$config.enable_follow description='Displays the \'Follow\' button'|gettext}
     {control type="text" name="twitter_user" label="Twitter User Name"|gettext value=$config.twitter_user}
     {control type=checkbox name="hideuser" value=1 label="Hide User Name in Button"|gettext checked=$config.hideuser|default:0}
-    {control type="dropdown" name="size" items="Medium,Large"|gettxtlist values=",large" label="Follow Button Size"|gettext value=$config.size|default:""}
+    {control type="dropdown" name="twsize" items="Medium,Large"|gettxtlist values=",large" label="Follow Button Size"|gettext value=$config.twsize|default:""}
 {/group}
