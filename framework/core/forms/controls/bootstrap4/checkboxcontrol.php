@@ -91,16 +91,21 @@ class checkboxcontrol extends formcontrol {
                 } else {
                     $html .= $labelwrap . $this->controlToHTML($name, $label);
                 }
+                if (!empty($this->description))
+                    $html .= "<small class=\"form-text text-muted\">" . $this->description . "</small>";
             } else {  // horizontal form
                 if (!$this->flip) {
                     $html .= '<div class="offset-sm-2 col-sm-10">' . $this->controlToHTML($name, $label) . $labelwrap . "</div>";
+                    if (!empty($this->description))
+                        $html .= '<div class="offset-sm-2 col-sm-10">' . "<small class=\"form-text text-muted\">" . $this->description . "</small>" . "</div>";
                 } else {
                     $labelwrap = "<label" . $for . " class=\"col-sm-2 form-check-label label\">" . $label . "</label>";
                     $html .= $labelwrap . '<div class="col-sm-10">' . $this->controlToHTML($name, $label) . "</div>";
+                    if (!empty($this->description))
+                        $html .= "<small class=\"form-text text-muted\">" . $this->description . "</small>";
                 }
             }
 
-            if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">" . $this->description . "</small>";
 //            $html .= ($this->horizontal) ? '</div>' : '';
             $html .= "</div>";
             return $html;

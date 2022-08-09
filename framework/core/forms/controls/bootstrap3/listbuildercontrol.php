@@ -67,10 +67,10 @@ class listbuildercontrol extends formcontrol {
 		} else {
             $this->_normalize();
 			$html = '<input type="hidden" name="'.$name.'" id="'.$name.'" value="'.implode("|!|",array_keys($this->default)).'" />';
-		    $html .= '<table cellpadding="9" border="0" width="70%" style="margin-bottom:0;"><tr><td width="40%" style="border:none;">';
+		    $html .= '<table cellpadding="9" border="0" style="margin-bottom:0;"><tr><td width="40%" style="border:none;">';
 			$html .= "<input id='source_$name' type='text' class=\"text form-control\"/>";
 			$html .= "</td>";
-			$html .= '<td valign="middle" width="10" style="border:none;">';
+			$html .= '<td align="center" valign="middle" width="20%" style="border:none;">';
 			if($process == "copy") {
 				$html .= "<button type='button' class='btn btn-default' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;,&quot;copy&quot;); return false' ><i class='fa fa-fw fa-arrow-right'></i><i class='fa fa-fw fa-arrow-right'></i></button>";
 			} else {
@@ -89,7 +89,8 @@ class listbuildercontrol extends formcontrol {
 				$html .= "<option value='$key'>$value</option>";
 			}
 			$html .= "</select>";
-			$html .= "</td><td width='20%' style='border:none;'></td></tr></table>";
+//			$html .= "</td><td width='20%' style='border:none;'></td></tr></table>";
+            $html .= "</td></tr></table>";
 //			$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
 		}
         $html .= "<div style=\"clear:both\"></div>";

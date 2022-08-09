@@ -14,11 +14,12 @@ Version 2.7.0 - Specific changes from previous version
 - add examples to router_maps for using portfolio or forms as a directory
 - add optional add form records to search results
 - add non-US currency support to ecommerce settings, except for external shipping calculations
+- add missing FaceBook buttons in news module views
 
 ### v270 fixes these issues in v260 and previous patches:
 - fix XSS User Agent vulnerability reported by Oscar Uribe, CVE-2022-23049
 - fix some php 8.1 fatal ecommerce and configure module anomalies
-- fix php 8.1 mysql fatal errors during installation and reindexing and when workflow not turned on
+- fix php 8.1 mysql fatal errors during installation, reindexing and when workflow not turned on
 - fix mysql server v8.0.19+ prevents saving some data
 - regression fix less.php optional autoprefixer was always run
 - regression fix module styles wrongly set to Box/Dark by default upon first save
@@ -41,6 +42,7 @@ Version 2.7.0 - Specific changes from previous version
 - quick fix PayPalExpress checkout error with discount and multiple items
 - fix paged form error when controls have help text
 - fix auto ealerts aren't being sent
+- fix paged summary displayed entire content if no page break set
 
 ### v270 updates/adds these 3rd party libraries in v260 and previous patches:
 - Twitter Bootstrap5 v5.1.3
