@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -36,7 +36,7 @@
                 <a href="{link controller=store action=show title=$result->sef_url}">{img file_id=$result->expFile.mainimage[0]->id w=60 h=60}</a>
             </div>
             <div class="item {cycle values="odd,even"} showbody">
-                <span class="showtitle"><a href="{link controller=store action=show title=$result->sef_url}">{$result->title}{if $result->model}, SKU: {$result->model}{/if}</a></span>
+                <span class="showtitle"><a href="{link controller=store action=show title=$result->sef_url}">{$result->title}{if $result->model}, {'SKU'|gettext}: {$result->model}{/if}</a></span>
                 {if $result->body != ""}<br /><span class="summary">{$result->body|strip_tags|truncate:240}</span>{/if}
             </div>
             <div class="showrightcol">

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -53,7 +53,7 @@ if (!$db->selectValue('modstate', 'active', 'module=\'eventregistration\''))
     return false;
 
 $ev = new eventregistration();
-$allevents = $ev->find('all', 'product_type=\'eventregistration\' AND active_type=0');
+$allevents = $ev->find('all', 'product_type=\'eventregistration\' AND (active_type=0 OR active_type IS NULL)');
 $events = array();
 foreach ($allevents as $event) {
     if ($event->eventenddate > time()) {

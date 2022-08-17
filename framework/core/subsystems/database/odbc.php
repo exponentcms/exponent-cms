@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -51,6 +51,7 @@ class odbc_database extends database {
 			$this->havedb = true;
 		}
 		$this->prefix = DB_TABLE_PREFIX . '_';
+        $this->version = 'ODBC';
 	}
 
     /** Begin SSP Methods */
@@ -591,7 +592,8 @@ class odbc_database extends database {
      * @return array
      */
     function alterTable($tablename, $newdatadef, $info, $aggressive = false) {
-        expSession::clearAllUsersSessionCache();
+        if ($this->havedb == true)
+            expSession::clearAllUsersSessionCache();
         $dd = $this->getDataDefinition($tablename);
         $modified = false;
 

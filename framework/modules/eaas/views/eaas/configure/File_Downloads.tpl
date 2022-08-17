@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +15,7 @@
 
 <h2>{"Filedownload Videos"|gettext}</h2>
 
-{control type="files" name="filedownload_image" subtype="filedownload_image" label="Filedownload Banner Image"|gettext accept="image/*" value=$config['expFile'] limit='1'}
+{control type="files" name="filedownload_image" subtype="filedownload_image" label="Filedownload Banner Image"|gettext accept="image/*" value=$config.expFile limit='1'}
 {control type="editor" name="filedownload_body" label="Filedownload HTML"|gettext value=$config.filedownload_body}
 
 <table class="exp-skin-table">

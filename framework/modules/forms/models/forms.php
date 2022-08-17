@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -103,7 +103,7 @@ class forms extends expRecord {
                 $tempdef = array();
                 foreach ($db->selectObjects('forms_control', 'forms_id=' . $this->id) as $control) {
                     if ($control->is_readonly == 0) {
-                        $ctl = unserialize($control->data);
+                        $ctl = expUnserialize($control->data);
                         $ctl->identifier = $control->name;
                         $ctl->caption = $control->caption;
                         $ctl->id = $control->id;
@@ -133,7 +133,7 @@ class forms extends expRecord {
     }
 
     /**
-     * Returns form records as objects
+     * Returns form records as array of objects
      *
      * @param string $where
      *

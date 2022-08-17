@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -38,14 +38,7 @@
                 </div>
             </div>
         </div>
-	    {*<div class="loadingdiv">{"Loading Multi-Photo Uploader"|gettext}</div>*}
         {loading title="Loading Multi-Photo Uploader"|gettext}
         {control type=buttongroup submit="Add Photos to Album"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
-
-{script unique="tabload" jquery=1 bootstrap="tab,transition"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

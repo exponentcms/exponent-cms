@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -588,7 +588,7 @@ if (USE_CDN) {
         define('BS3_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v3.x script
     if (!defined('BS4_SCRIPT')) {
-        define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>');
+        define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v4.x script
     if (!defined('BS5_SCRIPT')) {
         define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>');
@@ -600,7 +600,7 @@ if (USE_CDN) {
         define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
     if (!defined('FA6_SCRIPT')) {
-        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css');
     } // cdn FontAwesome v6.x stylesheet
 }
 
@@ -612,7 +612,7 @@ if (!defined('SMARTY_PATH')) {
     if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
     } else {
-        define('SMARTY_VERSION', '4.0.4');  //note smarty v3.1.28+ won't work properly with php < v7.1+
+        define('SMARTY_VERSION', '4.2.0');  //note smarty v3.1.28+ won't work properly with php < v7.1+
     }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
@@ -632,12 +632,12 @@ if (!defined('SWIFT_PATH')) {
     /**
      * Lexer is needed for Swiftmailer v6
      */
-    define('LEXER_VERSION', '1.2.2');
+    define('LEXER_VERSION', '1.2.3');
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '3.1.2');
+    define('EMAIL_VALIDATOR_VERSION', '3.2.1');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
@@ -649,39 +649,42 @@ if (!defined('MPDF7_VERSION')) {
     define('MPDF7_VERSION', '7.1.9');
 }
 if (!defined('MPDF8_VERSION')) {
-    define('MPDF8_VERSION', '8.0.8');  // 8.0.15
+    define('MPDF8_VERSION', '8.0.17');
+}
+if (!defined('MPDF81_VERSION')) {
+    define('MPDF81_VERSION', '8.1.1');  // 8.1.2
 }
 /**
  * Log is needed for MPDF v7+
  */
 if (!defined('LOG_VERSION')) {
-    define('LOG_VERSION', '1.1.3');  // 1.1.4
+    define('LOG_VERSION', '1.1.4');
 }
 /**
  * random_compat is needed for MPDF v7+ under PHP v5.6
  */
 if (!defined('RANDOM_VERSION')) {
-    define('RANDOM_VERSION', '2.0.19');  // 2.0.20
+    define('RANDOM_VERSION', '2.0.20');
 }
 /**
  * FPDI is needed for MPDF v8+
  */
 if (!defined('FPDI_VERSION')) {
-    define('FPDI_VERSION', '2.3.5');  // 2.3.6
+    define('FPDI_VERSION', '2.3.6');
 }
 
 if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '086');  // 111
+    define('DOMPDF8_VERSION', '-1.2.2');  // -2.0.0
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.2');  // 5.2.4
+    define('HTML2PDF5_VERSION', '5.2.5');
 }
 /**
- * TCPDF is needed for HTML2PDF
+ * TCPDF is needed for HTML2PDF5
  */
 if (!defined('TCPDF5_VERSION')) {
-    define('TCPDF5_VERSION', '6.3.5');  // 6.4.2
+    define('TCPDF5_VERSION', '6.4.4');  // 6.5.0
 }
 
 ?>

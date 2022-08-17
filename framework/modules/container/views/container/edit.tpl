@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -79,10 +79,8 @@
         {/form}
     </div>
     {if $is_edit}
-        {*<div class="loadingdiv">{'Loading Module Configuration Form'|gettext}</div>*}
         {loading title='Loading Module Configuration Form'|gettext}
     {else}
-        {*<div class="loadingdiv">{'Loading Module Creation Form'|gettext}</div>*}
         {loading title='Loading Module Creation Form'|gettext}
     {/if}
     {* src="$smarty.const.PATH_RELATIVE|cat:'js/ContainerSourceControl.js'" *}

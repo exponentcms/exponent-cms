@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -55,7 +55,7 @@ class uploadcontrol extends formcontrol {
             $fi_name = '';
             $fi_file = $this->default;
         } else {
-            $html .= '<div class="fileinput fileinput-new input-group" data-provides="fileinput">';
+            $html .= '<div class="fileinput fileinput-new input-group" data-provides="fileinput" style="width:82%">';
             $fi_name = $name;
             $fi_file = '';
         }

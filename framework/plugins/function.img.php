@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -46,15 +46,16 @@ function smarty_function_img($params,&$smarty)
 //        $params['w'] = $params['h'];
 //    }
 //    $dims = (isset($params['w']) && isset($params['h']) && isset($params['zc'])) ? ' height="'.$params['h'].'" width="'.$params['w'].'"' : '';
+    // set html dimension attributes
     $dims = '';
     if (isset($params['w']) && isset($params['h']) && isset($params['zc'])) {
         $dims = ' height="' . $params['h'] . '" width="' . $params['w'] . '"';
-//	 } elseif (isset($params['w']) && isset($params['h'])) {
-//		 $dims = ' height="'.$params['h'].'" width="'.$params['w'].'"';
-//	 } elseif (isset($params['w'])) {
-//		 $dims = ' width="'.$params['w'].'"';
-//	 } elseif (isset($params['h'])) {
-//		 $dims = ' height="'.$params['h'].'"';
+	 } elseif (isset($params['w']) && isset($params['h'])) {
+		 $dims = ' height="'.$params['h'].'" width="'.$params['w'].'"';
+	 } elseif (isset($params['w'])) {
+		 $dims = ' width="'.$params['w'].'"';
+	 } elseif (isset($params['h'])) {
+		 $dims = ' height="'.$params['h'].'"';
     }
 
     if (!isset($params['q']) && defined('THUMB_QUALITY'))

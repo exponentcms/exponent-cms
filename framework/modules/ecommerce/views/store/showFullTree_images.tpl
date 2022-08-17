@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -110,7 +110,7 @@
             {/foreach}
 
             {* close the row if left open. might happen for non-admins *}
-            {if $open_c_row==0}
+            {if $open_c_row==0 && $ipcr!=1}
                 </div>
                 {$open_c_row=1}
             {/if}

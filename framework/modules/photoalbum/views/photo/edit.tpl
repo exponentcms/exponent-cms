@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -51,7 +51,6 @@
                 </div>
             </div>
         </div>
-	    {*<div class="loadingdiv">{"Loading Photo Item"|gettext}</div>*}
         {loading title="Loading Photo Item"|gettext}
         {control type=buttongroup submit="Save Photo"|gettext cancel="Cancel"|gettext}
     {/form}

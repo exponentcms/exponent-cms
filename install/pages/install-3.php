@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -38,7 +38,7 @@ $warning = array();
 
     function echoStart($msg)
     {
-        echo '<tr><td valign="top" class="bodytext">' . $msg . '</td><td valign="top" class="bodytext">';
+        echo '<tr><td class="bodytext">' . $msg . '</td><td class="bodytext">';
     }
 
     function echoSuccess($msg = "")
@@ -102,6 +102,12 @@ $warning = array();
             $config['db_engine'],
             1
         );
+
+        if ($db->error_code) {
+            flash('error', $db->error_code);
+            header('Location: index.php?page=install-2&errconnect=true&errmessage=' . urlencode($db->error_code));
+            exit();
+        }
 
         $db->prefix = $config['db_table_prefix'] . '_';
 

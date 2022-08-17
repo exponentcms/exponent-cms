@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -118,11 +118,5 @@
         previous:'<i class="fa fa-fw fa-chevron-left" aria-label="previous photo"></i>',
         next:'<i class="fa fa-fw fa-chevron-right" aria-label="next photo"></i>',
     });
-{/literal}
-{/script}
-
-{script unique="tabload" jquery=1 bootstrap="tab,transition"}
-{literal}
-    $('.loadingdiv').remove();
 {/literal}
 {/script}

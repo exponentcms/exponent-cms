@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -132,7 +132,7 @@ class storeCategory extends expNestedNode {
         $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ON p.id = sc.product_id ';
         $sql .= 'WHERE ';
         if (!($user->is_admin || $user->is_acting_admin))
-            $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+            $sql .= '(p.active_type=0 OR p.active_type IS NULL OR p.active_type=1) AND ';
         $sql .= 'sc.storecategories_id = ' . $this->id;
         $sql  = $sql_start . $sql . $order;
         //echo $sql;
@@ -154,7 +154,7 @@ class storeCategory extends expNestedNode {
         $sql = 'JOIN ' . $db->tableStmt('product_storeCategories') . ' sc ON p.id = sc.product_id ';
         $sql .= 'WHERE ';
         if (!($user->is_admin || $user->is_acting_admin))
-            $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+            $sql .= '(p.active_type=0 OR p.active_type IS NULL OR p.active_type=1) AND ';
         $sql .= 'sc.storecategories_id = ' . $this->id;
         $sql  = $sql_start . $sql . $order;
         //echo $sql;
@@ -211,10 +211,11 @@ class storeCategory extends expNestedNode {
 		$tree = parent::getFullTree();
 		$tree_copy = array();
 		foreach($tree as $key=>$node) {  // add link and image
-			$tree_copy[$key] = new stdClass();
+//			$tree_copy[$key] = new stdClass();
+            $tree_copy[$key] = new storeCategory();
 			$tree_copy[$key]->id = $node->id;
 			$tree_copy[$key]->depth = $node->depth;
-            $tree_copy[$key]->active = $node->is_active;
+            $tree_copy[$key]->is_active = $node->is_active;
             $tree_copy[$key]->sef_url = $node->sef_url;
 			$tree_copy[$key]->href = makeLink(array('controller'=>'store','action'=>'showall','title'=>$node->sef_url));
 			$tree_copy[$key]->parent = $node->parent_id ? $node->parent_id : '#';

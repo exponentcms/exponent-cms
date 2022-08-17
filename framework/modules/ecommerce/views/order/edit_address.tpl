@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -53,7 +53,7 @@
         {*{control type=state name='address[state]' label="*"|cat:"State" includeblank="-- Choose a State --"|gettext default=$record->state add_other=true all_us_territories=true exclude="6,8,10,17,30,46,50"}*}
         {*{control type=text name='address[non_us_state]' label="&#160;"|cat:("State/Province if non-US"|gettext) value=$record->non_us_state}*}
         {*{control type=country name='address[country]' label="&#160;"|cat:("Country"|gettext) default=$record->country|default:223}*}
-        {control type=countryregion name='address[address]' label="Country/State"|gettext country_default=$record->country|default:223 region_default=$record->state includeblank="-- Choose a State --"|gettext required=true}
+        {control type=countryregion name='address[address]' label="Country/Region"|gettext country_default=$record->country|default:223 region_default=$record->state includeblank="-- Choose a State --"|gettext required=true}
 
         {control type=text name='address[zip]' label="Zip Code"|gettext value=$record->zip required=true}
         {control type=tel name="address[phone]" label="Phone Number"|gettext|cat:" (xxx-xxx-xxxx)" value=$record->phone required=true}

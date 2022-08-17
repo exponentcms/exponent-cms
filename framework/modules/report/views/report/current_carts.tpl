@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -70,6 +70,7 @@
                             <table width="50%">
                                 <thead>
                                     <tr>
+                                        <th>{'Last Active'|gettext}</th>
                                         <th>{'Length of Time'|gettext}</th>
                                         <th>{'IP/location'|gettext}</th>
                                         <th>{'Referring URL'|gettext}</th>
@@ -114,12 +115,13 @@
                                     {if is_array($item)}
                                     {cycle values="odd,even" assign=row}
                                     <tr class="{$row}">
+                                        <td>{$item.last_active|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</td>
                                         <td>{$item.length_of_time}</td>
                                         <td>{$item.ip_address}</td>
                                         <td>{$item.referrer}</td>
                                     </tr>
                                     <tr class="{$row}">
-                                        <td colspan="3">
+                                        <td colspan="4">
                                         <table>
                                             <thead>
                                                 <tr>
@@ -168,6 +170,7 @@
                                     <tr>
                                         <th>{'Name'|gettext}</th>
                                         <th>{'Email'|gettext}</th>
+                                        <th>{'Last Active'|gettext}</th>
                                         <th>{'Length of Time'|gettext}</th>
                                         <th>{'IP/location'|gettext}</th>
                                         <th>{'Referring URL'|gettext}</th>
@@ -180,12 +183,13 @@
                                         <tr class="{$row}">
                                             <td>{$item.name}</td>
                                             <td>{$item.email}</td>
+                                            <td>{$item.last_active|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</td>
                                             <td>{$item.length_of_time}</td>
                                             <td>{$item.ip_address}</td>
                                             <td>{$item.referrer}</td>
                                         </tr>
                                         <tr class="{$row}">
-                                            <td colspan="5">
+                                            <td colspan="6">
                                             <table>
                                                 <thead>
                                                     <tr>

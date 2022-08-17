@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -145,11 +145,11 @@
 
         {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
 //        CKEDITOR.disableAutoInline = true;
-        var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{stripSlashes($editor->data)}]{/if}{literal};
+        var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{expStripSlashes($editor->data)}]{/if}{literal};
         var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
         var fullToolbar = {/literal}{if empty($editor->data)}'formatselect fontselect fontsizeselect forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent '+
-            'link unlink image | visualblocks localautosave help'{else}[{expString::check_javascript(stripSlashes($editor->data),true)}]{/if}{literal};
+            'link unlink image | visualblocks localautosave help'{else}[{expString::check_javascript(expStripSlashes($editor->data),true)}]{/if}{literal};
         var titleToolbar = 'cut copy paste pastetext | undo redo localautosave | searchreplace selectall help';
         {/literal}{/if}{literal}
 
@@ -329,7 +329,7 @@
                 filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php?update=ck',
                 filebrowserLinkWindowWidth : 320,
                 filebrowserLinkWindowHeight : 600,
-                extraPlugins : 'autosave,tableresize,sourcedialog,image2,uploadimage,uploadfile,quicktable,showborders,{/literal}{stripSlashes($editor->plugins)}{literal}',
+                extraPlugins : 'autosave,tableresize,sourcedialog,image2,uploadimage,uploadfile,quicktable,showborders,{/literal}{expStripSlashes($editor->plugins)}{literal}',
                 removePlugins: 'image,forms,flash',
                 image2_alignClasses: [ 'image-left', 'image-center', 'image-right' ],
                 image2_captionedClass: 'image-captioned',

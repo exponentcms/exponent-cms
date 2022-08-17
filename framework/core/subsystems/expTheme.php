@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -283,7 +283,7 @@ class expTheme
         if ($config['meta']['generator']) {
             $str .= "\t" . '<meta name="Generator" content="Exponent Content Management System - v' . expVersion::getVersion(
                     true
-                ) . self::getThemeDetails() . '" ' . XHTML_CLOSING . '>' . "\n";
+                ) . ' ' . gt('using') . ' ' . self::getThemeDetails() . '" ' . XHTML_CLOSING . '>' . "\n";
         }
         if ($config['meta']['keywords']) {
             $str .= "\t" . '<meta name="Keywords" content="' . $metainfo['keywords'] . '" ' . XHTML_CLOSING . '>' . "\n";
@@ -1084,10 +1084,9 @@ class expTheme
      */
     public static function main()
     {
-        global $db, $page_main_section;
+        global $db;
 
         if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
-            $page_main_section = true;
             $last_section = expSession::get("last_section");
             $section = $db->selectObject("section", "id=" . $last_section);
             // View authorization will be taken care of by the runAction and mainContainer functions
@@ -1104,7 +1103,6 @@ class expTheme
                     self::mainContainer();
                 }
             }
-            $page_main_section = false;
         }
     }
 
@@ -1128,8 +1126,8 @@ class expTheme
 
         if (PUBLIC_SECTION) {
             expHistory::set('viewable', $router->params);
-        } else {
-            expHistory::set('manageable', $router->params);
+//        } else {
+//            expHistory::set('manageable', $router->params);
         }
 
         #   if (expSession::is_set("themeopt_override")) {
@@ -1141,7 +1139,8 @@ class expTheme
                 "view"       => "showall",
                 "source"     => "@section",
                 "scope"      => "sectional"
-            )
+            ),
+            true
         );
     }
 
@@ -1321,9 +1320,11 @@ class expTheme
      *
      * @return bool
      */
-    public static function module($params)
+    public static function module($params, $main=false)
     {
-        global $db, $module_scope, $sectionObj;
+        global $db, $module_scope, $sectionObj, $page_main_section;
+
+        $page_main_section = $main;
 
         if (empty($params)) {
             return false;
@@ -1618,7 +1619,7 @@ class expTheme
             if (class_exists($theme_file)) {
                 // Need to avoid instantiating non-existent classes.
                 $theme = new $theme_file();
-                return ' ' . gt('using') . ' ' . $theme->name() . ' ' . gt('by') . ' ' . $theme->author();
+                return $theme->name() . ' ' . gt('by') . ' ' . $theme->author();
             }
         }
         return '';

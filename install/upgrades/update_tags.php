@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -25,7 +25,7 @@
 class update_tags extends upgradescript {
 	protected $from_version = '2.5.0';  // version number introduced
 	protected $to_version = '2.5.1';  // version number fixed
-    public $optional = false;
+//    public $optional = false;
 
 	/**
 	 * name/title of upgrade script

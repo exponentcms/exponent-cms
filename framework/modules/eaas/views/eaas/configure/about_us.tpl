@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +15,7 @@
 
 <h2>{'About Us'|gettext}</h2>
 
-{control type="files" name="aboutus_image" subtype="aboutus_image" label="Banner Image"|gettext accept="image/*" value=$config['expFile'] limit='1'}
+{control type="files" name="aboutus_image" subtype="aboutus_image" label="Banner Image"|gettext accept="image/*" value=$config.expFile limit='1'}
 {control type="editor" label="About Us HTML"|gettext name="aboutus_body" value=$config.aboutus_body}
 {if $smarty.const.SITE_FILE_MANAGER == 'elfinder'}
     {control type="text" name="upload_folder" label="Quick Add Upload Subfolder"|gettext value=$config.upload_folder}

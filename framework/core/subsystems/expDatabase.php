@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -38,7 +38,7 @@ class expDatabase {
      * @param bool $new
      * @param null $log
      *
-     * @return \database the database object
+     * @return _database|database|stdClass
      */
 	public static function connect($username,$password,$hostname,$database,$dbclass = '',$new=false,$log=null) {
 		if (!defined('DB_ENGINE')) {
@@ -137,7 +137,8 @@ class expDatabase {
     public static function install_dbtables($aggressive=false, $workflow=ENABLE_WORKFLOW) {
    	    global $db;
 
-   		expSession::clearAllUsersSessionCache();
+        if ($db->havedb == true)
+            expSession::clearAllUsersSessionCache();
    		$tables = array();
 
    		// first the core definitions
@@ -1173,7 +1174,7 @@ abstract class database {
 	                $sql .= " MEDIUMTEXT";
 	            else
 	                $sql .= " LONGTEXT";
-	        } else {  // default size of 'TEXT'instead of error
+	        } else {  // default size of 'TEXT' instead of error
                 $sql .= " TEXT";
 	        }
 	    } else if ($type === DB_DEF_DECIMAL) {
@@ -1912,8 +1913,6 @@ abstract class database {
 	        return DB_DEF_TIMESTAMP;
         elseif ($type === "datetime")
   	        return DB_DEF_TIMESTAMP;
-	    //else if (substr($type,5) == "double")
-            //return DB_DEF_DECIMAL;
 	    elseif ($type === "double")
 	        return DB_DEF_DECIMAL;
 	    // Strings
@@ -1955,11 +1954,12 @@ abstract class database {
 	    $key = strtolower($fieldObj->Key);
 	    if ($key === "pri")
 	        return DB_PRIMARY;
-	    else if ($key === "uni") {
+	    else if ($key === "uni")
 	        return DB_UNIQUE;
-	    } else {
+//        else if ($key === "mul")  // could be regular or fulltext index
+//   	        return DB_INDEX;
+	    else
             return false;
-        }
 	}
 
 	/**

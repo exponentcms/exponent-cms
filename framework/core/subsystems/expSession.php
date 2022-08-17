@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -428,7 +428,7 @@ class expSession {
 		$ticket->ticket = uniqid("",true);
 		$ticket->last_active = time();
 		$ticket->start_time = time();
-		$ticket->browser = $_SERVER['HTTP_USER_AGENT'];
+		$ticket->browser = expString::sanitize($_SERVER['HTTP_USER_AGENT']);
         if (!empty($_SERVER['REMOTE_ADDR'])) {  // for cli/cron utilities
             $ticket->ip_address = $_SERVER['REMOTE_ADDR'];
         }

@@ -1,0 +1,7 @@
+$degrees: 45, 90, 135, 180, 225, 270, 315;
+
+@each $deg in $degrees {
+    .#{$bi-util-prefix}rotate-#{$deg} {
+        transform: rotate(#{$deg}deg)
+    }
+}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -342,9 +342,9 @@ class ecomconfigController extends expController {
     }
 
     function saveconfig() {
-        $this->params['min_order'] = substr($this->params['min_order'], 1) ;
-   		$this->params['minimum_gift_card_purchase'] = substr($this->params['minimum_gift_card_purchase'], 1) ;
-   		$this->params['custom_message_product']     = substr($this->params['custom_message_product'], 1) ;
+        $this->params['min_order'] = preg_replace('/[^0-9-.]+/', '', $this->params['min_order']);
+   		$this->params['minimum_gift_card_purchase'] = preg_replace('/[^0-9-.]+/', '', $this->params['minimum_gift_card_purchase']) ;
+   		$this->params['custom_message_product']     = preg_replace('/[^0-9-.]+/', '', $this->params['custom_message_product']) ;
         if (isset($this->params['store']['address_country_id'])) {
             $this->params['store']['country'] = $this->params['store']['address_country_id'];
             unset($this->params['store']['address_country_id']);

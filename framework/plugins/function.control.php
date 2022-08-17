@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -61,7 +61,7 @@ function smarty_function_control($params, &$smarty) {
                     $params['checked'] = true;
                 if (empty($params['value']))
                     $params['value'] = time();
-                $edittext = isset($params['edit_text']) ? $params['edit_text'] : 'Change Date/Time';
+                $edittext = isset($params['edit_text']) ? $params['edit_text'] : 'Use Current Date/Time';
                 $control = new yuidatetimecontrol($params['value'], $edittext, $showdate, $showtime);
                 break;
             case "yuicalendarcontrol":

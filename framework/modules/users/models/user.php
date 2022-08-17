@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -215,7 +215,7 @@ class user extends expRecord {
                         foreach ($items as $key => $item) {
                             if ($key === 'expeAlerts_id') {
                                 $this->expeAlerts[] = $db->selectObject('expeAlerts', 'id=' . $item);
-                            } elseif ($key != 'user_id') {
+                            } elseif ($key !== 'user_id' && !empty($item)) {
                                 $this->$key = preg_match('/^([a-zA-Z]+):([0-9]+):{/', $item) ? unserialize($item) : $item;
                             }
                         }

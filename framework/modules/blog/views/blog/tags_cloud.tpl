@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -33,7 +33,7 @@
     <ul class="item">
         {foreach from=$tags item=tag}
             <li>
-                <a href="{link action=showall_by_tags tag=$tag->sef_url}" style="font-size:1.{if $tag->count<10}0{$tag->count}{else}{$tag->count}{/if}em;" title="{'View posts tagged with'|gettext} '{$tag->title}'">{$tag->title}</a>
+                <a href="{link action=showall_by_tags tag=$tag->sef_url}" style="font-size:{if $tag->count>99}2.0{else}1.{if $tag->count<10}0{$tag->count}{else}{$tag->count}{/if}{/if}em;" title="{'View posts tagged with'|gettext} '{$tag->title}'">{$tag->title}</a>
             </li>
         {/foreach}
     </ul>

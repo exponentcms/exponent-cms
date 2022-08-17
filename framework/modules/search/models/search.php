@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -98,6 +98,12 @@ class search extends expRecord {
                     $loc = expUnserialize($event->location_data);
                     $records[$i]->view_link = str_replace(URL_FULL, '', makeLink(array('controller' => 'event', 'action' => 'show', 'id' => $records[$i]->original_id, 'event_id' => $event->id, 'src' => $loc->src)));
                 }
+            } else if ($records[$i]->ref_module === 'forms') {
+                //fixme here's where we remove search hit based on ???, but shouldn't be in here if not viewable
+//                if (empty($section) || !$section->canView()) {
+//                    unset($recs[$i]); // page is not available for viewing
+//                    //$records[$i]->canview = false;
+//                }
             } else {
                 $rloc = unserialize($records[$i]->location_data);
                 if (!empty($rloc)) {

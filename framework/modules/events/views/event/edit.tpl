@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -67,11 +67,7 @@
                         {exp_include file="_recurring.tpl"}
                     {elseif ($record->is_recurring == 1) }
                         {$dates=$record->eventdate}
-                        {control type=hidden name=is_recurring value=$record->is_recurring}
-                        {'This event is a recurring event, and occurs on the dates below.  Select which dates you wish to apply these edits to.'|gettext}
-                        <table cellspacing="0" cellpadding="2" width="100%" class="exp-skin-table">
-                            {exp_include file='_recur_dates.tpl'}
-                        </table>
+                        {exp_include file='_recur_dates.tpl'}
                     {/if}
                 </div>
                 {if $config.enable_feedback}
@@ -90,7 +86,6 @@
                 {/if}
             </div>
         </div>
-	    {*<div class="loadingdiv">{"Loading Event"|gettext}</div>*}
         {loading title="Loading Event"|gettext}
         {control type=buttongroup submit="Save Event"|gettext cancel="Cancel"|gettext}
      {/form}

@@ -2,7 +2,7 @@
 
 ----------
 
-Copyright (c) 2004-2021 OIC Group, Inc.
+Copyright (c) 2004-2022 OIC Group, Inc.
 
 ## Optional Features
 
@@ -27,17 +27,22 @@ If you are running an older version of PHP, you may need to use an older PDF Lib
 
 #### mPDF
 
-**mPDF is the preferred library.** We currently support four (4) versions:
+**mPDF is the preferred library.** We currently support five (5) versions:
 
-v8.0.8 is the newest version supported
-- [mpdf8v260.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf8v260.zip/download)
-This uses the mPDF v8.0.8 library which has been customized for Exponent.
-This requires Exponent CMS v2.6.0 or later.
+v8.1.1 is the newest version supported
+- [mpdf81v270.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf81v270.zip/download)
+This uses the mPDF v8.1.1 library which has been customized for Exponent.
+This requires Exponent CMS v2.7.0 or later. Works with PHP v5.6, 7.0, 7.1, 7.2, 7.3, 7.4, 8.0 or 8.1
+
+v8.0.17 is supported
+- [mpdf8v270.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf8v270.zip/download)
+This uses the mPDF v8.0.17 library which has been customized for Exponent.
+This requires Exponent CMS v2.7.0 or later. Works with PHP v5.6, 7.0, 7.1, 7.2, 7.3 or 7.4
 
 v7.1.9 is supported
 - [mpdf7v260.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf7v260.zip/download)
 This uses the mPDF v7.1.9 library which has been customized for Exponent.
-This requires Exponent CMS v2.6.0 or later.
+This requires Exponent CMS v2.6.0 or later. Works with PHP v5.6, 7.0, 7.1, or 7.2
 
 v6.1.4 was an older version
 - [mpdf61.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf61.zip/download)
@@ -53,15 +58,15 @@ package requires Exponent CMS v2.2.3 or later.
 
 domPDF was the first supported PHP based library. We currently support three (3) versions:
 
-v0.8.6 is the newest version supported
-- [dompdf08v260.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf08v260.zip/download)
-This uses the domPDF v0.8.6 library which has been customized for Exponent with a fix for thumbnails.
-This package requires Exponent CMS v2.6.0 and later and PHP v7.1 or later (0.8.3+).
+v1.2.2 is the newest version supported
+- [dompdf08v270.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf08v260.zip/download)
+This uses the domPDF v1.2.2 library which has been customized for Exponent with a fix for thumbnails.
+This package requires Exponent CMS v2.7.0 and later and PHP v7.1 or later.
 
 v0.7.0 is the previous stable version
 - [dompdf070.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf070.zip/download)
 This uses the domPDF v0.7.0 library which has been customized for Exponent with a fix for thumbnails. 
-This package requires Exponent CMS v2.4.1 and later.
+This package requires Exponent CMS v2.4.1 and later and PHP v5.3 or later
 
 v0.6.2 is the older version, but the first library we supported
 - [dompdf62a.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf62a.zip/download)
@@ -73,10 +78,10 @@ invoices and thumbnails. This package requires Exponent CMS v2.2.3 or later.
 HTML2PDF differs from the previous two libraries in that is uses a second 3rd party
 library (TCPDF) to perform the actual PDF creation. This appears to the be the slowest engine.
 
-v5.2.2 is the newest version supported
-- [html2pdf5v260.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/html2pdf5v260.zip/download)
-This uses the HTML2PDF v5.2.2 library which has the configuration customized for Exponent. It requires
-the TCPDF v6.3.5 PDF engine which is included in this package. This package requires Exponent CMS v2.6.0 
+v5.2.5 is the newest version supported
+- [html2pdf5v270.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/html2pdf5v270.zip/download)
+This uses the HTML2PDF v5.2.5 library which has the configuration customized for Exponent. It requires
+the TCPDF v6.4.4 PDF engine which is included in this package. This package requires Exponent CMS v2.7.0 
 or later.
 
 v4.6.1 is the previous stable version, though it is possible that earlier versions back to v4.5.0
@@ -103,7 +108,7 @@ Exponent CMS includes built-in Developer Debugging support, but this feature can
 installing the [Kint](https://github.com/kint-php/kint) PHP library. Simply place the kint.phar file
 into the /external folder (for v1 & v2 extract into the /external folder to create a subfolder).
 The feature is auto-activated by this installation.
-- v4.0.0 (/external/kint.phar) is the most recent release; (requires Exponent CMS v2.6.0patch2 or later)
+- v4.1.3 (/external/kint.phar) is the most recent release; (requires Exponent CMS v2.6.0patch2 or later)
 - v3.3.0 (/external/kint.phar) is the last 3.x release; 
 - v2.2 (/external/kint-2.2/) is the last 2.x version, 
 - but v1.1 (/external/kint/) is also supported

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 # Written and Designed by Dave Leffler
 #
 # This file is part of Exponent
@@ -98,6 +98,7 @@ function exp_getModuleInstancesByType($type = null)
             $modules[$ref->source][] = $mod;
         }
     }
+//    eLog($modules, 'Modules');
     return $modules;
 }
 
@@ -132,7 +133,7 @@ function getUsersBlogs($xmlrpcmsg)
             $section = $db->selectObject('sectionref', 'source=\'' . $src . '\'');
             $page = $db->selectObject('section', 'id=' . (int)$section->section);
             if (expPermissions::check('create', $loc) || (expPermissions::check('edit', $loc))) {
-                $structArray[] = new xmlrpcval(
+                $structArray[$src] = new xmlrpcval(
                     array(
                         'blogid' => new xmlrpcval($src, 'string'),
                         'url' => new xmlrpcval(URL_FULL . $page->sef_name, 'string'),
@@ -143,6 +144,7 @@ function getUsersBlogs($xmlrpcmsg)
                 );
             }
         }
+//eLog($structArray, 'getUsersBlogs');
         return new xmlrpcresp(new xmlrpcval($structArray, 'array'));
     } else {
         return new xmlrpcresp(0, 1, "Login Failed");
@@ -166,6 +168,7 @@ $newPost_doc = 'Post a new item to the blog.';
 function newPost($xmlrpcmsg)
 {
     $src = $xmlrpcmsg->getParam(0)->scalarval();
+if ($src == "1") $src = "@random48e7cdc1a672d";
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
 
@@ -236,6 +239,7 @@ function newPost($xmlrpcmsg)
 
             $post->update($params);
 
+//eLog($post->id, 'newPost');
             return new xmlrpcresp(
                 new xmlrpcval($post->id, 'string')
             ); // Return the id of the post just inserted into the DB. See mysql_insert_id() in the PHP manual.
@@ -337,6 +341,7 @@ function editPost($xmlrpcmsg)
 
             $post->update($params);
 
+//eLog($postid, 'editPost');
             return new xmlrpcresp(new xmlrpcval(true, 'boolean'));
         } else {
             return new xmlrpcresp(0, 1, "Login Failed");
@@ -384,14 +389,17 @@ function getPost($xmlrpcmsg)
             foreach ($post->expTag as $tag) {
                 $selectedtags .= $tag->title . ', ';
             }
+//eLog($postid, 'getPost id');
+//$tmp = new xmlrpcval(expString::convertSmartQuotes($post->body), 'string');
+//eLog($tmp, 'getPost');
             return new xmlrpcresp(
                 new xmlrpcval(
                     array(
                         'postid' => new xmlrpcval($post->id, 'string'),
                         'dateCreated' => new xmlrpcval(date('c',$post->publish), 'dateTime.iso8601'),
 //                        'link' => new xmlrpcval(makeLink(array('controller'=>'blog', 'action'=>'show', 'title'=>$post->sef_url)), 'string'),
-                        'title' => new xmlrpcval($post->title, 'string'),
-                        'description' => new xmlrpcval($post->body, 'string'),
+                        'title' => new xmlrpcval(expString::convertSmartQuotes($post->title), 'string'),
+                        'description' => new xmlrpcval(expString::convertSmartQuotes($post->body), 'string'),
                         'categories' => php_xmlrpc_encode($cat),
                         'wp_author_id' => new xmlrpcval(user::getUserAttribution($post->poster), 'string'),
                         'mt_keywords' => new xmlrpcval($selectedtags, 'string'),
@@ -444,6 +452,7 @@ function deletePost($xmlrpcmsg)
             $post->delete();
         }
 
+//eLog($postid, 'deletePost');
         return new xmlrpcresp(new xmlrpcval(true, 'boolean'));
     } else {
         return new xmlrpcresp(0, 1, "Login Failed");
@@ -468,6 +477,7 @@ function getRecentPosts($xmlrpcmsg)
     global $user;
 
     $src = $xmlrpcmsg->getParam(0)->scalarval();
+if ($src == "1") $src = "@random48e7cdc1a672d";
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
 
@@ -497,9 +507,9 @@ function getRecentPosts($xmlrpcmsg)
                         ) && $posts[$i]->poster == $user->id)
                 ) {
 //                    $desc = substr(strip_tags($posts[$i]->body), 0, 253) . "...";  // attempt to reduce length of reply
-                    $desc = $posts[$i]->body;
+                    $desc = expString::convertSmartQuotes($posts[$i]->body);
                     if (NO_XMLRPC_DESC) {  // MS Word had an issue when content is over a certain length
-                        $desc = substr(strip_tags($posts[$i]->body), 0, 12) . "...";  // attempt to reduce length of reply
+                        $desc = substr(strip_tags(expString::convertSmartQuotes($posts[$i]->body)), 0, 12) . "...";  // attempt to reduce length of reply
                     }
                     $cat = array();
                     foreach ($posts[$i]->expCat as $pcat) {
@@ -515,7 +525,7 @@ function getRecentPosts($xmlrpcmsg)
                             'postid' => new xmlrpcval($posts[$i]->id, 'string'),
                             'dateCreated' => new xmlrpcval(date('c',$posts[$i]->publish), 'dateTime.iso8601'),
 //                            'link' => new xmlrpcval(makeLink(array('controller'=>'blog', 'action'=>'show', 'title'=>$posts[$i]->sef_url)), 'string'),
-                            'title' => new xmlrpcval($posts[$i]->title, 'string'),
+                            'title' => new xmlrpcval(expString::convertSmartQuotes($posts[$i]->title), 'string'),
                             'description' => new xmlrpcval($desc, 'string'),
 //                            'userid' => new xmlrpcval($post->poster, 'string'),
                             'categories' => php_xmlrpc_encode($cat),
@@ -525,6 +535,8 @@ function getRecentPosts($xmlrpcmsg)
                     );
                 }
             }
+//eLog($src, 'getRecentPosts src');
+//eLog($structArray, 'getRecentPosts');
             return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
         } else {
             return new xmlrpcresp(0, 1, "Login Failed");
@@ -549,6 +561,7 @@ $getCategories_doc = 'Get the categories on the blog.';
 function getCategories($xmlrpcmsg)
 {
     $src = $xmlrpcmsg->getParam(0)->scalarval();
+if ($src == "1") $src = "@random48e7cdc1a672d";
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
 
@@ -569,6 +582,8 @@ function getCategories($xmlrpcmsg)
                 );
             }
         }
+//eLog($src, 'getCategories src');
+//eLog($structArray, 'getCategories');
         return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
     } else {
         return new xmlrpcresp(0, 1, 'Login Failed');
@@ -578,6 +593,7 @@ function getCategories($xmlrpcmsg)
 function getCategories_mt($xmlrpcmsg)
 {
     $src = $xmlrpcmsg->getParam(0)->scalarval();
+if ($src == "1") $src = "@random48e7cdc1a672d";
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
 
@@ -597,6 +613,7 @@ function getCategories_mt($xmlrpcmsg)
                 );
             }
         }
+//eLog($structArray, 'getCategories_mt');
         return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
     } else {
         return new xmlrpcresp(0, 1, 'Login Failed');
@@ -618,6 +635,7 @@ $getTerms_doc = 'Get the Tags on the blog.';
 function getTerms($xmlrpcmsg)
 {
     $src = $xmlrpcmsg->getParam(0)->scalarval();
+if ($src == "1") $src = "@random48e7cdc1a672d";
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
 
@@ -641,6 +659,8 @@ function getTerms($xmlrpcmsg)
                 }
             }
         }
+//eLog($src, 'getTerms src');
+//eLog($structArray, 'getTerms');
         return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
     } else {
         return new xmlrpcresp(0, 1, 'Login Failed');
@@ -662,6 +682,7 @@ $getAuthors_doc = 'Get the Authors on the blog.';
 function getAuthors($xmlrpcmsg)
 {
     $src = $xmlrpcmsg->getParam(0)->scalarval();
+if ($src == "1") $src = "@random48e7cdc1a672d";
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
 
@@ -678,6 +699,7 @@ function getAuthors($xmlrpcmsg)
                 ), 'struct'
             );
         }
+//eLog($structArray, 'getAuthors');
         return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
     } else {
         return new xmlrpcresp(0, 1, 'Login Failed');

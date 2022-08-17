@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +15,7 @@
 
 <h2>{"Events"|gettext}</h2>
 
-{control type="files" name="event_image" subtype="event_image" label="Event Banner Image"|gettext accept="image/*" value=$config['expFile'] limit='1'}
+{control type="files" name="event_image" subtype="event_image" label="Event Banner Image"|gettext accept="image/*" value=$config.expFile limit='1'}
 {control type="editor" name="event_body" label="Event HTML"|gettext value=$config.event_body}
 
 <table class="exp-skin-table">

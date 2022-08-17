@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -42,14 +42,7 @@
                 {/foreach}
             </div>
         </div>
-        {*<div class="loadingdiv">{"Loading Settings"|gettext}</div>*}
         {loading title="Loading Settings"|gettext}
         {control type=buttongroup submit="Save Configuration"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

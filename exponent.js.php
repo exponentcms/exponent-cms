@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -38,6 +38,8 @@ EXPONENT.YUI3_URL = "<?php echo YUI3_URL; ?>";
 EXPONENT.YUI2_VERSION = "<?php echo YUI2_VERSION; ?>";
 EXPONENT.YUI2_RELATIVE = "<?php echo YUI2_RELATIVE; ?>";
 EXPONENT.YUI2_URL = "<?php echo YUI2_URL; ?>";
+
+EXPONENT.ECOM_CURRENCY_SYMBOL = "<?php echo html_entity_decode(expCore::getCurrencySymbol()); ?>";
 
 // Helper function to kill console logging so it won't kill IE7-9
 //if (typeof console == "undefined" || typeof console.log == "undefined") {

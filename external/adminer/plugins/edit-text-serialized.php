@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -37,45 +37,39 @@ class AdminerEditTextSerializedarea {
 	}
 
     function expUnserialize($serial_str) {
-      if ($serial_str === 'Array') return null;  // empty array string??
-      if (is_array($serial_str) || is_object($serial_str)) return $serial_str;  // already unserialized
-//        $out1 = preg_replace_callback(
-//            '!s:(\d+):"(.*?)";!s',
-//            create_function ('$m',
-//                '$m_new = str_replace(\'"\',\'\"\',$m[2]);
-//                return "s:".strlen($m_new).\':"\'.$m_new.\'";\';'
-//            ),
-//            $serial_str );
+        if ($serial_str === 'Array' || is_null($serial_str))
+            return null;  // empty array string??
+        if (is_array($serial_str) || is_object($serial_str))
+            return $serial_str;  // already unserialized
         $out = preg_replace_callback(
             '!s:(\d+):"(.*?)";!s',
             function ($m) {
                 $m_new = str_replace('"','\"',$m[2]);
                 return "s:".strlen($m_new).':"'.$m_new.'";';
             }, $serial_str );
-//        if ($out1 !== $out) {
-//            eDebug('problem:<br>'.$out.'<br>'.$out1);
-//        }
-      $out2 = unserialize($out);
-      if (is_array($out2)) {
-          if (!empty($out2['moduledescription'])) {  // work-around for links in module descriptions
-              $out2['moduledescription'] = stripslashes($out2['moduledescription']);
-          }
-          if (!empty($out2['description'])) {  // work-around for links in forms descriptions
-              $out2['description'] = stripslashes($out2['description']);
-          }
-          if (!empty($out2['report_desc'])) {  // work-around for links in forms report descriptions
-              $out2['report_desc'] = stripslashes($out2['report_desc']);
-          }
-          if (!empty($out2['response'])) {  // work-around for links in forms response
-              $out2['response'] = stripslashes($out2['response']);
-          }
-          if (!empty($out2['auto_respond_body'])) {  // work-around for links in forms auto respond
-              $out2['auto_respond_body'] = stripslashes($out2['auto_respond_body']);
-          }
-      } elseif (is_object($out2) && get_class($out2) == 'htmlcontrol') {
-          $out2->html = stripslashes($out2->html);
-      }
-      return $out2;
-  }
+        $out2 = @unserialize($out);
+        $stripList = array(
+            'moduledescription',
+            'description',
+            'report_desc',
+            'report_def',
+            'report_def_showall',
+            'response',
+            'auto_respond_body'
+        );
+        if (is_array($out2)) {
+            foreach ($stripList as $strip) {
+                if (!empty($out2[$strip])) {  // work-around for links in module descriptions
+                    $out2[$strip] = stripslashes($out2[$strip]);
+                }
+            }
+        } elseif (is_object($out2) && $out2 instanceof \htmlcontrol) {
+            $out2->html = stripslashes($out2->html);
+        }
+        if ($out2 === false && !empty($out)) {
+            $out2 = $out;
+        }
+        return $out2;
+    }
 
 }

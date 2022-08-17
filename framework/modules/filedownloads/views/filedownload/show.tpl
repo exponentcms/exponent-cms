@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,6 +18,15 @@
 {css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.min.css"}
 
 {/css}
+
+{if !empty($config.enable_facebook_like) || !empty($config.displayfbcomments)}
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v14.0&appId={$config.app_id}&autoLogAppEvents=1" nonce="9wKafjYh"></script>
+{/if}
+
+{if $config.enable_tweet}
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+{/if}
 
 {$orderarray = explode(' ',$config.order)}
 {$order = $orderarray[0]}
@@ -133,35 +142,10 @@
             </ul>
         {/if}
         {if $config.enable_facebook_like}
-            <div id="fb-root"></div>
-            <div class="fb-like" data-href="{link action=show title=$record->sef_url}" data-send="false" data-width="{$config.fblwidth|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}"{if $config.color_scheme} data-colorscheme="{$config.color_scheme}"{/if}{if $config.verb} data-action="{$config.verb}"{/if}></div>
-            {script unique='facebook_src'}
-            {literal}
-                (function(d, s, id) {
-                    var js, fjs = d.getElementsByTagName(s)[0];
-                    if (d.getElementById(id)) return;
-                    js = d.createElement(s); js.id = id;
-                    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-                    fjs.parentNode.insertBefore(js, fjs);
-                }(document, 'script', 'facebook-jssdk'));
-            {/literal}
-            {/script}
+            <div class="fb-like" data-href="{link action=show title=$record->sef_url}" data-width="{$config.fblwidth}" data-layout="{$config.fblayout|default:'standard'}" data-action="{$config.fbverb|default:'like'}" data-size="{$config.fblsize|default:'small'}" data-share="true"></div>
         {/if}
         {if $config.enable_tweet}
-            <a href="https://twitter.com/share" class="twitter-share-button" data-url="{link action=show title=$record->sef_url}" data-text="{$record->title}"{if $config.layout} data-count="{$config.layout}"{/if}{if $config.size} data-size="{$config.size}"{/if} data-lang="en">{'Tweet'|gettext}</a>
-            {script unique='tweet_src'}
-            {literal}
-                !function(d,s,id){
-                    var js,fjs=d.getElementsByTagName(s)[0];
-                    if(!d.getElementById(id)){
-                        js=d.createElement(s);
-                        js.id=id;
-                        js.src="https://platform.twitter.com/widgets.js";
-                        fjs.parentNode.insertBefore(js,fjs);
-                    }
-                }(document,"script","twitter-wjs");
-            {/literal}
-            {/script}
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="{$item->title}" data-url="{link action=show title=$item->sef_url}"{if $config.twsize} data-size="{$config.twsize}"{/if} data-show-count="false">{'Tweet'|gettext}</a>
         {/if}
         {clear}
         {comments record=$record title="Comments"|gettext}

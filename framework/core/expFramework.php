@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -252,7 +252,7 @@ $timer = null;
  */
 $order = null;
 
-// page header level
+// page header level for smart headings
 const HEADER_LEVEL = ['h1' => 'h1', 'h2' => 'h2', 'h3' => 'h3', 'h4' => 'h4', 'h5' => 'h5', 'h6' => 'h6'];
 $page_heading_top = false;
 $page_main_section = false;
@@ -372,7 +372,7 @@ function renderAction(array $parms=array()) {
     if (($parms['action'] === 'edit' || $parms['action'] === 'update' || $parms['action'] === 'delete' ||
         $common_action === 'edit' || $common_action === 'update' || $common_action === 'delete') && !empty($parms['id'])) {
         $theaction = !empty($common_action) ? $common_action : $parms['action'];
-        $owner = $db->selectValue($model, 'poster', 'id=' . $parms['id']);
+        $owner = $db->selectValue($controller->model_table, 'poster', 'id=' . $parms['id']);
         if ($owner == $user->id && !expPermissions::check($theaction, $controller->loc) && expPermissions::check('create', $controller->loc)) {
             $perm_action = 'create';
         }
@@ -907,24 +907,27 @@ function expUnserialize($serial_str) {
 //        eDebug('problem:<br>'.$out.'<br>'.$out1);
 //    }
     $out2 = @unserialize($out);
+    // list of fields with rich text
+    $stripList = array(
+        'moduledescription',
+        'description',
+        'report_desc',
+        'report_def',
+        'report_def_showall',
+        'response',
+        'auto_respond_body',
+        'ecomheader',
+        'ecomfooter',
+        'cart_description_text',
+        'policy',
+        'checkout_message_top',
+        'checkout_message_bottom',
+    );
     if (is_array($out2)) {
-        if (!empty($out2['moduledescription'])) {  // work-around for links in module descriptions
-            $out2['moduledescription'] = stripslashes($out2['moduledescription']);
-        }
-        if (!empty($out2['description'])) {  // work-around for links in forms descriptions
-            $out2['description'] = stripslashes($out2['description']);
-        }
-        if (!empty($out2['report_desc'])) {  // work-around for links in forms report descriptions
-            $out2['report_desc'] = stripslashes($out2['report_desc']);
-        }
-        if (!empty($out2['report_def_showall'])) {  // work-around for links in forms report descriptions
-            $out2['report_def_showall'] = stripslashes($out2['report_def_showall']);
-        }
-        if (!empty($out2['response'])) {  // work-around for links in forms response
-            $out2['response'] = stripslashes($out2['response']);
-        }
-        if (!empty($out2['auto_respond_body'])) {  // work-around for links in forms auto respond
-            $out2['auto_respond_body'] = stripslashes($out2['auto_respond_body']);
+        foreach ($stripList as $strip) {
+            if (!empty($out2[$strip])) {  // work-around for links in rich text
+                $out2[$strip] = stripslashes($out2[$strip]);
+            }
         }
     } elseif (is_object($out2) && $out2 instanceof \htmlcontrol) {
         $out2->html = stripslashes($out2->html);
@@ -1273,6 +1276,19 @@ function strftime_to_date_format( $strf_format ) {
  */
 function date_to_strftime_format( $date_format ) {
 	return expDateTime::date_format_to( $date_format, 'strf' );
+}
+
+/**
+ * PHP v8.1+ friendly stripslashes() command
+ *
+ * @param $str string to strip slashes from
+ * @return mixed|string
+ */
+function expStripSlashes($str) {
+    if (empty($str)) {
+        return $str;
+    }
+    return stripslashes($str);
 }
 
 ?>

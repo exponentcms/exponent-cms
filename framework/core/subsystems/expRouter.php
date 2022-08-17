@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -121,7 +121,17 @@ class expRouter {
                                     $link .= urlencode($params[$key])."/";
                                 }
                             }
-                            break;  // if this hits then we've found a match
+                            // account for new multi-parameter router_maps
+                            if (count($this->maps[$i]) > 3) {
+                                foreach ($this->maps[$i] as $key2=>$value2) {
+                                    if ($key2 !== "url_parts" && isset($params[$key2]) && $params[$key2] != $this->maps[$i][$key2]) {
+                                        $link = '';
+                                        continue 2;
+                                    }
+                                }
+                            } else {
+                                break;  // if this hits then we've found a traditional controller/action match
+                            }
                         }
                     }
                 }
@@ -315,7 +325,7 @@ class expRouter {
         $trackingObject->user_id = $user->id;
         $trackingObject->timestamp = time();
         $trackingObject->user_address = $_SERVER['REMOTE_ADDR'];
-        $trackingObject->user_agent = $_SERVER['HTTP_USER_AGENT'];
+        $trackingObject->user_agent = expString::sanitize($_SERVER['HTTP_USER_AGENT']);
         $trackingObject->session_id = $_COOKIE['PHPSESSID'];
         $db->insertObject($trackingObject,'tracking_rawdata');
     }
@@ -474,7 +484,7 @@ class expRouter {
                     $redirectObject->cookieUID = (empty($_COOKIE['UserUID'])) ? expSession::getTicketString() : $_COOKIE['UserUID'];
                     $redirectObject->user_id = $user->id;
                     $redirectObject->user_address = $_SERVER['REMOTE_ADDR'];
-                    $redirectObject->user_agent = $_SERVER['HTTP_USER_AGENT'];
+                    $redirectObject->user_agent =expString::sanitize($_SERVER['HTTP_USER_AGENT']);
                     $redirectObject->session_id = $_COOKIE['PHPSESSID'];
                     if (!empty($page_redirect)) {
                         if (empty($page_redirect->type) || $page_redirect->type === 'url') {
@@ -867,19 +877,20 @@ class expRouter {
      * Get the SEF URL from the server
      * if we got an old school url, it will only contain the 'index.php'
      */
-    private function buildSEFPath () {
+    private function buildSEFPath ()
+    {
         // Apache or Microsoft-IIS -- Microsoft-IIS added by Todd Giardina, Todd's IT 12-17-2017
-        if (strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !== false || strpos($_SERVER['SERVER_SOFTWARE'],'Apache') !== false || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') !== false) {
-            switch(php_sapi_name()) {
+        if (strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') !== false || strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') !== false || strpos($_SERVER['SERVER_SOFTWARE'], 'WebServerX') !== false) {
+            switch (php_sapi_name()) {
                 case "cgi":
-                    $this->sefPath = !empty($_SERVER['REQUEST_URI']) ? urldecode($_SERVER['REQUEST_URI']): null;
+                    $this->sefPath = !empty($_SERVER['REQUEST_URI']) ? urldecode($_SERVER['REQUEST_URI']) : null;
                     break;
                 case "cgi-fcgi":
-                    if (isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != PATH_RELATIVE.'index.php') {
+                    if (isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != PATH_RELATIVE . 'index.php') {
                         $this->sefPath = urldecode($_SERVER['REDIRECT_URL']);
-                    } elseif (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != PATH_RELATIVE.'index.php') {
-                       $url = explode('?', $_SERVER['REQUEST_URI']);  // note the 'query' should already be in $_GET?? so remove it
-                       $this->sefPath = urldecode($url[0]);
+                    } elseif (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != PATH_RELATIVE . 'index.php') {
+                        $url = explode('?', $_SERVER['REQUEST_URI']);  // note the 'query' should already be in $_GET?? so remove it
+                        $this->sefPath = urldecode($url[0]);
                     } elseif (!empty($_ENV['REQUEST_URI'])) {
                         $this->sefPath = urldecode($_ENV['REQUEST_URI']);
                     } else {
@@ -890,28 +901,29 @@ class expRouter {
                     $this->sefPath = !empty($_SERVER['REDIRECT_URL']) ? urldecode($_SERVER['REDIRECT_URL']) : null;
                     break;
             }
-        // Lighty ???
-        } elseif (strpos(strtolower($_SERVER['SERVER_SOFTWARE']),'lighttpd') !== false) {
+            // Lighty ???
+        } elseif (strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'lighttpd') !== false) {
             //FIXME, we still need a good lighttpd.conf rewrite config for sef_urls to work
             if (isset($_SERVER['ORIG_PATH_INFO'])) {
                 $this->sefPath = urldecode($_SERVER['ORIG_PATH_INFO']);
-            } elseif (isset($_SERVER['REDIRECT_URI'])){
-                $this->sefPath = urldecode(substr($_SERVER['REDIRECT_URI'],9));
-            } elseif (isset($_SERVER['REQUEST_URI'])){
+            } elseif (isset($_SERVER['REDIRECT_URI'])) {
+                $this->sefPath = urldecode(substr($_SERVER['REDIRECT_URI'], 9));
+            } elseif (isset($_SERVER['REQUEST_URI'])) {
                 $this->sefPath = urldecode($_SERVER['REQUEST_URI']);
             }
-        // Nginx ???
-        } elseif (strpos(strtolower($_SERVER['SERVER_SOFTWARE']),'nginx') !== false) {
+            // Nginx ???
+        } elseif (strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'nginx') !== false) {
             $this->sefPath = urldecode($_SERVER['REQUEST_URI']);
         } else {
             $this->sefPath = urldecode($_SERVER['REQUEST_URI']);
         }
 
-        $this->sefPath = substr($this->sefPath,strlen(substr(PATH_RELATIVE,0,-1)));
-        if (strpos($this->sefPath,'/index.php') === 0) {
-            $this->sefPath = null;
+        if (!empty($this->sefPath)) {
+            $this->sefPath = substr($this->sefPath, strlen(substr(PATH_RELATIVE, 0, -1)));
+            if (strpos($this->sefPath, '/index.php') === 0) {
+                $this->sefPath = null;
+            }
         }
-
 		//parse the ecommerce tracking code if present and include in the object
         if(isset($_SERVER['argv']) && is_array($_SERVER['argv']))
         {
@@ -924,11 +936,13 @@ class expRouter {
                 }
             }
         }
-        if (substr($this->sefPath,-1) === "/")
-            $this->sefPath = substr($this->sefPath,0,-1);  //fixme isn't this redundant from above?
-        // sanitize it
-        $sefPath = explode('">',$this->sefPath);  // remove any attempts to close the command
-        $this->sefPath = expString::escape(expString::sanitize($sefPath[0]));
+        if (!empty($this->sefPath)) {
+            if (substr($this->sefPath, -1) === "/")
+                $this->sefPath = substr($this->sefPath, 0, -1);  //fixme isn't this redundant from above?
+            // sanitize it
+            $sefPath = explode('">', $this->sefPath);  // remove any attempts to close the command
+            $this->sefPath = expString::escape(expString::sanitize($sefPath[0]));
+        }
     }
 
     public function getSection() {

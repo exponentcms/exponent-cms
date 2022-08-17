@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -380,10 +380,8 @@
    	{loading title='Loading Pages'|gettext}
 </div>
 
-{script unique="tabload" jquery="bootstrap-dialog" bootstrap="modal,tab,transition"}
+{script unique="tabload" jquery="bootstrap-dialog" bootstrap="modal"}
 {literal}
-    $('.loadingdiv').remove();
-
     function deleteNode(id,alias_type,name) {
         if (alias_type==0){
             var message = "{/literal}{"Removing a content page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved"|gettext}{literal}";

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -51,6 +51,7 @@
                     {else}
                         {control type="checkbox" name="is_saved" label="Save Form Submissions to the Database?"|gettext value=1 checked=$form->is_saved description='Forms not saved to the database, are required to send an email on submission'|gettext}
                     {/if}
+                    {control type="checkbox" name="is_searchable" label="Return as Search Results?"|gettext value=1 checked=$form->is_searchable description='Add form records imto search index to appear as search results'|gettext}
                     {if !empty($form->table_name)}
                         {control type=text name='table_name' label='Table Name'|gettext value=$form->table_name disabled=true}
                         {control type=hidden name='table_name' value=$form->table_name}
@@ -74,25 +75,23 @@
                     {control type=text name='report_name' label='Report Title'|gettext value=$form->report_name}
                     {control type=html name='report_desc' label='Report Description'|gettext value=$form->report_desc}
                     {group label='Multi-Record Tabular View Configuration'|gettext}
-                        {control type="listbuilder" name="column_names_list" label="Columns for Export CSV" values=$column_names source=$fields description='Selecting NO columns is equal to selecting first five columns'|gettext}
+                        {control type="listbuilder" name="column_names_list" label="Columns for Display and Export CSV" values=$column_names source=$fields description='Selecting NO columns is equal to selecting first five columns'|gettext}
                     {/group}
-                    {group label='Custom View Configuration'|gettext}
-                    {control type=editor name='report_def' label='Custom E-Mail, Single and Portfolio View Template'|gettext value=$config.report_def rows=10 cols=60
-                        plugin="fieldinsert" additionalConfig="fieldinsert_list : `$fieldlist`"
+                    {group label='Custom Single Record View Configuration'|gettext}
+                    {if !empty($fieldlist)}
+                        {$addconf = "fieldinsert_list : $fieldlist"}
+                    {else}
+                        {$addconf = "fieldinsert_list : ''"}
+                    {/if}
+                    {control type=editor name='report_def' label='Custom E-Mail and Single Item View Template'|gettext value=$form->report_def rows=10 cols=60
+                        plugin="fieldinsert" additionalConfig=$addconf
                         description='Leave blank to display all fields.  Use \'Fields\' dropdown to insert fields'}
                     {/group}
                 </div>
             </div>
         </div>
-        {*<div class="loadingdiv">{'Loading Form'|gettext}</div>*}
         {loading title='Loading Form'|gettext}
         {control type=buttongroup submit="Save Form"|gettext cancel="Cancel"|gettext}
         {/form}
     </div>
 </div>
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

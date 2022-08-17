@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -233,7 +233,6 @@
                     </div>
                 </div>
             </div>
-            {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
             {loading}
             {control type="buttongroup" submit="Save Product"|gettext cancel="Cancel"|gettext}
         {/form}
@@ -262,11 +261,5 @@
         switchMethods();
         Y.one('#required_shipping_calculator_id').on('change', switchMethods);
     });
-{/literal}
-{/script}
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
 {/literal}
 {/script}

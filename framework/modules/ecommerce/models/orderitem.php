@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -90,7 +90,7 @@ class orderitem extends expRecord {
         //     return "<span style='font-style:italic'>SKU:" . $this->product->model . "</span><br/>"; // .
         //     // "<p style='font-size:10px; line-height: 110%'>" . $this->getUserInputFields() . "</p>";
         // }else{
-        return empty($this->product->model) ? "" : "<div style='font-style:italic'>SKU:" . $this->product->model . "</div>";
+        return empty($this->product->model) ? "" : "<div style='font-style:italic'>" . gt('SKU') . ":" . $this->product->model . "</div>";
         // }
     }
 

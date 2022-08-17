@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -155,7 +155,7 @@
 			<td>*&#160;Card&#160;Number</td>
 			<td class="creditcard-form">
 				<div required"="" class="text-control control " id="cc_numberControl">
-					<input type="text" class="text form-control" name="billing[cc_number]" id="cc_number" size="20" maxlength="20" onkeypress="return integer_filter.on_key_press(this, event);" onblur="integer_filter.onblur(this);" onfocus="integer_filter.onfocus(this);" onpaste="return integer_filter.onpaste(this, event);" credit_card_number/>
+					<input type="text" class="text form-control" name="billing[cc_number]" id="cc_number" size="20" maxlength="20" onkeypress="return integer_filter.on_key_press(this, event);" onblur="integer_filter.onblur(this);" onfocus="integer_filter.onfocus(this);" onpaste="return integer_filter.onpaste(this, event);" credit_card_number caption="Credit Card Number"/>
 				</div>
 			</td>
 		</tr>
@@ -164,7 +164,7 @@
 			<td class="creditcard-form dropdown">
 				{control type="dropdown" name="billing[expiration_month]" items="01,02,03,04,05,06,07,08,09,10,11,12" default="01"}
 				<div>/</div>
-				{control type="dropdown" name="billing[expiration_year]" items="2017,2018,2019,2020,2021,2022,2023,2024"}
+				{control type="dropdown" name="billing[expiration_year]" items="2022,2023,2024,2025,2026,2027,2028,2029,2030"}
 			</td>
 		</tr>
 
@@ -172,7 +172,7 @@
 			<td>*&#160;CVV&#160;Number (<a style="font-size:10px;" href="http://en.wikipedia.org/wiki/Card_Verification_Value" target="_blank" class="cvv_ver">What is a CVV Number?</a>)</td>
 			<td class="creditcard-form">
 				<div required"="" class="text-control control " id="cvvControl">
-					<input type="text" class="text form-control" id="cvv" name="billing[cvv]" size="4" maxlength="4" onkeypress="return integer_filter.on_key_press(this, event);" onblur="integer_filter.onblur(this);" onfocus="integer_filter.onfocus(this);" onpaste="return integer_filter.onpaste(this, event);" credit_card_cvv />
+					<input type="text" class="text form-control" id="cvv" name="billing[cvv]" size="4" maxlength="4" onkeypress="return integer_filter.on_key_press(this, event);" onblur="integer_filter.onblur(this);" onfocus="integer_filter.onfocus(this);" onpaste="return integer_filter.onpaste(this, event);" credit_card_cvv caption="CVV Number"/>
 				</div>
 			</td>
 		</tr>

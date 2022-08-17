@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -121,7 +121,7 @@
 				</td>
 			</tr>
 		{foreachelse}
-			<tr><td colspan="2" align="center"><em>{'No Events'|gettext}</em></td></tr>
+			<tr><td colspan="3" align="center"><em>{'No Events'|gettext}</em></td></tr>
 		{/foreach}
 		</tbody>
 	</table>

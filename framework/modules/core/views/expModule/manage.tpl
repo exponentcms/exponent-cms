@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -35,7 +35,7 @@
 .exp-skin-table td label span {
     position:absolute;
     right:0px;
-    top:0px;
+    /*top:0px;*/
     text-transform:uppercase;
     font-size:10px;
 }
@@ -96,6 +96,9 @@
                                 <em>
                                     {$module->description}
                                 </em>
+                                <span class="float-right">
+                                {icon button=true module=$module->class action=configure text='Default Config'|gettext icon=cog}
+                                </span>
                             </label>
                             </td>
                         </tr>
@@ -131,7 +134,6 @@
             {*</div>*}
         </div>
     </div>
-    {*<div class="loadingdiv">{"Loading Modules"|gettext}</div>*}
     {control type="buttongroup" submit="Update Active Modules"|gettext}
     {/form}
 </div>

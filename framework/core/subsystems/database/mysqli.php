@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -48,9 +48,15 @@ class mysqli_database extends database {
 		} else {
             $host = $hostname;
         }
-		if ($this->connection = @mysqli_connect($host, $username, $password, $database, $port)) {
+//        if (!DEVELOPMENT)
+            mysqli_report(MYSQLI_REPORT_OFF);  // php v8.1 help
+        if ($this->connection = @mysqli_connect($host, $username, $password, $database, $port)) {
 			$this->havedb = true;
-		}
+            $this->error_code = false;
+		} else {
+            $this->error_code = mysqli_connect_error();
+            return;
+        }
 		//fix to support utf8, warning it only works from a certain mySQL version on
 		//needed on mySQL servers that don't have the default connection encoding setting to utf8
 
@@ -58,7 +64,7 @@ class mysqli_database extends database {
 		// for using this feature to 4.1.2, although isam tables got the support for utf8 already in 4.1
 		//anything else would result in an inconsistent user experience
 
-		list($major, $minor, $micro) = sscanf(@mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
+		list($major, $minor, $micro, $variant) = sscanf(@mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
 		if(defined('DB_ENCODING')) {
 			//SET NAMES is possible since version 4.1
 			if(($major > 4) OR (($major == 4) AND ($minor >= 1))) {
@@ -67,9 +73,12 @@ class mysqli_database extends database {
 		}
 
 		$this->prefix = DB_TABLE_PREFIX . '_';
-
-		if (!DEVELOPMENT)
-            mysqli_report(MYSQLI_REPORT_OFF);  // php v8.1 help
+        $this->version = 'MySQL ' . $major . '.' . $minor . '.' .  $micro . '.' . $variant;
+        if ($major >= 8 && $minor >= 0 && $micro >= 19) {
+            $this->mysql8 = true;
+        } else {
+            $this->mysql8 = false;
+        }
 	}
 
     /**
@@ -154,7 +163,8 @@ class mysqli_database extends database {
      * @return string
      */
     function wrapStmt($sql) {
-        return preg_replace('/\w*rank(?<!_rank)(?<!`rank)/', '`rank`', $sql);
+        //fixme only needed for MySQL 8
+        return preg_replace('/\w*rank(?<!_rank)(?<!`rank)(?<!"rank)(?<!\'rank)/', '`rank`', $sql);
     }
 
     /**
@@ -242,6 +252,65 @@ class mysqli_database extends database {
     }
 
     /**
+   	* This is an internal function for use only within the database class
+   	* @internal Internal
+   	* @param  $name
+   	* @param  $def
+   	* @return bool|string
+   	*/
+   	function fieldSQL($name, $def) {
+        if (!$this->mysql8) {
+            return parent::fieldSQL($name, $def);
+        }
+   	    $sql = "`$name`";
+   	    if (!isset($def[DB_FIELD_TYPE])) {
+   	        return false;
+   	    }
+   	    $type = $def[DB_FIELD_TYPE];
+   	    if ($type === DB_DEF_ID) {
+   	        $sql .= " INT";
+   	    } else if ($type === DB_DEF_BOOLEAN) {
+   	        $sql .= " TINYINT(1)";
+   	    } else if ($type === DB_DEF_TIMESTAMP) {
+   	        $sql .= " BIGINT";
+        } else if ($type === DB_DEF_DATETIME) {
+            $sql .= " DATETIME";
+   	    } else if ($type === DB_DEF_INTEGER) {
+   	        $sql .= " MEDIUMINT";
+   	    } else if ($type === DB_DEF_STRING) {
+   	        if (isset($def[DB_FIELD_LEN]) && is_int($def[DB_FIELD_LEN])) {
+   	            $len = $def[DB_FIELD_LEN];
+   	            if ($len < 256)
+   	                $sql .= " VARCHAR($len)";
+   	            else if ($len < 65536)
+   	                $sql .= " TEXT";
+   	            else if ($len < 16777216)
+   	                $sql .= " MEDIUMTEXT";
+   	            else
+   	                $sql .= " LONGTEXT";
+   	        } else {  // default size of 'TEXT' instead of error
+                   $sql .= " TEXT";
+   	        }
+   	    } else if ($type === DB_DEF_DECIMAL) {
+   	        $sql .= " DOUBLE";
+   	    } else {
+   	        return false; // must specify known FIELD_TYPE
+   	    }
+   	    if ($type === DB_DEF_ID || $type === DB_DEF_BOOLEAN || !empty($def[DB_NOTNULL]) || !empty($def[DB_PRIMARY])) {
+               $sql .= " NOT NULL";
+           } else {
+               $sql .= " NULL";
+           }
+   	    if (isset($def[DB_DEFAULT]))
+   	        $sql .= " DEFAULT '" . $def[DB_DEFAULT] . "'";
+           else if ($type == DB_DEF_BOOLEAN || ($type === DB_DEF_ID && empty($def[DB_PRIMARY])))
+               $sql .= " DEFAULT 0";
+   	    if (isset($def[DB_INCREMENT]) && $def[DB_INCREMENT])
+   	        $sql .= " AUTO_INCREMENT";
+   	    return $sql;
+   	}
+
+    /**
      * Alter an existing table
      *
      * Alters the structure of an existing database table to conform to the passed
@@ -259,7 +328,8 @@ class mysqli_database extends database {
      * @return array
      */
     function alterTable($tablename, $newdatadef, $info, $aggressive = false) {
-        expSession::clearAllUsersSessionCache();
+        if ($this->havedb == true)
+            expSession::clearAllUsersSessionCache();
         $dd = $this->getDataDefinition($tablename);
         $modified = false;
 
@@ -298,9 +368,12 @@ class mysqli_database extends database {
         //Drop any old columns from the table if aggressive mode is set.
         if ($aggressive) {
             //update primary keys to 'release' columns
-            $sql = "ALTER IGNORE TABLE `" . $this->prefix . "$tablename` ";
+            $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
             if (count($primary)) {
-                $sql .= " DROP PRIMARY KEY, ADD PRIMARY KEY ( `" . implode("` , `",$primary) . "` )";
+                if ($this->indexExists($tablename, 'PRIMARY')) {
+                    $sql .= " DROP PRIMARY KEY,";
+                }
+                $sql .= " ADD PRIMARY KEY ( `" . implode("` , `", $primary) . "` )";
             }
             @mysqli_query($this->connection, $sql);
 
@@ -373,15 +446,21 @@ class mysqli_database extends database {
 
         $sep = false;
         if (count($primary)) {
-            $sql .= " DROP PRIMARY KEY, ADD PRIMARY KEY ( `" . implode("` , `",$primary) . "` )";
+            if ($this->indexExists($tablename, 'PRIMARY')) {
+                $sql .= " DROP PRIMARY KEY,";
+            }
+            $sql .= " ADD PRIMARY KEY ( `" . implode("` , `", $primary) . "` )";
             $sep = true;
         }
         if (count($fulltext)) {
             if ($sep) $sql .= ' ,';
 //            $sql .= " ADD FULLTEXT ( `" . implode("` , `", $fulltext) . "`)";
             // drop the index first so we don't get dupes
-            $drop = "DROP INDEX " . $fulltext[0] . " ON " . $this->prefix . $tablename;
-            @mysqli_query($this->connection, $drop);
+            if ($this->indexExists($tablename, $fulltext[0])) {
+                $drop = "DROP INDEX " . $fulltext[0] . " ON " . $this->prefix . $tablename;
+                @mysqli_query($this->connection, $drop);
+            }
+
             $sql .= " ADD FULLTEXT `" . $fulltext[0] . "`" . "( `" . implode("` , `", $fulltext) . "`)";
             $sep = true;
         }
@@ -393,8 +472,10 @@ class mysqli_database extends database {
 
         foreach ($index as $key => $value) {
             // drop the index first so we don't get dupes
-            $drop = "DROP INDEX " . $key . " ON " . $this->prefix . $tablename;
-            @mysqli_query($this->connection, $drop);
+            if ($this->indexExists($tablename, $key)) {
+                $drop = "DROP INDEX " . $key . " ON " . $this->prefix . $tablename;
+                @mysqli_query($this->connection, $drop);
+            }
 
             // re-add the index
             if ($sep) $sql .= ' ,';
@@ -1149,6 +1230,8 @@ class mysqli_database extends database {
     function tableExists($table) {
 //        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` LIMIT 0,1");
 //        return ($res != null);
+        if ($this->error_code != false)
+            return false;
         $res = @mysqli_query($this->connection, "SHOW TABLES LIKE \"" . $this->prefix . "$table\"");
         return (mysqli_num_rows($res) != 0);
     }
@@ -1164,7 +1247,7 @@ class mysqli_database extends database {
    	 function columnExists($table, $col) {
          // does the column exist?
          $result = @mysqli_query($this->connection, $this->wrapStmt("SHOW COLUMNS FROM `" . $this->prefix . "$table` LIKE '$col'"));
-         if (!@mysqli_num_rows($result))
+         if ($result === false || !@mysqli_num_rows($result))
              return false;
          else
              return true;
@@ -1309,6 +1392,37 @@ class mysqli_database extends database {
         expSession::setTableCache($table, $dd);
         return $dd;
     }
+
+    /**
+   	* This is an internal function for use only within the database class
+   	* @internal Internal
+   	* @param  $fieldObj
+   	* @return int
+   	*/
+   	function getDDFieldType($fieldObj) {
+        if (!$this->mysql8) {
+            return parent::getDDFieldType($fieldObj);
+        }
+   	    $type = strtolower($fieldObj->Type);
+
+   	    if ($type === "int")
+   	        return DB_DEF_ID;
+   	    elseif ($type === "mediumint")
+   	        return DB_DEF_INTEGER;
+   	    elseif ($type === "tinyint(1)")
+   	        return DB_DEF_BOOLEAN;
+   	    elseif ($type === "bigint")
+   	        return DB_DEF_TIMESTAMP;
+        elseif ($type === "datetime")
+            return DB_DEF_DATETIME;
+   	    elseif ($type === "double")
+   	        return DB_DEF_DECIMAL;
+   	    // Strings
+   	    elseif ($type === "text" || $type === "mediumtext" || $type === "longtext" || strpos($type, "varchar(") !== false)
+   	        return DB_DEF_STRING;
+   	    else
+            return DB_DEF_INTEGER;
+   	}
 
     /**
      * Returns an error message from the database server.  This is intended to be
@@ -1565,6 +1679,23 @@ class mysqli_database extends database {
 
 		return $records;
 	}
+
+    /**
+     * Check if a specific INDEX exists in a specific table
+     * @param string $table The table name
+     * @param string $index The key name
+     * @return bool
+     */
+    function indexExists($table, $index) {
+        $e = false;
+        if ($result = mysqli_query($this->connection,"SHOW INDEX FROM  $this->prefix$table WHERE Key_name = '$index'")) {
+            if($result->num_rows >= 1) {
+                $e = true;
+            }
+        }
+        mysqli_free_result($result);
+        return $e;
+    }
 
 }
 

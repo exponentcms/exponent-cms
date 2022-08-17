@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -123,7 +123,7 @@ class filedownloadController extends expController {
      * @return string
      */
     function meta_rich($request, $object) {
-        if (!empty($object->expFile[0]) && file_exists(BASE.$object->expFile[0]->directory.$object->expFile[0]->filename)) {
+        if (!empty($object->expFile['downloadable'][0]) && file_exists(BASE.$object->expFile['downloadable'][0]->directory.$object->expFile[0]->filename)) {
             $rich_meta = '<!--
         <PageMap>
             <DataObject type="action">
@@ -209,8 +209,8 @@ class filedownloadController extends expController {
         $metainfo['description'] = substr(empty($object->meta_tw['description']) ? $desc : $object->meta_tw['description'], 0, 199);
         $metainfo['image'] = empty($object->meta_tw['twimage'][0]) ? '' : $object->meta_tw['twimage'][0]->url;
         if (empty($metainfo['image'])) {
-            if (!empty($object->expFile['images'][0]->is_image)) {
-                $metainfo['image'] = $object->expFile['images'][0]->url;
+            if (!empty($object->expFile['downloadable'][0]->is_image)) {
+                $metainfo['image'] = $object->expFile['downloadable'][0]->url;
             } else {
                 if (!empty($config['expFile']['twimage'][0]))
                     $file = new expFile($config['expFile']['twimage'][0]);

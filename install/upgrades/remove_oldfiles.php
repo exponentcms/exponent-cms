@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -74,6 +74,7 @@ class remove_oldfiles extends upgradescript {
             'exponent_version.php.orig',
             'iconspopup.php',
             'login_redirect.php',
+            'login.php',
             'manifest.php',
             'mod_preview.php',
             'module_preview.php',
@@ -671,6 +672,8 @@ class remove_oldfiles extends upgradescript {
             'external/easypost-php-3.4.1/',
             'external/easypost-php-3.4.4/',
             'external/easypost-php-3.4.5/',
+            'external/easypost-php-4.0.2/',
+            'external/easypost-php-5.0.0/',
             'external/editors/connector/',
             'external/editors/FCKeditor/',
             'external/editors/ckeditor/images',
@@ -685,6 +688,7 @@ class remove_oldfiles extends upgradescript {
             'external/EmailValidator-2.1.17/',
             'external/EmailValidator-2.1.24/',
             'external/EmailValidator-3.0.0/',
+            'external/EmailValidator-3.1.2/',
             'external/facebook-php-sdk-3.2.2/',
             'external/fedex-php/',
             'external/fedex-phpv13/',
@@ -707,6 +711,7 @@ class remove_oldfiles extends upgradescript {
             'external/lexer-1.0.1/',
             'external/lexer-1.2.0/',
             'external/lexer-1.2.1/',
+            'external/lexer-1.2.2/',
             'external/minify/lib/',
             'external/minify/min/lib/Solar/',
             'external/minify/min_extras/',
@@ -724,6 +729,7 @@ class remove_oldfiles extends upgradescript {
             'external/simplepie-1.5.4/',
             'external/simplepie-1.5.5/',
             'external/simplepie-1.5.6/',
+            'external/simplepie-1.5.8/',
             'external/Smarty/',
             'external/Smarty-2/',
             'external/Smarty-3.1.4/',
@@ -741,7 +747,9 @@ class remove_oldfiles extends upgradescript {
             'external/smarty-3.1.34/',
             'external/smarty-3.1.36/',
             'external/smarty-3.1.39/',
+            'external/smarty-3.1.40/',
             'external/smarty-4.0.0/',
+            'external/smarty-4.0.4/',
             'external/swfobject/',
             'external/Swift/',
             'external/Swift-4/',

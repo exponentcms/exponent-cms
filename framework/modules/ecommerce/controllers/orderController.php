@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -2203,7 +2203,9 @@ exit();
                 'formatter' => function( $d, $row ) {
         	        $paid = strtolower($row['paid']);
         	        if ($paid === 'complete' || $paid === 'paid') {
-        	            if (bs4() || bs5()) {
+                        if (bs5()) {
+                            $class = 'bg-success';
+                        } elseif (bs4()) {
                             $class = 'badge-success';
                         } else {
                             $class = 'alert-success';
@@ -2211,7 +2213,9 @@ exit();
                         $title = gt('Paid');
                         $color = 'darkseagreen';
                     } else {
-                        if (bs4() || bs5()) {
+                        if (bs5()) {
+                            $class = 'bg-secondary';
+                        } elseif (bs4()) {
                             $class = 'badge-secondary';
                         } else {
                             $class = 'alert-secondary';
@@ -2256,7 +2260,9 @@ exit();
                         }
                         $color = 'lightgray';
                     }
-                    if (bs4() || bs5()) {
+                    if (bs5()) {
+                        return '<span class="badge bg-' . $class . '">' . $d . '</span>';
+                    } elseif (bs4()) {
                         return '<span class="badge badge-' . $class . '">' . $d . '</span>';
                     } elseif (bs()) {
                         return '<span class="badge alert-' . $class . '">' . $d . '</span>';

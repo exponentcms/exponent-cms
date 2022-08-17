@@ -115,14 +115,15 @@ class Http
 
         // When using Curl to query servers using Digest Auth, we get back a double set of http headers.
         // We strip out the 1st...
-        if ($headersProcessed && preg_match('/^HTTP\/[0-9]\.[0-9] 401 /', $data)) {
-            if (preg_match('/(\r?\n){2}HTTP\/[0-9]\.[0-9] 200 /', $data)) {
-                $data = preg_replace('/^HTTP\/[0-9]\.[0-9] 401 .+?(?:\r?\n){2}(HTTP\/[0-9.]+ 200 )/s', '$1', $data, 1);
+        if ($headersProcessed && preg_match('/^HTTP\/[0-9](?:\.[0-9])? 401 /', $data)) {
+            if (preg_match('/(\r?\n){2}HTTP\/[0-9](?:\.[0-9])? 200 /', $data)) {
+                $data = preg_replace('/^HTTP\/[0-9](?:\.[0-9])? 401 .+?(?:\r?\n){2}(HTTP\/[0-9.]+ 200 )/s', '$1', $data, 1);
             }
         }
 
-        if (preg_match('/^HTTP\/[0-9]\.[0-9] ([0-9]{3}) /', $data, $matches)) {
-            $httpResponse['status_code'] = $matches[1];
+        if (preg_match('/^HTTP\/([0-9](?:\.[0-9])?) ([0-9]{3}) /', $data, $matches)) {
+            $httpResponse['protocol_version'] = $matches[1];
+            $httpResponse['status_code'] = $matches[2];
         }
 
         if ($httpResponse['status_code'] !== '200') {
@@ -156,9 +157,10 @@ class Http
             if (count($arr) > 1) {
                 $headerName = strtolower(trim($arr[0]));
                 /// @todo some other headers (the ones that allow a CSV list of values)
-                /// do allow many values to be passed using multiple header lines.
-                /// We should add content to $xmlrpc->_xh['headers'][$headerName]
-                /// instead of replacing it for those...
+                ///       do allow many values to be passed using multiple header lines.
+                ///       We should add content to $xmlrpc->_xh['headers'][$headerName]
+                ///       instead of replacing it for those...
+                /// @todo should we drop support for rfc2965 (set-cookie2) cookies? It has been obsoleted since 2011
                 if ($headerName == 'set-cookie' || $headerName == 'set-cookie2') {
                     if ($headerName == 'set-cookie2') {
                         // version 2 cookies:
@@ -182,7 +184,7 @@ class Http
                         foreach ($cookie as $pos => $val) {
                             $val = explode('=', $val, 2);
                             $tag = trim($val[0]);
-                            $val = trim(@$val[1]);
+                            $val = isset($val[1]) ? trim($val[1]) : '';
                             /// @todo with version 1 cookies, we should strip leading and trailing " chars
                             if ($pos == 0) {
                                 $cookiename = $tag;

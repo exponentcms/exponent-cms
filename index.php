@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -140,7 +140,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
 }
 
 if (DEBUG_HISTORY && $user->isAdmin() && !expJavascript::inAjaxAction())
-	eDebug(expHistory::print_history());
+	echo expHistory::print_history();
 //write page build/load time if in DEVELOPMENT mode with logging
 if (DEVELOPMENT && LOGGER)
 	eLog(expDateTime::duration(0, $timer->mark(), true) . ' - ' . $section . '/' . $sectionObj->sef_name, gt('LOAD TIME'));

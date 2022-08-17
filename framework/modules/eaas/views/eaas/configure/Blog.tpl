@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +15,7 @@
 
 <h2>{"Blog"|gettext}</h2>
 
-{control type="files" name="blog_image" subtype="blog_image" label="Blog Banner Image"|gettext accept="image/*" value=$config['expFile'] limit='1'}
+{control type="files" name="blog_image" subtype="blog_image" label="Blog Banner Image"|gettext accept="image/*" value=$config.expFile limit='1'}
 {control type="editor" name="blog_body" label="Blog HTML"|gettext value=$config.blog_body}
 
 <table class="exp-skin-table">

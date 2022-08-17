@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -147,10 +147,12 @@ class expHistory extends expSubsystem {
         // bunch of identical entries
 
         $url = '';
-        if (stripos($router->current_url, 'EXPONENT.') !== false) return false;
+        if (stripos($router->current_url, 'EXPONENT.') !== false)
+            return false;
         if (expTheme::inAction()) {
             // we don't want to save history for these action...it screws up the flow when logging in
-            if (!isset($router->params['action']) || $router->params['action'] === 'loginredirect' || $router->params['action'] === 'logout') return false;
+            if (!isset($router->params['action']) || $router->params['action'] === 'loginredirect' || $router->params['action'] === 'logout')
+                return false;
 
             // figure out the module/controller names
             $router_name = isset($router->params['controller']) ? $router->params['controller'] : $router->params['module'];
@@ -175,13 +177,16 @@ class expHistory extends expSubsystem {
                 $diff = @array_diff_assoc($router->params, $this->history[$url_type][$size-1]['params']);
                 if (isset($diff['ajax_action']))
                     unset($diff['ajax_action']);
-                if (!$diff && (count($router->params) != count($this->history[$url_type][$size-1]['params']))) $diff = true;;
+                if (!$diff && (count($router->params) != count($this->history[$url_type][$size-1]['params'])))
+                    $diff = true;;
             }
-      	    if (!empty($diff) || $size == 0) $this->history[$url_type][] = $url;
+      	    if (!empty($diff) || $size == 0)
+                  $this->history[$url_type][] = $url;
 
       	    // save the "lasts" information
             $this->history['lasts']['type'] = $url_type;
-            if ($url_type !== 'editable') $this->history['lasts']['not_editable'] = $url_type;
+            if ($url_type !== 'editable')
+                $this->history['lasts']['not_editable'] = $url_type;
   	    }
 
         expSession::set('history', $this->history);
@@ -204,15 +209,18 @@ class expHistory extends expSubsystem {
 	public function goHere($url_type=null, $params=array()) {
 	    global $router;
 
+        //fixme, should we remove a history level???
 	    // figure out which type of url we should go back to
-	    if (empty($url_type)) $url_type = empty($this->history['lasts']['type']) ? 'viewable' : $this->history['lasts']['type'];
+	    if (empty($url_type))
+            $url_type = empty($this->history['lasts']['type']) ? 'viewable' : $this->history['lasts']['type'];
 
 	    // figure out how far back we should go
 	    $goback = isset($params['goback']) ? $params['goback'] : 1;
 
 	    // return the user where they need to go
 	    $index = count($this->history[$url_type]) - $goback;
-	    if ($index < 0) $index=0;
+	    if ($index < 0)
+            $index=0;
 	    $url = $this->history[$url_type][$index]['params'];
 	    if ($this->history[$url_type][$index]['url_type'] === 'base') {
             $url = array('section'=>'SITE_DEFAULT_SECTION');
@@ -277,9 +285,11 @@ class expHistory extends expSubsystem {
     public function lastUrl($url_type=null) {
         global $router;
 
-        if (empty($this->history['lasts']['type']) && empty($url_type)) return $router->makeLink(array('section'=>SITE_DEFAULT_SECTION));
+        if (empty($this->history['lasts']['type']) && empty($url_type))
+            return $router->makeLink(array('section'=>SITE_DEFAULT_SECTION));
 
-        if (empty($url_type)) $url_type = $this->history['lasts']['type'];
+        if (empty($url_type))
+            $url_type = $this->history['lasts']['type'];
 
         if (!empty($this->history[$url_type])) {
             $last = end($this->history[$url_type]);
@@ -305,10 +315,13 @@ class expHistory extends expSubsystem {
 		global $history;
 
 		$types = array('viewable', 'editable', 'manageable');
-		$ret = "<h2>Current expHistory</h2>";
+        $ret = "<div class='exphistory'>";
+		$ret .= "<h2>Current expHistory</h2>";
 		foreach ($types as $type) {
 			$ret .= "<strong>" . $type . ":</strong><br>";
-			$hist_type = array_reverse($history->history[$type], true);
+            $hist_type = array_reverse($history->history[$type], true);
+//            if (!empty($hist_type))
+//                $ret .= '<a href="' . expHistory::getLast($type) . '">' . gt('Return to Last') . ' ' . $type . '</a><br>';
 			foreach ($hist_type as $index=>$hist) {
 				$ret .= "&#160;&#160;" . $index ." - " . $hist['url_type'] . ' : ';
 				foreach ($hist['params'] as $key=>$value) {
@@ -317,7 +330,10 @@ class expHistory extends expSubsystem {
 				$ret .= "<br>";
 			}
 		}
-		$ret .= "<strong>expHistory Lasts:</strong> (not editable) " . $history->history['lasts']['not_editable'] . ' - (type) ' . $history->history['lasts']['type'];
+		$ret .= "<br><strong>expHistory Lasts:</strong> (not editable) " . $history->history['lasts']['not_editable'] . ' - (type) ' . $history->history['lasts']['type'];
+        $ret .= "<br><br>";
+        $ret .= '<a href="' . makeLink(array('controller'=>'administration', 'action'=>'clear_history')) . '">' . gt('Purge History') . '</a>';
+        $ret .= "</div>";
 		return $ret;
 	}
 

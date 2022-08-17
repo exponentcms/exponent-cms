@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -151,7 +151,7 @@ class blogController extends expController {
             'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."publish >= '".$start_date."' AND publish <= '".$end_date."'",
             'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
             'order'=>'publish',
-            'dir'=>'desc',
+            'dir'=>'DESC',
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
@@ -177,6 +177,7 @@ class blogController extends expController {
             'where' => ($this->aggregateWhereClause() ? $this->aggregateWhereClause() . " AND " : "") . "poster=" . $user->id,
             'limit' => isset($this->config['limit']) ? $this->config['limit'] : 10,
             'order' => 'publish',
+            'dir'=>'DESC',
             'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->baseclassname,
             'action' => $this->params['action'],
@@ -371,8 +372,8 @@ class blogController extends expController {
         $metainfo['url'] = empty($object->meta_fb['url']) ? $canonical : $object->meta_fb['url'];
         $metainfo['image'] = empty($object->meta_fb['fbimage'][0]) ? '' : $object->meta_fb['fbimage'][0]->url;
         if (empty($metainfo['image'])) {
-            if (!empty($object->expFile['files'][0]->is_image)) {
-                $metainfo['image'] = $object->expFile['files'][0]->url;
+            if (!empty($object->expFile[0]->is_image)) {
+                $metainfo['image'] = $object->expFile[0]->url;
             } else {
                 $config = expConfig::getConfig($object->location_data);
                 if (!empty($config['expFile']['fbimage'][0]))
@@ -413,8 +414,8 @@ class blogController extends expController {
         $metainfo['description'] = substr(empty($object->meta_tw['description']) ? $desc : $object->meta_tw['description'], 0, 199);
         $metainfo['image'] = empty($object->meta_tw['twimage'][0]) ? '' : $object->meta_tw['twimage'][0]->url;
         if (empty($metainfo['image'])) {
-            if (!empty($object->expFile['images'][0]->is_image)) {
-                $metainfo['image'] = $object->expFile['images'][0]->url;
+            if (!empty($object->expFile[0]->is_image)) {
+                $metainfo['image'] = $object->expFile[0]->url;
             } else {
                 if (!empty($config['expFile']['twimage'][0]))
                     $file = new expFile($config['expFile']['twimage'][0]);

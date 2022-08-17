@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -499,6 +499,7 @@ $opts = array(
             // 'copyOverwrite' => false,
             'copyJoin'        => true,
 //            'mimeDetect'      => 'internal',
+            'mimeDetect'      => 'mime_content_type',
 //            'tmpPath'         => BASE . 'tmp',
             'tmbCrop'         => false,
 //            'imgLib'          => 'gd',  // 'auto' doesn't seem to work on some servers

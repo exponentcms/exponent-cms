@@ -16,7 +16,7 @@ library main features and all project related information.
 
 The user manual can be found in the doc/manual directory, in Asciidoc format: [phpxmlrpc_manual.adoc](doc/manual/phpxmlrpc_manual.adoc)
 
-Release tarballs also contain HTML and PDF versions of the manual, as well as an automatically generated API documentation.
+Older release tarballs also contain HTML and PDF versions of the manual, as well as an automatically generated API documentation.
 
 *NB: the user manual has not been updated yet with all the changes made in version 4. Please consider it unreliable!*
 
@@ -49,7 +49,7 @@ The full sequence of operations is:
     # and, once you have finished all testing related work:
     ./tests/ci/vm.sh cleanup
 
-By default tests are run using php 7.0 in a Container based on Ubuntu 18 Bionic.
+By default tests are run using php 7.2 in a Container based on Ubuntu 18 Bionic.
 You can change the version of PHP and Ubuntu in use by setting the environment variables PHP_VERSION and UBUNTU_VERSION
 before building the Container.
 
@@ -64,5 +64,5 @@ Use of this software is subject to the terms in the [license.txt](license.txt) f
 [![Latest Stable Version](https://poser.pugx.org/phpxmlrpc/phpxmlrpc/v/stable)](https://packagist.org/packages/phpxmlrpc/phpxmlrpc)
 [![Total Downloads](https://poser.pugx.org/phpxmlrpc/phpxmlrpc/downloads)](https://packagist.org/packages/phpxmlrpc/phpxmlrpc)
 
-[![Build Status](https://github.com/gggeek/phpxmlrpc/actions/workflows/ci.yml/badge.svg)](https://travis-ci.com/gggeek/phpxmlrpc)
+[![Build Status](https://github.com/gggeek/phpxmlrpc/actions/workflows/ci.yml/badge.svg)](https://github.com/gggeek/phpxmlrpc/actions/workflows/ci.yml)
 [![Code Coverage](https://scrutinizer-ci.com/g/gggeek/phpxmlrpc/badges/coverage.png)](https://scrutinizer-ci.com/g/gggeek/phpxmlrpc)

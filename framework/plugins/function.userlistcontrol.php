@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -32,7 +32,7 @@
 function smarty_function_userlistcontrol($params, &$smarty) {
     global $db;
 
-    $users = $db->selectObjects("user", null, "username");
+    $users = $db->selectObjects("user", null, "username LIMIT 2500");
 
     $selected = isset($params['items']) ? $params['items'] : array();
     foreach ($users as $user) {

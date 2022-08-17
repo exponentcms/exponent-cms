@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -41,12 +41,5 @@
             {if $smarty.const.HANDLE_PAGE_REDIRECTION}<div id="tab3" role="tabpanel" class="tab-pane fade">{exp_include file="manage_redirection.tpl"}</div>{/if}
 	    </div>
 	</div>
-	{*<div class="loadingdiv">{'Loading Pages'|gettext}</div>*}
 	{loading title='Loading Pages'|gettext}
 </div>
-
-{script unique="tabload" jquery=1 bootstrap="tab,transition"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

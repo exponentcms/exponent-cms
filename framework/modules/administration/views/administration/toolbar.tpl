@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -129,6 +129,11 @@
              alert("{/literal}{"Your popup blocker has prevented the file manager from opening"|gettext}{literal}");
          }
 
+         var phpwindow = function (){
+             var win = window.open('{/literal}{link controller=administration action=phpinfo ajax_action=1}{literal}');
+             if (!win) { err(); }
+         }
+
          var adminerwindow = function (){
              var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?{/literal}{$db_driver}{literal}={/literal}{$smarty.const.DB_HOST|escape:"url"}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}{/literal}{$ns}{literal}');
              if (!win) { err(); }
@@ -167,6 +172,7 @@
          }
 
          Y.on('toolbar:loaded',function(){
+             if (document.getElementById("phpinfo-toolbar")) Y.one('#phpinfo-toolbar').on('click', phpwindow);
              if (document.getElementById("reportabug-toolbar")) Y.one('#reportabug-toolbar').on('click', reportbugwindow);
              if (document.getElementById("manage-db")) Y.one('#manage-db').on('click', adminerwindow);
              if (document.getElementById("docs-toolbar")) Y.one('#docs-toolbar').on('click',docswindow);

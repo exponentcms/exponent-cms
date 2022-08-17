@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -46,6 +46,11 @@ function smarty_function_loading($params,&$smarty) {
         expCSS::pushToHead(array(
            "corecss"=>"loading",
         ));
+    } elseif (bs5() && USE_BOOTSTRAP_ICONS) {
+        $spinner = '<i class="bi bi-lg bi-arrow-clockwise bi-pulse"></i> ';
+        expCSS::pushToHead(array(
+           "corecss"=>"loading",
+        ));
     } elseif (bs4() || bs5()) {
         $spinner = '<i class="fas fa-lg fa-spinner fa-pulse"></i> ';
         expCSS::pushToHead(array(
@@ -62,6 +67,19 @@ function smarty_function_loading($params,&$smarty) {
         ));
     } else {
         echo '<div class="loadingdiv">', $spinner, $title, '</div>';
+    }
+
+    if (bs()) {
+        expJavascript::pushToFoot(
+            array(
+                'unique' => 'loadingremove',
+                'jquery' => 1,
+                'content'=> "
+            $('.loadingdiv').remove();
+                ",
+                'bootstrap' => 'tab,transition'
+            )
+        );
     }
 }
 

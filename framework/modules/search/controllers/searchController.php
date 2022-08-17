@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -176,7 +176,7 @@ class searchController extends expController {
     function cloud() {
         global $db;
 
-        expHistory::set('manageable', $this->params);
+        expHistory::set('viewable', $this->params);
         $page = new expPaginator(array(
             'model'=>'expTag',
             'where'=>null,

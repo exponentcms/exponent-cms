@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -303,6 +303,15 @@ class administrationController extends expController {
         ));
     }
 
+    public function phpinfo() {
+        global $user;
+
+        if ($user->isAdmin()) {
+            echo phpinfo();
+        } else {
+            echo gt("Command is NOT available!");
+        }
+    }
 //    public function index() {
 //        redirect_to(array('controller'=>'administration', 'action'=>'toolbar'));
 ////        $this->toolbar();
@@ -486,9 +495,15 @@ class administrationController extends expController {
    		expHistory::back();
    	}
 
+    public function clear_history() {
+        expHistory::flush();
+        flash('message',gt("History has been cleared"));
+        expHistory::back();
+    }
+
 	public function clear_smarty_cache() {
-		expTheme::clearSmartyCache();
         expSession::clearAllUsersSessionCache();
+		expTheme::clearSmartyCache();
     }
 
 	public function clear_css_cache() {
@@ -544,7 +559,7 @@ class administrationController extends expController {
 			'mods'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-mods',
 		);
 
-        require_once(BASE . 'external/simplepie-1.5.8/autoloader.php');
+        require_once(BASE . 'external/simplepie-1.6.0/autoloader.php');
 		$RSS = new SimplePie();
 		$RSS->set_cache_location(BASE . 'tmp/rsscache');  // default is ./cache
 //	    $RSS->set_cache_duration(3600);  // default if 3600
@@ -991,7 +1006,8 @@ class administrationController extends expController {
         //display the upgrade scripts
         if (is_readable(BASE.'install/upgrades')) {
             $i = 0;
-            if (is_readable(BASE.'install/include/upgradescript.php')) include(BASE.'install/include/upgradescript.php');
+            if (is_readable(BASE.'install/include/upgradescript.php'))
+                include(BASE.'install/include/upgradescript.php');
 
             // first build a list of valid upgrade scripts
             $oldscripts = array(
@@ -1002,7 +1018,7 @@ class administrationController extends expController {
                 'upgrade_attachableitem_tables.php',
             );
             $ext_dirs = array(
-               BASE . 'install/upgrades',
+                BASE . 'install/upgrades',
                 THEME_ABSOLUTE . 'modules/upgrades'
             );
             foreach ($ext_dirs as $dir) {
@@ -1048,15 +1064,15 @@ class administrationController extends expController {
     public function install_upgrades_run() {
 
         set_time_limit(0);
+        // first lets update the database tables
         $tables = expDatabase::install_dbtables();
         ksort($tables);
 
         // locate the upgrade scripts
-        $upgrade_dir = BASE.'install/upgrades';
-        if (is_readable($upgrade_dir)) {
+        if (is_readable(BASE . 'install/upgrades')) {
             $i = 0;
-            if (is_readable(BASE.'install/include/upgradescript.php')) include(BASE.'install/include/upgradescript.php');
-            $dh = opendir($upgrade_dir);
+            if (is_readable(BASE . 'install/include/upgradescript.php'))
+                include(BASE . 'install/include/upgradescript.php');
 
             // first build a list of valid upgrade scripts
             $oldscripts = array(
@@ -1066,16 +1082,25 @@ class administrationController extends expController {
                 'remove_locationref.php',
                 'upgrade_attachableitem_tables.php',
             );
-            while (($file = readdir($dh)) !== false) {
-                if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && substr($file, -4, 4) == '.php'  && !in_array($file,$oldscripts)) {
-                    include_once($upgrade_dir . '/' . $file);
-                    $classname     = substr($file, 0, -4);
-                    /**
-                     * Stores the upgradescript object
-                     * @var \upgradescript $upgradescripts
-                     * @name $upgradescripts
-                     */
-                    $upgradescripts[] = new $classname;
+            $ext_dirs = array(
+                BASE . 'install/upgrades',
+                THEME_ABSOLUTE . 'modules/upgrades'
+            );
+            foreach ($ext_dirs as $dir) {
+                if (is_readable($dir)) {
+                    $dh = opendir($dir);
+                    while (($file = readdir($dh)) !== false) {
+                        if (is_readable($dir . '/' . $file) && is_file($dir . '/' . $file) && substr($file, -4, 4) == '.php' && !in_array($file, $oldscripts)) {
+                            include_once($dir . '/' . $file);
+                            $classname = substr($file, 0, -4);
+                            /**
+                             * Stores the upgradescript object
+                             * @var \upgradescript $upgradescripts
+                             * @name $upgradescripts
+                             */
+                            $upgradescripts[] = new $classname;
+                        }
+                    }
                 }
             }
             //  next sort the list by priority
@@ -1386,7 +1411,7 @@ class administrationController extends expController {
                 if (!empty($zone['timezone_id']) && !in_array($zone['timezone_id'],$added) && in_array($zone['timezone_id'],$idents)) {
                     try{
                         $z = new DateTimeZone($zone['timezone_id']);
-                        $c = new DateTime("now", $z);
+                        $c = new DateTime('', $z);
                         $zone['time'] = $c->format('H:i a');
                         $data[] = $zone;
                         $offset[] = $z->getOffset($c);

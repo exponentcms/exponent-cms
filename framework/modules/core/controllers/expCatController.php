@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -122,7 +122,7 @@ class expCatController extends expController {
         foreach ($cats->records as $record) {
             $cats->modules[$record->module][] = $record;
         }
-        if ($record->module === 'file' && SITE_FILE_MANAGER === 'elfinder') {
+        if (isset($cats->module['file']) && SITE_FILE_MANAGER === 'elfinder') {
             unset($cats->modules['file']);  // we're not using the traditional file manager
         }
         if (!empty($this->params['model']) && $this->params['model'] === 'file') {

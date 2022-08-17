@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -43,7 +43,7 @@ if ($status['framework/conf/config.php'] == SANITY_NOT_RW) {
 
 ?>
     <h1><?php echo gt('System Requirements Check'); ?></h1>
-<table cellspacing="0" cellpadding="0" rules="all" border="0" width="100%" class="exp-skin-table">
+<table class="exp-skin-table">
     <thead>
     <tr>
         <th colspan="2">
@@ -86,7 +86,7 @@ if ($status['framework/conf/config.php'] == SANITY_NOT_RW) {
     }
     ?>
     </tbody>
-    <table cellspacing="0" cellpadding="0" rules="all" border="0" width="100%" class="exp-skin-table">
+    <table class="exp-skin-table">
         <thead>
         <tr>
             <th colspan="2">

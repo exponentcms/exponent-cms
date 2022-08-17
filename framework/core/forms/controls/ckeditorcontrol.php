@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -69,19 +69,19 @@ class ckeditorcontrol extends formcontrol {
             $settings = expHTMLEditorController::getEditorSettings($this->toolbar, 'ckeditor');
         $plugins = '';
         if (!empty($settings)) {
-            $tb         = stripSlashes($settings->data);
+            $tb         = expStripSlashes($settings->data);
             $skin       = $settings->skin;
             $scayt_on   = $settings->scayt_on ? 'true' : 'false';
             $paste_word = $settings->paste_word ? 'pasteFromWordPromptCleanup : true,' : 'forcePasteAsPlainText : true,';
-            $plugins    = stripSlashes($settings->plugins);
-            $stylesset  = stripSlashes($settings->stylesset);
-            $formattags = stripSlashes($settings->formattags);
-            $fontnames  = stripSlashes($settings->fontnames);
+            $plugins    = expStripSlashes($settings->plugins);
+            $stylesset  = expStripSlashes($settings->stylesset);
+            $formattags = expStripSlashes($settings->formattags);
+            $fontnames  = expStripSlashes($settings->fontnames);
         }
         if (!empty($this->additionalConfig))
             $additionalConfig = $this->additionalConfig;
         elseif (!empty($settings->additionalconfig))
-            $additionalConfig = stripSlashes($settings->additionalconfig);
+            $additionalConfig = expStripSlashes($settings->additionalconfig);
         else
             $additionalConfig = '';
         if (!empty($additionalConfig) && strpos($additionalConfig,",",-1) === false)

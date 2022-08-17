@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,6 +17,9 @@
     <div class="module motd show">
     {if !empty($message)}
     {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle|default:"Message of the Day"|gettext}</{$config.heading_level|default:'h1'}>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {$myloc=serialize($__loc)}
     <div class="motd-message item panel panel-info">
         <div class="panel-body">

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -1866,10 +1866,11 @@ class reportController extends expController {
             }
 
             $carts['length_of_time'] = round(abs($item->last_active - $item->start_time) / 60, 2) . " minutes";
+            $carts['last_active'] = $item->last_active;
             $carts['ip_address'] = $item->ip_address;
             $carts['referrer'] = $item->referrer;
 
-            if (count($carts) > 3) {
+            if (count($carts) > 4) {
                 if (!empty($item->user_id)) {
                     $u = $db->selectObject('user', 'id=' . $item->user_id);
                     $carts['name'] = $u->firstname . ' ' . $u->lastname;

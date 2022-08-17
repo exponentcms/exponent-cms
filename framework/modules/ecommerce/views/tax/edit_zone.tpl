@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,7 +19,7 @@
     {control type="text" name="name" label="Zone Name"|gettext value=$zone->name focus=1}
     {*{control type=state name=state label="State/Province"|gettext default=$zone->state}*}
     {*{control type=country name=country label="Country"|gettext default=$zone->country}*}
-    {control type="countryregion" name=address label="Country/State"|gettext country_default=$zone->country|default:223 region_default=$zone->state includeblank="-- Choose a State --"|gettext}
+    {control type="countryregion" name=address label="Country/Region"|gettext country_default=$zone->country|default:223 region_default=$zone->state includeblank="-- Choose a State --"|gettext}
     <div class="module-actions">
         {icon controller="address" action=manage text="Manage Locations"|gettext}
     </div>

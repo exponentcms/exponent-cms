@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,6 +25,7 @@
 {control type=hidden name="forms_id" value=$config.forms_id}
 {if $config.is_saved && !empty($config.table_name)}
     {control type=text name='table_name' label='Saved to Database'|gettext value=$config.table_name disabled=true}
+    {control type="checkbox" name="is_searchable" label="Return as Search Results?"|gettext value=1 checked=$config.is_searchable description='Add form records imto search index to appear as search results'|gettext}
 {/if}
 {control type="checkbox" name="quick_submit" label="Allow single click form submission?"|gettext value=1 checked=$config.quick_submit description='Enable this setting to skip form entry confirmation'|gettext}
 {control type="checkbox" name="restrict_enter" label="Restrict Form Entry by Using Permissions?"|gettext value=1 checked=$config.restrict_enter description='Enable this setting to only allow those users with permission to enter data'|gettext}

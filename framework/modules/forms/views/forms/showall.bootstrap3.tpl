@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -44,7 +44,7 @@
 
     <div class="module forms showall">
         {if !empty($title)}
-        <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
+            <{$config.heading_level|default:'h1'}>{$title}</{$config.heading_level|default:'h1'}>
         {/if}
         {if $description != ""}
             {$description}

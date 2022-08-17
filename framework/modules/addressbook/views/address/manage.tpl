@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -43,7 +43,7 @@
                         {"Country"|gettext}
                     </th>
                     <th>
-                        {"State"|gettext}
+                        {"Region"|gettext}
                     </th>
                     <th>
                         {"Default / Rank"|gettext}

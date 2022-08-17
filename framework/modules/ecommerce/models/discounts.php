@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -130,6 +130,9 @@ class discounts extends expRecord {
         //-1 = 'ALL LOGGED IN USERS'
         //-2 => 'ALL NON-LOGGED IN USERS'
         $required_groups = expUnserialize($this->group_ids);
+        if (is_null($required_groups)) {
+            $required_groups = array();
+        }
 
         if (count($required_groups)) {
             $users_groups = $user->getGroupMemberships();

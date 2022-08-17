@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,6 +12,15 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
+{if !empty($config.enable_facebook_like) || !empty($config.displayfbcomments)}
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v14.0&appId={$config.app_id}&autoLogAppEvents=1" nonce="9wKafjYh"></script>
+{/if}
+
+{if $config.enable_tweet}
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+{/if}
 
 {uniqueid prepend="news" assign="name"}
 

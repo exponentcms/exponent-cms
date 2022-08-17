@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,7 +24,7 @@
  */
 class fix_siteurl extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.6.1';
+	protected $to_version = '2.7.0';
     public $priority = 98; // set this to a low priority
 
 	/**

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -51,6 +51,8 @@ class sqlsvr_database extends database {
 			$this->havedb = true;
 		}
 		$this->prefix = DB_TABLE_PREFIX . '_';
+        $server_info = sqlsrv_server_info($this->connection);
+        $this->version = 'SQL Server ' . $server_info['SQLServerVersion'];
 	}
 
     /** Begin SSP Methods */
@@ -581,7 +583,8 @@ class sqlsvr_database extends database {
      * @return array
      */
     function alterTable($tablename, $newdatadef, $info, $aggressive = false) {
-        expSession::clearAllUsersSessionCache();
+        if ($this->havedb == true)
+            expSession::clearAllUsersSessionCache();
         $dd = $this->getDataDefinition($tablename);
         $modified = false;
 
@@ -629,7 +632,6 @@ class sqlsvr_database extends database {
             if (is_array($newdatadef) && is_array($dd)) {
                 $oldcols = @array_diff_assoc($dd, $newdatadef);
                 if (count($oldcols)) {
-                    $modified = true;
                     $sql = "ALTER TABLE " . $this->tableStmt($tablename) . " ";
                     foreach ($oldcols as $name => $def) {
                         $sql .= " DROP COLUMN " . $name . ",";
@@ -681,9 +683,9 @@ class sqlsvr_database extends database {
                 }
             }
             if ($changed) {
-                $modified = true;
                 $sql = substr($sql, 0, -1);
                 @sqlsrv_query($this->connection, $sql);
+                $modified = true;
             }
         }
 

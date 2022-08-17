@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -59,7 +59,7 @@ if (!defined('EXPONENT')) {
         echo gt("We recommend having a recent database backup before performing an upgrade.") . '  ';
         echo gt("If you do not have a recent backup, then first");
         echo ' <a href="' . expCore::makeLink(array('controller' => 'file', 'action' => 'export_eql')) . '">' . gt(
-                'Restore Database'
+                'Backup Database'
             ) . '</a> ';
         echo gt("and then run the upgrade process again.");
         ?>

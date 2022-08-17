@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -34,31 +34,33 @@
         {/if}
         {control type=buttongroup submit="Save Text"|gettext cancel="Cancel"|gettext}
     {/form}
-    {selectobjects table=$record->tablename where="id=`$record->id`" orderby='revision_id DESC' item=revisions}
-    {if count($revisions) > 1}
-        {toggle unique='text-edit' label='Revisions'|gettext collapsed=true}
-            {foreach from=$revisions item=revision name=revision}
-                {$class = ''}
-                {if $revision->revision_id == $record->revision_id}{$class = 'current-revision revision'}{else}{$class = 'revision'}{/if}
-                {if !empty($revision->editor)}{$editor = $revision->editor}{else}{$editor = $revision->poster}{/if}
-                {$label = 'Revision'|gettext|cat:(' #'|cat:($revision->revision_id|cat:(' '|cat:('from'|gettext|cat:(' '|cat:($revision->edited_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT|cat:(' '|cat:('by'|gettext|cat:(' '|cat:($editor|username))))))))))}
-                {if $revision->revision_id == $record->revision_id}{$label = 'Editing'|gettext|cat:(' '|cat:$label)}{/if}
-                {if !$revision->approved && $smarty.const.ENABLE_WORKFLOW}{$class = 'unapproved '|cat:$class}{/if}
-                {$label = $label|cat:(' - '|cat:$revision->title)}
-                {group label=$label class=$class}
-                    {if $revision->revision_id != $record->revision_id}
-                    <a class="revision" href="{link action=edit id=$revision->id revision_id=$revision->revision_id}" title="{'Click to Restore this revision'|gettext}">
-                    {else}
-                    <span title="{'Editing this revision'|gettext}">
-                    {/if}
-                        {$revision->body|summarize:"html":"parahtml"}
-                    {if $revision->revision_id != $record->revision_id}
-                    </a>
-                    {else}
-                    </span>
-                    {/if}
-                {/group}
-            {/foreach}
-        {/toggle}
+    {if $smarty.const.ENABLE_WORKFLOW}
+        {selectobjects table=$record->tablename where="id=`$record->id`" orderby='revision_id DESC' item=revisions}
+        {if count($revisions) > 1}
+            {toggle unique='text-edit' label='Revisions'|gettext collapsed=true}
+                {foreach from=$revisions item=revision name=revision}
+                    {$class = ''}
+                    {if $revision->revision_id == $record->revision_id}{$class = 'current-revision revision'}{else}{$class = 'revision'}{/if}
+                    {if !empty($revision->editor)}{$editor = $revision->editor}{else}{$editor = $revision->poster}{/if}
+                    {$label = 'Revision'|gettext|cat:(' #'|cat:($revision->revision_id|cat:(' '|cat:('from'|gettext|cat:(' '|cat:($revision->edited_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT|cat:(' '|cat:('by'|gettext|cat:(' '|cat:($editor|username))))))))))}
+                    {if $revision->revision_id == $record->revision_id}{$label = 'Editing'|gettext|cat:(' '|cat:$label)}{/if}
+                    {if !$revision->approved && $smarty.const.ENABLE_WORKFLOW}{$class = 'unapproved '|cat:$class}{/if}
+                    {$label = $label|cat:(' - '|cat:$revision->title)}
+                    {group label=$label class=$class}
+                        {if $revision->revision_id != $record->revision_id}
+                        <a class="revision" href="{link action=edit id=$revision->id revision_id=$revision->revision_id}" title="{'Click to Restore this revision'|gettext}">
+                        {else}
+                        <span title="{'Editing this revision'|gettext}">
+                        {/if}
+                            {$revision->body|summarize:"html":"parahtml"}
+                        {if $revision->revision_id != $record->revision_id}
+                        </a>
+                        {else}
+                        </span>
+                        {/if}
+                    {/group}
+                {/foreach}
+            {/toggle}
+        {/if}
     {/if}
 </div>

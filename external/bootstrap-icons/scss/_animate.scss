@@ -1,0 +1,30 @@
+.#{$bi-util-prefix}spin {
+    -webkit-animation: #{$bi-util-prefix}spin 2s infinite linear;
+    animation: #{$bi-util-prefix}spin 2s infinite linear;
+}
+
+.#{$bi-util-prefix}pulse {
+  -webkit-animation: #{$bi-util-prefix}spin 1s infinite steps(8);
+  animation: #{$bi-util-prefix}spin 1s infinite steps(8);
+}
+
+@-webkit-keyframes #{$bi-util-prefix}spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes #{$bi-util-prefix}spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}

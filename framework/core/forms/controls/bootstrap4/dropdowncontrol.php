@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -124,7 +124,7 @@ class dropdowncontrol extends formcontrol {
             );
             expCSS::pushToHead(array(
     //	    "unique"=>"select2-bootstrap",
-    	    "scsscss"=>JQUERY_RELATIVE . "addons/scss/select2-bootstrap.scss",
+    	    "scsscss"=>JQUERY_RELATIVE . "addons/scss/select2-bootstrap4.scss",
     	    )
     	);
         }

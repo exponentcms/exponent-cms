@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -23,6 +23,15 @@
 {css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.min.css"}
 
 {/css}
+
+{if !empty($config.enable_facebook_like) || !empty($config.displayfbcomments)}
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v14.0&appId={$config.app_id}&autoLogAppEvents=1" nonce="9wKafjYh"></script>
+{/if}
+
+{if $config.enable_tweet}
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+{/if}
 
 <div class="module filedownload showall showall-tabbed">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{/if}
@@ -68,15 +77,8 @@
             {/foreach}
         </div>
     </div>
-    {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
     {loading}
 </div>
-
-{script unique="tabload" jquery=1 bootstrap="tab"}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}
 
 {if $config.show_player}
     {script unique="mediaelement-src" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}

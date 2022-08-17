@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -70,7 +70,6 @@
                     {/if}
                 </div>
             </div>
-            {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
             {loading}
             {control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
         {/form}

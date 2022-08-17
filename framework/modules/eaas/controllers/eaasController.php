@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -379,6 +379,9 @@ class eaasController extends expController {
             }
 
             $this->configImage($tab);  // fix attached files for proper display of file manager control
+            if (!isset($this->config[$tab . '_aggregate'])) {
+                $this->config[$tab . '_aggregate'] = array();
+            }
         }
 
         assign_to_template(array(

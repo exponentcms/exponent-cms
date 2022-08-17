@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -49,7 +49,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
     } else {
         // the info for the "next" version if we are a pre-release from the repository
         define('EXPONENT_VERSION_MAJOR', 2);
-        define('EXPONENT_VERSION_MINOR', 6);
+        define('EXPONENT_VERSION_MINOR', 7);
         define('EXPONENT_VERSION_REVISION', 1);
         define('EXPONENT_VERSION_TYPE', 'develop');
         define('EXPONENT_VERSION_ITERATION', '');

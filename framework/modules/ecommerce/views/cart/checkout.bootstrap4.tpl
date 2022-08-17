@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -395,7 +395,6 @@
                         {/foreach}
                     </div>
                 {/if}
-                {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
                 {loading}
             {else}
                 <div class="billing-method">
@@ -413,9 +412,3 @@
             </div-->
     </div>
 </div>
-
-{script unique="tabload" jquery=1}
-{literal}
-    $('.loadingdiv').remove();
-{/literal}
-{/script}

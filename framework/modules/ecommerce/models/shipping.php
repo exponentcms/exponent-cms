@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -127,7 +127,7 @@ class shipping extends expRecord {
                 }
                 $this->shippingmethod->update(array('option'=>$option,'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost'])); //updates SECOND created shipping method w/ rates, as that was the one set to $this->shippingmethod
                 if ($this->calculator->multiple_carriers) {
-                    $this->shippingmethod->update(array('carrier'=>$carrier[0],'delivery'=>$opt['delivery']));
+                    $this->shippingmethod->update(array('carrier'=>$carrier[0],'delivery'=>(int)$opt['delivery']));
                 }
             } else {
                 if (!$this->calculator->multiple_carriers) {
@@ -149,7 +149,7 @@ class shipping extends expRecord {
                         } else {
                             $option = $opt['id'];
                         }
-                        $this->shippingmethod->update(array('option'=>$option,'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost'],'carrier'=>$carrier[0],'delivery'=>$opt['delivery']));
+                        $this->shippingmethod->update(array('option'=>$option,'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost'],'carrier'=>$carrier[0],'delivery'=>(int)$opt['delivery']));
                     }
                 }
             }

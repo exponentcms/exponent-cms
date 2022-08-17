@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -23,7 +23,7 @@
  */
 class easypostcalculator extends shippingcalculator
 {
-    private static $version = '4.0.2';  // library version
+    private static $version = '4.0.3';  // library version
     /*
      * Returns the name of the shipping calculator, for use in the Shipping Administration Module
      */
@@ -102,7 +102,7 @@ class easypostcalculator extends shippingcalculator
             'SmallFlatRateEnvelope' => 'Small Flat Rat eEnvelope',
             'Parcel' => 'Parcel',
             'LargeParcel' => 'Large Parcel',
-            'IrregularParcel' => 'Irregular Parcel',
+//            'IrregularParcel' => 'Irregular Parcel',
             'SoftPack' => 'Soft Pack',
             'SmallFlatRateBox' => 'Small Flat Rate Box',
             'MediumFlatRateBox' => 'Medium Flat Rate Box',
@@ -175,19 +175,19 @@ class easypostcalculator extends shippingcalculator
 
     public function getRates($order)
     {
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
 
-        $from_address = self::ep_set_from_address();
+        $from_address = $this->ep_set_from_address();
         if (is_string($from_address)) {
             return $from_address;
         }  // error
 
         // get the current shippingmethod and format the address for easypost
         $currentmethod = $order->getCurrentShippingMethod();  // pulls in the 'to' address
-        $to_address = self::ep_set_to_address($currentmethod);
+        $to_address =$this->ep_set_to_address($currentmethod);
         if (is_string($to_address)) {
             return $to_address;
         }  // error
@@ -272,16 +272,6 @@ class easypostcalculator extends shippingcalculator
 #                    eDebug('dimensions: height: '.$pi->h." width: ".$pi->w." length: ".$pi->l);
 #                    echo "<hr>";
                     $weight = !empty($pi->weight) ? $pi->weight : $this->configdata['default_max_weight'];
-//                    $upsRate->package(array(
-//                        'description'=>'shipment',
-//                        'weight'=>$weight,
-//                        'weight_type'=>'LBS',  //FIXME we need to be able to set this
-//                        'code'=>'02',
-//                        'length'=>$pi->l,
-//                        'width'=>$pi->w,
-//                        'height'=>$pi->h,
-//                        'measure_type'=>'IN',  //FIXME we need to be able to set this
-//                    ));
                     $parcels[] = array(
                         "parcel" => array(
                             "length" => $pi->l,
@@ -317,16 +307,6 @@ class easypostcalculator extends shippingcalculator
                 $pkg_weight_oz = $pkg_weight_oz > 1 ? $pkg_weight_oz : 1;
 #                eDebug('created standard sized package with weight of '.$pkg_weight_oz);
 #                echo "<hr>";
-//                $upsRate->package(array(
-//                    'description'=>'shipment',
-//                    'weight'=>$pkg_weight_oz,
-//                    'weight_type'=>'LBS',  //FIXME we need to be able to set this
-//                    'code'=>'02',
-//                    'length'=>$box_length,
-//                    'width'=>$box_width,
-//                    'height'=>$box_height,
-//                    'measure_type'=>'IN',  //FIXME we need to be able to set this
-//                ));
                 $parcels[] = array(
                     "parcel" => array(
                         "length" => $box_length,
@@ -334,6 +314,9 @@ class easypostcalculator extends shippingcalculator
                         "height" => $box_height,
                         "weight" => $pkg_weight_oz * 16,  // convert to oz
                         'predefined_package' => null,
+                    ),
+                    "options" => array(
+                        "currency" => ECOM_CURRENCY
                     ),
                 );
                 $total_weight += $pkg_weight_oz * 16;
@@ -367,7 +350,7 @@ class easypostcalculator extends shippingcalculator
         foreach ($messages as $message) {
             //note we definitely get errors if USPS used for over 70 lbs
             if (!($message['carrier'] === 'USPS' && $total_weight > 1120))
-                flash('error', 'easypost: ' . $message['carrier'] . ': ' . $message['message']);
+                flash('info', 'easypost: ' . $message['carrier'] . ': ' . $message['message']);
         }
 
         try {
@@ -489,17 +472,17 @@ class easypostcalculator extends shippingcalculator
 
     function createLabel($shippingmethod)
     {
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
 
-        $from_address = self::ep_set_from_address();
+        $from_address = $this->ep_set_from_address();
         if (is_string($from_address)) {
             return $from_address;
         }  // error
 
-        $to_address = self::ep_set_to_address($shippingmethod);
+        $to_address = $this->ep_set_to_address($shippingmethod);
         if (is_string($to_address)) {
             return $to_address;
         }  // error
@@ -577,13 +560,13 @@ class easypostcalculator extends shippingcalculator
     function buyLabel($shippingmethod)
     {
         // here's where we buy a 'shipment'
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
 
         try {
-            $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
+            $shipment = \EasyPost\Shipment::retrieve($shippingmethod->shipping_options['shipment_id']);
         } catch (Exception $e) {
             return $this->easypost_error($e, gt('retrieve shipment'));
         }
@@ -613,13 +596,13 @@ class easypostcalculator extends shippingcalculator
     function cancelLabel($shippingmethod)
     {
         // here's where we refund a 'shipment'
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
 
         try {
-            $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
+            $shipment = \EasyPost\Shipment::retrieve($shippingmethod->shipping_options['shipment_id']);
         } catch (Exception $e) {
             return $this->easypost_error($e, gt('retrieve shipment'));
         }
@@ -637,7 +620,7 @@ class easypostcalculator extends shippingcalculator
     function createPickup($shippingmethod, $pickupdate, $pickupenddate, $instructions = '')
     {
         // here's where we create a 'pickup'
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
@@ -647,7 +630,7 @@ class easypostcalculator extends shippingcalculator
 //            return $from_address;  // error
 
         try {
-            $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
+            $shipment = \EasyPost\Shipment::retrieve($shippingmethod->shipping_options['shipment_id']);
         } catch (Exception $e) {
             return $this->easypost_error($e, gt('retrieve shipment'));
         }
@@ -658,8 +641,8 @@ class easypostcalculator extends shippingcalculator
                     "address" => $shipment->from_address,
                     "shipment" => $shipment,
                     "reference" => $shipment->id,
-                    "max_datetime" => date("Y-m-d H:i:s", $pickupdate),
-                    "min_datetime" => date("Y-m-d H:i:s", $pickupenddate),
+                    "min_datetime" => date("Y-m-d H:i:s", $pickupdate),
+                    "max_datetime" => date("Y-m-d H:i:s", $pickupenddate),
                     "is_account_address" => false,
                     "instructions" => $instructions
                 )
@@ -698,7 +681,7 @@ class easypostcalculator extends shippingcalculator
     function buyPickup($shippingmethod, $type)
     {
         // here's where we optionally buy a 'pickup'
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
@@ -732,7 +715,7 @@ class easypostcalculator extends shippingcalculator
 //        }
 
         try {
-            $pickup = \EasyPost\Pickup::retrieve(array('id' => $shippingmethod->shipping_options['pickup_id']));
+            $pickup = \EasyPost\Pickup::retrieve($shippingmethod->shipping_options['pickup_id']);
         } catch (Exception $e) {
             return $this->easypost_error($e, gt('retrieve pickup'));
         }
@@ -755,13 +738,13 @@ class easypostcalculator extends shippingcalculator
     function cancelPickup($shippingmethod)
     {
         // here's where we cancel a 'pickup'
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if ($init !== true) {
             return $init;
         }  // error
 
         try {
-            $pickup = \EasyPost\Pickup::retrieve(array('id' => $shippingmethod->shipping_options['pickup_id']));
+            $pickup = \EasyPost\Pickup::retrieve($shippingmethod->shipping_options['pickup_id']);
         } catch (Exception $e) {
             return $this->easypost_error($e, gt('retrieve pickup'));
         }
@@ -778,7 +761,7 @@ class easypostcalculator extends shippingcalculator
 
     function handleTracking() {
         $inputJSON = file_get_contents('php://input');
-        $init = self::ep_initialize();
+        $init = $this->ep_initialize();
         if (!empty($inputJSON)) {
             $event = \EasyPost\Event::receive($inputJSON);
             if($event->description === 'tracker.updated') {

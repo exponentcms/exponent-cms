@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -34,7 +34,7 @@
 					</div>
 					<div class="item {cycle values="odd,even"} searchbody">
 					   <span class="searchtitle">
-						   <a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}">{$result->title|highlight:$terms}{if $result->model}{br}SKU: {$result->model}{/if}</a>{if $user->isAdmin()} <span class="attribution">({$result->category}, {'Score'|gettext}:{$result->score|number_format:"2"})</span>{/if}
+						   <a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}">{$result->title|highlight:$terms}{if $result->model}{br}{'SKU'|gettext}: {$result->model}{/if}</a>{if $user->isAdmin()} <span class="attribution">({$result->category}, {'Score'|gettext}:{$result->score|number_format:"2"})</span>{/if}
 					   </span>
 					   {if $result->body != ""}
 						   {br}<span class="summary">{$result->body|strip_tags|truncate:240|highlight:$terms}</span>

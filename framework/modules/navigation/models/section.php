@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -428,6 +428,7 @@ class section extends expRecord {
                 $obj->expFile = $sections[$i]->expFile;
                 $obj->glyph = $sections[$i]->glyph;
                 $obj->glyph_only = $sections[$i]->glyph_only;
+//                $obj->depth = $sections[$i]->depth;  //fixme should be included, but causes menu display anomalies
                 $obj->type = $sections[$i]->alias_type;
                 if ($sections[$i]->active == 1) {
                     $obj->url = $sections[$i]->link;

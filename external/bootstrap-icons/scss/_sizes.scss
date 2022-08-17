@@ -1,0 +1,7 @@
+$isizes: (xs:.5, sm:.75, md: 1, lg:1.25, xl:1.5, '2xl':2, '3xl':2.5, '4xl':3, '5xl':3.5, '6xl':4, '7xl':4.5, '8xl':5);
+
+@each $key, $value in $isizes {
+    .#{$bi-util-prefix}#{$key} {
+        font-size: #{$value}em;
+    }
+}

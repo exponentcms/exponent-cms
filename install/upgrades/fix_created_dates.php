@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,7 +24,7 @@
  */
 class fix_created_dates extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.6.1';  // created dates were broken in 2.6.0 through patch 2
+	protected $to_version = '2.7.0';  // created dates were broken in 2.6.0 through patch 2
 
 	/**
 	 * name/title of upgrade script

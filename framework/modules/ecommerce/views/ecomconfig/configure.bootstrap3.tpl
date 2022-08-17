@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -36,7 +36,7 @@
            	            {control type="text" name="store[address1]" label="Address"|gettext value=$config.store.address1 required=1}
            	            {control type="text" name="store[address2]" label=" " value=$config.store.address2}
            	            {control type="text" name="store[city]" label="City"|gettext value=$config.store.city required=1}
-                        {control type="countryregion" name="store[address]" label="Country/State"|gettext country_default=$config.store.country|default:223 region_default=$config.store.state includeblank="-- Choose a State --"|gettext required=1}
+                        {control type="countryregion" name="store[address]" label="Country/Region"|gettext country_default=$config.store.country|default:223 region_default=$config.store.state includeblank="-- Choose a State --"|gettext required=1}
            	            {control type="text" name="store[postalCode]" label="Zip Code"|gettext size=10 value=$config.store.postalCode required=1}
                         {*{control type=tel name="store[phone]" label="Phone Number"|gettext value=$calculator->configdata.store.phone}*}
                     </div>
@@ -149,7 +149,6 @@
                     </div>
                 </div>
             </div>
-            {*<div class="loadingdiv">{'Loading Settings'|gettext}</div>*}
             {loading title='Loading Settings'|gettext}
             {control type=buttongroup submit="Save Config"|gettext cancel="Cancel"|gettext}
         {/form}
@@ -167,11 +166,5 @@ $('#invoice_email').change(function() {
 });
 if ($('#invoice_email').is(':checked') == false)
     $("#email_settings").hide("slow");
-{/literal}
-{/script}
-
-{script unique="tabload" jquery=1 bootstrap="tab,transition"}
-{literal}
-    $('.loadingdiv').remove();
 {/literal}
 {/script}

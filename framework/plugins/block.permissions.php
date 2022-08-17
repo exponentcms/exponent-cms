@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -39,7 +39,8 @@ function smarty_block_permissions($params,$content,&$smarty, &$repeat) {
             if (expTheme::inPreview() || !$user->isLoggedIn()) {
                 $cntnt = "";
             } else {
-                if (!bs3() && !bs4() && !bs5() && empty($css_core['admin-global'])) expCSS::pushToHead(array("corecss"=>"admin-global"));
+                if (!bs3() && !bs4() && !bs5() && empty($css_core['admin-global']))
+                    expCSS::pushToHead(array("corecss"=>"admin-global"));
                 $cntnt = (expTheme::inPreview() || !$user->isLoggedIn()) ? "" : $content;
             }
     		return $cntnt;

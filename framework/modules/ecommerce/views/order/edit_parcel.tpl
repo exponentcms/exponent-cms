@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2021 OIC Group, Inc.
+ * Copyright (c) 2004-2022 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -33,7 +33,7 @@
         <table class="exp-skin-table">
             <thead>
                 <th>{'Included'|gettext}</th>
-                <th>SKU</th>
+                <th>{'SKU'|gettext}</th>
                 <th>{'Product'|gettext}</th>
                 <th>{'Quantity'|gettext}</th>
             </thead>

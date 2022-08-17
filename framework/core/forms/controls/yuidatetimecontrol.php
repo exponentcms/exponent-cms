@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2021 OIC Group, Inc.
+# Copyright (c) 2004-2022 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -64,7 +64,7 @@ class yuidatetimecontrol extends formcontrol {
         $html = "<div" . $divID . " class=\"control datetime-control";
         $html .= (!empty($this->required)) ? ' required">' : '">';
         if (empty($this->flip)) {
-            $html .= "<label" . $for . " class=\"".(bs3()?"control-label":"label")."\">" . $label . "</label>";
+            $html .= "<label" . $for . " class=\"".(bs3()?"control-label":"label")."\">" . $label . ":</label>";
             $html .= $this->controlToHTML($name);
         } else {
             $html .= $this->controlToHTML($name);

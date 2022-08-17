@@ -1,0 +1,7 @@
+.#{$bi-util-prefix}flip-horizontal {
+    transform: scale(-1, 1)
+}
+
+.#{$bi-util-prefix}flip-vertical {
+    transform: scale(1, -1)
+}

@@ -1,0 +1,48 @@
+{*
+ * Copyright (c) 2004-2022 OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ *}
+
+<div id="config" class="module scaffold configure">
+    <div class="form_header">
+        <div class="info-header">
+            <div class="related-actions">
+                {help text="Get Help with"|gettext|cat:" "|cat:("module configuration"|gettext) page="module-configuration"}
+            </div>
+            <h2>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h2>
+            <blockquote>{'Use this form to configure the behavior of the module.'|gettext}</blockquote>
+        </div>
+    </div>
+    {form action=saveconfig}
+        <div id="config-tabs" class="">
+            <ul class="nav nav-tabs" role="tablist">
+                {foreach from=$views item=tab name=tabs}
+                    <li role="presentation" class="nav-item">
+                        <a href="#tab{$smarty.foreach.tabs.iteration}" class="nav-link{if $smarty.foreach.tabs.first} active{/if}" role="tab" data-bs-toggle="tab">
+                            {$tab.name}
+                        </a>
+                    </li>
+                {/foreach}
+            </ul>
+            <div class="tab-content">
+                {foreach from=$views item=body name=body}
+                    <div id="tab{$smarty.foreach.body.iteration}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.body.first} show active{/if}">
+                        {include file=$body.file}
+                    </div>
+                {/foreach}
+            </div>
+        </div>
+        {loading title="Loading Settings"|gettext}
+        {control type=buttongroup submit="Save Configuration"|gettext cancel="Cancel"|gettext}
+    {/form}
+</div>
