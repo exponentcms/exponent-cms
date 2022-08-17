@@ -49,8 +49,8 @@ Version 2.7.0 - Specific changes from previous version
 - Bootswatches5 v5.1.3
 - FontAwesome v6.1.2
 - Bootstrap Icons v1.9.1
-- Twitter Bootstrap4 to v4.6.2
-- Bootswatch4 to v4.6.2
+- Twitter Bootstrap4 v4.6.2
+- Bootswatch4 v4.6.2
 - smarty v4.2.0
 - easypost sdk v4.0.3
 - datatables v1.12.1
@@ -59,18 +59,18 @@ Version 2.7.0 - Specific changes from previous version
 - lexer v1.2.3
 - phpxmlrpc v4.8.0
 - elFinder v2.1.61
-- CKEditor to v4.19.1
-- Ace Editor CDN v1.8.1
+- CKEditor v4.19.1
+- Ace Editor CDN v1.9.6
 - CodeMirror CDN v5.65.7
 - sortable v1.15.0
 - simplepie v1.6.0
 - moment.js v2.29.4
 - tinymce v5.10.5
-- emailvalidator to v3.2.1
+- emailvalidator v3.2.1
 - jquery validation 1.19.5
-- FedEx WSDL to v31
+- FedEx WSDL v31
 
-## v2.6.0patch3
+## v2.6.0patch3 - Feb 12, 2022
 
 ### v260patch3 adds these features to v260 and previous patches:
 - add Font Awesome v6 support for Twitter Bootstrap v5 (requires BS5 addon)
@@ -88,15 +88,15 @@ Version 2.7.0 - Specific changes from previous version
 - regression fix configure store category doesn't display saved 'show products' setting
 
 ### v260patch3 updates these 3rd party libraries in v260 and previous patches:
-- scssphp to v1.10.0
-- smarty to v4.0.4
-- datatables to v1.11.4
-- lexer to v1.2.2
-- ckeditor to v4.17.2
-- tinymce to v5.10.3
-- mediaelement.js to v5.0.5
+- scssphp v1.10.0
+- smarty v4.0.4
+- datatables v1.11.4
+- lexer v1.2.2
+- ckeditor v4.17.2
+- tinymce v5.10.3
+- mediaelement.js v5.0.5
 
-## v2.6.0patch2
+## v2.6.0patch2 - Dec 31, 2021
 
 ### v260patch2 adds these features to v260 and previous patches:
 - update support for Twitter Bootstrap v5.0 final (requires BS5 addon)
@@ -130,34 +130,34 @@ Version 2.7.0 - Specific changes from previous version
 - regression fix file upload control and edit form image display issues
 
 ### v260patch2 updates these 3rd party libraries in v260 and previous patches:
-- jQuery to v3.6.0
-- jquery-migrate to v3.3.2
-- fontawesome to v5.15.4
-- Swiftmailer to v6.3.0
-- Emailvalidator to v3.1.2
-- elfinder to v2.1.60
-- tinymce5 to v5.10.2
-- ckeditor to v4.17.1
-- plupload to v2.3.9
+- jQuery v3.6.0
+- jquery-migrate v3.3.2
+- fontawesome v5.15.4
+- Swiftmailer v6.3.0
+- Emailvalidator v3.1.2
+- elfinder v2.1.60
+- tinymce5 v5.10.2
+- ckeditor v4.17.1
+- plupload v2.3.9
 - EasyPost v4.0.2
-- adminer db manager to v4.8.1
-- code snippet codemirror editor cdn to v5.65.0
-- code snippet ace editor cdn to v1.4.13
-- scssphp to v1.9.0
-- sortable.js to v1.14.0
-- jquery datatables to v1.11.3
-- jquery datatables.checkboxes.js to v 1.2.13
-- jstree to v3.3.12
-- getid3 to v1.9.21
-- jqueryui to v1.13.0
-- mediaelement to v5.0.4 & mediaelement-plugins to v2.6.2
-- smarty to v4.0.0
-- class.upload.php to v2.1.0
-- bootstrap/bootswatch to v4.6.1
-- simplepie to v1.5.8
-- phpxmlrpc to v4.6.0
+- adminer db manager v4.8.1
+- code snippet codemirror editor cdn v5.65.0
+- code snippet ace editor cdn v1.4.13
+- scssphp v1.9.0
+- sortable.js v1.14.0
+- jquery datatables v1.11.3
+- jquery datatables.checkboxes.js v 1.2.13
+- jstree v3.3.12
+- getid3 v1.9.21
+- jqueryui v1.13.0
+- mediaelement v5.0.4 & mediaelement-plugins v2.6.2
+- smarty v4.0.0
+- class.upload.php v2.1.0
+- bootstrap/bootswatch v4.6.1
+- simplepie v1.5.8
+- phpxmlrpc v4.6.0
 
-## v2.6.0patch1
+## v2.6.0patch1 - Feb 23, 2021
 
 ### v260patch1 adds these features to v260:
 - add help doc grandchildren display
@@ -175,18 +175,18 @@ Version 2.7.0 - Specific changes from previous version
 - regression fix (v251p3) - mysqli db insertObject broke when first 'true' value hit - e.g. unable to login to store
 
 ### v260patch1 updates these 3rd party libraries in v260:
-- adminer to v4.8.0 for php 8 fix
-- swiftmailer to v6.2.5
-- EmailValidator to v3.0.0
-- phpxmlrpc to v4.5.2
-- scssphp to v1.4.1
-- jstree to v3.3.11
-- FedEx WSDL to v28.0.0
-- bootstrap/bootswatch to v4.6.0
-- font-awesome to v5.15.2
-- smarty to v3.1.39
-- codemirror cdn to v5.59.3
-- jquery validate to v1.19.3
-- sortable.js to v1.13.0
-- ckeditor to v4.16.0
+- adminer v4.8.0 for php 8 fix
+- swiftmailer v6.2.5
+- EmailValidator v3.0.0
+- phpxmlrpc v4.5.2
+- scssphp v1.4.1
+- jstree v3.3.11
+- FedEx WSDL v28.0.0
+- bootstrap/bootswatch v4.6.0
+- font-awesome v5.15.2
+- smarty v3.1.39
+- codemirror cdn v5.59.3
+- jquery validate v1.19.3
+- sortable.js v1.13.0
+- ckeditor v4.16.0
 - phpThumb t v1.7.16
