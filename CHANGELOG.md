@@ -1,17 +1,36 @@
 # Exponent Content Management System..
 
-----------
+---
 
-Copyright (c) 2004-2021 OIC Group, Inc.
+Copyright (c) 2004-2022 OIC Group, Inc.
 
 ## Changes
 
 For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms/commits/master](https://github.com/exponentcms/exponent-cms/commits/master)
 
-----------
+---
+
+Version 2.7.0
+---
+
+### Address issues in v2.6.0 and Prepare for v3.0.0
+
+- compatible with PHP v7.4.x, v8.0.x and v8.1.x
+  - deprecated support for PHP v5.6.x, v7.0.x, v7.1.x, v7.2.x and v7.3.x still exists
+  - initial support for PHP v8.1.x stricter standards
+- adds support for MySQL v8 'rank' now a keyword and INT data type changes (v8.0.19+)
+- adds support for Twitter Bootstrap v5 with Font Awesome v6
+- adds optional support for Twitter Bootstrap Icons under Bootstrap v5
+- adds support for default module configurations
+- adds blog post author selection
+- adds optional form record search support, better forms portfolio view
+- fixes possible sql injection vulnerability reported by pang0lin
+- fixes XSS User Agent vulnerability reported by Oscar Uribe, CVE-2022-23049
+- fixes possible Host Header Injection vulnerability reported by dumpling-soup CVE-2021-38751
+- fixes and tweaks many issues in previous versions
 
 Version 2.6.0
--------------
+---
 ### Address issues in v2.5.1 and Prepare for v3.0.0
  - compatible with PHP v7.3.x, and v7.4.x
    - adds support for PHP v7.4
@@ -25,7 +44,7 @@ Version 2.6.0
  - fixes and tweaks many issues in previous versions
 
 Version 2.5.1
--------------
+---
 ### Address issues in v2.5.0 and Prepare for v3.0.0
  - compatible with PHP v7.1.x, v7.2.x, and v7.3.x
    - deprecated support for PHP v5.6.x, and v7.0.x still exists
@@ -34,7 +53,7 @@ Version 2.5.1
  - fixes and tweaks many issues in previous versions
 
 Version 2.5.0
--------------
+---
 ### Address issues in v2.4.3 and Prepare for v3.0.0
  - compatible with PHP v5.6.x, v7.0.x, v7.1.x, v7.2.x, and v7.3.x
    - adds support for PHP v 7.3.x
@@ -42,7 +61,7 @@ Version 2.5.0
  - adds experimental support for an MS SQL Server database
 
 Version 2.4.3
--------------
+---
 ### Address issues in v2.4.2 and Prepare for v3.0.0
  - adds IIS compatibility; requires rewrite_url module; thanks to Todd Giardina, Todd's IT
  - adds Twitter Bootstrap v4 with Font Awesome v5 theme support including a sample theme
@@ -54,7 +73,7 @@ Version 2.4.3
  - fixes and tweaks many issues in previous versions, esp. with users and ecommerce
 
 Version 2.4.2
--------------
+---
 ### Address issues in v2.4.1 and Prepare for v3.0.0
  - compatible with PHP v5.5.x, v5.6.x, v7.0.x, v7.1.x, and v7.2.x
    - removed compatibility with PHP v5.3.x and v5.4.x
@@ -74,7 +93,7 @@ Version 2.4.2
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
 Version 2.4.1
--------------
+---
 ### Address issues in v2.4.0, fix security vulnerabilities, and accessibility hints
   - continues to address security vulnerabilities
   - fixes a number of issues
@@ -87,7 +106,7 @@ Version 2.4.1
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
 Version 2.4.0
--------------
+---
 ### Address issues in v2.3.9, fix security vulnerabilities, and add accessibility hints
   - adds accessibility hints for screen readers
   - fixes numerous SQL Injection, XSS, file exploits/redirection, and RCE security vulnerabilities
@@ -107,7 +126,7 @@ Version 2.4.0
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
 Version 2.3.9
--------------
+---
 ### Address issues in v2.3.8
   - adds dynamic drag/drop form designer for bootstrap 3 based themes
   - adds much better small device support in elFinder and Bootstrap 3 based themes
@@ -147,7 +166,7 @@ Version 2.3.9
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
 Version 2.3.8
--------------
+---
 ### Address issues in v2.3.7
   - !!! Security fix for malformed associative array injection
   - !!! no workflow (revisions/approval) feedback in text module inline edit view
@@ -245,7 +264,7 @@ Version 2.3.8
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
 Version 2.3.7
--------------
+---
 ### Address issues in v2.3.6 esp. because it was pulled
   - !!! regression fix all styles were stripped from rich text upon save due to recent security fix
   - !!! regression fix an admin was able to possibly edit a super-admin user profile
@@ -260,7 +279,7 @@ Version 2.3.7
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
 Version 2.3.6 - release pulled
--------------
+---
 ### Refine 'shipment' interface, plus address issues in v2.3.5
   * !!! adds additional security checking for XSS vulnerabilities - CVE-ID 2015-8667
   * !!! adds support for PHP v7.x
@@ -283,7 +302,7 @@ Version 2.3.6 - release pulled
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
 Version 2.3.5
--------------
+---
 ### Finish removing YUI3 code/widgets from Bootstrap3 views, plus address issues in v2.3.4
   - adds bootstrap 3 variation to event & news announcement view using 'panels'
   - enhances elFinder/TinyMCE/CKEditor integration; CKEditor now allows paste/drop images
@@ -298,7 +317,7 @@ Version 2.3.5
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
 Version 2.3.4
--------------
+---
 ### Finish removing YUI2 code/widgets, plus address issues in v2.3.3
   * !!! fixes an XSS vulnerability in source_selector.php/selector.php
   * regression fix for issues caused by previous security fix (json data could be corrupted) unable to delete files, etc..
@@ -327,7 +346,7 @@ Version 2.3.4
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
 Version 2.3.3
--------------
+---
 ### Address issues in v2.3.2
   * !!! Removes support for PHP v5.2.x (primarily due to included 3rd party libraries)
     - Compatible with PHP v5.3.x, v5.4.x, v5.5.x, and v5.6.x
@@ -358,7 +377,7 @@ Version 2.3.3
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
 Version 2.3.2
--------------
+---
 ### Address issues in v2.3.1
   * !!! Fixes possible cross-site security (XSS) issue, CVE-ID 2014-6635 & CVE-ID 2014-8690
   - adds 'freeform' (modules) menu item and icon support to bootstrap 3 menu
@@ -388,7 +407,7 @@ Version 2.3.2
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
 Version 2.3.1
--------------
+---
 ### Refine implementation of TinyMCE, elFinder, & NewUI/Bootstrap3, remove YUI2 code/widgets, provide jQuery/Bootstrap code/widgets, plus address issues in v2.3.0
   * !!!Fixes regression bug where non-admin user login with workflow turned on always broke page
   * !!!Fixes regression bug where all checkboxes were either checked or unchecked
@@ -414,7 +433,7 @@ Version 2.3.1
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
   Version 2.3.0
--------------
+---
 ### Implement revisions/workflow/approval, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address issues in v2.2.3
   - updated default bootstrap theme (and the files to support it) to be more mobile friendly (responsive), esp. in tables
   - adds new touch enabled, responsive photo album slideshow view (default slideshow for bootstrap)
@@ -441,10 +460,10 @@ Version 2.3.1
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
-----------
+---
 
 Version 2.2.3
--------------
+---
 ### Address issues in v2.2.2 and finally remove features deprecated in v2.2.0
   * !!! changes use/function of the 'create' permission
     - 'create' permission is NO longer automatically tied to an 'edit' permission
@@ -475,10 +494,10 @@ Version 2.2.3
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
-----------
+---
 
 Version 2.2.2
--------------
+---
 ### Address issues in v2.2.1, enhance SEO and Social Media features
   - greatly enhances default page meta data (SEO out of the box)
     - changes 'show item' page meta description to fallback to item summary for better display by Facebook when sharing links
@@ -500,10 +519,10 @@ Version 2.2.2
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
-----------
+---
 
 Version 2.2.1
--------------
+---
 ### Address issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
   - PHP v5.5 compatible, along with v5.2, v5.3, & v5.4
   - new facebook module to display like buttons, like boxes, and optional like button to blog articles & file downloads
@@ -528,10 +547,10 @@ Version 2.2.1
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
-----------
+---
 
 Version 2.2.0
--------------
+---
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
   - Fixes CVE-ID 2013-3294 SQL Injection vulnerabilities
   - Fixes CVE-ID 2013-3295 Directory traversal vulnerability
@@ -574,40 +593,40 @@ Version 2.2.0
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
-----------
+---
 
 Version 2.1.4
--------------
+---
 ### This release only fixes bugs found in 2.1.3, everything else is destined for the v2.2 major version update
  - updates EQL file export/import to also include table definition for future proofing backups
  - adds new 'Exponent as a Service' module for JSON service calls
  - fixes Online Event Registrations activating many features, adds email registrants
  - fixes over 3 dozen issues found in 2.1.3
 
-----------
+---
 
 Version 2.1.3
--------------
+---
 ### This release only fixes bugs found in 2.1.2, everything else is destined for the v2.2 major version update
  - fixes form copy feature
  - fixes a 'file manager doesn't display files' issue on some servers
  - makes blog aggregation configuration tab more intuitive
  - fixes some migration issues with forms, events, & navigation
 
-----------
+---
 
 Version 2.1.2
--------------
+---
 ### This release focuses on things not completed in 2.1.1, but not destined for the v2.2 major version update
  - adds category and tag assignment to multi-add photo album feature
  - adds some tooltip information in file manager (file and image sizes) and form manager (number of records and controls)
  - cleans up form assignment to a module by using manage forms instead of module configuration settings
  - fixes over a dozen bugs and anomalies from previous versions
 
-----------
+---
 
 Version 2.1.1
--------------
+---
 ### This release focuses on the new forms module and user interface improvements
   - adds many new event calendar features
     - adds event copying feature (create new event from existing event)
@@ -642,10 +661,10 @@ Version 2.1.1
     - images may be optionally resized to a max width, and files assigned to a virtual folder during upload
   - calendarmodule and simplepollmodule (old school) are now fully deprecated (removed)
 
-----------
+---
 
 Version 2.1.0
--------------
+---
 ### This release focuses on new calendar module and a 'mega' menu
   - adds optional nested comments, and optional per-item comment disabling
   - adds optional comments to filedownload module items
@@ -663,10 +682,10 @@ Version 2.1.0
   - adds new built-in database manager
   - plus many, many other tweaks, fixes, and features
 
-----------
+---
 
 Version 2.0.9
--------------
+---
 ### This release focuses on greater HTML5 & PHP v5.4 compliance, & module upgrades
   - upgrades old school simple poll and navigation modules into 2.0 style controllers
     - page type indicators now displayed in Manage Pages view
@@ -696,10 +715,10 @@ Version 2.0.9
   - (finally) upgrades the YUI framework to v3.7.2 (after being stuck at v3.4.0 due to issue)
   - plus many, many other tweaks, fixes, and features
 
-----------
+---
 
 Version 2.0.8
--------------
+---
 ### This release focuses on fixing bugs and enhancing list management (tags, categories, comments)
   - adds manual sorting to news module
   - adds random sorting to links module
@@ -716,10 +735,10 @@ Version 2.0.8
   - adds alpha-level implementation of less style sheets (both system and theme)
   - plus many other tweaks, fixes, and features
 
-----------
+---
 
 Version 2.0.7
--------------
+---
 ### This release focuses on fixing bugs and enhanced speed/size
   - incorporates all fixes from v2.0.6 patches
   - Exponent CMS should work on servers running PHP v5.4.x (v5.2.1 or later required)
@@ -750,10 +769,10 @@ Version 2.0.7
   - many 3rd party libraries updated (ckeditor, flowplayer, minify, & swiftmailer)
   - plus many other tweaks, fixes, and features
 
-----------
+---
 
 Version 2.0.6
--------------
+---
 ### This release focuses on usability features and security
   - incorporates all fixes from v2.0.5 patches
   - adds publish/unpublish dates and 'draft' feature to blog
@@ -770,10 +789,10 @@ Version 2.0.6
   - adds additional url security checking
   - plus other tweaks, fixes, and features
 
-----------
+---
 
 Version 2.0.5
--------------
+---
 ### This release focuses on implementing categories
   - categories are (fully) implemented within the faq, filedownloads, links, photoalbum & portfolio modules
     - adds tabbed view either by category or alphabetized like rolodex
@@ -801,10 +820,10 @@ Version 2.0.5
   - coolwater theme enhanced with header configuration, new 'wide' style variation, etc...
   - changes calling parameters for send_reminders.php
 
-----------
+---
 
 Version 2.0.4
--------------
+---
 ### This release focuses on revising the install/update/upgrade process
   - installation and upgrade must now be specifically invoked by url
   - notice given to admin users on upgrade need or new version availability
@@ -819,10 +838,10 @@ Version 2.0.4
   - greatly enhanced Coolwater theme that allows easy header customization
   - plus many other bug fixes and updates
 
-----------
+---
 
 Version 2.0.3
--------------
+---
 ### This release focuses on refining the language system
   - for general use, installation, and to simplify translation creation
   - Spanish, German, Danish, Norwegian, Czech, and Finnish translations added
@@ -838,10 +857,10 @@ Version 2.0.3
 ### Adds search result highlighting
 ### Plus many other bug fixes and updates
 
-----------
+---
 
 Version 2.0.2
--------------
+---
 ### This release focuses on integrating Smarty v3
   - Custom themes/views must be updated to follow Smarty syntax (v2 allowed sloppy syntax)
 ### 3rd party libraries updated
@@ -851,10 +870,10 @@ Version 2.0.2
 ### Fixes numerous bugs and other issues; incorporates 3 patches to v2.0.1
 ### All 1.0 subsystems & FCKeditor now fully deprecated
 
-----------
+---
 
 Version 2.0.1
--------------
+---
 ### This release focuses on adding new features to and fixing problems with the first stable release
 ### (major change) YUI Loader changed to 'yui2in3', YUI3 updated to v3.4.0
   - Custom themes/views must be updated to new YUI2 loading method
@@ -874,9 +893,9 @@ Version 2.0.1
 ### Deprecates several 1.0 style subsystems & modules including administration & login modules
   - Custom themes/views must be updated to reference login controller instead of loginmodule
 
-----------
+---
 
 Version 2.0.0 (stable)
--------------
+---
 ### The first stable release
  - compatible with PHP v5.2 and v5.3
