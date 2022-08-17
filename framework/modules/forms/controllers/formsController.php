@@ -1462,9 +1462,9 @@ class formsController extends expController {
                 $content = array();
                 foreach ($form->getRecords() as $record) {
                     $content[] = $record;
-                    // next add/update searchable form items to search index
-                    $count += $this->add_search_record($content, $form);
                 }
+                // next add/update searchable form items to search index
+                $count += $this->add_search_record($content, $form);
             }
         }
         return $count;
@@ -1485,7 +1485,7 @@ class formsController extends expController {
         foreach ($content as $cnt) {
             $origid = $cnt->id;
             unset($cnt->id);
-            $cnt->location_data = expCore::makeLocation($this->baseclassname, null, $this->forms->id);
+            $cnt->location_data = serialize(expCore::makeLocation($this->baseclassname, null, $this->forms->id));
            //build the search record and save it.
             $sql = "original_id=" . $origid . " AND location_data=" . $this->forms->id . " AND ref_module='" . $this->baseclassname . "'";
             $oldindex = $db->selectObject('search', $sql);
