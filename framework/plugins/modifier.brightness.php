@@ -32,7 +32,7 @@
  * @package Smarty-Plugins
  * @subpackage Modifier
  */
-function smarty_modifier_brightness($colourstr, $steps = 20) {
+function smarty_modifier_brightness($colourstr='', $steps = 20) {
     $colourstr = str_replace('#', '', $colourstr);
     $rhex = substr($colourstr, 0, 2);
     $ghex = substr($colourstr, 2, 2);
