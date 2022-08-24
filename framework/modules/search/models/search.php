@@ -28,6 +28,8 @@ class search extends expRecord {
     }
 
     public static function removeHTML($str) {
+        if (empty($str))
+            return $str;
         $str = str_replace(array("\r\n", "\n"), " ", $str);
         return strip_tags(str_replace(array("<br/>", "<br>", "<br />", "</div>"), "\n", $str));
     }

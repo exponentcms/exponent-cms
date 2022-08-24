@@ -490,7 +490,7 @@ class navigationController extends expController {
                     }
                 }
             }
-            $search_record->body =substr($search_record->body, 0, 20000);  // trim excessive body
+            $search_record->body = !empty($search_record->body) ? substr($search_record->body, 0, 20000) : "";  // trim excessive body
             $db->insertObject($search_record, 'search');
         }
         return count($sections);

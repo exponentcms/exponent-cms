@@ -26,8 +26,10 @@ function smarty_modifier_regex_replace($string, $search, $replace, $limit = -1)
 {
     if (is_array($search)) {
         foreach ($search as $idx => $s) {
-            $search[ $idx ] = _smarty_regex_replace_check($s);
+            $search[$idx] = _smarty_regex_replace_check($s);
         }
+    } elseif (empty($string)) {
+        return $string;
     } else {
         $search = _smarty_regex_replace_check($search);
     }

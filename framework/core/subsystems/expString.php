@@ -235,6 +235,8 @@ class expString {
      * @return string
      */
     public static function summarize($string, $strtype='html', $type='para', $more='...') {
+        if (empty($string))
+            return $string;
         $sep = ($strtype === "html" ? array("</div>", "</p>") : array("\r\n", "\n", "\r"));
         $origstring = $string;
 
