@@ -180,7 +180,7 @@ class administrationController extends expController {
 		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
 		$no_sections = array();
 		foreach ($sectionrefs as $sectionref) {
-			if ($db->selectObject('section',"id=".(int)$sectionref->section) == null) {
+			if ($sectionref->refcount != 1000 && $db->selectObject('section',"id=".(int)$sectionref->section) == null) {
 			// There is no section/page for sectionref so change the refcount
 				$sectionref->refcount = 0;
 				$db->updateObject($sectionref,"sectionref");
