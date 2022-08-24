@@ -469,6 +469,10 @@ function renderAction(array $parms=array()) {
     $template->assign('user', $user);
 
     // lastly, run the action which can also override the above assignments
+    if (!empty($parms['recycled'])) {
+        $controller->config['add_source'] = true;
+        $controller->config['aggregate'] = array();
+    }
     $controller->$action();
 
     if (empty($parms['no_output'])) {
