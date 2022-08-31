@@ -57,8 +57,8 @@ elFinder,2.1.60,elfinder.org,2.1.60,customized in /framework with Exponent php c
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
 jQuery2,2.2.4,jquery.com,2.2.4,
 jQuery2 Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon
-jQuery3,3.6.0,jquery.com,3.6.0,
-jQuery3 Migrate,3.3.2,jquery.com,3.3.2,
+jQuery3,3.6.1,jquery.com,3.6.1,
+jQuery3 Migrate,3.4.0,jquery.com,3.4.0,
 jQueryUI,1.13.0,jqueryui.com,1.13.0,
 stepy,1.1.0exp,github.com/wbotelhos/stepy,1.2.0,"added button class, jquery.validate option passing"
 validate,1.19.5exp,jqueryvalidation.org,1.19.5,edit for 'undefined' in 'min' & 'max'
