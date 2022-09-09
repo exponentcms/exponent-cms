@@ -214,7 +214,7 @@ if (!function_exists('smarty_function_icon')) {
             $name = '';
         }
         if (empty($linktext) || ctype_space($linktext))
-            $linktext = '<span class="sr-only">' . $title . '</span>';
+            $linktext = '<span class="visually-hidden">' . $title . '</span>';
         if(!empty($params['action']) && $params['action'] == 'scriptaction') {
             echo '<a',$name,' href="#" title="', $title, '" class="btn ',$icon->type,' ',$btn_size,'"';
             if (!empty($nofollow))

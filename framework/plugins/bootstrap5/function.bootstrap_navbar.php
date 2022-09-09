@@ -78,7 +78,7 @@ function build_menu($page, $params) {
         $img = '';
     }
     if (!empty($img) && !empty($page->glyph_only)) {
-        $menu_item = $img . '<span class="sr-only">' . $page->text . '</span>';
+        $menu_item = $img . '<span class="visually-hidden">' . $page->text . '</span>';
     } else {
         $menu_item = $img . $page->text;
     }
