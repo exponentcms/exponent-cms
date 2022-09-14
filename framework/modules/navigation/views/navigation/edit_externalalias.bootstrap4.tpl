@@ -23,6 +23,7 @@
     }
     $('#{/literal}{$name}{literal}').select2({
 //        width: "100%",
+        theme: "bootstrap4",
         templateResult: format{/literal}{$name}{literal},
         templateSelection: format{/literal}{$name}{literal}
     });

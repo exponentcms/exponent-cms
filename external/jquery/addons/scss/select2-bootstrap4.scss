@@ -1,0 +1,13 @@
+// Import bootstrap variables including default color palette and fonts
+@import "../../../bootstrap4/scss/functions";
+@import "../#{$themepath}/../scss/variables"; //exp Modify this for theme colors, font-sizes, etc
+@import "../../../bootstrap4/scss/#{$swatch}/variables";
+@import "../../../bootstrap4/scss/variables";
+@import "../../../bootstrap4/scss/mixins";
+
+/*!
+ * select2-bootstrap4-theme v1.5.2
+*/
+@import "select2-bs4/layout";
+@import "select2-bs4/single";
+@import "select2-bs4/multiple";

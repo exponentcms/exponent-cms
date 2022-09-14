@@ -1,0 +1,11 @@
+/*!
+ * Select2 v4 Bootstrap 5 theme v1.3.0
+*/
+
+@import "../../../bootstrap5/scss/functions";
+@import "../#{$themepath}/../scss/variables"; //exp Modify this for theme colors, font-sizes, etc
+@import "../../../bootstrap5/scss/#{$swatch}/variables";
+@import "../../../bootstrap5/scss/variables";
+@import "../../../bootstrap5/scss/mixins";
+
+@import "select2-bs5/include-all";

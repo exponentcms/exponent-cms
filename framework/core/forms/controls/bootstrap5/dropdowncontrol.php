@@ -127,7 +127,7 @@ class dropdowncontrol extends formcontrol {
             );
             expCSS::pushToHead(array(
     //	    "unique"=>"select2-bootstrap",
-    	    "scsscss"=>JQUERY_RELATIVE . "addons/scss/select2-bootstrap5.scss",
+    	    "scsscss"=>JQUERY_RELATIVE . "addons/scss/select2-bootstrap-5.scss",
     	    )
     	);
         }
