@@ -1355,7 +1355,7 @@ class eventController extends expController {
             if (file_exists($cache_fname)) {
                 $cache = unserialize(file_get_contents($cache_fname));
                 if ($startdate >= $cache['start_date'] || $startdate >= $cache['first_date']) {
-                    $events = $db->selectObjects('event_cache','feed=\''.$extgcalurl.'\' AND ' . self::build_daterange_sql($startdate,$enddate,'eventdate',true));
+                    $events = $db->selectObjects('event_cache','feed=\''.$extgcalurl.'\' AND ' . $this->build_daterange_sql($startdate,$enddate,'eventdate',true));
                     foreach ($events as $event) {
                         if ($multiday) {
                             $extevents[$event->eventdate][$dy] = $event;
@@ -1406,7 +1406,7 @@ class eventController extends expController {
             if (file_exists($cache_fname)) {
                 $cache = unserialize(file_get_contents($cache_fname));
                 if ($startdate >= $cache['start_date'] || $startdate >= $cache['first_date']) {
-                    $events = $db->selectObjects('event_cache','feed=\''.$exticalurl.'\' AND ' . self::build_daterange_sql($startdate,$enddate,'eventdate',true));
+                    $events = $db->selectObjects('event_cache','feed=\''.$exticalurl.'\' AND ' . $this->build_daterange_sql($startdate,$enddate,'eventdate',true));
                     foreach ($events as $event) {
                         $extevents[$event->eventdate][$dy] = $event;
                         $extevents[$event->eventdate][$dy]->location_data = 'icalevent' . $key;
@@ -1537,7 +1537,7 @@ class eventController extends expController {
         require_once BASE . 'external/iCalcreator-2.28.2/autoload.php';
 //        require_once BASE . 'external/iCalcreator-2.30.10/autoload.php';
 //        require_once BASE . 'external/iCalcreator-2.40.10/autoload.php';
-//        require_once BASE . 'external/iCalcreator-2.41.57/autoload.php';
+//        require_once BASE . 'external/iCalcreator-2.41.64/autoload.php';
         $v = new Kigkonsult\Icalcreator\Vcalendar(); // initiate new CALENDAR
 //        if (stripos($exticalurl, 'http') === 0 || stripos($exticalurl, 'webcal') === 0) {
 //            $v->setConfig('url', $exticalurl);
