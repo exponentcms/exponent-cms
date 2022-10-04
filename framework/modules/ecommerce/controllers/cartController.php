@@ -450,7 +450,11 @@ class cartController extends expController {
         // get all the necessary addresses..shipping, billing, etc
         $address = new address();
         //$addresses_dd = $address->dropdownByUser($user->id);
-        $shipAddress = $address->find('first', 'user_id=' . $user->id . ' AND is_shipping=1');
+        if (!empty($user->id)) {
+            $shipAddress = $address->find('first', 'user_id=' . $user->id . ' AND is_shipping=1');
+        } else {
+            $shipAddress = array();
+        }
         if (empty($shipAddress) || !$user->isLoggedin()) {  // we're not logged in and don't have an address yet
             expSession::set('customer-signup', false);
             flash('message', gt('Enter your primary address info now.') .
