@@ -141,7 +141,7 @@ class yuidatetimecontrol extends formcontrol
             array(
                 "unique"    => "000-datetime-" . $idname,
                 "jquery"    => "moment,bootstrap-datetimepicker",
-                "bootstrap" => "collapse,transitions",
+                "bootstrap" => "collapse",
                 "content"   => $script,
             )
         );
