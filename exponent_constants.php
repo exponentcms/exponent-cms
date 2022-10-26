@@ -612,7 +612,7 @@ if (!defined('SMARTY_PATH')) {
     if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
     } else {
-        define('SMARTY_VERSION', '4.2.0');  //note smarty v3.1.28+ won't work properly with php < v7.1+
+        define('SMARTY_VERSION', '4.2.1');  //note smarty v3.1.28+ won't work properly with php < v7.1+
     }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
@@ -674,7 +674,7 @@ if (!defined('FPDI_VERSION')) {
 }
 
 if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '-1.2.2');  // -2.0.0
+    define('DOMPDF8_VERSION', '-1.2.2');  // -2.0.1
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
