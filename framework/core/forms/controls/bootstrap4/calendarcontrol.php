@@ -163,7 +163,7 @@ class calendarcontrol extends formcontrol
         expJavascript::pushToFoot(
             array(
                 "unique"  => 'zzcal-' . $idname,
-                "jquery"    => "moment,bootstrap-datetimepicker",
+                "jquery"    => "moment,tempusdominus-bootstrap-4",
                 "bootstrap" => "collapse",
                 "content" => $script,
             )

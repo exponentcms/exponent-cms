@@ -136,23 +136,31 @@ class calendarcontrol extends formcontrol
             $html .= "</div>";
 
         $script = "
-            $('#" . $idname . "').datetimepicker({
-                format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
+            new tempusDominus.TempusDominus(document.getElementById('" . $idname . "'),{
+                localization: {
+                    format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
+                    locale: '" . str_replace("_", "-", LOCALE) . "',
+                },
                 stepping: 15,
-                locale: '" . LOCALE . "',
-                showTodayButton: true,
-                sideBySide: true,
-//                icons: {
-//                    time: 'far fa-clock',
-//                    date: 'far fa-calendar-alt',
-//                    up: 'fas fa-chevron-up',
-//                    down: 'fas fa-chevron-down',
-//                    previous: 'fas fa-chevron-left',
-//                    next: 'fas fa-chevron-right',
-//                    today: 'fas fa-crosshairs',
-//                    clear: 'fas fa-trash-alt',
-//                    close: 'fas fa-times'
-//                },
+                display: {
+                    buttons: {
+                        today: true,
+    //                    clear: false,
+    //                    close: false
+                    },
+                    sideBySide: true,
+    //                icons: {
+    //                    time: 'far fa-clock',
+    //                    date: 'far fa-calendar-alt',
+    //                    up: 'fas fa-chevron-up',
+    //                    down: 'fas fa-chevron-down',
+    //                    previous: 'fas fa-chevron-left',
+    //                    next: 'fas fa-chevron-right',
+    //                    today: 'fas fa-crosshairs',
+    //                    clear: 'fas fa-trash-alt',
+    //                    close: 'fas fa-times'
+    //                },
+                }
             });
         ";
 
@@ -169,7 +177,7 @@ class calendarcontrol extends formcontrol
         expJavascript::pushToFoot(
             array(
                 "unique"  => 'zzcal-' . $idname,
-                "jquery"    => "moment,bootstrap-datetimepicker",
+                "jquery"    => "tempus-dominus",
                 "bootstrap" => "collapse",
                 "content" => $script,
             )

@@ -140,7 +140,7 @@ class yuidatetimecontrol extends formcontrol
         expJavascript::pushToFoot(
             array(
                 "unique"    => "000-datetime-" . $idname,
-                "jquery"    => "moment,tempusdominus-bootstrap-4",
+                "jquery"    => "tempus-dominus",
                 "bootstrap" => "collapse",
                 "content"   => $script,
             )

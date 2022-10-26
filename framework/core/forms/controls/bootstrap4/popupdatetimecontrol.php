@@ -167,7 +167,7 @@ class popupdatetimecontrol extends formcontrol
         expJavascript::pushToFoot(
             array(
                 "unique" => 'popcal' . $idname,
-                "jquery"    => "moment,bootstrap-datetimepicker",
+                "jquery"    => "moment,tempusdominus-bootstrap-4",
                 "bootstrap" => "collapse",
                 "content" => $script,
             )

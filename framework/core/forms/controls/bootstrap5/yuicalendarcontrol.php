@@ -119,24 +119,32 @@ class yuicalendarcontrol extends formcontrol
 
         $script = "
             $(document).ready(function() {
-                $('#" . $idname . "dateRangePicker').datetimepicker({
-                    format: '" .($this->showdate ? 'L' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'LT' : '') ."',
+                new tempusDominus.TempusDominus(document.getElementById('" . $idname . "dateRangePicker'),{
+                    localization: {
+                        locale: '" . str_replace("_", "-", LOCALE) . "',
+                        format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
+                    },
                     stepping: 15,
-                    locale: '" . LOCALE . "',
-                    showTodayButton: true,
-                    inline: true,
-                    sideBySide: true,
-//                    icons: {
-//                        time: 'far fa-clock',
-//                        date: 'far fa-calendar-alt',
-//                        up: 'fas fa-chevron-up',
-//                        down: 'fas fa-chevron-down',
-//                        previous: 'fas fa-chevron-left',
-//                        next: 'fas fa-chevron-right',
-//                        today: 'fas fa-crosshairs',
-//                        clear: 'fas fa-trash-alt',
-//                        close: 'fas fa-times'
-//                    },
+                    display: {
+                        buttons: {
+                            today: true,
+        //                    clear: false,
+        //                    close: false
+                        },
+                        inline: true,
+                        sideBySide: true,
+    //                    icons: {
+    //                        time: 'far fa-clock',
+    //                        date: 'far fa-calendar-alt',
+    //                        up: 'fas fa-chevron-up',
+    //                        down: 'fas fa-chevron-down',
+    //                        previous: 'fas fa-chevron-left',
+    //                        next: 'fas fa-chevron-right',
+    //                        today: 'fas fa-crosshairs',
+    //                        clear: 'fas fa-trash-alt',
+    //                        close: 'fas fa-times'
+    //                    },
+                    }
                 });
             });
         ";
@@ -154,7 +162,7 @@ class yuicalendarcontrol extends formcontrol
         expJavascript::pushToFoot(
             array(
                 "unique"    => '00yuical-' . $idname,
-                "jquery"    => "moment,bootstrap-datetimepicker",
+                "jquery"    => "tempus-dominus",
                 "bootstrap" => "collapse",
                 "content"   => $script,
             )

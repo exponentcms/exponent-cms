@@ -4,12 +4,12 @@
  * https://github.com/Eonasdan/bootstrap-datetimepicker/
  */
 $bs-datetimepicker-timepicker-font-size: 1.2em !default;
-$bs-datetimepicker-active-bg: $blue !default;
-$bs-datetimepicker-active-color: $white !default;
-$bs-datetimepicker-border-radius: $border-radius !default;
-$bs-datetimepicker-btn-hover-bg: $gray-200 !default;
-$bs-datetimepicker-disabled-color: $gray-600 !default;
-$bs-datetimepicker-alternate-color: $gray-600 !default;
+$bs-datetimepicker-active-bg: $btn-primary-bg !default;
+$bs-datetimepicker-active-color: $btn-primary-color !default;
+$bs-datetimepicker-border-radius: $border-radius-base !default;
+$bs-datetimepicker-btn-hover-bg: $gray-lighter !default;
+$bs-datetimepicker-disabled-color: $gray-light !default;
+$bs-datetimepicker-alternate-color: $gray-light !default;
 $bs-datetimepicker-secondary-border-color: #ccc !default;
 $bs-datetimepicker-secondary-border-color-rgba: rgba(0, 0, 0, 0.2) !default;
 $bs-datetimepicker-primary-border-color: white !default;
@@ -24,15 +24,15 @@ $bs-datetimepicker-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !default;
         width: 19em;
 
         &.timepicker-sbs {
-            @media (min-width: map-get($grid-breakpoints, 'sm')) {
+            @media (min-width: $screen-sm-min) {
                 width: 38em;
             }
 
-            @media (min-width: map-get($grid-breakpoints, 'md')) {
+            @media (min-width: $screen-md-min) {
                 width: 38em;
             }
 
-            @media (min-width: map-get($grid-breakpoints, 'lg')) {
+            @media (min-width: $screen-lg-min) {
                 width: 38em;
             }
         }
@@ -82,17 +82,6 @@ $bs-datetimepicker-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !default;
         }
 
         &.pull-right {
-            &:before {
-                left: auto;
-                right: 6px;
-            }
-
-            &:after {
-                left: auto;
-                right: 7px;
-            }
-        }
-        &.float-right {
             &:before {
                 left: auto;
                 right: 6px;
@@ -294,9 +283,6 @@ $bs-datetimepicker-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !default;
                 background-color: $bs-datetimepicker-active-bg;
                 color: $bs-datetimepicker-active-color;
                 text-shadow: $bs-datetimepicker-text-shadow;
-                background-image: none;
-                padding-top: 0;
-                overflow: inherit;
             }
 
             &.active.today:before {
@@ -327,9 +313,6 @@ $bs-datetimepicker-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !default;
                     background-color: $bs-datetimepicker-active-bg;
                     color: $bs-datetimepicker-active-color;
                     text-shadow: $bs-datetimepicker-text-shadow;
-                    background-image: none;
-                    padding-top: 0;
-                    overflow: inherit;
                 }
 
                 &.old {
