@@ -176,6 +176,7 @@ class popupdatetimecontrol extends formcontrol
             array(
                 "unique" => 'popcal' . $idname,
                 "jquery"    => "tempus-dominus",
+                "src"      => "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js",
                 "bootstrap" => "collapse",
                 "content" => $script,
             )

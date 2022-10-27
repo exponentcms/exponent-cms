@@ -127,7 +127,7 @@ class calendarcontrol extends formcontrol
         $html .= "<div class='input-group input-group-sm' id='" . $idname . "'>
                         <input type='text' class='text form-control' name='" . $name . "' value='".$default."'/>
                         <span class='input-group-append'>
-                            <span class='".$icon_cp."'></span>
+                            <span class='input-group-text ".$icon_cp."'></span>
                         </span>
                     </div>";
         if (!empty($this->description))
@@ -178,6 +178,7 @@ class calendarcontrol extends formcontrol
             array(
                 "unique"  => 'zzcal-' . $idname,
                 "jquery"    => "tempus-dominus",
+                "src"      => "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js",
                 "bootstrap" => "collapse",
                 "content" => $script,
             )
