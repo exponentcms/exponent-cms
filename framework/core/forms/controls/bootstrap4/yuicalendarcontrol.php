@@ -110,7 +110,7 @@ class yuicalendarcontrol extends formcontrol
 //        $date_input->name = $idname;
 //        $date_input->disabled = 'disabled';
 //        $html = "<!-- cke lazy -->";
-        $html = '<div class="input-group input-append" id="'.$idname.'dateRangePicker">'.$date_input->toHTML(null, $name).'</div>';
+        $html = '<div class="input-group date input-append" id="'.$idname.'dateRangePicker">'.$date_input->toHTML(null, $name).'</div>';
         if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">".$this->description."</small>";
 //        $html .= "
 //        <div style=\"clear:both\"></div>

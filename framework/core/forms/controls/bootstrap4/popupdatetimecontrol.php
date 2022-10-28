@@ -117,7 +117,7 @@ class popupdatetimecontrol extends formcontrol
         if ($this->horizontal)
             $date_input->horizontal_top = true;
         $html = $date_input->toHTML(null, $name);
-        $html = str_replace('form-group', '', $html);  // we're a control within a control
+        $html = str_replace('form-group', 'date', $html);  // we're a control within a control
 
 //        $html = '';
 //        if ($this->horizontal)
@@ -132,13 +132,13 @@ class popupdatetimecontrol extends formcontrol
 //            $html .= "</div>";
 
         $script = "
-            $(document).ready(function() {
+//            $(document).ready(function() {
                 $('#" . $idname."').datetimepicker({
-                    format: '" .($this->showdate ? 'L' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'LT' : '') ."',
-                    stepping: 15,
-                    locale: '" . LOCALE . "',
-                    showTodayButton: true,
-                    sideBySide: true,
+//                    format: '" .($this->showdate ? 'L' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'LT' : '') ."',
+//                    stepping: 15,
+//                    locale: '" . LOCALE . "',
+//                    showTodayButton: true,
+//                    sideBySide: true,
 //                    icons: {
 //                        time: 'far fa-clock',
 //                        date: 'far fa-calendar-alt',
@@ -151,7 +151,7 @@ class popupdatetimecontrol extends formcontrol
 //                        close: 'fas fa-times'
 //                    },
                   });
-            });
+//            });
         ";
 
         global $less_vars;

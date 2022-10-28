@@ -100,7 +100,7 @@
 
         // Popup calendar
         var pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}element = document.getElementById('j_input{/literal}{$__loc->src|replace:'@':'_'}{literal}');
-        var pop_{/literal}{$__loc->src|replace:'@':'_'}{literal} = new tempusDominus.TempusDominus(pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}element,{
+        new tempusDominus.TempusDominus(pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}element,{
             localization: {
                 format: 'YYYYMMDD',
                 locale: '{/literal}{str_replace("_", "-", $smarty.const.LOCALE)}{literal}',
