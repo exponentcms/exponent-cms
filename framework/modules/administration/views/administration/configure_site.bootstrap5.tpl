@@ -161,10 +161,10 @@
 	                {control type="dropdown" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Default time zone for this site"|gettext|cat:(' <br />'|cat:("CAUTION: Changes may affect calendars and other features using date functions."|gettext)) items=$timezones default=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position"|gettext items="Top of Viewport,Bottom of Viewport"|gettxtlist values="1,0" default=$smarty.const.SLINGBAR_TOP}
 					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$smarty.const.THUMB_QUALITY|default:75 size="2"}
-                    {control type="checkbox" name="sc[AJAX_PAGING]" label="Use ajax paging if available"|gettext value=1 checked=$smarty.const.AJAX_PAGING description='Can decrease paging loading time'|gettext}
-                    {control type="checkbox" name="sc[OLD_BROWSER_SUPPORT]" label="Support Obsolete Browsers"|gettext value=1 checked=$smarty.const.OLD_BROWSER_SUPPORT description='Activate support for obsolete (non-HTML5) browsers'|gettext}
+                    {control type="checkbox" postfalse=1 name="sc[AJAX_PAGING]" label="Use ajax paging if available"|gettext value=1 checked=$smarty.const.AJAX_PAGING description='Can decrease paging loading time'|gettext}
+                    {control type="checkbox" postfalse=1 name="sc[OLD_BROWSER_SUPPORT]" label="Support Obsolete Browsers"|gettext value=1 checked=$smarty.const.OLD_BROWSER_SUPPORT description='Activate support for obsolete (non-HTML5) browsers'|gettext}
                     {if bs5()}
-                        {control type="checkbox" name="sc[USE_BOOTSTRAP_ICONS]" label="Use Bootstrap Icons"|gettext value=1 checked=$smarty.const.USE_BOOTSTRAP_ICONS description='Use Bootstrap Icons instead of Font Awesome'|gettext}
+                        {control type="checkbox" postfalse=1 name="sc[USE_BOOTSTRAP_ICONS]" label="Use Bootstrap Icons"|gettext value=1 checked=$smarty.const.USE_BOOTSTRAP_ICONS description='Use Bootstrap Icons instead of Font Awesome'|gettext}
                     {/if}
                 </div>
                 <div id="tab6" role="tabpanel" class="tab-pane fade">
