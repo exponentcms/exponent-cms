@@ -98,9 +98,12 @@
             format: 'MM/DD/YYYY',
             extraFormats: ['YYYYMMDD','MM/DD/YYYY'],
             locale: '{/literal}{$smarty.const.LOCALE}{literal}',
-            showTodayButton: true,
 //            viewMode: 'months',
-            showClose: true,
+            buttons: {
+                showToday: true,
+                showClear: false,
+                showClose: true
+            },
             defaultDate: '{/literal}{$time|format_date:"%Y%m%d"}{literal}',
 //            allowInputToggle: true,
             calendarWeeks: true,

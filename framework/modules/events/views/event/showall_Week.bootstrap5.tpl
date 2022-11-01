@@ -121,18 +121,26 @@
             },
             defaultDate: '{/literal}{$time|format_date:"%m/%d/%Y"}{literal}',
     //            allowInputToggle: true,
-    //             icons: {
-    //                 time: 'fa fa-clock-o',
-    //                 date: 'fa fa-calendar',
-    //                 up: 'fa fa-chevron-up',
-    //                 down: 'fa fa-chevron-down',
-    //                 previous: 'fa fa-chevron-left',
-    //                 next: 'fa fa-chevron-right',
-    //                 today: 'fa fa-crosshairs',
-    //                 clear: 'fa fa-trash',
-    //                 close: 'fa fa-times'
-    //             },
         });
+
+        if ({/literal}{if $smarty.const.USE_BOOTSTRAP_ICONS}1{else}0{/if}{literal}) {
+            tclock.updateOptions({
+                display: {
+                    icons: {
+                        time: 'bi bi-clock',
+                        date: 'bi bi-calendar',
+                        up: 'bi bi-arrow-up',
+                        down: 'bi bi-arrow-down',
+                        previous: 'bi bi-chevron-left',
+                        next: 'bi bi-chevron-right',
+                        today: 'bi bi-calendar-check',
+                        clear: 'bi bi-trash',
+                        close: 'bi bi-x',
+                    },
+                }
+            });
+        }
+
         pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}element.addEventListener(tempusDominus.Namespace.events.hide,function(e){
             if (!moment($('#month{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.detail.date, 'month') || !moment($('#month{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.detail.date, 'year')) {
                 var unixtime = moment(e.detail.date).unix();

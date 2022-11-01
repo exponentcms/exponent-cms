@@ -134,7 +134,11 @@ class calendarcontrol extends formcontrol
                 format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
                 stepping: 15,
                 locale: '" . LOCALE . "',
-                showTodayButton: true,
+                buttons: {
+                    showToday: true,
+                    showClear: false,
+                    showClose: false
+                },
                 sideBySide: true,
 //                icons: {
 //                    time: 'far fa-clock',

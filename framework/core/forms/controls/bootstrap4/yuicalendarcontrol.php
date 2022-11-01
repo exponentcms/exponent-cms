@@ -122,7 +122,11 @@ class yuicalendarcontrol extends formcontrol
                     format: '" .($this->showdate ? 'L' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'LT' : '') ."',
                     stepping: 15,
                     locale: '" . LOCALE . "',
-                    showTodayButton: true,
+                    buttons: {
+                        showToday: true,
+//                        showClear: false,
+//                        showClose: false
+                    },
                     inline: true,
                     sideBySide: true,
 //                    icons: {

@@ -133,7 +133,7 @@ class popupdatetimecontrol extends formcontrol
 
         $script = "
             $(document).ready(function() {
-                new tempusDominus.TempusDominus(document.getElementById('" . $idname . "'),{
+                var tclock = new tempusDominus.TempusDominus(document.getElementById('" . $idname . "'),{
                     localization: {
                         format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
                         locale: '" . str_replace("_", "-", LOCALE) . "',
@@ -146,20 +146,27 @@ class popupdatetimecontrol extends formcontrol
         //                    close: false
                         },
                         sideBySide: true,
-        //                icons: {
-        //                    time: 'far fa-clock',
-        //                    date: 'far fa-calendar-alt',
-        //                    up: 'fas fa-chevron-up',
-        //                    down: 'fas fa-chevron-down',
-        //                    previous: 'fas fa-chevron-left',
-        //                    next: 'fas fa-chevron-right',
-        //                    today: 'fas fa-crosshairs',
-        //                    clear: 'fas fa-trash-alt',
-        //                    close: 'fas fa-times'
-        //                },
                     }
                 });
             });
+
+            if (" . (USE_BOOTSTRAP_ICONS ? '1' : '0') . ") {
+                tclock.updateOptions({
+                    display: {
+                        icons: {
+                            time: 'bi bi-clock',
+                            date: 'bi bi-calendar',
+                            up: 'bi bi-arrow-up',
+                            down: 'bi bi-arrow-down',
+                            previous: 'bi bi-chevron-left',
+                            next: 'bi bi-chevron-right',
+                            today: 'bi bi-calendar-check',
+                            clear: 'bi bi-trash',
+                            close: 'bi bi-x',
+                        },
+                    }
+                });
+            }
         ";
 
         global $less_vars;
