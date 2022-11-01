@@ -130,27 +130,31 @@ class expJavascript {
                             $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'util.js,';
                         } else {
                             $bootstrappath = 'external/bootstrap5/js/dist/';
-                            $scripts .= "\t" . '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>' . "\r\n";
-                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/data.js,';
-                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js,';
-                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js,';
-                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js,';
-                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'base-component.js,';
+//                            $scripts .= "\t" . '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>' . "\r\n";
+//                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/data.js,';
+//                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js,';
+//                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js,';
+//                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js,';
+//                            $srt[$i] .= PATH_RELATIVE . $bootstrappath . 'base-component.js,';
+                            $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . '../../dist/js/bootstrap.bundle.min.js"></script>' . "\r\n";
+//                            $scripts .= BS5_SCRIPT . "\r\n";
                         }
-                        foreach ($bootstrapjs as $mod) {
-                            if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
-                                if (strlen($srt[$i]) + strlen(PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js') <= $strlen && $i <= MINIFY_MAX_FILES) {
-                                    $srt[$i] .= PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js' . ",";
-                                } else {
-                                    $i++;
-                                    $srt[$i] = PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js' . ",";
-                                }
-                            } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
-                                if (strlen($srt[$i]) + strlen(PATH_RELATIVE . $bootstrappath . $mod . '.js') <= $strlen && $i <= MINIFY_MAX_FILES) {
-                                    $srt[$i] .= PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
-                                } else {
-                                    $i++;
-                                    $srt[$i] = PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
+                        if (!bs5()) {
+                            foreach ($bootstrapjs as $mod) {
+                                if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
+                                    if (strlen($srt[$i]) + strlen(PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js') <= $strlen && $i <= MINIFY_MAX_FILES) {
+                                        $srt[$i] .= PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js' . ",";
+                                    } else {
+                                        $i++;
+                                        $srt[$i] = PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js' . ",";
+                                    }
+                                } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
+                                    if (strlen($srt[$i]) + strlen(PATH_RELATIVE . $bootstrappath . $mod . '.js') <= $strlen && $i <= MINIFY_MAX_FILES) {
+                                        $srt[$i] .= PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
+                                    } else {
+                                        $i++;
+                                        $srt[$i] = PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
+                                    }
                                 }
                             }
                         }
@@ -298,18 +302,33 @@ class expJavascript {
                             $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util.js"></script>' . "\r\n";
                         } else {
                             $bootstrappath = 'external/bootstrap5/js/dist/';
-                            $scripts .= "\t" . '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>' . "\r\n";
-                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/data.js"></script>' . "\r\n";
-                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js"></script>' . "\r\n";
-                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js"></script>' . "\r\n";
-                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js"></script>' . "\r\n";
-                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'base-component.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/data.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'base-component.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util/index.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util/sanitizer.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/data.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util/config.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'base-component.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util/component-functions.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util/template-factory.js"></script>' . "\r\n";
+                            $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . '../../dist/js/bootstrap.bundle.min.js"></script>' . "\r\n";
+//                            $scripts .= "\t" . BS5_SCRIPT . "\r\n";
                         }
-                        foreach ($bootstrapjs as $mod) {
-                            if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
-                                $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
-                            } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
-                                $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . $mod . '.js"></script>' . "\r\n";
+                        if (!bs5()) {
+                            foreach ($bootstrapjs as $mod) {
+                                if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
+                                    $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
+                                } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
+                                    $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . $mod . '.js"></script>' . "\r\n";
+                                }
                             }
                         }
                     }
@@ -539,17 +558,21 @@ class expJavascript {
                         $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'util.js"></script>' . "\r\n";
                     } else {
                         $bootstrappath = 'external/bootstrap5/js/dist/';
-                        $scripts .= '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>' . "\r\n";
-                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/data.js"></script>' . "\r\n";
-                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js"></script>' . "\r\n";
-                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js"></script>' . "\r\n";
-                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js"></script>' . "\r\n";
+//                        $scripts .= '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>' . "\r\n";
+//                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/data.js"></script>' . "\r\n";
+//                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/event-handler.js"></script>' . "\r\n";
+//                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/manipulator.js"></script>' . "\r\n";
+//                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . 'dom/selector-engine.js"></script>' . "\r\n";
+                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . '../../dist/js/bootstrap.bundle.min.js"></script>' . "\r\n";
+//                        $scripts .= "\t" . BS5_SCRIPT . "\r\n";
                     }
-                    foreach ($bootstrapjs as $mod) {
-                        if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
-                            $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
-                        } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
-                            $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . $mod . '.js"></script>' . "\r\n";
+                    if (!bs5()) {
+                        foreach ($bootstrapjs as $mod) {
+                            if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
+                                $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
+                            } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
+                                $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . $mod . '.js"></script>' . "\r\n";
+                            }
                         }
                     }
                 }
