@@ -69,7 +69,7 @@ function smarty_function_loading($params,&$smarty) {
         echo '<div class="loadingdiv">', $spinner, $title, '</div>';
     }
 
-    if (bs()) {
+    if (bs() && !bs2()) {
         expJavascript::pushToFoot(
             array(
                 'unique' => 'loadingremove',

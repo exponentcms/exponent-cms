@@ -383,6 +383,7 @@
 {script unique="tabload" yui3mods="node,yui2-yahoo-dom-event,yui2-container"}
 {literal}
     YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
+        Y.one('.loadingdiv').remove();
         var YAHOO = Y.YUI2;
         EXPONENT.deleteNode = function (id,alias_type,name){
             var handleYes = function() {
