@@ -166,7 +166,7 @@
                                                     {control type="dropdown" name="order_status_id" label="Change order status to:"|gettext frommodel='order_status' orderby='rank' value=$order->order_status_id}
                                                     {control type="checkbox" name="email_user" label="Send email to user to notify them of status change?"|gettext value=1}
                                                     {control type="checkbox" name="include_shipping_info" label="Include Shipping Information in email?"|gettext value=1}
-                                                    <select class="form-control" id="order_status_messages" name="order_status_messages" size="1">
+                                                    <select class="form-control form-select" id="order_status_messages" name="order_status_messages" size="1">
                                                         <option value="0" selected>{'-- Select a predefined comment --'|gettext}</option>
                                                         {foreach from=$messages item=msg}
                                                             <option value="{$msg->body}">{$msg->body|truncate:80}</option>
@@ -725,7 +725,7 @@
                                                 {control type=text name="to_addresses" size="100" label="To (comma separate multiple):"|gettext value="`$to_addresses`"}
                                                 {control type=text name="email_subject" size="100" label="Email Subject:"|gettext value="`$email_subject`"}
                                                 {br}
-                                                <select class="form-control" id="order_status_messages" name="order_status_messages" size="1">
+                                                <select class="form-control form-select" id="order_status_messages" name="order_status_messages" size="1">
                                                     <option value="0" selected>{'-- Select a predefined message --'|gettext}</option>
                                                     {foreach from=$messages item=msg}
                                                         <option value="{$msg->body|escape:"htmlall"}">{$msg->body|truncate:80}</option>

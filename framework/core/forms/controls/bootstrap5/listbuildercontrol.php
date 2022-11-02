@@ -53,7 +53,7 @@ class listbuildercontrol extends formcontrol {
 		$this->process = $process;
 
 		if (!$this->newList) {
-			$html = "<select name='".$name."[]' id='$name' class=\"form-control\" multiple='multiple' size='$this->size'>";
+			$html = "<select name='".$name."[]' id='$name' class=\"form-control form-select\" multiple='multiple' size='$this->size'>";
             $list = $this->default + $this->source;
 			foreach ($list as $key=>$value) {
 				$html .= "<option value='$key'";
@@ -89,7 +89,7 @@ class listbuildercontrol extends formcontrol {
 				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;); return false;' ><i class='".$arrow_l."' style='display:inline;'></i>&nbsp;<i class='".$arrow_l."' style='display:inline;'></i></button>";
 			}
 			$html .= "</td>";
-			$html .= "<td width='40%' valign='top' style='border:none;'><small class=\"form-text text-muted\">".gt('Selected')."</small><select " . ((bs3()||bs4() || bs5()) ? "class=\"form-control\" " : "") . "id='dest_$name' size='".$this->size."'>";
+			$html .= "<td width='40%' valign='top' style='border:none;'><small class=\"form-text text-muted\">".gt('Selected')."</small><select " . ((bs3()||bs4() || bs5()) ? "class=\"form-control form-select\" " : "") . "id='dest_$name' size='".$this->size."'>";
 			foreach ($this->default as $key=>$value) {
 				if (isset($this->source[$key])) $value = $this->source[$key];
 				$html .= "<option value='$key'>$value</option>";
