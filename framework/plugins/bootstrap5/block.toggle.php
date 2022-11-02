@@ -109,19 +109,35 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
             "content"   => $script,
         ));
 
-        $css = '
-        .card.toggle .card-title a:after {
-            font-family:"Font Awesome 6 Free";
-            content:\'\f102\';
-            float:right;
-            font-size:18px;
-            font-weight:700;
+        if (USE_BOOTSTRAP_ICONS) {
+            $css = '
+         .card.toggle .card-title a:after {
+             font-family:"bootstrap-icons";
+             content:\'\F281\';
+             float:right;
+             font-size:18px;
+             font-weight:700;
+         }
+         .card.toggle .card-title a.collapsed:after  {
+             font-family:"bootstrap-icons";
+             content:\'\F27E\';
+         }
+         ';
+        } else {
+            $css = '
+         .card.toggle .card-title a:after {
+             font-family:"Font Awesome 6 Free";
+             content:\'\f102\';
+             float:right;
+             font-size:18px;
+             font-weight:700;
+         }
+         .card.toggle .card-title a.collapsed:after  {
+             font-family:"Font Awesome 6 Free";
+             content:\'\f103\';
+         }
+         ';
         }
-        .card.toggle .card-title a.collapsed:after  {
-            font-family:"Font Awesome 6 Free";
-            content:\'\f103\';
-        }
-        ';
 
         expCSS::pushToHead(array(
             "css"=>$css,
