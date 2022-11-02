@@ -58,8 +58,12 @@ foreach ($predefined_IMG_constants as $PHP_constant_name => $PHP_constant_value)
 		define($PHP_constant_name, $PHP_constant_value);
 	}
 }
-unset($predefined_IMG_constants, $PHP_constant_name, $PHP_constant_value);
-
+foreach ($predefined_IMAGETYPE_constants as $PHP_constant_name => $PHP_constant_value) {
+	if (!defined($PHP_constant_name)) {
+		define($PHP_constant_name, $PHP_constant_value);
+	}
+}
+unset($predefined_IMG_constants, $predefined_IMAGETYPE_constants, $PHP_constant_name, $PHP_constant_value);
 
 class phpthumb {
 
