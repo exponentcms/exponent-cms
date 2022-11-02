@@ -100,7 +100,7 @@
 
         // Popup calendar
         var pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}element = document.getElementById('j_input{/literal}{$__loc->src|replace:'@':'_'}{literal}');
-        var tclock = new tempusDominus.TempusDominus(pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}element,{
+        var pop_{/literal}{$__loc->src|replace:'@':'_'}{literal} = new tempusDominus.TempusDominus(pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}element,{
             localization: {
                 format: 'YYYYMMDD',
                 locale: '{/literal}{str_replace("_", "-", $smarty.const.LOCALE)}{literal}',
@@ -130,7 +130,7 @@
         });
 
         if ({/literal}{if $smarty.const.USE_BOOTSTRAP_ICONS}1{else}0{/if}{literal}) {
-            tclock.updateOptions({
+            pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}.updateOptions({
                 display: {
                     icons: {
                         time: 'bi bi-clock',
