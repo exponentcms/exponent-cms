@@ -1,9 +1,9 @@
 // Import bootstrap variables including default color palette and fonts
-@import "../../../external/bootstrap4/scss/functions";
+@import "../../../external/bootstrap5/scss/functions";
 @import "../scss/variables"; //exp Modify this for theme colors, font-sizes, etc
-@import "../../../external/bootstrap4/scss/#{$swatch}/variables";
-@import "../../../external/bootstrap4/scss/variables";
-@import "../../../external/bootstrap4/scss/mixins";
+@import "../../../external/bootstrap5/scss/#{$swatch}/variables";
+@import "../../../external/bootstrap5/scss/variables";
+@import "../../../external/bootstrap5/scss/mixins";
 
 .sr-only {
   position: absolute;

@@ -55,7 +55,7 @@
     </div>
 </div>
 
-{script unique=$name|cat:'-popup' jquery="moment,bootstrap-datetimepicker,jquery.history"}
+{script unique=$name|cat:'-popup' jquery="moment,tempus-dominus,jquery.history" src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"}
 {literal}
     $(document).ready(function() {
         var monthcal_{/literal}{$name}{literal} = $('#month-cal-{/literal}{$name}{literal}');
@@ -74,27 +74,49 @@
         var sUrl_{/literal}{$name}{literal} = EXPONENT.PATH_RELATIVE + "index.php?controller=eventregistration&action=eventsCalendar&view=month&ajax_action=1&src={/literal}{$__loc->src}{literal}";
 
         // Popup calendar
-        $('#j_input{/literal}{$__loc->src|replace:'@':'_'}{literal}').datetimepicker({
-            format: 'MM/YYYY',
-            locale: '{/literal}{$smarty.const.LOCALE}{literal}',
-//            showTodayButton: true,
-            viewMode: 'months',
-            showClose: true,
-//            allowInputToggle: true,
-//             icons: {
-//                 time: 'fa fa-clock-o',
-//                 date: 'fa fa-calendar',
-//                 up: 'fa fa-chevron-up',
-//                 down: 'fa fa-chevron-down',
-//                 previous: 'fa fa-chevron-left',
-//                 next: 'fa fa-chevron-right',
-//                 today: 'fa fa-crosshairs',
-//                 clear: 'fa fa-trash',
-//                 close: 'fa fa-times'
-//             },
-        }).on('dp.hide',function(e){
-            if (!moment().isSame(e.date, 'month') || !moment().isSame(e.date, 'year')) {
-                var unixtime = e.date.unix();
+        var pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}element = document.getElementById('j_input{/literal}{$__loc->src|replace:'@':'_'}{literal}');
+        var pop_{/literal}{$__loc->src|replace:'@':'_'}{literal} = new tempusDominus.TempusDominus(pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}element,{
+            localization: {
+                format: 'YYYYMMDD',
+                locale: '{/literal}{str_replace("_", "-", $smarty.const.LOCALE)}{literal}',
+            },
+    //            extraFormats: ['YYYYMMDD','MM/YYYY'],
+            display: {
+                viewMode: 'months',
+                buttons: {
+                    today: true,
+    //                    clear: false,
+                    close: true
+                },
+                components: {
+                    calendar: true,
+                    date: false,
+                    month: true,
+                    year: true,
+                    decades: true,
+                    clock: false,
+                    hours: false,
+                    minutes: false,
+                    seconds: false,
+                },
+            },
+            defaultDate: '{/literal}{$time|format_date:"%m/%d/%Y"}{literal}',
+    //            allowInputToggle: true,
+    //             icons: {
+    //                 time: 'fa fa-clock-o',
+    //                 date: 'fa fa-calendar',
+    //                 up: 'fa fa-chevron-up',
+    //                 down: 'fa fa-chevron-down',
+    //                 previous: 'fa fa-chevron-left',
+    //                 next: 'fa fa-chevron-right',
+    //                 today: 'fa fa-crosshairs',
+    //                 clear: 'fa fa-trash',
+    //                 close: 'fa fa-times'
+    //             },
+        });
+        pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}element.addEventListener(tempusDominus.Namespace.events.hide,function(e){
+            if (!moment($('#month{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.detail.date, 'month') || !moment($('#month{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.detail.date, 'year')) {
+                var unixtime = moment(e.detail.date).unix();
             {/literal} {if $smarty.const.AJAX_PAGING}
                 {literal}
                     $.ajax({

@@ -70,7 +70,8 @@ class recyclebin extends expRecord
                         'controller' => $orphans[$i]->module,
                         'action' => 'showall',
                         'src' => $orphans[$i]->source,
-                        "no_output" => true
+                        "no_output" => true,
+                        "recycled" => true
                     )
                 );
 //                } else {

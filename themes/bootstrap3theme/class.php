@@ -41,7 +41,7 @@ class bootstrap3theme extends theme {
        		$dh = opendir(BASE.'external/bootstrap3/less');
        		while (($file = readdir($dh)) !== false) {
        			if ($file !== '.' && $file !== '..' && is_dir(BASE."external/bootstrap3/less/$file")) {
-                    if ($file !== 'mixins' && $file !== 'fonts')
+                    if ($file !== 'mixins' && $file !== 'fonts' && $file !== 'help')
                         $swatches[$file] = ucfirst($file);
        			}
        		}

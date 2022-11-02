@@ -104,7 +104,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             <form role="form" method="post" action="' . PATH_RELATIVE . '">
               <div class="modal-header bg-primary">
                 <h4 class="modal-title" id="myModalLabel' . $uniqueid . '">' . gt('Set Order of') . ' ' . $params['label'] . '</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only"></span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true"></span><span class="visually-hidden"></span></button>
               </div>
               <div class="modal-body">
             <input type="hidden" name="model" value="' . $model . '" />

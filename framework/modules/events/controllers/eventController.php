@@ -1336,6 +1336,12 @@ class eventController extends expController {
         return $events;
     }
 
+    /**
+     * @param $startdate
+     * @param $enddate
+     * @param $multiday
+     * @return array
+     */
     function getExternalEvents($startdate, $enddate, $multiday = false) {
         global $db;
 
@@ -1349,7 +1355,7 @@ class eventController extends expController {
             if (file_exists($cache_fname)) {
                 $cache = unserialize(file_get_contents($cache_fname));
                 if ($startdate >= $cache['start_date'] || $startdate >= $cache['first_date']) {
-                    $events = $db->selectObjects('event_cache','feed=\''.$extgcalurl.'\' AND ' . self::build_daterange_sql($startdate,$enddate,'eventdate',true));
+                    $events = $db->selectObjects('event_cache','feed=\''.$extgcalurl.'\' AND ' . $this->build_daterange_sql($startdate,$enddate,'eventdate',true));
                     foreach ($events as $event) {
                         if ($multiday) {
                             $extevents[$event->eventdate][$dy] = $event;
@@ -1400,7 +1406,7 @@ class eventController extends expController {
             if (file_exists($cache_fname)) {
                 $cache = unserialize(file_get_contents($cache_fname));
                 if ($startdate >= $cache['start_date'] || $startdate >= $cache['first_date']) {
-                    $events = $db->selectObjects('event_cache','feed=\''.$exticalurl.'\' AND ' . self::build_daterange_sql($startdate,$enddate,'eventdate',true));
+                    $events = $db->selectObjects('event_cache','feed=\''.$exticalurl.'\' AND ' . $this->build_daterange_sql($startdate,$enddate,'eventdate',true));
                     foreach ($events as $event) {
                         $extevents[$event->eventdate][$dy] = $event;
                         $extevents[$event->eventdate][$dy]->location_data = 'icalevent' . $key;
@@ -1421,6 +1427,17 @@ class eventController extends expController {
         return $extevents;
     }
 
+    /**
+     * @param $extgcalurl
+     * @param $startdate
+     * @param $enddate
+     * @param $dy
+     * @param $key
+     * @param $multiday
+     * @return array
+     *
+     * @deprecated
+     */
     public function get_gcal_events($extgcalurl, $startdate, $enddate=null, &$dy=0, $key=0, $multiday=false) {
         $extevents = array();
         if (!empty($startdate)) $begin = date("Y-m-d\Th:i:sP", expDateTime::startOfDayTimestamp($startdate));
@@ -1506,19 +1523,32 @@ class eventController extends expController {
         return $extevents;
     }
 
+    /**
+     * @param $exticalurl
+     * @param $startdate
+     * @param $enddate
+     * @param $dy
+     * @param $key
+     * @param $multiday
+     * @return array
+     */
     public function get_ical_events($exticalurl, $startdate=null, $enddate=null, &$dy=0, $key=0, $multiday=false) {
         $extevents = array();
         require_once BASE . 'external/iCalcreator-2.28.2/autoload.php';
-//        require_once BASE . 'external/iCalcreator-2.30.5/autoload.php';
+//        require_once BASE . 'external/iCalcreator-2.30.10/autoload.php';
+//        require_once BASE . 'external/iCalcreator-2.40.10/autoload.php';
+//        require_once BASE . 'external/iCalcreator-2.41.64/autoload.php';
         $v = new Kigkonsult\Icalcreator\Vcalendar(); // initiate new CALENDAR
-        if (stripos($exticalurl, 'http') === 0 || stripos($exticalurl, 'webcal') === 0) {
-            $v->setConfig('url', $exticalurl);
-        } else {
-            $v->setConfig('directory', dirname($exticalurl));
-            $v->setConfig('filename', basename($exticalurl));
-        }
+//        if (stripos($exticalurl, 'http') === 0 || stripos($exticalurl, 'webcal') === 0) {
+//            $v->setConfig('url', $exticalurl);
+//        } else {
+//            $v->setConfig('directory', dirname($exticalurl));
+//            $v->setConfig('filename', basename($exticalurl));
+//        }
+//        $vcal = file_get_contents($exticalurl);
         try {
-            $v->parse();
+//            $v->parse();
+            $v->parse(file_get_contents($exticalurl));
         }
         catch( Exception $e ) {
             flash('error', $e->getMessage());
@@ -1552,7 +1582,7 @@ class eventController extends expController {
 
         // Set the timezone to GMT
         @date_default_timezone_set('GMT');
-        $tzarray = Kigkonsult\Icalcreator\getTimezonesAsDateArrays($v);
+//        $tzarray = Kigkonsult\Icalcreator\getTimezonesAsDateArrays($v);
         // Set the default timezone
         @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
         if (!empty($eventArray)) foreach ($eventArray as $year => $yearArray) {

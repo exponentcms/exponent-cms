@@ -109,7 +109,7 @@ class datetimecontrol extends formcontrol {
             $html .= '<input class="text timebox form-control" type="text" id="' . $name . '_minute" name="' . $name . '_minute" aria-label="' . gt('Minute') . '" size="3" maxlength="2" value="' . $minute . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
-            $html .= '<select class="select form-control" id="' . $name . '_ampm" name="' . $name . '_ampm" size="1"';
+            $html .= '<select class="select form-select form-control" id="' . $name . '_ampm" name="' . $name . '_ampm" size="1"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= '>';
             $html .= '<option value="am"' . ($default_date['hours'] < 12 ? " selected" : "") . '>am</option>';

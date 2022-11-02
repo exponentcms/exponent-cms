@@ -19,7 +19,7 @@
     {$label_class = "label"}
 {/if}
 <label class="{$label_class}" for="recur">{'Recurrence'|gettext}:</label>
-<select class="form-control" id="recur" name="recur" onchange="showSubform(this)">
+<select class="form-control form-select" id="recur" name="recur" onchange="showSubform(this)">
 	<option value="recur_none">{'None'|gettext}</option>
 	<option value="recur_daily">{'Daily'|gettext}</option>
 	<option value="recur_weekly">{'Weekly'|gettext}</option>

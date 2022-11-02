@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="yadcf" scsscss="`$smarty.const.JQUERY_RELATIVE`addons/scss/select2-bootstrap.scss"}
+{css unique="yadcf" scsscss="`$smarty.const.JQUERY_RELATIVE`addons/scss/select2-bootstrap4.scss"}
 {literal}
     table.dataTable thead > tr {
         font-size-adjust: 0.4;
@@ -258,6 +258,7 @@
             select_type: 'select2',
             select_type_options: {
             //     width: '50px',
+                theme: "bootstrap4",
                 minimumResultsForSearch: -1 // remove search box
             },
             style_class: 'form-control',
@@ -279,6 +280,7 @@
             select_type: 'select2',
             select_type_options: {
             //     width: '50px',
+                theme: "bootstrap4",
                 minimumResultsForSearch: -1 // remove search box
             },
             style_class: 'form-control',
@@ -291,6 +293,7 @@
             select_type: 'select2',
             select_type_options: {
             //     width: '50px',
+                theme: "bootstrap4",
                 minimumResultsForSearch: -1 // remove search box
             },
             style_class: 'form-control',

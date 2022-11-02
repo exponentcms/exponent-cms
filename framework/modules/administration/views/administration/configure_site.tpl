@@ -167,8 +167,8 @@
 	                {control type="dropdown" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Default time zone for this site"|gettext|cat:(' <br />'|cat:("CAUTION: Changes may affect calendars and other features using date functions."|gettext)) items=$timezones default=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position"|gettext items="Top of Viewport,Bottom of Viewport"|gettxtlist values="1,0" default=$smarty.const.SLINGBAR_TOP}
 					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$smarty.const.THUMB_QUALITY|default:75 size="2"}
-                    {control type="checkbox" name="sc[AJAX_PAGING]" label="Use ajax paging if available"|gettext value=1 checked=$smarty.const.AJAX_PAGING description='Can decrease paging loading time'|gettext}
-                    {control type="checkbox" name="sc[OLD_BROWSER_SUPPORT]" label="Support Obsolete Browsers"|gettext value=1 checked=$smarty.const.OLD_BROWSER_SUPPORT description='Activate support for obsolete (non-HTML5) browsers'|gettext}
+                    {control type="checkbox" postfalse=1 name="sc[AJAX_PAGING]" label="Use ajax paging if available"|gettext value=1 checked=$smarty.const.AJAX_PAGING description='Can decrease paging loading time'|gettext}
+                    {control type="checkbox" postfalse=1 name="sc[OLD_BROWSER_SUPPORT]" label="Support Obsolete Browsers"|gettext value=1 checked=$smarty.const.OLD_BROWSER_SUPPORT description='Activate support for obsolete (non-HTML5) browsers'|gettext}
                 </div>
                 <div id="tab6">
 	                <div class="info-header">
@@ -178,7 +178,7 @@
 		                <h2>{"File Manager/Uploader Settings"|gettext}</h2>
                     </div>
                     {control type="dropdown" name="sc[SITE_FILE_MANAGER]" label="File Manager"|gettext items="Traditional,elFinder"|gettxtlist values="picker,elfinder" default=$smarty.const.SITE_FILE_MANAGER}
-                    {control type="dropdown" name="sc[ELFINDER_THEME]" label="elFinder Theme"|gettext items=$elf_themes default=$smarty.const.ELFINDER_THEME default=""}
+                    {control type="dropdown" name="sc[ELFINDER_THEME]" label="elFinder Theme"|gettext items=$elf_themes default=$smarty.const.ELFINDER_THEME}
                     {control type="checkbox" postfalse=1 name="sc[FM_MSOFFICE]" label="Prefer MS Office for Doc Previews?"|gettext checked=$smarty.const.FM_MSOFFICE value=1}
                     {control type="text" name="sc[FM_WIDTH]" label="Popup Window Width"|gettext value=$smarty.const.FM_WIDTH|default:1024 size="4"}
                     {control type="text" name="sc[FM_HEIGHT]" label="Popup Window Height"|gettext value=$smarty.const.FM_HEIGHT|default:600 size="4"}

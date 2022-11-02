@@ -133,24 +133,39 @@ class popupdatetimecontrol extends formcontrol
 
         $script = "
             $(document).ready(function() {
-                $('#" . $idname."').datetimepicker({
-                    format: '" .($this->showdate ? 'L' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'LT' : '') ."',
+                var tclock = new tempusDominus.TempusDominus(document.getElementById('" . $idname . "'),{
+                    localization: {
+                        format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
+                        locale: '" . str_replace("_", "-", LOCALE) . "',
+                    },
                     stepping: 15,
-                    locale: '" . LOCALE . "',
-                    showTodayButton: true,
-                    sideBySide: true,
-//                    icons: {
-//                        time: 'far fa-clock',
-//                        date: 'far fa-calendar-alt',
-//                        up: 'fas fa-chevron-up',
-//                        down: 'fas fa-chevron-down',
-//                        previous: 'fas fa-chevron-left',
-//                        next: 'fas fa-chevron-right',
-//                        today: 'fas fa-crosshairs',
-//                        clear: 'fas fa-trash-alt',
-//                        close: 'fas fa-times'
-//                    },
-                  });
+                    display: {
+                        buttons: {
+                            today: true,
+        //                    clear: false,
+        //                    close: false
+                        },
+                        sideBySide: true,
+                    }
+                });
+
+                if (" . (USE_BOOTSTRAP_ICONS ? '1' : '0') . ") {
+                    tclock.updateOptions({
+                        display: {
+                            icons: {
+                                time: 'bi bi-clock',
+                                date: 'bi bi-calendar',
+                                up: 'bi bi-arrow-up',
+                                down: 'bi bi-arrow-down',
+                                previous: 'bi bi-chevron-left',
+                                next: 'bi bi-chevron-right',
+                                today: 'bi bi-calendar-check',
+                                clear: 'bi bi-trash',
+                                close: 'bi bi-x',
+                            },
+                        }
+                    });
+                }
             });
         ";
 
@@ -167,7 +182,8 @@ class popupdatetimecontrol extends formcontrol
         expJavascript::pushToFoot(
             array(
                 "unique" => 'popcal' . $idname,
-                "jquery"    => "moment,bootstrap-datetimepicker",
+                "jquery"    => "tempus-dominus",
+                "src"      => "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js",
                 "bootstrap" => "collapse",
                 "content" => $script,
             )

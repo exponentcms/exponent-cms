@@ -127,7 +127,7 @@ class calendarcontrol extends formcontrol
         $html .= "<div class='input-group input-group-sm' id='" . $idname . "'>
                         <input type='text' class='text form-control' name='" . $name . "' value='".$default."'/>
                         <span class='input-group-append'>
-                            <span class='".$icon_cp."'></span>
+                            <span class='input-group-text ".$icon_cp."'></span>
                         </span>
                     </div>";
         if (!empty($this->description))
@@ -136,23 +136,40 @@ class calendarcontrol extends formcontrol
             $html .= "</div>";
 
         $script = "
-            $('#" . $idname . "').datetimepicker({
-                format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
-                stepping: 15,
-                locale: '" . LOCALE . "',
-                showTodayButton: true,
-                sideBySide: true,
-//                icons: {
-//                    time: 'far fa-clock',
-//                    date: 'far fa-calendar-alt',
-//                    up: 'fas fa-chevron-up',
-//                    down: 'fas fa-chevron-down',
-//                    previous: 'fas fa-chevron-left',
-//                    next: 'fas fa-chevron-right',
-//                    today: 'fas fa-crosshairs',
-//                    clear: 'fas fa-trash-alt',
-//                    close: 'fas fa-times'
-//                },
+            $(document).ready(function() {
+                var tclock = new tempusDominus.TempusDominus(document.getElementById('" . $idname . "'),{
+                    localization: {
+                        format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
+                        locale: '" . str_replace("_", "-", LOCALE) . "',
+                    },
+                    stepping: 15,
+                    display: {
+                        buttons: {
+                            today: true,
+        //                    clear: false,
+        //                    close: false
+                        },
+                        sideBySide: true,
+                    }
+                });
+
+                if (" . (USE_BOOTSTRAP_ICONS ? '1' : '0') . ") {
+                    tclock.updateOptions({
+                        display: {
+                            icons: {
+                                time: 'bi bi-clock',
+                                date: 'bi bi-calendar',
+                                up: 'bi bi-arrow-up',
+                                down: 'bi bi-arrow-down',
+                                previous: 'bi bi-chevron-left',
+                                next: 'bi bi-chevron-right',
+                                today: 'bi bi-calendar-check',
+                                clear: 'bi bi-trash',
+                                close: 'bi bi-x',
+                            },
+                        }
+                    });
+                }
             });
         ";
 
@@ -169,7 +186,8 @@ class calendarcontrol extends formcontrol
         expJavascript::pushToFoot(
             array(
                 "unique"  => 'zzcal-' . $idname,
-                "jquery"    => "moment,bootstrap-datetimepicker",
+                "jquery"    => "tempus-dominus",
+                "src"      => "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js",
                 "bootstrap" => "collapse",
                 "content" => $script,
             )

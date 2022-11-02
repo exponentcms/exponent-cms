@@ -119,10 +119,10 @@ class calendarcontrol extends formcontrol
         $html = '';
         if ($this->horizontal)
             $html .= "<div class='col-sm-10'>";
-        $html .= "<div class='input-group input-group-sm' id='" . $idname . "'>
-                        <input type='text' class='text form-control' name='" . $name . "' value='".$default."'/>
-                        <span class='input-group-append'>
-                            <span class='far fa-calendar-alt'></span>
+        $html .= "<div class='input-group date input-group-sm' id='" . $idname . "'>
+                        <input type='text' class='text form-control datetimepicker-input' name='" . $name . "' value='".$default."' data-target='#" . $idname . "'/>
+                        <span class='input-group-append' data-target='#" . $idname . "' data-toggle='datetimepicker'>
+                            <span class='input-group-text far fa-calendar-alt'></span>
                         </span>
                     </div>";
         if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">".$this->description."</small>";
@@ -134,7 +134,11 @@ class calendarcontrol extends formcontrol
                 format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
                 stepping: 15,
                 locale: '" . LOCALE . "',
-                showTodayButton: true,
+                buttons: {
+                    showToday: true,
+                    showClear: false,
+                    showClose: false
+                },
                 sideBySide: true,
 //                icons: {
 //                    time: 'far fa-clock',
@@ -163,7 +167,7 @@ class calendarcontrol extends formcontrol
         expJavascript::pushToFoot(
             array(
                 "unique"  => 'zzcal-' . $idname,
-                "jquery"    => "moment,bootstrap-datetimepicker",
+                "jquery"    => "moment,tempusdominus-bootstrap-4",
                 "bootstrap" => "collapse",
                 "content" => $script,
             )

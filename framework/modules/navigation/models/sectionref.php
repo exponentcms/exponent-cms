@@ -39,7 +39,7 @@ class sectionref extends expRecord {
                 $iLoc = expUnserialize($container->internal);
                 $newret = recyclebin::restoreFromRecycleBin($iLoc, $page_id);
                 if (!empty($newret)) $ret .= $newret . '<br>';
-                if ($iLoc->mod == 'container') {
+                if ($iLoc->mod === 'container') {
                     $ret .= scan_container($container->internal, $page_id);
                 }
             }
@@ -67,9 +67,9 @@ class sectionref extends expRecord {
         $ret .= scan_page(-1);  // now the stand alone pages
 
         // we need to get the non-main containers such as sidebars, footers, etc...
-        $hardcodedmods = $db->selectObjects('sectionref',"refcount=1000 AND source NOT LIKE '%@section%' AND source NOT LIKE '%@random%'");
+        $hardcodedmods = $db->selectObjects('sectionref',"source NOT LIKE '%@section%' AND source NOT LIKE '%@random%'");
         foreach ($hardcodedmods as $hardcodedmod) {
-            if ($hardcodedmod->module == 'container') {
+            if ($hardcodedmod->module === 'container') {
                 $page_id = (int)(preg_replace('/\D/', '', $hardcodedmod->source));
                 if (empty($page_id)) {
                     $page_id = SITE_DEFAULT_SECTION;  // we'll default to the home page
@@ -77,6 +77,7 @@ class sectionref extends expRecord {
                 $ret .= scan_container(serialize(expCore::makeLocation($hardcodedmod->module, $hardcodedmod->source)), $page_id);
             } else {
                 $hardcodedmod->section = 0;  // this is a hard-coded non-container module
+                $hardcodedmod->refcount = 1000;  // this is a hard-coded non-container module
                 $db->updateObject($hardcodedmod, 'sectionref');
             }
         }

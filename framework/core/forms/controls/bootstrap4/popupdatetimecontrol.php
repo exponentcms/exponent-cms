@@ -117,9 +117,17 @@ class popupdatetimecontrol extends formcontrol
         if ($this->horizontal)
             $date_input->horizontal_top = true;
         $html = $date_input->toHTML(null, $name);
-        $html = str_replace('form-group', '', $html);  // we're a control within a control
+        $html = str_replace('form-group', 'date', $html);  // we're a control within a control
 
-//        $html = '';
+
+        $html = '<div id="' . $idname . 'Control" class="text-control control col-sm-10 ">
+                    <div class="input-group input-group-sm date" id="' . $idname . '" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" value="'. $myval . '" data-target="#' . $idname . '" size="40"/>
+                        <span class="input-group-append" data-target="#' . $idname . '" data-toggle="datetimepicker">
+                            <i class="input-group-text fas fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>';
 //        if ($this->horizontal)
 //            $html .= "<div class='col-sm-10'>";
 //        $html .= "<div class='input-group' id='" . $idname . "'>
@@ -132,26 +140,30 @@ class popupdatetimecontrol extends formcontrol
 //            $html .= "</div>";
 
         $script = "
-            $(document).ready(function() {
-                $('#" . $idname."').datetimepicker({
-                    format: '" .($this->showdate ? 'L' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'LT' : '') ."',
+//            $(document).ready(function() {
+                $('#" . $idname . "').datetimepicker({
+                    format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
                     stepping: 15,
                     locale: '" . LOCALE . "',
-                    showTodayButton: true,
+                    buttons: {
+                        showToday: true,
+                        showClear: false,
+                        showClose: false
+                    },
                     sideBySide: true,
-//                    icons: {
-//                        time: 'far fa-clock',
-//                        date: 'far fa-calendar-alt',
-//                        up: 'fas fa-chevron-up',
-//                        down: 'fas fa-chevron-down',
-//                        previous: 'fas fa-chevron-left',
-//                        next: 'fas fa-chevron-right',
-//                        today: 'fas fa-crosshairs',
-//                        clear: 'fas fa-trash-alt',
-//                        close: 'fas fa-times'
-//                    },
-                  });
-            });
+    //                icons: {
+    //                    time: 'far fa-clock',
+    //                    date: 'far fa-calendar-alt',
+    //                    up: 'fas fa-chevron-up',
+    //                    down: 'fas fa-chevron-down',
+    //                    previous: 'fas fa-chevron-left',
+    //                    next: 'fas fa-chevron-right',
+    //                    today: 'fas fa-crosshairs',
+    //                    clear: 'fas fa-trash-alt',
+    //                    close: 'fas fa-times'
+    //                },
+                });
+//            });
         ";
 
         global $less_vars;
@@ -167,7 +179,7 @@ class popupdatetimecontrol extends formcontrol
         expJavascript::pushToFoot(
             array(
                 "unique" => 'popcal' . $idname,
-                "jquery"    => "moment,bootstrap-datetimepicker",
+                "jquery"    => "moment,tempusdominus-bootstrap-4",
                 "bootstrap" => "collapse",
                 "content" => $script,
             )

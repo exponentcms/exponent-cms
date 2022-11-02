@@ -180,7 +180,7 @@ class administrationController extends expController {
 		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
 		$no_sections = array();
 		foreach ($sectionrefs as $sectionref) {
-			if ($db->selectObject('section',"id=".(int)$sectionref->section) == null) {
+			if ($sectionref->refcount != 1000 && $db->selectObject('section',"id=".(int)$sectionref->section) == null) {
 			// There is no section/page for sectionref so change the refcount
 				$sectionref->refcount = 0;
 				$db->updateObject($sectionref,"sectionref");
@@ -559,7 +559,7 @@ class administrationController extends expController {
 			'mods'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-mods',
 		);
 
-        require_once(BASE . 'external/simplepie-1.6.0/autoloader.php');
+        require_once(BASE . 'external/simplepie-1.7.0/autoloader.php');
 		$RSS = new SimplePie();
 		$RSS->set_cache_location(BASE . 'tmp/rsscache');  // default is ./cache
 //	    $RSS->set_cache_duration(3600);  // default if 3600

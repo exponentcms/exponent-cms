@@ -76,7 +76,8 @@
                 $("#aggregation-list").hide("slow");
             }
         });
-        if (!$("#add_source").checked) $("#aggregation-list").hide();
+        if (!$("#add_source").is(':checked'))
+            $("#aggregation-list").hide();
     });
 
 //    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {

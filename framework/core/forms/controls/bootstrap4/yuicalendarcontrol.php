@@ -110,7 +110,7 @@ class yuicalendarcontrol extends formcontrol
 //        $date_input->name = $idname;
 //        $date_input->disabled = 'disabled';
 //        $html = "<!-- cke lazy -->";
-        $html = '<div class="input-group input-append" id="'.$idname.'dateRangePicker">'.$date_input->toHTML(null, $name).'</div>';
+        $html = '<div class="input-group date input-append col-sm-10 border" id="'.$idname.'dateRangePicker">'.$date_input->toHTML(null, $name).'</div>';
         if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">".$this->description."</small>";
 //        $html .= "
 //        <div style=\"clear:both\"></div>
@@ -122,7 +122,11 @@ class yuicalendarcontrol extends formcontrol
                     format: '" .($this->showdate ? 'L' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'LT' : '') ."',
                     stepping: 15,
                     locale: '" . LOCALE . "',
-                    showTodayButton: true,
+                    buttons: {
+                        showToday: true,
+//                        showClear: false,
+//                        showClose: false
+                    },
                     inline: true,
                     sideBySide: true,
 //                    icons: {
@@ -153,7 +157,7 @@ class yuicalendarcontrol extends formcontrol
         expJavascript::pushToFoot(
             array(
                 "unique"    => '00yuical-' . $idname,
-                "jquery"    => "moment,bootstrap-datetimepicker",
+                "jquery"    => "moment,tempusdominus-bootstrap-4",
                 "bootstrap" => "collapse",
                 "content"   => $script,
             )

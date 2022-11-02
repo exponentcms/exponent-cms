@@ -108,7 +108,7 @@ Exponent CMS includes built-in Developer Debugging support, but this feature can
 installing the [Kint](https://github.com/kint-php/kint) PHP library. Simply place the kint.phar file
 into the /external folder (for v1 & v2 extract into the /external folder to create a subfolder).
 The feature is auto-activated by this installation.
-- v4.1.3 (/external/kint.phar) is the most recent release; (requires Exponent CMS v2.6.0patch2 or later)
+- v4.2.0 (/external/kint.phar) is the most recent release; (requires Exponent CMS v2.6.0patch2 or later)
 - v3.3.0 (/external/kint.phar) is the last 3.x release; 
 - v2.2 (/external/kint-2.2/) is the last 2.x version, 
 - but v1.1 (/external/kint/) is also supported
@@ -138,5 +138,5 @@ implemented by installing the [php-autoprefixer](https://github.com/padaliyajay/
 This library also requires the [PHP-CSS-Parser](https://github.com/sabberworm/PHP-CSS-Parser) PHP
 library.  Simply extract the package into the / (root) folder and it will be automatically recognized.
 - [php-autoprefixerv260.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/php-autoprefixerv260.zip/download)
-This uses the php-autoprefixer v1.3 library with PHP-CSS-Parser v8.3.1 library which has been customized 
+This uses the php-autoprefixer v1.4 library with PHP-CSS-Parser v8.4.0 library which has been customized 
 for Exponent due to the unique file structure required. This requires Exponent CMS v2.6.0 or later.

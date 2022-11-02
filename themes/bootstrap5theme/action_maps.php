@@ -36,9 +36,17 @@ return array(
     'store'=>array(                     // the 'store' module
         'manage'=>'Full Size'           // 'manage' action will use the 'Full Size' subtheme
     ),
+    'search'=>array(                    // the 'search' module
+        '*'=>'Default'                  // ANY 'search' action will use the 'Default' subtheme
+    ),
+    'administration'=>array(            // the 'administration' module
+        '*'=>'Default'                  // ANY 'administration' action will use the 'Default' subtheme
+    ),
+    'file'=>array(                      // the 'file' module
+        '*'=>'Default'                  // ANY 'file' action will use the 'Default' subtheme
+    ),
 //    'blog'=>array(                      // the 'blog' module
-//        'show'=>'Blog Sidebar',         // 'show' action will use the 'Blog Sidebar' subtheme
-//        'showall'=>'Blog Sidebar',      // 'showall' action will use the 'Blog Sidebar' subtheme
+//        '*'=>'Blog Sidebar',            // ANY 'blog' action will use the 'Blog Sidebar' subtheme
 //    ),
 //    '*'=>array(                         // ANY module
 //        'showall_by_tags'=>'Tags View'  // showall_by_tags action will use the 'Tags View' subtheme

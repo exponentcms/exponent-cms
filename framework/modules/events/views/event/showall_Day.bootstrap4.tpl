@@ -65,10 +65,10 @@
 			{/if}
 		</div>
 	{/permissions}
-    <div class='input-group module-actions' id='j_input{$__loc->src|replace:'@':'_'}' style="left:40%">
-        <input type='hidden' class="form-control" />
-        <span class="input-group-append" style="display:inherit;border-radius:4px;border-left:1px solid #ccc;cursor:pointer;width:auto">
-            <span class="fas fa-calendar"></span>
+    <div class='input-group date module-actions' id='j_input{$__loc->src|replace:'@':'_'}' data-target-input="nearest" style="left:40%">
+        <input type='hidden' class="form-control datetimepicker-input" data-target="#j_input{$__loc->src|replace:'@':'_'}" />
+        <span class="input-group-append" data-target="#j_input{$__loc->src|replace:'@':'_'}" data-toggle="datetimepicker" style="display:inherit;border-radius:4px;border-left:1px solid #ccc;cursor:pointer;width:auto">
+            <span class="input-group-text fas fa-calendar"></span>
             {'Go to Date'|gettext}
         </span>
         <span class="loader"></span>
@@ -78,7 +78,7 @@
     </div>
 </div>
 
-{script unique=$name|cat:'-popup' jquery="moment,bootstrap-datetimepicker,jquery.history"}
+{script unique=$name|cat:'-popup' jquery="moment,tempusdominus-bootstrap-4,jquery.history"}
 {literal}
     $(document).ready(function() {
         var monthcal_{/literal}{$name}{literal} = $('#day-{/literal}{$name}{literal}');
@@ -97,13 +97,17 @@
         var sUrl_{/literal}{$name}{literal} = EXPONENT.PATH_RELATIVE + "index.php?controller=event&action=showall&view=day&ajax_action=1&src={/literal}{$__loc->src}{literal}";
 
         // Popup calendar
-        $('#j_input{/literal}{$__loc->src|replace:'@':'_'}{literal}').datetimepicker({
+        var pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}element = $('#j_input{/literal}{$__loc->src|replace:'@':'_'}{literal}');
+        pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}element.datetimepicker({
             format: 'MM/DD/YYYY',
             extraFormats: ['YYYYMMDD','MM/DD/YYYY'],
             locale: '{/literal}{$smarty.const.LOCALE}{literal}',
-            showTodayButton: true,
-//            viewMode: 'months',
-            showClose: true,
+            viewMode: 'months',
+            buttons: {
+                showToday: true,
+                showClear: false,
+                showClose: true
+            },
             defaultDate: '{/literal}{$time|format_date:"%Y%m%d"}{literal}',
 //            allowInputToggle: true,
 //             icons: {
@@ -117,7 +121,8 @@
 //                 clear: 'fa fa-trash',
 //                 close: 'fa fa-times'
 //             },
-        }).on('dp.hide',function(e){
+        });
+        pop_{/literal}{$__loc->src|replace:'@':'_'}{literal}element.on('hide.datetimepicker',function(e){
             if (!moment($('#day{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.date, 'day') || !moment($('#day{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.date, 'month') || !moment($('#day{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.date, 'year')) {
                 var unixtime = e.date.unix();
             {/literal} {if $smarty.const.AJAX_PAGING}

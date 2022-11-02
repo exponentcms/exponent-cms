@@ -110,7 +110,7 @@ class yuicalendarcontrol extends formcontrol
 //        $date_input->name = $idname;
 //        $date_input->disabled = 'disabled';
 //        $html = "<!-- cke lazy -->";
-        $html = '<div class="input-group input-append" id="'.$idname.'dateRangePicker">'.$date_input->toHTML(null, $name).'</div>';
+        $html = '<div class="input-group input-append col-sm-10" id="'.$idname.'dateRangePicker" style="width:inherit;">'.$date_input->toHTML(null, $name).'</div>';
         if (!empty($this->description))
             $html .= "<div id=\"" . $name . "HelpBlock\" class=\"form-text text-muted\">".$this->description."</div>";
 //        $html .= "
@@ -119,25 +119,40 @@ class yuicalendarcontrol extends formcontrol
 
         $script = "
             $(document).ready(function() {
-                $('#" . $idname . "dateRangePicker').datetimepicker({
-                    format: '" .($this->showdate ? 'L' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'LT' : '') ."',
+                var tclock = new tempusDominus.TempusDominus(document.getElementById('" . $idname . "dateRangePicker'),{
+                    localization: {
+                        locale: '" . str_replace("_", "-", LOCALE) . "',
+                        format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
+                    },
                     stepping: 15,
-                    locale: '" . LOCALE . "',
-                    showTodayButton: true,
-                    inline: true,
-                    sideBySide: true,
-//                    icons: {
-//                        time: 'far fa-clock',
-//                        date: 'far fa-calendar-alt',
-//                        up: 'fas fa-chevron-up',
-//                        down: 'fas fa-chevron-down',
-//                        previous: 'fas fa-chevron-left',
-//                        next: 'fas fa-chevron-right',
-//                        today: 'fas fa-crosshairs',
-//                        clear: 'fas fa-trash-alt',
-//                        close: 'fas fa-times'
-//                    },
+                    display: {
+                        buttons: {
+                            today: true,
+        //                    clear: false,
+        //                    close: false
+                        },
+                        inline: true,
+                        sideBySide: true,
+                    }
                 });
+
+                if (" . (USE_BOOTSTRAP_ICONS ? '1' : '0') . ") {
+                    tclock.updateOptions({
+                        display: {
+                            icons: {
+                                time: 'bi bi-clock',
+                                date: 'bi bi-calendar',
+                                up: 'bi bi-arrow-up',
+                                down: 'bi bi-arrow-down',
+                                previous: 'bi bi-chevron-left',
+                                next: 'bi bi-chevron-right',
+                                today: 'bi bi-calendar-check',
+                                clear: 'bi bi-trash',
+                                close: 'bi bi-x',
+                            },
+                        }
+                    });
+                }
             });
         ";
 
@@ -154,7 +169,7 @@ class yuicalendarcontrol extends formcontrol
         expJavascript::pushToFoot(
             array(
                 "unique"    => '00yuical-' . $idname,
-                "jquery"    => "moment,bootstrap-datetimepicker",
+                "jquery"    => "tempus-dominus",
                 "bootstrap" => "collapse",
                 "content"   => $script,
             )

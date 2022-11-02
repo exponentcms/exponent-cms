@@ -532,9 +532,9 @@ if (!defined('YUI2_RELATIVE')) {
 if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
-    define('JQUERY3_VERSION', '3.6.0');
-    define('JQUERY3_MIGRATE_VERSION', '3.3.2');
-    define('JQUERYUI_VERSION', '1.13.0');
+    define('JQUERY3_VERSION', '3.6.1');
+    define('JQUERY3_MIGRATE_VERSION', '3.4.0');
+    define('JQUERYUI_VERSION', '1.13.2');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
     define('JQUERY_URL', URL_FULL . 'external/jquery/');
@@ -591,7 +591,8 @@ if (USE_CDN) {
         define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v4.x script
     if (!defined('BS5_SCRIPT')) {
-        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>');
+//        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>');
+        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v5.x script
     if (!defined('FA4_SCRIPT')) {
         define('FA4_SCRIPT', 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
@@ -600,7 +601,7 @@ if (USE_CDN) {
         define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
     if (!defined('FA6_SCRIPT')) {
-        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css');
+        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css');
     } // cdn FontAwesome v6.x stylesheet
 }
 
@@ -612,7 +613,7 @@ if (!defined('SMARTY_PATH')) {
     if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
     } else {
-        define('SMARTY_VERSION', '4.2.0');  //note smarty v3.1.28+ won't work properly with php < v7.1+
+        define('SMARTY_VERSION', '4.2.1');  //note smarty v3.1.28+ won't work properly with php < v7.1+
     }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
@@ -674,7 +675,7 @@ if (!defined('FPDI_VERSION')) {
 }
 
 if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '-1.2.2');  // -2.0.0
+    define('DOMPDF8_VERSION', '-1.2.2');  // -2.0.1
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
