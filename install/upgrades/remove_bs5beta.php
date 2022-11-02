@@ -56,8 +56,8 @@ class remove_bs5beta extends upgradescript {
 	 */
 	function upgrade() {
         $olddirs = array(
-            'themes/bootstrap4theme/',
-            'themes/bootstrap5theme/',
+            'themes/bootstrap4theme',
+            'themes/bootstrap5theme',
         );
         $oldfiles = array(
             'tempusdominus-bootstrap-4.js',
@@ -67,8 +67,8 @@ class remove_bs5beta extends upgradescript {
         $files_removed = 0;
         foreach ($olddirs as $dir) {
             foreach ($oldfiles as $file) {
-                if (file_exists(BASE . $dir . $file)) {
-                    if (unlink(BASE . $dir . $file)) $files_removed++;
+                if (file_exists(BASE . $dir . '/js/' . $file)) {
+                    if (unlink(BASE . $dir . '/js/' . $file)) $files_removed++;
                 }
             }
         }
