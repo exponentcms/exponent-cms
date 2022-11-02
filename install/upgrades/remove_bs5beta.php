@@ -73,8 +73,8 @@ class remove_bs5beta extends upgradescript {
             }
         }
 
-        return ($files_removed ? $files_removed : gt('No')) . " " . gt("Bootstrap 5 beta theme files removed.") . " " .
-            gt("You may also want to remove any similar files in a custom Bootstrap 4 or Boostrap 5 theme in the 'theme/js' folder which are named 'tempusdominus-bootstrap-4'.");
+        return ($files_removed ? $files_removed : gt('No')) . " " . gt("Bootstrap-5 beta theme files removed.") . " " .
+            gt("You may also want to remove any similar files in your custom Bootstrap 4 or Boostrap 5 theme within the 'theme/js' folder which are named 'tempusdominus-bootstrap-4'.");
 	}
 }
 
