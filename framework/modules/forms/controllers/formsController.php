@@ -123,12 +123,13 @@ class formsController extends expController {
                 $items = $f->selectRecordsArray($where);
                 // resort the items if using a second column to sort
                 if (!empty($this->config['order2'])) {
-                    usort($items, function ($a, $b): int {
-                        if ($a[$this->config['order']] === $b[$this->config['order']]) {
-                            return $a[$this->config['order2']] <=> $b[$this->config['order2']];
-                        }
-                        return $a[$this->config['order']] <=> $b[$this->config['order']];
-                    });
+//                    usort($items, function ($a, $b): int {
+//                        if ($a[$this->config['order']] === $b[$this->config['order']]) {
+//                            return $a[$this->config['order2']] <=> $b[$this->config['order2']];
+//                        }
+//                        return $a[$this->config['order']] <=> $b[$this->config['order']];
+//                    });
+                    usort($items, array("formsController", "sortOrder"));
                 }
                 $columns = array();
                 foreach ($this->config['column_names_list'] as $column_name) {
@@ -231,6 +232,26 @@ class formsController extends expController {
                 "error" => 1,
             ));
         }
+    }
+
+    function sortOrder($a, $b) {
+        if ($a[$this->config['order']] === $b[$this->config['order']]) {
+//            return $a[$this->config['order2']] <=> $b[$this->config['order2']];
+            if ($a[$this->config['order2']] < $b[$this->config['order2']])
+                return -1;
+            else if ($a[$this->config['order2']] > $b[$this->config['order2']])
+                return 1;
+            else if ($a[$this->config['order2']] == $b[$this->config['order2']])
+                return 0;
+        }
+//        return $a[$this->config['order']] <=> $b[$this->config['order']];
+        if ($a[$this->config['order']] < $b[$this->config['order']])
+            return -1;
+        else if ($a[$this->config['order']] > $b[$this->config['order']])
+            return 1;
+        else if ($a[$this->config['order']] == $b[$this->config['order']])
+            return 0;
+
     }
 
     public function show() {
