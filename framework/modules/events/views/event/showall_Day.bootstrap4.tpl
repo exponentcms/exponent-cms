@@ -168,7 +168,7 @@
                 monthcal_{/literal}{$name}{literal}.css('opacity', 1);
             }
             monthcal_{/literal}{$name}{literal}.prev().find('.loader').html('');
-            $('#j_input{/literal}{$__loc->src|replace:'@':'_'}{literal}').data("DateTimePicker").date($('#day{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value);
+            $('#j_input{/literal}{$__loc->src|replace:'@':'_'}{literal}').datetimepicker('date', $('#day{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value);
         };
 
         monthcal_{/literal}{$name}{literal}.delegate('a.evnav', 'click', function(e){
