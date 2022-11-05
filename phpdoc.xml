@@ -6,7 +6,7 @@
         <output>../exponent-api3</output>
         <cache>../exponent-api3/cache</cache>
     </paths>
-    <version number="2.7.0">
+    <version number="2.7.1">
         <api format="php">
             <source dsn=".">
                 <path>.</path>
