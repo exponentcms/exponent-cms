@@ -269,7 +269,7 @@ class tinymce5control extends formcontrol
                     font_formats :
                         " . $fontnames . ",
                     end_container_on_empty_block: true,
-                    file_picker_callback: mceElf.browser,
+//                    file_picker_callback: mceElf.browser,
                 });
             });
         ";
