@@ -456,16 +456,16 @@ class expJavascript {
             } else {
                 //$src = str_replace(URL_FULL,PATH_RELATIVE,$params['src']);
            	    $src = $params['src'];
-                   //FIXME we need to allow for an array of scripts with unique+index as name
+                //FIXME we need to allow for an array of scripts with unique+index as name
            	    //if (file_exists(str_replace(PATH_RELATIVE,"",$src))) {
-                       $expJS[$params['unique']] = array(
-       					"name" => $params['unique'],
-       					"type" => 'js',
-       					"fullpath" => $src
-                       );
-                   // } else {
-                   //     flash('error',"Exponent could not find ".$src.". Check to make sure the path is correct.");
-                   // }
+                    $expJS[$params['unique']] = array(
+                        "name" => $params['unique'],
+                        "type" => 'js',
+                        "fullpath" => $src
+                    );
+                // } else {
+                //     flash('error',"Exponent could not find ".$src.". Check to make sure the path is correct.");
+                // }
             }
     	}
 

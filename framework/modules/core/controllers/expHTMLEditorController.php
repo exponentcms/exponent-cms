@@ -201,6 +201,120 @@ class expHTMLEditorController extends expController
         return $db->selectObject('htmleditor_' . $editor, 'active=1');
     }
 
+    /**
+     * Load elFinder files needed to run the File Browser under TinyMCE
+     *
+     * @param string $editor
+     * @return void
+     */
+    public static function load_tiny_elFinder($editor = 'tinymce') {
+        expCSS::pushToHead(array(
+                "unique" => "jqueryui",
+                "link" => PATH_RELATIVE . "external/jquery/css/smoothness/jquery-ui.min.css",
+            )
+        );
+        expJavascript::pushToFoot(
+            array(
+                "unique" => "elfinder",
+                "jquery" => "jqueryui",
+                "src" => array(
+                    PATH_RELATIVE . "external/elFinder/js/elFinder.js",
+                    PATH_RELATIVE . "external/elFinder/js/elFinder.version.js",
+                    PATH_RELATIVE . "external/elFinder/js/jquery.dialogelfinder.js",
+                    PATH_RELATIVE . "external/elFinder/js/jquery.elfinder.js",
+                    PATH_RELATIVE . "external/elFinder/js/elFinder.mimetypes.js",
+                    PATH_RELATIVE . "external/elFinder/js/elFinder.options.js",
+                    PATH_RELATIVE . "external/elFinder/js/elFinder.options.netmount.js",
+                    PATH_RELATIVE . "external/elFinder/js/elFinder.history.js",
+                    PATH_RELATIVE . "external/elFinder/js/elFinder.command.js",
+                    PATH_RELATIVE . "external/elFinder/js/elFinder.resources.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/button.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/contextmenu.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/cwd.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/dialog.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/fullscreenbutton.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/navbar.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/navdock.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/overlay.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/panel.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/path.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/places.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/searchbutton.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/sortbutton.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/stat.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/toast.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/toolbar.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/tree.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/uploadButton.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/viewbutton.js",
+                    PATH_RELATIVE . "external/elFinder/js/ui/workzone.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/archive.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/back.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/chmod.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/colwidth.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/copy.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/cut.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/download.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/duplicate.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/edit.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/empty.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/extract.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/forward.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/fullscreen.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/getfile.js",
+                    PATH_RELATIVE . "framework/modules/file/connector/help.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/hidden.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/hide.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/home.js",
+                    PATH_RELATIVE . "framework/modules/file/connector/info.js",
+                    PATH_RELATIVE . "framework/modules/file/connector/links.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/mkdir.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/mkfile.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/netmount.js",
+                    PATH_RELATIVE . "framework/modules/file/connector/open.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/opendir.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/opennew.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/paste.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/places.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/preference.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/quicklook.js",
+                    PATH_RELATIVE . "framework/modules/file/connector/quicklook.plugins.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/reload.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/rename.js",
+                    PATH_RELATIVE . "framework/modules/file/connector/resize.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/restore.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/rm.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/search.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/selectall.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/selectinvert.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/selectnone.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/sort.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/undo.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/up.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/upload.js",
+                    PATH_RELATIVE . "external/elFinder/js/commands/view.js",
+                    PATH_RELATIVE . "framework/modules/file/connector/i18n/elfinder." . substr(LOCALE, 0, 2) . ".js",
+                    PATH_RELATIVE . "external/elFinder/js/extras/editors.default.js",
+                )
+            )
+        );
+        expJavascript::pushToFoot(
+            array(
+                "unique" => "tinymcepu",
+                "src" => PATH_RELATIVE . "external/editors/" . $editor . "/plugins/quickupload/plupload.full.min.js"
+            )
+        );
+        expJavascript::pushToFoot(
+            array(
+                "unique" => "tinymce",
+                "src" => array(
+                    PATH_RELATIVE . "external/editors/" . $editor . "/tinymce.min.js",
+                    PATH_RELATIVE . "framework/modules/file/connector/tinymceElfinder.js",
+                )
+            )
+        );
+    }
+
 }
 
 ?>
