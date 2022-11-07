@@ -116,12 +116,8 @@
         {else}
             {$configjs = ''}
         {/if}
-    {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
-        {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
-        {/script}
-    {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}
-        {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce5/tinymce.min.js"}
-        {/script}
+    {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}
+        {expHTMLEditorController::load_tiny_elFinder($smarty.const.SITE_WYSIWYG_EDITOR)}
     {/if}
 
     {script unique=$name jquery="jqueryui"}
@@ -332,6 +328,17 @@
                 baseHref : EXPONENT.PATH_RELATIVE,
             });
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}{literal}
+            const mceElf = new tinymceElfinder({
+                // connector URL (Set your connector)
+                url: EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/elfinder.php',
+                // upload target folder hash for this tinyMCE
+                uploadTargetHash: 'lexp2_Lw', // Hash value on elFinder of writable folder
+                // elFinder dialog node id
+                nodeId: 'elfinder', // Any ID you decide
+                baseUrl: EXPONENT.PATH_RELATIVE + 'external/elFinder/',
+                cssAutoLoad: EXPONENT.PATH_RELATIVE + 'external/elFinder' + EXPONENT.ELFINDER_THEME + '/css/theme.css',
+            });
+
             tinymce.init({
                 selector : '#'+node.id,
                 plugins : tinyplugins,
@@ -353,33 +360,7 @@
                 font_formats :
                     {/literal}{$editor->fontnames}{literal},
                 end_container_on_empty_block: true,
-                file_picker_callback: function expBrowser (callback, value, meta) {
-                    tinymce.activeEditor.windowManager.open({
-                        file: EXPONENT.PATH_RELATIVE+'index.php?controller=file&action=picker&ajax_action=1&update=tiny&filter='+meta.filetype,
-                        title: 'File Manager',
-                        width: {/literal}{$smarty.const.FM_WIDTH}{literal},
-                        height: {/literal}{$smarty.const.FM_HEIGHT}{literal},
-                        resizable: 'yes'
-                    }, {
-                        oninsert: function (url, alt, title) {
-                            // Provide file and text for the link dialog
-                            if (meta.filetype == 'file') {
-                                callback(url, {text: alt, title: title});
-                            }
-
-                            // Provide image and alt text for the image dialog
-                            if (meta.filetype == 'image') {
-                                callback(url, {alt: alt});
-                            }
-
-                            // Provide alternative source and posted for the media dialog
-                            if (meta.filetype == 'media') {
-                                callback(url, {poster: alt});
-                            }
-                        }
-                    });
-                    return false;
-                },
+                file_picker_callback: mceElf.browser,
                 setup: function (theEditor) {
                     theEditor.on('blur', function (e) {
                         if (this.isDirty()) {
