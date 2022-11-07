@@ -396,7 +396,7 @@ $opts = array(
             'path'            => BASE . 'files/',
             'URL'             => URL_FULL . 'files/',
             'trashHash'       => 'tt1_Lw',                     // elFinder's hash of trash folder
-            'winHashFix' => DIRECTORY_SEPARATOR !== '/', // to make hash same to Linux one on windows too
+            'winHashFix'      => DIRECTORY_SEPARATOR !== '/', // to make hash same to Linux one on windows too
             'dirMode'         => octdec(DIR_DEFAULT_MODE_STR + 0),    // new dirs mode (default 0755)
             'fileMode'        => octdec(FILE_DEFAULT_MODE_STR + 0),   // new files mode (default 0644)
             'detectDirIcon'   => '.foldericon.png',       // File to be detected as a folder icon image (elFinder >= 2.1.10) e.g. '.favicon.png'
@@ -409,7 +409,7 @@ $opts = array(
             'accessControl'   => 'access',
             // 'accessControl' => array($acl, 'fsAccess'),
             // 'accessControlData' => array('uid' => 1),
-            'uploadDeny'  => array('all'),                // NO Mimetype allowed to upload
+            'uploadDeny'      => array('all'),                // NO Mimetype allowed to upload
             'uploadAllow'     => array(
                 'application/arj',
                 'application/excel',
@@ -504,7 +504,7 @@ $opts = array(
             'uploadOrder'     => 'deny,allow',
             'uploadOverwrite' => true,
 //            'uploadMaxSize'   => '128m',
-            // 'copyOverwrite' => false,
+//             'copyOverwrite'  => false,
             'copyJoin'        => true,
 //            'mimeDetect'      => 'internal',
             'mimeDetect'      => 'mime_content_type',
@@ -522,15 +522,15 @@ $opts = array(
             // 'acceptedName'    => 'validName',
             'utf8fix'         => false,
 //            'statOwner'       => true,
-            'attributes'      => array(
-                array(
-                    'pattern' => '/^\/\./', // dot files are hidden
-                    'read'    => false,
-                    'write'   => false,
-                    'hidden'  => true,
-                    'locked'  => true
-                )
-            )
+//            'attributes'      => array(
+//                array(
+//                    'pattern' => '/^\/\./', // dot files are hidden
+//                    'read'    => false,
+//                    'write'   => false,
+//                    'hidden'  => true,
+//                    'locked'  => true
+//                )
+//            )
         ),
         // Trash volume
         array(

@@ -29,23 +29,22 @@
     {else}
     <link rel="stylesheet" href="{$smarty.const.JQUERY_RELATIVE}css/smoothness/jquery-ui.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
     {/if}
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/commands.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/common.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/contextmenu.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/cwd.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/dialog.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/fonts.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/navbar.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/places.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/quicklook.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/statusbar.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/toast.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/toolbar.css" type="text/css">
+{*    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/commands.css" type="text/css">*}
+{*    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/common.css" type="text/css">*}
+{*    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/contextmenu.css" type="text/css">*}
+{*    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/cwd.css" type="text/css">*}
+{*    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/dialog.css" type="text/css">*}
+{*    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/fonts.css" type="text/css">*}
+{*    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/navbar.css" type="text/css">*}
+{*    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/places.css" type="text/css">*}
+{*    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/quicklook.css" type="text/css">*}
+{*    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/statusbar.css" type="text/css">*}
+{*    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/toast.css" type="text/css">*}
+{*    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/toolbar.css" type="text/css">*}
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}framework/modules/file/assets/css/elfinder.css" type="text/css">
 
     {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/theme.css" type="text/css">  *}{* default OSX theme *}
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder{$smarty.const.ELFINDER_THEME}/css/theme.css" type="text/css">
-
+{*    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder{$smarty.const.ELFINDER_THEME}/css/theme.css" type="text/css">*}
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
     <!--[if lt IE 9]>
         <script src="{$smarty.const.JQUERY_SCRIPT}" charset="utf-8"></script>
@@ -187,12 +186,96 @@
 
         $().ready(function() {
             var funcNum = getUrlParam('CKEditorFuncNum');
+            var $autoLoadCSS = "{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder"|cat:$smarty.const.ELFINDER_THEME|cat:"/css/theme.css"}{literal}";
 
             var elf = $('#elfinder').elfinder({
                 baseUrl: EXPONENT.PATH_RELATIVE + 'external/elFinder/',  // main URL
                 url: EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/elfinder.php',  // connector URL
                 urlUpload: EXPONENT.URL_FULL + 'framework/modules/file/connector/elfinder.php',  // connector full URL
-                cssAutoLoad: false,
+                cssAutoLoad: $autoLoadCSS,
+                themes : {
+                    "default" : {
+                      "name":"Default OS/X",
+                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"css/theme.css"}{literal}",
+                      "author":"Naoki Sawada",
+                      // "email":"dev@std42.ru",
+                      "license":"3-clauses BSD license",
+                      "link":"https://github.com/Studio-42/elFinder",
+                      "image":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder/themes/default.png"}{literal}",
+                      "description":"Default theme shipped with elFinder"
+                    },
+                    "bootstrap" : {
+                      "name":"Bootstrap",
+                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/bootstrap/css/theme.css"}{literal}",
+                      "author":"Dennis Suitters",
+                      // "email":"Author Email",
+                      // "license":"License",
+                      "link":"https://github.com/DiemenDesign/LibreICONS/tree/master/themes/elFinder",
+                      "image":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder/themes/bootstrap/bootstrap.png"}{literal}",
+                      "description":"Bootstrap and LibreICONS theme for elFinder"
+                    },
+                    "dark-slim" : {
+                      "name":"Dark Slim",
+                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/dark-slim/css/theme.css"}{literal}",
+                      "author":"John Fort",
+                      "email":"support@fortcms.ru",
+                      "license":"MIT",
+                      "link":"https://github.com/johnfort/elFinder.themes",
+                      "image":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder/themes/dark-slim/dark-slim.png"}{literal}",
+                      "description":"Dark Slim theme for elFinder"
+                    },
+                    "material" : {
+                      "name":"Material",
+                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/Material/css/theme.css"}{literal}",
+                      "author":"Róbert Kelčák",
+                      // "email":"Author Email",
+                      "license":"MIT",
+                      "link":"https://github.com/RobiNN1/elFinder-Material-Theme",
+                      "image":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder/themes/Material/Material.png"}{literal}",
+                      "description":"Material Theme for elFinder"
+                    },
+                    "material-gray" : {
+                      "name":"Material Gray",
+                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/Material-Gray/css/theme.css"}{literal}",
+                      "author":"Róbert Kelčák",
+                      // "email":"Author Email",
+                      "license":"MIT",
+                      "link":"https://github.com/RobiNN1/elFinder-Material-Theme",
+                      "image":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder/themes/Material-Gray/Material-Gray.png"}{literal}",
+                      "description":"Material Gray Theme for elFinder"
+                    },
+                    "material-light" : {
+                      "name":"Material Light",
+                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/Material-Light/css/theme.css"}{literal}",
+                      "author":"Róbert Kelčák",
+                      // "email":"Author Email",
+                      "license":"MIT",
+                      "link":"https://github.com/RobiNN1/elFinder-Material-Theme",
+                      "image":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder/themes/Material-Light/Material-Light.png"}{literal}",
+                      "description":"Material Light Theme for elFinder"
+                    },
+                    "moono" : {
+                      "name":"Moono",
+                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/moono/css/theme.css"}{literal}",
+                      "author":"Lawrence Okoth-Odida",
+                      // "email":"Author Email",
+                      // "license":"License",
+                      "link":"https://github.com/lokothodida/elfinder-theme-moono",
+                      "image":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder/themes/moono/moono.png"}{literal}",
+                      "description":"A theme for elFinder that mimics CKEditor's Moono skin."
+                    },
+                    "windows-10" : {
+                      "name":"Windows 10",
+                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/windows-10/css/theme.css"}{literal}",
+                      "author":"Lawrence Okoth-Odida",
+                      // "email":"Author Email",
+                      // "license":"License",
+                      "link":"https://github.com/lokothodida/elfinder-theme-windows-10",
+                      "image":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder/themes/windows-10/windows-10.png"}{literal}",
+                      "description":"An elFinder theme that mimics Windows 10's user interface."
+                    },
+                },
+                theme : 'default',
                 // commands : [
                 //     'pixlr',
                 //     'open', 'opendir', 'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook',

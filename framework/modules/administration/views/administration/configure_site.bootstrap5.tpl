@@ -17,7 +17,7 @@
 
 {messagequeue}
 
-<div id="siteconfig" class="module administration configure-site bootstrap3 bootstrap4">
+<div id="siteconfig" class="module administration configure-site bootstrap3 bootstrap4 bootstrap5">
 	<div class="form_header">
 		<div class="info-header">
 			<div class="related-actions">
