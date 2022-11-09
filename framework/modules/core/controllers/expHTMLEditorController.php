@@ -118,14 +118,19 @@ class expHTMLEditorController extends expController
     {
         expHistory::set('editable', $this->params);
         $tool = self::getEditorSettings(!empty($this->params['id'])?$this->params['id']:null, $this->params['editor']);
-        if ($tool == null) $tool = new stdClass();
+//        if ($tool == null) $tool = new stdClass();
         $tool->data = !empty($tool->data) ? @expStripSlashes($tool->data) : '';
         $tool->plugins = !empty($tool->plugins) ? @expStripSlashes($tool->plugins) : '';
         $tool->stylesset = !empty($tool->stylesset) ? @expStripSlashes($tool->stylesset) : '';
         $tool->formattags = !empty($tool->formattags) ? @expStripSlashes($tool->formattags) : '';
         $tool->fontnames = !empty($tool->fontnames) ? @expStripSlashes($tool->fontnames) : '';
         $tool->additionalconfig = !empty($tool->additionalconfig) ? @expStripSlashes($tool->additionalconfig) : '';
-        $skins_dir = opendir(BASE . 'external/editors/' . $this->params['editor'] . '/skins');
+        if ($this->params['editor'] === 'tinymce5') {
+            $dir = BASE . 'external/editors/' . $this->params['editor'] . '/skins/ui';
+        } else {
+            $dir = BASE . 'external/editors/' . $this->params['editor'] . '/skins';
+        }
+        $skins_dir = opendir($dir);
         $skins = array();
         while (($skin = readdir($skins_dir)) !== false) {
             if ($skin !== '.' && $skin !== '..') {
@@ -191,7 +196,11 @@ class expHTMLEditorController extends expController
     {
         global $db;
 
-        return @$db->selectObject('htmleditor_' . $editor, "id=" . $settings_id);
+        $settings = @$db->selectObject('htmleditor_' . $editor, "id=" . $settings_id);
+        if (empty($settings)) {
+            $settings = new stdClass();
+        }
+        return $settings;
     }
 
     public static function getActiveEditorSettings($editor)

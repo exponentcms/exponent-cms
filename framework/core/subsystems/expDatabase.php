@@ -1443,8 +1443,10 @@ abstract class database {
 	 */
 	function toggle($table, $col, $where=null) {
 	    $obj = $this->selectObject($table, $where);
-	    $obj->$col = ($obj->$col == 0) ? 1 : 0;
-	    $this->updateObject($obj, $table);
+        if (!empty($obj)) {
+            $obj->$col = ($obj->$col == 0) ? 1 : 0;
+            $this->updateObject($obj, $table);
+        }
 	}
 
 	/**
