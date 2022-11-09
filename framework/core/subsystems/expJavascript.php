@@ -442,7 +442,8 @@ class expJavascript {
                 foreach ($params['src'] as $unique => $url) {
                     //if (file_exists(str_replace(PATH_RELATIVE,"",$src))) {
                     if (is_int($unique)) {
-                        $unique = "unique-" . microtime();  // must be unique for each call
+//                        $unique = "unique-" . microtime();  // must be unique for each call
+                        $unique = $params['unique'] . "-" . $unique;  // must be unique for each call
                     }
                     $expJS[$unique] = array(
                         "name" => $unique,
