@@ -13,11 +13,20 @@
  *
  *}
 
-{if $ancestors|@count>0}
-    <div class="module store category-breadcrumb">
-        {foreach from=$ancestors item=ancestor name=path}
-            <a href="{link controller=store action=showall title=$ancestor->sef_url}">{$ancestor->title}</a>
-            {if $smarty.foreach.path.last}{br}{else}&#160;&#160;&raquo;&#160;{/if}
-        {/foreach}
-    </div>
-{/if}
+<div class="category-breadcrumb col-sm-12">
+    {if empty(ecomconfig::getConfig('store_home'))}
+        <a href="{link controller=store action=showall}" title="{'View the Store'|gettext}">{'Store'|gettext}</a>{if count($ancestors)}&#160;&#160;&raquo;&#160;{/if}
+    {else}
+        <a href="{$home}" title="{'View the Store'|gettext}">{'Store'|gettext}</a>{if count($ancestors)}&#160;&#160;&raquo;&#160;{/if}
+    {/if}
+    {foreach from=$ancestors item=ancestor name=path}
+        {if !$smarty.foreach.path.last}
+            <a href="{link controller=store action=showall title=$ancestor->sef_url}" title="{'View this Product Category'|gettext}">{$ancestor->title}</a>&#160;&#160;&raquo;&#160;
+        {elseif empty($show_product)}
+            {$ancestor->title}
+        {else}
+            <a href="{link controller=store action=showall title=$ancestor->sef_url}" title="{'View this Product Category'|gettext}">{$ancestor->title}</a>&#160;&#160;&raquo;&#160;
+            {$show_product}
+        {/if}
+    {/foreach}
+</div>

@@ -26,13 +26,8 @@
 {/if}
 
 <div class="module store show product row">
-    <div class="category-breadcrumb col-sm-12">
-        <a href="{link controller=store action=showall}" title="{'View the Store'|gettext}">{'Store'|gettext}</a>&#160;&#160;&raquo;&#160;
-        {foreach from=$ancestors item=ancestor name=path}
-            <a href="{link controller=store action=showall title=$ancestor->sef_url}" title="{'View this Product Category'|gettext}">{$ancestor->title}</a>&#160;&#160;&raquo;&#160;
-        {/foreach}
-        {$product->title}
-    </div>
+    {$show_product=$product->title}
+    {exp_include file="categoryBreadcrumb.tpl"}
     <div itemscope itemtype="http://data-vocabulary.org/Product">
         {if !empty($product->storeCategory[0]->title)}<span itemprop="category" content="{$product->storeCategory[0]->title}"></span>{/if}
         {permissions}

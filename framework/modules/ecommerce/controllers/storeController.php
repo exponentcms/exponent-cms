@@ -553,9 +553,15 @@ class storeController extends expController {
         }*/
 
         $ancestors = $this->category->pathToNode();
+        if (ecomconfig::getConfig('store_home')) {
+            $home = makeLink(array('section' => ecomconfig::getConfig('store_home_page')));
+        } else {
+            $home = 0;
+        }
         // eDebug($ancestors);
         assign_to_template(array(
-            'ancestors' => $ancestors
+            'ancestors' => $ancestors,
+            'home'      => $home
         ));
     }
 

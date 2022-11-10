@@ -134,7 +134,7 @@ class cartController extends expController {
         //it will validate and fail back to the options page if data is incorrect for whatever reason (eg, bad form post)
         if ($product->addToCart($this->params)) {
             // product was added
-            if (ecomconfig::getConfig('show_cart') || !empty($this->params['quick'])) {
+            if (ecomconfig::getConfig('show_cart') == 1 || !empty($this->params['quick'])) {
                 // adding an item displays the shopping cart
 //                global $order;
 //                $order->calculateGrandTotal();
@@ -145,9 +145,11 @@ class cartController extends expController {
 //                } else {
                 //expHistory::back();
                 //eDebug(show_msg_queue(false),true);
-                redirect_to(array('controller'=>'cart', 'action'=>'show'));
+                redirect_to(array('controller' => 'cart', 'action' => 'show'));
                 //expHistory::lastNotEditable();
 //                }
+            } elseif (ecomconfig::getConfig('show_cart') == 2) {
+                redirect_to(array('section' => ecomconfig::getConfig('show_cart_page')));
             } else {
                 // quick added, so just provide message
                 if ($product->product_type == "donation") {
