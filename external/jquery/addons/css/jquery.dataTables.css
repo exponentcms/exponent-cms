@@ -51,7 +51,7 @@ table.dataTable thead > tr > td.sorting_desc_disabled:after {
   opacity: 0.125;
   right: 10px;
   line-height: 9px;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 table.dataTable thead > tr > th.sorting:before, table.dataTable thead > tr > th.sorting_asc:before, table.dataTable thead > tr > th.sorting_desc:before, table.dataTable thead > tr > th.sorting_asc_disabled:before, table.dataTable thead > tr > th.sorting_desc_disabled:before,
 table.dataTable thead > tr > td.sorting:before,
@@ -60,7 +60,7 @@ table.dataTable thead > tr > td.sorting_desc:before,
 table.dataTable thead > tr > td.sorting_asc_disabled:before,
 table.dataTable thead > tr > td.sorting_desc_disabled:before {
   bottom: 50%;
-  content: "▴";
+  content: "▲";
 }
 table.dataTable thead > tr > th.sorting:after, table.dataTable thead > tr > th.sorting_asc:after, table.dataTable thead > tr > th.sorting_desc:after, table.dataTable thead > tr > th.sorting_asc_disabled:after, table.dataTable thead > tr > th.sorting_desc_disabled:after,
 table.dataTable thead > tr > td.sorting:after,
@@ -69,7 +69,7 @@ table.dataTable thead > tr > td.sorting_desc:after,
 table.dataTable thead > tr > td.sorting_asc_disabled:after,
 table.dataTable thead > tr > td.sorting_desc_disabled:after {
   top: 50%;
-  content: "▾";
+  content: "▼";
 }
 table.dataTable thead > tr > th.sorting_asc:before, table.dataTable thead > tr > th.sorting_desc:after,
 table.dataTable thead > tr > td.sorting_asc:before,
@@ -280,6 +280,9 @@ table.dataTable tbody tr.selected > * {
   box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.9);
   color: white;
 }
+table.dataTable tbody tr.selected a {
+  color: #090a0b;
+}
 table.dataTable tbody th,
 table.dataTable tbody td {
   padding: 8px 10px;
@@ -388,13 +391,9 @@ table.dataTable.no-footer {
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 table.dataTable.compact thead th,
-table.dataTable.compact thead td {
-  padding: 4px 17px;
-}
+table.dataTable.compact thead td,
 table.dataTable.compact tfoot th,
-table.dataTable.compact tfoot td {
-  padding: 4px;
-}
+table.dataTable.compact tfoot td,
 table.dataTable.compact tbody th,
 table.dataTable.compact tbody td {
   padding: 4px;
@@ -452,12 +451,12 @@ table.dataTable td {
   text-align: center;
   text-decoration: none !important;
   cursor: pointer;
-  color: #333 !important;
+  color: inherit !important;
   border: 1px solid transparent;
   border-radius: 2px;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-  color: #333 !important;
+  color: inherit !important;
   border: 1px solid rgba(0, 0, 0, 0.3);
   background-color: rgba(230, 230, 230, 0.1);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(230, 230, 230, 0.1)), color-stop(100%, rgba(0, 0, 0, 0.1)));
@@ -522,7 +521,7 @@ table.dataTable td {
 .dataTables_wrapper .dataTables_info,
 .dataTables_wrapper .dataTables_processing,
 .dataTables_wrapper .dataTables_paginate {
-  color: #333;
+  color: inherit;
 }
 .dataTables_wrapper .dataTables_scroll {
   clear: both;
