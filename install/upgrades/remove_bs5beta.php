@@ -63,6 +63,7 @@ class remove_bs5beta extends upgradescript {
             'tempusdominus-bootstrap-4.js',
             'tempusdominus-bootstrap-4.scss',
             '_tempusdominus-bootstrap-4.scss',
+            'bootbox.all.js',
         );
         $files_removed = 0;
         foreach ($olddirs as $dir) {
