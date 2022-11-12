@@ -43,10 +43,14 @@ class filedownload extends expRecord {
 
         if (!empty($this->meta_fb))
             $this->meta_fb = expUnserialize($this->meta_fb);
+        else
+            $this->meta_fb = array();
         if (!empty($this->meta_fb['fbimage']) && !empty($this->meta_fb['fbimage'][0]))
             $this->meta_fb['fbimage'][0] = new expFile($this->meta_fb['fbimage'][0]);
         if (!empty($this->meta_tw))
             $this->meta_tw = expUnserialize($this->meta_tw);
+        else
+            $this->meta_tw = array();
         if (!empty($this->meta_tw['twimage']) && !empty($this->meta_tw['twimage'][0]))
             $this->meta_tw['twimage'][0] = new expFile($this->meta_tw['twimage'][0]);
 
