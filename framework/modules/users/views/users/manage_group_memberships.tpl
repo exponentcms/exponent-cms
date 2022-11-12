@@ -60,7 +60,7 @@
 </div>
 
 {if $table_filled}
-{script unique="groups-showall" jquery='jquery.dataTables,dataTables.checkboxes'}
+{script unique="groups-showall" jquery='jquery.dataTables,dataTables.dataTables,dataTables.checkboxes'}
 {literal}
     $(document).ready(function() {
         var tableContainer = $('#groups-manage');

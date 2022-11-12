@@ -66,7 +66,7 @@
 </div>
 
 {if $table_filled}
-{script unique="groups-showall" jquery='jquery.dataTables'}
+{script unique="groups-showall" jquery='jquery.dataTables,dataTables.dataTables'}
 {literal}
     $(document).ready(function() {
         var tableContainer = $('#groups-manage');

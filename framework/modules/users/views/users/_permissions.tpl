@@ -62,7 +62,7 @@
     {control type="buttongroup" submit="Save Permissions"|gettext cancel="Cancel"|gettext}
 {/form}
 
-{script unique="permissions" jquery='jquery.dataTables,dataTables.checkboxes'}
+{script unique="permissions" jquery='jquery.dataTables,dataTables.dataTables,dataTables.checkboxes'}
 {literal}
     $(document).ready(function() {
         var checkSubs = function(row) {

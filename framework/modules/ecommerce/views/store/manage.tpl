@@ -133,7 +133,7 @@
     </div>
 </div>
 
-{script unique="manage-products" jquery='jqueryui,select2,jquery.dataTables,dataTables.jqueryui,jquery.dataTables.yadcf'}
+{script unique="manage-products" jquery='jqueryui,select2,jquery.dataTables,dataTables.dataTables,jquery.dataTables.yadcf'}
 {literal}
     $(document).ready(function() {
         var tableContainer = $('#prods');

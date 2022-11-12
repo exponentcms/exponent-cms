@@ -180,7 +180,7 @@
 </div>
 
 {if $table_filled}
-{script unique="view-registrants" jquery='jquery.dataTables'}
+{script unique="view-registrants" jquery='jquery.dataTables,dataTables.dataTables'}
 {literal}
     $(document).ready(function() {
         var tableContainer = $('#view-registrants');
