@@ -28,7 +28,7 @@ class bootstrap5theme extends theme {
         $settings = expSettings::parseFile(__DIR__ . "/config.php");
         if (empty($settings['SWATCH']))
             $settings['SWATCH'] = 'default';
-        $ret = "An HTML5 responsive grids theme based on <a href=\"https://getbootstrap.com/docs/5.0/\" target=\"_blank\">Twitter Bootstrap v5</a> and ";
+        $ret = "An HTML5 responsive grids theme based on <a href=\"https://getbootstrap.com/docs/5.2/\" target=\"_blank\">Twitter Bootstrap v5</a> and ";
         if (USE_BOOTSTRAP_ICONS) {
             $ret .= "<a href=\"https://icons.getbootstrap.com/\" target=\"_blank\">Bootstrap Icons</a>";
         } else {
