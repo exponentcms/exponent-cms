@@ -32,6 +32,7 @@ class yuicalendarcontrol extends formcontrol {
 //    var $disable_text = "";
 //    var $showdate = true;
 //    var $showtime = false;
+    var $type     = 'datetime';
 
     static function name() {
         return "Date / Time - Calendar Display";

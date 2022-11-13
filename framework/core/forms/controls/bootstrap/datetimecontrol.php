@@ -28,6 +28,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class datetimecontrol extends formcontrol {
 
+    var $type     = 'datetime';
     var $showdate = true;
     var $showtime = true;
 

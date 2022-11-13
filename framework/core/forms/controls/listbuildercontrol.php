@@ -27,6 +27,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class listbuildercontrol extends formcontrol {
 
+    var $type     = 'select';
 	var $source = null;
 	var $size = 8;
 	var $newList = false;

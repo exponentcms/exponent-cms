@@ -27,10 +27,10 @@ if (!defined('EXPONENT')) exit('');
  */
 class countryregioncontrol extends formcontrol {
 
+    var $type = 'select';
 	var $size = 0;
 	var $maxlength = "";
     var $include_blank = false;
-    var $type = 'select';
 
 	static function name() { return "Country / Region Selector"; }
 

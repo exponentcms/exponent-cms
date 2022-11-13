@@ -30,6 +30,7 @@ if (!defined('EXPONENT')) {
 class popupdatetimecontrol extends formcontrol
 {
 
+    var $type     = 'datetime';
     var $disable_text = "";
     var $showtime = true;
     var $showdate = true;

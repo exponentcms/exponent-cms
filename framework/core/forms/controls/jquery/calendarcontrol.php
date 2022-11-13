@@ -33,6 +33,7 @@ class calendarcontrol extends formcontrol
 {
 
 //    var $disable_text = "";
+    var $type     = 'datetime';
     var $showtime = true;
     var $default_date = '';
     var $default_hour = '';

@@ -29,6 +29,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class checkboxcontrol extends formcontrol {
 
+    var $type     = 'select';
     var $default = false;
     var $value = "1";
 //    var $newschool = false;

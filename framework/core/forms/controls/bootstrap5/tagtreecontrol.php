@@ -26,6 +26,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class tagtreecontrol extends formcontrol {
 
+    var $type     = 'select';
     var $values = array();
 //    var $menu = true;
     var $addable = true;

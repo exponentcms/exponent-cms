@@ -29,6 +29,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class buttongroupcontrol extends formcontrol {
 
+    var $type   = 'button';
 	var $submit = "Submit";
 	var $reset = "";
 	var $cancel = "";

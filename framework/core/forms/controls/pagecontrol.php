@@ -27,6 +27,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class pagecontrol extends formcontrol {
 
+    var $type    = 'page';
     var $caption = "";
     var $design_time = false;
 //    var $placeholder = "";
