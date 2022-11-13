@@ -200,6 +200,9 @@ class AdminerSerializedPreview
 			$value .= "style='display: none' id='serialize-code-$id'";
 		}
 		$value .= ">";
+        if (is_object($json)) {
+            $value .= "<tr><th colspan='2'><code>" . h(get_class($json)) . " Object</code></th></tr>";
+        }
 
 		if (!empty($json)) foreach ($json as $key => $val) {
 			$value .= "<tr><th><code>" . h($key) . "</code>";
