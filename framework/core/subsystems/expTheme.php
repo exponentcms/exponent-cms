@@ -794,7 +794,7 @@ class expTheme
             } else {
                 $theme = BASE . 'themes/' . DISPLAY_THEME . '/index.php';
             }
-        } elseif ($sectionObj->subtheme != '' && is_readable(
+        } elseif (property_exists($sectionObj, 'subtheme') && $sectionObj->subtheme != '' && is_readable(
                 BASE . 'themes/' . DISPLAY_THEME . '/subthemes/' . $sectionObj->subtheme . '.php'
             )
         ) {

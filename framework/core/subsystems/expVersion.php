@@ -123,7 +123,7 @@ class expVersion {
      * @return bool
      */
     public static function checkVersion($force=false) {
-        global $db, $user;
+        global $db, $user, $framework;
 
         $swversion = self::swVersion();
         $update = false;
@@ -183,6 +183,10 @@ class expVersion {
             return $update;
         } else {
             // database is unavailable, so show us as being offline
+            if (empty($framework)) {
+                $framework = expSession::get('framework');
+            }
+            expCore::setup_autoload($framework);
             $template = new standalonetemplate('_maintenance');
             $template->assign("db_down", true);
             $template->output();

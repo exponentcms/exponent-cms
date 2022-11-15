@@ -633,6 +633,28 @@ class expCore
         }
     }
 
+    // set up controls search order based on framework outside of theme/subtheme page
+    public static function setup_autoload($framework) {
+        global $auto_dirs;
+        if ($framework === 'jquery' || $framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5')
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
+        if ($framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5')
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
+        if ($framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5')
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
+        if ($framework === 'bootstrap4' || $framework === 'bootstrap5')
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap4');
+        if ($framework === 'bootstrap5')
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap5');
+        if (newui())
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
+        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
+        if (!defined('XHTML')) {
+            define('XHTML', 1);
+            define('XHTML_CLOSING', "/"); //default
+        }
+    }
+
 }
 
 ?>
