@@ -50,7 +50,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             $model = empty($params['model']) ? $params['items'][0]->classname : $params['model'];
             $only = !empty($params['only']) ? ' AND ' . $params['only'] : '';
             $obj = new $model();
-            if ($params['model'] == 'expCat') {
+            if ($params['model'] === 'expCat') {
                 if (empty($params['module'])) {
                     $locsql = '1';
                 } else {
@@ -91,7 +91,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             }
             $btn_size = expTheme::buttonStyle();
             $icon_size = expTheme::iconSize();
-            if ($model != 'container') {  // make a button
+            if ($model !== 'container') {  // make a button
                 echo '<a id="rerank', $uniqueid, '" class="',$btn_size,'" data-bs-toggle="modal" data-bs-target="#panel', $uniqueid, '" href="#"><i class="', (USE_BOOTSTRAP_ICONS?'bi-arrow-left-right bi-rotate-90':'fas fa-exchange-alt fa-rotate-90'), $icon_size, '"></i> ', gt("Order"), ' ', $params['label'], '</a>';
             } else {  // make a menu item
                 echo '<a id="rerank', $uniqueid, '" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#panel', $uniqueid, '" href="#"><i class="', (USE_BOOTSTRAP_ICONS?'bi-arrow-left-right bi-rotate-90':'fas fa-exchange-alt fa-rotate-90 fa-fw'), '"></i> ', gt("Order"), ' ', $params['label'], '</a>';
@@ -119,14 +119,14 @@ if (!function_exists('smarty_function_ddrerank')) {
                 ';
                 $stringlen = 40;
                 foreach ($params['items'] as $item) {
-                if (!empty($params['module']) || $params['model'] == 'expDefinableField') {  // we want to embellish the title used
-                        if ($params['module'] == 'formbuilder_control' || $params['module'] == 'forms_control' || $params['model'] == 'expDefinableField') {
+                if (!empty($params['module']) || $params['model'] === 'expDefinableField') {  // we want to embellish the title used
+                        if ($params['module'] === 'formbuilder_control' || $params['module'] === 'forms_control' || $params['model'] === 'expDefinableField') {
                             $control = expUnserialize($item->data);
                             $ctrl = new $control();
                             $name = $ctrl->name();
                             $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . $name . ')';
                             $stringlen = 65;
-                        } elseif ($params['module'] == 'container') {
+                        } elseif ($params['module'] === 'container') {
                             $mod = expUnserialize($item->internal);
                             $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . ucfirst(expModules::getModuleBaseName($mod->mod)) . ')';
                             $stringlen = 65;
@@ -138,7 +138,7 @@ if (!function_exists('smarty_function_ddrerank')) {
                     <div class="fpdrag"></div>';
                     //Do we include the picture? It depends on if there is one set.
                     $html .= (!empty($item->expFile[0]->id) && !empty($item->expFile[0]->is_image)) ? '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile[0]->id . '&w=16&h=16&zc=1" alt="item'.$item->id.'">' : '';
-//note new phpThumb                    $html .= (!empty($item->expFile[0]->id) && !empty($item->expFile[0]->is_image)) ? '<img class="filepic" src="' . get_thumbnail('id=' . $item->expFile[0]->id . '&w=16&h=16&zc=1') .'" alt="item'.$item->id.'">' : '';
+//note new phpThumb                     $html .= (!empty($item->expFile[0]->id) && !empty($item->expFile[0]->is_image)) ? '<img class="filepic" src="' . get_thumbnail('id=' . $item->expFile[0]->id . '&w=16&h=16&zc=1') .'" alt="item'.$item->id.'">' : '';
                     $html .= '<span class="title">' . (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . '</span>
                     </li>';
                 }
@@ -184,7 +184,7 @@ if (!function_exists('smarty_function_ddrerank')) {
                   });
 
             ";
-            if ($model == 'container') {  // must move modal off of menu to display
+            if ($model === 'container') {  // must move modal off of menu to display
                 $script .= "$('#panel" . $uniqueid . "').appendTo('body');";
             }
             $script .="

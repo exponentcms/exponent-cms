@@ -65,9 +65,9 @@ function smarty_function_img($params,&$smarty)
     }
 
 	if (empty($params['fulllink']) && !EXPORT_AS_PDF === 1) {
-		$src = PATH_RELATIVE.'thumb.php?';
+		$src = PATH_RELATIVE . 'thumb.php?';
 	} else {
-		$src = URL_FULL.'thumb.php?';
+		$src = URL_FULL . 'thumb.php?';
 	}
 
 	// figure out which file we're showing
