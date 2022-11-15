@@ -62,10 +62,10 @@
                 message += "{/literal}{'Until'|gettext} {literal}";
                 message += ts.toLocaleString() + " <br />";
                 {/literal}{/if}{literal}
-                message += "{/literal}{$config.body|trim}{literal}";
+                message += "{/literal}{$config.body|trim|replace:'"':'\''}{literal}";
                 note.html(message);
             } else {
-                note.html("{/literal}{$config.message|trim}{literal}");
+                note.html("{/literal}{$config.message|trim|replace:'"':'\''}{literal}");
             }
         };
 
