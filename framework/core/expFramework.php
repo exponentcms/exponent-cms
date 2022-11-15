@@ -926,6 +926,7 @@ function expUnserialize($serial_str) {
         'policy',
         'checkout_message_top',
         'checkout_message_bottom',
+        'message'
     );
     if (is_array($out2)) {
         foreach ($stripList as $strip) {

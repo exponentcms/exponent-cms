@@ -48,6 +48,7 @@ class AdminerEditTextSerializedarea {
                 return "s:".strlen($m_new).':"'.$m_new.'";';
             }, $serial_str );
         $out2 = @unserialize($out);
+        // list of fields with rich text
         $stripList = array(
             'moduledescription',
             'description',
@@ -55,11 +56,18 @@ class AdminerEditTextSerializedarea {
             'report_def',
             'report_def_showall',
             'response',
-            'auto_respond_body'
+            'auto_respond_body',
+            'ecomheader',
+            'ecomfooter',
+            'cart_description_text',
+            'policy',
+            'checkout_message_top',
+            'checkout_message_bottom',
+            'message'
         );
         if (is_array($out2)) {
             foreach ($stripList as $strip) {
-                if (!empty($out2[$strip])) {  // work-around for links in module descriptions
+                if (!empty($out2[$strip])) {  // work-around for links in rich text
                     $out2[$strip] = stripslashes($out2[$strip]);
                 }
             }

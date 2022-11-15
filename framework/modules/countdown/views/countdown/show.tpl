@@ -20,7 +20,6 @@
 {/css}
 
 <div class="module countdown show">
-
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if !$config}
         <strong style="color:red">{"To Display the 'Countdown' Module, you MUST First 'Configure Settings'"|gettext|cat:"!"}</strong>
@@ -49,8 +48,8 @@
 {script unique="`$name`" jquery="jquery.countdown"}
 {literal}
     $(function(){
-    	var note = $('#note'),
-    		ts = new Date("{/literal}{$config.date-count} {$config.time-h-count.}:{$config.time-m-count} {$config.ampm-count}{literal}");
+        var note = $('#note'),
+            ts = new Date("{/literal}{$config['date-count']} {$config['time-h-count']}:{$config['time-m-count']} {$config['ampm-count']}{literal}");
 
     	$('#countdown').countdown({
     		timestamp	: ts,
