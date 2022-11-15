@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 {*
  * Copyright (c) 2004-2022 OIC Group, Inc.
  *
@@ -12,8 +13,6 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-
-<!DOCTYPE html>
 <html lang="{substr($smarty.const.LOCALE,0,2)}">
 <!--  Maintenance Page Theme by Start Bootstrap and Jackie D'Elia Design -->
 <head>
@@ -27,6 +26,8 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="{$smarty.const.PATH_RELATIVE}external/bootstrap5/css/bootstrap.css" rel="stylesheet">
+    <link href="{$smarty.const.PATH_RELATIVE}external/jquery/addons/css/jquery.countdown.css" rel="stylesheet">
+    <link href="{$smarty.const.PATH_RELATIVE}framework/modules/countdown/assets/css/countdown.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <style media="screen" type="text/css">
@@ -211,6 +212,15 @@
     <!-- Custom Fonts -->
     <link href="{$smarty.const.PATH_RELATIVE}external/font-awesome6/css/fontawesome.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="{$smarty.const.PATH_RELATIVE}external/html5shiv/html5shiv.js"></script>
+        <script src="{$smarty.const.PATH_RELATIVE}external/Respond-1.4.2/dest/respond.src.js"></script>
+    <![endif]-->
+    <script src="{$smarty.const.JQUERY3_SCRIPT}"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/jquery/addons/js/jquery.countdown.js"></script>
 </head>
 
 <body class="site">
@@ -232,7 +242,7 @@
                     {$smarty.const.MAINTENANCE_MSG_HTML}
                     {if $smarty.const.MAINTENANCE_USE_RETURN_TIME && $smarty.const.MAINTENANCE_RETURN_TIME > time()}
                         {$prm = ["count" => $smarty.const.MAINTENANCE_RETURN_TIME, "title" => $smarty.const.MAINTENANCE_RETURN_TEXT]}
-                        {showmodule controller=countdown action=show view=$smarty.const.MAINTENANCE_RETURN_TIME_TYPE params=$prm}
+                        {showmodule controller=countdown action=show view=show params=$prm}
                     {/if}
                 {/if}
                 {if $login}...
@@ -247,5 +257,27 @@
         </div>
         <!-- /.container -->
     </div>
+    {if $smarty.const.MAINTENANCE_USE_RETURN_TIME && $smarty.const.MAINTENANCE_RETURN_TIME > time()}
+        <script>
+            $(function(){
+                var note = $('#note'),
+                    ts = new Date({$smarty.const.MAINTENANCE_RETURN_TIME} * 1000);
+
+                $('#countdown').countdown({
+                    timestamp	: ts,
+                    callback	: function(days, hours, minutes, seconds){
+                        var message = "";
+                        // message += days + " day" + ( days==1 ? '':'s' ) + ", ";
+                        // message += hours + " hour" + ( hours==1 ? '':'s' ) + ", ";
+                        // message += minutes + " minute" + ( minutes==1 ? '':'s' ) + " and ";
+                        // message += seconds + " second" + ( seconds==1 ? '':'s' ) + " <br />";
+                        message += '{'Until'|gettext} ';
+                        message += ts.toLocaleString() + " <br />";
+                        note.html(message);
+                    },
+                });
+            });
+        </script>
+    {/if}
 </body>
 </html>
