@@ -123,13 +123,11 @@ class calendarcontrol extends formcontrol
         if (USE_BOOTSTRAP_ICONS) {
             $icon_cp = 'bi bi-calendar3';
         } else {
-            $icon_cp = 'far fa-calendar-alt ';
+            $icon_cp = 'far fa-calendar-days';
         }
         $html .= "<div class='input-group input-group-sm' id='" . $idname . "'>
                         <input type='text' class='text form-control' name='" . $name . "' value='".$default."'/>
-                        <span class='input-group-append'>
-                            <span class='input-group-text ".$icon_cp."'></span>
-                        </span>
+                        <span class='input-group-text ".$icon_cp."'></span>
                     </div>";
         if (!empty($this->description))
             $html .= "<div id=\"" . $name . "HelpBlock\" class=\"form-text text-muted\">".$this->description."</div>";

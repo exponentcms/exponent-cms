@@ -114,7 +114,7 @@ class popupdatetimecontrol extends formcontrol
         $date_input->id = $idname;
         $date_input->name = $idname;
         $date_input->description = $this->description;
-        $date_input->append = 'calendar';
+        $date_input->append = 'calendar-alt';
         if ($this->horizontal)
             $date_input->horizontal_top = true;
         $html = $date_input->toHTML(null, $name);
@@ -125,7 +125,7 @@ class popupdatetimecontrol extends formcontrol
                     <div class="input-group input-group-sm date" id="' . $idname . '" data-target-input="nearest">
                         <input type="text" class="form-control datetimepicker-input" value="'. $myval . '" data-target="#' . $idname . '" size="40"/>
                         <span class="input-group-append" data-target="#' . $idname . '" data-toggle="datetimepicker">
-                            <i class="input-group-text fas fa-calendar"></i>
+                            <i class="input-group-text fas fa-calendar-alt"></i>
                         </span>
                     </div>
                 </div>';
