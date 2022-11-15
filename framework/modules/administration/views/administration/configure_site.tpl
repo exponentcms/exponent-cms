@@ -229,6 +229,7 @@
                     {control type="html" name="sc[MAINTENANCE_MSG_HTML]" label="Maintenance Mode Message"|gettext value=$smarty.const.MAINTENANCE_MSG_HTML}
                     {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_USE_RETURN_TIME]" label="Display a countdown clock until site returns?"|gettext checked=$smarty.const.MAINTENANCE_USE_RETURN_TIME value=1}
                     {group label="Maintenance Countdown Settings"|gettext}
+                        {control type="dropdown" name="sc[MAINTENANCE_RETURN_TIME_TYPE]" label="Countdown clock style"|gettext items="Default,Circles"|gettxtlist values="show,show_circles" default=$smarty.const.MAINTENANCE_RETURN_TIME_TYPE}
                         {control type="text" name="sc[MAINTENANCE_RETURN_TEXT]" label="Site will return message"|gettext value=$smarty.const.MAINTENANCE_RETURN_TEXT}
                         {control type="yuicalendar" name="sc[MAINTENANCE_RETURN_TIME]" label="Site will return time"|gettext value=$smarty.const.MAINTENANCE_RETURN_TIME}
                     {/group}

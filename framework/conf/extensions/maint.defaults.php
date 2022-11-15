@@ -21,6 +21,7 @@ if (!defined('MAINTENANCE_MSG_HTML')) define('MAINTENANCE_MSG_HTML',exponent_unh
 if (!defined('MAINTENANCE_USE_RETURN_TIME')) define('MAINTENANCE_USE_RETURN_TIME','0');
 if (!defined('MAINTENANCE_RETURN_TEXT')) define('MAINTENANCE_RETURN_TEXT','The web site will return in');
 if (!defined('MAINTENANCE_RETURN_TIME')) define('MAINTENANCE_RETURN_TIME','0');
+if (!defined('MAINTENANCE_RETURN_TIME_TYPE')) define('MAINTENANCE_RETURN_TIME_TYPE','show');
 
 if (!defined('DEVELOPMENT')) define('DEVELOPMENT','0');
 if (!defined('SMARTY_DEVELOPMENT')) define('SMARTY_DEVELOPMENT','0');

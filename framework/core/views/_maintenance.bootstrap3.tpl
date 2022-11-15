@@ -237,6 +237,10 @@
                 {else}
                     <hr class="intro-divider">
                     {$smarty.const.MAINTENANCE_MSG_HTML}
+                    {if $smarty.const.MAINTENANCE_USE_RETURN_TIME && $smarty.const.MAINTENANCE_RETURN_TIME > time()}
+                        {$prm = ["count" => $smarty.const.MAINTENANCE_RETURN_TIME, "title" => $smarty.const.MAINTENANCE_RETURN_TEXT]}
+                        {showmodule controller=countdown action=show view=$smarty.const.MAINTENANCE_RETURN_TIME_TYPE params=$prm}
+                    {/if}
                 {/if}
                 {if $login}...
                     {showmodule controller=login action=showlogin view=showlogin_stacked moduletitle="Administrators Login"|gettext}
