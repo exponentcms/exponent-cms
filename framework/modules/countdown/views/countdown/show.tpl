@@ -64,14 +64,14 @@
                 {/literal}{if $config.displaydate}{literal}
                 message += "{/literal}{'Until'|gettext} {literal}";
                 message += ts.toLocaleString() + " <br />";
-//                message += "{/literal}{$config.date-count} "{literal};
-//                message += "{/literal}{$config.time-h-count}:{$config.time-m-count} {$config.ampm-count}{literal}" + " <br />";
+//                message += "{/literal}{$config['date-count']} "{literal};
+//                message += "{/literal}{$config['time-h-count']}:{$config['time-m-count']} {$config['ampm-count']}{literal}" + " <br />";
                 {/literal}{/if}{literal}
-                message += "{/literal}{$config.body|trim}{literal}";
+                message += "{/literal}{$config.body|trim|replace:'"':'\''}{literal}";
     			note.html(message);
     		},
     		finishedCallback	: function(){
-    			note.html("{/literal}{$config.message|trim}{literal}");
+    			note.html("{/literal}{$config.message|trim|replace:'"':'\''}{literal}");
     		},
     	});
     });
