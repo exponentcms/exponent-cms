@@ -32,6 +32,28 @@ function epb($buffer, $mode) {
     return expProcessBuffer($buffer);  // add/process css & jscript for page
 }
 
+// set up controls search order based on framework outside of theme/subtheme page
+function setup_autoload($framework) {
+    global $auto_dirs;
+    if ($framework === 'jquery' || $framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5')
+        array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
+    if ($framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5')
+        array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
+    if ($framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5')
+        array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
+    if ($framework === 'bootstrap4' || $framework === 'bootstrap5')
+        array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap4');
+    if ($framework === 'bootstrap5')
+        array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap5');
+    if (newui())
+        array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
+    array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
+    if (!defined('XHTML')) {
+        define('XHTML', 1);
+        define('XHTML_CLOSING', "/"); //default
+    }
+}
+
 ob_start('epb');
 
 // Initialize the Exponent Framework
@@ -82,6 +104,7 @@ if (expJavascript::requiresJSON()) {
 if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !(!empty($_REQUEST['controller']) && $_REQUEST['controller'] === 'login' && !empty($_REQUEST['action']) && $_REQUEST['action'] === 'login')) {
 	//only admins/acting_admins are allowed to get to the site, all others get the maintenance view
     $framework = expSession::get('framework');
+    setup_autoload($framework);
 	$template = new standalonetemplate('_maintenance');
     if (!empty($_REQUEST['controller']) && $_REQUEST['controller'] === 'login') {
         $template->assign("login", true);
@@ -111,23 +134,10 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
 			include($page);
 			expTheme::satisfyThemeRequirements();
 		} else {  // ajax request
-            // set up controls search order based on framework
-//            $framework = framework();
             if (empty($framework)) {
                 $framework = expSession::get('framework');
             }
-            if ($framework === 'jquery' || $framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
-            if ($framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
-            if ($framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
-            if ($framework === 'bootstrap4' || $framework === 'bootstrap5') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap4');
-            if ($framework === 'bootstrap5') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap5');
-            if (newui()) array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
-            array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
-            if (!defined('XHTML')) {
-                define('XHTML', 1);
-                define('XHTML_CLOSING', "/"); //default
-            }
-
+            setup_autoload($framework);
 			expTheme::runAction();
 		}
 	} else {
