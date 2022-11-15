@@ -71,19 +71,19 @@ class listbuildercontrol extends formcontrol {
 			$html .= "<input id='source_$name' type='text' class=\"text form-control\"/>";
 			$html .= "</td>";
 			$html .= '<td align="center" valign="middle" width="20%" style="border:none;">';
-			if($process == "copy") {
+			if($process === "copy") {
 				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;,&quot;copy&quot;); return false' ><i class='fas fa-fw fa-arrow-right' style='display:inline;'></i>&nbsp;<i class='fas fa-fw fa-arrow-right' style='display:inline;'></i></button>";
 			} else {
 				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;); return false' ><i class='fas fa-fw fa-arrow-right' style='display:inline;'></i>&nbsp;<i class='fas fa-fw fa-arrow-right' style='display:inline;'></i></button>";
 			}
 			$html .= "<br />";
-			if($process == "copy") {
+			if($process === "copy") {
 				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;,&quot;copy&quot); return false;' ><i class='fas fa-fw fa-arrow-left' style='display:inline;'></i>&nbsp;<i class='fas fa-fw fa-arrow-left' style='display:inline;'></i></button>";
 			} else {
 				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;); return false;' ><i class='fas fa-fw fa-arrow-left' style='display:inline;'></i>&nbsp;<i class='fas fa-fw fa-arrow-left' style='display:inline;'></i></button>";
 			}
 			$html .= "</td>";
-			$html .= "<td width='40%' valign='top' style='border:none;'><small class=\"form-text text-muted\">".gt('Selected')."</small><select " . ((bs3()||bs4() || bs5()) ? "class=\"form-control\" " : "") . "id='dest_$name' size='".$this->size."'>";
+			$html .= "<td width='40%' valign='top' style='border:none;'><small class=\"form-text text-muted\">".gt('Selected')."</small><select class=\"form-control\" " . "id='dest_$name' size='".$this->size."'>";
 			foreach ($this->default as $key=>$value) {
 				if (isset($this->source[$key])) $value = $this->source[$key];
 				$html .= "<option value='$key'>$value</option>";
@@ -120,11 +120,11 @@ class listbuildercontrol extends formcontrol {
         }
 		$process = empty($this->process) ? null : $this->process;
 		if(empty($this->flip)){
-			$html .= (!empty($label)) ? "<label".$for." class=\"".((bs3()||bs4() || bs5())?"control-label":"label")."\">".$labeltag."</label>" : "";
+			$html .= (!empty($label)) ? "<label".$for." class=\"control-label"."\">".$labeltag."</label>" : "";
 			$html .= $this->controlToHTML($name, $label, $process);
 		} else {
 			$html .= $this->controlToHTML($name, $label, $process);
-			$html .= (!empty($label)) ? "<label".$for." class=\"".((bs3()||bs4() || bs5())?"control-label":"label")."\">".$labeltag."</label>" : "";
+			$html .= (!empty($label)) ? "<label".$for." class=\"control-label"."\">".$labeltag."</label>" : "";
 		}
 		//$html .= "</label>";
 		$html .= "</div>";
@@ -176,7 +176,7 @@ class listbuildercontrol extends formcontrol {
 				$this->default = $default;
 			} else {
 				// No form Error.  Just normalize $this->source
-				if($this->process != 'copy') {
+				if($this->process !== 'copy') {
 					$this->source = array_diff_assoc($this->source,$this->default);
 				}
 			}

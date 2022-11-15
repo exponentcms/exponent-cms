@@ -76,7 +76,7 @@ class tagtreecontrol extends formcontrol {
         $link = expCore::makeLink(array("module"=> $this->controller->baseclassname, "action"=> "edit", "parent"=> 0));
         $html = "";
 //        if ($this->menu == "true") {
-            if (bs4() || bs5()) {
+            if (bs4()) {
                 $btn_size = expTheme::buttonSize();
                 $icon_size = expTheme::iconSize();
                 if ($this->addable) $html = '<a class="btn-success btn '.$btn_size.'" href="' . $link . '"><i class="fas fa-plus-circle '.$icon_size.'"></i> ' . gt('Add a Top Level Category') . '</a> ';
@@ -113,7 +113,7 @@ class tagtreecontrol extends formcontrol {
         foreach ($icon as $key=>$icn) {
             $text = expTheme::buttonIcon($key, 'large');
             $icon[$key] = $text->prefix . $text->class . ' ' . $text->size;
-            if (bs3() || bs4() || bs5())
+            if (bs3() || bs4())
                 $icon[$key] .= ' fa-fw';
             elseif (bs2())
                 $icon[$key] .= ' icon-fixed-width';

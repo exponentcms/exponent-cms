@@ -57,11 +57,11 @@ class datetimecontrol extends formcontrol {
         $html .= (!empty($this->required)) ? ' required">' : '">';
         //$html .= "<label>";
         if (empty($this->flip)) {
-            $html .= "<span class=\"".(bs3()?"control-label":"label")."\">" . $label . "</span>";
+            $html .= "<span class=\"label\">" . $label . "</span>";
             $html .= $this->controlToHTML($name);
         } else {
             $html .= $this->controlToHTML($name);
-            $html .= "<span class=\"".(bs3()?"control-label":"label")."\">" . $label . "</span>";
+            $html .= "<span class=\"label\">" . $label . "</span>";
         }
         //$html .= "</label>";
         $html .= "</div>";
@@ -94,27 +94,24 @@ class datetimecontrol extends formcontrol {
             $html .= '</div>';
         }
         if ($this->showtime) {
-            $framework = framework();
-            if ($framework != 'bootstrap' && $framework != 'bootstrap3') {
-                $html .= '<br /><label class="'.(bs3()?"control-label":"label").' spacer"> </label>';
-            }
+            $html .= '<br /><label class="label spacer"> </label>';
             $html .= '<div class="datetime date time">';
             if ($this->showdate)
-                $html .= '<label".(bs3()?" class=\"control-label\"":"")." style="display:inline;float:none;">' . gt('Time') . ': </label>';
+                $html .= '<label style="display:inline;float:none;">' . gt('Time') . ': </label>';
             $html .= '<input class="text timebox form-control" type="text" id="' . $name . '_hour" name="' . $name . '_hour" aria-label="' . gt('Hour') . '" size="3" maxlength="2" value="' . $hour . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
             $html .= '<input class="text timebox form-control" type="text" id="' . $name . '_minute" name="' . $name . '_minute" size="3" aria-label="' . gt('Minute') . '" maxlength="2" value="' . $minute . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
-            $html .= '<select class="select' . (bs3() ? ' form-control ' : '') . '" id="' . $name . '_ampm" name="' . $name . '_ampm" size="1"';
+            $html .= '<select class="select id="' . $name . '_ampm" name="' . $name . '_ampm" size="1"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= '>';
             $html .= '<option value="am"' . ($default_date['hours'] < 12 ? " selected" : "") . '>am</option>';
             $html .= '<option value="pm"' . ($default_date['hours'] < 12 ? "" : " selected") . '>pm</option>';
             $html .= '</select></div>';
         }
-        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">" . $this->description . "</div>";
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">" . $this->description . "</div>";
         return $html;
     }
 
@@ -129,10 +126,10 @@ class datetimecontrol extends formcontrol {
         if (isset($values[$name . "_month"]))
             $time = mktime(8, 0, 0, $values[$name . '_month'], $values[$name . '_day'], $values[$name . '_year']) - 8 * 3600;
         if (isset($values[$name . "_hour"])) {
-            if ($values[$name . '_hour'] == 12 && $values[$name . '_ampm'] == 'am') {
+            if ($values[$name . '_hour'] == 12 && $values[$name . '_ampm'] === 'am') {
                 // 12 am (right after midnight) is 0:xx
                 $values[$name . '_hour'] = 0;
-            } else if ($values[$name . '_hour'] != 12 && $values[$name . '_ampm'] == 'pm') {
+            } else if ($values[$name . '_hour'] != 12 && $values[$name . '_ampm'] === 'pm') {
                 // 1:00 pm to 11:59 pm shifts 12 hours
                 $values[$name . '_hour'] += 12;
             }

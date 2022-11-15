@@ -57,33 +57,26 @@ class textcontrol extends formcontrol {
         $this->size = !empty($this->size) ? $this->size : 25;
         $idname  = (!empty($this->id)) ? $this->id : $name;
         $idname = createValidId($idname);
-        if ($this->type != 'text') {
+        if ($this->type !== 'text') {
             $extra_class = ' ' . $this->type;
         } else {
             $extra_class = '';
         }
         $html = ($this->horizontal) ? '<div class="col-sm-10">' : '';
+        if ($this->type === 'color') {
+            $html = ($this->horizontal) ? '<div class="col-sm-10 offset-sm-2">' : '';
+        }
         if (!empty($this->prepend)) {
-            if (bs2()) {
-                $html .= '<div class="input-prepend">';
-                $html .= '<span class="add-on"><i class="icon-'.$this->prepend.'"></i></span>';
-            } elseif (bs3()) {
-                $html .= '<div class="input-group">';
-                $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
-            } elseif (bs4() || (bs5() && !USE_BOOTSTRAP_ICONS)) {
+            if (!USE_BOOTSTRAP_ICONS) {
                 $html .= '<div class="input-group input-group-sm">';
-                $html .= '<span class="input-group-prepend"><i class="input-group-text bi bi-'.$this->prepend.'"></i></span>';
+                $html .= '<span class="input-group-prepend"><i class="input-group-text fas fa-'.$this->prepend.'"></i></span>';
             } else {
                 $html .= '<div class="input-group input-group-sm">';
                 $html .= '<span class="input-group-prepend"><i class="input-group-text bi bi-'.expTheme::buttonIcon($this->prepend)->class.'"></i></span>';
             }
         }
-        if (!empty($this->append) && bs()) {
-            if (bs2()) {
-                $html .= '<div class="input-append">';
-            } elseif (bs3() || bs4() || bs5()) {
-                $html .= '<div class="input-group input-group-sm">';
-            }
+        if (!empty($this->append)) {
+            $html .= '<div class="input-group input-group-sm">';
         }
         $html .= '<input id="' . $idname . '" class="text form-control' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
         if (is_null($this->default))
@@ -109,15 +102,11 @@ class textcontrol extends formcontrol {
         if (!empty($this->description))
             $html .= ' aria-describedby="'. $name . 'HelpBlock "';
         $html .= "/>";
-        if (!empty($this->prepend) && bs()) {
+        if (!empty($this->prepend)) {
             $html .= '</div>';
         }
-        if (!empty($this->append) && bs()) {
-            if (bs2()) {
-                $html .= '<span class="add-on"><i class="icon-'.$this->append.'"></i></span>';
-            } elseif (bs3()) {
-                $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->append.'"></i></span>';
-            } elseif (bs4() || (bs5() & !USE_BOOTSTRAP_ICONS)) {
+        if (!empty($this->append)) {
+            if (!USE_BOOTSTRAP_ICONS) {
                 $html .= '<span class="input-group-append"><i class="input-group-text fas fa-'.$this->append.'"></i></span>';
             } else {
                 $html .= '<span class="input-group-append"><i class="input-group-text bi bi-'.expTheme::buttonIcon($this->append)->class.'"></i></span>';

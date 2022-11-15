@@ -79,7 +79,7 @@ class datetimecontrol extends formcontrol {
 
         $minute = $default_date['minutes'] . "";
         if ($minute < 10) $minute = "0" . $minute;
-        $html = ($this->horizontal && (bs3()||bs4() || bs5())) ? '<div class="col-sm-10">' : '';
+        $html = ($this->horizontal) ? '<div class="col-sm-10">' : '';
         $html .= "<input type='hidden' id='__" . $name . "' name='__" . $name . "' value='" . ($this->showdate ? "1" : "0") . ($this->showtime ? "1" : "0") . "' />";
         $html .= "<div class=\"row\">";
         if ($this->showdate) {
@@ -119,7 +119,7 @@ class datetimecontrol extends formcontrol {
         $html .= "</div>";
         if (!empty($this->description))
             $html .= "<div id=\"" . $name . "HelpBlock\" class=\"form-text text-muted\">".$this->description."</div>";
-        $html .= ($this->horizontal && (bs3()||bs4() || bs5())) ? '</div>' : '';
+        $html .= ($this->horizontal) ? '</div>' : '';
         return $html;
     }
 

@@ -49,11 +49,11 @@ class texteditorcontrol extends formcontrol {
 	}
 
 	function controlToHTML($name,$label) {
-        $html = ($this->horizontal && (bs3()||bs4() || bs5())) ? '<div class="col-sm-10">' : '';
+        $html = ($this->horizontal) ? '<div class="col-sm-10">' : '';
         $idname  = (!empty($this->id)) ? $this->id : $this->name;
         if (empty($idname))
             $idname = $name;
-		$html .= "<textarea class=\"textarea" . ((bs3()||bs4() || bs5()) ? " form-control" : "") . "\" id=\"$idname\" name=\"$name\"";
+		$html .= "<textarea class=\"textarea form-control" . "\" id=\"$idname\" name=\"$name\"";
         if ($this->focus) $html .= " autofocus";
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
         $html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");
@@ -73,7 +73,7 @@ class texteditorcontrol extends formcontrol {
 		$html .= htmlentities($this->default,ENT_COMPAT,LANG_CHARSET);
 		$html .= "</textarea>";
         if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">".$this->description."</small>";
-        $html .= ($this->horizontal && (bs3()||bs4() || bs5())) ? '</div>' : '';
+        $html .= ($this->horizontal) ? '</div>' : '';
 		return $html;
 	}
 

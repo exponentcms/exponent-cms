@@ -68,13 +68,13 @@ class listbuildercontrol extends formcontrol {
 		}
 		$html .= "</td>";
 		$html .= '<td valign="middle" width="10" style="border:none;">';
-		if($process == "copy") {
+		if($process === "copy") {
 			$html .= "<input type='image' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;,&quot;copy&quot;); return false' src='".ICON_RELATIVE."navigate-right-icon.png' />";
 		} else {
 			$html .= "<input type='image' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;); return false' src='".ICON_RELATIVE."navigate-right-icon.png' />";
 		}
 		$html .= "<br />";
-		if($process == "copy") {
+		if($process === "copy") {
 			$html .= "<input type='image' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;,&quot;copy&quot); return false;' src='".ICON_RELATIVE."navigate-left-icon.png' />";
 		} else {
 			$html .= "<input type='image' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;); return false;' src='".ICON_RELATIVE."navigate-left-icon.png' />";
@@ -145,7 +145,7 @@ class listbuildercontrol extends formcontrol {
 				$this->default = $default;
 			} else {
 				// No form Error.  Just normalize $this->source
-				if($this->process != 'copy') {
+				if($this->process !== 'copy') {
 					$this->source = array_diff_assoc($this->source,$this->default);
 				}
 			}

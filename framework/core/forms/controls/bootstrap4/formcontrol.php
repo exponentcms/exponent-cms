@@ -165,11 +165,11 @@ abstract class formcontrol {
                 $labeltag = $label;
             }
             if (empty($this->flip)) {
-                $html .= (!empty($label)) ? "<label" . $for . " class=\"".((bs3()||bs4() || bs5())?"control-label":"") . (($this->horizontal == 1)?' col-sm-2 col-form-label':'') ."\">" . $labeltag . "</label>" : "";
+                $html .= (!empty($label)) ? "<label" . $for . " class=\"control-label" . (($this->horizontal == 1)?' col-sm-2 col-form-label':'') ."\">" . $labeltag . "</label>" : "";
                 $html .= $this->controlToHTML($name, $label);
             } else {
                 $html .= $this->controlToHTML($name, $label);
-                $html .= (!empty($label)) ? "<label" . $for . " class=\"".((bs3()||bs4() || bs5())?"control-label":"")."\">" . $labeltag . "</label>" : "";
+                $html .= (!empty($label)) ? "<label" . $for . " class=\"control-label"."\">" . $labeltag . "</label>" : "";
             }
             //$html .= "</label>";
             $html .= "</div>";

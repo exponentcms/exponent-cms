@@ -96,8 +96,7 @@ class datetimecontrol extends formcontrol {
             $html .= '</div>';
         }
         if ($this->showtime) {
-            $framework = framework();
-            if ($framework != 'bootstrap' && $framework != 'bootstrap3') {
+            if (!bs2() && !bs3()) {
                 $html .= '<br /><label class="control-label label spacer"> </label>';
             }
             $html .= '<div class="datetime date time" style="display:inline-block;margin-left: 15px;">';
@@ -133,10 +132,10 @@ class datetimecontrol extends formcontrol {
         if (isset($values[$name . "_month"]))
             $time = mktime(8, 0, 0, $values[$name . '_month'], $values[$name . '_day'], $values[$name . '_year']) - 8 * 3600;
         if (isset($values[$name . "_hour"])) {
-            if ($values[$name . '_hour'] == 12 && $values[$name . '_ampm'] == 'am') {
+            if ($values[$name . '_hour'] == 12 && $values[$name . '_ampm'] === 'am') {
                 // 12 am (right after midnight) is 0:xx
                 $values[$name . '_hour'] = 0;
-            } else if ($values[$name . '_hour'] != 12 && $values[$name . '_ampm'] == 'pm') {
+            } else if ($values[$name . '_hour'] != 12 && $values[$name . '_ampm'] === 'pm') {
                 // 1:00 pm to 11:59 pm shifts 12 hours
                 $values[$name . '_hour'] += 12;
             }

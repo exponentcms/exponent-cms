@@ -55,7 +55,7 @@ class listbuildercontrol extends formcontrol {
 		$this->process = $process;
 
 		if (!$this->newList) {
-			$html = "<div class=\"".(bs3()?"help-block":"control-desc")."\"></div><select name='".$name."[]' id='$name' class=\"form-control\" multiple='multiple' size='$this->size'>";
+			$html = "<div class=\"control-desc\"></div><select name='".$name."[]' id='$name' class=\"form-control\" multiple='multiple' size='$this->size'>";
             $list = $this->default + $this->source;
 			foreach ($list as $key=>$value) {
 				$html .= "<option value='$key'";
@@ -72,19 +72,19 @@ class listbuildercontrol extends formcontrol {
 			$html .= "<input id='source_$name' type='text' class=\"text form-control\"/>";
 			$html .= "</td>";
 			$html .= '<td valign="middle" width="10" style="border:none;">';
-			if($process == "copy") {
+			if($process === "copy") {
 				$html .= "<input type='image' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;,&quot;copy&quot;); return false' src='".ICON_RELATIVE."navigate-right-icon.png' />";
 			} else {
 				$html .= "<input type='image' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;); return false' src='".ICON_RELATIVE."navigate-right-icon.png' />";
 			}
 			$html .= "<br />";
-			if($process == "copy") {
+			if($process === "copy") {
 				$html .= "<input type='image' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;,&quot;copy&quot); return false;' src='".ICON_RELATIVE."navigate-left-icon.png' />";
 			} else {
 				$html .= "<input type='image' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;); return false;' src='".ICON_RELATIVE."navigate-left-icon.png' />";
 			}
 			$html .= "</td>";
-			$html .= "<td width='40%' valign='top' style='border:none;'><div class=\"".(bs3()?"help-block":"control-desc")."\">".gt('Selected')."</div><select " . (bs3() ? "class=\"form-control\" " : "") . "id='dest_$name' size='".$this->size."'>";
+			$html .= "<td width='40%' valign='top' style='border:none;'><div class=\"control-desc\">".gt('Selected')."</div><select class=\"form-control\" " . "id='dest_$name' size='".$this->size."'>";
 			foreach ($this->default as $key=>$value) {
 				if (isset($this->source[$key])) $value = $this->source[$key];
 				$html .= "<option value='$key'>$value</option>";
@@ -94,7 +94,7 @@ class listbuildercontrol extends formcontrol {
 //			$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
 		}
         $html .= "<div style=\"clear:both\"></div>";
-        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 		return $html;
 	}
 
@@ -120,11 +120,11 @@ class listbuildercontrol extends formcontrol {
         }
 		$process = empty($this->process) ? null : $this->process;
 		if(empty($this->flip)){
-			$html .= (!empty($label)) ? "<label".$for." class=\"".(bs3()?"control-label":"label")."\">".$labeltag."</label>" : "";
+			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$labeltag."</label>" : "";
 			$html .= $this->controlToHTML($name, $label, $process);
 		} else {
 			$html .= $this->controlToHTML($name, $label, $process);
-			$html .= (!empty($label)) ? "<label".$for." class=\"".(bs3()?"control-label":"label")."\">".$labeltag."</label>" : "";
+			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$labeltag."</label>" : "";
 		}
 		//$html .= "</label>";
 		$html .= "</div>";
@@ -176,7 +176,7 @@ class listbuildercontrol extends formcontrol {
 				$this->default = $default;
 			} else {
 				// No form Error.  Just normalize $this->source
-				if($this->process != 'copy') {
+				if($this->process !== 'copy') {
 					$this->source = array_diff_assoc($this->source,$this->default);
 				}
 			}

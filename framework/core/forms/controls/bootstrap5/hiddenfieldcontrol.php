@@ -34,8 +34,7 @@ class hiddenfieldcontrol extends formcontrol {
 	}
 
 	function toHTML($label,$name) {
-		$html = $this->controlToHTML($name,$label);
-		return $html;
+        return $this->controlToHTML($name,$label);
 	}
 
 	function controlToHTML($name=null,$label=null) {

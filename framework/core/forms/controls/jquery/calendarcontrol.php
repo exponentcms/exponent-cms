@@ -144,11 +144,11 @@ class calendarcontrol extends formcontrol
             $date = strtotime($values['date-' . $name]);
             $time = 0;
             if (isset($values['time-h-' . $name])) {
-                if ($values['time-h-' . $name] == 12 && $values['ampm-' . $name] == 'am') {
+                if ($values['time-h-' . $name] == 12 && $values['ampm-' . $name] === 'am') {
                     // 12 am (right after midnight) is 0:xx
                     $values['time-h-' . $name] = 0;
                 } else {
-                    if ($values['time-h-' . $name] != 12 && $values['ampm-' . $name] == 'pm') {
+                    if ($values['time-h-' . $name] != 12 && $values['ampm-' . $name] === 'pm') {
                         // 1:00 pm to 11:59 pm shifts 12 hours
                         $values['time-h-' . $name] += 12;
                     }

@@ -92,7 +92,7 @@ class genericcontrol extends formcontrol {
         $this->name = empty($this->name) ? $name : $this->name;
         $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$this->name.'"';
         $html = '';
-        $html .= ($this->type != 'hidden' && $this->horizontal) ? '<div class="col-sm-10">' : '<div>';
+        $html .= ($this->type !== 'hidden' && $this->horizontal) ? '<div class="col-sm-10">' : '<div>';
         if (!empty($this->prepend)) {
             if (bs2()) {
                 $html .= '<div class="input-prepend">';

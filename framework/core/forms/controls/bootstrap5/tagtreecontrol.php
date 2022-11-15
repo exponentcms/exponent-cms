@@ -76,37 +76,20 @@ class tagtreecontrol extends formcontrol {
         $link = expCore::makeLink(array("module"=> $this->controller->baseclassname, "action"=> "edit", "parent"=> 0));
         $html = "";
 //        if ($this->menu == "true") {
-            if (bs5() && USE_BOOTSTRAP_ICONS) {
+            if (USE_BOOTSTRAP_ICONS) {
                 $btn_size = expTheme::buttonSize();
                 $icon_size = expTheme::iconSize();
                 if ($this->addable) $html = '<a class="btn-success btn ' . $btn_size . '" href="' . $link . '"><i class="bi bi-plus-circle ' . $icon_size . '"></i> ' . gt('Add a Top Level Category') . '</a> ';
 //                $html .= '<a class="btn btn-default '.$btn_size.'" href="#" id="refresh-tree"><i class="fas fa-refresh '.$icon_size.'"></i> ' . gt('Refresh') . '</a> ';
                 $html .= '<a class="btn btn-secondary ' . $btn_size . '" href="#" id="expand-tree"><i class="bi bi-arrows-angle-expand ' . $icon_size . '"></i> ' . gt('Expand All') . '</a> ';
                 $html .= '<a class="btn btn-secondary ' . $btn_size . '" href="#" id="collapse-tree"><i class="bi bi-arrows-angle-contract ' . $icon_size . '"></i> ' . gt('Collapse All') . '</a>';
-            } elseif (bs4() || bs5()) {
+            } else {
                 $btn_size = expTheme::buttonSize();
                 $icon_size = expTheme::iconSize();
                 if ($this->addable) $html = '<a class="btn-success btn '.$btn_size.'" href="' . $link . '"><i class="fas fa-plus-circle '.$icon_size.'"></i> ' . gt('Add a Top Level Category') . '</a> ';
 //                $html .= '<a class="btn btn-default '.$btn_size.'" href="#" id="refresh-tree"><i class="fas fa-refresh '.$icon_size.'"></i> ' . gt('Refresh') . '</a> ';
                 $html .= '<a class="btn btn-secondary '.$btn_size.'" href="#" id="expand-tree"><i class="fas fa-expand '.$icon_size.'"></i> ' . gt('Expand All') . '</a> ';
                 $html .= '<a class="btn btn-secondary '.$btn_size.'" href="#" id="collapse-tree"><i class="fas fa-compress '.$icon_size.'"></i> ' . gt('Collapse All') . '</a>';
-            } elseif (bs3()) {
-                $btn_size = expTheme::buttonSize();
-                $icon_size = expTheme::iconSize();
-                if ($this->addable) $html = '<a class="btn-success btn '.$btn_size.'" href="' . $link . '"><i class="fa fa-plus-circle '.$icon_size.'"></i> ' . gt('Add a Top Level Category') . '</a> ';
-//                $html .= '<a class="btn btn-default '.$btn_size.'" href="#" id="refresh-tree"><i class="fa fa-refresh '.$icon_size.'"></i> ' . gt('Refresh') . '</a> ';
-                $html .= '<a class="btn btn-default '.$btn_size.'" href="#" id="expand-tree"><i class="fa fa-expand '.$icon_size.'"></i> ' . gt('Expand All') . '</a> ';
-                $html .= '<a class="btn btn-default '.$btn_size.'" href="#" id="collapse-tree"><i class="fa fa-compress '.$icon_size.'"></i> ' . gt('Collapse All') . '</a>';
-            } elseif (bs2()) {
-                $btn_size = expTheme::buttonSize();
-                $icon_size = expTheme::iconSize();
-                if ($this->addable) $html = '<a class="btn-success btn '.$btn_size.'" href="' . $link . '"><i class="icon-plus-sign '.$icon_size.'"></i> ' . gt('Add a Top Level Category') . '</a> ';
-                $html .= '<a class="btn '.$btn_size.'" href="#" id="expand-tree"><i class="icon-resize-full '.$icon_size.'"></i> ' . gt('Expand All') . '</a> ';
-                $html .= '<a class="btn '.$btn_size.'" href="#" id="collapse-tree"><i class="icon-resize-small '.$icon_size.'"></i> ' . gt('Collapse All') . '</a>';
-            } else {
-                if ($this->addable) $html = '<a class="add" href="' . $link . '">' . gt('Add a Top Level Category') . '</a> | ';
-                $html .= '<a href="#" id="expand-tree">' . gt('Expand All') . '</a> | ';
-                $html .= '<a href="#" id="collapse-tree">' . gt('Collapse All') . '</a>';
             }
 //        }
 
@@ -120,12 +103,8 @@ class tagtreecontrol extends formcontrol {
         foreach ($icon as $key=>$icn) {
             $text = expTheme::buttonIcon($key, 'large');
             $icon[$key] = $text->prefix . $text->class . ' ' . $text->size;
-            if (bs3() || bs4() || bs5())
-                $icon[$key] .= ' fa-fw';
-            elseif (bs2())
-                $icon[$key] .= ' icon-fixed-width';
+            $icon[$key] .= ' fa-fw';
         }
-
         $html .= '
 		<div id="' . $this->id . '" class="nodetree"></div>
 		<div id="' . $this->id . '-checks"></div>';

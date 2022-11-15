@@ -60,14 +60,14 @@ class radiocontrol extends formcontrol {
             $html .= "<td class=\"input\">";
             $html .= $this->controlToHTML($name);
             $html .="</td>";
-            $html .= "<td nowrap><label".$for." ".(bs3()?"class=\"control-label\"":"").">".$label."</label></td>";
+            $html .= "<td nowrap><label".$for.">".$label."</label></td>";
         } else {
-            $html .= "<td nowrap><label".$for." ".(bs3()?"class=\"control-label\"":"").">".$label."</label></td>";
+            $html .= "<td nowrap><label".$for.">".$label."</label></td>";
             $html .= "<td class=\"input\">";
             $html .= $this->controlToHTML($name);
             $html .="</td>";
         }
-        if (!empty($this->description)) $html .= "</tr><tr><td></td><td><div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div></td>";
+        if (!empty($this->description)) $html .= "</tr><tr><td></td><td><div class=\"control-desc\">".$this->description."</div></td>";
         $html .= "</tr></table></div>";
 
         return $html;

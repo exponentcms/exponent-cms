@@ -41,17 +41,38 @@ class htmlcontrol extends formcontrol {
 
 	function toHTML($label,$name) {
 		if ($this->span) {
-			return '<div class="htmlcontrol control form-group">' . ($this->horizontal&&(bs3()||bs4()||bs5())?'<div class="col-sm-offset-2 col-sm-10">':'') . $this->html . ($this->horizontal&&(bs3()||bs4()||bs5())?'</div>':'') . '</div>';
+			return '<div class="htmlcontrol control form-group">' . ($this->horizontal && bs() ? '<div class="' . $this->label_class() . '">' : '') . $this->html . ($this->horizontal && bs() ? '</div>':'') . '</div>';
 		} else {
-            if ($this->horizontal&&(bs3()||bs4()||bs5())) $this->html = '<div class="col-sm-offset-2 col-sm-10">' . $this->html . '</div>';
-			return parent::toHTML($label,$name);
+            if ($this->horizontal && (bs3() || bs4() || bs5()))
+                $this->html = '<div class="' . $this->label_class() . '">' . $this->html . '</div>';
+			return parent::toHTML($label, $name);
 		}
 	}
 
 	function controlToHTML($name,$label) {
-        if ($this->horizontal&&(bs3()||bs4()||bs5())) return '<div class="col-sm-offset-2 col-sm-10">' . $this->html . '</div>';
+        if ($this->horizontal && (bs3() || bs4() || bs5())) return '<div class="' . $this->label_class() . '">' . $this->html . '</div>';
 		return $this->html;
 	}
+
+    function label_class() {
+        $label_class = "";
+        if (bs2()){
+//            if ($this->horizontal) {
+//                $label_class .= "span10 offset2";
+//            }
+        } elseif (bs3()) {
+            if ($this->horizontal) {
+                $label_class = "col-sm-offset-2 col-sm-10";
+            }
+        } elseif (bs4() || bs5()) {
+            if ($this->horizontal) {
+                $label_class = "offset-sm-2 col-sm-10";
+            }
+        } else {
+            $label_class = "label";
+        }
+        return $label_class;
+    }
 
 	static function form($object) {
 		$form = new form();
@@ -59,15 +80,15 @@ class htmlcontrol extends formcontrol {
 		if (!isset($object->html)) {
 			$object->html = "";
 		}
-		$form->register("html",'',new htmleditorcontrol($object->html));
+        $form->register("html", '', new htmleditorcontrol($object->html));
 		if (!expJavascript::inAjaxAction())
-			$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
+            $form->register("submit", "", new buttongroupcontrol(gt('Save'), '', gt('Cancel'), "", 'editable'));
 		return $form;
 	}
 
     static function update($values, $object) {
 		if ($object == null) $object = new htmlcontrol();
-		$object->html = preg_replace("/<br ?\/>$/","",trim($values['html']));
+        $object->html = preg_replace("/<br ?\/>$/", "", trim($values['html']));
 		$object->caption = '';
 		$object->identifier = uniqid("");
 		$object->is_static = 1;

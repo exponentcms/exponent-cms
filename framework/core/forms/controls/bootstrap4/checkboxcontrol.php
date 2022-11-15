@@ -85,7 +85,7 @@ class checkboxcontrol extends formcontrol {
             $html .= (!empty($this->class)) ? ' ' . $this->class : '';
             $html .= (!empty($this->required)) ? ' required">' : '">';
 
-            $labelwrap = "<label" . $for . " class=\"form-check-label label\">" . $label . "</label>";
+            $labelwrap = "<label" . $for . " class=\"form-check-label\" style=\"display:inline;\">" . $label . "</label>";
             if (!$this->horizontal) {
                 if (!$this->flip) {
                     $html .= $this->controlToHTML($name, $label) . $labelwrap;
