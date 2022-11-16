@@ -66,8 +66,6 @@
             <script src="{$smarty.const.PATH_RELATIVE}external/html5shiv/html5shiv.js"></script>
             <script src="{$smarty.const.PATH_RELATIVE}external/Respond-1.4.2/dest/respond.src.js"></script>
         <![endif]-->
-        <script src="{$smarty.const.JQUERY3_SCRIPT}"></script>
-        <script src="{$smarty.const.PATH_RELATIVE}external/jquery/addons/js/jquery.countdown.js"></script>
     </head>
     <body>
         <div class="box">
@@ -89,7 +87,10 @@
             {/if}
         </div>
         <div style="float:right;">{'Powered by'|gettext} <a style="color:black;" href="http://www.exponentcms.org">ExponentCMS</a></div>
+        <script src="{$smarty.const.JQUERY3_SCRIPT}"></script>
+        <script src="{$smarty.const.YUI3_URL}"></script>
         {if $smarty.const.MAINTENANCE_USE_RETURN_TIME && $smarty.const.MAINTENANCE_RETURN_TIME > time()}
+            <script src="{$smarty.const.PATH_RELATIVE}external/jquery/addons/js/jquery.countdown.js"></script>
             <script>
                 $(function(){
                     var note = $('#note'),

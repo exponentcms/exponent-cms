@@ -211,19 +211,11 @@
             	color : #ff0000;
             }
         </style>
+        <!-- MINIFY REPLACE -->
 
         <!-- Custom Fonts -->
-        <link href="{$smarty.const.PATH_RELATIVE}external/font-awesome5/css/fontawesome.css" rel="stylesheet" type="text/css">
+        <link href="{$smarty.const.FA5_SCRIPT}" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="{$smarty.const.PATH_RELATIVE}external/html5shiv/html5shiv.js"></script>
-            <script src="{$smarty.const.PATH_RELATIVE}external/Respond-1.4.2/dest/respond.src.js"></script>
-        <![endif]-->
-        <script src="{$smarty.const.JQUERY3_SCRIPT}"></script>
-        <script src="{$smarty.const.PATH_RELATIVE}external/jquery/addons/js/jquery.countdown.js"></script>
     </head>
 
     <body class="site">
@@ -260,7 +252,10 @@
             </div>
             <!-- /.container -->
         </div>
+        <script src="{$smarty.const.JQUERY3_SCRIPT}"></script>
+        {$smarty.const.BS4_SCRIPT
     {if $smarty.const.MAINTENANCE_USE_RETURN_TIME && $smarty.const.MAINTENANCE_RETURN_TIME > time()}
+        <script src="{$smarty.const.PATH_RELATIVE}external/jquery/addons/js/jquery.countdown.js"></script>
         <script>
             $(function(){
                 var note = $('#note'),

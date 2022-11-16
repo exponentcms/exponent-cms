@@ -416,11 +416,11 @@ class expTheme
 //        }
 
         if (bs()) {
-//                    $lessvars = array_merge(
-//                        array('swatch' => SWATCH),
-//                        array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
-//                        !empty($head_config['lessvars']) ? $head_config['lessvars'] : array()
-//                    );
+//            $lessvars = array_merge(
+//                array('swatch' => SWATCH),
+//                array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
+//                !empty($head_config['lessvars']) ? $head_config['lessvars'] : array()
+//            );
 //            $less_vars = array_merge(
 //                array('swatch' => SWATCH),
 //                array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
