@@ -181,7 +181,7 @@
                 }
 
                 .intro-divider {
-                    width: 80%;
+                    /*width: 80%;*/
                     border-top: 1px solid #f8f8f8;
                     border-bottom: 1px solid dimgrey;
                 }
@@ -251,8 +251,8 @@
                     {/if}
                 </div>
                 <div class="intro-footer">
-                    <div class="copyright text-muted small" style="float:right;">{'Powered by'|gettext}
-                        <a style="color:white;" href="http://www.exponentcms.org">ExponentCMS</a>
+                    <div class="copyright text-white small" style="float:right;">
+                        {'Powered by'|gettext} <a class="text-white" href="http://www.exponentcms.org">ExponentCMS</a>
                     </div>
                 </div>
             </div>

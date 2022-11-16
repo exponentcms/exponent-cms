@@ -51,6 +51,11 @@
                 border-radius         : 12px;
                 text-align            : center;
             }
+            .intro-divider {
+                width: 100%;
+                border-top: 1px solid #f8f8f8;
+                border-bottom: 1px solid dimgrey;
+            }
             .required {
             	color : #ff0000;
             }
