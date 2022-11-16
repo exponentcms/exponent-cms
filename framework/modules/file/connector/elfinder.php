@@ -252,7 +252,7 @@ function access($attr, $path, $data, $volume, $isDir, $relpath) {
    	return $basename[0] === '.'                  // if file/folder begins with '.' (dot)
    			 && strlen($relpath) !== 1           // but with out volume root
    		? !($attr == 'read' || $attr == 'write') // set read+write to false, other (locked+hidden) set to true
-   		:  null;                                  // else elFinder decide it itself
+   		:  null;                                 // else elFinder decide it itself
 }
 
 /**
@@ -524,13 +524,22 @@ $opts = array(
 //            'statOwner'       => true,
 //            'attributes'      => array(
 //                array(
-//                    'pattern' => '/^\/\./', // dot files are hidden
+//                    'pattern' => '/^\/\./', // dot files are hidden, we use 'access' for this feature
 //                    'read'    => false,
 //                    'write'   => false,
 //                    'hidden'  => true,
 //                    'locked'  => true
 //                )
 //            )
+            'attributes' => array(
+                 array(
+                     'pattern' => '/^./', // files in root are NOT locked and hiddend by default for Exponent
+//                     'read'    => true,
+//                     'write'   => false,
+                     'hidden'  => false,
+                     'locked'  => false
+                 )
+               )
         ),
         // Trash volume
         array(

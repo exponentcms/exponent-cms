@@ -335,8 +335,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $result = parent::stat($path);
         // we don't include directories nor dot files in expFiles
         if ($result && !empty($result['mime'])) {
-            if ($result['mime'] !== 'directory' && strpos($result['name'], '.') !== 0
-            ) {
+            if ($result['mime'] !== 'directory' && strpos($result['name'], '.') !== 0) {
                 $file = self::_get_expFile($path);
                 if (!$user->isAdmin() && $file->poster != $user->id) {
                     $result['locked'] = true;
@@ -358,14 +357,16 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
                     $result['width'] = $file->image_width;
                     $result['height'] = $file->image_height;
                 }
+                // every file in uploads and avatars folder is read-only except for superadmins
                 if ((strpos($path, substr(UPLOAD_DIRECTORY, 0, -1) . DIRECTORY_SEPARATOR . 'avatars') !== false || strpos($path, substr(UPLOAD_DIRECTORY, 0, -1) . DIRECTORY_SEPARATOR . 'uploads') !== false) && !$user->isSuperAdmin()) {
                     $result['write'] = false;
                     $result['locked'] = true;
                 }
             } elseif($result['mime'] === 'directory') {
                 if ((strtolower($result['name']) === 'avatars' || strtolower($result['name']) === 'uploads')) {
-                     // only admins can see the avatars and uploads subfolders and their contents
+                     // only admins can see the avatars and uploads subfolders and their contents, but never delete the folder
                     $result['locked'] = true;
+                    // only superadmins can add new files/folders into folder
                     if (!$user->isSuperAdmin()) {
                         $result['write'] = false;
                     }
@@ -373,6 +374,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
                         $result['hidden'] = true;
                     }
                 } else {
+                    // only admins can delete folders
                     if (!$user->isAdmin()) {
 //                        $result['write'] = false;
                         $result['locked'] = true;
