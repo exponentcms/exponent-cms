@@ -48,9 +48,9 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
         define('EXPONENT_VERSION_BUILDDATE', '%%BUILDDATE%%');
     } else {
         // the info for the "next" version if we are a pre-release from the repository
-        define('EXPONENT_VERSION_MAJOR', 2);
-        define('EXPONENT_VERSION_MINOR', 7);
-        define('EXPONENT_VERSION_REVISION', 1);
+        define('EXPONENT_VERSION_MAJOR', 3);
+        define('EXPONENT_VERSION_MINOR', 0);
+        define('EXPONENT_VERSION_REVISION', 0);
         define('EXPONENT_VERSION_TYPE', 'develop');
         define('EXPONENT_VERSION_ITERATION', null);
         define('EXPONENT_VERSION_BUILDDATE', time());
