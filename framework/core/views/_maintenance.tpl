@@ -48,6 +48,28 @@
                 font-family : "Trebuchet MS", sans-serif;
                 color       : #333;
             }
+            .intro-message > h1 {
+                margin: 0;
+                text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+                font-size: 3em;
+            }
+            .intro-divider {
+                width: 100%;
+                border-top: 1px solid #f8f8f8;
+                border-bottom: 1px solid dimgrey;
+            }
+            .intro-message > h2, .intro-message > h3 {
+                text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+            }
+            .intro-message > h2 {
+                font-size: 2em;
+                line-height: 1.625;
+                color: #7DD6F3;
+            }
+            .intro-message > h3 {
+                font-size: 1.5em;
+                line-height: 1.625;
+            }
             .box {
                 margin                : 15%;
                 padding               : 3em;
@@ -84,24 +106,32 @@
     </head>
     <body>
         <div class="box">
-            <h1>{$smarty.const.ORGANIZATION_NAME}</h1>
-            {* NOTE no database, so we can't log on! *}
-            {if $db_down}
-                <h2 class="required">Our website is currently down for maintenance.</h2>
-                <h3>It will return once our technicians have completed repairs.</h3>
-            {else}
-                <hr class="intro-divider">
-                {$smarty.const.MAINTENANCE_MSG_HTML}
-                {if $smarty.const.MAINTENANCE_USE_RETURN_TIME && $smarty.const.MAINTENANCE_RETURN_TIME > time()}
-                    {$prm = ["count" => $smarty.const.MAINTENANCE_RETURN_TIME, "title" => $smarty.const.MAINTENANCE_RETURN_TEXT]}
-                    {showmodule controller=countdown action=show view=show params=$prm}
-                {/if}
-                {if $login}...
-                    {showmodule controller=login action=showlogin view=showlogin_stacked moduletitle="Administrators Login"|gettext}
-                {/if}
+            {if file_exists("`$smarty.const.THEME_RELATIVE`images/logo.png")}
+                <p></p>
+                <img class="img-responsive img-thumbnail center-block" style="max-width: 480px;" src="{$smarty.const.THEME_RELATIVE}images/logo.png" />
             {/if}
+            <div class="intro-message">
+                <h1>{$smarty.const.ORGANIZATION_NAME}</h1>
+                {* NOTE no database, so we can't log on! *}
+                {if $db_down}
+                    <h2 class="required">Our website is currently down for maintenance.</h2>
+                    <h3>It will return once our technicians have completed repairs.</h3>
+                {else}
+                    <hr class="intro-divider">
+                    {$smarty.const.MAINTENANCE_MSG_HTML}
+                    {if $smarty.const.MAINTENANCE_USE_RETURN_TIME && $smarty.const.MAINTENANCE_RETURN_TIME > time()}
+                        {$prm = ["count" => $smarty.const.MAINTENANCE_RETURN_TIME, "title" => $smarty.const.MAINTENANCE_RETURN_TEXT]}
+                        {showmodule controller=countdown action=show view=show params=$prm}
+                    {/if}
+                    {if $login}...
+                        {showmodule controller=login action=showlogin view=showlogin_stacked moduletitle="Administrators Login"|gettext}
+                    {/if}
+                {/if}
+            </div>
+            <div class="intro-footer">
+                <div style="float:right;">{'Powered by'|gettext} <a style="color:black;" href="http://www.exponentcms.org">ExponentCMS</a></div>
+            </div>
         </div>
-        <div style="float:right;">{'Powered by'|gettext} <a style="color:black;" href="http://www.exponentcms.org">ExponentCMS</a></div>
         {expTheme::foot()}
     </body>
 </html>
