@@ -16,18 +16,34 @@
 <html lang="{substr($smarty.const.LOCALE,0,2)}">
     <!--  Maintenance Page Theme by Start Bootstrap and Jackie D'Elia Design -->
     <head>
-        <meta charset="{$smarty.const.LANG_CHARSET}">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>{$smarty.const.SITE_TITLE} :: {'Down for Maintenance.'|gettext}</title>
-        <meta http-equiv="Content-Language" content="{strtolower(str_replace('_', '-', $smarty.const.LOCALE))}">
-        <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <!-- Bootstrap Core CSS -->
-        <link href="{$smarty.const.PATH_RELATIVE}external/bootstrap5/css/bootstrap.css" rel="stylesheet">
-        <link href="{$smarty.const.PATH_RELATIVE}external/jquery/addons/css/jquery.countdown.css" rel="stylesheet">
-        <link href="{$smarty.const.PATH_RELATIVE}framework/modules/countdown/assets/css/countdown.css" rel="stylesheet">
+        {expTheme::head([
+            "xhtml"=>false,
+            "framework"=>"bootstrap5",
+            "viewport"=>[
+                "width"=>"device-width",
+                "height"=>"device-height",
+                "initial_scale"=>1,
+                "minimum_scale"=>0.25,
+                "user_scalable"=>true
+            ],
+            "css_core"=>[
+                "common"
+            ],
+            "lessvars"=>[
+                'menu_height'=>MENU_HEIGHT,
+                'menu_width'=>MENU_WIDTH,
+                'menu_align_center'=>(MENU_ALIGN === 'center'),
+                'enable-gradients'=>(ENHANCED_STYLE == 1),
+                'enable-shadows'=>(ENHANCED_STYLE2 == 1),
+                'enable-transitions'=>(ENHANCED_STYLE3 == 1),
+                'enable-rounded'=>(ENHANCED_STYLE4 == 1),
+                'enable-rfs'=>(ENHANCED_STYLE5 == 1),
+                'enable-validation-icons'=>(ENHANCED_STYLE6 == 1)
+            ],
+            "css_links"=>true,
+            "css_theme"=>true
+        ])}
 
         <!-- Custom CSS -->
         <style media="screen" type="text/css">
@@ -211,14 +227,8 @@
             	color : #ff0000;
             }
         </style>
-        <!-- MINIFY REPLACE -->
 
         <!-- Custom Fonts -->
-        {if $smarty.const.USE_BOOTSTRAP_ICONS}
-            <link href="{$smarty.const.PATH_RELATIVE}external/bootstrap-icons/css/bootstrap-icons.css" rel="stylesheet" type="text/css">
-        {else}
-            <link href="{$smarty.const.FA6_SCRIPT}" rel="stylesheet" type="text/css">
-        {/if}
         <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
     </head>
 
@@ -256,30 +266,6 @@
             </div>
             <!-- /.container -->
         </div>
-        <script src="{$smarty.const.JQUERY3_SCRIPT}"></script>
-        {$smarty.const.BS5_SCRIPT}
-    {if $smarty.const.MAINTENANCE_USE_RETURN_TIME && $smarty.const.MAINTENANCE_RETURN_TIME > time()}
-        <script src="{$smarty.const.PATH_RELATIVE}external/jquery/addons/js/jquery.countdown.js"></script>
-        <script>
-            $(function(){
-                var note = $('#note'),
-                    ts = new Date({$smarty.const.MAINTENANCE_RETURN_TIME} * 1000);
-
-                $('#countdown').countdown({
-                    timestamp	: ts,
-                    callback	: function(days, hours, minutes, seconds){
-                        var message = "";
-                        // message += days + " day" + ( days==1 ? '':'s' ) + ", ";
-                        // message += hours + " hour" + ( hours==1 ? '':'s' ) + ", ";
-                        // message += minutes + " minute" + ( minutes==1 ? '':'s' ) + " and ";
-                        // message += seconds + " second" + ( seconds==1 ? '':'s' ) + " <br />";
-                        message += '{'at'|gettext} ';
-                        message += ts.toLocaleString() + " <br />";
-                        note.html(message);
-                    },
-                });
-            });
-        </script>
-    {/if}
+        {expTheme::foot()}
     </body>
 </html>

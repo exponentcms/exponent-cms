@@ -182,7 +182,7 @@ class expVersion {
             }
             return $update;
         } else {
-            // database is unavailable, so show us as being offline
+            // database is unavailable, so show us as being offline and stop
             if (empty($framework)) {
                 $framework = expSession::get('framework');
             }

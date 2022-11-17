@@ -636,6 +636,7 @@ class expCore
     // set up controls search order based on framework outside of theme/subtheme page
     public static function setup_autoload($framework) {
         global $auto_dirs;
+
         if ($framework === 'jquery' || $framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5')
             array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
         if ($framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5')

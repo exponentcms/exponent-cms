@@ -77,6 +77,9 @@ if (expJavascript::requiresJSON()) {
 	header("Content-Type: text/html; charset=".LANG_CHARSET);
 }
 
+// check to see if we need to install or upgrade the system and confirm the db is up
+expVersion::checkVersion();
+
 // Check to see if we are in maintenance mode.
 //if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login') && !expJavascript::inAjaxAction()) {
 if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !(!empty($_REQUEST['controller']) && $_REQUEST['controller'] === 'login' && !empty($_REQUEST['action']) && $_REQUEST['action'] === 'login')) {
@@ -84,7 +87,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
     if (empty($framework)) {
         $framework = expSession::get('framework');
     }
-    expCore::setup_autoload($framework);
+//    expCore::setup_autoload($framework);
 	$template = new standalonetemplate('_maintenance');
     if (!empty($_REQUEST['controller']) && $_REQUEST['controller'] === 'login') {
         $template->assign("login", true);
@@ -95,9 +98,6 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
 
 	// Handle sub themes
 	$page = expTheme::getTheme();
-
-    // check to see if we need to install or upgrade the system
-   	expVersion::checkVersion();
 
 	// If we are in a printer friendly request then we need to change to our printer friendly subtheme
 	if (PRINTER_FRIENDLY == 1 || EXPORT_AS_PDF == 1) {
