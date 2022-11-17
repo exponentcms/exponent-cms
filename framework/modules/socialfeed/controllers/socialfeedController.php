@@ -134,11 +134,6 @@ class socialfeedController extends expController
         $config['app_id'] = $this->config['socialfeed_facebook_app_id'];
         $config['secret'] = $this->config['socialfeed_facebook_secret_key'];
 
-        // PHP SDK 4.x.
-        if (version_compare(PHP_VERSION, '5.4.0') < 0) {  // facebook library requires php v5.4.x
-            flash('error', gt('Social Feed Facebook support requires PHP v5.4 or later'));
-            return array();
-        }
         require_once(BASE . "external/facebook-php-sdk-4.0.23/autoload.php"); //v4
 //        require_once(BASE . "external/facebook-php-sdk-v4-5.2.0/src/Facebook/autoload.php");
 //        require_once(BASE . "external/php-graph-sdk-5.6.2/src/Facebook/autoload.php");

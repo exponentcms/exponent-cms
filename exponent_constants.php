@@ -613,11 +613,7 @@ if (!defined('JQUERY_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
-        define('SMARTY_VERSION', '3.1.27');
-    } else {
-        define('SMARTY_VERSION', '4.2.1');  //note smarty v3.1.28+ won't work properly with php < v7.1+
-    }
+    define('SMARTY_VERSION', '4.2.1');
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
 }
@@ -627,11 +623,7 @@ if (!defined('SMARTY_PATH')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SWIFT_PATH')) {
-    if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
-        define('SWIFT_VERSION', '5.4.12');
-    } else {
-        define('SWIFT_VERSION', '6.3.0');  //note v6.x requires php v7.x
-    }
+    define('SWIFT_VERSION', '6.3.0');
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
     /**
      * Lexer is needed for Swiftmailer v6

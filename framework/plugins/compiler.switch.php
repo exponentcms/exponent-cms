@@ -17,11 +17,7 @@
 ##################################################
 
 //Register the post and pre filters as they are not auto-registered.
-if (version_compare(SMARTY_VERSION, '3.1.28', 'lt')) {
-    $this->registerFilter('post', 'smarty_postfilter_switch');  // for v3.1.27
-} else {
-    $smarty->registerFilter('post', 'smarty_postfilter_switch');  // for v3.1.28+
-}
+$smarty->registerFilter('post', 'smarty_postfilter_switch');  // for v3.1.28+
 
 /**
  * Switch statement plugin for smarty.

@@ -1173,9 +1173,6 @@ class expMPDF7 extends expMPDF
             if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
             ini_set('display_errors', 0);  // warnings must be turned off to work
             require_once(BASE . 'external/log-' . LOG_VERSION . '/autoload.php');
-            if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
-                require_once(BASE . 'external/random_compat-' . RANDOM_VERSION . '/lib/random.php');
-            }
             require_once(BASE . 'external/mpdf-' . MPDF7_VERSION . '/src/autoload.php');
             $this->size = $paper_size;
             $this->orient = strtoupper($orientation[0]);
@@ -1232,9 +1229,6 @@ class expMPDF8 extends expMPDF
             if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
             ini_set('display_errors', 0);  // warnings must be turned off to work
             require_once(BASE . 'external/log-' . LOG_VERSION . '/autoload.php');
-            if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
-                require_once(BASE . 'external/random_compat-' . RANDOM_VERSION . '/lib/random.php');
-            }
             require_once(BASE . 'external/FPDI-' . FPDI_VERSION . '/src/autoload.php');
             require_once(BASE . 'external/mpdf-' . MPDF8_VERSION . '/src/autoload.php');
             $this->size = $paper_size;
@@ -1294,9 +1288,6 @@ class expMPDF81 extends expMPDF
             if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
             ini_set('display_errors', 0);  // warnings must be turned off to work
             require_once(BASE . 'external/log-' . LOG_VERSION . '/autoload.php');
-            if (version_compare(PHP_VERSION, '7.0.0', 'lt')) {
-                require_once(BASE . 'external/random_compat-' . RANDOM_VERSION . '/lib/random.php');
-            }
             require_once(BASE . 'external/FPDI-' . FPDI_VERSION . '/src/autoload.php');
             require_once(BASE . 'external/message-factory-1.0.1/src/autoload.php');
             require_once(BASE . 'external/http-message-1.0/src/autoload.php');

@@ -58,10 +58,6 @@ abstract class basetemplate {
         $this->tpl->debugging = SMARTY_DEVELOPMENT; // Opens up the debug console
         $this->tpl->error_unassigned = true; // display notice when accessing unassigned variable, if warnings turned on
 
-        if (version_compare(SMARTY_VERSION, '4.0.0', 'lt')) {
-            $this->tpl->php_handling = SMARTY::PHP_REMOVE;  //fixme remove for smarty v4
-        }
-
         if (SMARTY_CACHING)
             $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
         else

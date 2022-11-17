@@ -68,11 +68,9 @@ class expMail {
 	 * @todo add further documentation for using settings other than the system default
 	 */
 	function __construct($params = array()) {
-        if (version_compare(SWIFT_VERSION, '6.0.0', 'ge')) {
-            require_once(SWIFT_LEXER_PATH . 'AbstractLexer.php');
-            require_once(SWIFT_EMAIL_PATH . 'EmailValidator.php');
-            Egulias\EmailValidator\EmailValidator::registerAutoload();
-        }
+        require_once(SWIFT_LEXER_PATH . 'AbstractLexer.php');
+        require_once(SWIFT_EMAIL_PATH . 'EmailValidator.php');
+        Egulias\EmailValidator\EmailValidator::registerAutoload();
 		require_once(SWIFT_PATH . 'swift_required.php');
 
 		if (array_key_exists('method', $params)) {
@@ -101,18 +99,10 @@ class expMail {
 					if (isset($params['connections']) && !is_array($params['connections']) && $params['connections'] != '') {
 						// Allow custom mail parameters.
 //						$this->transport = Swift_MailTransport::newInstance($params['connections']);
-                        if (version_compare(SWIFT_VERSION, '6.0.0', 'ge')) {
-                            $this->transport = new Swift_SendmailTransport('/usr/sbin/sendmail -bs');
-                        } else {
-                            $this->transport = new Swift_MailTransport($params['connections']);  //fixme DEPRECATED
-                        }
+                        $this->transport = new Swift_SendmailTransport('/usr/sbin/sendmail -bs');
 					} else {
 //						$this->transport = Swift_MailTransport::newInstance();
-                        if (version_compare(SWIFT_VERSION, '6.0.0', 'ge')) {
-                            $this->transport = new Swift_SendmailTransport('/usr/sbin/sendmail -bs');
-                        } else {
-                            $this->transport = new Swift_MailTransport($params['connections']);  //fixme DEPRECATED
-                        }
+                        $this->transport = new Swift_SendmailTransport('/usr/sbin/sendmail -bs');
 					}
 					break;
 				case "exim":
@@ -137,19 +127,11 @@ class expMail {
 			if (isset($params['connections']) && !is_array($params['connections']) && $params['connections'] != '') {
 				// Allow custom mail parameters.
 //				$this->transport = Swift_MailTransport::newInstance($params['connections']);
-                if (version_compare(SWIFT_VERSION, '6.0.0', 'ge')) {
-                    $this->transport = new Swift_SendmailTransport('/usr/sbin/sendmail -bs');
-                } else {
-                    $this->transport = new Swift_MailTransport($params['connections']);  //fixme DEPRECATED
-                }
+                $this->transport = new Swift_SendmailTransport('/usr/sbin/sendmail -bs');
 			} else {
 				// Use default Mail parameters.
 //				$this->transport = Swift_MailTransport::newInstance();
-                if (version_compare(SWIFT_VERSION, '6.0.0', 'ge')) {
-                    $this->transport = new Swift_SendmailTransport('/usr/sbin/sendmail -bs');
-                } else {
-                    $this->transport = new Swift_MailTransport($params['connections']);  //fixme DEPRECATED
-                }
+                $this->transport = new Swift_SendmailTransport('/usr/sbin/sendmail -bs');
 			}
 		} else {
 			/*
