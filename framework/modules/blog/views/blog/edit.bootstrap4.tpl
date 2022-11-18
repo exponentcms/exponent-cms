@@ -128,7 +128,7 @@
                         {else}
                         <span title="{'Editing this revision'|gettext}">
                         {/if}
-                            {$revision->body|summarize:"html":"parahtml"}
+                            {$revision->body|summarize:"html":"paraxlinks"}
                         {if $revision->revision_id != $record->revision_id}
                         </a>
                         {else}
