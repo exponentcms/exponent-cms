@@ -48,7 +48,6 @@
              * Code licensed under MIT
              * For details, see https://github.com/BlackrockDigital/startbootstrap-landing-page/blob/gh-pages/LICENSE
              */
-
             .site {
                 display: flex;
                 min-height: 100vh;
@@ -62,7 +61,6 @@
                 background-size: auto 100%;
                 -o-background-size: auto 100%;
             }
-
             .overlay {
                 background-color: rgb(0, 0, 0);
                 background-color: rgba(0, 0, 0, 0.6);
@@ -71,12 +69,10 @@
                 background-size: auto 100%;
                 -o-background-size: auto 100%;
             }
-
             body, h1, h2, h3, h4, h5, h6 {
                 font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
                 font-weight: 400;
             }
-
             .container {
                 text-align: center;
                 color: #f8f8f8;
@@ -84,83 +80,69 @@
                 min-height: 100vh;
                 flex-direction: column;
             }
-
             .intro-message {
                 position: relative;
                 margin: auto;
                 padding: 10%;
 
             }
-
             .intro-message > h1 {
                 margin: 0;
                 text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
                 font-size: 3em;
             }
-
             .intro-divider {
                 width: 100%;
                 border-top: 1px solid #f8f8f8;
                 border-bottom: 1px solid dimgrey;
             }
-
             .intro-message > h2, .intro-message > h3 {
                 text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
             }
-
             .intro-message > h2 {
                 font-size: 2em;
                 line-height: 1.625;
                 color: #7DD6F3;
             }
-
             .intro-message > h3 {
                 font-size: 1.5em;
                 line-height: 1.625;
             }
-
             .intro-content {
                 position: relative;
                 /*padding-top: 5%;*/
                 /*padding-bottom: 5%;*/
             }
-
             .intro-content .tel {
                 color: #7DD6F3;
                 font-size: 2em;
                 font-weight: 400;
                 text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
             }
-
             .intro-content .address {
                 color: #fff;
                 font-size: 1.6em;
                 font-weight: 400;
                 text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
             }
-
             .intro-footer {
                 font-size: 1em;
                 text-align: center;
             }
-
             .intro-footer .text-muted {
                 color: #f5f5f5;
                 font-weight: normal;
             }
-
             .network-name {
                 text-transform: uppercase;
                 font-size: 14px;
                 font-weight: 400;
                 letter-spacing: 2px;
             }
-
             footer {
                 padding: 50px 0;
                 background-color: #f8f8f8;
             }
-
             .intro-social-buttons {
                 display: flex;
                 justify-content: space-around;
@@ -168,19 +150,15 @@
                 padding: 0;
                 /*margin: 20px;*/
             }
-
             ol.intro-social-buttons, ul.intro-social-buttons {
                 list-style-type: none;
             }
-
             ul.intro-social-buttons > li {
                 margin: 10px;
             }
-
             ul.intro-social-buttons > li:last-child {} .btn-default {
                 color: grey;
             }
-
             @media (min-width: 769px) {
                 .site,
                 .overlay {
@@ -189,30 +167,24 @@
                     background-size: cover;
                     -o-background-size: cover;
                 }
-
                 .intro-divider {
                     /*width: 80%;*/
                     border-top: 1px solid #f8f8f8;
                     border-bottom: 1px solid dimgrey;
                 }
-
                 .intro-message > h1 {
                     font-size: 5em;
                 }
-
                 .intro-social-buttons {
                     flex-direction: row;
                 }
-
                 ul.intro-social-buttons > li {
                     margin-bottom: 20px;
                     padding: 0;
                 }
-
                 .intro-content .tel {
                     font-size: 3em;
                 }
-
                 .intro-content .address {
                     font-size: 2em;
                 }
@@ -234,7 +206,6 @@
     </head>
     <body class="site">
         <div class="overlay">
-            <!-- Header -->
             <div class="container">
                 {if file_exists("`$smarty.const.THEME_RELATIVE`images/logo.png")}
                     <p></p>
@@ -264,7 +235,6 @@
                     </div>
                 </div>
             </div>
-            <!-- /.container -->
         </div>
         {expTheme::foot()}
     </body>

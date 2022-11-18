@@ -175,39 +175,40 @@ class expTheme
         }
 
         // set up controls search order based on framework
-        if (empty($head_config['framework'])) {
-            $head_config['framework'] = '';
-        }
-        if (bs() || $framework === 'jquery') {
-            array_unshift(
-                $auto_dirs,
-                BASE . 'framework/core/forms/controls/jquery'
-            );
-        }
-        if (bs(true)) {
-            array_unshift(
-                $auto_dirs,
-                BASE . 'framework/core/forms/controls/bootstrap'
-            );
-        }
-        if (bs3(true) || bs4() || bs5()) {
-            array_unshift(
-                $auto_dirs,
-                BASE . 'framework/core/forms/controls/bootstrap3'
-            );
-        }
-        if (bs4() || bs5()) {
-            array_unshift(
-                $auto_dirs,
-                BASE . 'framework/core/forms/controls/bootstrap4'
-            );
-        }
-        if (bs5()) {
-            array_unshift(
-                $auto_dirs,
-                BASE . 'framework/core/forms/controls/bootstrap5'
-            );
-        }
+//        if (empty($head_config['framework'])) {
+//            $head_config['framework'] = '';
+//        }
+        expCore::setup_autoload($framework);
+//        if (bs() || $framework === 'jquery') {
+//            array_unshift(
+//                $auto_dirs,
+//                BASE . 'framework/core/forms/controls/jquery'
+//            );
+//        }
+//        if (bs(true)) {
+//            array_unshift(
+//                $auto_dirs,
+//                BASE . 'framework/core/forms/controls/bootstrap'
+//            );
+//        }
+//        if (bs3(true) || bs4() || bs5()) {
+//            array_unshift(
+//                $auto_dirs,
+//                BASE . 'framework/core/forms/controls/bootstrap3'
+//            );
+//        }
+//        if (bs4() || bs5()) {
+//            array_unshift(
+//                $auto_dirs,
+//                BASE . 'framework/core/forms/controls/bootstrap4'
+//            );
+//        }
+//        if (bs5()) {
+//            array_unshift(
+//                $auto_dirs,
+//                BASE . 'framework/core/forms/controls/bootstrap5'
+//            );
+//        }
         if (newui()) {
             expCSS::pushToHead(array(
                 "lessprimer"=>"external/bootstrap3/less/newui.less",
@@ -217,9 +218,9 @@ class expTheme
 //                ),
             ));
             if (!defined("BTN_SIZE")) define("BTN_SIZE", 'small');
-            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
+//            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
         }
-        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
+//        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
 
 //        if (!expSession::is_set('framework') || expSession::get(
 //                'framework'

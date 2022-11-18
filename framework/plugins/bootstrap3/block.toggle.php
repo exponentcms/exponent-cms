@@ -42,8 +42,8 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 
         echo '<div id="',$params['unique'],'" class="panel panel-default toggle">
             <div id="',$params['unique'],'-head" class="panel-heading" title="',$params['collapsed']?gt('Click to Expand'):gt('Click to Collapse') ,'">
-                <h2 id="h2-',$params['unique'],'" class="panel-title" data-toggle="collapse" data-target="#',$params['unique'],'-content">',$params['title'],'
-                <a id="a-',$params['unique'],'" data-toggle="collapse" data-target="#',$params['unique'],'-content" class="',$params['collapsed']?' collapsed':'','"></a></h2>
+                <h5 id="h5-',$params['unique'],'" class="panel-title" data-toggle="collapse" data-target="#',$params['unique'],'-content">',$params['title'],'
+                <a id="a-',$params['unique'],'" data-toggle="collapse" data-target="#',$params['unique'],'-content" class="',$params['collapsed']?' collapsed':'','"></a></h5>
             </div>
         ';
         echo '  <div id="',$params['unique'],'-content" class="panel-body collapse',!$params['collapsed']?' in':'','">';
@@ -75,7 +75,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
             }
 
             $(document).ready(function(){  // swap to summary and display it
-                $(\'#h2-' . $params['unique'] . '\').removeAttr(\'data-toggle\');
+                $(\'#h5-' . $params['unique'] . '\').removeAttr(\'data-toggle\');
                 $(\'#a-' . $params['unique'] . '\').removeAttr(\'data-toggle\');
                 if ('.(int)!empty($params['collapsed']).') {
                     $(\'#' . $params['unique'] . '-content\').addClass(\'in\')

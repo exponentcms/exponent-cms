@@ -50,11 +50,7 @@ function smarty_function_bootstrap_navbar($params,&$smarty) {
         }
         expJavascript::pushToFoot(array(
             "unique"  => 'bootstrap-dropdown',
-            "bootstrap"=> 'dropdown',
-        ));
-        expJavascript::pushToFoot(array(
-            "unique"  => 'bootstrap-collapse',
-            "bootstrap"=> 'collapse',
+            "bootstrap"=> 'dropdown,collapse',
         ));
         return $menu;
     }

@@ -42,8 +42,8 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 
         echo '<div id="',$params['unique'],'" class="card toggle">
             <div id="',$params['unique'],'-head" class="card-header" title="',$params['collapsed']?gt('Click to Expand'):gt('Click to Collapse') ,'">
-                <h2 id="h2-',$params['unique'],'" class="card-title" data-bs-toggle="collapse" data-bs-target="#',$params['unique'],'-content">',$params['title'],'
-                <a id="a-',$params['unique'],'" data-bs-toggle="collapse" data-bs-target="#',$params['unique'],'-content" class="',$params['collapsed']?' collapsed':'','"></a></h2>
+                <h5 id="h5-',$params['unique'],'" class="card-title" data-bs-toggle="collapse" data-bs-target="#',$params['unique'],'-content">',$params['title'],'
+                <a id="a-',$params['unique'],'" data-bs-toggle="collapse" data-bs-target="#',$params['unique'],'-content" class="',$params['collapsed']?' collapsed':'','"></a></h5>
             </div>
         ';
         echo '  <div id="',$params['unique'],'-content" class="card-body collapse',!$params['collapsed']?' show':'','">';
@@ -75,7 +75,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
             }
 
             $(document).ready(function(){  // swap to summary and display it
-                $(\'#h2-' . $params['unique'] . '\').removeAttr(\'data-bs-toggle\');
+                $(\'#h5-' . $params['unique'] . '\').removeAttr(\'data-bs-toggle\');
                 $(\'#a-' . $params['unique'] . '\').removeAttr(\'data-bs-toggle\');
                 if ('.(int)!empty($params['collapsed']).') {
                     $(\'#' . $params['unique'] . '-content\').addClass(\'show\')
