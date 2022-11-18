@@ -5,7 +5,7 @@ namespace EasyPost;
 class Refund extends EasypostResource
 {
     /**
-     * retrieve a refund
+     * Retrieve a refund.
      *
      * @param string $id
      * @param string $apiKey
@@ -13,25 +13,25 @@ class Refund extends EasypostResource
      */
     public static function retrieve($id, $apiKey = null)
     {
-        return self::_retrieve(get_class(), $id, $apiKey);
+        return self::retrieveResource(get_class(), $id, $apiKey);
     }
 
     /**
-     * retrieve all refunds
+     * Retrieve all refunds.
      *
-     * @param mixed  $params
+     * @param mixed $params
      * @param string $apiKey
      * @return mixed
      */
     public static function all($params = null, $apiKey = null)
     {
-        return self::_all(get_class(), $params, $apiKey);
+        return self::allResources(get_class(), $params, $apiKey);
     }
 
     /**
-     * create a refund
+     * Create a refund.
      *
-     * @param mixed  $params
+     * @param mixed $params
      * @param string $apiKey
      * @return mixed
      */
@@ -43,6 +43,6 @@ class Refund extends EasypostResource
             $params['refund'] = $clone;
         }
 
-        return self::_create(get_class(), $params, $apiKey);
+        return self::createResource(get_class(), $params, $apiKey);
     }
 }

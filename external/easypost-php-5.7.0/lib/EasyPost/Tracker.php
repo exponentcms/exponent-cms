@@ -2,10 +2,29 @@
 
 namespace EasyPost;
 
+/**
+ * @package EasyPost
+ * @property string $id
+ * @property string $object
+ * @property string $mode
+ * @property string $tracking_code
+ * @property string $status
+ * @property string $signed_by
+ * @property float $weight
+ * @property string $est_delivery_date
+ * @property string $shipment_id
+ * @property string $carrier
+ * @property TrackingDetail[] $tracking_details
+ * @property CarrierDetail $carrier_detail
+ * @property string $public_url
+ * @property Fee[] $fees
+ * @property string $created_at
+ * @property string $updated_at
+ */
 class Tracker extends EasypostResource
 {
     /**
-     * retrieve a tracker
+     * Retrieve a tracker.
      *
      * @param string $id
      * @param string $apiKey
@@ -13,11 +32,11 @@ class Tracker extends EasypostResource
      */
     public static function retrieve($id, $apiKey = null)
     {
-        return self::_retrieve(get_class(), $id, $apiKey);
+        return self::retrieveResource(get_class(), $id, $apiKey);
     }
 
     /**
-     * retrieve all trackers
+     * Retrieve all trackers.
      *
      * @param mixed  $params
      * @param string $apiKey
@@ -25,11 +44,11 @@ class Tracker extends EasypostResource
      */
     public static function all($params = null, $apiKey = null)
     {
-        return self::_all(get_class(), $params, $apiKey);
+        return self::allResources(get_class(), $params, $apiKey);
     }
 
     /**
-     * create a tracker
+     * Create a tracker.
      *
      * @param mixed  $params
      * @param string $apiKey
@@ -47,26 +66,31 @@ class Tracker extends EasypostResource
             $params['tracker'] = $clone;
         }
 
-        return self::_create(get_class(), $params, $apiKey);
+        return self::createResource(get_class(), $params, $apiKey);
     }
 
     /**
-     * create a list of trackers
+     * Create a list of trackers.
      *
      * @param mixed  $params
      * @param string $apiKey
+     * @return bool
      */
     public static function create_list($params = null, $apiKey = null)
     {
-        $class = get_class();
         if (!isset($params['trackers']) || !is_array($params['trackers'])) {
             $clone = $params;
             unset($params);
-            $params['trackers'] = $clone;
+            $params['trackers'] = (object)$clone;
         }
 
+        $encodedParams = str_replace('\\', '', json_encode($params));
+
         $requestor = new Requestor($apiKey);
-        $url = self::classUrl($class);
-        list($response, $apiKey) = $requestor->request('post', $url . '/create_list', $params);
+        $url = self::classUrl(get_class());
+        list($response, $apiKey) = $requestor->request('post', $url . '/create_list', $encodedParams);
+
+        // The response is empty, we return true if no error
+        return true;
     }
 }

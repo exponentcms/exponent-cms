@@ -5,7 +5,7 @@ namespace EasyPost;
 abstract class Util
 {
     /**
-     * check if input is a list
+     * Check if input is a list.
      *
      * @param $array
      * @return bool
@@ -25,14 +25,14 @@ abstract class Util
     }
 
     /**
-     * convert EasyPost object to an array
+     * Convert EasyPost object to an array.
      *
      * @param mixed $values
      * @return array
      */
     public static function convertEasyPostObjectToArray($values)
     {
-        $results = array();
+        $results = [];
         foreach ($values as $k => $v) {
             if ($v instanceof EasyPostObject) {
                 $results[$k] = $v->__toArray(true);
@@ -47,29 +47,34 @@ abstract class Util
     }
 
     /**
-     * convert input to an EasyPost object
+     * Convert input to an EasyPost object.
      *
-     * @param mixed  $response
+     * @param mixed $response
      * @param string $apiKey
      * @param string $parent
      * @param string $name
-     * @return array
+     * @return mixed
      */
     public static function convertToEasyPostObject($response, $apiKey, $parent = null, $name = null)
     {
-        $types = array(
+        $types = [
             'Address'               => '\EasyPost\Address',
             'Batch'                 => '\EasyPost\Batch',
             'CarrierAccount'        => '\EasyPost\CarrierAccount',
+            'CarrierDetail'         => '\EasyPost\CarrierDetail',
             'CustomsInfo'           => '\EasyPost\CustomsInfo',
             'CustomsItem'           => '\EasyPost\CustomsItem',
+            'EndShipper'            => '\EasyPost\EndShipper',
             'Event'                 => '\EasyPost\Event',
             'Fee'                   => '\EasyPost\Fee',
             'Insurance'             => '\EasyPost\Insurance',
+            'Message'               => '\EasyPost\Message',
             'Order'                 => '\EasyPost\Order',
             'Parcel'                => '\EasyPost\Parcel',
             'PaymentLogReport'      => '\EasyPost\Report',
+            'PaymentMethod'         => '\EasyPost\PaymentMethod',
             'Pickup'                => '\EasyPost\Pickup',
+            'PickupRate'            => '\EasyPost\PickupRate',
             'PostageLabel'          => '\EasyPost\PostageLabel',
             'Rate'                  => '\EasyPost\Rate',
             'Refund'                => '\EasyPost\Refund',
@@ -81,17 +86,24 @@ abstract class Util
             'ShipmentReport'        => '\EasyPost\Report',
             'TaxIdentifier'         => '\EasyPost\TaxIdentifier',
             'Tracker'               => '\EasyPost\Tracker',
+            'TrackingDetail'        => '\EasyPost\TrackingDetail',
+            'TrackingLocation'      => '\EasyPost\TrackingLocation',
             'TrackerReport'         => '\EasyPost\Report',
             'User'                  => '\EasyPost\User',
+            'Verification'          => '\EasyPost\Verification',
+            'VerificationDetails'   => '\EasyPost\VerificationDetails',
+            'Verifictions'          => '\EasyPost\Verifications',
             'Webhook'               => '\EasyPost\Webhook',
-        );
+        ];
 
-        $prefixes = array(
+        $prefixes = [
             'adr'       => '\EasyPost\Address',
             'batch'     => '\EasyPost\Batch',
+            'brd'       => '\EasyPost\Brand',
             'ca'        => '\EasyPost\CarrierAccount',
             'cstinfo'   => '\EasyPost\CustomsInfo',
             'cstitem'   => '\EasyPost\CustomsItem',
+            'es'        => '\EasyPost\EndShipper',
             'evt'       => '\EasyPost\Event',
             'fee'       => '\EasyPost\Fee',
             'hook'      => '\EasyPost\Webhook',
@@ -111,10 +123,10 @@ abstract class Util
             'trk'       => '\EasyPost\Tracker',
             'trkrep'    => '\EasyPost\Report',
             'user'      => '\EasyPost\User',
-        );
+        ];
 
         if (self::isList($response)) {
-            $mapped = array();
+            $mapped = [];
             foreach ($response as $object => $v) {
                 if (is_string($object) && isset($types[$object])) {
                     $v['object'] = $object;
@@ -126,8 +138,8 @@ abstract class Util
         } elseif (is_array($response)) {
             if (isset($response['object']) && is_string($response['object']) && isset($types[$response['object']])) {
                 $class = $types[$response['object']];
-            } elseif (isset($response['id']) && isset($prefixes[substr($response['id'], 0, strpos($response['id'], "_"))])) {
-                $class = $prefixes[substr($response['id'], 0, strpos($response['id'], "_"))];
+            } elseif (isset($response['id']) && isset($prefixes[substr($response['id'], 0, strpos($response['id'], '_'))])) {
+                $class = $prefixes[substr($response['id'], 0, strpos($response['id'], '_'))];
             } else {
                 $class = '\EasyPost\EasyPostObject';
             }
@@ -136,5 +148,74 @@ abstract class Util
         } else {
             return $response;
         }
+    }
+
+    /**
+     * @param object EasyPostObject
+     * @param array $carriers
+     * @param array $services
+     * @param string $ratesKey
+     * @return Rate
+     * @throws \EasyPost\Error
+     */
+    public static function getLowestObjectRate($easypostObject, $carriers = [], $services = [], $ratesKey = 'rates')
+    {
+        $lowestRate = false;
+        $carriersInclude = [];
+        $carriersExclude = [];
+        $servicesInclude = [];
+        $servicesExclude = [];
+
+        if (!is_array($carriers)) {
+            $carriers = explode(',', $carriers);
+        }
+        for ($i = 0; $i < count($carriers); $i++) {
+            $carriers[$i] = trim(strtolower($carriers[$i]));
+            if (substr($carriers[$i], 0, 1) == '!') {
+                $carriersExclude[] = substr($carriers[$i], 1);
+            } else {
+                $carriersInclude[] = $carriers[$i];
+            }
+        }
+
+        if (!is_array($services)) {
+            $services = explode(',', $services);
+        }
+        for ($i = 0; $i < count($services); $i++) {
+            $services[$i] = trim(strtolower($services[$i]));
+            if (substr($services[$i], 0, 1) == '!') {
+                $servicesExclude[] = substr($services[$i], 1);
+            } else {
+                $servicesInclude[] = $services[$i];
+            }
+        }
+
+        for ($i = 0; $i < count($easypostObject->$ratesKey); $i++) {
+            $rateCarrier = strtolower($easypostObject->$ratesKey[$i]->carrier);
+            if (!empty($carriersInclude[0]) && !in_array($rateCarrier, $carriersInclude)) {
+                continue;
+            }
+            if (!empty($carriersExclude[0]) && in_array($rateCarrier, $carriersExclude)) {
+                continue;
+            }
+
+            $rateService = strtolower($easypostObject->$ratesKey[$i]->service);
+            if (!empty($servicesInclude[0]) && !in_array($rateService, $servicesInclude)) {
+                continue;
+            }
+            if (!empty($servicesExclude[0]) && in_array($rateService, $servicesExclude)) {
+                continue;
+            }
+
+            if (!$lowestRate || floatval($easypostObject->$ratesKey[$i]->rate) < floatval($lowestRate->rate)) {
+                $lowestRate = clone ($easypostObject->$ratesKey[$i]);
+            }
+        }
+
+        if ($lowestRate == false) {
+            throw new Error('No rates found.');
+        }
+
+        return $lowestRate;
     }
 }

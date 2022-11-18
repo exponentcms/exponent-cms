@@ -2,10 +2,25 @@
 
 namespace EasyPost;
 
+/**
+ * @package EasyPost
+ * @property string $id
+ * @property string $object
+ * @property string $mode
+ * @property string $status
+ * @property string $start_date
+ * @property string $end_date
+ * @property bool $include_children
+ * @property string $url
+ * @property string $url_expires_at
+ * @property bool $send_email
+ * @property string $created_at
+ * @property string $updated_at
+ */
 class Report extends EasypostResource
 {
     /**
-     * retrieve a report
+     * Retrieve a report.
      *
      * @param string $id
      * @param string $apiKey
@@ -14,13 +29,13 @@ class Report extends EasypostResource
      */
     public static function retrieve($id, $apiKey = null)
     {
-        return self::_retrieve(get_class(), $id, $apiKey);
+        return self::retrieveResource(get_class(), $id, $apiKey);
     }
 
     /**
-     * retrieve all reports
+     * Retrieve all reports.
      *
-     * @param mixed  $params
+     * @param mixed $params
      * @param string $apiKey
      * @return mixed
      * @throws \EasyPost\Error
@@ -32,7 +47,7 @@ class Report extends EasypostResource
         } else {
             $type = $params['type'];
 
-            self::_validate('all', $params, $apiKey);
+            self::validate($params, $apiKey);
             $requestor = new Requestor($apiKey);
 
             $url = self::reportUrl($type);
@@ -44,9 +59,9 @@ class Report extends EasypostResource
     }
 
     /**
-     * create a report
+     * Create a report.
      *
-     * @param mixed  $params
+     * @param mixed $params
      * @param string $apiKey
      * @return mixed
      */
@@ -54,21 +69,19 @@ class Report extends EasypostResource
     {
         if (!isset($params['type'])) {
             throw new Error('Undetermined Report Type');
-        } else {
-            $type = $params['type'];
-
-            self::_validate('create', $params, $apiKey);
-            $requestor = new Requestor($apiKey);
-
-            $url = self::reportUrl($type);
-
-            list($response, $apiKey) = $requestor->request('post', $url, $params, true);
-            return Util::convertToEasyPostObject($response, $apiKey);
         }
+
+        $url = self::reportUrl($params['type']);
+
+        self::validate($params, $apiKey);
+        $requestor = new Requestor($apiKey);
+
+        list($response, $apiKey) = $requestor->request('post', $url, $params);
+        return Util::convertToEasyPostObject($response, $apiKey);
     }
 
     /**
-     * generate report url format
+     * Generate report url format.
      *
      * @param string $type
      * @return mixed

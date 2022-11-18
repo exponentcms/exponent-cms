@@ -2,10 +2,23 @@
 
 namespace EasyPost;
 
+/**
+ * @package EasyPost
+ * @property string $id
+ * @property string $object
+ * @property string $mode
+ * @property float $length
+ * @property float $width
+ * @property float $height
+ * @property float $wiehgt
+ * @property string $predefined_package
+ * @property string $created_at
+ * @property string $updated_at
+ */
 class Parcel extends EasypostResource
 {
     /**
-     * retrieve a parcel
+     * Retrieve a parcel.
      *
      * @param string $id
      * @param string $apiKey
@@ -13,25 +26,13 @@ class Parcel extends EasypostResource
      */
     public static function retrieve($id, $apiKey = null)
     {
-        return self::_retrieve(get_class(), $id, $apiKey);
+        return self::retrieveResource(get_class(), $id, $apiKey);
     }
 
     /**
-     * retrieve all parcels
+     * Create a parcel.
      *
-     * @param mixed  $params
-     * @param string $apiKey
-     * @return mixed
-     */
-    public static function all($params = null, $apiKey = null)
-    {
-        return self::_all(get_class(), $params, $apiKey);
-    }
-
-    /**
-     * create a parcel
-     *
-     * @param mixed  $params
+     * @param mixed $params
      * @param string $apiKey
      * @return mixed
      */
@@ -43,6 +44,6 @@ class Parcel extends EasypostResource
             $params['parcel'] = $clone;
         }
 
-        return self::_create(get_class(), $params, $apiKey);
+        return self::createResource(get_class(), $params, $apiKey);
     }
 }

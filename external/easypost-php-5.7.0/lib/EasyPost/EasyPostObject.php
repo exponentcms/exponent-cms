@@ -40,7 +40,7 @@ class EasyPostObject implements \ArrayAccess, \Iterator
     private $_name;
 
     /**
-     * constructor
+     * Constructor for EasyPost objects.
      *
      * @param string $id
      * @param string $apiKey
@@ -50,13 +50,13 @@ class EasyPostObject implements \ArrayAccess, \Iterator
     public function __construct($id = null, $apiKey = null, $parent = null, $name = null)
     {
         $this->_apiKey = $apiKey;
-        $this->_values = array();
-        $this->_unsavedValues = array();
-        $this->_immutableValues = array('_apiKey', 'id');
+        $this->_values = [];
+        $this->_unsavedValues = [];
+        $this->_immutableValues = ['_apiKey', 'id'];
         $this->_parent = $parent;
         $this->_name = $name;
 
-        $this->_retrieveOptions = array();
+        $this->_retrieveOptions = [];
         if (is_array($id)) {
             foreach ($id as $key => $value) {
                 if ($key != 'id') {
@@ -72,7 +72,7 @@ class EasyPostObject implements \ArrayAccess, \Iterator
     }
 
     /**
-     * Standard accessor magic methods
+     * Standard accessor magic methods.
      *
      * @param string $k
      * @param mixed $v
@@ -83,16 +83,16 @@ class EasyPostObject implements \ArrayAccess, \Iterator
 
         $i = 0;
         $current = $this;
-        $param = array($k => $v);
+        $param = [$k => $v];
 
         while (true && $i < 99) {
             if (!is_null($current->_parent)) {
-                $param = array($current->_name => $param);
+                $param = [$current->_name => $param];
                 $current = $current->_parent;
             } else {
                 reset($param);
-                $first_key = key($param);
-                $current->_unsavedValues[$first_key] = $param[$first_key];
+                $firstKey = key($param);
+                $current->_unsavedValues[$firstKey] = $param[$firstKey];
                 break;
             }
             $i++;
@@ -100,7 +100,7 @@ class EasyPostObject implements \ArrayAccess, \Iterator
     }
 
     /**
-     * isset magic method
+     * `isset` magic method.
      *
      * @param string $k
      * @return bool
@@ -111,7 +111,7 @@ class EasyPostObject implements \ArrayAccess, \Iterator
     }
 
     /**
-     * unset magic method
+     * `unset` magic method.
      *
      * @param string $k
      */
@@ -122,16 +122,16 @@ class EasyPostObject implements \ArrayAccess, \Iterator
 
             $i = 0;
             $current = $this;
-            $param = array($k => null);
+            $param = [$k => null];
 
             while (true && $i < 99) {
                 if (!is_null($current->_parent)) {
-                    $param = array($current->_name => $param);
+                    $param = [$current->_name => $param];
                     $current = $current->_parent;
                 } else {
                     reset($param);
-                    $first_key = key($param);
-                    unset($current->_unsavedValues[$first_key]);
+                    $firstKey = key($param);
+                    unset($current->_unsavedValues[$firstKey]);
                     break;
                 }
                 $i++;
@@ -140,7 +140,7 @@ class EasyPostObject implements \ArrayAccess, \Iterator
     }
 
     /**
-     * getter
+     * Getter.
      *
      * @param string $k
      * @return mixed
@@ -158,9 +158,9 @@ class EasyPostObject implements \ArrayAccess, \Iterator
     }
 
     /**
-     * construct from
+     * Construct from.
      *
-     * @param array  $values
+     * @param array $values
      * @param string $class
      * @param string $apiKey
      * @param string $parent
@@ -180,9 +180,9 @@ class EasyPostObject implements \ArrayAccess, \Iterator
     }
 
     /**
-     * refresh from
+     * Refresh from.
      *
-     * @param array  $values
+     * @param array $values
      * @param string $apiKey
      * @param bool $partial
      */
@@ -191,7 +191,7 @@ class EasyPostObject implements \ArrayAccess, \Iterator
         $this->_apiKey = $apiKey;
 
         if ($partial) {
-            $removed = array();
+            $removed = [];
         } else {
             $removed = array_diff(array_keys($this->_values), array_keys($values));
         }
@@ -214,97 +214,106 @@ class EasyPostObject implements \ArrayAccess, \Iterator
 
             $this->_values[$k] = Util::convertToEasyPostObject($v, $apiKey, $this, $k);
         }
-        $this->_unsavedValues = array();
+        $this->_unsavedValues = [];
     }
 
     /**
-     * ArrayAccess methods
+     * ArrayAccess methods.
      *
      * @param string $k
      * @param mixed $v
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($k, $v)
     {
         $this->$k = $v;
     }
 
     /**
-     * ArrayAccess methods
+     * ArrayAccess methods.
      *
      * @param string $k
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($k)
     {
         return array_key_exists($k, $this->_values);
     }
 
     /**
-     * ArrayAccess methods
+     * ArrayAccess methods.
      *
      * @param string $k
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($k)
     {
         unset($this->$k);
     }
 
     /**
-     * ArrayAccess methods
+     * ArrayAccess methods.
      *
      * @param string $k
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($k)
     {
         return array_key_exists($k, $this->_values) ? $this->_values[$k] : null;
     }
 
     /**
-     * Iterator methods
+     * Iterator methods.
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         reset($this->_values);
     }
 
     /**
-     * Iterator methods
+     * Iterator methods.
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return current($this->_values);
     }
 
     /**
-     * Iterator methods
+     * Iterator methods.
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return key($this->_values);
     }
 
     /**
-     * Iterator methods
+     * Iterator methods.
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         return next($this->_values);
     }
 
     /**
-     * Iterator methods
+     * Iterator methods.
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         $key = key($this->_values);
@@ -312,7 +321,7 @@ class EasyPostObject implements \ArrayAccess, \Iterator
     }
 
     /**
-     * convert object to JSON
+     * Convert object to JSON.
      *
      * @return string
      */
@@ -326,7 +335,7 @@ class EasyPostObject implements \ArrayAccess, \Iterator
     }
 
     /**
-     * convert object to a string
+     * Convert object to a string.
      *
      * @return string
      */
@@ -336,7 +345,7 @@ class EasyPostObject implements \ArrayAccess, \Iterator
     }
 
     /**
-     * convert object to an array
+     * Convert object to an array.
      *
      * @param bool $recursive
      * @return array

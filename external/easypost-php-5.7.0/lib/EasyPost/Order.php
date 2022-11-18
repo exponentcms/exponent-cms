@@ -2,10 +2,27 @@
 
 namespace EasyPost;
 
+/**
+ * @package EasyPost
+ * @property string $id
+ * @property string $object
+ * @property string $reference
+ * @property string $mode
+ * @property Address $to_address
+ * @property Address $from_address
+ * @property Address $return_address
+ * @property Address $buyer_address
+ * @property Shipment[] $shipments
+ * @property Rates[] $rates
+ * @property Message[] $messages
+ * @property bool $is_return
+ * @property string $created_at
+ * @property string $updated_at
+ */
 class Order extends EasypostResource
 {
     /**
-     * retrieve an order
+     * Retrieve an order.
      *
      * @param string $id
      * @param string $apiKey
@@ -13,23 +30,11 @@ class Order extends EasypostResource
      */
     public static function retrieve($id, $apiKey = null)
     {
-        return self::_retrieve(get_class(), $id, $apiKey);
+        return self::retrieveResource(get_class(), $id, $apiKey);
     }
 
     /**
-     * retrieve all orders
-     *
-     * @param mixed  $params
-     * @param string $apiKey
-     * @return mixed
-     */
-    public static function all($params = null, $apiKey = null)
-    {
-        return self::_all(get_class(), $params, $apiKey);
-    }
-
-    /**
-     * create an order
+     * Create an order.
      *
      * @param mixed $params
      * @param string $apiKey
@@ -43,11 +48,11 @@ class Order extends EasypostResource
             $params['order'] = $clone;
         }
 
-        return self::_create(get_class(), $params, $apiKey);
+        return self::createResource(get_class(), $params, $apiKey);
     }
 
     /**
-     * get rates for a order
+     * Get rates for a order.
      *
      * @param mixed $params
      * @return $this
@@ -64,7 +69,7 @@ class Order extends EasypostResource
     }
 
     /**
-     * buy an order
+     * Buy an order.
      *
      * @param mixed $params
      * @return $this
@@ -86,5 +91,20 @@ class Order extends EasypostResource
         $this->refreshFrom($response, $apiKey, false);
 
         return $this;
+    }
+
+    /**
+     * Get the lowest rate for the order.
+     *
+     * @param array $carriers
+     * @param array $services
+     * @return Rate
+     * @throws \EasyPost\Error
+     */
+    public function lowest_rate($carriers = [], $services = [])
+    {
+        $lowestRate = Util::getLowestObjectRate($this, $carriers, $services);
+
+        return $lowestRate;
     }
 }

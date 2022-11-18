@@ -2,10 +2,30 @@
 
 namespace EasyPost;
 
+/**
+ * @package EasyPost
+ * @property string $id
+ * @property string $object
+ * @property string $reference
+ * @property string $mode
+ * @property string $status
+ * @property string $min_datetime
+ * @property string $max_datetime
+ * @property bool $is_account_address
+ * @property string $instructions
+ * @property Message[] $messages
+ * @property string $confirmation
+ * @property Shipment $shipment
+ * @property Address $address
+ * @property CarrierAccount[] $carrier_accounts
+ * @property PickupRate[] $pickup_rates
+ * @property string $created_at
+ * @property string $updated_at
+ */
 class Pickup extends EasypostResource
 {
     /**
-     * retrieve a pickup
+     * Retrieve a pickup.
      *
      * @param string $id
      * @param string $apiKey
@@ -13,13 +33,13 @@ class Pickup extends EasypostResource
      */
     public static function retrieve($id, $apiKey = null)
     {
-        return self::_retrieve(get_class(), $id, $apiKey);
+        return self::retrieveResource(get_class(), $id, $apiKey);
     }
 
     /**
-     * create a pickup
+     * Create a pickup.
      *
-     * @param mixed  $params
+     * @param mixed $params
      * @param string $apiKey
      * @return mixed
      */
@@ -31,11 +51,11 @@ class Pickup extends EasypostResource
             $params['pickup'] = $clone;
         }
 
-        return self::_create(get_class(), $params, $apiKey);
+        return self::createResource(get_class(), $params, $apiKey);
     }
 
     /**
-     * buy a pickup
+     * Buy a pickup.
      *
      * @param mixed $params
      * @return $this
@@ -53,7 +73,7 @@ class Pickup extends EasypostResource
     }
 
     /**
-     * cancel a pickup
+     * Cancel a pickup.
      *
      * @param mixed $params
      * @return $this
@@ -68,5 +88,20 @@ class Pickup extends EasypostResource
         $this->refreshFrom($response, $apiKey, true);
 
         return $this;
+    }
+
+    /**
+     * Get the lowest rate for the pickup.
+     *
+     * @param array $carriers
+     * @param array $services
+     * @return Rate
+     * @throws \EasyPost\Error
+     */
+    public function lowest_rate($carriers = [], $services = [])
+    {
+        $lowestRate = Util::getLowestObjectRate($this, $carriers, $services, 'pickup_rates');
+
+        return $lowestRate;
     }
 }
