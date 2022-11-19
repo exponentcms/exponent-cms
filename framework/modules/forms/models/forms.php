@@ -203,9 +203,9 @@ class forms extends expRecord {
 
         if ($record == null)
             return null;
-        //fixme do makesefurl here?
         $record = (object) $record;
         $record->sef_url = $this->getRecordSefURL($record);
+        $record->location_data = serialize(expCore::makeLocation('forms', null, $this->id));  //fixme
         $db->insertObject($record, 'forms_' . $this->table_name);
     }
 
@@ -221,9 +221,9 @@ class forms extends expRecord {
 
         if ($record == null)
             return null;
-        //fixme do makesefurl here?
         $record = (object) $record;
         $record->sef_url = $this->getRecordSefURL($record);
+        $record->location_data = serialize(expCore::makeLocation('forms', null, $this->id));  //fixme
         $db->updateObject($record, 'forms_' . $this->table_name);
     }
 

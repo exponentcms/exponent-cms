@@ -130,6 +130,9 @@ class formsController extends expController {
 //                        return $a[$this->config['order']] <=> $b[$this->config['order']];
 //                    });
                     usort($items, array("formsController", "sortOrder"));
+                    if (!empty($this->config['dir2'])) {
+                        $items = array_reverse($items);
+                    }
                 }
                 $columns = array();
                 foreach ($this->config['column_names_list'] as $column_name) {
@@ -731,12 +734,7 @@ class formsController extends expController {
                     $db_data->timestamp = time();
                     $referrer = $db->selectValue("sessionticket", "referrer", "ticket = '" . expSession::getTicketString() . "'");
                     $db_data->referrer = $referrer;
-                    $location_data = null;
-                    if (!empty($this->params['src'])) {
-                        $mod = !empty($this->params['module']) ? $this->params['module'] : $this->params['controller'];
-                        $location_data = expCore::makeLocation($mod,$this->params['src'],$this->params['int']);
-                    }
-                    $db_data->location_data = serialize($location_data);
+                    $db_data->location_data = serialize(expCore::makeLocation('forms', null, $this->id));
                     $this->params['data_id'] = $f->insertRecord($db_data);
                 }
                 if ($f->is_searchable) {
@@ -1506,9 +1504,9 @@ class formsController extends expController {
         foreach ($content as $cnt) {
             $origid = $cnt->id;
             unset($cnt->id);
-            $cnt->location_data = serialize(expCore::makeLocation($this->baseclassname, null, $this->forms->id));
-           //build the search record and save it.
-            $sql = "original_id=" . $origid . " AND location_data=" . $this->forms->id . " AND ref_module='" . $this->baseclassname . "'";
+            //build the search record and save it.
+            $cnt->location_data = serialize(expCore::makeLocation($this->baseclassname, null, $form->id));
+            $sql = "original_id=" . $origid . " AND location_data=" . $cnt->location_data . " AND ref_module='" . $this->baseclassname . "'";
             $oldindex = $db->selectObject('search', $sql);
             if (!empty($oldindex)) {
                 $search_record = new search($oldindex->id, false, false);
