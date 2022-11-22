@@ -47,7 +47,7 @@
                 {icon class=delete action=delete forms_id=$f->id id=$record_id title='Delete this record'|gettext}
             {/if}
             {if $permissions.viewdata}
-                {icon class="view" action=showall id=$form->id text='View Records'|gettext|cat:" (`$count`)" title='View all records'|gettext}
+                {icon class="view" action=showall id=$f->id text='View Records'|gettext|cat:" (`$count`)" title='View all records'|gettext}
             {/if}
         {/permissions}
         {if !$is_email && ($prev || $next) && (empty($config.pagelinks) || $config.pagelinks == "Top and Bottom" || $config.pagelinks == "Top Only")}
