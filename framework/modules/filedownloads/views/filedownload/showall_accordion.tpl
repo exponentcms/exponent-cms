@@ -148,7 +148,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         $('audio,video').mediaelementplayer({
             // Do not forget to put a final slash (/)
             pluginPath: '../build/',
-            iconSprite: '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/mediaelement/build/mejs-controls.svg',
+            iconSprite: EXPONENT.PATH_RELATIVE+'external/mediaelement/build/mejs-controls.svg',
             // this will allow the CDN to use Flash without restrictions
             // (by default, this is set as `sameDomain`)
             shimScriptAccess: 'always',
