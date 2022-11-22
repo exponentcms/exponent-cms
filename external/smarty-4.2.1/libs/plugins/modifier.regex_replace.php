@@ -24,7 +24,9 @@
  */
 function smarty_modifier_regex_replace($string, $search, $replace, $limit = -1)
 {
-    if (is_array($search)) {
+    if (empty($string)) {
+        return $string;
+    } elseif (is_array($search)) {
         foreach ($search as $idx => $s) {
             $search[ $idx ] = _smarty_regex_replace_check($s);
         }
