@@ -119,7 +119,7 @@
                         {*<th>{'Registrant Email'|gettext}</th>*}
                         {*<th>{'Registrant Phone'|gettext}</th>*}
                         {foreach from=$controls item=control key=name name=control}
-                            <th{if $control@first} data-bs-class="expand"{elseif $control@iteration < 4} data-bs-hide="phone"{elseif $control@iteration > 7} data-bs-hide="always"{else} data-bs-hide="phone,tablet"{/if}>
+                            <th{if $control@first} data-class="expand"{elseif $control@iteration < 4} data-hide="phone"{elseif $control@iteration > 7} data-hide="always"{else} data-hide="phone,tablet"{/if}>
                                 <span>{$control->caption}</span>
                             </th>
                         {foreachelse}
