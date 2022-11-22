@@ -78,6 +78,8 @@ class formsController extends expController {
     }
 
     public function showall() {
+        global $db;
+
         if ((!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc))) {
             expHistory::set('viewable', $this->params);
             $f = null;
@@ -93,11 +95,23 @@ class formsController extends expController {
                     $this->get_defaults($f);
             }
 
+            if (isset($this->config['order_dropdown_all'])) {
+                $all_text = $this->config['order_dropdown_all'];
+            } else {
+                $all_text = gettext('(All)');
+            }
+
             if (!empty($f)) {
                 if (empty($this->config['report_filter']) && empty($this->params['filter'])) {  // allow for param of 'filter' also
                     $where = '1';
                 } elseif (!empty($this->params['filter'])) {
-                    $where = expString::escape($this->params['filter']);
+                    if (is_numeric($this->params['filter'])) {
+                        $where = expString::escape($this->params['filter']);
+                    } elseif ($this->params['filter'] === $all_text) {
+                        $where = '1';
+                    } else {
+                        $where = $this->config['order'] . "='" . expString::escape($this->params['filter']) . "'";
+                    }
                 } else {
                     $where = $this->config['report_filter'];
                 }
@@ -216,6 +230,21 @@ class formsController extends expController {
                     )
                 );
 
+                if (isset($this->config['order'])) {
+                    $list = $db->selectColumn('forms_' . $f->table_name, $this->config['order']);
+                    $list = array_unique($list);
+                    sort($list);
+                    assign_to_template(
+                        array(
+                            "list" => $list,
+                        )
+                    );
+                }
+                if (isset($this->params['filter'])) {
+                    $selected = $this->params['filter'];
+                } else {
+                    $selected = $all_text;
+                }
                 assign_to_template(
                     array(
 //                "backlink"    => expHistory::getLastNotEditable(),
@@ -227,6 +256,8 @@ class formsController extends expController {
                         "filtered" => !empty($this->config['report_filter']) ? $this->config['report_filter'] : '',
                         "count" => $f->countRecords(),
                         "config" => $this->config,
+                        "selected" => $selected,
+                        "all_text" => $all_text
                     )
                 );
             }
