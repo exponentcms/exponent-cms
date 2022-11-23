@@ -112,6 +112,9 @@ class formsController extends expController {
                     } else {
                         $where = $this->config['order'] . "='" . expString::escape($this->params['filter']) . "'";
                     }
+                    if (!empty($this->config['report_filter'])) {
+                        $where = $this->config['report_filter'] . ' AND ' . $where;
+                    }
                 } else {
                     $where = $this->config['report_filter'];
                 }
