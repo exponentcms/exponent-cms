@@ -107,7 +107,7 @@
 	</table>
 </div>
 
-{script unique="manage-users" jquery='jquery.dataTables,dataTables.bootstrap5'}
+{script unique="manage-users" jquery='jquery.dataTables'}
 {literal}
     $(document).ready(function() {
         // var responsiveHelper;

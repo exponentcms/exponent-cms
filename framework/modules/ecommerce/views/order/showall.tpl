@@ -98,7 +98,7 @@
     </table>
 </div>
 
-{script unique="manage-orders" jquery='jqueryui,select2,jquery.dataTables,dataTables.dataTables,jquery.dataTables.yadcf'}
+{script unique="manage-orders" jquery='jqueryui,select2,jquery.dataTables,jquery.dataTables.yadcf'}
 {literal}
     $(document).ready(function() {
         var tableContainer = $('#orders');

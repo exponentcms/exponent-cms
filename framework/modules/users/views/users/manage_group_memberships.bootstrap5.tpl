@@ -88,7 +88,7 @@
     {/form}
 </div>
 
-{script unique="manage-groups" jquery='jquery.dataTables,dataTables.bootstrap5,dataTables.checkboxes'}
+{script unique="manage-groups" jquery='jquery.dataTables,dataTables.checkboxes'}
 {literal}
     $(document).ready(function() {
         // var responsiveHelper;

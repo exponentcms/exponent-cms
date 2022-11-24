@@ -190,7 +190,7 @@
     </div>
 </div>
 
-{script unique="manage-products" jquery='jquery.dataTables,dataTables.bootstrap5,jquery.dataTables.yadcf'}
+{script unique="manage-products" jquery='jquery.dataTables,jquery.dataTables.yadcf'}
 {literal}
     $(document).ready(function() {
         // var responsiveHelper;

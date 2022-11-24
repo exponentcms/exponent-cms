@@ -155,7 +155,7 @@
 {elseif $config.pagelinks == 'Disable page links'}
     {$pageit = '<"top"lf>rt<"bottom"<"clear">'}
 {/if}
-{script unique="form-showall" jquery='jquery.dataTables,dataTables.dataTables'}
+{script unique="form-showall" jquery='jquery.dataTables'}
 {literal}
     $(document).ready(function() {
         var tableContainer = $('#forms-showall');
