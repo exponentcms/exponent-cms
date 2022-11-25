@@ -1647,7 +1647,7 @@ class formsController extends expController {
             $fc = new forms_control();
             //$f->column_names_list is a serialized array
             //$this->config['column_names_list'] is an array
-            if ($this->config['column_names_list'] == '') {
+            if ($this->config['export_all'] || $this->config['column_names_list'] == '') {
                 //define some default columns...
                 $controls = $fc->find('all', "forms_id=" . $f->id . " AND is_readonly = 0 AND is_static = 0", "rank");
                 //FIXME should we default to only 5 columns or all columns? and should we pick up modules columns ($this->config) or just form defaults ($f->)
