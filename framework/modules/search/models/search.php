@@ -96,6 +96,9 @@ class search extends expRecord {
                 if (!empty($event)) {
                     if (!empty($eventlimit) && $event->date < time()-($eventlimit*24*60*60))
                         unset($recs[$i]);
+                    if ($event->date < time()) {  // emphasize past events
+                        $records[$i]->title = "<em>" . $records[$i]->title . "</em>";
+                    }
                     $records[$i]->title .= ' - ' . expDateTime::format_date($event->date);
                     $loc = expUnserialize($event->location_data);
                     $records[$i]->view_link = str_replace(URL_FULL, '', makeLink(array('controller' => 'event', 'action' => 'show', 'id' => $records[$i]->original_id, 'event_id' => $event->id, 'src' => $loc->src)));
