@@ -66,7 +66,8 @@
 					<td class="actions module-actions">
 						{if $theme->style_variations|@count>0}
 							{foreach from=$theme->style_variations item=sv key=svkey name=styles}
-                                {group label=$sv|ucfirst|cat:' '|cat:'Style'|gettext}
+                                {$sv = ucfirst($sv)}
+                                {group label=$sv|cat:' '|cat:'Style'|gettext}
                                     {if $smarty.const.DISPLAY_THEME == $class && $smarty.const.DISPLAY_THEME == $smarty.const.DISPLAY_THEME_REAL && $smarty.const.THEME_STYLE == $smarty.const.THEME_STYLE_REAL &&
                                         ($smarty.const.THEME_STYLE == $sv || ($smarty.const.THEME_STYLE == "" && $sv == "Default"))}
                                     {elseif $smarty.const.DISPLAY_THEME == $class && ($smarty.const.THEME_STYLE == $sv || ($smarty.const.THEME_STYLE == "" && $sv == "Default"))}
