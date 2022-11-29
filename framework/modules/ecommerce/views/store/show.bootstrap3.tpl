@@ -417,7 +417,7 @@
                                     <th><strong>{"SKU"|gettext}</strong></th>
                                     {if !empty($product->extra_fields)}
                                         {foreach from=$product->extra_fields item=chiprodname}
-                                            <th><span>{$chiprodname.name|regex_replace:'/\_/':' '|ucwords}</span></th>
+                                            <th><span>{$chiprodname.name|regex_replace:'/\_/':' '|capitalize}</span></th>
                                         {/foreach}
                                     {/if}
                                     <th class="text-right"><strong>{"PRICE"|gettext}</strong></th>
@@ -461,7 +461,7 @@
                                         </td>
                                         {if !empty($chiprod->extra_fields)}
                                             {foreach from=$chiprod->extra_fields item=ef}
-                                                <td data-title="{$ef.name|regex_replace:'/\_/':' '|ucwords}">
+                                                <td data-title="{$ef.name|regex_replace:'/\_/':' '|capitalize}">
                                                     <span>{$ef.value|stripslashes}</span>
                                                 </td>
                                             {/foreach}

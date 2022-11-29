@@ -75,7 +75,7 @@
 	</table>
 </div>
 
-{script unique="users-showall" jquery='jquery.dataTables,dataTables.dataTables'}
+{script unique="users-showall" jquery='jquery.dataTables'}
 {literal}
     $(document).ready(function() {
         var tableContainer = $('#users-manage');

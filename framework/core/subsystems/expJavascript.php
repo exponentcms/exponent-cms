@@ -175,6 +175,38 @@ class expJavascript {
                         expCSS::pushToHead(array(
                             'css_primer'=>JQUERYUI_CSS
                         ));
+                    } elseif ($mod === 'jquery.dataTables') {
+                        $dt_js = JQUERY_RELATIVE . 'addons/js/jquery.dataTables.js';
+                        if (bs5()) {
+                            expCSS::pushToHead(array(
+                       		    "css_primer"=>JQUERY_RELATIVE . 'addons/css/dataTables.bootstrap5.css',
+                       		    )
+                       		);
+                            $dt_js .= ',' . JQUERY_RELATIVE . 'addons/js/jquery/dataTables.bootstrap5.js';
+                        } elseif (bs4()) {
+                            expCSS::pushToHead(array(
+                       		    "css_primer"=>JQUERY_RELATIVE . 'addons/css/dataTables.bootstrap4.css',
+                       		    )
+                       		);
+                            $dt_js .= ',' . JQUERY_RELATIVE . 'addons/js/jquery/dataTables.bootstrap4.js';
+                        } elseif (bs3()) {
+                            expCSS::pushToHead(array(
+                       		    "css_primer"=>JQUERY_RELATIVE . 'addons/css/dataTables.bootstrap.css',
+                       		    )
+                       		);
+                            $dt_js .= ',' . JQUERY_RELATIVE . 'addons/js/jquery/dataTables.bootstrap.js';
+                        } else {
+                            expCSS::pushToHead(array(
+                       		    "css_primer"=>JQUERY_RELATIVE . 'addons/css/jquery.dataTables.css',
+                       		    )
+                       		);
+                        }
+                        if (strlen($srt[$i]) + strlen($dt_js) <= $strlen && $i <= MINIFY_MAX_FILES) {
+                            $srt[$i] .= $dt_js . ",";
+                        } else {
+                            $i++;
+                            $srt[$i] = $dt_js . ",";
+                        }
                     } else {
                         if ($mod === 'jstree') {
                             $scripts .= "\t" . '<script type="text/javascript" src="' . JQUERY_RELATIVE . 'addons/js/' . $mod . '.js"></script>' . "\r\n";
@@ -347,6 +379,32 @@ class expJavascript {
                                     'css_primer' => JQUERYUI_CSS
                                 )
                             );
+                        } elseif ($mod === 'jquery.dataTables') {
+                            $scripts .= "\t" . '<script type="text/javascript" src="' . JQUERY_RELATIVE . 'addons/js/jquery.dataTables.js"></script>' . "\r\n";
+                            if (bs5()) {
+                                $scripts .= "\t" . '<script type="text/javascript" src="' . JQUERY_RELATIVE . 'addons/js/dataTables.bootstrap5.js"></script>' . "\r\n";
+                                expCSS::pushToHead(array(
+                           		    "css_primer"=>JQUERY_RELATIVE . 'addons/css/dataTables.bootstrap5.css',
+                           		    )
+                           		);
+                            } elseif (bs4()) {
+                                $scripts .= "\t" . '<script type="text/javascript" src="' . JQUERY_RELATIVE . 'addons/js/dataTables.bootstrap4.js"></script>' . "\r\n";
+                                expCSS::pushToHead(array(
+                           		    "css_primer"=>JQUERY_RELATIVE . 'addons/css/dataTables.bootstrap4.css',
+                           		    )
+                           		);
+                            } elseif (bs3()) {
+                                $scripts .= "\t" . '<script type="text/javascript" src="' . JQUERY_RELATIVE . 'addons/js/dataTables.bootstrap.js"></script>' . "\r\n";
+                                expCSS::pushToHead(array(
+                           		    "css_primer"=>JQUERY_RELATIVE . 'addons/css/dataTables.bootstrap.css',
+                           		    )
+                           		);
+                            } else {
+                                expCSS::pushToHead(array(
+                           		    "css_primer"=>JQUERY_RELATIVE . 'addons/css/jquery.dataTables.css',
+                           		    )
+                           		);
+                            }
                         } else {
                             if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
                                 $scripts .= "\t" . '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";

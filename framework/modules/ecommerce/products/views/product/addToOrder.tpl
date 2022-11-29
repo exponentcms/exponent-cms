@@ -77,7 +77,7 @@
                             <th><strong>{"QTY"|gettext}</strong></th>
                             <th><strong>{"SKU"|gettext}</strong></th>
                             {foreach from=$product->extra_fields item=chiprodname}
-                                <th><span>{$chiprodname.name|regex_replace:'/\_/':' '|ucwords}</span></th>
+                                <th><span>{$chiprodname.name|regex_replace:'/\_/':' '|capitalize}</span></th>
                             {/foreach}
                             <th style="text-align: right; padding-right: 10px"><strong>{"PRICE"|gettext}</strong></th>
                             {*<th>{'Action'|gettext}</th>*}

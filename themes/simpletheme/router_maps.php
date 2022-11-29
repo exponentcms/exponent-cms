@@ -128,7 +128,7 @@ $maps = array();
 //    ),
 //);
 
-// Use Forms as a Directory. Form MUST have sef_url of 'directory' or edit as needed. URL would look like directory/my-entry
+// Use Forms as a Directory. Form itself MUST have sef_url of 'directory' or edit below as needed. URL would look like directory/my-entry
 //$maps[] = array(
 //    'controller' => 'forms',
 //    'action'     => 'show',

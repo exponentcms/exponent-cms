@@ -66,9 +66,11 @@
                         {foreach  $page->columns as $name=>$caption}
                             <th>{$caption}</th>
                         {/foreach}
-                        <div class="item-actions">
-                            <th>{'Actions'|gettext}</th>
-                        </div>
+                        <th>
+                            <div class="item-actions">
+                                {'Actions'|gettext}
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -109,22 +111,22 @@
                                     {/if}
                                 </td>
                             {/foreach}
-                            <div class="item-actions">
-                                <td>
-                                    {if !$config.hide_view || !$permissions.manage}
-                                        {icon img="view.png" action=show forms_id=$f->id id=$fields.id title='View all data fields for this record'|gettext}
-                                    {/if}
-                                    {if $permissions.edit}
-                                        {icon img="edit.png" action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
-                                    {/if}
-                                    {if $permissions.delete}
-                                        {icon img="delete.png" action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
-                                    {/if}
-                                </td>
-                            </div>
+                            <td>
+                                <div class="item-actions">
+                                {if !$config.hide_view || !$permissions.manage}
+                                    {icon img="view.png" action=show forms_id=$f->id id=$fields.id title='View all data fields for this record'|gettext}
+                                {/if}
+                                {if $permissions.edit}
+                                    {icon img="edit.png" action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
+                                {/if}
+                                {if $permissions.delete}
+                                    {icon img="delete.png" action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
+                                {/if}
+                                </div>
+                            </td>
                         </tr>
                     {foreachelse}
-                        <tr><h4>{$config.no_records_msg|default:"No Records Found"|gettext}</h4></tr>
+                        <tr><td colspan="{$page->columns|count}"><h4>{$config.no_records_msg|default:"No Records Found"|gettext}</h4></td></tr>
                     {/foreach}
                 </tbody>
             </table>
@@ -153,7 +155,7 @@
 {elseif $config.pagelinks == 'Disable page links'}
     {$pageit = '<"top"lf>rt<"bottom"<"clear">'}
 {/if}
-{script unique="form-showall" jquery='jquery.dataTables,dataTables.dataTables'}
+{script unique="form-showall" jquery='jquery.dataTables'}
 {literal}
     $(document).ready(function() {
         var tableContainer = $('#forms-showall');

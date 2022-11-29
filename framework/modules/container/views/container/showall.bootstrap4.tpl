@@ -34,7 +34,7 @@
                 <div class="dropdown exp-container-chrome exp-container-chrome-container">
                     <a id="dropdownMenu{$top->id}" class="dropdown-toggle exp-trigger" data-toggle="dropdown" href="#">{if $container->is_private}<i class="fas fa-unlock-alt fa-fw" title="{'Private Module'|gettext}"></i> {/if}{'Container'|gettext}</a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu{$top->id}">
-                        <li role="presentation" class="dropdown-header">({$top->scope|gettext|ucwords})</li>
+                        <li role="presentation" class="dropdown-header">({$top->scope|gettext|capitalize})</li>
                         <li class="dropdown-divider"></li>
                         {if $user->isAdmin() && !$smarty.const.SIMPLE_PERMISSIONS}
                             <li role="menuitem"><a href="{link controller=users action=userperms mod=container}" class="dropdown-item"><i class="fas fa-user fa-fw"></i> {"User Permissions"|gettext}</a></li>

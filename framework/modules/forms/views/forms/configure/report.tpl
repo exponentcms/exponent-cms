@@ -29,6 +29,7 @@
 {control type=radiogroup name='dir' label='Sorting Direction'|gettext default=$config.dir|default:'ASC' items='Ascending, Descending'|gettxtlist values='ASC,DESC'}
 {group label='Multi-Record Tabular View Configuration'|gettext}
     {control type="listbuilder" name="column_names_list" label="Columns for Display and Export CSV" values=$column_names source=$fields description='Selecting NO columns is equal to selecting first five columns'|gettext}
+    {control type="checkbox" name="export_all" label="Export ALL Columns in CSV?"|gettext value=1 checked=$config.export_all}
 {/group}
 {group label='Custom Single Record View Configuration'|gettext}
     {if !empty($fieldlist)}

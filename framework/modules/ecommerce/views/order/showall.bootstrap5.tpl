@@ -148,7 +148,7 @@
     </table>
 </div>
 
-{script unique="manage-orders" jquery='moment,bootstrap-datetimepicker,select2,jquery.dataTables,dataTables.bootstrap5,jquery.dataTables.yadcf'}
+{script unique="manage-orders" jquery='moment,bootstrap-datetimepicker,select2,jquery.dataTables,jquery.dataTables.yadcf'}
 {literal}
     $(document).ready(function() {
 //        var responsiveHelper;

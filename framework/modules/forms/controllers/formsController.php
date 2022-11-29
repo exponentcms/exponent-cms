@@ -78,6 +78,8 @@ class formsController extends expController {
     }
 
     public function showall() {
+        global $db;
+
         if ((!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc))) {
             expHistory::set('viewable', $this->params);
             $f = null;
@@ -93,11 +95,26 @@ class formsController extends expController {
                     $this->get_defaults($f);
             }
 
+            if (isset($this->config['order_dropdown_all'])) {
+                $all_text = $this->config['order_dropdown_all'];
+            } else {
+                $all_text = gettext('(All)');
+            }
+
             if (!empty($f)) {
                 if (empty($this->config['report_filter']) && empty($this->params['filter'])) {  // allow for param of 'filter' also
                     $where = '1';
                 } elseif (!empty($this->params['filter'])) {
-                    $where = expString::escape($this->params['filter']);
+                    if (is_numeric($this->params['filter'])) {
+                        $where = expString::escape($this->params['filter']);
+                    } elseif ($this->params['filter'] === $all_text) {
+                        $where = '1';
+                    } else {
+                        $where = $this->config['order'] . "='" . expString::escape($this->params['filter']) . "'";
+                    }
+                    if (!empty($this->config['report_filter'])) {
+                        $where = $this->config['report_filter'] . ' AND ' . $where;
+                    }
                 } else {
                     $where = $this->config['report_filter'];
                 }
@@ -130,6 +147,9 @@ class formsController extends expController {
 //                        return $a[$this->config['order']] <=> $b[$this->config['order']];
 //                    });
                     usort($items, array("formsController", "sortOrder"));
+                    if (!empty($this->config['dir2'])) {
+                        $items = array_reverse($items);
+                    }
                 }
                 $columns = array();
                 foreach ($this->config['column_names_list'] as $column_name) {
@@ -213,6 +233,21 @@ class formsController extends expController {
                     )
                 );
 
+                if (isset($this->config['order'])) {
+                    $list = $db->selectColumn('forms_' . $f->table_name, $this->config['order']);
+                    $list = array_unique($list);
+                    sort($list);
+                    assign_to_template(
+                        array(
+                            "list" => $list,
+                        )
+                    );
+                }
+                if (isset($this->params['filter'])) {
+                    $selected = $this->params['filter'];
+                } else {
+                    $selected = $all_text;
+                }
                 assign_to_template(
                     array(
 //                "backlink"    => expHistory::getLastNotEditable(),
@@ -224,6 +259,8 @@ class formsController extends expController {
                         "filtered" => !empty($this->config['report_filter']) ? $this->config['report_filter'] : '',
                         "count" => $f->countRecords(),
                         "config" => $this->config,
+                        "selected" => $selected,
+                        "all_text" => $all_text
                     )
                 );
             }
@@ -731,12 +768,7 @@ class formsController extends expController {
                     $db_data->timestamp = time();
                     $referrer = $db->selectValue("sessionticket", "referrer", "ticket = '" . expSession::getTicketString() . "'");
                     $db_data->referrer = $referrer;
-                    $location_data = null;
-                    if (!empty($this->params['src'])) {
-                        $mod = !empty($this->params['module']) ? $this->params['module'] : $this->params['controller'];
-                        $location_data = expCore::makeLocation($mod,$this->params['src'],$this->params['int']);
-                    }
-                    $db_data->location_data = serialize($location_data);
+                    $db_data->location_data = serialize(expCore::makeLocation('forms', null, $this->id));
                     $this->params['data_id'] = $f->insertRecord($db_data);
                 }
                 if ($f->is_searchable) {
@@ -1506,9 +1538,9 @@ class formsController extends expController {
         foreach ($content as $cnt) {
             $origid = $cnt->id;
             unset($cnt->id);
-            $cnt->location_data = serialize(expCore::makeLocation($this->baseclassname, null, $this->forms->id));
-           //build the search record and save it.
-            $sql = "original_id=" . $origid . " AND location_data=" . $this->forms->id . " AND ref_module='" . $this->baseclassname . "'";
+            //build the search record and save it.
+            $cnt->location_data = serialize(expCore::makeLocation($this->baseclassname, null, $form->id));
+            $sql = "original_id=" . $origid . " AND location_data=" . $cnt->location_data . " AND ref_module='" . $this->baseclassname . "'";
             $oldindex = $db->selectObject('search', $sql);
             if (!empty($oldindex)) {
                 $search_record = new search($oldindex->id, false, false);
@@ -1615,7 +1647,7 @@ class formsController extends expController {
             $fc = new forms_control();
             //$f->column_names_list is a serialized array
             //$this->config['column_names_list'] is an array
-            if ($this->config['column_names_list'] == '') {
+            if ($this->config['export_all'] || $this->config['column_names_list'] == '') {
                 //define some default columns...
                 $controls = $fc->find('all', "forms_id=" . $f->id . " AND is_readonly = 0 AND is_static = 0", "rank");
                 //FIXME should we default to only 5 columns or all columns? and should we pick up modules columns ($this->config) or just form defaults ($f->)
@@ -1699,7 +1731,7 @@ class formsController extends expController {
 
             expCore::save_csv($items, $rpt_columns, "report.csv");
 
-            //fixme old routine
+            //fixme old routine, not called
 
             if (LANG_CHARSET === 'UTF-8') {
                 $file = chr(0xEF) . chr(0xBB) . chr(0xBF); // add utf-8 signature to file to open appropriately in Excel, etc...

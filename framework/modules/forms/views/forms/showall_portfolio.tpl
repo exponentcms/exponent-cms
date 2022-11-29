@@ -75,6 +75,9 @@
                 {/if}
             </div>
         {/permissions}
+    {if $config.order_dropdown}
+        {control type="dropdown" name="select_it" label=$config.order_dropdown_text|default:"Limit Records to"|gettext items=array_merge(array('-1'=>$all_text), $list)}
+    {/if}
         {pagelinks paginate=$page top=1}
         <div style="overflow: auto; overflow-y: hidden;">
             {$cat="bad"}
@@ -155,4 +158,17 @@
             {/permissions}
         {/if}
     </div>
+{/if}
+
+{if $config.order_dropdown}
+{script unique="sort-submit"}
+    var url = "{makeLink([controller=>forms, action=>showall, view=>showall_portfolio, src=>$__loc->src, id=>$f->id, filter=>1])}";
+{literal}
+    $('#select_it option:contains("{/literal}{$selected}{literal}")').prop('selected',true);
+    $('#select_it').on('change',function(e){
+        var loc = url.slice(0, -1)+encodeURI($("#select_it option:selected").text());
+        window.location=loc;
+    });
+{/literal}
+{/script}
 {/if}
