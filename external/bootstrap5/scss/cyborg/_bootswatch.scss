@@ -1,4 +1,4 @@
-/* Cyborg 5.2.2 */
+/* Cyborg 5.2.3 */
 // Bootswatch
 
 
@@ -59,6 +59,7 @@ legend {
 }
 
 .form-control {
+  color-scheme: light;
   background-clip: border-box;
 
   &:disabled,

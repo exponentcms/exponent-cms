@@ -1,4 +1,4 @@
-/* Superhero 5.2.2 */
+/* Superhero 5.2.3 */
 // Bootswatch
 
 
@@ -71,6 +71,10 @@ label,
 .checkbox label,
 .help-block {
   font-size: $font-size-sm;
+}
+
+.form-control{
+  color-scheme: light;
 }
 
 .form-floating {
