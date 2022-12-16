@@ -63,8 +63,8 @@ class pagecontrol extends formcontrol {
     function toHTML($label,$name) {
         $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
         $description = !empty($this->description) ? $this->description : $caption;
-        $html  = '<fieldset ' . ($this->horizontal && (bs3() || bs4() || bs5()) && $this->design_time?'class="col-sm-10" ':'') . 'title="' . $caption . '">
-                  <legend>' . $description . '</legend>';
+        $html  = '<fieldset ' . ($this->horizontal && (bs3() || bs4() || bs5()) && $this->design_time?'class="col-sm-10" ':'class="stepy-step"') . 'st-title="' . $caption . '">
+                  <legend class="stepy-legend">' . $description . '</legend>';
         return $html;
 	}
 
