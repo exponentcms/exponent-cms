@@ -217,7 +217,7 @@ class expMail {
 			$this->transport->start();
 			echo "<h2>".gt("Mail Server Test Complete!")."</h2>".gt("We Connected to the Mail Server")." - ", SMTP_SERVER;
 		} catch (Swift_TransportException $e) {
-			echo "<h2".gt("Mail Server Test Failed!")."</h2>", SMTP_SERVER;
+			echo "<h2>".gt("Mail Server Test Failed!")."</h2>", SMTP_SERVER;
 			eDebug($e->getMessage());
 		}
 	}
