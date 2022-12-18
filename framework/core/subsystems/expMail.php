@@ -837,7 +837,12 @@ class expMail {
                 $email .= '.net';
             }
         }
-        $this->from = $email;
+
+        if (!empty(SMTP_FROM_ONLY)) {
+            $this->from = trim(SMTP_USERNAME); // default address is ours
+        } else {
+            $this->from = $email;
+        }
         if (!empty($email)) {  // && Swift_Validate::email($email)
             $this->message->setFrom($email);  //note this is appropriate? or cumulative $this->message->addFrom($email);
         }

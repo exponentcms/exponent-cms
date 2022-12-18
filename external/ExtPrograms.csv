@@ -109,7 +109,7 @@ http-message,1.0,github.com/php-fig/http-message,1.0,,"optional, required by mPD
 message-factory,1.0.1,github.com/php-http/message-factory,1.0.1,,"optional, required by mPDF v8.1+"
 FPDI,2.3.6,github.com/Setasign/FPDI,2.3.6,,"optional, required by mPDF v7+"
 HTML2PDF,5.2.5/4.6.1,github.com/spipu/html2pdf,5.2.5,,"optional, we tweak tcpdfConfig.php"
-TCPDF,6.4.4,sourceforge.net/projects/tcpdf,6.6.1,,"optional, used by HTML2PDF"
+TCPDF,6.4.4,sourceforge.net/projects/tcpdf,6.6.2,,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,,"optional, has issues with bootstrap v2"
 Kint,1.1/2.2/5.0.1,github.com/kint-php/kint,5.0.1,,"optional, for formatted edebug output"
 ,,,,,
