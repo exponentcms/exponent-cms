@@ -89,7 +89,7 @@ function logger($cmd, $result, $args, $elfinder)
         if (!is_dir($dir) && !mkdir($dir, octdec(DIR_DEFAULT_MODE_STR + 0))) {
             return;
         }
-        if (($fp = fopen($logfile, 'a'))) {
+        if (($fp = fopen($logfile, 'ab'))) {
             fwrite($fp, $log);
             fclose($fp);
         }
@@ -226,7 +226,7 @@ class elFinderSimpleLogger
     {
         if ($eol)
             $eol = "\n";
-        if (($fp = @fopen($this->file, 'a'))) {
+        if (($fp = @fopen($this->file, 'ab'))) {
             fwrite($fp, $log . $eol);
             fclose($fp);
         }

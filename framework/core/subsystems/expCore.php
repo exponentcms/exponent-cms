@@ -401,7 +401,7 @@ class expCore
     public static function saveData($url, $filename, $ref = false, $post = false)
     {
         $chImg = curl_init($url);
-        $fp = fopen($filename, 'w');
+        $fp = fopen($filename, 'wb');
         curl_setopt($chImg, CURLOPT_FILE, $fp);
 //    	curl_setopt($chImg, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($chImg, CURLOPT_BINARYTRANSFER, 1);
@@ -515,7 +515,7 @@ class expCore
 		// CREATE A TEMP FILE
 		$tmpfname = tempnam(BASE.'/tmp', "rep"); // Rig
 
-		$handle = fopen($tmpfname, "w");
+		$handle = fopen($tmpfname, "wb");
 		fwrite($handle,$out);
 		fclose($handle);
 

@@ -1518,7 +1518,7 @@ class usersController extends expController {
         $headerinfo = null;
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $fh = fopen(BASE . $directory . "/" . $file->filename, "r");
+        $fh = fopen(BASE . $directory . "/" . $file->filename, 'rb');
         if (!empty($this->params["use_header"])) $this->params["rowstart"]++;
         for ($x = 0; $x < $this->params["rowstart"]; $x++) {
             $lineInfo = fgetcsv($fh, 2000, $this->params["delimiter"]);
@@ -1624,7 +1624,7 @@ class usersController extends expController {
     public function import_users_display() {
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $file = fopen(BASE . $this->params["filename"], "r");
+        $file = fopen(BASE . $this->params["filename"], 'rb');
         $userinfo = array();
         $userarray = array();
         $usersdone = array();
@@ -1762,7 +1762,7 @@ class usersController extends expController {
         }
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $file = fopen(BASE . $this->params["filename"], "r");
+        $file = fopen(BASE . $this->params["filename"], 'rb');
         $userinfo = array();
         $userarray = array();
         $usersdone = array();

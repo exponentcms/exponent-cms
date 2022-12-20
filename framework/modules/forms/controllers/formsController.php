@@ -1744,7 +1744,7 @@ class formsController extends expController {
             // CREATE A TEMP FILE
             $tmpfname = tempnam(BASE.'/tmp', "rep"); // Rig
 
-            $handle = fopen($tmpfname, "w");
+            $handle = fopen($tmpfname, "wb");
             fwrite($handle, $file);
             fclose($handle);
 
@@ -2017,7 +2017,7 @@ class formsController extends expController {
             $headerinfo = null;
             $line_end = ini_get('auto_detect_line_endings');
             ini_set('auto_detect_line_endings',TRUE);
-            $fh = fopen(BASE . $directory . "/" . $file->filename, "r");
+            $fh = fopen(BASE . $directory . "/" . $file->filename, "rb");
             if (!empty($this->params["use_header"])) $this->params["rowstart"]++;
             for ($x = 0; $x < $this->params["rowstart"]; $x++) {
                 $lineInfo = fgetcsv($fh, 2000, $this->params["delimiter"]);
@@ -2203,7 +2203,7 @@ class formsController extends expController {
         $headerinfo = null;
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $fh = fopen(BASE . $directory . "/" . $file->filename, "r");
+        $fh = fopen(BASE . $directory . "/" . $file->filename, "rb");
         if (!empty($this->params["use_header"])) $this->params["rowstart"]++;
         for ($x = 0; $x < $this->params["rowstart"]; $x++) {
             $lineInfo = fgetcsv($fh, 2000, $this->params["delimiter"]);
@@ -2257,7 +2257,7 @@ class formsController extends expController {
     public function import_csv_data_display() {
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $file = fopen(BASE . $this->params["filename"], "r");
+        $file = fopen(BASE . $this->params["filename"], 'rb');
         $record = array();
         $records = array();
         $linenum = 1;
@@ -2305,7 +2305,7 @@ class formsController extends expController {
         }
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $file = fopen(BASE . $this->params["filename"], "r");
+        $file = fopen(BASE . $this->params["filename"], 'rb');
         $recordsdone = 0;
         $linenum = 1;
         $f = new forms($this->params['forms_id']);

@@ -35,7 +35,7 @@
     $content.='<description>' . SITE_DESCRIPTION . '</description>'.chr(13).chr(10);
 
     //Check if the file exist
-	if (!$handle = fopen($filename, 'w')) {
+	if (!$handle = fopen($filename, 'wb')) {
 		echo "Cannot open file ($filename)<br>";
 		exit;
 	}
@@ -237,7 +237,7 @@
     $header.="Availability".chr(9)."Condition".chr(9)."MerchantCategory".chr(9)."B_Category".chr(13).chr(10);
 
     //Check if the file exist
-    if (!$handle = fopen($filename, 'w')) {
+    if (!$handle = fopen($filename, 'wb')) {
         echo "Cannot open file ($filename)<br>";
         exit;
     }
