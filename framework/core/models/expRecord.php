@@ -21,6 +21,7 @@
  * @subpackage Models
  * @package    Core
  */
+#[AllowDynamicProperties]
 class expRecord {
     protected $classinfo = null;
     public $classname = '';
