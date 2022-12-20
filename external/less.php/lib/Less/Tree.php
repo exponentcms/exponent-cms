@@ -6,6 +6,7 @@
  * @package Less
  * @subpackage tree
  */
+#[AllowDynamicProperties]
 class Less_Tree {
 
 	public $cache_string;

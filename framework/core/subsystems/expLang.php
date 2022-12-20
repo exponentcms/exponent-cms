@@ -290,9 +290,9 @@ class expLang {
    				if (substr($f,-4,4) === '.php' && substr($f,-9,9) !== '.info.php') {
    					if (file_exists($dir.'/'.substr($f,0,-4).'.info.php')) {
    						$info = include($dir.'/'.substr($f,0,-4).'.info.php');
-   						$langs[substr(utf8_encode($f),0,-4)] = $info['name'] . ' -- ' . $info['author'];
+   						$langs[substr(self::utf8encode($f),0,-4)] = $info['name'] . ' -- ' . $info['author'];
    					} else {
-   						$langs[substr(utf8_encode($f),0,-4)] = substr($f,0,-4);
+   						$langs[substr(self::utf8encode($f),0,-4)] = substr($f,0,-4);
    					}
    				}
    			}
@@ -338,9 +338,17 @@ class expLang {
 
     public static function utf8decode($text) {
         if (expCore::is_php('8.2')) {
-            return $text;
+            return mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
         } else {
             return utf8_decode($text);
+        }
+    }
+
+    public static function utf8encode($text) {
+        if (expCore::is_php('8.2')) {
+            return mb_convert_encoding($text, 'UTF-8', 'ISO-8859-1');
+        } else {
+            return utf8_encode($text);
         }
     }
 
