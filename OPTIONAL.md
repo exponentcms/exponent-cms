@@ -39,13 +39,13 @@ v8.0.17 is supported
 
 - [mpdf8v270.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf8v270.zip/download)
   This uses the mPDF v8.0.17 library which has been customized for Exponent.
-  This requires Exponent CMS v2.7.0 or later. Works with PHP v5.6, 7.0, 7.1, 7.2, 7.3 or 7.4
+  This requires Exponent CMS v2.7.0 or later. Works with PHP v5.6, 7.0, 7.1, 7.2, 7.3 7.4, 8.0 or 8.1
 
 v7.1.9 is supported
 
 - [mpdf7v260.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf7v260.zip/download)
   This uses the mPDF v7.1.9 library which has been customized for Exponent.
-  This requires Exponent CMS v2.6.0 or later. Works with PHP v5.6, 7.0, 7.1, or 7.2
+  This requires Exponent CMS v2.6.0 or later. Works with PHP v5.6, 7.0, 7.1, 7.2, or 7.3
 
 v6.1.4 was an older version
 
@@ -91,7 +91,7 @@ library (TCPDF) to perform the actual PDF creation. This appears to the be the s
 - [html2pdf5v270.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/html2pdf5v270.zip/download)
   This uses the HTML2PDF v5.2.5 library which has the configuration customized for Exponent. It requires
   the TCPDF v6.4.4 PDF engine which is included in this package. This package requires Exponent CMS v2.7.0
-  or later.
+  or later. Requires PHP v5.6 to v7.4.
 
 v4.6.1 is the previous stable version, though it is possible that earlier versions back to v4.5.0
 may also work if installed correctly.
