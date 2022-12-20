@@ -23,6 +23,7 @@ if (!defined('SMTP_PORT')) define('SMTP_PORT','25');
 if (!defined('SMTP_PROTOCOL')) define('SMTP_PROTOCOL','');
 if (!defined('SMTP_USERNAME')) define('SMTP_USERNAME','');
 if (!defined('SMTP_PASSWORD')) define('SMTP_PASSWORD','');
+if (!defined('SMTP_FROM_ONLY')) define('SMTP_FROM_ONLY','0');
 if (!defined('SMTP_DEBUGGING')) define('SMTP_DEBUGGING','0');
 
 ?>

@@ -258,7 +258,7 @@
         }, _navigator: function (index) {
             return $('<p class="stepy-navigator" />');
         }, _title: function (step) {
-            return $('<div />', { html: step.attr('title') || '--' });
+            return $('<div />', { html: step.attr('st-title') || '--' });
         }, destroy: function () {
             return $(this).each(function () {
                 var that = $(this);

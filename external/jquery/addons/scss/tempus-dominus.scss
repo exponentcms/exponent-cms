@@ -16,6 +16,7 @@
   list-style: none;
   padding: 4px;
   width: 19rem;
+  min-height: 360px;
   border-radius: 4px;
   display: none;
   z-index: 9999;
@@ -134,10 +135,6 @@
       text-align: center;
     }
   }
-
-    &.inline {
-      z-index: inherit;
-    }
 
   .toolbar {
     display: grid;
