@@ -215,7 +215,20 @@
 
         var datepickerDefaults = {
             showTodayButton: true,
-            showClear: true
+            showClear: true,
+            {/literal}{if $smarty.const.USE_BOOTSTRAP_ICONS}{literal}
+            icons: {
+                time: 'bi bi-clock',
+                date: 'bi bi-calendar3',
+                up: 'bi bi-arrow-up',
+                down: 'bi bi-arrow-down',
+                previous: 'bi bi-chevron-left',
+                next: 'bi bi-chevron-right',
+                today: 'bi bi-calendar-check',
+                clear: 'bi bi-trash',
+                close: 'bi bi-x',
+            }
+            {/literal}{/if}{literal}
         };
 
         yadcf.init(table, [{
@@ -271,7 +284,7 @@
             date_format: 'MM/DD/YYYY hh:mmA',
             filter_type: "range_date",
             filter_default_label: ["From","To"],
-    filter_delay: 500,
+            filter_delay: 500,
         }, {
             column_number: 5,
             column_data_type: "text",
