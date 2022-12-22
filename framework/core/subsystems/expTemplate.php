@@ -91,7 +91,7 @@ class expTemplate {
 
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-		$fh = fopen($form_file,"r");
+		$fh = fopen($form_file,"rb");
 		while (($control_data = fgetcsv($fh,65536,"\t")) !== false) {
 			$data = array();
 			foreach ($control_data as $d) {
@@ -132,7 +132,7 @@ class expTemplate {
 
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-		$fh = fopen($form_file,"r");
+		$fh = fopen($form_file,"rb");
 		$options = array();
 		while (($control_data = fgetcsv($fh,65536,"\t")) !== false) {
 			$data = array();

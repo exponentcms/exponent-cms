@@ -1887,7 +1887,7 @@ class expFile extends expRecord {
 //        $errors = array();
 
         if (is_readable($file)) {
-            $eql = @fopen($file, "r");
+            $eql = @fopen($file, "rb");
             if ($eql) {
                 //NOTE changed to fgets($file)
 //                $lines = @file($file);

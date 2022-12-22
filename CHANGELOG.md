@@ -29,7 +29,7 @@ Version 2.7.1
   - deprecated support for PHP v5.6.x, v7.0.x, v7.1.x, v7.2.x and v7.3.x still exists
   - initial support for PHP v8.2.x
 - add trash feature to file manager
-- add tinymce5 as an editor option
+- add/fix tinymce5 as an editor option
 - fix maintenance view selected by theme framework and fix optional clock display
 - fixes and tweaks many issues in previous versions
 

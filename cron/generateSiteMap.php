@@ -89,7 +89,7 @@ if ($include_mobile) $content .= chr(13) . chr(10) . "        xmlns:mobile='http
 $content .= ">" . chr(13) . chr(10);
 
 //Check if the file exist
-if (!$handle = fopen($filename, 'w')) {
+if (!$handle = fopen($filename, 'wb')) {
     echo "Cannot open file ($filename)";
     exit;
 }

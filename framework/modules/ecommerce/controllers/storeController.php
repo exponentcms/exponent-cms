@@ -694,7 +694,7 @@ class storeController extends expController {
 
 		// CREATE A TEMP FILE
 		$tmpfname = tempnam(BASE.'/tmp', "rep"); // Rig
-		$handle = fopen($tmpfname, "w");
+		$handle = fopen($tmpfname, "wb");
 
         if (LANG_CHARSET === 'UTF-8') {
             fwrite($handle, chr(0xEF).chr(0xBB).chr(0xBF));  // add utf-8 signature to file to open appropriately in Excel, etc...
@@ -1951,7 +1951,7 @@ class storeController extends expController {
 
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $checkhandle = fopen($file->path, "r");
+        $checkhandle = fopen($file->path, "rb");
         // read in the header line
         $checkdata = fgetcsv($checkhandle, 10000, ",");
         $fieldCount = count($checkdata);
@@ -1972,7 +1972,7 @@ class storeController extends expController {
         //exit();
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $handle = fopen($file->path, "r");
+        $handle = fopen($file->path, "rb");
 
         // read in the header line
         $data = fgetcsv($handle, 10000, ",");
@@ -2237,7 +2237,7 @@ class storeController extends expController {
 
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $checkhandle = fopen($file->path, "r");
+        $checkhandle = fopen($file->path, "rb");
         if ($this->params['type_of_address'][0] === 'am') {
             // read in the header line
             $checkdata = fgetcsv($checkhandle, 10000, "\t");
@@ -2279,7 +2279,7 @@ class storeController extends expController {
         //exit();
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $handle = fopen($file->path, "r");
+        $handle = fopen($file->path, "rb");
 
         // read in the header line and discard it
         $data = fgetcsv($handle, 10000, ",");
@@ -2521,7 +2521,7 @@ class storeController extends expController {
 
             $line_end = ini_get('auto_detect_line_endings');
             ini_set('auto_detect_line_endings',TRUE);
-            $checkhandle = fopen($file->path, "r");
+            $checkhandle = fopen($file->path, "rb");
             // read in the header line
             $checkdata = fgetcsv($checkhandle, 10000, ",");
             $fieldCount = count($checkdata);
@@ -2543,7 +2543,7 @@ class storeController extends expController {
             echo "<br/>CSV File passed validation...<br/><br/>Importing....<br/><br/>";
             $line_end = ini_get('auto_detect_line_endings');
             ini_set('auto_detect_line_endings',TRUE);
-            $handle = fopen($file->path, "r");
+            $handle = fopen($file->path, "rb");
             // read in the header line
             $data = fgetcsv($handle, 10000, ",");
 
@@ -2782,7 +2782,7 @@ class storeController extends expController {
         }
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $handle = fopen($file->path, "r");
+        $handle = fopen($file->path, "rb");
 
         // read in the header line
         $header = fgetcsv($handle, 10000, ",");

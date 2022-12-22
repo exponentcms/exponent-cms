@@ -24,6 +24,7 @@ if (!defined('EXPONENT')) exit('');
  * @package Subsystems-Forms
  * @subpackage Control
  */
+#[AllowDynamicProperties]
 abstract class formcontrol {
 
     var $id = null;

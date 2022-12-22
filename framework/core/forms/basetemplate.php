@@ -23,6 +23,7 @@
  * @package Subsystems-Forms
  * @subpackage Template
  */
+#[AllowDynamicProperties]
 abstract class basetemplate {
 	// Smarty template object.
 	var $tpl;

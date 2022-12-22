@@ -764,6 +764,7 @@ class expDatabase {
 * @subpackage Database
 * @package Subsystems
 */
+#[AllowDynamicProperties]
 abstract class database {
 
 	/**

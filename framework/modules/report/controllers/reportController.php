@@ -2073,7 +2073,7 @@ class reportController extends expController {
         }
 
         $outFile = 'tmp/product_export_' . time() . '.csv';
-        $outHandle = fopen(BASE . $outFile, 'w');
+        $outHandle = fopen(BASE . $outFile, 'wb');
         fwrite($outHandle, $out);
         fclose($outHandle);
 
@@ -2213,7 +2213,7 @@ class reportController extends expController {
 
         //eDebug($out,true);
         $outFile = 'tmp/product_status_' . time() . '.csv';
-        $outHandle = fopen(BASE . $outFile, 'w');
+        $outHandle = fopen(BASE . $outFile, 'wb');
         fwrite($outHandle, $out);
         fclose($outHandle);
 

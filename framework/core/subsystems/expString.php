@@ -709,8 +709,8 @@ class expString {
    		 * We only convert entities that are within tags since
    		 * these are the ones that will pose security problems.
    		 */
-   		$str = preg_replace_callback("/[^a-z0-9>]+[a-z0-9]+=([\'\"]).*?\\1/si", array('self', '_convert_attribute'), $str);
-   		$str = preg_replace_callback('/<\w+.*/si', array('self', '_decode_entity'), $str);
+   		$str = preg_replace_callback("/[^a-z0-9>]+[a-z0-9]+=([\'\"]).*?\\1/si", array('expString', '_convert_attribute'), $str);
+   		$str = preg_replace_callback('/<\w+.*/si', array('expString', '_decode_entity'), $str);
 
    		// Remove Invisible Characters Again!
    		$str = self::remove_invisible_characters($str);
@@ -770,7 +770,7 @@ class expString {
 
    			// We only want to do this when it is followed by a non-word character
    			// That way valid stuff like "dealer to" does not become "dealerto"
-   			$str = preg_replace_callback('#('.substr($word, 0, -3).')(\W)#is', array('self', '_compact_exploded_words'), $str);
+   			$str = preg_replace_callback('#('.substr($word, 0, -3).')(\W)#is', array('expString', '_compact_exploded_words'), $str);
    		}
 
    		/*
@@ -791,12 +791,12 @@ class expString {
 
    			if (preg_match('/<a/i', $str))
    			{
-   				$str = preg_replace_callback('#<a[^a-z0-9>]+([^>]*?)(?:>|$)#si', array('self', '_js_link_removal'), $str);
+   				$str = preg_replace_callback('#<a[^a-z0-9>]+([^>]*?)(?:>|$)#si', array('expString', '_js_link_removal'), $str);
    			}
 
    			if (preg_match('/<img/i', $str))
    			{
-   				$str = preg_replace_callback('#<img[^a-z0-9]+([^>]*?)(?:\s?/?>|$)#si', array('self', '_js_img_removal'), $str);
+   				$str = preg_replace_callback('#<img[^a-z0-9]+([^>]*?)(?:\s?/?>|$)#si', array('expString', '_js_img_removal'), $str);
    			}
 
    			if (preg_match('/script|xss/i', $str))
@@ -835,7 +835,7 @@ class expString {
    		do
    		{
    			$old_str = $str;
-   			$str = preg_replace_callback($pattern, array('self', '_sanitize_naughty_html'), $str);
+   			$str = preg_replace_callback($pattern, array('expString', '_sanitize_naughty_html'), $str);
    		}
    		while ($old_str !== $str);
    		unset($old_str);

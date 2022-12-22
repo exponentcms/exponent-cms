@@ -1097,7 +1097,7 @@ class eventregistrationController extends expController {
 		// CREATE A TEMP FILE
 		$tmpfname = tempnam(BASE.'/tmp', "rep"); // Rig
 
-		$handle = fopen($tmpfname, "w");
+		$handle = fopen($tmpfname, "wb");
 		fwrite($handle,$out);
 		fclose($handle);
 

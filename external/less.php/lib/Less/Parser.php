@@ -8,6 +8,7 @@ require_once dirname( __FILE__ ).'/Cache.php';
  * @package Less
  * @subpackage parser
  */
+#[AllowDynamicProperties]
 class Less_Parser {
 
 	/**

@@ -67,13 +67,13 @@ $default_lang = array();
 $custom_lang = array();
 /**
  * Stores the name of the default language file
- * @var array $default_lang_file
+ * @var string $default_lang_file
  * @name $default_lang_file
  */
 $default_lang_file = '';
 /**
  * Stores the name of the language file to be created
- * @var array $target_lang_file
+ * @var string $target_lang_file
  * @name $target_lang_file
  */
 $target_lang_file = '';

@@ -186,7 +186,7 @@
 
         $().ready(function() {
             var funcNum = getUrlParam('CKEditorFuncNum');
-            var $autoLoadCSS = "{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder"|cat:$smarty.const.ELFINDER_THEME|cat:"/css/theme.css"}{literal}";
+            var $autoLoadCSS = "{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder"|cat:$smarty.const.ELFINDER_THEME|cat:"/css/theme.css"}{literal}";
 
             var elf = $('#elfinder').elfinder({
                 baseUrl: EXPONENT.PATH_RELATIVE + 'external/elFinder/',  // main URL
@@ -196,7 +196,7 @@
                 themes : {
                     "default" : {
                       "name":"Default OS/X",
-                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"css/theme.css"}{literal}",
+                      "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/css/theme.css"}{literal}",
                       "author":"Naoki Sawada",
                       // "email":"dev@std42.ru",
                       "license":"3-clauses BSD license",
@@ -206,7 +206,7 @@
                     },
                     "bootstrap" : {
                       "name":"Bootstrap",
-                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/bootstrap/css/theme.css"}{literal}",
+                      "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/themes/bootstrap/css/theme.css"}{literal}",
                       "author":"Dennis Suitters",
                       // "email":"Author Email",
                       // "license":"License",
@@ -216,7 +216,7 @@
                     },
                     "dark-slim" : {
                       "name":"Dark Slim",
-                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/dark-slim/css/theme.css"}{literal}",
+                      "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/themes/dark-slim/css/theme.css"}{literal}",
                       "author":"John Fort",
                       "email":"support@fortcms.ru",
                       "license":"MIT",
@@ -226,7 +226,7 @@
                     },
                     "material" : {
                       "name":"Material",
-                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/Material/css/theme.css"}{literal}",
+                      "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/themes/Material/css/theme.css"}{literal}",
                       "author":"Róbert Kelčák",
                       // "email":"Author Email",
                       "license":"MIT",
@@ -236,7 +236,7 @@
                     },
                     "material-gray" : {
                       "name":"Material Gray",
-                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/Material-Gray/css/theme.css"}{literal}",
+                      "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/themes/Material-Gray/css/theme.css"}{literal}",
                       "author":"Róbert Kelčák",
                       // "email":"Author Email",
                       "license":"MIT",
@@ -246,7 +246,7 @@
                     },
                     "material-light" : {
                       "name":"Material Light",
-                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/Material-Light/css/theme.css"}{literal}",
+                      "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/themes/Material-Light/css/theme.css"}{literal}",
                       "author":"Róbert Kelčák",
                       // "email":"Author Email",
                       "license":"MIT",
@@ -256,7 +256,7 @@
                     },
                     "moono" : {
                       "name":"Moono",
-                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/moono/css/theme.css"}{literal}",
+                      "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/themes/moono/css/theme.css"}{literal}",
                       "author":"Lawrence Okoth-Odida",
                       // "email":"Author Email",
                       // "license":"License",
@@ -266,7 +266,7 @@
                     },
                     "windows-10" : {
                       "name":"Windows 10",
-                      "cssurls":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"themes/windows-10/css/theme.css"}{literal}",
+                      "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/themes/windows-10/css/theme.css"}{literal}",
                       "author":"Lawrence Okoth-Odida",
                       // "email":"Author Email",
                       // "license":"License",

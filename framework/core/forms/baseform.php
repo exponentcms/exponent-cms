@@ -25,6 +25,7 @@
  * @package Subsystems-Forms
  * @subpackage Form
  */
+#[AllowDynamicProperties]
 abstract class baseform {
 
 	var $meta    = array();

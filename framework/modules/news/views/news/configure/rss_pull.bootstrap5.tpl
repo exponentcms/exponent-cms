@@ -37,7 +37,7 @@
         {$icon_size = ''}
     {else}
         {$btn_size = ''}
-        {if $smarty.const.USE_BOOTSTRAP_ICONS)}
+        {if $smarty.const.USE_BOOTSTRAP_ICONS}
             {$icon_size = 'bi-lg'}
         {else}
             {$icon_size = 'fa-lg'}
@@ -67,7 +67,7 @@
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "removerss btn {/literal}{$btn_size}{literal} btn-danger";
-            newRemove.innerHTML = " {/literal}<i class='{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-x-circle{else}fas fa-times-circle{/if}{literal} {$icon_size}'></i> {'Remove'|gettext}{literal}";
+            newRemove.innerHTML = " {/literal}<i class='{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-x-circle{else}fas fa-times-circle{/if}{literal} {$icon_size}'></i> {/literal}{'Remove'|gettext}{literal}";
             newli.appendChild(newLabel);
             newli.appendChild(newRemove);
             var list = Y.one('#rsspull-feeds');

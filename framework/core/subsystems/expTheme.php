@@ -22,6 +22,7 @@
  * @package    Subsystems
  * @subpackage Subsystems
  */
+#[AllowDynamicProperties]
 class expTheme
 {
 
@@ -2370,6 +2371,7 @@ class expTheme
  * @package Subsystems
  * @subpackage Subsystems
  */
+#[AllowDynamicProperties]
 class theme {
 	public $user_configured = false;
     public $stock_theme = false;

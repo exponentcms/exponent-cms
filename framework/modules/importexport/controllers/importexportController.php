@@ -435,7 +435,7 @@ class importexportController extends expController {
 
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $checkhandle = fopen($file->path, "r");
+        $checkhandle = fopen($file->path, 'rb');
         $checkdata = fgetcsv($checkhandle, 10000, ",");
         $fieldCount = count($checkdata);
 
@@ -602,7 +602,7 @@ class importexportController extends expController {
         }
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $handle = fopen($file->path, "r");
+        $handle = fopen($file->path, 'rb');
 
         // read in the header line
         $header = fgetcsv($handle, 10000, ",");

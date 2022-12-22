@@ -532,7 +532,7 @@ if (!defined('YUI2_RELATIVE')) {
 if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
-    define('JQUERY3_VERSION', '3.6.2');
+    define('JQUERY3_VERSION', '3.6.3');
     define('JQUERY3_MIGRATE_VERSION', '3.4.0');
     define('JQUERYUI_VERSION', '1.13.2');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
@@ -648,7 +648,7 @@ if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.17');
 }
 if (!defined('MPDF81_VERSION')) {
-    define('MPDF81_VERSION', '8.1.1');  // 8.1.3
+    define('MPDF81_VERSION', '8.1.1');  // 8.1.4
 }
 /**
  * Log is needed for MPDF v7+
@@ -680,7 +680,7 @@ if (!defined('HTML2PDF5_VERSION')) {
  * TCPDF is needed for HTML2PDF5
  */
 if (!defined('TCPDF5_VERSION')) {
-    define('TCPDF5_VERSION', '6.4.4');  // 6.6.1
+    define('TCPDF5_VERSION', '6.4.4');  // 6.6.2
 }
 
 ?>
