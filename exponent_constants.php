@@ -532,7 +532,7 @@ if (!defined('YUI2_RELATIVE')) {
 if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
-    define('JQUERY3_VERSION', '3.6.2');
+    define('JQUERY3_VERSION', '3.6.3');
     define('JQUERY3_MIGRATE_VERSION', '3.4.0');
     define('JQUERYUI_VERSION', '1.13.2');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
