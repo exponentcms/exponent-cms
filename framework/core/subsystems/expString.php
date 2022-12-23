@@ -72,11 +72,14 @@ class expString {
      * Routine to
      *
      * @static
-     * @param string $str
+     * @param string|array $str
      * @param bool $unescape should the string also be unescaped?
      * @return mixed|string
      */
 	static function parseAndTrim($str, $unescape=false) {
+        if (empty($str))
+            return $str;
+
         if (is_array($str)) {
             $rst = array();
             foreach ($str as $key=>$st) {
