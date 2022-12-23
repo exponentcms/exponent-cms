@@ -1616,7 +1616,7 @@ class storeController extends expController {
                 if (!empty($prod)) {
                     $metainfo['title'] = empty($prod->meta_title) ? $prod->title . " - " . $storename : $prod->meta_title;
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
-                    $metainfo['description'] = empty($prod->meta_description) ? strip_tags($prod->body) : strip_tags($prod->meta_description);
+                    $metainfo['description'] = empty($prod->meta_description) ? @strip_tags($prod->body) : strip_tags($prod->meta_description);
                     $metainfo['canonical'] = empty($prod->canonical) ? $router->plainPath() : strip_tags($prod->canonical);
                     $metainfo['noindex'] = empty($prod->meta_noindex) ? false : $prod->meta_noindex;
                     $metainfo['nofollow'] = empty($prod->meta_nofollow) ? false : $prod->meta_nofollow;
