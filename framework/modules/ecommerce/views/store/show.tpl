@@ -437,7 +437,7 @@
                                     {if !empty($chiprod->extra_fields)}
                                         {foreach from=$chiprod->extra_fields item=ef}
                                             <td>
-                                                <span>{$ef.value|stripslashes}</span>
+                                                <span>{expStripSlashes($ef.value)}</span>
                                             </td>
                                         {/foreach}
                                     {/if}
