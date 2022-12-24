@@ -462,7 +462,7 @@
                                         {if !empty($chiprod->extra_fields)}
                                             {foreach from=$chiprod->extra_fields item=ef}
                                                 <td data-title="{$ef.name|regex_replace:'/\_/':' '|capitalize}">
-                                                    <span>{$ef.value|stripslashes}</span>
+                                                    <span>{expStripSlashes($ef.value)}</span>
                                                 </td>
                                             {/foreach}
                                         {/if}

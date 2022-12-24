@@ -104,7 +104,7 @@
                                 <td><span>{$chiprod->model}</span></td>
                                 {if $chiprod->extra_fields}
                                     {foreach from=$chiprod->extra_fields item=ef}
-                                    <td><span>{$ef.value|stripslashes}</span></td>
+                                    <td><span>{expStripSlashes($ef.value)}</span></td>
                                     {/foreach}
                                 {/if}
                                 <td style="text-align: right;">
