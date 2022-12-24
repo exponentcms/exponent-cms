@@ -8,7 +8,7 @@
  */
 class Less_Colors {
 
-	private const COLORS = [
+	public static $colors = array(
 		'aliceblue' => '#f0f8ff',
 		'antiquewhite' => '#faebd7',
 		'aqua' => '#00ffff',
@@ -155,24 +155,15 @@ class Less_Colors {
 		'white' => '#ffffff',
 		'whitesmoke' => '#f5f5f5',
 		'yellow' => '#ffff00',
-		'yellowgreen' => '#9acd32',
-	];
+			'yellowgreen' => '#9acd32'
+		);
 
-	/**
-	 * @param string $color
-	 * @return bool
-	 */
-	public static function hasOwnProperty( string $color ): bool {
-		return isset( self::COLORS[$color] );
+	public static function hasOwnProperty( $color ) {
+		return isset( self::$colors[$color] );
 	}
 
-	/**
-	 * @param string $color Should be an existing color name,
-	 *   checked via hasOwnProperty()
-	 * @return string the corresponding hexadecimal representation
-	 */
-	public static function color( string $color ): string {
-		return self::COLORS[$color];
+	public static function color( $color ) {
+		return self::$colors[$color];
 	}
 
 }
