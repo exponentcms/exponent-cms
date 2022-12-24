@@ -27,10 +27,10 @@ if (!defined('EXPONENT')) exit('');
  */
 class dropdowncontrol extends formcontrol {
 
+    var $type = 'select';
     var $items = array();
     var $size = 1;
     var $include_blank = false;
-    var $type = 'select';
 
     static function name() { return "Drop Down List"; }
     static function isSimpleControl() { return true; }

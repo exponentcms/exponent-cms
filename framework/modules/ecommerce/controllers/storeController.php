@@ -553,9 +553,15 @@ class storeController extends expController {
         }*/
 
         $ancestors = $this->category->pathToNode();
+        if (ecomconfig::getConfig('store_home')) {
+            $home = makeLink(array('section' => ecomconfig::getConfig('store_home_page')));
+        } else {
+            $home = 0;
+        }
         // eDebug($ancestors);
         assign_to_template(array(
-            'ancestors' => $ancestors
+            'ancestors' => $ancestors,
+            'home'      => $home
         ));
     }
 
@@ -688,7 +694,7 @@ class storeController extends expController {
 
 		// CREATE A TEMP FILE
 		$tmpfname = tempnam(BASE.'/tmp', "rep"); // Rig
-		$handle = fopen($tmpfname, "w");
+		$handle = fopen($tmpfname, "wb");
 
         if (LANG_CHARSET === 'UTF-8') {
             fwrite($handle, chr(0xEF).chr(0xBB).chr(0xBF));  // add utf-8 signature to file to open appropriately in Excel, etc...
@@ -1598,7 +1604,7 @@ class storeController extends expController {
                 if (!empty($cat)) {
                     $metainfo['title'] = empty($cat->meta_title) ? $cat->title . ' ' . gt('Products') . ' - ' . $storename : $cat->meta_title;
                     $metainfo['keywords'] = empty($cat->meta_keywords) ? $cat->title : strip_tags($cat->meta_keywords);
-                    $metainfo['description'] = empty($cat->meta_description) ? strip_tags($cat->body) : strip_tags($cat->meta_description);
+                    $metainfo['description'] = empty($cat->meta_description) ? @strip_tags($cat->body) : strip_tags($cat->meta_description);
                     $metainfo['canonical'] = empty($cat->canonical) ? $router->plainPath() : strip_tags($cat->canonical);
                     $metainfo['noindex'] = empty($cat->meta_noindex) ? false : $cat->meta_noindex;
                     $metainfo['nofollow'] = empty($cat->meta_nofollow) ? false : $cat->meta_nofollow;
@@ -1610,7 +1616,7 @@ class storeController extends expController {
                 if (!empty($prod)) {
                     $metainfo['title'] = empty($prod->meta_title) ? $prod->title . " - " . $storename : $prod->meta_title;
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
-                    $metainfo['description'] = empty($prod->meta_description) ? strip_tags($prod->body) : strip_tags($prod->meta_description);
+                    $metainfo['description'] = empty($prod->meta_description) ? @strip_tags($prod->body) : strip_tags($prod->meta_description);
                     $metainfo['canonical'] = empty($prod->canonical) ? $router->plainPath() : strip_tags($prod->canonical);
                     $metainfo['noindex'] = empty($prod->meta_noindex) ? false : $prod->meta_noindex;
                     $metainfo['nofollow'] = empty($prod->meta_nofollow) ? false : $prod->meta_nofollow;
@@ -1945,7 +1951,7 @@ class storeController extends expController {
 
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $checkhandle = fopen($file->path, "r");
+        $checkhandle = fopen($file->path, "rb");
         // read in the header line
         $checkdata = fgetcsv($checkhandle, 10000, ",");
         $fieldCount = count($checkdata);
@@ -1966,7 +1972,7 @@ class storeController extends expController {
         //exit();
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $handle = fopen($file->path, "r");
+        $handle = fopen($file->path, "rb");
 
         // read in the header line
         $data = fgetcsv($handle, 10000, ",");
@@ -2231,7 +2237,7 @@ class storeController extends expController {
 
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $checkhandle = fopen($file->path, "r");
+        $checkhandle = fopen($file->path, "rb");
         if ($this->params['type_of_address'][0] === 'am') {
             // read in the header line
             $checkdata = fgetcsv($checkhandle, 10000, "\t");
@@ -2273,7 +2279,7 @@ class storeController extends expController {
         //exit();
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $handle = fopen($file->path, "r");
+        $handle = fopen($file->path, "rb");
 
         // read in the header line and discard it
         $data = fgetcsv($handle, 10000, ",");
@@ -2515,7 +2521,7 @@ class storeController extends expController {
 
             $line_end = ini_get('auto_detect_line_endings');
             ini_set('auto_detect_line_endings',TRUE);
-            $checkhandle = fopen($file->path, "r");
+            $checkhandle = fopen($file->path, "rb");
             // read in the header line
             $checkdata = fgetcsv($checkhandle, 10000, ",");
             $fieldCount = count($checkdata);
@@ -2537,7 +2543,7 @@ class storeController extends expController {
             echo "<br/>CSV File passed validation...<br/><br/>Importing....<br/><br/>";
             $line_end = ini_get('auto_detect_line_endings');
             ini_set('auto_detect_line_endings',TRUE);
-            $handle = fopen($file->path, "r");
+            $handle = fopen($file->path, "rb");
             // read in the header line
             $data = fgetcsv($handle, 10000, ",");
 
@@ -2776,7 +2782,7 @@ class storeController extends expController {
         }
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $handle = fopen($file->path, "r");
+        $handle = fopen($file->path, "rb");
 
         // read in the header line
         $header = fgetcsv($handle, 10000, ",");

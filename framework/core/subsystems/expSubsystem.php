@@ -24,6 +24,7 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
+#[AllowDynamicProperties]
 class expSubsystem {
 
     /**

@@ -1,4 +1,4 @@
-/*/ Sketchy 5.2.2 */
+/*/ Sketchy 5.2.3 */
 // Bootswatch
 
 
@@ -190,7 +190,7 @@ select.form-control {
   }
 
   &:focus::before {
-    box-shadow: 0 0 0 .25rem rgb(51 51 51 / 25%);
+    box-shadow: 0 0 0 .25rem rgba(51, 51, 51, .25);
   }
 
   &:checked::after {
@@ -231,7 +231,7 @@ select.form-control {
   }
 
   &:focus::before {
-    box-shadow: 0 0 0 .25rem rgb(51 51 51 / 25%);
+    box-shadow: 0 0 0 .25rem rgba(51, 51, 51, .25);
   }
 
   &:checked::before {
@@ -292,7 +292,7 @@ select.form-control {
 // Navs
 
 .dropdown-menu {
-  overflow: hidden;
+  //overflow: hidden;
   border-radius: 555px 25px 25px 25px/25px 25px 25px 555px;
 }
 

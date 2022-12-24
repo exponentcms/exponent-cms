@@ -22,6 +22,7 @@
  * @package    Installation
  * @subpackage Upgrade
  */
+#[AllowDynamicProperties]
 abstract class upgradescript {
     protected $from_version = '9999.99.99'; // set default ridiculously high so that it NEVER runs
     protected $to_version = '9999.99.99'; // set default to something ridiculously high so it always runs

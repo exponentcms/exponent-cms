@@ -27,6 +27,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class uploadcontrol extends formcontrol {
 
+    var $type     = 'file';
     var $accept = "";
 
 	static function name() { return "File Upload Field"; }
@@ -46,7 +47,7 @@ class uploadcontrol extends formcontrol {
 	}
 
 	function controlToHTML($name,$label) {
-        $html = ($this->horizontal && bs3()) ? '<div class="col-sm-10">' : '';
+        $html = '';
 
         if (!empty($this->default)) {
             $html .= '<div class="fileupload fileupload-exists" data-provides="fileupload">';
@@ -68,8 +69,8 @@ class uploadcontrol extends formcontrol {
         $html .= '  </div>';
         $html .= '</div>';
 
-        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
-        $html .= ($this->horizontal && bs3()) ? '</div>' : '';
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+        $html .= ($this->horizontal) ? '</div>' : '';
 
         expJavascript::pushToFoot(array(
             "unique"  => 'fileupload-' . $name,

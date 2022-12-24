@@ -259,7 +259,7 @@ class expSettings
                 $conffolder['dirname']
             )
         ) {
-            $fh = fopen($configname, "w");
+            $fh = fopen($configname, "wb");
             fwrite($fh, $str);
             /*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
             fclose($fh);
@@ -605,7 +605,7 @@ class expSettings
             //FIXME do we need to delete current config first??
             copy(BASE . "framework/conf/profiles/$profile.php", BASE . "framework/conf/config.php");
             // tag it with the profile name
-            $fh = fopen(BASE . "framework/conf/config.php", "a");
+            $fh = fopen(BASE . "framework/conf/config.php", "ab");
             fwrite(
                 $fh,
                 "\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$profile\");\n?>"

@@ -32,6 +32,7 @@ class calendarcontrol extends formcontrol
 {
 
 //    var $disable_text = "";
+    var $type     = 'datetime';
     var $showtime = true;
     var $default_date = '';
     var $default_hour = '';
@@ -125,7 +126,7 @@ class calendarcontrol extends formcontrol
                             <span class='fa fa-calendar'></span>
                         </span>
                     </div>";
-        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"help-block"."\">".$this->description."</div>";
         if ($this->horizontal)
             $html .= "</div>";
 

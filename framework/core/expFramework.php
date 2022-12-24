@@ -67,13 +67,13 @@ $default_lang = array();
 $custom_lang = array();
 /**
  * Stores the name of the default language file
- * @var array $default_lang_file
+ * @var string $default_lang_file
  * @name $default_lang_file
  */
 $default_lang_file = '';
 /**
  * Stores the name of the language file to be created
- * @var array $target_lang_file
+ * @var string $target_lang_file
  * @name $target_lang_file
  */
 $target_lang_file = '';
@@ -926,6 +926,7 @@ function expUnserialize($serial_str) {
         'policy',
         'checkout_message_top',
         'checkout_message_bottom',
+        'message'
     );
     if (is_array($out2)) {
         foreach ($stripList as $strip) {
@@ -1000,7 +1001,8 @@ function ecom_active() {
 
     return ($db->selectValue('modstate', 'active', 'module=\'store\'') ||
         $db->selectValue('modstate', 'active', 'module=\'eventregistration\'') ||
-        $db->selectValue('modstate', 'active', 'module=\'donation\'') || FORCE_ECOM);
+        $db->selectValue('modstate', 'active', 'module=\'donation\'') ||
+        FORCE_ECOM);
 }
 
 /**
@@ -1024,10 +1026,7 @@ function framework() {
 function bs2($strict = false) {
     global $framework;
 
-    if ($framework === 'bootstrap') {
-        return true;
-    }
-    return false;
+    return $framework === 'bootstrap';
 }
 
 /**
@@ -1057,10 +1056,7 @@ function bs3($strict = false) {
 function bs4($strict = false) {
     global $framework;
 
-    if ($framework === 'bootstrap4') {
-        return true;
-    }
-    return false;
+    return $framework === 'bootstrap4';
 }
 
 /**
@@ -1072,10 +1068,7 @@ function bs4($strict = false) {
 function bs5($strict = false) {
     global $framework;
 
-    if ($framework === 'bootstrap5') {
-        return true;
-    }
-    return false;
+    return $framework === 'bootstrap5';
 }
 
 /**
@@ -1104,10 +1097,7 @@ function bs($strict = false) {
 function newui() {
     global $framework;
 
-    if ($framework === 'newui') {
-        return true;
-    }
-    return false;
+    return $framework === 'newui';
 }
 
 function gt($s){
@@ -1250,7 +1240,26 @@ function get_thumbnail($src) {
     global $PHPTHUMB_CONFIG;
     require_once(BASE . "external/phpThumb/phpThumb.config.php");
 
-    return phpThumbURL($src, URL_FULL . "external/phpThumb/phpThumb.php");
+    $params = explode('&', $src);
+    if (isset($params['id'])) {
+        // Since bootstrap doesn't setup the session we need to define this
+        // otherwise the expFile can't find it's table desc from cache.
+        // Initialize the Database Subsystem
+        $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME,'',false,BASE . 'tmp/thumb_sql.log');
+
+        $file_obj = new expFile((int)($params['id']));
+        //$params['src'] = "/" . $file_obj->directory.$file_obj->filename;
+    //    $params['src'] = $file_obj->path;
+        array_unshift($params, array('src' => $file_obj->path_relative));  // fix for using v1.7.12+
+
+        unset(
+            $params['id'],
+            $params['square']
+        );
+        $src = implode('&', $params);
+    }
+
+    return htmlspecialchars(phpThumbURL($src, URL_FULL . "external/phpThumb/phpThumb.php"));
 }
 
 /**

@@ -72,11 +72,14 @@ class expString {
      * Routine to
      *
      * @static
-     * @param string $str
+     * @param string|array $str
      * @param bool $unescape should the string also be unescaped?
      * @return mixed|string
      */
 	static function parseAndTrim($str, $unescape=false) {
+        if (empty($str))
+            return $str;
+
         if (is_array($str)) {
             $rst = array();
             foreach ($str as $key=>$st) {
@@ -227,10 +230,10 @@ class expString {
     /**
      * Summarize or short a long string
      *
-     * @param        $string
-     * @param string $strtype
-     * @param string $type
-     * @param string $more
+     * @param            $string
+     * @param string     $strtype type of string being passed html or non-html
+     * @param string|int $type    type of summary to create or number of words to return
+     * @param string     $more    text to indicate we summarized the string and more is available
      *
      * @return string
      */
@@ -241,7 +244,7 @@ class expString {
         $origstring = $string;
 
         switch ($type) {
-            case "para":
+            case "para":  // simply take the first paragraph based on $type as the summary leaving tags intact
                 foreach ($sep as $s) {
                     $para = explode($s, $string);
                     $string = $para[0];
@@ -251,8 +254,29 @@ class expString {
                 }
     //			return str_replace("&amp;#160;"," ",htmlentities(expString::convertSmartQuotes(strip_tags($string)),ENT_QUOTES));
                 return expString::convertSmartQuotes(strip_tags($string));
-//                break;
-            case "paralinks":
+            case "paraclean":  // take the first html paragraph as the summary, but strip out any tags
+                foreach ($sep as $s) {
+                    $para = explode($s, $string);
+                    $string = $para[0];
+                }
+                $string = strip_tags($string);
+                if (strlen($string) < strlen($origstring)) {
+                    $string .= "<span> " . $more . "</span>";
+                }
+    //			return str_replace("&#160;"," ",htmlspecialchars_decode(htmlentities(expString::convertSmartQuotes(strip_tags($string,'<a>')),ENT_QUOTES)));
+                return expString::convertSmartQuotes($string);
+            case "paraxlinks":  // take the first html paragraph as the summary, but strip out only the links
+                foreach ($sep as $s) {
+                    $para = explode($s, $string);
+                    $string = $para[0];
+                }
+                $string = preg_replace('/<a.*>(.*)<\/a>/isU', '$1', $string);
+                if (strlen($string) < strlen($origstring)) {
+                    $string .= "<span> " . $more . "</span>";
+                }
+    //			return str_replace("&#160;"," ",htmlspecialchars_decode(htmlentities(expString::convertSmartQuotes(strip_tags($string,'<a>')),ENT_QUOTES)));
+                return expString::convertSmartQuotes($string);
+            case "paralinks":  // take the first html paragraph as the summary, but strip out any tags except the links
                 foreach ($sep as $s) {
                     $para = explode($s, $string);
                     $string = $para[0];
@@ -263,8 +287,7 @@ class expString {
                 }
     //			return str_replace("&#160;"," ",htmlspecialchars_decode(htmlentities(expString::convertSmartQuotes(strip_tags($string,'<a>')),ENT_QUOTES)));
                 return expString::convertSmartQuotes($string);
-//                break;
-            case "parapaged":
+            case "parapaged":  // use the html page break to determine the summary
 //               $s = '<div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div>';
                 $s = '<div style="page-break-after: always';
                 $para = explode($s, $string);
@@ -276,8 +299,7 @@ class expString {
                     return expString::convertSmartQuotes($string);
                 }
                 // if there's no page break, fall through to simple html paragraph
-//                break;
-            case "parahtml":
+            case "parahtml":  // take the first html paragraph as the summary, attempting to close any open tags
                 // strip first <div> to first <p>
                 foreach ($sep as $s) {
                     $para = explode($s, $string);
@@ -384,8 +406,7 @@ class expString {
                     $string .= "<span> " . $more . "</span>";
                 }
                 return expString::convertSmartQuotes($string);
-//                break;
-            default:
+            default:  // take the first $type number of words as a summary
                 $words = explode(" ", strip_tags($string));
                 $string = implode(" ", array_slice($words, 0, (int)$type + 0));
                 if (strlen($string) < strlen($origstring)) {
@@ -393,7 +414,6 @@ class expString {
                 }
     //			return str_replace("&amp;#160;"," ",htmlentities(expString::convertSmartQuotes($string),ENT_QUOTES));
                 return expString::convertSmartQuotes($string);
-//                break;
         }
     }
 
@@ -692,8 +712,8 @@ class expString {
    		 * We only convert entities that are within tags since
    		 * these are the ones that will pose security problems.
    		 */
-   		$str = preg_replace_callback("/[^a-z0-9>]+[a-z0-9]+=([\'\"]).*?\\1/si", array('self', '_convert_attribute'), $str);
-   		$str = preg_replace_callback('/<\w+.*/si', array('self', '_decode_entity'), $str);
+   		$str = preg_replace_callback("/[^a-z0-9>]+[a-z0-9]+=([\'\"]).*?\\1/si", array('expString', '_convert_attribute'), $str);
+   		$str = preg_replace_callback('/<\w+.*/si', array('expString', '_decode_entity'), $str);
 
    		// Remove Invisible Characters Again!
    		$str = self::remove_invisible_characters($str);
@@ -753,7 +773,7 @@ class expString {
 
    			// We only want to do this when it is followed by a non-word character
    			// That way valid stuff like "dealer to" does not become "dealerto"
-   			$str = preg_replace_callback('#('.substr($word, 0, -3).')(\W)#is', array('self', '_compact_exploded_words'), $str);
+   			$str = preg_replace_callback('#('.substr($word, 0, -3).')(\W)#is', array('expString', '_compact_exploded_words'), $str);
    		}
 
    		/*
@@ -774,12 +794,12 @@ class expString {
 
    			if (preg_match('/<a/i', $str))
    			{
-   				$str = preg_replace_callback('#<a[^a-z0-9>]+([^>]*?)(?:>|$)#si', array('self', '_js_link_removal'), $str);
+   				$str = preg_replace_callback('#<a[^a-z0-9>]+([^>]*?)(?:>|$)#si', array('expString', '_js_link_removal'), $str);
    			}
 
    			if (preg_match('/<img/i', $str))
    			{
-   				$str = preg_replace_callback('#<img[^a-z0-9]+([^>]*?)(?:\s?/?>|$)#si', array('self', '_js_img_removal'), $str);
+   				$str = preg_replace_callback('#<img[^a-z0-9]+([^>]*?)(?:\s?/?>|$)#si', array('expString', '_js_img_removal'), $str);
    			}
 
    			if (preg_match('/script|xss/i', $str))
@@ -818,7 +838,7 @@ class expString {
    		do
    		{
    			$old_str = $str;
-   			$str = preg_replace_callback($pattern, array('self', '_sanitize_naughty_html'), $str);
+   			$str = preg_replace_callback($pattern, array('expString', '_sanitize_naughty_html'), $str);
    		}
    		while ($old_str !== $str);
    		unset($old_str);

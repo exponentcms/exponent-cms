@@ -22,6 +22,7 @@
  * @package Subsystems
  * @subpackage Subsystems
  */
+#[AllowDynamicProperties]
 class expLang {
 
     public static function initialize() {
@@ -30,15 +31,15 @@ class expLang {
 	    if (!defined('LANGUAGE'))
 	        define('LANGUAGE', 'English - US');
 		if (!defined('LANG')) {  // LANG is needed by YUI
-			if ((is_readable(BASE . 'framework/core/lang/' . utf8_decode(LANGUAGE) . '.php'))) {
+			if ((is_readable(BASE . 'framework/core/lang/' . self::utf8decode(LANGUAGE) . '.php'))) {
 				define('LANG', LANGUAGE); // Lang file exists.
 			} else {
 				define('LANG', 'English - US'); // Fallback to 'English - US' if language file not present.
 			}
 		}
 
-	    if (is_readable(BASE . 'framework/core/lang/' . utf8_decode(LANG).'.info.php')) {
-			$info = include(BASE . 'framework/core/lang/' . utf8_decode(LANG).'.info.php');
+	    if (is_readable(BASE . 'framework/core/lang/' . self::utf8decode(LANG) . '.info.php')) {
+			$info = include(BASE . 'framework/core/lang/' . self::utf8decode(LANG) . '.info.php');
             define('LOCALE', $info['locale']);
 			setlocale(LC_ALL, $info['locale']);
             // For anything related to character sets:
@@ -59,7 +60,7 @@ class expLang {
             $default_lang = include($default_lang_file);
         if (empty($default_lang))
   	        $default_lang = array();
-        $target_lang_file = BASE . "framework/core/lang/" . utf8_decode(LANG) . ".php";
+        $target_lang_file = BASE . "framework/core/lang/" . self::utf8decode(LANG) . ".php";
         $cur_lang = include($target_lang_file);
         if (empty($cur_lang))
             $cur_lang = array();
@@ -70,8 +71,8 @@ class expLang {
             $dh = opendir($dir);
             while (($f = readdir($dh)) !== false) {
                 if (is_dir($dir . '/' . $f)) {
-                    if ((is_readable($dir . '/' . $f . '/lang/' . utf8_decode(LANGUAGE) . '.php'))) {
-                        $custom_lang_m = include($dir . '/' . $f . '/lang/' . utf8_decode(LANGUAGE) . '.php');
+                    if ((is_readable($dir . '/' . $f . '/lang/' . self::utf8decode(LANGUAGE) . '.php'))) {
+                        $custom_lang_m = include($dir . '/' . $f . '/lang/' . self::utf8decode(LANGUAGE) . '.php');
                         $cur_lang = array_merge($cur_lang, $custom_lang_m);
 //                        $cur_lang += $custom_lang_m;
                     }
@@ -79,8 +80,8 @@ class expLang {
             }
         }
         // and finally here's where we locate and merge a custom theme language file
-        if ((is_readable(THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php'))) {
-            $custom_lang = include(THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php');
+        if ((is_readable(THEME_ABSOLUTE . 'lang/' . self::utf8decode(LANGUAGE) . '.php'))) {
+            $custom_lang = include(THEME_ABSOLUTE . 'lang/' . self::utf8decode(LANGUAGE) . '.php');
             $cur_lang = array_merge($cur_lang, $custom_lang);
         }
     }
@@ -126,7 +127,7 @@ class expLang {
 	        return;  // we never want single characters
         if (!array_key_exists(trim(addslashes(strip_tags($str))), $default_lang)) {
             $str = stripslashes(strip_tags($str));
-            @$fp = fopen($default_lang_file, 'w+');
+            @$fp = fopen($default_lang_file, 'wb+');
             if($fp === false && DEVELOPMENT) {
                flash('error',"I could not open $default_lang_file.");
                return;
@@ -154,9 +155,9 @@ class expLang {
 
         $str = stripslashes(strip_tags($str));
         expFile::makeDirectory('themes/' . DISPLAY_THEME . '/lang/');
-        @$fp = fopen(THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php', 'w+');
+        @$fp = fopen(THEME_ABSOLUTE . 'lang/' . self::utf8decode(LANGUAGE) . '.php', 'wb+');
         if($fp === false && DEVELOPMENT) {
-            flash('error',"I could not open " . THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php');
+            flash('error',"I could not open " . THEME_ABSOLUTE . 'lang/' . self::utf8decode(LANGUAGE) . '.php');
             return;
         }
         $custom_lang[trim(addslashes($str))] = trim(addslashes($str));  // add to custom language array
@@ -183,7 +184,7 @@ class expLang {
             $default_lang = include(BASE."framework/core/lang/English - US.php");
         $num_added = 0;
         if ((is_readable($target_lang_file))) {
-            $fp = fopen($target_lang_file, 'w+') or die("I could not open $target_lang_file.");
+            $fp = fopen($target_lang_file, 'wb+') or die("I could not open $target_lang_file.");
             foreach ($default_lang as $key=>$value) {
                 if (!array_key_exists($key,$cur_lang)) {
                     $cur_lang[$key] = $value;
@@ -210,7 +211,7 @@ class expLang {
         global $cur_lang, $target_lang_file;
 
         if ((is_readable($target_lang_file))) {
-            $fp = fopen($target_lang_file, 'w+') or die("I could not open $target_lang_file.");
+            $fp = fopen($target_lang_file, 'wb+') or die("I could not open $target_lang_file.");
             ksort($cur_lang);
             fwrite($fp,"<?php\n");
             fwrite($fp,"return array(\n");
@@ -230,9 +231,9 @@ class expLang {
         $error = false;
         $result = array();
         if (!empty($newlang)) {
-            $newlangfile = BASE."framework/core/lang/".utf8_decode($newlang).".php";
+            $newlangfile = BASE."framework/core/lang/".self::utf8decode($newlang).".php";
             if (((!file_exists($newlangfile)) && ($newlangfile != $default_lang_file && $newlangfile != $target_lang_file))) {
-                $fp = fopen($newlangfile, 'w+') or die("I could not open $newlangfile.");
+                $fp = fopen($newlangfile, 'wb+') or die("I could not open $newlangfile.");
                 ksort($cur_lang);
                 fwrite($fp,"<?php\n");
                 fwrite($fp,"return array(\n");
@@ -259,9 +260,9 @@ class expLang {
         if (!empty($newlang)) {
             if (empty($newcharset))
                 $newcharset = 'UTF-8';
-            $newlanginfofile = BASE."framework/core/lang/".utf8_decode($newlang).".info.php";
+            $newlanginfofile = BASE."framework/core/lang/".self::utf8decode($newlang).".info.php";
             if (((!file_exists($newlanginfofile)))) {
-                $fp = fopen($newlanginfofile, 'w+') or die("I could not open $newlanginfofile.");
+                $fp = fopen($newlanginfofile, 'wb+') or die("I could not open $newlanginfofile.");
                 fwrite($fp,"<?php\n");
                 fwrite($fp,"return array(\n");
                 fwrite($fp,"\t\"name\"=>\"".$newlang."\",\n");
@@ -289,9 +290,9 @@ class expLang {
    				if (substr($f,-4,4) === '.php' && substr($f,-9,9) !== '.info.php') {
    					if (file_exists($dir.'/'.substr($f,0,-4).'.info.php')) {
    						$info = include($dir.'/'.substr($f,0,-4).'.info.php');
-   						$langs[substr(utf8_encode($f),0,-4)] = $info['name'] . ' -- ' . $info['author'];
+   						$langs[substr(self::utf8encode($f),0,-4)] = $info['name'] . ' -- ' . $info['author'];
    					} else {
-   						$langs[substr(utf8_encode($f),0,-4)] = substr($f,0,-4);
+   						$langs[substr(self::utf8encode($f),0,-4)] = substr($f,0,-4);
    					}
    				}
    			}
@@ -333,6 +334,22 @@ class expLang {
         $gt = new BingTranslateWrapper(BING_API);
         /* Enable the cache */
         return $gt->LanguagesSupported();
+    }
+
+    public static function utf8decode($text) {
+        if (expCore::is_php('8.2')) {
+            return mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
+        }
+
+        return utf8_decode($text);
+    }
+
+    public static function utf8encode($text) {
+        if (expCore::is_php('8.2')) {
+            return mb_convert_encoding($text, 'UTF-8', 'ISO-8859-1');
+        }
+
+        return utf8_encode($text);
     }
 
 }

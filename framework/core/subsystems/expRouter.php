@@ -93,9 +93,11 @@ class expRouter {
                 if (empty($params['sef_name'])) {
                     global $db;
 
-                    $params['sef_name'] = $db->selectValue('section', 'sef_name', 'id='.(int)($params['section']));
+                    if ($db->havedb) {
+                        $params['sef_name'] = $db->selectValue('section', 'sef_name', 'id=' . (int)($params['section']));
+                    }
                 }
-                return self::cleanLink($linkbase.$params['sef_name']);
+                return self::cleanLink($linkbase . $params['sef_name']);
             } else {
                 // initialize the link
                 $link = '';
@@ -189,6 +191,7 @@ class expRouter {
             return $link; // phillip: removed htmlspecialchars so that links return without parsing & to &amp; in URL strings
             //return htmlspecialchars($link,ENT_QUOTES);
         }
+        $link = 1;
     }
 
     /**

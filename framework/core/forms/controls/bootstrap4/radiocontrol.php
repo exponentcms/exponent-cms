@@ -29,6 +29,8 @@ if (!defined('EXPONENT')) exit('');
  */
 class radiocontrol extends formcontrol {
 
+    var $type     = 'select';
+
     static function name() { return "Radio Button"; }
 
     function __construct($default = false, $value = "", $groupname="radiogroup", $flip=false, $onclick="") {
@@ -52,7 +54,7 @@ class radiocontrol extends formcontrol {
         $for = createValidId($for);
         $html = '<div id="' . $divID . '" class="radio form-check'.($this->cols!=1?" form-check-inline":"");
         $html .= (!empty($this->required)) ? ' required">' : '">';
-        $labelwrap = '<label for="' . $for . '" class="form-check-label label">' . $label . '</label>';
+        $labelwrap = '<label for="' . $for . '" class="form-check-label d-inline">' . $label . '</label>';
         if ($this->flip) $html .= $labelwrap;
         $html .= $this->controlToHTML($name);
         if (!$this->flip) $html .= $labelwrap;

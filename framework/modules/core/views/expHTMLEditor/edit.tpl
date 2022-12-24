@@ -51,6 +51,7 @@
             {control type="checkbox" postfalse=1 name=paste_word label="Allow Formatted Pasting from MS Word"|gettext checked=$record->paste_word value=1}
         {elseif $editor == 'tinymce' || $editor == 'tinymce5'}
             {control type="checkbox" postfalse=1 name=scayt_on label="Disable Browser Spell Check"|gettext checked=$record->scayt_on value=1}
+            {control type="hidden" name=paste_word value=0}
         {/if}
         <blockquote>
             <h4>{'Blank or empty entries in the following text boxes result in using the default setting'|gettext}</h4>

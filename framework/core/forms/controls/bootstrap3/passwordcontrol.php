@@ -45,7 +45,7 @@ class passwordcontrol extends genericcontrol {
         }
 //        if ($this->required) $label = "*" . $label;
         $disabled = $this->disabled == true ? "disabled" : "";
-        if ($this->type != 'hidden') {
+        if ($this->type !== 'hidden') {
             $html = '';
              if ($this->meter) {
                  $html .= "<div class=\"row " . $this->id . "-meter\">";
@@ -60,11 +60,11 @@ class passwordcontrol extends genericcontrol {
                 $labeltag = $label;
             }
             if(empty($this->flip)){
-                    $html .= empty($label) ? "" : "<label".$for." ".(bs3()?"class=\"control-label\"":"").(($this->horizontal)?"col-sm-2 control-label":"" ).">". $labeltag."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." class=\"control-label\"".(($this->horizontal)?"col-sm-2 control-label":"" ).">". $labeltag."</label>";
                     $html .= $this->controlToHTML($name, $label);
             } else {
                     $html .= $this->controlToHTML($name, $label);
-                    $html .= empty($label) ? "" : "<label".$for." ".(bs3()?"class=\"control-label\"":"").">". $labeltag."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." class=\"control-label\"".">". $labeltag."</label>";
             }
             $html .= "</div>";
             if ($this->meter) {

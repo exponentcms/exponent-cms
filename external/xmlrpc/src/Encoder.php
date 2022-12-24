@@ -108,7 +108,7 @@ class Encoder
                         $result->setTimestamp($out);
 
                         return $result;
-                    } elseif (is_a($out, 'DateTimeInterface')) {
+                    } elseif (is_a($out, 'DateTimeInterface') || is_a($out, 'DateTime')) {
                         return $out;
                     }
                 }
@@ -116,7 +116,7 @@ class Encoder
 
             case 'array':
                 $arr = array();
-                foreach($xmlrpcVal as $value) {
+                foreach ($xmlrpcVal as $value) {
                     $arr[] = $this->decode($value, $options);
                 }
                 return $arr;
@@ -218,7 +218,8 @@ class Encoder
             case 'object':
                 if (is_a($phpVal, 'PhpXmlRpc\Value')) {
                     $xmlrpcVal = $phpVal;
-                } elseif (is_a($phpVal, 'DateTimeInterface')) {
+                // DateTimeInterface is not present in php 5.4...
+                } elseif (is_a($phpVal, 'DateTimeInterface') || is_a($phpVal, 'DateTime')) {
                     $xmlrpcVal = new Value($phpVal->format('Ymd\TH:i:s'), Value::$xmlrpcDateTime);
                 } elseif (in_array('extension_api', $options) && $phpVal instanceof \stdClass && isset($phpVal->xmlrpc_type)) {
                     // Handle the 'pre-converted' base64 and datetime values
@@ -239,7 +240,7 @@ class Encoder
 
                 } else {
                     $arr = array();
-                    foreach($phpVal as $k => $v) {
+                    foreach ($phpVal as $k => $v) {
                         $arr[$k] = $this->encode($v, $options);
                     }
                     $xmlrpcVal = new Value($arr, Value::$xmlrpcStruct);
@@ -303,11 +304,11 @@ class Encoder
             // The following code might be better for mb_string enabled installs, but makes the lib about 200% slower...
             //if (!is_valid_charset($valEncoding, array('UTF-8'))
             if (!in_array($valEncoding, array('UTF-8', 'US-ASCII')) && !XMLParser::hasEncoding($xmlVal)) {
-                if ($valEncoding == 'ISO-8859-1') {
-                    $xmlVal = utf8_encode($xmlVal);
+                if (extension_loaded('mbstring')) {
+                    $xmlVal = mb_convert_encoding($xmlVal, 'UTF-8', $valEncoding);
                 } else {
-                    if (extension_loaded('mbstring')) {
-                        $xmlVal = mb_convert_encoding($xmlVal, 'UTF-8', $valEncoding);
+                    if ($valEncoding == 'ISO-8859-1') {
+                        $xmlVal = utf8_encode($xmlVal);
                     } else {
                         $this->getLogger()->errorLog('XML-RPC: ' . __METHOD__ . ': invalid charset encoding of xml text: ' . $valEncoding);
                     }

@@ -1,4 +1,4 @@
-/* Materia 5.2.2 */
+/* Materia 5.2.3 */
 // Bootswatch
 
 
@@ -116,6 +116,16 @@ $web-font-path: "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;50
       }
     }
   }
+}
+
+.bg-primary,
+.bg-success,
+.bg-info,
+.bg-warning,
+.bg-danger,
+.bg-dark,
+.bg-black {
+  color-scheme: dark;
 }
 
 // Buttons
@@ -252,6 +262,10 @@ p {
   &-lg {
     font-size: $font-size-lg;
   }
+}
+
+.form-control {
+  color-scheme: inherit;
 }
 
 textarea,

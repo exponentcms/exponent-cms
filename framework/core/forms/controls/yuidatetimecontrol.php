@@ -29,6 +29,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class yuidatetimecontrol extends formcontrol {
 
+    var $type     = 'datetime';
     var $showdate = true;
     var $showtime = true;
 

@@ -33,6 +33,7 @@ class yuicalendarcontrol extends formcontrol
 {
 
 //    var $disable_text = "";
+    var $type     = 'datetime';
     var $showdate = true;
     var $showtime = false;
 
@@ -60,7 +61,7 @@ class yuicalendarcontrol extends formcontrol
         if (empty($default)) {
             $default = time();
         }
-        $this->default = $default;
+        $this->default      = $default;
         $this->showdate     = $showdate;
         $this->showtime     = $showtime;
 
@@ -110,7 +111,7 @@ class yuicalendarcontrol extends formcontrol
 //        $date_input->name = $idname;
 //        $date_input->disabled = 'disabled';
 //        $html = "<!-- cke lazy -->";
-        $html = '<div class="input-group date input-append col-sm-10 border" id="'.$idname.'dateRangePicker" data-target-input="nearest">'.$date_input->toHTML(null, $name).'</div>';
+        $html = '<div class="input-group date input-append col-sm-10" id="'.$idname.'dateRangePicker" data-target-input="nearest">'.$date_input->toHTML(null, $name).'</div>';
         if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">".$this->description."</small>";
 //        $html .= "
 //        <div style=\"clear:both\"></div>

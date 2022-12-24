@@ -104,7 +104,7 @@ if (!empty($profiles)) {
 
     function changeProfile(val) {
         if (confirm('<?php echo gt('Are you sure you want to load a new profile?'); ?>')) {
-            window.location = '<?php echo URL_FULL; ?>' + "install/index.php?profile=" + val;
+            window.location = EXPONENT.URL_FULL + "install/index.php?profile=" + val;
         } else {
             document.getElementById("profiles").value = '';
         }

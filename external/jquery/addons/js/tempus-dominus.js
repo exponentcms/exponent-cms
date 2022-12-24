@@ -1,5 +1,5 @@
 /*!
-  * Tempus Dominus v6.2.6 (https://getdatepicker.com/)
+  * Tempus Dominus v6.2.10 (https://getdatepicker.com/)
   * Copyright 2013-2022 Jonathan Peterson
   * Licensed under MIT (https://github.com/Eonasdan/tempus-dominus/blob/master/LICENSE)
   */
@@ -25,11 +25,6 @@
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      hour12: true,
-  };
-  const twoDigitTwentyFourTemplate = {
-      hour: '2-digit',
-      hour12: false
   };
   const getFormatByUnit = (unit) => {
       switch (unit) {
@@ -38,11 +33,39 @@
           case 'month':
               return {
                   month: 'numeric',
-                  year: 'numeric'
+                  year: 'numeric',
               };
           case 'year':
               return { year: 'numeric' };
       }
+  };
+  const guessHourCycle = (locale) => {
+      if (!locale)
+          return 'h12';
+      // noinspection SpellCheckingInspection
+      const template = {
+          hour: '2-digit',
+          minute: '2-digit',
+          numberingSystem: 'latn',
+      };
+      const dt = new DateTime().setLocale(locale);
+      dt.hours = 0;
+      const start = dt.parts(undefined, template).hour;
+      //midnight is 12 so en-US style 12 AM
+      if (start === '12')
+          return 'h12';
+      //midnight is 24 is from 00-24
+      if (start === '24')
+          return 'h24';
+      dt.hours = 23;
+      const end = dt.parts(undefined, template).hour;
+      //if midnight is 00 and hour 23 is 11 then
+      if (start === '00' && end === '11')
+          return 'h11';
+      if (start === '00' && end === '23')
+          return 'h23';
+      console.warn(`couldn't determine hour cycle for ${locale}. start: ${start}. end: ${end}`);
+      return undefined;
   };
   /**
    * For the most part this object behaves exactly the same way
@@ -55,7 +78,9 @@
            * Used with Intl.DateTimeFormat
            */
           this.locale = 'default';
-          this.nonLeapLadder = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+          this.nonLeapLadder = [
+              0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334,
+          ];
           this.leapLadder = [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335];
       }
       /**
@@ -82,6 +107,7 @@
        * @param input
        * @param localization
        */
+      //eslint-disable-next-line @typescript-eslint/no-unused-vars
       static fromString(input, localization) {
           return new DateTime(input);
       }
@@ -114,7 +140,7 @@
               case 'date':
                   this.setHours(0, 0, 0, 0);
                   break;
-              case 'weekDay':
+              case 'weekDay': {
                   this.startOf(exports.Unit.date);
                   if (this.weekDay === startOfTheWeek)
                       break;
@@ -123,6 +149,7 @@
                       goBack = 8 - startOfTheWeek;
                   this.manipulate(startOfTheWeek - goBack, exports.Unit.date);
                   break;
+              }
               case 'month':
                   this.startOf(exports.Unit.date);
                   this.setDate(1);
@@ -157,10 +184,14 @@
               case 'date':
                   this.setHours(23, 59, 59, 999);
                   break;
-              case 'weekDay':
+              case 'weekDay': {
                   this.endOf(exports.Unit.date);
-                  this.manipulate((6 + startOfTheWeek) - this.weekDay, exports.Unit.date);
+                  const endOfWeek = 6 + startOfTheWeek;
+                  if (this.weekDay === endOfWeek)
+                      break;
+                  this.manipulate(endOfWeek - this.weekDay, exports.Unit.date);
                   break;
+              }
               case 'month':
                   this.endOf(exports.Unit.date);
                   this.manipulate(1, exports.Unit.month);
@@ -168,8 +199,7 @@
                   break;
               case 'year':
                   this.endOf(exports.Unit.date);
-                  this.manipulate(1, exports.Unit.year);
-                  this.setDate(0);
+                  this.setMonth(11, 31);
                   break;
           }
           return this;
@@ -324,17 +354,9 @@
       set hours(value) {
           this.setHours(value);
       }
-      /**
-       * Returns two digit hours
-       */
-      get hoursFormatted() {
-          return this.parts(undefined, twoDigitTwentyFourTemplate).hour;
-      }
-      /**
-       * Returns two digit hours but in twelve hour mode e.g. 13 -> 1
-       */
-      get twelveHoursFormatted() {
-          return this.parts(undefined, twoDigitTemplate).hour;
+      getHoursFormatted(hourCycle = 'h12') {
+          return this.parts(undefined, { ...twoDigitTemplate, hourCycle: hourCycle })
+              .hour;
       }
       /**
        * Get the meridiem of the date. E.g. AM or PM.
@@ -345,7 +367,7 @@
       meridiem(locale = this.locale) {
           return new Intl.DateTimeFormat(locale, {
               hour: 'numeric',
-              hour12: true
+              hour12: true,
           })
               .formatToParts(this)
               .find((p) => p.type === 'dayPeriod')?.value;
@@ -438,10 +460,11 @@
           return p1 === 4 || p2 === 3 ? 53 : 52;
       }
       get isLeapYear() {
-          return this.year % 4 === 0 && (this.year % 100 !== 0 || this.year % 400 === 0);
+          return (this.year % 4 === 0 && (this.year % 100 !== 0 || this.year % 400 === 0));
       }
       computeOrdinal() {
-          return this.date + (this.isLeapYear ? this.leapLadder : this.nonLeapLadder)[this.month];
+          return (this.date +
+              (this.isLeapYear ? this.leapLadder : this.nonLeapLadder)[this.month]);
       }
   }
 
@@ -528,6 +551,7 @@
        * @param date
        * @param soft If true, logs a warning instead of an error.
        */
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
       failedToParseDate(optionName, date, soft = false) {
           const error = new TdError(`${this.base} Could not correctly parse "${date}" to a date for ${optionName}.`);
           error.code = 5;
@@ -574,6 +598,9 @@
        */
       dateString() {
           console.warn(`${this.base} Using a string for date options is not recommended unless you specify an ISO string or use the customDateFormat plugin.`);
+      }
+      deprecatedWarning(message, remediation) {
+          console.warn(`${this.base} Warning ${message} is deprecated and will be removed in a future version. ${remediation}`);
       }
       throwError(message) {
           const error = new TdError(`${this.base} ${message}`);
@@ -797,12 +824,12 @@
            */
           this.lightTheme = 'light';
           /**
-          * Applied to the widget when the option display.theme is dark.
-          */
+           * Applied to the widget when the option display.theme is dark.
+           */
           this.darkTheme = 'dark';
           /**
-          * Used for detecting if the system color preference is dark mode
-          */
+           * Used for detecting if the system color preference is dark mode
+           */
           this.isDarkPreferredQuery = '(prefers-color-scheme: dark)';
       }
   }
@@ -889,6 +916,9 @@
       refreshCurrentView() {
           this.currentView = CalendarModes[this.currentCalendarViewMode].name;
       }
+      get isTwelveHour() {
+          return ['h12', 'h11'].includes(this.options.localization.hourCycle);
+      }
   }
 
   /**
@@ -941,7 +971,8 @@
                   return false;
               }
               if (this.optionsStore.options.restrictions.disabledTimeIntervals.length > 0) {
-                  for (let disabledTimeIntervals of this.optionsStore.options.restrictions.disabledTimeIntervals) {
+                  for (const disabledTimeIntervals of this.optionsStore.options
+                      .restrictions.disabledTimeIntervals) {
                       if (targetDate.isBetween(disabledTimeIntervals.from, disabledTimeIntervals.to))
                           return false;
                   }
@@ -959,8 +990,7 @@
           if (!this.optionsStore.options.restrictions.disabledDates ||
               this.optionsStore.options.restrictions.disabledDates.length === 0)
               return false;
-          return this.optionsStore.options.restrictions.disabledDates
-              .find((x) => x.isSame(testDate, exports.Unit.date));
+          return this.optionsStore.options.restrictions.disabledDates.find((x) => x.isSame(testDate, exports.Unit.date));
       }
       /**
        * Checks to see if the enabledDates option is in use and returns true (meaning valid)
@@ -972,8 +1002,7 @@
           if (!this.optionsStore.options.restrictions.enabledDates ||
               this.optionsStore.options.restrictions.enabledDates.length === 0)
               return true;
-          return this.optionsStore.options.restrictions.enabledDates
-              .find((x) => x.isSame(testDate, exports.Unit.date));
+          return this.optionsStore.options.restrictions.enabledDates.find((x) => x.isSame(testDate, exports.Unit.date));
       }
       /**
        * Checks to see if the disabledHours option is in use and returns true (meaning invalid)
@@ -1029,7 +1058,7 @@
           this.triggerEvent = new EventEmitter();
           this.viewUpdate = new EventEmitter();
           this.updateDisplay = new EventEmitter();
-          this.action = new EventEmitter();
+          this.action = new EventEmitter(); //eslint-disable-line @typescript-eslint/no-explicit-any
           this.updateViewDate = new EventEmitter();
       }
       destroy() {
@@ -1050,7 +1079,7 @@
           daysOfWeekDisabled: [],
           disabledTimeIntervals: [],
           disabledHours: [],
-          enabledHours: []
+          enabledHours: [],
       },
       display: {
           icons: {
@@ -1063,7 +1092,7 @@
               next: 'fa-solid fa-chevron-right',
               today: 'fa-solid fa-calendar-check',
               clear: 'fa-solid fa-trash',
-              close: 'fa-solid fa-xmark'
+              close: 'fa-solid fa-xmark',
           },
           sideBySide: false,
           calendarWeeks: false,
@@ -1073,7 +1102,7 @@
           buttons: {
               today: false,
               clear: false,
-              close: false
+              close: false,
           },
           components: {
               calendar: true,
@@ -1085,10 +1114,10 @@
               hours: true,
               minutes: true,
               seconds: false,
-              useTwentyfourHour: undefined
+              useTwentyfourHour: undefined,
           },
           inline: false,
-          theme: 'auto'
+          theme: 'auto',
       },
       stepping: 1,
       useCurrent: true,
@@ -1122,6 +1151,7 @@
           selectDate: 'Select Date',
           dayViewHeaderFormat: { month: 'long', year: '2-digit' },
           locale: 'default',
+          hourCycle: undefined,
           startOfTheWeek: 0,
           /**
            * This is only used with the customDateFormat plugin
@@ -1141,7 +1171,7 @@
           /**
            * This is only used with the customDateFormat plugin
            */
-          format: 'L LT'
+          format: 'L LT',
       },
       keepInvalid: false,
       debug: false,
@@ -1152,7 +1182,7 @@
       promptTimeOnDateChange: false,
       promptTimeOnDateChangeTransitionDelay: 200,
       meta: {},
-      container: undefined
+      container: undefined,
   };
 
   /**
@@ -1199,12 +1229,13 @@
    * @param providedType Used to provide text to error messages
    * @param localization
    */
-  function typeCheckDateArray(optionName, value, providedType, localization) {
+  function typeCheckDateArray(optionName, value, //eslint-disable-line @typescript-eslint/no-explicit-any
+  providedType, localization) {
       if (!Array.isArray(value)) {
           Namespace.errorMessages.typeMismatch(optionName, providedType, 'array of DateTime or Date');
       }
       for (let i = 0; i < value.length; i++) {
-          let d = value[i];
+          const d = value[i];
           const dateTime = convertToDateTime(d, optionName, localization);
           if (!dateTime) {
               Namespace.errorMessages.typeMismatch(optionName, typeof d, 'DateTime or Date');
@@ -1219,7 +1250,8 @@
    * @param value Option value
    * @param providedType Used to provide text to error messages
    */
-  function typeCheckNumberArray(optionName, value, providedType) {
+  function typeCheckNumberArray(optionName, value, //eslint-disable-line @typescript-eslint/no-explicit-any
+  providedType) {
       if (!Array.isArray(value) || value.some((x) => typeof x !== typeof 0)) {
           Namespace.errorMessages.typeMismatch(optionName, providedType, 'array of numbers');
       }
@@ -1250,7 +1282,7 @@
               return [];
           }
           typeCheckNumberArray(key, value, providedType);
-          if (value.some(x => x < lower || x > upper))
+          if (value.some((x) => x < lower || x > upper))
               Namespace.errorMessages.numbersOutOfRange(key, lower, upper);
           return value;
       };
@@ -1275,23 +1307,23 @@
       };
   }
   const optionProcessors = Object.freeze({
-      'defaultDate': mandatoryDate('defaultDate'),
-      'viewDate': mandatoryDate('viewDate'),
-      'minDate': optionalDate('restrictions.minDate'),
-      'maxDate': optionalDate('restrictions.maxDate'),
-      'disabledHours': validHourRange('restrictions.disabledHours'),
-      'enabledHours': validHourRange('restrictions.enabledHours'),
-      'disabledDates': validDateArray('restrictions.disabledDates'),
-      'enabledDates': validDateArray('restrictions.enabledDates'),
-      'daysOfWeekDisabled': numbersInRange('restrictions.daysOfWeekDisabled', 0, 6),
-      'disabledTimeIntervals': ({ key, value, providedType, localization }) => {
+      defaultDate: mandatoryDate('defaultDate'),
+      viewDate: mandatoryDate('viewDate'),
+      minDate: optionalDate('restrictions.minDate'),
+      maxDate: optionalDate('restrictions.maxDate'),
+      disabledHours: validHourRange('restrictions.disabledHours'),
+      enabledHours: validHourRange('restrictions.enabledHours'),
+      disabledDates: validDateArray('restrictions.disabledDates'),
+      enabledDates: validDateArray('restrictions.enabledDates'),
+      daysOfWeekDisabled: numbersInRange('restrictions.daysOfWeekDisabled', 0, 6),
+      disabledTimeIntervals: ({ key, value, providedType, localization }) => {
           if (value === undefined) {
               return [];
           }
           if (!Array.isArray(value)) {
               Namespace.errorMessages.typeMismatch(key, providedType, 'array of { from: DateTime|Date, to: DateTime|Date }');
           }
-          const valueObject = value;
+          const valueObject = value; //eslint-disable-line @typescript-eslint/no-explicit-any
           for (let i = 0; i < valueObject.length; i++) {
               Object.keys(valueObject[i]).forEach((vk) => {
                   const subOptionName = `${key}[${i}].${vk}`;
@@ -1306,13 +1338,19 @@
           }
           return valueObject;
       },
-      'toolbarPlacement': validKeyOption(['top', 'bottom', 'default']),
-      'type': validKeyOption(['icons', 'sprites']),
-      'viewMode': validKeyOption(['clock', 'calendar', 'months', 'years', 'decades']),
-      'theme': validKeyOption(['light', 'dark', 'auto']),
-      'meta': ({ value }) => value,
-      'dayViewHeaderFormat': ({ value }) => value,
-      'container': ({ value, path }) => {
+      toolbarPlacement: validKeyOption(['top', 'bottom', 'default']),
+      type: validKeyOption(['icons', 'sprites']),
+      viewMode: validKeyOption([
+          'clock',
+          'calendar',
+          'months',
+          'years',
+          'decades',
+      ]),
+      theme: validKeyOption(['light', 'dark', 'auto']),
+      meta: ({ value }) => value,
+      dayViewHeaderFormat: ({ value }) => value,
+      container: ({ value, path }) => {
           if (value &&
               !(value instanceof HTMLElement ||
                   value instanceof Element ||
@@ -1321,13 +1359,15 @@
           }
           return value;
       },
-      'useTwentyfourHour': ({ value, path, providedType, defaultType }) => {
+      useTwentyfourHour: ({ value, path, providedType, defaultType }) => {
+          Namespace.errorMessages.deprecatedWarning('useTwentyfourHour', 'Please use "options.localization.hourCycle" instead');
           if (value === undefined || providedType === 'boolean')
               return value;
           Namespace.errorMessages.typeMismatch(path, providedType, defaultType);
-      }
+      },
+      hourCycle: validKeyOption(['h11', 'h12', 'h23', 'h24']),
   });
-  const defaultProcessor = ({ value, defaultType, providedType, path }) => {
+  const defaultProcessor = ({ value, defaultType, providedType, path, }) => {
       switch (defaultType) {
           case 'boolean':
               return value === 'true' || value === true;
@@ -1358,6 +1398,7 @@
               }
               else if (inputElement instanceof Date) {
                   o[key] = new Date(inputElement.valueOf());
+                  return;
               }
               o[key] = inputElement;
               if (typeof inputElement !== 'object' ||
@@ -1380,10 +1421,11 @@
               paths = paths.slice(1);
           if (!paths)
               return obj;
-          return paths.split('.')
-              .reduce((value, key) => (OptionConverter.isValue(value) || OptionConverter.isValue(value[key]) ?
-              value[key] :
-              undefined), obj);
+          return paths
+              .split('.')
+              .reduce((value, key) => OptionConverter.isValue(value) || OptionConverter.isValue(value[key])
+              ? value[key]
+              : undefined, obj);
       }
       /**
        * The spread operator caused sub keys to be missing after merging.
@@ -1401,21 +1443,23 @@
               const flattenedOptions = OptionConverter.getFlattenDefaultOptions();
               const errors = unsupportedOptions.map((x) => {
                   let error = `"${path}.${x}" in not a known option.`;
-                  let didYouMean = flattenedOptions.find((y) => y.includes(x));
+                  const didYouMean = flattenedOptions.find((y) => y.includes(x));
                   if (didYouMean)
                       error += ` Did you mean "${didYouMean}"?`;
                   return error;
               });
               Namespace.errorMessages.unexpectedOptions(errors);
           }
-          Object.keys(provided).filter(key => key !== '__proto__' && key !== 'constructor').forEach((key) => {
+          Object.keys(provided)
+              .filter((key) => key !== '__proto__' && key !== 'constructor')
+              .forEach((key) => {
               path += `.${key}`;
               if (path.charAt(0) === '.')
                   path = path.slice(1);
               const defaultOptionValue = defaultOptions[key];
-              let providedType = typeof provided[key];
-              let defaultType = typeof defaultOptionValue;
-              let value = provided[key];
+              const providedType = typeof provided[key];
+              const defaultType = typeof defaultOptionValue;
+              const value = provided[key];
               if (value === undefined || value === null) {
                   copyTo[key] = value;
                   path = path.substring(0, path.lastIndexOf(`.${key}`));
@@ -1423,7 +1467,8 @@
               }
               if (typeof defaultOptionValue === 'object' &&
                   !Array.isArray(provided[key]) &&
-                  !(defaultOptionValue instanceof Date || OptionConverter.ignoreProperties.includes(key))) {
+                  !(defaultOptionValue instanceof Date ||
+                      OptionConverter.ignoreProperties.includes(key))) {
                   OptionConverter.spread(provided[key], copyTo[key], path, localization);
               }
               else {
@@ -1432,8 +1477,16 @@
               path = path.substring(0, path.lastIndexOf(`.${key}`));
           });
       }
-      static processKey(key, value, providedType, defaultType, path, localization) {
-          return processKey({ key, value, providedType, defaultType, path, localization });
+      static processKey(key, value, //eslint-disable-line @typescript-eslint/no-explicit-any
+      providedType, defaultType, path, localization) {
+          return processKey({
+              key,
+              value,
+              providedType,
+              defaultType,
+              path,
+              localization,
+          });
       }
       static _mergeOptions(providedOptions, mergeTo) {
           const newConfig = OptionConverter.deepCopy(mergeTo);
@@ -1454,7 +1507,7 @@
               Object.keys(eData).length === 0 ||
               eData.constructor !== DOMStringMap)
               return options;
-          let dataOptions = {};
+          const dataOptions = {};
           // because dataset returns camelCase including the 'td' key the option
           // key won't align
           const objectToNormalized = (object) => {
@@ -1512,7 +1565,8 @@
        * @param localization object containing locale and format settings. Only used with the custom formats
        * @private
        */
-      static _dateTypeCheck(d, localization) {
+      static _dateTypeCheck(d, //eslint-disable-line @typescript-eslint/no-explicit-any
+      localization) {
           return tryConvertToDateTime(d, localization);
       }
       /**
@@ -1540,7 +1594,8 @@
        * @param optionName Provides text to error messages e.g. disabledDates
        * @param localization object containing locale and format settings. Only used with the custom formats
        */
-      static dateConversion(d, optionName, localization) {
+      static dateConversion(d, //eslint-disable-line @typescript-eslint/no-explicit-any
+      optionName, localization) {
           return convertToDateTime(d, optionName, localization);
       }
       static getFlattenDefaultOptions() {
@@ -1582,9 +1637,14 @@
           }
       }
   }
-  OptionConverter.ignoreProperties = ['meta', 'dayViewHeaderFormat',
-      'container', 'dateForms', 'ordinal'];
-  OptionConverter.isValue = a => a != null; // everything except undefined + null
+  OptionConverter.ignoreProperties = [
+      'meta',
+      'dayViewHeaderFormat',
+      'container',
+      'dateForms',
+      'ordinal',
+  ];
+  OptionConverter.isValue = (a) => a != null; // everything except undefined + null
 
   class Dates {
       constructor() {
@@ -1625,20 +1685,17 @@
               year: components.calendar && components.year ? 'numeric' : undefined,
               month: components.calendar && components.month ? '2-digit' : undefined,
               day: components.calendar && components.date ? '2-digit' : undefined,
-              hour: components.clock && components.hours
-                  ? components.useTwentyfourHour
-                      ? '2-digit'
-                      : 'numeric'
-                  : undefined,
+              hour: components.clock && components.hours ? '2-digit' : undefined,
               minute: components.clock && components.minutes ? '2-digit' : undefined,
               second: components.clock && components.seconds ? '2-digit' : undefined,
-              hour12: !components.useTwentyfourHour,
+              hourCycle: this.optionsStore.options.localization.hourCycle,
           });
       }
       /**
        * parse the value into a DateTime object.
        * this can be overwritten to supply your own parsing.
        */
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
       parseInput(value) {
           return OptionConverter.dateConversion(value, 'input', this.optionsStore.options.localization);
       }
@@ -1648,6 +1705,7 @@
        * @param value Value to convert or null|undefined
        * @param index When using multidates this is the index in the array
        */
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
       setFromInput(value, index) {
           if (!value) {
               this.setValue(undefined, index);
@@ -1676,7 +1734,7 @@
           if (!unit)
               return this._dates.find((x) => x === targetDate) !== undefined;
           const format = getFormatByUnit(unit);
-          let innerDateFormatted = targetDate.format(format);
+          const innerDateFormatted = targetDate.format(format);
           return (this._dates
               .map((x) => x.format(format))
               .find((x) => x === innerDateFormatted) !== undefined);
@@ -1692,7 +1750,7 @@
           if (!unit)
               return this._dates.indexOf(targetDate);
           const format = getFormatByUnit(unit);
-          let innerDateFormatted = targetDate.format(format);
+          const innerDateFormatted = targetDate.format(format);
           return this._dates.map((x) => x.format(format)).indexOf(innerDateFormatted);
       }
       /**
@@ -1718,6 +1776,18 @@
           const step = factor / 10, startYear = Math.floor(year / factor) * factor, endYear = startYear + step * 9, focusValue = Math.floor(year / step) * step;
           return [startYear, endYear, focusValue];
       }
+      updateInput(target) {
+          if (!this.optionsStore.input)
+              return;
+          let newValue = this.formatInput(target);
+          if (this.optionsStore.options.multipleDates) {
+              newValue = this._dates
+                  .map((d) => this.formatInput(d))
+                  .join(this.optionsStore.options.multipleDatesSeparator);
+          }
+          if (this.optionsStore.input.value != newValue)
+              this.optionsStore.input.value = newValue;
+      }
       /**
        * Attempts to either clear or set the `target` date at `index`.
        * If the `target` is null then the date will be cleared.
@@ -1733,20 +1803,8 @@
           if (!oldDate && !this.optionsStore.unset && noIndex && isClear) {
               oldDate = this.lastPicked;
           }
-          const updateInput = () => {
-              if (!this.optionsStore.input)
-                  return;
-              let newValue = this.formatInput(target);
-              if (this.optionsStore.options.multipleDates) {
-                  newValue = this._dates
-                      .map((d) => this.formatInput(d))
-                      .join(this.optionsStore.options.multipleDatesSeparator);
-              }
-              if (this.optionsStore.input.value != newValue)
-                  this.optionsStore.input.value = newValue;
-          };
           if (target && oldDate?.isSame(target)) {
-              updateInput();
+              this.updateInput(target);
               return;
           }
           // case of calling setValue(null)
@@ -1760,7 +1818,7 @@
               else {
                   this._dates.splice(index, 1);
               }
-              updateInput();
+              this.updateInput();
               this._eventEmitters.triggerEvent.emit({
                   type: Namespace.events.change,
                   date: undefined,
@@ -1783,7 +1841,7 @@
           if (this.validation.isValid(target)) {
               this._dates[index] = target;
               this._eventEmitters.updateViewDate.emit(target.clone);
-              updateInput();
+              this.updateInput(target);
               this.optionsStore.unset = false;
               this._eventEmitters.updateDisplay.emit('all');
               this._eventEmitters.triggerEvent.emit({
@@ -1798,7 +1856,7 @@
           if (this.optionsStore.options.keepInvalid) {
               this._dates[index] = target;
               this._eventEmitters.updateViewDate.emit(target.clone);
-              updateInput();
+              this.updateInput(target);
               this._eventEmitters.triggerEvent.emit({
                   type: Namespace.events.change,
                   date: target,
@@ -1860,24 +1918,24 @@
        * @private
        */
       getPicker() {
-          const container = document.createElement("div");
+          const container = document.createElement('div');
           container.classList.add(Namespace.css.daysContainer);
           container.append(...this._daysOfTheWeek());
           if (this.optionsStore.options.display.calendarWeeks) {
-              const div = document.createElement("div");
+              const div = document.createElement('div');
               div.classList.add(Namespace.css.calendarWeeks, Namespace.css.noHighlight);
               container.appendChild(div);
           }
           for (let i = 0; i < 42; i++) {
               if (i !== 0 && i % 7 === 0) {
                   if (this.optionsStore.options.display.calendarWeeks) {
-                      const div = document.createElement("div");
+                      const div = document.createElement('div');
                       div.classList.add(Namespace.css.calendarWeeks, Namespace.css.noHighlight);
                       container.appendChild(div);
                   }
               }
-              const div = document.createElement("div");
-              div.setAttribute("data-action", ActionTypes$1.selectDay);
+              const div = document.createElement('div');
+              div.setAttribute('data-action', ActionTypes$1.selectDay);
               container.appendChild(div);
           }
           return container;
@@ -1888,10 +1946,10 @@
        */
       _update(widget, paint) {
           const container = widget.getElementsByClassName(Namespace.css.daysContainer)[0];
-          if (this.optionsStore.currentView === "calendar") {
+          if (this.optionsStore.currentView === 'calendar') {
               const [previous, switcher, next] = container.parentElement
                   .getElementsByClassName(Namespace.css.calendarHeader)[0]
-                  .getElementsByTagName("div");
+                  .getElementsByTagName('div');
               switcher.setAttribute(Namespace.css.daysContainer, this.optionsStore.viewDate.format(this.optionsStore.options.localization.dayViewHeaderFormat));
               this.optionsStore.options.display.components.month
                   ? switcher.classList.remove(Namespace.css.disabled)
@@ -1903,21 +1961,21 @@
                   ? next.classList.remove(Namespace.css.disabled)
                   : next.classList.add(Namespace.css.disabled);
           }
-          let innerDate = this.optionsStore.viewDate.clone
+          const innerDate = this.optionsStore.viewDate.clone
               .startOf(exports.Unit.month)
-              .startOf("weekDay", this.optionsStore.options.localization.startOfTheWeek)
+              .startOf('weekDay', this.optionsStore.options.localization.startOfTheWeek)
               .manipulate(12, exports.Unit.hours);
           container
               .querySelectorAll(`[data-action="${ActionTypes$1.selectDay}"], .${Namespace.css.calendarWeeks}`)
               .forEach((containerClone) => {
               if (this.optionsStore.options.display.calendarWeeks &&
                   containerClone.classList.contains(Namespace.css.calendarWeeks)) {
-                  if (containerClone.innerText === "#")
+                  if (containerClone.innerText === '#')
                       return;
                   containerClone.innerText = `${innerDate.week}`;
                   return;
               }
-              let classes = [];
+              const classes = [];
               classes.push(Namespace.css.day);
               if (innerDate.isBefore(this.optionsStore.viewDate, exports.Unit.month)) {
                   classes.push(Namespace.css.old);
@@ -1941,9 +1999,9 @@
               paint(exports.Unit.date, innerDate, classes, containerClone);
               containerClone.classList.remove(...containerClone.classList);
               containerClone.classList.add(...classes);
-              containerClone.setAttribute("data-value", `${innerDate.year}-${innerDate.monthFormatted}-${innerDate.dateFormatted}`);
-              containerClone.setAttribute("data-day", `${innerDate.date}`);
-              containerClone.innerText = innerDate.format({ day: "numeric" });
+              containerClone.setAttribute('data-value', `${innerDate.year}-${innerDate.monthFormatted}-${innerDate.dateFormatted}`);
+              containerClone.setAttribute('data-day', `${innerDate.date}`);
+              containerClone.innerText = innerDate.format({ day: 'numeric' });
               innerDate.manipulate(1, exports.Unit.date);
           });
       }
@@ -1952,21 +2010,21 @@
        * @private
        */
       _daysOfTheWeek() {
-          let innerDate = this.optionsStore.viewDate.clone
-              .startOf("weekDay", this.optionsStore.options.localization.startOfTheWeek)
+          const innerDate = this.optionsStore.viewDate.clone
+              .startOf('weekDay', this.optionsStore.options.localization.startOfTheWeek)
               .startOf(exports.Unit.date);
           const row = [];
-          document.createElement("div");
+          document.createElement('div');
           if (this.optionsStore.options.display.calendarWeeks) {
-              const htmlDivElement = document.createElement("div");
+              const htmlDivElement = document.createElement('div');
               htmlDivElement.classList.add(Namespace.css.calendarWeeks, Namespace.css.noHighlight);
-              htmlDivElement.innerText = "#";
+              htmlDivElement.innerText = '#';
               row.push(htmlDivElement);
           }
           for (let i = 0; i < 7; i++) {
-              const htmlDivElement = document.createElement("div");
+              const htmlDivElement = document.createElement('div');
               htmlDivElement.classList.add(Namespace.css.dayOfTheWeek, Namespace.css.noHighlight);
-              htmlDivElement.innerText = innerDate.format({ weekday: "short" });
+              htmlDivElement.innerText = innerDate.format({ weekday: 'short' });
               innerDate.manipulate(1, exports.Unit.date);
               row.push(htmlDivElement);
           }
@@ -2018,11 +2076,11 @@
                   ? next.classList.remove(Namespace.css.disabled)
                   : next.classList.add(Namespace.css.disabled);
           }
-          let innerDate = this.optionsStore.viewDate.clone.startOf(exports.Unit.year);
+          const innerDate = this.optionsStore.viewDate.clone.startOf(exports.Unit.year);
           container
               .querySelectorAll(`[data-action="${ActionTypes$1.selectMonth}"]`)
               .forEach((containerClone, index) => {
-              let classes = [];
+              const classes = [];
               classes.push(Namespace.css.month);
               if (!this.optionsStore.unset &&
                   this.dates.isPicked(innerDate, exports.Unit.month)) {
@@ -2055,11 +2113,11 @@
        * @private
        */
       getPicker() {
-          const container = document.createElement("div");
+          const container = document.createElement('div');
           container.classList.add(Namespace.css.yearsContainer);
           for (let i = 0; i < 12; i++) {
-              const div = document.createElement("div");
-              div.setAttribute("data-action", ActionTypes$1.selectYear);
+              const div = document.createElement('div');
+              div.setAttribute('data-action', ActionTypes$1.selectYear);
               container.appendChild(div);
           }
           return container;
@@ -2072,11 +2130,13 @@
           this._startYear = this.optionsStore.viewDate.clone.manipulate(-1, exports.Unit.year);
           this._endYear = this.optionsStore.viewDate.clone.manipulate(10, exports.Unit.year);
           const container = widget.getElementsByClassName(Namespace.css.yearsContainer)[0];
-          if (this.optionsStore.currentView === "years") {
+          if (this.optionsStore.currentView === 'years') {
               const [previous, switcher, next] = container.parentElement
                   .getElementsByClassName(Namespace.css.calendarHeader)[0]
-                  .getElementsByTagName("div");
-              switcher.setAttribute(Namespace.css.yearsContainer, `${this._startYear.format({ year: "numeric" })}-${this._endYear.format({ year: "numeric" })}`);
+                  .getElementsByTagName('div');
+              switcher.setAttribute(Namespace.css.yearsContainer, `${this._startYear.format({ year: 'numeric' })}-${this._endYear.format({
+                year: 'numeric',
+            })}`);
               this.optionsStore.options.display.components.decades
                   ? switcher.classList.remove(Namespace.css.disabled)
                   : switcher.classList.add(Namespace.css.disabled);
@@ -2087,13 +2147,13 @@
                   ? next.classList.remove(Namespace.css.disabled)
                   : next.classList.add(Namespace.css.disabled);
           }
-          let innerDate = this.optionsStore.viewDate.clone
+          const innerDate = this.optionsStore.viewDate.clone
               .startOf(exports.Unit.year)
               .manipulate(-1, exports.Unit.year);
           container
               .querySelectorAll(`[data-action="${ActionTypes$1.selectYear}"]`)
               .forEach((containerClone) => {
-              let classes = [];
+              const classes = [];
               classes.push(Namespace.css.year);
               if (!this.optionsStore.unset &&
                   this.dates.isPicked(innerDate, exports.Unit.year)) {
@@ -2105,8 +2165,8 @@
               paint(exports.Unit.year, innerDate, classes, containerClone);
               containerClone.classList.remove(...containerClone.classList);
               containerClone.classList.add(...classes);
-              containerClone.setAttribute("data-value", `${innerDate.year}`);
-              containerClone.innerText = innerDate.format({ year: "numeric" });
+              containerClone.setAttribute('data-value', `${innerDate.year}`);
+              containerClone.innerText = innerDate.format({ year: 'numeric' });
               innerDate.manipulate(1, exports.Unit.year);
           });
       }
@@ -2126,11 +2186,11 @@
        * @private
        */
       getPicker() {
-          const container = document.createElement("div");
+          const container = document.createElement('div');
           container.classList.add(Namespace.css.decadesContainer);
           for (let i = 0; i < 12; i++) {
-              const div = document.createElement("div");
-              div.setAttribute("data-action", ActionTypes$1.selectDecade);
+              const div = document.createElement('div');
+              div.setAttribute('data-action', ActionTypes$1.selectDecade);
               container.appendChild(div);
           }
           return container;
@@ -2148,9 +2208,11 @@
           const container = widget.getElementsByClassName(Namespace.css.decadesContainer)[0];
           const [previous, switcher, next] = container.parentElement
               .getElementsByClassName(Namespace.css.calendarHeader)[0]
-              .getElementsByTagName("div");
+              .getElementsByTagName('div');
           if (this.optionsStore.currentView === 'decades') {
-              switcher.setAttribute(Namespace.css.decadesContainer, `${this._startDecade.format({ year: "numeric" })}-${this._endDecade.format({ year: "numeric" })}`);
+              switcher.setAttribute(Namespace.css.decadesContainer, `${this._startDecade.format({
+                year: 'numeric',
+            })}-${this._endDecade.format({ year: 'numeric' })}`);
               this.validation.isValid(this._startDecade, exports.Unit.year)
                   ? previous.classList.remove(Namespace.css.disabled)
                   : previous.classList.add(Namespace.css.disabled);
@@ -2165,19 +2227,21 @@
               if (index === 0) {
                   containerClone.classList.add(Namespace.css.old);
                   if (this._startDecade.year - 10 < 0) {
-                      containerClone.textContent = " ";
+                      containerClone.textContent = ' ';
                       previous.classList.add(Namespace.css.disabled);
                       containerClone.classList.add(Namespace.css.disabled);
-                      containerClone.setAttribute("data-value", ``);
+                      containerClone.setAttribute('data-value', '');
                       return;
                   }
                   else {
-                      containerClone.innerText = this._startDecade.clone.manipulate(-10, exports.Unit.year).format({ year: "numeric" });
-                      containerClone.setAttribute("data-value", `${this._startDecade.year}`);
+                      containerClone.innerText = this._startDecade.clone
+                          .manipulate(-10, exports.Unit.year)
+                          .format({ year: 'numeric' });
+                      containerClone.setAttribute('data-value', `${this._startDecade.year}`);
                       return;
                   }
               }
-              let classes = [];
+              const classes = [];
               classes.push(Namespace.css.decade);
               const startDecadeYear = this._startDecade.year;
               const endDecadeYear = this._startDecade.year + 9;
@@ -2186,11 +2250,13 @@
                       .length > 0) {
                   classes.push(Namespace.css.active);
               }
-              paint("decade", this._startDecade, classes, containerClone);
+              paint('decade', this._startDecade, classes, containerClone);
               containerClone.classList.remove(...containerClone.classList);
               containerClone.classList.add(...classes);
-              containerClone.setAttribute("data-value", `${this._startDecade.year}`);
-              containerClone.innerText = `${this._startDecade.format({ year: "numeric" })}`;
+              containerClone.setAttribute('data-value', `${this._startDecade.year}`);
+              containerClone.innerText = `${this._startDecade.format({
+                year: 'numeric',
+            })}`;
               this._startDecade.manipulate(10, exports.Unit.year);
           });
       }
@@ -2223,7 +2289,8 @@
        */
       _update(widget) {
           const timesDiv = (widget.getElementsByClassName(Namespace.css.clockContainer)[0]);
-          const lastPicked = (this.dates.lastPicked || this.optionsStore.viewDate).clone;
+          const lastPicked = (this.dates.lastPicked || this.optionsStore.viewDate)
+              .clone;
           timesDiv
               .querySelectorAll('.disabled')
               .forEach((element) => element.classList.remove(Namespace.css.disabled));
@@ -2238,9 +2305,7 @@
                       .querySelector(`[data-action=${ActionTypes$1.decrementHours}]`)
                       .classList.add(Namespace.css.disabled);
               }
-              timesDiv.querySelector(`[data-time-component=${exports.Unit.hours}]`).innerText = this.optionsStore.options.display.components.useTwentyfourHour
-                  ? lastPicked.hoursFormatted
-                  : lastPicked.twelveHoursFormatted;
+              timesDiv.querySelector(`[data-time-component=${exports.Unit.hours}]`).innerText = lastPicked.getHoursFormatted(this.optionsStore.options.localization.hourCycle);
           }
           if (this.optionsStore.options.display.components.minutes) {
               if (!this.validation.isValid(this.optionsStore.viewDate.clone.manipulate(1, exports.Unit.minutes), exports.Unit.minutes)) {
@@ -2268,7 +2333,7 @@
               }
               timesDiv.querySelector(`[data-time-component=${exports.Unit.seconds}]`).innerText = lastPicked.secondsFormatted;
           }
-          if (!this.optionsStore.options.display.components.useTwentyfourHour) {
+          if (this.optionsStore.isTwelveHour) {
               const toggle = timesDiv.querySelector(`[data-action=${ActionTypes$1.toggleMeridiem}]`);
               toggle.innerText = lastPicked.meridiem();
               if (!this.validation.isValid(lastPicked.clone.manipulate(lastPicked.hours >= 12 ? -12 : 12, exports.Unit.hours))) {
@@ -2361,15 +2426,16 @@
               divElement.appendChild(downIcon.cloneNode(true));
               bottom.push(divElement);
           }
-          if (!this.optionsStore.options.display.components.useTwentyfourHour) {
+          if (this.optionsStore.isTwelveHour) {
               this._gridColumns += ' a';
               let divElement = getSeparator();
               top.push(divElement);
-              let button = document.createElement('button');
+              const button = document.createElement('button');
               button.setAttribute('title', this.optionsStore.options.localization.toggleMeridiem);
               button.setAttribute('data-action', ActionTypes$1.toggleMeridiem);
               button.setAttribute('tabindex', '-1');
-              if (Namespace.css.toggleMeridiem.includes(',')) { //todo move this to paint function?
+              if (Namespace.css.toggleMeridiem.includes(',')) {
+                  //todo move this to paint function?
                   button.classList.add(...Namespace.css.toggleMeridiem.split(','));
               }
               else
@@ -2401,8 +2467,7 @@
       getPicker() {
           const container = document.createElement('div');
           container.classList.add(Namespace.css.hourContainer);
-          for (let i = 0; i <
-              (this.optionsStore.options.display.components.useTwentyfourHour ? 24 : 12); i++) {
+          for (let i = 0; i < (this.optionsStore.isTwelveHour ? 12 : 24); i++) {
               const div = document.createElement('div');
               div.setAttribute('data-action', ActionTypes$1.selectHour);
               container.appendChild(div);
@@ -2415,11 +2480,11 @@
        */
       _update(widget, paint) {
           const container = widget.getElementsByClassName(Namespace.css.hourContainer)[0];
-          let innerDate = this.optionsStore.viewDate.clone.startOf(exports.Unit.date);
+          const innerDate = this.optionsStore.viewDate.clone.startOf(exports.Unit.date);
           container
               .querySelectorAll(`[data-action="${ActionTypes$1.selectHour}"]`)
               .forEach((containerClone) => {
-              let classes = [];
+              const classes = [];
               classes.push(Namespace.css.hour);
               if (!this.validation.isValid(innerDate, exports.Unit.hours)) {
                   classes.push(Namespace.css.disabled);
@@ -2428,10 +2493,7 @@
               containerClone.classList.remove(...containerClone.classList);
               containerClone.classList.add(...classes);
               containerClone.setAttribute('data-value', `${innerDate.hours}`);
-              containerClone.innerText = this.optionsStore.options.display.components
-                  .useTwentyfourHour
-                  ? innerDate.hoursFormatted
-                  : innerDate.twelveHoursFormatted;
+              containerClone.innerText = innerDate.getHoursFormatted(this.optionsStore.options.localization.hourCycle);
               innerDate.manipulate(1, exports.Unit.hours);
           });
       }
@@ -2452,7 +2514,7 @@
       getPicker() {
           const container = document.createElement('div');
           container.classList.add(Namespace.css.minuteContainer);
-          let step = this.optionsStore.options.stepping === 1
+          const step = this.optionsStore.options.stepping === 1
               ? 5
               : this.optionsStore.options.stepping;
           for (let i = 0; i < 60 / step; i++) {
@@ -2468,14 +2530,14 @@
        */
       _update(widget, paint) {
           const container = widget.getElementsByClassName(Namespace.css.minuteContainer)[0];
-          let innerDate = this.optionsStore.viewDate.clone.startOf(exports.Unit.hours);
-          let step = this.optionsStore.options.stepping === 1
+          const innerDate = this.optionsStore.viewDate.clone.startOf(exports.Unit.hours);
+          const step = this.optionsStore.options.stepping === 1
               ? 5
               : this.optionsStore.options.stepping;
           container
               .querySelectorAll(`[data-action="${ActionTypes$1.selectMinute}"]`)
               .forEach((containerClone) => {
-              let classes = [];
+              const classes = [];
               classes.push(Namespace.css.minute);
               if (!this.validation.isValid(innerDate, exports.Unit.minutes)) {
                   classes.push(Namespace.css.disabled);
@@ -2518,11 +2580,11 @@
        */
       _update(widget, paint) {
           const container = widget.getElementsByClassName(Namespace.css.secondContainer)[0];
-          let innerDate = this.optionsStore.viewDate.clone.startOf(exports.Unit.minutes);
+          const innerDate = this.optionsStore.viewDate.clone.startOf(exports.Unit.minutes);
           container
               .querySelectorAll(`[data-action="${ActionTypes$1.selectSecond}"]`)
               .forEach((containerClone) => {
-              let classes = [];
+              const classes = [];
               classes.push(Namespace.css.second);
               if (!this.validation.isValid(innerDate, exports.Unit.seconds)) {
                   classes.push(Namespace.css.disabled);
@@ -2576,6 +2638,7 @@
           target.style.height = '0';
           target.classList.remove(Namespace.css.collapse);
           target.classList.add(Namespace.css.collapsing);
+          //eslint-disable-next-line @typescript-eslint/no-unused-vars
           setTimeout(complete, this.getTransitionDurationFromElement(target));
           target.style.height = `${target.scrollHeight}px`;
       }
@@ -2606,6 +2669,7 @@
           target.classList.remove(Namespace.css.collapse, Namespace.css.show);
           target.classList.add(Namespace.css.collapsing);
           target.style.height = '';
+          //eslint-disable-next-line @typescript-eslint/no-unused-vars
           setTimeout(complete, this.getTransitionDurationFromElement(target));
       }
   }
@@ -2647,7 +2711,7 @@
            */
           this._documentClickEvent = (e) => {
               if (this.optionsStore.options.debug || window.debug)
-                  return;
+                  return; //eslint-disable-line @typescript-eslint/no-explicit-any
               if (this._isVisible &&
                   !e.composedPath().includes(this.widget) && // click inside the widget
                   !e.composedPath()?.includes(this.optionsStore.element) // click on the element
@@ -2754,9 +2818,11 @@
        * @param _classes
        * @param _element
        */
+      /* eslint-disable @typescript-eslint/no-unused-vars */
       paint(_unit, _date, _classes, _element) {
           // implemented in plugin
       }
+      /* eslint-enable @typescript-eslint/no-unused-vars */
       /**
        * Shows the picker and creates a Popper instance if needed.
        * Add document click event to hide when clicking outside the picker.
@@ -2800,7 +2866,7 @@
                   });
               }
               // otherwise return to the calendar view
-              if (!this.optionsStore.currentCalendarViewMode) {
+              else if (!this.optionsStore.currentCalendarViewMode) {
                   this.optionsStore.currentCalendarViewMode =
                       this.optionsStore.minimumCalendarViewMode;
               }
@@ -2857,9 +2923,13 @@
           this._eventEmitters.triggerEvent.emit({ type: Namespace.events.show });
           this._isVisible = true;
       }
-      async createPopup(element, widget, options) {
+      async createPopup(element, widget, 
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
+      options) {
           let createPopperFunction;
+          //eslint-disable-next-line @typescript-eslint/no-explicit-any
           if (window?.Popper) {
+              //eslint-disable-next-line @typescript-eslint/no-explicit-any
               createPopperFunction = window?.Popper?.createPopper;
           }
           else {
@@ -2892,7 +2962,7 @@
               .querySelectorAll(`.${Namespace.css.dateContainer} > div:not(.${Namespace.css.calendarHeader}), .${Namespace.css.timeContainer} > div:not(.${Namespace.css.clockContainer})`)
               .forEach((e) => (e.style.display = 'none'));
           const datePickerMode = CalendarModes[this.optionsStore.currentCalendarViewMode];
-          let picker = this.widget.querySelector(`.${datePickerMode.className}`);
+          const picker = this.widget.querySelector(`.${datePickerMode.className}`);
           switch (datePickerMode.className) {
               case Namespace.css.decadesContainer:
                   this.decadeDisplay._update(this.widget, this.paint);
@@ -2908,6 +2978,8 @@
                   break;
           }
           picker.style.display = 'grid';
+          if (this.optionsStore.options.display.sideBySide)
+              (this.widget.querySelectorAll(`.${Namespace.css.clockContainer}`)[0]).style.display = 'grid';
           this._updateCalendarHeader();
           this._eventEmitters.viewUpdate.emit();
       }
@@ -2952,6 +3024,8 @@
           }
       }
       _updateCalendarHeader() {
+          if (!this._hasDate)
+              return;
           const showing = [
               ...this.widget.querySelector(`.${Namespace.css.dateContainer} div[style*="display: grid"]`).classList,
           ].find((x) => x.startsWith(Namespace.css.dateContainer));
@@ -2978,7 +3052,7 @@
                   previous.setAttribute('title', this.optionsStore.options.localization.previousMonth);
                   switcher.setAttribute('title', this.optionsStore.options.localization.selectMonth);
                   next.setAttribute('title', this.optionsStore.options.localization.nextMonth);
-                  switcher.innerText = this.optionsStore.viewDate.format(this.optionsStore.options.localization.dayViewHeaderFormat);
+                  switcher.setAttribute(showing, this.optionsStore.viewDate.format(this.optionsStore.options.localization.dayViewHeaderFormat));
                   break;
           }
           switcher.innerText = switcher.getAttribute(showing);
@@ -3210,12 +3284,9 @@
        */
       _rebuild() {
           const wasVisible = this._isVisible;
-          if (wasVisible)
-              this.hide();
           this._dispose();
-          if (wasVisible) {
+          if (wasVisible)
               this.show();
-          }
       }
   }
 
@@ -3238,6 +3309,7 @@
        * @param e This is normally a click event
        * @param action If not provided, then look for a [data-action]
        */
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
       do(e, action) {
           const currentTarget = e?.currentTarget;
           if (currentTarget?.classList?.contains(Namespace.css.disabled))
@@ -3257,75 +3329,32 @@
               case ActionTypes$1.selectMonth:
               case ActionTypes$1.selectYear:
               case ActionTypes$1.selectDecade:
-                  const value = +currentTarget.dataset.value;
-                  switch (action) {
-                      case ActionTypes$1.selectMonth:
-                          this.optionsStore.viewDate.month = value;
-                          break;
-                      case ActionTypes$1.selectYear:
-                      case ActionTypes$1.selectDecade:
-                          this.optionsStore.viewDate.year = value;
-                          break;
-                  }
-                  if (this.optionsStore.currentCalendarViewMode ===
-                      this.optionsStore.minimumCalendarViewMode) {
-                      this.dates.setValue(this.optionsStore.viewDate, this.dates.lastPickedIndex);
-                      if (!this.optionsStore.options.display.inline) {
-                          this.display.hide();
-                      }
-                  }
-                  else {
-                      this.display._showMode(-1);
-                  }
+                  this.handleSelectCalendarMode(action, currentTarget);
                   break;
               case ActionTypes$1.selectDay:
-                  const day = this.optionsStore.viewDate.clone;
-                  if (currentTarget.classList.contains(Namespace.css.old)) {
-                      day.manipulate(-1, exports.Unit.month);
-                  }
-                  if (currentTarget.classList.contains(Namespace.css.new)) {
-                      day.manipulate(1, exports.Unit.month);
-                  }
-                  day.date = +currentTarget.dataset.day;
-                  let index = 0;
-                  if (this.optionsStore.options.multipleDates) {
-                      index = this.dates.pickedIndex(day, exports.Unit.date);
-                      if (index !== -1) {
-                          this.dates.setValue(null, index); //deselect multi-date
-                      }
-                      else {
-                          this.dates.setValue(day, this.dates.lastPickedIndex + 1);
-                      }
-                  }
-                  else {
-                      this.dates.setValue(day, this.dates.lastPickedIndex);
-                  }
-                  if (!this.display._hasTime &&
-                      !this.optionsStore.options.display.keepOpen &&
-                      !this.optionsStore.options.display.inline &&
-                      !this.optionsStore.options.multipleDates) {
-                      this.display.hide();
-                  }
+                  this.handleSelectDay(currentTarget);
                   break;
-              case ActionTypes$1.selectHour:
+              case ActionTypes$1.selectHour: {
                   let hour = +currentTarget.dataset.value;
-                  if (lastPicked.hours >= 12 &&
-                      !this.optionsStore.options.display.components.useTwentyfourHour)
+                  if (lastPicked.hours >= 12 && this.optionsStore.isTwelveHour)
                       hour += 12;
                   lastPicked.hours = hour;
                   this.dates.setValue(lastPicked, this.dates.lastPickedIndex);
                   this.hideOrClock(e);
                   break;
-              case ActionTypes$1.selectMinute:
+              }
+              case ActionTypes$1.selectMinute: {
                   lastPicked.minutes = +currentTarget.dataset.value;
                   this.dates.setValue(lastPicked, this.dates.lastPickedIndex);
                   this.hideOrClock(e);
                   break;
-              case ActionTypes$1.selectSecond:
+              }
+              case ActionTypes$1.selectSecond: {
                   lastPicked.seconds = +currentTarget.dataset.value;
                   this.dates.setValue(lastPicked, this.dates.lastPickedIndex);
                   this.hideOrClock(e);
                   break;
+              }
               case ActionTypes$1.incrementHours:
                   this.manipulateAndSet(lastPicked, exports.Unit.hours);
                   break;
@@ -3348,32 +3377,15 @@
                   this.manipulateAndSet(lastPicked, exports.Unit.hours, this.dates.lastPicked.hours >= 12 ? -12 : 12);
                   break;
               case ActionTypes$1.togglePicker:
-                  if (currentTarget.getAttribute('title') ===
-                      this.optionsStore.options.localization.selectDate) {
-                      currentTarget.setAttribute('title', this.optionsStore.options.localization.selectTime);
-                      currentTarget.innerHTML = this.display._iconTag(this.optionsStore.options.display.icons.time).outerHTML;
-                      this.display._updateCalendarHeader();
-                      this.optionsStore.refreshCurrentView();
-                  }
-                  else {
-                      currentTarget.setAttribute('title', this.optionsStore.options.localization.selectDate);
-                      currentTarget.innerHTML = this.display._iconTag(this.optionsStore.options.display.icons.date).outerHTML;
-                      if (this.display._hasTime) {
-                          this.handleShowClockContainers(ActionTypes$1.showClock);
-                          this.display._update('clock');
-                      }
-                  }
-                  this.display.widget
-                      .querySelectorAll(`.${Namespace.css.dateContainer}, .${Namespace.css.timeContainer}`)
-                      .forEach((htmlElement) => Collapse.toggle(htmlElement));
-                  this._eventEmitters.viewUpdate.emit();
+                  this.handleToggle(currentTarget);
                   break;
               case ActionTypes$1.showClock:
               case ActionTypes$1.showHours:
               case ActionTypes$1.showMinutes:
               case ActionTypes$1.showSeconds:
                   //make sure the clock is actually displaying
-                  if (!this.optionsStore.options.display.sideBySide && this.optionsStore.currentView !== 'clock') {
+                  if (!this.optionsStore.options.display.sideBySide &&
+                      this.optionsStore.currentView !== 'clock') {
                       //hide calendar
                       Collapse.hideImmediately(this.display.widget.querySelector(`div.${Namespace.css.dateContainer}`));
                       //show clock
@@ -3388,13 +3400,14 @@
               case ActionTypes$1.close:
                   this.display.hide();
                   break;
-              case ActionTypes$1.today:
+              case ActionTypes$1.today: {
                   const today = new DateTime().setLocale(this.optionsStore.options.localization.locale);
                   this._eventEmitters.updateViewDate.emit(today);
                   //todo this this really a good idea?
                   if (this.validation.isValid(today, exports.Unit.date))
                       this.dates.setValue(today, this.dates.lastPickedIndex);
                   break;
+              }
           }
       }
       handleShowClockContainers(action) {
@@ -3441,7 +3454,7 @@
        * @param e
        */
       hideOrClock(e) {
-          if (this.optionsStore.options.display.components.useTwentyfourHour &&
+          if (!this.optionsStore.isTwelveHour &&
               !this.optionsStore.options.display.components.minutes &&
               !this.optionsStore.options.display.keepOpen &&
               !this.optionsStore.options.display.inline) {
@@ -3463,6 +3476,82 @@
               this.dates.setValue(newDate, this.dates.lastPickedIndex);
           }
       }
+      handleSelectCalendarMode(action, 
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
+      currentTarget) {
+          const value = +currentTarget.dataset.value;
+          switch (action) {
+              case ActionTypes$1.selectMonth:
+                  this.optionsStore.viewDate.month = value;
+                  break;
+              case ActionTypes$1.selectYear:
+              case ActionTypes$1.selectDecade:
+                  this.optionsStore.viewDate.year = value;
+                  break;
+          }
+          if (this.optionsStore.currentCalendarViewMode ===
+              this.optionsStore.minimumCalendarViewMode) {
+              this.dates.setValue(this.optionsStore.viewDate, this.dates.lastPickedIndex);
+              if (!this.optionsStore.options.display.inline) {
+                  this.display.hide();
+              }
+          }
+          else {
+              this.display._showMode(-1);
+          }
+      }
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
+      handleToggle(currentTarget) {
+          if (currentTarget.getAttribute('title') ===
+              this.optionsStore.options.localization.selectDate) {
+              currentTarget.setAttribute('title', this.optionsStore.options.localization.selectTime);
+              currentTarget.innerHTML = this.display._iconTag(this.optionsStore.options.display.icons.time).outerHTML;
+              this.display._updateCalendarHeader();
+              this.optionsStore.refreshCurrentView();
+          }
+          else {
+              currentTarget.setAttribute('title', this.optionsStore.options.localization.selectDate);
+              currentTarget.innerHTML = this.display._iconTag(this.optionsStore.options.display.icons.date).outerHTML;
+              if (this.display._hasTime) {
+                  this.handleShowClockContainers(ActionTypes$1.showClock);
+                  this.display._update('clock');
+              }
+          }
+          this.display.widget
+              .querySelectorAll(`.${Namespace.css.dateContainer}, .${Namespace.css.timeContainer}`)
+              .forEach((htmlElement) => Collapse.toggle(htmlElement));
+          this._eventEmitters.viewUpdate.emit();
+      }
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
+      handleSelectDay(currentTarget) {
+          const day = this.optionsStore.viewDate.clone;
+          if (currentTarget.classList.contains(Namespace.css.old)) {
+              day.manipulate(-1, exports.Unit.month);
+          }
+          if (currentTarget.classList.contains(Namespace.css.new)) {
+              day.manipulate(1, exports.Unit.month);
+          }
+          day.date = +currentTarget.dataset.day;
+          let index = 0;
+          if (this.optionsStore.options.multipleDates) {
+              index = this.dates.pickedIndex(day, exports.Unit.date);
+              if (index !== -1) {
+                  this.dates.setValue(null, index); //deselect multi-date
+              }
+              else {
+                  this.dates.setValue(day, this.dates.lastPickedIndex + 1);
+              }
+          }
+          else {
+              this.dates.setValue(day, this.dates.lastPickedIndex);
+          }
+          if (!this.display._hasTime &&
+              !this.optionsStore.options.display.keepOpen &&
+              !this.optionsStore.options.display.inline &&
+              !this.optionsStore.options.multipleDates) {
+              this.display.hide();
+          }
+      }
   }
 
   /**
@@ -3470,6 +3559,7 @@
    */
   class TempusDominus {
       constructor(element, options = {}) {
+          //eslint-disable-next-line @typescript-eslint/no-explicit-any
           this._subscribers = {};
           this._isDisabled = false;
           /**
@@ -3477,13 +3567,14 @@
            * something for the remove listener function.
            * @private
            */
+          //eslint-disable-next-line @typescript-eslint/no-explicit-any
           this._inputChangeEvent = (event) => {
               const internallyTriggered = event?.detail;
               if (internallyTriggered)
                   return;
               const setViewDate = () => {
                   if (this.dates.lastPicked)
-                      this.viewDate = this.dates.lastPicked.clone;
+                      this.optionsStore.viewDate = this.dates.lastPicked.clone;
               };
               const value = this.optionsStore.input.value;
               if (this.optionsStore.options.multipleDates) {
@@ -3509,7 +3600,8 @@
            * @private
            */
           this._toggleClickEvent = () => {
-              if (this.optionsStore.element?.disabled || this.optionsStore.input?.disabled)
+              if (this.optionsStore.element?.disabled ||
+                  this.optionsStore.input?.disabled)
                   return;
               this.toggle();
           };
@@ -3536,7 +3628,7 @@
           this._eventEmitters.viewUpdate.subscribe(() => {
               this._viewUpdate();
           });
-          this._eventEmitters.updateViewDate.subscribe(dateTime => {
+          this._eventEmitters.updateViewDate.subscribe((dateTime) => {
               this.viewDate = dateTime;
           });
       }
@@ -3627,11 +3719,12 @@
        * @param callbacks Function to call when event is triggered
        * @public
        */
-      subscribe(eventTypes, callbacks) {
+      subscribe(eventTypes, callbacks //eslint-disable-line @typescript-eslint/no-explicit-any
+      ) {
           if (typeof eventTypes === 'string') {
               eventTypes = [eventTypes];
           }
-          let callBackArray;
+          let callBackArray; //eslint-disable-line @typescript-eslint/no-explicit-any
           if (!Array.isArray(callbacks)) {
               callBackArray = [callbacks];
           }
@@ -3649,7 +3742,7 @@
               }
               this._subscribers[eventType].push(callBackArray[i]);
               returnArray.push({
-                  unsubscribe: this._unsubscribe.bind(this, eventType, this._subscribers[eventType].length - 1)
+                  unsubscribe: this._unsubscribe.bind(this, eventType, this._subscribers[eventType].length - 1),
               });
               if (eventTypes.length === 1) {
                   return returnArray[0];
@@ -3679,11 +3772,11 @@
        * @param language
        */
       locale(language) {
-          let asked = loadedLocales[language];
+          const asked = loadedLocales[language];
           if (!asked)
               return;
           this.updateOptions({
-              localization: asked
+              localization: asked,
           });
       }
       /**
@@ -3702,11 +3795,19 @@
                   return;
               }
               this._handleAfterChangeEvent(event);
-              this.optionsStore.input?.dispatchEvent(new CustomEvent(event.type, { detail: event }));
-              this.optionsStore.input?.dispatchEvent(new CustomEvent('change', { detail: event }));
+              this.optionsStore.input?.dispatchEvent(
+              //eslint-disable-next-line @typescript-eslint/no-explicit-any
+              new CustomEvent(event.type, { detail: event }));
+              this.optionsStore.input?.dispatchEvent(
+              //eslint-disable-next-line @typescript-eslint/no-explicit-any
+              new CustomEvent('change', { detail: event }));
           }
-          this.optionsStore.element.dispatchEvent(new CustomEvent(event.type, { detail: event }));
+          this.optionsStore.element.dispatchEvent(
+          //eslint-disable-next-line @typescript-eslint/no-explicit-any
+          new CustomEvent(event.type, { detail: event }));
+          //eslint-disable-next-line @typescript-eslint/no-explicit-any
           if (window.jQuery) {
+              //eslint-disable-next-line @typescript-eslint/no-explicit-any
               const $ = window.jQuery;
               if (isChangeEvent && this.optionsStore.input) {
                   $(this.optionsStore.input).trigger(event);
@@ -3734,7 +3835,7 @@
       _viewUpdate() {
           this._triggerEvent({
               type: Namespace.events.update,
-              viewDate: this.optionsStore.viewDate.clone
+              viewDate: this.optionsStore.viewDate.clone,
           });
       }
       _unsubscribe(eventName, index) {
@@ -3779,8 +3880,11 @@
           if (this.display?.isVisible) {
               this.display._update('all');
           }
-          if (newConfig.display.components.useTwentyfourHour === undefined) {
-              newConfig.display.components.useTwentyfourHour = !!!newConfig.viewDate.parts()?.dayPeriod;
+          if (newConfig.display.components.useTwentyfourHour &&
+              newConfig.localization.hourCycle === undefined)
+              newConfig.localization.hourCycle = 'h24';
+          else if (newConfig.localization.hourCycle === undefined) {
+              newConfig.localization.hourCycle = guessHourCycle(newConfig.localization.locale);
           }
           this.optionsStore.options = newConfig;
       }
@@ -3794,7 +3898,7 @@
               this.optionsStore.input = this.optionsStore.element;
           }
           else {
-              let query = this.optionsStore.element.dataset.tdTargetInput;
+              const query = this.optionsStore.element.dataset.tdTargetInput;
               if (query == undefined || query == 'nearest') {
                   this.optionsStore.input =
                       this.optionsStore.element.querySelector('input');
@@ -3806,6 +3910,8 @@
           }
           if (!this.optionsStore.input)
               return;
+          if (!this.optionsStore.input.value && this.optionsStore.options.defaultDate)
+              this.optionsStore.input.value = this.dates.formatInput(this.optionsStore.options.defaultDate);
           this.optionsStore.input.addEventListener('change', this._inputChangeEvent);
           if (this.optionsStore.options.allowInputToggle) {
               this.optionsStore.input.addEventListener('click', this._toggleClickEvent);
@@ -3861,9 +3967,9 @@
               if (this.display.widget) {
                   this._eventEmitters.action.emit({
                       e: {
-                          currentTarget: this.display.widget.querySelector(`.${Namespace.css.switch} div`)
+                          currentTarget: this.display.widget.querySelector(`.${Namespace.css.switch}`),
                       },
-                      action: ActionTypes$1.togglePicker
+                      action: ActionTypes$1.togglePicker,
                   });
               }
           }, this.optionsStore.options.promptTimeOnDateChangeTransitionDelay);
@@ -3890,7 +3996,7 @@
    * @param l
    */
   const locale = (l) => {
-      let asked = loadedLocales[l];
+      const asked = loadedLocales[l];
       if (!asked)
           return;
       DefaultOptions.localization = asked;
@@ -3901,17 +4007,17 @@
    * @param plugin
    * @param option
    */
-  const extend = function (plugin, option) {
+  const extend = function (plugin, option = undefined) {
       if (!plugin)
           return tempusDominus;
       if (!plugin.installed) {
           // install plugin only once
-          plugin(option, { TempusDominus, Dates, Display, DateTime, ErrorMessages }, tempusDominus);
+          plugin(option, { TempusDominus, Dates, Display, DateTime, Namespace }, tempusDominus);
           plugin.installed = true;
       }
       return tempusDominus;
   };
-  const version = '6.2.6';
+  const version = '6.2.10';
   const tempusDominus = {
       TempusDominus,
       extend,
@@ -3921,7 +4027,7 @@
       DefaultOptions,
       DateTime,
       Unit: exports.Unit,
-      version
+      version,
   };
 
   exports.DateTime = DateTime;

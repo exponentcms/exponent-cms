@@ -26,6 +26,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class filemanagercontrol extends formcontrol {
 
+    var $type     = 'file';
     var $html;
     var $span;
     var $description = "";

@@ -184,7 +184,6 @@ class Less_Tree_Ruleset extends Less_Tree {
 
 	/**
 	 * Compile the selectors and create a new ruleset object for the compile() method
-	 *
 	 */
 	private function PrepareRuleset( $env ) {
 		$hasOnePassingSelector = false;
@@ -300,7 +299,7 @@ class Less_Tree_Ruleset extends Less_Tree {
 		if ( is_null( $this->_variables ) ) {
 			$this->variables();
 		}
-		return isset( $this->_variables[$name] ) ? $this->_variables[$name] : null;
+		return $this->_variables[$name] ?? null;
 	}
 
 	public function find( $selector, $self = null ) {

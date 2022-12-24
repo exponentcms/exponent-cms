@@ -22,6 +22,7 @@
  * @package    Subsystems
  * @subpackage Subsystems
  */
+#[AllowDynamicProperties]
 class expTheme
 {
 
@@ -175,39 +176,40 @@ class expTheme
         }
 
         // set up controls search order based on framework
-        if (empty($head_config['framework'])) {
-            $head_config['framework'] = '';
-        }
-        if (bs() || $framework === 'jquery') {
-            array_unshift(
-                $auto_dirs,
-                BASE . 'framework/core/forms/controls/jquery'
-            );
-        }
-        if (bs(true)) {
-            array_unshift(
-                $auto_dirs,
-                BASE . 'framework/core/forms/controls/bootstrap'
-            );
-        }
-        if (bs3(true) || bs4() || bs5()) {
-            array_unshift(
-                $auto_dirs,
-                BASE . 'framework/core/forms/controls/bootstrap3'
-            );
-        }
-        if (bs4() || bs5()) {
-            array_unshift(
-                $auto_dirs,
-                BASE . 'framework/core/forms/controls/bootstrap4'
-            );
-        }
-        if (bs5()) {
-            array_unshift(
-                $auto_dirs,
-                BASE . 'framework/core/forms/controls/bootstrap5'
-            );
-        }
+//        if (empty($head_config['framework'])) {
+//            $head_config['framework'] = '';
+//        }
+        expCore::setup_autoload($framework);
+//        if (bs() || $framework === 'jquery') {
+//            array_unshift(
+//                $auto_dirs,
+//                BASE . 'framework/core/forms/controls/jquery'
+//            );
+//        }
+//        if (bs(true)) {
+//            array_unshift(
+//                $auto_dirs,
+//                BASE . 'framework/core/forms/controls/bootstrap'
+//            );
+//        }
+//        if (bs3(true) || bs4() || bs5()) {
+//            array_unshift(
+//                $auto_dirs,
+//                BASE . 'framework/core/forms/controls/bootstrap3'
+//            );
+//        }
+//        if (bs4() || bs5()) {
+//            array_unshift(
+//                $auto_dirs,
+//                BASE . 'framework/core/forms/controls/bootstrap4'
+//            );
+//        }
+//        if (bs5()) {
+//            array_unshift(
+//                $auto_dirs,
+//                BASE . 'framework/core/forms/controls/bootstrap5'
+//            );
+//        }
         if (newui()) {
             expCSS::pushToHead(array(
                 "lessprimer"=>"external/bootstrap3/less/newui.less",
@@ -217,9 +219,9 @@ class expTheme
 //                ),
             ));
             if (!defined("BTN_SIZE")) define("BTN_SIZE", 'small');
-            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
+//            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
         }
-        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
+//        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
 
 //        if (!expSession::is_set('framework') || expSession::get(
 //                'framework'
@@ -416,11 +418,11 @@ class expTheme
 //        }
 
         if (bs()) {
-//                    $lessvars = array_merge(
-//                        array('swatch' => SWATCH),
-//                        array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
-//                        !empty($head_config['lessvars']) ? $head_config['lessvars'] : array()
-//                    );
+//            $lessvars = array_merge(
+//                array('swatch' => SWATCH),
+//                array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
+//                !empty($head_config['lessvars']) ? $head_config['lessvars'] : array()
+//            );
 //            $less_vars = array_merge(
 //                array('swatch' => SWATCH),
 //                array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
@@ -794,7 +796,7 @@ class expTheme
             } else {
                 $theme = BASE . 'themes/' . DISPLAY_THEME . '/index.php';
             }
-        } elseif ($sectionObj->subtheme != '' && is_readable(
+        } elseif (property_exists($sectionObj, 'subtheme') && $sectionObj->subtheme != '' && is_readable(
                 BASE . 'themes/' . DISPLAY_THEME . '/subthemes/' . $sectionObj->subtheme . '.php'
             )
         ) {
@@ -2369,6 +2371,7 @@ class expTheme
  * @package Subsystems
  * @subpackage Subsystems
  */
+#[AllowDynamicProperties]
 class theme {
 	public $user_configured = false;
     public $stock_theme = false;

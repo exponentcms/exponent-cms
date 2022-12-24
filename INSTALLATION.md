@@ -7,22 +7,24 @@ Copyright (c) 2004-2022 OIC Group, Inc.
 Installation of Exponent CMS 2.0
 --------------------------------
 
-Requirements
+### Requirements
 - Linux-based web host (recommended)
   - or Windows-based web host
 - Apache 2.0 or greater (recommended)
   - or Microsoft IIS, nginx, or lighttpd
-- PHP 7.1.x or greater (v5.6.x & v7.0.x deprecated support)
+- PHP 7.4 or greater (deprecated support for v5.6, v7.0, v7.1, v7.2 & v7.3)
 - MySQL or MariaDB database
 
 ---------------------
 
-Upgrading / Migrating
+### Upgrading / Migrating
 If you are upgrading, it is HIGHLY RECOMMENDED that you export your database and back up your files.
 Upgrading from 1.0 (0.9x) to 2.0 isn't an upgrade, but a migration. Refer to to documentation on migrating
 content from 1.0 to 2.0.
 
 ---------------------
+
+### Procedure 
 
 1. Download the latest package
     - Check [http://www.exponentcms.org](http://www.exponentcms.org) or

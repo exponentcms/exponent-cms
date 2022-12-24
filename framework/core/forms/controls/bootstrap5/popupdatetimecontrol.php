@@ -30,6 +30,7 @@ if (!defined('EXPONENT')) {
 class popupdatetimecontrol extends formcontrol
 {
 
+    var $type     = 'datetime';
     var $disable_text = "";
     var $showtime = true;
     var $showdate = true;
@@ -113,7 +114,11 @@ class popupdatetimecontrol extends formcontrol
         $date_input->id = $idname;
         $date_input->name = $idname;
         $date_input->description = $this->description;
-        $date_input->append = 'calendar';
+        if (USE_BOOTSTRAP_ICONS) {
+            $date_input->append = 'calendar3';
+        } else {
+            $date_input->append = 'calendar-days';
+        }
         if ($this->horizontal)
             $date_input->horizontal_top = true;
         $html = $date_input->toHTML(null, $name);
@@ -154,7 +159,7 @@ class popupdatetimecontrol extends formcontrol
                         display: {
                             icons: {
                                 time: 'bi bi-clock',
-                                date: 'bi bi-calendar',
+                                date: 'bi bi-calendar3',
                                 up: 'bi bi-arrow-up',
                                 down: 'bi bi-arrow-down',
                                 previous: 'bi bi-chevron-left',

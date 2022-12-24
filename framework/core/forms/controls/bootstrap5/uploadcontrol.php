@@ -27,6 +27,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class uploadcontrol extends formcontrol {
 
+    var $type     = 'file';
     var $accept = "";
 
 	static function name() { return "File Upload Field"; }
@@ -77,7 +78,7 @@ class uploadcontrol extends formcontrol {
 
         if (!empty($this->description))
             $html .= "<div id=\"" . $fi_name . "HelpBlock\" class=\"form-text text-muted\">" . $this->description . "</div>";
-        $html .= ($this->horizontal &&(bs3()||bs4() || bs5())) ? '</div>' : '';
+        $html .= ($this->horizontal) ? '</div>' : '';
 
         expCSS::pushToHead(array(
             "unique" => 'fileupload-' . $name,
@@ -96,25 +97,23 @@ class uploadcontrol extends formcontrol {
                 }
     	    "
         ));
-        if (bs4() || bs5()) {
-            expCSS::pushToHead(array(
-                "unique" => 'fileupload-bs4-' . $name,
-                "css" => "
-                    .fileinput.input-group,
-                    .file-input {
-                        display: flex;
-                    }
-        	    "
-            ));
-            global $less_vars;
+        expCSS::pushToHead(array(
+            "unique" => 'fileupload-bs4-' . $name,
+            "css" => "
+                .fileinput.input-group,
+                .file-input {
+                    display: flex;
+                }
+            "
+        ));
+        global $less_vars;
 
-            if (empty($less_vars['themepath'])) {
-                $less_vars = array_merge($less_vars, array(
-                    'swatch' => SWATCH,
-                    'themepath' => '../../../themes/' . DISPLAY_THEME . '/less',
-                    'menu_width' => MENU_WIDTH,
-                ));
-            }
+        if (empty($less_vars['themepath'])) {
+            $less_vars = array_merge($less_vars, array(
+                'swatch' => SWATCH,
+                'themepath' => '../../../themes/' . DISPLAY_THEME . '/less',
+                'menu_width' => MENU_WIDTH,
+            ));
         }
 
         expJavascript::pushToFoot(array(

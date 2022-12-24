@@ -200,6 +200,9 @@ class AdminerSerializedPreview
 			$value .= "style='display: none' id='serialize-code-$id'";
 		}
 		$value .= ">";
+        if (is_object($json)) {
+            $value .= "<tr><th colspan='2'><code>" . h(get_class($json)) . " Object</code></th></tr>";
+        }
 
 		if (!empty($json)) foreach ($json as $key => $val) {
 			$value .= "<tr><th><code>" . h($key) . "</code>";
@@ -262,7 +265,7 @@ class AdminerSerializedPreview
         return (is_object(@json_decode(str_replace('\"', '"', $data))));
     }
 
-    public function expUnserialize($serial_str) {
+    function expUnserialize($serial_str) {
         if ($serial_str === 'Array' || is_null($serial_str))
             return null;  // empty array string??
         if (is_array($serial_str) || is_object($serial_str))
@@ -274,7 +277,7 @@ class AdminerSerializedPreview
                 return "s:".strlen($m_new).':"'.$m_new.'";';
             }, $serial_str );
         $out2 = @unserialize($out);
-        // list of fields with links requiring cleaning
+        // list of fields with rich text
         $stripList = array(
             'moduledescription',
             'description',
@@ -282,7 +285,14 @@ class AdminerSerializedPreview
             'report_def',
             'report_def_showall',
             'response',
-            'auto_respond_body'
+            'auto_respond_body',
+            'ecomheader',
+            'ecomfooter',
+            'cart_description_text',
+            'policy',
+            'checkout_message_top',
+            'checkout_message_bottom',
+            'message'
         );
         if (is_array($out2)) {
             foreach ($stripList as $strip) {
@@ -298,4 +308,5 @@ class AdminerSerializedPreview
         }
         return $out2;
     }
+
 }

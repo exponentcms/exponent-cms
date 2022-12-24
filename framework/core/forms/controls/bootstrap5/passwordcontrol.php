@@ -45,7 +45,7 @@ class passwordcontrol extends genericcontrol {
         }
 //        if ($this->required) $label = "*" . $label;
         $disabled = $this->disabled == true ? "disabled" : "";
-        if ($this->type != 'hidden') {
+        if ($this->type !== 'hidden') {
             $html = '';
             $class = empty($this->class) ? '' : ' '.$this->class;
              if ($this->meter) {

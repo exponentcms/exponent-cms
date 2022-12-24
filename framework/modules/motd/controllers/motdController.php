@@ -226,7 +226,7 @@ class motdController extends expController {
 
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $fh = fopen(BASE . $directory . "/" . $file->filename, "r");
+        $fh = fopen(BASE . $directory . "/" . $file->filename, 'rb');
         $msginfo = array();
         $msgarray = array();
         $linenum = 1;
@@ -272,7 +272,7 @@ class motdController extends expController {
 
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $fh = fopen(BASE . $this->params["filename"], "r");
+        $fh = fopen(BASE . $this->params["filename"], 'rb');
         $msginfo = array();
         $msginfo['location_data'] = serialize(expCore::makeLocation('motd', $this->params["source"]));
         $linenum = 1;

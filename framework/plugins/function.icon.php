@@ -74,6 +74,10 @@ function smarty_function_icon($params, &$smarty) {
 
     if (!isset($params['int'])) $params['int'] = $loc->int;
 
+    if (!isset($params['action'])) {
+        $params['action'] = '';
+    }
+
     // attempt to translate the alt, text, & title
     if (!empty($params['alt'])) {
         $params['alt'] = gt($params['alt']);

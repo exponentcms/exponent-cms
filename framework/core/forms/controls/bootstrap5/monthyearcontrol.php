@@ -45,7 +45,7 @@ class monthyearcontrol extends formcontrol {
     }
 
 	function controlToHTML($name,$label=null) {
-		$html = '<select ' . ((bs4() || bs5()) ? 'class="form-control form-select" ' : '') . (($this->horizontal == 1)?'style="display:inline;" ':'') . 'id="' . $name . '_month" name="' . $name . '_month">';
+		$html = '<select class="form-control form-select" ' . (($this->horizontal == 1)?'style="display:inline;" ':'') . 'id="' . $name . '_month" name="' . $name . '_month">';
 		for ($i = 1; $i <= 12; $i++) {
 			$s = ((strlen($i) == 1)?"0".$i:$i);
 			$html .= '<option value="' . $s . '"';
@@ -54,7 +54,7 @@ class monthyearcontrol extends formcontrol {
 		}
 		$html .= '</select>';
 		$html .= "/";
-		$html .= '<select ' . ((bs4() || bs5()) ? 'class="form-control form-select" ' : '') . (($this->horizontal == 1)?'style="display:inline;" ':'') . 'id="' . $name . '_year" name="' . $name . '_year">';
+		$html .= '<select class="form-control form-select" ' . (($this->horizontal == 1)?'style="display:inline;" ':'') . 'id="' . $name . '_year" name="' . $name . '_year">';
 		for ($i = date("Y"); $i <= (date("Y") + 15); $i++) {
 			$html .= '<option value="' . $i . '"';
 			if ($i == $this->default_year) $html .= " selected";

@@ -258,7 +258,12 @@ class expHistory extends expSubsystem {
 	    global $history;
 
         $d=$depth?$depth+1:2;
-		return $history->history[$history->history['lasts']['type']][count($history->history[$history->history['lasts']['type']])-$d]['params'];
+        if (empty($history->history[$history->history['lasts']['type']])) {
+            $count = 0;
+        } else {
+            $count = count($history->history[$history->history['lasts']['type']]);
+        }
+		return $history->history[$history->history['lasts']['type']][$count-$d]['params'];
 	}
 
     public static function returnTo($url_type=null, $params=array()) {

@@ -29,6 +29,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class radiogroupcontrol extends formcontrol {
 
+    var $type     = 'select';
 	var $items = array();
 //	var $spacing = 100;
 	var $cols = 1;
@@ -53,9 +54,9 @@ class radiogroupcontrol extends formcontrol {
 
 	function toHTML($label,$name) {
 		$this->id  = (empty($this->id)) ? $name : $this->id;
-		$html = "<div role=\"radiogroup\" id=\"".$this->id."Control\" class=\"radiogroup control form-group";
+        $html = "<div role=\"radiogroup\" id=\"" . $this->id . "Control\" class=\"radiogroup control form-group";
 		$html .= (!empty($this->required)) ? ' required">' : '">';
-        $html .= (!empty($label))?"<label class=\"label".($this->horizontal?' col-sm-2':'')."\"".($this->cols!=1?" style=\"padding-right:12px\"":"").">".$label."</label>":"";
+        $html .= (!empty($label)) ? "<label class=\"col-form-label" . ($this->horizontal ? ' col-sm-2 float-sm-left pt-0' : '') . "\"" . ($this->cols != 1 ? " style=\"padding-right:12px\"" : "") . ">" . $label . "</label>" : "";
 		$html .= $this->controlToHTML($name, $label);
         $html .= "</div>";
 		return $html;
@@ -64,7 +65,7 @@ class radiogroupcontrol extends formcontrol {
 	function controlToHTML($name, $label) {
         //eDebug($this->items);
         $html = '';
-        $html .= ($this->horizontal) ? '<div class="col-sm-10">' : '';
+        $html .= ($this->horizontal) ? '<div class="col-sm-10 d-inline-block">' : '';
 		foreach ($this->items as $rvalue=>$rlabel) {  //FJD
 			$radio = null;
 
@@ -86,7 +87,7 @@ class radiogroupcontrol extends formcontrol {
 
             $html .= $radio->toHTML($rlabel, $name);
 		}
-        if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">".$this->description."</small>";
+        if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">" . $this->description . "</small>";
         $html .= ($this->horizontal) ? '</div>' : '';
 		return $html;
 	}

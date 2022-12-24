@@ -110,7 +110,7 @@ class mysqlid_database {
 	    if (empty($log_file)) $this->logFile = BASE . 'tmp/sql.log';
 	    else $this->logFile = $log_file;
 	    //eDebug($log_file);
-	    $this->logFH = fopen($this->logFile, 'a');
+	    $this->logFH = fopen($this->logFile, 'ab');
 	    $this->writeLog("Starting...");
 	    $this->startTime = microtime(true);
 

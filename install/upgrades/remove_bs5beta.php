@@ -44,7 +44,9 @@ class remove_bs5beta extends upgradescript {
 	 * @return bool
 	 */
 	function needed() {
-          if (file_exists(BASE.'themes/bootstrap4theme/js/tempusdominus-bootstrap-4.js') || file_exists(BASE.'themes/bootstrap5theme/js/tempusdominus-bootstrap-4.js')) {
+          if (file_exists(BASE.'themes/bootstrap4theme/js/tempusdominus-bootstrap-4.js') ||
+              file_exists(BASE.'themes/bootstrap5theme/js/tempusdominus-bootstrap-4.js') ||
+              file_exists(BASE.'themes/bootstrap5theme/js/bootbox.all.js')) {
             return true;
         }
         return false;
@@ -63,6 +65,7 @@ class remove_bs5beta extends upgradescript {
             'tempusdominus-bootstrap-4.js',
             'tempusdominus-bootstrap-4.scss',
             '_tempusdominus-bootstrap-4.scss',
+            'bootbox.all.js',
         );
         $files_removed = 0;
         foreach ($olddirs as $dir) {
@@ -73,7 +76,7 @@ class remove_bs5beta extends upgradescript {
             }
         }
 
-        return ($files_removed ? $files_removed : gt('No')) . " " . gt("Bootstrap-5 beta theme files removed.") . " " .
+        return ($files_removed ? : gt('No')) . " " . gt("Bootstrap-5 beta theme files removed.") . " " .
             gt("You may also want to remove any similar files in your custom Bootstrap 4 or Boostrap 5 theme within the 'theme/js' folder which are named 'tempusdominus-bootstrap-4'.");
 	}
 }

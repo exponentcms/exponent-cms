@@ -29,7 +29,7 @@
                         {group label="Payment Response"|gettext}
                         {foreach from=$opts->result item=field key=key}
                             {if $key != 'transId'}
-                                {control type="text" name="result[`$key`]" label=$key|replace:"_":" "|ucwords value=$field}
+                                {control type="text" name="result[`$key`]" label=$key|replace:"_":" "|capitalize value=$field}
                             {/if}
                         {foreachelse}
                             {'None'|gettext}
@@ -37,7 +37,7 @@
                         {/group}
                         {foreach from=$opts item=field key=key}
                             {if !is_array($field) && !is_object($field)}
-                                {control type="text" name="`$key`" label=$key|replace:"_":" "|ucwords value=$field}
+                                {control type="text" name="`$key`" label=$key|replace:"_":" "|capitalize value=$field}
                             {/if}
                         {/foreach}
                         {control type="buttongroup" submit="Save Payment Info"|gettext cancel="Cancel"|gettext}

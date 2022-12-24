@@ -41,7 +41,10 @@ class Less_Tree_Import extends Less_Tree {
 				$this->css = !isset( $this->options['less'] ) || !$this->options['less'] || $this->options['inline'];
 			} else {
 				$pathValue = $this->getPath();
-				if ( $pathValue && preg_match( '/css([\?;].*)?$/', $pathValue ) ) {
+				// Leave any ".css" file imports as literals for the browser.
+				// Also leave any remote HTTP resources as literals regardless of whether
+				// they contain ".css" in their filename.
+				if ( $pathValue && preg_match( '/^(https?:)?\/\/|\.css$/i', $pathValue ) ) {
 					$this->css = true;
 				}
 			}
@@ -97,13 +100,17 @@ class Less_Tree_Import extends Less_Tree {
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
 	public function getPath() {
 		if ( $this->path instanceof Less_Tree_Quoted ) {
 			$path = $this->path->value;
 			$path = ( isset( $this->css ) || preg_match( '/(\.[a-z]*$)|([\?;].*)$/', $path ) ) ? $path : $path . '.less';
-		} else if ( $this->path instanceof Less_Tree_URL ) {
+
+		// During the first pass, Less_Tree_URL may contain a Less_Tree_Variable (not yet expanded),
+		// and thus has no value property defined yet. Return null until we reach the next phase.
+		// https://github.com/wikimedia/less.php/issues/29
+		} else if ( $this->path instanceof Less_Tree_URL && !( $this->path->value instanceof Less_Tree_Variable ) ) {
 			$path = $this->path->value->value;
 		} else {
 			return null;
@@ -192,8 +199,6 @@ class Less_Tree_Import extends Less_Tree {
 
 	/**
 	 * Using the import directories, get the full absolute path and uri of the import
-	 *
-	 * @param Less_Tree_Import $evald
 	 */
 	public function PathAndUri() {
 		$evald_path = $this->getPath();

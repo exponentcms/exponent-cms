@@ -58,9 +58,9 @@ class tinymce5control extends formcontrol
         global $user;
 
         $contentCSS = '';
-        $css = 'themes/' . DISPLAY_THEME . '/editors/tinymce5/tinymce.css';
-        if (THEME_STYLE != "" && is_file(BASE . 'themes/' . DISPLAY_THEME . '/editors/tinymce5/tinymce_' . THEME_STYLE . '.css'))
-            $css = 'themes/' . DISPLAY_THEME . '/editors/tinymce5/tinymce_' . THEME_STYLE . '.css';
+        $css = 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce.css';
+        if (THEME_STYLE != "" && is_file(BASE . 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce_' . THEME_STYLE . '.css'))
+            $css = 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce_' . THEME_STYLE . '.css';
         if (is_file(BASE . $css)) {
             $contentCSS = "content_css : '" . PATH_RELATIVE . $css . "',
             ";
@@ -247,6 +247,18 @@ class tinymce5control extends formcontrol
                     tinymce.remove('editor" . createValidId($name) . "');
 //                    return true;
                 };
+
+                const mceElf = new tinymceElfinder({
+                    // connector URL (Set your connector)
+                    url: EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/elfinder.php',
+                    // upload target folder hash for this tinyMCE
+                    uploadTargetHash: 'lexp2_Lw', // Hash value on elFinder of writable folder
+                    // elFinder dialog node id
+                    nodeId: 'elfinder', // Any ID you decide
+                    baseUrl: EXPONENT.PATH_RELATIVE + 'external/elFinder/',
+                    cssAutoLoad: EXPONENT.PATH_RELATIVE + 'external/elFinder' + EXPONENT.ELFINDER_THEME + '/css/theme.css',
+                });
+
                 EXPONENT.editor" . createValidId($name) . " = tinymce.init({
                     selector : '#" . createValidId($name) . "',
                     plugins : ['" . $plugins . "'],
@@ -270,22 +282,11 @@ class tinymce5control extends formcontrol
                         " . $fontnames . ",
                     end_container_on_empty_block: true,
                     file_picker_callback: mceElf.browser,
+//                    images_upload_handler: mceElf.uploadHandler
                 });
             });
         ";
-
-        expJavascript::pushToFoot(
-            array(
-                "unique" => "tinymcepu",
-                "src"=>PATH_RELATIVE."external/editors/tinymce5/plugins/quickupload/plupload.full.min.js"
-            )
-        );
-        expJavascript::pushToFoot(
-            array(
-                "unique" => "tinymce",
-                "src"=>PATH_RELATIVE."external/editors/tinymce5/tinymce.min.js"
-            )
-        );
+        expHTMLEditorController::load_tiny_elFinder('tinymce5');
         expJavascript::pushToFoot(
             array(
                 "unique" => "000-tinymce" . $name,

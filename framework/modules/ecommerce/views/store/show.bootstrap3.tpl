@@ -26,13 +26,8 @@
 {/if}
 
 <div class="module store show product row">
-    <div class="category-breadcrumb col-sm-12">
-        <a href="{link controller=store action=showall}" title="{'View the Store'|gettext}">{'Store'|gettext}</a>&#160;&#160;&raquo;&#160;
-        {foreach from=$ancestors item=ancestor name=path}
-            <a href="{link controller=store action=showall title=$ancestor->sef_url}" title="{'View this Product Category'|gettext}">{$ancestor->title}</a>&#160;&#160;&raquo;&#160;
-        {/foreach}
-        {$product->title}
-    </div>
+    {$show_product=$product->title}
+    {exp_include file="categoryBreadcrumb.tpl"}
     <div itemscope itemtype="http://data-vocabulary.org/Product">
         {if !empty($product->storeCategory[0]->title)}<span itemprop="category" content="{$product->storeCategory[0]->title}"></span>{/if}
         {permissions}
@@ -422,7 +417,7 @@
                                     <th><strong>{"SKU"|gettext}</strong></th>
                                     {if !empty($product->extra_fields)}
                                         {foreach from=$product->extra_fields item=chiprodname}
-                                            <th><span>{$chiprodname.name|regex_replace:'/\_/':' '|ucwords}</span></th>
+                                            <th><span>{$chiprodname.name|regex_replace:'/\_/':' '|capitalize}</span></th>
                                         {/foreach}
                                     {/if}
                                     <th class="text-right"><strong>{"PRICE"|gettext}</strong></th>
@@ -466,8 +461,8 @@
                                         </td>
                                         {if !empty($chiprod->extra_fields)}
                                             {foreach from=$chiprod->extra_fields item=ef}
-                                                <td data-title="{$ef.name|regex_replace:'/\_/':' '|ucwords}">
-                                                    <span>{$ef.value|stripslashes}</span>
+                                                <td data-title="{$ef.name|regex_replace:'/\_/':' '|capitalize}">
+                                                    <span>{expStripSlashes($ef.value)}</span>
                                                 </td>
                                             {/foreach}
                                         {/if}

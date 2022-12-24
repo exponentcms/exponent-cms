@@ -12,6 +12,7 @@ class Less_Tree_Operation extends Less_Tree {
 	public $operands;
 	public $isSpaced;
 	public $type = 'Operation';
+    public $parensInOp;
 
 	/**
 	 * @param string $op
@@ -41,7 +42,7 @@ class Less_Tree_Operation extends Less_Tree {
 			}
 
 			if ( !method_exists( $a, 'operate' ) ) {
-                throw new Less_Exception_Compiler( "Operation on an invalid type", null, $a->index, $a->currentFileInfo);
+				throw new Less_Exception_Compiler( "Operation on an invalid type" );
 			}
 
 			return $a->operate( $this->op, $b );

@@ -57,7 +57,7 @@ class textcontrol extends formcontrol {
         $this->size = !empty($this->size) ? $this->size : 25;
         $idname  = (!empty($this->id)) ? $this->id : $name;
         $idname = createValidId($idname);
-        if ($this->type != 'text') {
+        if ($this->type !== 'text') {
             $extra_class = ' ' . $this->type;
         } else {
             $extra_class = '';
@@ -75,7 +75,7 @@ class textcontrol extends formcontrol {
         if (!empty($this->append) && bs()) {
             if (bs2()) {
                 $html .= '<div class="input-append">';
-            } elseif (bs3() || bs4() || bs5()) {
+            } elseif (bs3()) {
                 $html .= '<div class="input-group">';
             }
         }
@@ -109,12 +109,10 @@ class textcontrol extends formcontrol {
                 $html .= '<span class="add-on"><i class="icon-'.$this->append.'"></i></span>';
             } elseif (bs3()) {
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->append.'"></i></span>';
-            } elseif (bs4() || bs5()) {
-                $html .= '<span class="input-group-addon"><i class="fas fa-'.$this->append.'"></i></span>';
             }
             $html .= '</div>';
         }
-        if (!empty($this->description)) $html .= "<div class=\"".((bs3() || bs4() || bs5())?"help-block":"control-desc")."\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
         $html .= ($this->horizontal) ? '</div>' : '';
         return $html;
     }

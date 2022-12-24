@@ -22,7 +22,7 @@
  * @package    Core
  * @subpackage Controllers
  */
-
+#[AllowDynamicProperties]
 abstract class expController {
     protected $classname = ''; // full controller name w/ 'Controller' suffix
     public $baseclassname = ''; // root controller name w/o 'Controller' suffix

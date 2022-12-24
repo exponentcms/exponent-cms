@@ -123,7 +123,8 @@ class XMLParser
             return;
         }
 
-        $parser = xml_parser_create();
+        // NB: we use '' instead of null to force charset detection from the xml declaration
+        $parser = xml_parser_create('');
 
         foreach ($this->parsing_options as $key => $val) {
             xml_parser_set_option($parser, $key, $val);
@@ -136,7 +137,7 @@ class XMLParser
 
         xml_set_object($parser, $this);
 
-        switch($returnType) {
+        switch ($returnType) {
             case self::RETURN_PHP:
                 xml_set_element_handler($parser, 'xmlrpc_se', 'xmlrpc_ee_fast');
                 break;
@@ -315,7 +316,7 @@ class XMLParser
                         $this->_xh['ac'] = ''; // reset the accumulator
                         break;
                     }
-                // we do not support the <NIL/> extension, so
+                // if here, we do not support the <NIL/> extension, so
                 // drop through intentionally
                 default:
                     // INVALID ELEMENT: RAISE ISF so that it is later recognized!!!
@@ -652,6 +653,9 @@ class XMLParser
         }
 
         // 3 - test if encoding is specified in the xml declaration
+        /// @todo this regexp will fail if $xmlChunk uses UTF-32/UCS-4, and most likely UTF-16/UCS-2 as well. In that
+        ///       case we leave the guesswork up to mbstring - which seems to be able to detect it, starting with php 5.6.
+        ///       For lower versions, we could attempt usage of mb_ereg...
         // Details:
         // SPACE:         (#x20 | #x9 | #xD | #xA)+ === [ \x9\xD\xA]+
         // EQ:            SPACE?=SPACE? === [ \x9\xD\xA]*=[ \x9\xD\xA]*
@@ -688,7 +692,7 @@ class XMLParser
     }
 
     /**
-     * Helper function: checks if an xml chunk as a charset declaration (BOM or in the xml declaration)
+     * Helper function: checks if an xml chunk has a charset declaration (BOM or in the xml declaration)
      *
      * @param string $xmlChunk
      * @return bool

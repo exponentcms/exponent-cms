@@ -55,6 +55,13 @@
 
   &.show {
     display: block;
+    &.date-container {
+      min-height: 315px;
+    }
+
+    &.time-container {
+      min-height: 217px;
+    }
   }
 
   .td-collapse {

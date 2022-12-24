@@ -45,9 +45,9 @@ DirectoryIndex index.php
     # Kludge out certain file types that we don't want to try to route thru the eXp router.
     RewriteCond %{REQUEST_URI} !\.(css|js|pdf|shtml|htc|map)$ [NC]
     # Kludge out image files that we don't want to try to route thru the eXp router.
-    RewriteCond %{REQUEST_URI} !\.(jp?g|gif|png|tiff)$ [NC]
+    RewriteCond %{REQUEST_URI} !\.(jpe?g|gif|png|tiff|svg|webp)$ [NC]
     # Kludge out media files that we don't want to try to route thru the eXp router.
-    RewriteCond %{REQUEST_URI} !\.(mp3|mp4|webm|ogv|flv|f4v)$ [NC]
+    RewriteCond %{REQUEST_URI} !\.(mp3|mp4|webm|ogv|flv|f4v|mov|mpeg)$ [NC]
     # Kludge out certain other misc files that we don't want to try to route thru the eXp router.
     RewriteCond %{REQUEST_URI} !^/robots\.txt$ [NC]
     RewriteCond %{REQUEST_URI} !^/favicon\.ico$ [NC]

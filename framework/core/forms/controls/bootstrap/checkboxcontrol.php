@@ -29,6 +29,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class checkboxcontrol extends formcontrol {
 
+    var $type     = 'select';
     var $default = false;
     var $value = "1";
 //    var $newschool = false;
@@ -93,7 +94,7 @@ class checkboxcontrol extends formcontrol {
             $html = '<div id="' . $divID . '" class="checkbox control control-group';
             $html .= (!empty($this->class)) ? ' ' . $this->class : '';
             $html .= (!empty($this->required)) ? ' required">' : '">';
-            $html .= "<label" . $for . " class=\" ".(bs3()?"control-label ":"")."checkbox control\" style=\"display:inline;\">";
+            $html .= "<label" . $for . " class=\"checkbox control\" style=\"display:inline;\">";
             if (!empty($this->flip)) $html .= $label;
             $html .= $this->controlToHTML($name);
             if (empty($this->flip)) $html .= $label;

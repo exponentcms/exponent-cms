@@ -77,7 +77,7 @@
                             <th><strong>{"QTY"|gettext}</strong></th>
                             <th><strong>{"SKU"|gettext}</strong></th>
                             {foreach from=$product->extra_fields item=chiprodname}
-                                <th><span>{$chiprodname.name|regex_replace:'/\_/':' '|ucwords}</span></th>
+                                <th><span>{$chiprodname.name|regex_replace:'/\_/':' '|capitalize}</span></th>
                             {/foreach}
                             <th style="text-align: right; padding-right: 10px"><strong>{"PRICE"|gettext}</strong></th>
                             {*<th>{'Action'|gettext}</th>*}
@@ -104,7 +104,7 @@
                                 <td><span>{$chiprod->model}</span></td>
                                 {if $chiprod->extra_fields}
                                     {foreach from=$chiprod->extra_fields item=ef}
-                                    <td><span>{$ef.value|stripslashes}</span></td>
+                                    <td><span>{expStripSlashes($ef.value)}</span></td>
                                     {/foreach}
                                 {/if}
                                 <td style="text-align: right;">

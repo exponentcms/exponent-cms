@@ -33,6 +33,7 @@ class yuicalendarcontrol extends formcontrol
 {
 
 //    var $disable_text = "";
+    var $type     = 'datetime';
     var $showdate = true;
     var $showtime = false;
 
@@ -81,8 +82,7 @@ class yuicalendarcontrol extends formcontrol
         if (!$this->showdate && !$this->showtime) {
             return "";
         }
-        $html = parent::toHTML($label, $name);
-        return $html;
+        return parent::toHTML($label, $name);
     }
 
     function controlToHTML($name, $label = null)
@@ -141,7 +141,7 @@ class yuicalendarcontrol extends formcontrol
                         display: {
                             icons: {
                                 time: 'bi bi-clock',
-                                date: 'bi bi-calendar',
+                                date: 'bi bi-calendar3',
                                 up: 'bi bi-arrow-up',
                                 down: 'bi bi-arrow-down',
                                 previous: 'bi bi-chevron-left',

@@ -99,7 +99,7 @@ class genericcontrol extends formcontrol {
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
             } elseif (bs4() || bs5()) {
                 $html .= '<div class="input-group">';
-                $html .= '<span class="input-group-addon"><i class="fas fa-'.$this->prepend.'"></i></span>';
+                $html .= '<span class="input-group-text"><i class="fas fa-'.$this->prepend.'"></i></span>';
             } else {
                 $html .= '<span class="add-on"><i class="'.$this->prepend.'"></i></span>';
             }

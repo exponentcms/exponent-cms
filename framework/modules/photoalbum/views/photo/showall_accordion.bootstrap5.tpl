@@ -55,7 +55,7 @@
         {foreach name=items from=$page->cats key=catid item=cat}
             <div id="item{$catid}" class="accordion-item">
                 <{$config.item_level|default:'h2'} class="accordion-header" id="heading-{$catid}">
-                    <button class="accordion-button{if !(($smarty.foreach.items.iteration==1 && $config.initial_view == '3') || $config.initial_view == '2')} collapsed{/if}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{$catid}" aria-expanded="true" aria-controls="collapse-{$catid}">{if $item->title ==""}&#160;{else}{$item->title}{/if}</button>
+                    <button class="accordion-button{if !(($smarty.foreach.items.iteration==1 && $config.initial_view == '3') || $config.initial_view == '2')} collapsed{/if}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{$catid}" aria-expanded="true" aria-controls="collapse-{$catid}">{if $cat->name ==""}&#160;{else}{$cat->name}{/if}</button>
                 </{$config.item_level|default:'h2'}>
                 <div id="collapse-{$catid}" class="accordion-collapse collapse{if ($smarty.foreach.items.iteration==1 && $config.initial_view == '3') || $config.initial_view == '2'} show{/if}" aria-labelledby="heading-{$catid}" data-bs-parent="#photo-{$id}">
                     <div class="piece accordion-body">

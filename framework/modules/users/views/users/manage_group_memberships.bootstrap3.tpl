@@ -89,7 +89,7 @@
 </div>
 
 {*{if $table_filled}*}
-{script unique="manage-groups" jquery='jquery.dataTables,dataTables.bootstrap,dataTables.checkboxes'}
+{script unique="manage-groups" jquery='jquery.dataTables,dataTables.checkboxes'}
 {literal}
     $(document).ready(function() {
         // var responsiveHelper;

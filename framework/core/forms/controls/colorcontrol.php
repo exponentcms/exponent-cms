@@ -41,11 +41,11 @@ class colorcontrol extends textcontrol {
      */
     function toHTML($label,$name) {
 		if (!empty($this->id)) {
-		    $divID  = ' id="'.$this->id.'Control"';
-		    $for = ' for="'.createValidId($this->id).'"';
+            $divID = ' id="' . $this->id . 'Control"';
+            $for = ' for="' . createValidId($this->id) . '"';
 		} else {
 //		    $divID  = '';
-            $divID  = ' id="'.$name.'Control"';
+            $divID = ' id="' . $name . 'Control"';
 		    $for = '';
 		}
 
@@ -53,20 +53,41 @@ class colorcontrol extends textcontrol {
 		$class = empty($this->class) ? '' : $this->class;
 
 //        $html = '';
-        $html = '<div'.$divID.' class="'.$this->type.'-control control form-group ' . $class . " " . $disabled;
+        $html = '<div' . $divID . ' class="' . $this->type . '-control control form-group ' . $class . " " . $disabled;
 		$html .= !empty($this->required) ? ' required">' : '">';
 		//$html .= "<label>";
         if($this->required) {
-            $labeltag = '<span class="required" title="'.gt('This entry is required').'">*&#160;</span>' . $label;
+            $labeltag = '<span class="required" title="' . gt('This entry is required') . '">*&#160;</span>' . $label;
         } else {
             $labeltag = $label;
         }
+        $label_class = "";
+        if (bs2()){
+            if ($this->horizontal) {
+                $label_class = "control-label";
+            }
+        } elseif (bs3()) {
+            if ($this->horizontal) {
+                $label_class = "control-label col-sm-2";
+            }
+        } elseif (bs4()) {
+            if ($this->horizontal) {
+                $label_class = "col-form-label col-sm-2 float-sm-left pt-0";
+            }
+        } elseif (bs5()) {
+            $label_class = "form-label";
+            if ($this->horizontal) {
+                $label_class = "col-form-label col-sm-2 float-sm-left";
+            }
+        } else {
+            $label_class = "label";
+        }
 		if(empty($this->flip)){
-			$html .= (!empty($label)) ? "&#160;<label"." class=\"".(bs()?"control-label":"label").($this->horizontal&&(bs3()||bs4()||bs5())?' col-sm-2':'')."\""." style=\"display:inline-block\">".$labeltag."</label>" : "";
+            $html .= (!empty($label)) ? "&#160;<label" . " class=\"" . $label_class . "\"" . " style=\"display:inline-block\">" . $labeltag . "</label>" : "";
 			$html .= $this->controlToHTML($name, $label);
 		} else {
 			$html .= $this->controlToHTML($name, $label);
-			$html .= (!empty($label)) ? "&#160;<label"." class=\"".(bs()?"control-label":"label").($this->horizontal&&(bs3()||bs4()||bs5())?' col-sm-2':'')."\""." style=\"display:inline-block\">".$labeltag."</label>" : "";
+            $html .= (!empty($label)) ? "&#160;<label" . " class=\"" . $label_class . "\"" . " style=\"display:inline-block\">" . $labeltag . "</label>" : "";
 		}
 		//$html .= "</label>";
 		$html .= "</div>";

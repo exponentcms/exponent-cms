@@ -1,4 +1,4 @@
-/* Slate 5.2.2 */
+/* Slate 5.2.3 */
 // Bootswatch
 
 
@@ -232,6 +232,10 @@ h6 {
 
 legend {
   color: $white;
+}
+
+.form-control {
+  color-scheme: light;
 }
 
 .input-group-addon {

@@ -401,7 +401,7 @@ class expCore
     public static function saveData($url, $filename, $ref = false, $post = false)
     {
         $chImg = curl_init($url);
-        $fp = fopen($filename, 'w');
+        $fp = fopen($filename, 'wb');
         curl_setopt($chImg, CURLOPT_FILE, $fp);
 //    	curl_setopt($chImg, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($chImg, CURLOPT_BINARYTRANSFER, 1);
@@ -515,7 +515,7 @@ class expCore
 		// CREATE A TEMP FILE
 		$tmpfname = tempnam(BASE.'/tmp', "rep"); // Rig
 
-		$handle = fopen($tmpfname, "w");
+		$handle = fopen($tmpfname, "wb");
 		fwrite($handle,$out);
 		fclose($handle);
 
@@ -630,6 +630,29 @@ class expCore
 //                    'theme_update'
 //                ) . '" target="_blank">' . gt('Help') . '</a>';
             flash('notice', $message);
+        }
+    }
+
+    // set up controls search order based on framework outside of theme/subtheme page
+    public static function setup_autoload($framework) {
+        global $auto_dirs;
+
+        if ($framework === 'jquery' || $framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5')
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
+        if ($framework === 'bootstrap' || $framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5')
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
+        if ($framework === 'bootstrap3' || $framework === 'bootstrap4' || $framework === 'bootstrap5')
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
+        if ($framework === 'bootstrap4' || $framework === 'bootstrap5')
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap4');
+        if ($framework === 'bootstrap5')
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap5');
+        if (newui())
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
+        array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
+        if (!defined('XHTML')) {
+            define('XHTML', 1);
+            define('XHTML_CLOSING', "/"); //default
         }
     }
 

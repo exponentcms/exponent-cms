@@ -37,12 +37,12 @@ class rangecontrol extends textcontrol {
     function controlToHTML($name, $label) {
         $this->size = !empty($this->size) ? $this->size : 25;
         $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$name.'"';
-        if ($this->type != 'text') {
+        if ($this->type !== 'text') {
             $extra_class = ' ' . $this->type;
         } else {
             $extra_class = '';
         }
-        $html = ($this->horizontal && (bs3()||bs4() || bs5())) ? '<div class="col-sm-10">' : '';
+        $html = ($this->horizontal) ? '<div class="col-sm-10">' : '';
         $html .= '<input' . $idname . ' class="text form-control' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
         $html .= " value=\"" . str_replace('"',"&quot;",$this->default) . "\"";
         $html .= $this->size ? " size=\"".$this->size."\"" : "";
@@ -67,7 +67,7 @@ class rangecontrol extends textcontrol {
         if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" ';
         $html .= "/>";
         if (!empty($this->description)) $html .= "<small class=\"form-text text-muted\">".$this->description."</small>";
-        $html .= ($this->horizontal && (bs3()||bs4() || bs5())) ? '</div>' : '';
+        $html .= ($this->horizontal) ? '</div>' : '';
         return $html;
     }
 

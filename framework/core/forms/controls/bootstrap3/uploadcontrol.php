@@ -27,6 +27,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class uploadcontrol extends formcontrol {
 
+    var $type     = 'file';
     var $accept = "";
 
 	static function name() { return "File Upload Field"; }
@@ -47,7 +48,7 @@ class uploadcontrol extends formcontrol {
 
 	function controlToHTML($name,$label)
     {
-        $html = ($this->horizontal && bs3()) ? '<div class="col-sm-10">' : '';
+        $html = ($this->horizontal) ? '<div class="col-sm-10">' : '';
 
         if (!empty($this->default)) {
             $html .= '<div class="fileinput fileinput-exists input-group" data-provides="fileinput">';
@@ -68,8 +69,8 @@ class uploadcontrol extends formcontrol {
         $html .= '  <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</a></span>';
         $html .= '</div>';
 
-        if (!empty($this->description)) $html .= "<div class=\"" . (bs3() ? "help-block" : "control-desc") . "\">" . $this->description . "</div>";
-        $html .= ($this->horizontal && bs3()) ? '</div>' : '';
+        if (!empty($this->description)) $html .= "<div class=\"help-block" . "\">" . $this->description . "</div>";
+        $html .= ($this->horizontal) ? '</div>' : '';
 
         expCSS::pushToHead(array(
             "unique" => 'fileupload-' . $name,
@@ -88,17 +89,6 @@ class uploadcontrol extends formcontrol {
                 }
     	    "
         ));
-        if (bs4() || bs5()) {
-            expCSS::pushToHead(array(
-                "unique" => 'fileupload-bs4-' . $name,
-                "css" => "
-                    .fileinput.input-group,
-                    .file-input {
-                        display: flex;
-                    }
-        	    "
-            ));
-        }
 
         expJavascript::pushToFoot(array(
             "unique" => 'fileupload-' . $name,

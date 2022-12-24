@@ -47,7 +47,9 @@
                     </div>
                     <div id="tab3" role="tabpanel" class="tab-pane fade">
                         <h2>{"Cart Settings"|gettext}</h2>
-                        {control type="checkbox" name="show_cart" label="Adding an Item Displays Shopping Cart?"|gettext value=1 checked=$config.show_cart description='Move directly to the shopping cart after adding a new item?'|gettext}
+{*                        {control type="checkbox" name="show_cart" label="Adding an Item Displays Shopping Cart?"|gettext value=1 checked=$config.show_cart description='Move directly to the shopping cart after adding a new item?'|gettext}*}
+                        {control type=radiogroup columns=3 name="show_cart" label="After Adding an Item:"|gettext items="Returns to Product page,Displays Shopping Cart,Goes to a Specific page (below)"|gettxtlist values="0,1,2" default=$config.show_cart|default:"0" description='What page to display after adding a new item to the Shopping Cart'|gettext}
+                        {control type="dropdown" name="show_cart_page" label="Specific Page after Adding an Item"|gettext items=section::levelDropdownControlArray(0,0,array(),true,'view',true,true) value=$config.show_cart_page description='Select specific page to display after adding a new item to the Shopping Cart'|gettext}
                         {control type="text" name="min_order" label="Minimum order amount to require"|gettext value=$config.min_order filter=money description='Orders less than this amount will not be allowed to complete a checkout'|gettext}
                         {* control type="checkbox" name="allow_anonymous_checkout" label="Allow Anonymous Checkout" value=1 checked=$config.allow_anonymous_checkout *}
                         {group label="Cart"|gettext}
@@ -67,6 +69,8 @@
                     </div>
                     <div id="tab4" role="tabpanel" class="tab-pane fade">
                         <h2>{"Display Settings"|gettext}</h2>
+                        {control type=radiogroup columns=2 name="store_home" label="Store Home Location:"|gettext items="Generic Generated page,Specific page (below)"|gettxtlist values="0,1" default=$config.store_home|default:"0" description='What page to display when a Customer clicks on \'Store\' breadcrumb'|gettext}
+                        {control type="dropdown" name="store_home_page" label="Specific Page for Store Home"|gettext items=section::levelDropdownControlArray(0,0,array(),true,'view',true,true) value=$config.store_home_page description='Select specific page to display  when a Customer clicks on \'Store\' breadcrumb'|gettext}
                         {group label="Product Listing Pages"|gettext}
                             {control type="number" name="images_per_row" label="Products per Row"|gettext size="3" value=$config.images_per_row|default:3 min=0 max=6 description='0 will use default'|gettext}
                             {control type="text" name="pagination_default" label="Default # of products to show per page"|gettext size=3 filter=integer value=$config.pagination_default}
@@ -166,5 +170,39 @@ $('#invoice_email').change(function() {
 });
 if ($('#invoice_email').is(':checked') == false)
     $("#email_settings").hide("slow");
+{/literal}
+{/script}
+
+{script unique="hometype" jquery=1}
+{literal}
+$(document).ready(function(){
+    var radioSwitchers_home = $('#store_homeControl input[type="radio"]');
+    radioSwitchers_home.on('click', function(e){
+        if (e.target.id == 'store_home_1') {
+            $("#store_home_pageControl").css('display', 'block');
+        } else {
+            $("#store_home_pageControl").css('display', 'none');
+        }
+    });
+
+    radioSwitchers_home.trigger('click');
+});
+{/literal}
+{/script}
+
+{script unique="carttype" jquery=1}
+{literal}
+$(document).ready(function(){
+    var radioSwitchers_cart = $('#show_cartControl input[type="radio"]');
+    radioSwitchers_cart.on('click', function(e){
+        if (e.target.id == 'show_cart_2') {
+            $("#show_cart_pageControl").css('display', 'block');
+        } else {
+            $("#show_cart_pageControl").css('display', 'none');
+        }
+    });
+
+    radioSwitchers_cart.trigger('click');
+});
 {/literal}
 {/script}

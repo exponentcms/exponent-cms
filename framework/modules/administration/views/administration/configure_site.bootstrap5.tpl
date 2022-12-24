@@ -17,7 +17,7 @@
 
 {messagequeue}
 
-<div id="siteconfig" class="module administration configure-site bootstrap3 bootstrap4">
+<div id="siteconfig" class="module administration configure-site bootstrap3 bootstrap4 bootstrap5">
 	<div class="form_header">
 		<div class="info-header">
 			<div class="related-actions">
@@ -211,6 +211,7 @@
                         {control type="dropdown" name="sc[SMTP_PROTOCOL]" label="Type of Encrypted Connection"|gettext items=$protocol default=$smarty.const.SMTP_PROTOCOL includeblank="None"}
                         {control type="text" name="sc[SMTP_USERNAME]" label="SMTP Username"|gettext value=$smarty.const.SMTP_USERNAME}
                         {control type="password" name="sc[SMTP_PASSWORD]" label="SMTP Password"|gettext value=$smarty.const.SMTP_PASSWORD}
+                        {control type="checkbox" postfalse=1 name="sc[SMTP_FROM_ONLY]" label="Only use the SMTP Username address above for outgoing emails"|gettext checked=$smarty.const.SMTP_FROM_ONLY value=1 description="Some SMTP Servers only allow sending emails from addresses which exist on themselves"|gettext}
                         {control type="checkbox" postfalse=1 name="sc[SMTP_DEBUGGING]" label="Turn On SMTP Debugging?"|gettext checked=$smarty.const.SMTP_DEBUGGING value=1}
                     {/group}
                     </span>

@@ -121,7 +121,7 @@
         {*<div class="navbar-header">*}
             {*<button type="button" class="navbar-toggle navbar-toggler hidden-sm-up" data-bs-toggle="collapse"*}
                     {*data-bs-target="#admin-navbar-collapse-1">*}
-                {*<span class="sr-only">{'Toggle navigation'|gettext}</span>*}
+                {*<span class="visually-hidden">{'Toggle navigation'|gettext}</span>*}
                 {*<span class="icon-bar"></span>*}
                 {*<span class="icon-bar"></span>*}
                 {*<span class="icon-bar"></span>&#9776;*}
@@ -177,7 +177,7 @@
         }
 
         var adminerwindow = function (){
-            var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?{/literal}{$db_driver}{literal}={/literal}{$smarty.const.DB_HOST|escape:"url"}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}{/literal}{$ns}{literal}');
+            var win = window.open(EXPONENT.PATH_RELATIVE+'external/adminer/admin.php?{/literal}{$db_driver}{literal}={/literal}{$smarty.const.DB_HOST|escape:"url"}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}{/literal}{$ns}{literal}');
             if (!win) { err(); }
         }
 

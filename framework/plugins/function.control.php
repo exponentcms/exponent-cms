@@ -426,7 +426,7 @@ function smarty_function_control($params, &$smarty) {
                         ));
                     }
                     return;
-                } elseif (ANTI_SPAM_CONTROL == 0) {
+                } else {
                     return;
                 }
                 break;

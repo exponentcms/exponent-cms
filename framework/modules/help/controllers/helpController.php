@@ -226,6 +226,9 @@ class helpController extends expController {
             }
         }
 
+        if ($this->params['version'] === 'current') {
+            $this->params['version'] = $current_version->id;
+        }
 	    $where = empty($this->params['version']) ? 1 : 'help_version_id='.(int)($this->params['version']);
 	    $page = new expPaginator(array(
             'model'=>'help',

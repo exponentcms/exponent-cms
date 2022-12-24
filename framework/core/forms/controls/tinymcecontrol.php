@@ -247,6 +247,18 @@ class tinymcecontrol extends formcontrol
                 if(!Y.Lang.isUndefined(EXPONENT.editor" . createValidId($name) . ")){
                     return true;
                 };
+
+                const mceElf = new tinymceElfinder({
+                    // connector URL (Set your connector)
+                    url: EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/elfinder.php',
+                    // upload target folder hash for this tinyMCE
+                    uploadTargetHash: 'lexp2_Lw', // Hash value on elFinder of writable folder
+                    // elFinder dialog node id
+                    nodeId: 'elfinder', // Any ID you decide
+                    baseUrl: EXPONENT.PATH_RELATIVE + 'external/elFinder/',
+                    cssAutoLoad: EXPONENT.PATH_RELATIVE + 'external/elFinder' + EXPONENT.ELFINDER_THEME + '/css/theme.css',
+                });
+
                 EXPONENT.editor" . createValidId($name) . " = tinymce.init({
                     selector : '#" . createValidId($name) . "',
                     plugins : ['" . $plugins . "'],
@@ -269,35 +281,7 @@ class tinymcecontrol extends formcontrol
                     font_formats :
                         " . $fontnames . ",
                     end_container_on_empty_block: true,
-                    file_picker_callback: function expBrowser (callback, value, meta) {
-                        tinymce.activeEditor.windowManager.open({
-                            file: '" . makelink(
-                                    array("controller" => "file", "action" => "picker", "ajax_action" => 1, "update" => "tiny")
-                                ) . "?filter='+meta.filetype,
-                            title: '".gt('File Manager')."',
-                            width: " . FM_WIDTH . ",
-                            height: " . FM_HEIGHT . ",
-                            resizable: 'yes'
-                        }, {
-                            oninsert: function (url, alt, title) {
-                                // Provide file and text for the link dialog
-                                if (meta.filetype == 'file') {
-                                    callback(url, {text: alt, title: title});
-                                }
-
-                                // Provide image and alt text for the image dialog
-                                if (meta.filetype == 'image') {
-                                    callback(url, {alt: alt});
-                                }
-
-                                // Provide alternative source and posted for the media dialog
-                                if (meta.filetype == 'media') {
-                                    callback(url);
-                                }
-                            }
-                        });
-                        return false;
-                    },
+                    file_picker_callback: mceElf.browser,
                 });
 
             });
@@ -306,19 +290,7 @@ class tinymcecontrol extends formcontrol
             }
         });
         ";
-
-        expJavascript::pushToFoot(
-            array(
-                "unique" => "tinymcepu",
-                "src"=>PATH_RELATIVE."external/editors/tinymce/plugins/quickupload/plupload.full.min.js"
-            )
-        );
-        expJavascript::pushToFoot(
-            array(
-                "unique" => "tinymce",
-                "src"=>PATH_RELATIVE."external/editors/tinymce/tinymce.min.js"
-            )
-        );
+        expHTMLEditorController::load_tiny_elFinder('tinymce');
         expJavascript::pushToFoot(
             array(
                 "unique" => "000-tinymce" . $name,

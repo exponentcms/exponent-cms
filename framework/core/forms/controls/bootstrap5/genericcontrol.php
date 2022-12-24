@@ -63,9 +63,9 @@ class genericcontrol extends formcontrol {
         }
 //        if ($this->required) $label = "*" . $label;
         $disabled = $this->disabled == true ? "disabled" : "";
-        if ($this->type != 'hidden') {
+        if ($this->type !== 'hidden') {
             $class = empty($this->class) ? '' : ' '.$this->class;
-            $html = '<div' . $divID . ' class="' . $this->type . '-control control ' . ($this->horizontal ? 'row ' : '') . 'form-group ' . $class . '" ' . $disabled;
+            $html = '<div' . $divID . ' class="' . $this->type . '-control control mb-2 ' . ($this->horizontal ? 'row ' : '') . 'form-group ' . $class . '" ' . $disabled;
             $html .= (!empty($this->required)) ? ' required="required">' : '>';
       		//$html .= "<label>";
             if($this->required) {
@@ -91,29 +91,18 @@ class genericcontrol extends formcontrol {
         $this->size = !empty($this->size) ? $this->size : 20;
         $this->name = empty($this->name) ? $name : $this->name;
         $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$this->name.'"';
-        $html = '';
-        $html .= ($this->type != 'hidden' && $this->horizontal) ? '<div class="col-sm-10">' : '<div>';
+        $html = ($this->type !== 'hidden' && $this->horizontal) ? '<div class="col-sm-10">' : '<div>';
         if (!empty($this->prepend)) {
-            if (bs2()) {
-                $html .= '<div class="input-prepend">';
-                $html .= '<span class="add-on"><i class="icon-'.$this->prepend.'"></i></span>';
-            } elseif (bs3()) {
-                $html .= '<div class="input-group">';
-                $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
-            } elseif (bs4() || (bs5() && !USE_BOOTSTRAP_ICONS)) {
+            if (!USE_BOOTSTRAP_ICONS) {
                 $html .= '<div class="input-group input-group-sm">';
-                $html .= '<span class="input-group-prepend"><i class="input-group-text fas fa-'.$this->prepend.'"></i></span>';
+                $html .= '<i class="input-group-text fas fa-'.$this->prepend.'"></i>';
             } else {
                 $html .= '<div class="input-group input-group-sm">';
-                $html .= '<span class="input-group-prepend"><i class="input-group-text bi bi-'.expTheme::buttonIcon($this->prepend)->class.'"></i></span>';
+                $html .= '<i class="input-group-text bi bi-'.expTheme::buttonIcon($this->prepend)->class.'"></i>';
             }
         }
-        if (!empty($this->append) && bs()) {
-            if (bs2()) {
-                $html .= '<div class="input-append">';
-            } elseif (bs3() || bs4() || bs5()) {
-                $html .= '<div class="input-group input-group-sm">';
-            }
+        if (!empty($this->append)) {
+            $html .= '<div class="input-group input-group-sm">';
         }
         $html .= '<input'.$idname.' type="'.$this->type.'" name="' . $this->name . '" value="'.$this->default.'"';
         if ($this->size) $html .= ' size="' . $this->size . '"';
@@ -150,18 +139,14 @@ class genericcontrol extends formcontrol {
         if (!empty($this->description))
             $html .= ' aria-describedby="'. $name . 'HelpBlock "';
         $html .= ' />';
-        if (!empty($this->prepend) && bs()) {
+        if (!empty($this->prepend)) {
             $html .= '</div>';
         }
-        if (!empty($this->append) && bs()) {
-            if (bs2()) {
-                $html .= '<span class="add-on"><i class="icon-'.$this->append.'"></i></span>';
-            } elseif (bs3()) {
-                $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->append.'"></i></span>';
-            } elseif (bs4() || (bs5() && !USE_BOOTSTRAP_ICONS)) {
-                $html .= '<span class="input-group-append"><i class="input-group-text fas fa-'.$this->append.'"></i></span>';
+        if (!empty($this->append)) {
+            if (!USE_BOOTSTRAP_ICONS) {
+                $html .= '<i class="input-group-text fas fa-'.$this->append.'"></i>';
             } else {
-                $html .= '<span class="input-group-append"><i class="input-group-text bi bi-'.expTheme::buttonIcon($this->append)->class.'"></i></span>';
+                $html .= '<i class="input-group-text bi bi-'.expTheme::buttonIcon($this->append)->class.'"></i>';
             }
             $html .= '</div>';
         }

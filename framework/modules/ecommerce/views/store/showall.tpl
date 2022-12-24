@@ -18,16 +18,8 @@
 {/css}
 
 <div class="module store showall">
-    <div class="category-breadcrumb">
-        <a href="{link controller=store action=showall}" title="{'View the Store'|gettext}">{'Store'|gettext}</a>{if count($ancestors)}&#160;&#160;&raquo;&#160;{/if}
-        {foreach from=$ancestors item=ancestor name=path}
-            {if !$smarty.foreach.path.last}
-                <a href="{link controller=store action=showall title=$ancestor->sef_url}" title="{'View this Product Category'|gettext}'>{$ancestor->title}</a>&#160;&#160;&raquo;&#160;
-            {else}
-                {$ancestor->title}
-            {/if}
-        {/foreach}
-    </div>
+    {$show_product=''}
+    {exp_include file="categoryBreadcrumb.tpl"}
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>
     {else}
         <{$config.heading_level|default:'h1'}>{$current_category->title}</{$config.heading_level|default:'h1'}>

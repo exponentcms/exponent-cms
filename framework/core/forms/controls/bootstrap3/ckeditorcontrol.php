@@ -269,7 +269,7 @@ class ckeditorcontrol extends formcontrol {
             $html = '<div class="col-sm-10">' . $html . '</div>';
         }
 
-        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"help-block"."\">".$this->description."</div>";
         return $html;
     }
 

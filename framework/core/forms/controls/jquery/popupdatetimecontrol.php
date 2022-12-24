@@ -31,6 +31,7 @@ if (!defined('EXPONENT')) {
 class popupdatetimecontrol extends formcontrol
 {
 
+    var $type     = 'datetime';
     var $disable_text = "";
     var $showtime = true;
     var $showdate = true;
@@ -139,7 +140,7 @@ class popupdatetimecontrol extends formcontrol
             #	$html .= '<input type="hidden" name="'.$name.'_enabled" value="1" />';
         }
         $html .= '<a class="module-actions" style="z-index:999;" href="javascript:void(0);" id="J_popup_closeable_' . $idname . '">' . $img . '</a>';
-        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 
 //        $script = "
 //            EXPONENT.YUI3_CONFIG.modules = {

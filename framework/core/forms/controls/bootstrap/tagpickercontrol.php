@@ -26,6 +26,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class tagpickercontrol extends formcontrol {
 
+    var $type     = 'select';
     var $record = array();
     var $subtype = '';
     var $taglist = '';

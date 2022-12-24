@@ -35,27 +35,15 @@
 {/css}
 
 {if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}
-{script unique="ckeditor" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js"}
-
-{/script}
-{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || SITE_WYSIWYG_EDITOR == 'tinymce5'}
-{script unique="tinymcepu" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/plugins/quickupload/plupload.full.min.js"}
-
-{/script}
-{if $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
-{script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
-
-{/script}
-{else}
-{script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce5/tinymce.min.js"}
-
-{/script}
-{/if}
+    {script unique="ckeditor" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js"}
+    {/script}
+{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce" || $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce5"}
+    {expHTMLEditorController::load_tiny_elFinder($smarty.const.SITE_WYSIWYG_EDITOR)}
 {/if}
 
 <div id="editproduct" class="module store edit yui3-skin-sam exp-admin-skin">
     {if $record->id != ""}
-        <h1>{'Edit Information for'|gettext}{if $record->childProduct|@count != 0} {'Parent'|gettext}{/if}{if $record->parent_id != 0} {'Child'|gettext}{/if} {$model_name|ucfirst}</h1>
+        <h1>{'Edit Information for'|gettext}{if $record->childProduct|@count != 0} {'Parent'|gettext}{/if}{if $record->parent_id != 0} {'Child'|gettext}{/if} {makecase type=ucfirst value=$model_name}</h1>
     {else}
         <h1>{'New'|gettext} {$model_name}</h1>
     {/if}
@@ -199,7 +187,7 @@
        tabs.item(0).simulate('click');
 
        Y.one('#editproduct-tabs').removeClass('hide');
-       Y.one('.loadingdiv').remove();
+       // Y.one('.loadingdiv').remove();
     });
 {/literal}
 {/script}

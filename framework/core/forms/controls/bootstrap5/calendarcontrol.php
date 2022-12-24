@@ -32,6 +32,7 @@ class calendarcontrol extends formcontrol
 {
 
 //    var $disable_text = "";
+    var $type     = 'datetime';
     var $showtime = true;
     var $default_date = '';
     var $default_hour = '';
@@ -122,13 +123,11 @@ class calendarcontrol extends formcontrol
         if (USE_BOOTSTRAP_ICONS) {
             $icon_cp = 'bi bi-calendar3';
         } else {
-            $icon_cp = 'far fa-calendar-alt ';
+            $icon_cp = 'far fa-calendar-days';
         }
         $html .= "<div class='input-group input-group-sm' id='" . $idname . "'>
                         <input type='text' class='text form-control' name='" . $name . "' value='".$default."'/>
-                        <span class='input-group-append'>
-                            <span class='input-group-text ".$icon_cp."'></span>
-                        </span>
+                        <span class='input-group-text ".$icon_cp."'></span>
                     </div>";
         if (!empty($this->description))
             $html .= "<div id=\"" . $name . "HelpBlock\" class=\"form-text text-muted\">".$this->description."</div>";
@@ -158,7 +157,7 @@ class calendarcontrol extends formcontrol
                         display: {
                             icons: {
                                 time: 'bi bi-clock',
-                                date: 'bi bi-calendar',
+                                date: 'bi bi-calendar3',
                                 up: 'bi bi-arrow-up',
                                 down: 'bi bi-arrow-down',
                                 previous: 'bi bi-chevron-left',

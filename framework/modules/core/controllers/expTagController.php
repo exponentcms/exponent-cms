@@ -302,7 +302,7 @@ class expTagController extends expController {
         }
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
-        $handle = fopen($file->path, "r");
+        $handle = fopen($file->path, "rb");
 
         // read in the header line
         $header = fgetcsv($handle, 10000, ",");

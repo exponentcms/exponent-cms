@@ -677,7 +677,7 @@ exit();
         $chunksize  = 1 * (1024 * 1024); //you may want to change this
         $bytes_send = 0;
 
-        if ($file = fopen($file, 'r')) {
+        if ($file = fopen($file, 'rb')) {
             if (isset($_SERVER['HTTP_RANGE'])) fseek($file, $range);
 
             while (!feof($file) && (!connection_aborted()) && ($bytes_send < $new_length)) {

@@ -114,7 +114,7 @@
                 {foreach from=$page->records item=listing name=listings}
                     <tr class="{cycle values="odd,even"}">
                         {*<td>{img file_id=$listing->expFile.images[0]->id square=60}</td>*}
-                        <td>{$listing->product_type|ucwords}</td>
+                        <td>{$listing->product_type|capitalize}</td>
                         <td>
                             {if $listing->product_type == "eventregistration"}
                                 <a href={link controller=eventregistration action=show title=$listing->sef_url}>{img file_id=$listing->fileid square=true h=50}{br}{$listing->title}</a>
@@ -163,7 +163,7 @@
     </div>
 </div>
 
-{script unique="manage-products" jquery='jquery.dataTables,dataTables.bootstrap,jquery.dataTables.yadcf'}
+{script unique="manage-products" jquery='jquery.dataTables,jquery.dataTables.yadcf'}
 {literal}
     $(document).ready(function() {
         // var responsiveHelper;

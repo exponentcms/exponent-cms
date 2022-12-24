@@ -27,6 +27,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class uploadcontrol extends formcontrol {
 
+    var $type     = 'file';
     var $accept = "";
 
 	static function name() { return "File Upload Field"; }
