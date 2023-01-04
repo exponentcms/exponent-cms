@@ -30,7 +30,8 @@ Version 2.7.1
   - initial support for PHP v8.2.x
 - add trash feature to file manager
 - add/fix tinymce5 as an editor option
-- fix maintenance view selected by theme framework and fix optional clock display
+- fix maintenance view selected by theme framework
+- fix optional clock display
 - fixes and tweaks many issues in previous versions
 
 Version 2.7.0

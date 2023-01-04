@@ -1342,6 +1342,7 @@ class expHTML2PDF extends expHtmlToPDF
         if (file_exists($html2pdf_loc . 'html2pdf.class.php') && file_exists($tcpdf_loc . 'tcpdf.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata'))
                 expFile::makeDirectory('tmp/ttfontdata');
+            ini_set('display_errors', 0);  // warnings must be turned off to work
             require_once($html2pdf_loc . 'html2pdf.class.php');
             require_once($tcpdf_loc . 'tcpdf.php');
             require_once($html2pdf_loc . '_class/locale.class.php');
@@ -1544,6 +1545,7 @@ class expHTML2PDF5 extends expHTML2PDF
         if (file_exists($html2pdf_loc . 'Html2Pdf.php') && file_exists($tcpdf_loc . 'tcpdf.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata'))
                 expFile::makeDirectory('tmp/ttfontdata');
+            ini_set('display_errors', 0);  // warnings must be turned off to work
             require_once($html2pdf_loc . 'autoload.php');
             require_once($tcpdf_loc . 'tcpdf.php');
             $this->size = $paper_size;

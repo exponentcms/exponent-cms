@@ -628,12 +628,17 @@ if (!defined('SWIFT_PATH')) {
     /**
      * Lexer is needed for Swiftmailer v6
      */
-    define('LEXER_VERSION', '1.2.3');
-    define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
+    define('LEXER_VERSION', '2.1.0');
+    define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/src/');
+    /**
+     * Deprecations is needed for Lexer v2
+     */
+    define('DEPRECATIONS_VERSION', '1.0.0');
+    define('SWIFT_DEPRECATIONS_PATH', BASE . 'external/\deprecations-' . DEPRECATIONS_VERSION . '/lib/Doctrine/Deprecations/');
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '3.2.1');
+    define('EMAIL_VALIDATOR_VERSION', '3.2.4');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
