@@ -191,13 +191,8 @@ function smarty_compiler_exp_include($_params, &$compiler)
         $output .= "echo \$_smarty_tpl->_subTemplateRender(\$_include_file, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
                 ',', (array)$arg_list) . "), 0, false);\n"; // for v3.1.28+
     } else {
-        if (version_compare(SMARTY_VERSION, '3.1.28', 'lt')) {
-            $output .= "echo \$_smarty_tpl->getSubTemplate({$include_file}, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
-                    ',', (array)$arg_list) . "), 0);\n"; // for v3.1.27
-        } else {
-            $output .= "echo \$_smarty_tpl->_subTemplateRender({$include_file}, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
-                    ',', (array)$arg_list) . "), 0, false);\n"; // for v3.1.28+
-        }
+        $output .= "echo \$_smarty_tpl->_subTemplateRender({$include_file}, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
+                ',', (array)$arg_list) . "), 0, false);\n"; // for v3.1.28+
     }
 
     $output .= "\$_smarty_tpl->tpl_vars = \$_smarty_tpl_vars;\n" .

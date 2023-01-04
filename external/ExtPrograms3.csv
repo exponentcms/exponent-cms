@@ -1,7 +1,7 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
 Swiftmailer,6.3.0,github.com/swiftmailer/swiftmailer,6.3.0,we add  eDebugLogger & eDebugHtmlReporter plugins
-Doctrine Lexer,1.2.3,github.com/doctrine/lexer,1.2.3,needed by swiftmailer v6
-EmailValidator,3.2.1,github.com/egulias/EmailValidator,3.2.1,needed by swiftmailer v6; move folder structure and add autoloader to main file
+Doctrine Lexer,1.2.3,github.com/doctrine/lexer,1.2.3/2.1.0/3.0.0,needed by swiftmailer v6
+EmailValidator,3.2.1,github.com/egulias/EmailValidator,3.2.4,needed by swiftmailer v6; change folder structure and add autoloader to main file
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
 Smarty,4.3.0,smarty.net,4.3.0,
@@ -37,7 +37,7 @@ Font-Awesome3,3.2.1,fontawesome.github.com/Font-Awesome,3.2.1,updated FontAwesom
 Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
 Font-Awesome6,6.2.1,fontawesome.com,6.2.1,add import all 'fonts' sheets into main sheet
-Bootstrap-Icons,1.10.2,icons.getbootstrap.com,1.10.2,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
+Bootstrap-Icons,1.10.3,icons.getbootstrap.com,1.10.3,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
 Adminer,4.8.1exp,www.adminer.org,4.8.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
@@ -85,7 +85,7 @@ Sortable,1.15.0,github.com/SortableJS/Sortable,1.15.0,
 jstree,3.3.12,github.com/vakata/jstree,3.3.12,added nav menu icons to stylesheet
 bootstrap3-dialog,1.35.4,github.com/nakupanda/bootstrap3-dialog,1.35.4,use /src .less file and add our .less variable imports; w/ bs4 fixes
 impromptu,6.2.3,trentrichardson.com/Impromptu,6.2.3,add some colors to .css
-bootbox,5.5.3,github.com/makeusabrew/bootbox,6.0.0,
+bootbox,6.0.0,github.com/makeusabrew/bootbox,6.0.0,
 bootstrap-touch-carousel,0.8.0exp,github.com/ixisio/bootstrap-touch-carousel,0.8.0,patched with vertical drag fix
 bootstrap-tagsinput,0.8.0exp,github.com/timschlechter/bootstrap-tagsinput,0.8.0,patched with android fix
 bootstrap-duallistbox,3.0.9/4.0.2,github.com/istvan-ujjmeszaros/bootstrap-duallistbox,4.0.2,v4.0.2 placed in bootstrap4/5theme
