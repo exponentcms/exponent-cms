@@ -824,7 +824,7 @@ class storeController extends expController {
         $filename = 'product_export_' . time() . '.csv';
 
         ob_end_clean();
-        ob_start("ob_gzhandler");
+        ob_start();
 
         // 'application/octet-stream' is the registered IANA type but
         //        MSIE and Opera seems to prefer 'application/octetstream'
