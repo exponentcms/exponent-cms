@@ -21,7 +21,7 @@ CKEDITOR.editorConfig = function( config ) {
     config.protectedSource.push( /<i class[\s\S]*?\>/g );
     config.protectedSource.push( /<\/i>/g );
 
-    /* CKEditor Twitter Bootstrap 5 Styles */
+    /* CKEditor Bootstrap 5 Styles */
     if (CKEDITOR.stylesSet.get( 'default') === null) {
         CKEDITOR.stylesSet.add('default', [
             /* Typography */
