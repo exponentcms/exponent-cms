@@ -123,7 +123,7 @@ class filedownloadController extends expController {
      * @return string
      */
     function meta_rich($request, $object) {
-        if (!empty($object->expFile['downloadable'][0]) && file_exists(BASE.$object->expFile['downloadable'][0]->directory.$object->expFile[0]->filename)) {
+        if (!empty($object->expFile['downloadable'][0]) && file_exists(BASE.$object->expFile['downloadable'][0]->directory.$object->expFile['downloadable'][0]->filename)) {
             $rich_meta = '<!--
         <PageMap>
             <DataObject type="action">
