@@ -67,11 +67,11 @@
 //                message += "{/literal}{$config['date-count']} "{literal};
 //                message += "{/literal}{$config['time-h-count']}:{$config['time-m-count']} {$config['ampm-count']}{literal}" + " <br />";
                 {/literal}{/if}{literal}
-                message += "{/literal}{$config.body|trim|replace:'"':'\''}{literal}";
+                message += "{/literal}{trim($config.body)|replace:'"':'\''}{literal}";
     			note.html(message);
     		},
     		finishedCallback	: function(){
-    			note.html("{/literal}{$config.message|trim|replace:'"':'\''}{literal}");
+    			note.html("{/literal}{trim($config.message)|replace:'"':'\''}{literal}");
     		},
     	});
     });
