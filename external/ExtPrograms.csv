@@ -6,7 +6,7 @@ EmailValidator,3.2.4,github.com/egulias/EmailValidator,3.2.5,needed by swiftmail
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.27/4.3.0,smarty.net,4.3.0,
-phpthumb,1.7.19exp,github.com/JamesHeinrich/phpThumb,1.7.19,phpThumb.config.php - we also allow &amp in parsing and err command
+phpthumb,1.7.20exp,github.com/JamesHeinrich/phpThumb,1.7.20,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.22,github.com/JamesHeinrich/getID3,1.9.22,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.13,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
