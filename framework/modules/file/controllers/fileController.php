@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -979,7 +979,7 @@ class fileController extends expController {
         	$filename = preg_replace('/[^A-Za-z0-9_.-]/','-',date(strftime_to_date_format($filename),time()).'.eql');
 
         	ob_end_clean();
-        	ob_start("ob_gzhandler");
+        	ob_start();
 
         	if (isset($this->params['save_sample'])) { // Save as a theme sample is checked off
         		$path = BASE . "themes/".DISPLAY_THEME."/sample.eql";

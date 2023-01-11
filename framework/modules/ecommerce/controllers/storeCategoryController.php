@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -234,7 +234,7 @@ class storeCategoryController extends expNestedNodeController {
         $filename = 'storecategory_export_' . time() . '.csv';
 
         ob_end_clean();
-        ob_start("ob_gzhandler");
+        ob_start();
 
         // 'application/octet-stream' is the registered IANA type but
         //        MSIE and Opera seems to prefer 'application/octetstream'

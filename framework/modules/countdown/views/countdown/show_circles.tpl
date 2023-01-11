@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -62,10 +62,10 @@
                 message += "{/literal}{'Until'|gettext} {literal}";
                 message += ts.toLocaleString() + " <br />";
                 {/literal}{/if}{literal}
-                message += "{/literal}{$config.body|trim|replace:'"':'\''}{literal}";
+                message += "{/literal}{trim($config.body)|replace:'"':'\''}{literal}";
                 note.html(message);
             } else {
-                note.html("{/literal}{$config.message|trim|replace:'"':'\''}{literal}");
+                note.html("{/literal}{trim($config.message)|replace:'"':'\''}{literal}");
             }
         };
 

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,13 +22,13 @@ class bootstrap3theme extends theme {
     public $user_configured = true;
     public $stock_theme = true;
 
-	function name() { return "Twitter Bootstrap 3 Theme"; }
+	function name() { return "Bootstrap 3 Theme"; }
 	function author() { return "David Leffler"; }
 	function description() {
         $settings = expSettings::parseFile(__DIR__ . "/config.php");
         if (empty($settings['SWATCH']))
             $settings['SWATCH'] = 'custom';
-        $ret = "An HTML5 responsive grids theme based on <a href=\"https://getbootstrap.com/docs/3.4/\" target=\"_blank\">Twitter Bootstrap v3</a> and <a href=\"https://fontawesome.com/versions\" target=\"_blank\">Font Awesome v4</a>";
+        $ret = "An HTML5 responsive grids theme based on <a href=\"https://getbootstrap.com/docs/3.4/\" target=\"_blank\">Bootstrap v3</a> and <a href=\"https://fontawesome.com/versions\" target=\"_blank\">Font Awesome v4</a>";
         if ($settings['SWATCH'] !== 'custom')
             $ret .= " using the <strong>" . ucfirst($settings['SWATCH']) . "</strong> Swatch";
 	    return $ret;
