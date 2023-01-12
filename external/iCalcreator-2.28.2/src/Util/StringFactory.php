@@ -117,7 +117,7 @@ class StringFactory
         $text = str_replace( $BASEDELIMs, $EMPTYROW, $text );
         /* fix line folding */
         $text = str_replace( $BASEDELIM, Util::$CRLF, $text );
-        $text = str_replace( $CRLFexts, null, $text );
+        $text = str_replace( $CRLFexts, '', $text );
         /* split in component/property lines */
         return explode( Util::$CRLF, $text );
     }
