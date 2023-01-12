@@ -167,6 +167,7 @@ class UtilDateTime extends DateTime
      * @return string
      * @since  2.21.7 - 2015-03-07
      */
+    #[\ReturnTypeWillChange]
     public function format( $format = null ) {
         if( empty( $format ) && isset( $this->dateFormat )) {
             $format = $this->dateFormat;
