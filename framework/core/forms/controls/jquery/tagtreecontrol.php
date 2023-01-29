@@ -134,7 +134,7 @@ class tagtreecontrol extends formcontrol {
                 $this->tags[$i]->value = false;
                 $this->tags[$i]->state->selected = false;
             }
-            if (!$this->tags[$i]->active) {
+            if (!$this->tags[$i]->is_active) {
                 $attr = new stdClass();
                 $attr->class = 'inactive';
                 $this->tags[$i]->a_attr = $attr;
