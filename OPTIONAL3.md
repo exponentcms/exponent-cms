@@ -79,7 +79,7 @@ Exponent CMS includes built-in Developer Debugging support, but this feature can
 installing the [Kint](https://github.com/kint-php/kint) PHP library. Simply place the kint.phar file
 into the /external folder. The feature is auto-activated by this installation.
 
-- v3.3.0 to v5.0.1 (/external/kint.phar) is the last 3.x release; (requires Exponent CMS v2.6.0patch2 or later)
+- v3.3.0 to v5.0.2 (/external/kint.phar) is the last 3.x release; (requires Exponent CMS v2.6.0patch2 or later)
 
 ### .less/.scss Auto-prefixer
 
