@@ -31,5 +31,7 @@
         {/if}
         {exp_include file='filedownloaditem.tpl'}
         {$cat=$item->expCat[0]->id}
+    {foreachelse}
+        <strong>{'No Files to Display'|gettext}</strong>
     {/foreach}
     {pagelinks paginate=$page bottom=1}
