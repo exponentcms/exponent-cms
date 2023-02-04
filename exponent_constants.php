@@ -683,7 +683,7 @@ if (!defined('FPDI_VERSION')) {
 }
 
 if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '-1.2.2');  // -2.0.1
+    define('DOMPDF8_VERSION', '-1.2.2');  // -2.0.2
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
