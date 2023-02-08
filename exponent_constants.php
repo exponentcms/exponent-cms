@@ -642,7 +642,7 @@ if (!defined('SWIFT_PATH')) {
      * Deprecations is needed for Lexer v2
      */
     define('DEPRECATIONS_VERSION', '1.0.0');
-    define('SWIFT_DEPRECATIONS_PATH', BASE . 'external/\deprecations-' . DEPRECATIONS_VERSION . '/lib/Doctrine/Deprecations/');
+    define('SWIFT_DEPRECATIONS_PATH', BASE . 'external/deprecations-' . DEPRECATIONS_VERSION . '/lib/Doctrine/Deprecations/');
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
