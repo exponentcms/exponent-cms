@@ -683,11 +683,11 @@ if (!defined('FPDI_VERSION')) {
 }
 
 if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '-1.2.2');  // -2.0.2
+    define('DOMPDF8_VERSION', '-1.2.2');  // -2.0.3
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.5');
+    define('HTML2PDF5_VERSION', '5.2.7');  // 5.2.7
 }
 /**
  * TCPDF is needed for HTML2PDF5
