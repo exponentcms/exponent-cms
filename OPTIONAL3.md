@@ -28,11 +28,11 @@ If you are running an older version of PHP, you may need to use an older PDF Lib
 
 **mPDF is the preferred library.** We currently support two (2) versions:
 
-v8.1.1 is the newest version supported
+v8.1.4 is the newest version supported
 
-- [mpdf81v270.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf81v270.zip/download)
-  This uses the mPDF v8.1.1 library which has been customized for Exponent.
-  This requires Exponent CMS v2.7.0 or later. Works with PHP v5.6 to v8.1
+- [mpdf81v271.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf81v271.zip/download)
+  This uses the mPDF v8.1.4 library which has been customized for Exponent.
+  This requires Exponent CMS v2.7.1 or later. Works with PHP v5.6 to v8.2
 
 v8.0.17 is supported
 
@@ -42,9 +42,15 @@ v8.0.17 is supported
 
 #### domPDF
 
-domPDF was the first supported PHP based library. We currently support one (1) version:
+domPDF was the first supported PHP based library. We currently supports two (2) versions:
 
-**v1.2.2 is the newest version supported**
+**v2.0.3 is the newest version supported**
+
+- [dompdf2v271.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf2v271.zip/download)
+  This uses the domPDF v2.0.3 library which has been customized for Exponent with a fix for thumbnails.
+  This package requires Exponent CMS v2.7.1 and later and PHP v7.1 or later.
+
+v1.2.2 is the previous version which began at v0.8.0
 
 - [dompdf08v270.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf08v260.zip/download)
   This uses the domPDF v1.2.2 library which has been customized for Exponent with a fix for thumbnails.
@@ -55,12 +61,12 @@ domPDF was the first supported PHP based library. We currently support one (1) v
 HTML2PDF differs from the previous two libraries in that is uses a second 3rd party
 library (TCPDF) to perform the actual PDF creation. This appears to the be the slowest engine.
 
-**v5.2.5 is the newest version supported**
+**v5.2.7 is the newest version supported**
 
-- [html2pdf5v270.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/html2pdf5v270.zip/download)
-  This uses the HTML2PDF v5.2.5 library which has the configuration customized for Exponent. It requires
-  the TCPDF v6.4.4 PDF engine which is included in this package. This package requires Exponent CMS v2.7.0
-  or later. Requires PHP v5.6 to v8.0.
+- [html2pdf5v271.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/html2pdf5v271.zip/download)
+  This uses the HTML2PDF v5.2.7 library which has the configuration customized for Exponent. It requires
+  the TCPDF v6.4.4 PDF engine which is included in this package. This package requires Exponent CMS v2.7.1
+  or later. Requires PHP v5.6 to v8.2.
 
 #### WKHTMLtoPDF
 
@@ -79,7 +85,7 @@ Exponent CMS includes built-in Developer Debugging support, but this feature can
 installing the [Kint](https://github.com/kint-php/kint) PHP library. Simply place the kint.phar file
 into the /external folder. The feature is auto-activated by this installation.
 
-- v3.3.0 to v5.0.2 (/external/kint.phar) is the last 3.x release; (requires Exponent CMS v2.6.0patch2 or later)
+- v3.3.0 to v5.0.3 (/external/kint.phar), (requires Exponent CMS v2.6.0patch2 or later)
 
 ### .less/.scss Auto-prefixer
 
@@ -87,11 +93,11 @@ into the /external folder. The feature is auto-activated by this installation.
 
 Exponent CMS includes built-in .less and .scss stylesheet compiling support. Stylesheet library developers
 often expect their stylesheets to be pre-compiled on the server then run through a binary post-css processor.
-Our PHP based solution allows this to take place within Exponent. Adding this option will cause the compiler
-to run much slower than without it, but will add prefixes needed by older browsers.This option can be
+Our PHP based solution allows this to take place within Exponent. Adding this option will cause the less/scss 
+compilers to run much slower than without it, but will add prefixes needed by older browsers.This option can be
 implemented by installing the [php-autoprefixer](https://github.com/padaliyajay/php-autoprefixer) package.
 This library also requires the [PHP-CSS-Parser](https://github.com/sabberworm/PHP-CSS-Parser) PHP
-library.  Simply extract the package into the / (root) folder and it will be automatically recognized.
+library.  Simply extract our complete package into the / (root) folder and it will be automatically recognized.
 
 - [php-autoprefixerv260.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/php-autoprefixerv260.zip/download)
   This uses the php-autoprefixer v1.4 library with PHP-CSS-Parser v8.4.0 library which has been customized
