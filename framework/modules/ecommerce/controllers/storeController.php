@@ -3267,9 +3267,11 @@ class storeController extends expController {
         // Table's primary key
         $primaryKey = 'id';
 
-        echo json_encode(
-        	expDatabase::complex( $this->params, $table, $primaryKey, $columns )
-        );
+        $data = expDatabase::complex( $this->params, $table, $primaryKey, $columns );
+
+        $data['yadcf_data_0'] = array('product', 'eventregistration', 'donation', 'giftcard');
+
+        echo json_encode($data);
     }
 
 }

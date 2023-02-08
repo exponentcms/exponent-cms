@@ -1303,14 +1303,15 @@ abstract class expController {
         $count = 0;
         foreach ($content as $cnt) {
             // get the location data for this content
-            if (isset($cnt['location_data']))
+            if (isset($cnt['location_data'])) {
                 $loc = expUnserialize($cnt['location_data']);
-            $src = isset($loc->src) ? $loc->src : null;
-            // we don't want stuff in the recycle bin
-            if (!$db->selectObjects('sectionref', "module='" . $loc->mod . "' AND source='" . $loc->src . "' AND refcount!=0")) {
-                if ($this::hasSources())
-                    continue; // this module is in the recycle bin and isn't automatically picked up by other modules
+                // we don't want stuff in the recycle bin
+                if (!$db->selectObjects('sectionref', "module='" . $loc->mod . "' AND source='" . $loc->src . "' AND refcount!=0")) {
+                    if ($this::hasSources())
+                        continue; // this module is in the recycle bin and isn't automatically picked up by other modules
+                }
             }
+            $src = isset($loc->src) ? $loc->src : null;
 
             $origid = $cnt['id'];
             unset($cnt['id']);

@@ -38,7 +38,11 @@
 		<thead>
 			<tr>
 				{$page->header_columns}
-                <th>{'Actions'|gettext}</th>
+                <th>
+                    {permissions}
+                    {'Actions'|gettext}
+                    {/permissions}
+                </th>
 			</tr>
 		</thead>
 		<tbody>

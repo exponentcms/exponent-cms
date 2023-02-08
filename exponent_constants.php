@@ -604,7 +604,7 @@ if (!defined('JQUERY_RELATIVE')) {
         define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
     if (!defined('FA6_SCRIPT')) {
-        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css');
+        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css');
     } // cdn FontAwesome v6.x stylesheet
 //}
 
@@ -634,7 +634,7 @@ if (!defined('SWIFT_PATH')) {
      * Deprecations is needed for Lexer v2
      */
     define('DEPRECATIONS_VERSION', '1.0.0');
-    define('SWIFT_DEPRECATIONS_PATH', BASE . 'external/\deprecations-' . DEPRECATIONS_VERSION . '/lib/Doctrine/Deprecations/');
+    define('SWIFT_DEPRECATIONS_PATH', BASE . 'external/deprecations-' . DEPRECATIONS_VERSION . '/lib/Doctrine/Deprecations/');
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
@@ -675,11 +675,14 @@ if (!defined('FPDI_VERSION')) {
 }
 
 if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '-1.2.2');  // -2.0.1
+    define('DOMPDF8_VERSION', '-1.2.2');
+}
+if (!defined('DOMPDF2_VERSION')) {
+    define('DOMPDF2_VERSION', '2.0.3');
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.5');
+    define('HTML2PDF5_VERSION', '5.2.7');  // 5.2.7
 }
 /**
  * TCPDF is needed for HTML2PDF5

@@ -261,6 +261,7 @@ class tinymce5control extends formcontrol
 
                 EXPONENT.editor" . createValidId($name) . " = tinymce.init({
                     selector : '#" . createValidId($name) . "',
+                    height: 300,
                     plugins : ['" . $plugins . "'],
                     " . $additionalConfig . "
                     " . $contentCSS . "
