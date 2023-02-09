@@ -976,7 +976,10 @@ class fileController extends expController {
         		array('__DOMAIN__','__DB__'),
         		array(str_replace('.','_',HOSTNAME),DB_NAME),
                 $this->params['filename']);
-        	$filename = preg_replace('/[^A-Za-z0-9_.-]/','-',date(strftime_to_date_format($filename),time()).'.eql');
+            if (empty($filename)) {
+                $filename = 'database_' . date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), time());
+            }
+            $filename = preg_replace('/[^A-Za-z0-9_.-]/','_',$filename).'.eql';
 
         	ob_end_clean();
         	ob_start();
@@ -1201,7 +1204,10 @@ class fileController extends expController {
             array('__DOMAIN__','__DB__'),
             array(str_replace('.','_',HOSTNAME),DB_NAME),
             $this->params['filename']);
-        $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',date(strftime_to_date_format($filename),time()).'.tar.gz');
+        if (empty($filename)) {
+            $filename = 'files_' . date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), time());
+        }
+        $filename = preg_replace('/[^A-Za-z0-9_.-]/','_',$filename).'.tar.gz';
 
         if (isset($this->params['save_sample'])) { // Save as a theme sample is checked off
             copy($fname . '.tar.gz',BASE . "themes/".DISPLAY_THEME_REAL."/sample.tar.gz");
