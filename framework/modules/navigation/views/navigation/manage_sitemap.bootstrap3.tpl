@@ -173,6 +173,11 @@
                                     {else}
                                         <i class="fa fa-fw fa-ban text-warning" title="{'Inactive'|gettext}"></i>
                                     {/if}
+                                    {if !$section->noindex}
+                                        <i class="fa fa-fw fa-check-square-o" title="{'Index'|gettext}"></i>
+                                    {else}
+                                        <i class="fa fa-fw fa-times-circle text-warning" title="{'No Index'|gettext}"></i>
+                                    {/if}
                                     {if $section->new_window}
                                         <i class="fa fa-fw fa-share-square-o text-success" title="{'Open in New Window'|gettext}"></i>
                                     {else}
@@ -330,6 +335,11 @@
                                         <i class="fa fa-fw fa-sign-out" title="{'Active'|gettext}"></i>
                                     {else}
                                         <i class="fa fa-fw fa-ban text-warning" title="{'Inactive'|gettext}"></i>
+                                    {/if}
+                                    {if !$section->noindex}
+                                        <i class="fa fa-fw fa-check-square-o" title="{'Index'|gettext}"></i>
+                                    {else}
+                                        <i class="fa fa-fw fa-times-circle text-warning" title="{'No Index'|gettext}"></i>
                                     {/if}
                                     {if $section->new_window}
                                         <i class="fa fa-fw fa-share-square-o text-success" title="{'Open in New Window'|gettext}"></i>

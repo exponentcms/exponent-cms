@@ -173,6 +173,11 @@
                                     {else}
                                         <i class="icon-fixed-width icon-ban-circle text-warning" title="{'Inactive'|gettext}"></i>
                                     {/if}
+                                    {if !$section->noindex}
+                                        <i class="icon-fixed-width icon-check" title="{'Index'|gettext}"></i>
+                                    {else}
+                                        <i class="icon-fixed-width icon-remove-circle text-warning" title="{'No Index'|gettext}"></i>
+                                    {/if}
                                     {if $section->new_window}
                                         <i class="icon-fixed-width icon-share text-success" title="{'Open in New Window'|gettext}"></i>
                                     {else}
@@ -330,6 +335,11 @@
                                         <i class="icon-fixed-width icon-signout" title="{'Active'|gettext}"></i>
                                     {else}
                                         <i class="icon-fixed-width icon-ban-circle text-warning" title="{'Inactive'|gettext}"></i>
+                                    {/if}
+                                    {if !$section->noindex}
+                                        <i class="icon-fixed-width icon-check" title="{'Index'|gettext}"></i>
+                                    {else}
+                                        <i class="icon-fixed-width icon-remove-circle text-warning" title="{'No Index'|gettext}"></i>
                                     {/if}
                                     {if $section->new_window}
                                         <i class="icon-fixed-width icon-share text-success" title="{'Open in New Window'|gettext}"></i>

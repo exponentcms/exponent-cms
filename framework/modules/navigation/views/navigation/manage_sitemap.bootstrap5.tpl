@@ -173,6 +173,11 @@
                                     {else}
                                         <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-slash-circle-fill{else}fas fa-fw fa-ban{/if} text-warning" title="{'Inactive'|gettext}"></i>
                                     {/if}
+                                    {if !$section->noindex}
+                                        <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-x-square{else}far fa-fw fa-square-check{/if}" title="{'Index'|gettext}"></i>
+                                    {else}
+                                        <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-check-square{else}far fa-fw fa-rectangle-xmark{/if} text-warning" title="{'No Index'|gettext}"></i>
+                                    {/if}
                                     {if $section->new_window}
                                         <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-box-arrow-right{else}fas fa-fw fa-share-square{/if} text-success" title="{'Open in New Window'|gettext}"></i>
                                     {else}
@@ -330,6 +335,11 @@
                                         <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-box-arrow-right{else}fas fa-fw fa-sign-out-alt{/if}" title="{'Active'|gettext}"></i>
                                     {else}
                                         <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-slash-circle-fill{else}fas fa-fw fa-ban{/if} text-warning" title="{'Inactive'|gettext}"></i>
+                                    {/if}
+                                    {if !$section->noindex}
+                                        <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-x-square{else}far fa-fw fa-square-check{/if}" title="{'Index'|gettext}"></i>
+                                    {else}
+                                        <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-check-square{else}far fa-fw fa-rectangle-xmark{/if} text-warning" title="{'No Index'|gettext}"></i>
                                     {/if}
                                     {if $section->new_window}
                                         <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-box-arrow-right{else}fas fa-fw fa-share-square{/if} text-success" title="{'Open in New Window'|gettext}"></i>
