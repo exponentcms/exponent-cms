@@ -840,6 +840,7 @@ class expMail {
         }
 
         if (!empty(SMTP_FROM_ONLY)) {
+            $this->message->setReplyTo($email);  //note we want replies to go back to the real sender
             $email = trim(SMTP_USERNAME); // default address is ours
         }
         $this->from = $email;
