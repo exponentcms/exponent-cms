@@ -126,7 +126,7 @@ if ($include_videos) {
     }
     $md = new media();
 }
-$sections = $db->selectColumn('section', 'sef_name', 'public = 1 and active = 1');
+$sections = $db->selectColumn('section', 'sef_name', 'public = 1 and active = 1 and noindex=0');
 //if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php')) {
 //    include(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php');
 //    if (count($maps)) {
