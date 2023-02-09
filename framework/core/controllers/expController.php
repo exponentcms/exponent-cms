@@ -1113,6 +1113,7 @@ abstract class expController {
                 $x = 0;
                 $itunes_cats = array();
                 foreach ($ic as $cat) {
+                    $itunes_cats[$x] = new stdClass();
                     $cat_sub = explode(":", $cat);
                     $itunes_cats[$x]->category = $cat_sub[0];
                     if (isset($cat_sub[1])) {
