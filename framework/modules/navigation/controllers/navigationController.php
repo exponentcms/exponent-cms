@@ -851,6 +851,7 @@ class navigationController extends expController {
         global $db, $router;
 
         expHistory::set('editable', $this->params);
+        $sef_name = "";
         if (isset($this->params['id'])) {
             $record = $db->selectObject('redirect_map', 'id=' . $this->params['id']);
         } elseif (isset($this->params['missed_sef_name'])) {
