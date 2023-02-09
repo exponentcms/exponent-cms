@@ -10,13 +10,17 @@ Disallow: /exponent_php_setup.php
 Disallow: /exponent_version.php
 Disallow: /getswversion.php
 Disallow: /logmein.php
+Disallow: /nginix.config
 Disallow: /overrides.php
 Disallow: /phpdoc.xml
+Disallow: /phpdoc2.xml
 Disallow: /reset.php
+Disallow: /rsd.xml.sample
 Disallow: /selector.php
 Disallow: /site_rss.php
 Disallow: /source_selector.php
 # Disallow: /thumb.php
+Disallow: /web.config
 Disallow: /wlwmanifest.xml
 Disallow: /xmlrpc.php
 
@@ -29,6 +33,8 @@ Disallow: /OPTIONAL.md
 Disallow: /README.md
 Disallow: /RELEASE.md
 Disallow: /TODO.md
+Disallow: /readme-ical.txt
+Disallow: /readme-xmlrpc.txt
 
 Disallow: /cgi-bin/
 Disallow: /cart/
