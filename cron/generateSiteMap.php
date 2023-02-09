@@ -127,6 +127,7 @@ if ($include_videos) {
     $md = new media();
 }
 $sections = $db->selectColumn('section', 'sef_name', 'public = 1 and active = 1 and noindex=0');
+$home = $db->selectColumn('section', 'sef_name', 'id = ' . SITE_DEFAULT_SECTION);
 //if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php')) {
 //    include(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php');
 //    if (count($maps)) {
@@ -139,10 +140,12 @@ $sections = $db->selectColumn('section', 'sef_name', 'public = 1 and active = 1 
 //}
 
 foreach ($sections as $item) {
-
     $columns = '<url>' . chr(13) . chr(10);
 
     $columns .= '    <loc>';
+    if ($item === $home) {
+        $item = '';
+    }
     $columns .= URL_FULL . $item;
     $columns .= '</loc>' . chr(13) . chr(10);
 
