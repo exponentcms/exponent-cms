@@ -9,7 +9,7 @@
 
         <supportsPostAsDraft>Yes</supportsPostAsDraft>
         <!--<supportsCustomDate>Yes</supportsCustomDate>-->
-        <supportsExcerpt>No</supportsExcerpt>
+        <supportsExcerpt>Yes</supportsExcerpt>
         <!--<supportsAuthor>Yes</supportsAuthor>-->
         <supportsFileUpload>Yes</supportsFileUpload>
 
@@ -24,7 +24,7 @@
         <supportsNewCategoriesInline>Yes</supportsNewCategoriesInline>
 
         <supportsEmbeds>Yes</supportsEmbeds>
-        <!--<supportsScripts>Yes</supportsScripts>-->
+        <supportsScripts>No</supportsScripts>
 
         <characterSet>utf-8</characterSet>
         <requiresHtmlTitles>Yes</requiresHtmlTitles>

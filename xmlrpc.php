@@ -87,7 +87,7 @@ function exp_getModuleInstancesByType($type = null)
 
     global $db;
 
-    $refs = $db->selectObjects('sectionref', 'module=\'' . $type . '\'');
+    $refs = $db->selectObjects('sectionref', 'module=\'' . $type . '\' and section != 0');
     $modules = array();
     foreach ($refs as $ref) {
         if ($ref->refcount > 0) {
@@ -132,17 +132,19 @@ function getUsersBlogs($xmlrpcmsg)
             $blog_name = (empty($blog[0]->title) ? 'Untitled' : $blog[0]->title) . ' on page ' . $blog[0]->section;
             $loc = expCore::makeLocation('blog', $src);
             $section = $db->selectObject('sectionref', 'source=\'' . $src . '\'');
-            $page = $db->selectObject('section', 'id=' . (int)$section->section);
-            if (expPermissions::check('create', $loc) || (expPermissions::check('edit', $loc))) {
-                $structArray[$src] = new xmlrpcval(
-                    array(
-                        'blogid' => new xmlrpcval($src, 'string'),
-                        'url' => new xmlrpcval(URL_FULL . $page->sef_name, 'string'),
-                        'blogName' => new xmlrpcval($blog_name, 'string'),
-                        'isAdmin' => new xmlrpcval(true, 'boolean'),
-                        'xmlrpc' => new xmlrpcval(URL_FULL . 'xmlrpc.php', 'string')
-                    ), 'struct'
-                );
+            if (!empty($section->section)) {
+                $page = $db->selectObject('section', 'id=' . (int)$section->section);
+                if (expPermissions::check('create', $loc) || (expPermissions::check('edit', $loc))) {
+                    $structArray[$src] = new xmlrpcval(
+                        array(
+                            'blogid' => new xmlrpcval($src, 'string'),
+                            'url' => new xmlrpcval(URL_FULL . $page->sef_name, 'string'),
+                            'blogName' => new xmlrpcval($blog_name, 'string'),
+                            'isAdmin' => new xmlrpcval(true, 'boolean'),
+                            'xmlrpc' => new xmlrpcval(URL_FULL . 'xmlrpc.php', 'string')
+                        ), 'struct'
+                    );
+                }
             }
         }
         if (defined('XMLRPC_DEVELOPMENT') && XMLRPC_DEVELOPMENT == 1)
