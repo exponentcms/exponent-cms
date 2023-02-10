@@ -114,8 +114,8 @@
                 <h1>{$smarty.const.ORGANIZATION_NAME}</h1>
                 {* NOTE no database, so we can't log on! *}
                 {if $db_down}
-                    <h2 class="required">Our website is currently down for maintenance.</h2>
-                    <h3>It will return once our technicians have completed repairs.</h3>
+                    <h2 class="required">{'Our website is currently down for maintenance.'|gettext}</h2>
+                    <h3>{'It will return once our technicians have completed repairs.'|gettext}</h3>
                 {else}
                     <hr class="intro-divider">
                     {$smarty.const.MAINTENANCE_MSG_HTML}
