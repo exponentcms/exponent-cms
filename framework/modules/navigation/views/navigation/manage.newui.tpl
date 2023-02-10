@@ -26,6 +26,9 @@
 		{if $user->isAdmin()}
 			<div class="module-actions">
 				{icon class=manage action=manage_sitemap text='Manage by Sitemap'|gettext}
+                {if $user->isSystemAdmin()}  {* only the real super admin can create/change other super admins *}
+                    {icon class=manage action=buildSiteMap text='Generate Sitemap'|gettext}
+                {/if}
 			</div>
 		{/if}
 	{/permissions}

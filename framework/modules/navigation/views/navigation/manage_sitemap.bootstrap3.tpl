@@ -30,9 +30,12 @@
    		</div>
    	</div>
     {permissions}
-        {if $canManage == 1}
+        {if $user->isAdmin()}
             <div class="module-actions">
                 {icon action=manage text='Manage by Menu Heirarchy'|gettext}
+                {if $user->isSystemAdmin()}  {* only the real super admin can create/change other super admins *}
+                    {icon class=manage action=buildSiteMap text='Generate Sitemap'|gettext}
+                {/if}
             </div>
         {/if}
     {/permissions}
@@ -195,7 +198,7 @@
                                 </td>
                                 <td>
                                     {permissions}
-                                        {if $canManage == 1}
+                                        {if $user->isAdmin()}
                                             <div class="item-actions">
                                                 {if $section->alias_type == 0}
                                                     {icon class=edit action=edit_contentpage record=$section text=notext title="Edit this Page"|gettext}
@@ -358,7 +361,7 @@
                                 </td>
                                 <td>
                                     {permissions}
-                                        {if $canManage == 1}
+                                        {if $user->isAdmin()}
                                             <div class="item-actions">
                                                 {if $section->alias_type == 0}
                                                     {icon class=edit action=edit_contentpage record=$section text=notext title="Edit this Page"|gettext}
