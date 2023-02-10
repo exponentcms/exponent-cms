@@ -14,11 +14,16 @@
  *}
 
 <div class="module users reset-password">
-    <h1>{'Reset Your Password'|gettext}</h1>
-    <blockquote>
-        {'To reset your password, enter your username or email address below.'|gettext}&#160;&#160;
-        {'An email will be sent to the email address you provided along with instructions to reset your password.'|gettext}
-    </blockquote>
+    <div class="info-header">
+        <div class="related-actions">
+            {help text="Get Help with"|gettext|cat:" "|cat:("Resetting User Passwords"|gettext) module="reset-my-password"}
+        </div>
+        <h2>{'Reset'|gettext} {if $isuser}{'your'|gettext}{else}{$u->username}'s{/if} {'password'|gettext}</h2>
+        <blockquote>
+            {'To reset your password, enter your username or email address below.'|gettext}&#160;&#160;
+            {'An email will be sent to the email address you provided along with instructions to reset your password.'|gettext}
+        </blockquote>
+    </div>
 
     {form action=send_new_password}
         {control type="text" name="username" label="Username/Email"|gettext}

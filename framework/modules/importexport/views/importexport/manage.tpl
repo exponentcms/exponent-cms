@@ -19,7 +19,7 @@
     </blockquote>
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help with"|gettext|cat:" "|cat:("Importing Data"|gettext) module="import-data"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Importing Data"|gettext) module="import-export-data"}
         </div>
         <h2>{"Import Data"|gettext}</h2>
     </div>
@@ -30,7 +30,7 @@
     {br}
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help with"|gettext|cat:" "|cat:("Exporting Data"|gettext) module="export-data"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Exporting Data"|gettext) module="import-export-data"}
         </div>
         <h2>{"Export Data"|gettext}</h2>
     </div>
