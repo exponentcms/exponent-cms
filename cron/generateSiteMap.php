@@ -113,7 +113,7 @@ $columns = '';
 if ($include_images) {
     $image_sections = $db->selectObjects('sectionref', "module LIKE '%photo%'");
     foreach ($image_sections as $key => $image_section) {
-        $section = $db->selectColumn('section', 'sef_name', 'public = 1 and active = 1 and id=' . $image_section->section);
+        $section = $db->selectColumn('section', 'sef_name', 'public = 1 AND active = 1 AND id=' . $image_section->section);
         $image_sections[$key]->sef_name = !empty($section[0]) ? $section[0] : null;
     }
     $ph = new photo();
@@ -121,12 +121,12 @@ if ($include_images) {
 if ($include_videos) {
     $media_sections = $db->selectObjects('sectionref', "module LIKE '%media%'");
     foreach ($media_sections as $key => $media_section) {
-        $section = $db->selectColumn('section', 'sef_name', 'public = 1 and active = 1 and id=' . $media_section->section);
+        $section = $db->selectColumn('section', 'sef_name', 'public = 1 AND active = 1 AND id=' . $media_section->section);
         $media_sections[$key]->sef_name = !empty($section[0]) ? $section[0] : null;
     }
     $md = new media();
 }
-$sections = $db->selectColumn('section', 'sef_name', 'public = 1 and active = 1 and noindex=0');
+$sections = $db->selectColumn('section', 'sef_name', 'public = 1 AND active = 1 AND noindex=0 AND (alias_type=0 OR alias_type=3)');
 $home = $db->selectColumn('section', 'sef_name', 'id = ' . SITE_DEFAULT_SECTION);
 //if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php')) {
 //    include(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php');
@@ -284,11 +284,11 @@ if ($include_products) {
     }
 
     //Get all the active products
-    $total = $db->countObjects('product', '(active_type = 0 or active_type = 1) and parent_id = 0');
+    $total = $db->countObjects('product', '(active_type = 0 OR active_type = 1) AND parent_id = 0');
     for ($i = 0; $i < $total; $i += 100) {
         $orderby = 'id '. $db->limitStmt(100, $i);
 
-        $products = $db->selectColumn('product', 'sef_url', '(active_type = 0 or active_type = 1) and parent_id = 0', $orderby);
+        $products = $db->selectColumn('product', 'sef_url', '(active_type = 0 OR active_type = 1) AND parent_id = 0', $orderby);
         foreach ($products as $item) {
 
             $columns = '<url>' . chr(13) . chr(10);
