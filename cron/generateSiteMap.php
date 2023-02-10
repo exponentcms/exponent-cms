@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 ##################################################
 #
@@ -30,6 +31,7 @@ $include_products = false;
 
 //processing flags
 if (php_sapi_name() === 'cli') {
+    //note running this script from cli produces the wrong url
     $nl = "\n";
     if (!empty($_SERVER['argc'])) for ($ac = 1; $ac < $_SERVER['argc']; $ac++) {
         if ($_SERVER['argv'][$ac] === '-mobile') {
@@ -127,7 +129,7 @@ if ($include_videos) {
     $md = new media();
 }
 $sections = $db->selectColumn('section', 'sef_name', 'public = 1 AND active = 1 AND noindex=0 AND (alias_type=0 OR alias_type=3)');
-$home = $db->selectColumn('section', 'sef_name', 'id = ' . SITE_DEFAULT_SECTION);
+$home = $db->selectValue('section', 'sef_name', 'id = ' . SITE_DEFAULT_SECTION);
 //if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php')) {
 //    include(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php');
 //    if (count($maps)) {
