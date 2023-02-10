@@ -33,6 +33,7 @@ class calendarcontrol extends formcontrol
 
 //    var $disable_text = "";
     var $type     = 'datetime';
+    var $showdate = true;
     var $showtime = true;
     var $default_date = '';
     var $default_hour = '';
@@ -102,7 +103,7 @@ class calendarcontrol extends formcontrol
             $this->default_date = date('m/d/Y', $this->default);
             $this->default_hour = date('h', $this->default);
             $this->default_min = date('i', $this->default);
-            $this->default_ampm = date('a', $this->default);
+            $this->default_ampm = date('A', $this->default);
         }
         $this->default = strtotime($this->default_date . ' ' . $this->default_hour . ':' . $this->default_min . ' ' . $this->default_ampm);
         $default = date('n/j/Y g:i a', $this->default);
@@ -136,6 +137,7 @@ class calendarcontrol extends formcontrol
 
         $script = "
             $(document).ready(function() {
+                tempusDominus.extend(window.tempusDominus.plugins.customDateFormat);
                 var tclock = new tempusDominus.TempusDominus(document.getElementById('" . $idname . "'),{
                     localization: {
                         format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
@@ -148,7 +150,11 @@ class calendarcontrol extends formcontrol
         //                    clear: false,
         //                    close: false
                         },
-                        sideBySide: true,
+                         components: {
+                            calendar: " . ($this->showdate ? 'true' : 'false') . ",
+                            clock: " . ($this->showtime ? 'true' : 'false') . ",
+                        },
+                        sideBySide: " . ($this->showdate && $this->showtime ? 'true' : 'false') . ",
                     }
                 });
 
@@ -186,7 +192,10 @@ class calendarcontrol extends formcontrol
             array(
                 "unique"  => 'zzcal-' . $idname,
                 "jquery"    => "tempus-dominus",
-                "src"      => "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js",
+                "src"      => array(
+                    "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js",
+                    JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js"
+                ),
                 "bootstrap" => "collapse",
                 "content" => $script,
             )

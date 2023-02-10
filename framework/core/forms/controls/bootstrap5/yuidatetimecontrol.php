@@ -142,7 +142,10 @@ class yuidatetimecontrol extends formcontrol
             array(
                 "unique"    => "000-datetime-" . $idname,
                 "jquery"    => "tempus-dominus",
-                "src"      => "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js",
+                "src"      => array(
+                    "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js",
+                    JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js"
+                ),
                 "bootstrap" => "collapse",
                 "content"   => $script,
             )

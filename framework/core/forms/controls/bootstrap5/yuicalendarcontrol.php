@@ -93,11 +93,11 @@ class yuicalendarcontrol extends formcontrol
         }
         if (is_numeric($this->default)) {
             if ($this->showdate && !$this->showtime) {
-                $default = date('n/j/Y', $this->default);
+                $default = date('m/j/Y', $this->default);
             } elseif (!$this->showdate && $this->showtime) {
-                $default = date('H:i', $this->default);
+                $default = date('h:i A', $this->default);
             } else {
-                $default = date('n/j/Y H:i', $this->default);
+                $default = date('m/j/Y h:i A', $this->default);
             }
         } else {
             $default = $this->default;
@@ -119,10 +119,11 @@ class yuicalendarcontrol extends formcontrol
 
         $script = "
             $(document).ready(function() {
+                tempusDominus.extend(window.tempusDominus.plugins.customDateFormat);
                 var tclock = new tempusDominus.TempusDominus(document.getElementById('" . $idname . "dateRangePicker'),{
                     localization: {
                         locale: '" . str_replace("_", "-", LOCALE) . "',
-                        format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
+                        format: '" .($this->showdate ? 'L' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'LT' : '') ."',
                     },
                     stepping: 15,
                     display: {
@@ -131,8 +132,12 @@ class yuicalendarcontrol extends formcontrol
         //                    clear: false,
         //                    close: false
                         },
+                        components: {
+                            calendar: " . ($this->showdate ? 'true' : 'false') . ",
+                            clock: " . ($this->showtime ? 'true' : 'false') . ",
+                        },
                         inline: true,
-                        sideBySide: true,
+                        sideBySide: " . ($this->showdate && $this->showtime ? 'true' : 'false') . ",
                     }
                 });
 
@@ -171,6 +176,7 @@ class yuicalendarcontrol extends formcontrol
                 "unique"    => '00yuical-' . $idname,
                 "jquery"    => "tempus-dominus",
                 "bootstrap" => "collapse",
+                "src"       => JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js",
                 "content"   => $script,
             )
         );
