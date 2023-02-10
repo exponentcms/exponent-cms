@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -261,6 +261,7 @@ class tinymcecontrol extends formcontrol
 
                 EXPONENT.editor" . createValidId($name) . " = tinymce.init({
                     selector : '#" . createValidId($name) . "',
+                    height: 300,
                     plugins : ['" . $plugins . "'],
                     " . $additionalConfig . "
                     " . $contentCSS . "

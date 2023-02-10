@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -77,7 +77,7 @@
                             {'Early Registration discounts are discounts applied when a customer registers for this event before a specified date.'|gettext}
                             {'You can configure the discount below.'|gettext}
                         </blockquote>
-                        <table class="early-discount">
+                        <table class="early-discount table">
                             <tr>
                                 <td>{control type="checkbox" name="use_early_price" label="Use an Early Registration Discount if a customer registers before"|gettext value=1 checked=$record->use_early_price postfalse=1}</td>
                             </tr>
@@ -96,7 +96,7 @@
                             {'Quantity discounts are discounts applied when a customer registers a certain number of people for this event.'|gettext}
                             {'You can configure how the discounts work by setting the discount rules below.'|gettext}
                         </blockquote>
-                        <table class="qty-discount">
+                        <table class="qty-discount table">
                             <tr>
                                 <td>{'If a customer registers more than'|gettext} </td>
                                 <!--td>{control type="dropdown" name="quantity_discount_num_items_mod" label=" " items=$record->quantity_discount_items_modifiers value=$record->quantity_discount_num_items}</td-->

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -35,9 +35,9 @@
 		{foreach from=$userarray item=user}
 			<tr class="{cycle values='even,odd'}">
 				<td style="background-color:inherit;">
-					{if $user->changed == 1}<span style="color:green;">{'Changed'|gettext}</span>
-					{elseif $user->changed == "skipped"}<span style="color:red;">{'Ignored&#160;(Line&#160;%s)'|sprintf:$user->linenum})</span>
-					{else}<span style="color:black;">{'Success'|gettext}</span>
+					{if $user->changed == 1}<span style="color:green;">{'Updated'|gettext}</span>
+					{elseif $user->changed == "skipped"}<span style="color:red;">{'Ignored'|gettext} ({'Line'|gettext} {$user->linenum})</span>
+					{else}<span style="color:black;">{'Added'|gettext}</span>
 					{/if}
 				</td>
 				<td>{$user->id}</td>

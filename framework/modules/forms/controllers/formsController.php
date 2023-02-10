@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -1852,7 +1852,7 @@ class formsController extends expController {
             $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',$f->sef_url.'.eql');
 
             ob_end_clean();
-            ob_start("ob_gzhandler");
+            ob_start();
 
             // This code was lifted from phpMyAdmin, but this is Open Source, right?
 

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -691,6 +691,7 @@ class remove_oldfiles extends upgradescript {
             'external/EmailValidator-2.1.24/',
             'external/EmailValidator-3.0.0/',
             'external/EmailValidator-3.1.2/',
+            'external/EmailValidator-3.2.1/',
             'external/facebook-php-sdk-3.2.2/',
             'external/fedex-php/',
             'external/fedex-phpv13/',
@@ -715,6 +716,7 @@ class remove_oldfiles extends upgradescript {
             'external/lexer-1.2.0/',
             'external/lexer-1.2.1/',
             'external/lexer-1.2.2/',
+            'external/lexer-1.2.3/',
             'external/minify/lib/',
             'external/minify/min/lib/Solar/',
             'external/minify/min_extras/',

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -48,7 +48,7 @@
 	{/script}
 
 	{form action=export_eql_process}
-		<table cellspacing="0" cellpadding="2">
+		<table cellspacing="0" cellpadding="2" class="table">
 			{section name=tid loop=$tables step=2}
 				<tr class="{cycle values='even,odd'}">
 					<td>

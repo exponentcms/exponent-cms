@@ -1,7 +1,8 @@
+#!/usr/bin/env php
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #

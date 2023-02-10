@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -70,8 +70,10 @@ class expMail {
 	function __construct($params = array()) {
         if (version_compare(SWIFT_VERSION, '6.0.0', 'ge')) {
             require_once(SWIFT_LEXER_PATH . 'AbstractLexer.php');
+            require_once(SWIFT_DEPRECATIONS_PATH . 'Deprecation.php');
+            require_once(SWIFT_LEXER_PATH . 'Token.php');
             require_once(SWIFT_EMAIL_PATH . 'EmailValidator.php');
-            Egulias\EmailValidator\EmailValidator::registerAutoload();
+            Egulias\EmailValidator\EmailValidator::registerAutoload();  // our custom autoload function
         }
 		require_once(SWIFT_PATH . 'swift_required.php');
 
@@ -97,7 +99,6 @@ class expMail {
 					}
 					break;
 				case "native":
-
 					if (isset($params['connections']) && !is_array($params['connections']) && $params['connections'] != '') {
 						// Allow custom mail parameters.
 //						$this->transport = Swift_MailTransport::newInstance($params['connections']);
@@ -839,10 +840,10 @@ class expMail {
         }
 
         if (!empty(SMTP_FROM_ONLY)) {
-            $this->from = trim(SMTP_USERNAME); // default address is ours
-        } else {
-            $this->from = $email;
+            $this->message->setReplyTo($email);  //note we want replies to go back to the real sender
+            $email = trim(SMTP_USERNAME); // default address is ours
         }
+        $this->from = $email;
         if (!empty($email)) {  // && Swift_Validate::email($email)
             $this->message->setFrom($email);  //note this is appropriate? or cumulative $this->message->addFrom($email);
         }

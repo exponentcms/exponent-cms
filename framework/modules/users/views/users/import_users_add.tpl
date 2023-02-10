@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -40,7 +40,7 @@
                 <tr class="row {cycle values='even,odd'}">
                     <td>
                         {if $user.changed == 1}<span style="color:green;">{'Updated'|gettext}</span>
-                        {elseif $user.changed == "skipped"}<span style="color:red;">{'Ignored&#160;(Line&#160;%s)'|sprintf:$user.linenum})</span>
+                        {elseif $user.changed == "skipped"}<span style="color:red;">{'Ignored'|gettext} ({'Line'|gettext} {$user.linenum})</span>
                         {else}<span style="color:black;">{'Added'|gettext}</span>
                         {/if}
                     </td>

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -84,7 +84,7 @@
             {$controls = $event->getAllControls()}
             <div style="overflow: auto; overflow-y: hidden;">
             {$table_filled = true}
-            <table id="view-registrants">
+            <table id="view-registrants table">
                 <thead>
                     <tr>
                         {*<th>{'Registrant Name'|gettext}</th>*}

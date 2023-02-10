@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 # Written and Designed by Dave Leffler
 #
 # This file is part of Exponent
@@ -87,7 +87,7 @@ function exp_getModuleInstancesByType($type = null)
 
     global $db;
 
-    $refs = $db->selectObjects('sectionref', 'module=\'' . $type . '\'');
+    $refs = $db->selectObjects('sectionref', 'module=\'' . $type . '\' and section != 0');
     $modules = array();
     foreach ($refs as $ref) {
         if ($ref->refcount > 0) {
@@ -98,7 +98,8 @@ function exp_getModuleInstancesByType($type = null)
             $modules[$ref->source][] = $mod;
         }
     }
-//    eLog($modules, 'Modules');
+    if (defined('XMLRPC_DEVELOPMENT') && XMLRPC_DEVELOPMENT == 1)
+        eLog($modules, 'Modules');
     return $modules;
 }
 
@@ -131,20 +132,23 @@ function getUsersBlogs($xmlrpcmsg)
             $blog_name = (empty($blog[0]->title) ? 'Untitled' : $blog[0]->title) . ' on page ' . $blog[0]->section;
             $loc = expCore::makeLocation('blog', $src);
             $section = $db->selectObject('sectionref', 'source=\'' . $src . '\'');
-            $page = $db->selectObject('section', 'id=' . (int)$section->section);
-            if (expPermissions::check('create', $loc) || (expPermissions::check('edit', $loc))) {
-                $structArray[$src] = new xmlrpcval(
-                    array(
-                        'blogid' => new xmlrpcval($src, 'string'),
-                        'url' => new xmlrpcval(URL_FULL . $page->sef_name, 'string'),
-                        'blogName' => new xmlrpcval($blog_name, 'string'),
-                        'isAdmin' => new xmlrpcval(true, 'boolean'),
-                        'xmlrpc' => new xmlrpcval(URL_FULL . 'xmlrpc.php', 'string')
-                    ), 'struct'
-                );
+            if (!empty($section->section)) {
+                $page = $db->selectObject('section', 'id=' . (int)$section->section);
+                if (expPermissions::check('create', $loc) || (expPermissions::check('edit', $loc))) {
+                    $structArray[$src] = new xmlrpcval(
+                        array(
+                            'blogid' => new xmlrpcval($src, 'string'),
+                            'url' => new xmlrpcval(URL_FULL . $page->sef_name, 'string'),
+                            'blogName' => new xmlrpcval($blog_name, 'string'),
+                            'isAdmin' => new xmlrpcval(true, 'boolean'),
+                            'xmlrpc' => new xmlrpcval(URL_FULL . 'xmlrpc.php', 'string')
+                        ), 'struct'
+                    );
+                }
             }
         }
-//eLog($structArray, 'getUsersBlogs');
+        if (defined('XMLRPC_DEVELOPMENT') && XMLRPC_DEVELOPMENT == 1)
+            eLog($structArray, 'getUsersBlogs');
         return new xmlrpcresp(new xmlrpcval($structArray, 'array'));
     } else {
         return new xmlrpcresp(0, 1, "Login Failed");
@@ -239,7 +243,8 @@ if ($src == "1") $src = "@random48e7cdc1a672d";
 
             $post->update($params);
 
-//eLog($post->id, 'newPost');
+            if (defined('XMLRPC_DEVELOPMENT') && XMLRPC_DEVELOPMENT == 1)
+                eLog($post->id, 'newPost');
             return new xmlrpcresp(
                 new xmlrpcval($post->id, 'string')
             ); // Return the id of the post just inserted into the DB. See mysql_insert_id() in the PHP manual.
@@ -341,7 +346,8 @@ function editPost($xmlrpcmsg)
 
             $post->update($params);
 
-//eLog($postid, 'editPost');
+            if (defined('XMLRPC_DEVELOPMENT') && XMLRPC_DEVELOPMENT == 1)
+                eLog($postid, 'editPost');
             return new xmlrpcresp(new xmlrpcval(true, 'boolean'));
         } else {
             return new xmlrpcresp(0, 1, "Login Failed");
@@ -389,9 +395,11 @@ function getPost($xmlrpcmsg)
             foreach ($post->expTag as $tag) {
                 $selectedtags .= $tag->title . ', ';
             }
-//eLog($postid, 'getPost id');
-//$tmp = new xmlrpcval(expString::convertSmartQuotes($post->body), 'string');
-//eLog($tmp, 'getPost');
+            if (defined('XMLRPC_DEVELOPMENT') && XMLRPC_DEVELOPMENT == 1) {
+                eLog($postid, 'getPost id');
+                $tmp = new xmlrpcval(expString::convertSmartQuotes($post->body), 'string');
+                eLog($tmp, 'getPost');
+            }
             return new xmlrpcresp(
                 new xmlrpcval(
                     array(
@@ -452,7 +460,8 @@ function deletePost($xmlrpcmsg)
             $post->delete();
         }
 
-//eLog($postid, 'deletePost');
+        if (defined('XMLRPC_DEVELOPMENT') && XMLRPC_DEVELOPMENT == 1)
+            eLog($postid, 'deletePost');
         return new xmlrpcresp(new xmlrpcval(true, 'boolean'));
     } else {
         return new xmlrpcresp(0, 1, "Login Failed");
@@ -535,8 +544,10 @@ if ($src == "1") $src = "@random48e7cdc1a672d";
                     );
                 }
             }
-//eLog($src, 'getRecentPosts src');
-//eLog($structArray, 'getRecentPosts');
+            if (defined('XMLRPC_DEVELOPMENT') && XMLRPC_DEVELOPMENT == 1) {
+                eLog($src, 'getRecentPosts src');
+                eLog($structArray, 'getRecentPosts');
+            }
             return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
         } else {
             return new xmlrpcresp(0, 1, "Login Failed");
@@ -582,8 +593,10 @@ if ($src == "1") $src = "@random48e7cdc1a672d";
                 );
             }
         }
-//eLog($src, 'getCategories src');
-//eLog($structArray, 'getCategories');
+        if (defined('XMLRPC_DEVELOPMENT') && XMLRPC_DEVELOPMENT == 1) {
+            eLog($src, 'getCategories src');
+            eLog($structArray, 'getCategories');
+        }
         return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
     } else {
         return new xmlrpcresp(0, 1, 'Login Failed');
@@ -613,7 +626,8 @@ if ($src == "1") $src = "@random48e7cdc1a672d";
                 );
             }
         }
-//eLog($structArray, 'getCategories_mt');
+        if (defined('XMLRPC_DEVELOPMENT') && XMLRPC_DEVELOPMENT == 1)
+            eLog($structArray, 'getCategories_mt');
         return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
     } else {
         return new xmlrpcresp(0, 1, 'Login Failed');
@@ -659,8 +673,10 @@ if ($src == "1") $src = "@random48e7cdc1a672d";
                 }
             }
         }
-//eLog($src, 'getTerms src');
-//eLog($structArray, 'getTerms');
+        if (defined('XMLRPC_DEVELOPMENT') && XMLRPC_DEVELOPMENT == 1) {
+            eLog($src, 'getTerms src');
+            eLog($structArray, 'getTerms');
+        }
         return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
     } else {
         return new xmlrpcresp(0, 1, 'Login Failed');
@@ -699,7 +715,8 @@ if ($src == "1") $src = "@random48e7cdc1a672d";
                 ), 'struct'
             );
         }
-//eLog($structArray, 'getAuthors');
+        if (defined('XMLRPC_DEVELOPMENT') && XMLRPC_DEVELOPMENT == 1)
+            eLog($structArray, 'getAuthors');
         return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
     } else {
         return new xmlrpcresp(0, 1, 'Login Failed');

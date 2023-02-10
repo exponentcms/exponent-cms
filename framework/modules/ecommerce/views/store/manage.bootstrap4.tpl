@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="yadcf"}
+{css unique="yadcf" scsscss="`$smarty.const.JQUERY_RELATIVE`addons/scss/select2-bootstrap4.scss"}
 {literal}
     table.dataTable thead > tr {
         font-size-adjust: 0.4;
@@ -125,7 +125,7 @@
 		</div>
     {/permissions}
     <div id="products">
-        <table id="prods" style="width:95%;">
+        <table class="responsive{if $smarty.const.ECOM_LARGE_DB} exp-skin-table{/if}" id="prods" style="width:95%;">
             <thead>
                 <tr>
                     <th>{'Type'|gettext}</th>
@@ -190,7 +190,7 @@
     </div>
 </div>
 
-{script unique="manage-products" jquery='jquery.dataTables,jquery.dataTables.yadcf'}
+{script unique="manage-products" jquery='select2,jquery.dataTables,jquery.dataTables.yadcf'}
 {literal}
     $(document).ready(function() {
         // var responsiveHelper;
@@ -215,7 +215,7 @@
     {literal}
             stateSave: true,
             columns: [
-                { data: 'product_type', type: 'text' },
+                { data: 'product_type' },
                 { data: 'title', type: 'html' },
                 { data: 'model', type: 'text' },
                 { data: 'children', type: 'text' },
@@ -256,16 +256,15 @@
         yadcf.init(table, [{
             column_number: 0,
             column_data_type: "text",
-            html_data_type: "text",
-            // filter_type: "multi_select",
-            filter_type: "text",
-            filter_default_label: "",
-            filter_delay: 500,
-            // select_type: 'select2',
-            style_class: 'form-control',
+            filter_type: "select",
+            filter_default_label: "Select Type",
+            select_type: 'select2',
             select_type_options: {
-                width: '30px'
-            }
+            //     width: '50px',
+                theme: "bootstrap4",
+                minimumResultsForSearch: -1 // remove search box
+            },
+            style_class: 'form-control',
         }, {
             column_number: 1,
             column_data_type: "html",

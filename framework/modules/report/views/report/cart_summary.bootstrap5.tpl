@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -27,7 +27,7 @@
             <div class="tab-content">
                 <div id="tab1" role="tabpanel" class="exp-ecom-table tab-pane fade show active">
                     {control type="dropdown" name="filter" label="Range"|gettext|cat:": "  items=$quickrange}
-                    <table border="0" cellspacing="0" cellpadding="0">
+                    <table border="0" cellspacing="0" cellpadding="0" class="table">
                         <tbody>
                             <tr class="even">
                                 <td>{'Carts Started (visits)'|gettext}

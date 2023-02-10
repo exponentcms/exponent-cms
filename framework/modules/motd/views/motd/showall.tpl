@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -38,7 +38,11 @@
 		<thead>
 			<tr>
 				{$page->header_columns}
-                <th>{'Actions'|gettext}</th>
+                <th>
+                    {permissions}
+                    {'Actions'|gettext}
+                    {/permissions}
+                </th>
 			</tr>
 		</thead>
 		<tbody>

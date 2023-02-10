@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -50,7 +50,7 @@
 
     {form id="myform" action="update_memberships"}
         {control type="hidden" name="id" value=$group->id}
-        <table id="groups-manage">
+        <table id="groups-manage" class="table">
             <thead>
                 <tr>
                     {*<th>id</th>*}

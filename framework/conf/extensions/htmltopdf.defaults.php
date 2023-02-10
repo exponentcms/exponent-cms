@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -20,7 +20,7 @@ if (!defined('HTMLTOPDF_PATH')) define('HTMLTOPDF_PATH','');
 if (!defined('HTMLTOPDF_PATH_TMP')) define('HTMLTOPDF_PATH_TMP','');
 if (!defined('HTMLTOPDF_OUTPUT')) define('HTMLTOPDF_OUTPUT','0');
 if (!defined('HTMLTOPDF_ENGINE')) define('HTMLTOPDF_ENGINE','none');
-if (!defined('HTMLTOPDF_PAPER')) define('HTMLTOPDF_PAPER','A4');
+if (!defined('HTMLTOPDF_PAPER')) define('HTMLTOPDF_PAPER','Letter');
 if (!defined('HTMLTOPDF_DEBUG')) define('HTMLTOPDF_DEBUG','0');
 
 ?>

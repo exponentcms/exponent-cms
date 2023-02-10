@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -30,7 +30,7 @@
 </div>
 
 {if $smarty.const.SITE_CODE_EDITOR == 'ace'}
-{script unique='aceeditor' jquery=1 src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.14.0/ace.js'}
+{script unique='aceeditor' jquery=1 src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/ace.js'}
 {literal}
     // Hook up ACE editor to all textareas with data-editor attribute
     $(function () {

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -50,9 +50,9 @@
                             {/if}
                         </td>
                         <td>
-                            {if $record.changed == 1}<span style="color:green;">{'Update'|gettext}</span>
-                            {elseif $record.changed == "skipped"}<span style="color:red;">{'Ignore&#160;(Line&#160;%s)'|sprintf:$record.linenum})</span>
-                            {else}<span style="color:black;">{'Add'|gettext}</span>
+                            {if $record.changed == 1}<span style="color:green;">{'Updated'|gettext}</span>
+                            {elseif $record.changed == "skipped"}<span style="color:red;">{'Ignored'|gettext} ({'Line'|gettext} {$record.linenum})</span>
+                            {else}<span style="color:black;">{'Added'|gettext}</span>
                             {/if}
                         </td>
                         {foreach from=$record key=key item=field}

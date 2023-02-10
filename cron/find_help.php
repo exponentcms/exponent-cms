@@ -2,7 +2,7 @@
 <?php
     ##################################################
     #
-    # Copyright (c) 2004-2022 OIC Group, Inc.
+    # Copyright (c) 2004-2023 OIC Group, Inc.
     #
     # This file is part of Exponent
     #
@@ -15,6 +15,13 @@
     # GPL: http://www.gnu.org/licenses/gpl.txt
     #
     ##################################################
+
+/**
+ * This script is designed to be run on the Help Docs Site
+ *
+ * It assumes the software if the current or development version
+ * It also assumes the database contains the latest help version
+ */
 
     $param_array = array();
     $verbose = false;
@@ -66,7 +73,7 @@
     $pages = array_unique($param_array['page']);
     sort($pages);
     foreach ($pages as $page) {
-        if (!$db->selectObject('section', 'sef_name=\'' . $page . '\'')) {
+        if (empty($db->selectValue('section', 'id', 'sef_name=' . $page))) {
             print $page . $nl;
         }
     }

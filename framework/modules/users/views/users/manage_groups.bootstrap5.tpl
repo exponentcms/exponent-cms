@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -41,7 +41,7 @@
     {br}
     {*{pagelinks paginate=$page top=1}*}
     {$table_filled = true}
-	<table id="groups-manage">
+	<table id="groups-manage" class="table">
 	    <thead>
 			<tr>
 				{*{$page->header_columns}*}

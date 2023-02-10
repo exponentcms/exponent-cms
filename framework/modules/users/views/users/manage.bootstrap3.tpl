@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -64,7 +64,7 @@
 		{icon class=add module=users action=create text="Create a New User"|gettext}
 	</div>
     {br}
-	<table id="users-manage">
+	<table id="users-manage" class="table">
 	    <thead>
 			<tr>
                 <th data-class="expand">{'Username'|gettext}</th>

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -45,9 +45,13 @@
     <div class="module forms showall">
         {if !empty($title)}
             <{$config.heading_level|default:'h1'}>{$title}</{$config.heading_level|default:'h1'}>
+        {elseif $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
+            <{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>
         {/if}
         {if $description != ""}
             {$description}
+        {elseif $config.moduledescription != ""}
+            {$config.moduledescription}
         {/if}
         {permissions}
             <div class="module-actions">
@@ -87,7 +91,7 @@
             {/permissions}
         {*{$page->links}*}
         <div>
-            <table id="forms-showall" border="0" cellspacing="0" cellpadding="0">
+            <table id="forms-showall" border="0" cellspacing="0" cellpadding="0" class="table">
                 <thead>
                     <tr>
                         {*{$page->header_columns}*}
@@ -95,9 +99,11 @@
                             <th{if $caption@first} data-class="expand"{elseif $caption@iteration < 4} data-hide="phone"{elseif $caption@iteration > 7} data-hide="always"{else} data-hide="phone,tablet"{/if}>{$caption}</th>
                         {/foreach}
                         <th>
+                            {permissions}
                             <div class="item-actions">
                                 {'Actions'|gettext}
                             </div>
+                            {/permissions}
                         </th>
                     </tr>
                 </thead>
@@ -140,21 +146,23 @@
                                 </td>
                             {/foreach}
                             <td>
+                                {permissions}
                                 <div class="item-actions">
-                                {if !$config.hide_view || !$permissions.manage}
-                                    {icon img="view.png" action=show forms_id=$f->id id=$fields.id title='View all data fields for this record'|gettext}
-                                {/if}
-                                {if $permissions.edit}
-                                    {icon img="edit.png" action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
-                                {/if}
-                                {if $permissions.delete}
-                                    {icon img="delete.png" action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
-                                {/if}
+                                    {if !$config.hide_view || !$permissions.manage}
+                                        {icon img="view.png" action=show forms_id=$f->id id=$fields.id title='View all data fields for this record'|gettext}
+                                    {/if}
+                                    {if $permissions.edit}
+                                        {icon img="edit.png" action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
+                                    {/if}
+                                    {if $permissions.delete}
+                                        {icon img="delete.png" action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
+                                    {/if}
                                 </div>
+                                {/permissions}
                             </td>
                         </tr>
                     {foreachelse}
-                        <tr><td colspan="{$page->columns|count}"><h4>{$config.no_records_msg|default:"No Records Found"|gettext}</h4></td></tr>
+                        <tr><td colspan="{$page->columns|count+1}"><h4>{$config.no_records_msg|default:"No Records Found"|gettext}</h4></td></tr>
                     {/foreach}
                 </tbody>
             </table>

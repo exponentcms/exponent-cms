@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -72,7 +72,7 @@
                                 {"Quantity discounts are discounts that get applied when a customer purchases a certain amount of this product."|gettext}&#160;&#160;
                                 {"You can configure how the discounts work by setting the discount rules below."|gettext}
                             </blockquote>
-                            <table class="qty-discount">
+                            <table class="qty-discount table">
                                 <tr>
                                     <td>{"If a customer purchases more than"|gettext} </td>
                                     <!--td>{control type="dropdown" name="pricing[quantity_discount_num_items_mod]" label=" " items=$record->quantity_discount_items_modifiers value=$record->quantity_discount_num_items}</td-->

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -23,7 +23,7 @@
         <br/>
     {/if}
     {if $loggedin == true || $smarty.const.PREVIEW_READONLY == 1}
-        {'Welcome'|gettext|cat:', %s'|sprintf:$displayname}<br/>
+        {'Welcome'|gettext} {$displayname}<br/>
         {if !$user->globalPerm('prevent_profile_change')}
             {*<a class="profile" href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>*}
             {icon class="profile" controller=users action=edituser id=$user->id text='Edit Profile'|gettext}

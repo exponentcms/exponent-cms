@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -33,6 +33,8 @@
  * @subpackage Modifier
  */
 function smarty_modifier_brightness($colourstr='', $steps = 20) {
+    if (empty($colourstr))
+        return $colourstr;
     $colourstr = str_replace('#', '', $colourstr);
     $rhex = substr($colourstr, 0, 2);
     $ghex = substr($colourstr, 2, 2);

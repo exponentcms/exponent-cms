@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -70,7 +70,7 @@
                             {if $edit_user->is_acting_admin}{control type=hidden name=is_acting_admin value=1}{/if}
                         {/if}
                         {if $user->isSuperAdmin()}
-                            {if $user->is_system_user}  {* only the real super admin can create/change other super admins *}
+                            {if $user->isSystemAdmin()}  {* only the real super admin can create/change other super admins *}
                                 {control type=checkbox name=is_admin value=1 label="Make this user a Super Administrator?"|gettext checked=$edit_user->is_admin}
                             {else}
                                 {control type=checkbox readonly="readonly" name=is_admin value=1 label="This user is a Super Administrator?"|gettext checked=$edit_user->is_admin}

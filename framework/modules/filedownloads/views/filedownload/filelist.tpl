@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -31,5 +31,7 @@
         {/if}
         {exp_include file='filedownloaditem.tpl'}
         {$cat=$item->expCat[0]->id}
+    {foreachelse}
+        <strong>{'No Files to Display'|gettext}</strong>
     {/foreach}
     {pagelinks paginate=$page bottom=1}

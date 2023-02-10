@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -134,7 +134,7 @@ class tagtreecontrol extends formcontrol {
                 $this->tags[$i]->value = false;
                 $this->tags[$i]->state->selected = false;
             }
-            if (!$this->tags[$i]->active) {
+            if (!$this->tags[$i]->is_active) {
                 $attr = new stdClass();
                 $attr->class = 'inactive';
                 $this->tags[$i]->a_attr = $attr;

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -162,7 +162,7 @@
                             </div>
                         {/permissions}
                         {br}
-                        <table style="width: 100%; border: 0px; text-align: left; padding: 0px; margin:0px;">
+                        <table style="width: 100%; border: 0px; text-align: left; padding: 0px; margin:0px;" class="table">
                             <tr style="border: 0px; padding: 0px; margin:0px;">
                                 <td style="border: 0px; text-align: left; padding: 0px; margin:0px;">
                                     <strong>{"Shipping Method"|gettext}:</strong>{br}
@@ -192,7 +192,7 @@
             {$sm=$order->orderitem[0]->shippingmethod}
             {if $sm->to != "" || $sm->from != "" || $sm->message != ""}
             <div class="col-sm-12">
-                <table class="gift-message">
+                <table class="gift-message table">
                     <thead>
                         <tr>
                             <th>

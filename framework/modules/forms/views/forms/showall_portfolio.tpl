@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -35,10 +35,14 @@
     {/css}
     <div class="module forms showall portfolio">
         {if !empty($title)}
-        <{$config.heading_level|default:'h1'}>{$title}</{$config.heading_level|default:'h1'}>
+            <{$config.heading_level|default:'h1'}>{$title}</{$config.heading_level|default:'h1'}>
+        {elseif $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
+            <{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>
         {/if}
         {if $description != ""}
             {$description}
+        {elseif $config.moduledescription != ""}
+            {$config.moduledescription}
         {/if}
         {permissions}
             <div class="module-actions">
@@ -87,6 +91,7 @@
                     <{$config.item_level|default:'h2'} class="category">{if $fields.$sort!= ""}{$fields.$sort}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</{$config.item_level|default:'h2'}>
                 {/if}
                 <div class="item">
+                    {permissions}
                     <div class="item-actions">
                         {if $permissions.edit}
                             {icon class=edit action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
@@ -95,6 +100,7 @@
                             {icon class=delete action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
                         {/if}
                     </div>
+                    {/permissions}
                     {if !empty($config.report_def_showall)}
                         {eval var=$config.report_def_showall}
                         {clear}

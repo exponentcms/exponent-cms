@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -336,6 +336,9 @@ class blogController extends expController {
                 $sql .= " AND ";
             }
             $sql .= "private = 0 AND (publish = 0 OR publish <= " . time() . ")";
+        }
+        if (empty($sql)) {
+            $sql = "1"; // must explicitly be set for next/prev to work
         }
 
         return $sql;

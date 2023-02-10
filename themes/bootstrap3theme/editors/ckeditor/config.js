@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2022 OIC Group, Inc.
+ * Copyright (c) 2004-2023 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,7 @@ CKEDITOR.editorConfig = function( config ) {
     config.protectedSource.push( /<i class[\s\S]*?\>/g );  // allow <i> opening tag
     config.protectedSource.push( /<\/i>/g );  // allow </i> closing tag
 
-    /* CKEditor Twitter Bootstrap 3 Styles */
+    /* CKEditor Bootstrap 3 Styles */
     if (CKEDITOR.stylesSet.get( 'default') === null) {
         CKEDITOR.stylesSet.add('default', [
             /* Typography */

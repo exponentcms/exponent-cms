@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -895,6 +895,63 @@ class expDOMPDF080 extends expDOMPDF070
 }
 
 /**
+ * This is the class expDOMPDF2
+ * a wrapper for using dompdf v2.0.0+
+ *
+ * @package    Subsystems
+ * @subpackage Subsystems
+ */
+class expDOMPDF2 extends expDOMPDF080
+{
+
+    /**
+     * Return status of pdf engine being installed correctly
+     */
+    public static function installed()
+    {
+        return file_exists(BASE . 'external/dompdf-' . DOMPDF2_VERSION . '/vendor/autoload.php');
+    }
+
+    /**
+     * Constructor: initialize a pdf file file.
+     *
+     * @param string $paper_size page size
+     * @param string $orientation page orientation
+     * @param string $html html code for page
+     * @param bool $use_file a flag to show $html is an html file location to be loaded
+     */
+    public function __construct($paper_size = HTMLTOPDF_PAPER, $orientation = "portrait", $html = null, $use_file = false)
+    {
+        if (file_exists(BASE . 'external/dompdf-' . DOMPDF2_VERSION . '/vendor/autoload.php')) {
+            if (!file_exists(BASE . 'tmp/ttfontdata'))
+                expFile::makeDirectory('tmp/ttfontdata');
+            /**
+             * Disable link creation
+             *
+             * If this setting is set to true, DOMPDF will not embed active links
+             *
+             * @var bool
+             */
+            define("DOMPDF_DISABLE_LINKS", true);
+            require_once(BASE . 'external/dompdf-' . DOMPDF2_VERSION . '/vendor/autoload.php');
+            $this->pdf = new Dompdf\Dompdf();
+            $this->size = $paper_size;
+            $this->orient = $orientation;
+            $this->isRemoteEnabled = true;
+            $this->isJavascriptEnabled = false;
+            $this->pdf->setPaper($this->size, $this->orient);
+            if (!empty($html)) {
+                if ($use_file) {
+                    $this->pdf->loadHtmlFile($html);
+                } else {
+                    $this->pdf->loadHtml($html);
+                }
+            }
+        }
+    }
+}
+
+/**
  * This is the class expMPDF
  * a wrapper for using mPDF v5.7
  *
@@ -1351,6 +1408,7 @@ class expHTML2PDF extends expHtmlToPDF
         if (file_exists($html2pdf_loc . 'html2pdf.class.php') && file_exists($tcpdf_loc . 'tcpdf.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata'))
                 expFile::makeDirectory('tmp/ttfontdata');
+            ini_set('display_errors', 0);  // warnings must be turned off to work
             require_once($html2pdf_loc . 'html2pdf.class.php');
             require_once($tcpdf_loc . 'tcpdf.php');
             require_once($html2pdf_loc . '_class/locale.class.php');
@@ -1553,6 +1611,7 @@ class expHTML2PDF5 extends expHTML2PDF
         if (file_exists($html2pdf_loc . 'Html2Pdf.php') && file_exists($tcpdf_loc . 'tcpdf.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata'))
                 expFile::makeDirectory('tmp/ttfontdata');
+            ini_set('display_errors', 0);  // warnings must be turned off to work
             require_once($html2pdf_loc . 'autoload.php');
             require_once($tcpdf_loc . 'tcpdf.php');
             $this->size = $paper_size;

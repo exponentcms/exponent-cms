@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -824,7 +824,7 @@ class storeController extends expController {
         $filename = 'product_export_' . time() . '.csv';
 
         ob_end_clean();
-        ob_start("ob_gzhandler");
+        ob_start();
 
         // 'application/octet-stream' is the registered IANA type but
         //        MSIE and Opera seems to prefer 'application/octetstream'
@@ -3267,9 +3267,11 @@ class storeController extends expController {
         // Table's primary key
         $primaryKey = 'id';
 
-        echo json_encode(
-        	expDatabase::complex( $this->params, $table, $primaryKey, $columns )
-        );
+        $data = expDatabase::complex( $this->params, $table, $primaryKey, $columns );
+
+        $data['yadcf_data_0'] = array('product', 'eventregistration', 'donation', 'giftcard');
+
+        echo json_encode($data);
     }
 
 }

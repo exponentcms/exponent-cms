@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2022 OIC Group, Inc.
+# Copyright (c) 2004-2023 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -604,7 +604,7 @@ if (!defined('JQUERY_RELATIVE')) {
         define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
     if (!defined('FA6_SCRIPT')) {
-        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css');
+        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css');
     } // cdn FontAwesome v6.x stylesheet
 //}
 
@@ -636,12 +636,17 @@ if (!defined('SWIFT_PATH')) {
     /**
      * Lexer is needed for Swiftmailer v6
      */
-    define('LEXER_VERSION', '1.2.3');
-    define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/lib/Doctrine/Common/Lexer/');
+    define('LEXER_VERSION', '2.1.0');
+    define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/src/');
+    /**
+     * Deprecations is needed for Lexer v2
+     */
+    define('DEPRECATIONS_VERSION', '1.0.0');
+    define('SWIFT_DEPRECATIONS_PATH', BASE . 'external/deprecations-' . DEPRECATIONS_VERSION . '/lib/Doctrine/Deprecations/');
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '3.2.1');
+    define('EMAIL_VALIDATOR_VERSION', '3.2.4');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
@@ -656,7 +661,7 @@ if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.17');
 }
 if (!defined('MPDF81_VERSION')) {
-    define('MPDF81_VERSION', '8.1.1');  // 8.1.4
+    define('MPDF81_VERSION', '8.1.4');  // 8.1.4
 }
 /**
  * Log is needed for MPDF v7+
@@ -678,17 +683,20 @@ if (!defined('FPDI_VERSION')) {
 }
 
 if (!defined('DOMPDF8_VERSION')) {
-    define('DOMPDF8_VERSION', '-1.2.2');  // -2.0.1
+    define('DOMPDF8_VERSION', '-1.2.2');
+}
+if (!defined('DOMPDF2_VERSION')) {
+    define('DOMPDF2_VERSION', '2.0.3');
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.5');
+    define('HTML2PDF5_VERSION', '5.2.7');  // 5.2.7
 }
 /**
  * TCPDF is needed for HTML2PDF5
  */
 if (!defined('TCPDF5_VERSION')) {
-    define('TCPDF5_VERSION', '6.4.4');  // 6.6.2
+    define('TCPDF5_VERSION', '6.6.2');  // 6.6.2
 }
 
 ?>
