@@ -68,7 +68,7 @@
 <a class="triggerlogin" href="#" title="{'Click to open this panel'|gettext}">{'Login'|gettext}</a>
 {else}
     <div>
-        <strong>{'Welcome'|gettext|cat:', %s'|sprintf:$displayname}</strong>{br}{br}
+        <strong>{'Welcome'|gettext} {$displayname}</strong>{br}{br}
         {if !$user->globalPerm('prevent_profile_change')}
             {*<a class="profile" href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>{br}*}
             {icon class="profile" controller=users action=edituser id=$user->id text='Edit Profile'|gettext}

@@ -21,7 +21,7 @@
     <div class="form_header">
         <h2>{'Add New Page to Site Navigation'|gettext}</h2>
         <div class="desc">
-            {if $parent->id == 0}{'You are adding a new top-level page.'|gettext}{else}{"You are adding a new sub page to '%s'."|gettext|sprintf:$parent->name}{/if}
+            {if $parent->id == 0}{'You are adding a new top-level page.'|gettext}{else}{"You are adding a new sub page to."|gettext} {$parent->name}{/if}
             {'Please select the type of page you would like to add.'|gettext}
         </div>
     </div>

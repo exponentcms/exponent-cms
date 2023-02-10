@@ -57,9 +57,9 @@
                             {/if}
                         </td>
                         <td>
-                            {if $user.changed == 1}<span style="color:green;">{'Update'|gettext}</span>
-                            {elseif $user.changed == "skipped"}<span style="color:red;">{'Ignore&#160;(Line&#160;%s)'|sprintf:$user.linenum})</span>
-                            {else}<span style="color:black;">{'Add'|gettext}</span>
+                            {if $user.changed == 1}<span style="color:green;">{'Updated'|gettext}</span>
+                            {elseif $user.changed == "skipped"}<span style="color:red;">{'Ignored'|gettext} ({'Line'|gettext} {$user.linenum})</span>
+                            {else}<span style="color:black;">{'Added'|gettext}</span>
                             {/if}
                         </td>
                         <td>{$user.username}</td>
