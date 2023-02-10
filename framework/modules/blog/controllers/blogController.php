@@ -337,6 +337,9 @@ class blogController extends expController {
             }
             $sql .= "private = 0 AND (publish = 0 OR publish <= " . time() . ")";
         }
+        if (empty($sql)) {
+            $sql = "1"; // must explicitly be set for next/prev to work
+        }
 
         return $sql;
     }
