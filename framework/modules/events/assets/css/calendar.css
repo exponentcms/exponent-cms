@@ -320,7 +320,7 @@ a.cats {
 }
 
 .events .module-actions {
-	display: inline;
+	display: inline-flex;
 }
 
 .events .image {
