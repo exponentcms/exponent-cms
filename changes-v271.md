@@ -22,7 +22,8 @@ Version 2.7.1 - Specific changes from previous version
 - fix export db or files input filename disregarded
 - regression fix pagination ribbon when sorting by category to trim total records
 - regression fix aggregation anomaly prevented blog post next/prev links
-
+- regression fix (v270p1) new bs5 datepicker not passing good date
+- 
 ### v271 updates these 3rd party libraries in v270 and previous patches:
 - bootstrap-icons to v1.10.3
 - EmailValidator to v3.2.4
