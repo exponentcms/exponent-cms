@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdocumentor configVersion="3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://www.phpdoc.org"
                xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd">
-    <title>Exponent v2.7.0</title>
+    <title>Exponent v2.7.1</title>
     <paths>
         <output>../exponent-api3</output>
         <cache>../exponent-api3/cache</cache>
