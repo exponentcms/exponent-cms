@@ -84,7 +84,7 @@
             {$controls = $event->getAllControls()}
             <div style="overflow: auto; overflow-y: hidden;">
             {$table_filled = true}
-            <table id="view-registrants">
+            <table id="view-registrants table">
                 <thead>
                     <tr>
                         {*<th>{'Registrant Name'|gettext}</th>*}

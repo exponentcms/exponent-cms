@@ -51,7 +51,7 @@
     {form id="myform" action="update_memberships"}
         {control type="hidden" name="id" value=$group->id}
         {$table_filled = true}
-        <table id="groups-manage">
+        <table id="groups-manage" class="table">
             <thead>
                 <tr>
                     <th data-class="expand">{'Username'|gettext}</th>

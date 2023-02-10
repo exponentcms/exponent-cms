@@ -30,7 +30,7 @@
 	</div>
     {br}
     {$table_filled = true}
-	<table id="groups-manage">
+	<table id="groups-manage" class="table">
 	    <thead>
 			<tr>
                 <th data-class="expand" data-name="Name">{'Group Name'|gettext}</th>

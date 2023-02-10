@@ -91,7 +91,7 @@
             {/permissions}
         {*{$page->links}*}
         <div>
-            <table id="forms-showall" border="0" cellspacing="0" cellpadding="0">
+            <table id="forms-showall" border="0" cellspacing="0" cellpadding="0" class="table">
                 <thead>
                     <tr>
                         {*{$page->header_columns}*}

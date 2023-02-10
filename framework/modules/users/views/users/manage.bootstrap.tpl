@@ -33,7 +33,7 @@
 	</div>
     {br}
     {$table_filled = true}
-	<table id="users-manage">
+	<table id="users-manage" class="table">
 	    <thead>
 			<tr>
                 <th data-class="expand">{'Username'|gettext}</th>

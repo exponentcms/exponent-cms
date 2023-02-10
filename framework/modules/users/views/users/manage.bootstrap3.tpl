@@ -64,7 +64,7 @@
 		{icon class=add module=users action=create text="Create a New User"|gettext}
 	</div>
     {br}
-	<table id="users-manage">
+	<table id="users-manage" class="table">
 	    <thead>
 			<tr>
                 <th data-class="expand">{'Username'|gettext}</th>

@@ -50,7 +50,7 @@
 
     {form id="myform" action="update_memberships"}
         {control type="hidden" name="id" value=$group->id}
-        <table id="groups-manage">
+        <table id="groups-manage" class="table">
             <thead>
                 <tr>
                     {*<th>id</th>*}
