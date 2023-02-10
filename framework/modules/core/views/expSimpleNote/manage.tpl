@@ -20,7 +20,7 @@
 <div class="module simplenote manage">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help with"|gettext|cat:" "|cat:("Managing Notes"|gettext) module="manage-simple-notes"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Managing Notes"|gettext) module="manage-notes"}
         </div>
         <h2>{'Manage Notes'|gettext}</h2>
         <blockquote>{'The table below shows notes have not yet been approved'|gettext}.</blockquote>

@@ -250,9 +250,11 @@ class expPaginator extends expSubsystem {
 			}
 		}
 
-        // next we'll sort them based on categories if needed
-        if (!empty($this->categorize) && $this->categorize && empty($this->dontsort))
-            expCatController::addCats($this->records,$sort,$this->uncat,$this->groups,$this->dontsortwithincat);
+        // next we'll sort and trim them based on categories if needed
+        if (!empty($this->categorize) && $this->categorize && empty($this->dontsort)) {
+            expCatController::addCats($this->records, $sort, $this->uncat, $this->groups, $this->dontsortwithincat);
+            $this->total_records = null;
+        }
 
         // let's see how many total records there are
         if (empty($this->total_records))

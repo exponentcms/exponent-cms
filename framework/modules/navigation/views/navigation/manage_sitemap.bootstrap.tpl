@@ -30,9 +30,12 @@
    		</div>
    	</div>
     {permissions}
-        {if $canManage == 1}
+        {if $user->isAdmin()}
             <div class="module-actions">
                 {icon action=manage text='Manage by Menu Heirarchy'|gettext}
+                {if $user->isSystemAdmin()}  {* only the real super admin can create/change other super admins *}
+                    {icon class=manage action=buildSiteMap text='Generate Sitemap'|gettext}
+                {/if}
             </div>
         {/if}
     {/permissions}
@@ -173,6 +176,11 @@
                                     {else}
                                         <i class="icon-fixed-width icon-ban-circle text-warning" title="{'Inactive'|gettext}"></i>
                                     {/if}
+                                    {if !$section->noindex}
+                                        <i class="icon-fixed-width icon-check" title="{'Index'|gettext}"></i>
+                                    {else}
+                                        <i class="icon-fixed-width icon-remove-circle text-warning" title="{'No Index'|gettext}"></i>
+                                    {/if}
                                     {if $section->new_window}
                                         <i class="icon-fixed-width icon-share text-success" title="{'Open in New Window'|gettext}"></i>
                                     {else}
@@ -190,7 +198,7 @@
                                 </td>
                                 <td>
                                     {permissions}
-                                        {if $canManage == 1}
+                                        {if $user->isAdmin()}
                                             <div class="item-actions">
                                                 {if $section->alias_type == 0}
                                                     {icon class=edit action=edit_contentpage record=$section text=notext title="Edit this Page"|gettext}
@@ -331,6 +339,11 @@
                                     {else}
                                         <i class="icon-fixed-width icon-ban-circle text-warning" title="{'Inactive'|gettext}"></i>
                                     {/if}
+                                    {if !$section->noindex}
+                                        <i class="icon-fixed-width icon-check" title="{'Index'|gettext}"></i>
+                                    {else}
+                                        <i class="icon-fixed-width icon-remove-circle text-warning" title="{'No Index'|gettext}"></i>
+                                    {/if}
                                     {if $section->new_window}
                                         <i class="icon-fixed-width icon-share text-success" title="{'Open in New Window'|gettext}"></i>
                                     {else}
@@ -348,7 +361,7 @@
                                 </td>
                                 <td>
                                     {permissions}
-                                        {if $canManage == 1}
+                                        {if $user->isAdmin()}
                                             <div class="item-actions">
                                                 {if $section->alias_type == 0}
                                                     {icon class=edit action=edit_contentpage record=$section text=notext title="Edit this Page"|gettext}

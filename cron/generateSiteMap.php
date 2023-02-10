@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 ##################################################
 #
@@ -30,6 +31,7 @@ $include_products = false;
 
 //processing flags
 if (php_sapi_name() === 'cli') {
+    //note running this script from cli produces the wrong url
     $nl = "\n";
     if (!empty($_SERVER['argc'])) for ($ac = 1; $ac < $_SERVER['argc']; $ac++) {
         if ($_SERVER['argv'][$ac] === '-mobile') {
@@ -83,9 +85,12 @@ $mobile_tag = '    <mobile:mobile/>' . chr(13) . chr(10);
 //Header of the xml file
 $content = "<?xml version='1.0' encoding='UTF-8'?>" . chr(13) . chr(10);
 $content .= "<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'";                                                   // standard sitemap
-if ($include_images) $content .= chr(13) . chr(10) . "        xmlns:image='http://www.google.com/schemas/sitemap-image/1.1'";    // image sitemap
-if ($include_videos) $content .= chr(13) . chr(10) . "        xmlns:video='http://www.google.com/schemas/sitemap-video/1.1'";    // video sitemap
-if ($include_mobile) $content .= chr(13) . chr(10) . "        xmlns:mobile='http://www.google.com/schemas/sitemap-mobile/1.0'";  // mobile sitemap
+if ($include_images)
+    $content .= chr(13) . chr(10) . "        xmlns:image='http://www.google.com/schemas/sitemap-image/1.1'";    // image sitemap
+if ($include_videos)
+    $content .= chr(13) . chr(10) . "        xmlns:video='http://www.google.com/schemas/sitemap-video/1.1'";    // video sitemap
+if ($include_mobile)
+    $content .= chr(13) . chr(10) . "        xmlns:mobile='http://www.google.com/schemas/sitemap-mobile/1.0'";  // mobile sitemap
 $content .= ">" . chr(13) . chr(10);
 
 //Check if the file exist
@@ -110,7 +115,7 @@ $columns = '';
 if ($include_images) {
     $image_sections = $db->selectObjects('sectionref', "module LIKE '%photo%'");
     foreach ($image_sections as $key => $image_section) {
-        $section = $db->selectColumn('section', 'sef_name', 'public = 1 and active = 1 and id=' . $image_section->section);
+        $section = $db->selectColumn('section', 'sef_name', 'public = 1 AND active = 1 AND id=' . $image_section->section);
         $image_sections[$key]->sef_name = !empty($section[0]) ? $section[0] : null;
     }
     $ph = new photo();
@@ -118,28 +123,31 @@ if ($include_images) {
 if ($include_videos) {
     $media_sections = $db->selectObjects('sectionref', "module LIKE '%media%'");
     foreach ($media_sections as $key => $media_section) {
-        $section = $db->selectColumn('section', 'sef_name', 'public = 1 and active = 1 and id=' . $media_section->section);
+        $section = $db->selectColumn('section', 'sef_name', 'public = 1 AND active = 1 AND id=' . $media_section->section);
         $media_sections[$key]->sef_name = !empty($section[0]) ? $section[0] : null;
     }
     $md = new media();
 }
-$sections = $db->selectColumn('section', 'sef_name', 'public = 1 and active = 1');
-if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php')) {
-    include(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php');
-    if (count($maps)) {
-        foreach ($maps as $map) { // $maps is set by included $mapfile
-            if (isset($map['url_parts']['controller']))
-                $sections[] = $map['url_parts']['controller'];
-        }
-        $sections = array_unique($sections);
-    }
-}
+$sections = $db->selectColumn('section', 'sef_name', 'public = 1 AND active = 1 AND noindex=0 AND (alias_type=0 OR alias_type=3)');
+$home = $db->selectValue('section', 'sef_name', 'id = ' . SITE_DEFAULT_SECTION);
+//if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php')) {
+//    include(BASE . 'themes/' . DISPLAY_THEME . '/router_maps.php');
+//    if (count($maps)) {
+//        foreach ($maps as $map) { // $maps is set by included $mapfile
+//            if (isset($map['url_parts']['controller']))
+//                $sections[] = $map['url_parts']['controller'];
+//        }
+//        $sections = array_unique($sections);
+//    }
+//}
 
 foreach ($sections as $item) {
-
     $columns = '<url>' . chr(13) . chr(10);
 
     $columns .= '    <loc>';
+    if ($item === $home) {
+        $item = '';
+    }
     $columns .= URL_FULL . $item;
     $columns .= '</loc>' . chr(13) . chr(10);
 
@@ -168,12 +176,12 @@ foreach ($sections as $item) {
                         $columns .= '        <image:loc>';
                         $columns .= $photo->expFile[0]->url;
                         $columns .= '</image:loc>' . chr(13) . chr(10);
-                        $columns .= '        <image:title>';
-                        $columns .= htmlspecialchars($photo->title);
-                        $columns .= '</image:title>' . chr(13) . chr(10);
-                        $columns .= '        <image:caption>';
-                        $columns .= htmlspecialchars($photo->alt);
-                        $columns .= '</image:caption>' . chr(13) . chr(10);
+//                        $columns .= '        <image:title>';
+//                        $columns .= htmlspecialchars($photo->title);
+//                        $columns .= '</image:title>' . chr(13) . chr(10);
+//                        $columns .= '        <image:caption>';
+//                        $columns .= htmlspecialchars($photo->alt);
+//                        $columns .= '</image:caption>' . chr(13) . chr(10);
                         $columns .= '    </image:image>' . chr(13) . chr(10);
                         $num_images++;
                     }
@@ -188,7 +196,7 @@ foreach ($sections as $item) {
                 $loc = serialize(expCore::makeLocation('media', $video_sef->source));
                 $videos = $md->find('all', "location_data='" . $loc . "' AND media_type='file'");
                 foreach ($videos as $video) {
-                    if ($video->expFile['media'][0]->mimetype != 'audio/mpeg' && file_exists(BASE . $video->expFile['media'][0]->directory . $video->expFile['media'][0]->filename)) {
+                    if ($video->expFile['media'][0]->mimetype !== 'audio/mpeg' && file_exists(BASE . $video->expFile['media'][0]->directory . $video->expFile['media'][0]->filename)) {
                         $columns .= '    <video:video>' . chr(13) . chr(10);
                         $columns .= '        <video:thumbnail_loc>';
                         if (!empty($video->expFile['splash'][0]->url)) {
@@ -278,11 +286,11 @@ if ($include_products) {
     }
 
     //Get all the active products
-    $total = $db->countObjects('product', '(active_type = 0 or active_type = 1) and parent_id = 0');
+    $total = $db->countObjects('product', '(active_type = 0 OR active_type = 1) AND parent_id = 0');
     for ($i = 0; $i < $total; $i += 100) {
         $orderby = 'id '. $db->limitStmt(100, $i);
 
-        $products = $db->selectColumn('product', 'sef_url', '(active_type = 0 or active_type = 1) and parent_id = 0', $orderby);
+        $products = $db->selectColumn('product', 'sef_url', '(active_type = 0 OR active_type = 1) AND parent_id = 0', $orderby);
         foreach ($products as $item) {
 
             $columns = '<url>' . chr(13) . chr(10);
@@ -331,9 +339,12 @@ if (fwrite($handle, $content) == FALSE) {
 $action_msg = "SC";
 fclose($handle);
 echo "Generated $count link(s)";
-if ($include_images) echo ", $num_images image(s)";
-if ($include_videos) echo ", $num_videos video(s)";
-if ($include_products) echo ", $num_cats product category(s), with $num_products product(s)";
+if ($include_images)
+    echo ", $num_images image(s)";
+if ($include_videos)
+    echo ", $num_videos video(s)";
+if ($include_products)
+    echo ", $num_cats product category(s), with $num_products product(s)";
 echo " in the sitemap.";
 
 ?>

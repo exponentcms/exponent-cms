@@ -30,9 +30,12 @@
    		</div>
    	</div>
     {permissions}
-        {if $canManage == 1}
+        {if $user->isAdmin()}
             <div class="module-actions">
                 {icon action=manage text='Manage by Menu Heirarchy'|gettext}
+                {if $user->isSystemAdmin()}  {* only the real super admin can create/change other super admins *}
+                    {icon class=manage action=buildSiteMap text='Generate Sitemap'|gettext}
+                {/if}
             </div>
         {/if}
     {/permissions}
@@ -173,6 +176,11 @@
                                     {else}
                                         <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-slash-circle-fill{else}fas fa-fw fa-ban{/if} text-warning" title="{'Inactive'|gettext}"></i>
                                     {/if}
+                                    {if !$section->noindex}
+                                        <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-x-square{else}far fa-fw fa-square-check{/if}" title="{'Index'|gettext}"></i>
+                                    {else}
+                                        <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-check-square{else}far fa-fw fa-rectangle-xmark{/if} text-warning" title="{'No Index'|gettext}"></i>
+                                    {/if}
                                     {if $section->new_window}
                                         <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-box-arrow-right{else}fas fa-fw fa-share-square{/if} text-success" title="{'Open in New Window'|gettext}"></i>
                                     {else}
@@ -190,7 +198,7 @@
                                 </td>
                                 <td>
                                     {permissions}
-                                        {if $canManage == 1}
+                                        {if $user->isAdmin()}
                                             <div class="item-actions">
                                                 {if $section->alias_type == 0}
                                                     {icon class=edit action=edit_contentpage record=$section text=notext title="Edit this Page"|gettext}
@@ -331,6 +339,11 @@
                                     {else}
                                         <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-slash-circle-fill{else}fas fa-fw fa-ban{/if} text-warning" title="{'Inactive'|gettext}"></i>
                                     {/if}
+                                    {if !$section->noindex}
+                                        <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-x-square{else}far fa-fw fa-square-check{/if}" title="{'Index'|gettext}"></i>
+                                    {else}
+                                        <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-check-square{else}far fa-fw fa-rectangle-xmark{/if} text-warning" title="{'No Index'|gettext}"></i>
+                                    {/if}
                                     {if $section->new_window}
                                         <i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-box-arrow-right{else}fas fa-fw fa-share-square{/if} text-success" title="{'Open in New Window'|gettext}"></i>
                                     {else}
@@ -348,7 +361,7 @@
                                 </td>
                                 <td>
                                     {permissions}
-                                        {if $canManage == 1}
+                                        {if $user->isAdmin()}
                                             <div class="item-actions">
                                                 {if $section->alias_type == 0}
                                                     {icon class=edit action=edit_contentpage record=$section text=notext title="Edit this Page"|gettext}

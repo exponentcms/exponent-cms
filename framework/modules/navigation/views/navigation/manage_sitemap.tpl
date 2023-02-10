@@ -41,9 +41,12 @@
    		</div>
    	</div>
     {permissions}
-        {if $canManage == 1}
+        {if $user->isAdmin()}
             <div class="module-actions">
                 {icon action=manage text='Manage by Menu Heirarchy'|gettext}
+                {if $user->isSystemAdmin()}  {* only the real super admin can create/change other super admins *}
+                    {icon class=manage action=buildSiteMap text='Generate Sitemap'|gettext}
+                {/if}
             </div>
         {/if}
     {/permissions}
@@ -184,6 +187,11 @@
                                     {else}
                                         <i class="fa fa-fw fa-ban text-warning" title="{'Inactive'|gettext}"></i>
                                     {/if}
+                                    {if !$section->noindex}
+                                        <i class="far fa-fw fa-check-square" title="{'Index'|gettext}"></i>
+                                    {else}
+                                        <i class="far fa-fw fa-times-circle text-warning" title="{'No Index'|gettext}"></i>
+                                    {/if}
                                     {if $section->new_window}
                                         <i class="fa fa-fw fa-share-square-o text-success" title="{'Open in New Window'|gettext}"></i>
                                     {else}
@@ -201,7 +209,7 @@
                                 </td>
                                 <td>
                                     {permissions}
-                                        {if $canManage == 1}
+                                        {if $user->isAdmin()}
                                             <div class="item-actions">
                                                 {if $section->alias_type == 0}
                                                     {icon class=edit action=edit_contentpage record=$section img="edit.png" text=notext title="Edit this Page"|gettext}
@@ -342,6 +350,11 @@
                                     {else}
                                         <i class="fa fa-fw fa-ban text-warning" title="{'Inactive'|gettext}"></i>
                                     {/if}
+                                    {if !$section->noindex}
+                                        <i class="far fa-fw fa-check-square" title="{'Index'|gettext}"></i>
+                                    {else}
+                                        <i class="far fa-fw fa-times-circle text-warning" title="{'No Index'|gettext}"></i>
+                                    {/if}
                                     {if $section->new_window}
                                         <i class="fa fa-fw fa-share-square-o text-success" title="{'Open in New Window'|gettext}"></i>
                                     {else}
@@ -359,7 +372,7 @@
                                 </td>
                                 <td>
                                     {permissions}
-                                        {if $canManage == 1}
+                                        {if $user->isAdmin()}
                                             <div class="item-actions">
                                                 {if $section->alias_type == 0}
                                                     {icon class=edit action=edit_contentpage record=$section text=notext img="edit.png" title="Edit this Page"|gettext}

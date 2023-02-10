@@ -20,4 +20,4 @@ define('BING_API', 'your_bing_account_api_number');
 //Azure Account from https://datamarket.azure.com/dataset/1899a118-d202-492c-aa16-ba21c33c06cb
 define('ACCOUNT_KEY', 'your_azure_account_key');
 //translation method; default is Azure; 'Azure' is Azure alternate method; 'BING' is for old Bing API
-define('TRANSLATE', '');
+define('TRANSLATE', 'BING');

@@ -79,7 +79,7 @@
         {/if}
     {/foreach}
     {permissions}
-        {if $canManage == 1}
+        {if $user->isAdmin()}
             <div class="module-actions">
                 {icon action=manage}
             </div>
