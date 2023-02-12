@@ -65,7 +65,7 @@
                     {$prepend = '&#160;&#160;|&#160;&#160;'|not_bs}
                 {/if}
                 {if !empty($config.usecategories)}
-                    {'in'|gettext} <a href="{link action=showall src=$record->src cat=$record->expCat[0]->id}" title='{"View all posts filed under"|gettext} {$record->expCat[0]->title}'>{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</a>
+                    {'in'|gettext} <a href="{link action=showall cat=$record->expCat[0]->sef_url src=$record->src}" title='{"View all posts filed under"|gettext} {$record->expCat[0]->title}'>{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</a>
                 {/if}
                 {if !$config.datetag}
                     {'on'|gettext} <span class="date">{$record->publish_date|format_date}</span>

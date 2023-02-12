@@ -28,7 +28,7 @@
     <ul>
         {foreach from=$cats item=cat}
             <li>
-                <a href="{link action=showall cat=$cat->id}" title='{"View all posts filed under"|gettext} {$cat->title}'>{$cat->title} ({$cat->count})</a>
+                <a href="{link action=showall cat=$cat->sef_url}" title='{"View all posts filed under"|gettext} {$cat->title}'>{$cat->title} ({$cat->count})</a>
             </li>
         {/foreach}
     </ul>
