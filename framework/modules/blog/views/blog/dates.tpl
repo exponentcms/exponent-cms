@@ -19,7 +19,9 @@
    		{$config.moduledescription}
    	{/if}
     {foreach from=$dates item=ydate key=year}
-        <h3>{$year}</h3>
+        <h3>
+            <a href="{link action=showall_by_date year=$year}" title='{"View all posts from"|gettext} {$year}'>{$year}</a>
+        </h3>
         <ul>
             {foreach from=$ydate item=mdate key=month}
                 <li>

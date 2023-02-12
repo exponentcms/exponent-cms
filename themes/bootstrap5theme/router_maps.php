@@ -60,15 +60,6 @@ $maps = array();
 //    ),
 //);
 
-// Find blog post by the title. URL would look like blog/my-post-title
-//$maps[] = array(
-//    'controller' => 'blog',
-//    'action' => 'show',
-//    'url_parts' => array(
-//        'controller' => 'blog',
-//        'title' => '(.*)'
-//    ),
-//);
 // Find blog posts by the tag. URL would look like view-blogs-by-tag/my-tag
 //$maps[] = array(
 //    'controller' => 'blog',
@@ -86,6 +77,24 @@ $maps = array();
 //        'controller' => 'blog',
 //        'year' => '(19|20)\d\d',
 //        'month' => '[01]?\d',
+//    ),
+//);
+// Find blog posts by date, year.  URL would look like blog/2019 to display all posts in 2019
+//$maps[] = array(
+//    'controller' => 'blog',
+//    'action' => 'showall_by_date',
+//    'url_parts' => array(
+//        'controller' => 'blog',
+//        'year' => '(19|20)\d\d',
+//    ),
+//);
+// Find blog post by the title. URL would look like blog/my-post-title
+//$maps[] = array(
+//    'controller' => 'blog',
+//    'action' => 'show',
+//    'url_parts' => array(
+//        'controller' => 'blog',
+//        'title' => '(.*)'
 //    ),
 //);
 // Find blog posts by author. URL would look like view-blogs-by-author/author-username

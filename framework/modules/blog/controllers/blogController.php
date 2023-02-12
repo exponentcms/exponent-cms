@@ -153,8 +153,15 @@ class blogController extends expController {
 
     public function showall_by_date() {
 	    expHistory::set('viewable', $this->params, true);
-	    $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
-	    $end_date = expDateTime::endOfMonthTimestamp(mktime(23, 59, 59, $this->params['month'], 1, $this->params['year']));
+        if (isset($this->params['month'])) {
+            $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
+     	    $end_date = expDateTime::endOfMonthTimestamp(mktime(23, 59, 59, $this->params['month'], 1, $this->params['year']));
+             $period = expDateTime::format_date($start_date,"%B %Y");
+        } else {
+            $start_date = expDateTime::startOfYearTimestamp(mktime(0, 0, 0, 1, 1, $this->params['year']));
+     	    $end_date = expDateTime::endOfYearTimestamp(mktime(23, 59, 59, 12, 1, $this->params['year']));
+            $period = expDateTime::format_date($start_date,"%Y");
+        }
 
 		$page = new expPaginator(array(
             'model'=>$this->basemodel_name,
@@ -173,7 +180,7 @@ class blogController extends expController {
 
 		assign_to_template(array(
             'page'=>$page,
-            'moduletitle'=>gt('Blogs by date').' "'.expDateTime::format_date($start_date,"%B %Y").'"')
+            'moduletitle'=>gt('Blogs by date').' "'.$period.'"')
         );
 	}
 

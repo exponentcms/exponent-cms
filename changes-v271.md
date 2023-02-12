@@ -11,6 +11,8 @@ Version 2.7.1 - Specific changes from previous version
 - expHtmlToPDF support for Dompdf v2+
 - add do-not-index indicator to manage pages by sitemap status
 - set email reply-to to actual sender when smtp send requires smtp username
+- allow blog categories url by sef_url instead of only id
+- allow view blog date url by year instead of only year/month
 
 ### v271 fixes these issues in v270 and previous patches:
 - change default pdf output from A4 to Letter
@@ -23,7 +25,8 @@ Version 2.7.1 - Specific changes from previous version
 - regression fix pagination ribbon when sorting by category to trim total records
 - regression fix aggregation anomaly prevented blog post next/prev links
 - regression fix (v270p1) new bs5 datepicker not passing good date
-- 
+- fix issue where group selected expCats array wasn't reindexed
+
 ### v271 updates these 3rd party libraries in v270 and previous patches:
 - bootstrap-icons to v1.10.3
 - EmailValidator to v3.2.4
