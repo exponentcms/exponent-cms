@@ -52,7 +52,15 @@ class blogController extends expController {
     }
 
     public function showall() {
+        global $db;
+
 	    expHistory::set('viewable', $this->params, true);
+        if (isset($this->params['cat']) && !is_numeric($this->params['cat'])) {
+            $cat = $db->selectObject('expCats', "sef_url='" . $this->params['cat'] . "'");
+            if (!empty($cat->id)) {
+                $this->params['cat'] = $cat->id;
+            }
+        }
 		$page = new expPaginator(array(
             'model'=>$this->basemodel_name,
             'where'=>$this->aggregateWhereClause(),
@@ -76,9 +84,11 @@ class blogController extends expController {
             'page'=>$page,
             'params'=>$this->params,
         ));
-        if (isset($this->params['cat'])) assign_to_template(array(
-            'moduletitle' => gt('Posts filed under') . ' ' . (empty($page->records[0]->expCat[0]->title) ? $this->config['uncat'] : $page->records[0]->expCat[0]->title),
-        ));
+        if (isset($this->params['cat'])) {
+            assign_to_template(array(
+                'moduletitle' => gt('Posts filed under') . ' ' . (empty($page->records[0]->expCat[0]->title) ? $this->config['uncat'] : $page->records[0]->expCat[0]->title),
+            ));
+        }
 
 	}
 
