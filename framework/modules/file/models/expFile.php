@@ -1815,10 +1815,11 @@ class expFile extends expRecord {
 
         //FIXME we need to echo and/or write to file within this method to handle large database dumps
         $dump = EQL_HEADER . "\r\n";
+        $version = EXPONENT - 1;
         if ($type == null || $type === 'export') {
-            $dump .= 'VERSION:' . EXPONENT . "\r\n\r\n";
+            $dump .= 'VERSION:' . $version . "\r\n\r\n";
         } else {
-            $dump .= 'VERSION:' . EXPONENT . ':' . $type . "\r\n\r\n";
+            $dump .= 'VERSION:' . $version . ':' . $type . "\r\n\r\n";
         }
 
         if (is_string($tables)) $tables = array($tables);
@@ -1904,7 +1905,7 @@ class expFile extends expRecord {
 //                $version = explode(':', trim($lines[1]));
                 $version = explode(':', trim($line1));
                 $eql_version = $version[1] + 0;
-                $current_version = EXPONENT + 0;
+                $current_version = EXPONENT - 1;
                 if ((array_key_exists(2, $version) && $type == null) || (array_key_exists(
                             2,
                             $version
@@ -2193,7 +2194,7 @@ class expFile extends expRecord {
 
             $version = explode(':', trim($lines[1]));
             $eql_version = $version[1] + 0;
-            $current_version = EXPONENT + 0;
+            $current_version = EXPONENT - 1;
             if ((array_key_exists(2, $version) && $type == null) || (array_key_exists(2, $version) && $version[2] != $type)) {
                 $eql_version = 0;  // trying to import wrong eql type
             }
