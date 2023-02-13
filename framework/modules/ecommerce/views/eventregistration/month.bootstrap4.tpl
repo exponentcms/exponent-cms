@@ -14,7 +14,7 @@
  *}
 
     {$myloc=serialize($__loc)}
-	<table id="calendar" summary="{$moduletitle|default:'Calendar'|gettext}">
+	<table id="calendar" class="table" summary="{$moduletitle|default:'Calendar'|gettext}">
         <div class="caption">
             <span class="d-none d-sm-inline">&laquo;</span>&#160;
             <a class="evnav module-actions" href="{link action=eventsCalendar time=$prevmonth3}" rel="{$prevmonth3}" title="{$prevmonth3|format_date:"%B %Y"}">{$prevmonth3|format_date:"%b"}</a><span class="d-none d-sm-inline">&#160;</span>&#160;&laquo;&#160;

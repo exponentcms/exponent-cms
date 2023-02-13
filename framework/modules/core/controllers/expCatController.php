@@ -228,6 +228,7 @@ class expCatController extends expController {
                 unset ($records[$key]);
             }
         }
+        $records = array_values($records);
         // we don't always want to sort  by cat first
         if (!$dontsort) {
             $orderby = explode(" ",$order);

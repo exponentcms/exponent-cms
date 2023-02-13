@@ -440,6 +440,7 @@ abstract class expController {
         $used_cats = array();
         $used_cats[0] = new stdClass();
         $used_cats[0]->id = 0;
+        $used_cats[0]->sef_url = 0;
         $used_cats[0]->title = !empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized');
         $used_cats[0]->count = 0;
         foreach ($items as $item) {

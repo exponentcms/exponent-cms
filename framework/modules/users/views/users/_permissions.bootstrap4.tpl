@@ -30,7 +30,7 @@
     {control type="hidden" name="int" value=$loc->int}
     {*{$page->links}*}
     <div style="overflow : auto; overflow-y : hidden;">
-        <table id="permissions" border="0" cellspacing="0" cellpadding="0">
+        <table id="permissions" border="0" cellspacing="0" cellpadding="0" class="table">
             <thead>
                 <tr>
                     {*{$page->header_columns}*}

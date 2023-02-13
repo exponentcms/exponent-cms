@@ -48,7 +48,7 @@
 	{/script}
 
 	{form action=export_eql_process}
-		<table cellspacing="0" cellpadding="2">
+		<table cellspacing="0" cellpadding="2" class="table">
 			{section name=tid loop=$tables step=2}
 				<tr class="{cycle values='even,odd'}">
 					<td>

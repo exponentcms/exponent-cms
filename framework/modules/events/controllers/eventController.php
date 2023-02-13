@@ -492,7 +492,8 @@ class eventController extends expController {
             default;
                 //                $items = null;
                 //                $dates = null;
-                $day = expDateTime::startOfDayTimestamp(time());
+                @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
+                $day = expDateTime::startOfDayTimestamp(time()) - date('Z');  // offset TZ for 'date' entry in DB
                 $sort_asc = true; // For the getEventsForDates call
                 //                $moreevents = false;
                 switch ($viewrange) {
@@ -514,7 +515,7 @@ class eventController extends expController {
                         $begin = null;
                         $end = $day;
                         break;
-                    case "today":  // events occuring today
+                    case "today":  // events occurring today
                         $begin = $day;
                         $end = expDateTime::endOfDayTimestamp($day);
                         $dates = $ed->find("all", $locsql . " AND (date >= " .$day . " AND date <= " . $end . ")");

@@ -32,8 +32,8 @@ class popupdatetimecontrol extends formcontrol
 
     var $type     = 'datetime';
     var $disable_text = "";
-    var $showtime = true;
     var $showdate = true;
+    var $showtime = true;
 
     static function name()
     {
@@ -100,11 +100,11 @@ class popupdatetimecontrol extends formcontrol
         }
         if (is_numeric($this->default)) {
             if ($this->showdate && !$this->showtime) {
-                $myval = date('n/j/Y', $this->default);
+                $myval = date('m/j/Y', $this->default);
             } elseif (!$this->showdate && $this->showtime) {
-                $myval = date('H:i', $this->default);
+                $myval = date('h:i A', $this->default);
             } else {
-                $myval = date('n/j/Y H:i', $this->default);
+                $myval = date('m/j/Y h:i A', $this->default);
             }
         } else {
             $myval = $this->default;
@@ -138,6 +138,7 @@ class popupdatetimecontrol extends formcontrol
 
         $script = "
             $(document).ready(function() {
+                tempusDominus.extend(window.tempusDominus.plugins.customDateFormat);
                 var tclock = new tempusDominus.TempusDominus(document.getElementById('" . $idname . "'),{
                     localization: {
                         format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
@@ -150,7 +151,11 @@ class popupdatetimecontrol extends formcontrol
         //                    clear: false,
         //                    close: false
                         },
-                        sideBySide: true,
+                        components: {
+                            calendar: " . ($this->showdate ? 'true' : 'false') . ",
+                            clock: " . ($this->showtime ? 'true' : 'false') . ",
+                        },
+                        sideBySide: " . ($this->showdate && $this->showtime ? 'true' : 'false') . ",
                     }
                 });
 
@@ -188,7 +193,10 @@ class popupdatetimecontrol extends formcontrol
             array(
                 "unique" => 'popcal' . $idname,
                 "jquery"    => "tempus-dominus",
-                "src"      => "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js",
+                "src"      => array(
+                    "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js",
+                    JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js"
+                ),
                 "bootstrap" => "collapse",
                 "content" => $script,
             )
