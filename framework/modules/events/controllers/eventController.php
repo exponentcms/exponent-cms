@@ -492,8 +492,10 @@ class eventController extends expController {
             default;
                 //                $items = null;
                 //                $dates = null;
+                $tz = date_default_timezone_get();
                 @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
                 $day = expDateTime::startOfDayTimestamp(time()) - date('Z');  // offset TZ for 'date' entry in DB
+                @date_default_timezone_set($tz);
                 $sort_asc = true; // For the getEventsForDates call
                 //                $moreevents = false;
                 switch ($viewrange) {
