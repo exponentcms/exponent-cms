@@ -13,7 +13,7 @@
  *
  *}
 
-{if $shipping->pricelist|is_array == true}
+{if is_array($shipping->pricelist)}
     <span class="shippingmethod{if $noShippingPrices} hide{/if}">
         <strong id="shipping-service"><img class="shippingmethodimg" src="{$shipping->calculator->icon}">
         <span id="shprceup">{$shipping->shippingmethod->option_title}{br} (${$shipping->shippingmethod->shipping_cost|number_format:2})</span></strong>
