@@ -15,7 +15,7 @@ yui2in3,0.3,github.com/yui/2in3,0.3,
 recaptchalib,1.2.4,github.com/google/ReCAPTCHA,1.2.4,
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
 feedcreator.class.php,1.80exp,sourceforge.net/projects/feedcreator,1.80dev,"blog.pothoven.net/2006/01/changing-feedcreatorclassphp-for.html, also merged 1.7.3 from Drupal"
-xmlrpc.php,4.9.5,github.com/gggeek/phpxmlrpc,4.9.5,
+xmlrpc.php,4.9.5,github.com/gggeek/phpxmlrpc,4.10.0,
 Twitter model,2.3.1,github.com/tijsverkoyen/TwitterOAuth,2.3.1,placed in Twitter module with _construct tweaked & namespace deleted
 Twitter API,1.0.6,github.com/J7mbo/twitter-api-php,1.0.6,used by socialmedia module
 SimplePie,1.7.0,github.com/simplepie/simplepie,1.8.0,php 8 fix
@@ -24,7 +24,7 @@ class.upload,2.1.3exp,github.com/verot/class.upload.php,2.1.3,"Correct flip oper
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.40.10/2.41.71,uncomment load utilities; php 8 fix
 scssphp,1.11.0exp,github.com/scssphp/scssphp,1.11.0,includes example server; hack to compile newui
 lessphp,0.5.0exp,github.com/leafo/lessphp,0.5.0,"will not compile bootstrap v3+, hack to allow prefix"
-less.php,3.2.0exp,github.com/wikimedia/less.php,3.2.0,php v5.6 regression fixes
+less.php,3.2.0exp,github.com/wikimedia/less.php,3.2.1,php v5.6 regression fixes
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap3,3.4.1,twitter.github.com/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
 Twitter-Bootstrap4,4.6.2,twitter.github.com/bootstrap,4.6.2,"patched bootstrap.scss includes swatches & exp variables, remove @page"
@@ -42,7 +42,7 @@ Bootstrap-Icons,1.10.3,icons.getbootstrap.com,1.10.3,"patched bootstrap-icons.sc
 Adminer,4.8.1exp,www.adminer.org,4.8.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
-MediaElement.js,5.1.0,mediaelementjs.com,5.1.0,
+MediaElement.js,5.1.0,mediaelementjs.com,6.0.1,
 MediaElement plugins,2.6.3,github.com/johndyer/mediaelement-plugins,2.6.3,
 Facebook PHP SDK3,3.2.3,github.com/facebook/php-graph-sdk,5.7.0,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
