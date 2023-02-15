@@ -1589,6 +1589,11 @@ class storeController extends expController {
         return $products;
     }
 
+    /**
+     * get the metainfo for this module
+     *
+     * @return array|boolean
+     */
     function metainfo() {
         global $router;
 

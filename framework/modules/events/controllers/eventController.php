@@ -785,7 +785,7 @@ class eventController extends expController {
 
     /**
    	 * get the metainfo for this module
-   	 * @return array
+     * @return array|boolean
    	 */
    	function metainfo() {
        global $router;

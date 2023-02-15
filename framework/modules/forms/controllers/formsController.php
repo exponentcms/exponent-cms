@@ -1612,12 +1612,13 @@ class formsController extends expController {
     /**
      * get the metainfo for this module
      *
-     * @return array
+     * @return array|boolean
      */
     function metainfo() {
         global $router;
 
-        if (empty($router->params['action'])) return false;
+        if (empty($router->params['action']))
+            return false;
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
 
         // figure out what metadata to pass back based on the action we are in.
@@ -1626,11 +1627,46 @@ class formsController extends expController {
                 $metainfo['title'] = gt("Form Records") . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
+                if (!empty($router->params['id'])) {
+                    $f = $this->forms->find('first', 'id=' . $router->params['id']);
+                } elseif (!empty($router->params['title'])) {
+                    $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($router->params['title']) . '\'');
+                }
+                if (!empty($f)) {
+                    $this->get_defaults($f);
+                    $metainfo['title'] = $f->title . ' ' . gt("Records");
+                }
                 break;
             case 'show':
                 $metainfo['title'] = gt("Form Record") . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
+                if (!empty($router->params['forms_id'])) {
+                    $f = $this->forms->find('first', 'id=' . $router->params['forms_id']);
+                } elseif (!empty($router->params['title'])) {
+                    $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($router->params['title']) . '\'');
+                }
+                if (!empty($f)) {
+                    $this->get_defaults($f);
+                    $id = !empty($router->params['id']) ? $router->params['id'] : null;
+                    if (!empty($router->params['item']))
+                        $id = 'sef_url="' . expString::escape($router->params['item']) . '"';
+                    $data = $f->getRecord($id);
+                    $needles = array(
+                        'name',
+                        'title',
+                        'last',
+                        'first',
+                    );
+                    foreach ($needles as $needle) {
+                        foreach ($data as $key => $value) {
+                            if (false !== stripos($key, $needle)) {
+                                $metainfo['title'] = $f->title . ' - ' . $value;
+                                break 2;
+                            }
+                        }
+                    }
+                }
                 break;
             default:
                 $metainfo = parent::metainfo();
