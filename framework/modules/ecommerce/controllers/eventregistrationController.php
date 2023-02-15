@@ -428,6 +428,11 @@ class eventregistrationController extends expController {
         ));
     }
 
+    /**
+     * get the metainfo for this module
+     *
+     * @return array|boolean
+     */
     function metainfo() {
         global $router;
         if (empty($router->params['action'])) return false;
