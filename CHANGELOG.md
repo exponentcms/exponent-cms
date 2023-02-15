@@ -10,6 +10,14 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ---
 
+Version 2.7.2
+-------------
+
+### Address issues in v2.7.1 and Prepare for v3.0.2
+
+- compatible with PHP v7.4.x, v8.0.x, v8.1.x and v8.2.x
+- add better metainfo for forms and records
+
 Version 2.7.1
 -------------
 

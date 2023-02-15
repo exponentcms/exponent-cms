@@ -1,0 +1,4 @@
+Version 2.7.2
+-------------
+- compatible with PHP v7.4.x, v8.0.x, v8.1.x and v8.2.x
+- add better metainfo for forms and records
