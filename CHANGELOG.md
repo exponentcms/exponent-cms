@@ -10,6 +10,14 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ---
 
+Version 3.0.2
+-------------
+
+### Address issues in v3.0.0, incorporate changes in v2.7.2
+
+- compatible with PHP v7.4.x, v8.0.x, v8.1.x and v8.2.x
+- fixes and tweaks many issues in previous versions
+
 Version 3.0.0
 -------------
 

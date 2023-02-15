@@ -8,9 +8,9 @@ Copyright (c) 2004-2023 OIC Group, Inc.
 
 For a complete list of the changes made from release to release, see the [CHANGELOG.md](CHANGELOG.md)
 
-## 3.0.0 - February 2023
+## 3.0.2 - July 2023
 
 ----------
 
 ### Removed support for obsolete PHP versions
-- Functionally equivaltent to v2.7.1
+- Functionally equivaltent to v2.7.2
