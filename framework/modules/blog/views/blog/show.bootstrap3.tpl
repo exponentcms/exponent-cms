@@ -67,6 +67,8 @@
                 blogitem_{/literal}{$name}{literal}.find('link').each(function(k, n){
                     $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
                 });
+                $title = blogitem_{/literal}{$name}{literal}.find('div.item .heading');
+                document.title = $title[0].outerText.trim();
             } else {
                 $('#{/literal}{$name}{literal}item.loadingdiv').remove();
                 blogitem_{/literal}{$name}{literal}.html('Unable to load content');
