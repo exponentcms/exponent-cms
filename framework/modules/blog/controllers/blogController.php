@@ -180,7 +180,7 @@ class blogController extends expController {
 
 		assign_to_template(array(
             'page'=>$page,
-            'moduletitle'=>gt('Blogs by date').' "'.$period.'"')
+            'moduletitle'=>gt('Posts from').' "'.$period.'"')
         );
 	}
 
@@ -206,7 +206,7 @@ class blogController extends expController {
 
         assign_to_template(array(
             'page' => $page,
-            'moduletitle' => gt('Blogs by author') . ' "' . user::getUserAttribution($user->id) . '"'
+            'moduletitle' => gt('Posts by') . ' "' . user::getUserAttribution($user->id) . '"'
         ));
     }
 

@@ -127,7 +127,7 @@ class newsController extends expController {
 
 		assign_to_template(array(
             'page'=>$page,
-            'moduletitle'=>gt('News for').' "'.expDateTime::format_date($start_date,$format_date).'"')
+            'moduletitle'=>gt('News from').' "'.expDateTime::format_date($start_date,$format_date).'"')
         );
 	}
 
