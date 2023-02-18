@@ -459,7 +459,7 @@ abstract class expController {
 //            }
 //        }
 
-        $used_cats = $db->selectObjectsBySql("SELECT cnt.expcats_id AS id, cat.title, cat.sef_url, COUNT(expcats_id) AS count FROM " . $db->tableStmt('content_expCats') . " cnt JOIN " . $db->tableStmt('expCats') . " cat ON cnt.expcats_id = cat.id WHERE content_type = '" . $modelname . "' AND " . $this->aggregateWhereClause() . " GROUP BY expcats_id");
+        $used_cats = $db->selectObjectsBySql("SELECT cnt.expcats_id AS id, cat.title, cat.sef_url, COUNT(expcats_id) AS count FROM " . $db->tableStmt('content_expCats') . " cnt JOIN " . $db->tableStmt('expCats') . " cat ON cnt.expcats_id = cat.id WHERE content_type = '" . $modelname . " GROUP BY expcats_id");
         // check for uncategoriezed items
         $total = $db->countObjects($modelname);
         foreach($used_cats as $u) {
