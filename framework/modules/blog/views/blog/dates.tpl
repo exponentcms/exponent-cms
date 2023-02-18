@@ -14,7 +14,9 @@
  *}
 
 <div class="module blog showall-dates">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h2'}>{$moduletitle}</{$config.heading_level|default:'h2'}>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h2'}>
+    {$moduletitle}
+    </{$config.heading_level|default:'h2'}>{/if}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
@@ -30,4 +32,5 @@
             {/foreach}
         </ul>
     {/foreach}
+    {icon class=view action=dates view='dates_calendar' text="View all posts by date"|gettext}
 </div>

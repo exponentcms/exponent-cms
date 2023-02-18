@@ -433,30 +433,48 @@ abstract class expController {
      * return all categories used by module's items
      */
     public function categories() {
+        global $db;
+
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
 
-        $items = $this->$modelname->find('all', $this->aggregateWhereClause());
-        $used_cats = array();
-        $used_cats[0] = new stdClass();
-        $used_cats[0]->id = 0;
-        $used_cats[0]->sef_url = 0;
-        $used_cats[0]->title = !empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized');
-        $used_cats[0]->count = 0;
-        foreach ($items as $item) {
-            if (!empty($item->expCat)) {
-                if (isset($used_cats[$item->expCat[0]->id])) {
-                    $used_cats[$item->expCat[0]->id]->count++;
-                } else {
-                    $expcat = new expCat($item->expCat[0]->id);
-                    $used_cats[$item->expCat[0]->id] = $expcat;
-                    $used_cats[$item->expCat[0]->id]->count = 1;
-                }
-            } else {
-                $used_cats[0]->count++;
-            }
+//        $items = $this->$modelname->find('all', $this->aggregateWhereClause());
+//        $used_cats = array();
+//        $used_cats[0] = new stdClass();
+//        $used_cats[0]->id = 0;
+//        $used_cats[0]->sef_url = 0;
+//        $used_cats[0]->title = !empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized');
+//        $used_cats[0]->count = 0;
+//        foreach ($items as $item) {
+//            if (!empty($item->expCat)) {
+//                if (isset($used_cats[$item->expCat[0]->id])) {
+//                    $used_cats[$item->expCat[0]->id]->count++;
+//                } else {
+//                    $expcat = new expCat($item->expCat[0]->id);
+//                    $used_cats[$item->expCat[0]->id] = $expcat;
+//                    $used_cats[$item->expCat[0]->id]->count = 1;
+//                }
+//            } else {
+//                $used_cats[0]->count++;
+//            }
+//        }
+
+        $used_cats = $db->selectObjectsBySql("SELECT cnt.expcats_id AS id, cat.title, cat.sef_url, COUNT(expcats_id) AS count FROM " . $db->tableStmt('content_expCats') . " cnt JOIN " . $db->tableStmt('expCats') . " cat ON cnt.expcats_id = cat.id WHERE content_type = '" . $modelname . "' AND " . $this->aggregateWhereClause() . " GROUP BY expcats_id");
+        // check for uncategoriezed items
+        $total = $db->countObjects($modelname);
+        foreach($used_cats as $u) {
+            $total -= $u->count;
+        }
+        if ($total) {
+            $unused = new stdClass();
+            $unused->id = 0;
+            $unused->sef_url = 0;
+            $unused->title = !empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized');
+            $unused->count = $total;
+            array_unshift($used_cats, $unused);
         }
 
+        // sort the list
 //        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
 //        $used_cats = expSorter::sort(array('array'=>$used_cats,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
 //        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';

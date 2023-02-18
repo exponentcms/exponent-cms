@@ -93,17 +93,26 @@ class blogController extends expController {
 	}
 
 	public function authors() {
+        global $db;
+
         expHistory::set('viewable', $this->params);
-        $blogs = $this->blog->find('all');
+        $blogs = $db->selectObjectsBySql('SELECT poster, COUNT(poster) as count FROM ' . $db->tableStmt('blog') . ' WHERE ' . $this->aggregateWhereClause() . ' GROUP BY poster;');
         $users = array();
         foreach ($blogs as $blog) {
-            if (isset($users[$blog->poster])) {
-                $users[$blog->poster]->count++;
-            } else {
-                $users[$blog->poster] = new user($blog->poster);
-                $users[$blog->poster]->count = 1;
-            }
+            $users[$blog->poster] = new user($blog->poster);
+            $users[$blog->poster]->count = $blog->count;
         }
+
+//        $blogs = $this->blog->find('all');
+//        $users = array();
+//        foreach ($blogs as $blog) {
+//            if (isset($users[$blog->poster])) {
+//                $users[$blog->poster]->count++;
+//            } else {
+//                $users[$blog->poster] = new user($blog->poster);
+//                $users[$blog->poster]->count = 1;
+//            }
+//        }
 
 	    assign_to_template(array(
             'authors'=>$users
@@ -119,6 +128,9 @@ class blogController extends expController {
 	    $blog_date = array();
         $count = 0;
         $limit = empty($this->config['limit']) ? count($dates) : $this->config['limit'];
+        if (!empty($this->params['view']) && $this->params['view'] === 'dates_calendar') {
+            $limit = count($dates);
+        }
 	    foreach ($dates as $date) {
 	        $year = date('Y',$date);
 	        $month = date('n',$date);
@@ -127,21 +139,41 @@ class blogController extends expController {
 	        } else {
                 $count++;
                 if ($count > $limit) break;
-                $blog_date[$year][$month] = new stdClass();
-	            $blog_date[$year][$month]->name = date('F',$date);
+                if (!isset($blog_date[$year]) || @count($blog_date[$year]) == 0) {
+                    for ($i=1;$i<=12;$i++) {
+                        if (!isset($blog_date[$year][$i])) {
+                            $blog_date[$year][$i] = new stdClass();
+                            $blog_date[$year][$i]->name = date("F", mktime(0, 0, 0, $i, 1));
+                            $blog_date[$year][$i]->count = 0;
+                        }
+                    }
+                }
+//                $blog_date[$year][$month] = new stdClass();
+//	              $blog_date[$year][$month]->name = date('F',$date);
 	            $blog_date[$year][$month]->count = 1;
 	        }
 	    }
         if (!empty($blog_date)) {
-            if (!empty($this->config['yearcount'])) {
+            if (!empty($this->config['yearcount']) && $this->params['view'] !== 'dates_calendar') {
                 $blog_date = array_slice($blog_date, 0, $this->config['yearcount'], true);
             }
+            // sort years
             ksort($blog_date);
             $blog_date = array_reverse($blog_date,1);
-            foreach ($blog_date as $key=>$val) {
-                ksort($blog_date[$key]);
-                $blog_date[$key] = array_reverse($blog_date[$key],1);
-            }
+            // sort months
+            foreach ($blog_date as $yr=>$months) {
+                ksort($blog_date[$yr]);
+//                $blog_date[$yr] = array_reverse($blog_date[$yr],1);
+                if (empty($this->params['view']) || $this->params['view'] === 'dates') {
+                    $blog_date[$yr] = array_reverse($blog_date[$yr],1);
+                } else {
+                    for ($i=1;$i<=12;$i++) {
+                        if (!isset($blog_date[$yr][$i]))  {
+                            $blog_date[$yr][$i] = new stdClass();
+                            $blog_date[$yr][$i]->name = date("F", mktime(0, 0, 0, $i, 1));
+                        }
+                    }
+                }           }
         } else {
             $blog_date = array();
         }
