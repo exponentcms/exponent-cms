@@ -170,7 +170,7 @@ class eventController extends expController {
                     $annual[$i] = expDateTime::monthlyDaysTimestamp($month);
                     $info = getdate($month);
                     $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
-                    $now = getdate(time());
+                    $now = getdate();
                     $endofmonth = date('t', $month);
                     foreach ($annual[$i] as $weekNum => $week) {
                         foreach ($week as $dayNum => $day) {
@@ -237,7 +237,7 @@ class eventController extends expController {
                 $monthly = expDateTime::monthlyDaysTimestamp($time);
                 $info = getdate($time);
                 $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
-                $now = getdate(time());
+                $now = getdate();
                 $currentday = $now['mday'];
                 $endofmonth = date('t', $time);
                 foreach ($monthly as $weekNum => $week) {
@@ -382,7 +382,7 @@ class eventController extends expController {
                 //                $monthly = array();
                 //                $counts = array();
                 $info = getdate($time);
-                $nowinfo = getdate(time());
+                $nowinfo = getdate();
                 if ($info['mon'] != $nowinfo['mon']) $nowinfo['mday'] = -10;
                 // Grab non-day numbers only (before end of month)
 //                $week = 0;
@@ -492,10 +492,15 @@ class eventController extends expController {
             default;
                 //                $items = null;
                 //                $dates = null;
-                $tz = date_default_timezone_get();
-                @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
-                $day = expDateTime::startOfDayTimestamp(time()) - date('Z');  // offset TZ for 'date' entry in DB
-                @date_default_timezone_set($tz);
+//                $tz = date_default_timezone_get();
+//                eLog(expDateTime::startOfDayTimestamp(time()),'raw time');
+//                @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
+//                eLog(expDateTime::startOfDayTimestamp(time()),'tzadjust time');
+//                $day = expDateTime::startOfDayTimestamp(time()) - date('Z');  // offset TZ for 'date' entry in DB
+//                eLog($day,'adjusted time');
+//                @date_default_timezone_set($tz);
+                $day = expDateTime::startOfDayTimestamp(time());  // offset TZ for 'date' entry in DB
+                eLog($day,'adjusted time');
                 $sort_asc = true; // For the getEventsForDates call
                 //                $moreevents = false;
                 switch ($viewrange) {
@@ -546,12 +551,14 @@ class eventController extends expController {
 //                $items = $this->getEventsForDates($dates, $sort_asc, isset($this->config['only_featured']) ? true : false, true);
                 $items = $this->event->getEventsForDates($dates, $sort_asc, isset($this->config['only_featured']) ? true : false, ($viewrange !== 'past'));
                 if ($viewrange !== 'past') {
+                    $tz = date_default_timezone_get();
+                    @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
                     $extitems = $this->getExternalEvents($begin, $end);
                     // we need to flatten these down to simple array of events
                     $extitem = array();
                     foreach ($extitems as $days) {
                         foreach ($days as $event) {
-                            if (empty($event->eventdate->date) || ($viewrange === 'upcoming' && $event->eventdate->date < time()))
+                            if (empty($event->eventdate->date) || ($viewrange === 'upcoming' && $event->eventdate->date < (time()  + date('Z'))))
                                 break;
                             if (empty($event->eventstart))
                                 $event->eventstart = $event->eventdate->date;
@@ -574,13 +581,14 @@ class eventController extends expController {
                     // remove today's events that have already ended
                     if ($viewtype === 'default' && $viewrange === 'upcoming') {
                         foreach ($items as $key=>$item) {
-                            if (!$item->is_allday && $item->eventend < time()) {
+                            if (!$item->is_allday && $item->eventend < (time()  + date('Z'))) {
                                 //fixme we've left events ending earlier in the day, but already cancelled out tomorrow's event
                                 unset($items[$key]);
                             } else {
                                 break;  // they are chronological so we can end
                             }
                         }
+                        @date_default_timezone_set($tz);
                     }
                 }
                 $items = expSorter::sort(array('array' => $items, 'sortby' => 'eventstart', 'order' => $sort_asc?'ASC':'DESC'));
