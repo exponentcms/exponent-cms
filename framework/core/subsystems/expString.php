@@ -298,8 +298,12 @@ class expString {
                 return expString::convertSmartQuotes($string);
             case "parapaged":  // use the html page break to determine the summary
 //               $s = '<div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div>';
-                $s = '<div style="page-break-after: always';
+                $s = '<div style="page-break-after: always';  // ckeditor page break
                 $para = explode($s, $string);
+                if (count($para) === 1) {
+                    $s = '<!--more-->';  // wordpress except break
+                    $para = explode($s, $string);
+                }
                 if (count($para) > 1) {  // we have a page break
                     $string = $para[0];
                     if (strlen($string) < strlen($origstring)) {

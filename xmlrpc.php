@@ -108,10 +108,10 @@ function exp_getModuleInstancesByType($type = null)
  */
 $getUsersBlogs_sig = array(
     array(
-        $xmlrpcArray,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcString
+        \PhpXmlRpc\Value::$xmlrpcArray,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString
     )
 );
 $getUsersBlogs_doc = 'Returns a list of weblogs to which an author has posting privileges.';
@@ -160,12 +160,12 @@ function getUsersBlogs($xmlrpcmsg)
  */
 $newPost_sig = array(
     array(
-        $xmlrpcBoolean,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcStruct,
-        $xmlrpcBoolean
+        \PhpXmlRpc\Value::$xmlrpcBoolean,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcStruct,
+        \PhpXmlRpc\Value::$xmlrpcBoolean
     )
 );
 $newPost_doc = 'Post a new item to the blog.';
@@ -261,12 +261,12 @@ if ($src == "1") $src = "@random48e7cdc1a672d";
  */
 $editPost_sig = array(
     array(
-        $xmlrpcBoolean,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcStruct,
-        $xmlrpcBoolean
+        \PhpXmlRpc\Value::$xmlrpcBoolean,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcStruct,
+        \PhpXmlRpc\Value::$xmlrpcBoolean
     )
 );
 $editPost_doc = 'Edit an item on the blog.';
@@ -362,10 +362,10 @@ function editPost($xmlrpcmsg)
  */
 $getPost_sig = array(
     array(
-        $xmlrpcStruct,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcString
+        \PhpXmlRpc\Value::$xmlrpcStruct,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString
     )
 );
 $getPost_doc = 'Get an item on the blog.';
@@ -429,12 +429,12 @@ function getPost($xmlrpcmsg)
  */
 $deletePost_sig = array(
     array(
-        $xmlrpcBoolean,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcBoolean
+        \PhpXmlRpc\Value::$xmlrpcBoolean,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcBoolean
     )
 );
 $deletePost_doc = 'Deletes a post.';
@@ -473,11 +473,11 @@ function deletePost($xmlrpcmsg)
  */
 $getRecentPosts_sig = array(
     array(
-        $xmlrpcArray,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcInt
+        \PhpXmlRpc\Value::$xmlrpcArray,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcInt
     )
 );
 $getRecentPosts_doc = 'Get the recent posts on the blog.';
@@ -562,10 +562,10 @@ if ($src == "1") $src = "@random48e7cdc1a672d";
  */
 $getCategories_sig = array(
     array(
-        $xmlrpcArray,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcString
+        \PhpXmlRpc\Value::$xmlrpcArray,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString
     )
 );
 $getCategories_doc = 'Get the categories on the blog.';
@@ -639,10 +639,10 @@ if ($src == "1") $src = "@random48e7cdc1a672d";
  */
 $getTerms_sig = array(
     array(
-        $xmlrpcArray,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcString
+        \PhpXmlRpc\Value::$xmlrpcArray,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString
     )
 );
 $getTerms_doc = 'Get the Tags on the blog.';
@@ -688,10 +688,10 @@ if ($src == "1") $src = "@random48e7cdc1a672d";
  */
 $getAuthors_sig = array(
     array(
-        $xmlrpcArray,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcString
+        \PhpXmlRpc\Value::$xmlrpcArray,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString
     )
 );
 $getAuthors_doc = 'Get the Authors on the blog.';
@@ -728,11 +728,11 @@ if ($src == "1") $src = "@random48e7cdc1a672d";
  */
 $newMediaObject_sig = array(
     array(
-        $xmlrpcStruct,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcString,
-        $xmlrpcStruct
+        \PhpXmlRpc\Value::$xmlrpcStruct,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcString,
+        \PhpXmlRpc\Value::$xmlrpcStruct
     )
 );
 $newMediaObject_doc = 'Upload media files onto the blog server.';

@@ -500,7 +500,7 @@ class eventController extends expController {
 //                eLog($day,'adjusted time');
 //                @date_default_timezone_set($tz);
                 $day = expDateTime::startOfDayTimestamp(time());  // offset TZ for 'date' entry in DB
-                eLog($day,'adjusted time');
+//                eLog($day,'adjusted time');
                 $sort_asc = true; // For the getEventsForDates call
                 //                $moreevents = false;
                 switch ($viewrange) {
