@@ -111,7 +111,6 @@ class event extends expRecord {
 
         $tz = date_default_timezone_get();
         @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
-//        echo date('c')," - time<br>";
         foreach ($edates as $edate) {
             $evs = $this->find('all', "id=" . $edate->event_id . $featuresql);
             foreach ($evs as $key=>$event) {
@@ -127,9 +126,7 @@ class event extends expRecord {
                     });
                     $tmp = time() - date('Z');
                     if (!empty($multiday_event) || (!$event->is_allday && $event->eventend < (time())) - date('Z')) {
-//                        unset($evs[$key]);
-//                        echo date('c',$event->eventend),"<br>";
-//                        echo date('c',$event->eventend - date('Z')),"<br>";
+                        unset($evs[$key]);
                         continue;
                     }
                 }
