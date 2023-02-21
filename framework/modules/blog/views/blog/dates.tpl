@@ -26,9 +26,11 @@
         </h3>
         <ul>
             {foreach from=$ydate item=mdate key=month}
+                {if $mdate->count}
                 <li>
                     <a href="{link action=showall_by_date month=$month year=$year}" title='{"View all posts from"|gettext} {$mdate->name} {$year}'>{$mdate->name} ({$mdate->count})</a>
                 </li>
+                {/if}
             {/foreach}
         </ul>
     {/foreach}
