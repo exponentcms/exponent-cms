@@ -97,11 +97,17 @@ class storeController extends expController {
     }
 
     static function canImportData() {
-        return true;
+        if (ECOM)
+            return true;
+        else
+            return false;
     }
 
     static function canExportData() {
-        return true;
+        if (ECOM)
+            return true;
+        else
+            return false;
     }
 
     function __construct($src = null, $params = array()) {
