@@ -31,7 +31,12 @@ if (DEVELOPMENT) {
 	// Display all errors (some production servers have this set to off)
 	ini_set('display_errors',1);
 	// Up the ante on the error reporting so we can see notices as well.
-	ini_set('error_reporting',E_ALL);
+    if (NO_DEPRECATIONS) {
+        $level = E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED;
+    } else {
+        $level = E_ALL;
+    }
+	ini_set('error_reporting',$level);
 	// This is rarely set to true, but the first time it is, we'll be ready.
 	ini_set('ignore_repeated_errors',0);
 } else {

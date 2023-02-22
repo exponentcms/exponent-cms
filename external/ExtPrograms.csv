@@ -15,7 +15,7 @@ yui2in3,0.3,github.com/yui/2in3,0.3,
 recaptchalib,1.2.4,github.com/google/ReCAPTCHA,1.2.4,
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
 feedcreator.class.php,1.80exp,sourceforge.net/projects/feedcreator,1.80dev,"blog.pothoven.net/2006/01/changing-feedcreatorclassphp-for.html, also merged 1.7.3 from Drupal"
-xmlrpc.php,4.10.0,github.com/gggeek/phpxmlrpc,4.10.0,
+xmlrpc.php,4.10.1,github.com/gggeek/phpxmlrpc,4.10.1,
 Twitter model,2.3.1,github.com/tijsverkoyen/TwitterOAuth,2.3.1,placed in Twitter module with _construct tweaked & namespace deleted
 Twitter API,1.0.6,github.com/J7mbo/twitter-api-php,1.0.6,used by socialmedia module
 SimplePie,1.7.0,github.com/simplepie/simplepie,1.8.0,php 8 fix

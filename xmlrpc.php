@@ -849,7 +849,7 @@ $a = array(
 );
 
 $s = new xmlrpc_server($a, false);
-$s->setdebug(2);
+$s->setdebug(3);
 
 $s->service();
 ?>
