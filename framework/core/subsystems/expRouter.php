@@ -519,8 +519,8 @@ class expRouter {
                         $db->insertObject($redirectObject, 'redirect');
                         return false;
                     }
-                }
-                return false;
+                } else
+                    return false;
             }
             #########################################################
             //if (empty($section)) return false;  //couldnt find the page..let the calling action deal with it.
