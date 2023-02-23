@@ -393,7 +393,7 @@ class eaasController extends expController {
     }
 
     private function configImage($tab) {
-        if (count(@$this->config['expFile'][$tab.'_image']) > 0) {
+        if (isset($this->config['expFile'][$tab.'_image']) && count($this->config['expFile'][$tab.'_image']) > 0) {
             if (!is_object($this->config['expFile'][$tab.'_image'][0])) {
                 $ftmp[] = new expFile($this->config['expFile'][$tab . '_image'][0]);
                 $this->config['expFile'][$tab . '_image'][] = $ftmp;
