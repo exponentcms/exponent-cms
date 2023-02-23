@@ -46,7 +46,7 @@ class expModuleController extends expController {
         $aMods = $db->selectObjects('modstate',1);
 
         foreach ($aMods as $key => $value) {
-            if (!empty($this->params['mods']) && array_key_exists($value->module,expModules::getControllerName($this->params['mods']))) {
+            if (!empty($this->params['mods']) && array_key_exists($value->module,$this->params['mods'])) {
                 $aMods[$key]->active = $this->params['mods'][$value->module];
                 $db->updateObject($aMods[$key],'modstate',"module='".expModules::getControllerName($value->module)."'");
             } else {
