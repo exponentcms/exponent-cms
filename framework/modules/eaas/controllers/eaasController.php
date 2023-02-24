@@ -418,7 +418,7 @@ class eaasController extends expController {
 
     private function getImageBody($tab) {
         // create an empty 'banner' object to prevent errors in caller
-        $this->data['banner']['obj'] = null;
+        $this->data['banner']['obj'] = new stdClass();
         $this->data['banner']['obj']->url = null;
         $this->data['banner']['md5'] = null;
 
