@@ -124,8 +124,7 @@ class event extends expRecord {
                         global $eventid;
                         return $event->id === $eventid;
                     });
-                    $tmp = time() - date('Z');
-                    if (!empty($multiday_event) || (!$event->is_allday && $event->eventend < (time())) - date('Z')) {
+                    if (!empty($multiday_event) || (!$event->is_allday && $event->eventend < (time()) - date('Z'))) {
                         unset($evs[$key]);
                         continue;
                     }
