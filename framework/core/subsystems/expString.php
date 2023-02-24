@@ -301,7 +301,7 @@ class expString {
                 $s = '<div style="page-break-after: always';  // ckeditor page break
                 $para = explode($s, $string);
                 if (count($para) === 1) {
-                    $s = '<!--more-->';  // wordpress except break
+                    $s = '<!--more';  // wordpress excerpt break
                     $para = explode($s, $string);
                 }
                 if (count($para) > 1) {  // we have a page break
