@@ -105,7 +105,7 @@ class eaasController extends expController {
             $ar = new expAjaxReply(400, 'Bad Request', 'No service available for your request', null);
             $ar->send();
         }
-        if ($this->params['get'] != 'aboutus' && empty($this->config[$this->params['get'].'_aggregate'])) {
+        if ($this->params['get'] !== 'aboutus' && empty($this->config[$this->params['get'].'_aggregate'])) {
             $ar = new expAjaxReply(400, 'Bad Request', 'No modules assigned to requested service', null);
             $ar->send();
         }
@@ -156,7 +156,7 @@ class eaasController extends expController {
     private function aboutUs() {
         $counts = array();
         foreach ($this->tabs as $key=>$name) {
-            if ($key != 'aboutus') {
+            if ($key !== 'aboutus') {
                 $data = $this->$key();
                 $counts[$key] = count($data['records']);
             }
@@ -178,7 +178,7 @@ class eaasController extends expController {
 
             // figure out if we should limit the results
             if (isset($this->params['limit'])) {
-                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
+                $limit = $this->params['limit'] === 'none' ? null : $this->params['limit'];
             } else {
                 $limit = '';
             }
@@ -227,7 +227,7 @@ class eaasController extends expController {
 
             // figure out if we should limit the results
             if (isset($this->params['limit'])) {
-                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
+                $limit = $this->params['limit'] === 'none' ? null : $this->params['limit'];
             } else {
                 $limit = '';
             }
@@ -252,7 +252,7 @@ class eaasController extends expController {
 
             // figure out if we should limit the results
             if (isset($this->params['limit'])) {
-                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
+                $limit = $this->params['limit'] === 'none' ? null : $this->params['limit'];
             } else {
                 $limit = '';
             }
@@ -277,7 +277,7 @@ class eaasController extends expController {
 
             // figure out if we should limit the results
             if (isset($this->params['limit'])) {
-                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
+                $limit = $this->params['limit'] === 'none' ? null : $this->params['limit'];
             } else {
                 $limit = '';
             }
@@ -301,7 +301,7 @@ class eaasController extends expController {
 
             // figure out if we should limit the results
             if (isset($this->params['limit'])) {
-                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
+                $limit = $this->params['limit'] === 'none' ? null : $this->params['limit'];
             } else {
                 $limit = '';
             }
@@ -325,7 +325,7 @@ class eaasController extends expController {
 
             // figure out if we should limit the results
             if (isset($this->params['limit'])) {
-                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
+                $limit = $this->params['limit'] === 'none' ? null : $this->params['limit'];
             } else {
                 $limit = '';
             }
@@ -360,7 +360,7 @@ class eaasController extends expController {
 
         foreach ($this->tabs as $tab => $name) {
             // news tab
-            if ($tab != 'aboutus') {
+            if ($tab !== 'aboutus') {
                 $pullable[$tab] = expModules::listInstalledControllers($tab);
                 $page[$tab] = new expPaginator(array(
                     'controller'=>$tab.'Controller',

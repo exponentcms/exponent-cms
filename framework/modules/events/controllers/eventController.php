@@ -702,9 +702,10 @@ class eventController extends expController {
         if (!empty($this->params['date_id'])) {  // specific event instance
             $eventdate = new eventdate($this->params['date_id']);
             $eventdate->event = new event($eventdate->event_id);
-        } else {  // we'll default to the first event of this series
+        } else {  // we'll default to the next upcoming event of this series
             $event = new event($this->params['id']);
-            $eventdate = new eventdate($event->eventdate[0]->id);
+            $next = $event->find('upcoming', 'event_id=' . $this->params['id']);
+            $eventdate = new eventdate($next[0]->eventdate[0]->id);
         }
         if (empty($eventdate->id))
             redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>'event'));
