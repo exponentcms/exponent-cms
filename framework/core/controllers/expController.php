@@ -1649,7 +1649,7 @@ abstract class expController {
             if (file_exists($this->viewpath . '/eaas/' . ucfirst($this->basemodel_name) . '.tpl')) {
                 // return in $views format
                 return array(
-                    'file' => $this->viewpath . '/eaas/' . $this->baseclassname . '.tpl',
+                    'file' => $this->viewpath . '/eaas/' . ucfirst($this->baseclassname) . '.tpl',
                     'name' => $this->name()
                 );
             }
