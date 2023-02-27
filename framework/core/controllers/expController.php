@@ -1195,7 +1195,8 @@ abstract class expController {
                     $rss->itunes->category = $itunes_cats[0]->category;
                     $rss->itunes->subcategory = $itunes_cats[0]->subcategory;
                 }
-                //		$rss->itunes->explicit = 0;
+                $rss->itunes->type = 'episodic';
+//                $rss->itunes->explicit = 0;
 //                $rss->itunes->subtitle = $site_rss->title;
                 $rss->itunes->subtitle = $site_rss->feed_desc;
                 //		$rss->itunes->keywords = 0;

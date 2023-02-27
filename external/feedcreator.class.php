@@ -191,6 +191,12 @@ class iTunes {
     */
    var $category, $subcategory;
 
+    /**
+     * This tag should be used to note whether or not your Podcast contains episodes.
+     * There are 2 possible values for this tag: Yes or No
+     */
+    var $type;
+
    /**
     * This tag should be used to note whether or not your Podcast contains explicit material.
     * There are 2 possible values for this tag: Yes or No
@@ -1125,7 +1131,7 @@ class RSSCreator091 extends FeedCreator {
 		$feed.= "<rss version=\"".$this->RSSVersion."\" ";
         if (!empty($this->XMLNS)) {
             foreach ($this->XMLNS as $xmlns) {
-                $feed.= "    xmlns:".$xmlns."\n";
+                $feed.= " xmlns:".$xmlns."\n";
             }
 		}
         $feed.= 'xmlns:content="http://purl.org/rss/1.0/modules/content/" ' ;
@@ -1206,6 +1212,9 @@ class RSSCreator091 extends FeedCreator {
 			    }
 			    $feed.= "        </itunes:category>\n";
 			}
+            if (!empty($this->itunes->type)) {
+                $feed.= "        <itunes:type>".$this->itunes->type."</itunes:type>\n";
+            }
 			if (!empty($this->itunes->explicit)) {
 				$feed.= "        <itunes:explicit>".$this->itunes->explicit."</itunes:explicit>\n";
 			}
@@ -1350,6 +1359,7 @@ class PodcastCreator extends RSSCreator20 {
 	    parent::_setRSSVersion("2.0");
         $this->encoding = "utf-8";
 	    parent::_setXMLNS('itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"');
+        parent::_setXMLNS('podcast="https://podcastindex.org/namespace/1.0"');
 //        parent::_setXMLNS('rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"');
 //        parent::_setXMLNS('googleplay="http://www.google.com/schemas/play-podcasts/1.0"');
 //        parent::_setXMLNS('media="http://search.yahoo.com/mrss/"');
