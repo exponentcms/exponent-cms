@@ -51,6 +51,15 @@ class blogController extends expController {
         return true;
     }
 
+    /**
+     * can this module export EAAS data?
+     *
+     * @return bool
+     */
+    public static function canHandleEAAS() {
+        return true;
+    }
+
     public function showall() {
         global $db;
 
@@ -503,6 +512,34 @@ class blogController extends expController {
                 return $metainfo;
             }
         }
+        return array();
+    }
+
+    /**
+     * returns module's EAAS data as an array of records
+     *
+     * @return array
+     */
+    public function eaasData($params=array(), $where=null) {
+        $data = array();  // initialize
+        if (!empty($params['id'])) {
+            $blog = new blog($params['id']);
+            $data['records'] = $blog;
+        } else {
+            $blog = new blog();
+
+            // figure out if we should limit the results
+            if (isset($params['limit'])) {
+                $limit = $params['limit'] === 'none' ? null : $params['limit'];
+            } else {
+                $limit = '';
+            }
+
+            $order = isset($params['order']) ? $params['order'] : 'publish DESC';
+            $items = $blog->find('all', $where, $order, $limit);
+            $data['records'] = $items;
+        }
+        return $data;
     }
 
 }

@@ -98,7 +98,8 @@ abstract class expController {
 //        $this->viewpath = BASE.'framework/modules/'.$this->relative_viewpath;
         //FIXME this requires we move the 'core' controllers into the modules folder or use this hack
         $depth = array_search('core', $controllerpath);
-        if (DEVELOPMENT && !$depth) $depth = array_search('themes', $controllerpath);  // account for modified controller within theme
+//        if (DEVELOPMENT && !$depth)
+//            $depth = array_search('themes', $controllerpath);  // account for modified controller (only) within theme without and theme views
         if ($depth) {
             $this->viewpath = BASE . 'framework/modules/' . $this->relative_viewpath;
         } else {
@@ -288,6 +289,15 @@ abstract class expController {
      * @return bool
      */
     public static function canExportData() {
+        return false;
+    }
+
+    /**
+     * can this module export EAAS data?
+     *
+     * @return bool
+     */
+    public static function canHandleEAAS() {
         return false;
     }
 
@@ -1626,6 +1636,34 @@ abstract class expController {
         }
 
         return $sql;
+    }
+
+    /**
+     * returns info about Config template
+     * standard location is a folder named 'eaas' in the module's view folder with a model_name template
+     *
+     * @return array|boolean
+     */
+    public function eaasConfig() {
+        if ($this::canHandleEAAS()) {
+            if (file_exists($this->viewpath . '/eaas/' . ucfirst($this->basemodel_name) . '.tpl')) {
+                // return in $views format
+                return array(
+                    'file' => $this->viewpath . '/eaas/' . $this->baseclassname . '.tpl',
+                    'name' => $this->name()
+                );
+            }
+        }
+        return false;
+    }
+
+    /**
+     * returns module's EAAS data as an array of records
+     *
+     * @return array
+     */
+    public function eaasData($params=array(), $where=null) {
+        return array();
     }
 
 }

@@ -55,6 +55,15 @@ class newsController extends expController {
         return true;
     }
 
+    /**
+     * can this module export EAAS data?
+     *
+     * @return bool
+     */
+    public static function canHandleEAAS() {
+        return true;
+    }
+
     public function showall() {
         expHistory::set('viewable', $this->params, true);
         // figure out if should limit the results
@@ -603,6 +612,33 @@ class newsController extends expController {
 //        }
 //        expHistory::back();
 //    }
+
+    /**
+     * returns module's EAAS data as an array of records
+     *
+     * @return array
+     */
+    public function eaasData($params=array(), $where=null) {
+        $data = array();  // initialize
+        if (!empty($params['id'])) {
+            $news = new news($params['id']);
+            $data['records'] = $news;
+        } else {
+            $news = new news();
+
+            // figure out if we should limit the results
+            if (isset($params['limit'])) {
+                $limit = $params['limit'] === 'none' ? null : $params['limit'];
+            } else {
+                $limit = '';
+            }
+
+            $order = isset($params['order']) ? $params['order'] : 'publish DESC';
+            $items = $news->find('all', $where, $order, $limit);
+            $data['records'] = $items;
+        }
+        return $data;
+    }
 
 }
 

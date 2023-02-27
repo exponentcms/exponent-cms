@@ -73,6 +73,15 @@ class eventController extends expController {
         return true;
     }
 
+    /**
+     * can this module export EAAS data?
+     *
+     * @return bool
+     */
+    public static function canHandleEAAS() {
+        return true;
+    }
+
     function showall() {
         global $user;
 
@@ -2030,6 +2039,41 @@ class eventController extends expController {
         echo $control->toHTML($this->params['label'], $this->params['name']);
 //        $ar = new expAjaxReply(200, gt('The control was created'), json_encode(array('data'=>$code)));
 //        $ar->send();
+    }
+
+    /**
+     * returns module's EAAS data as an array of records
+     *
+     * @return array
+     */
+    public function eaasData($params=array(), $where=null) {
+        $data = array();  // initialize
+        if (!empty($params['id'])) {
+            $event = new event($params['id']);
+            $data['records'] = $event;
+        } else {
+            $event = new event();
+
+            // figure out if we should limit the results
+            if (isset($params['limit'])) {
+                $limit = $params['limit'] === 'none' ? null : $params['limit'];
+            } else {
+                $limit = '';
+            }
+
+            $items = $event->find('upcoming', $where, false, false);  //new 'upcoming' type of find
+            if (!empty($limit))
+                $items = array_slice($items, 0, $limit);  // limit number of items, not numberof days
+            $data['records'] = $items;
+        }
+
+        if (!empty($params['groupbydate'])&&!empty($items)) {  // aggregate by day like with regular calendar
+            $data['records'] = array();
+            foreach ($items as $value) {
+                $data['records'][date('r',$value->eventdate[0]->date)][] = $value;
+            }
+        }
+        return $data;
     }
 
 }
