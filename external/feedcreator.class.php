@@ -193,7 +193,7 @@ class iTunes {
 
     /**
      * This tag should be used to note whether or not your Podcast contains episodes.
-     * There are 2 possible values for this tag: Yes or No
+     * There are 2 possible values for this tag: Episodic (default) or Serial
      */
     var $type;
 

@@ -324,11 +324,6 @@ function renderAction(array $parms=array()) {
         }
     }
 
-// FIXME this is now handled by the template class during get_template_for_action since it only sets template variables
-    // have the controller assign knowledge about itself to the template.
-    // this has to be done after the controller gets the template for its actions
-//    $controller->moduleSelfAwareness();
-
     //if this controller is being called by a container then we should have a module title.
     if (isset($parms['moduletitle'])) {
         $template->assign('moduletitle', $parms['moduletitle']);

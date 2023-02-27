@@ -52,7 +52,7 @@ class event extends expRecord {
             //note $order is boolean for 'featured'
             //note $limit is number of days, NOT number of records
             //note $limitstart is a unixtimestamp in this instance
-            $order = expString::escape($order);
+            $order = expString::escape($order);  //fixme convert to simple boolean?
             if ($limit !== null)
                 $limit = (int)($limit);
             if ($limitstart !== null)

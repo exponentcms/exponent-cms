@@ -301,20 +301,6 @@ abstract class expController {
     }
 
     /**
-     * glue to make the view template aware of the module
-     * @deprecated
-     */
-//    public function moduleSelfAwareness() {
-//        assign_to_template(array(
-//            'asset_path' => $this->asset_path,
-//            'model_name' => $this->basemodel_name,
-//            'table'      => $this->model_table,
-//            'controller' => $this->baseclassname,
-//            'config'     => $this->config
-//        ));
-//    }
-
-    /**
      * default module view method for all items
      */
     public function showall() {
@@ -1195,8 +1181,8 @@ abstract class expController {
                     $rss->itunes->category = $itunes_cats[0]->category;
                     $rss->itunes->subcategory = $itunes_cats[0]->subcategory;
                 }
-                $rss->itunes->type = 'episodic';
-//                $rss->itunes->explicit = 0;
+                $rss->itunes->type = 'Episodic';  // iTunes default
+                $rss->itunes->explicit = 'No';
 //                $rss->itunes->subtitle = $site_rss->title;
                 $rss->itunes->subtitle = $site_rss->feed_desc;
                 //		$rss->itunes->keywords = 0;
