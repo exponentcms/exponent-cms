@@ -142,7 +142,7 @@ class eaasController extends expController {
                 $ar = new expAjaxReply(200, 'ok', $this->event(), null);
                 $ar->send();
                 break;
-            default:  // probably shouldn't evet get to this point
+            default:  // probably shouldn't ever get to this point
                 $ar = new expAjaxReply(400, 'Bad Request', 'No service available for your request', null);
                 $ar->send();
                 break;
@@ -156,14 +156,18 @@ class eaasController extends expController {
     private function aboutUs() {
         $counts = array();
         foreach ($this->tabs as $key=>$name) {
-            if ($key !== 'aboutus') {
-                $data = $this->$key();
-                $counts[$key] = count($data['records']);
+            if ($key !== 'aboutus' && !array_key_exists($key, $this->custom_tabs)) {
+                if (empty($this->config[$key . '_aggregate'])) {
+                    $counts[$key] = -1;
+                } else {
+                    $data = $this->$key();
+                    $counts[$key] = count($data['records']);
+                }
             }
         }
 //        $this->data = array();  // initialize
         $this->data = $counts;
-        $this->data['records'] = array();
+        $this->data['records'] = array();  // no actual records, basically a banner
         $this->getImageBody($this->params['get']);
         return $this->data;
     }
@@ -191,31 +195,6 @@ class eaasController extends expController {
         $this->getImageBody($this->params['get']);
         return $this->data;
     }
-
-//    private function youtube() {  //FIXME must replace with media player and then removed
-//        $this->data = array();  // initialize
-//        if (!empty($this->params['id'])) {
-//            $youtube = new youtube($this->params['id']);
-//            $this->data['records'] = $youtube;
-//        } else {
-//            $youtube = new youtube();
-//
-//            // figure out if should limit the results
-//            if (isset($this->params['limit'])) {
-//                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
-//            } else {
-//                $limit = '';
-//            }
-//
-//            $order = isset($this->params['order']) ? $this->params['order'] : 'created_at ASC';
-//
-//            $items = $youtube->find('all', $this->aggregateWhereClause('youtube'), $order, $limit);
-//            $this->data['records'] = $items;
-//        }
-//
-//        $this->getImageBody($this->params['get']);
-//        return $this->data;
-//    }
 
     private function media() {
         $this->data = array();  // initialize
@@ -330,9 +309,9 @@ class eaasController extends expController {
                 $limit = '';
             }
 
-//            $order = isset($this->params['order']) ? $this->params['order'] : 'created_at';  //FIXME we shoud be getting upcoming events
-//            $items = $event->find('all', $this->aggregateWhereClause('event'), $order, $limit);  //FIXME needs 'upcoming' type of find
-            $items = $event->find('upcoming', $this->aggregateWhereClause('event'), false, $limit);  //new 'upcoming' type of find
+            $items = $event->find('upcoming', $this->aggregateWhereClause('event'), false, false);  //new 'upcoming' type of find
+            if (!empty($limit))
+                $items = array_slice($items, 0, $limit);  // limit number of items, not numberof days
             $this->data['records'] = $items;
         }
 
@@ -388,7 +367,7 @@ class eaasController extends expController {
             'config'=>$this->config, // though already assigned in controllertemplate, we need to update expFiles
             'pullable'=>$pullable,
             'page'=>$page,
-//                'views'=>$views
+            'views'=>$views
         ));
     }
 
@@ -422,18 +401,18 @@ class eaasController extends expController {
         $this->data['banner']['obj']->url = null;
         $this->data['banner']['md5'] = null;
 
-        if (count(@$this->config['expFile'][$tab.'_image']) > 0) {
-            if (is_numeric($this->config['expFile'][$tab.'_image'][0])) {
-                $img = new expFile($this->config['expFile'][$tab.'_image'][0]);
-            } elseif (is_object($this->config['expFile'][$tab.'_image'][0])) {
-                $img =$this->config['expFile'][$tab.'_image'][0];
+        if (count(@$this->config['expFile'][$tab . '_image']) > 0) {
+            if (is_numeric($this->config['expFile'][$tab . '_image'][0])) {
+                $img = new expFile($this->config['expFile'][$tab . '_image'][0]);
+            } elseif (is_object($this->config['expFile'][$tab . '_image'][0])) {
+                $img =$this->config['expFile'][$tab . '_image'][0];
             }
             if ($img) {
                 $this->data['banner']['obj'] = $img;
                 $this->data['banner']['md5'] = md5_file($img->path);
             }
         }
-        $this->data['html'] = $this->config[$tab.'_body'];
+        $this->data['html'] = $this->config[$tab . '_body'];
     }
 
     /**
@@ -444,10 +423,10 @@ class eaasController extends expController {
      */
     function aggregateWhereClause($type='') {
         $sql = '(0';  // simply to offset the 'OR' added in loop
-        if (!empty($this->config[$type.'_aggregate'])) {
-            foreach ($this->config[$type.'_aggregate'] as $src) {
+        if (!empty($this->config[$type . '_aggregate'])) {
+            foreach ($this->config[$type . '_aggregate'] as $src) {
                 $loc = expCore::makeLocation($type, $src);
-                $sql .= " OR location_data ='".serialize($loc)."'";
+                $sql .= " OR location_data ='" . serialize($loc)."'";
             }
 
         }
