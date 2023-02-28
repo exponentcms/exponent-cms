@@ -51,11 +51,17 @@ class storeCategoryController extends expNestedNodeController {
     }
 
     static function canImportData() {
-        return true;
+        if (ECOM)
+            return true;
+        else
+            return false;
     }
 
     static function canExportData() {
-        return true;
+        if (ECOM)
+            return true;
+        else
+            return false;
     }
 
     public function edit() {

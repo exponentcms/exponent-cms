@@ -96,7 +96,7 @@ var renderIntoTabview,
 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var tabhistory = Y.expTabs({srcNode: '#topsearch'});
     Y.one('#topsearch').removeClass('hide');
-    Y.one('.loadingdiv').remove();
+    // Y.one('.loadingdiv').remove();
 
     var myDataValues = [
         [{/literal}{$records_key}{literal}],

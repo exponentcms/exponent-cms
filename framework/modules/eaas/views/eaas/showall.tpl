@@ -21,7 +21,7 @@
                 {icon class=configure action=configure text="Configure Service"|gettext}
             </div>
             <{$config.item_level|default:'h2'}>{'API Key'|gettext}</{$config.item_level|default:'h2'}>
-            <textarea class="form-control" style="width:100%; height:100px;">{$info.apikey}</textarea>
+            <textarea class="form-control" style="width:100%;" rows="1" readonly>{$info.apikey}</textarea>
             {*edebug var=$info*}
         {/if}
     {/permissions}

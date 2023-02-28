@@ -73,6 +73,15 @@ class eventController extends expController {
         return true;
     }
 
+    /**
+     * can this module export EAAS data?
+     *
+     * @return bool
+     */
+    public static function canHandleEAAS() {
+        return true;
+    }
+
     function showall() {
         global $user;
 
@@ -170,7 +179,7 @@ class eventController extends expController {
                     $annual[$i] = expDateTime::monthlyDaysTimestamp($month);
                     $info = getdate($month);
                     $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
-                    $now = getdate(time());
+                    $now = getdate();
                     $endofmonth = date('t', $month);
                     foreach ($annual[$i] as $weekNum => $week) {
                         foreach ($week as $dayNum => $day) {
@@ -237,7 +246,7 @@ class eventController extends expController {
                 $monthly = expDateTime::monthlyDaysTimestamp($time);
                 $info = getdate($time);
                 $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
-                $now = getdate(time());
+                $now = getdate();
                 $currentday = $now['mday'];
                 $endofmonth = date('t', $time);
                 foreach ($monthly as $weekNum => $week) {
@@ -382,7 +391,7 @@ class eventController extends expController {
                 //                $monthly = array();
                 //                $counts = array();
                 $info = getdate($time);
-                $nowinfo = getdate(time());
+                $nowinfo = getdate();
                 if ($info['mon'] != $nowinfo['mon']) $nowinfo['mday'] = -10;
                 // Grab non-day numbers only (before end of month)
 //                $week = 0;
@@ -492,10 +501,15 @@ class eventController extends expController {
             default;
                 //                $items = null;
                 //                $dates = null;
-                $tz = date_default_timezone_get();
-                @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
-                $day = expDateTime::startOfDayTimestamp(time()) - date('Z');  // offset TZ for 'date' entry in DB
-                @date_default_timezone_set($tz);
+//                $tz = date_default_timezone_get();
+//                eLog(expDateTime::startOfDayTimestamp(time()),'raw time');
+//                @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
+//                eLog(expDateTime::startOfDayTimestamp(time()),'tzadjust time');
+//                $day = expDateTime::startOfDayTimestamp(time()) - date('Z');  // offset TZ for 'date' entry in DB
+//                eLog($day,'adjusted time');
+//                @date_default_timezone_set($tz);
+                $day = expDateTime::startOfDayTimestamp(time());  // offset TZ for 'date' entry in DB
+//                eLog($day,'adjusted time');
                 $sort_asc = true; // For the getEventsForDates call
                 //                $moreevents = false;
                 switch ($viewrange) {
@@ -546,12 +560,14 @@ class eventController extends expController {
 //                $items = $this->getEventsForDates($dates, $sort_asc, isset($this->config['only_featured']) ? true : false, true);
                 $items = $this->event->getEventsForDates($dates, $sort_asc, isset($this->config['only_featured']) ? true : false, ($viewrange !== 'past'));
                 if ($viewrange !== 'past') {
+                    $tz = date_default_timezone_get();
+                    @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
                     $extitems = $this->getExternalEvents($begin, $end);
                     // we need to flatten these down to simple array of events
                     $extitem = array();
                     foreach ($extitems as $days) {
                         foreach ($days as $event) {
-                            if (empty($event->eventdate->date) || ($viewrange === 'upcoming' && $event->eventdate->date < time()))
+                            if (empty($event->eventdate->date) || ($viewrange === 'upcoming' && $event->eventdate->date < (time()  + date('Z'))))
                                 break;
                             if (empty($event->eventstart))
                                 $event->eventstart = $event->eventdate->date;
@@ -574,13 +590,14 @@ class eventController extends expController {
                     // remove today's events that have already ended
                     if ($viewtype === 'default' && $viewrange === 'upcoming') {
                         foreach ($items as $key=>$item) {
-                            if (!$item->is_allday && $item->eventend < time()) {
+                            if (!$item->is_allday && $item->eventend < (time()  + date('Z'))) {
                                 //fixme we've left events ending earlier in the day, but already cancelled out tomorrow's event
                                 unset($items[$key]);
                             } else {
                                 break;  // they are chronological so we can end
                             }
                         }
+                        @date_default_timezone_set($tz);
                     }
                 }
                 $items = expSorter::sort(array('array' => $items, 'sortby' => 'eventstart', 'order' => $sort_asc?'ASC':'DESC'));
@@ -694,9 +711,10 @@ class eventController extends expController {
         if (!empty($this->params['date_id'])) {  // specific event instance
             $eventdate = new eventdate($this->params['date_id']);
             $eventdate->event = new event($eventdate->event_id);
-        } else {  // we'll default to the first event of this series
+        } else {  // we'll default to the next upcoming event of this series
             $event = new event($this->params['id']);
-            $eventdate = new eventdate($event->eventdate[0]->id);
+            $next = $event->find('upcoming', 'event_id=' . $this->params['id']);
+            $eventdate = new eventdate($next[0]->eventdate[0]->id);
         }
         if (empty($eventdate->id))
             redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>'event'));
@@ -2021,6 +2039,41 @@ class eventController extends expController {
         echo $control->toHTML($this->params['label'], $this->params['name']);
 //        $ar = new expAjaxReply(200, gt('The control was created'), json_encode(array('data'=>$code)));
 //        $ar->send();
+    }
+
+    /**
+     * returns module's EAAS data as an array of records
+     *
+     * @return array
+     */
+    public function eaasData($params=array(), $where=null) {
+        $data = array();  // initialize
+        if (!empty($params['id'])) {
+            $event = new event($params['id']);
+            $data['records'] = $event;
+        } else {
+            $event = new event();
+
+            // figure out if we should limit the results
+            if (isset($params['limit'])) {
+                $limit = $params['limit'] === 'none' ? null : $params['limit'];
+            } else {
+                $limit = '';
+            }
+
+            $items = $event->find('upcoming', $where, false, false);  //new 'upcoming' type of find
+            if (!empty($limit))
+                $items = array_slice($items, 0, $limit);  // limit number of items, not numberof days
+            $data['records'] = $items;
+        }
+
+        if (!empty($params['groupbydate'])&&!empty($items)) {  // aggregate by day like with regular calendar
+            $data['records'] = array();
+            foreach ($items as $value) {
+                $data['records'][date('r',$value->eventdate[0]->date)][] = $value;
+            }
+        }
+        return $data;
     }
 
 }

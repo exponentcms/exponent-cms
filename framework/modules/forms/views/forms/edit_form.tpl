@@ -72,6 +72,7 @@
                             {'Report settings to use in the absence of a configured report view.'|gettext}
                         </blockquote>
                     </div>
+                    {control type="checkbox" name="unrestrict_view" label="Enable Data Viewing by Users without Permissions?"|gettext value=1 checked=$config.unrestrict_view description='Enable this setting to allow everyone to view data'|gettext}
                     {control type=text name='report_name' label='Report Title'|gettext value=$form->report_name}
                     {control type=html name='report_desc' label='Report Description'|gettext value=$form->report_desc}
                     {group label='Multi-Record Tabular View Configuration'|gettext}

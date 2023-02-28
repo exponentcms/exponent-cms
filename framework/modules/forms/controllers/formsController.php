@@ -80,21 +80,21 @@ class formsController extends expController {
     public function showall() {
         global $db;
 
-        if ((!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc))) {
-            expHistory::set('viewable', $this->params);
-            $f = null;
-            if (!empty($this->config)) {
-                $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
-            } elseif (!empty($this->params['title'])) {
-                $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($this->params['title']) . '\'');
-                if (!empty($f))
-                    $this->get_defaults($f);
-            } elseif (!empty($this->params['id'])) {
-                $f = $this->forms->find('first', 'id=' . $this->params['id']);
-                if (!empty($f))
-                    $this->get_defaults($f);
-            }
+        expHistory::set('viewable', $this->params);
+        $f = null;
+        if (!empty($this->config)) {
+            $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
+        } elseif (!empty($this->params['title'])) {
+            $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($this->params['title']) . '\'');
+            if (!empty($f))
+                $this->get_defaults($f);
+        } elseif (!empty($this->params['id'])) {
+            $f = $this->forms->find('first', 'id=' . $this->params['id']);
+            if (!empty($f))
+                $this->get_defaults($f);
+        }
 
+        if ((!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc))) {
             if (isset($this->config['order_dropdown_all'])) {
                 $all_text = $this->config['order_dropdown_all'];
             } else {
@@ -292,23 +292,23 @@ class formsController extends expController {
     }
 
     public function show() {
-        if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) {
-            expHistory::set('viewable', $this->params);
-            $f = null;
-            if (!empty($this->config)) {
-                $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
-            } elseif (!empty($this->params['forms_id'])) {
-                $f = $this->forms->find('first', 'id=' . $this->params['forms_id']);
-                if (!empty($f))
-                    $this->get_defaults($f);
-            } elseif (!empty($this->params['title'])) {
-                $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($this->params['title']) . '\'');
-                if (!empty($f))
-                    $this->get_defaults($f);
+        expHistory::set('viewable', $this->params);
+        $f = null;
+        if (!empty($this->config)) {
+            $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
+        } elseif (!empty($this->params['forms_id'])) {
+            $f = $this->forms->find('first', 'id=' . $this->params['forms_id']);
+            if (!empty($f))
+                $this->get_defaults($f);
+        } elseif (!empty($this->params['title'])) {
+            $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($this->params['title']) . '\'');
+            if (!empty($f))
+                $this->get_defaults($f);
 //                if (!empty($f))
 //                    redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
-            }
+        }
 
+        if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) {
             if (!empty($f)) {
                 $fc = new forms_control();
                 $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');

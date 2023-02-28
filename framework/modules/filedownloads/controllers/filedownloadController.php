@@ -40,6 +40,15 @@ class filedownloadController extends expController {
     static function description() { return gt("Place files on your website for users to download or use as a podcast."); }
     static function isSearchable() { return true; }
 
+    /**
+     * can this module export EAAS data?
+     *
+     * @return bool
+     */
+    public static function canHandleEAAS() {
+        return true;
+    }
+
     function showall() {
         expHistory::set('viewable', $this->params, true);
         $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
@@ -304,6 +313,33 @@ class filedownloadController extends expController {
                 break;
         }
         return $rssitems;
+    }
+
+    /**
+     * returns module's EAAS data as an array of records
+     *
+     * @return array
+     */
+    public function eaasData($params=array(), $where=null) {
+        $data = array();  // initialize
+        if (!empty($params['id'])) {
+            $filedownload = new filedownload($params['id']);
+            $data['records'] = $filedownload;
+        } else {
+            $filedownload = new filedownload();
+
+            // figure out if we should limit the results
+            if (isset($params['limit'])) {
+                $limit = $params['limit'] === 'none' ? null : $params['limit'];
+            } else {
+                $limit = '';
+            }
+
+            $order = isset($params['order']) ? $params['order'] : 'created_at ASC';
+
+            $items = $filedownload->find('all', $where, $order, $limit);
+            $data['records'] = $items;
+        }        return $data;
     }
 
 }

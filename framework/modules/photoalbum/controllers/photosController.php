@@ -43,7 +43,8 @@ class photosController extends expController {
 
     static function displayname() { return gt("Photo Album"); }
     static function description() { return gt("Displays and manages images and slideshows."); }
-    static function isSearchable() { return true; }
+    static function isSearchable() { return false; }
+    public static function canHandleEAAS() { return false; }
 
     public function showall() {
         expHistory::set('viewable', $this->params, true);
@@ -308,6 +309,33 @@ class photosController extends expController {
             $obj->delete();
         }
         expHistory::back();
+    }
+
+    /**
+     * returns module's EAAS data as an array of records
+     *
+     * @return array
+     */
+    public function eaasData($params=array(), $where=null) {
+        $data = array();  // initialize
+        if (!empty($params['id'])) {
+            $photo = new photo($params['id']);
+            $data['records'] = $photo;
+        } else {
+            $photo = new photo();
+
+            // figure out if we should limit the results
+            if (isset($params['limit'])) {
+                $limit = $params['limit'] === 'none' ? null : $params['limit'];
+            } else {
+                $limit = '';
+            }
+
+            $order = isset($params['order']) ? $params['order'] : 'rank';
+            $items = $photo->find('all', $where, $order, $limit);
+            $data['records'] = $items;
+        }
+        return $data;
     }
 
 }

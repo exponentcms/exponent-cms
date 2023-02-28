@@ -30,6 +30,17 @@ class photoController extends photosController {
         //'showall_tags'=>"Tag Categories"
     );
 
+    static function isSearchable() { return true; }
+
+    /**
+     * can this module export EAAS data?
+     *
+     * @return bool
+     */
+    public static function canHandleEAAS() {
+        return true;
+    }
+
 }
 
 ?>

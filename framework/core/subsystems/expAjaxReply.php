@@ -39,6 +39,8 @@ class expAjaxReply extends expSubsystem {
 			}
 		} else {
 			if ($p = expJavascript::requiresJSON()) {
+                header('Access-Control-Allow-Origin: *');
+                header('Content-Type: application/json');
 				if ($p==='jsonp') {
 					echo expString::sanitize($_GET['callback']) . '(' . json_encode($this->packet) . ')';
 				} else {

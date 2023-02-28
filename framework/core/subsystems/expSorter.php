@@ -138,11 +138,11 @@ class expSorter extends expSubsystem {
         if (!function_exists('collapse')) {function collapse($node, $props) {
             if (is_array($props)) {
                 foreach ($props as $prop) {
-                    $node = (!isset($node->$prop)) ? null : $node->$prop;
+                    $node = (!isset($node->$prop)) ? '' : $node->$prop;
                 }
                 return $node;
             } else {
-                return (!isset($node->$props)) ? null : $node->$props;
+                return (!isset($node->$props)) ? '' : $node->$props;
             }
         }}
         if (!function_exists('oasort')) {function oasort($a, $b) {

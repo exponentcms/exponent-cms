@@ -89,7 +89,7 @@ class motdController extends expController {
             $annual[$i] = expDateTime::monthlyDaysTimestamp($month);
             $info = getdate($month);
             $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
-            $now = getdate(time());
+            $now = getdate();
             $endofmonth = date('t', $month);
             foreach ($annual[$i] as $weekNum => $week) {
                 foreach ($week as $dayNum => $day) {
@@ -106,7 +106,7 @@ class motdController extends expController {
         }
 
         $days = expDateTime::monthlyDaysTimestamp();
-        $now = getdate(time());
+        $now = getdate();
         $endofmonth = date('t', $month);
         foreach ($days as $weekNum => $week) {
             foreach ($week as $dayNum => $day) {

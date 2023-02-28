@@ -226,7 +226,7 @@ class expRecord {
     /**
      * find an item or items
      *
-     * @param string $range
+     * @param string $range  // all, revisions, first, bytitle, count, bytag, bycat,
      * @param null   $where
      * @param null   $order
      * @param null   $limit
