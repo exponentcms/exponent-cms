@@ -499,10 +499,6 @@ class Server
                         break;
                     }
                 }
-//                if (!file_exists($in['root']) or filemtime($in['root']) > $in['updated']) {
-//                    // The main file has changed so we should compile.
-//                    $root = $in['root'];
-//                }
             }
         } else {
             // TODO: Throw an exception? We got neither a string nor something
@@ -555,6 +551,8 @@ class Server
         $this->scss = $scss;
         $this->showErrorsAsCSS = false;
 
-        date_default_timezone_set('UTC');
+        if (!ini_get('date.timezone') && function_exists('date_default_timezone_set')) { // PHP >= 5.1.0
+            date_default_timezone_set('UTC');
+        }
     }
 }
