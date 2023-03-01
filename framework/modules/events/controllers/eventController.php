@@ -1031,14 +1031,34 @@ class eventController extends expController {
 
                 $tz = DISPLAY_DEFAULT_TIMEZONE;
                 $msg = "BEGIN:VCALENDAR\n";
+                $msg .= "PRODID:<-//ExponentCMS//EN>\n";
                 $msg .= "VERSION:2.0\n"; // version for iCalendar files vs vCalendar files
+                $msg .= "X-WR-TIMEZONE:$tz\n";
                 $msg .= "CALSCALE:GREGORIAN\n";
                 $msg .= "METHOD: PUBLISH\n";
-                $msg .= "PRODID:<-//ExponentCMS//EN>\n";
                 if (isset($this->config['rss_cachetime']) && ($this->config['rss_cachetime'] > 0)) {
                     $msg .= "X-PUBLISHED-TTL:PT" . $this->config['rss_cachetime'] . "M\n";
                 }
                 $msg .= "X-WR-CALNAME:$Filename\n";
+
+//                $msg .= "BEGIN:VTIMEZONE\n";
+//                $msg .= "TZID:$tz\n";
+//                $msg .= "X-LIC-LOCATION:$tz\n";
+//                $msg .= "BEGIN:DAYLIGHT\n";
+////                TZOFFSETFROM:-0800
+////                TZOFFSETTO:-0700
+////                TZNAME:PDT
+////                DTSTART:19700308T020000
+////                RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+//                $msg .= "END:DAYLIGHT\n";
+//                $msg .= "BEGIN:STANDARD\n";
+////                TZOFFSETFROM:-0700
+////                TZOFFSETTO:-0800
+////                TZNAME:PST
+////                DTSTART:19701101T020000
+////                RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+//                $msg .= "END:STANDARD\n";
+//                $msg .= "END:VTIMEZONE\n";
 
                 $items = $this->event->getEventsForDates($dates);
 
@@ -1602,7 +1622,7 @@ class eventController extends expController {
         }
 
         // Set the timezone to GMT
-        @date_default_timezone_set('GMT');
+        @date_default_timezone_set('UTC');
 //        $tzarray = Kigkonsult\Icalcreator\getTimezonesAsDateArrays($v);
         // Set the default timezone
         @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
@@ -1633,7 +1653,7 @@ class eventController extends expController {
 //                            $ourtzoffsets = -(Kigkonsult\Icalcreator\util\util::tz2offset(date('O',time())));
                             $ourtzoffsets = -(Kigkonsult\Icalcreator\util\DateTimeZoneFactory::offsetToSeconds(date('O',self::_date2timestamp($dtstart['value']))));
                             // Set the timezone to GMT
-                            @date_default_timezone_set('GMT');
+                            @date_default_timezone_set('UTC');
                             if (!empty($dtstart['params']['TZID'])) $tzoffsets = Kigkonsult\Icalcreator\getTzOffsetForDate($tzarray, $dtstart['params']['TZID'], $dtstart['value']);
                             // Set the default timezone
                             @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
