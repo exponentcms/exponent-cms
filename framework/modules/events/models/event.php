@@ -108,9 +108,6 @@ class event extends expRecord {
         $featuresql = "";
         if ($featuredonly)
             $featuresql = " AND is_featured=1";
-
-        $tz = date_default_timezone_get();
-        @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
         foreach ($edates as $edate) {
             $evs = $this->find('all', "id=" . $edate->event_id . $featuresql);
             foreach ($evs as $key=>$event) {
@@ -124,7 +121,7 @@ class event extends expRecord {
                         global $eventid;
                         return $event->id === $eventid;
                     });
-                    if (!empty($multiday_event) || (!$event->is_allday && $event->eventend < (time()) - date('Z'))) {
+                    if (!empty($multiday_event) || (!$event->is_allday && $event->eventend < time())) {
                         unset($evs[$key]);
                         continue;
                     }
@@ -145,7 +142,6 @@ class event extends expRecord {
                 break; // keep from breaking system by too much data
             }
         }
-        @date_default_timezone_set($tz);
         $events = expSorter::sort(array('array' => $events, 'sortby' => 'eventstart', 'order' => $sort_asc ? 'ASC' : 'DESC'));
         return $events;
     }
