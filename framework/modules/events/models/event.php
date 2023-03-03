@@ -256,6 +256,56 @@ class event extends expRecord {
         return $days;
     }
 
+    /**
+     * add dates to an existing event
+     * @param $params
+     * @return void
+     * @throws ReflectionException
+     */
+    public function add_dates($params) {
+        $start_recur = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$params));
+        $stop_recur  = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("untildate",$params));
+
+        if (!empty($params['recur']) && $params['recur'] !== "recur_none") {  // recurring event
+            // Do recurrence
+           $freq = $params['recur_freq_'.$params['recur']];
+
+            switch ($params['recur']) {
+                case "recur_daily":
+                    $dates = expDateTime::recurringDailyDates($start_recur,$stop_recur,$freq);
+                    break;
+                case "recur_weekly":
+                   $dateinfo = getdate($start_recur);  //FIXME hack in case the day of week wasn't checked off
+                    $dates = expDateTime::recurringWeeklyDates($start_recur,$stop_recur,$freq,(!empty($params['day']) ? array_keys($params['day']) : array($dateinfo['wday'])));
+                    break;
+                case "recur_monthly":
+                    $dates = expDateTime::recurringMonthlyDates($start_recur,$stop_recur,$freq,(!empty($params['month_type'])?$params['month_type']:true));
+                    break;
+                case "recur_yearly":
+                    $dates = expDateTime::recurringYearlyDates($start_recur,$stop_recur,$freq);
+                    break;
+                default:
+                    echo "Bad type: " . $params['recur'] . "<br />";
+                    return;
+                    break;
+            }
+
+        } else {  // not recurring
+            $dates = array($start_recur);
+        }
+
+        // we've made this a recurring event after adding at least one new date to an existing event
+        if (!$this->is_recurring) {
+            $this->is_recurring = 1; // Set the recurrence flag.
+            $this->save(true);
+        }
+
+        foreach ($dates as $d) {
+           $edate = new eventdate(array('event_id'=>$this->id, 'location_data'=>$this->location_data, 'date'=>$d));
+           $edate->update();
+       }
+    }
+
 }
 
 ?>

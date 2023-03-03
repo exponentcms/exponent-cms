@@ -63,6 +63,9 @@
                   	{control type="checkbox" name="is_allday" label="All Day Event?"|gettext value=1 checked=$record->is_allday hooks=$jsHooks}
                     {control type="datetimecontrol" name="eventstart" label="Start Time"|gettext showdate=false value=$record->eventstart+$record->eventdate[0]->date disabled=$record->is_allday}
                     {control type="datetimecontrol" name="eventend" label="End Time"|gettext showdate=false value=$record->eventend+$record->eventdate[0]->date disabled=$record->is_allday}
+                    {if $record->id}
+                        {icon class="add" action=add_recurring id=$record->id text='Add more Dates'|gettext}
+                    {/if}
                     {if (empty($record->id)) }
                         {exp_include file="_recurring.tpl"}
                     {elseif ($record->is_recurring == 1) }

@@ -739,15 +739,36 @@ class eventController extends expController {
     }
 
     /**
+     * Add more recurring events to an existing event, similar to delete_recurring()
+     *
+     */
+    function add_recurring() {
+        expHistory::set('editable', $this->params);
+        $item = $this->event->find('first', 'id=' . (int)$this->params['id']);
+        assign_to_template(array(
+            'event'        => $item,
+        ));
+    }
+    /**
+     * Add new event dates to an existing event
+     *
+     */
+    function add_selected() {
+        $ev = new event((int)$this->params['id']);
+        $ev->add_dates($this->params);
+        expHistory::back();
+    }
+
+    /**
      * Delete a recurring event by asking for which event dates to delete
      *
      */
     function delete_recurring() {
-        $item = $this->event->find('first', 'id=' . $this->params['id']);
+        $item = $this->event->find('first', 'id=' . (int)$this->params['id']);
         if ($item->is_recurring == 1) { // need to give user options
             expHistory::set('editable', $this->params);
             assign_to_template(array(
-                'checked_date' => $this->params['date_id'],
+                'checked_date' => (int)$this->params['date_id'],
                 'event'        => $item,
             ));
         } else { // Process a regular delete
@@ -760,7 +781,7 @@ class eventController extends expController {
      *
      */
     function delete_selected() {
-        $item = $this->event->find('first', 'id=' . $this->params['id']);
+        $item = $this->event->find('first', 'id=' . (int)$this->params['id']);
         if ($item && $item->is_recurring == 1) {
             $event_remaining = false;
             $eventdates = $item->eventdate[0]->find('all', 'event_id=' . $item->id);
@@ -857,7 +878,7 @@ class eventController extends expController {
         }
         $success = false;
         if (isset($this->params['id'])) {
-            $ed = new eventdate($this->params['id']);
+            $ed = new eventdate((int)$this->params['id']);
 //            $email_addrs = array();
             if ($ed->event->feedback_email != '') {
                 $msgtemplate = expTemplate::get_template_for_action($this, 'email/_' . expString::escape($this->params['formname']), $this->loc);
@@ -907,8 +928,8 @@ class eventController extends expController {
             if ($this->config['enable_ical']) {
                 $ed = new eventdate();
                 if (isset($this->params['date_id'])) { // get single specific event only
-                    $dates = $ed->find('first', "id=" . $this->params['date_id']);
-                    $Filename = "Event-" . $this->params['date_id'];
+                    $dates = $ed->find('first', "id=" . (int)$this->params['date_id']);
+                    $Filename = "Event-" . (int)$this->params['date_id'];
                 } else {
                     $locsql = $this->aggregateWhereClause();
                     if (isset($this->params['time'])) {
