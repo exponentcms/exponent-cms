@@ -239,7 +239,7 @@ class formsController extends expController {
                     sort($list);
                     assign_to_template(
                         array(
-                            "list" => $list,
+                            "list" => array_merge(array('-1'=>$all_text), $list),
                         )
                     );
                 }
@@ -260,7 +260,7 @@ class formsController extends expController {
                         "count" => $f->countRecords(),
                         "config" => $this->config,
                         "selected" => $selected,
-                        "all_text" => $all_text
+//                        "all_text" => $all_text
                     )
                 );
             }
