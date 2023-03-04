@@ -19,18 +19,18 @@
     <table cellspacing="0" cellpadding="2" width="100%" class="exp-skin-table">
         <tr>
             <td style="border:none;" colspan="2">
-               {script unique="recurdates"}
-            {literal}
-                function recur_selectUnselectAll(setChecked) {
-                    var elems = document.getElementsByTagName("input");
-                    for (var key = 0; key < elems.length; key++) {
-                        if (elems[key].type == "checkbox" && elems[key].name.substr(0,6) == "dates[") {
-                            elems[key].checked = setChecked;
+                {script unique="recurdates"}
+                {literal}
+                    function recur_selectUnselectAll(setChecked) {
+                        var elems = document.getElementsByTagName("input");
+                        for (var key = 0; key < elems.length; key++) {
+                            if (elems[key].type == "checkbox" && elems[key].name.substr(0,6) == "dates[") {
+                                elems[key].checked = setChecked;
+                            }
                         }
                     }
-                }
-            {/literal}
-               {/script}
+                {/literal}
+                {/script}
                 <a href="#" onclick="recur_selectUnselectAll(true); return false;">{'Select All'|gettext}</a>
                 &#160;/&#160;
                 <a href="#" onclick="recur_selectUnselectAll(false); return false;">{'Unselect All'|gettext}</a>

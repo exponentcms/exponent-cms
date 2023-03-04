@@ -80,7 +80,7 @@
             </div>
         {/permissions}
     {if $config.order_dropdown}
-        {control type="dropdown" name="select_it" label=$config.order_dropdown_text|default:"Limit Records to"|gettext items=array_merge(array('-1'=>$all_text), $list)}
+        {control type="dropdown" name="select_it" label=$config.order_dropdown_text|default:"Limit Records to"|gettext items=$list}
     {/if}
         {pagelinks paginate=$page top=1}
         <div style="overflow: auto; overflow-y: hidden;">

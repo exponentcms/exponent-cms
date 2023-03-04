@@ -25,7 +25,7 @@
         {/css}
     {/if}
     <div class="module forms show">
-        <div class="item-actions">
+        <div class="module-actions">
         {if !$is_email && ($prev || $next) && (empty($config.pagelinks) || $config.pagelinks == "Top and Bottom" || $config.pagelinks == "Top Only")}
             {clear}
             <span style="float:left">
@@ -60,19 +60,21 @@
             </span>
             {clear}
         {/if}
+        </div>
+        <{$config.heading_level|default:'h1'}>{$title}</{$config.heading_level|default:'h1'}>
+        <div class="item">
         {if !empty($config.report_def)}
-            <{$config.heading_level|default:'h1'}>{$title}</{$config.heading_level|default:'h1'}>
             {eval var=$config.report_def}
             {clear}{br}
         {else}
             <table class="exp-skin-table">
-                <thead>
-                    <tr>
-                        <th colspan="2">
-                            <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
-                        </th>
-                    </tr>
-                </thead>
+{*                <thead>*}
+{*                    <tr>*}
+{*                        <th colspan="2">*}
+{*                            <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>*}
+{*                        </th>*}
+{*                    </tr>*}
+{*                </thead>*}
                 <tbody>
                     {foreach $fields as $fieldname=>$value}
                         <tr class="{cycle values="even,odd"}">
@@ -114,6 +116,7 @@
         {if !empty($referrer)}
             <p>{'Referrer'|gettext}: {$referrer}</p>
         {/if}
+        </div>
         {if !$is_email && ($prev || $next) && (empty($config.pagelinks) || $config.pagelinks == "Top and Bottom" || $config.pagelinks == "Bottom Only")}
             <div class="module-actions">
                 {clear}
