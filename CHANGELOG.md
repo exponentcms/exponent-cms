@@ -13,14 +13,14 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Version 3.0.2
 -------------
 
-### Address issues in v3.0.0, incorporate changes in v2.7.2
+### Address issues in v3.0.0, incorporate changes found in v2.7.2
 
 - compatible with PHP v7.4.x, v8.0.x, v8.1.x and v8.2.x
 - add better metainfo for forms and records
 - add feature to add dates to an existing event
 - new blog dates calendar view
 - fixes several warnings/issues with PHP v8
-- fixes and tweaks many issues in previous versions
+- fixes and tweaks many issues in previous versions, otherwise is code compatible with v2.7.2
 
 Version 3.0.0
 -------------

@@ -13,4 +13,4 @@ For a complete list of the changes made from release to release, see the [CHANGE
 ----------
 
 ### Removed support for obsolete PHP versions
-- Functionally equivaltent to v2.7.2
+- Functionally equivalent to v2.7.2
