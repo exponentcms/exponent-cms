@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v6.3.0 (2023-02-17)
+
+- Adds beta `retrieveStatelessRates` function
+- Adds `getLowestStatelessRate` utility
+- Correct HTTP 403 status responses to throw `ForbiddenException`
+- Various other small corrections and improvements
+
 ## v6.2.0 (2023-01-18)
 
 - Added function to retrieve all pickups via `$client->pickup->all()`
