@@ -319,9 +319,9 @@ a.cats {
     filter     : alpha(opacity = 25);
 }
 
-.events .module-actions {
-	display: inline-flex;
-}
+/*.events .module-actions {*/
+/*	display: inline-flex;*/
+/*}*/
 
 .events .image {
     padding-top: 3px;
