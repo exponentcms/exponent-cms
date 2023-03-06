@@ -145,7 +145,7 @@ function sanity_checkServer() {
 	$status = array(
 		gt('Database Backend')=>_sanity_checkDB(),
 		gt('GD Graphics Library 2.0+')=>_sanity_checkGD(),
-		'PHP 5.6.0+'=>_sanity_checkPHPVersion(),
+		'PHP 7.4.0+'=>_sanity_checkPHPVersion(),
 		gt('ZLib Support')=>_sanity_checkZlib(),
         gt('cURL Library Support')=>_sanity_checkcURL(),
 		gt('XML (Expat) Library Support')=>_sanity_checkXML(),

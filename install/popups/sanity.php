@@ -73,9 +73,9 @@
 	</td>
 </tr>
 <tr>
-	<td id="o_php" class="bodytext" style="font-weight: bold;">PHP 5.6.0+</td>
+	<td id="o_php" class="bodytext" style="font-weight: bold;">PHP 7.4.0+</td>
 	<td class="bodytext">
-		<?php echo gt('Because of some of the functions that Exponent uses, versions of PHP prior to 5.6.0 are not suitable.  Most functions that are supported in later versions have workarounds, but there are a few major bugs, and functions that can\'t be re-implemented in PHP prior to 5.6.0.'); ?>
+		<?php echo gt('Some functions and libraries Exponent uses require PHP version 7.4.0 or newer.  PHP versions prior to v7.4.0 are obsolete and no longer recommended'); ?>
 	</td>
 </tr>
 <tr>
