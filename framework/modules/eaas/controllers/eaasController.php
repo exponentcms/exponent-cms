@@ -41,15 +41,17 @@ class eaasController extends expController {
         'tags',
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    public $tabs = array(
-        'aboutus'=>'About Us',
-        'blog'=>'Blog',
-        'photo'=>'Photos',
-        'media'=>'Media',
-        'event'=>'Events',
-        'filedownload'=>'File Downloads',
-        'news'=>'News'
-    );
+//    public $tabs = array(
+//        'aboutus'=>'About Us',
+//        'blog'=>'Blog',
+//        'photo'=>'Photos',
+//        'media'=>'Media',
+//        'event'=>'Events',
+//        'filedownload'=>'File Downloads',
+//        'news'=>'News'
+//    );
+    public $tabs = array();
+    public $sources = array();
     protected $data = array();
 
     static function displayname() { return gt("Exponent as a Service"); }
@@ -101,52 +103,44 @@ class eaasController extends expController {
     }
 
     private function handleRequest() {
+        global $available_controllers;
+
+        // create eaas module list
+        foreach ($available_controllers as $key => $path) {
+            if (strpos($key, "Controller") !== false) {
+                $c = new $key();
+                if ($c::canHandleEAAS()) {
+                    $this->tabs[$c->baseclassname] = $c->name();
+                    $this->sources[$c->baseclassname] = $c;
+                }
+            }
+        }
+
+        // handle about request
+        if ($this->params['get'] === 'aboutus') {
+            $ar = new expAjaxReply(200, 'ok', $this->aboutUs(), null);
+            $ar->send();
+        }
+
+        // check for a valid module
         if (!array_key_exists($this->params['get'], $this->tabs)) {
             $ar = new expAjaxReply(400, 'Bad Request', 'No service available for your request', null);
             $ar->send();
         }
-        if ($this->params['get'] != 'aboutus' && empty($this->config[$this->params['get'].'_aggregate'])) {
+
+        // check for aggregate on modules with sources
+        if (empty($this->config[$this->params['get'].'_aggregate']) && $this->sources[$this->params['get']]->hasSources() !== false) {
             $ar = new expAjaxReply(400, 'Bad Request', 'No modules assigned to requested service', null);
             $ar->send();
         }
-        switch ($this->params['get']) {
-            case 'aboutus':
-                $ar = new expAjaxReply(200, 'ok', $this->aboutUs(), null);
-                $ar->send();
-                break;
-            case 'news':
-                $ar = new expAjaxReply(200, 'ok', $this->news(), null);
-                $ar->send();
-                break;
-            case 'photo':
-            case 'photos':
-                $ar = new expAjaxReply(200, 'ok', $this->photo(), null);
-                $ar->send();
-                break;
-            case 'media':
-                $ar = new expAjaxReply(200, 'ok', $this->media(), null);
-                $ar->send();
-                break;
-            case 'filedownload':
-            case 'filedownloads':
-                $ar = new expAjaxReply(200, 'ok', $this->filedownload(), null);
-                $ar->send();
-                break;
-            case 'blog':
-            case 'blogs':
-                $ar = new expAjaxReply(200, 'ok', $this->blog(), null);
-                $ar->send();
-                break;
-            case 'event':
-            case 'events':
-                $ar = new expAjaxReply(200, 'ok', $this->event(), null);
-                $ar->send();
-                break;
-            default:  // probably shouldn't evet get to this point
-                $ar = new expAjaxReply(400, 'Bad Request', 'No service available for your request', null);
-                $ar->send();
-                break;
-        }
+
+        // get the data from the module
+        $this->data = $this->sources[$this->params['get']]->eaasData($this->params, $this->aggregateWhereClause($this->params['get']));
+
+        // apply the standard banner info to the response
+        $this->getImageBody($this->params['get']);
+        $ar = new expAjaxReply(200, 'ok', $this->data, null);
+        $ar->send();
     }
 
     /**
@@ -154,62 +148,40 @@ class eaasController extends expController {
      * @return array
      */
     private function aboutUs() {
-        $counts = array();
-        foreach ($this->tabs as $key=>$name) {
-            if ($key != 'aboutus') {
-                $data = $this->$key();
-                $counts[$key] = count($data['records']);
+        if (DEVELOPMENT) {
+            $counts = array();
+            foreach ($this->tabs as $key => $name) {
+                if (empty($this->config[$key.'_aggregate']) && $this->sources[$key]->hasSources() !== false) {
+                    $counts[$key] = -1;
+                } else {
+                    $data = $this->sources[$key]->eaasData(null, $this->aggregateWhereClause($key));
+                    $counts[$key] = count($data['records']);
+                }
             }
+            $this->data = $counts;
         }
-//        $this->data = array();  // initialize
-        $this->data = $counts;
-        $this->data['records'] = array();
+        $this->data['records'] = array();  // no actual records, basically a banner
         $this->getImageBody($this->params['get']);
         return $this->data;
     }
 
-    private function news() {
-        $this->data = array();  // initialize
-        if (!empty($this->params['id'])) {
-            $news = new news($this->params['id']);
-            $this->data['records'] = $news;
-        } else {
-            $news = new news();
-
-            // figure out if we should limit the results
-            if (isset($this->params['limit'])) {
-                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
-            } else {
-                $limit = '';
-            }
-
-            $order = isset($this->params['order']) ? $this->params['order'] : 'publish DESC';
-            $items = $news->find('all', $this->aggregateWhereClause('news'), $order, $limit);
-            $this->data['records'] = $items;
-        }
-
-        $this->getImageBody($this->params['get']);
-        return $this->data;
-    }
-
-//    private function youtube() {  //FIXME must replace with media player and then removed
+//    private function news() {
 //        $this->data = array();  // initialize
 //        if (!empty($this->params['id'])) {
-//            $youtube = new youtube($this->params['id']);
-//            $this->data['records'] = $youtube;
+//            $news = new news($this->params['id']);
+//            $this->data['records'] = $news;
 //        } else {
-//            $youtube = new youtube();
+//            $news = new news();
 //
-//            // figure out if should limit the results
+//            // figure out if we should limit the results
 //            if (isset($this->params['limit'])) {
-//                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
+//                $limit = $this->params['limit'] === 'none' ? null : $this->params['limit'];
 //            } else {
 //                $limit = '';
 //            }
 //
-//            $order = isset($this->params['order']) ? $this->params['order'] : 'created_at ASC';
-//
-//            $items = $youtube->find('all', $this->aggregateWhereClause('youtube'), $order, $limit);
+//            $order = isset($this->params['order']) ? $this->params['order'] : 'publish DESC';
+//            $items = $news->find('all', $this->aggregateWhereClause('news'), $order, $limit);
 //            $this->data['records'] = $items;
 //        }
 //
@@ -217,165 +189,177 @@ class eaasController extends expController {
 //        return $this->data;
 //    }
 
-    private function media() {
-        $this->data = array();  // initialize
-        if (!empty($this->params['id'])) {
-            $media = new media($this->params['id']);
-            $this->data['records'] = $media;
-        } else {
-            $media = new media();
+//    private function media() {
+//        $this->data = array();  // initialize
+//        if (!empty($this->params['id'])) {
+//            $media = new media($this->params['id']);
+//            $this->data['records'] = $media;
+//        } else {
+//            $media = new media();
+//
+//            // figure out if we should limit the results
+//            if (isset($this->params['limit'])) {
+//                $limit = $this->params['limit'] === 'none' ? null : $this->params['limit'];
+//            } else {
+//                $limit = '';
+//            }
+//
+//            $order = isset($this->params['order']) ? $this->params['order'] : 'created_at ASC';
+//
+//            $items = $media->find('all', $this->aggregateWhereClause('media'), $order, $limit);
+//            $this->data['records'] = $items;
+//        }
+//
+//        $this->getImageBody($this->params['get']);
+//        return $this->data;
+//    }
 
-            // figure out if we should limit the results
-            if (isset($this->params['limit'])) {
-                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
-            } else {
-                $limit = '';
-            }
+//    private function filedownload() {
+//        $this->data = array();  // initialize
+//        if (!empty($this->params['id'])) {
+//            $filedownload = new filedownload($this->params['id']);
+//            $this->data['records'] = $filedownload;
+//        } else {
+//            $filedownload = new filedownload();
+//
+//            // figure out if we should limit the results
+//            if (isset($this->params['limit'])) {
+//                $limit = $this->params['limit'] === 'none' ? null : $this->params['limit'];
+//            } else {
+//                $limit = '';
+//            }
+//
+//            $order = isset($this->params['order']) ? $this->params['order'] : 'created_at ASC';
+//
+//            $items = $filedownload->find('all', $this->aggregateWhereClause('filedownload'), $order, $limit);
+//            $this->data['records'] = $items;
+//        }
+//
+//        $this->getImageBody($this->params['get']);
+//        return $this->data;
+//    }
 
-            $order = isset($this->params['order']) ? $this->params['order'] : 'created_at ASC';
+//    private function photo() {
+//        $this->data = array();  // initialize
+//        if (!empty($this->params['id'])) {
+//            $photo = new photo($this->params['id']);
+//            $this->data['records'] = $photo;
+//        } else {
+//            $photo = new photo();
+//
+//            // figure out if we should limit the results
+//            if (isset($this->params['limit'])) {
+//                $limit = $this->params['limit'] === 'none' ? null : $this->params['limit'];
+//            } else {
+//                $limit = '';
+//            }
+//
+//            $order = isset($this->params['order']) ? $this->params['order'] : 'rank';
+//            $items = $photo->find('all', $this->aggregateWhereClause('photo'), $order, $limit);
+//            $this->data['records'] = $items;
+//        }
+//
+//        $this->getImageBody($this->params['get']);
+//        return $this->data;
+//    }
 
-            $items = $media->find('all', $this->aggregateWhereClause('media'), $order, $limit);
-            $this->data['records'] = $items;
-        }
+//    private function blog() {
+//        $this->data = array();  // initialize
+//        if (!empty($this->params['id'])) {
+//            $blog = new blog($this->params['id']);
+//            $this->data['records'] = $blog;
+//        } else {
+//            $blog = new blog();
+//
+//            // figure out if we should limit the results
+//            if (isset($this->params['limit'])) {
+//                $limit = $this->params['limit'] === 'none' ? null : $this->params['limit'];
+//            } else {
+//                $limit = '';
+//            }
+//
+//            $order = isset($this->params['order']) ? $this->params['order'] : 'publish DESC';
+//            $items = $blog->find('all', $this->aggregateWhereClause('blog'), $order, $limit);
+//            $this->data['records'] = $items;
+//        }
+//
+//        $this->getImageBody($this->params['get']);
+//        return $this->data;
+//    }
 
-        $this->getImageBody($this->params['get']);
-        return $this->data;
-    }
-
-    private function filedownload() {
-        $this->data = array();  // initialize
-        if (!empty($this->params['id'])) {
-            $filedownload = new filedownload($this->params['id']);
-            $this->data['records'] = $filedownload;
-        } else {
-            $filedownload = new filedownload();
-
-            // figure out if we should limit the results
-            if (isset($this->params['limit'])) {
-                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
-            } else {
-                $limit = '';
-            }
-
-            $order = isset($this->params['order']) ? $this->params['order'] : 'created_at ASC';
-
-            $items = $filedownload->find('all', $this->aggregateWhereClause('filedownload'), $order, $limit);
-            $this->data['records'] = $items;
-        }
-
-        $this->getImageBody($this->params['get']);
-        return $this->data;
-    }
-
-    private function photo() {
-        $this->data = array();  // initialize
-        if (!empty($this->params['id'])) {
-            $photo = new photo($this->params['id']);
-            $this->data['records'] = $photo;
-        } else {
-            $photo = new photo();
-
-            // figure out if we should limit the results
-            if (isset($this->params['limit'])) {
-                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
-            } else {
-                $limit = '';
-            }
-
-            $order = isset($this->params['order']) ? $this->params['order'] : 'rank';
-            $items = $photo->find('all', $this->aggregateWhereClause('photo'), $order, $limit);
-            $this->data['records'] = $items;
-        }
-
-        $this->getImageBody($this->params['get']);
-        return $this->data;
-    }
-
-    private function blog() {
-        $this->data = array();  // initialize
-        if (!empty($this->params['id'])) {
-            $blog = new blog($this->params['id']);
-            $this->data['records'] = $blog;
-        } else {
-            $blog = new blog();
-
-            // figure out if we should limit the results
-            if (isset($this->params['limit'])) {
-                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
-            } else {
-                $limit = '';
-            }
-
-            $order = isset($this->params['order']) ? $this->params['order'] : 'publish DESC';
-            $items = $blog->find('all', $this->aggregateWhereClause('blog'), $order, $limit);
-            $this->data['records'] = $items;
-        }
-
-        $this->getImageBody($this->params['get']);
-        return $this->data;
-    }
-
-    private function event() {
-        $this->data = array();  // initialize
-        if (!empty($this->params['id'])) {
-            $event = new event($this->params['id']);
-            $this->data['records'] = $event;
-        } else {
-            $event = new event();
-
-            // figure out if we should limit the results
-            if (isset($this->params['limit'])) {
-                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
-            } else {
-                $limit = '';
-            }
-
-//            $order = isset($this->params['order']) ? $this->params['order'] : 'created_at';  //FIXME we shoud be getting upcoming events
-//            $items = $event->find('all', $this->aggregateWhereClause('event'), $order, $limit);  //FIXME needs 'upcoming' type of find
-            $items = $event->find('upcoming', $this->aggregateWhereClause('event'), false, $limit);  //new 'upcoming' type of find
-            $this->data['records'] = $items;
-        }
-
-        if (!empty($this->params['groupbydate'])&&!empty($items)) {  // aggregate by day like with regular calendar
-            $this->data['records'] = array();
-            foreach ($items as $value) {
-                $this->data['records'][date('r',$value->eventdate[0]->date)][] = $value;
-                // edebug($value);
-            }
-        }
-
-        $this->getImageBody($this->params['get']);
-        return $this->data;
-    }
+//    private function event() {
+//        $this->data = array();  // initialize
+//        if (!empty($this->params['id'])) {
+//            $event = new event($this->params['id']);
+//            $this->data['records'] = $event;
+//        } else {
+//            $event = new event();
+//
+//            // figure out if we should limit the results
+//            if (isset($this->params['limit'])) {
+//                $limit = $this->params['limit'] === 'none' ? null : $this->params['limit'];
+//            } else {
+//                $limit = '';
+//            }
+//
+//            $items = $event->find('upcoming', $this->aggregateWhereClause('event'), false, false);  //new 'upcoming' type of find
+//            if (!empty($limit))
+//                $items = array_slice($items, 0, $limit);  // limit number of items, not numberof days
+//            $this->data['records'] = $items;
+//        }
+//
+//        if (!empty($this->params['groupbydate'])&&!empty($items)) {  // aggregate by day like with regular calendar
+//            $this->data['records'] = array();
+//            foreach ($items as $value) {
+//                $this->data['records'][date('r',$value->eventdate[0]->date)][] = $value;
+//                // edebug($value);
+//            }
+//        }
+//
+//        $this->getImageBody($this->params['get']);
+//        return $this->data;
+//    }
 
     function configure() {
+        global $available_controllers;
+
         expHistory::set('editable', $this->params);
         parent::configure();
         $order = isset($this->params['order']) ? $this->params['order'] : 'section';
         $dir = isset($this->params['dir']) ? $this->params['dir'] : '';
 
-        $views = expTemplate::get_config_templates($this, $this->loc);
+        $views = expTemplate::get_config_templates($this, $this->loc); // configure views found within eaas module
+
+        // add module configuration views
+        foreach ($available_controllers as $key => $path) {
+            if (strpos($key, "Controller") !== false) {
+                $c = new $key();
+                if ($c::canHandleEAAS()) {
+                    $config = $c->eaasConfig();
+                    if (!empty($config)) {
+                        $views[$c->baseclassname] = $c->eaasConfig();
+                        $this->tabs[$c->baseclassname] = $c->name();
+                    }
+                }
+            }
+        }
+
+        // get aggregate
         $pullable = array();
         $page = array();
-
         foreach ($this->tabs as $tab => $name) {
-            // news tab
-            if ($tab != 'aboutus') {
-                $pullable[$tab] = expModules::listInstalledControllers($tab);
-                $page[$tab] = new expPaginator(array(
-                    'controller'=>$tab.'Controller',
-                    'action' => $this->params['action'],
-                    'records'=>$pullable[$tab],
-                    'limit'=>count($pullable[$tab]),
-                    'order'=>$order,
-                    'dir'=>$dir,
-                    'columns'=>array(gt('Title')=>'title',gt('Page')=>'section'),
-                ));
-
-                if (@is_null($this->config[$tab . '_aggregate'])) {
-                    $this->config[$tab . '_aggregate'] = array();
-                }
-
+            $pullable[$tab] = expModules::listInstalledControllers($tab);
+            $page[$tab] = new expPaginator(array(
+                'controller'=>$tab.'Controller',
+                'action' => $this->params['action'],
+                'records'=>$pullable[$tab],
+                'limit'=>count($pullable[$tab]),
+                'order'=>$order,
+                'dir'=>$dir,
+                'columns'=>array(gt('Title')=>'title',gt('Page')=>'section'),
+            ));
+            if (@is_null($this->config[$tab . '_aggregate'])) {
+                $this->config[$tab . '_aggregate'] = array();
             }
 
             $this->configImage($tab);  // fix attached files for proper display of file manager control
@@ -388,12 +372,12 @@ class eaasController extends expController {
             'config'=>$this->config, // though already assigned in controllertemplate, we need to update expFiles
             'pullable'=>$pullable,
             'page'=>$page,
-//                'views'=>$views
+            'views'=>$views
         ));
     }
 
     private function configImage($tab) {
-        if (count(@$this->config['expFile'][$tab.'_image']) > 0) {
+        if (isset($this->config['expFile'][$tab.'_image']) && count($this->config['expFile'][$tab.'_image']) > 0) {
             if (!is_object($this->config['expFile'][$tab.'_image'][0])) {
                 $ftmp[] = new expFile($this->config['expFile'][$tab . '_image'][0]);
                 $this->config['expFile'][$tab . '_image'][] = $ftmp;
@@ -418,22 +402,22 @@ class eaasController extends expController {
 
     private function getImageBody($tab) {
         // create an empty 'banner' object to prevent errors in caller
-        $this->data['banner']['obj'] = null;
+        $this->data['banner']['obj'] = new stdClass();
         $this->data['banner']['obj']->url = null;
         $this->data['banner']['md5'] = null;
 
-        if (count(@$this->config['expFile'][$tab.'_image']) > 0) {
-            if (is_numeric($this->config['expFile'][$tab.'_image'][0])) {
-                $img = new expFile($this->config['expFile'][$tab.'_image'][0]);
-            } elseif (is_object($this->config['expFile'][$tab.'_image'][0])) {
-                $img =$this->config['expFile'][$tab.'_image'][0];
+        if (count(@$this->config['expFile'][$tab . '_image']) > 0) {
+            if (is_numeric($this->config['expFile'][$tab . '_image'][0])) {
+                $img = new expFile($this->config['expFile'][$tab . '_image'][0]);
+            } elseif (is_object($this->config['expFile'][$tab . '_image'][0])) {
+                $img =$this->config['expFile'][$tab . '_image'][0];
             }
             if ($img) {
                 $this->data['banner']['obj'] = $img;
                 $this->data['banner']['md5'] = md5_file($img->path);
             }
         }
-        $this->data['html'] = $this->config[$tab.'_body'];
+        $this->data['html'] = $this->config[$tab . '_body'];
     }
 
     /**
@@ -444,10 +428,10 @@ class eaasController extends expController {
      */
     function aggregateWhereClause($type='') {
         $sql = '(0';  // simply to offset the 'OR' added in loop
-        if (!empty($this->config[$type.'_aggregate'])) {
-            foreach ($this->config[$type.'_aggregate'] as $src) {
+        if (!empty($this->config[$type . '_aggregate'])) {
+            foreach ($this->config[$type . '_aggregate'] as $src) {
                 $loc = expCore::makeLocation($type, $src);
-                $sql .= " OR location_data ='".serialize($loc)."'";
+                $sql .= " OR location_data ='" . serialize($loc)."'";
             }
 
         }

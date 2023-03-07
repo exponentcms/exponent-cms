@@ -98,7 +98,8 @@ abstract class expController {
 //        $this->viewpath = BASE.'framework/modules/'.$this->relative_viewpath;
         //FIXME this requires we move the 'core' controllers into the modules folder or use this hack
         $depth = array_search('core', $controllerpath);
-        if (DEVELOPMENT && !$depth) $depth = array_search('themes', $controllerpath);  // account for modified controller within theme
+//        if (DEVELOPMENT && !$depth)
+//            $depth = array_search('themes', $controllerpath);  // account for modified controller (only) within theme without and theme views
         if ($depth) {
             $this->viewpath = BASE . 'framework/modules/' . $this->relative_viewpath;
         } else {
@@ -292,6 +293,15 @@ abstract class expController {
     }
 
     /**
+     * can this module export EAAS data?
+     *
+     * @return bool
+     */
+    public static function canHandleEAAS() {
+        return false;
+    }
+
+    /**
      * does this module require configuration?
      *
      * @return bool
@@ -299,20 +309,6 @@ abstract class expController {
     public static function requiresConfiguration() {
         return false;
     }
-
-    /**
-     * glue to make the view template aware of the module
-     * @deprecated
-     */
-//    public function moduleSelfAwareness() {
-//        assign_to_template(array(
-//            'asset_path' => $this->asset_path,
-//            'model_name' => $this->basemodel_name,
-//            'table'      => $this->model_table,
-//            'controller' => $this->baseclassname,
-//            'config'     => $this->config
-//        ));
-//    }
 
     /**
      * default module view method for all items
@@ -433,30 +429,48 @@ abstract class expController {
      * return all categories used by module's items
      */
     public function categories() {
+        global $db;
+
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
 
-        $items = $this->$modelname->find('all', $this->aggregateWhereClause());
-        $used_cats = array();
-        $used_cats[0] = new stdClass();
-        $used_cats[0]->id = 0;
-        $used_cats[0]->sef_url = 0;
-        $used_cats[0]->title = !empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized');
-        $used_cats[0]->count = 0;
-        foreach ($items as $item) {
-            if (!empty($item->expCat)) {
-                if (isset($used_cats[$item->expCat[0]->id])) {
-                    $used_cats[$item->expCat[0]->id]->count++;
-                } else {
-                    $expcat = new expCat($item->expCat[0]->id);
-                    $used_cats[$item->expCat[0]->id] = $expcat;
-                    $used_cats[$item->expCat[0]->id]->count = 1;
-                }
-            } else {
-                $used_cats[0]->count++;
-            }
+//        $items = $this->$modelname->find('all', $this->aggregateWhereClause());
+//        $used_cats = array();
+//        $used_cats[0] = new stdClass();
+//        $used_cats[0]->id = 0;
+//        $used_cats[0]->sef_url = 0;
+//        $used_cats[0]->title = !empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized');
+//        $used_cats[0]->count = 0;
+//        foreach ($items as $item) {
+//            if (!empty($item->expCat)) {
+//                if (isset($used_cats[$item->expCat[0]->id])) {
+//                    $used_cats[$item->expCat[0]->id]->count++;
+//                } else {
+//                    $expcat = new expCat($item->expCat[0]->id);
+//                    $used_cats[$item->expCat[0]->id] = $expcat;
+//                    $used_cats[$item->expCat[0]->id]->count = 1;
+//                }
+//            } else {
+//                $used_cats[0]->count++;
+//            }
+//        }
+
+        $used_cats = $db->selectObjectsBySql("SELECT cnt.expcats_id AS id, cat.title, cat.sef_url, COUNT(expcats_id) AS count FROM " . $db->tableStmt('content_expCats') . " cnt JOIN " . $db->tableStmt('expCats') . " cat ON cnt.expcats_id = cat.id WHERE content_type = '" . $modelname . "' GROUP BY expcats_id");
+        // check for uncategoriezed items
+        $total = $db->countObjects($modelname);
+        foreach($used_cats as $u) {
+            $total -= $u->count;
+        }
+        if ($total) {
+            $unused = new stdClass();
+            $unused->id = 0;
+            $unused->sef_url = 0;
+            $unused->title = !empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized');
+            $unused->count = $total;
+            array_unshift($used_cats, $unused);
         }
 
+        // sort the list
 //        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
 //        $used_cats = expSorter::sort(array('array'=>$used_cats,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
 //        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
@@ -1177,7 +1191,8 @@ abstract class expController {
                     $rss->itunes->category = $itunes_cats[0]->category;
                     $rss->itunes->subcategory = $itunes_cats[0]->subcategory;
                 }
-                //		$rss->itunes->explicit = 0;
+                $rss->itunes->type = 'Episodic';  // iTunes default
+                $rss->itunes->explicit = 'No';
 //                $rss->itunes->subtitle = $site_rss->title;
                 $rss->itunes->subtitle = $site_rss->feed_desc;
                 //		$rss->itunes->keywords = 0;
@@ -1621,6 +1636,34 @@ abstract class expController {
         }
 
         return $sql;
+    }
+
+    /**
+     * returns info about Config template
+     * standard location is a folder named 'eaas' in the module's view folder with a model_name template
+     *
+     * @return array|boolean
+     */
+    public function eaasConfig() {
+        if ($this::canHandleEAAS()) {
+            if (file_exists($this->viewpath . '/eaas/' . ucfirst($this->basemodel_name) . '.tpl')) {
+                // return in $views format
+                return array(
+                    'file' => $this->viewpath . '/eaas/' . ucfirst($this->baseclassname) . '.tpl',
+                    'name' => $this->name()
+                );
+            }
+        }
+        return false;
+    }
+
+    /**
+     * returns module's EAAS data as an array of records
+     *
+     * @return array
+     */
+    public function eaasData($params=array(), $where=null) {
+        return array();
     }
 
 }

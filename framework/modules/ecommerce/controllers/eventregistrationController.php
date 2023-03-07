@@ -145,7 +145,7 @@ class eventregistrationController extends expController {
 //        $counts  = array();
 
         $info = getdate($time);
-        $nowinfo = getdate(time());
+        $nowinfo = getdate();
         if ($info['mon'] != $nowinfo['mon']) $nowinfo['mday'] = -10;
         // Grab non-day numbers only (before end of month)
 //        $week        = 0;
@@ -428,6 +428,11 @@ class eventregistrationController extends expController {
         ));
     }
 
+    /**
+     * get the metainfo for this module
+     *
+     * @return array|boolean
+     */
     function metainfo() {
         global $router;
         if (empty($router->params['action'])) return false;

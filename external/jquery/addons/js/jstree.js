@@ -13,7 +13,7 @@
 }(function ($, undefined) {
 	"use strict";
 /*!
- * jsTree 3.3.14
+ * jsTree 3.3.15
  * http://jstree.com/
  *
  * Copyright (c) 2014 Ivan Bozhanov (http://vakata.com)
@@ -63,7 +63,7 @@
 		 * specifies the jstree version in use
 		 * @name $.jstree.version
 		 */
-		version : '3.3.14',
+		version : '3.3.15',
 		/**
 		 * holds all the default options used when creating new instances
 		 * @name $.jstree.defaults
@@ -84,7 +84,7 @@
 		idregex : /[\\:&!^|()\[\]<>@*'+~#";.,=\- \/${}%?`]/g,
 		root : '#'
 	};
-
+	
 	/**
 	 * creates a jstree instance
 	 * @name $.jstree.create(el [, options])
@@ -454,7 +454,7 @@
 		 */
 		restore_focus : true,
 		/**
-		 * Force to compute and set "aria-setsize" and "aria-posinset" explicitly for each treeitem.
+		 * Force to compute and set "aria-setsize" and "aria-posinset" explicitly for each treeitem. 
 		 * Some browsers may compute incorrect elements position and produce wrong announcements for screen readers. Defaults to `false`
 		 * @name $.jstree.defaults.core.compute_elements_positions
 		 */
@@ -914,7 +914,7 @@
 					}.bind(this))
 				.on('focus.jstree', '.jstree-anchor', function (e) {
 						var tmp = this.get_node(e.currentTarget);
-						if(tmp && tmp.id) {
+						if(tmp && (tmp.id || tmp.id === 0)) {
 							this._data.core.focused = tmp.id;
 						}
 						this.element.find('.jstree-hovered').not(e.currentTarget).trigger('mouseleave');
@@ -1041,7 +1041,7 @@
 		 * @return {Object|jQuery}
 		 */
 		get_node : function (obj, as_dom) {
-			if(obj && obj.id) {
+			if(obj && (obj.id || obj.id === 0)) {
 				obj = obj.id;
 			}
 			if (obj instanceof $ && obj.length && obj[0].id) {
@@ -1766,7 +1766,7 @@
 									tmp.state[i] = df[i];
 								}
 							}
-							if(d && d.id) { tmp.id = d.id.toString(); }
+							if(d && (d.id || d.id === 0)) { tmp.id = d.id.toString(); }
 							if(d && d.text) { tmp.text = d.text; }
 							if(d && d.data && d.data.jstree && d.data.jstree.icon) {
 								tmp.icon = d.data.jstree.icon;
@@ -1798,10 +1798,10 @@
 									}
 								}
 							}
-							if(tmp.li_attr.id && !tmp.id) {
+							if(tmp.li_attr.id && !(tmp.id || tmp.id === 0)) {
 								tmp.id = tmp.li_attr.id.toString();
 							}
-							if(!tmp.id) {
+							if(!(tmp.id || tmp.id === 0)) {
 								tmp.id = tid;
 							}
 							if(!tmp.li_attr.id) {
@@ -2286,7 +2286,7 @@
 					tmp.state[i] = df[i];
 				}
 			}
-			if(d && d.id) { tmp.id = d.id.toString(); }
+			if(d && (d.id || d.id === 0)) { tmp.id = d.id.toString(); }
 			if(d && d.text) { tmp.text = d.text; }
 			if(d && d.data && d.data.jstree && d.data.jstree.icon) {
 				tmp.icon = d.data.jstree.icon;
@@ -2318,10 +2318,10 @@
 					}
 				}
 			}
-			if(tmp.li_attr.id && !tmp.id) {
+			if(tmp.li_attr.id && !(tmp.id || tmp.id === 0)) {
 				tmp.id = tmp.li_attr.id.toString();
 			}
-			if(!tmp.id) {
+			if(!(tmp.id || tmp.id === 0)) {
 				tmp.id = tid;
 			}
 			if(!tmp.li_attr.id) {
@@ -3917,7 +3917,7 @@
 					break;
 			}
 			if(pos > par.children.length) { pos = par.children.length; }
-			if(!node.id) { node.id = true; }
+			if(node.id === undefined) { node.id = true; }
 			if(!this.check("create_node", node, par, pos)) {
 				this.settings.core.error.call(this, this._data.core.last_error);
 				return false;
@@ -4155,7 +4155,7 @@
 					return true;
 				}
 			}
-			obj = obj && obj.id ? obj : this.get_node(obj);
+			obj = obj && (obj.id !== undefined) ? obj : this.get_node(obj);
 
 			if(!obj || obj.id === $.jstree.root) { return false; }
 
@@ -4328,7 +4328,7 @@
 					return true;
 				}
 			}
-			obj = obj && obj.id ? obj : this.get_node(obj);
+			obj = obj && (obj.id !== undefined) ? obj : this.get_node(obj);
 			if(!obj || obj.id === $.jstree.root) { return false; }
 
 			old_par = (obj.parent || $.jstree.root).toString();
@@ -4432,7 +4432,7 @@
 			var tmp = [], o, t1, t2;
 			for(t1 = 0, t2 = obj.length; t1 < t2; t1++) {
 				o = this.get_node(obj[t1]);
-				if(o && o.id && o.id !== $.jstree.root) { tmp.push(o); }
+				if(o && (o.id || o.id === 0) && o.id !== $.jstree.root) { tmp.push(o); }
 			}
 			if(!tmp.length) { return false; }
 			ccp_node = tmp;
@@ -4459,7 +4459,7 @@
 			var tmp = [], o, t1, t2;
 			for(t1 = 0, t2 = obj.length; t1 < t2; t1++) {
 				o = this.get_node(obj[t1]);
-				if(o && o.id && o.id !== $.jstree.root) { tmp.push(o); }
+				if(o && (o.id !== undefined) && o.id !== $.jstree.root) { tmp.push(o); }
 			}
 			if(!tmp.length) { return false; }
 			ccp_node = tmp;
@@ -4991,7 +4991,7 @@
 		return d;
 	};
 	$.vakata.trim = function (text) {
-		return String.prototype.trim ?
+		return String.prototype.trim ? 
 			String.prototype.trim.call(text.toString()) :
 			text.toString().replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
 	};
@@ -5476,9 +5476,9 @@
 			this.element.find('.jstree-closed').not(':has(.jstree-children)')
 				.each(function () {
 					var tmp = tt.get_node(this), tmp2;
-
+					
 					if(!tmp) { return; }
-
+					
 					if(!tmp.state.loaded) {
 						if(tmp.original && tmp.original.state && tmp.original.state.undetermined && tmp.original.state.undetermined === true) {
 							if(o[tmp.id] === undefined && tmp.id !== $.jstree.root) {
@@ -5695,7 +5695,7 @@
 		};
 		this.delete_node = function (obj) {
 			if(this.settings.checkbox.tie_selection || $.vakata.is_array(obj)) {
-				return parent.delete_node(obj);
+				return parent.delete_node.call(this, obj);
 			}
 			var tmp, k, l, c = false;
 			obj = this.get_node(obj);
@@ -5885,7 +5885,7 @@
 				this.trigger('uncheck_node', { 'node' : obj, 'selected' : this._data.checkbox.selected, 'event' : e });
 			}
 		};
-
+		
 		/**
 		 * checks all nodes in the tree (only if tie_selection in checkbox settings is false, otherwise select_all will be called internally)
 		 * @name check_all()
@@ -6113,7 +6113,7 @@
 		 * * `_disabled` - a boolean indicating if this action should be disabled
 		 * * `label` - a string - the name of the action (could be a function returning a string)
 		 * * `title` - a string - an optional tooltip for the item
-		 * * `action` - a function to be executed if this item is chosen, the function will receive
+		 * * `action` - a function to be executed if this item is chosen, the function will receive 
 		 * * `icon` - a string, can be a path to an icon or a className, if using an image that is in the current directory use a `./` prefix, otherwise it will be detected as a class
 		 * * `shortcut` - keyCode which will trigger the action if the menu is open (for example `113` for rename, which equals F2)
 		 * * `shortcut_label` - shortcut label (like for example `F2` for rename)
@@ -6836,7 +6836,7 @@
 						if(this.settings.core.force_text) {
 							txt = $.vakata.html.escape(txt);
 						}
-						if(obj && obj.id && obj.id !== $.jstree.root && (e.which === 1 || e.type === "touchstart" || e.type === "dragstart") &&
+						if(obj && (obj.id || obj.id === 0) && obj.id !== $.jstree.root && (e.which === 1 || e.type === "touchstart" || e.type === "dragstart") &&
 							(this.settings.dnd.is_draggable === true || ($.vakata.is_function(this.settings.dnd.is_draggable) && this.settings.dnd.is_draggable.call(this, (mlt > 1 ? this.get_top_selected(true) : [obj]), e)))
 						) {
 							drg = { 'jstree' : true, 'origin' : this, 'obj' : this.get_node(obj,true), 'nodes' : mlt > 1 ? this.get_top_selected() : [obj.id] };
@@ -6966,7 +6966,7 @@
 					else {
 						// if we are hovering a tree node
 						ref = ins.settings.dnd.large_drop_target ? $(data.event.target).closest('.jstree-node').children('.jstree-anchor') : $(data.event.target).closest('.jstree-anchor');
-
+						
 						if(ref && ref.length && ref.parent().is('.jstree-closed, .jstree-open, .jstree-leaf')) {
 							off = ref.offset();
 							rel = (data.event.pageY !== undefined ? data.event.pageY : data.event.originalEvent.pageY) - off.top;
@@ -7412,7 +7412,7 @@
 	 *		"id1" : [{ "text" : "Child of ID1", "id" : "c1" }, { "text" : "Another child of ID1", "id" : "c2" }],
 	 *		"id2" : [{ "text" : "Child of ID2", "id" : "c3" }]
 	 *	}
-	 *
+	 * 
 	 * @name $.jstree.defaults.massload
 	 * @plugin massload
 	 */
@@ -7423,7 +7423,7 @@
 			parent.init.call(this, el, options);
 		};
 		this._load_nodes = function (nodes, callback, is_callback, force_reload) {
-			var s = this.settings.massload,
+			var s = this.settings.massload,				
 				toLoad = [],
 				m = this._model.data,
 				i, j, dom;
@@ -7639,7 +7639,7 @@
 				return this.clear_search();
 			}
 			inside = this.get_node(inside);
-			inside = inside && inside.id ? inside.id : null;
+			inside = inside && (inside.id || inside.id === 0) ? inside.id : null;
 			str = str.toString();
 			var s = this.settings.search,
 				a = s.ajax ? s.ajax : false,
@@ -8214,7 +8214,7 @@
 			if(tmp === false) { return false; }
 			if($.vakata.is_array(tmp)) {
 				for(i = 0, j = tmp.length; i < j; i++) {
-					tmp[i].type = tmp[i].id && m[tmp[i].id] && m[tmp[i].id].type ? m[tmp[i].id].type : "default";
+					tmp[i].type = (tmp[i].id || tmp[i].id === 0) && m[tmp[i].id] && m[tmp[i].id].type ? m[tmp[i].id].type : "default";
 					if(options && options.no_id) {
 						delete tmp[i].id;
 						if(tmp[i].li_attr && tmp[i].li_attr.id) {
@@ -8227,7 +8227,7 @@
 				}
 			}
 			else {
-				tmp.type = tmp.id && m[tmp.id] && m[tmp.id].type ? m[tmp.id].type : "default";
+				tmp.type = (tmp.id || tmp.id === 0) && m[tmp.id] && m[tmp.id].type ? m[tmp.id].type : "default";
 				if(options && options.no_id) {
 					tmp = this._delete_ids(tmp);
 				}
@@ -8255,9 +8255,9 @@
 		};
 		this.check = function (chk, obj, par, pos, more) {
 			if(parent.check.call(this, chk, obj, par, pos, more) === false) { return false; }
-			obj = obj && obj.id ? obj : this.get_node(obj);
-			par = par && par.id ? par : this.get_node(par);
-			var m = obj && obj.id ? (more && more.origin ? more.origin : $.jstree.reference(obj.id)) : null, tmp, d, i, j;
+			obj = obj && (obj.id || obj.id === 0) ? obj : this.get_node(obj);
+			par = par && (par.id || par.id === 0) ? par : this.get_node(par);
+			var m = obj && (obj.id || obj.id === 0) ? (more && more.origin ? more.origin : $.jstree.reference(obj.id)) : null, tmp, d, i, j;
 			m = m && m._model && m._model.data ? m._model.data : null;
 			switch(chk) {
 				case "create_node":
@@ -8266,11 +8266,11 @@
 					if(chk !== 'move_node' || $.inArray(obj.id, par.children) === -1) {
 						tmp = this.get_rules(par);
 						if(tmp.max_children !== undefined && tmp.max_children !== -1 && tmp.max_children === par.children.length) {
-							this._data.core.last_error = { 'error' : 'check', 'plugin' : 'types', 'id' : 'types_01', 'reason' : 'max_children prevents function: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && obj.id ? obj.id : false, 'par' : par && par.id ? par.id : false }) };
+							this._data.core.last_error = { 'error' : 'check', 'plugin' : 'types', 'id' : 'types_01', 'reason' : 'max_children prevents function: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && (obj.id || obj.id === 0) ? obj.id : false, 'par' : par && (par.id || par.id === 0) ? par.id : false }) };
 							return false;
 						}
 						if(tmp.valid_children !== undefined && tmp.valid_children !== -1 && $.inArray((obj.type || 'default'), tmp.valid_children) === -1) {
-							this._data.core.last_error = { 'error' : 'check', 'plugin' : 'types', 'id' : 'types_02', 'reason' : 'valid_children prevents function: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && obj.id ? obj.id : false, 'par' : par && par.id ? par.id : false }) };
+							this._data.core.last_error = { 'error' : 'check', 'plugin' : 'types', 'id' : 'types_02', 'reason' : 'valid_children prevents function: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && (obj.id || obj.id === 0) ? obj.id : false, 'par' : par && (par.id || par.id === 0) ? par.id : false }) };
 							return false;
 						}
 						if(m && obj.children_d && obj.parents) {
@@ -8283,7 +8283,7 @@
 						if(d <= 0 || d === undefined) { d = 1; }
 						do {
 							if(tmp.max_depth !== undefined && tmp.max_depth !== -1 && tmp.max_depth < d) {
-								this._data.core.last_error = { 'error' : 'check', 'plugin' : 'types', 'id' : 'types_03', 'reason' : 'max_depth prevents function: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && obj.id ? obj.id : false, 'par' : par && par.id ? par.id : false }) };
+								this._data.core.last_error = { 'error' : 'check', 'plugin' : 'types', 'id' : 'types_03', 'reason' : 'max_depth prevents function: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && (obj.id || obj.id === 0) ? obj.id : false, 'par' : par && (par.id || par.id === 0) ? par.id : false }) };
 								return false;
 							}
 							par = this.get_node(par.parent);
@@ -8493,8 +8493,8 @@
 	$.jstree.plugins.unique = function (options, parent) {
 		this.check = function (chk, obj, par, pos, more) {
 			if(parent.check.call(this, chk, obj, par, pos, more) === false) { return false; }
-			obj = obj && obj.id ? obj : this.get_node(obj);
-			par = par && par.id ? par : this.get_node(par);
+			obj = obj && (obj.id || obj.id === 0) ? obj : this.get_node(obj);
+			par = par && (par.id || par.id === 0) ? par : this.get_node(par);
 			if(!par || !par.children) { return true; }
 			var n = chk === "rename_node" ? pos : obj.text,
 				c = [],
@@ -8526,25 +8526,25 @@
 					}
 					i = ($.inArray(n, c) === -1 || (obj.text && t === n));
 					if(!i) {
-						this._data.core.last_error = { 'error' : 'check', 'plugin' : 'unique', 'id' : 'unique_01', 'reason' : 'Child with name ' + n + ' already exists. Preventing: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && obj.id ? obj.id : false, 'par' : par && par.id ? par.id : false }) };
+						this._data.core.last_error = { 'error' : 'check', 'plugin' : 'unique', 'id' : 'unique_01', 'reason' : 'Child with name ' + n + ' already exists. Preventing: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && (obj.id || obj.id === 0) ? obj.id : false, 'par' : par && (par.id || par.id === 0) ? par.id : false }) };
 					}
 					return i;
 				case "create_node":
 					i = ($.inArray(n, c) === -1);
 					if(!i) {
-						this._data.core.last_error = { 'error' : 'check', 'plugin' : 'unique', 'id' : 'unique_04', 'reason' : 'Child with name ' + n + ' already exists. Preventing: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && obj.id ? obj.id : false, 'par' : par && par.id ? par.id : false }) };
+						this._data.core.last_error = { 'error' : 'check', 'plugin' : 'unique', 'id' : 'unique_04', 'reason' : 'Child with name ' + n + ' already exists. Preventing: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && (obj.id || obj.id === 0) ? obj.id : false, 'par' : par && (par.id || par.id === 0) ? par.id : false }) };
 					}
 					return i;
 				case "copy_node":
 					i = ($.inArray(n, c) === -1);
 					if(!i) {
-						this._data.core.last_error = { 'error' : 'check', 'plugin' : 'unique', 'id' : 'unique_02', 'reason' : 'Child with name ' + n + ' already exists. Preventing: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && obj.id ? obj.id : false, 'par' : par && par.id ? par.id : false }) };
+						this._data.core.last_error = { 'error' : 'check', 'plugin' : 'unique', 'id' : 'unique_02', 'reason' : 'Child with name ' + n + ' already exists. Preventing: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && (obj.id || obj.id === 0) ? obj.id : false, 'par' : par && (par.id || par.id === 0) ? par.id : false }) };
 					}
 					return i;
 				case "move_node":
 					i = ( (obj.parent === par.id && (!more || !more.is_multi)) || $.inArray(n, c) === -1);
 					if(!i) {
-						this._data.core.last_error = { 'error' : 'check', 'plugin' : 'unique', 'id' : 'unique_03', 'reason' : 'Child with name ' + n + ' already exists. Preventing: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && obj.id ? obj.id : false, 'par' : par && par.id ? par.id : false }) };
+						this._data.core.last_error = { 'error' : 'check', 'plugin' : 'unique', 'id' : 'unique_03', 'reason' : 'Child with name ' + n + ' already exists. Preventing: ' + chk, 'data' : JSON.stringify({ 'chk' : chk, 'pos' : pos, 'obj' : obj && (obj.id || obj.id === 0) ? obj.id : false, 'par' : par && (par.id || par.id === 0) ? par.id : false }) };
 					}
 					return i;
 			}

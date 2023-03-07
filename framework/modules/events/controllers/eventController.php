@@ -73,6 +73,15 @@ class eventController extends expController {
         return true;
     }
 
+    /**
+     * can this module export EAAS data?
+     *
+     * @return bool
+     */
+    public static function canHandleEAAS() {
+        return true;
+    }
+
     function showall() {
         global $user;
 
@@ -170,7 +179,7 @@ class eventController extends expController {
                     $annual[$i] = expDateTime::monthlyDaysTimestamp($month);
                     $info = getdate($month);
                     $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
-                    $now = getdate(time());
+                    $now = getdate();
                     $endofmonth = date('t', $month);
                     foreach ($annual[$i] as $weekNum => $week) {
                         foreach ($week as $dayNum => $day) {
@@ -237,7 +246,7 @@ class eventController extends expController {
                 $monthly = expDateTime::monthlyDaysTimestamp($time);
                 $info = getdate($time);
                 $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
-                $now = getdate(time());
+                $now = getdate();
                 $currentday = $now['mday'];
                 $endofmonth = date('t', $time);
                 foreach ($monthly as $weekNum => $week) {
@@ -382,7 +391,7 @@ class eventController extends expController {
                 //                $monthly = array();
                 //                $counts = array();
                 $info = getdate($time);
-                $nowinfo = getdate(time());
+                $nowinfo = getdate();
                 if ($info['mon'] != $nowinfo['mon']) $nowinfo['mday'] = -10;
                 // Grab non-day numbers only (before end of month)
 //                $week = 0;
@@ -692,9 +701,10 @@ class eventController extends expController {
         if (!empty($this->params['date_id'])) {  // specific event instance
             $eventdate = new eventdate($this->params['date_id']);
             $eventdate->event = new event($eventdate->event_id);
-        } else {  // we'll default to the first event of this series
+        } else {  // we'll default to the next upcoming event of this series
             $event = new event($this->params['id']);
-            $eventdate = new eventdate($event->eventdate[0]->id);
+            $next = $event->find('upcoming', 'event_id=' . $this->params['id']);
+            $eventdate = new eventdate($next[0]->eventdate[0]->id);
         }
         if (empty($eventdate->id))
             redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>'event'));
@@ -730,15 +740,36 @@ class eventController extends expController {
     }
 
     /**
+     * Add more recurring events to an existing event, similar to delete_recurring()
+     *
+     */
+    function add_recurring() {
+        expHistory::set('editable', $this->params);
+        $item = $this->event->find('first', 'id=' . (int)$this->params['id']);
+        assign_to_template(array(
+            'event'        => $item,
+        ));
+    }
+    /**
+     * Add new event dates to an existing event
+     *
+     */
+    function add_selected() {
+        $ev = new event((int)$this->params['id']);
+        $ev->add_dates($this->params);
+        expHistory::back();
+    }
+
+    /**
      * Delete a recurring event by asking for which event dates to delete
      *
      */
     function delete_recurring() {
-        $item = $this->event->find('first', 'id=' . $this->params['id']);
+        $item = $this->event->find('first', 'id=' . (int)$this->params['id']);
         if ($item->is_recurring == 1) { // need to give user options
             expHistory::set('editable', $this->params);
             assign_to_template(array(
-                'checked_date' => $this->params['date_id'],
+                'checked_date' => (int)$this->params['date_id'],
                 'event'        => $item,
             ));
         } else { // Process a regular delete
@@ -751,7 +782,7 @@ class eventController extends expController {
      *
      */
     function delete_selected() {
-        $item = $this->event->find('first', 'id=' . $this->params['id']);
+        $item = $this->event->find('first', 'id=' . (int)$this->params['id']);
         if ($item && $item->is_recurring == 1) {
             $event_remaining = false;
             $eventdates = $item->eventdate[0]->find('all', 'event_id=' . $item->id);
@@ -783,7 +814,7 @@ class eventController extends expController {
 
     /**
    	 * get the metainfo for this module
-   	 * @return array
+     * @return array|boolean
    	 */
    	function metainfo() {
        global $router;
@@ -848,7 +879,7 @@ class eventController extends expController {
         }
         $success = false;
         if (isset($this->params['id'])) {
-            $ed = new eventdate($this->params['id']);
+            $ed = new eventdate((int)$this->params['id']);
 //            $email_addrs = array();
             if ($ed->event->feedback_email != '') {
                 $msgtemplate = expTemplate::get_template_for_action($this, 'email/_' . expString::escape($this->params['formname']), $this->loc);
@@ -898,8 +929,8 @@ class eventController extends expController {
             if ($this->config['enable_ical']) {
                 $ed = new eventdate();
                 if (isset($this->params['date_id'])) { // get single specific event only
-                    $dates = $ed->find('first', "id=" . $this->params['date_id']);
-                    $Filename = "Event-" . $this->params['date_id'];
+                    $dates = $ed->find('first', "id=" . (int)$this->params['date_id']);
+                    $Filename = "Event-" . (int)$this->params['date_id'];
                 } else {
                     $locsql = $this->aggregateWhereClause();
                     if (isset($this->params['time'])) {
@@ -1011,14 +1042,34 @@ class eventController extends expController {
 
                 $tz = DISPLAY_DEFAULT_TIMEZONE;
                 $msg = "BEGIN:VCALENDAR\n";
+                $msg .= "PRODID:<-//ExponentCMS//EN>\n";
                 $msg .= "VERSION:2.0\n"; // version for iCalendar files vs vCalendar files
+                $msg .= "X-WR-TIMEZONE:$tz\n";
                 $msg .= "CALSCALE:GREGORIAN\n";
                 $msg .= "METHOD: PUBLISH\n";
-                $msg .= "PRODID:<-//ExponentCMS//EN>\n";
                 if (isset($this->config['rss_cachetime']) && ($this->config['rss_cachetime'] > 0)) {
                     $msg .= "X-PUBLISHED-TTL:PT" . $this->config['rss_cachetime'] . "M\n";
                 }
                 $msg .= "X-WR-CALNAME:$Filename\n";
+
+//                $msg .= "BEGIN:VTIMEZONE\n";
+//                $msg .= "TZID:$tz\n";
+//                $msg .= "X-LIC-LOCATION:$tz\n";
+//                $msg .= "BEGIN:DAYLIGHT\n";
+////                TZOFFSETFROM:-0800
+////                TZOFFSETTO:-0700
+////                TZNAME:PDT
+////                DTSTART:19700308T020000
+////                RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+//                $msg .= "END:DAYLIGHT\n";
+//                $msg .= "BEGIN:STANDARD\n";
+////                TZOFFSETFROM:-0700
+////                TZOFFSETTO:-0800
+////                TZNAME:PST
+////                DTSTART:19701101T020000
+////                RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+//                $msg .= "END:STANDARD\n";
+//                $msg .= "END:VTIMEZONE\n";
 
                 $items = $this->event->getEventsForDates($dates);
 
@@ -1582,7 +1633,7 @@ class eventController extends expController {
         }
 
         // Set the timezone to GMT
-        @date_default_timezone_set('GMT');
+        @date_default_timezone_set('UTC');
 //        $tzarray = Kigkonsult\Icalcreator\getTimezonesAsDateArrays($v);
         // Set the default timezone
         @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
@@ -1613,7 +1664,7 @@ class eventController extends expController {
 //                            $ourtzoffsets = -(Kigkonsult\Icalcreator\util\util::tz2offset(date('O',time())));
                             $ourtzoffsets = -(Kigkonsult\Icalcreator\util\DateTimeZoneFactory::offsetToSeconds(date('O',self::_date2timestamp($dtstart['value']))));
                             // Set the timezone to GMT
-                            @date_default_timezone_set('GMT');
+                            @date_default_timezone_set('UTC');
                             if (!empty($dtstart['params']['TZID'])) $tzoffsets = Kigkonsult\Icalcreator\getTzOffsetForDate($tzarray, $dtstart['params']['TZID'], $dtstart['value']);
                             // Set the default timezone
                             @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
@@ -2019,6 +2070,41 @@ class eventController extends expController {
         echo $control->toHTML($this->params['label'], $this->params['name']);
 //        $ar = new expAjaxReply(200, gt('The control was created'), json_encode(array('data'=>$code)));
 //        $ar->send();
+    }
+
+    /**
+     * returns module's EAAS data as an array of records
+     *
+     * @return array
+     */
+    public function eaasData($params=array(), $where=null) {
+        $data = array();  // initialize
+        if (!empty($params['id'])) {
+            $event = new event($params['id']);
+            $data['records'] = $event;
+        } else {
+            $event = new event();
+
+            // figure out if we should limit the results
+            if (isset($params['limit'])) {
+                $limit = $params['limit'] === 'none' ? null : $params['limit'];
+            } else {
+                $limit = '';
+            }
+
+            $items = $event->find('upcoming', $where, false, false);  //new 'upcoming' type of find
+            if (!empty($limit))
+                $items = array_slice($items, 0, $limit);  // limit number of items, not numberof days
+            $data['records'] = $items;
+        }
+
+        if (!empty($params['groupbydate'])&&!empty($items)) {  // aggregate by day like with regular calendar
+            $data['records'] = array();
+            foreach ($items as $value) {
+                $data['records'][date('r',$value->eventdate[0]->date)][] = $value;
+            }
+        }
+        return $data;
     }
 
 }

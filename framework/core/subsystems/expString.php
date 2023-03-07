@@ -32,6 +32,8 @@ class expString {
      * @return string
      */
 	static function convertUTF($string) {
+        if (empty($string))
+            return $string;
 		return $string = str_replace('?', '', htmlspecialchars($string, ENT_IGNORE, 'UTF-8'));
 	}
 
@@ -57,6 +59,8 @@ class expString {
      * @return string
      */
 	static function onlyReadables($string) {
+        if (empty($string))
+            return $string;
         for ($i = 0, $iMax = strlen($string); $i < $iMax; $i++) {
 			$chr = $string[$i];
 			$ord = ord($chr);
@@ -108,6 +112,8 @@ class expString {
      * @return string
      */
 	static function convertXMLFeedSafeChar($str) {
+        if (empty($str))
+            return $str;
         $str = str_replace(array("<br>", "</br>", "<br/>", "<br />", "&quot;", "&#39;", "&rsquo;", "&lsquo;", "&#174;", "�", "�", "�", "&rdquo;", "�", "&ldquo;", "\r\n", "�", "&#188;", "�", "&#189;", "�", "&#190;", "�", "&trade;", "&reg;", "�", "&", ">"), array("", "", "", "", '"', "'", "'", "'", "", "-", "-", '"', '"', '"', '"', " ", " 1/4", " 1/4", " 1/2", " 1/2", " 3/4", " 3/4", "(TM)", "(TM)", "(R)", "(R)", "&amp;", "&gt;"), $str);
         return trim($str);
 	}
@@ -119,6 +125,9 @@ class expString {
      * @return string
      */
     public static function convertSmartQuotes($str) {
+        if (empty($str))
+            return $str;
+
     	$find[] = '�';  // left side double smart quote
     	$find[] = '�';  // right side double smart quote
     	$find[] = '�';  // left side single smart quote
@@ -289,8 +298,12 @@ class expString {
                 return expString::convertSmartQuotes($string);
             case "parapaged":  // use the html page break to determine the summary
 //               $s = '<div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div>';
-                $s = '<div style="page-break-after: always';
+                $s = '<div style="page-break-after: always';  // ckeditor page break
                 $para = explode($s, $string);
+                if (count($para) === 1) {
+                    $s = '<!--more';  // wordpress excerpt break
+                    $para = explode($s, $string);
+                }
                 if (count($para) > 1) {  // we have a page break
                     $string = $para[0];
                     if (strlen($string) < strlen($origstring)) {
@@ -419,6 +432,8 @@ class expString {
 
     public static function parseAndTrimExport($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str);
+        if (empty($str))
+            return $str;
 
         $str = str_replace(array("�", "�", "�", "�", "�", "�", "�", "\r\n", "\t", ",", "�", "�", "�"), array("&rsquo;", "&lsquo;", "&#174;", "-", "&#151;", "&rdquo;", "&ldquo;", " ", " ", "\,", "&#188;", "&#189;", "&#190;"), $str);
 
@@ -438,6 +453,8 @@ class expString {
     public static function parseAndTrimImport($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str);
 //        global $db;
+        if (empty($str))
+            return $str;
 
         $str = str_replace(array("�", "�", "�", "�", "�", "�", "�", "\r\n", "\,", '""'), array("&rsquo;", "&lsquo;", "&#174;", "-", "&#151;", "&rdquo;", "&ldquo;", " ", ",", '"'), $str); //do this no matter what...in case someone added a quote in a non HTML field
         if (!$isHTML) {
@@ -477,6 +494,8 @@ class expString {
      * @return mixed
      */
     public static function html2text($val) {
+        if (empty($val))
+            return $val;
         $val = preg_replace('/(<script[^>]*>.+?<\/script>|<style[^>]*>.+?<\/style>)/s', '', $val); // remove any script or style blocks
         $val = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $val)));  // replace breaks with newlines
         return $val;

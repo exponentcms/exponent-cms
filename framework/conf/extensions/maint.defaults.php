@@ -23,6 +23,7 @@ if (!defined('MAINTENANCE_RETURN_TEXT')) define('MAINTENANCE_RETURN_TEXT','The w
 if (!defined('MAINTENANCE_RETURN_TIME')) define('MAINTENANCE_RETURN_TIME','0');
 
 if (!defined('DEVELOPMENT')) define('DEVELOPMENT','0');
+if (!defined('NO_DEPRECATIONS')) define('NO_DEPRECATIONS','0');
 if (!defined('SMARTY_DEVELOPMENT')) define('SMARTY_DEVELOPMENT','0');
 if (!defined('XMLRPC_DEVELOPMENT')) define('XMLRPC_DEVELOPMENT','0');
 if (!defined('SMARTY_CACHING')) define('SMARTY_CACHING','0');

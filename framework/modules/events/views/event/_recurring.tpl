@@ -28,12 +28,12 @@
 </select>
 
 <div id="recur_daily" style="display: none">
-	{'Every'|gettext} <input class="form-control" type="text" size="2" name="recur_freq_recur_daily" maxlength="2" value="1" /> {'day(s)'|gettext}
+	{'Every'|gettext} <input class="form-control" type="number" size="2" name="recur_freq_recur_daily" maxlength="2" value="1" /> {'day(s)'|gettext}
 </div>
 
 <div id="recur_weekly" style="display: none">
-	{'Every'|gettext} <input class="form-control" type="text" size="2" name="recur_freq_recur_weekly" maxlength="2" value="1" /> {'week(s) on'|gettext}
-	<table cellspacing="0" cellpadding="0" border="0" style="border: 1px solid black; display:inline;" rules="all">
+	{'Every'|gettext} <input class="form-control" type="number" size="2" name="recur_freq_recur_weekly" maxlength="2" value="1" /> {'week(s) on'|gettext}
+	<table style="display:inline;" rules="all">
 		<tr>
 			<td id="day_0" align="center">
 				S<br />
@@ -68,13 +68,13 @@
 </div>
 
 <div id="recur_monthly" style="display: none">
-	{'Every'|gettext} <input class="form-control" type="text" size="2" name="recur_freq_recur_monthly" maxlength="2" value="1" /> {'month(s)'|gettext}
+	{'Every'|gettext} <input class="form-control" type="number" size="2" name="recur_freq_recur_monthly" maxlength="2" value="1" /> {'month(s)'|gettext}
 	<input type="radio" name="month_type" value="1" checked="1" /> {'By Day'|gettext}
 	<input type="radio" name="month_type" value="0" /> {'By Date'|gettext}
 </div>
 
 <div id="recur_yearly" style="display: none">
-	{'Every'|gettext} <input class="form-control" type="text" size="2" name="recur_freq_recur_yearly" maxlength="2" value="1" /> {'year(s)'|gettext}
+	{'Every'|gettext} <input class="form-control" type="number" size="2" name="recur_freq_recur_yearly" maxlength="2" value="1" /> {'year(s)'|gettext}
 </div>
 
 <div id="until_date" style="display: none">
@@ -88,6 +88,7 @@
 </div>
 
 {script unique="recurring"}
+{literal}
     var last = "recur_none";
 
     function showSubform(sel) {
@@ -110,4 +111,5 @@
 
         last = id;
     }
+{/literal}
 {/script}

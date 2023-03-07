@@ -242,7 +242,7 @@ class ckeditorcontrol extends formcontrol {
                         ev.editor.dataProcessor.writer.setRules( blockTags[i], rules );
                     }
                 });
-        });
+            });
         ";
 
         expJavascript::pushToFoot(array(

@@ -34,7 +34,7 @@ class search extends expRecord {
         return strip_tags(str_replace(array("<br/>", "<br>", "<br />", "</div>"), "\n", $str));
     }
 
-    public function getSearchResults($terms, $only_best = false, $readonly = 0, $eventlimit = null) {
+    public function getSearchResults($terms, $only_best = false, $readonly = 0, $eventlimit = 30) {
         global $db, $user;
 
         // get the search terms
@@ -94,14 +94,16 @@ class search extends expRecord {
             } else if ($records[$i]->ref_module === 'event') {  // add (closest) date to title/link
                 $event = $db->selectObject('eventdate', 'event_id=' . $records[$i]->original_id . ' ORDER BY ABS( DATEDIFF( date, NOW() ) )');
                 if (!empty($event)) {
-                    if (!empty($eventlimit) && $event->date < time()-($eventlimit*24*60*60))
+                    if (!empty($eventlimit) && $event->date < time()-($eventlimit*24*60*60)) {
                         unset($recs[$i]);
-                    if ($event->date < time()) {  // emphasize past events
-                        $records[$i]->title = "<em>" . $records[$i]->title . "</em>";
+                        continue;
                     }
-                    $records[$i]->title .= ' - ' . expDateTime::format_date($event->date);
+                    if ($event->date < time()) {  // emphasize past events
+                        $recs[$i]->title = "<em>" . $records[$i]->title . "</em>";
+                    }
+                    $recs[$i]->title .= ' - ' . expDateTime::format_date($event->date);
                     $loc = expUnserialize($event->location_data);
-                    $records[$i]->view_link = str_replace(URL_FULL, '', makeLink(array('controller' => 'event', 'action' => 'show', 'id' => $records[$i]->original_id, 'event_id' => $event->id, 'src' => $loc->src)));
+                    $recs[$i]->view_link = str_replace(URL_FULL, '', makeLink(array('controller' => 'event', 'action' => 'show', 'id' => $records[$i]->original_id, 'event_id' => $event->id, 'src' => $loc->src)));
                 }
             } else if ($records[$i]->ref_module === 'forms') {
                 //fixme here's where we remove search hit based on ???, but shouldn't be in here if not viewable

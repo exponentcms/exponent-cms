@@ -46,7 +46,7 @@
                 <span class="year">{$record->publish_date|format_date:"%Y"}</span>
             </p>
         {/if}
-        <{$config.heading_level|default:'h1'}>{$record->title}</{$config.heading_level|default:'h1'}>
+        <{$config.heading_level|default:'h1'} class="heading">{$record->title}</{$config.heading_level|default:'h1'}>
         <div class="item-actions">
             {printer_friendly_link view='show'}{export_pdf_link view='show' prepend='&#160;&#160;|&#160;&#160;'|not_bs}
             {subscribe_link prepend='<br />'}

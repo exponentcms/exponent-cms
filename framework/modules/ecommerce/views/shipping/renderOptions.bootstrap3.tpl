@@ -13,7 +13,7 @@
  *
  *}
 {*{edebug var=$shipping->pricelist}*}
-{if $shipping->pricelist|is_array == true}
+{if is_array($shipping->pricelist)}
     <div id="shipping-method-options">
         {if !$shipping->calculator->multiple_carriers}
             <img class="shippingmethodimg" src="{$shipping->calculator->icon}">

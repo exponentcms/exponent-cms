@@ -80,21 +80,21 @@ class formsController extends expController {
     public function showall() {
         global $db;
 
-        if ((!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc))) {
-            expHistory::set('viewable', $this->params);
-            $f = null;
-            if (!empty($this->config)) {
-                $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
-            } elseif (!empty($this->params['title'])) {
-                $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($this->params['title']) . '\'');
-                if (!empty($f))
-                    $this->get_defaults($f);
-            } elseif (!empty($this->params['id'])) {
-                $f = $this->forms->find('first', 'id=' . $this->params['id']);
-                if (!empty($f))
-                    $this->get_defaults($f);
-            }
+        expHistory::set('viewable', $this->params);
+        $f = null;
+        if (!empty($this->config)) {
+            $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
+        } elseif (!empty($this->params['title'])) {
+            $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($this->params['title']) . '\'');
+            if (!empty($f))
+                $this->get_defaults($f);
+        } elseif (!empty($this->params['id'])) {
+            $f = $this->forms->find('first', 'id=' . $this->params['id']);
+            if (!empty($f))
+                $this->get_defaults($f);
+        }
 
+        if ((!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc))) {
             if (isset($this->config['order_dropdown_all'])) {
                 $all_text = $this->config['order_dropdown_all'];
             } else {
@@ -239,7 +239,7 @@ class formsController extends expController {
                     sort($list);
                     assign_to_template(
                         array(
-                            "list" => $list,
+                            "list" => array_merge(array('-1'=>$all_text), $list),
                         )
                     );
                 }
@@ -260,7 +260,7 @@ class formsController extends expController {
                         "count" => $f->countRecords(),
                         "config" => $this->config,
                         "selected" => $selected,
-                        "all_text" => $all_text
+//                        "all_text" => $all_text
                     )
                 );
             }
@@ -292,23 +292,23 @@ class formsController extends expController {
     }
 
     public function show() {
-        if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) {
-            expHistory::set('viewable', $this->params);
-            $f = null;
-            if (!empty($this->config)) {
-                $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
-            } elseif (!empty($this->params['forms_id'])) {
-                $f = $this->forms->find('first', 'id=' . $this->params['forms_id']);
-                if (!empty($f))
-                    $this->get_defaults($f);
-            } elseif (!empty($this->params['title'])) {
-                $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($this->params['title']) . '\'');
-                if (!empty($f))
-                    $this->get_defaults($f);
+        expHistory::set('viewable', $this->params);
+        $f = null;
+        if (!empty($this->config)) {
+            $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
+        } elseif (!empty($this->params['forms_id'])) {
+            $f = $this->forms->find('first', 'id=' . $this->params['forms_id']);
+            if (!empty($f))
+                $this->get_defaults($f);
+        } elseif (!empty($this->params['title'])) {
+            $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($this->params['title']) . '\'');
+            if (!empty($f))
+                $this->get_defaults($f);
 //                if (!empty($f))
 //                    redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
-            }
+        }
 
+        if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) {
             if (!empty($f)) {
                 $fc = new forms_control();
                 $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
@@ -1612,12 +1612,13 @@ class formsController extends expController {
     /**
      * get the metainfo for this module
      *
-     * @return array
+     * @return array|boolean
      */
     function metainfo() {
         global $router;
 
-        if (empty($router->params['action'])) return false;
+        if (empty($router->params['action']))
+            return false;
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
 
         // figure out what metadata to pass back based on the action we are in.
@@ -1626,11 +1627,46 @@ class formsController extends expController {
                 $metainfo['title'] = gt("Form Records") . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
+                if (!empty($router->params['id'])) {
+                    $f = $this->forms->find('first', 'id=' . $router->params['id']);
+                } elseif (!empty($router->params['title'])) {
+                    $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($router->params['title']) . '\'');
+                }
+                if (!empty($f)) {
+                    $this->get_defaults($f);
+                    $metainfo['title'] = $f->title . ' ' . gt("Records");
+                }
                 break;
             case 'show':
                 $metainfo['title'] = gt("Form Record") . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
+                if (!empty($router->params['forms_id'])) {
+                    $f = $this->forms->find('first', 'id=' . $router->params['forms_id']);
+                } elseif (!empty($router->params['title'])) {
+                    $f = $this->forms->find('first', 'sef_url=\'' . expString::escape($router->params['title']) . '\'');
+                }
+                if (!empty($f)) {
+                    $this->get_defaults($f);
+                    $id = !empty($router->params['id']) ? $router->params['id'] : null;
+                    if (!empty($router->params['item']))
+                        $id = 'sef_url="' . expString::escape($router->params['item']) . '"';
+                    $data = $f->getRecord($id);
+                    $needles = array(
+                        'name',
+                        'title',
+                        'last',
+                        'first',
+                    );
+                    foreach ($needles as $needle) {
+                        foreach ($data as $key => $value) {
+                            if (false !== stripos($key, $needle)) {
+                                $metainfo['title'] = $f->title . ' - ' . $value;
+                                break 2;
+                            }
+                        }
+                    }
+                }
                 break;
             default:
                 $metainfo = parent::metainfo();

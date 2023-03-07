@@ -40,6 +40,15 @@ class mediaController extends expController {
     static function description() { return gt("Display video files, YouTube links, or play audio streams on your site."); }
     static function isSearchable() { return true; }
 
+    /**
+     * can this module export EAAS data?
+     *
+     * @return bool
+     */
+    public static function canHandleEAAS() {
+        return true;
+    }
+
     function showall() {
         expHistory::set('viewable', $this->params, true);
         $page = new expPaginator(array(
@@ -63,6 +72,34 @@ class mediaController extends expController {
             'items'=>$page->records,
             'params'=>$this->params,
         ));
+    }
+
+    /**
+     * returns module's EAAS data as an array of records
+     *
+     * @return array
+     */
+    public function eaasData($params=array(), $where=null) {
+        $data = array();  // initialize
+        if (!empty($params['id'])) {
+            $media = new media($params['id']);
+            $data['records'] = $media;
+        } else {
+            $media = new media();
+
+            // figure out if we should limit the results
+            if (isset($params['limit'])) {
+                $limit = $params['limit'] === 'none' ? null : $params['limit'];
+            } else {
+                $limit = '';
+            }
+
+            $order = isset($params['order']) ? $params['order'] : 'created_at ASC';
+
+            $items = $media->find('all', $where, $order, $limit);
+            $data['records'] = $items;
+        }
+        return $data;
     }
 
 }
