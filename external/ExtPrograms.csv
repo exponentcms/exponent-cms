@@ -86,6 +86,7 @@ Sortable,1.15.0,github.com/SortableJS/Sortable,1.15.0,
 jstree,3.3.15,github.com/vakata/jstree,3.3.15,added nav menu icons to stylesheet
 bootstrap3-dialog,1.35.4,github.com/nakupanda/bootstrap3-dialog,1.35.4,use /src .less file and add our .less variable imports; w/ bs4 fixes
 impromptu,6.2.3,trentrichardson.com/Impromptu,6.2.3,add some colors to .css
+jquery-confirm,3.3.4,github.com/craftpip/jquery-confirm,3.3.4,
 bootbox,6.0.0,github.com/makeusabrew/bootbox,6.0.0,
 bootstrap-touch-carousel,0.8.0exp,github.com/ixisio/bootstrap-touch-carousel,0.8.0,patched with vertical drag fix
 bootstrap-tagsinput,0.8.0exp,github.com/timschlechter/bootstrap-tagsinput,0.8.0,patched with android fix
