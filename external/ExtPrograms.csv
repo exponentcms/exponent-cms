@@ -42,7 +42,7 @@ Bootstrap-Icons,1.10.3,icons.getbootstrap.com,1.10.3,"patched bootstrap-icons.sc
 Adminer,4.8.1exp,www.adminer.org,4.8.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
-MediaElement.js,5.1.0,mediaelementjs.com,6.0.1,
+MediaElement.js,6.0.2,mediaelementjs.com,6.0.2,
 MediaElement plugins,2.6.3,github.com/johndyer/mediaelement-plugins,2.6.3,
 Facebook PHP SDK3,3.2.3,github.com/facebook/php-graph-sdk,5.7.0,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
@@ -57,8 +57,8 @@ elFinder,2.1.61,elfinder.org,2.1.61,customized in /framework with Exponent php c
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
 jQuery2,2.2.4,jquery.com,2.2.4,
 jQuery2 Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon
-jQuery3,3.6.3,jquery.com,3.6.3,
-jQuery3 Migrate,3.4.0,jquery.com,3.4.0,
+jQuery3,3.6.4,jquery.com,3.6.4,
+jQuery3 Migrate,3.4.1,jquery.com,3.4.1,
 jQueryUI,1.13.2,jqueryui.com,1.13.2,
 stepy,1.1.0exp,github.com/wbotelhos/stepy,1.2.0,"added button class, jquery.validate option passing"
 validate,1.19.5exp,jqueryvalidation.org,1.19.5,edit for 'undefined' in 'min' & 'max'
