@@ -1071,7 +1071,9 @@ class formsController extends expController {
             }
             $fieldlist .= '["{\$fields[\'' . $name . '\']}","' . $caption . '","' . gt('Insert') . ' ' . $caption . ' ' . gt('Field') . '"],';
         }
-        // add link field
+        // add report title
+        $fieldlist .= '["{$title}","' . gt('Report Title') . '","' . gt('Insert') . ' ' . gt('Report Title') . '"],';
+        // add link to record
         $fieldlist .= '["{\$fields[\'' . 'link' . '\']}","' . gt('Link to Record') . '","' . gt('Insert') . ' ' . gt('Link to Record') . ' ' . gt('Field') . '"],';
         $fieldlist .= ']';
 
@@ -1448,8 +1450,10 @@ class formsController extends expController {
                 }
                 $fieldlist .= '["{\$fields[\'' . $name . '\']}","' . $caption . '","' . gt('Insert') . ' ' . $caption . ' ' . gt('Field') . '"],';
             }
-            // add link field
-            $fieldlist .= '["{\$fields[\'' . 'link' . '\']}","' . gt('Link to Record') . '","' . gt('Insert') . ' ' . gt('Link to Record') . ' ' . gt('Field') . '"],';
+            // add report title
+            $fieldlist .= '["{$title}","' . gt('Report Title') . '","' . gt('Insert') . ' ' . gt('Report Title') . '"],';
+            // add record link
+            $fieldlist .= '["{\$fields[\'' . 'link' . '\']}","' . gt('Link to Record') . '","' . gt('Insert') . ' ' . gt('Link to Record') . '"],';
         }
         $fieldlist .= ']';
 
