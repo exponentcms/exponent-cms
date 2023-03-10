@@ -926,16 +926,20 @@ class formsController extends expController {
 
             //If is a new post show response, otherwise redirect to the flow.
             if (!isset($this->params['data_id'])) {
-                if (empty($this->config['response'])) $this->config['response'] = gt('Thanks for your submission');
-                assign_to_template(array(
-                    "backlink"=>expHistory::getLastNotEditable(),
-                    "response_html"=>$this->config['response'],
-                ));
+//                if (empty($this->config['response'])) $this->config['response'] = gt('Thanks for your submission');
+//                assign_to_template(array(
+//                    "backlink"=>expHistory::getLastNotEditable(),
+//                    "response_html"=>$this->config['response'],
+//                ));
+                $response = !empty($this->config['response']) ? $this->config['response'] : gt('Thanks for your submission');
             } else {
-                flash('message', gt('Record was updated!'));
-                expHistory::back();
+//                flash('message', gt('Record was updated!'));
+//                expHistory::back();
 //                expHistory::returnTo('editable');
+                $response =  gt('Record was updated!');
             }
+            flash('message', $response);
+            expHistory::back();
         }
     }
 
