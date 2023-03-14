@@ -77,6 +77,11 @@ class formsController extends expController {
         return true;
     }
 
+    /**
+     * Display Report
+     *
+     * @return void
+     */
     public function showall() {
         global $db;
 
@@ -291,6 +296,11 @@ class formsController extends expController {
 
     }
 
+    /**
+     * Display Record
+     *
+     * @return void
+     */
     public function show() {
         expHistory::set('viewable', $this->params);
         $f = null;
@@ -397,6 +407,11 @@ class formsController extends expController {
         $this->enterdata();
     }
 
+    /**
+     * Display Form
+     *
+     * @return void
+     */
     public function enterdata() {
         if (empty($this->config['restrict_enter']) || expPermissions::check('enter_data', $this->loc)) {
 
@@ -492,7 +507,7 @@ class formsController extends expController {
                 // if we are editing an existing record or doing quick submission we'll need to do recaptcha here since we won't call confirm_data
                 if (!empty($this->params['id']) || !empty($this->config['quick_submit'])) {
                     $antispam = '';
-                    if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL === 'recaptcha') {
+                    if (SITE_USE_ANTI_SPAM && (ANTI_SPAM_CONTROL === 'recaptcha' || ANTI_SPAM_CONTROL === 'recaptcha_v2')) {
                         // make sure we have the proper config.
                         if (!defined('RECAPTCHA_PUB_KEY')) {
                             $antispam .= '<h2 style="color:red">' . gt('reCaptcha configuration is missing the public key.') . '</h2>';
@@ -502,26 +517,45 @@ class formsController extends expController {
                             $re_theme = (RECAPTCHA_THEME === 'dark') ? 'dark' : 'light';
                             // show the form control
                             $antispam .= '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
-                            //create unique recaptcha blocks
-                            $randomNumber = mt_rand(10000000, 99999999);
-                            $antispam .= '<div class="g-recaptcha" id="recaptcha-block-' . $randomNumber . '" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
-//                            $antispam .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=' . LOCALE . '" async defer></script>';
-                            $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
-                            $content = "
-                            var captcha;
-                            var myCallBack = function() {
-                                var recaptchas = document.querySelectorAll('div[id^=recaptcha-block-]');
-                                for (i = 0; i < recaptchas.length; i++) {
-                                    captcha = grecaptcha.render(recaptchas[i].id, {
-                                      'sitekey' : '" . RECAPTCHA_PUB_KEY . "',
-                                      'theme'   : '" . $re_theme . "'
+                            if (ANTI_SPAM_CONTROL === 'recaptcha') { // reCaptcha v2 Checkbox
+                                //create unique recaptcha blocks
+                                $randomNumber = mt_rand(10000000, 99999999);
+                                $antispam .= '<div class="g-recaptcha" id="recaptcha-block-' . $randomNumber . '" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
+                                $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
+                                $content = "
+                                var captcha;
+                                var grecaptcha_onload = function() {
+                                    var recaptchas = document.querySelectorAll('div[id^=recaptcha-block-]');
+                                    for (i = 0; i < recaptchas.length; i++) {
+                                        captcha = grecaptcha.render(recaptchas[i].id, {
+                                          'sitekey' : '" . RECAPTCHA_PUB_KEY . "',
+                                          'theme'   : '" . $re_theme . "'
+                                        });
+                                    }
+                                };";
+                            } else {  // reCaptcha v2 Invisible
+                                // need an input field to return token
+                                echo '<input type="hidden" value="" name="g-recaptcha-response" class="g-recaptcha-response" />';
+                                // we do explicit loading to allow for multiple recaptcha widgets on a page
+                                $content = "
+                                function grecaptcha_onload() {
+                                    $('.g-recaptcha-response').each(function( k, v ) {
+                                        var submit = $(v).closest(\"form\").find('[type=\"submit\"]');
+                                        grecaptcha.render( submit[0], {
+                                            'sitekey' : '" . RECAPTCHA_PUB_KEY . "',
+                                            'callback' : function( token ) {
+                                                $(v).closest(\"form\").find('.g-recaptcha-response').val( token );
+                                                $(v).closest(\"form\").submit();
+                                            },
+                                            'size' : 'invisible',
+                                        });
                                     });
-                                }
-                            };";
+                                }";
+                            }
                             expJavascript::pushToFoot(array(
                                 "unique" => 'recaptcha',
                                 "content" => $content,
-                                "src" => "https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=" . LOCALE
+                                "src" => "https://www.google.com/recaptcha/api.js?onload=grecaptcha_onload&render=explicit&hl=" . LOCALE
                             ));
                             $form->register(uniqid(''), '', new htmlcontrol($antispam));
                         }

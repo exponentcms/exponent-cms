@@ -73,9 +73,9 @@ if (!function_exists('smarty_block_form')) {
                     "corecss"=>"forms-bootstrap"
                 ));
                 $btn_class = 'btn btn-default';
-                if (BTN_SIZE == 'large') {
+                if (BTN_SIZE === 'large') {
                     $btn_size = '';  // actually default size, NOT true bootstrap large
-                } elseif (BTN_SIZE == 'small') {
+                } elseif (BTN_SIZE === 'small') {
                     $btn_size = 'btn-mini';
                 } else { // medium
                     $btn_size = 'btn-small';
@@ -86,11 +86,11 @@ if (!function_exists('smarty_block_form')) {
                     "corecss"=>"forms-bootstrap3"
                 ));
                 $btn_class = 'btn btn-default';
-                if (BTN_SIZE == 'large') {
+                if (BTN_SIZE === 'large') {
                     $btn_size = 'btn-lg';
-                } elseif (BTN_SIZE == 'small') {
+                } elseif (BTN_SIZE === 'small') {
                     $btn_size = 'btn-sm';
-                } elseif (BTN_SIZE == 'extrasmall') {
+                } elseif (BTN_SIZE === 'extrasmall') {
                     $btn_size = 'btn-xs';
                 } else { // medium
                     $btn_size = '';

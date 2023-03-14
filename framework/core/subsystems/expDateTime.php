@@ -48,7 +48,7 @@ class expDateTime {
 	 * @param $default_month
 	 * @return string
 	 */
-	public static function monthsDropdown($controlName,$default_month) {
+	public static function monthsDropdown($controlName, $default_month) {
 		$months = array(
 			1=>gt("January"),
 			2=>gt("February"),
@@ -89,7 +89,7 @@ class expDateTime {
      * @return array
      * @node Subsystems:expDateTime
      */
-	public static function duration($time_a,$time_b,$iso8601=false) {
+	public static function duration($time_a, $time_b, $iso8601=false) {
 		$d = abs($time_b-$time_a);
         if (!$iso8601) {
             $duration = array();
@@ -109,22 +109,22 @@ class expDateTime {
             }
             $duration['seconds'] = $d;
         } else {
-           $parts = array();
-           $multipliers = array(
-               'hours' => 3600,
-               'minutes' => 60,
-               'seconds' => 1
-           );
-           foreach ($multipliers as $type => $m) {
-               $parts[$type] = (int)($d / $m);
-               $d -= ($parts[$type] * $m);
-           }
-           $default = array(
-               'hours' => 0,
-               'minutes' => 0,
-               'seconds' => 0
-           );
-           extract(array_merge($default, $parts));
+            $parts = array();
+            $multipliers = array(
+                'hours' => 3600,
+                'minutes' => 60,
+                'seconds' => 1
+            );
+            foreach ($multipliers as $type => $m) {
+                $parts[$type] = (int)($d / $m);
+                $d -= ($parts[$type] * $m);
+            }
+            $default = array(
+                'hours' => 0,
+                'minutes' => 0,
+                'seconds' => 0
+            );
+            extract(array_merge($default, $parts), EXTR_OVERWRITE);
             $duration = "PT{$hours}H{$minutes}M{$seconds}S";
         }
 		return $duration;
@@ -311,7 +311,7 @@ class expDateTime {
 	 * @return array
 	 * @node Subsystems:expDateTime
 	 */
-	public static function recurringDailyDates($start,$end,$freq) {
+	public static function recurringDailyDates($start, $end, $freq) {
 		$dates = array();
 		$curdate = $start;
 		do {
@@ -338,7 +338,7 @@ class expDateTime {
 	 * @return array
 	 * @node Subsystems:expDateTime
 	 */
-	public static function recurringWeeklyDates($start,$end,$freq,$days) {
+	public static function recurringWeeklyDates($start, $end, $freq, $days) {
 		// Holding array, for keeping the timestamps of applicable dates.
 		// This variable will be returned to the calling scope.
 		$dates = array();
@@ -440,7 +440,7 @@ class expDateTime {
 	 * @return array
 	 * @node Subsystems:expDateTime
 	 */
-	public static function recurringMonthlyDates($start,$end,$freq,$by_day=false) {
+	public static function recurringMonthlyDates($start, $end, $freq, $by_day=false) {
 		// Holding array, for keeping all of the matching timestamps
 		$dates = array();
 		// Date to start on.
@@ -560,13 +560,13 @@ class expDateTime {
 	 * @return array
 	 * @node Subsystems:expDateTime
 	 */
-	public static function recurringYearlyDates($start,$end,$freq) {
+	public static function recurringYearlyDates($start, $end, $freq) {
 		$dates = array();
 
-		$freq = '+'.$freq.' year';
+		$freq = '+' . $freq . ' year';
 		while ($start <= $end) {
 			$dates[] = $start;
-			$start = strtotime($freq,$start);
+			$start = strtotime($freq, $start);
 		}
 
 		return $dates;
@@ -582,7 +582,8 @@ class expDateTime {
 	public static function monthlyDaysTimestamp($time=null) {
 //		global $db;
 		$monthly = array();
-        if (empty($time)) $time = time();
+        if (empty($time))
+            $time = time();
         $info = getdate($time);
 		// Grab non-day numbers only (before end of month)
         $week = date('W',expDateTime::startOfWeekTimestamp($time));
@@ -612,12 +613,15 @@ class expDateTime {
 				$week++;
 				$monthly[$week] = array(); // allocate an array for the next week
 				$weekday = 0;
-			} else $weekday++;
+			} else
+                $weekday++;
 		}
 
 		// Grab non-day numbers only (after end of month)
-		for ($i = 1; $weekday && $i <= (7-$weekday); $i++) $monthly[$week][$i+$endofmonth] = array("ts"=>-1);
-        if (empty($monthly[$week])) unset($monthly[$week]);
+		for ($i = 1; $weekday && $i <= (7-$weekday); $i++)
+            $monthly[$week][$i+$endofmonth] = array("ts"=>-1);
+        if (empty($monthly[$week]))
+            unset($monthly[$week]);
 
 		return $monthly;
 	}
@@ -646,8 +650,8 @@ class expDateTime {
 
 			By Garrett Murray, http://graveyard.maniacalrage.net/etc/relative/
 		**/
-        $diff = time()-$posted_date;
-		$fposted_date = date('YmdGis',$posted_date);  // convert to expected format
+        $diff = time() - $posted_date;
+		$fposted_date = date('YmdGis', $posted_date);  // convert to expected format
 
 //		$in_seconds = strtotime(substr($fposted_date,0,8).' '.
 //					  substr($fposted_date,8,2).':'.
@@ -673,7 +677,7 @@ class expDateTime {
 		if ($months>0) {
 			// over a month old, just show date (mm/dd/yyyy format)
 //			return 'on '.substr($fposted_date,4,2).'/'.substr($fposted_date,6,2).'/'.substr($fposted_date,0,4);
-            return 'on '.self::format_date($posted_date);
+            return 'on ' . self::format_date($posted_date);
 		} else {
 			if ($weeks>0) {
 				// weeks and days
@@ -697,9 +701,9 @@ class expDateTime {
 		}
 		// show relative date and add proper verbiage
 		if ($future) {
-			return 'in '.$relative_date;
+			return 'in ' . $relative_date;
 		} else {
-			return $relative_date.' ago';
+			return $relative_date . ' ago';
 		}
 	}
 
@@ -711,7 +715,7 @@ class expDateTime {
      *
      * @return string
      */
-    public static function format_date($timestamp,$format=DISPLAY_DATE_FORMAT) {
+    public static function format_date($timestamp, $format=DISPLAY_DATE_FORMAT) {
     	// Do some sort of mangling of the format for windows.
     	// reference the PHP_OS constant to figure that one out.
     	if (strtolower(substr(PHP_OS,0,3)) === 'win') {
@@ -723,11 +727,12 @@ class expDateTime {
     			$toks[$i] = str_replace(
     				array('%D','%e','%g','%G','%h','%r','%R','%T','%l'),
     				array('%m/%d/%y','%d','%y','%Y','%b','%I:%M:%S %p','%H:%M','%H:%M:%S','%I'),
-    				$toks[$i]);
+    				$toks[$i]
+                );
     		}
-    		$format = implode('%%',$toks);
+    		$format = implode('%%', $toks);
     	}
-    	return date(strftime_to_date_format($format),$timestamp);
+    	return date(strftime_to_date_format($format), $timestamp);
     }
 
     /**
@@ -739,7 +744,7 @@ class expDateTime {
      * @return bool
      */
     public static function sameDay($date1, $date2) {
-        return (date("Y-m-d",$date1) == date("Y-m-d",$date2));
+        return (date("Y-m-d", $date1) == date("Y-m-d", $date2));
     }
 
     /**
@@ -757,7 +762,7 @@ class expDateTime {
      * @param string $syntax The format's syntax. Either 'strf' for `strtime()` or 'date' for `date()`.
      * @return bool|string Returns a string formatted according $syntax using the given $format or `false`.
      */
-    public static function date_format_to( $format, $syntax ) {
+    public static function date_format_to($format, $syntax) {
     	// http://php.net/manual/en/function.strftime.php
     	$strf_syntax = [
     		// Day - no strf eq : S (created one called %O)
