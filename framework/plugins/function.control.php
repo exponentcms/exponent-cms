@@ -428,11 +428,13 @@ function smarty_function_control($params, &$smarty) {
                                 $content = "
                                 var grecaptcha_onload = function() {
                                     [].forEach.call(document.querySelectorAll('.g-recaptcha'), function(el){
+                                        $(el).parents('form').find(':submit').attr('disabled', true);
                                         var renderCaptcha = grecaptcha.render(el, {
                                             sitekey: '" . RECAPTCHA_PUB_KEY . "',
                                             callback: function(token) {
                                                 el.parentNode.querySelector('.g-recaptcha').value = token;
                                                 console.log('success! ' + token);
+                                                $(el).parents('form').find(':submit').removeAttr('disabled');
                                             },
                                             size: 'invisible',
 //                                            badge: 'inline'
