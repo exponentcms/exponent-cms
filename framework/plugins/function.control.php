@@ -423,20 +423,21 @@ function smarty_function_control($params, &$smarty) {
                                 };";
                             } else {  // reCaptcha v2 Invisible
                                 // need an input field to return token
-                                echo '<input type="hidden" value="" name="g-recaptcha-response" class="g-recaptcha-response" />';
+                                echo '<div class="g-recaptcha" name="g-recaptcha-response"></div>';
                                 // we do explicit loading to allow for multiple recaptcha widgets on a page
                                 $content = "
-                                function grecaptcha_onload() {
-                                    $('.g-recaptcha-response').each(function( k, v ) {
-                                        var submit = $(v).closest(\"form\").find('[type=\"submit\"]');
-                                        grecaptcha.render( submit[0], {
-                                            'sitekey' : '" . RECAPTCHA_PUB_KEY . "',
-                                            'callback' : function( token ) {
-                                                $(v).closest(\"form\").find('.g-recaptcha-response').val( token );
-                                                $(v).closest(\"form\").submit();
+                                var grecaptcha_onload = function() {
+                                    [].forEach.call(document.querySelectorAll('.g-recaptcha'), function(el){
+                                        var renderCaptcha = grecaptcha.render(el, {
+                                            sitekey: '" . RECAPTCHA_PUB_KEY . "',
+                                            callback: function(token) {
+                                                el.parentNode.querySelector('.g-recaptcha').value = token;
+//                                                console.log('success! ' + token);
                                             },
-                                            'size' : 'invisible',
-                                        });
+                                            size: 'invisible',
+//                                            badge: 'inline'
+                                        }, true);
+                                        grecaptcha.execute(renderCaptcha);
                                     });
                                 }";
                             }
