@@ -78,7 +78,7 @@ class expRouter {
 	 * @return string A url
 	 */
     public function makeLink($params, $force_old_school=false, $secure=false, $no_map=false) {
-        $secure = ENABLE_SSL == 1 ? $secure : false;  // check if this site can use SSL if not then force the link to not be secure
+        $secure = ENABLE_SSL || $secure;  // check if this site can use SSL if not then force the link to not be secure
         $linkbase =  $secure ? URL_BASE_SECURE : URL_BASE;
         $linkbase .= SCRIPT_RELATIVE;
 

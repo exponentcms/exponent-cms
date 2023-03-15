@@ -248,9 +248,9 @@ class fakeform extends form {
                 $this->btn_size = 'btn-small';
                 $icon_size = 'icon-large';
             }
-            $this->edit_class = ' class="btn '.$this->btn_size.'"';
+            $this->edit_class = ' class="btn '.$this->btn_size.' edit"';
             $this->edit_icon_class = '<i class="icon-edit '.$icon_size.'"></i>';
-            $this->delete_class = ' class="btn btn-danger '.$this->btn_size.'"';
+            $this->delete_class = ' class="btn btn-danger '.$this->btn_size.' delete"';
             $this->delete_icon_class = '<i class="icon-remove-sign '.$icon_size.'"></i>';
         } elseif (bs3()) {
             expCSS::pushToHead(array(

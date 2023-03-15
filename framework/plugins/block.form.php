@@ -52,9 +52,9 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                     "corecss"=>"forms-bootstrap"
                 ));
                 $btn_class = 'btn btn-default';
-                if (BTN_SIZE == 'large') {
+                if (BTN_SIZE === 'large') {
                     $btn_size = '';  // actually default size, NOT true bootstrap large
-                } elseif (BTN_SIZE == 'small') {
+                } elseif (BTN_SIZE === 'small') {
                     $btn_size = 'btn-mini';
                 } else { // medium
                     $btn_size = 'btn-small';
@@ -79,11 +79,11 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 } else {
                     $btn_class = 'btn btn-secondary';
                 }
-                if (BTN_SIZE == 'large') {
+                if (BTN_SIZE === 'large') {
                     $btn_size = 'btn-lg';
-                } elseif (BTN_SIZE == 'small') {
+                } elseif (BTN_SIZE === 'small') {
                     $btn_size = 'btn-sm';
-                } elseif (BTN_SIZE == 'extrasmall') {
+                } elseif (BTN_SIZE === 'extrasmall') {
                     if (bs3()) {
                         $btn_size = 'btn-xs';
                     } else {

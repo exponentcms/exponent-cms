@@ -81,7 +81,8 @@
                     {control type="dropdown" name="sc[ANTI_SPAM_CONTROL]" label="Anti-Spam Method"|gettext items=$as_types default=$smarty.const.ANTI_SPAM_CONTROL}
                     {group label="reCAPTCHA Settings"|gettext}
                         <blockquote>
-                        {'To obtain the reCAPTCHA \'keys\', you\'ll need to first have a'|gettext} <a href="http://www.google.com/" target="_blank">{"Google account"|gettext}</a> {"to log in, then setup up a reCAPTCHA account for your domain(s)"|gettext} <a href="http://www.google.com/recaptcha/admin" target="_blank">{"here"|gettext}</a>
+                            {'To obtain the reCAPTCHA \'keys\', you\'ll need to first have a'|gettext} <a href="http://www.google.com/" target="_blank">{"Google account"|gettext}</a> {"to log in, then setup up a reCAPTCHA account for your domain(s)"|gettext} <a href="http://www.google.com/recaptcha/admin" target="_blank">{"here"|gettext}</a>
+                            {br}{'Note there are different keys for different types of reCAPTCHA (v2 checkbox, v2 invisible, or v3), they are NOT interchangable!'|gettext}
                         </blockquote>
                         {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="reCaptcha Theme"|gettext items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
                         {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Site Key"|gettext value=$smarty.const.RECAPTCHA_PUB_KEY}
