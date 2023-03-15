@@ -544,12 +544,15 @@ class formsController extends expController {
                                             sitekey: '" . RECAPTCHA_PUB_KEY . "',
                                             callback: function(token) {
                                                 el.parentNode.querySelector('.g-recaptcha').value = token;
-//                                                console.log('success! ' + token);
+                                                console.log('success! ' + token);
                                             },
                                             size: 'invisible',
 //                                            badge: 'inline'
                                         }, true);
                                         grecaptcha.execute(renderCaptcha);
+                                        $(el).parents('form').on('submit',function(e) {
+                                            grecaptcha.execute(renderCaptcha);
+                                        });
                                     });
                                 }";
                             }

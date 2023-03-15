@@ -376,7 +376,7 @@ class expValidator {
             case 'recaptcha':
             case 'recaptcha_v2':
                 if (empty($params["g-recaptcha-response"])) {
-                    self::failAndReturnToForm($msg, $params);  // there was no response
+                    self::failAndReturnToForm($msg . '-' . gt('No Response'), $params);  // there was no response
                 }
 
                 if (!defined('RECAPTCHA_PRIVATE_KEY')) {
@@ -409,7 +409,7 @@ class expValidator {
 //            case 'recaptcha_v3':
             case 0:
                 return true;
-                break;
+//                break;
         }
         return false;
     }
