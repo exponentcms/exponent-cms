@@ -19,6 +19,7 @@ Version 2.7.2
 - add better metainfo for forms and records
 - add feature to add dates to an existing event
 - new blog dates calendar view
+- add invisible reCaptcha option
 - fixes several warnings/issues with PHP v8
 - fixes and tweaks many issues in previous versions
 
