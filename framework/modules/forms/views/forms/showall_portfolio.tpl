@@ -33,6 +33,7 @@
         }
     {/literal}
     {/css}
+
     <div class="module forms showall portfolio">
         {if !empty($title)}
             <{$config.heading_level|default:'h1'}>{$title}</{$config.heading_level|default:'h1'}>
