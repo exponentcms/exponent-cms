@@ -17,13 +17,15 @@
     <div name="mod_{$container->id}" id="mod_{$container->id}"></div>
 	{permissions}
 		{if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $container->permissions.manage)}
-			<div id="module{$container->id}" class="exp-container-module-wrapper exp-skin">
-				<div class="dropdown exp-container-chrome exp-container-chrome-module">
-                    <a id="dropdownMenu{$container->id}" class="dropdown-toggle exp-trigger" data-toggle="dropdown" href="#">{if $container->is_private}<i class="fas fa-unlock-alt fa-fw" title="{'Private Module'|gettext}"></i> {/if}{$container->info.module|gettext}</a>
-                    {nocache}
-                        {getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last}
-                    {/nocache}
-				</div>
+			<div id="module{$container->id}" class="exp-container-module-wrapper">
+                <div class="exp-skin">
+                    <div class="dropdown exp-container-chrome exp-container-chrome-module">
+                        <a id="dropdownMenu{$container->id}" class="dropdown-toggle exp-trigger" data-toggle="dropdown" href="#">{if $container->is_private}<i class="fas fa-unlock-alt fa-fw" title="{'Private Module'|gettext}"></i> {/if}{$container->info.module|gettext}</a>
+                        {nocache}
+                            {getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last}
+                        {/nocache}
+                    </div>
+                </div>
 		{/if}
 	{/permissions}
 	<div class="{module_style style=$container->config.mstyle}"> {* module styling output *}
