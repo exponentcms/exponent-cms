@@ -2166,7 +2166,7 @@ class storeController extends expController {
                         $html .= ecomconfig::getConfig('ecomfooter');
 
                         $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
-                        if (empty($from[0])) $from = SMTP_FROMADDRESS;
+                        if (empty($from[0])) $from = array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME));
                         try {
                             $mail = new expMail();
                             $mail->quickSend(array(
