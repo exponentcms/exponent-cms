@@ -286,7 +286,8 @@ class expMail {
 			$params['from'] = trim($params['from']);
 		}
 		if (empty($params['from'])) {
-			$params['from'] = trim(SMTP_FROMADDRESS); // default address is ours
+			$params['from'] = array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)); // default address is ours
+
 		}
         $this->addFrom($params['from']);
 
@@ -438,7 +439,7 @@ class expMail {
 			$params['from'] = trim($params['from']);
 		}
 		if (empty($params['from'])) {
-			$params['from'] = trim(SMTP_FROMADDRESS); // default address is ours
+			$params['from'] = array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)); // default address is ours
 		}
         $this->addFrom($params['from']);
 
@@ -687,10 +688,11 @@ class expMail {
 	public function addTo($email = null) {
         // attempt to fix a bad to address
         if (is_array($email)) {
-            foreach ($email as $address=>$name) {
+            foreach ($email as $address=>$nname) {
                 if (is_int($address)) {
-                    if (strpos($name, '.') === false) {
-                        $email[$address] .= $name.'.net';
+                    if (strpos($nname, '.') === false) {
+                        unset($email[$address]);
+                        $email[$address . '.net'] .= $nname;
                     }
                 }
             }
@@ -788,10 +790,10 @@ class expMail {
 	public function addBcc($email, $name = null) {
         // attempt to fix a bad to address
         if (is_array($email)) {
-            foreach ($email as $address=>$name) {
+            foreach ($email as $address=>$nname) {
                 if (is_int($address)) {
-                    if (strpos($name, '.') === false) {
-                        $email[$address] .= $name.'.net';
+                    if (strpos($nname, '.') === false) {
+                        $email[$address] .= $nname.'.net';
                     }
                 }
             }
@@ -828,9 +830,10 @@ class expMail {
 	public function addFrom($email = null) {
         // attempt to fix a bad from address
         if (is_array($email)) {
-            foreach ($email as $address=>$name) {
+            foreach ($email as $address=>$nname) {
                 if (strpos($address, '.') === false) {
-                    $email[$name] .= '.net';
+                    unset($email[$address]);
+                    $email[$address . '.net'] .= $nname;
                 }
             }
         } else {
@@ -841,7 +844,7 @@ class expMail {
 
         if (!empty(SMTP_FROM_ONLY)) {
             $this->message->setReplyTo($email);  //note we want replies to go back to the real sender
-            $email = trim(SMTP_USERNAME); // default address is ours
+            $email = array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)); // default address is ours
         }
         $this->from = $email;
         if (!empty($email)) {  // && Swift_Validate::email($email)

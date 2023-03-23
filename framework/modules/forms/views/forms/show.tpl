@@ -24,6 +24,7 @@
 
         {/css}
     {/if}
+
     <div class="module forms show">
         <div class="module-actions">
         {if !$is_email && ($prev || $next) && (empty($config.pagelinks) || $config.pagelinks == "Top and Bottom" || $config.pagelinks == "Top Only")}
@@ -108,7 +109,7 @@
                             </td>
                         </tr>
                     {foreachelse}
-                        <tr><td colspan="4"><p>{message text=$config.no_records_msg|default:"Record Not Found"|gettext}</p></td></tr>
+                        <tr><td colspan="2"><p>{message text=$config.no_records_msg|default:"Record Not Found"|gettext}</p></td></tr>
                     {/foreach}
                 </tbody>
             </table>

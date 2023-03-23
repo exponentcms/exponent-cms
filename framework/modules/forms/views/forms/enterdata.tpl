@@ -43,6 +43,15 @@
 
     <div class="module forms edit enter-data">
         {messagequeue name='notice'}
+        {if $edit_mode}
+            <{$config.heading_level|default:'h1'}>{'Edit Form Record'|gettext}</{$config.heading_level|default:'h1'}>
+        {else}
+            {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
+                <{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
+            {if $config.moduledescription != ""}
+                {$config.moduledescription}
+            {/if}
+        {/if}
         {permissions}
             <div class="module-actions">
                 {if $permissions.viewdata && $form->is_saved}
@@ -66,15 +75,6 @@
                 {/if}
             </div>
         {/permissions}
-        {if $edit_mode}
-            <{$config.heading_level|default:'h1'}>{'Edit Form Record'|gettext}</{$config.heading_level|default:'h1'}>
-        {else}
-            {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
-                <{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
-            {if $config.moduledescription != ""}
-                {$config.moduledescription}
-            {/if}
-        {/if}
         <div class="bodycopy">
             {if empty($form) && $permissions.configure}
                 {permissions}

@@ -176,7 +176,7 @@ class yuicalendarcontrol extends formcontrol
                 "unique"    => '00yuical-' . $idname,
                 "jquery"    => "tempus-dominus",
                 "bootstrap" => "collapse",
-                "src"       => JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js",
+//                "src"       => JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js",
                 "content"   => $script,
             )
         );

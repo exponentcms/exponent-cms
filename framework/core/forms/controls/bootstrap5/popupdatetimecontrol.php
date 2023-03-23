@@ -195,7 +195,7 @@ class popupdatetimecontrol extends formcontrol
                 "jquery"    => "tempus-dominus",
                 "src"      => array(
                     "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js",
-                    JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js"
+//                    JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js"
                 ),
                 "bootstrap" => "collapse",
                 "content" => $script,

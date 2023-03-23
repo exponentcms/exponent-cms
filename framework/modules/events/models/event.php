@@ -204,17 +204,17 @@ class event extends expRecord {
 
        			switch ($params['recur']) {
        				case "recur_daily":
-       					$dates = expDateTime::recurringDailyDates($start_recur,$stop_recur,$freq);
+       					$dates = expDateTime::recurringDailyDates($start_recur, $stop_recur, $freq);
        					break;
        				case "recur_weekly":
                         $dateinfo = getdate($start_recur);  //FIXME hack in case the day of week wasn't checked off
-       					$dates = expDateTime::recurringWeeklyDates($start_recur,$stop_recur,$freq,(!empty($params['day']) ? array_keys($params['day']) : array($dateinfo['wday'])));
+       					$dates = expDateTime::recurringWeeklyDates($start_recur, $stop_recur, $freq, (!empty($params['day']) ? array_keys($params['day']) : array($dateinfo['wday'])));
        					break;
        				case "recur_monthly":
-       					$dates = expDateTime::recurringMonthlyDates($start_recur,$stop_recur,$freq,(!empty($params['month_type'])?$params['month_type']:true));
+       					$dates = expDateTime::recurringMonthlyDates($start_recur, $stop_recur, $freq, (!empty($params['month_type'])?$params['month_type']:true));
        					break;
        				case "recur_yearly":
-       					$dates = expDateTime::recurringYearlyDates($start_recur,$stop_recur,$freq);
+       					$dates = expDateTime::recurringYearlyDates($start_recur, $stop_recur, $freq);
        					break;
        				default:
        					echo "Bad type: " . $params['recur'] . "<br />";
