@@ -12,7 +12,7 @@ class ups {
      * $License = XML Access Code provided by UPS
      * $User = UPS.com Username
      * $Password = UPS.com Password
-     * $templatePath = Path to XML templates 
+     * $templatePath = Path to XML templates
      *
      **********************************************/
 
@@ -20,7 +20,7 @@ class ups {
 		$this->License = $license;
 		$this->User = $user;
 		$this->Pass = $pass;
-		$this->setTestingMode(1); 
+		$this->setTestingMode(1);
 		$this->accessRequest = false;
 		$this->templatePath = 'xml/'; // No beginning slash if path is relative
 	}
@@ -49,8 +49,8 @@ class ups {
 	function request($type, $xml){
 		// This function will return all of the relevant response info in the form of an Array
 		if ($this->accessRequest != true) {
-			die('access function has not been set');		
-		} else {	
+			die('access function has not been set');
+		} else {
 			$output = preg_replace('/[\s+]{2,}/', '', $xml);
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $this->upsUrl.'/ups.app/xml/'.$type);
@@ -67,7 +67,7 @@ class ups {
 
 
 			// Find out if the UPS service is down
-			preg_match_all('/HTTP\/1\.\d\s(\d+)/',$curlReturned,$matches);
+			preg_match_all('/HTTP\/2\s(\d+)/',$curlReturned,$matches);
 			foreach($matches[1] as $key=>$value) {
 				if ($value != 100 && $value != 200) {
 					$this->throwError("The UPS service seems to be down with HTTP/1.1 $value");
@@ -78,16 +78,16 @@ class ups {
 				}
 			}
 		}
-	}	
-	
+	}
+
 	function sandwich($templateFile, $findArray, $replaceArray){
-		// This will look in the template folder for an xml template and subsitute one array for another	
+		// This will look in the template folder for an xml template and subsitute one array for another
 		$handle=fopen($templateFile, "r");
 		if($handle){
 				$buffer = fread($handle, filesize($templateFile));fclose($handle);
 		}
 		$x=0;while($x < count($findArray)){
-				$buffer = str_replace($findArray[$x],$replaceArray[$x],$buffer);++$x; 
+				$buffer = str_replace($findArray[$x],$replaceArray[$x],$buffer);++$x;
 		}
 		return $buffer;
 	}
@@ -111,11 +111,11 @@ class ups {
 				$key = $availArr[0][$x];
 				$textArrayLayout .= "$".$prefix."['".$key."'] = '';<br>";
 			}
-		++$x; 
+		++$x;
 		}
 	return $textArrayLayout;
 	}
-	
+
 	function setTemplatePath($path){
 		// TODO: set the default path to ../xml/ incase user doesn't set it
 		// Set the template path for xml templates
@@ -124,7 +124,7 @@ class ups {
 		}
 		return true;
 	}
-	
+
 	function setTestingMode($bool){
 		if($bool == 1){
 			$this->debugMode = true;
@@ -141,7 +141,7 @@ class ups {
 		if($this->debugMode) {
 			die($error);
 		}else{
-			return $error;		
+			return $error;
 		}
 	}
 }
@@ -204,7 +204,7 @@ class xml2Array {
 	var $arrOutput = array();
 	var $resParser;
 	var $strXmlData;
-	
+
 	function parse($strInputXML){
 		$this->resParser = xml_parser_create();
 		xml_set_object($this->resParser,$this);
@@ -219,12 +219,12 @@ class xml2Array {
 		xml_parser_free($this->resParser);
 	return $this->arrOutput;
 	}
-	
+
 	function tagOpen($parser, $name, $attrs){
 		$tag=array("name"=>$name,"attrs"=>$attrs);
 		array_push($this->arrOutput,$tag);
 	}
-	
+
 	function tagData($parser, $tagData){
 		if(trim($tagData)){
 			if(isset($this->arrOutput[count($this->arrOutput)-1]['tagData'])){
@@ -234,7 +234,7 @@ class xml2Array {
 			}
 		}
 	}
-	
+
 	function tagClosed($parser, $name){
 		$this->arrOutput[count($this->arrOutput)-2]['children'][] = $this->arrOutput[count($this->arrOutput)-1];
 		array_pop($this->arrOutput);
@@ -266,14 +266,14 @@ class upsxmlParser {
         		}
         		xml_parser_set_option($xmlp, $opt, $optVal);
       	}
-      
+
 		if(xml_parse_into_struct($xmlp, $input, $vals, $index)) {
         	$this->root = $this->_foldCase($vals[0]['tag']);
         	$this->params = $this->xml2ary($vals);
 		}
       	xml_parser_free($xmlp);
     }
-    
+
     function _foldCase($arg) {
 		return( $this->fold ? strtoupper($arg) : $arg);
     }
@@ -281,9 +281,9 @@ class upsxmlParser {
 	/*
 	 * Credits for the structure of this function
 	 * http://mysrc.blogspot.com/2007/02/php-xml-to-array-and-backwards.html
-	 * 
-	 * Adapted by Ropu - 05/23/2007 
-	 * 
+	 *
+	 * Adapted by Ropu - 05/23/2007
+	 *
 	 */
 
     function xml2ary($vals) {
@@ -295,21 +295,21 @@ class upsxmlParser {
 			if ($r['type']=='open') {
 				if (isset($ary[$t]) && !empty($ary[$t])) {
 					if (isset($ary[$t][0])){
-						$ary[$t][]=array(); 
+						$ary[$t][]=array();
 					} else {
 						$ary[$t]=array($ary[$t], array());
-					} 
+					}
 					$cv=&$ary[$t][count($ary[$t])-1];
 				} else {
 					$cv=&$ary[$t];
                 }
 				$cv=array();
-				if (isset($r['attributes'])) { 
+				if (isset($r['attributes'])) {
 					foreach ($r['attributes'] as $k=>$v) {
 					$cv[$k]=$v;
 					}
 				}
-                
+
 				$cv['_p']=&$ary;
 				$ary=&$cv;
 
@@ -319,27 +319,27 @@ class upsxmlParser {
 							$ary[$t][]=array();
 						} else {
 							$ary[$t]=array($ary[$t], array());
-						} 
+						}
 					$cv=&$ary[$t][count($ary[$t])-1];
                 } else {
 					$cv=&$ary[$t];
-				} 
+				}
 				if (isset($r['attributes'])) {
 					foreach ($r['attributes'] as $k=>$v) {
 						$cv[$k]=$v;
 					}
 				}
 				$cv['VALUE'] = (isset($r['value']) ? $r['value'] : '');
-    
+
 				} elseif ($r['type']=='close') {
 					$ary=&$ary['_p'];
 				}
-        }    
-        
+        }
+
 		$this->_del_p($mnary);
 		return $mnary;
 	}
-    
+
     // _Internal: Remove recursion in result array
     function _del_p(&$ary) {
         foreach ($ary as $k=>$v) {
@@ -354,12 +354,12 @@ class upsxmlParser {
 
     /* Returns the root of the XML data */
     function GetRoot() {
-      return $this->root; 
+      return $this->root;
     }
 
     /* Returns the array representing the XML data */
     function GetData() {
-      return $this->params; 
+      return $this->params;
     }
   }
 ?>

@@ -1,7 +1,7 @@
 <?php
 class upsTrack {
-    var $AccessLicenseNumber;  
-    var $UserId;  
+    var $AccessLicenseNumber;
+    var $UserId;
     var $Password;
     var $credentials;
     var $isSuccessful;
@@ -23,7 +23,7 @@ class upsTrack {
 	else {
 		$this->AccessLicenseNumber = $access;
 		$this->UserID = $user;
-		$this->Password = $pass;	
+		$this->Password = $pass;
 		$this->credentials = 1;
 	}
     }
@@ -31,7 +31,7 @@ class upsTrack {
     function getTrack($trackingNumber) {
 	if(!$this->isOnline())
 		throw new Exception("The UPS service seems to be down with HTTP/1.1 $value");
-        
+
 	$ch = curl_init("https://www.ups.com/ups.app/xml/Track");
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch,CURLOPT_POST,1);
@@ -96,7 +96,7 @@ class upsTrack {
     	</TrackRequest>";
 	return $data;
     }
-       
+
     function isOnline() {
 
         $ch = curl_init("https://www.ups.com/ups.app/xml/Track");
@@ -108,7 +108,7 @@ class upsTrack {
         $result = curl_exec ($ch);
         curl_close($ch);
 	// Find out if the service is down
-	preg_match_all('/HTTP\/1\.\d\s(\d+)/',$result,$matches);
+	preg_match_all('/HTTP\/2\s(\d+)/',$result,$matches);
 	foreach($matches[1] as $key=>$value) {
 	    if ($value == 100 || $value == 200) {
 		return true;
@@ -117,19 +117,19 @@ class upsTrack {
 	}
 	return false;
     }
-    
+
     function getDeliveryDate() {
 	if ($this->isSuccessful != 1) {
 	    throw new Exception('Last response from UPS was not ran or not successful, please run getTrack() again');
 	}
-	return $this->xmlResponse['TRACKRESPONSE']['SHIPMENT']['SCHEDULEDDELIVERYDATE'];	
+	return $this->xmlResponse['TRACKRESPONSE']['SHIPMENT']['SCHEDULEDDELIVERYDATE'];
     }
 
     function getPickupDate() {
 	if ($this->isSuccessful != 1) {
 	    throw new Exception('Last response from UPS was not ran or not successful, please run getTrack() again');
 	}
-	return $this->xmlResponse['TRACKRESPONSE']['SHIPMENT']['PICKUPDATE'];	
+	return $this->xmlResponse['TRACKRESPONSE']['SHIPMENT']['PICKUPDATE'];
     }
 
 }
