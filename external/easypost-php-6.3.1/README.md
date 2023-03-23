@@ -32,7 +32,7 @@ require_once("/path/to/vendor/easypost/autoload.php");
 
 $client = new \EasyPost\EasyPostClient(getenv('EASYPOST_API_KEY'));
 
-$shipment = $client->shipmemt->create([
+$shipment = $client->shipment->create([
     "from_address" => [
         "company" => "EasyPost",
         "street1" => "118 2nd Street",
@@ -70,6 +70,12 @@ API documentation can be found at: <https://easypost.com/docs/api>.
 Library documentation can be found on the web at: <https://easypost.github.io/easypost-php/> or locally in the `docs` directory.
 
 Upgrading major versions of this project? Refer to the [Upgrade Guide](UPGRADE_GUIDE.md).
+
+## Support
+
+New features and bug fixes are released on the latest major release of this library. If you are on an older major release of this library, we recommend upgrading to the most recent release to take advantage of new features, bug fixes, and security patches. Older versions of this library will continue to work and be available as long as the API version they are tied to remains active; however, they will not receive updates and are considered EOL.
+
+For additional support, see our [org-wide support policy](https://github.com/EasyPost/.github/blob/main/SUPPORT.md).
 
 ## Development
 
