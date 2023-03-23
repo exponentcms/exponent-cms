@@ -67,7 +67,7 @@ class ups {
 
 
 			// Find out if the UPS service is down
-			preg_match_all('/HTTP\/2\s(\d+)/',$curlReturned,$matches);
+			preg_match_all('/HTTP\/[\d.]+\s(\d+)/',$curlReturned,$matches);
 			foreach($matches[1] as $key=>$value) {
 				if ($value != 100 && $value != 200) {
 					$this->throwError("The UPS service seems to be down with HTTP/1.1 $value");

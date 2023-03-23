@@ -108,7 +108,7 @@ class upsTrack {
         $result = curl_exec ($ch);
         curl_close($ch);
 	// Find out if the service is down
-	preg_match_all('/HTTP\/2\s(\d+)/',$result,$matches);
+	preg_match_all('/HTTP\/[\d.]+\s(\d+)/',$result,$matches);
 	foreach($matches[1] as $key=>$value) {
 	    if ($value == 100 || $value == 200) {
 		return true;
