@@ -107,9 +107,7 @@ class formsController extends expController {
             }
 
             if (!empty($f)) {
-                if (empty($this->config['report_filter']) && empty($this->params['filter'])) {  // allow for param of 'filter' also
-                    $where = '1';
-                } elseif (!empty($this->params['filter'])) {
+                if (!empty($this->params['filter'])) {
                     if (is_numeric($this->params['filter'])) {
                         $where = expString::escape($this->params['filter']);
                     } elseif ($this->params['filter'] === $all_text) {
@@ -117,11 +115,13 @@ class formsController extends expController {
                     } else {
                         $where = $this->config['order'] . "='" . expString::escape($this->params['filter']) . "'";
                     }
-                    if (!empty($this->config['report_filter'])) {
-                        $where = $this->config['report_filter'] . ' AND ' . $where;
-                    }
-                } else {
+//                    if (!empty($this->config['report_filter'])) {
+//                        $where = $this->config['report_filter'] . ' AND ' . $where;
+//                    }
+                } elseif (!empty($this->config['report_filter'])) {
                     $where = $this->config['report_filter'];
+                } else {
+                    $where = '1';
                 }
                 $fc = new forms_control();
                 // account for portfolio view & column list
