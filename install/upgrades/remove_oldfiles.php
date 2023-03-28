@@ -37,7 +37,7 @@ class remove_oldfiles extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Several system files have been moved or are no longer needed.  This Script removes those leftover files from previous versions."; }
+	function description() { return "This Script removes those leftover files from previous versions."; }
 
     /**
    	 * This routine should perform additional test(s) to see if upgrade script should be run (files/tables exist, etc...)
