@@ -24,8 +24,8 @@
     {icon class=add action=edit_version text="Add a New Help Version"|gettext}{br}
     {icon class=add action=edit text="Add a New Help Document"|gettext}{br}
     {icon class=manage action=manage_versions text="Manage Help Versions"|gettext}{br}
-    {$page->links}
-    <table class="exp-skin-table">
+{*    {$page->links}*}
+    <table id="docs-manage" class="exp-skin-table">
         <thead>
         <tr>
             {$page->header_columns}
@@ -58,6 +58,23 @@
         {/foreach}
         </tbody>
     </table>
-    {$page->links}
-
+{*    {$page->links}*}
 </div>
+
+{script unique="manage-groups" jquery='jquery.dataTables'}
+{literal}
+    $(document).ready(function() {
+        var tableContainer = $('#docs-manage');
+
+        var table = tableContainer.DataTable({
+            columns: [
+                null,
+                { searchable: false },
+                null,
+                { searchable: false, orderable: false },
+            ],
+            autoWidth: false,
+        });
+    } );
+{/literal}
+{/script}
