@@ -28,7 +28,10 @@
     <table id="docs-manage" class="exp-skin-table">
         <thead>
         <tr>
-            {$page->header_columns}
+{*            {$page->header_columns}*}
+            <th>{'Title'|gettext}</th>
+            <th>{'Version'|gettext}</th>
+            <th>{'Section'|gettext}</th>
             <th>{'Actions'|gettext}</th>
         </tr>
         </thead>
