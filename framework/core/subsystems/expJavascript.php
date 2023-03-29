@@ -675,13 +675,13 @@ class expJavascript {
                             }
                         } elseif (file_exists(JQUERY_PATH . 'addons/js/' . $mod . '.js')) {
                             $scripts .= '<script type="text/javascript" src="' . JQUERY_RELATIVE . 'addons/js/' . $mod . '.js"></script>' . "\r\n";
-                                if (file_exists(JQUERY_PATH . 'addons/scss/' . $mod . '.scss')) {
-                                    expCSS::pushToHead(
-                                        array(
-                                            "scssprimer" => JQUERY_RELATIVE . 'addons/scss/' . $mod . '.scss',
-                                        )
-                                    );
-                                } elseif (file_exists(JQUERY_PATH . 'addons/less/' . $mod . '.less')) {
+                            if ((bs4() | bs5()) && file_exists(JQUERY_PATH . 'addons/scss/' . $mod . '.scss')) {
+                                expCSS::pushToHead(
+                                    array(
+                                        "scssprimer" => JQUERY_RELATIVE . 'addons/scss/' . $mod . '.scss',
+                                    )
+                                );
+                            } elseif (file_exists(JQUERY_PATH . 'addons/less/' . $mod . '.less')) {
                                 expCSS::pushToHead(
                                     array(
                                         "lessprimer" => JQUERY_RELATIVE . 'addons/less/' . $mod . '.less',

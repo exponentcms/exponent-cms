@@ -37,7 +37,7 @@ Bootswatch5,5.2.3,bootswatch.com,5.2.3,change 1st line variables.scss comment to
 Font-Awesome3,3.2.1,fontawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
-Font-Awesome6,6.3.0,fontawesome.com,6.3.0,add import all 'fonts' sheets into main sheet
+Font-Awesome6,6.4.0,fontawesome.com,6.4.0,add import all 'fonts' sheets into main sheet
 Bootstrap-Icons,1.10.3,icons.getbootstrap.com,1.10.3,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
 Adminer,4.8.1exp,www.adminer.org,4.8.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3

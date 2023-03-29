@@ -141,6 +141,7 @@ class helpController extends expController {
             'doc'=>$doc,
             'children'=>$children,
             "hv"=>$this->help_version,
+            "hvid"=>$version_id,
             'config'=>$config
         ));
 	}
@@ -158,6 +159,9 @@ class helpController extends expController {
             $help->id = null;
             if (isset($help->sef_url))
                 $help->sef_url = null;
+        }
+        if (empty($help->id) && empty($help->loc)) {
+            $help->loc = $this->loc;
         }
 
 	    // get the id of the current version and use it if we need to.
@@ -198,6 +202,7 @@ class helpController extends expController {
 	    assign_to_template(array(
             'record'=>$help,
             'parents'=>$parentlist,
+            'parent'=>isset($this->params['parent'])?$this->params['parent']:0,
             "current_section"=>$this->loc->src,
             "sections"=>$sectionlist
         ));
@@ -233,7 +238,7 @@ class helpController extends expController {
 	    $page = new expPaginator(array(
             'model'=>'help',
             'where'=>$where,
-            'limit'=>30,
+//            'limit'=>30,
             'order'      => (isset($this->params['order']) ? $this->params['order'] : 'help_version_id'),
             'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),

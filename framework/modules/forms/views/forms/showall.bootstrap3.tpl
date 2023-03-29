@@ -162,7 +162,7 @@
                             {/permissions}
                         </tr>
                     {foreachelse}
-                        <tr><td colspan="{$page->columns|count+}"><h4>{$config.no_records_msg|default:"No Records Found"|gettext}</h4></td></tr>
+                        <tr><td colspan="{$page->columns|count}"><h4>{$config.no_records_msg|default:"No Records Found"|gettext}</h4></td></tr>
                     {/foreach}
                 </tbody>
             </table>

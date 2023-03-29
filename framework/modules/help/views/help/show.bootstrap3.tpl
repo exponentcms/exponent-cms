@@ -19,10 +19,10 @@
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
-                {icon class=add action=edit text="Add a Help Doc"|gettext}
+                {icon class=add action=edit parent=$doc->id text="Add a Help Doc"|gettext}
             {/if}
             {if $permissions.manage}
-                {icon action=manage version=$current_version->id text="Manage Help Docs for version"|gettext|cat:" `$current_version->version`"}
+                {icon action=manage version=$hvid text="Manage Help Docs for version"|gettext|cat:" `$hv`"}
                 {icon class=manage action=manage_versions text="Manage Help Versions"|gettext}
             {/if}
         </div>
