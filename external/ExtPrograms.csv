@@ -5,7 +5,7 @@ Doctrine Deprecations,1.0.0,github.com/doctrine/deprecations,1.0.0,needed by Doc
 EmailValidator,3.2.4,github.com/egulias/EmailValidator,3.2.5/4.0.1,needed by swiftmailer v6; change folder structure and add autoloader to main file
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
-Smarty,3.1.27/4.3.0,smarty.net,4.3.1,
+Smarty,3.1.27/4.3.1,smarty.net,4.3.1,
 phpthumb,1.7.20exp,github.com/JamesHeinrich/phpThumb,1.7.20,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.22,github.com/JamesHeinrich/getID3,1.9.22,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.13,modify config.php
@@ -42,7 +42,7 @@ Bootstrap-Icons,1.10.3,icons.getbootstrap.com,1.10.3,"patched bootstrap-icons.sc
 Adminer,4.8.1exp,www.adminer.org,4.8.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
-MediaElement.js,6.0.2,mediaelementjs.com,6.0.2,
+MediaElement.js,6.0.3,mediaelementjs.com,6.0.3,
 MediaElement plugins,2.6.3,github.com/johndyer/mediaelement-plugins,2.6.3,
 Facebook PHP SDK3,3.2.3,github.com/facebook/php-graph-sdk,5.7.0,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
@@ -51,7 +51,7 @@ html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 CKEditor,4.21.0,ckeditor.com,4.21.0/36.0.1,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
-TinyMCE v5,5.10.7,tiny.cloud,5.10.7/6.4.0,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
+TinyMCE v5,5.10.7,tiny.cloud,5.10.7/6.4.1,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.9,github.com/moxiecode/plupload,2.3.9/3.1.5,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 elFinder,2.1.61,elfinder.org,2.1.61,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
