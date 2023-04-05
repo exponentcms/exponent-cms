@@ -93,11 +93,11 @@ class yuicalendarcontrol extends formcontrol
         }
         if (is_numeric($this->default)) {
             if ($this->showdate && !$this->showtime) {
-                $default = date('m/j/Y', $this->default);
+                $default = date('m/d/Y', $this->default);
             } elseif (!$this->showdate && $this->showtime) {
                 $default = date('h:i A', $this->default);
             } else {
-                $default = date('m/j/Y h:i A', $this->default);
+                $default = date('m/d/Y h:i A', $this->default);
             }
         } else {
             $default = $this->default;
@@ -119,7 +119,7 @@ class yuicalendarcontrol extends formcontrol
 
         $script = "
             $(document).ready(function() {
-                tempusDominus.extend(window.tempusDominus.plugins.customDateFormat);
+//                tempusDominus.extend(window.tempusDominus.plugins.customDateFormat);
                 var tclock = new tempusDominus.TempusDominus(document.getElementById('" . $idname . "dateRangePicker'),{
                     localization: {
                         locale: '" . str_replace("_", "-", LOCALE) . "',
