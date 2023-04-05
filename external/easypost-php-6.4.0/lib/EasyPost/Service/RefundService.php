@@ -3,12 +3,12 @@
 namespace EasyPost\Service;
 
 /**
- * Insurance service containing all the logic to make API calls.
+ * Refund service containing all the logic to make API calls.
  */
-class InsuranceService extends BaseService
+class RefundService extends BaseService
 {
     /**
-     * Retrieve an insurance object.
+     * Retrieve a refund.
      *
      * @param string $id
      * @return mixed
@@ -19,7 +19,7 @@ class InsuranceService extends BaseService
     }
 
     /**
-     * Retrieve all insurance objects.
+     * Retrieve all refunds.
      *
      * @param mixed $params
      * @return mixed
@@ -30,17 +30,29 @@ class InsuranceService extends BaseService
     }
 
     /**
-     * Create an insurance object.
+     * Retrieve the next page of Refund collection
+     *
+     * @param mixed $refunds
+     * @param string $pageSize
+     * @return mixed
+     */
+    public function getNextPage($refunds, $pageSize = null)
+    {
+        return $this->getNextPageResources(self::serviceModelClassName(self::class), $refunds, $pageSize);
+    }
+
+    /**
+     * Create a refund.
      *
      * @param mixed $params
      * @return mixed
      */
     public function create($params = null)
     {
-        if (!isset($params['insurance']) || !is_array($params['insurance'])) {
+        if (!isset($params['refund']) || !is_array($params['refund'])) {
             $clone = $params;
             unset($params);
-            $params['insurance'] = $clone;
+            $params['refund'] = $clone;
         }
 
         return self::createResource(self::serviceModelClassName(self::class), $params);

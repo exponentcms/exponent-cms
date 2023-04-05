@@ -30,7 +30,33 @@ class ShipmentService extends BaseService
      */
     public function all($params = null)
     {
-        return self::allResources(self::serviceModelClassName(self::class), $params);
+        self::validate($params);
+        $response = Requestor::request($this->client, 'get', '/shipments', $params);
+        $response['purchased'] = $params['purchased'] ?? null;
+        $response['include_children'] = $params['include_children'] ?? null;
+
+        return InternalUtil::convertToEasyPostObject($this->client, $response);
+    }
+
+    /**
+     * Retrieve the next page of Shipment collection
+     *
+     * @param mixed $shipments
+     * @param string $pageSize
+     * @return mixed
+     */
+    public function getNextPage($shipments, $pageSize = null)
+    {
+        $params = [];
+
+        if (isset($shipments->purchased)) {
+            $params['purchased'] = $shipments->purchased;
+        }
+
+        if (isset($shipments->include_children)) {
+            $params['include_children'] = $shipments->include_children;
+        }
+        return $this->getNextPageResources(self::serviceModelClassName(self::class), $shipments, $pageSize, $params);
     }
 
     /**

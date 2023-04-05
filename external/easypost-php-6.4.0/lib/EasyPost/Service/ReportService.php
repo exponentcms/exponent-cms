@@ -4,6 +4,7 @@ namespace EasyPost\Service;
 
 use EasyPost\Constant\Constants;
 use EasyPost\Exception\General\MissingParameterException;
+use EasyPost\Exception\General\EndOfPaginationException;
 use EasyPost\Http\Requestor;
 use EasyPost\Util\InternalUtil;
 
@@ -40,9 +41,39 @@ class ReportService extends BaseService
             $url = self::reportUrl($type);
             unset($params['type']);
             $response = Requestor::request($this->client, 'get', $url, $params);
+            $response['type'] = $type;
 
             return InternalUtil::convertToEasyPostObject($this->client, $response);
         }
+    }
+
+    /**
+     * Retrieve the next page of Report collection
+     *
+     * @param mixed $reports
+     * @param string $pageSize
+     * @return mixed
+     */
+    public function getNextPage($reports, $pageSize = null)
+    {
+        $reportArray = $reports['reports'];
+
+        if (empty($reportArray) || !$reports['has_more']) {
+            throw new EndOfPaginationException();
+        }
+
+        $params = [
+            'page_size' => $pageSize,
+            'before_id' => $reportArray[count($reportArray) - 1]['id']
+        ];
+        $url = self::reportUrl($reports->type);
+        $response = Requestor::request($this->client, 'get', $url, $params);
+
+        if (empty($response['reports']) || !$response['has_more']) {
+            throw new EndOfPaginationException();
+        }
+
+        return InternalUtil::convertToEasyPostObject($this->client, $response);
     }
 
     /**
