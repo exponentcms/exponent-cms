@@ -29,7 +29,7 @@ Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.l
 Twitter-Bootstrap3,3.4.1,twitter.github.com/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
 Twitter-Bootstrap4,4.6.2,twitter.github.com/bootstrap,4.6.2,"patched bootstrap.scss includes swatches & exp variables, remove @page"
 Twitter-Bootstrap5,5.2.3,twitter.github.com/bootstrap,5.2.3,patched bootstrap.scss includes swatches & exp variables
-popper.js/floating-ui,1.16.1,github.com/FezVrasta/popper.js,1.16.1/2.11.6,needed by BS4/BS5 (umd)
+popper.js/floating-ui,1.16.1,github.com/FezVrasta/popper.js,1.16.1/2.11.7,needed by BS4/BS5 (umd)
 Bootswatch2,2.3.2,bootswatch.com,2.3.2,
 Bootswatch3,3.4.1+1,bootswatch.com,3.4.1+1,change 1st line variables.less comment to output to .css file
 Bootswatch4,4.6.2,bootswatch.com,4.6.2,change 1st line variables.scss comment to output to .css file
@@ -49,7 +49,7 @@ Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
-CKEditor,4.21.0,ckeditor.com,4.21.0/36.0.1,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
+CKEditor,4.21.0,ckeditor.com,4.21.0/37.0.1,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 TinyMCE v5,5.10.7,tiny.cloud,5.10.7/6.4.1,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.9,github.com/moxiecode/plupload,2.3.9/3.1.5,"needed for TinyMCE Quick Upload, placed in that plugin folder"
@@ -96,16 +96,16 @@ select2,4.0.13,github.com/select2/select2,4.0.13,renamed select2.full.js to sele
 shuffle.js,v3.1.1,github.com/Vestride/Shuffle,4.2.0/5.4.1/6.1.0,
 Jasny Bootstrap2,2.3.1,jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,4.0.0,jasny.github.io/bootstrap,4.0.0,only using fileinput at this time
-easypost sdk,4.0.3,github.com/EasyPost/easypost-php,4.0.3/6.3.1,
+easypost sdk,4.0.3,github.com/EasyPost/easypost-php,4.0.3/6.4.0,
 jquery.cookie.js,1.4.1,github.com/carhartl/jquery-cookie,1.4.1,
 jquery.history.js,1.8b2,github.com/browserstate/history.js,1.8.0,
 Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
 dompdf,"2.0.3exp,1.2.2exp/0.7.0exp/0.6.2exp",github.com/dompdf/dompdf,2.0.3,"optional, patched to display our images and not break on bad tables and disable links"
-mPDF,8.1.4/8.0.17/7.1.9/6.1.4/5.7.4a,github.com/mpdf/mpdf,8.1.4,optional
+mPDF,8.1.4/8.0.17/7.1.9/6.1.4/5.7.4a,github.com/mpdf/mpdf,8.1.5,optional
 log,1.1.4,github.com/php-fig/log,1.1.4,"optional, required by mPDF v7+"
-DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.11.0,"optional, suggested by mPDF v7+ for TOC"
+DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.11.1,"optional, suggested by mPDF v7+ for TOC"
 random_compat,2.0.21,github.com/paragonie/random_compat,2.0.21,"optional, required by mPDF v7+"
 http-message,1,github.com/php-fig/http-message,1,"optional, required by mPDF v8.1+"
 message-factory,1.0.1,github.com/php-http/message-factory,1.0.1,"optional, required by mPDF v8.1+"
@@ -113,7 +113,7 @@ FPDI,2.3.6,github.com/Setasign/FPDI,2.3.7,"optional, required by mPDF v7+"
 HTML2PDF,5.2.7/4.6.1,github.com/spipu/html2pdf,5.2.7,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.6.2,sourceforge.net/projects/tcpdf,6.6.2,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
-Kint,1.1/2.2/5.0.4,github.com/kint-php/kint,5.0.4,"optional, for formatted edebug output"
+Kint,1.1/2.2/5.0.5,github.com/kint-php/kint,5.0.5,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
 DataTables Buttons,,www.datatables.net,2.3.6,
