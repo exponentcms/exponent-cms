@@ -128,6 +128,12 @@ class expVersion {
         $swversion = self::swVersion();
         $update = false;
 
+        // we're not up and running yet, new installation so launch installer
+        if (@file_exists(BASE.'install/not_configured') || !(@file_exists(BASE.'framework/conf/config.php'))) {
+          		header('Location: '.URL_FULL.'install/index.php');
+          		exit('Redirecting to the Exponent Install Wizard');
+        }
+
         // check database version against installed software version
         if ($db->havedb) {
             $dbversion = self::dbVersion();
