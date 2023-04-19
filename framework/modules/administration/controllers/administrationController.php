@@ -717,7 +717,11 @@ class administrationController extends expController {
 //						self::verify_extension('tar');
 					}
 				} else { // it must be a zip
-					$unzip = new ZipArchive();
+                    try {
+                        $unzip = new ZipArchive();
+                    } catch (Exception $e) {
+                        flash('error',gt('Error extracting ZIP archive') . ': ' . ' : ' . gt('PHP Zip extension not loaded') . '<br />');
+                    }
 
                     $unzip_error_no = $unzip->open($dest);
                     if ($unzip_error_no !== true) {

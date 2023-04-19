@@ -38,7 +38,7 @@
 {/css}
 
 <div class="module motd events mini-cal annual ">
-    <div class="row">
+    <div>
         <{$config.heading_level|default:'h1'}>
            {ical_link}
            {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}

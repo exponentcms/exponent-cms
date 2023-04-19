@@ -30,9 +30,9 @@ define('SANITY_ERROR',				2);
 
 /**
  * Check file/folder for requested permissions
- * @param $file     file/folder name
- * @param $as_file  is this a file or a folder
- * @param $flags    type of check to perform
+ * @param $file     string file/folder name
+ * @param $as_file  bool is this a file or a folder
+ * @param $flags    int type of check to perform
  * @return int      error
  */
 function sanity_checkFile($file, $as_file, $flags) {
@@ -86,8 +86,8 @@ function sanity_checkFile($file, $as_file, $flags) {
 
 /**
  * Recursively check folder and all files/folders within for requested permissions
- * @param $dir  folder name
- * @param $flag type of check
+ * @param $dir  string folder name
+ * @param $flag int type of check
  * @return int  error
  */
 function sanity_checkDirectory($dir, $flag) {
@@ -147,9 +147,10 @@ function sanity_checkServer() {
 		gt('GD Graphics Library 2.0+')=>_sanity_checkGD(),
 		'PHP 7.4.0+'=>_sanity_checkPHPVersion(),
 		gt('ZLib Support')=>_sanity_checkZlib(),
+        gt('Zip Support')=>_sanity_checkZip(),
         gt('cURL Library Support')=>_sanity_checkcURL(),
 		gt('XML (Expat) Library Support')=>_sanity_checkXML(),
-		gt('Safe Mode Not Enabled')=>_sanity_CheckSafeMode(),
+//		gt('Safe Mode Not Enabled')=>_sanity_CheckSafeMode(),
 		gt('Open BaseDir Not Enabled')=>_sanity_checkOpenBaseDir(),
 		gt('FileInfo Support')=>_sanity_checkFileinfo(),
 		gt('File Upload Support')=>_sanity_checkUploadSize(),
@@ -183,7 +184,7 @@ function _sanity_checkGD() {
 	}
 	$info = gd_info();
 	if ($info['GD Version'] === 'Not Supported') {
-		return array(SANITY_WARNING,gt('No GD Support'));
+		return array(SANITY_WARNING,gt('No GD Support, PHP gd extension needed'));
 	} else if (strpos($info['GD Version'],'2.') === false) {
 		return array(SANITY_WARNING,sprintf(gt('Older Version Installed').' (%s)',$info['GD Version']));
 	}
@@ -202,7 +203,15 @@ function _sanity_checkZlib() {
 	if (function_exists('gzdeflate')) {
 		return array(SANITY_FINE,gt('Passed'));
 	} else {
-		return array(SANITY_ERROR,gt('Failed'));
+		return array(SANITY_ERROR,gt('Failed, PHP zlib not enabled'));
+	}
+}
+
+function _sanity_checkZip() {
+	if (extension_loaded('zip')) {
+		return array(SANITY_FINE,gt('Passed'));
+	} else {
+        return array(SANITY_WARNING,gt('No Zip file support for installing Extensions, PHP zip extension needed'));
 	}
 }
 
@@ -210,7 +219,7 @@ function _sanity_checkcURL() {
 	if (function_exists('curl_init')) {
 		return array(SANITY_FINE,gt('Passed'));
 	} else {
-		return array(SANITY_ERROR,gt('Failed'));
+		return array(SANITY_ERROR,gt('Failed, PHP curl extension needed'));
 	}
 }
 
@@ -218,7 +227,7 @@ function _sanity_checkFileinfo() {
 	if (function_exists('finfo_open')) {
 		return array(SANITY_FINE,gt('Passed'));
 	} else {
-        return array(SANITY_WARNING,gt('No FileInfo Support'));
+        return array(SANITY_WARNING,gt('No FileInfo Support, PHP finfo extension needed'));
 	}
 }
 
@@ -234,17 +243,17 @@ function _sanity_checkXML() {
 	if (function_exists('xml_parser_create')) {
 		return array(SANITY_FINE,gt('Passed'));
 	} else {
-		return array(SANITY_WARNING,gt('Failed'));
+		return array(SANITY_WARNING,gt('Failed, PHP XML not enabled'));
 	}
 }
 
-function _sanity_checkSafeMode() {
-	if (ini_get('safe_mode') == 1) {
-		return array(SANITY_WARNING,gt('Failed'));
-	} else {
-		return array(SANITY_FINE,gt('Passed'));
-	}
-}
+//function _sanity_checkSafeMode() {
+//	if (ini_get('safe_mode') == 1) {
+//		return array(SANITY_WARNING,gt('Failed'));
+//	} else {
+//		return array(SANITY_FINE,gt('Passed'));
+//	}
+//}
 
 function _sanity_checkOpenBaseDir() {
 	$path = ini_get('open_basedir');

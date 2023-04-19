@@ -30,7 +30,7 @@
 </div>
 
 {if $smarty.const.SITE_CODE_EDITOR == 'ace'}
-{script unique='aceeditor' jquery=1 src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.16.0/ace.js'}
+{script unique='aceeditor' jquery=1 src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.17.0/ace.js'}
 {literal}
     // Hook up ACE editor to all textareas with data-editor attribute
     $(function () {
