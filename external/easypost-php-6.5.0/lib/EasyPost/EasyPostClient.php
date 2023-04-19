@@ -12,6 +12,7 @@ use EasyPost\Service\BetaRateService;
 use EasyPost\Service\BetaReferralCustomerService;
 use EasyPost\Service\BillingService;
 use EasyPost\Service\CarrierAccountService;
+use EasyPost\Service\CarrierMetadataService;
 use EasyPost\Service\CustomsInfoService;
 use EasyPost\Service\CustomsItemService;
 use EasyPost\Service\EndShipperService;
@@ -73,8 +74,12 @@ class EasyPostClient extends BaseService
      * @param string $apiBase
      * @param object $mockingUtility
      */
-    public function __construct($apiKey, $timeout = Constants::TIMEOUT, $apiBase = Constants::API_BASE, $mockingUtility = null)
-    {
+    public function __construct(
+        $apiKey,
+        $timeout = Constants::TIMEOUT,
+        $apiBase = Constants::API_BASE,
+        $mockingUtility = null
+    ) {
         // Client properties
         $this->apiKey = $apiKey;
         $this->timeout = $timeout;
@@ -82,7 +87,9 @@ class EasyPostClient extends BaseService
         $this->mockingUtility = $mockingUtility;
 
         if (!$this->apiKey) {
-            throw new MissingParameterException('No API key provided. See https://www.easypost.com/docs for details, or contact ' . Constants::SUPPORT_EMAIL . ' for assistance.');
+            throw new MissingParameterException(
+                'No API key provided. See https://www.easypost.com/docs for details, or contact ' . Constants::SUPPORT_EMAIL . ' for assistance.' // phpcs:ignore
+            );
         }
     }
 
@@ -102,6 +109,7 @@ class EasyPostClient extends BaseService
             'betaRate' => BetaRateService::class,
             'billing' => BillingService::class,
             'carrierAccount' => CarrierAccountService::class,
+            'carrierMetadata' => CarrierMetadataService::class,
             'customsInfo' => CustomsInfoService::class,
             'customsItem' => CustomsItemService::class,
             'endShipper' => EndShipperService::class,
@@ -124,7 +132,9 @@ class EasyPostClient extends BaseService
         if (array_key_exists($serviceName, $serviceClassMap)) {
             return new $serviceClassMap[$serviceName]($this);
         } else {
-            throw new EasyPostException(sprintf(Constants::UNDEFINED_PROPERTY_ERROR, 'EasyPostClient', $serviceName));
+            throw new EasyPostException(
+                sprintf(Constants::UNDEFINED_PROPERTY_ERROR, 'EasyPostClient', $serviceName)
+            );
         }
     }
 
