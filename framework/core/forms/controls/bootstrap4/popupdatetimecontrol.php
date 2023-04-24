@@ -110,18 +110,17 @@ class popupdatetimecontrol extends formcontrol
             $myval = $this->default;
         }
 
-        $date_input = new textcontrol($myval);
-        $date_input->id = $idname;
-        $date_input->name = $idname;
-        $date_input->description = $this->description;
-        $date_input->append = 'calendar-alt';
-        if ($this->horizontal)
-            $date_input->horizontal_top = true;
-        $html = $date_input->toHTML(null, $name);
-        $html = str_replace('form-group', 'date', $html);  // we're a control within a control
+//        $date_input = new textcontrol($myval);
+//        $date_input->id = $idname;
+//        $date_input->name = $idname;
+//        $date_input->description = $this->description;
+//        $date_input->append = 'calendar-alt';
+//        if ($this->horizontal)
+//            $date_input->horizontal_top = true;
+//        $html = $date_input->toHTML(null, $name);
+//        $html = str_replace('form-group', 'date', $html);  // we're a control within a control
 
-
-        $html = '<div id="' . $idname . 'Control" class="text-control control col-sm-10 ">
+        $html = '<div id="' . $idname . 'Control" class="text-control control' . ($this->horizontal ? ' col-sm-10' : '') . '">
                     <div class="input-group input-group-sm date" id="' . $idname . '" data-target-input="nearest">
                         <input type="text" class="form-control datetimepicker-input" value="'. $myval . '" data-target="#' . $idname . '" size="40"/>
                         <span class="input-group-append" data-target="#' . $idname . '" data-toggle="datetimepicker">
