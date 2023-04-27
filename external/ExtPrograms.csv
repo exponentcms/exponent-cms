@@ -43,7 +43,7 @@ Adminer,4.8.1exp,www.adminer.org,4.8.1,"customized plugins: tinymce, ckeditor, p
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
 MediaElement.js,6.0.3,mediaelementjs.com,6.0.3,
-MediaElement plugins,2.6.3,github.com/johndyer/mediaelement-plugins,2.6.3,
+MediaElement plugins,2.6.6,github.com/johndyer/mediaelement-plugins,2.6.6,
 Facebook PHP SDK3,3.2.3,github.com/facebook/php-graph-sdk,5.7.0,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
