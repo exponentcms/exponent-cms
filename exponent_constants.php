@@ -662,7 +662,7 @@ if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.17');
 }
 if (!defined('MPDF81_VERSION')) {
-    define('MPDF81_VERSION', '8.1.4');  // 8.1.5
+    define('MPDF81_VERSION', '8.1.4');  // 8.1.6
 }
 /**
  * Log is needed for MPDF v7+
