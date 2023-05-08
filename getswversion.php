@@ -27,7 +27,7 @@ $swversion->iteration = EXPONENT_VERSION_ITERATION;
 $swversion->builddate = EXPONENT_VERSION_BUILDDATE;
 
 $ajaxObj['data'] = $swversion;
-$ajaxObj['replyCode'] = 201;
+$ajaxObj['replyCode'] = 200;
 $ajaxObj['replyText'] = 'Ok';
 echo json_encode($ajaxObj);
 
