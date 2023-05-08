@@ -120,7 +120,7 @@ class calendarcontrol extends formcontrol
         $html = '';
         if ($this->horizontal)
             $html .= "<div class='col-sm-10'>";
-        $html .= "<div class='input-group date input-group-sm' id='" . $idname . "'>
+        $html .= "<div class='input-group date input-group-sm' id='" . $idname . "' data-target-input='nearest'>
                         <input type='text' class='text form-control datetimepicker-input' name='" . $name . "' value='".$default."' data-target='#" . $idname . "'/>
                         <span class='input-group-append' data-target='#" . $idname . "' data-toggle='datetimepicker'>
                             <span class='input-group-text far fa-calendar-alt'></span>

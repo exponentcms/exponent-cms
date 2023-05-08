@@ -38,12 +38,12 @@ Font-Awesome3,3.2.1,fontawesome.github.com/Font-Awesome,3.2.1,updated FontAwesom
 Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
 Font-Awesome6,6.4.0,fontawesome.com,6.4.0,add import all 'fonts' sheets into main sheet
-Bootstrap-Icons,1.10.4,icons.getbootstrap.com,1.10.4,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
+Bootstrap-Icons,1.10.5,icons.getbootstrap.com,1.10.5,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
 Adminer,4.8.1exp,www.adminer.org,4.8.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
 MediaElement.js,6.0.3,mediaelementjs.com,6.0.3,
-MediaElement plugins,2.6.3,github.com/johndyer/mediaelement-plugins,2.6.3,
+MediaElement plugins,2.6.6,github.com/johndyer/mediaelement-plugins,2.6.6,
 Facebook PHP SDK3,3.2.3,github.com/facebook/php-graph-sdk,5.7.0,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
@@ -51,7 +51,7 @@ html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 CKEditor,4.21.0,ckeditor.com,4.21.0/37.0.1,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
-TinyMCE v5,5.10.7,tiny.cloud,5.10.7/6.4.1,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
+TinyMCE v5,5.10.7,tiny.cloud,5.10.7/6.4.2,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.9,github.com/moxiecode/plupload,2.3.9/3.1.5,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 elFinder,2.1.61,elfinder.org,2.1.61,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
@@ -76,10 +76,10 @@ excoloSlider,1.1.0,excolo.github.io/Excolo-Slider,1.1.0,
 OwlCarousel2,2.3.4,github.com/smashingboxes/OwlCarousel2,2.3.4,
 colorbox,1.6.4,www.jacklmoore.com/colorbox,1.6.4,using style #5 renamed to jquery.colorbox.css
 Searcher,0.3.0,github.com/lloiser/jquery-searcher,0.3.0,
-DateTimePicker,2.5.21exp,xdsoft.net/jqplugins/datetimepicker,2.5.21,rename .full version; we add .js auto-close on inline date select and extra 'reset' work & remove .css z-index issue
+DateTimePicker,2.5.21exp,github.com/xdan/datetimepicker,2.5.21,rename .full version; we add .js auto-close on inline date select and extra 'reset' work & remove .css z-index issue
 Bootstrap DateTimePicker,4.17.49,github.com/Eonasdan/bootstrap-datetimepicker,4.17.49,"patch for 'today' button in side-by-side view, modded version placed in bootstrap4theme & bootstrap5theme to help yadcf"
 Tempus Dominus Bootstrap 4,5.39.0,github.com/tempusdominus/bootstrap-4,5.39.0,
-Tempus Dominus Bootstrap 5,6.4.4,github.com/Eonasdan/tempus-dominus,6.4.4,added .inline z-index style
+Tempus Dominus Bootstrap 5,6.7.7,github.com/Eonasdan/tempus-dominus,6.7.7,added .inline z-index style; scss change @use color
 moment.js,2.29.4,github.com/moment/moment,2.29.4,needed for Bootstrap DateTimePicker; min/moment-with-locales.js renamed
 strength-meter,1.1.4,github.com/kartik-v/strength-meter,1.1.4,
 Sortable,1.15.0,github.com/SortableJS/Sortable,1.15.0,
@@ -96,14 +96,14 @@ select2,4.0.13,github.com/select2/select2,4.0.13,renamed select2.full.js to sele
 shuffle.js,v3.1.1,github.com/Vestride/Shuffle,4.2.0/5.4.1/6.1.0,
 Jasny Bootstrap2,2.3.1,jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,4.0.0,jasny.github.io/bootstrap,4.0.0,only using fileinput at this time
-easypost sdk,4.0.3,github.com/EasyPost/easypost-php,4.0.3/6.5.0,
+easypost sdk,4.0.3,github.com/EasyPost/easypost-php,4.0.3/6.6.0,
 jquery.cookie.js,1.4.1,github.com/carhartl/jquery-cookie,1.4.1,
 jquery.history.js,1.8b2,github.com/browserstate/history.js,1.8.0,
 Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
 dompdf,"2.0.3exp,1.2.2exp/0.7.0exp/0.6.2exp",github.com/dompdf/dompdf,2.0.3,"optional, patched to display our images and not break on bad tables and disable links"
-mPDF,8.1.4/8.0.17/7.1.9/6.1.4/5.7.4a,github.com/mpdf/mpdf,8.1.5,optional
+mPDF,8.1.4/8.0.17/7.1.9/6.1.4/5.7.4a,github.com/mpdf/mpdf,8.1.6,optional
 log,1.1.4,github.com/php-fig/log,1.1.4,"optional, required by mPDF v7+"
 DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.11.1,"optional, suggested by mPDF v7+ for TOC"
 random_compat,2.0.21,github.com/paragonie/random_compat,2.0.21,"optional, required by mPDF v7+"

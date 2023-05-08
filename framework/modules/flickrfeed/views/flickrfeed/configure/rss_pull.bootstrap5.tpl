@@ -13,6 +13,18 @@
  *
  *}
 
+{css unique="ical"}
+    {literal}
+        .color-control.control.form-group  {
+            display: inline-block;
+        }
+        .text.form-control.color {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    {/literal}
+{/css}
+
 <div id="rsspullControl" class="control">
     <div class="form_header">
     	<div class="info-header">
@@ -70,7 +82,7 @@
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "removerss btn {/literal}{$btn_size}{literal} btn-danger";
-            newRemove.innerHTML = " {/literal}<i class='{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-x-circle{else}fas fa-times-circle{/if}{literal} {$icon_size}'></i> {'Remove'|gettext}{literal}";
+            newRemove.innerHTML = " {/literal}<i class='{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-x-circle{else}fas fa-times-circle{/if} {$icon_size}'></i> {'Remove'|gettext}{literal}";
             newli.appendChild(newLabel);
             newli.appendChild(newRemove);
             var list = Y.one('#rsspull-feeds');
