@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v6.6.0 (2023-05-02)
+
+- Adds `retrieveEstimatedDeliveryDate` function to the Shipment class
+
 ## v6.5.0 (2023-04-18)
 
 - Adds beta `retrieveCarrierMetadata` function
