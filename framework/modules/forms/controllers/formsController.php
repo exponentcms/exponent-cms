@@ -1184,6 +1184,15 @@ class formsController extends expController {
             expHistory::set('editable', $this->params);
             $f = new forms($this->params['id']);
             $controls = $f->forms_control;
+            // Fix control ranks to be sequential beginning at 1
+            $rank = 1;
+            foreach ($controls as $control) {
+                if ($control->rank != $rank) {
+                    $control->rank = $rank;
+                    $control->update();
+                }
+                $rank++;
+            }
 
             $form = new fakeform();
             $form->horizontal = !empty($this->config['style']) ? $this->config['style'] : false;
@@ -1225,26 +1234,28 @@ class formsController extends expController {
     public function edit_control() {
         $f = new forms($this->params['forms_id']);
         if ($f) {
-            if (bs2()) {
-                expCSS::pushToHead(array(
-                    "corecss"=>"forms-bootstrap"
-                ));
-            } elseif (bs3()) {
-                expCSS::pushToHead(array(
-                    "corecss"=>"forms-bootstrap3"
-                ));
-            } elseif (bs4()) {
-                expCSS::pushToHead(array(
-                    "corecss"=>"forms-bootstrap4"
-                ));
-            } elseif (bs5()) {
-                expCSS::pushToHead(array(
-                    "corecss"=>"forms-bootstrap5"
-                ));
-            } else {
-                expCSS::pushToHead(array(
-                    "corecss" => "forms",
-                ));
+            if (!expJavascript::inAjaxAction()) {
+                if (bs2()) {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap"
+                    ));
+                } elseif (bs3()) {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap3"
+                    ));
+                } elseif (bs4()) {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap4"
+                    ));
+                } elseif (bs5()) {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap5"
+                    ));
+                } else {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms",
+                    ));
+                }
             }
 
             if (isset($this->params['control_type']) && $this->params['control_type'][0] === ".") {

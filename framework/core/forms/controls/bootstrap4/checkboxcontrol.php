@@ -101,9 +101,10 @@ class checkboxcontrol extends formcontrol {
                         $html .= '<div class="offset-sm-2 col-sm-10">' . "<small class=\"form-text text-muted\">" . $this->description . "</small>" . "</div>";
                 } else {
                     $labelwrap = "<label" . $for . " class=\"col-sm-2 form-check-label label\">" . $label . "</label>";
-                    $html .= $labelwrap . '<div class="col-sm-10">' . $this->controlToHTML($name, $label) . "</div>";
+                    $html .= $labelwrap . '<div class="col-sm-10">' . $this->controlToHTML($name, $label);
                     if (!empty($this->description))
                         $html .= "<small class=\"form-text text-muted\">" . $this->description . "</small>";
+                    $html .= "</div>";
                 }
             }
 
