@@ -1743,7 +1743,7 @@ class formsController extends expController {
             $fc = new forms_control();
             //$f->column_names_list is a serialized array
             //$this->config['column_names_list'] is an array
-            if ($this->config['export_all'] || $this->config['column_names_list'] == '') {
+            if (!empty($this->config['export_all']) || empty($this->config['column_names_list'])) {
                 //define some default columns...
                 $controls = $fc->find('all', "forms_id=" . $f->id . " AND is_readonly = 0 AND is_static = 0", "rank");
                 //FIXME should we default to only 5 columns or all columns? and should we pick up modules columns ($this->config) or just form defaults ($f->)
@@ -1754,6 +1754,11 @@ class formsController extends expController {
 //                    $this->config['column_names_list'] .= $control->name;
                     $this->config['column_names_list'][$control->name] = $control->name;
                 }
+                $this->config['column_names_list']['ip'] = 'ip';
+                $this->config['column_names_list']['sef_url'] = 'sef_url';
+                $this->config['column_names_list']['referrer'] = 'referrer';
+                $this->config['column_names_list']['user_id'] = 'user_id';
+                $this->config['column_names_list']['timestamp'] = 'timestamp';
             }
 
 //            $rpt_columns2 = explode("|!|", $this->config['column_names_list']);
@@ -1773,7 +1778,7 @@ class formsController extends expController {
                             $rpt_columns[$column] = gt('SEF URL');
                             break;
                         case 'referrer':
-                            $rpt_columns[$column] = gt('Event ID');
+                            $rpt_columns[$column] = gt('Referrer');
                             break;
                         case 'user_id':
                             $rpt_columns[$column] = gt('Posted by');
