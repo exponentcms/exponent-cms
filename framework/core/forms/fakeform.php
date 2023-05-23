@@ -242,9 +242,9 @@ class fakeform extends form {
     function style_form() {
         if (bs2()) {
             if (!expJavascript::inAjaxAction())
-            expCSS::pushToHead(array(
-                "corecss"=>"forms-bootstrap"
-            ));
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms-bootstrap"
+                ));
             if (BTN_SIZE === 'large') {
                 $this->btn_size = '';  // actually default size, NOT true bootstrap large
                 $icon_size = 'icon-large';
@@ -261,9 +261,9 @@ class fakeform extends form {
             $this->delete_icon_class = '<i class="icon-remove-sign '.$icon_size.'"></i>';
         } elseif (bs3()) {
             if (!expJavascript::inAjaxAction())
-            expCSS::pushToHead(array(
-                "corecss"=>"forms-bootstrap3"
-            ));
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms-bootstrap3"
+                ));
             if (BTN_SIZE === 'large') {
                 $this->btn_size = 'btn-lg';
                 $icon_size = 'fa-lg';
@@ -284,14 +284,14 @@ class fakeform extends form {
         } elseif (bs()) {
             if (bs4()) {
                 if (!expJavascript::inAjaxAction())
-                expCSS::pushToHead(array(
-                    "corecss" => "forms-bootstrap4"
-                ));
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap4"
+                    ));
             } else {
                 if (!expJavascript::inAjaxAction())
-                expCSS::pushToHead(array(
-                    "corecss" => "forms-bootstrap5"
-                ));
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap5"
+                    ));
             }
             if (BTN_SIZE === 'large') {
                 $this->btn_size = 'btn-lg';
@@ -327,9 +327,9 @@ class fakeform extends form {
             $this->edit_class = ' class="edit"';
             $this->delete_class = ' class="delete"';
             if (!expJavascript::inAjaxAction())
-            expCSS::pushToHead(array(
-                "corecss"=>"forms"
-            ));
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms"
+                ));
         }
     }
 
