@@ -29,34 +29,29 @@ if (!defined('EXPONENT')) {
  * @package    Subsystems-Forms
  * @subpackage Control
  */
-class yuicalendarcontrol extends formcontrol
-{
+class yuicalendarcontrol extends formcontrol {
 
 //    var $disable_text = "";
     var $type     = 'datetime';
     var $showdate = true;
     var $showtime = false;
 
-    static function name()
-    {
+    static function name() {
         return "Date / Time - Calendar Display";
     }
 
-    static function isSimpleControl()
-    {
+    static function isSimpleControl() {
         return true;
     }
 
-    static function getFieldDefinition()
-    {
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE => DB_DEF_TIMESTAMP
         );
     }
 
 //    function __construct($default = null, $disable_text = "", $showtime = true) {  //FIXME $disable_text & $showtime are NOT used
-    function __construct($default = null, $showdate = true, $showtime = false)
-    {
+    function __construct($default = null, $showdate = true, $showtime = false) {
 //        $this->disable_text = $disable_text;
         if (empty($default)) {
             $default = time();
@@ -77,8 +72,7 @@ class yuicalendarcontrol extends formcontrol
 //    {
 //    }
 
-    function toHTML($label, $name)
-    {
+    function toHTML($label, $name) {
         if (!$this->showdate && !$this->showtime) {
             return "";
         }
@@ -86,8 +80,7 @@ class yuicalendarcontrol extends formcontrol
         return $html;
     }
 
-    function controlToHTML($name, $label = null)
-    {
+    function controlToHTML($name, $label = null) {
         $idname = createValidId($name);
         if (empty($this->default)) {
             $this->default = time();
@@ -123,7 +116,7 @@ class yuicalendarcontrol extends formcontrol
                     format: '" .($this->showdate ? 'L' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'LT' : '') ."',
                     stepping: 15,
                     locale: '" . LOCALE . "',
-                    showTodayButton: true,
+                    showTodayButton: ".(!$this->showdate && $this->showtime ? 'false' : 'true').",,
                     inline: true,
                     sideBySide: true,
                     icons: {
@@ -151,8 +144,7 @@ class yuicalendarcontrol extends formcontrol
         return $html;
     }
 
-    static function parseData($name, $values, $for_db = false)
-    {
+    static function parseData($name, $values, $for_db = false) {
         if (!empty($values[$name]) && is_string($values[$name])) {
             return strtotime($values[$name]);
         } elseif (is_int($values[$name])) {
@@ -170,14 +162,14 @@ class yuicalendarcontrol extends formcontrol
      *
      * @return string
      */
-    static function templateFormat($db_data, $ctl)
-    {
-//        if ($ctl->showtime) {
-//            return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
-//        } else {
-//            return strftime(DISPLAY_DATE_FORMAT, $db_data);
-//        return gmstrftime(DISPLAY_DATE_FORMAT, $db_data);
-        $date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $db_data);
+    static function templateFormat($db_data, $ctl) {
+        if ($ctl->showdate && !$ctl->showtime) {
+            $date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $db_data);
+        } elseif (!$ctl->showdate && $ctl->showtime) {
+            $date = date(strftime_to_date_format(DISPLAY_TIME_FORMAT), $db_data);
+        } else {
+            $date = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $db_data);
+        }
         if (!$date) {
             $date = date('m/d/y', $db_data);
         }
@@ -185,14 +177,14 @@ class yuicalendarcontrol extends formcontrol
 //        }
     }
 
-    static function form($object)
-    {
+    static function form($object) {
         $form = new form();
         if (empty($object)) $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption    = "";
             $object->description = "";
+            $object->showdate   = true;
             $object->showtime   = true;
 //            $object->is_hidden  = false;
         }
@@ -200,6 +192,7 @@ class yuicalendarcontrol extends formcontrol
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
+        $form->register("showdate",gt('Show Date'), new checkboxcontrol($object->showdate,false));
         $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
 //        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
         if (!expJavascript::inAjaxAction())
@@ -207,8 +200,7 @@ class yuicalendarcontrol extends formcontrol
         return $form;
     }
 
-    static function update($values, $object)
-    {
+    static function update($values, $object) {
         if ($object == null) {
             $object = new yuicalendarcontrol();
             $object->default = 0;
@@ -222,6 +214,7 @@ class yuicalendarcontrol extends formcontrol
         $object->identifier = $values['identifier'];
         $object->caption    = $values['caption'];
         $object->description = $values['description'];
+        $object->showdate   = !empty($values['showdate']);
         $object->showtime   = !empty($values['showtime']);
 //        $object->is_hidden  = isset($values['is_hidden']);
         return $object;

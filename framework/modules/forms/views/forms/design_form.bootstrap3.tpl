@@ -456,6 +456,7 @@
                 // we need to remove the control from the database
                 $.ajax({
                     type: "POST",
+                    headers: { 'X-Transaction': 'Delete Form Control'},
                     url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=delete_control&ajax_action=1',
                     data: 'id=' + evt.item.id,
                     success: function(o){
