@@ -164,7 +164,7 @@ class mysqli_database extends database {
      */
     function wrapStmt($sql) {
         //fixme only needed for MySQL 8
-        return preg_replace('/\w*rank(?<!_rank)(?<!`rank)(?<!"rank)(?<!\'rank)/', '`rank`', $sql);
+        return preg_replace('/rank(?<!_rank)(?<!`rank)(?<!"rank)(?<!\'rank)(?<!\Srank)/', '`rank`', $sql);
     }
 
     /**
@@ -1051,13 +1051,14 @@ class mysqli_database extends database {
         }
         $sql = substr($sql, 0, -1) . substr($values, 0) . ")";
         //if($table=='text')eDebug($sql,true);
-        if (@mysqli_query($this->connection, $this->wrapStmt($sql)) != false) {
+        if (@mysqli_query($this->connection, $sql) != false) {
             $id = mysqli_insert_id($this->connection);
             return $id;
-        } else
-            if (DEVELOPMENT)
-               eLog($this->wrapStmt($sql) . ' - ' . mysqli_error ( $this->connection ), 'insertObject Error');
-            return 0;
+        }
+
+        if (DEVELOPMENT)
+           eLog($sql . ' - ' . mysqli_error ( $this->connection ), 'insertObject Error');
+        return 0;
     }
 
     /**
@@ -1131,16 +1132,16 @@ class mysqli_database extends database {
         }
         $sql = substr($sql, 0, -1) . " WHERE ";
         if ($where != null)
-            $sql .= $this->injectProof($where);
+            $sql .= $this->injectProof($this->wrapStmt($where));
         else
             $sql .= "`" . $identifier . "`=" . $object->$identifier;
         if (isset($object->revision_id)) {
             $sql .= ' AND revision_id=' . $object->revision_id;
         }
         //if ($table == 'text') eDebug($sql,true);
-        $res = (@mysqli_query($this->connection, $this->wrapStmt($sql)) != false);
+        $res = (@mysqli_query($this->connection, $sql)) != false;
         if (DEVELOPMENT && !$res)
-            eLog($this->wrapStmt($sql) . ' - ' . mysqli_error ( $this->connection ), 'updateObject Error');
+            eLog($sql . ' - ' . mysqli_error ( $this->connection ), 'updateObject Error');
         return $res;
     }
 
