@@ -37,7 +37,7 @@ ob_start('epb');
 // Initialize the Exponent Framework
 require_once('exponent.php');
 
-//active global timer if in DEVELOPMENT mode
+//activate global timer if in DEVELOPMENT mode
 if(DEVELOPMENT)
 	$timer = new expTimer();
 

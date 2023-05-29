@@ -81,11 +81,20 @@ class checkboxcontrol extends formcontrol {
             if (empty($label)) {
                 $for = '';
             }
-            $html = '<div id="' . $divID . '"' . (($this->horizontal) ? ' style="width:100%;"' : '') . ' class="checkbox control form-group form-check';
+            $html = '<div id="' . $divID . '"' . (($this->horizontal) ? ' style="width:100%;"' : '') . ' class="checkbox control form-group';
+            if ($this->horizontal)
+                $html .= " row";
+            else
+                $html .= " form-check";
             $html .= (!empty($this->class)) ? ' ' . $this->class : '';
             $html .= (!empty($this->required)) ? ' required">' : '">';
+            if ($this->required) {
+                $labeltag = '<span class="required" title="' . gt('This entry is required') . '">*&#160;</span>' . $label;
+            } else {
+                $labeltag = $label;
+            }
 
-            $labelwrap = "<label" . $for . " class=\"form-check-label\" style=\"display:inline;\">" . $label . "</label>";
+            $labelwrap = "<label" . $for . " class=\"form-check-label\" style=\"display:inline;\">" . $labeltag . "</label>";
             if (!$this->horizontal) {
                 if (!$this->flip) {
                     $html .= $this->controlToHTML($name, $label) . $labelwrap;
@@ -100,7 +109,7 @@ class checkboxcontrol extends formcontrol {
                     if (!empty($this->description))
                         $html .= '<div class="offset-sm-2 col-sm-10">' . "<small class=\"form-text text-muted\">" . $this->description . "</small>" . "</div>";
                 } else {
-                    $labelwrap = "<label" . $for . " class=\"col-sm-2 form-check-label label\">" . $label . "</label>";
+                    $labelwrap = "<label" . $for . " style=\"margin-right:0; padding-left:15px\" class=\"col-sm-2 form-check-label label\">" . $labeltag . "</label>";
                     $html .= $labelwrap . '<div class="col-sm-10">' . $this->controlToHTML($name, $label);
                     if (!empty($this->description))
                         $html .= "<small class=\"form-text text-muted\">" . $this->description . "</small>";

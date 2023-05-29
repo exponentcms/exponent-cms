@@ -98,14 +98,17 @@ class yuicalendarcontrol extends formcontrol {
         }
 
         $date_input = new hiddenfieldcontrol($default);
-        if ($this->horizontal)
+        $label_offset = "";
+        if ($this->horizontal) {
             $date_input->horizontal_top = true;
+            $label_offset = "col-sm-offset-2 col-sm-10 ";
+        }
 //        $date_input->id = $idname;
 //        $date_input->name = $idname;
 //        $date_input->disabled = 'disabled';
 //        $html = "<!-- cke lazy -->";
         $html = '<div class="input-group input-append" id="'.$idname.'dateRangePicker">'.$date_input->toHTML(null, $name).'</div>';
-        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"" . $label_offset . (bs3()?"help-block":"control-desc") . "\">" . $this->description . "</div>";
 //        $html .= "
 //        <div style=\"clear:both\"></div>
 //        ";
@@ -116,7 +119,7 @@ class yuicalendarcontrol extends formcontrol {
                     format: '" .($this->showdate ? 'L' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'LT' : '') ."',
                     stepping: 15,
                     locale: '" . LOCALE . "',
-                    showTodayButton: ".(!$this->showdate && $this->showtime ? 'false' : 'true').",,
+                    showTodayButton: ".(!$this->showdate && $this->showtime ? 'false' : 'true').",
                     inline: true,
                     sideBySide: true,
                     icons: {

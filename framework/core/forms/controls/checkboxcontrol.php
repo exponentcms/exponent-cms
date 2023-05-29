@@ -85,8 +85,14 @@ class checkboxcontrol extends formcontrol {
             }
             $html = '<div id="' . $divID . '" class="control checkbox';
             $html .= (!empty($this->required)) ? ' required">' : '">';
+            if ($this->required) {
+                $labeltag = '<span class="required" title="' . gt('This entry is required') . '">*&#160;</span>' . $label;
+            } else {
+                $labeltag = $label;
+            }
+
             if (!empty($this->flip)) {
-                $html .= "<label " . $for . " class=\"label\" style=\"display:inline;\">" . $label . "</label>";
+                $html .= "<label " . $for . " class=\"label\" style=\"display:inline;\">" . $labeltag . "</label>";
                 $html .= $this->controlToHTML($name);
                 $flip = '';
             } else {
@@ -99,7 +105,7 @@ class checkboxcontrol extends formcontrol {
                     if ($this->required) $html .= '<span class="required" title="' . gt(
                             'This entry is required'
                         ) . '">*&#160;</span>';
-                    $html .= $label;
+                    $html .= $labeltag;
 //                $html .= "</div>";
                     $html .= "</label>";
                 }
