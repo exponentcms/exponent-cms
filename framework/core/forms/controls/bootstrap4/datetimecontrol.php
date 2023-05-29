@@ -138,7 +138,21 @@ class datetimecontrol extends formcontrol {
                 $values[$name . '_hour'] += 12;
             }
 
-            $time += $values[$name . '_hour'] * 3600 + $values[$name . '_minute'] * 60;
+//            // Create two timezone objects
+//            $dateTimeZoneUTC = new DateTimeZone("UTC");
+//            $dateTimeZoneLocal = new DateTimeZone(date_default_timezone_get());
+//
+//            // Create two DateTime objects that will contain the same Unix timestamp, but
+//            // have different timezones attached to them.
+//            $dateTimeUTC = new DateTime("now", $dateTimeZoneUTC);
+//            $dateTimeLocal = new DateTime("now", $dateTimeZoneLocal);
+//
+//            // Calculate the GMT offset for the date/time contained in the $dateTimeTaipei
+//            // object, but using the timezone rules as defined for Tokyo
+//            // ($dateTimeZoneJapan).
+//            $timeOffset = $dateTimeZoneLocal->getOffset($dateTimeUTC);
+            $timeOffset = 0;  //fixme placeholder to replace commented code above
+            $time += ($values[$name . '_hour'] * 3600) + ($values[$name . '_minute'] * 60) - $timeOffset;
         }
 
         return $time;
@@ -160,17 +174,20 @@ class datetimecontrol extends formcontrol {
         if ($ctl->showdate && $ctl->showtime) {
 //            return gmstrftime(DISPLAY_DATETIME_FORMAT, $db_data);
             $datetime = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $db_data);
-            if (!$datetime) $datetime = date('m/d/y h:ma', $db_data);
+            if (!$datetime)
+                $datetime = date('m/d/y h:ma', $db_data);
             return $datetime;
         } elseif ($ctl->showdate) {
 //            return gmstrftime(DISPLAY_DATE_FORMAT, $db_data);
             $date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $db_data);
-            if (!$date) $date = date('m/d/y', $db_data);
+            if (!$date)
+                $date = date('m/d/y', $db_data);
             return $date;
         } elseif ($ctl->showtime) {
 //            return gmstrftime(DISPLAY_TIME_FORMAT, $db_data);
             $time = date(strftime_to_date_format(DISPLAY_TIME_FORMAT), $db_data);
-            if (!$time) $time = date('h:ma', $db_data);
+            if (!$time)
+                $time = date('h:ma', $db_data);
             return $time;
         } else {
             return "";
@@ -179,7 +196,8 @@ class datetimecontrol extends formcontrol {
 
     static function form($object) {
         $form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier  = "";
             $object->caption     = "";
@@ -187,7 +205,8 @@ class datetimecontrol extends formcontrol {
             $object->showdate    = true;
             $object->showtime    = true;
         }
-        if (empty($object->description)) $object->description = "";
+        if (empty($object->description))
+            $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
