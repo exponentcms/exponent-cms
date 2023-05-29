@@ -66,26 +66,27 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
             ");
             // clean up code for passing to javascript via json
             $content = trim(str_replace('\n', '', str_replace('\r\n', '', $content)) , '"');
-            $content = str_replace('%s', '/\r\n/g', $content);
-            $content = str_replace('%t', '/[\r\n]/g', $content);
+            $content = str_replace(array('%s', '%t'), array('/\r\n/g', '/[\r\n]/g'), $content);
         }
         if (isset($params['icon'])) {
             $icon = $params['icon'];
         } else {
             $icon = 'file';
         }
-        echo '<a class="' . expTheme::buttonStyle() . '" href="#" id="' . $params['id'] . '">' . expTheme::iconStyle($icon, $params['text']) . '</a>';
         if (isset($params['type'])) {
-            if ($params['type'] == 'warning') {
+            if ($params['type'] === 'warning') {
                 $type = 'BootstrapDialog.TYPE_WARNING';
-            } elseif ($params['type'] == 'danger') {
+            } elseif ($params['type'] === 'danger') {
                 $type = 'BootstrapDialog.TYPE_DANGER';
             } else {
                 $type = 'BootstrapDialog.TYPE_INFO';
             }
         } else {
             $type = 'BootstrapDialog.TYPE_INFO';
+            $params['type'] = '';
         }
+        echo '<a class="' . expTheme::buttonStyle($params['type']) . '" href="#" id="' . $params['id'] . '">' . expTheme::iconStyle($icon, $params['text']) . '</a>';
+
         $script = "
             $(document).ready(function(){
                 $('#".$params['id']."').click(function(event) {
