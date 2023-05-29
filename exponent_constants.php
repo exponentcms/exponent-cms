@@ -647,9 +647,6 @@ if (!defined('SWIFT_PATH')) {
  * Optional expHTMLTOPDF Version Constants
  * Changing the versions here lets Exponent adjust where to look
  */
-if (!defined('MPDF7_VERSION')) {
-    define('MPDF7_VERSION', '7.1.9');
-}
 if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.17');
 }
@@ -661,12 +658,6 @@ if (!defined('MPDF81_VERSION')) {
  */
 if (!defined('LOG_VERSION')) {
     define('LOG_VERSION', '1.1.4');
-}
-/**
- * random_compat is needed for MPDF v7+ under PHP v5.6
- */
-if (!defined('RANDOM_VERSION')) {
-    define('RANDOM_VERSION', '2.0.21');
 }
 /**
  * FPDI is needed for MPDF v8+
