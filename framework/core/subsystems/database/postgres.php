@@ -24,6 +24,9 @@
  * @subpackage Database
  */
 class postgres_database extends database {
+    //fixme Class must be declared abstract or implement methods
+    // 'unlockTables', 'sql_connect_pdo', 'selectArrays', 'escapeString', 'lockTable', 'selectArray', 'selectExpObjects', 'tableStmt', 'selectArraysBySql',
+    // 'currencyStmt', 'selectObjectBySql', 'limitStmt', 'getTextColumns', 'datetimeStmt', 'columnUpdate', 'wrapStmt'
 	var $error = "";
 	var $in_error = false;
 
