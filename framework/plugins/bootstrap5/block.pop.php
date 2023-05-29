@@ -53,7 +53,6 @@ function smarty_block_pop($params, $content, &$smarty, &$repeat)
         } else {
             $icon = 'file';
         }
-        echo '<a class="' . expTheme::buttonStyle() . '" href="#" id="' . $params['id'] . '">' . expTheme::iconStyle($icon, $params['text']) . '</a>';
         if (isset($params['type'])) {
             if ($params['type'] === 'warning') {
                 $type = 'bg-warning';
@@ -64,7 +63,10 @@ function smarty_block_pop($params, $content, &$smarty, &$repeat)
             }
         } else {
             $type = 'bg-info';
+            $params['type'] = '';
         }
+        echo '<a class="' . expTheme::buttonStyle($params['type']) . '" href="#" id="' . $params['id'] . '">' . expTheme::iconStyle($icon, $params['text']) . '</a>';
+
         if (isset($params['ajax'])) {
 //            $script = "
 //                $(document).ready(function(){
