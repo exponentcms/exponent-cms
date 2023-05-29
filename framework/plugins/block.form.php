@@ -165,7 +165,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
                                 error.insertAfter(element.parent().parent());
                             } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                                error.appendTo(element.parent().parent());
+                                error.appendTo(element.parent());
                             } else {
                                 error.insertAfter(element);
                             }
@@ -189,7 +189,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             // mark form as validated
                             $(element).closest('form').addClass('was-validated');
                             // move backward to label and set to invalid
-//                            $(element).parent().find('label').removeClass('valid-feedback').addClass('invalid-feedback');
+//                          $(element).parent().find('label').removeClass('valid-feedback').addClass('invalid-feedback');
 //	 						$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
 //	 						$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
 //							$(element).closest('.form-group').append('<i class=\"fas fa-exclamation fa-lg invalid-feedback\"></i>');
@@ -198,7 +198,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             // mark form as validated
                             $(element).closest('form').addClass('was-validated');
                             // move backward to label and set to valid
-//                            $(element).parent().find('label').removeClass('invalid-feedback').addClass('valid-feedback');
+//                          $(element).parent().find('label').removeClass('invalid-feedback').addClass('valid-feedback');
 //							$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
 //							$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
 //							$(element).closest('.form-group').append('<i class=\"fas fa-check fa-lg valid-feedback\"></i>');
@@ -211,7 +211,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
                                 error.insertAfter(element.parent().parent());
                             } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                                error.appendTo(element.parent().parent());
+                                error.appendTo(element.parent());
                             } else {
                                 error.insertAfter(element);
                             }
@@ -300,7 +300,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
                                 error.insertAfter(element.parent().parent());
                             } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                                error.appendTo(element.parent().parent());
+                                error.appendTo(element.parent());
                             } else {
                                 error.insertAfter(element);
                             }
@@ -325,7 +325,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             // mark form as validated
                             $(element).closest('form').addClass('was-validated');
                             // move backward to label and set to invalid
-//                            $(element).parent().find('label').removeClass('valid-feedback').addClass('invalid-feedback');
+//                          $(element).parent().find('label').removeClass('valid-feedback').addClass('invalid-feedback');
 //	 						$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
 //	 						$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
 //							$(element).closest('.form-group').append('<i class=\"fas fa-exclamation fa-lg invalid-feedback\"></i>');
@@ -334,7 +334,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             // mark form as validated
                             $(element).closest('form').addClass('was-validated');
                             // move backward to label and set to valid
-//                            $(element).parent().find('label').removeClass('invalid-feedback').addClass('valid-feedback');
+//                          $(element).parent().find('label').removeClass('invalid-feedback').addClass('valid-feedback');
 //							$(element).closest('.form-group').find('i.fa.invalid-feedback').remove();
 //							$(element).closest('.form-group').find('i.fa.valid-feedback').remove();
 //							$(element).closest('.form-group').append('<i class=\"fas fa-check fa-lg valid-feedback\"></i>');
@@ -347,7 +347,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                             } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
                                 error.insertAfter(element.parent().parent());
                             } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                                error.appendTo(element.parent().parent());
+                                error.appendTo(element.parent());
                             } else {
                                 error.insertAfter(element);
                             }

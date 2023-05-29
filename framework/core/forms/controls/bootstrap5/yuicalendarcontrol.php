@@ -97,15 +97,18 @@ class yuicalendarcontrol extends formcontrol {
         }
 
         $date_input = new hiddenfieldcontrol($default);
-        if ($this->horizontal)
+        $label_offset = "";
+        if ($this->horizontal) {
             $date_input->horizontal_top = true;
+            $label_offset = "offset-sm-2 col-sm-10 ";
+        }
 //        $date_input->id = $idname;
 //        $date_input->name = $idname;
 //        $date_input->disabled = 'disabled';
 //        $html = "<!-- cke lazy -->";
         $html = '<div class="input-group input-append col-sm-10" id="'.$idname.'dateRangePicker" data-td-target-input="nearest" style="width:inherit;">'.$date_input->toHTML(null, $name).'</div>';
         if (!empty($this->description))
-            $html .= "<div id=\"" . $name . "HelpBlock\" class=\"form-text text-muted\">".$this->description."</div>";
+            $html .= "<div id=\"" . $name . "HelpBlock\" class=\"" . $label_offset . "form-text text-muted\">".$this->description."</div>";
 //        $html .= "
 //        <div style=\"clear:both\"></div>
 //        ";
@@ -121,7 +124,7 @@ class yuicalendarcontrol extends formcontrol {
                     stepping: 15,
                     display: {
                         buttons: {
-                            today: ".(!$this->showdate && $this->showtime ? 'false' : 'true').",,
+                            today: ".(!$this->showdate && $this->showtime ? 'false' : 'true').",
         //                    clear: false,
         //                    close: false
                         },
