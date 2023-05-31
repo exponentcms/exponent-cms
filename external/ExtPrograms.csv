@@ -102,7 +102,7 @@ jquery.history.js,1.8b2,github.com/browserstate/history.js,1.8.0,
 Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
-dompdf,"2.0.3exp,1.2.2exp/0.7.0exp/0.6.2exp",github.com/dompdf/dompdf,2.0.3,"optional, patched to display our images and not break on bad tables and disable links"
+dompdf,2.0.3exp/1.2.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,2.0.3,"optional, patched to display our images and not break on bad tables and disable links"
 mPDF,8.1.4/8.0.17/7.1.9/6.1.4/5.7.4a,github.com/mpdf/mpdf,8.1.6,optional
 log,1.1.4,github.com/php-fig/log,1.1.4,"optional, required by mPDF v7+"
 DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.11.1,"optional, suggested by mPDF v7+ for TOC"
