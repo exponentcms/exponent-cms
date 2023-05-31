@@ -84,6 +84,12 @@
                 newslist_{/literal}{$name}{literal}.find('link').each(function(k, n){
                     $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
                 });
+                if (document.getElementsByClassName('fb-like').length) {
+                    FB.XFBML.parse();
+                }
+                if (document.getElementsByClassName('twitter-share-button').length) {
+                    twttr.widgets.load();
+                }
             } else {
                 $('#{/literal}{$name}{literal}item.loadingdiv').remove();
                 newslist_{/literal}{$name}{literal}.html('Unable to load content');
