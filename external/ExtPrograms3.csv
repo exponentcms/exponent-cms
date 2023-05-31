@@ -28,7 +28,7 @@ less.php,4.1.0exp,github.com/wikimedia/less.php,4.1.0,
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap3,3.4.1,twitter.github.com/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
 Twitter-Bootstrap4,4.6.2,twitter.github.com/bootstrap,4.6.2,"patched bootstrap.scss includes swatches & exp variables, remove @page"
-Twitter-Bootstrap5,5.2.3,twitter.github.com/bootstrap,5.2.3,patched bootstrap.scss includes swatches & exp variables
+Twitter-Bootstrap5,5.2.3,twitter.github.com/bootstrap,5.3.0,patched bootstrap.scss includes swatches & exp variables
 popper.js/floating-ui,1.16.1,github.com/FezVrasta/popper.js,1.16.1/2.11.7,needed by BS4/BS5 (umd)
 Bootswatch2,2.3.2,bootswatch.com,2.3.2,
 Bootswatch3,3.4.1+1,bootswatch.com,3.4.1+1,change 1st line variables.less comment to output to .css file
