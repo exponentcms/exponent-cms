@@ -424,6 +424,7 @@ class section extends expRecord {
                 $obj->text = $sections[$i]->name;
                 $obj->title = $sections[$i]->page_title;
                 $obj->description = $sections[$i]->description;
+//                $obj->depth = 0;
                 $obj->new_window = $sections[$i]->new_window;
                 $obj->expFile = $sections[$i]->expFile;
                 $obj->glyph = $sections[$i]->glyph;
