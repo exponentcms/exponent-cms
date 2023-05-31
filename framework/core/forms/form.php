@@ -488,7 +488,7 @@ class form extends baseform {
                             $(element).closest('.form-group').append('<i class=\"fa fa-check fa-lg form-control-feedback\"></i>');
                         },
                         errorElement: 'span',
-                        errorClass: 'help-block',
+                        errorClass: 'help-block invalid-feedback',
                         errorPlacement: function(error, element) {
                             if (element.parent('.input-group').length) {
                                 error.insertAfter(element.parent());
@@ -626,7 +626,7 @@ class form extends baseform {
                             $(element).closest('.form-group').append('<i class=\"fa fa-check fa-lg form-control-feedback\"></i>');
                         },
                         errorElement: 'span',
-                        errorClass: 'help-block',
+                        errorClass: 'help-block invalid-feedback',
                         errorPlacement: function(error, element) {
                             if (element.parent('.input-group').length) {
                                 error.insertAfter(element.parent());
