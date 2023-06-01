@@ -77,6 +77,11 @@ class formsController extends expController {
         return true;
     }
 
+    /**
+     * Display Report
+     *
+     * @return void
+     */
     public function showall() {
         global $db;
 
@@ -102,9 +107,7 @@ class formsController extends expController {
             }
 
             if (!empty($f)) {
-                if (empty($this->config['report_filter']) && empty($this->params['filter'])) {  // allow for param of 'filter' also
-                    $where = '1';
-                } elseif (!empty($this->params['filter'])) {
+                if (!empty($this->params['filter'])) {
                     if (is_numeric($this->params['filter'])) {
                         $where = expString::escape($this->params['filter']);
                     } elseif ($this->params['filter'] === $all_text) {
@@ -112,11 +115,13 @@ class formsController extends expController {
                     } else {
                         $where = $this->config['order'] . "='" . expString::escape($this->params['filter']) . "'";
                     }
-                    if (!empty($this->config['report_filter'])) {
-                        $where = $this->config['report_filter'] . ' AND ' . $where;
-                    }
-                } else {
+//                    if (!empty($this->config['report_filter'])) {
+//                        $where = $this->config['report_filter'] . ' AND ' . $where;
+//                    }
+                } elseif (!empty($this->config['report_filter'])) {
                     $where = $this->config['report_filter'];
+                } else {
+                    $where = '1';
                 }
                 $fc = new forms_control();
                 // account for portfolio view & column list
@@ -291,6 +296,11 @@ class formsController extends expController {
 
     }
 
+    /**
+     * Display Record
+     *
+     * @return void
+     */
     public function show() {
         expHistory::set('viewable', $this->params);
         $f = null;
@@ -397,6 +407,11 @@ class formsController extends expController {
         $this->enterdata();
     }
 
+    /**
+     * Display Form
+     *
+     * @return void
+     */
     public function enterdata() {
         if (empty($this->config['restrict_enter']) || expPermissions::check('enter_data', $this->loc)) {
 
@@ -492,7 +507,7 @@ class formsController extends expController {
                 // if we are editing an existing record or doing quick submission we'll need to do recaptcha here since we won't call confirm_data
                 if (!empty($this->params['id']) || !empty($this->config['quick_submit'])) {
                     $antispam = '';
-                    if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL === 'recaptcha') {
+                    if (SITE_USE_ANTI_SPAM && (ANTI_SPAM_CONTROL === 'recaptcha' || ANTI_SPAM_CONTROL === 'recaptcha_v2')) {
                         // make sure we have the proper config.
                         if (!defined('RECAPTCHA_PUB_KEY')) {
                             $antispam .= '<h2 style="color:red">' . gt('reCaptcha configuration is missing the public key.') . '</h2>';
@@ -502,26 +517,51 @@ class formsController extends expController {
                             $re_theme = (RECAPTCHA_THEME === 'dark') ? 'dark' : 'light';
                             // show the form control
                             $antispam .= '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
-                            //create unique recaptcha blocks
-                            $randomNumber = mt_rand(10000000, 99999999);
-                            $antispam .= '<div class="g-recaptcha" id="recaptcha-block-' . $randomNumber . '" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
-//                            $antispam .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=' . LOCALE . '" async defer></script>';
-                            $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
-                            $content = "
-                            var captcha;
-                            var myCallBack = function() {
-                                var recaptchas = document.querySelectorAll('div[id^=recaptcha-block-]');
-                                for (i = 0; i < recaptchas.length; i++) {
-                                    captcha = grecaptcha.render(recaptchas[i].id, {
-                                      'sitekey' : '" . RECAPTCHA_PUB_KEY . "',
-                                      'theme'   : '" . $re_theme . "'
+                            if (ANTI_SPAM_CONTROL === 'recaptcha') { // reCaptcha v2 Checkbox
+                                //create unique recaptcha blocks
+                                $randomNumber = mt_rand(10000000, 99999999);
+                                $antispam .= '<div class="g-recaptcha" id="recaptcha-block-' . $randomNumber . '" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
+                                $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
+                                $content = "
+                                var captcha;
+                                var grecaptcha_onload = function() {
+                                    var recaptchas = document.querySelectorAll('div[id^=recaptcha-block-]');
+                                    for (i = 0; i < recaptchas.length; i++) {
+                                        captcha = grecaptcha.render(recaptchas[i].id, {
+                                          'sitekey' : '" . RECAPTCHA_PUB_KEY . "',
+                                          'theme'   : '" . $re_theme . "'
+                                        });
+                                    }
+                                };";
+                            } else {  // reCaptcha v2 Invisible
+                                // need an input field to return token
+                                $antispam .= '<div class="g-recaptcha" name="g-recaptcha-response"></div>';
+                                // we do explicit loading to allow for multiple recaptcha widgets on a page
+                                $content = "
+                                var grecaptcha_onload = function() {
+                                    [].forEach.call(document.querySelectorAll('.g-recaptcha'), function(el){
+                                        $(el).parents('form').find(':submit').attr('disabled', true);
+                                        var renderCaptcha = grecaptcha.render(el, {
+                                            sitekey: '" . RECAPTCHA_PUB_KEY . "',
+                                            callback: function(token) {
+                                                el.parentNode.querySelector('.g-recaptcha').value = token;
+                                                console.log('success! ' + token);
+                                                $(el).parents('form').find(':submit').removeAttr('disabled');
+                                            },
+                                            size: 'invisible',
+//                                            badge: 'inline'
+                                        }, true);
+                                        grecaptcha.execute(renderCaptcha);
+                                        $(el).parents('form').on('submit',function(e) {
+                                            grecaptcha.execute(renderCaptcha);
+                                        });
                                     });
-                                }
-                            };";
+                                }";
+                            }
                             expJavascript::pushToFoot(array(
                                 "unique" => 'recaptcha',
                                 "content" => $content,
-                                "src" => "https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=" . LOCALE
+                                "src" => "https://www.google.com/recaptcha/api.js?onload=grecaptcha_onload&render=explicit&hl=" . LOCALE
                             ));
                             $form->register(uniqid(''), '', new htmlcontrol($antispam));
                         }
@@ -926,16 +966,20 @@ class formsController extends expController {
 
             //If is a new post show response, otherwise redirect to the flow.
             if (!isset($this->params['data_id'])) {
-                if (empty($this->config['response'])) $this->config['response'] = gt('Thanks for your submission');
-                assign_to_template(array(
-                    "backlink"=>expHistory::getLastNotEditable(),
-                    "response_html"=>$this->config['response'],
-                ));
+//                if (empty($this->config['response'])) $this->config['response'] = gt('Thanks for your submission');
+//                assign_to_template(array(
+//                    "backlink"=>expHistory::getLastNotEditable(),
+//                    "response_html"=>$this->config['response'],
+//                ));
+                $response = !empty($this->config['response']) ? $this->config['response'] : gt('Thanks for your submission');
             } else {
-                flash('message', gt('Record was updated!'));
-                expHistory::back();
+//                flash('message', gt('Record was updated!'));
+//                expHistory::back();
 //                expHistory::returnTo('editable');
+                $response =  gt('Record was updated!');
             }
+            flash('message', $response);
+            expHistory::back();
         }
     }
 
@@ -1071,7 +1115,9 @@ class formsController extends expController {
             }
             $fieldlist .= '["{\$fields[\'' . $name . '\']}","' . $caption . '","' . gt('Insert') . ' ' . $caption . ' ' . gt('Field') . '"],';
         }
-        // add link field
+        // add report title
+        $fieldlist .= '["{$title}","' . gt('Report Title') . '","' . gt('Insert') . ' ' . gt('Report Title') . '"],';
+        // add link to record
         $fieldlist .= '["{\$fields[\'' . 'link' . '\']}","' . gt('Link to Record') . '","' . gt('Insert') . ' ' . gt('Link to Record') . ' ' . gt('Field') . '"],';
         $fieldlist .= ']';
 
@@ -1138,6 +1184,15 @@ class formsController extends expController {
             expHistory::set('editable', $this->params);
             $f = new forms($this->params['id']);
             $controls = $f->forms_control;
+            // Fix control ranks to be sequential beginning at 1
+            $rank = 1;
+            foreach ($controls as $control) {
+                if ($control->rank != $rank) {
+                    $control->rank = $rank;
+                    $control->update();
+                }
+                $rank++;
+            }
 
             $form = new fakeform();
             $form->horizontal = !empty($this->config['style']) ? $this->config['style'] : false;
@@ -1179,26 +1234,28 @@ class formsController extends expController {
     public function edit_control() {
         $f = new forms($this->params['forms_id']);
         if ($f) {
-            if (bs2()) {
-                expCSS::pushToHead(array(
-                    "corecss"=>"forms-bootstrap"
-                ));
-            } elseif (bs3()) {
-                expCSS::pushToHead(array(
-                    "corecss"=>"forms-bootstrap3"
-                ));
-            } elseif (bs4()) {
-                expCSS::pushToHead(array(
-                    "corecss"=>"forms-bootstrap4"
-                ));
-            } elseif (bs5()) {
-                expCSS::pushToHead(array(
-                    "corecss"=>"forms-bootstrap5"
-                ));
-            } else {
-                expCSS::pushToHead(array(
-                    "corecss" => "forms",
-                ));
+            if (!expJavascript::inAjaxAction()) {
+                if (bs2()) {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap"
+                    ));
+                } elseif (bs3()) {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap3"
+                    ));
+                } elseif (bs4()) {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap4"
+                    ));
+                } elseif (bs5()) {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms-bootstrap5"
+                    ));
+                } else {
+                    expCSS::pushToHead(array(
+                        "corecss" => "forms",
+                    ));
+                }
             }
 
             if (isset($this->params['control_type']) && $this->params['control_type'][0] === ".") {
@@ -1305,6 +1362,7 @@ class formsController extends expController {
             } else {
                 $ctl1 = call_user_func(array($this->params['control_type'], 'update'), $this->params, $ctl1);
             }
+            $ctl1->type = str_replace('control', '', $this->params['control_type'], );  // update the control type
             if (!empty($this->params['rank']))
                 $ctl1->rank = $this->params['rank'];
 
@@ -1448,8 +1506,10 @@ class formsController extends expController {
                 }
                 $fieldlist .= '["{\$fields[\'' . $name . '\']}","' . $caption . '","' . gt('Insert') . ' ' . $caption . ' ' . gt('Field') . '"],';
             }
-            // add link field
-            $fieldlist .= '["{\$fields[\'' . 'link' . '\']}","' . gt('Link to Record') . '","' . gt('Insert') . ' ' . gt('Link to Record') . ' ' . gt('Field') . '"],';
+            // add report title
+            $fieldlist .= '["{$title}","' . gt('Report Title') . '","' . gt('Insert') . ' ' . gt('Report Title') . '"],';
+            // add record link
+            $fieldlist .= '["{\$fields[\'' . 'link' . '\']}","' . gt('Link to Record') . '","' . gt('Insert') . ' ' . gt('Link to Record') . '"],';
         }
         $fieldlist .= ']';
 
@@ -1683,7 +1743,7 @@ class formsController extends expController {
             $fc = new forms_control();
             //$f->column_names_list is a serialized array
             //$this->config['column_names_list'] is an array
-            if ($this->config['export_all'] || $this->config['column_names_list'] == '') {
+            if (!empty($this->config['export_all']) || empty($this->config['column_names_list'])) {
                 //define some default columns...
                 $controls = $fc->find('all', "forms_id=" . $f->id . " AND is_readonly = 0 AND is_static = 0", "rank");
                 //FIXME should we default to only 5 columns or all columns? and should we pick up modules columns ($this->config) or just form defaults ($f->)
@@ -1694,6 +1754,11 @@ class formsController extends expController {
 //                    $this->config['column_names_list'] .= $control->name;
                     $this->config['column_names_list'][$control->name] = $control->name;
                 }
+                $this->config['column_names_list']['ip'] = 'ip';
+                $this->config['column_names_list']['sef_url'] = 'sef_url';
+                $this->config['column_names_list']['referrer'] = 'referrer';
+                $this->config['column_names_list']['user_id'] = 'user_id';
+                $this->config['column_names_list']['timestamp'] = 'timestamp';
             }
 
 //            $rpt_columns2 = explode("|!|", $this->config['column_names_list']);
@@ -1713,7 +1778,7 @@ class formsController extends expController {
                             $rpt_columns[$column] = gt('SEF URL');
                             break;
                         case 'referrer':
-                            $rpt_columns[$column] = gt('Event ID');
+                            $rpt_columns[$column] = gt('Referrer');
                             break;
                         case 'user_id':
                             $rpt_columns[$column] = gt('Posted by');

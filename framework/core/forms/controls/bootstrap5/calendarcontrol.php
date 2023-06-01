@@ -106,7 +106,7 @@ class calendarcontrol extends formcontrol
             $this->default_ampm = date('A', $this->default);
         }
         $this->default = strtotime($this->default_date . ' ' . $this->default_hour . ':' . $this->default_min . ' ' . $this->default_ampm);
-        $default = date('n/j/Y g:i a', $this->default);
+        $default = date('m/d/Y h:i a', $this->default);
 
         $idname = createValidId($name);
 //        $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/assets/';
@@ -137,7 +137,7 @@ class calendarcontrol extends formcontrol
 
         $script = "
             $(document).ready(function() {
-                tempusDominus.extend(window.tempusDominus.plugins.customDateFormat);
+//                tempusDominus.extend(window.tempusDominus.plugins.customDateFormat);
                 var tclock = new tempusDominus.TempusDominus(document.getElementById('" . $idname . "'),{
                     localization: {
                         format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
@@ -194,7 +194,7 @@ class calendarcontrol extends formcontrol
                 "jquery"    => "tempus-dominus",
                 "src"      => array(
                     "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js",
-                    JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js"
+//                    JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js"
                 ),
                 "bootstrap" => "collapse",
                 "content" => $script,

@@ -96,7 +96,7 @@ class filemanagercontrol extends formcontrol {
         }
         $js = "
             EXPONENT.YUI3_CONFIG.modules.SimpleAjaxUploader = {
-                fullpath: EXPONENT.URL_FULL+'external/yui/SimpleAjaxUploader-yui.js'
+                fullpath: EXPONENT.PATH_RELATIVE+'external/yui/SimpleAjaxUploader-yui.js'
             };
 
             YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {

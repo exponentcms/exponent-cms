@@ -354,7 +354,7 @@ class orderController extends expController {
             foreach ($addresses as $address) {
                 $mail = new expMail();
                 $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
-                if (empty($from[0])) $from = SMTP_FROMADDRESS;
+                if (empty($from[0])) $from = array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME));
                 $mail->quickSend(array(
                     'html_message'=> $html,
 //                    'text_message'=> $txt,
@@ -374,7 +374,7 @@ class orderController extends expController {
 
             $mail = new expMail();
             $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
-            if (empty($from[0])) $from = SMTP_FROMADDRESS;
+            if (empty($from[0])) $from = array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME));
             $mail->quickSend(array(
                 'html_message'=> $usermsg,
 //                'text_message'=> $txt,
@@ -779,7 +779,7 @@ exit();
 
                     $mail = new expMail();
                     $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
-                    if (empty($from[0])) $from = SMTP_FROMADDRESS;
+                    if (empty($from[0])) $from = array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME));
                     $mail->quickSend(array(
                         'html_message'=> $html,
 //                        'text_message'=> str_replace("<br>", "\r\n", $template->render()),
@@ -847,7 +847,7 @@ exit();
             } else {
                 $from = ecomconfig::getConfig('from_address');
             }
-            if (empty($from[0])) $from = SMTP_FROMADDRESS;
+            if (empty($from[0])) $from = array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME));
 
             if (isset($this->params['email_subject'])) {
                 $email_subject = $this->params['email_subject'];

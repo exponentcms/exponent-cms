@@ -97,9 +97,9 @@ label.form-check-inline {
 	//margin-top: 0;
 }
 
-.radio, .checkbox {
-	padding-left: 0px;
-}
+//.radio, .checkbox {
+//	padding-left: 0px;
+//}
 
 input.radio, input.checkbox {
 	float: none;
@@ -217,6 +217,7 @@ a.fa-sort,
 
 .alt-control {
 	margin-bottom: 10px;
+    margin-left: 15px;
 }
 
 .alt-control .control {
@@ -273,11 +274,21 @@ input.tagit-hidden-field {
 	display: block;
 }
 
-.datetime-control .bootstrap-datetimepicker-widget {
+.datetime-control .bootstrap-datetimepicker-widget,
+.yuicalendar-control .bootstrap-datetimepicker-widget,
+.formmoduleedit .bootstrap-datetimepicker-widget {
 	border: #ccc solid 1px;
 	.border-radius(4px)
 }
 
 .buttongroup.control.form-group {
     margin-top: 20px;
+}
+
+.grecaptcha-badge {
+    z-index: 60;
+}
+
+.group-controls {
+    margin: 0 12px 5px;
 }

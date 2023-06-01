@@ -29,34 +29,29 @@ if (!defined('EXPONENT')) {
  * @package    Subsystems-Forms
  * @subpackage Control
  */
-class yuicalendarcontrol extends formcontrol
-{
+class yuicalendarcontrol extends formcontrol {
 
 //    var $disable_text = "";
     var $type     = 'datetime';
     var $showdate = true;
     var $showtime = false;
 
-    static function name()
-    {
+    static function name() {
         return "Date / Time - Calendar Display";
     }
 
-    static function isSimpleControl()
-    {
+    static function isSimpleControl() {
         return true;
     }
 
-    static function getFieldDefinition()
-    {
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE => DB_DEF_TIMESTAMP
         );
     }
 
 //    function __construct($default = null, $disable_text = "", $showtime = true) {  //FIXME $disable_text & $showtime are NOT used
-    function __construct($default = null, $showdate = true, $showtime = false)
-    {
+    function __construct($default = null, $showdate = true, $showtime = false) {
 //        $this->disable_text = $disable_text;
         if (empty($default)) {
             $default = time();
@@ -77,49 +72,50 @@ class yuicalendarcontrol extends formcontrol
 //    {
 //    }
 
-    function toHTML($label, $name)
-    {
+    function toHTML($label, $name) {
         if (!$this->showdate && !$this->showtime) {
             return "";
         }
         return parent::toHTML($label, $name);
     }
 
-    function controlToHTML($name, $label = null)
-    {
+    function controlToHTML($name, $label = null) {
         $idname = createValidId($name);
         if (empty($this->default)) {
             $this->default = time();
         }
         if (is_numeric($this->default)) {
             if ($this->showdate && !$this->showtime) {
-                $default = date('m/j/Y', $this->default);
+                $default = date('m/d/Y', $this->default);
             } elseif (!$this->showdate && $this->showtime) {
                 $default = date('h:i A', $this->default);
             } else {
-                $default = date('m/j/Y h:i A', $this->default);
+                $default = date('m/d/Y h:i A', $this->default);
             }
         } else {
             $default = $this->default;
         }
 
         $date_input = new hiddenfieldcontrol($default);
-        if ($this->horizontal)
+        $label_offset = "";
+        if ($this->horizontal) {
             $date_input->horizontal_top = true;
+            $label_offset = "offset-sm-2 col-sm-10 ";
+        }
 //        $date_input->id = $idname;
 //        $date_input->name = $idname;
 //        $date_input->disabled = 'disabled';
 //        $html = "<!-- cke lazy -->";
         $html = '<div class="input-group input-append col-sm-10" id="'.$idname.'dateRangePicker" data-td-target-input="nearest" style="width:inherit;">'.$date_input->toHTML(null, $name).'</div>';
         if (!empty($this->description))
-            $html .= "<div id=\"" . $name . "HelpBlock\" class=\"form-text text-muted\">".$this->description."</div>";
+            $html .= "<div id=\"" . $name . "HelpBlock\" class=\"" . $label_offset . "form-text text-muted\">".$this->description."</div>";
 //        $html .= "
 //        <div style=\"clear:both\"></div>
 //        ";
 
         $script = "
             $(document).ready(function() {
-                tempusDominus.extend(window.tempusDominus.plugins.customDateFormat);
+//                tempusDominus.extend(window.tempusDominus.plugins.customDateFormat);
                 var tclock = new tempusDominus.TempusDominus(document.getElementById('" . $idname . "dateRangePicker'),{
                     localization: {
                         locale: '" . str_replace("_", "-", LOCALE) . "',
@@ -128,7 +124,7 @@ class yuicalendarcontrol extends formcontrol
                     stepping: 15,
                     display: {
                         buttons: {
-                            today: true,
+                            today: ".(!$this->showdate && $this->showtime ? 'false' : 'true').",
         //                    clear: false,
         //                    close: false
                         },
@@ -176,15 +172,14 @@ class yuicalendarcontrol extends formcontrol
                 "unique"    => '00yuical-' . $idname,
                 "jquery"    => "tempus-dominus",
                 "bootstrap" => "collapse",
-                "src"       => JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js",
+//                "src"       => JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js",
                 "content"   => $script,
             )
         );
         return $html;
     }
 
-    static function parseData($name, $values, $for_db = false)
-    {
+    static function parseData($name, $values, $for_db = false) {
         if (!empty($values[$name]) && is_string($values[$name])) {
             return strtotime($values[$name]);
         } elseif (is_int($values[$name])) {
@@ -202,14 +197,15 @@ class yuicalendarcontrol extends formcontrol
      *
      * @return string
      */
-    static function templateFormat($db_data, $ctl)
-    {
-//        if ($ctl->showtime) {
-//            return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
-//        } else {
-//            return strftime(DISPLAY_DATE_FORMAT, $db_data);
-//        return gmstrftime(DISPLAY_DATE_FORMAT, $db_data);
-        $date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $db_data);
+    static function templateFormat($db_data, $ctl) {
+        if ($ctl->showdate && !$ctl->showtime) {
+            $date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $db_data);
+        } elseif (!$ctl->showdate && $ctl->showtime) {
+            $date = date(strftime_to_date_format(DISPLAY_TIME_FORMAT), $db_data);
+        } else {
+            $date = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $db_data);
+        }
+
         if (!$date) {
             $date = date('m/d/y', $db_data);
         }
@@ -217,14 +213,14 @@ class yuicalendarcontrol extends formcontrol
 //        }
     }
 
-    static function form($object)
-    {
+    static function form($object) {
         $form = new form();
         if (empty($object)) $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption    = "";
             $object->description = "";
+            $object->showdate   = true;
             $object->showtime   = true;
 //            $object->is_hidden  = false;
         }
@@ -232,6 +228,7 @@ class yuicalendarcontrol extends formcontrol
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
+        $form->register("showdate",gt('Show Date'), new checkboxcontrol($object->showdate,false));
         $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
 //        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
         if (!expJavascript::inAjaxAction())
@@ -239,8 +236,7 @@ class yuicalendarcontrol extends formcontrol
         return $form;
     }
 
-    static function update($values, $object)
-    {
+    static function update($values, $object) {
         if ($object == null) {
             $object = new yuicalendarcontrol();
             $object->default = 0;
@@ -254,6 +250,7 @@ class yuicalendarcontrol extends formcontrol
         $object->identifier = $values['identifier'];
         $object->caption    = $values['caption'];
         $object->description = $values['description'];
+        $object->showdate   = !empty($values['showdate']);
         $object->showtime   = !empty($values['showtime']);
 //        $object->is_hidden  = isset($values['is_hidden']);
         return $object;

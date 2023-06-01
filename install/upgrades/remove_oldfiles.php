@@ -37,7 +37,7 @@ class remove_oldfiles extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Several system files have been moved or are no longer needed.  This Script removes those leftover files from previous versions."; }
+	function description() { return "This Script removes those leftover files from previous versions."; }
 
     /**
    	 * This routine should perform additional test(s) to see if upgrade script should be run (files/tables exist, etc...)
@@ -178,6 +178,7 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/js/jquery-3.5.1.min.js',
             'external/jquery/js/jquery-3.6.0.min.js',
             'external/jquery/js/jquery-3.6.1.min.js',
+            'external/jquery/js/jquery-3.6.3.min.js',
             'external/jquery/js/jquery-migrate-1.1.0.js',
             'external/jquery/js/jquery-migrate-1.1.0.min.js',
             'external/jquery/js/jquery-migrate-1.1.1.js',
@@ -190,6 +191,7 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/js/jquery-migrate-3.3.0.min.js',
             'external/jquery/js/jquery-migrate-3.3.1.min.js',
             'external/jquery/js/jquery-migrate-3.3.2.min.js',
+            'external/jquery/js/jquery-migrate-3.4.0.min.js',
             'external/jquery/js/jquery-ui-1.9.1.custom.js',
             'external/jquery/js/jquery-ui-1.9.1.custom.min.js',
             'external/jquery/js/jquery-ui-1.10.0.custom.js',
@@ -758,6 +760,7 @@ class remove_oldfiles extends upgradescript {
             'external/smarty-4.0.4/',
             'external/smarty-4.2.0/',
             'external/smarty-4.2.1/',
+            'external/smarty-4.3.0/',
             'external/swfobject/',
             'external/Swift/',
             'external/Swift-4/',

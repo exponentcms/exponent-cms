@@ -91,6 +91,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             newslist.all('link').each(function(n){
                 Y.Get.css(n.get('href'));
             });
+            if (document.getElementsByClassName('fb-like').length) {
+                FB.XFBML.parse();
+            }
+            if (document.getElementsByClassName('twitter-share-button').length) {
+                twttr.widgets.load();
+            }
         } else {
             newslist.one('.loadingdiv').remove();
         }

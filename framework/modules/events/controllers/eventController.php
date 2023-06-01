@@ -893,7 +893,7 @@ class eventController extends expController {
                 $success += $mail->quickSend(array(
                     "text_message" => $msgtemplate->render(),
                     'to'           => $email_addrs,
-                    'from'         => !empty($this->params['email']) ? $this->params['email'] : trim(SMTP_FROMADDRESS),
+                    'from'         => !empty($this->params['email']) ? $this->params['email'] : array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
                     'subject'      => $this->params['subject'],
                 ));
             }

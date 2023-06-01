@@ -63,6 +63,12 @@
                 newsitem_{/literal}{$name}{literal}.find('link').each(function(k, n){
                     $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
                 });
+                if (document.getElementsByClassName('fb-like').length) {
+                    FB.XFBML.parse();
+                }
+                if (document.getElementsByClassName('twitter-share-button').length) {
+                    twttr.widgets.load();
+                }
                 $title = newsitem_{/literal}{$name}{literal}.find('div.item .heading');
                 document.title = $title[0].outerText.trim();
             } else {

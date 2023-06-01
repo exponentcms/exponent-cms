@@ -392,44 +392,76 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "antispam":
                 //eDebug(ANTI_SPAM_CONTROL, true);
-                if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL === 'recaptcha') {
-                    // make sure we have the proper config.
-                    if (!defined('RECAPTCHA_PUB_KEY') || RECAPTCHA_PUB_KEY == '') {
-                        echo '<h2 style="color:red">', gt('reCaptcha configuration is missing the public key.'), '</h2>';
-                        return;
-                    }
-                    if (!($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1)) {
-                        // skip it for logged on users based on config
-                        $re_theme = (RECAPTCHA_THEME === 'dark') ? 'dark' : 'light';
-                        // show the form control
-                        echo '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
-                        //create unique recaptcha blocks
-                        $randomNumber = mt_rand(10000000, 99999999);
-                        echo '<div class="g-recaptcha" id="recaptcha-block-' . $randomNumber . '" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
-//                        echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=' . LOCALE . '" async defer></script>';
-                        echo '<p>', gt('Fill out the above security question to submit your form.'), '</p>';
-                        $content = "
-                            var captcha;
-                            var myCallBack = function() {
-                                var recaptchas = document.querySelectorAll('div[id^=recaptcha-block-]');
-                                for (i = 0; i < recaptchas.length; i++) {
-                                    captcha = grecaptcha.render(recaptchas[i].id, {
-                                      'sitekey' : '" . RECAPTCHA_PUB_KEY . "',
-                                      'theme'   : '" . $re_theme . "'
+                if (SITE_USE_ANTI_SPAM) {
+                    if (ANTI_SPAM_CONTROL === 'recaptcha' || ANTI_SPAM_CONTROL === 'recaptcha_v2') {
+                        // make sure we have the proper config.
+                        if (!defined('RECAPTCHA_PUB_KEY') || RECAPTCHA_PUB_KEY == '') {
+                            echo '<h2 style="color:red">', gt('reCaptcha configuration is missing the public key.'), '</h2>';
+                            return;
+                        }
+                        if (!($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1)) {
+                            // skip it for logged on users based on config
+                            $re_theme = (RECAPTCHA_THEME === 'dark') ? 'dark' : 'light';
+                            // show the form control
+                            echo '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
+                            if (ANTI_SPAM_CONTROL === 'recaptcha') { // reCaptcha v2 Checkbox
+                                //create unique recaptcha checkbox blocks
+                                $randomNumber = mt_rand(10000000, 99999999);
+                                echo '<div class="g-recaptcha" id="recaptcha-block-' . $randomNumber . '" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
+                                echo '<p>', gt('Fill out the above security question to submit your form.'), '</p>';
+                                // we do explicit loading to allow for multiple recaptcha widgets on a page
+                                $content = "
+                                var captcha;
+                                var grecaptcha_onload = function() {
+                                    var recaptchas = document.querySelectorAll('div[id^=recaptcha-block-]');
+                                    for (i = 0; i < recaptchas.length; i++) {
+                                        captcha = grecaptcha.render(recaptchas[i].id, {
+                                          'sitekey' : '" . RECAPTCHA_PUB_KEY . "',
+                                          'theme'   : '" . $re_theme . "'
+                                        });
+                                    }
+                                };";
+                            } else {  // reCaptcha v2 Invisible
+                                // need an input field to return token
+                                echo '<div class="g-recaptcha" name="g-recaptcha-response"></div>';
+                                // we do explicit loading to allow for multiple recaptcha widgets on a page
+                                $content = "
+                                var grecaptcha_onload = function() {
+                                    [].forEach.call(document.querySelectorAll('.g-recaptcha'), function(el){
+                                        $(el).parents('form').find(':submit').attr('disabled', true);
+                                        var renderCaptcha = grecaptcha.render(el, {
+                                            sitekey: '" . RECAPTCHA_PUB_KEY . "',
+                                            callback: function(token) {
+                                                el.parentNode.querySelector('.g-recaptcha').value = token;
+                                                console.log('success! ' + token);
+                                                $(el).parents('form').find(':submit').removeAttr('disabled');
+                                            },
+                                            size: 'invisible',
+//                                            badge: 'inline'
+                                        }, true);
+                                        grecaptcha.execute(renderCaptcha);
+                                        $(el).parents('form').on('submit',function(e) {
+                                            grecaptcha.execute(renderCaptcha);
+                                        });
                                     });
-                                }
-                            };";
-                        expJavascript::pushToFoot(array(
-                            "unique" => 'recaptcha',
-                            "content" => $content,
-                            "src" => "https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=" . LOCALE
-                        ));
+                                }";
+                            }
+                            expJavascript::pushToFoot(array(
+                                "unique" => 'recaptcha',
+                                "content" => $content,
+                                "src" => "https://www.google.com/recaptcha/api.js?onload=grecaptcha_onload&render=explicit&hl=" . LOCALE
+                            ));
+                        }
+//                        return;
+//                    } elseif (ANTI_SPAM_CONTROL === 'recaptcha_v3') {
+//                    } else {
+//                        return;
                     }
-                    return;
-                } else {
-                    return;
+//                } else {
+//                    return;
                 }
-                break;
+                return;
+//                break;
             case "autocomplete":
                 $control              = new autocompletecontrol();
                 $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";

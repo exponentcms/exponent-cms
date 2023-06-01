@@ -87,12 +87,17 @@ class checkboxcontrol extends formcontrol {
             $html .= (!empty($this->class)) ? ' ' . $this->class : '';
             $html .= (!empty($this->required)) ? ' required">' : '">';
             $html .= ($this->horizontal) ? '<div class="col-sm-offset-2 col-sm-10">' : '';
+            if ($this->required) {
+                $labeltag = '<span class="required" title="' . gt('This entry is required') . '">*&#160;</span>' . $label;
+            } else {
+                $labeltag = $label;
+            }
 
 //            $html .= "<div class=\"checkbox\"><label class=\"control-label\">".$label;
             $html .= "<label" . $for . " class=\"control-label\">";
-            if (!$this->horizontal) $html .= $label;
+            if (!$this->horizontal) $html .= $labeltag;
             $html .= $this->controlToHTML($name, $label);
-            if ($this->horizontal) $html .= $label;
+            if ($this->horizontal) $html .= $labeltag;
 //            $html .= "</label></div>";
             $html .= "</label>";
 

@@ -30,14 +30,30 @@
  * @subpackage Function
  */
 function smarty_function_google_maps_link($params,&$smarty) {
-	$link = '';
 
-	if (!empty($params['street'])) $link .= addPlus($link).urlencode(trim($params['street']));
-	if (!empty($params['city'])) $link .= addPlus($link).urlencode(trim($params['city']));
-	if (!empty($params['state'])) $link .= addPlus($link).urlencode(trim($params['state']));
-	if (!empty($params['zip'])) $link .= addPlus($link).urlencode(trim($params['zip']));
-
-	echo 'https://maps.google.com/maps?f=q&hl=en&geocode=&q='.$link;
+    if (ecomconfig::getConfig('site_mapping') !== 'mapquest') {
+        $link = 'https://maps.google.com/maps?f=q&hl=en&geocode=&q=';
+        if (!empty($params['street']))
+            $link .= addPlus($link).urlencode(trim($params['street']));
+        if (!empty($params['city']))
+            $link .= addPlus($link).urlencode(trim($params['city']));
+        if (!empty($params['state']))
+            $link .= addPlus($link).urlencode(trim($params['state']));
+        if (!empty($params['zip']))
+            $link .= addPlus($link).urlencode(trim($params['zip']));
+        echo $link;
+    } else {
+        $link = 'https://mapquest.com';
+        if (!empty($params['state']))
+            $link .= '/' . urlencode(trim($params['state']));
+        if (!empty($params['city']))
+            $link .= '/' . urlencode(trim($params['city']));
+        if (!empty($params['zip']))
+            $link .= '/' . urlencode(trim($params['zip']));
+        if (!empty($params['street']))
+            $link .= '/' . urlencode(trim($params['street']));
+        echo $link;
+    }
 
 }
 

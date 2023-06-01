@@ -83,7 +83,7 @@ class datetimecontrol extends formcontrol {
         $html .= "<input type='hidden' id='__" . $name . "' name='__" . $name . "' value='" . ($this->showdate ? "1" : "0") . ($this->showtime ? "1" : "0") . "' />";
         $html .= "<div class=\"row\">";
         if ($this->showdate) {
-            $html .= '<div class="datetime date" style="display:inline-block;margin-left: 15px;">';
+            $html .= '<div class="datetime date" style="display:flex;margin-left: 15px;">';
             if ($this->showtime)
                 $html .= '<label class="col-xs-2 control-label">' . gt('Date') . ': </label>';
             $html .= expDateTime::monthsDropdown($name . "_month", $default_date['mon']);
@@ -96,14 +96,13 @@ class datetimecontrol extends formcontrol {
             $html .= '</div>';
         }
         if ($this->showtime) {
-            $framework = framework();
-            $html .= '<div class="datetime date time" style="display:inline-block;margin-left: 15px;">';
+            $html .= '<div class="datetime date time" style="display:flex;margin-left: 15px;">';
             if ($this->showdate)
                 $html .= '<label class="col-xs-2 control-label">' . gt('Time') . ': </label>';
-            $html .= '<input class="text timebox form-control col-xs-1" type="text" id="' . $name . '_hour" name="' . $name . '_hour" aria-label="' . gt('Hour') . '" size="3" maxlength="2" value="' . $hour . '"';
+            $html .= '<input class="text timebox form-control col-xs-2 col-2" type="text" id="' . $name . '_hour" name="' . $name . '_hour" aria-label="' . gt('Hour') . '" size="3" maxlength="2" value="' . $hour . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
-            $html .= '<input class="text timebox form-control col-xs-1" type="text" id="' . $name . '_minute" name="' . $name . '_minute" aria-label="' . gt('Minute') . '" size="3" maxlength="2" value="' . $minute . '"';
+            $html .= '<input class="text timebox form-control col-xs-2 col-2" type="text" id="' . $name . '_minute" name="' . $name . '_minute" aria-label="' . gt('Minute') . '" size="3" maxlength="2" value="' . $minute . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
             $html .= '<select class="select form-control col-xs-1" id="' . $name . '_ampm" name="' . $name . '_ampm" size="1"';

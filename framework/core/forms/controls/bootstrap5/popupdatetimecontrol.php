@@ -100,11 +100,11 @@ class popupdatetimecontrol extends formcontrol
         }
         if (is_numeric($this->default)) {
             if ($this->showdate && !$this->showtime) {
-                $myval = date('m/j/Y', $this->default);
+                $myval = date('m/d/Y', $this->default);
             } elseif (!$this->showdate && $this->showtime) {
                 $myval = date('h:i A', $this->default);
             } else {
-                $myval = date('m/j/Y h:i A', $this->default);
+                $myval = date('m/d/Y h:i A', $this->default);
             }
         } else {
             $myval = $this->default;
@@ -138,7 +138,7 @@ class popupdatetimecontrol extends formcontrol
 
         $script = "
             $(document).ready(function() {
-                tempusDominus.extend(window.tempusDominus.plugins.customDateFormat);
+//                tempusDominus.extend(window.tempusDominus.plugins.customDateFormat);
                 var tclock = new tempusDominus.TempusDominus(document.getElementById('" . $idname . "'),{
                     localization: {
                         format: '" .'L' . ($this->showtime ? ' LT' : '') ."',
@@ -195,7 +195,7 @@ class popupdatetimecontrol extends formcontrol
                 "jquery"    => "tempus-dominus",
                 "src"      => array(
                     "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js",
-                    JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js"
+//                    JQUERY_RELATIVE . "/addons/js/plugins/customDateFormat.js"
                 ),
                 "bootstrap" => "collapse",
                 "content" => $script,

@@ -69,7 +69,7 @@ class help extends expRecord {
 			$params['src'] = $params['help_section'];
             $params['rank'] = 0;
             // check for and update any child help docs to new section
-            if (isset($params['id'])) {
+            if (isset($params['id']) && $params['id'] !== 0) {
                 $child_docs = $this->find('all', 'parent='.$params['id']);
                 foreach ($child_docs as $key=>$doc) {
                     $doc->section = $params['section'];

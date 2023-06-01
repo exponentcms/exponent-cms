@@ -1198,7 +1198,7 @@ class eventregistrationController extends expController {
         }
 
         $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
-        if (empty($from[0])) $from = SMTP_FROMADDRESS;
+        if (empty($from[0])) $from = array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME));
         $mail->quickBatchSend(array(
             	'headers'=>$headers,
                 'html_message'=> $this->params['email_message'],

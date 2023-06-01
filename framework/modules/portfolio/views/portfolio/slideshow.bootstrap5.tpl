@@ -149,7 +149,7 @@
 </div>
 
 {if $slides|@count > 1}
-{script unique="ssc-`$name`" bootstrap="carousel,transition" jquery="bootstrap-touch-carousel"}
+{script unique="ssc-`$name`" bootstrap="carousel,transition"}
 {if $config.speed}
 {literal}
     $('#ss-{/literal}{$name}{literal}').carousel({

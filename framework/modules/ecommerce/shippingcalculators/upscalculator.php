@@ -194,7 +194,7 @@ class upscalculator extends shippingcalculator {
             }
         }
 
-        if ($this->configdata['negotiated_rate']) {
+        if (!empty($this->configdata['negotiated_rate'])) {
             $upsRate->rateInformation(array('NegotiatedRatesIndicator'=>'yes'));
         }
 
@@ -211,7 +211,7 @@ class upscalculator extends shippingcalculator {
 	        $available_methods = $this->availableMethods();
 	        foreach ($rateFromUPS['RatingServiceSelectionResponse']['RatedShipment'] as $rate) {
 	            if (array_key_exists($rate['Service']['Code']['VALUE'], $available_methods)) {
-                    if ($this->configdata['negotiated_rate'] && isset($rate['NegotiatedRates']['NetSummaryCharges']['GrandTotal']['MonetaryValue']['VALUE'])) {
+                    if (!empty($this->configdata['negotiated_rate']) && isset($rate['NegotiatedRates']['NetSummaryCharges']['GrandTotal']['MonetaryValue']['VALUE'])) {
                         $rates[$rate['Service']['Code']['VALUE']] = array(
                                'id' => $rate['Service']['Code']['VALUE'],
                                'title' => $this->shippingmethods[$rate['Service']['Code']['VALUE']],

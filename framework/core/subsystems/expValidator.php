@@ -374,15 +374,20 @@ class expValidator {
         $msg = empty($msg) ? gt('Anti-spam verification failed.  Please try again.') : $msg;
         switch (ANTI_SPAM_CONTROL) {
             case 'recaptcha':
+            case 'recaptcha_v2':
                 if (empty($params["g-recaptcha-response"])) {
-                    self::failAndReturnToForm($msg, $params);  // there was no response
+                    self::failAndReturnToForm($msg . '-' . gt('No Response'), $params);  // there was no response
                 }
 
                 if (!defined('RECAPTCHA_PRIVATE_KEY')) {
                     self::failAndReturnToForm(gt('reCAPTCHA is not properly configured. Please contact an administrator.'), $params);
                 }
 
-                require_once(BASE . 'external/ReCaptcha/autoload.php');
+                if (version_compare(PHP_VERSION, '8.0.0', 'lt')) {
+                    require_once(BASE . 'external/ReCaptcha/autoload.php');  // v1.2.4
+                } else {
+                    require_once(BASE . 'external/ReCaptcha/src/autoload.php'); // v1.3.0
+                }
                 $reCaptcha = new \ReCaptcha\ReCaptcha(RECAPTCHA_PRIVATE_KEY);
 
                 $resp = $reCaptcha->verify(
@@ -401,9 +406,10 @@ class expValidator {
                     };
                 }
                 break;
+//            case 'recaptcha_v3':
             case 0:
                 return true;
-                break;
+//                break;
         }
         return false;
     }

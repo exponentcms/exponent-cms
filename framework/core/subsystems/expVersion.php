@@ -128,6 +128,12 @@ class expVersion {
         $swversion = self::swVersion();
         $update = false;
 
+        // we're not up and running yet, new installation so launch installer
+        if (@file_exists(BASE.'install/not_configured') || !(@file_exists(BASE.'framework/conf/config.php'))) {
+          		header('Location: '.URL_FULL.'install/index.php');
+          		exit('Redirecting to the Exponent Install Wizard');
+        }
+
         // check database version against installed software version
         if ($db->havedb) {
             $dbversion = self::dbVersion();
@@ -154,8 +160,8 @@ class expVersion {
             if ((!(defined('SKIP_VERSION_CHECK') ? SKIP_VERSION_CHECK : 0) || $force) && $user->isSuperAdmin()) {
                 if (!expSession::is_set('update-check')) {
                     //FIXME we need a good installation/server to place this on
-//                    $jsondata = json_decode(expCore::loadData('http://www.exponentcms.org/' . 'getswversion.php'));
-                    $jsondata = json_decode(expCore::loadData('https://www.seindianabaptist.org/' . 'getswversion.php'));  //FIXME substitute until git fixed on exponent servers
+                    $jsondata = json_decode(expCore::loadData('http://www.exponentcms.org/' . 'getswversion.php'));
+//                    $jsondata = json_decode(expCore::loadData('https://www.seindianabaptist.org/' . 'getswversion.php'));  //FIXME substitute until git fixed on exponent servers
                     expSession::set('update-check', '1');
                     if (!empty($jsondata->data->major)) {
                         $onlineVer = $jsondata->data;

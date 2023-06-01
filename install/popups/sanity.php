@@ -85,6 +85,12 @@
 	</td>
 </tr>
 <tr>
+    <td id="o_zip" class="bodytext" style="font-weight: bold;"><?php echo gt('Zip Support'); ?></td>
+    <td class="bodytext">
+        <?php echo gt('The PHP Zip extension is used for archive support, which Exponent uses for uncompressing Zip archives.'); ?>
+    </td>
+</tr>
+<tr>
     <td id="o_curl" class="bodytext" style="font-weight: bold;"><?php echo gt('cURL Library Support'); ?></td>
     <td class="bodytext">
         <?php echo gt('PHP cURL support is required for several features which pull data from external sources.'); ?>
@@ -96,16 +102,16 @@
 		<?php echo gt('The web services extensions for Exponent require the Expat Library.  If you are not using web services or module that are dependent on web services, this is a safe warning to ignore.'); ?>
 	</td>
 </tr>
-<tr>
-	<td id="o_safemode" class="bodytext" style="font-weight: bold;"><?php echo gt('Safe Mode Not Enabled'); ?></td>
-	<td class="bodytext">
-        <div class="sanity_req"><?php echo gt('Exponent works best when Safe Mode is disabled'); ?></div>
-        <br />
-		<?php echo gt('Safe Mode is a security measure present in some Shared Hosting Environments.  It limits a PHP scripts from including or modifying files that are not owned by that script\'s owner.  This can cause serious and subtle problems that look like bugs if Exponent\'s files are not properly set up.'); ?>
-        <br /><br />
-        <?php echo gt('If you decide to ignore this warning, make sure that ALL files included in the Exponent package are owned by the same system user.'); ?>
-	</td>
-</tr>
+<!--<tr>-->
+<!--	<td id="o_safemode" class="bodytext" style="font-weight: bold;">--><?php //echo gt('Safe Mode Not Enabled'); ?><!--</td>-->
+<!--	<td class="bodytext">-->
+<!--        <div class="sanity_req">--><?php //echo gt('Exponent works best when Safe Mode is disabled'); ?><!--</div>-->
+<!--        <br />-->
+<!--		--><?php //echo gt('Safe Mode is a security measure present in some Shared Hosting Environments.  It limits a PHP scripts from including or modifying files that are not owned by that script\'s owner.  This can cause serious and subtle problems that look like bugs if Exponent\'s files are not properly set up.'); ?>
+<!--        <br /><br />-->
+<!--        --><?php //echo gt('If you decide to ignore this warning, make sure that ALL files included in the Exponent package are owned by the same system user.'); ?>
+<!--	</td>-->
+<!--</tr>-->
 <tr>
 	<td id="o_openbasedir" class="bodytext" style="font-weight: bold;"><?php echo gt('Open BaseDir Not Enabled'); ?></td>
 	<td class="bodytext">
@@ -121,7 +127,7 @@
 	</td>
 </tr>
 <tr>
-	<td id="o_curl" class="bodytext" style="font-weight: bold;"><?php echo gt('File Upload Support'); ?></td>
+	<td id="o_max" class="bodytext" style="font-weight: bold;"><?php echo gt('File Upload Support'); ?></td>
 	<td class="bodytext">
 		<?php echo gt('The php.ini \'post_max_size\' and \'upload_max_filesize\' settings may cause file upload issues if not set to same value.'); ?>
 	</td>

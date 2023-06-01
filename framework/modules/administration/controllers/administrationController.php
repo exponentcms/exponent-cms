@@ -717,7 +717,11 @@ class administrationController extends expController {
 //						self::verify_extension('tar');
 					}
 				} else { // it must be a zip
-					$unzip = new ZipArchive();
+                    try {
+                        $unzip = new ZipArchive();
+                    } catch (Exception $e) {
+                        flash('error',gt('Error extracting ZIP archive') . ': ' . ' : ' . gt('PHP Zip extension not loaded') . '<br />');
+                    }
 
                     $unzip_error_no = $unzip->open($dest);
                     if ($unzip_error_no !== true) {
@@ -1310,11 +1314,13 @@ class administrationController extends expController {
 
         // TYPES OF ANTISPAM CONTROLS... CURRENTLY ONLY ReCAPTCHA
         $as_types = array(
-            '0'=>'-- '.gt('Please Select an Anti-Spam Control').' --',
-            "recaptcha"=>'reCAPTCHA'
+            '0'=>'-- ' . gt('Select an Anti-Spam Control') . ' --',
+            "recaptcha"=>'reCAPTCHA v2',
+            "recaptcha_v2"=>'Invisible reCAPTCHA v2',
+//            "recaptcha_v3"=>'reCAPTCHA v3',
         );
 
-        //THEMES FOR RECAPTCHA
+        //THEMES FOR RECAPTCHA v2
         $as_themes = array(
             "light"=>gt('Light (Default)'),
         	"dark"=>gt('Dark'),

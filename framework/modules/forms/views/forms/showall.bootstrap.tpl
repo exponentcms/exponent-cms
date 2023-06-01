@@ -77,13 +77,13 @@
                         {foreach  $page->columns as $name=>$caption}
                             <th{if $caption@first} data-class="expand"{elseif $caption@iteration < 4} data-hide="phone"{elseif $caption@iteration > 7} data-hide="always"{else} data-hide="phone,tablet"{/if}>{$caption}</th>
                         {/foreach}
+                        {permissions}
                         <th>
-                            {permissions}
                             <div class="item-actions">
                                 {'Actions'|gettext}
                             </div>
-                            {/permissions}
                         </th>
+                        {/permissions}
                     </tr>
                 </thead>
                 <tbody>
@@ -124,8 +124,8 @@
                                     {/if}
                                 </td>
                             {/foreach}
+                            {permissions}
                             <td>
-                                {permissions}
                                 <div class="item-actions">
                                     {if !$config.hide_view || !$permissions.manage}
                                         {icon img="view.png" action=show forms_id=$f->id id=$fields.id title='View all data fields for this record'|gettext}
@@ -137,11 +137,11 @@
                                         {icon img="delete.png" action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
                                     {/if}
                                 </div>
-                                {/permissions}
                             </td>
+                            {/permissions}
                         </tr>
                     {foreachelse}
-                        <tr><td colspan="{$page->columns|count+1}"><h4>{$config.no_records_msg|default:"No Records Found"|gettext}</h4></td></tr>
+                        <tr><td colspan="{$page->columns|count}"><h4>{$config.no_records_msg|default:"No Records Found"|gettext}</h4></td></tr>
                     {/foreach}
                 </tbody>
             </table>

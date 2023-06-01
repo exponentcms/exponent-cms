@@ -92,7 +92,7 @@
     <ul id="controls" class="controls" title="{'Drag a control from this box and drop it on the form to add it to the selected location'|gettext}">
         <strong>{'Available Form Controls'|gettext}</strong>
         {foreach from=$types key=value item=caption}
-            <li class="item" type="{$value}">
+            <li class="item" type="{$value}"{if $smarty.const.DEVELOPMENT} title="{$value}"{/if}>
                 {$caption}
             </li>
         {/foreach}
@@ -454,6 +454,7 @@
                 // we need to remove the control from the database
                 $.ajax({
                     type: "POST",
+                    headers: { 'X-Transaction': 'Delete Form Control'},
                     url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=delete_control&ajax_action=1',
                     data: 'id=' + evt.item.id,
                     success: function(o){

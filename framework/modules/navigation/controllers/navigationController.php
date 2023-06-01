@@ -778,6 +778,24 @@ class navigationController extends expController {
         global $db, $router, $user;
 
         expHistory::set('manageable', $router->params);
+
+        // Fix page ranks to be sequential beginning at 1
+        $sect = new section();
+        $pages = $sect->find('all','parent!=-1','parent,rank');
+        $rank = 1;
+        $oldparent = $pages[0]->parent;
+        foreach ($pages as $page) {
+            if ($oldparent !== $page->parent) {
+                $rank = 1;
+                $oldparent = $page->parent;
+            }
+            if ($page->rank != $rank) {
+                $page->rank = $rank;
+                $page->update();
+            }
+            $rank++;
+        }
+
         assign_to_template(array(
             'canManageStandalones' => self::canManageStandalones(),
             'sasections'           => $db->selectObjects('section', 'parent=-1'),

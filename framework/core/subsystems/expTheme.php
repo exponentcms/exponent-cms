@@ -1647,6 +1647,12 @@ class expTheme
             'purple'  => 'btn-info',
             'black'   => 'btn-inverse',  //fixme bs4 btn-dark
             'pink'    => 'btn-danger',
+            'success' => 'btn-success',
+            'primary' => 'btn-primary',
+            'danger'  => 'btn-danger',
+            'warning' => 'btn-warning',
+            'default' => 'btn-default',
+            'info'    => 'btn-info',
         );
         if (bs()) {
             if (!empty($colors[$color])) { // awesome to bootstrap button conversion

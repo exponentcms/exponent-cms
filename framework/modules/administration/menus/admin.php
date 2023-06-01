@@ -26,7 +26,7 @@ if ($user->globalPerm('hide_exp_menu'))
 
 $my_version = gt("Exponent Version") . " : " . expVersion::getVersion(true, false, false) . "<br />";
 if (EXPONENT_VERSION_TYPE != '') {
-    $my_type = gt("Release level") . " : " . EXPONENT_VERSION_TYPE . EXPONENT_VERSION_ITERATION . "<br />";
+    $my_type = gt("Release level") . " : " . EXPONENT_VERSION_TYPE . ' #' . EXPONENT_VERSION_ITERATION . "<br />";
 } else {
     $my_type = '';
 }

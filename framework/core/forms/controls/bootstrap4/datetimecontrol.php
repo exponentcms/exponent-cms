@@ -87,29 +87,26 @@ class datetimecontrol extends formcontrol {
             if ($this->showtime)
                 $html .= '<label class="col-2 control-label">' . gt('Date') . ': </label>';
             $html .= expDateTime::monthsDropdown($name . "_month", $default_date['mon']);
-            $html .= '<input class="text form-control" type="text" id="' . $name . '_day" name="' . $name . '_day" aria-label="' . gt('Day') . '" size="3" maxlength="2" value="' . $default_date['mday'] . '"';
+            $html .= '<input class="text form-control col-3" type="text" id="' . $name . '_day" name="' . $name . '_day" aria-label="' . gt('Day') . '" size="3" maxlength="2" value="' . $default_date['mday'] . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
-            $html .= '<input class="text form-control" type="text" id="' . $name . '_year" name="' . $name . '_year" aria-label="' . gt('Month') . '" size="5" maxlength="4" value="' . $default_date['year'] . '"';
+            $html .= '<input class="text form-control col-4" type="text" id="' . $name . '_year" name="' . $name . '_year" aria-label="' . gt('Month') . '" size="5" maxlength="4" value="' . $default_date['year'] . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
             $html .= '</div>';
         }
         if ($this->showtime) {
-            $framework = framework();
-            if ($framework !== 'bootstrap' && $framework !== 'bootstrap3') {
-                $html .= '<br /><label class="control-label label spacer"> </label>';
-            }
+            $html .= '<br /><label class="control-label label spacer"> </label>';
             $html .= '<div class="datetime date time" style="display:inline-block;margin-left: 15px;">';
             if ($this->showdate)
                 $html .= '<label class="col-2 control-label">' . gt('Time') . ': </label>';
-            $html .= '<input class="text timebox form-control" type="text" id="' . $name . '_hour" name="' . $name . '_hour" aria-label="' . gt('Hour') . '" size="3" maxlength="2" value="' . $hour . '"';
+            $html .= '<input class="text timebox form-control col-4" type="text" id="' . $name . '_hour" name="' . $name . '_hour" aria-label="' . gt('Hour') . '" size="3" maxlength="2" value="' . $hour . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
-            $html .= '<input class="text timebox form-control" type="text" id="' . $name . '_minute" name="' . $name . '_minute" aria-label="' . gt('Minute') . '" size="3" maxlength="2" value="' . $minute . '"';
+            $html .= '<input class="text timebox form-control col-3" type="text" id="' . $name . '_minute" name="' . $name . '_minute" aria-label="' . gt('Minute') . '" size="3" maxlength="2" value="' . $minute . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
-            $html .= '<select class="select form-control" id="' . $name . '_ampm" name="' . $name . '_ampm" size="1"';
+            $html .= '<select class="select form-control col-4" id="' . $name . '_ampm" name="' . $name . '_ampm" size="1"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= '>';
             $html .= '<option value="am"' . ($default_date['hours'] < 12 ? " selected" : "") . '>am</option>';
@@ -141,7 +138,21 @@ class datetimecontrol extends formcontrol {
                 $values[$name . '_hour'] += 12;
             }
 
-            $time += $values[$name . '_hour'] * 3600 + $values[$name . '_minute'] * 60;
+//            // Create two timezone objects
+//            $dateTimeZoneUTC = new DateTimeZone("UTC");
+//            $dateTimeZoneLocal = new DateTimeZone(date_default_timezone_get());
+//
+//            // Create two DateTime objects that will contain the same Unix timestamp, but
+//            // have different timezones attached to them.
+//            $dateTimeUTC = new DateTime("now", $dateTimeZoneUTC);
+//            $dateTimeLocal = new DateTime("now", $dateTimeZoneLocal);
+//
+//            // Calculate the GMT offset for the date/time contained in the $dateTimeTaipei
+//            // object, but using the timezone rules as defined for Tokyo
+//            // ($dateTimeZoneJapan).
+//            $timeOffset = $dateTimeZoneLocal->getOffset($dateTimeUTC);
+            $timeOffset = 0;  //fixme placeholder to replace commented code above
+            $time += ($values[$name . '_hour'] * 3600) + ($values[$name . '_minute'] * 60) - $timeOffset;
         }
 
         return $time;
@@ -163,17 +174,20 @@ class datetimecontrol extends formcontrol {
         if ($ctl->showdate && $ctl->showtime) {
 //            return gmstrftime(DISPLAY_DATETIME_FORMAT, $db_data);
             $datetime = date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), $db_data);
-            if (!$datetime) $datetime = date('m/d/y h:ma', $db_data);
+            if (!$datetime)
+                $datetime = date('m/d/y h:ma', $db_data);
             return $datetime;
         } elseif ($ctl->showdate) {
 //            return gmstrftime(DISPLAY_DATE_FORMAT, $db_data);
             $date = date(strftime_to_date_format(DISPLAY_DATE_FORMAT), $db_data);
-            if (!$date) $date = date('m/d/y', $db_data);
+            if (!$date)
+                $date = date('m/d/y', $db_data);
             return $date;
         } elseif ($ctl->showtime) {
 //            return gmstrftime(DISPLAY_TIME_FORMAT, $db_data);
             $time = date(strftime_to_date_format(DISPLAY_TIME_FORMAT), $db_data);
-            if (!$time) $time = date('h:ma', $db_data);
+            if (!$time)
+                $time = date('h:ma', $db_data);
             return $time;
         } else {
             return "";
@@ -182,7 +196,8 @@ class datetimecontrol extends formcontrol {
 
     static function form($object) {
         $form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier  = "";
             $object->caption     = "";
@@ -190,7 +205,8 @@ class datetimecontrol extends formcontrol {
             $object->showdate    = true;
             $object->showtime    = true;
         }
-        if (empty($object->description)) $object->description = "";
+        if (empty($object->description))
+            $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));

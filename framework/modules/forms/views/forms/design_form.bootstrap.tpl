@@ -13,8 +13,19 @@
  *
  *}
 
-{css unique="design-form" lesscss="`$asset_path`less/designer.less" corecss="button"}
-
+{css unique="design-form" lesscss="`$asset_path`less/designer_bs3.less" corecss="button"}
+{literal}
+    .formmoduleedit a.delete {
+        background-color: #bd362f;
+        background-image: none;
+        padding: 0;
+    }
+    .formmoduleedit a.edit {
+        background-color: #e6e6e6;
+        background-image: none;
+        padding: 0;
+    }
+{/literal}
 {/css}
 
 {if $config.style}
@@ -94,7 +105,7 @@
     {/if}
 </div>
 <div id="trash" class="trash">
-    <strong>{'Trash Can'|gettext}</strong><br><br>
+    <strong>{'Trash Can'|gettext}</strong><br>
     {img class="img-center" src="`$smarty.const.PATH_RELATIVE`framework/modules/recyclebin/assets/images/trashcan_full_large.png"}
 </div>
 <ul id="controls" class="controls">
@@ -313,6 +324,7 @@
                 // we need to remove the control from the database
                 $.ajax({
                     type: "POST",
+                    headers: { 'X-Transaction': 'Delete Form Control'},
                     url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=delete_control&ajax_action=1',
                     data: 'id=' + evt.item.id,
                     success: function(o){

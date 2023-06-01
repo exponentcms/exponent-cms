@@ -13,6 +13,18 @@
  *
  *}
 
+{css unique="ical"}
+    {literal}
+        .color-control.control.form-group  {
+            display: inline-block;
+        }
+        .text.form-control.color {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    {/literal}
+{/css}
+
 <div id="icalpullControl" class="control">
     <div class="form_header">
     	<div class="info-header">

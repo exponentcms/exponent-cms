@@ -82,13 +82,22 @@ class checkboxcontrol extends formcontrol {
             if (empty($label)) {
                 $for = '';
             }
-            $html = '<div id="' . $divID . '"' . (($this->horizontal) ? ' style="width:100%;"' : '') . ' class="checkbox control form-check';
+            $html = '<div id="' . $divID . '"' . (($this->horizontal) ? ' style="width:100%;"' : '') . ' class="checkbox control';
+            if ($this->horizontal)
+                $html .= " row";
+            else
+                $html .= " form-check";
             $html .= (!empty($this->switch)) ? ' form-switch' : '';
             $html .= (!empty($this->class)) ? ' ' . $this->class : '';
             $html .= (!empty($this->horizontal)) ? ' row' : '';
             $html .= (!empty($this->required)) ? ' required">' : '">';
+            if ($this->required) {
+                $labeltag = '<span class="required" title="' . gt('This entry is required') . '">*&#160;</span>' . $label;
+            } else {
+                $labeltag = $label;
+            }
 
-            $labelwrap = "<label" . $for . " class=\"form-check-label form-label\">" . $label . "</label>";
+            $labelwrap = "<label" . $for . " class=\"form-check-label form-label\">" . $labeltag . "</label>";
             if (!$this->horizontal) {
                 if (!$this->flip) {
                     $html .= $this->controlToHTML($name, $label) . $labelwrap;
@@ -103,10 +112,11 @@ class checkboxcontrol extends formcontrol {
                     if (!empty($this->description))
                         $html .= '<div class="offset-sm-2 col-sm-10">' . "<div id=\"" . $name . "HelpBlock\" class=\"form-text text-muted\">" . $this->description . "</div>" . "</div>";
                 } else {
-                    $labelwrap = "<label" . $for . " class=\"col-sm-2 col-form-label form-check-label form-label\">" . $label . "</label>";
-                    $html .= $labelwrap . '<div class="col-sm-10">' . $this->controlToHTML($name, $label) . "</div>";
+                    $labelwrap = "<label" . $for . " style=\"margin-right:0; padding-left:15px\" class=\"col-sm-2 col-form-label form-check-label form-label\">" . $labeltag . "</label>";
+                    $html .= $labelwrap . '<div class="col-sm-10">' . $this->controlToHTML($name, $label);
                     if (!empty($this->description))
                         $html .= "<div id=\"" . $name . "HelpBlock\" class=\"form-text text-muted\">" . $this->description . "</div>";
+                    $html .= "</div>";
                 }
             }
 
