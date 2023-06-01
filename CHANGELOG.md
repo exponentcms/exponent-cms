@@ -10,19 +10,6 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ---
 
-Version 2.7.2
--------------
-
-### Address issues in v2.7.1 and Prepare for v3.0.2
-
-- compatible with PHP v7.4.x, v8.0.x, v8.1.x and v8.2.x
-- add better metainfo for forms and records
-- add feature to add dates to an existing event
-- new blog dates calendar view
-- add invisible reCaptcha option
-- fixes several warnings/issues with PHP v8
-- fixes and tweaks many issues in previous versions
-
 Version 2.7.1
 -------------
 
