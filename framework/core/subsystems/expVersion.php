@@ -24,6 +24,8 @@
  */
 class expVersion {
 
+    private static $check_site = 'http://www.exponentcms.org/';  // url to check source code current version
+
     /**
      * Return a string of the current version number.
      *
@@ -128,12 +130,6 @@ class expVersion {
         $swversion = self::swVersion();
         $update = false;
 
-        // we're not up and running yet, new installation so launch installer
-        if (@file_exists(BASE.'install/not_configured') || !(@file_exists(BASE.'framework/conf/config.php'))) {
-          		header('Location: '.URL_FULL.'install/index.php');
-          		exit('Redirecting to the Exponent Install Wizard');
-        }
-
         // check database version against installed software version
         if ($db->havedb) {
             $dbversion = self::dbVersion();
@@ -150,7 +146,7 @@ class expVersion {
             if ($user->isSuperAdmin()) {
                 // check if software version is newer than database version
                 if (self::compareVersion($dbversion, $swversion)) {
-                    flash('message', gt('The database requires upgrading from') . ' v' . self::getDBVersion(true,false,true) . ' ' . gt('to') . ' v' . self::getVersion(true,false,true) .
+                    flash('message', gt('The database requires upgrading from') . ' v' . self::getDBVersion(true, false, true) . ' ' . gt('to') . ' v' . self::getVersion(true, false, true) .
                         '<br><a href="' . makelink(array("controller" => "administration", "action" => "install_exponent")) . '">' . gt('Click here to Upgrade your website') . '</a>');
                     $update = true;
                 }
@@ -160,8 +156,7 @@ class expVersion {
             if ((!(defined('SKIP_VERSION_CHECK') ? SKIP_VERSION_CHECK : 0) || $force) && $user->isSuperAdmin()) {
                 if (!expSession::is_set('update-check')) {
                     //FIXME we need a good installation/server to place this on
-                    $jsondata = json_decode(expCore::loadData('http://www.exponentcms.org/' . 'getswversion.php'));
-//                    $jsondata = json_decode(expCore::loadData('https://www.seindianabaptist.org/' . 'getswversion.php'));  //FIXME substitute until git fixed on exponent servers
+                    $jsondata = json_decode(expCore::loadData(self::$check_site . 'getswversion.php'));
                     expSession::set('update-check', '1');
                     if (!empty($jsondata->data->major)) {
                         $onlineVer = $jsondata->data;
@@ -187,17 +182,23 @@ class expVersion {
                 }
             }
             return $update;
-        } else {
-            // database is unavailable, so show us as being offline and stop
-            if (empty($framework)) {
-                $framework = expSession::get('framework');
-            }
-            expCore::setup_autoload($framework);
-            $template = new standalonetemplate('_maintenance');
-            $template->assign("db_down", true);
-            $template->output();
-            exit();
         }
+
+        // we're not up and running yet, new installation so launch installer
+        if (@file_exists(BASE.'install/not_configured') || !(@file_exists(BASE.'framework/conf/config.php'))) {
+            header('Location: '.URL_FULL.'install/index.php');
+            exit('Redirecting to the Exponent Install Wizard');
+        }
+
+        // database is unavailable, so show us as being offline and stop
+        if (empty($framework)) {
+            $framework = expSession::get('framework');
+        }
+        expCore::setup_autoload($framework);
+        $template = new standalonetemplate('_maintenance');
+        $template->assign("db_down", true);
+        $template->output();
+        exit();
     }
 
     /**
