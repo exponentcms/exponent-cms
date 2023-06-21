@@ -32,7 +32,7 @@ class elFinder
      *
      * @var integer
      */
-    protected static $ApiRevision = 61;
+    protected static $ApiRevision = 62;
 
     /**
      * Storages (root dirs)
@@ -421,9 +421,9 @@ class elFinder
 
     /**
      * LAN class allowed when uploading via URL
-     *
+     * 
      * Array keys are 'local', 'private_a', 'private_b', 'private_c' and 'link'
-     *
+     * 
      * local:     127.0.0.0/8
      * private_a: 10.0.0.0/8
      * private_b: 172.16.0.0/12
@@ -2082,7 +2082,7 @@ class elFinder
         }
 
         if ($args['cpath'] && $args['reqid']) {
-            setcookie('elfdl' . $args['reqid'], '1', 0, $args['cpath']);
+            setcookie('elfdl' . $args['reqid'], '1', 0, urlencode($args['cpath']));
         }
 
         $result = array(
@@ -3338,7 +3338,14 @@ class elFinder
                                 fclose($fp);
                                 throw $e;
                             }
-                            $_name = preg_replace('~^.*?([^/#?]+)(?:\?.*)?(?:#.*)?$~', '$1', rawurldecode($url));
+                            if (strpos($url, '%') !== false) {
+                                $url = rawurldecode($url);
+                            }
+                            if (is_callable('mb_convert_encoding') && is_callable('mb_detect_encoding')) {
+                                $url = mb_convert_encoding($url, 'UTF-8', mb_detect_encoding($url));
+                            }
+                            $url = iconv('UTF-8', 'UTF-8//IGNORE', $url);
+                            $_name = preg_replace('~^.*?([^/#?]+)(?:\?.*)?(?:#.*)?$~', '$1', $url);
                             // Check `Content-Disposition` response header
                             if (($headers = get_headers($url, true)) && !empty($headers['Content-Disposition'])) {
                                 if (preg_match('/filename\*=(?:([a-zA-Z0-9_-]+?)\'\')"?([a-z0-9_.~%-]+)"?/i', $headers['Content-Disposition'], $m)) {
@@ -5219,7 +5226,7 @@ var go = function() {
             $name = str_replace('\\', '/', $name);
         }
         $parts = explode('/', trim($name, '/'));
-        $name = array_pop($parts);
+        $name = array_pop($parts); 
         return $name;
     }
 
