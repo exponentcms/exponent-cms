@@ -103,7 +103,7 @@ class formsController extends expController {
             if (isset($this->config['order_dropdown_all'])) {
                 $all_text = $this->config['order_dropdown_all'];
             } else {
-                $all_text = gettext('(All)');
+                $all_text = gt('(All)');
             }
 
             if (!empty($f)) {
