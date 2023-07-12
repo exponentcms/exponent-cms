@@ -49,9 +49,9 @@ Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
-CKEditor,4.21.0,ckeditor.com,4.21.0/38.0.1,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
+CKEditor,4.22.1,ckeditor.com,4.22.1/38.1.1,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
-TinyMCE v5,5.10.7,tiny.cloud,5.10.7/6.5.0,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
+TinyMCE v5,5.10.7,tiny.cloud,5.10.7/6.6.0,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.9,github.com/moxiecode/plupload,2.3.9/3.1.5,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 elFinder,2.1.62,elfinder.org,2.1.62,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
@@ -65,7 +65,7 @@ validate,1.19.5exp,jqueryvalidation.org,1.19.5,edit for 'undefined' in 'min' & '
 Countdown,1.1,tutorialzine.com/2011/12/countdown-jquery,1.1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker,1.6.3,used by adminer
 TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
-DataTables,1.13.4,www.datatables.net,1.13.4,includes boostrap2 integration w/ renamed 1.10.7 version
+DataTables,1.13.5,www.datatables.net,1.13.5,includes boostrap2 integration w/ renamed 1.10.7 version
 DataTables Checkboxes,1.2.13,github.com/gyrocode/jquery-datatables-checkboxes,1.2.13,
 DataTables Tabletools,2.2.4,www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,github.com/Comanche/datatables-responsive,0.2.0,replaced by 'Responsive' in 1.10.8
@@ -79,7 +79,7 @@ Searcher,0.3.0,github.com/lloiser/jquery-searcher,0.3.0,
 DateTimePicker,2.5.21exp,github.com/xdan/datetimepicker,2.5.21,rename .full version; we add .js auto-close on inline date select and extra 'reset' work & remove .css z-index issue
 Bootstrap DateTimePicker,4.17.49,github.com/Eonasdan/bootstrap-datetimepicker,4.17.49,"patch for 'today' button in side-by-side view, modded version placed in bootstrap4theme & bootstrap5theme to help yadcf"
 Tempus Dominus Bootstrap 4,5.39.0,github.com/tempusdominus/bootstrap-4,5.39.0,
-Tempus Dominus Bootstrap 5,6.7.7,github.com/Eonasdan/tempus-dominus,6.7.7,added .inline z-index style; scss change @use color
+Tempus Dominus Bootstrap 5,6.7.11,github.com/Eonasdan/tempus-dominus,6.7.11,added .inline z-index style; scss change @use color
 moment.js,2.29.4,github.com/moment/moment,2.29.4,needed for Bootstrap DateTimePicker; min/moment-with-locales.js renamed
 strength-meter,1.1.4,github.com/kartik-v/strength-meter,1.1.4,
 Sortable,1.15.0,github.com/SortableJS/Sortable,1.15.0,
@@ -113,11 +113,11 @@ FPDI,2.3.6,github.com/Setasign/FPDI,2.3.7,"optional, required by mPDF v7+"
 HTML2PDF,5.2.7/4.6.1,github.com/spipu/html2pdf,5.2.7,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.6.2,sourceforge.net/projects/tcpdf,6.6.2,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
-Kint,1.1/2.2/5.0.6,github.com/kint-php/kint,5.0.6,"optional, for formatted edebug output"
+Kint,1.1/2.2/5.0.7,github.com/kint-php/kint,5.0.7,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
-DataTables Buttons,,www.datatables.net,2.3.6,
-DataTables Responsive,,www.datatables.net,2.4.1,
+DataTables Buttons,,www.datatables.net,2.4.1,
+DataTables Responsive,,www.datatables.net,2.5.0,
 ,,,,
 No longer included,,,,
 pwstrength-bootstrap,2.0.0,github.com/ablanco/jquery.pwstrength.bootstrap,,
