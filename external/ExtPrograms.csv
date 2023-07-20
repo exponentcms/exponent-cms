@@ -5,8 +5,8 @@ Doctrine Deprecations,1.0.0,github.com/doctrine/deprecations,1.1.1,needed by Doc
 EmailValidator,3.2.4,github.com/egulias/EmailValidator,3.2.6/4.0.1,needed by swiftmailer v6; change folder structure and add autoloader to main file
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
-Smarty,3.1.27/4.3.1,smarty.net,4.3.1,
-phpthumb,1.7.20exp,github.com/JamesHeinrich/phpThumb,1.7.20,phpThumb.config.php - we also allow &amp in parsing and err command
+Smarty,3.1.27/4.3.2,smarty.net,4.3.2,
+phpthumb,1.7.21exp,github.com/JamesHeinrich/phpThumb,1.7.21,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.22,github.com/JamesHeinrich/getID3,1.9.22,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.14,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
@@ -21,7 +21,7 @@ Twitter API,1.0.6,github.com/J7mbo/twitter-api-php,1.0.6,used by socialmedia mod
 SimplePie,1.7.0,github.com/simplepie/simplepie,1.8.0,php 8 fix
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,2.1.3exp,github.com/verot/class.upload.php,2.1.3,"Correct flip operation where flip vertical & horizontal were inverted/swapped, php 8 fix"
-iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.40.10/2.41.76,uncomment load utilities; php 8 fix
+iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.40.10/2.41.80,uncomment load utilities; php 8 fix
 scssphp,1.11.0exp,github.com/scssphp/scssphp,1.11.0,includes example server; hack to compile newui
 lessphp,0.5.0exp,github.com/leafo/lessphp,0.5.0,"will not compile bootstrap v3+, hack to allow prefix"
 less.php,3.2.0exp,github.com/wikimedia/less.php,3.2.1/4.1.0,php v5.6 regression fixes
@@ -69,7 +69,7 @@ DataTables,1.13.5,www.datatables.net,1.13.5,includes boostrap2 integration w/ re
 DataTables Checkboxes,1.2.13,github.com/gyrocode/jquery-datatables-checkboxes,1.2.13,
 DataTables Tabletools,2.2.4,www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,github.com/Comanche/datatables-responsive,0.2.0,replaced by 'Responsive' in 1.10.8
-yadcf,0.9.4b45,github.com/vedmack/yadcf,0.9.4b45,
+yadcf,0.9.4b46,github.com/vedmack/yadcf,0.9.4b46,
 tag-it,2,aehlke.github.io/tag-it,2,renamed css file to same as js file for our loader
 multiselect,2,mind2soft.com/labs/jquery/multiselect,2,
 excoloSlider,1.1.0,excolo.github.io/Excolo-Slider,1.1.0,
@@ -110,7 +110,7 @@ random_compat,2.0.21,github.com/paragonie/random_compat,2.0.21,"optional, requir
 http-message,1,github.com/php-fig/http-message,1,"optional, required by mPDF v8.1+"
 message-factory,1.0.1,github.com/php-http/message-factory,1.0.1,"optional, required by mPDF v8.1+"
 FPDI,2.3.6,github.com/Setasign/FPDI,2.3.7,"optional, required by mPDF v7+"
-HTML2PDF,5.2.7/4.6.1,github.com/spipu/html2pdf,5.2.7,"optional, we tweak tcpdfConfig.php"
+HTML2PDF,5.2.7/4.6.1,github.com/spipu/html2pdf,5.2.8,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.6.2,sourceforge.net/projects/tcpdf,6.6.2,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
 Kint,1.1/2.2/5.0.7,github.com/kint-php/kint,5.0.7,"optional, for formatted edebug output"
