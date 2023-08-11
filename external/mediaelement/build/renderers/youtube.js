@@ -3,7 +3,7 @@
  * http://www.mediaelementjs.com/
  *
  * Wrapper that mimics native HTML5 MediaElement (audio and video)
- * using a variety of technologies (pure JavaScript, Flash, iframe)
+ * using a variety of technologies (pure JavaScript, iframe)
  *
  * Copyright 2010-2017, John Dyer (http://j.hn/)
  * License: MIT
@@ -63,7 +63,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mejs = {};
 
-mejs.version = '6.0.3';
+mejs.version = '7.0.0';
 
 mejs.html5media = {
 	properties: ['volume', 'src', 'currentTime', 'muted', 'duration', 'paused', 'ended', 'buffered', 'error', 'networkState', 'readyState', 'seeking', 'seekable', 'currentSrc', 'preload', 'bufferedBytes', 'bufferedTime', 'initialTime', 'startOffsetTime', 'defaultPlaybackRate', 'playbackRate', 'played', 'autoplay', 'loop', 'controls'],
@@ -128,7 +128,7 @@ var Renderer = function () {
 			renderers = renderers.length ? renderers : this.order;
 
 			if (!renderersLength) {
-				var rendererIndicator = [/^(html5|native)/i, /^flash/i, /iframe$/i],
+				var rendererIndicator = [/^(html5|native)/i, /iframe$/i],
 				    rendererRanking = function rendererRanking(renderer) {
 					for (var i = 0, total = rendererIndicator.length; i < total; i++) {
 						if (rendererIndicator[i].test(renderer)) {
@@ -1169,7 +1169,7 @@ function getTypeFromFile(url) {
 	var mime = 'video/mp4';
 
 	if (normalizedExt) {
-		if (~['mp4', 'm4v', 'ogg', 'ogv', 'webm', 'flv', 'mpeg'].indexOf(normalizedExt)) {
+		if (~['mp4', 'm4v', 'ogg', 'ogv', 'webm', 'mpeg'].indexOf(normalizedExt)) {
 			mime = 'video/' + normalizedExt;
 		} else if ('mov' === normalizedExt) {
 			mime = 'video/quicktime';
