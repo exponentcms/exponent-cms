@@ -29,7 +29,7 @@
         <script src="{$smarty.const.JQUERY_SCRIPT}"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
-        <script src="{$smarty.const.JQUERY2_SCRIPT}"></script>
+        <script src="{$smarty.const.JQUERY3_SCRIPT}"></script>
     <!--<![endif]-->
 </head>
 <body>
