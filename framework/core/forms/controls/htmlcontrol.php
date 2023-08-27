@@ -85,11 +85,24 @@ class htmlcontrol extends formcontrol {
 
 	static function form($object) {
 		$form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
 		if (!isset($object->html)) {
 			$object->html = "";
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );
 		}
         $form->register("html", '', new htmleditorcontrol($object->html));
+        if (bs4() || bs5())
+            $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("span",gt('Full Width when Labels on Side?'), new checkboxcontrol($object->span,false));
 		if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), '', gt('Cancel'), "", 'editable'));
@@ -97,11 +110,13 @@ class htmlcontrol extends formcontrol {
 	}
 
     static function update($values, $object) {
-		if ($object == null) $object = new htmlcontrol();
+		if ($object == null)
+            $object = new htmlcontrol();
         $object->html = preg_replace("/<br ?\/>$/", "", trim($values['html']));
         $object->span = !empty($values['span']);
 		$object->caption = '';
 		$object->identifier = uniqid("");
+        if (isset($values['width'])) $object->width = ($values['width']);
 		$object->is_static = 1;
 		return $object;
 	}

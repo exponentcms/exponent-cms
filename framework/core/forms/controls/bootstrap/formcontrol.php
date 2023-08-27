@@ -155,7 +155,7 @@ abstract class formcontrol {
             if ($this->horizontal_top)
                 $class .= ' col-sm-10 ';
 
-            $html = "<div" . $divID . " class=\"" . $this->type . "-control control " . (bs3()?'form-group':'control-group') . " " . $class . $disabled;
+            $html = "<div" . $divID . " class=\"" . $this->type . "-control control " . (bs3()?'form-group':'control-group') . " " . $class . "\" " . $disabled;
             $html .= !empty($this->required) ? ' required">' : '">';
             //$html .= "<label>";
             if ($this->required) {

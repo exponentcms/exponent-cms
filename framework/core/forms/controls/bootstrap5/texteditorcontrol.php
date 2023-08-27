@@ -82,7 +82,8 @@ class texteditorcontrol extends formcontrol {
 
 	static function form($object) {
 		$form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
 			$object->caption = "";
@@ -94,6 +95,16 @@ class texteditorcontrol extends formcontrol {
 			$object->maxchars = 0;
             $object->maxlength = 0;
             $object->is_hidden = false;
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );
 		}
         if (empty($object->description)) $object->description = "";
 		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
@@ -104,6 +115,7 @@ class texteditorcontrol extends formcontrol {
 		$form->register("rows",gt('Rows'), new textcontrol($object->rows,4,false,3,"integer"));
 		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4, false,3,"integer"));
         $form->register("maxlength",gt('Maximum Length'), new textcontrol((($object->maxlength==0)?"":$object->maxlength),4,false,3,"integer"));
+        $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
 		if (!expJavascript::inAjaxAction())
 			$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
@@ -111,7 +123,8 @@ class texteditorcontrol extends formcontrol {
 	}
 
     static function update($values, $object) {
-		if ($object == null) $object = new texteditorcontrol();
+		if ($object == null)
+            $object = new texteditorcontrol();
 		if ($values['identifier'] == "") {
 			$post = expString::sanitize($_POST);
 			$post['_formError'] = gt('Identifier is required.');
@@ -127,6 +140,7 @@ class texteditorcontrol extends formcontrol {
         if (isset($values['cols'])) $object->cols = (int)($values['cols']);
         if (isset($values['maxchars'])) $object->maxchars = (int)($values['maxchars']);
         if (isset($values['maxlength'])) $object->maxlength = (int)($values['maxlength']);
+        if (isset($values['width'])) $object->width = ($values['width']);
 		$object->required = !empty($values['required']);
         $object->is_hidden = !empty($values['is_hidden']);
 		return $object;

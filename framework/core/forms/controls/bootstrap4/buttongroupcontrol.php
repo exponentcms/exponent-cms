@@ -54,7 +54,7 @@ class buttongroupcontrol extends formcontrol {
 	function toHTML($label,$name) {
 	    $disabled = $this->disabled != false ? " disabled" : "";
 		if ($this->submit . $this->reset . $this->cancel == "") return "";
-		$html = "<div id=\"".$name."Control\" class=\"buttongroup control form-group".$disabled."\">";
+		$html = "<div id=\"".$name."Control\" class=\"buttongroup control form-group col-sm-12".$disabled."\">";
 		$html .= ($this->horizontal) ? '<div class="offset-sm-2 col-sm-10">' : '';
 		$html .= $this->controlToHTML($name);
 		$html .= ($this->horizontal) ? '</div>' : '';
