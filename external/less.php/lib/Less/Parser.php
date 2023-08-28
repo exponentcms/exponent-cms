@@ -816,39 +816,6 @@ $g = intval( $g );
 	}
 
 	/**
-	 * @return null|string
-	 * @see less-2.5.3.js#parserInput.$quoted
-	 */
-	private function MatchQuoted() {
-		$startChar = $this->input[$this->pos] ?? null;
-		if ( $startChar !== "'" && $startChar !== '"' ) {
-			return;
-		}
-
-		$i = 1;
-		while ( $this->pos + $i < $this->input_len ) {
-			$nextChar = $this->input[$this->pos + $i];
-			switch ( $nextChar ) {
-			case "\\":
-				$i++;
-				break;
-			case "\r":
-			case "\n":
-				return;
-			case $startChar:
-				$i++;
-				$matched = substr( $this->input, $this->pos, $i );
-				$this->skipWhitespace( $i );
-				return $matched;
-			}
-
-			$i++;
-		}
-
-		return null;
-	}
-
-	/**
 	 * Same as match(), but don't change the state of the parser,
 	 * just return the match.
 	 *
@@ -1040,20 +1007,49 @@ $g = intval( $g );
 	 * @see less-2.5.3.js#entities.quoted
 	 */
 	private function parseEntitiesQuoted() {
-		$index = $this->pos;
-
-		$this->save();
-
-		$isEscaped = $this->MatchChar( '~' ) !== null;
-		$str = $this->MatchQuoted();
-		if ( $str === null ) {
-			$this->restore();
+		// Optimization: Determine match potential without save()/restore() overhead
+		// Optimization: Inline MatchChar() here, with its skipWhitespace(1) call below
+		$startChar = $this->input[$this->pos] ?? null;
+		$isEscaped = $startChar === '~';
+		if ( !$isEscaped && $startChar !== "'" && $startChar !== '"' ) {
 			return;
 		}
 
-		$this->forget();
+		$index = $this->pos;
+		$this->save();
 
-		return new Less_Tree_Quoted( $str[0], substr( $str, 1, -1 ), $isEscaped, $index, $this->env->currentFileInfo );
+		if ( $isEscaped ) {
+			$this->skipWhitespace( 1 );
+			$startChar = $this->input[$this->pos] ?? null;
+			if ( $startChar !== "'" && $startChar !== '"' ) {
+				$this->restore();
+				return;
+			}
+		}
+
+		// Optimization: Inline matching of quotes for 8% overall speed up
+		// on large LESS files. https://gerrit.wikimedia.org/r/939727
+		// @see less-2.5.3.js#parserInput.$quoted
+		$i = 1;
+		while ( $this->pos + $i < $this->input_len ) {
+			// Optimization: Skip over irrelevant chars without slow loop
+			$i += strcspn( $this->input, "\n\r$startChar\\", $this->pos + $i );
+			switch ( $this->input[$this->pos + $i++] ) {
+				case "\\":
+					$i++;
+					break;
+				case "\r":
+				case "\n":
+					break 2;
+				case $startChar:
+					$str = substr( $this->input, $this->pos, $i );
+					$this->skipWhitespace( $i );
+					$this->forget();
+					return new Less_Tree_Quoted( $str[0], substr( $str, 1, -1 ), $isEscaped, $index, $this->env->currentFileInfo );
+			}
+		}
+
+		$this->restore();
 	}
 
 	/**
@@ -1292,6 +1288,12 @@ $g = intval( $g );
 	 * @return Less_Tree_UnicodeDescriptor|null
 	 */
 	function parseUnicodeDescriptor() {
+		// Optimization: Hardcode first char, to avoid MatchReg() cost for common case
+		$char = $this->input[$this->pos] ?? null;
+		if ( $char !== 'U' ) {
+			return;
+		}
+
 		$ud = $this->MatchReg( '/\\G(U\+[0-9a-fA-F?]+)(\-[0-9a-fA-F?]+)?/' );
 		if ( $ud ) {
 			return new Less_Tree_UnicodeDescriptor( $ud[0] );
@@ -1307,16 +1309,27 @@ $g = intval( $g );
 	 * @see less-2.5.3.js#parsers.entities.javascript
 	 */
 	private function parseEntitiesJavascript() {
-		$index = $this->pos;
-
-		$this->save();
-
-		$isEscaped = $this->MatchChar( '~' ) !== null;
-		$jsQuote = $this->MatchChar( '`' ) !== null;
-		if ( !$jsQuote ) {
-			$this->restore();
+		// Optimization: Hardcode first char, to avoid save()/restore() overhead
+		// Optimization: Inline MatchChar(), with skipWhitespace(1) below
+		$char = $this->input[$this->pos] ?? null;
+		$isEscaped = $char === '~';
+		if ( !$isEscaped && $char !== '`' ) {
 			return;
 		}
+
+		$index = $this->pos;
+		$this->save();
+
+		if ( $isEscaped ) {
+			$this->skipWhitespace( 1 );
+			$char = $this->input[$this->pos] ?? null;
+			if ( $char !== '`' ) {
+				$this->restore();
+				return;
+			}
+		}
+
+		$this->skipWhitespace( 1 );
 		$js = $this->MatchReg( '/\\G[^`]*`/' );
 		if ( $js ) {
 			$this->forget();
