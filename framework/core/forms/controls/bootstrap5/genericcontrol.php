@@ -95,10 +95,10 @@ class genericcontrol extends formcontrol {
         if (!empty($this->prepend)) {
             if (!USE_BOOTSTRAP_ICONS) {
                 $html .= '<div class="input-group input-group-sm">';
-                $html .= '<i class="input-group-text fas fa-'.$this->prepend.'"></i>';
+                $html .= '<span><i class="input-group-text fas fa-'.$this->prepend.'"></i></span>';
             } else {
                 $html .= '<div class="input-group input-group-sm">';
-                $html .= '<i class="input-group-text bi bi-'.expTheme::buttonIcon($this->prepend)->class.'"></i>';
+                $html .= '<span><i class="input-group-text bi bi-'.expTheme::buttonIcon($this->prepend)->class.'"></i></span>';
             }
         }
         if (!empty($this->append)) {

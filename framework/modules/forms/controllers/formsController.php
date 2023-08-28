@@ -103,7 +103,7 @@ class formsController extends expController {
             if (isset($this->config['order_dropdown_all'])) {
                 $all_text = $this->config['order_dropdown_all'];
             } else {
-                $all_text = gettext('(All)');
+                $all_text = gt('(All)');
             }
 
             if (!empty($f)) {
@@ -1362,7 +1362,7 @@ class formsController extends expController {
             } else {
                 $ctl1 = call_user_func(array($this->params['control_type'], 'update'), $this->params, $ctl1);
             }
-            $ctl1->type = str_replace('control', '', $this->params['control_type'], );  // update the control type
+            $ctl1->type = str_replace('control', '', $this->params['control_type']);  // update the control type
             if (!empty($this->params['rank']))
                 $ctl1->rank = $this->params['rank'];
 

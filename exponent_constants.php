@@ -591,8 +591,8 @@ if (!defined('JQUERY_RELATIVE')) {
         define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v4.x script
     if (!defined('BS5_SCRIPT')) {
-        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>');
-//        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>');
+
+        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v5.x script
 /**
  * Font-Awesome CDN links
@@ -605,7 +605,7 @@ if (!defined('JQUERY_RELATIVE')) {
         define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
     if (!defined('FA6_SCRIPT')) {
-        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
     } // cdn FontAwesome v6.x stylesheet
 //}
 
@@ -614,7 +614,7 @@ if (!defined('JQUERY_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    define('SMARTY_VERSION', '4.3.1');
+    define('SMARTY_VERSION', '4.3.2');
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
 }
@@ -634,12 +634,12 @@ if (!defined('SWIFT_PATH')) {
     /**
      * Deprecations is needed for Lexer v2
      */
-    define('DEPRECATIONS_VERSION', '1.0.0');
+    define('DEPRECATIONS_VERSION', '1.1.1');
     define('SWIFT_DEPRECATIONS_PATH', BASE . 'external/deprecations-' . DEPRECATIONS_VERSION . '/lib/Doctrine/Deprecations/');
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '3.2.4');
+    define('EMAIL_VALIDATOR_VERSION', '3.2.6');
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
@@ -674,7 +674,7 @@ if (!defined('DOMPDF2_VERSION')) {
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.7');
+    define('HTML2PDF5_VERSION', '5.2.7');  // 5.2.8
 }
 /**
  * TCPDF is needed for HTML2PDF5

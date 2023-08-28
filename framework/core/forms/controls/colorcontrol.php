@@ -49,11 +49,17 @@ class colorcontrol extends textcontrol {
 		    $for = '';
 		}
 
-		$disabled = $this->disabled != 0 ? "disabled" : "";
+		$disabled = $this->disabled != 0 ? " disabled" : "";
 		$class = empty($this->class) ? '' : $this->class;
-
+        if (!$this->horizontal && (bs4() || bs5())) {
+            if (empty($this->width)) {
+                $class .= " col-sm-12";
+            } else {
+                $class .= " " . $this->width;
+            }
+        }
 //        $html = '';
-        $html = '<div' . $divID . ' class="' . $this->type . '-control control form-group ' . $class . " " . $disabled;
+        $html = '<div' . $divID . ' class="' . $this->type . '-control control form-group ' . $class . $disabled;
 		$html .= !empty($this->required) ? ' required">' : '">';
 		//$html .= "<label>";
         if($this->required) {
@@ -62,7 +68,7 @@ class colorcontrol extends textcontrol {
             $labeltag = $label;
         }
         $label_class = "";
-        if (bs2()){
+        if (bs2()) {
             if ($this->horizontal) {
                 $label_class = "control-label";
             }
@@ -75,9 +81,10 @@ class colorcontrol extends textcontrol {
                 $label_class = "col-form-label col-sm-2 float-sm-left pt-0";
             }
         } elseif (bs5()) {
-            $label_class = "form-label";
             if ($this->horizontal) {
-                $label_class = "col-form-label col-sm-2 float-sm-left";
+                $label_class = "col-form-label col-sm-2";
+            } else {
+                $label_class = "form-label";
             }
         } else {
             $label_class = "label";
@@ -95,18 +102,19 @@ class colorcontrol extends textcontrol {
 	}
 
     static function form($object) {
-        if (empty($object)) $object = new stdClass();
-        if (!isset($object->identifier)) {
-            $object->identifier = "";
-            $object->caption = "";
-            $object->description = "";
-            $object->default = "";
-            $object->placeholder = "";
-            $object->pattern = "";
-            $object->size = 0;
-            $object->maxlength = 0;
-            $object->required = false;
-        }
+//        if (empty($object))
+//            $object = new stdClass();
+//        if (!isset($object->identifier)) {
+//            $object->identifier = "";
+//            $object->caption = "";
+//            $object->description = "";
+//            $object->default = "";
+////            $object->placeholder = "";
+////            $object->pattern = "";
+////            $object->size = 0;
+////            $object->maxlength = 0;
+//            $object->required = false;
+//        }
 
         $form = parent::form($object);
 

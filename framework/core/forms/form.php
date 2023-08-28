@@ -328,11 +328,18 @@ class form extends baseform {
         }
 		$html .= '<div class="error">'.$formError.'</div>';
         $class = '';
+        if (bs4() || bs5()) {
+            $class = " class=\"row\"";
+        }
         if ($this->horizontal) {
             if (newui()) {
                 $class = " class=\"exp-skin form-horizontal\"";
             } else {
-                $class = " class=\"form-horizontal\"";
+                if (bs4() || bs5()) {
+                    $class = " class=\"row form-horizontal\"";
+                } else {
+                    $class = " class=\"form-horizontal\"";
+                }
             }
         } elseif (newui()) {
             $class = " class=\"exp-skin\"";

@@ -106,7 +106,8 @@ class textcontrol extends formcontrol {
 
     static function form($object) {
         $form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption = "";
@@ -117,8 +118,19 @@ class textcontrol extends formcontrol {
             $object->size = 0;
             $object->maxlength = 0;
             $object->required = false;
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );
         }
-        if (empty($object->description)) $object->description = "";
+        if (empty($object->description))
+            $object->description = "";
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true,array('required'=>true));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
@@ -127,6 +139,7 @@ class textcontrol extends formcontrol {
         $form->register("pattern",gt('Pattern'), new textcontrol($object->pattern));
         $form->register("size",gt('Size'), new textcontrol((($object->size==0)?"":$object->size),4,false,3,"integer"));
         $form->register("maxlength",gt('Maximum Length'), new textcontrol((($object->maxlength==0)?"":$object->maxlength),4,false,3,"integer"));
+        $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,false));
         if (!expJavascript::inAjaxAction())
             $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
@@ -136,7 +149,8 @@ class textcontrol extends formcontrol {
     static function update($values, $object) {
         $this_control = !empty($values['control_type']) ? $values['control_type'] : 'textcontrol';
 //        if ($object == null) $object = new textcontrol();
-        if ($object == null) $object = new $this_control();
+        if ($object == null)
+            $object = new $this_control();
         if ($values['identifier'] == "") {
             $post = expString::sanitize($_POST);
             $post['_formError'] = gt('Identifier is required.');
@@ -151,6 +165,7 @@ class textcontrol extends formcontrol {
         if (isset($values['pattern'])) $object->pattern = $values['pattern'];
         if (isset($values['size'])) $object->size = (int)($values['size']);
         if (isset($values['maxlength'])) $object->maxlength = (int)($values['maxlength']);
+        if (isset($values['width'])) $object->width = ($values['width']);
         $object->required = !empty($values['required']);
         return $object;
     }

@@ -16,10 +16,11 @@ Version 3.0.2
 ### Address issues in v3.0.0, incorporate changes found in v2.7.2
 
 - compatible with PHP v7.4.x, v8.0.x, v8.1.x and v8.2.x
-- add better metainfo for forms and records
-- add feature to add dates to an existing event
+    - deprecated support for PHP v5.6.x, v7.0.x, v7.1.x, v7.2.x and v7.3.x still exists
+- adds better metainfo for forms and records
+- adds feature to add dates to an existing event
 - new blog dates calendar view
-- add invisible reCaptcha option
+- adds invisible reCaptcha option
 - fixes several warnings/issues with PHP v8
 - fixes and tweaks many issues in previous versions, otherwise is code compatible with v2.7.2
 

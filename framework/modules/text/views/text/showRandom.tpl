@@ -15,7 +15,9 @@
 
 <div class="module text show-random">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
-    {$myloc=serialize($__loc)}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
@@ -26,6 +28,7 @@
             {/if}
         </div>
     {/permissions}
+    {$myloc=serialize($__loc)}
     {foreach from=$items item=item name=items}
         <div class="item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
             {if $item->title}<{$config.item_level|default:'h2'}>{$item->title}</{$config.item_level|default:'h2'}>{/if}

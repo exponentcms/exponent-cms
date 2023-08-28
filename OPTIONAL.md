@@ -125,7 +125,7 @@ installing the [Kint](https://github.com/kint-php/kint) PHP library. Simply plac
 into the /external folder (for v1 & v2 extract into the /external folder to create a subfolder).
 The feature is auto-activated by this installation.
 
-- v3.3.0 to v5.0.4 (/external/kint.phar), (requires Exponent CMS v2.6.0patch2 or later)
+- v3.3.0 to v5.0.6 (/external/kint.phar), (requires Exponent CMS v2.6.0patch2 or later)
 - v2.2 (/external/kint-2.2/) is the last 2.x version,
 - but v1.1 (/external/kint/) is also supported
 

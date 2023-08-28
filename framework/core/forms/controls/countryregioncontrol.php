@@ -131,12 +131,15 @@ class countryregioncontrol extends formcontrol {
         } else {
             $c_name = $name . "_country_id";
         }
+        $c_dd->width = $r_dd->width = 'col-sm-6';
+        $html .= "<div class='row'><div class='" . $c_dd->width . "'>";
 		$html .= $c_dd->controlToHTML($c_name);
-		$html .="<br>";
+//		$html .="<br>";
+        $html .= "</div><div class='" . $r_dd->width . "'>";
         if (!bs())
             $html .="<label class='label'></label>";
 		$html .= $r_dd->controlToHTML($r_name);
-
+		$html .= "</div></div>";
 		return $html;
 	}
 

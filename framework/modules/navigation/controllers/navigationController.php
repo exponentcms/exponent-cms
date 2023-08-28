@@ -781,7 +781,11 @@ class navigationController extends expController {
 
         // Fix page ranks to be sequential beginning at 1
         $sect = new section();
-        $pages = $sect->find('all','parent!=-1','parent,rank');
+        if ($db->mysql8)
+            $order = '`parent`,`rank`';
+        else
+            $order = 'parent,rank';
+        $pages = $sect->find('all','parent!=-1',$order);
         $rank = 1;
         $oldparent = $pages[0]->parent;
         foreach ($pages as $page) {

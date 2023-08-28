@@ -148,6 +148,7 @@ class tinymce5control extends formcontrol
                 toolbar: 'bold italic underline removeformat | bullist numlist | link unlink localautosave help',";
             } else {
                 $tb = "
+                toolbar_mode: 'scrolling',
                 toolbar1: 'undo redo localautosave | styleselect formatselect fontselect fontsizeselect | cut copy paste | bold italic underline removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
                 toolbar2: 'link unlink image quickupload | print preview visualblocks fullscreen code media | forecolor backcolor emoticons help";
                 if (!empty($this->plugin)) {
