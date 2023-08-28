@@ -89,6 +89,11 @@ class checkboxcontrol extends formcontrol {
                 $html .= " form-check";
             $html .= (!empty($this->switch)) ? ' form-switch' : '';
             $html .= (!empty($this->class)) ? ' ' . $this->class : '';
+            if (empty($this->width)) {
+                $html .= " col-sm-12";
+            } else {
+                $html .= " " . $this->width;
+            }
             $html .= (!empty($this->horizontal)) ? ' row' : '';
             $html .= (!empty($this->required)) ? ' required">' : '">';
             if ($this->required) {
@@ -194,7 +199,8 @@ class checkboxcontrol extends formcontrol {
 
     static function form($object) {
         $form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier  = "";
             $object->caption     = "";
@@ -203,23 +209,35 @@ class checkboxcontrol extends formcontrol {
             $object->flip        = false;
             $object->required    = false;
             $object->is_hidden = false;
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );
         }
-        if (empty($object->description)) $object->description = "";
+        if (empty($object->description))
+            $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("default", gt('Default value'), new checkboxcontrol($object->default, false));
+        $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("flip", "Caption on Left", new checkboxcontrol($object->flip, false));
         $form->register("required", gt('Make this a required field'), new checkboxcontrol($object->required, false));
         $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
         if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), '', gt('Cancel'), "", 'editable'));
-
         return $form;
     }
 
     static function update($values, $object) {
-        if ($object == null) $object = new checkboxcontrol();
+        if ($object == null)
+            $object = new checkboxcontrol();
         if ($values['identifier'] == "") {
             $post = expString::sanitize($_POST);
             $post['_formError'] = gt('Identifier is required.');
@@ -230,6 +248,7 @@ class checkboxcontrol extends formcontrol {
         $object->caption     = $values['caption'];
         $object->description = $values['description'];
         $object->default     = !empty($values['default']);
+        if (isset($values['width'])) $object->width = ($values['width']);
         $object->flip        = !empty($values['flip']);
         $object->required    = !empty($values['required']);
         $object->is_hidden   = !empty($values['is_hidden']);

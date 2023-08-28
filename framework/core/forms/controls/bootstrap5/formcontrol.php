@@ -42,9 +42,19 @@ abstract class formcontrol {
 	var $tabindex = -1;
 	var $inError = 0; // This will ONLY be set by the parent form.
 	var $type = 'text';
-    var $horizontal = false;
-    var $horizontal_top = false;
+    var $horizontal = false;  // label on side
+    var $horizontal_top = false;  //fixme ??
     var $jsHooks = array();
+    var $width = '';
+    var $widths = array(
+        '' => 'Full',
+        'col-sm-8' => '8 Col',
+        'col-sm-6' => '6 Col',
+        'col-sm-4' => '4 Col',
+        'col-sm-3' => '3 Col',
+        'col-sm-2' => '2 Col',
+        'col-sm-1' => '1 Col'
+    );
 
 	static function name() { return "formcontrol"; }
 
@@ -152,11 +162,17 @@ abstract class formcontrol {
 
             $disabled = $this->disabled != 0 ? "disabled='disabled'" : "";
             $class = empty($this->class) ? '' : $this->class;
-            if ($this->horizontal_top)
+//            if ($this->horizontal_top)
+            if ($this->horizontal)
                 $class .= ' col-sm-10 ';
+            elseif (empty($this->width)) {
+                $class .= " col-sm-12";
+            } else {
+                $class .= " " . $this->width;
+            }
 
-            $html = "<div" . $divID . " class=\"" . $this->type . "-control control mb-2 " . ($this->horizontal ? 'row ' : '') . 'form-group ' . $class . $disabled;
-            $html .= !empty($this->required) ? ' required">' : '">';
+            $html = "<div" . $divID . " class=\"" . $this->type . "-control control mb-2 " . ($this->horizontal ? 'row ' : '') . 'form-group ' . $class . "\" " . $disabled;
+            $html .= !empty($this->required) ? ' required>' : '>';
             //$html .= "<label>";
             if ($this->required) {
                 $labeltag = '<span class="required" title="' . gt(

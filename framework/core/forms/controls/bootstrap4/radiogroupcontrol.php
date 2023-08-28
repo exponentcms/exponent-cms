@@ -55,7 +55,12 @@ class radiogroupcontrol extends formcontrol {
 	function toHTML($label,$name) {
 		$this->id  = (empty($this->id)) ? $name : $this->id;
         $html = "<div role=\"radiogroup\" id=\"" . $this->id . "Control\" class=\"radiogroup control form-group";
-		$html .= (!empty($this->required)) ? ' required">' : '">';
+        if (empty($this->width)) {
+            $html .= " col-sm-12";
+        } else {
+            $html .= " " . $this->width;
+        }
+        $html .= (!empty($this->required)) ? ' required">' : '">';
         $html .= (!empty($label)) ? "<label class=\"col-form-label" . ($this->horizontal ? ' col-sm-2 float-sm-left pt-0' : '') . "\"" . ($this->cols != 1 ? " style=\"padding-right:12px\"" : "") . ">" . $label . "</label>" : "";
 		$html .= $this->controlToHTML($name, $label);
         $html .= "</div>";
@@ -94,7 +99,8 @@ class radiogroupcontrol extends formcontrol {
 
 	static function form($object) {
 		$form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
 			$object->caption = "";
@@ -104,13 +110,25 @@ class radiogroupcontrol extends formcontrol {
 //			$object->spacing = 100;
 			$object->cols = 1;
 			$object->items = array();
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );
 		}
-        if (empty($object->description)) $object->description = "";
+        if (empty($object->description))
+            $object->description = "";
 		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
 		$form->register("default",gt('Default'), new textcontrol($object->default));
+        $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
 		$form->register("flip","Item Caption on Left", new checkboxcontrol($object->flip,false));
 //		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4,false,2,"integer"));
         $form->register("cols","Stacked Controls", new checkboxcontrol($object->cols,false));
@@ -123,7 +141,8 @@ class radiogroupcontrol extends formcontrol {
 	}
 
     static function update($values, $object) {
-		if ($object == null) $object = new radiogroupcontrol();
+		if ($object == null)
+            $object = new radiogroupcontrol();
 		if ($values['identifier'] == "") {
 			$post = expString::sanitize($_POST);
 			$post['_formError'] = gt('Identifier is required.');
@@ -140,6 +159,7 @@ class radiogroupcontrol extends formcontrol {
 //        if (isset($values['cols'])) $object->cols = (int)($values['cols']);
         $object->cols = !empty($values['cols']) ? 1 : 0;
 //        if (isset($values['spacing'])) $object->spacing = (int)($values['spacing']);
+        if (isset($values['width'])) $object->width = ($values['width']);
 		$object->required = !empty($values['required']);
 
 		return $object;

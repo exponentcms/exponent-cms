@@ -146,13 +146,24 @@ class uploadcontrol extends formcontrol {
 
 	static function form($object) {
 		$form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
 			$object->caption = "";
             $object->description = "";
 			$object->default = "";
             $object->accept = "";
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );
 		}
         if (empty($object->description)) $object->description = "";
 		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
@@ -160,13 +171,15 @@ class uploadcontrol extends formcontrol {
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("default",gt('Default'), new textcontrol($object->default));
         $form->register("accept",gt('Accept'), new textcontrol($object->accept));
+        $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
         if (!expJavascript::inAjaxAction())
     		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		return $form;
 	}
 
     static function update($values, $object) {
-        if ($object == null) $object = new uploadcontrol();
+        if ($object == null)
+            $object = new uploadcontrol();
         if ($values['identifier'] == "") {
             $post = expString::sanitize($_POST);
             $post['_formError'] = gt('Identifier is required.');
@@ -176,10 +189,9 @@ class uploadcontrol extends formcontrol {
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
         $object->description = $values['description'];
-        if (!empty($values['default']))
-            $object->default = $values['default'];
-        if (!empty($values['accept']))
-            $object->accept = $values['accept'];
+        if (!empty($values['default'])) $object->default = $values['default'];
+        if (!empty($values['accept'])) $object->accept = $values['accept'];
+        if (isset($values['width'])) $object->width = ($values['width']);
         return $object;
     }
 
