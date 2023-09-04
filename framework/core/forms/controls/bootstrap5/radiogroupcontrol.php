@@ -128,7 +128,7 @@ class radiogroupcontrol extends formcontrol {
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
 		$form->register("default",gt('Default'), new textcontrol($object->default));
-        $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
+        $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
 		$form->register("flip","Item Caption on Left", new checkboxcontrol($object->flip,false));
 //		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4,false,2,"integer"));
         $form->register("cols","Stacked Controls", new checkboxcontrol($object->cols,false));

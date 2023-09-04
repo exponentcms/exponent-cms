@@ -171,7 +171,7 @@ class uploadcontrol extends formcontrol {
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("default",gt('Default'), new textcontrol($object->default));
         $form->register("accept",gt('Accept'), new textcontrol($object->accept));
-        $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
+        $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         if (!expJavascript::inAjaxAction())
     		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		return $form;

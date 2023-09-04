@@ -205,7 +205,7 @@ class htmleditorcontrol extends htmleditor {
         $form->register("cols", gt('Columns'), new textcontrol($object->cols, 4, false, 3, "integer"));
         $form->register("maxlength", gt('Maximum Length'), new textcontrol((($object->maxlength == 0) ? "" : $object->maxlength), 4, false, 3, "integer"));
         if (bs4() || bs5())
-            $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
+            $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden), false));
         if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), '', gt('Cancel'), "", 'editable'));

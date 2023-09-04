@@ -115,7 +115,7 @@ class countrycontrol extends dropdowncontrol {
         $form->register("abbv", gt('Use abbreviations?'), new checkboxcontrol($object->abbv,true));
         $form->register("show_all", gt('Show all countries?'), new checkboxcontrol($object->show_all,true));
         if (bs4() || bs5())
-            $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
+            $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
         if (!expJavascript::inAjaxAction())
             $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));

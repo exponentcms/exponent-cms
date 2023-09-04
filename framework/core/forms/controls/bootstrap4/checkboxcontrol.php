@@ -221,7 +221,7 @@ class checkboxcontrol extends formcontrol {
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("default", gt('Default value'), new checkboxcontrol($object->default, false));
-        $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
+        $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("flip", "Caption on Left", new checkboxcontrol($object->flip, false));
         $form->register("required", gt('Make this a required field'), new checkboxcontrol($object->required, false));
         $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));

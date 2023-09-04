@@ -102,7 +102,7 @@ class htmlcontrol extends formcontrol {
 		}
         $form->register("html", '', new htmleditorcontrol($object->html));
         if (bs4() || bs5())
-            $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
+            $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("span",gt('Full Width when Labels on Side?'), new checkboxcontrol($object->span,false));
 		if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), '', gt('Cancel'), "", 'editable'));
