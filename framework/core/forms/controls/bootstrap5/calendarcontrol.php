@@ -278,7 +278,7 @@ class calendarcontrol extends formcontrol {
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showtime", gt('Show Time'), new checkboxcontrol($object->showtime, false));
-        $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
+        $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
         return $form;

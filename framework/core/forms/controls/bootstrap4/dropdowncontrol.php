@@ -165,7 +165,7 @@ class dropdowncontrol extends formcontrol {
         $form->register("include_blank", gt('Include a Blank Item.'), new checkboxcontrol($object->include_blank,true));
         $form->register("default",gt('Default'), new textcontrol($object->default));
         $form->register("size",gt('Size'), new textcontrol($object->size,3,false,2,"integer"));
-        $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
+        $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
         if (!expJavascript::inAjaxAction())
             $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));

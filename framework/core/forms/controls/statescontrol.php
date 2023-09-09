@@ -126,7 +126,7 @@ class statescontrol extends dropdowncontrol {
         $form->register("add_other", gt('\'Select State\' entry?'), new checkboxcontrol($object->add_other,true));
         $form->register("include_blank", gt('Include a Blank Entry?'), new checkboxcontrol($object->include_blank,true));
         if (bs4() || bs5())
-            $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
+            $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
         if (!expJavascript::inAjaxAction())
             $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));

@@ -532,7 +532,7 @@ if (!defined('YUI2_RELATIVE')) {
 if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
-    define('JQUERY3_VERSION', '3.7.0');
+    define('JQUERY3_VERSION', '3.7.1');
     define('JQUERY3_MIGRATE_VERSION', '3.4.1');
     define('JQUERYUI_VERSION', '1.13.2');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
@@ -629,7 +629,7 @@ if (!defined('SWIFT_PATH')) {
     /**
      * Lexer is needed for Swiftmailer v6
      */
-    define('LEXER_VERSION', '2.1.0');
+    define('LEXER_VERSION', '2.1.0');  // 3.0.0
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/src/');
     /**
      * Deprecations is needed for Lexer v2
@@ -651,7 +651,7 @@ if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.17');
 }
 if (!defined('MPDF81_VERSION')) {
-    define('MPDF81_VERSION', '8.1.4');  // 8.1.6
+    define('MPDF81_VERSION', '8.1.4');  // 8.2.0
 }
 /**
  * Log is needed for MPDF v7+
@@ -663,7 +663,25 @@ if (!defined('LOG_VERSION')) {
  * FPDI is needed for MPDF v8+
  */
 if (!defined('FPDI_VERSION')) {
-    define('FPDI_VERSION', '2.3.6');  // 2.3.7
+    define('FPDI_VERSION', '2.3.6');  // 2.4.1
+}
+/**
+ * HTTP Message Shim is needed for MPDF v8.2+
+ */
+if (!defined('HTTP_MSG_SHM_VERSION')) {
+    define('HTTP_MSG_SHM_VERSION', '2.0.0');
+}
+/**
+ * Log Aware Trait is needed for MPDF v8.1.6+
+ */
+if (!defined('LOG_AWARE_VERSION')) {
+    define('LOG_AWARE_VERSION', '3.0.0');
+}
+/**
+ * HTTP Message is needed for MPDF v8+
+ */
+if (!defined('HTTP_MSG_VERSION')) {
+    define('HTTP_MSG_VERSION', '1.0');  // 2.0
 }
 
 if (!defined('DOMPDF8_VERSION')) {
@@ -680,7 +698,7 @@ if (!defined('HTML2PDF5_VERSION')) {
  * TCPDF is needed for HTML2PDF5
  */
 if (!defined('TCPDF5_VERSION')) {
-    define('TCPDF5_VERSION', '6.6.2');
+    define('TCPDF5_VERSION', '6.6.2');  // 6.6.5
 }
 
 ?>

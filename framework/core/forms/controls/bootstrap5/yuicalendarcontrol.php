@@ -242,7 +242,7 @@ class yuicalendarcontrol extends formcontrol {
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showdate",gt('Show Date'), new checkboxcontrol($object->showdate,false));
         $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
-        $form->register('width',gt('Width').': ',new dropdowncontrol($object->width, $object->widths));
+        $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
 //        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
         if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
