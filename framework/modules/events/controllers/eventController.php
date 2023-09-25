@@ -812,6 +812,44 @@ class eventController extends expController {
     }
 
     /**
+     * Returns Facebook og: meta data
+     *
+     * @param $request
+     * @param $object
+     * @param $canonical
+     *
+     * @return null
+     */
+    public function meta_fb($request, $object, $canonical) {
+        $metainfo = array();
+        $metainfo['type'] = 'article';
+        if (!empty($object->event->body)) {
+            $desc = str_replace('"',"'",expString::summarize($object->event->body,'html','para'));
+        } else {
+            $desc = SITE_DESCRIPTION;
+        }
+        $metainfo['title'] = substr(empty($object->meta_fb['title']) ? $object->event->title : $object->meta_fb['title'], 0, 87);
+        $metainfo['description'] = substr(empty($object->meta_fb['description']) ? $desc : $object->meta_fb['description'], 0, 199);
+        $metainfo['url'] = empty($object->meta_fb['url']) ? $canonical : $object->meta_fb['url'];
+        $metainfo['image'] = empty($object->meta_fb['fbimage'][0]) ? '' : $object->meta_fb['fbimage'][0]->url;
+        if (empty($metainfo['image'])) {
+            $ev = new event($object->event->id);
+            if (!empty($ev->expFile[0]->is_image)) {
+                $metainfo['image'] = $ev->expFile[0]->url;
+            } else {
+                $config = expConfig::getConfig($object->location_data);
+                if (!empty($config['expFile']['fbimage'][0]))
+                    $file = new expFile($config['expFile']['fbimage'][0]);
+                if (!empty($file->id))
+                    $metainfo['image'] = $file->url;
+                if (empty($metainfo['image']))
+                    $metainfo['image'] = URL_BASE . MIMEICON_RELATIVE . 'generic_22x22.png';
+            }
+        }
+        return $metainfo;
+    }
+
+    /**
    	 * get the metainfo for this module
      * @return array|boolean
    	 */
@@ -841,6 +879,7 @@ class eventController extends expController {
                             }
                             $metainfo['keywords'] = $keyw;
                         }
+                        $metainfo['fb'] = $this->meta_fb($router->params, $object, $metainfo['canonical']);
                         return $metainfo;
                         break;
                     }
