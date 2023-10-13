@@ -64,7 +64,9 @@
                 {br}
                 {control type="buttongroup" wide=true size=large submit="Log In"|gettext}
                 {br}
+                <div class="buttongroup control form-group col-sm-12">
                 {icon wide=true size=large controller=users action=reset_password text='Forgot Your Password?'|gettext}
+                </div>
             {/form}
         </div>
         {if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM}
