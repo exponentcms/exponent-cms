@@ -49,7 +49,10 @@ class dropdowncontrol extends formcontrol {
     }
 
     function controlToHTML($name,$label=null) {
-        $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
+        // compensate for multiple defaults separated by |
+        if (stripos($this->default, "|") !== 0) {
+            $this->default = explode("|", $this->default);
+        }       $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
         $disabled = $this->disabled != false ? "disabled" : "";
 
         $html = ($this->horizontal) ? '<div class="col-sm-10">' : '<div style="display:inline">';
@@ -116,6 +119,7 @@ class dropdowncontrol extends formcontrol {
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
         $form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
         $form->register("include_blank", gt('Include a Blank Item.'), new checkboxcontrol($object->include_blank,true));
+        $form->register("multiple", gt('Allow Multiple Selections.'), new checkboxcontrol($object->multiple,true));
         $form->register("default",gt('Default'), new textcontrol($object->default));
         $form->register("size",gt('Size'), new textcontrol($object->size,3,false,2,"integer"));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
@@ -138,6 +142,7 @@ class dropdowncontrol extends formcontrol {
         $object->default = $values['default'];
         $object->items = listbuildercontrol::parseData('items', $values, true);
         $object->include_blank = !empty($values['include_blank']);
+        $object->multiple = !empty($values['multiple']);
         if (isset($values['size'])) $object->size = ((int)($values['size']) <= 0)?1:(int)($values['size']);
         $object->required = !empty($values['required']);
         return $object;

@@ -1,5 +1,5 @@
 /*!
-  * Tempus Dominus v6.7.13 (https://getdatepicker.com/)
+  * Tempus Dominus v6.7.10 (https://getdatepicker.com/)
   * Copyright 2013-2023 Jonathan Peterson
   * Licensed under MIT (https://github.com/Eonasdan/tempus-dominus/blob/master/LICENSE)
   */
@@ -4026,9 +4026,9 @@
                   this.optionsStore.viewDate.year = value;
                   break;
           }
-          this.dates.setValue(this.optionsStore.viewDate, this.dates.lastPickedIndex);
           if (this.optionsStore.currentCalendarViewMode ===
               this.optionsStore.minimumCalendarViewMode) {
+              this.dates.setValue(this.optionsStore.viewDate, this.dates.lastPickedIndex);
               if (!this.optionsStore.options.display.inline) {
                   this.display.hide();
               }
@@ -4170,25 +4170,9 @@
            */
           this._toggleClickEvent = () => {
               if (this.optionsStore.element?.disabled ||
-                  this.optionsStore.input?.disabled ||
-                  //if we just have the input and allow input toggle is enabled, then don't cause a toggle
-                  (this._toggle.nodeName === 'INPUT' &&
-                      this._toggle?.type === 'text' &&
-                      this.optionsStore.options.allowInputToggle))
-                  return;
-              this.toggle();
-          };
-          /**
-           * Event for when the toggle is clicked. This is a class level method so there's
-           * something for the remove listener function.
-           * @private
-           */
-          this._openClickEvent = () => {
-              if (this.optionsStore.element?.disabled ||
                   this.optionsStore.input?.disabled)
                   return;
-              if (!this.display.isVisible)
-                  this.show();
+              this.toggle();
           };
           setupServiceLocator();
           this._eventEmitters = serviceLocator.locate(EventEmitters);
@@ -4347,8 +4331,8 @@
           this._eventEmitters.destroy();
           this.optionsStore.input?.removeEventListener('change', this._inputChangeEvent);
           if (this.optionsStore.options.allowInputToggle) {
-              this.optionsStore.input?.removeEventListener('click', this._openClickEvent);
-              this.optionsStore.input?.removeEventListener('focus', this._openClickEvent);
+              this.optionsStore.input?.removeEventListener('click', this._toggleClickEvent);
+              this.optionsStore.input?.removeEventListener('focus', this._toggleClickEvent);
           }
           this._toggle?.removeEventListener('click', this._toggleClickEvent);
           this._subscribers = {};
@@ -4470,12 +4454,6 @@
           else if (newConfig.localization.hourCycle === undefined) {
               newConfig.localization.hourCycle = guessHourCycle(newConfig.localization.locale);
           }
-          if (newConfig.restrictions.maxDate &&
-              this.viewDate.isAfter(newConfig.restrictions.maxDate))
-              this.viewDate = newConfig.restrictions.maxDate;
-          if (newConfig.restrictions.minDate &&
-              this.viewDate.isBefore(newConfig.restrictions.minDate))
-              this.viewDate = newConfig.restrictions.minDate;
           this.optionsStore.options = newConfig;
       }
       /**
@@ -4504,8 +4482,8 @@
               this.optionsStore.input.value = this.dates.formatInput(this.optionsStore.options.defaultDate);
           this.optionsStore.input.addEventListener('change', this._inputChangeEvent);
           if (this.optionsStore.options.allowInputToggle) {
-              this.optionsStore.input.addEventListener('click', this._openClickEvent);
-              this.optionsStore.input.addEventListener('focus', this._openClickEvent);
+              this.optionsStore.input.addEventListener('click', this._toggleClickEvent);
+              this.optionsStore.input.addEventListener('focus', this._toggleClickEvent);
           }
           if (this.optionsStore.input.value) {
               this._inputChangeEvent();
@@ -4559,7 +4537,7 @@
               if (this.display.widget) {
                   this._eventEmitters.action.emit({
                       e: {
-                          currentTarget: this.display.widget.querySelector('[data-action="togglePicker"]'),
+                          currentTarget: this.display.widget.querySelector(`.${Namespace.css.switch}`),
                       },
                       action: ActionTypes$1.togglePicker,
                   });
@@ -4609,7 +4587,7 @@
       }
       return tempusDominus;
   };
-  const version = '6.7.13';
+  const version = '6.7.10';
   const tempusDominus = {
       TempusDominus,
       extend,

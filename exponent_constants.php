@@ -614,7 +614,7 @@ if (!defined('JQUERY_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    define('SMARTY_VERSION', '4.3.2');
+    define('SMARTY_VERSION', '4.3.4');
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
 }
@@ -634,12 +634,12 @@ if (!defined('SWIFT_PATH')) {
     /**
      * Deprecations is needed for Lexer v2
      */
-    define('DEPRECATIONS_VERSION', '1.1.1');
+    define('DEPRECATIONS_VERSION', '1.1.2');
     define('SWIFT_DEPRECATIONS_PATH', BASE . 'external/deprecations-' . DEPRECATIONS_VERSION . '/lib/Doctrine/Deprecations/');
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '3.2.6');
+    define('EMAIL_VALIDATOR_VERSION', '3.2.6');  // 4.0.2
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
@@ -657,7 +657,7 @@ if (!defined('MPDF81_VERSION')) {
  * Log is needed for MPDF v7+
  */
 if (!defined('LOG_VERSION')) {
-    define('LOG_VERSION', '1.1.4');
+    define('LOG_VERSION', '1.1.4');  // 2.0.0, 3.0.0
 }
 /**
  * FPDI is needed for MPDF v8+
@@ -669,7 +669,7 @@ if (!defined('FPDI_VERSION')) {
  * HTTP Message Shim is needed for MPDF v8.2+
  */
 if (!defined('HTTP_MSG_SHM_VERSION')) {
-    define('HTTP_MSG_SHM_VERSION', '2.0.0');
+    define('HTTP_MSG_SHM_VERSION', '2.0.1');
 }
 /**
  * Log Aware Trait is needed for MPDF v8.1.6+
