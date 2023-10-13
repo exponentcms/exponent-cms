@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v6.9.0 (2023-10-11)
+
+- Deprecates API key-related functions in the `user` service and introduces the replacement functions in the `api_keys` service
+- Fixes a bug that changed the timezone to UTC on each request without resetting it to the original timezone in use (closes #310)
+- Fixes documentation generation command invocation
+
 ## v6.8.1 (2023-09-05)
 
 - Fix endpoint for creating a FedEx Smartpost carrier account
