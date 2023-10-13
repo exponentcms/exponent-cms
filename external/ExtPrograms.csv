@@ -5,7 +5,7 @@ Doctrine Deprecations,1.0.0,github.com/doctrine/deprecations,1.1.1,needed by Doc
 EmailValidator,3.2.6,github.com/egulias/EmailValidator,3.2.6/4.0.1,needed by swiftmailer v6; change folder structure and add autoloader to main file
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
-Smarty,3.1.27/4.3.2,smarty.net,4.3.2,
+Smarty,3.1.27/4.3.4,smarty.net,4.3.4,
 phpthumb,1.7.21exp,github.com/JamesHeinrich/phpThumb,1.7.21,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.22,github.com/JamesHeinrich/getID3,1.9.22,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.14,modify config.php
