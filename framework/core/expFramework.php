@@ -1130,11 +1130,11 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
             case E_ERROR:
             case E_USER_ERROR:
                 $msg = 'PHP Error('.$errno.'): ';
-            break;
+                break;
             case E_WARNING:
             case E_USER_WARNING:
                 $msg = 'PHP Warning('.$errno.'): ';
-            break;
+                break;
             case E_NOTICE:
             case E_USER_NOTICE:
                 $msg = 'PHP Notice('.$errno.'): ';
@@ -1142,7 +1142,7 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
             default:
                 return;  // we really don't want other issues printed
                 $msg = 'PHP Issue('.$errno.'): ';
-            break;
+                break;
         }
         $msg .= $errstr;
         $msg .= !empty($errfile) ? ' in file '.$errfile : "";
@@ -1270,7 +1270,7 @@ function isSSL() {
  * Equivalent to `date_format_to( $format, 'date' )`
  *
  * @param string $strf_format A `strftime()` date/time format
- * @return string
+ * @return string A `date()` date/time format
  */
 function strftime_to_date_format( $strf_format ) {
 	return expDateTime::date_format_to( $strf_format, 'date' );
@@ -1280,10 +1280,20 @@ function strftime_to_date_format( $strf_format ) {
  * Equivalent to `convert_datetime_format_to( $format, 'strf' )`
  *
  * @param string $date_format A `date()` date/time format
- * @return string
+ * @return string A `strftime()` date/time format
  */
 function date_to_strftime_format( $date_format ) {
 	return expDateTime::date_format_to( $date_format, 'strf' );
+}
+
+/**
+ * Converts an strftime format to a moment.js format
+ *
+ * @param string $strf_format A `strftime()` date/time format
+ * @return string A `moment.js` date/time format
+ */
+function strftime_to_moment_format( $strf_format ) {
+	return expDateTime::convertPhpToJsMomentFormat(expDateTime::date_format_to( $strf_format, 'date' ));
 }
 
 /**
