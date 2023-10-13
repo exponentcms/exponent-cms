@@ -617,7 +617,7 @@ if (!defined('SMARTY_PATH')) {
     if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
     } else {
-        define('SMARTY_VERSION', '4.3.2');  //note smarty v3.1.28+ won't work properly with php < v7.1+
+        define('SMARTY_VERSION', '4.3.4');  //note smarty v3.1.28+ won't work properly with php < v7.1+
     }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
@@ -642,12 +642,12 @@ if (!defined('SWIFT_PATH')) {
     /**
      * Deprecations is needed for Lexer v2
      */
-    define('DEPRECATIONS_VERSION', '1.1.1');
+    define('DEPRECATIONS_VERSION', '1.1.2');
     define('SWIFT_DEPRECATIONS_PATH', BASE . 'external/deprecations-' . DEPRECATIONS_VERSION . '/lib/Doctrine/Deprecations/');
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '3.2.6');
+    define('EMAIL_VALIDATOR_VERSION', '3.2.6');  // 4.0.2
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
@@ -668,7 +668,7 @@ if (!defined('MPDF81_VERSION')) {
  * Log is needed for MPDF v7+
  */
 if (!defined('LOG_VERSION')) {
-    define('LOG_VERSION', '1.1.4');
+    define('LOG_VERSION', '1.1.4');  // 2.0.0, 3.0.0
 }
 /**
  * random_compat is needed for MPDF v7+ under PHP v5.6
@@ -686,7 +686,7 @@ if (!defined('FPDI_VERSION')) {
  * HTTP Message Shim is needed for MPDF v8.2+
  */
 if (!defined('HTTP_MSG_SHM_VERSION')) {
-    define('HTTP_MSG_SHM_VERSION', '2.0.0');
+    define('HTTP_MSG_SHM_VERSION', '2.0.1');
 }
 /**
  * Log Aware Trait is needed for MPDF v8.1.6+
