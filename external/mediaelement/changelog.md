@@ -1,5 +1,12 @@
 # Version History
 
+*7.0.2* (2023/11/14)
+* Fixed an error that occurred with the iFrame players
+* Fixed a problem with the scaling of iFrames within their containers
+
+*7.0.1* (2023/10/31)
+* Fix state of caption toggle not visible
+
 *7.0.0* (2023/03/28)
 ## Removal of flash support
 * Flash support removed, see [Migration Guide](MIGRATION.md) for more information about Breaking Changes. 

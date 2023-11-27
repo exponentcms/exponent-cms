@@ -38,11 +38,11 @@ Font-Awesome3,3.2.1,fontawesome.github.com/Font-Awesome,3.2.1,updated FontAwesom
 Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
 Font-Awesome6,6.4.2,fontawesome.com,6.4.2,add import all 'fonts' sheets into main sheet
-Bootstrap-Icons,1.11.1,icons.getbootstrap.com,1.11.1,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
+Bootstrap-Icons,1.11.2,icons.getbootstrap.com,1.11.2,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
 Adminer,4.8.1exp,www.adminer.org,4.8.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
-MediaElement.js,7.0.0	,mediaelementjs.com,7.0.0,
+MediaElement.js,7.0.2,mediaelementjs.com,7.0.2,
 MediaElement plugins,2.6.7,github.com/johndyer/mediaelement-plugins,2.6.7,
 Facebook PHP SDK3,3.2.3,github.com/facebook/php-graph-sdk,5.7.0,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
