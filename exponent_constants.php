@@ -605,7 +605,7 @@ if (!defined('JQUERY_RELATIVE')) {
         define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
     if (!defined('FA6_SCRIPT')) {
-        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
+        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
     } // cdn FontAwesome v6.x stylesheet
 //}
 
