@@ -592,7 +592,7 @@ if (!defined('JQUERY_RELATIVE')) {
     } // cdn Bootstrap v4.x script
     if (!defined('BS5_SCRIPT')) {
 
-        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>');
+        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v5.x script
 /**
  * Font-Awesome CDN links
@@ -680,7 +680,7 @@ if (!defined('RANDOM_VERSION')) {
  * FPDI is needed for MPDF v8+
  */
 if (!defined('FPDI_VERSION')) {
-    define('FPDI_VERSION', '2.3.6');  // 2.5.0
+    define('FPDI_VERSION', '2.3.6');  // 2.6.0
 }
 /**
  * HTTP Message Shim is needed for MPDF v8.2+
@@ -705,7 +705,7 @@ if (!defined('DOMPDF8_VERSION')) {
     define('DOMPDF8_VERSION', '-1.2.2');
 }
 if (!defined('DOMPDF2_VERSION')) {
-    define('DOMPDF2_VERSION', '2.0.3');
+    define('DOMPDF2_VERSION', '2.0.3');  // 2.0.4
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
