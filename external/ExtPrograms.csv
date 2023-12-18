@@ -6,7 +6,7 @@ EmailValidator,3.2.6,github.com/egulias/EmailValidator,3.2.6/4.0.1,needed by swi
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.27/4.3.4,smarty.net,4.3.4,
-phpthumb,1.7.21exp,github.com/JamesHeinrich/phpThumb,1.7.21,phpThumb.config.php - we also allow &amp in parsing and err command
+phpthumb,1.7.22exp,github.com/JamesHeinrich/phpThumb,1.7.22,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.22,github.com/JamesHeinrich/getID3,1.9.22,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.14,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
@@ -20,7 +20,7 @@ Twitter model,2.3.1,github.com/tijsverkoyen/TwitterOAuth,2.3.1,placed in Twitter
 Twitter API,1.0.6,github.com/J7mbo/twitter-api-php,1.0.6,used by socialmedia module
 SimplePie,1.7.0,github.com/simplepie/simplepie,1.8.0,php 8 fix
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
-class.upload,2.1.4exp,github.com/verot/class.upload.php,2.1.4,"Correct flip operation where flip vertical & horizontal were inverted/swapped, php 8 fix"
+class.upload,2.1.6exp,github.com/verot/class.upload.php,2.1.6,"Correct flip operation where flip vertical & horizontal were inverted/swapped, php 8 fix"
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.40.10/2.41.83,uncomment load utilities; php 8 fix
 scssphp,1.11.1exp,github.com/scssphp/scssphp,1.11.1,includes example server; hack to compile newui
 lessphp,0.5.0exp,github.com/leafo/lessphp,0.5.0,"will not compile bootstrap v3+, hack to allow prefix"
