@@ -27,7 +27,7 @@
 	 |                                                                        |
 	 +------------------------------------------------------------------------+
 	 */
-	
+
 	class Pixidou{
 
 		private $imageFile;
@@ -44,11 +44,11 @@
 		 */
 		public function __construct($imageFile){
 			set_time_limit(0);
-			$this->uploadedFile = new Upload($this->destDirectory.'/'.$imageFile);
-				
+			$this->uploadedFile = new \Verot\Upload\Upload($this->destDirectory.'/'.$imageFile);
+
 			$this->imageFile = $imageFile;
 		}
-	
+
 		/**
 		 * Resizes an image
 		 *
@@ -61,7 +61,7 @@
 			$this->uploadedFile->image_y = $height;
 			$this->outputJsonData();
 		}
-	
+
 		/**
 		 * Flips an image
 		 *
@@ -76,7 +76,7 @@
 			}
 			$this->outputJsonData();
 		}
-	
+
 		/**
 		 * Rotates an image
 		 *
@@ -86,7 +86,7 @@
 			$this->uploadedFile->image_rotate = $degrees;
 			$this->outputJsonData();
 		}
-	
+
 		/**
 		 * Get negative of an image
 		 *
@@ -95,7 +95,7 @@
 			$this->uploadedFile->image_negative = true;
 			$this->outputJsonData();
 		}
-	
+
 		/**
 		 * Tints an image
 		 *
@@ -105,7 +105,7 @@
 			$this->uploadedFile->image_tint_color = '#'.$color;
 			$this->outputJsonData();
 		}
-	
+
 		/**
 		 * Applies contrast to an image
 		 *
@@ -115,7 +115,7 @@
 			$this->uploadedFile->image_contrast = (int)$value;
 			$this->outputJsonData();
 		}
-	
+
 		/**
 		 * Applies brightness to an image
 		 *
@@ -125,7 +125,7 @@
 			$this->uploadedFile->image_brightness = (int)$value;
 			$this->outputJsonData();
 		}
-	
+
 		/**
 		 * Crops an image
 		 *
@@ -147,16 +147,16 @@
 				case 'jpeg':
 					$originalImage = imagecreatefromjpeg($this->destDirectory.'/'.$this->imageFile);
 					break;
-	
+
 				case 'png':
 					$originalImage = imagecreatefrompng($this->destDirectory.'/'.$this->imageFile);
 					break;
-	
+
 				case 'gif':
 					$originalImage = imagecreatefromgif($this->destDirectory.'/'.$this->imageFile);
 					break;
 			}
-				
+
 			// crop part
 			$cropImage = imagecreatetruecolor($width, $height);
 
@@ -172,33 +172,33 @@
 
 			//get body part of file name to generate a new one
 			$bodyPart = $this->uploadedFile->file_src_name_body.'_1';
-			
+
 			while (@file_exists($this->processedDirectory.'/'.$bodyPart.'.'.$extension)) {
 				$bodyPart = $bodyPart.'_1';
 			}
-			
+
 			// new file name
 			$newFileName = $bodyPart.'.'.$extension;
-				
+
 			switch($extension){
 				case 'jpeg':
 				case 'jpg':
 					$result = imagejpeg($cropImage, $this->processedDirectory.'/'.$newFileName, $this->imageQuality);
 					break;
-	
+
 				case 'png':
 					$result = imagepng($cropImage, $this->processedDirectory.'/'.$newFileName);
 					break;
-	
+
 				case 'gif':
 					$result = imagegif($cropImage, $this->processedDirectory.'/'.$newFileName);
 					break;
 			}
-				
+
 			// output json data
 			echo json_encode(array('image' => $newFileName, 'width' => $width, 'height' => $height));
 		}
-		
+
 		/**
 		 * Saves/Converts an image
 		 *
@@ -207,13 +207,13 @@
 		public function saveImage($type){
 			// convert image
 			$this->uploadedFile->image_convert = $type;
-			
+
 			// process it
 			$this->uploadedFile->Process($this->processedDirectory);
-			
+
 			// check if the processing is ok
 			if ($this->uploadedFile->processed) {
-				// echo json data	
+				// echo json data
 				echo json_encode(array('image' => $this->uploadedFile->file_dst_name));
 			}
 			else{
@@ -233,9 +233,9 @@
 		 *
 		 */
 		private function outputJsonData(){
-				
+
 			$this->uploadedFile->Process($this->processedDirectory);
-				
+
 			// check if the processing is ok
 			if ($this->uploadedFile->processed) {
 				// get the filename
@@ -251,10 +251,10 @@
 				echo json_encode(array('error' => $this->uploadedFile->error));
 			}
 		}
-	
+
 		public function __destruct(){
 //			$this->uploadedFile->clean();  //NOTE we have to KEEP the old file for undo, why is this even here?
 		}
-	
+
 	}
 ?>
