@@ -48,7 +48,14 @@ class filemanagercontrol extends formcontrol {
     	$assets_path = SCRIPT_RELATIVE.'framework/core/forms/controls/assets/';
         $subTypeName = empty($this->subtype) ? "expFile[]" : "expFile[".$this->subtype."][]";
         $files = $this->buildImages();
-        $html = '<div id="filemanager'.$name.'" class="filemanager control form-group'.(empty($this->class)?"":" ".$this->class).'">';
+        $class = empty($this->class) ? '' : $this->class;if ($this->horizontal)
+            $class .= ' col-sm-10 ';
+        elseif (empty($this->width)) {
+            $class .= " col-sm-12";
+        } else {
+            $class .= " " . $this->width;
+        }
+        $html = '<div id="filemanager'.$name.'" class="filemanager control form-group'.(empty($class)?"":" ".$class).'">';
         //$html .= '<div id="displayfiles" class="displayfiles" style="padding:5px; border:1px solid #444"> </div>';
         $html .= '<div class="hd"><label class="form-label" id="sortfiles-'.$name.'" title="'.gt('Click to Sort List').'">'.$label;
         if ($this->limit!=null){
