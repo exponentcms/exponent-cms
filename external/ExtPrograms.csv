@@ -6,7 +6,7 @@ EmailValidator,3.2.6,github.com/egulias/EmailValidator,3.2.6/4.0.1,needed by swi
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.27/4.3.4,smarty.net,4.3.4,
-phpthumb,1.7.21exp,github.com/JamesHeinrich/phpThumb,1.7.21,phpThumb.config.php - we also allow &amp in parsing and err command
+phpthumb,1.7.22exp,github.com/JamesHeinrich/phpThumb,1.7.22,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.22,github.com/JamesHeinrich/getID3,1.9.22,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.14,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
@@ -20,7 +20,7 @@ Twitter model,2.3.1,github.com/tijsverkoyen/TwitterOAuth,2.3.1,placed in Twitter
 Twitter API,1.0.6,github.com/J7mbo/twitter-api-php,1.0.6,used by socialmedia module
 SimplePie,1.7.0,github.com/simplepie/simplepie,1.8.0,php 8 fix
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
-class.upload,2.1.4exp,github.com/verot/class.upload.php,2.1.4,"Correct flip operation where flip vertical & horizontal were inverted/swapped, php 8 fix"
+class.upload,2.1.6exp,github.com/verot/class.upload.php,2.1.6,"Correct flip operation where flip vertical & horizontal were inverted/swapped, php 8 fix"
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.40.10/2.41.83,uncomment load utilities; php 8 fix
 scssphp,1.11.1exp,github.com/scssphp/scssphp,1.11.1,includes example server; hack to compile newui
 lessphp,0.5.0exp,github.com/leafo/lessphp,0.5.0,"will not compile bootstrap v3+, hack to allow prefix"
@@ -37,23 +37,23 @@ Bootswatch5,5.3.1,bootswatch.com,5.3.1,change 1st line variables.scss comment to
 Font-Awesome3,3.2.1,fontawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
-Font-Awesome6,6.4.2,fontawesome.com,6.4.2,add import all 'fonts' sheets into main sheet
-Bootstrap-Icons,1.11.1,icons.getbootstrap.com,1.11.1,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
+Font-Awesome6,6.5.1,fontawesome.com,6.5.1,add import all 'fonts' sheets into main sheet
+Bootstrap-Icons,1.11.2,icons.getbootstrap.com,1.11.2,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
 Adminer,4.8.1exp,www.adminer.org,4.8.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
-MediaElement.js,7.0.0	,mediaelementjs.com,7.0.0,
+MediaElement.js,7.0.2,mediaelementjs.com,7.0.2,
 MediaElement plugins,2.6.7,github.com/johndyer/mediaelement-plugins,2.6.7,
 Facebook PHP SDK3,3.2.3,github.com/facebook/php-graph-sdk,5.7.0,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
-CKEditor,4.22.1,ckeditor.com,4.22.1/40.0.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
+CKEditor,4.22.1,ckeditor.com,4.22.1/40.2.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
-TinyMCE v5,5.10.7,tiny.cloud,5.10.7/6.7.0,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
+TinyMCE v5,5.10.7,tiny.cloud,5.10.7/6.8.2,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.9,github.com/moxiecode/plupload,2.3.9/3.1.5,"needed for TinyMCE Quick Upload, placed in that plugin folder"
-elFinder,2.1.62,elfinder.org,2.1.62,customized in /framework with Exponent php classes and .js files
+elFinder,2.1.64,elfinder.org,2.1.64,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
 jQuery2,2.2.4,jquery.com,2.2.4,
 jQuery2 Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon
@@ -65,7 +65,7 @@ validate,1.20.0exp,jqueryvalidation.org,1.20.0,edit for 'undefined' in 'min' & '
 Countdown,1.1,tutorialzine.com/2011/12/countdown-jquery,1.1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker,1.6.3,used by adminer
 TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
-DataTables,1.13.6,www.datatables.net,1.13.6,includes boostrap2 integration w/ renamed 1.10.7 version
+DataTables,1.13.8,www.datatables.net,1.13.8,includes boostrap2 integration w/ renamed 1.10.7 version
 DataTables Checkboxes,1.2.14,github.com/gyrocode/jquery-datatables-checkboxes,1.2.14,
 DataTables Tabletools,2.2.4,www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,github.com/Comanche/datatables-responsive,0.2.0,replaced by 'Responsive' in 1.10.8
@@ -79,7 +79,7 @@ Searcher,0.3.0,github.com/lloiser/jquery-searcher,0.3.0,
 DateTimePicker,2.5.21exp,github.com/xdan/datetimepicker,2.5.21,rename .full version; we add .js auto-close on inline date select and extra 'reset' work & remove .css z-index issue
 Bootstrap DateTimePicker,4.17.49,github.com/Eonasdan/bootstrap-datetimepicker,4.17.49,"patch for 'today' button in side-by-side view, modded version placed in bootstrap4theme & bootstrap5theme to help yadcf"
 Tempus Dominus Bootstrap 4,5.39.0,github.com/tempusdominus/bootstrap-4,5.39.0,
-Tempus Dominus Bootstrap 5,6.7.136,github.com/Eonasdan/tempus-dominus,6.7.16,added .inline z-index style; scss change @use color
+Tempus Dominus Bootstrap 5,6.7.16,github.com/Eonasdan/tempus-dominus,6.7.19,added .inline z-index style; scss change @use color
 moment.js,2.29.4,github.com/moment/moment,2.29.4,needed for Bootstrap DateTimePicker; min/moment-with-locales.js renamed
 strength-meter,1.1.4,github.com/kartik-v/strength-meter,1.1.4,
 Sortable,1.15.0,github.com/SortableJS/Sortable,1.15.0,
@@ -96,13 +96,13 @@ select2,4.0.13,github.com/select2/select2,4.0.13,renamed select2.full.js to sele
 shuffle.js,v3.1.1,github.com/Vestride/Shuffle,4.2.0/5.4.1/6.1.0,
 Jasny Bootstrap2,2.3.1,jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,4.0.0,jasny.github.io/bootstrap,4.0.0,only using fileinput at this time
-easypost sdk,4.0.3,github.com/EasyPost/easypost-php,4.0.3/6.9.0,
+easypost sdk,4.0.3,github.com/EasyPost/easypost-php,4.0.3/7.0.0,
 jquery.cookie.js,1.4.1,github.com/carhartl/jquery-cookie,1.4.1,
 jquery.history.js,1.8b2,github.com/browserstate/history.js,1.8.0,
 Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
-dompdf,2.0.3exp/1.2.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,2.0.3,"optional, patched to display our images and not break on bad tables and disable links"
+dompdf,2.0.3exp/1.2.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,2.0.4,"optional, patched to display our images and not break on bad tables and disable links"
 mPDF,8.1.4/8.0.17/7.1.9/6.1.4/5.7.4a,github.com/mpdf/mpdf,8.2.0,optional
 log,1.1.4,github.com/php-fig/log,1.1.4/2.0.0/3.0.0,"optional, required by mPDF v7+"
 DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.11.1,"optional, suggested by mPDF v7+ for TOC"
@@ -111,7 +111,7 @@ http-message,1,github.com/php-fig/http-message,1.1/2.0,"optional, required by mP
 message-factory,1.0.1,github.com/php-http/message-factory,1.1.0,"optional, required by mPDF v8.1.x"
 http-message-shim,2.0.0,github.com/mpdf/psr-http-message-shim,2.0.1,"optional, required by mPDF v8.2.x"
 log-aware-trait,3.0.0,github.com/mpdf/psr-log-aware-trait,3.0.0,"optional, required by mPDF v8.2.x"
-FPDI,2.3.6,github.com/Setasign/FPDI,2.4.1,"optional, required by mPDF v7+"
+FPDI,2.3.6,github.com/Setasign/FPDI,2.6.0,"optional, required by mPDF v7+"
 HTML2PDF,5.2.7/4.6.1,github.com/spipu/html2pdf,5.2.8,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.6.2,sourceforge.net/projects/tcpdf,6.6.5,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
