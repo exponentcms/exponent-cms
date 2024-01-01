@@ -2,13 +2,13 @@ Program,Version,URL,Avail version,Exponent Customization Notes:
 Swiftmailer,5.4.12/6.3.0,github.com/swiftmailer/swiftmailer,6.3.0,we add  eDebugLogger & eDebugHtmlReporter plugins & fix php 5.6 ssl issue
 Doctrine Lexer,2.1.0,github.com/doctrine/lexer,2.1.0/3.0.0,needed by swiftmailer v6
 Doctrine Deprecations,1.1.2,github.com/doctrine/deprecations,1.1.2,needed by Doctrine Lexer v2
-EmailValidator,3.2.6,github.com/egulias/EmailValidator,3.2.6/4.0.1,needed by swiftmailer v6; change folder structure and add autoloader to main file
+EmailValidator,3.2.6,github.com/egulias/EmailValidator,3.2.6/4.0.2,needed by swiftmailer v6; change folder structure and add autoloader to main file
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.27/4.3.4,smarty.net,4.3.4,
 phpthumb,1.7.22exp,github.com/JamesHeinrich/phpThumb,1.7.22,phpThumb.config.php - we also allow &amp in parsing and err command
-getid3,1.9.22,github.com/JamesHeinrich/getID3,1.9.22,
-minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.14,modify config.php
+getid3,1.9.23,github.com/JamesHeinrich/getID3,1.9.23,
+minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.4,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
 YUI3,3.18.1,github.com/yui/yui3,3.18.1,
 yui2in3,0.3,github.com/yui/2in3,0.3,
@@ -29,7 +29,7 @@ Twitter-Bootstrap2,2.3.2,github.com/twbs/bootstrap,2.3.2,"patched bootstrap.less
 Bootstrap3,3.4.1,github.com/twbs/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
 Bootstrap4,4.6.2,github.com/twbs/bootstrap,4.6.2,"patched bootstrap.scss includes swatches & exp variables, remove @page"
 Bootstrap5,5.3.2,github.com/twbs/bootstrap,5.3.2,patched bootstrap.scss includes swatches & exp variables
-popper.js/floating-ui,1.16.1,github.com/FezVrasta/popper.js,1.16.1/2.11.7,needed by BS4/BS5 (umd)
+popper.js/floating-ui,1.16.1,github.com/FezVrasta/popper.js,1.16.1/2.11.8,needed by BS4/BS5 (umd)
 Bootswatch2,2.3.2,bootswatch.com,2.3.2,
 Bootswatch3,3.4.1+1,bootswatch.com,3.4.1+1,change 1st line variables.less comment to output to .css file
 Bootswatch4,4.6.2,bootswatch.com,4.6.2,change 1st line variables.scss comment to output to .css file
@@ -39,7 +39,7 @@ Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
 Font-Awesome6,6.5.1,fontawesome.com,6.5.1,add import all 'fonts' sheets into main sheet
 Bootstrap-Icons,1.11.2,icons.getbootstrap.com,1.11.2,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
-Adminer,4.8.1exp,www.adminer.org,4.8.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
+Adminer,4.8.1exp,www.adminer.org,4.8.3,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
 MediaElement.js,7.0.2,mediaelementjs.com,7.0.2,
@@ -79,10 +79,10 @@ Searcher,0.3.0,github.com/lloiser/jquery-searcher,0.3.0,
 DateTimePicker,2.5.21exp,github.com/xdan/datetimepicker,2.5.21,rename .full version; we add .js auto-close on inline date select and extra 'reset' work & remove .css z-index issue
 Bootstrap DateTimePicker,4.17.49,github.com/Eonasdan/bootstrap-datetimepicker,4.17.49,"patch for 'today' button in side-by-side view, modded version placed in bootstrap4theme & bootstrap5theme to help yadcf"
 Tempus Dominus Bootstrap 4,5.39.0,github.com/tempusdominus/bootstrap-4,5.39.0,
-Tempus Dominus Bootstrap 5,6.7.16,github.com/Eonasdan/tempus-dominus,6.7.19,added .inline z-index style; scss change @use color
+Tempus Dominus Bootstrap 5,6.9.4,github.com/Eonasdan/tempus-dominus,6.9.4,added .inline z-index style; scss change @use color
 moment.js,2.29.4,github.com/moment/moment,2.29.4,needed for Bootstrap DateTimePicker; min/moment-with-locales.js renamed
 strength-meter,1.1.4,github.com/kartik-v/strength-meter,1.1.4,
-Sortable,1.15.0,github.com/SortableJS/Sortable,1.15.0,
+Sortable,1.15.1,github.com/SortableJS/Sortable,1.15.1,
 jstree,3.3.16,github.com/vakata/jstree,3.3.16,added nav menu icons to stylesheet
 bootstrap3-dialog,1.35.4,github.com/nakupanda/bootstrap3-dialog,1.35.4,use /src .less file and add our .less variable imports; w/ bs4 fixes
 impromptu,6.2.3,trentrichardson.com/Impromptu,6.2.3,add some colors to .css
@@ -115,7 +115,7 @@ FPDI,2.3.6,github.com/Setasign/FPDI,2.6.0,"optional, required by mPDF v7+"
 HTML2PDF,5.2.7/4.6.1,github.com/spipu/html2pdf,5.2.8,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.6.2,sourceforge.net/projects/tcpdf,6.6.5,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
-Kint,1.1/2.2/5.0.7,github.com/kint-php/kint,5.0.7,"optional, for formatted edebug output"
+Kint,1.1/2.2/5.0.7,github.com/kint-php/kint,5.1.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
 DataTables Buttons,,www.datatables.net,2.4.2,
