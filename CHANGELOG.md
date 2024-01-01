@@ -13,10 +13,10 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Version 3.0.2
 -------------
 
-### Address issues in v3.0.0, incorporate changes found in v2.7.2
+### Address issues in v3.0.0rc1/3.0.1, incorporate changes found in v2.7.2
 
-- compatible with PHP v7.4.x, v8.0.x, v8.1.x and v8.2.x
-  - deprecated support for PHP v5.6.x, v7.0.x, v7.1.x, v7.2.x and v7.3.x still exists
+- compatible with PHP v8.1.x and v8.2.x
+  - deprecated support for PHP v7.4.x, v8.0.x still exists
   - initial support for PHP v8.3.x
 - adds better metainfo for forms and records
 - adds feature to add dates to an existing event
