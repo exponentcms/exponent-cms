@@ -504,7 +504,7 @@ function smarty_function_control($params, &$smarty) {
             case "number":
             case "range":
                 $ctrl_name = $params['type'] . 'control';
-                $control       = new $ctrl_name($params['type']);
+                $control       = new $ctrl_name();
                 $control->size = !empty($params['size']) ? $params['size'] : "40";
                 $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
                 $control->pattern = !empty($params['pattern']) ? $params['pattern'] : "";
