@@ -1,5 +1,20 @@
 # Version History
 
+*7.0.2* (2023/11/14)
+* Fixed an error that occurred with the iFrame players
+* Fixed a problem with the scaling of iFrames within their containers
+
+*7.0.1* (2023/10/31)
+* Fix state of caption toggle not visible
+
+*7.0.0* (2023/03/28)
+## Removal of flash support
+* Flash support removed, see [Migration Guide](MIGRATION.md) for more information about Breaking Changes. 
+Thanks to @jaapmarcus for initial PR.
+* Make `test` npm-script available to work on all plattforms.
+* HLS and MPEG-Dash renderer should now have working captions. (#2928)
+* Fix firefox bug on mouseout. (#2840) Thanks to @JoshStegmaier.
+
 *6.0.3* (2023/03/28)
 * `outline-style: auto` has been replaced by `outline-style: solid` in the CSS `focus:` pseudo-class in the class `mejs__container`. This change will enable Firefox to show the correct `outline-color` on focus if defined. (#2924)
 

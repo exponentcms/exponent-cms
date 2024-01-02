@@ -163,11 +163,12 @@
 {elseif $config.pagelinks == 'Disable page links'}
     {$pageit = '<"top"lf>rt<"bottom"<"clear">'}
 {/if}
-{script unique="form-showall" jquery='jquery.dataTables'}
+{script unique="form-showall" jquery='moment,jquery.dataTables'}
 {literal}
     $(document).ready(function() {
         var tableContainer = $('#forms-showall');
 
+        DataTable.datetime('{/literal}{strftime_to_moment_format( $smarty.const.DISPLAY_DATE_FORMAT ) }{literal}');
         var table = tableContainer.DataTable({
             pagingType: "full_numbers",
 //            dom: '{/literal}{$pageit}{literal}',  // pagination location

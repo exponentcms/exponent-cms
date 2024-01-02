@@ -97,16 +97,17 @@ class yuicalendarcontrol extends formcontrol {
         }
 
         $date_input = new hiddenfieldcontrol($default);
-        $label_offset = "";
+        $control_offset = $label_offset = "";
         if ($this->horizontal) {
-            $date_input->horizontal_top = true;
+//            $date_input->horizontal_top = true;
+            $control_offset = " col-sm-10 ";
             $label_offset = "offset-sm-2 col-sm-10 ";
         }
 //        $date_input->id = $idname;
 //        $date_input->name = $idname;
 //        $date_input->disabled = 'disabled';
 //        $html = "<!-- cke lazy -->";
-        $html = '<div class="input-group input-append col-sm-10" id="'.$idname.'dateRangePicker" data-td-target-input="nearest" style="width:inherit;">'.$date_input->toHTML(null, $name).'</div>';
+        $html = '<div class="input-group input-append' . $control_offset . '" id="'.$idname.'dateRangePicker" data-td-target-input="nearest">'.$date_input->toHTML(null, $name).'</div>';
         if (!empty($this->description))
             $html .= "<div id=\"" . $name . "HelpBlock\" class=\"" . $label_offset . "form-text text-muted\">".$this->description."</div>";
 //        $html .= "
@@ -215,21 +216,33 @@ class yuicalendarcontrol extends formcontrol {
 
     static function form($object) {
         $form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption    = "";
             $object->description = "";
             $object->showdate   = true;
             $object->showtime   = true;
-//            $object->is_hidden  = false;
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );//            $object->is_hidden  = false;
         }
-        if (empty($object->description)) $object->description = "";
+        if (empty($object->description))
+            $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showdate",gt('Show Date'), new checkboxcontrol($object->showdate,false));
         $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
+        $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
 //        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
         if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
@@ -252,6 +265,7 @@ class yuicalendarcontrol extends formcontrol {
         $object->description = $values['description'];
         $object->showdate   = !empty($values['showdate']);
         $object->showtime   = !empty($values['showtime']);
+        if (isset($values['width'])) $object->width = ($values['width']);
 //        $object->is_hidden  = isset($values['is_hidden']);
         return $object;
     }

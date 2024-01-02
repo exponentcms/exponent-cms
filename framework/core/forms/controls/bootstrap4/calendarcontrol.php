@@ -28,8 +28,7 @@ if (!defined('EXPONENT')) {
  * @package    Subsystems-Forms
  * @subpackage Control
  */
-class calendarcontrol extends formcontrol
-{
+class calendarcontrol extends formcontrol {
 
 //    var $disable_text = "";
     var $type     = 'datetime';
@@ -39,25 +38,21 @@ class calendarcontrol extends formcontrol
     var $default_min = '';
     var $default_ampm = '';
 
-    static function name()
-    {
+    static function name() {
         return "Date / Time - Popup w/ Text Input";
     }
 
-    static function isSimpleControl()
-    {
+    static function isSimpleControl() {
         return true;
     }
 
-    static function getFieldDefinition()
-    {
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE => DB_DEF_TIMESTAMP
         );
     }
 
-    function __construct($default = null, $showtime = true)
-    {
+    function __construct($default = null, $showtime = true) {
         if (empty($default)) {
             $default = time();
         }
@@ -90,8 +85,7 @@ class calendarcontrol extends formcontrol
 //        return $html;
 //    }
 
-    function controlToHTML($name, $label = null)
-    {
+    function controlToHTML($name, $label = null) {
         if (empty($this->default_date)) {
             if (empty($this->default)) {
                 $this->default = time();
@@ -177,8 +171,7 @@ class calendarcontrol extends formcontrol
         return $html;
     }
 
-    static function parseData($name, $values, $for_db = false)
-    {
+    static function parseData($name, $values, $for_db = false) {
         if (!empty($values['date-' . $name])) {
             $date = strtotime($values['date-' . $name]);
             $time = 0;
@@ -212,8 +205,7 @@ class calendarcontrol extends formcontrol
      *
      * @return string
      */
-    static function templateFormat($db_data, $ctl)
-    {
+    static function templateFormat($db_data, $ctl) {
         if ($ctl->showtime) {
 //            return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
 //            return gmstrftime(DISPLAY_DATETIME_FORMAT, $db_data);
@@ -233,28 +225,39 @@ class calendarcontrol extends formcontrol
         }
     }
 
-    static function form($object)
-    {
+    static function form($object) {
         $form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption = "";
             $object->description = "";
             $object->showtime = true;
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );
         }
-        if (empty($object->description)) $object->description = "";
+        if (empty($object->description))
+            $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showtime", gt('Show Time'), new checkboxcontrol($object->showtime, false));
+        $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
         return $form;
     }
 
-    static function update($values, $object)
-    {
+    static function update($values, $object) {
         if ($object == null) {
             $object = new calendarcontrol();
             $object->default = 0;
@@ -269,6 +272,7 @@ class calendarcontrol extends formcontrol
         $object->caption = $values['caption'];
         $object->description = $values['description'];
         $object->showtime = !empty($values['showtime']);
+        if (isset($values['width'])) $object->width = ($values['width']);
         return $object;
     }
 

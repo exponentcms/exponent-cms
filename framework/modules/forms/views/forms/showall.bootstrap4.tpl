@@ -181,7 +181,7 @@
 {/if}
 
 {if $page->records|count}
-{script unique="form-showall" jquery='jquery.dataTables'}
+{script unique="form-showall" jquery='moment,jquery.dataTables'}
 {literal}
     $(document).ready(function() {
         // var responsiveHelper;
@@ -190,6 +190,7 @@
         //     phone : 480
         // };
         var tableContainer = $('#forms-showall');
+        DataTable.datetime('{/literal}{strftime_to_moment_format( $smarty.const.DISPLAY_DATE_FORMAT ) }{literal}');
 
         var table = tableContainer.DataTable({
             columnDefs: [

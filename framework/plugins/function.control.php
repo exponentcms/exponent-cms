@@ -287,6 +287,7 @@ function smarty_function_control($params, &$smarty) {
                     $control->hide = $params['hide'];
                 break;
             case "state":
+                //fixme why don't we use a statescontrol here???
                 //old use:  if (empty($params['all_us_territories'])) {
                 /*$regions = $db->select
                     $not_states = array(3,6,7,8,9,10,11,17,20,30,46,50,52,60);
@@ -344,7 +345,7 @@ function smarty_function_control($params, &$smarty) {
                 //old - pre address configuration
                 //if(!empty($params['exclude'])) $not_countries = explode(',',$params['exclude']);
                 //else $not_countries = array();
-
+                //fixme why don't we use a countrycontrol here???
                 if ($db->tableExists('geo_country')) {
                     $control                = new dropdowncontrol();
                     $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
@@ -465,7 +466,7 @@ function smarty_function_control($params, &$smarty) {
             case "autocomplete":
                 $control              = new autocompletecontrol();
                 $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
-                $control->width       = !empty($params['width']) ? $params['width'] : "320px";
+                $control->wwidth       = !empty($params['wwidth']) ? $params['wwidth'] : "320px";
                 $control->schema      = "'" . str_replace(",", "','", $params['schema']) . "'";
                 $control->value       = isset($params['value']) ? $params['value'] : null;
                 $control->controller  = empty($params['controller']) ? "search" : $params['controller'];
@@ -495,6 +496,22 @@ function smarty_function_control($params, &$smarty) {
                 $control->multiple      = isset($params['multiple']) ? true : false;
                 $control->meter      = isset($params['meter']) ? true : false;
                 break;
+            case "text":
+            case "email":
+            case "url":
+            case "tel":
+            case "telephone":
+            case "number":
+            case "range":
+                $ctrl_name = $params['type'] . 'control';
+                $control       = new $ctrl_name($params['type']);
+                $control->size = !empty($params['size']) ? $params['size'] : "40";
+                $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
+                $control->pattern = !empty($params['pattern']) ? $params['pattern'] : "";
+                $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
+                $control->prepend = !empty($params['prepend']) ? $params['prepend'] : "";
+                $control->multiple      = isset($params['multiple']) ? true : false;
+                break;
             case "quantity":
 //                $value   = isset($params['value']) ? $params['value'] : null;
 //                $min     = isset($params['min']) ? $params['min'] : 0;
@@ -502,14 +519,7 @@ function smarty_function_control($params, &$smarty) {
 //                $control = new quantitycontrol($value, $min, $max);
 //                break;
                 $params['type'] = 'number';
-            case "text":
             case "search":
-            case "email":
-            case "url":
-            case "tel":
-            case "telephone":
-            case "number":
-            case "range":
             case "hidden":
             default:
                 $control       = new genericcontrol($params['type']);
@@ -648,6 +658,14 @@ function smarty_function_control($params, &$smarty) {
             $control->max = $params['max'];
         if (isset($params['step']))
             $control->step = $params['step'];
+        if (bs4() || bs5()) {
+            if (isset($params['width'])) {
+                $control->width = $params['width'];
+            } else {
+                $control->width = 'col-sm-12';
+            }
+        }
+
 
         $params['name'] = !empty($params['name']) ? $params['name'] : '';
         $control->name  = $params['name'];

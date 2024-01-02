@@ -163,8 +163,11 @@ class mysqli_database extends database {
      * @return string
      */
     function wrapStmt($sql) {
-        //fixme only needed for MySQL 8
-        return preg_replace('/rank(?<!_rank)(?<!`rank)(?<!"rank)(?<!\'rank)(?<!\Srank)/', '`rank`', $sql);
+        // only needed for MySQL 8
+        if ($this->mysql8)
+            return preg_replace('/rank(?<!_rank)(?<!`rank)(?<!"rank)(?<!\'rank)(?<!\Srank)/', '`rank`', $sql);
+        else
+            return $sql;
     }
 
     /**

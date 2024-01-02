@@ -28,7 +28,7 @@ if (!defined('EXPONENT')) exit('');
 class autocompletecontrol extends formcontrol {
 
     var $placeholder = "";
-    var $width = "320px";
+    var $wwidth = "320px";
     var $controller = "";   // controller to call
     var $action = "";       // action to call
     var $searchmodel = "";  // model to search
@@ -58,7 +58,7 @@ class autocompletecontrol extends formcontrol {
         YUI(EXPONENT.YUI3_CONFIG).use('*', function (Y) {
             var autocomplete = Y.one('#".$name."_autoc');
             autocomplete.plug(Y.Plugin.AutoComplete, {
-                width:'320px',
+                width:'".$this->wwidth."',
                 maxResults: ".$this->maxresults.",
                 resultListLocator: 'data',  // 'data' field of json response
                 resultTextLocator: 'title', // the field to place in the input after selection
@@ -88,7 +88,7 @@ class autocompletecontrol extends formcontrol {
                     overflow-x: auto;
                 }
                 #".$name."_autoc {
-                    width: ".$this->width.";
+                    width: " . $this->wwidth.";
                 }
     	    "
     	    )

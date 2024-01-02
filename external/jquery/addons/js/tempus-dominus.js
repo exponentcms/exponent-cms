@@ -1,5 +1,5 @@
 /*!
-  * Tempus Dominus v6.7.7 (https://getdatepicker.com/)
+  * Tempus Dominus v6.9.4 (https://getdatepicker.com/)
   * Copyright 2013-2023 Jonathan Peterson
   * Licensed under MIT (https://github.com/Eonasdan/tempus-dominus/blob/master/LICENSE)
   */
@@ -387,8 +387,6 @@
   Namespace.errorMessages = new ErrorMessages();
 
   const DefaultFormatLocalization = {
-      locale: 'default',
-      hourCycle: undefined,
       dateFormats: {
           LTS: 'h:mm:ss T',
           LT: 'h:mm T',
@@ -397,12 +395,14 @@
           LLL: 'MMMM d, yyyy h:mm T',
           LLLL: 'dddd, MMMM d, yyyy h:mm T',
       },
+      format: 'L LT',
+      locale: 'default',
+      hourCycle: undefined,
       ordinal: (n) => {
           const s = ['th', 'st', 'nd', 'rd'];
           const v = n % 100;
           return `[${n}${s[(v - 20) % 10] || s[v] || s[0]}]`;
       },
-      format: 'L LT',
   };
   var DefaultFormatLocalization$1 = { ...DefaultFormatLocalization };
 
@@ -488,7 +488,7 @@
           this.dateTimeRegex = 
           //is regex cannot be simplified beyond what it already is
           /(\[[^[\]]*])|y{1,4}|M{1,4}|d{1,4}|H{1,2}|h{1,2}|t|T|m{1,2}|s{1,2}|f{3}/g; //NOSONAR
-          this.formattingTokens = /(\[[^[\]]*])|([-_:/.,()\s]+)|(T|t|yyyy|yy?|MM?M?M?|Do|dd?|hh?|HH?|mm?|ss?)/g; //NOSONAR is regex cannot be simplified beyond what it already is
+          this.formattingTokens = /(\[[^[\]]*])|([-_:/.,()\s]+)|(T|t|yyyy|yy?|MM?M?M?|Do|dd?d?d?|hh?|HH?|mm?|ss?)/g; //NOSONAR is regex cannot be simplified beyond what it already is
           this.match2 = /\d\d/; // 00 - 99
           this.match3 = /\d{3}/; // 000 - 999
           this.match4 = /\d{4}/; // 0000 - 9999
@@ -503,52 +503,88 @@
               },
           ];
           this.expressions = {
-              t: [
-                  this.matchWord,
-                  (ojb, input) => {
-                      ojb.afternoon = this.meridiemMatch(input);
+              t: {
+                  pattern: undefined,
+                  parser: (obj, input) => {
+                      obj.afternoon = this.meridiemMatch(input);
                   },
-              ],
-              T: [
-                  this.matchWord,
-                  (ojb, input) => {
-                      ojb.afternoon = this.meridiemMatch(input);
+              },
+              T: {
+                  pattern: undefined,
+                  parser: (obj, input) => {
+                      obj.afternoon = this.meridiemMatch(input);
                   },
-              ],
-              fff: [
-                  this.match3,
-                  (ojb, input) => {
-                      ojb.milliseconds = +input;
+              },
+              fff: {
+                  pattern: this.match3,
+                  parser: (obj, input) => {
+                      obj.milliseconds = +input;
                   },
-              ],
-              s: [this.match1to2, this.addInput('seconds')],
-              ss: [this.match1to2, this.addInput('seconds')],
-              m: [this.match1to2, this.addInput('minutes')],
-              mm: [this.match1to2, this.addInput('minutes')],
-              H: [this.match1to2, this.addInput('hours')],
-              h: [this.match1to2, this.addInput('hours')],
-              HH: [this.match1to2, this.addInput('hours')],
-              hh: [this.match1to2, this.addInput('hours')],
-              d: [this.match1to2, this.addInput('day')],
-              dd: [this.match2, this.addInput('day')],
-              Do: [
-                  this.matchWord,
-                  (ojb, input) => {
-                      [ojb.day] = input.match(/\d+/);
+              },
+              s: {
+                  pattern: this.match1to2,
+                  parser: this.addInput('seconds'),
+              },
+              ss: {
+                  pattern: this.match1to2,
+                  parser: this.addInput('seconds'),
+              },
+              m: {
+                  pattern: this.match1to2,
+                  parser: this.addInput('minutes'),
+              },
+              mm: {
+                  pattern: this.match1to2,
+                  parser: this.addInput('minutes'),
+              },
+              H: {
+                  pattern: this.match1to2,
+                  parser: this.addInput('hours'),
+              },
+              h: {
+                  pattern: this.match1to2,
+                  parser: this.addInput('hours'),
+              },
+              HH: {
+                  pattern: this.match1to2,
+                  parser: this.addInput('hours'),
+              },
+              hh: {
+                  pattern: this.match1to2,
+                  parser: this.addInput('hours'),
+              },
+              d: {
+                  pattern: this.match1to2,
+                  parser: this.addInput('day'),
+              },
+              dd: {
+                  pattern: this.match2,
+                  parser: this.addInput('day'),
+              },
+              Do: {
+                  pattern: this.matchWord,
+                  parser: (obj, input) => {
+                      obj.day = +(input.match(/\d+/)[0] || 1);
                       if (!this.localization.ordinal)
                           return;
                       for (let i = 1; i <= 31; i += 1) {
                           if (this.localization.ordinal(i).replace(/[[\]]/g, '') === input) {
-                              ojb.day = i;
+                              obj.day = i;
                           }
                       }
                   },
-              ],
-              M: [this.match1to2, this.addInput('month')],
-              MM: [this.match2, this.addInput('month')],
-              MMM: [
-                  this.matchWord,
-                  (obj, input) => {
+              },
+              M: {
+                  pattern: this.match1to2,
+                  parser: this.addInput('month'),
+              },
+              MM: {
+                  pattern: this.match2,
+                  parser: this.addInput('month'),
+              },
+              MMM: {
+                  pattern: this.matchWord,
+                  parser: (obj, input) => {
                       const months = this.getAllMonths();
                       const monthsShort = this.getAllMonths('short');
                       const matchIndex = (monthsShort || months.map((_) => _.slice(0, 3))).indexOf(input) + 1;
@@ -557,10 +593,10 @@
                       }
                       obj.month = matchIndex % 12 || matchIndex;
                   },
-              ],
-              MMMM: [
-                  this.matchWord,
-                  (obj, input) => {
+              },
+              MMMM: {
+                  pattern: this.matchWord,
+                  parser: (obj, input) => {
                       const months = this.getAllMonths();
                       const matchIndex = months.indexOf(input) + 1;
                       if (matchIndex < 1) {
@@ -568,15 +604,21 @@
                       }
                       obj.month = matchIndex % 12 || matchIndex;
                   },
-              ],
-              y: [this.matchSigned, this.addInput('year')],
-              yy: [
-                  this.match2,
-                  (obj, input) => {
-                      obj.year = this.parseTwoDigitYear(input);
+              },
+              y: {
+                  pattern: this.matchSigned,
+                  parser: this.addInput('year'),
+              },
+              yy: {
+                  pattern: this.match2,
+                  parser: (obj, input) => {
+                      obj.year = this.parseTwoDigitYear(+input);
                   },
-              ],
-              yyyy: [this.match4, this.addInput('year')],
+              },
+              yyyy: {
+                  pattern: this.match4,
+                  parser: this.addInput('year'),
+              },
               // z: this.zoneExpressions,
               // zz: this.zoneExpressions,
               // zzz: this.zoneExpressions
@@ -659,10 +701,8 @@
                   this.startOf(exports.Unit.date);
                   if (this.weekDay === startOfTheWeek)
                       break;
-                  let goBack = this.weekDay;
-                  if (startOfTheWeek !== 0 && this.weekDay === 0)
-                      goBack = 8 - startOfTheWeek;
-                  this.manipulate(startOfTheWeek - goBack, exports.Unit.date);
+                  const goBack = (this.weekDay - startOfTheWeek + 7) % 7;
+                  this.manipulate(goBack * -1, exports.Unit.date);
                   break;
               }
               case 'month':
@@ -1014,16 +1054,15 @@
           });
       }
       parseTwoDigitYear(input) {
-          input = +input;
           return input + (input > 68 ? 1900 : 2000);
       }
-      offsetFromString(string) {
-          if (!string)
+      offsetFromString(input) {
+          if (!input)
               return 0;
-          if (string === 'Z')
+          if (input === 'Z')
               return 0;
-          const [first, second, third] = string.match(/([+-]|\d\d)/g);
-          const minutes = +(second * 60) + (+third || 0);
+          const [first, second, third] = input.match(/([+-]|\d\d)/g);
+          const minutes = +second * 60 + (+third || 0);
           const signed = first === '+' ? -minutes : minutes;
           return minutes === 0 ? 0 : signed; // eslint-disable-line no-nested-ternary
       }
@@ -1047,18 +1086,21 @@
           return `${negative ? '-' : ''}${name}`;
       }
       addInput(property) {
-          return (time, input) => {
-              time[property] = +input;
+          return (obj, input) => {
+              obj[property] = +input;
           };
       }
-      meridiemMatch(input) {
-          const meridiem = new Intl.DateTimeFormat(this.localization.locale, {
+      getLocaleAfternoon() {
+          return new Intl.DateTimeFormat(this.localization.locale, {
               hour: 'numeric',
               hour12: true,
           })
               .formatToParts(new Date(2022, 3, 4, 13))
-              .find((p) => p.type === 'dayPeriod')?.value;
-          return input.toLowerCase() === meridiem.toLowerCase();
+              .find((p) => p.type === 'dayPeriod')
+              ?.value?.replace(/\s+/g, ' ');
+      }
+      meridiemMatch(input) {
+          return input.toLowerCase() === this.getLocaleAfternoon().toLowerCase();
       }
       correctHours(time) {
           const { afternoon } = time;
@@ -1077,18 +1119,17 @@
       }
       makeParser(format) {
           format = this.replaceTokens(format, this.localization.dateFormats);
-          const array = format.match(this.formattingTokens);
-          const { length } = array;
+          const matchArray = format.match(this.formattingTokens);
+          const { length } = matchArray;
+          const expressionArray = [];
           for (let i = 0; i < length; i += 1) {
-              const token = array[i];
-              const parseTo = this.expressions[token];
-              const regex = parseTo && parseTo[0];
-              const parser = parseTo && parseTo[1];
-              if (parser) {
-                  array[i] = { regex, parser };
+              const token = matchArray[i];
+              const expression = this.expressions[token];
+              if (expression?.parser) {
+                  expressionArray[i] = expression;
               }
               else {
-                  array[i] = token.replace(/^\[[^[\]]*]$/g, '');
+                  expressionArray[i] = token.replace(/^\[[^[\]]*]$/g, '');
               }
           }
           return (input) => {
@@ -1099,16 +1140,18 @@
                   milliseconds: 0,
               };
               for (let i = 0, start = 0; i < length; i += 1) {
-                  const token = array[i];
+                  const token = expressionArray[i];
                   if (typeof token === 'string') {
                       start += token.length;
                   }
                   else {
-                      const { regex, parser } = token;
                       const part = input.slice(start);
-                      const match = regex.exec(part);
-                      const value = match[0];
-                      parser.call(this, time, value);
+                      let value = part;
+                      if (token.pattern) {
+                          const match = token.pattern.exec(part);
+                          value = match[0];
+                      }
+                      token.parser.call(this, time, value);
                       input = input.replace(value, '');
                   }
               }
@@ -1131,6 +1174,7 @@
               dt.setLocalization(localization);
               if (['x', 'X'].indexOf(localization.format) > -1)
                   return new DateTime((localization.format === 'X' ? 1000 : 1) * +input);
+              input = input.replace(/\s+/g, ' ');
               const parser = dt.makeParser(localization.format);
               const { year, month, day, hours, minutes, seconds, milliseconds, zone } = parser(input);
               const d = day || (!year && !month ? dt.getDate() : 1);
@@ -1176,6 +1220,7 @@
               ? 'h12'
               : this.localization.hourCycle;
           const matches = {
+              y: this.year,
               yy: formatter({ year: '2-digit' }),
               yyyy: this.year,
               M: formatter({ month: 'numeric' }),
@@ -1489,6 +1534,7 @@
       incrementMinute: 'Increment Minute',
       incrementSecond: 'Increment Second',
       locale: DefaultFormatLocalization$1.locale,
+      maxWeekdayLength: 0,
       nextCentury: 'Next Century',
       nextDecade: 'Next Decade',
       nextMonth: 'Next Month',
@@ -1625,17 +1671,14 @@
    * @param localization
    */
   function typeCheckDateArray(optionName, value, //eslint-disable-line @typescript-eslint/no-explicit-any
-  providedType, localization) {
+  providedType, localization = DefaultFormatLocalization$1) {
       if (!Array.isArray(value)) {
           Namespace.errorMessages.typeMismatch(optionName, providedType, 'array of DateTime or Date');
       }
       for (let i = 0; i < value.length; i++) {
           const d = value[i];
           const dateTime = convertToDateTime(d, optionName, localization);
-          if (!dateTime) {
-              Namespace.errorMessages.typeMismatch(optionName, typeof d, 'DateTime or Date');
-          }
-          dateTime.setLocalization(localization ?? DefaultFormatLocalization$1);
+          dateTime.setLocalization(localization);
           value[i] = dateTime;
       }
   }
@@ -1659,7 +1702,6 @@
               dateTime.setLocalization(localization);
               return dateTime;
           }
-          Namespace.errorMessages.typeMismatch(key, providedType, 'DateTime or Date');
       };
   }
   function optionalDate(key) {
@@ -1724,9 +1766,6 @@
                   const subOptionName = `${key}[${i}].${vk}`;
                   const d = valueObject[i][vk];
                   const dateTime = convertToDateTime(d, subOptionName, localization);
-                  if (!dateTime) {
-                      Namespace.errorMessages.typeMismatch(subOptionName, typeof d, 'DateTime or Date');
-                  }
                   dateTime.setLocalization(localization);
                   valueObject[i][vk] = dateTime;
               });
@@ -1899,9 +1938,7 @@
               delete eData.tdTargetInput;
           if (eData?.tdTargetToggle)
               delete eData.tdTargetToggle;
-          if (!eData ||
-              Object.keys(eData).length === 0 ||
-              eData.constructor !== DOMStringMap)
+          if (!eData || Object.keys(eData).length === 0)
               return options;
           const dataOptions = {};
           // because dataset returns camelCase including the 'td' key the option
@@ -1949,7 +1986,7 @@
               if (keyOption === undefined)
                   return internalObject;
               // if this is another object, continue down the rabbit hole
-              if (optionSubgroup[keyOption].constructor === Object) {
+              if (optionSubgroup[keyOption]?.constructor === Object) {
                   index++;
                   internalObject[keyOption] = normalizeObject(split, index, optionSubgroup[keyOption], value);
               }
@@ -2093,7 +2130,18 @@
        */
       //eslint-disable-next-line @typescript-eslint/no-explicit-any
       parseInput(value) {
-          return OptionConverter.dateConversion(value, 'input', this.optionsStore.options.localization);
+          try {
+              return OptionConverter.dateConversion(value, 'input', this.optionsStore.options.localization);
+          }
+          catch (e) {
+              this._eventEmitters.triggerEvent.emit({
+                  type: Namespace.events.error,
+                  reason: Namespace.errorMessages.failedToParseInput,
+                  format: this.optionsStore.options.localization.format,
+                  value: value,
+              });
+              return undefined;
+          }
       }
       /**
        * Tries to convert the provided value to a DateTime object.
@@ -2401,7 +2449,9 @@
       _dateToDataValue(date) {
           if (!DateTime.isValid(date))
               return '';
-          return `${date.year}-${date.monthFormatted}-${date.dateFormatted}`;
+          return `${date.year}-${date.month.toString().padStart(2, '0')}-${date.date
+            .toString()
+            .padStart(2, '0')}`;
       }
       _handleDateRange(innerDate, classes) {
           const rangeStart = this.dates.picked[0];
@@ -2529,7 +2579,10 @@
           for (let i = 0; i < 7; i++) {
               const htmlDivElement = document.createElement('div');
               htmlDivElement.classList.add(Namespace.css.dayOfTheWeek, Namespace.css.noHighlight);
-              htmlDivElement.innerText = innerDate.format({ weekday: 'short' });
+              let weekDay = innerDate.format({ weekday: 'short' });
+              if (this.optionsStore.options.localization.maxWeekdayLength > 0)
+                  weekDay = weekDay.substring(0, this.optionsStore.options.localization.maxWeekdayLength);
+              htmlDivElement.innerText = weekDay;
               innerDate.manipulate(1, exports.Unit.date);
               row.push(htmlDivElement);
           }
@@ -2763,6 +2816,10 @@
                       .length > 0) {
                   classes.push(Namespace.css.active);
               }
+              if (!this.validation.isValid(this._startDecade, exports.Unit.year) &&
+                  !this.validation.isValid(this._startDecade.clone.manipulate(10, exports.Unit.year), exports.Unit.year)) {
+                  classes.push(Namespace.css.disabled);
+              }
               paint('decade', this._startDecade, classes, containerClone);
               containerClone.classList.remove(...containerClone.classList);
               containerClone.classList.add(...classes);
@@ -2948,6 +3005,7 @@
               let divElement = getSeparator();
               top.push(divElement);
               const button = document.createElement('button');
+              button.setAttribute('type', 'button');
               button.setAttribute('title', this.optionsStore.options.localization.toggleMeridiem);
               button.setAttribute('data-action', ActionTypes$1.toggleMeridiem);
               button.setAttribute('tabindex', '-1');
@@ -3289,7 +3347,6 @@
       _update(unit) {
           if (!this.widget)
               return;
-          //todo do I want some kind of error catching or other guards here?
           switch (unit) {
               case exports.Unit.seconds:
                   this.secondDisplay._update(this.widget, this.paint);
@@ -3308,6 +3365,9 @@
                   break;
               case exports.Unit.year:
                   this.yearDisplay._update(this.widget, this.paint);
+                  break;
+              case 'decade':
+                  this.decadeDisplay._update(this.widget, this.paint);
                   break;
               case 'clock':
                   if (!this._hasTime)
@@ -3810,6 +3870,28 @@
           if (wasVisible)
               this.show();
       }
+      refreshCurrentView() {
+          //if the widget is not showing, just destroy it
+          if (!this._isVisible)
+              this._dispose();
+          switch (this.optionsStore.currentView) {
+              case 'clock':
+                  this._update('clock');
+                  break;
+              case 'calendar':
+                  this._update(exports.Unit.date);
+                  break;
+              case 'months':
+                  this._update(exports.Unit.month);
+                  break;
+              case 'years':
+                  this._update(exports.Unit.year);
+                  break;
+              case 'decades':
+                  this._update('decade');
+                  break;
+          }
+      }
   }
 
   /**
@@ -4130,7 +4212,8 @@
                       this.optionsStore.viewDate = this.dates.lastPicked.clone;
               };
               const value = this.optionsStore.input.value;
-              if (this.optionsStore.options.multipleDates) {
+              if (this.optionsStore.options.multipleDates ||
+                  this.optionsStore.options.dateRange) {
                   try {
                       const valueSplit = value.split(this.optionsStore.options.multipleDatesSeparator);
                       for (let i = 0; i < valueSplit.length; i++) {
@@ -4154,9 +4237,25 @@
            */
           this._toggleClickEvent = () => {
               if (this.optionsStore.element?.disabled ||
-                  this.optionsStore.input?.disabled)
+                  this.optionsStore.input?.disabled ||
+                  //if we just have the input and allow input toggle is enabled, then don't cause a toggle
+                  (this._toggle.nodeName === 'INPUT' &&
+                      this._toggle?.type === 'text' &&
+                      this.optionsStore.options.allowInputToggle))
                   return;
               this.toggle();
+          };
+          /**
+           * Event for when the toggle is clicked. This is a class level method so there's
+           * something for the remove listener function.
+           * @private
+           */
+          this._openClickEvent = () => {
+              if (this.optionsStore.element?.disabled ||
+                  this.optionsStore.input?.disabled)
+                  return;
+              if (!this.display.isVisible)
+                  this.show();
           };
           setupServiceLocator();
           this._eventEmitters = serviceLocator.locate(EventEmitters);
@@ -4206,7 +4305,7 @@
           else
               this._initializeOptions(options, this.optionsStore.options);
           this.optionsStore.viewDate.setLocalization(this.optionsStore.options.localization);
-          this.display._rebuild();
+          this.display.refreshCurrentView();
       }
       // noinspection JSUnusedGlobalSymbols
       /**
@@ -4315,7 +4414,8 @@
           this._eventEmitters.destroy();
           this.optionsStore.input?.removeEventListener('change', this._inputChangeEvent);
           if (this.optionsStore.options.allowInputToggle) {
-              this.optionsStore.input?.removeEventListener('click', this._toggleClickEvent);
+              this.optionsStore.input?.removeEventListener('click', this._openClickEvent);
+              this.optionsStore.input?.removeEventListener('focus', this._openClickEvent);
           }
           this._toggle?.removeEventListener('click', this._toggleClickEvent);
           this._subscribers = {};
@@ -4438,6 +4538,12 @@
               newConfig.localization.hourCycle = guessHourCycle(newConfig.localization.locale);
           }
           this.optionsStore.options = newConfig;
+          if (newConfig.restrictions.maxDate &&
+              this.viewDate.isAfter(newConfig.restrictions.maxDate))
+              this.viewDate = newConfig.restrictions.maxDate.clone;
+          if (newConfig.restrictions.minDate &&
+              this.viewDate.isBefore(newConfig.restrictions.minDate))
+              this.viewDate = newConfig.restrictions.minDate.clone;
       }
       /**
        * Checks if an input field is being used, attempts to locate one and sets an
@@ -4465,7 +4571,8 @@
               this.optionsStore.input.value = this.dates.formatInput(this.optionsStore.options.defaultDate);
           this.optionsStore.input.addEventListener('change', this._inputChangeEvent);
           if (this.optionsStore.options.allowInputToggle) {
-              this.optionsStore.input.addEventListener('click', this._toggleClickEvent);
+              this.optionsStore.input.addEventListener('click', this._openClickEvent);
+              this.optionsStore.input.addEventListener('focus', this._openClickEvent);
           }
           if (this.optionsStore.input.value) {
               this._inputChangeEvent();
@@ -4519,7 +4626,7 @@
               if (this.display.widget) {
                   this._eventEmitters.action.emit({
                       e: {
-                          currentTarget: this.display.widget.querySelector(`.${Namespace.css.switch}`),
+                          currentTarget: this.display.widget.querySelector('[data-action="togglePicker"]'),
                       },
                       action: ActionTypes$1.togglePicker,
                   });
@@ -4569,7 +4676,7 @@
       }
       return tempusDominus;
   };
-  const version = '6.7.7';
+  const version = '6.9.4';
   const tempusDominus = {
       TempusDominus,
       extend,

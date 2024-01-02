@@ -3,7 +3,7 @@
  * http://www.mediaelementjs.com/
  *
  * Wrapper that mimics native HTML5 MediaElement (audio and video)
- * using a variety of technologies (pure JavaScript, Flash, iframe)
+ * using a variety of technologies (pure JavaScript, iframe)
  *
  * Copyright 2010-2017, John Dyer (http://j.hn/)
  * License: MIT
@@ -253,7 +253,7 @@ var SoundCloudIframeRenderer = {
 
 			var initEvents = ['rendererready', 'loadeddata', 'loadedmetadata', 'canplay'];
 			for (var _i3 = 0, _total3 = initEvents.length; _i3 < _total3; _i3++) {
-				var event = mejs.Utils.createEvent(initEvents[_i3], sc);
+				var event = mejs.Utils.createEvent(initEvents[_i3], sc, true);
 				mediaElement.dispatchEvent(event);
 			}
 		};

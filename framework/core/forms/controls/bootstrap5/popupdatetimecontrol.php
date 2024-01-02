@@ -27,33 +27,28 @@ if (!defined('EXPONENT')) {
  * @package    Subsystems-Forms
  * @subpackage Control
  */
-class popupdatetimecontrol extends formcontrol
-{
+class popupdatetimecontrol extends formcontrol {
 
     var $type     = 'datetime';
     var $disable_text = "";
     var $showdate = true;
     var $showtime = true;
 
-    static function name()
-    {
+    static function name() {
         return "Date / Time - Popup w/ Static Text";
     }
 
-    static function isSimpleControl()
-    {
+    static function isSimpleControl() {
         return true;
     }
 
-    static function getFieldDefinition()
-    {
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE => DB_DEF_TIMESTAMP
         );
     }
 
-    function __construct($default = null, $disable_text = "", $showtime = true)
-    {
+    function __construct($default = null, $disable_text = "", $showtime = true) {
         $this->disable_text = $disable_text;
         $this->default = $default;
         $this->showtime = $showtime;
@@ -74,8 +69,7 @@ class popupdatetimecontrol extends formcontrol
 //        return $this->controlToHTML($name, $label);
 //    }
 
-    function controlToHTML($name, $label)
-    {
+    function controlToHTML($name, $label) {
         $idname = createValidId($name);
         if ($this->default == 0) {
             $this->default = time();
@@ -119,8 +113,8 @@ class popupdatetimecontrol extends formcontrol
         } else {
             $date_input->append = 'calendar-days';
         }
-        if ($this->horizontal)
-            $date_input->horizontal_top = true;
+//        if ($this->horizontal)
+//            $date_input->horizontal_top = true;
         $html = $date_input->toHTML(null, $name);
         $html = str_replace('form-group', '', $html);  // we're a control within a control
 
@@ -204,8 +198,7 @@ class popupdatetimecontrol extends formcontrol
         return $html;
     }
 
-    static function parseData($name, $values, $for_db = false)
-    {
+    static function parseData($name, $values, $for_db = false) {
 //        if (!isset($values[$name . '_disabled'])) {
 ////			return strtotime($values[$name]);
 //            return $values[$name];
@@ -227,8 +220,7 @@ class popupdatetimecontrol extends formcontrol
      *
      * @return string
      */
-    static function templateFormat($db_data, $ctl)
-    {
+    static function templateFormat($db_data, $ctl) {
         if (empty($db_data))
             return gt('No Date Set');
         if ($ctl->showtime) {
@@ -248,8 +240,7 @@ class popupdatetimecontrol extends formcontrol
         }
     }
 
-    static function form($object)
-    {
+    static function form($object) {
         $form = new form();
         if (!isset($object->identifier)) {
             $object = new stdClass();
@@ -257,19 +248,30 @@ class popupdatetimecontrol extends formcontrol
             $object->caption = "";
             $object->description = "";
             $object->showtime = true;
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );
         }
-        if (empty($object->description)) $object->description = "";
+        if (empty($object->description))
+            $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showtime", gt('Show Time'), new checkboxcontrol($object->showtime, false));
+        $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
         return $form;
     }
 
-    static function update($values, $object)
-    {
+    static function update($values, $object) {
         if ($object == null) {
             $object = new popupdatetimecontrol();
             $object->default = 0;
@@ -284,6 +286,7 @@ class popupdatetimecontrol extends formcontrol
         $object->caption = $values['caption'];
         $object->description = $values['description'];
         $object->showtime = !empty($values['showtime']);
+        if (isset($values['width'])) $object->width = ($values['width']);
         return $object;
     }
 

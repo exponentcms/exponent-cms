@@ -103,7 +103,7 @@ class formsController extends expController {
             if (isset($this->config['order_dropdown_all'])) {
                 $all_text = $this->config['order_dropdown_all'];
             } else {
-                $all_text = gettext('(All)');
+                $all_text = gt('(All)');
             }
 
             if (!empty($f)) {
@@ -701,7 +701,7 @@ class formsController extends expController {
         );
         foreach ($this->params as $k => $v) {
         //    $this->params[$k]=htmlentities(htmlspecialchars($v,ENT_COMPAT,LANG_CHARSET));
-            $this->params[$k] = htmlspecialchars($v, ENT_COMPAT, LANG_CHARSET);
+            $this->params[$k] = htmlspecialchars((string)$v, ENT_COMPAT, LANG_CHARSET);
         }
         expSession::set('forms_data_' . $this->params['id'], $this->params);
 
@@ -1362,7 +1362,7 @@ class formsController extends expController {
             } else {
                 $ctl1 = call_user_func(array($this->params['control_type'], 'update'), $this->params, $ctl1);
             }
-            $ctl1->type = str_replace('control', '', $this->params['control_type'], );  // update the control type
+            $ctl1->type = str_replace('control', '', $this->params['control_type']);  // update the control type
             if (!empty($this->params['rank']))
                 $ctl1->rank = $this->params['rank'];
 
@@ -2116,8 +2116,8 @@ class formsController extends expController {
 
             //split the line into its columns
             $headerinfo = null;
-            $line_end = ini_get('auto_detect_line_endings');
-            ini_set('auto_detect_line_endings',TRUE);
+//            $line_end = ini_get('auto_detect_line_endings');
+//            ini_set('auto_detect_line_endings',TRUE);
             $fh = fopen(BASE . $directory . "/" . $file->filename, "rb");
             if (!empty($this->params["use_header"])) $this->params["rowstart"]++;
             for ($x = 0; $x < $this->params["rowstart"]; $x++) {
@@ -2125,7 +2125,7 @@ class formsController extends expController {
                 if ($x == 0 && !empty($this->params["use_header"])) $headerinfo = $lineInfo;
             }
             fclose($fh);
-            ini_set('auto_detect_line_endings',$line_end);
+//            ini_set('auto_detect_line_endings',$line_end);
 
             // get list of simple non-static controls if we are also creating a new form
             $types = expTemplate::listControlTypes(false);
@@ -2302,16 +2302,19 @@ class formsController extends expController {
 
         //split the line into its columns
         $headerinfo = null;
-        $line_end = ini_get('auto_detect_line_endings');
-        ini_set('auto_detect_line_endings',TRUE);
+//        $line_end = ini_get('auto_detect_line_endings');
+//        ini_set('auto_detect_line_endings',TRUE);
         $fh = fopen(BASE . $directory . "/" . $file->filename, "rb");
         if (!empty($this->params["use_header"])) $this->params["rowstart"]++;
         for ($x = 0; $x < $this->params["rowstart"]; $x++) {
             $lineInfo = fgetcsv($fh, 2000, $this->params["delimiter"]);
-            if ($x == 0 && !empty($this->params["use_header"])) $headerinfo = $lineInfo;
+            if ($x == 0) {
+                $lineInfo = str_replace("\xEF\xBB\xBF",'', $lineInfo); // remove BOM
+                if (!empty($this->params["use_header"])) $headerinfo = $lineInfo;
+            }
         }
         fclose($fh);
-        ini_set('auto_detect_line_endings',$line_end);
+//        ini_set('auto_detect_line_endings',$line_end);
 
         // pull in the form control definitions here
         $f = new forms($this->params['forms_id']);
@@ -2321,6 +2324,11 @@ class formsController extends expController {
         foreach ($f->forms_control as $control) {
             $fields[$control->name] = $control->caption;
         }
+        $fields['ip'] = 'IP Address';
+        $fields['sef_url'] = 'SEF URL';
+        $fields['referrer'] = 'Referrer';
+        $fields['user_id'] = 'Posted by';
+        $fields['timestamp'] = 'Timestamp';
 
         //Check to see if the line got split, otherwise throw an error
         if ($lineInfo == null) {
@@ -2345,7 +2353,8 @@ class formsController extends expController {
                 } else {
                     $title = $lineInfo[$i];
                 }
-                $form->register("column[$i]", $title, new dropdowncontrol("none", $fields));
+                $select = array_search($headerinfo[$i], $fields);
+                $form->register("column[$i]", $title, new dropdowncontrol($select, $fields));
             }
             $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
@@ -2356,8 +2365,8 @@ class formsController extends expController {
     }
 
     public function import_csv_data_display() {
-        $line_end = ini_get('auto_detect_line_endings');
-        ini_set('auto_detect_line_endings',TRUE);
+//        $line_end = ini_get('auto_detect_line_endings');
+//        ini_set('auto_detect_line_endings',TRUE);
         $file = fopen(BASE . $this->params["filename"], 'rb');
         $record = array();
         $records = array();
@@ -2369,6 +2378,11 @@ class formsController extends expController {
         foreach ($f->forms_control as $control) {
             $fields[$control->name] = $control->caption;
         }
+        $fields['ip'] = 'IP Address';
+        $fields['sef_url'] = 'SEF URL';
+        $fields['referrer'] = 'Referrer';
+        $fields['user_id'] = 'Posted by';
+        $fields['timestamp'] = 'Timestamp';
 
         while (($filedata = fgetcsv($file, 2000, $this->params["delimiter"])) != false) {
             if ($linenum >= $this->params["rowstart"]) {
@@ -2389,7 +2403,7 @@ class formsController extends expController {
             $linenum++;
         }
         fclose($file);
-        ini_set('auto_detect_line_endings',$line_end);
+//        ini_set('auto_detect_line_endings',$line_end);
 
         assign_to_template(array(
             "records" => $records,
@@ -2404,8 +2418,8 @@ class formsController extends expController {
             header('Location: ' . URL_FULL);
             exit();  // attempt to hack the site
         }
-        $line_end = ini_get('auto_detect_line_endings');
-        ini_set('auto_detect_line_endings',TRUE);
+//        $line_end = ini_get('auto_detect_line_endings');
+//        ini_set('auto_detect_line_endings',TRUE);
         $file = fopen(BASE . $this->params["filename"], 'rb');
         $recordsdone = 0;
         $linenum = 1;
@@ -2430,6 +2444,7 @@ class formsController extends expController {
             if ($linenum >= $this->params["rowstart"] && in_array($linenum,$this->params['importrecord'])) {
                 $i = 0;
                 $db_data = new stdClass();
+                // default entries
                 $db_data->ip = '';
                 $db_data->sef_url = '';
                 $db_data->user_id = $user->id;
@@ -2458,7 +2473,7 @@ class formsController extends expController {
         }
 
         fclose($file);
-        ini_set('auto_detect_line_endings',$line_end);
+//        ini_set('auto_detect_line_endings',$line_end);
 
         // update multi-item forms controls
         if (!empty($multi_item_control_ids)) {

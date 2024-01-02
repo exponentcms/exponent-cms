@@ -51,7 +51,10 @@ class dropdowncontrol extends formcontrol {
     }
 
     function controlToHTML($name,$label=null) {
-        $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
+        // compensate for multiple defaults separated by |
+        if (!empty($this->default) && stripos($this->default, "|") !== 0) {
+            $this->default = explode("|", $this->default);
+        }        $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
         $disabled = $this->disabled != false ? "disabled" : "";
 
         $html = ($this->horizontal) ? '<div class="col-sm-10">' : '<div style="display:inline">';
@@ -137,7 +140,8 @@ class dropdowncontrol extends formcontrol {
 
     static function form($object) {
         $form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption = "";
@@ -147,15 +151,28 @@ class dropdowncontrol extends formcontrol {
             $object->items = array();
             $object->include_blank = false;
             $object->required = false;
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );
         }
-        if (empty($object->description)) $object->description = "";
+        if (empty($object->description))
+            $object->description = "";
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
         $form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
         $form->register("include_blank", gt('Include a Blank Item.'), new checkboxcontrol($object->include_blank,true));
+        $form->register("multiple", gt('Allow Multiple Selections.'), new checkboxcontrol($object->multiple,true));
         $form->register("default",gt('Default'), new textcontrol($object->default));
         $form->register("size",gt('Size'), new textcontrol($object->size,3,false,2,"integer"));
+        $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
         if (!expJavascript::inAjaxAction())
             $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
@@ -169,14 +186,17 @@ class dropdowncontrol extends formcontrol {
             expSession::set("last_POST",$post);
             return null;
         }
-        if ($object == null) $object = new dropdowncontrol();
+        if ($object == null)
+            $object = new dropdowncontrol();
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
         $object->description = $values['description'];
         $object->default = $values['default'];
         $object->items = listbuildercontrol::parseData('items', $values, true);
         $object->include_blank = !empty($values['include_blank']);
+        $object->multiple = !empty($values['multiple']);
         if (isset($values['size'])) $object->size = ((int)($values['size']) <= 0)?1:(int)($values['size']);
+        if (isset($values['width'])) $object->width = ($values['width']);
         $object->required = !empty($values['required']);
         return $object;
     }

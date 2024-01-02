@@ -33,7 +33,7 @@
  * @subpackage Modifier
  */
 function smarty_modifier_highlight($text='', $word='', $highlight='html5') {
-   if(strlen($text) > 0 && strlen($word) > 0) {
+   if(!is_null($text) && !is_null($word) && strlen($text) > 0 && strlen($word) > 0) {
        $highlight = empty($highlight) ? 'style="background-color:#ffff55;"' : $highlight;
        $words = explode(' ',$word);
        $words = array_unique($words);  // no need to highlight duplicated words more than once

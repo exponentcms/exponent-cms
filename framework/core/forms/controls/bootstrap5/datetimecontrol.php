@@ -52,8 +52,14 @@ class datetimecontrol extends formcontrol {
     }
 
     function toHTML($label, $name) {
-        if (!$this->showdate && !$this->showtime) return "";
-        $html = "<div id=\"" . $name . "Control\" class=\"datetime-control control " . ($this->horizontal ? 'row ' : '') . "form-group";
+        if (!$this->showdate && !$this->showtime)
+            return "";
+        if (empty($this->width)) {
+            $class = "col-sm-12 ";
+        } else {
+            $class = $this->width . " ";
+        }
+        $html = "<div id=\"" . $name . "Control\" class=\"datetime-control control " . $class . ($this->horizontal ? 'row ' : '') . "form-group";
         $html .= (!empty($this->required)) ? ' required">' : '">';
         //$html .= "<label>";
         if (empty($this->flip)) {
@@ -183,20 +189,33 @@ class datetimecontrol extends formcontrol {
 
     static function form($object) {
         $form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier  = "";
             $object->caption     = "";
             $object->description = "";
             $object->showdate    = true;
             $object->showtime    = true;
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );
         }
-        if (empty($object->description)) $object->description = "";
+        if (empty($object->description))
+            $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showdate", gt('Show Date'), new checkboxcontrol($object->showdate, false));
         $form->register("showtime", gt('Show Time'), new checkboxcontrol($object->showtime, false));
+        $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
         return $form;
@@ -218,6 +237,7 @@ class datetimecontrol extends formcontrol {
         $object->description = $values['description'];
         $object->showdate    = !empty($values['showdate']);
         $object->showtime    = !empty($values['showtime']);
+        if (isset($values['width'])) $object->width = ($values['width']);
         return $object;
     }
 }

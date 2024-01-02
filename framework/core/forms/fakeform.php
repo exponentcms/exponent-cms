@@ -91,11 +91,18 @@ class fakeform extends form {
         }
 		$html .= $formError;
         $class = '';
+        if (bs4() || bs5()) {
+            $class = " class=\"row\"";
+        }
         if ($this->horizontal) {
             if (newui()) {
                 $class = " class=\"exp-skin form-horizontal\"";
             } else {
-                $class = " class=\"form-horizontal\"";
+                if (bs4() || bs5()) {
+                    $class = " class=\"row form-horizontal\"";
+                } else {
+                    $class = " class=\"form-horizontal\"";
+                }
             }
         } elseif (newui()) {
             $class = " class=\"exp-skin\"";
@@ -119,7 +126,20 @@ class fakeform extends form {
         global $router;
 
         $this->even = ($this->even === "odd") ? "even" : "odd";
-        $html = "<div id='" . $this->controls[$name]->_id . "' class=\"formmoduleedit item ".$this->even." control" . (!empty($this->controls[$name]->is_hidden)?' ishidden':'') . ($this->controls[$name]->_controltype === 'pagecontrol'?' ispaged':'') . "\" >";
+        $width = '';
+        if (bs4() || bs5()) {
+            if (empty($this->controls[$name]->width) || $this->controls[$name]->horizontal) {
+               $width = " col-sm-12";
+           } else {
+               $width = " " . $this->controls[$name]->width;
+           }
+        } else {
+            if ($this->controls[$name]->horizontal) {
+                $width = " col-sm-12";
+            }
+        }
+
+        $html = "<div id='" . $this->controls[$name]->_id . "' class=\"formmoduleedit item ".$this->even. $width." control" . (!empty($this->controls[$name]->is_hidden)?' ishidden':'') . ($this->controls[$name]->_controltype === 'pagecontrol'?' ispaged':'') . "\" >";
         if ($this->controls[$name]->horizontal && (bs3() || bs4()|| bs5()))
             $html .= '<div class="row">';
 

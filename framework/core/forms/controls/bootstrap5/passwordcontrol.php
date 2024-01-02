@@ -48,9 +48,15 @@ class passwordcontrol extends genericcontrol {
         if ($this->type !== 'hidden') {
             $html = '';
             $class = empty($this->class) ? '' : ' '.$this->class;
-             if ($this->meter) {
+            if ($this->horizontal)
+                $class .= ' col-sm-10 ';
+            elseif (empty($this->width)) {
+                $class .= " col-sm-12";
+            } else {
+                $class .= " " . $this->width;
+            }
+            if ($this->meter) {
                  $html .= "<div class=\" " . $this->id . "-meter\">";
-                 $class = "span4";
              }
             $html .= '<div' . $divID . ' class="' . $this->type . '-control control ' . ($this->horizontal ? 'row ' : '') . 'form-group ' . $class . '" ' . $disabled;
             $html .= (!empty($this->required)) ? ' required="required">' : '>';

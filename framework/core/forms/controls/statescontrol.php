@@ -92,7 +92,8 @@ class statescontrol extends dropdowncontrol {
 
     static function form($object) {
         $form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption = "";
@@ -103,8 +104,19 @@ class statescontrol extends dropdowncontrol {
             $object->add_other = false;
             $object->include_blank = false;
             $object->required = false;
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );
         }
-        if (empty($object->description)) $object->description = "";
+        if (empty($object->description))
+            $object->description = "";
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
@@ -113,6 +125,8 @@ class statescontrol extends dropdowncontrol {
         $form->register("abbv", gt('Use abbreviations'), new checkboxcontrol($object->abbv,true));
         $form->register("add_other", gt('\'Select State\' entry?'), new checkboxcontrol($object->add_other,true));
         $form->register("include_blank", gt('Include a Blank Entry?'), new checkboxcontrol($object->include_blank,true));
+        if (bs4() || bs5())
+            $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
         if (!expJavascript::inAjaxAction())
             $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
@@ -127,7 +141,8 @@ class statescontrol extends dropdowncontrol {
             expSession::set("last_POST",$post);
             return null;
         }
-        if ($object == null) $object = new statescontrol();
+        if ($object == null)
+            $object = new statescontrol();
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
         $object->description = $values['description'];
@@ -136,6 +151,7 @@ class statescontrol extends dropdowncontrol {
         $object->abbv = isset($values['abbv']);
         $object->add_other = isset($values['add_other']);
         $object->include_blank = isset($values['include_blank']);
+        if (isset($values['width'])) $object->width = ($values['width']);
         $object->required = !empty($values['required']);
         return $object;
     }

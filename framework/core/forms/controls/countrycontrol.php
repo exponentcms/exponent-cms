@@ -83,7 +83,8 @@ class countrycontrol extends dropdowncontrol {
 
     static function form($object) {
         $form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption = "";
@@ -93,8 +94,19 @@ class countrycontrol extends dropdowncontrol {
             $object->abbv = false;
             $object->show_all = false;
             $object->required = false;
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );
         }
-        if (empty($object->description)) $object->description = "";
+        if (empty($object->description))
+            $object->description = "";
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
@@ -102,6 +114,8 @@ class countrycontrol extends dropdowncontrol {
         $form->register("size",gt('Size'), new textcontrol($object->size,3,false,2,"integer"));
         $form->register("abbv", gt('Use abbreviations?'), new checkboxcontrol($object->abbv,true));
         $form->register("show_all", gt('Show all countries?'), new checkboxcontrol($object->show_all,true));
+        if (bs4() || bs5())
+            $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
         if (!expJavascript::inAjaxAction())
             $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
@@ -115,7 +129,8 @@ class countrycontrol extends dropdowncontrol {
             expSession::set("last_POST",$post);
             return null;
         }
-        if ($object == null) $object = new countrycontrol();
+        if ($object == null)
+            $object = new countrycontrol();
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
         $object->description = $values['description'];
@@ -123,6 +138,7 @@ class countrycontrol extends dropdowncontrol {
         if (isset($values['size'])) $object->size = ((int)($values['size']) <= 0)?1:(int)($values['size']);
         $object->abbv = isset($values['abbv']);
         $object->show_all = !empty($values['show_all']);
+        if (isset($values['width'])) $object->width = ($values['width']);
         $object->required = !empty($values['required']);
         return $object;
     }

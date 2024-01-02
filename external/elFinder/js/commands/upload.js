@@ -195,14 +195,18 @@ elFinder.prototype.commands.upload = function() {
 				target = e._target || null,
 				trf = e.dataTransfer || null,
 				kind = '',
-				errors;
+				idx, errors;
 			
 			if (trf) {
-				if (trf.types && trf.types.length && $.inArray('Files', trf.types) !== -1) {
-				    kind = 'file';
+				if (trf.types && trf.types.length) {
+					if ((idx = $.inArray('application/x-moz-file', trf.types)) !== -1) {
+						kind = 'file';
+					} else if ((idx = $.inArray('Files', trf.types)) !== -1) {
+						kind = 'file';
+					}
 				}
 				else if (trf.items && trf.items.length && trf.items[0].kind) {
-				    kind = trf.items[0].kind;
+					kind = trf.items[0].kind;
 				}
 
 				try {
@@ -216,7 +220,7 @@ elFinder.prototype.commands.upload = function() {
 					}
 				} catch(e) {}
 				
-				if (kind === 'file' && (trf.items[0].getAsEntry || trf.items[0].webkitGetAsEntry)) {
+				if (kind === 'file' && (trf.items[idx].getAsEntry || trf.items[idx].webkitGetAsEntry || trf.items[idx].getAsFile)) {
 					file = trf;
 					type = 'data';
 				} else if (kind !== 'string' && trf.files && trf.files.length && $.inArray('Text', trf.types) === -1) {

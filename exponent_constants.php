@@ -532,7 +532,7 @@ if (!defined('YUI2_RELATIVE')) {
 if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
-    define('JQUERY3_VERSION', '3.7.0');
+    define('JQUERY3_VERSION', '3.7.1');
     define('JQUERY3_MIGRATE_VERSION', '3.4.1');
     define('JQUERYUI_VERSION', '1.13.2');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
@@ -591,8 +591,8 @@ if (!defined('JQUERY_RELATIVE')) {
         define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v4.x script
     if (!defined('BS5_SCRIPT')) {
-        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>');
-//        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>');
+
+        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v5.x script
 /**
  * Font-Awesome CDN links
@@ -605,7 +605,7 @@ if (!defined('JQUERY_RELATIVE')) {
         define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
     if (!defined('FA6_SCRIPT')) {
-        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
     } // cdn FontAwesome v6.x stylesheet
 //}
 
@@ -617,7 +617,7 @@ if (!defined('SMARTY_PATH')) {
     if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
     } else {
-        define('SMARTY_VERSION', '4.3.1');  //note smarty v3.1.28+ won't work properly with php < v7.1+
+        define('SMARTY_VERSION', '4.3.4');  //note smarty v3.1.28+ won't work properly with php < v7.1+
     }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
@@ -637,17 +637,17 @@ if (!defined('SWIFT_PATH')) {
     /**
      * Lexer is needed for Swiftmailer v6
      */
-    define('LEXER_VERSION', '2.1.0');
+    define('LEXER_VERSION', '2.1.0');  // 3.0.0
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/src/');
     /**
      * Deprecations is needed for Lexer v2
      */
-    define('DEPRECATIONS_VERSION', '1.0.0');
+    define('DEPRECATIONS_VERSION', '1.1.2');
     define('SWIFT_DEPRECATIONS_PATH', BASE . 'external/deprecations-' . DEPRECATIONS_VERSION . '/lib/Doctrine/Deprecations/');
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '3.2.4');
+    define('EMAIL_VALIDATOR_VERSION', '3.2.6');  // 4.0.2
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
@@ -662,13 +662,13 @@ if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.17');
 }
 if (!defined('MPDF81_VERSION')) {
-    define('MPDF81_VERSION', '8.1.4');  // 8.1.6
+    define('MPDF81_VERSION', '8.1.4');  // 8.2.2
 }
 /**
  * Log is needed for MPDF v7+
  */
 if (!defined('LOG_VERSION')) {
-    define('LOG_VERSION', '1.1.4');
+    define('LOG_VERSION', '1.1.4');  // 2.0.0, 3.0.0
 }
 /**
  * random_compat is needed for MPDF v7+ under PHP v5.6
@@ -680,24 +680,42 @@ if (!defined('RANDOM_VERSION')) {
  * FPDI is needed for MPDF v8+
  */
 if (!defined('FPDI_VERSION')) {
-    define('FPDI_VERSION', '2.3.6');  // 2.3.7
+    define('FPDI_VERSION', '2.3.6');  // 2.6.0
+}
+/**
+ * HTTP Message Shim is needed for MPDF v8.2+
+ */
+if (!defined('HTTP_MSG_SHM_VERSION')) {
+    define('HTTP_MSG_SHM_VERSION', '2.0.1');
+}
+/**
+ * Log Aware Trait is needed for MPDF v8.1.6+
+ */
+if (!defined('LOG_AWARE_VERSION')) {
+    define('LOG_AWARE_VERSION', '3.0.0');
+}
+/**
+ * HTTP Message is needed for MPDF v8+
+ */
+if (!defined('HTTP_MSG_VERSION')) {
+    define('HTTP_MSG_VERSION', '1.0');  // 1.1.0
 }
 
 if (!defined('DOMPDF8_VERSION')) {
     define('DOMPDF8_VERSION', '-1.2.2');
 }
 if (!defined('DOMPDF2_VERSION')) {
-    define('DOMPDF2_VERSION', '2.0.3');
+    define('DOMPDF2_VERSION', '2.0.3');  // 2.0.4
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.7');
+    define('HTML2PDF5_VERSION', '5.2.7');  // 5.2.8
 }
 /**
  * TCPDF is needed for HTML2PDF5
  */
 if (!defined('TCPDF5_VERSION')) {
-    define('TCPDF5_VERSION', '6.6.2');
+    define('TCPDF5_VERSION', '6.6.2');  // 6.6.5
 }
 
 ?>

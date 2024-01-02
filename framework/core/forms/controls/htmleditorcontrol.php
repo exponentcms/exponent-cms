@@ -27,8 +27,7 @@ if (SITE_WYSIWYG_EDITOR === "ckeditor") {
      * @package Subsystems-Forms
      * @subpackage Control
      */
-    class htmleditor extends ckeditorcontrol
-    {
+    class htmleditor extends ckeditorcontrol {
 
     }
 
@@ -40,8 +39,7 @@ if (SITE_WYSIWYG_EDITOR === "ckeditor") {
      * @package Subsystems-Forms
      * @subpackage Control
      */
-    class htmleditor extends ckeditor5control
-    {
+    class htmleditor extends ckeditor5control {
 
     }
 
@@ -53,8 +51,7 @@ if (SITE_WYSIWYG_EDITOR === "ckeditor") {
      * @package Subsystems-Forms
      * @subpackage Control
      */
-    class htmleditor extends tinymcecontrol
-    {
+    class htmleditor extends tinymcecontrol {
 
     }
 
@@ -66,8 +63,7 @@ if (SITE_WYSIWYG_EDITOR === "ckeditor") {
      * @package Subsystems-Forms
      * @subpackage Control
      */
-    class htmleditor extends tinymce5control
-    {
+    class htmleditor extends tinymce5control {
 
     }
 
@@ -79,26 +75,22 @@ if (SITE_WYSIWYG_EDITOR === "ckeditor") {
      * @package Subsystems-Forms
      * @subpackage Control
      */
-    class htmleditor extends texteditorcontrol
-    {
+    class htmleditor extends texteditorcontrol {
         var $module = "";
         var $toolbar = "";
 
-        static function name()
-        {
+        static function name() {
             return "WYSIWYG Editor";
         }
 
-        function __construct($default = "", $module = "", $rows = 20, $cols = 60, $toolbar = "", $height = 300)
-        {
+        function __construct($default = "", $module = "", $rows = 20, $cols = 60, $toolbar = "", $height = 300) {
             $this->default = $default;
             $this->module = $module; // For looking up templates.
             $this->toolbar = $toolbar;
             $this->height = $height;
         }
 
-        function controlToHTML($name, $label)
-        {
+        function controlToHTML($name, $label) {
             global $db;
 
             if ($this->toolbar == "") {
@@ -147,8 +139,7 @@ if (SITE_WYSIWYG_EDITOR === "ckeditor") {
 
         }
 
-        static function parseData($name, $values, $for_db = false)
-        {
+        static function parseData($name, $values, $for_db = false) {
             $html = $values[$name];
             if (trim($html) === "<br />") $html = "";
             return $html;
@@ -163,26 +154,23 @@ if (SITE_WYSIWYG_EDITOR === "ckeditor") {
  * @package Subsystems-Forms
  * @subpackage Control
  */
-class htmleditorcontrol extends htmleditor
-{
+class htmleditorcontrol extends htmleditor {
     static function name() { return "Text Area - WYSIWYG"; }
 
-    static function isSimpleControl()
-    {
+    static function isSimpleControl() {
         return true;
     }
 
-    static function getFieldDefinition()
-    {
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE => DB_DEF_STRING,
             DB_FIELD_LEN => 10000);
     }
 
-    static function form($object)
-    {
+    static function form($object) {
         $form = new form();
-        if (empty($object)) $object = new stdClass();
+        if (empty($object))
+            $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption = "";
@@ -194,8 +182,19 @@ class htmleditorcontrol extends htmleditor
             $object->maxchars = 0;
             $object->maxlength = 0;
             $object->is_hidden = false;
+            $object->width = '';
+            $object->widths     = array(
+                '' => 'Full',
+                'col-sm-8' => '8 Col',
+                'col-sm-6' => '6 Col',
+                'col-sm-4' => '4 Col',
+                'col-sm-3' => '3 Col',
+                'col-sm-2' => '2 Col',
+                'col-sm-1' => '1 Col'
+            );
         }
-        if (empty($object->description)) $object->description = "";
+        if (empty($object->description))
+            $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier),true, array('required'=>true));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
@@ -205,15 +204,17 @@ class htmleditorcontrol extends htmleditor
         $form->register("rows", gt('Rows'), new textcontrol($object->rows, 4, false, 3, "integer"));
         $form->register("cols", gt('Columns'), new textcontrol($object->cols, 4, false, 3, "integer"));
         $form->register("maxlength", gt('Maximum Length'), new textcontrol((($object->maxlength == 0) ? "" : $object->maxlength), 4, false, 3, "integer"));
+        if (bs4() || bs5())
+            $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden), false));
         if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), '', gt('Cancel'), "", 'editable'));
         return $form;
     }
 
-    static function update($values, $object)
-    {
-        if ($object == null) $object = new htmleditorcontrol();
+    static function update($values, $object) {
+        if ($object == null)
+            $object = new htmleditorcontrol();
         if ($values['identifier'] == "") {
             $post = expString::sanitize($_POST);
             $post['_formError'] = gt('Identifier is required.');
@@ -229,6 +230,7 @@ class htmleditorcontrol extends htmleditor
         if (isset($values['cols'])) $object->cols = (int)($values['cols']);
         if (isset($values['maxchars'])) $object->maxchars = (int)($values['maxchars']);
         if (isset($values['maxlength'])) $object->maxlength = (int)($values['maxlength']);
+        if (isset($values['width'])) $object->width = ($values['width']);
         $object->required = !empty($values['required']);
         $object->is_hidden = !empty($values['is_hidden']);
         return $object;
@@ -238,8 +240,7 @@ class htmleditorcontrol extends htmleditor
     //   		return str_replace(array("\r\n","\n","\r"),'<br />', htmlspecialchars($values[$original_name]));
     //   	}
 
-    static function templateFormat($db_data, $ctl)
-    {
+    static function templateFormat($db_data, $ctl) {
         return str_replace(array("\r\n", "\n", "\r", '\r\n', '\n', '\r'), '<br />', $db_data);
     }
 }

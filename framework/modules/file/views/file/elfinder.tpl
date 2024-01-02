@@ -207,12 +207,12 @@
                     "bootstrap" : {
                       "name":"Bootstrap",
                       "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/themes/bootstrap/css/theme.css"}{literal}",
-                      "author":"Dennis Suitters",
+                      "author":"Dennis Suitters StudioJunkyard",
                       // "email":"Author Email",
-                      // "license":"License",
+                      "license":"MIT",
                       "link":"https://github.com/DiemenDesign/LibreICONS/tree/master/themes/elFinder",
                       "image":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder/themes/bootstrap/bootstrap.png"}{literal}",
-                      "description":"Bootstrap and LibreICONS theme for elFinder"
+                      "description":"Bootstrap like theme for elFinder LibreICONS SVG Edition"
                     },
                     "dark-slim" : {
                       "name":"Dark Slim",
@@ -227,7 +227,7 @@
                     "material" : {
                       "name":"Material",
                       "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/themes/Material/css/theme.css"}{literal}",
-                      "author":"Róbert Kelčák",
+                      "author":"Róbert Kelčák {RobiNN}",
                       // "email":"Author Email",
                       "license":"MIT",
                       "link":"https://github.com/RobiNN1/elFinder-Material-Theme",
@@ -237,29 +237,29 @@
                     "material-gray" : {
                       "name":"Material Gray",
                       "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/themes/Material-Gray/css/theme.css"}{literal}",
-                      "author":"Róbert Kelčák",
+                      "author":"Róbert Kelčák {RobiNN}",
                       // "email":"Author Email",
                       "license":"MIT",
                       "link":"https://github.com/RobiNN1/elFinder-Material-Theme",
                       "image":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder/themes/Material-Gray/Material-Gray.png"}{literal}",
-                      "description":"Material Gray Theme for elFinder"
+                      "description":"Material (Gray) Theme for elFinder"
                     },
                     "material-light" : {
                       "name":"Material Light",
                       "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/themes/Material-Light/css/theme.css"}{literal}",
-                      "author":"Róbert Kelčák",
+                      "author":"Róbert Kelčák {RobiNN}",
                       // "email":"Author Email",
                       "license":"MIT",
                       "link":"https://github.com/RobiNN1/elFinder-Material-Theme",
                       "image":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder/themes/Material-Light/Material-Light.png"}{literal}",
-                      "description":"Material Light Theme for elFinder"
+                      "description":"Material (Light) Theme for elFinder"
                     },
                     "moono" : {
                       "name":"Moono",
                       "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/themes/moono/css/theme.css"}{literal}",
                       "author":"Lawrence Okoth-Odida",
                       // "email":"Author Email",
-                      // "license":"License",
+                      "license":"MIT",
                       "link":"https://github.com/lokothodida/elfinder-theme-moono",
                       "image":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder/themes/moono/moono.png"}{literal}",
                       "description":"A theme for elFinder that mimics CKEditor's Moono skin."
@@ -269,7 +269,7 @@
                       "cssurls":"{/literal}{$smarty.const.URL_FULL|cat:"external/elFinder/themes/windows-10/css/theme.css"}{literal}",
                       "author":"Lawrence Okoth-Odida",
                       // "email":"Author Email",
-                      // "license":"License",
+                      "license":"MIT",
                       "link":"https://github.com/lokothodida/elfinder-theme-windows-10",
                       "image":"{/literal}{$smarty.const.PATH_RELATIVE|cat:"external/elFinder/themes/windows-10/windows-10.png"}{literal}",
                       "description":"An elFinder theme that mimics Windows 10's user interface."

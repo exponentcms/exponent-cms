@@ -3,7 +3,7 @@
  * http://www.mediaelementjs.com/
  *
  * Wrapper that mimics native HTML5 MediaElement (audio and video)
- * using a variety of technologies (pure JavaScript, Flash, iframe)
+ * using a variety of technologies (pure JavaScript, iframe)
  *
  * Copyright 2010-2017, John Dyer (http://j.hn/)
  * License: MIT
@@ -341,7 +341,7 @@ var DailyMotionIframeRenderer = {
 			var initEvents = ['rendererready', 'loadedmetadata', 'loadeddata', 'canplay'];
 
 			for (var _i5 = 0, _total5 = initEvents.length; _i5 < _total5; _i5++) {
-				var event = mejs.Utils.createEvent(initEvents[_i5], dm);
+				var event = mejs.Utils.createEvent(initEvents[_i5], dm, true);
 				mediaElement.dispatchEvent(event);
 			}
 		};
