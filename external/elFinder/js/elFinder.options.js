@@ -7,38 +7,38 @@
 elFinder.prototype._options = {
 	/**
 	 * URLs of 3rd party libraries CDN
-	 * 
+	 *
 	 * @type Object
 	 */
 	cdns : {
 		// for editor etc.
-		ace        : 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.22.0',
+		ace        : 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2',
 		codemirror : 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7',
-		ckeditor   : 'https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.21.0',
-		ckeditor5  : 'https://cdn.ckeditor.com/ckeditor5/38.0.1',
-		tinymce    : 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.4.2',
+		ckeditor   : 'https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.22.1', // last version of Open Source Project
+		ckeditor5  : 'https://cdn.ckeditor.com/ckeditor5/40.2.0',
+		tinymce    : 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2',
 		simplemde  : 'https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2',
 		fabric     : 'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1',
 		fabric16   : 'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.7',
 		tui        : 'https://uicdn.toast.com',
 		// for quicklook etc.
-		hls        : 'https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.4/hls.min.js',
-		dash       : 'https://cdnjs.cloudflare.com/ajax/libs/dashjs/4.7.0/dash.all.min.js',
+		hls        : 'https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.14/hls.min.js',
+		dash       : 'https://cdnjs.cloudflare.com/ajax/libs/dashjs/4.7.3/dash.all.min.js',
 		flv        : 'https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.6.2/flv.min.js',
-		videojs    : 'https://cdnjs.cloudflare.com/ajax/libs/video.js/8.3.0',
+		videojs    : 'https://cdnjs.cloudflare.com/ajax/libs/video.js/8.8.0',
 		prettify   : 'https://cdn.jsdelivr.net/gh/google/code-prettify@e006587b4a893f0281e9dc9a53001c7ed584d4e7/loader/run_prettify.js',
 		psd        : 'https://cdnjs.cloudflare.com/ajax/libs/psd.js/3.4.0/psd.min.js',
 		rar        : 'https://cdn.jsdelivr.net/gh/nao-pon/rar.js@6cef13ec66dd67992fc7f3ea22f132d770ebaf8b/rar.min.js',
 		zlibUnzip  : 'https://cdn.jsdelivr.net/gh/imaya/zlib.js@0.3.1/bin/unzip.min.js', // need check unzipFiles() in quicklook.plugins.js when update
 		zlibGunzip : 'https://cdn.jsdelivr.net/gh/imaya/zlib.js@0.3.1/bin/gunzip.min.js',
 		bzip2      : 'https://cdn.jsdelivr.net/gh/nao-pon/bzip2.js@0.8.0/bzip2.js',
-		marked     : 'https://cdnjs.cloudflare.com/ajax/libs/marked/5.0.4/marked.min.js',
+		marked     : 'https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.0/marked.min.js',
 		sparkmd5   : 'https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.2/spark-md5.min.js',
-		jssha      : 'https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.3.0/sha.min.js',
+		jssha      : 'https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.3.1/sha.min.js',
 		amr        : 'https://cdn.jsdelivr.net/gh/yxl/opencore-amr-js@dcf3d2b5f384a1d9ded2a54e4c137a81747b222b/js/amrnb.js',
 		tiff       : 'https://cdn.jsdelivr.net/gh/seikichi/tiff.js@545ede3ee46b5a5bc5f06d65954e775aa2a64017/tiff.min.js'
 	},
-	
+
 	/**
 	 * Connector url. Required!
 	 *
@@ -53,24 +53,24 @@ elFinder.prototype._options = {
 	 * @default "get"
 	 */
 	requestType : 'get',
-	
+
 	/**
 	 * Use CORS to connector url
-	 * 
+	 *
 	 * @type Boolean|null  true|false|null(Auto detect)
 	 */
 	cors : null,
 
 	/**
 	 * Array of header names to return parrot out in HTTP headers received from the server
-	 * 
+	 *
 	 * @type Array
 	 */
 	parrotHeaders : [],
 
 	/**
 	 * Maximum number of concurrent connections on request
-	 * 
+	 *
 	 * @type Number
 	 * @default 3
 	 */
@@ -97,7 +97,7 @@ elFinder.prototype._options = {
 	 *      // upload ...
 	 *      return dfrd;
 	 *    }
-	 *    
+	 *
 	 *  }
 	 **/
 	transport : {},
@@ -118,26 +118,26 @@ elFinder.prototype._options = {
 	 * @default  'auto'
 	 */
 	dragUploadAllow : 'auto',
-	
+
 	/**
 	 * Confirmation dialog displayed at the time of overwriting upload
-	 * 
+	 *
 	 * @type Boolean
 	 * @default true
 	 */
 	overwriteUploadConfirm : true,
-	
+
 	/**
 	 * Max size of chunked data of file upload
-	 * 
+	 *
 	 * @type Number
 	 * @default  10485760(10MB)
 	 */
 	uploadMaxChunkSize : 10485760,
-	
+
 	/**
 	 * Regular expression of file name to exclude when uploading folder
-	 * 
+	 *
 	 * @type Object
 	 * @default { win: /^(?:desktop\.ini|thumbs\.db)$/i, mac: /^\.ds_store$/i }
 	 */
@@ -145,7 +145,7 @@ elFinder.prototype._options = {
 		win: /^(?:desktop\.ini|thumbs\.db)$/i,
 		mac: /^\.ds_store$/i
 	},
-	
+
 	/**
 	 * Timeout for upload using iframe
 	 *
@@ -153,7 +153,7 @@ elFinder.prototype._options = {
 	 * @default  0 - no timeout
 	 */
 	iframeTimeout : 0,
-	
+
 	/**
 	 * Data to append to all requests and to upload files
 	 *
@@ -161,7 +161,7 @@ elFinder.prototype._options = {
 	 * @default  {}
 	 */
 	customData : {},
-	
+
 	/**
 	 * Event listeners to bind on elFinder init
 	 *
@@ -197,7 +197,7 @@ elFinder.prototype._options = {
 	/**
 	 * Base URL of elfFinder library starting from Manager HTML
 	 * Auto detect when empty value
-	 * 
+	 *
 	 * @type String
 	 * @default ""
 	 */
@@ -206,7 +206,7 @@ elFinder.prototype._options = {
 	/**
 	 * Base URL of i18n js files
 	 * baseUrl + "js/i18n/" when empty value
-	 * 
+	 *
 	 * @type String
 	 * @default ""
 	 */
@@ -215,17 +215,17 @@ elFinder.prototype._options = {
 	/**
 	 * Base URL of worker js files
 	 * baseUrl + "js/worker/" when empty value
-	 * 
+	 *
 	 * @type String
 	 * @default ""
 	 */
 	 workerBaseUrl : '',
-	
+
 	/**
 	 * Auto load required CSS
 	 * `false` to disable this function or
 	 * CSS URL Array to load additional CSS files
-	 * 
+	 *
 	 * @type Boolean|Array
 	 * @default true
 	 */
@@ -248,21 +248,21 @@ elFinder.prototype._options = {
 	 *     "description":"Description"
 	 *   }
 	 * }
-	 * 
+	 *
 	 * @type Object
 	 */
 	themes : {},
 
 	/**
 	 * Theme id to initial theme
-	 * 
+	 *
 	 * @type String|Null
 	 */
 	theme : null,
 
 	/**
 	 * Maximum value of error dialog open at the same time
-	 * 
+	 *
 	 * @type Number
 	 */
 	maxErrorDialogs : 5,
@@ -288,7 +288,7 @@ elFinder.prototype._options = {
 	//	'open', 'opendir', 'paste', 'places', 'quicklook', 'reload', 'rename', 'resize', 'restore', 'rm',
 	//	'search', 'sort', 'up', 'upload', 'view', 'zipdl'
 	//],
-	
+
 	/**
 	 * Commands options.
 	 *
@@ -325,7 +325,7 @@ elFinder.prototype._options = {
 			// action when callback is fail (""/"close"/"destroy")
 			onerror : '',
 			// get path before callback call
-			getPath    : true, 
+			getPath    : true,
 			// get image sizes before callback call
 			getImgSize : false
 		},
@@ -412,7 +412,7 @@ elFinder.prototype._options = {
 			officeOnlineMimes : [],
 			// File size threshold when using the dim command for obtain the image size necessary to image preview
 			getDimThreshold : '200K',
-			// Max filesize to show filenames of the zip/tar/gzip/bzip file 
+			// Max filesize to show filenames of the zip/tar/gzip/bzip file
 			unzipMaxSize : '50M',
 			// MIME-Type regular expression that does not check empty files
 			mimeRegexNotEmptyCheck : /^application\/vnd\.google-apps\./
@@ -448,15 +448,15 @@ elFinder.prototype._options = {
 				// 	 * files mimetypes allowed to edit in current wysisyg
 				// 	 * @type  Array
 				// 	 */
-				// 	mimes : ['text/html'], 
+				// 	mimes : ['text/html'],
 				// 	/**
 				// 	 * HTML element for editing area (optional for text editor)
 				// 	 * @type  String
 				// 	 */
-				// 	html : '<textarea></textarea>', 
+				// 	html : '<textarea></textarea>',
 				// 	/**
 				// 	 * Initialize editing area node (optional for text editor)
-				// 	 * 
+				// 	 *
 				// 	 * @param  String  dialog DOM id
 				// 	 * @param  Object  target file object
 				// 	 * @param  String  target file content (text or Data URI Scheme(binary file))
@@ -519,14 +519,14 @@ elFinder.prototype._options = {
 				// 	 * @return void
 				// 	 */
 				// 	resize : function(textarea, instance, event, data) {}
-				// 
+				//
 				// }
 			],
 			// Character encodings of select box
-			encodings : ['Big5', 'Big5-HKSCS', 'Cp437', 'Cp737', 'Cp775', 'Cp850', 'Cp852', 'Cp855', 'Cp857', 'Cp858', 
-				'Cp862', 'Cp866', 'Cp874', 'EUC-CN', 'EUC-JP', 'EUC-KR', 'GB18030', 'ISO-2022-CN', 'ISO-2022-JP', 'ISO-2022-KR', 
-				'ISO-8859-1', 'ISO-8859-2', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5', 'ISO-8859-6', 'ISO-8859-7', 
-				'ISO-8859-8', 'ISO-8859-9', 'ISO-8859-13', 'ISO-8859-15', 'KOI8-R', 'KOI8-U', 'Shift-JIS', 
+			encodings : ['Big5', 'Big5-HKSCS', 'Cp437', 'Cp737', 'Cp775', 'Cp850', 'Cp852', 'Cp855', 'Cp857', 'Cp858',
+				'Cp862', 'Cp866', 'Cp874', 'EUC-CN', 'EUC-JP', 'EUC-KR', 'GB18030', 'ISO-2022-CN', 'ISO-2022-JP', 'ISO-2022-KR',
+				'ISO-8859-1', 'ISO-8859-2', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5', 'ISO-8859-6', 'ISO-8859-7',
+				'ISO-8859-8', 'ISO-8859-9', 'ISO-8859-13', 'ISO-8859-15', 'KOI8-R', 'KOI8-U', 'Shift-JIS',
 				'Windows-1250', 'Windows-1251', 'Windows-1252', 'Windows-1253', 'Windows-1254', 'Windows-1257'],
 			// options for extra editors
 			extraOptions : {
@@ -534,7 +534,7 @@ elFinder.prototype._options = {
 				uploadOpts : {},
 				// TUI Image Editor's options
 				tuiImgEditOpts : {
-					// Path prefix of icon-a.svg, icon-b.svg, icon-c.svg and icon-d.svg in the Theme. 
+					// Path prefix of icon-a.svg, icon-b.svg, icon-c.svg and icon-d.svg in the Theme.
 					// `iconsPath` MUST follow the same origin policy.
 					iconsPath : void(0), // default is "./img/tui-"
 					// Theme object
@@ -624,37 +624,37 @@ elFinder.prototype._options = {
 				// 	/**
 				// 	 * Lable (require)
 				// 	 * It is filtered by the `fm.i18n()`
-				// 	 * 
+				// 	 *
 				// 	 * @type String
 				// 	 */
 				// 	label : 'Description',
-				// 	
+				//
 				// 	/**
 				// 	 * Template (require)
 				// 	 * `{id}` is replaced in dialog.id
-				// 	 * 
+				// 	 *
 				// 	 * @type String
 				// 	 */
 				// 	tpl : '<div class="elfinder-info-desc"><span class="elfinder-spinner"></span></div>',
-				// 	
+				//
 				// 	/**
 				// 	 * Restricts to mimetypes (optional)
 				// 	 * Exact match or category match
-				// 	 * 
+				// 	 *
 				// 	 * @type Array
 				// 	 */
 				// 	mimes : ['text', 'image/jpeg', 'directory'],
-				// 	
+				//
 				// 	/**
 				// 	 * Restricts to file.hash (optional)
-				// 	 * 
+				// 	 *
 				// 	 * @ type Regex
 				// 	 */
 				// 	hashRegex : /^l\d+_/,
-				// 
+				//
 				// 	/**
 				// 	 * Request that asks for the description and sets the field (optional)
-				// 	 * 
+				// 	 *
 				// 	 * @type Function
 				// 	 */
 				// 	action : function(file, fm, dialog) {
@@ -719,10 +719,10 @@ elFinder.prototype._options = {
 			selectActions : ['open', 'edit/download', 'resize/edit/download', 'download', 'quicklook']
 		}
 	},
-	
+
 	/**
 	 * Disabled commands relationship
-	 * 
+	 *
 	 * @type Object
 	 */
 	disabledCmdsRels : {
@@ -733,18 +733,18 @@ elFinder.prototype._options = {
 
 	/**
 	 * Callback for prepare boot up
-	 * 
+	 *
 	 * - The this object in the function is an elFinder node
 	 * - The first parameter is elFinder Instance
 	 * - The second parameter is an object of other parameters
 	 *   For now it can use `dfrdsBeforeBootup` Array
-	 * 
+	 *
 	 * @type Function
 	 * @default null
 	 * @return void
 	 */
 	bootCallback : null,
-	
+
 	/**
 	 * Callback for "getfile" commands.
 	 * Required to use elFinder with WYSIWYG editors etc..
@@ -753,7 +753,7 @@ elFinder.prototype._options = {
 	 * @default null (command not active)
 	 */
 	getFileCallback : null,
-	
+
 	/**
 	 * Default directory view. icons/list
 	 *
@@ -761,20 +761,20 @@ elFinder.prototype._options = {
 	 * @default "icons"
 	 */
 	defaultView : 'icons',
-	
+
 	/**
 	 * Hash of default directory path to open
-	 * 
+	 *
 	 * NOTE: This setting will be disabled if the target folder is specified in location.hash.
-	 * 
+	 *
 	 * If you want to find the hash in Javascript
 	 * can be obtained with the following code. (In the case of a standard hashing method)
-	 * 
+	 *
 	 * var volumeId = 'l1_'; // volume id
 	 * var path = 'path/to/target'; // without root path
 	 * //var path = 'path\\to\\target'; // use \ on windows server
 	 * var hash = volumeId + btoa(path).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '.').replace(/\.+$/, '');
-	 * 
+	 *
 	 * @type String
 	 * @default ""
 	 */
@@ -783,12 +783,12 @@ elFinder.prototype._options = {
 	/**
 	 * Emit a sound when a file is deleted
 	 * Sounds are in sounds/ folder
-	 * 
+	 *
 	 * @type Boolean
 	 * @default true
 	 */
 	sound : true,
-	
+
 	/**
 	 * UI plugins to load.
 	 * Current dir ui and dialogs loads always.
@@ -799,7 +799,7 @@ elFinder.prototype._options = {
 	 * @full ['toolbar', 'places', 'tree', 'path', 'stat']
 	 */
 	ui : ['toolbar', 'places', 'tree', 'path', 'stat'],
-	
+
 	/**
 	 * Some UI plugins options.
 	 * @type Object
@@ -865,7 +865,7 @@ elFinder.prototype._options = {
 			//  * Add CSS class name to navbar directories (optional)
 			//  * see: https://github.com/Studio-42/elFinder/pull/1061,
 			//  *      https://github.com/Studio-42/elFinder/issues/1231
-			//  * 
+			//  *
 			//  * @type Function
 			//  */
 			// getClass: function(dir) {
@@ -891,13 +891,13 @@ elFinder.prototype._options = {
 		cwd : {
 			// display parent folder with ".." name :)
 			oldSchool : false,
-			
+
 			// fm.UA types array to show item select checkboxes e.g. ['All'] or ['Mobile'] etc. default: ['Touch']
 			showSelectCheckboxUA : ['Touch'],
 
 			// Enable dragout by dragstart with Alt key or Shift key
 			metakeyDragout : true,
-			
+
 			// file info columns displayed
 			listView : {
 				// name is always displayed, cols are ordered
@@ -929,7 +929,7 @@ elFinder.prototype._options = {
 					0: 'viewSmall',
 					1: 'viewMedium',
 					2: 'viewLarge',
-					3: 'viewExtraLarge' 
+					3: 'viewExtraLarge'
 				}
 			},
 
@@ -937,7 +937,7 @@ elFinder.prototype._options = {
 			//  * Add CSS class name to cwd directories (optional)
 			//  * see: https://github.com/Studio-42/elFinder/pull/1061,
 			//  *      https://github.com/Studio-42/elFinder/issues/1231
-			//  * 
+			//  *
 			//  * @type Function
 			//  */
 			// ,
@@ -945,7 +945,7 @@ elFinder.prototype._options = {
 			// 	// e.g. This adds the directory's name (lowercase) with prefix as a CSS class
 			// 	return 'elfinder-cwd-' + file.name.replace(/[ "]/g, '').toLowerCase();
 			//}
-			
+
 			//,
 			//// Template placeholders replacement rules for overwrite. see ui/cwd.js replacement
 			//replacement : {
@@ -993,7 +993,7 @@ elFinder.prototype._options = {
 	/**
 	 * MIME regex of send HTTP header "Content-Disposition: inline" or allow preview in quicklook
 	 * This option will overwrite by connector configuration
-	 * 
+	 *
 	 * @type String
 	 * @default '^(?:(?:image|video|audio)|text/plain|application/pdf$)'
 	 * @example
@@ -1031,7 +1031,7 @@ elFinder.prototype._options = {
 	 * @type {String}
 	 */
 	sortType : 'name',
-	
+
 	/**
 	 * Default sort order.
 	 *
@@ -1039,7 +1039,7 @@ elFinder.prototype._options = {
 	 * @default "asc"
 	 */
 	sortOrder : 'asc',
-	
+
 	/**
 	 * Display folders first?
 	 *
@@ -1047,7 +1047,7 @@ elFinder.prototype._options = {
 	 * @default true
 	 */
 	sortStickFolders : true,
-	
+
 	/**
 	 * Sort also applies to the treeview (null: disable this feature)
 	 *
@@ -1055,15 +1055,15 @@ elFinder.prototype._options = {
 	 * @default false
 	 */
 	sortAlsoTreeview : false,
-	
+
 	/**
-	 * If true - elFinder will formating dates itself, 
+	 * If true - elFinder will formating dates itself,
 	 * otherwise - backend date will be used.
 	 *
 	 * @type Boolean
 	 */
 	clientFormatDate : true,
-	
+
 	/**
 	 * Show UTC dates.
 	 * Required set clientFormatDate to true
@@ -1071,7 +1071,7 @@ elFinder.prototype._options = {
 	 * @type Boolean
 	 */
 	UTCDate : false,
-	
+
 	/**
 	 * File modification datetime format.
 	 * Value from selected language data  is used by default.
@@ -1081,7 +1081,7 @@ elFinder.prototype._options = {
 	 * @default  ""
 	 */
 	dateFormat : '',
-	
+
 	/**
 	 * File modification datetime format in form "Yesterday 12:23:01".
 	 * Value from selected language data is used by default.
@@ -1093,16 +1093,16 @@ elFinder.prototype._options = {
 	 * @example "$1 H:m:i"
 	 */
 	fancyDateFormat : '',
-	
+
 	/**
 	 * Style of file mode at cwd-list, info dialog
 	 * 'string' (ex. rwxr-xr-x) or 'octal' (ex. 755) or 'both' (ex. rwxr-xr-x (755))
-	 * 
+	 *
 	 * @type {String}
 	 * @default 'both'
 	 */
 	fileModeStyle : 'both',
-	
+
 	/**
 	 * elFinder width
 	 *
@@ -1110,7 +1110,7 @@ elFinder.prototype._options = {
 	 * @default  "auto"
 	 */
 	width : 'auto',
-	
+
 	/**
 	 * elFinder node height
 	 * Number: pixcel or String: Number + "%"
@@ -1119,7 +1119,7 @@ elFinder.prototype._options = {
 	 * @default  400
 	 */
 	height : 400,
-	
+
 	/**
 	 * Do not resize the elFinder node itself on resize parent node
 	 * Specify `true` when controlling with CSS such as Flexbox
@@ -1137,7 +1137,7 @@ elFinder.prototype._options = {
 	 * @default null | $(window) (if height is percentage)
 	 **/
 	heightBase : null,
-	
+
 	/**
 	 * Make elFinder resizable if jquery ui resizable available
 	 *
@@ -1145,7 +1145,7 @@ elFinder.prototype._options = {
 	 * @default  true
 	 */
 	resizable : true,
-	
+
 	/**
 	 * Timeout before open notifications dialogs
 	 *
@@ -1153,7 +1153,7 @@ elFinder.prototype._options = {
 	 * @default  500 (.5 sec)
 	 */
 	notifyDelay : 500,
-	
+
 	/**
 	 * Position CSS, Width of notifications dialogs
 	 *
@@ -1162,15 +1162,15 @@ elFinder.prototype._options = {
 	 * position: CSS object | null (null: position center & middle)
 	 */
 	notifyDialog : {position : {}, width : null, canClose : false, hiddens : ['open']},
-	
+
 	/**
 	 * Dialog contained in the elFinder node
-	 * 
+	 *
 	 * @type Boolean
 	 * @default false
 	 */
 	dialogContained : false,
-	
+
 	/**
 	 * Allow shortcuts
 	 *
@@ -1178,7 +1178,7 @@ elFinder.prototype._options = {
 	 * @default  true
 	 */
 	allowShortcuts : true,
-	
+
 	/**
 	 * Remeber last opened dir to open it after reload or in next session
 	 *
@@ -1186,16 +1186,16 @@ elFinder.prototype._options = {
 	 * @default  true
 	 */
 	rememberLastDir : true,
-	
+
 	/**
 	 * Clear historys(elFinder) on reload(not browser) function
 	 * Historys was cleared on Reload function on elFinder 2.0 (value is true)
-	 * 
+	 *
 	 * @type Boolean
 	 * @default  false
 	 */
 	reloadClearHistory : false,
-	
+
 	/**
 	 * Use browser native history with supported browsers
 	 *
@@ -1203,7 +1203,7 @@ elFinder.prototype._options = {
 	 * @default  true
 	 */
 	useBrowserHistory : true,
-	
+
 	/**
 	 * Lazy load config.
 	 * How many files display at once?
@@ -1212,7 +1212,7 @@ elFinder.prototype._options = {
 	 * @default  50
 	 */
 	showFiles : 50,
-	
+
 	/**
 	 * Lazy load config.
 	 * Distance in px to cwd bottom edge to start display files
@@ -1221,7 +1221,7 @@ elFinder.prototype._options = {
 	 * @default  50
 	 */
 	showThreshold : 50,
-	
+
 	/**
 	 * Additional rule to valid new file name.
 	 * By default not allowed empty names or '..'
@@ -1234,11 +1234,11 @@ elFinder.prototype._options = {
 	 *  validName : /^[^\s]+$/,
 	 */
 	validName : false,
-	
+
 	/**
 	 * Additional rule to filtering for browsing.
 	 * This setting does not have a sense of security.
-	 * 
+	 *
 	 * The object `this` is elFinder instance object in this function
 	 *
 	 * @type false|RegExp|function
@@ -1246,12 +1246,12 @@ elFinder.prototype._options = {
 	 * @example
 	 *  show only png and jpg files:
 	 *  fileFilter : /.*\.(png|jpg)$/i,
-	 *  
+	 *
 	 *  show only image type files:
 	 *  fileFilter : function(file) { return file.mime && file.mime.match(/^image\//i); },
 	 */
 	fileFilter : false,
-	
+
 	/**
 	 * Backup name suffix.
 	 *
@@ -1259,7 +1259,7 @@ elFinder.prototype._options = {
 	 * @default  "~"
 	 */
 	backupSuffix : '~',
-	
+
 	/**
 	 * Sync content interval
 	 *
@@ -1267,7 +1267,7 @@ elFinder.prototype._options = {
 	 * @default  0 (do not sync)
 	 */
 	sync : 0,
-	
+
 	/**
 	 * Sync start on load if sync value >= 1000
 	 *
@@ -1275,7 +1275,7 @@ elFinder.prototype._options = {
 	 * @default  true
 	 */
 	syncStart : true,
-	
+
 	/**
 	 * How many thumbnails create in one request
 	 *
@@ -1283,7 +1283,7 @@ elFinder.prototype._options = {
 	 * @default  5
 	 */
 	loadTmbs : 5,
-	
+
 	/**
 	 * Cookie option for browsersdoes not suppot localStorage
 	 *
@@ -1296,7 +1296,7 @@ elFinder.prototype._options = {
 		secure   : false,
 		samesite : 'lax'
 	},
-	
+
 	/**
 	 * Contextmenu config
 	 *
@@ -1314,15 +1314,15 @@ elFinder.prototype._options = {
 	/**
 	 * elFinder node enable always
 	 * This value will set to `true` if <body> has elFinder node only
-	 * 
+	 *
 	 * @type     Bool
 	 * @default  false
 	 */
 	enableAlways : false,
-	
+
 	/**
 	 * elFinder node enable by mouse over
-	 * 
+	 *
 	 * @type     Bool
 	 * @default  true
 	 */
@@ -1332,7 +1332,7 @@ elFinder.prototype._options = {
 	 * Show window close confirm dialog
 	 * Value is which state to show
 	 * 'hasNotifyDialog', 'editingFile', 'hasSelectedItem' and 'hasClipboardData'
-	 * 
+	 *
 	 * @type     Array
 	 * @default  ['hasNotifyDialog', 'editingFile']
 	 */
@@ -1341,7 +1341,7 @@ elFinder.prototype._options = {
 	/**
 	 * Function decoding 'raw' string converted to unicode
 	 * It is used instead of fm.decodeRawString(str)
-	 * 
+	 *
 	 * @type Null|Function
 	 */
 	rawStringDecoder : typeof Encoding === 'object' && typeof Encoding.convert === 'function'? function(str) {

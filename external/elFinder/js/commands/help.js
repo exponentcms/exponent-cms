@@ -20,13 +20,13 @@
 		sec     = 'ui-priority-secondary',
 		lic     = 'elfinder-help-license',
 		tab     = '<li class="' + fm.res('class', 'tabstab') + ' elfinder-help-tab-{id}"><a href="#'+fm.namespace+'-help-{id}" class="ui-tabs-anchor">{title}</a></li>',
-		html    = ['<div class="ui-tabs ui-widget ui-widget-content ui-corner-all elfinder-help">', 
+		html    = ['<div class="ui-tabs ui-widget ui-widget-content ui-corner-all elfinder-help">',
 				'<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-top">'],
 		stpl    = '<div class="elfinder-help-shortcut"><div class="elfinder-help-shortcut-pattern">{pattern}</div> {descrip}</div>',
 		sep     = '<div class="elfinder-help-separator"></div>',
 		selfUrl = $('base').length? fm.escape(document.location.href.replace(/#.*$/, '')) : '',
 		clTabActive = fm.res('class', 'tabsactive'),
-		
+
 		getTheme = function() {
 			var src;
 			if (fm.theme && fm.theme.author) {
@@ -46,35 +46,35 @@
 			html.push('<div class="'+sec+'">jQuery/jQuery UI: '+$().jquery+'/'+$.ui.version+'</div>');
 
 			html.push(sep);
-			
+
 			html.push(linktpltgt[r](url, 'https://studio-42.github.io/elFinder/')[r](link, fm.i18n('homepage')));
 			html.push(linktpltgt[r](url, 'https://github.com/Studio-42/elFinder/wiki')[r](link, fm.i18n('docs')));
 			html.push(linktpltgt[r](url, 'https://github.com/Studio-42/elFinder')[r](link, fm.i18n('github')));
 			//html.push(linktpltgt[r](url, 'http://twitter.com/elrte_elfinder')[r](link, fm.i18n('twitter')));
-			
+
 			html.push(sep);
-			
+
 			html.push('<div class="'+prim+'">'+fm.i18n('team')+'</div>');
-			
+
 			html.push(atpl[r](author, 'Dmitry "dio" Levashov &lt;dio@std42.ru&gt;')[r](work, fm.i18n('chiefdev')));
 			html.push(atpl[r](author, 'Naoki Sawada (nao-pon)&lt;hypweb+elfinder@gmail.com&gt;')[r](work, fm.i18n('developer')));
 			html.push(atpl[r](author, 'Troex Nevelin &lt;troex@fury.scancode.ru&gt;')[r](work, fm.i18n('maintainer')));
 			html.push(atpl[r](author, 'Alexey Sukhotin &lt;strogg@yandex.ru&gt;')[r](work, fm.i18n('contributor')));
-			
+
 			if (fm.i18[fm.lang].translator) {
 				$.each(fm.i18[fm.lang].translator.split(', '), function() {
 					html.push(atpl[r](author, $.trim(this))[r](work, fm.i18n('translator')+' ('+fm.i18[fm.lang].language+')'));
-				});	
+				});
 			}
-			
+
 			html.push(getTheme());
 
 			html.push(sep);
 			html.push('<div class="'+lic+'">'+fm.i18n('icons')+': Pixelmixer, <a href="http://p.yusukekamiyamane.com" target="_blank">Fugue</a>, <a href="https://icons8.com" target="_blank">Icons8</a></div>');
-			
+
 			html.push(sep);
 			html.push('<div class="'+lic+'">Licence: 3-clauses BSD Licence</div>');
-			html.push('<div class="'+lic+'">Copyright © 2009-2022, Studio 42 / nao-pon</div>');
+			html.push('<div class="'+lic+'">Copyright © 2009-2024, Studio 42 / nao-pon</div>');
 			html.push('<div class="'+lic+'">„ …'+fm.i18n('dontforget')+' ”</div>');
 			html.push('</div>');
 		},
@@ -82,21 +82,21 @@
 			var sh = fm.shortcuts();
 			// shortcuts tab
 			html.push('<div id="'+fm.namespace+'-help-shortcuts" class="ui-tabs-panel ui-widget-content ui-corner-bottom">');
-			
+
 			if (sh.length) {
 				html.push('<div class="ui-widget-content elfinder-help-shortcuts">');
 				$.each(sh, function(i, s) {
 					html.push(stpl.replace(/\{pattern\}/, s[0]).replace(/\{descrip\}/, s[1]));
 				});
-			
+
 				html.push('</div>');
 			} else {
 				html.push('<div class="elfinder-help-disabled">'+fm.i18n('shortcutsof')+'</div>');
 			}
-			
-			
+
+
 			html.push('</div>');
-			
+
 		},
 		help = function() {
 			// help tab
@@ -138,7 +138,7 @@
 			cnt = debugUL.children('li').length,
 			targetL, target, tabId,
 			info, lastUL, lastDIV;
-			
+
 			if (self.debug.options || self.debug.debug) {
 				if (cnt >= 5) {
 					lastUL = debugUL.children('li:last');
@@ -151,11 +151,11 @@
 						lastDIV.prev().remove();
 					}
 				}
-				
+
 				tabId = fm.namespace + '-help-debug-' + (+new Date());
 				targetL = $('<li></li>').html('<a href="'+selfUrl+'#'+tabId+'">'+self.debug.debug.cmd+'</a>').prependTo(debugUL);
 				target = $('<div id="'+tabId+'"></div>').data('debug', self.debug);
-				
+
 				targetL.on('click.debugrender', function() {
 					var debug = target.data('debug');
 					target.removeData('debug');
@@ -173,44 +173,44 @@
 					}
 					targetL.off('click.debugrender');
 				});
-				
+
 				debugUL.after(target);
-				
+
 				opened && debugDIV.tabs('refresh');
 			}
 		},
 		content = '',
 		opened, tabInteg, integDIV, tabDebug, debugDIV, debugUL;
-	
+
 	this.alwaysEnabled  = true;
 	this.updateOnSelect = false;
 	this.state = -1;
-	
+
 	this.shortcuts = [{
 		pattern     : 'f1',
 		description : this.title
 	}];
-	
+
 	fm.bind('load', function() {
 		var parts = self.options.view || ['about', 'shortcuts', 'help', 'integrations', 'debug'],
 			i, helpSource, tabBase, tabNav, tabs, delta;
-		
+
 		// remove 'preference' tab, it moved to command 'preference'
 		if ((i = $.inArray('preference', parts)) !== -1) {
 			parts.splice(i, 1);
 		}
-		
+
 		// debug tab require jQueryUI Tabs Widget
 		if (! $.fn.tabs) {
 			if ((i = $.inArray(parts, 'debug')) !== -1) {
 				parts.splice(i, 1);
 			}
 		}
-		
+
 		$.each(parts, function(i, title) {
 			html.push(tab[r](/\{id\}/g, title)[r](/\{title\}/, fm.i18n(title)));
 		});
-		
+
 		html.push('</ul>');
 
 		$.inArray('about', parts) !== -1 && about();
@@ -221,10 +221,10 @@
 		}
 		$.inArray('integrations', parts) !== -1 && integrations();
 		$.inArray('debug', parts) !== -1 && debug();
-		
+
 		html.push('</div>');
 		content = $(html.join(''));
-		
+
 		content.find('.ui-tabs-nav li')
 			.on('mouseenter mouseleave', function(e) {
 				$(this).toggleClass('ui-state-hover', e.type === 'mouseenter');
@@ -235,15 +235,15 @@
 			.children()
 			.on('click', function(e) {
 				var link = $(this);
-				
+
 				e.preventDefault();
 				e.stopPropagation();
-				
+
 				link.parent().addClass(clTabActive).siblings().removeClass(clTabActive);
 				content.children('.ui-tabs-panel').hide().filter(link.attr('href')).show();
 			})
 			.filter(':first').trigger('click');
-		
+
 		if (useInteg) {
 			tabInteg = content.find('.elfinder-help-tab-integrations').hide();
 			integDIV = content.find('#'+fm.namespace+'-help-integrations').hide().append($('<div class="elfinder-help-integrations-desc"></div>').html(fm.i18n('integrationWith')));
@@ -312,7 +312,7 @@
 			});
 
 			self.debug = {};
-	
+
 			fm.bind('backenddebug', function(e) {
 				// CAUTION: DO NOT TOUCH `e.data`
 				if (useDebug && e.data && e.data.debug) {
@@ -346,7 +346,7 @@
 			.css({
 				overflow: 'hidden'
 			});
-		
+
 		tabBase = self.dialog.children('.ui-tabs');
 		tabNav = tabBase.children('.ui-tabs-nav:first');
 		tabs = tabBase.children('.ui-tabs-panel');
@@ -354,7 +354,7 @@
 		self.dialog.closest('.ui-dialog').on('resize', function() {
 			tabs.height(self.dialog.height() - delta - tabNav.outerHeight(true) - 20);
 		});
-		
+
 		if (helpSource) {
 			self.dialog.one('initContents', function() {
 				$.ajax({
@@ -372,7 +372,7 @@
 				});
 			});
 		}
-		
+
 		self.state = 0;
 
 		fm.trigger('helpBuilded', self.dialog);
@@ -391,11 +391,11 @@
 			});
 		});
 	});
-	
+
 	this.getstate = function() {
 		return 0;
 	};
-	
+
 	this.exec = function(sel, opts) {
 		var tab = opts? opts.tab : void(0),
 			debugShow = function() {

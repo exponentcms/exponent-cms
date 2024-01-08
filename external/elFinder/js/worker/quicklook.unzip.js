@@ -1,5 +1,5 @@
 var type = self.data.type,
-	bin = self.data.bin,
+	bin = new Uint8Array(self.data.bin),
 	unzipFiles = function() {
 		/** @type {Array.<string>} */
 		var filenameList = [];
@@ -59,7 +59,7 @@ switch (type) {
     self.res.files = tarFiles(self.bzip2.simple(self.bzip2.array(bin)));
     break;
   default:
-    
+
     break;
 }
 

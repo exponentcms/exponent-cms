@@ -38,7 +38,7 @@ Font-Awesome3,3.2.1,fontawesome.github.com/Font-Awesome,3.2.1,updated FontAwesom
 Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
 Font-Awesome6,6.5.1,fontawesome.com,6.5.1,add import all 'fonts' sheets into main sheet
-Bootstrap-Icons,1.11.2,icons.getbootstrap.com,1.11.2,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
+Bootstrap-Icons,1.11.3,icons.getbootstrap.com,1.11.3,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
 Adminer,4.8.1exp,www.adminer.org,4.8.3,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
@@ -53,7 +53,7 @@ CKEditor,4.22.1,ckeditor.com,4.22.1/40.2.0,"add fieldinsert (exp), autosave, sou
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 TinyMCE v5,5.10.7,tiny.cloud,5.10.7/6.8.2,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.9,github.com/moxiecode/plupload,2.3.9/3.1.5,"needed for TinyMCE Quick Upload, placed in that plugin folder"
-elFinder,2.1.64,elfinder.org,2.1.64,customized in /framework with Exponent php classes and .js files
+elFinder,2.1.65,elfinder.org,2.1.65,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
 jQuery2,2.2.4,jquery.com,2.2.4,
 jQuery2 Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon

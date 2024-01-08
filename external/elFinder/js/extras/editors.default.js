@@ -106,7 +106,7 @@
 						});
 				},
 				url;
-			
+
 			if (!content.match(/^data:/)) {
 				fm.openUrl(file.hash, false, function(v) {
 					url = v;
@@ -174,7 +174,7 @@
 			chk();
 			return dfd;
 		};
-	
+
 	// check getfile callback function
 	if (getfile) {
 		getfile = getfile[1];
@@ -190,7 +190,7 @@
 			};
 		}
 	}
-	
+
 	// return editors Array
 	return [
 		{
@@ -533,7 +533,7 @@
 					},
 					mime = file.mime,
 					liveMsg, type, quty;
-				
+
 				if (!confObj.mimesFlip) {
 					confObj.mimesFlip = fm.arrayFlip(confObj.mimes, true);
 				}
@@ -732,7 +732,7 @@
 					container = $('#elfinder-pixo-container'),
 					init = function(onload) {
 						var opts;
-							
+
 						if (!container.length) {
 							container = $('<div id="elfinder-pixo-container" class="ui-front"></div>').css({
 								position: 'fixed',
@@ -992,7 +992,7 @@
 						ace.config.loadModule('ace/ext/settings_menu', function() {
 							ace.require('ace/ext/settings_menu').init(editor);
 						});
-						
+
 						// Short cuts
 						editor.commands.addCommand({
 							name : "saveFile",
@@ -1063,7 +1063,7 @@
 							instance: editor,
 							opts: {}
 						});
-						
+
 						//dialog.trigger('resize');
 						dfrd.resolve(editor);
 					};
@@ -1115,10 +1115,10 @@
 						var ta   = $(textarea),
 							base = ta.parent(),
 							editor, editorBase, opts;
-						
+
 						// set base height
 						base.height(base.height());
-						
+
 						// CodeMirror configure options
 						opts = {
 							lineNumbers: true,
@@ -1140,10 +1140,10 @@
 
 						// CodeMirror configure
 						editor = CodeMirror.fromTextArea(textarea, opts);
-						
+
 						// return editor instance
 						dfrd.resolve(editor);
-						
+
 						// Auto mode set
 						var info, m, mode, spec;
 						if (! info) {
@@ -1161,7 +1161,7 @@
 							// show MIME:mode in title bar
 							base.prev().children('.elfinder-dialog-title').append(' (' + spec + (mode != 'null'? ' : ' + mode : '') + ')');
 						}
-						
+
 						// editor base node
 						editorBase = $(editor.getWrapperElement()).css({
 							// fix CSS conflict to SimpleMDE
@@ -1169,10 +1169,10 @@
 							border: 'none'
 						});
 						ta.data('cm', true);
-						
+
 						// fit height to base
 						editorBase.height('100%');
-						
+
 						// TextArea button and Setting button
 						$('<div class="ui-dialog-buttonset"></div>').css('float', 'left')
 						.append(
@@ -1273,7 +1273,7 @@
 						var h	 = base.height(),
 							delta = base.outerHeight(true) - h + 14,
 							editor, editorBase, opts;
-						
+
 						// fit height function
 						textarea._setHeight = function(height) {
 							var h	= height || base.height(),
@@ -1287,10 +1287,10 @@
 							editor.codemirror.refresh();
 							return areaH;
 						};
-						
+
 						// set base height
 						base.height(h);
-						
+
 						opts = {
 							element: textarea,
 							autofocus: true
@@ -1307,10 +1307,10 @@
 						// make editor
 						editor = new SimpleMDE(opts);
 						dfrd.resolve(editor);
-						
+
 						// editor base node
 						editorBase = $(editor.codemirror.getWrapperElement());
-						
+
 						// fit height to base
 						editorBase.css('min-height', '50px')
 							.children('.CodeMirror-scroll').css('min-height', '50px');
@@ -1385,7 +1385,7 @@
 							loc = self.confObj.managerUrl || window.location.href.replace(/#.*$/, ''),
 							name = 'ckeditor',
 							opts;
-						
+
 						// make manager location
 						if (reg.test(loc)) {
 							loc = loc.replace(reg, '$1' + name);
@@ -1550,7 +1550,7 @@
 					init = function(cEditor) {
 						var base = $(editnode).parent(),
 							opts;
-						
+
 						// set base height
 						base.height(fm.getUI().height() - 100);
 
@@ -1665,7 +1665,7 @@
 									toolbars: Array.from(editor.ui.componentFactory.names())
 								});*/
 							})
-							['catch'](function(error) { // ['cache'] instead .cache for fix error on ie8 
+							['catch'](function(error) { // ['cache'] instead .cache for fix error on ie8
 								fm.error(error);
 							});
 					},
@@ -1837,7 +1837,7 @@
 						opts = {
 							selector: '#' + textarea.id,
 							resize: false,
-							plugins: 'print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
+							plugins: 'preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help',
 							toolbar: 'formatselect | bold italic strikethrough forecolor backcolor | link image media | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | removeformat',
 							image_advtab: true,
 							init_instance_callback : function(editor) {
@@ -1885,7 +1885,7 @@
 
 									// URL normalization
 									url = fm.convAbsUrl(file.url);
-									
+
 									// Make file info
 									info = file.name + ' (' + fm.formatSize(file.size) + ')';
 
@@ -1908,7 +1908,7 @@
 								gf.options.folders = true;
 								gf.options.multiple = false;
 								fm.commandMap.open = 'getfile';
-								
+
 								hideMceDlg();
 								dlg.trigger('togleminimize').one('resize close', revar);
 								fm.toast({
@@ -1983,7 +1983,7 @@
 						// TinyMCE configure
 						tinymce.init(Object.assign(opts, self.confObj.mceOpts));
 					};
-				
+
 				if (!self.confObj.loader) {
 					self.confObj.loader = $.Deferred();
 					self.fm.loadScript([fm.options.cdns.tinymce + (fm.options.cdns.tinymce.match(/\.js/)? '' : '/tinymce.min.js')], function() {
@@ -2071,7 +2071,7 @@
 						});
 						return data;
 					};
-				
+
 				$(ta).data('xhr', fm.request({
 					data: {
 						cmd: 'editor',
@@ -2332,7 +2332,7 @@
 								}
 							}).on('change', function(e) {
 								var t = $(e.target),
-									p = t.parent(), 
+									p = t.parent(),
 									b = t.closest('.elfinder-edit-onlineconvert-button').children('button:first'),
 									o = b.data('opts') || {},
 									v = p.data('type') === 'boolean'? t.is(':checked') : t.val();
@@ -2410,7 +2410,7 @@
 							},
 							ts = (+new Date()),
 							i = 0;
-						
+
 						if (!confObj.ext2mime) {
 							confObj.ext2mime = Object.assign(fm.arrayFlip(fm.mimeTypes), ext2mime);
 						}
