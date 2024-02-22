@@ -406,10 +406,16 @@ function smarty_function_control($params, &$smarty) {
                             // show the form control
                             echo '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
                             if (ANTI_SPAM_CONTROL === 'recaptcha') { // reCaptcha v2 Checkbox
+                                if (isset($params['horizontal']) && bs()) {
+                                   echo "<div class=\"offset-sm-2 col-sm-10\"";
+                                }
                                 //create unique recaptcha checkbox blocks
                                 $randomNumber = mt_rand(10000000, 99999999);
                                 echo '<div class="g-recaptcha" id="recaptcha-block-' . $randomNumber . '" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
                                 echo '<p>', gt('Fill out the above security question to submit your form.'), '</p>';
+                                if (isset($params['horizontal']) && bs()) {
+                                    echo "</div>";
+                                }
                                 // we do explicit loading to allow for multiple recaptcha widgets on a page
                                 $content = "
                                 var captcha;

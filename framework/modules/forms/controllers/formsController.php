@@ -518,10 +518,16 @@ class formsController extends expController {
                             // show the form control
                             $antispam .= '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
                             if (ANTI_SPAM_CONTROL === 'recaptcha') { // reCaptcha v2 Checkbox
+                                if ($form->horizontal && bs()) {
+                                    $antispam .= "<div class=\"offset-sm-2 col-sm-10\"";
+                                }
                                 //create unique recaptcha blocks
                                 $randomNumber = mt_rand(10000000, 99999999);
                                 $antispam .= '<div class="g-recaptcha" id="recaptcha-block-' . $randomNumber . '" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
                                 $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
+                                if ($form->horizontal && bs()) {
+                                    $antispam .= "</div>";
+                                }
                                 $content = "
                                 var captcha;
                                 var grecaptcha_onload = function() {
