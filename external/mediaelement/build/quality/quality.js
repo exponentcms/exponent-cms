@@ -24,7 +24,9 @@ Object.assign(mejs.MepDefaults, {
 
 	autoHLS: false,
 
-	qualityChangeCallback: null
+	qualityChangeCallback: null,
+
+	iconPathQuality: 'mejs-quality.svg'
 });
 
 Object.assign(MediaElementPlayer.prototype, {
@@ -120,9 +122,10 @@ Object.assign(MediaElementPlayer.prototype, {
 		currentQuality = defaultValue;
 
 		var generateId = Math.floor(Math.random() * 100);
+		var iconHtml = '<svg xmlns="http://www.w3.org/2000/svg" id="' + generateId + '" class="' + t.options.classPrefix + '" aria-hidden="true" focusable="false">\n\t\t\t<use xlink:href="' + t.options.iconPathQuality + '#default-icon"></use></svg>';
 		player.qualitiesContainer = document.createElement('div');
 		player.qualitiesContainer.className = t.options.classPrefix + 'button ' + t.options.classPrefix + 'qualities-button';
-		player.qualitiesContainer.innerHTML = '<button type="button" title="' + qualityTitle + '" aria-label="' + qualityTitle + '" aria-controls="qualitieslist-' + generateId + '" aria-expanded="false">' + defaultValue + '</button>' + ('<div class="' + t.options.classPrefix + 'qualities-selector ' + t.options.classPrefix + 'offscreen">') + ('<ul class="' + t.options.classPrefix + 'qualities-selector-list" id="qualitieslist-' + generateId + '" tabindex="-1"></ul></div>');
+		player.qualitiesContainer.innerHTML = '<button type="button" title="' + qualityTitle + '" aria-label="' + qualityTitle + '" aria-controls="qualitieslist-' + generateId + '" aria-expanded="false">\n\t\t' + (t.options.iconPathQuality ? iconHtml : defaultValue) + '</button>' + ('<div class="' + t.options.classPrefix + 'qualities-selector ' + t.options.classPrefix + 'offscreen">') + ('<ul class="' + t.options.classPrefix + 'qualities-selector-list" id="qualitieslist-' + generateId + '" tabindex="-1"></ul></div>');
 
 		t.addControlElement(player.qualitiesContainer, 'qualities');
 
@@ -332,7 +335,6 @@ Object.assign(MediaElementPlayer.prototype, {
 	updateQualityButton: function updateQualityButton(self, player) {
 		var t = this;
 		var newQuality = self.value;
-
 		var formerSelected = player.qualitiesContainer.querySelectorAll('.' + t.options.classPrefix + 'qualities-selected');
 		for (var i = 0, total = formerSelected.length; i < total; i++) {
 			mejs.Utils.removeClass(formerSelected[i], t.options.classPrefix + 'qualities-selected');
@@ -348,7 +350,10 @@ Object.assign(MediaElementPlayer.prototype, {
 			currentSelected[j].parentElement.querySelector('input').classList.add(t.options.classPrefix + 'qualities-selected-input');
 		}
 
-		player.qualitiesContainer.querySelector('button').innerHTML = newQuality;
+		if (!t.options.iconPathQuality) {
+			player.qualitiesContainer.querySelector('button').innerHTML = newQuality;
+		}
+
 		return newQuality;
 	},
 	getQualityFromHeight: function getQualityFromHeight(height) {
