@@ -591,8 +591,7 @@ if (!defined('JQUERY_RELATIVE')) {
         define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v4.x script
     if (!defined('BS5_SCRIPT')) {
-
-        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>');
+        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v5.x script
 /**
  * Font-Awesome CDN links
@@ -617,7 +616,7 @@ if (!defined('SMARTY_PATH')) {
     if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
     } else {
-        define('SMARTY_VERSION', '4.3.4');  //note smarty v3.1.28+ won't work properly with php < v7.1+
+        define('SMARTY_VERSION', '4.5.1');  //note smarty v3.1.28+ won't work properly with php < v7.1+
     }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
@@ -662,7 +661,7 @@ if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.17');
 }
 if (!defined('MPDF81_VERSION')) {
-    define('MPDF81_VERSION', '8.1.4');  // 8.2.2
+    define('MPDF81_VERSION', '8.1.4');  // 8.2.3
 }
 /**
  * Log is needed for MPDF v7+
@@ -715,7 +714,7 @@ if (!defined('HTML2PDF5_VERSION')) {
  * TCPDF is needed for HTML2PDF5
  */
 if (!defined('TCPDF5_VERSION')) {
-    define('TCPDF5_VERSION', '6.6.2');  // 6.6.5
+    define('TCPDF5_VERSION', '6.6.2');  // 6.7.4
 }
 
 ?>
