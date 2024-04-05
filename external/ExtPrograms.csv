@@ -5,7 +5,7 @@ Doctrine Deprecations,1.1.2,github.com/doctrine/deprecations,1.1.3,needed by Doc
 EmailValidator,3.2.6,github.com/egulias/EmailValidator,3.2.6/4.0.2,needed by swiftmailer v6; change folder structure and add autoloader to main file
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
-Smarty,3.1.27/4.5.1,smarty.net,4.5.1,
+Smarty,3.1.27/4.4.1,smarty.net,4.5.1/5.0.2,
 phpthumb,1.7.22exp,github.com/JamesHeinrich/phpThumb,1.7.22,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.23,github.com/JamesHeinrich/getID3,1.9.23,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.4/4.0.0,modify config.php
@@ -37,7 +37,7 @@ Bootswatch5,5.3.3,bootswatch.com,5.3.3,change 1st line variables.scss comment to
 Font-Awesome3,3.2.1,fontawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
-Font-Awesome6,6.5.1,fontawesome.com,6.5.1,add import all 'fonts' sheets into main sheet
+Font-Awesome6,6.5.2,fontawesome.com,6.5.2,add import all 'fonts' sheets into main sheet
 Bootstrap-Icons,1.11.3,icons.getbootstrap.com,1.11.3,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
 Adminer,4.8.1exp,www.adminer.org,4.8.3,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
