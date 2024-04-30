@@ -26,3 +26,4 @@ phpdoc-*
 
 # Always include .htaccess files
 !.htaccess
+/.run/
