@@ -341,6 +341,28 @@
     triggerChangeEvent(dualListbox);
   }
 
+  function moveDown(dualListbox) {
+       var selectedItems = dualListbox.elements.box2.find(':selected');
+
+       for (var i = selectedItems.length - 1; i > -1; i--) {
+           var allItems = dualListbox.elements.box2.find('option');
+           var selectedItem = $(selectedItems[i]);
+           var selectedIndex = selectedItem.index();
+           selectedItem.insertAfter(allItems[selectedIndex + 1]);
+       }
+  }
+
+  function moveUp(dualListbox) {
+       var selectedItems = dualListbox.elements.box2.find(':selected');
+
+       for (var i = 0;i<=selectedItems.length;i++) {
+           var allItems = dualListbox.elements.box2.find('option');
+           var selectedItem = $(selectedItems[i]);
+           var selectedIndex = selectedItem.index();
+           selectedItem.insertBefore(allItems[selectedIndex - 1]);
+       }
+  }
+
   function bindEvents(dualListbox) {
     dualListbox.elements.form.submit(function(e) {
       if (dualListbox.elements.filterInput1.is(':focus')) {
@@ -388,6 +410,14 @@
       });
     }
 
+    dualListbox.elements.moveUpButton.on('click', function() {
+      moveUp(dualListbox);
+    });
+
+    dualListbox.elements.moveDownButton.on('click', function() {
+      moveDown(dualListbox);
+    });
+
     dualListbox.elements.filterInput1.on('change keyup', function() {
       filter(dualListbox, 1);
     });
@@ -402,7 +432,7 @@
       // Add the custom HTML template
       this.container = $('' +
         '<div class="bootstrap-duallistbox-container row">' +
-        ' <div class="box1 col-md-6">' +
+        ' <div class="box1 col-md-5">' +
         '   <label></label>' +
         '   <span class="info-container">' +
         '     <span class="info"></span>' +
@@ -415,7 +445,7 @@
         '   </div>' +
         '   <select multiple="multiple"></select>' +
         ' </div>' +
-        ' <div class="box2 col-md-6">' +
+        ' <div class="box2 col-md-5">' +
         '   <label></label>' +
         '   <span class="info-container">' +
         '     <span class="info"></span>' +
@@ -427,6 +457,10 @@
         '     <button type="button" class="btn removeall"></button>' +
         '   </div>' +
         '   <select multiple="multiple"></select>' +
+        ' </div>' +
+        ' <div class="box3 col-md-2"><br><br><br><br><br><br>' +
+        '  <div class="btn btn-outline-secondary moveup"><i class="fas fa-arrow-up"></i></div><br>' +
+        '  <div class="btn btn-outline-secondary movedown"><i class="fas fa-arrow-down"></i></div>' +
         ' </div>' +
         '</div>')
         .insertBefore(this.element);
@@ -450,6 +484,8 @@
         removeButton: $('.box2 .remove', this.container),
         moveAllButton: $('.box1 .moveall', this.container),
         removeAllButton: $('.box2 .removeall', this.container),
+        moveUpButton: $('.box3 .moveup', this.container),
+        moveDownButton: $('.box3 .movedown', this.container),
         form: $($('.box1 .filter', this.container)[0].form)
       };
 
