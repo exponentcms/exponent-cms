@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v7.2.0 (2024-04-10)
+
+- Fix payment method funding and deletion failures due to undetermined payment method type
+- Adds `refund` function in Insurance service for requesting a refund for a standalone insurance
+
+## v7.1.0 (2024-01-08)
+
+- Add `allChildren` and `getNextPageOfChildren` methods to `user` service
+
 ## v7.0.0 (2023-12-01)
 
 Upgrading major versions of this project? Refer to the [Upgrade Guide](UPGRADE_GUIDE.md).

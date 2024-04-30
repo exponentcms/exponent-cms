@@ -2,15 +2,15 @@
 /**
  * @private
  */
-class Less_Tree_Javascript extends Less_Tree {
+class Less_Tree_JavaScript extends Less_Tree {
 
-	public $type = 'Javascript';
 	public $escaped;
 	public $expression;
 	public $index;
 
 	/**
-	 * @param bool $index
+	 * @param string $string
+	 * @param int $index
 	 * @param bool $escaped
 	 */
 	public function __construct( $string, $index, $escaped ) {
