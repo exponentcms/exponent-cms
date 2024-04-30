@@ -445,16 +445,19 @@ class Less_Functions {
 	 */
 	public function mix( $color1 = null, $color2 = null, $weight = null ) {
 		if ( !$color1 instanceof Less_Tree_Color ) {
-			throw new Less_Exception_Compiler( 'The first argument to mix must be a color' . ( $color1 instanceof Less_Tree_Expression ? ' (did you forgot commas?)' : '' ) );
+			$type = is_object( $color1 ) ? get_class( $color1 ) : gettype( $color1 );
+			throw new Less_Exception_Compiler( "The first argument must be a color, $type given" . ( $color1 instanceof Less_Tree_Expression ? ' (did you forgot commas?)' : '' ) );
 		}
 		if ( !$color2 instanceof Less_Tree_Color ) {
-			throw new Less_Exception_Compiler( 'The second argument to mix must be a color' . ( $color2 instanceof Less_Tree_Expression ? ' (did you forgot commas?)' : '' ) );
+			$type = is_object( $color2 ) ? get_class( $color2 ) : gettype( $color2 );
+			throw new Less_Exception_Compiler( "The second argument must be a color, $type given" . ( $color2 instanceof Less_Tree_Expression ? ' (did you forgot commas?)' : '' ) );
 		}
 		if ( !$weight ) {
 			$weight = new Less_Tree_Dimension( '50', '%' );
 		}
 		if ( !$weight instanceof Less_Tree_Dimension ) {
-			throw new Less_Exception_Compiler( 'The third argument to contrast must be a percentage' . ( $weight instanceof Less_Tree_Expression ? ' (did you forgot commas?)' : '' ) );
+			$type = is_object( $weight ) ? get_class( $weight ) : gettype( $weight );
+			throw new Less_Exception_Compiler( "The third argument must be a percentage, $type given" . ( $weight instanceof Less_Tree_Expression ? ' (did you forgot commas?)' : '' ) );
 		}
 
 		$p = $weight->value / 100.0;
@@ -547,10 +550,10 @@ class Less_Functions {
 		$replacement = ( $replacement instanceof Less_Tree_Quoted ) ?
 			$replacement->value : $replacement->toCSS();
 
-		$result = preg_replace( $expr, $replacement, $result, 1 );
-
 		if ( $flags && $flags->value && preg_match( '/g/', $flags->value ) ) {
 			$result = preg_replace( $expr, $replacement, $result );
+		} else {
+			$result = preg_replace( $expr, $replacement, $result, 1 );
 		}
 
 		if ( $string instanceof Less_Tree_Quoted ) {
@@ -814,6 +817,7 @@ class Less_Functions {
 			return new Less_Tree_Color( substr( $c->value, 1 ) );
 		}
 
+		// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition
 		if ( ( $c instanceof Less_Tree_Color ) || ( $c = Less_Tree_Color::fromKeyword( $c->value ) ) ) {
 			$c->value = null;
 			return $c;

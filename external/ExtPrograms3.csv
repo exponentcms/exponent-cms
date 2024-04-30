@@ -24,7 +24,7 @@ class.upload,2.1.6exp,github.com/verot/class.upload.php,2.1.6,"Correct flip oper
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.40.10/2.41.90,uncomment load utilities; php 8 fix
 scssphp,1.11.1exp,github.com/scssphp/scssphp,1.11.1,includes example server; hack to compile newui
 lessphp,0.5.0exp,github.com/leafo/lessphp,0.5.0,"will not compile bootstrap v3+, hack to allow prefix"
-less.php,4.1.1exp,github.com/wikimedia/less.php,4.2.1,php v5.6 regression fixes
+less.php,4.2.1exp,github.com/wikimedia/less.php,4.3.0,php v5.6 regression fixes
 Twitter-Bootstrap2,2.3.2,github.com/twbs/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Bootstrap3,3.4.1,github.com/twbs/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
 Bootstrap4,4.6.2,github.com/twbs/bootstrap,4.6.2,"patched bootstrap.scss includes swatches & exp variables, remove @page"

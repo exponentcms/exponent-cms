@@ -9,6 +9,9 @@ class Less_Tree {
 	public $extendOnEveryPath;
 	public $allExtends;
 
+	/**
+	 * @see less-2.5.3.js#Node.prototype.toCSS
+	 */
 	public function toCSS() {
 		$output = new Less_Output();
 		$this->genCSS( $output );
@@ -128,7 +131,6 @@ class Less_Tree {
 	public static function ReferencedArray( $rules ) {
 		foreach ( $rules as $rule ) {
 			if ( method_exists( $rule, 'markReferenced' ) ) {
-				// @phan-suppress-next-line PhanUndeclaredMethod
 				$rule->markReferenced();
 			}
 		}
