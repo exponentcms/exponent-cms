@@ -65,7 +65,7 @@ validate,1.20.0exp,jqueryvalidation.org,1.20.0,edit for 'undefined' in 'min' & '
 Countdown,1.1,tutorialzine.com/2011/12/countdown-jquery,1.1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker,1.6.3,used by adminer
 TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
-DataTables,2.0.5,www.datatables.net,1.13.8/2.0.5,includes boostrap2 integration w/ renamed 1.10.7 version
+DataTables,2.0.7,www.datatables.net,1.13.8/2.0.7,includes boostrap2 integration w/ renamed 1.10.7 version
 DataTables Checkboxes,1.2.14,github.com/gyrocode/jquery-datatables-checkboxes,1.2.14,
 DataTables Tabletools,2.2.4,www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,github.com/Comanche/datatables-responsive,0.2.0,replaced by 'Responsive' in 1.10.8
@@ -102,7 +102,7 @@ jquery.history.js,1.8b2,github.com/browserstate/history.js,1.8.0,
 Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
-dompdf,2.0.3exp/1.2.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,2.0.7,"optional, patched to display our images and not break on bad tables and disable links"
+dompdf,2.0.3exp/1.2.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,2.0.8,"optional, patched to display our images and not break on bad tables and disable links"
 mPDF,8.1.4/8.0.17/7.1.9/6.1.4/5.7.4a,github.com/mpdf/mpdf,8.2.3,optional
 log,1.1.4,github.com/php-fig/log,1.1.4/2.0.0/3.0.0,"optional, required by mPDF v7+"
 DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.11.1,"optional, suggested by mPDF v7+ for TOC"
@@ -115,7 +115,7 @@ FPDI,2.3.6,github.com/Setasign/FPDI,2.6.0,"optional, required by mPDF v7+"
 HTML2PDF,5.2.7/4.6.1,github.com/spipu/html2pdf,5.2.8,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.6.2,sourceforge.net/projects/tcpdf,6.7.5,"optional, used by HTML2PDF"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
-Kint,1.1/2.2/5.0.7,github.com/kint-php/kint,5.1.0,"optional, for formatted edebug output"
+Kint,1.1/2.2/5.0.7,github.com/kint-php/kint,5.1.1,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
 DataTables Buttons,,www.datatables.net,2.4.2/3.0.2,
