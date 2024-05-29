@@ -1,11 +1,11 @@
-/*! DataTables 2.0.5
+/*! DataTables 2.0.7
  * © SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     DataTables
  * @description Paginate, search and order HTML tables
- * @version     2.0.5
+ * @version     2.0.7
  * @author      SpryMedia Ltd
  * @contact     www.datatables.net
  * @copyright   SpryMedia Ltd.
@@ -4422,6 +4422,7 @@
 		}
 	
 		var i = 0;
+		var matched = [];
 	
 		// Search term can be a function, regex or string - if a string we apply our
 		// smart filtering regex (assuming the options require that)
@@ -4433,18 +4434,22 @@
 				: _fnFilterCreateSearch( input, options );
 	
 		// Then for each row, does the test pass. If not, lop the row from the array
-		while (i < searchRows.length) {
+		for (i=0 ; i<searchRows.length ; i++) {
 			var row = settings.aoData[ searchRows[i] ];
 			var data = column === undefined
 				? row._sFilterRow
 				: row._aFilterData[ column ];
 	
-			if ( (searchFunc && ! searchFunc(data, row._aData, searchRows[i], column)) || (rpSearch && ! rpSearch.test(data)) ) {
-				searchRows.splice(i, 1);
-				i--;
+			if ( (searchFunc && searchFunc(data, row._aData, searchRows[i], column)) || (rpSearch && rpSearch.test(data)) ) {
+				matched.push(searchRows[i]);
 			}
+		}
 	
-			i++;
+		// Mutate the searchRows array
+		searchRows.length = matched.length;
+	
+		for (i=0 ; i<matched.length ; i++) {
+			searchRows[i] = matched[i];
 		}
 	}
 	
@@ -4812,6 +4817,7 @@
 	function _processingHtml ( settings )
 	{
 		var table = settings.nTable;
+		var scrolling = settings.oScroll.sX !== '' || settings.oScroll.sY !== '';
 	
 		if ( settings.oFeatures.bProcessing ) {
 			var n = $('<div/>', {
@@ -4820,9 +4826,16 @@
 					'role': 'status'
 				} )
 				.html( settings.oLanguage.sProcessing )
-				.append('<div><div></div><div></div><div></div><div></div></div>')
-				.insertBefore( table );
-			
+				.append('<div><div></div><div></div><div></div><div></div></div>');
+	
+			// Different positioning depending on if scrolling is enabled or not
+			if (scrolling) {
+				n.prependTo( $('div.dt-scroll', settings.nTableWrapper) );
+			}
+			else {
+				n.insertBefore( table );
+			}
+	
 			$(table).on( 'processing.dt.DT', function (e, s, show) {
 				n.css( 'display', show ? 'block' : 'none' );
 			} );
@@ -5066,7 +5079,7 @@
 		// of the indexes out.
 		if (settings.aiDisplay.length) {
 			// Get the column sizes from the first row in the table
-			var colSizes = table.find('tbody tr').eq(0).find('th, td').map(function (vis) {
+			var colSizes = table.children('tbody').eq(0).children('tr').eq(0).children('th, td').map(function (vis) {
 				return {
 					idx: _fnVisibleToColumnIndex(settings, vis),
 					width: $(this).outerWidth()
@@ -5510,6 +5523,10 @@
 	 * @param {*} settings
 	 */
 	function _fnSortDisplay(settings, display) {
+		if (display.length < 2) {
+			return;
+		}
+	
 		var master = settings.aiDisplayMaster;
 		var masterMap = {};
 		var map = {};
@@ -7901,9 +7918,15 @@
 	_api_register( 'row().node()', function () {
 		var ctx = this.context;
 	
-		return ctx.length && this.length && this[0].length ?
-			ctx[0].aoData[ this[0] ].nTr || null :
-			null;
+		if (ctx.length && this.length && this[0].length) {
+			var row = ctx[0].aoData[ this[0] ];
+	
+			if (row && row.nTr) {
+				return row.nTr;
+			}
+		}
+	
+		return null;
 	} );
 	
 	
@@ -7962,8 +7985,9 @@
 		if ( state && state.childRows ) {
 			api
 				.rows( state.childRows.map(function (id) {
-					// Escape any `:` characters from the row id, unless previously escaped
-					return id.replace(/(?<!\\):/g, '\\:');
+					// Escape any `:` characters from the row id. Accounts for
+					// already escaped characters.
+					return id.replace(/([^:\\]*(?:\\.[^:\\]*)*):/g, "$1\\:");
 				}) )
 				.every( function () {
 					_fnCallbackFire( api.settings()[0], null, 'requestChild', [ this ] )
@@ -9587,7 +9611,7 @@
 	 *  @type string
 	 *  @default Version number
 	 */
-	DataTable.version = "2.0.5";
+	DataTable.version = "2.0.7";
 	
 	/**
 	 * Private data store, containing all of the settings objects that are
