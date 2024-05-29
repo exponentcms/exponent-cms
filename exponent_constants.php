@@ -704,7 +704,7 @@ if (!defined('DOMPDF8_VERSION')) {
     define('DOMPDF8_VERSION', '-1.2.2');
 }
 if (!defined('DOMPDF2_VERSION')) {
-    define('DOMPDF2_VERSION', '2.0.3');  // 2.0.8
+    define('DOMPDF2_VERSION', '2.0.3');  // 2.0.8/3.0.0
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
