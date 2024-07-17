@@ -1926,7 +1926,7 @@ class expFile extends expRecord {
                 }
 
                 // make sure the database tables are up to date with the system definitions
-                expDatabase::install_dbtables();
+//                expDatabase::install_dbtables();
 
                 $table = '';
                 $oldformdata = array();
