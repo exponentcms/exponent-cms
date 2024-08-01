@@ -30,7 +30,7 @@
 </div>
 
 {if $smarty.const.SITE_CODE_EDITOR == 'ace'}
-{script unique='aceeditor' jquery=1 src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.35.2/ace.js'}
+{script unique='aceeditor' jquery=1 src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.35.4/ace.js'}
 {literal}
     // Hook up ACE editor to all textareas with data-editor attribute
     $(function () {
@@ -71,7 +71,7 @@
     }
 {/css}
 {literal}
-    {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/'}{literal}
+    {/literal}{$cdn = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/'}{literal}
     <script src="{/literal}{$cdn}{literal}codemirror.min.js"></script>
     <link rel="stylesheet" href="{/literal}{$cdn}{literal}codemirror.css">
     <link rel="stylesheet" href="{/literal}{$cdn}{literal}addon/fold/foldgutter.css">
