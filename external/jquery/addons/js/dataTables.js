@@ -1,11 +1,11 @@
-/*! DataTables 2.1.2
+/*! DataTables 2.1.3
  * © SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     DataTables
  * @description Paginate, search and order HTML tables
- * @version     2.1.2
+ * @version     2.1.3
  * @author      SpryMedia Ltd
  * @contact     www.datatables.net
  * @copyright   SpryMedia Ltd.
@@ -1270,7 +1270,7 @@
 	
 	// Replaceable function in api.util
 	var _stripHtml = function (input) {
-		if (! input) {
+		if (! input || typeof input !== 'string') {
 			return input;
 		}
 	
@@ -4731,7 +4731,7 @@
 	 */
 	function _fnInitialise ( settings )
 	{
-		var i, iAjaxStart=settings.iInitDisplayStart;
+		var i;
 		var init = settings.oInit;
 		var deferLoading = settings.deferLoading;
 		var dataSrc = _fnDataSource( settings );
@@ -4751,6 +4751,9 @@
 			// Then draw the header / footer
 			_fnDrawHead( settings, settings.aoHeader );
 			_fnDrawHead( settings, settings.aoFooter );
+	
+			// Cache the paging start point, as the first redraw will reset it
+			var iAjaxStart = settings.iInitDisplayStart
 	
 			// Local data load
 			// Check if there is data passing into the constructor
@@ -4966,6 +4969,11 @@
 	 */
 	function _fnProcessingDisplay ( settings, show )
 	{
+		// Ignore cases when we are still redrawing
+		if (settings.bDrawing && show === false) {
+			return;
+		}
+	
 		_fnCallbackFire( settings, null, 'processing', [settings, show] );
 	}
 	
@@ -6222,8 +6230,7 @@
 			}
 		}
 	
-		// Restore key features - todo - for 1.11 this needs to be done by
-		// subscribed events
+		// Restore key features
 		if ( s.start !== undefined ) {
 			if(api === null) {
 				settings._iDisplayStart    = s.start;
@@ -9804,7 +9811,7 @@
 	 *  @type string
 	 *  @default Version number
 	 */
-	DataTable.version = "2.1.2";
+	DataTable.version = "2.1.3";
 	
 	/**
 	 * Private data store, containing all of the settings objects that are
