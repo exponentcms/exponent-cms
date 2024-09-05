@@ -33,13 +33,19 @@ table.dataTable tr.dt-hasChild td.dt-control:before {
 }
 
 html.dark table.dataTable td.dt-control:before,
-:root[data-bs-theme=dark] table.dataTable td.dt-control:before {
+:root[data-bs-theme=dark] table.dataTable td.dt-control:before,
+:root[data-theme=dark] table.dataTable td.dt-control:before {
   border-left-color: rgba(255, 255, 255, 0.5);
 }
 html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
-:root[data-bs-theme=dark] table.dataTable tr.dt-hasChild td.dt-control:before {
+:root[data-bs-theme=dark] table.dataTable tr.dt-hasChild td.dt-control:before,
+:root[data-theme=dark] table.dataTable tr.dt-hasChild td.dt-control:before {
   border-top-color: rgba(255, 255, 255, 0.5);
   border-left-color: transparent;
+}
+
+div.dt-scroll {
+  width: 100%;
 }
 
 div.dt-scroll-body thead tr,
@@ -508,40 +514,79 @@ table.dataTable.compact tbody td {
   padding: 4px;
 }
 
+div.dt-container div.dt-layout-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0.75em 0;
+}
+div.dt-container div.dt-layout-row div.dt-layout-cell {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+div.dt-container div.dt-layout-row div.dt-layout-cell.dt-layout-start {
+  justify-content: flex-start;
+  margin-right: auto;
+}
+div.dt-container div.dt-layout-row div.dt-layout-cell.dt-layout-end {
+  justify-content: flex-end;
+  margin-left: auto;
+}
+div.dt-container div.dt-layout-row div.dt-layout-cell:empty {
+  display: none;
+}
+
+@media screen and (max-width: 767px) {
+  div.dt-container div.dt-layout-row:not(.dt-layout-table) {
+    display: block;
+  }
+  div.dt-container div.dt-layout-row:not(.dt-layout-table) div.dt-layout-cell {
+    display: block;
+    text-align: center;
+  }
+  div.dt-container div.dt-layout-row:not(.dt-layout-table) div.dt-layout-cell > * {
+    margin: 0.5em 0;
+  }
+  div.dt-container div.dt-layout-row:not(.dt-layout-table) div.dt-layout-cell.dt-layout-start {
+    margin-right: 0;
+  }
+  div.dt-container div.dt-layout-row:not(.dt-layout-table) div.dt-layout-cell.dt-layout-end {
+    margin-left: 0;
+  }
+}
+div.dt-container div.dt-layout-start > *:not(:last-child) {
+  margin-right: 1em;
+}
+div.dt-container div.dt-layout-end > *:not(:first-child) {
+  margin-left: 1em;
+}
+div.dt-container div.dt-layout-full {
+  width: 100%;
+}
+div.dt-container div.dt-layout-full > *:only-child {
+  margin-left: auto;
+  margin-right: auto;
+}
+div.dt-container div.dt-layout-table > div {
+  display: block !important;
+}
+
+@media screen and (max-width: 767px) {
+  div.dt-container div.dt-layout-start > *:not(:last-child) {
+    margin-right: 0;
+  }
+  div.dt-container div.dt-layout-end > *:not(:first-child) {
+    margin-left: 0;
+  }
+}
 /*
  * Control feature layout
  */
 div.dt-container {
   position: relative;
   clear: both;
-}
-div.dt-container div.dt-layout-row {
-  display: table;
-  clear: both;
-  width: 100%;
-}
-div.dt-container div.dt-layout-row.dt-layout-table {
-  display: block;
-}
-div.dt-container div.dt-layout-row.dt-layout-table div.dt-layout-cell {
-  display: block;
-}
-div.dt-container div.dt-layout-cell {
-  display: table-cell;
-  vertical-align: middle;
-  padding: 5px 0;
-}
-div.dt-container div.dt-layout-cell.dt-full {
-  text-align: center;
-}
-div.dt-container div.dt-layout-cell.dt-start {
-  text-align: left;
-}
-div.dt-container div.dt-layout-cell.dt-end {
-  text-align: right;
-}
-div.dt-container div.dt-layout-cell:empty {
-  display: none;
 }
 div.dt-container .dt-search input {
   border: 1px solid #aaa;
@@ -652,27 +697,6 @@ div.dt-container.dt-empty-footer .dt-scroll-body tbody > tr:last-child > * {
   border-bottom: none;
 }
 
-@media screen and (max-width: 767px) {
-  div.dt-container div.dt-layout-row {
-    display: block;
-  }
-  div.dt-container div.dt-layout-cell {
-    display: block;
-  }
-  div.dt-container div.dt-layout-cell.dt-full, div.dt-container div.dt-layout-cell.dt-start, div.dt-container div.dt-layout-cell.dt-end {
-    text-align: center;
-  }
-}
-@media screen and (max-width: 640px) {
-  .dt-container .dt-length,
-  .dt-container .dt-search {
-    float: none;
-    text-align: center;
-  }
-  .dt-container .dt-search {
-    margin-top: 0.5em;
-  }
-}
 html.dark {
   --dt-row-hover: 255, 255, 255;
   --dt-row-stripe: 255, 255, 255;

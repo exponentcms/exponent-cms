@@ -604,7 +604,7 @@ if (!defined('JQUERY_RELATIVE')) {
         define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
     if (!defined('FA6_SCRIPT')) {
-        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
+        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css');
     } // cdn FontAwesome v6.x stylesheet
 //}
 
@@ -650,7 +650,7 @@ if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.17');
 }
 if (!defined('MPDF81_VERSION')) {
-    define('MPDF81_VERSION', '8.1.4');  // 8.2.3
+    define('MPDF81_VERSION', '8.1.4');  // 8.2.4
 }
 /**
  * Log is needed for MPDF v7+
@@ -662,7 +662,7 @@ if (!defined('LOG_VERSION')) {
  * FPDI is needed for MPDF v8+
  */
 if (!defined('FPDI_VERSION')) {
-    define('FPDI_VERSION', '2.3.6');  // 2.6.0
+    define('FPDI_VERSION', '2.3.6');  // 2.6.1
 }
 /**
  * HTTP Message Shim is needed for MPDF v8.2+
