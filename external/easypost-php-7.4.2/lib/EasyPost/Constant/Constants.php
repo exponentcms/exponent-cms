@@ -11,14 +11,19 @@ abstract class Constants
     const BETA_API_VERSION = 'beta';
 
     // Library constants
-    const LIBRARY_VERSION = '7.2.0';
+    const LIBRARY_VERSION = '7.4.2';
     const SUPPORT_EMAIL = 'support@easypost.com';
 
     // Validation
     const CARRIER_ACCOUNT_TYPES_WITH_CUSTOM_WORKFLOWS = [
         'FedexAccount',
-        'UpsAccount',
         'FedexSmartpostAccount'
+    ];
+
+    const UPS_OAUTH_ACCOUNT_TYPES = [
+        'UpsAccount',
+        'UpsMailInnovationsAccount',
+        'UpsSurepostAccount'
     ];
 
     // Exception messages (many of these are intended to be used with `sprintf()`)

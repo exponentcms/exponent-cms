@@ -15,6 +15,7 @@ use EasyPost\Service\BetaReferralCustomerService;
 use EasyPost\Service\BillingService;
 use EasyPost\Service\CarrierAccountService;
 use EasyPost\Service\CarrierMetadataService;
+use EasyPost\Service\ClaimService;
 use EasyPost\Service\CustomsInfoService;
 use EasyPost\Service\CustomsItemService;
 use EasyPost\Service\EndShipperService;
@@ -29,6 +30,7 @@ use EasyPost\Service\RefundService;
 use EasyPost\Service\ReportService;
 use EasyPost\Service\ScanFormService;
 use EasyPost\Service\ShipmentService;
+use EasyPost\Service\SmartRateService;
 use EasyPost\Service\TrackerService;
 use EasyPost\Service\UserService;
 use EasyPost\Service\WebhookService;
@@ -46,6 +48,7 @@ use GuzzleHttp\Client;
  * @property BillingService $billing
  * @property CarrierAccountService $carrierAccount
  * @property CarrierMetadataService $carrierMetadata
+ * @property ClaimService $claim
  * @property CustomsInfoService $customsInfo
  * @property CustomsItemService $customsItem
  * @property EndShipperService $endShipper
@@ -60,6 +63,7 @@ use GuzzleHttp\Client;
  * @property ReportService $report
  * @property ScanFormService $scanForm
  * @property ShipmentService $shipment
+ * @property SmartRateService $smartRate
  * @property TrackerService $tracker
  * @property UserService $user
  * @property WebhookService $webhook
@@ -117,6 +121,7 @@ class EasyPostClient extends BaseService
             'billing' => BillingService::class,
             'carrierAccount' => CarrierAccountService::class,
             'carrierMetadata' => CarrierMetadataService::class,
+            'claim' => ClaimService::class,
             'customsInfo' => CustomsInfoService::class,
             'customsItem' => CustomsItemService::class,
             'endShipper' => EndShipperService::class,
@@ -131,6 +136,7 @@ class EasyPostClient extends BaseService
             'report' => ReportService::class,
             'scanForm' => ScanFormService::class,
             'shipment' => ShipmentService::class,
+            'smartRate' => SmartRateService::class,
             'tracker' => TrackerService::class,
             'user' => UserService::class,
             'webhook' => WebhookService::class,
