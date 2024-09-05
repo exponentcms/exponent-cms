@@ -22,9 +22,9 @@ SimplePie,1.7.0,github.com/simplepie/simplepie,1.8.0,php 8 fix
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,2.1.6exp,github.com/verot/class.upload.php,2.1.6,"Correct flip operation where flip vertical & horizontal were inverted/swapped, php 8 fix"
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.40.10/2.41.90,uncomment load utilities; php 8 fix
-scssphp,1.11.1exp,github.com/scssphp/scssphp,1.11.1,includes example server; hack to compile newui
+scssphp,1.11.1exp,github.com/scssphp/scssphp,1.13.0,includes example server; hack to compile newui
 lessphp,0.5.0exp,github.com/leafo/lessphp,0.5.0,"will not compile bootstrap v3+, hack to allow prefix"
-less.php,3.2.0exp,github.com/wikimedia/less.php,3.2.1/4.4.1/5.0.0,php v5.6 regression fixes
+less.php,3.2.0exp,github.com/wikimedia/less.php,3.2.1/4.4.1/5.1.1,php v5.6 regression fixes
 Twitter-Bootstrap2,2.3.2,github.com/twbs/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Bootstrap3,3.4.1,github.com/twbs/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
 Bootstrap4,4.6.2,github.com/twbs/bootstrap,4.6.2,"patched bootstrap.scss includes swatches & exp variables, remove @page"
@@ -37,7 +37,7 @@ Bootswatch5,5.3.3,bootswatch.com,5.3.3,change 1st line variables.scss comment to
 Font-Awesome3,3.2.1,fontawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
-Font-Awesome6,6.5.2,fontawesome.com,6.6.0,add import all 'fonts' sheets into main sheet
+Font-Awesome6,6.6.0,fontawesome.com,6.6.0,add import all 'fonts' sheets into main sheet
 Bootstrap-Icons,1.11.3,icons.getbootstrap.com,1.11.3,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
 Adminer,4.8.1exp,www.adminer.org,4.8.4evo,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
@@ -58,7 +58,7 @@ jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
 jQuery2,2.2.4,jquery.com,2.2.4,
 jQuery2 Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon
 jQuery3,3.7.1,jquery.com,3.7.1,
-jQuery3 Migrate,3.4.1,jquery.com,3.4.1,
+jQuery3 Migrate,3.5.2,jquery.com,3.5.2,
 jQueryUI,1.14.0,jqueryui.com,1.14.0,
 stepy,1.1.0exp,github.com/wbotelhos/stepy,1.2.0,"added button class, jquery.validate option passing"
 validate,1.21.0exp,jqueryvalidation.org,1.21.0,edit for 'undefined' in 'min' & 'max'
