@@ -679,7 +679,7 @@ if (!defined('RANDOM_VERSION')) {
  * FPDI is needed for MPDF v8+
  */
 if (!defined('FPDI_VERSION')) {
-    define('FPDI_VERSION', '2.3.6');  // 2.6.0
+    define('FPDI_VERSION', '2.3.6');  // 2.6.1
 }
 /**
  * HTTP Message Shim is needed for MPDF v8.2+

@@ -1,11 +1,11 @@
-/*! DataTables 2.1.3
+/*! DataTables 2.1.5
  * © SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     DataTables
  * @description Paginate, search and order HTML tables
- * @version     2.1.3
+ * @version     2.1.5
  * @author      SpryMedia Ltd
  * @contact     www.datatables.net
  * @copyright   SpryMedia Ltd.
@@ -1053,7 +1053,8 @@
 			active: 'current',
 			button: 'dt-paging-button',
 			container: 'dt-paging',
-			disabled: 'disabled'
+			disabled: 'disabled',
+			nav: ''
 		}
 	} );
 	
@@ -2155,7 +2156,11 @@
 		for (var i=0 ; i<cols.length ; i++) {
 			var width = _fnColumnsSumWidth(settings, [i], false, false);
 	
-			cols[i].colEl.css('width', width);
+			// Need to set the min-width, otherwise the browser might try to collapse
+			// it further
+			cols[i].colEl
+				.css('width', width)
+				.css('min-width', width);
 		}
 	}
 	
@@ -3121,6 +3126,9 @@
 					_fnWriteCell(nTd, display[i]);
 				}
 	
+				// column class
+				_addClass(nTd, oCol.sClass);
+	
 				// Visibility - add or remove as required
 				if ( oCol.bVisible && create )
 				{
@@ -3452,7 +3460,6 @@
 					var td = aoData.anCells[i];
 	
 					_addClass(td, _ext.type.className[col.sType]); // auto class
-					_addClass(td, col.sClass); // column class
 					_addClass(td, oSettings.oClasses.tbody.cell); // all cells
 				}
 	
@@ -5226,21 +5233,37 @@
 		// is because of Responsive which might remove `col` elements, knocking the alignment
 		// of the indexes out.
 		if (settings.aiDisplay.length) {
-			// Get the column sizes from the first row in the table
-			var colSizes = table.children('tbody').eq(0).children('tr').eq(0).children('th, td').map(function (vis) {
-				return {
-					idx: _fnVisibleToColumnIndex(settings, vis),
-					width: $(this).outerWidth()
+			// Get the column sizes from the first row in the table. This should really be a
+			// [].find, but it wasn't supported in Chrome until Sept 2015, and DT has 10 year
+			// browser support
+			var firstTr = null;
+	
+			for (i=0 ; i<settings.aiDisplay.length ; i++) {
+				var idx = settings.aiDisplay[i];
+				var tr = settings.aoData[idx].nTr;
+	
+				if (tr) {
+					firstTr = tr;
+					break;
 				}
-			});
+			}
 	
-			// Check against what the colgroup > col is set to and correct if needed
-			for (var i=0 ; i<colSizes.length ; i++) {
-				var colEl = settings.aoColumns[ colSizes[i].idx ].colEl[0];
-				var colWidth = colEl.style.width.replace('px', '');
+			if (firstTr) {
+				var colSizes = $(firstTr).children('th, td').map(function (vis) {
+					return {
+						idx: _fnVisibleToColumnIndex(settings, vis),
+						width: $(this).outerWidth()
+					}
+				});
 	
-				if (colWidth !== colSizes[i].width) {
-					colEl.style.width = colSizes[i].width + 'px';
+				// Check against what the colgroup > col is set to and correct if needed
+				for (var i=0 ; i<colSizes.length ; i++) {
+					var colEl = settings.aoColumns[ colSizes[i].idx ].colEl[0];
+					var colWidth = colEl.style.width.replace('px', '');
+	
+					if (colWidth !== colSizes[i].width) {
+						colEl.style.width = colSizes[i].width + 'px';
+					}
 				}
 			}
 		}
@@ -5383,7 +5406,11 @@
 			var width = _fnColumnsSumWidth( settings, this, true, false );
 	
 			if ( width ) {
+				// Need to set the width and min-width, otherwise the browser
+				// will attempt to collapse the table beyond want might have
+				// been specified
 				this.style.width = width;
+				this.style.minWidth = width;
 	
 				// For scrollX we need to force the column width otherwise the
 				// browser will collapse it. If this width is smaller than the
@@ -6768,6 +6795,7 @@
 			return new _Api( context, data );
 		}
 	
+		var i;
 		var settings = [];
 		var ctxSettings = function ( o ) {
 			var a = _toSettings( o );
@@ -6777,7 +6805,7 @@
 		};
 	
 		if ( Array.isArray( context ) ) {
-			for ( var i=0, ien=context.length ; i<ien ; i++ ) {
+			for ( i=0 ; i<context.length ; i++ ) {
 				ctxSettings( context[i] );
 			}
 		}
@@ -6792,7 +6820,16 @@
 	
 		// Initial data
 		if ( data ) {
-			this.push.apply(this, data);
+			// Chrome can throw a max stack error if apply is called with
+			// too large an array, but apply is faster.
+			if (data.length < 10000) {
+				this.push.apply(this, data);
+			}
+			else {
+				for (i=0 ; i<data.length ; i++) {
+					this.push(data[i]);
+				}
+			}
 		}
 	
 		// selector
@@ -8482,8 +8519,10 @@
 				switch( match[2] ) {
 					case 'visIdx':
 					case 'visible':
-						if (match[1]) {
+						// Selector is a column index
+						if (match[1] && match[1].match(/^\d+$/)) {
 							var idx = parseInt( match[1], 10 );
+	
 							// Visible index given, convert to column index
 							if ( idx < 0 ) {
 								// Counting from the right
@@ -8496,9 +8535,19 @@
 							return [ _fnVisibleToColumnIndex( settings, idx ) ];
 						}
 						
-						// `:visible` on its own
-						return columns.map( function (col, i) {
-							return col.bVisible ? i : null;
+						return columns.map( function (col, idx) {
+							// Not visible, can't match
+							if (! col.bVisible) {
+								return null;
+							}
+	
+							// Selector
+							if (match[1]) {
+								return $(nodes[idx]).filter(match[1]).length > 0 ? idx : null;
+							}
+	
+							// `:visible` on its own
+							return idx;
 						} );
 	
 					case 'name':
@@ -9811,7 +9860,7 @@
 	 *  @type string
 	 *  @default Version number
 	 */
-	DataTable.version = "2.1.3";
+	DataTable.version = "2.1.5";
 	
 	/**
 	 * Private data store, containing all of the settings objects that are
@@ -12485,7 +12534,7 @@
 			pre: function ( a ) {
 				// This is a little complex, but faster than always calling toString,
 				// http://jsperf.com/tostring-v-check
-				return _empty(a) ?
+				return _empty(a) && typeof a !== 'boolean' ?
 					'' :
 					typeof a === 'string' ?
 						a.toLowerCase() :
@@ -12738,6 +12787,12 @@
 						return;               // table, not a nested one
 					}
 	
+					var sorting = ctx.sortDetails;
+	
+					if (! sorting) {
+						return;
+					}
+	
 					var i;
 					var orderClasses = classes.order;
 					var columns = ctx.api.columns( cell );
@@ -12746,7 +12801,6 @@
 					var ariaType = '';
 					var indexes = columns.indexes();
 					var sortDirs = columns.orderable(true).flatten();
-					var sorting = ctx.sortDetails;
 					var orderedColumns = _pluck(sorting, 'col');
 	
 					cell
@@ -13114,7 +13168,11 @@
 	
 		var host = $('<div/>')
 			.addClass(settings.oClasses.paging.container + (opts.type ? ' paging_' + opts.type : ''))
-			.append('<nav>');
+			.append(
+				$('<nav>')
+					.attr('aria-label', 'pagination')
+					.addClass(settings.oClasses.paging.nav)
+			);
 		var draw = function () {
 			_pagingDraw(settings, host.children(), opts);
 		};
