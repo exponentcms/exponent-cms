@@ -37,7 +37,7 @@ Bootswatch5,5.3.3,bootswatch.com,5.3.3,change 1st line variables.scss comment to
 Font-Awesome3,3.2.1,fontawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
-Font-Awesome6,6.6.0,fontawesome.com,6.6.0,add import all 'fonts' sheets into main sheet
+Font-Awesome6,6.7.1,fontawesome.com,6.7.1,add import all 'fonts' sheets into main sheet
 Bootstrap-Icons,1.11.3,icons.getbootstrap.com,1.11.3,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
 Adminer,4.8.1exp,www.adminer.org,4.8.4evo,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
@@ -49,9 +49,9 @@ Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
-CKEditor,4.22.1,ckeditor.com,4.22.1/43.1.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
+CKEditor,4.22.1,ckeditor.com,4.22.1/43.3.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
-TinyMCE v5,5.10.9,tiny.cloud,5.10.9/6.8.4/7.3.0,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
+TinyMCE v5,5.10.9,tiny.cloud,5.10.9/6.8.4/7.4.1,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.9,github.com/moxiecode/plupload,2.3.9/3.1.5,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 elFinder,2.1.65,elfinder.org,2.1.65,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
@@ -59,13 +59,13 @@ jQuery2,2.2.4,jquery.com,2.2.4,
 jQuery2 Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon
 jQuery3,3.7.1,jquery.com,3.7.1,
 jQuery3 Migrate,3.5.2,jquery.com,3.5.2,
-jQueryUI,1.14.0,jqueryui.com,1.14.0,
+jQueryUI,1.14.1,jqueryui.com,1.14.1,
 stepy,1.1.0exp,github.com/wbotelhos/stepy,1.2.0,"added button class, jquery.validate option passing"
 validate,1.21.0exp,jqueryvalidation.org,1.21.0,edit for 'undefined' in 'min' & 'max'
 Countdown,1.1,tutorialzine.com/2011/12/countdown-jquery,1.1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker,1.6.3,used by adminer
 TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
-DataTables,2.1.7,www.datatables.net,1.13.8/2.1.7,includes boostrap2 integration w/ renamed 1.10.7 version
+DataTables,2.1.7,www.datatables.net,1.13.8/2.1.8,includes boostrap2 integration w/ renamed 1.10.7 version
 DataTables Checkboxes,1.3.0,github.com/gyrocode/jquery-datatables-checkboxes,1.3.0,
 DataTables Tabletools,2.2.4,www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,github.com/Comanche/datatables-responsive,0.2.0,replaced by 'Responsive' in 1.10.8
