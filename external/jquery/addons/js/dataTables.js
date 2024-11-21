@@ -1,11 +1,11 @@
-/*! DataTables 2.1.7
+/*! DataTables 2.1.8
  * © SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     DataTables
  * @description Paginate, search and order HTML tables
- * @version     2.1.7
+ * @version     2.1.8
  * @author      SpryMedia Ltd
  * @contact     www.datatables.net
  * @copyright   SpryMedia Ltd.
@@ -3247,9 +3247,6 @@
 			settings.aoFooter = detected;
 		}
 	
-		// ARIA role for the rows
-		$(target).children('tr').attr('role', 'row');
-	
 		// Every cell needs to be passed through the renderer
 		$(target).children('tr').children('th, td')
 			.each( function () {
@@ -5239,7 +5236,7 @@
 			// browser support
 			var firstTr = null;
 	
-			for (i=0 ; i<settings.aiDisplay.length ; i++) {
+			for (i=settings._iDisplayStart ; i<settings.aiDisplay.length ; i++) {
 				var idx = settings.aiDisplay[i];
 				var tr = settings.aoData[idx].nTr;
 	
@@ -9857,7 +9854,7 @@
 	 *  @type string
 	 *  @default Version number
 	 */
-	DataTable.version = "2.1.7";
+	DataTable.version = "2.1.8";
 	
 	/**
 	 * Private data store, containing all of the settings objects that are
@@ -12182,7 +12179,7 @@
 	
 			// Add type detection and sorting specific to this date format - we need to be able to identify
 			// date type columns as such, rather than as numbers in extensions. Hence the need for this.
-			if (! DataTable.ext.type.order[typeName]) {
+			if (! DataTable.ext.type.order[typeName + '-pre']) {
 				DataTable.type(typeName, {
 					detect: function (d) {
 						// The renderer will give the value to type detect as the type!
