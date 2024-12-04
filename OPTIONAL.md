@@ -125,7 +125,7 @@ installing the [Kint](https://github.com/kint-php/kint) PHP library. Simply plac
 into the /external folder (for v1 & v2 extract into the /external folder to create a subfolder).
 The feature is auto-activated by this installation.
 
-- v3.3.0 to v5.0.6 (/external/kint.phar), (requires Exponent CMS v2.6.0patch2 or later)
+- v3.3.0 to v6.0.0 (/external/kint.phar), (requires Exponent CMS v2.6.0patch2 or later)
 - v2.2 (/external/kint-2.2/) is the last 2.x version,
 - but v1.1 (/external/kint/) is also supported
 
@@ -147,6 +147,8 @@ the /external folder which creates an subfolder named 'iless'. You must also man
 
 #### php-autoprefixer
 
+Though this option is still available, it is NOT recommended since it slows down page loading when a new 
+stylesheet must be built! 
 Exponent CMS includes built-in .less and .scss stylesheet compiling support. Stylesheet library developers
 often expect their stylesheets to be pre-compiled on the server then run through a binary post-css processor.
 Our PHP based solution allows this to take place within Exponent. Adding this option will cause the less/scss 
@@ -156,5 +158,5 @@ This library also requires the [PHP-CSS-Parser](https://github.com/sabberworm/PH
 library.  Simply extract our complete package into the / (root) folder and it will be automatically recognized.
 
 - [php-autoprefixerv260.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/php-autoprefixerv260.zip/download)
-  This uses the php-autoprefixer v1.4 library with PHP-CSS-Parser v8.4.0 library which has been customized
+- This uses the php-autoprefixer v1.4 library with PHP-CSS-Parser v8.4.0 library which has been customized
   for Exponent due to the unique file structure required. This requires Exponent CMS v2.6.0 or later.
