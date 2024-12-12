@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 {*
- * Copyright (c) 2004-2023 OIC Group, Inc.
+ * Copyright (c) 2004-2025 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
