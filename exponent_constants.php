@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2023 OIC Group, Inc.
+# Copyright (c) 2004-2025 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -533,8 +533,8 @@ if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
     define('JQUERY3_VERSION', '3.7.1');
-    define('JQUERY3_MIGRATE_VERSION', '3.4.1');
-    define('JQUERYUI_VERSION', '1.13.3');
+    define('JQUERY3_MIGRATE_VERSION', '3.5.2');
+    define('JQUERYUI_VERSION', '1.14.0');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
     define('JQUERY_URL', URL_FULL . 'external/jquery/');
@@ -604,7 +604,7 @@ if (!defined('JQUERY_RELATIVE')) {
         define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
     if (!defined('FA6_SCRIPT')) {
-        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css');
+        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css');
     } // cdn FontAwesome v6.x stylesheet
 //}
 
@@ -650,7 +650,7 @@ if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.17');
 }
 if (!defined('MPDF81_VERSION')) {
-    define('MPDF81_VERSION', '8.1.4');  // 8.2.4
+    define('MPDF81_VERSION', '8.1.4');  // 8.2.5
 }
 /**
  * Log is needed for MPDF v7+
@@ -697,7 +697,7 @@ if (!defined('HTML2PDF5_VERSION')) {
  * TCPDF is needed for HTML2PDF5
  */
 if (!defined('TCPDF5_VERSION')) {
-    define('TCPDF5_VERSION', '6.6.2');  // 6.7.5
+    define('TCPDF5_VERSION', '6.6.2');  // 6.7.7
 }
 
 ?>

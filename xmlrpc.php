@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2023 OIC Group, Inc.
+# Copyright (c) 2004-2025 OIC Group, Inc.
 # Written and Designed by Dave Leffler
 #
 # This file is part of Exponent
