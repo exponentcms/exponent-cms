@@ -149,6 +149,7 @@ the /external folder which creates an subfolder named 'iless'. You must also man
 
 Though this option is still available, it is NOT recommended since it slows down page loading when a new 
 stylesheet must be built! 
+
 Exponent CMS includes built-in .less and .scss stylesheet compiling support. Stylesheet library developers
 often expect their stylesheets to be pre-compiled on the server then run through a binary post-css processor.
 Our PHP based solution allows this to take place within Exponent. Adding this option will cause the less/scss 
