@@ -8,7 +8,7 @@ Copyright (c) 2004-2025 OIC Group, Inc.
 
 For a complete list of the changes made from release to release, see the [CHANGELOG.md](CHANGELOG.md)
 
-## 3.0.2 - July 2023
+## 3.0.2 - January 2025
 
 ----------
 

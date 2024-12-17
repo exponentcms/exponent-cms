@@ -2,7 +2,7 @@
 
 ---
 
-Copyright (c) 2004-2023 OIC Group, Inc.
+Copyright (c) 2004-2025 OIC Group, Inc.
 
 ## Optional Features
 
@@ -85,11 +85,14 @@ Exponent CMS includes built-in Developer Debugging support, but this feature can
 installing the [Kint](https://github.com/kint-php/kint) PHP library. Simply place the kint.phar file
 into the /external folder. The feature is auto-activated by this installation.
 
-- v3.3.0 to v5.0.3 (/external/kint.phar), (requires Exponent CMS v2.6.0patch2 or later)
+- v3.3.0 to v6.0.0 (/external/kint.phar), (requires Exponent CMS v2.6.0patch2 or later)
 
 ### .less/.scss Auto-prefixer
 
 #### php-autoprefixer
+
+Though this option is still available, it is NOT recommended since it slows down page loading when a new 
+stylesheet must be built! 
 
 Exponent CMS includes built-in .less and .scss stylesheet compiling support. Stylesheet library developers
 often expect their stylesheets to be pre-compiled on the server then run through a binary post-css processor.

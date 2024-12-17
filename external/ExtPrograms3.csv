@@ -82,8 +82,8 @@ Tempus Dominus Bootstrap 4,5.39.0,github.com/tempusdominus/bootstrap-4,5.39.0,
 Tempus Dominus Bootstrap 5,6.9.5,github.com/Eonasdan/tempus-dominus,6.9.11,added .inline z-index style; scss change @use color
 moment.js,2.30.1,github.com/moment/moment,2.30.1,needed for Bootstrap DateTimePicker; min/moment-with-locales.js renamed
 strength-meter,1.1.4,github.com/kartik-v/strength-meter,1.1.4,
-Sortable,1.15.3,github.com/SortableJS/Sortable,1.15.4,
-jstree,3.3.16,github.com/vakata/jstree,3.3.17,added nav menu icons to stylesheet
+Sortable,1.15.4,github.com/SortableJS/Sortable,1.15.4,
+jstree,3.3.17,github.com/vakata/jstree,3.3.17,added nav menu icons to stylesheet
 bootstrap3-dialog,1.35.4,github.com/nakupanda/bootstrap3-dialog,1.35.4,use /src .less file and add our .less variable imports; w/ bs4 fixes
 impromptu,6.2.3,trentrichardson.com/Impromptu,6.2.3,add some colors to .css
 jquery-confirm,3.3.4,github.com/craftpip/jquery-confirm,3.3.4,
