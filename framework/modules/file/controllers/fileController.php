@@ -857,6 +857,7 @@ class fileController extends expController {
         $list = array(
             'expeAlerts_temp',
             'expealerts_temp',
+            'event_cache',
             'mimetype',
             'passreset_token',
             'sessionticket',
