@@ -102,18 +102,9 @@ jquery.history.js,1.8b2,github.com/browserstate/history.js,1.8.0,
 Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
-dompdf,2.0.3exp/1.2.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,2.0.8/3.0.0,"optional, patched to display our images and not break on bad tables and disable links"
-mPDF,8.1.4/8.0.17,github.com/mpdf/mpdf,8.2.5,optional
-log,1.1.4,github.com/php-fig/log,1.1.4/2.0.0/3.0.2,"optional, required by mPDF v7+"
-DeepCopy,1.7.0,github.com/myclabs/DeepCopy,1.11.1,"optional, suggested by mPDF v7+ for TOC"
-random_compat,2.0.21,github.com/paragonie/random_compat,2.0.21,"optional, required by mPDF v7+"
-http-message,1,github.com/php-fig/http-message,1.1/2.0,"optional, required by mPDF v8.1+"
-message-factory,1.0.1,github.com/php-http/message-factory,1.1.0,"optional, required by mPDF v8.1.x"
-http-message-shim,2.0.0,github.com/mpdf/psr-http-message-shim,2.0.1,"optional, required by mPDF v8.2.x"
-log-aware-trait,3.0.0,github.com/mpdf/psr-log-aware-trait,3.0.0,"optional, required by mPDF v8.2.x"
-FPDI,2.3.6,github.com/Setasign/FPDI,2.6.1,"optional, required by mPDF v7+"
-HTML2PDF,5.2.7/4.6.1,github.com/spipu/html2pdf,5.2.8,"optional, we tweak tcpdfConfig.php"
-TCPDF,6.6.2,sourceforge.net/projects/tcpdf,6.7.7,"optional, used by HTML2PDF"
+dompdf,3.0.1exp/1.2.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,3.0.1,"optional, patched to display our images and not break on bad tables and disable links"
+mPDF,8.2.5,github.com/mpdf/mpdf,8.2.5,optional
+HTML2PDF,5.2.8,github.com/spipu/html2pdf,5.2.8,"optional, we tweak tcpdfConfig.php"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
 Kint,1.1/2.2/6.0.0,github.com/kint-php/kint,6.0.0,"optional, for formatted edebug output"
 ,,,,
