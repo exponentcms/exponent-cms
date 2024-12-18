@@ -12,5 +12,4 @@ For a complete list of the changes made from release to release, see the [CHANGE
 
 ----------
 
-### Removed support for obsolete PHP versions
-- Functionally equivalent to v2.7.2
+### Finalize support for PHP v8.2. Also addresses issues in v2.7.1 and Prepares for v3.0.2.

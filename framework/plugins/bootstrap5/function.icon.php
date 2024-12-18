@@ -198,8 +198,7 @@ if (!function_exists('smarty_function_icon')) {
             $params['style'],
             $params['icon'],
             $params['size'],
-            $params['color'],
-            $params['wide']
+            $params['color']
         );
         $nofollow = !empty($params['nofollow']) ? $params['nofollow'] : '';
         unset($params['nofollow']);
@@ -219,6 +218,8 @@ if (!function_exists('smarty_function_icon')) {
         }
         if (empty($linktext) || ctype_space($linktext))
             $linktext = '<span class="visually-hidden">' . $title . '</span>';
+        if (!empty($params['wide']) )
+            echo '<div class="d-grid gap-2">';
         if(!empty($params['action']) && $params['action'] == 'scriptaction') {
             echo '<a',$name,' href="#" title="', $title, '" class="btn ',$icon->type,' ',$btn_size,'"';
             if (!empty($nofollow))
@@ -249,6 +250,11 @@ if (!function_exists('smarty_function_icon')) {
         } else {
             echo '<div',$name,' class="btn',(empty($params['live'])?' disabled ':' '),$icon->type,' ',$btn_size,'"><i class="',$icon->prefix,$icon->class,' ',$icon_size,'" aria-hidden="true"></i> ',$linktext,'</div>';
         }
+        if (!empty($params['wide']) ) {
+            unset($params['wide']);
+            echo '</div>';
+        }
+
     }
 }
 
