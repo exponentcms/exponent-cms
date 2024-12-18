@@ -534,7 +534,7 @@ if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY2_VERSION', '2.2.4');
     define('JQUERY3_VERSION', '3.7.1');
     define('JQUERY3_MIGRATE_VERSION', '3.5.2');
-    define('JQUERYUI_VERSION', '1.14.0');
+    define('JQUERYUI_VERSION', '1.14.1');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
     define('JQUERY_URL', URL_FULL . 'external/jquery/');
@@ -604,7 +604,7 @@ if (!defined('JQUERY_RELATIVE')) {
         define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
     if (!defined('FA6_SCRIPT')) {
-        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css');
+        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
     } // cdn FontAwesome v6.x stylesheet
 //}
 
@@ -661,60 +661,18 @@ if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.17');
 }
 if (!defined('MPDF81_VERSION')) {
-    define('MPDF81_VERSION', '8.1.4');  // 8.2.5
-}
-/**
- * Log is needed for MPDF v7+
- */
-if (!defined('LOG_VERSION')) {
-    define('LOG_VERSION', '1.1.4');  // 2.0.0, 3.0.0
-}
-/**
- * random_compat is needed for MPDF v7+ under PHP v5.6
- */
-if (!defined('RANDOM_VERSION')) {
-    define('RANDOM_VERSION', '2.0.21');
-}
-/**
- * FPDI is needed for MPDF v8+
- */
-if (!defined('FPDI_VERSION')) {
-    define('FPDI_VERSION', '2.3.6');  // 2.6.1
-}
-/**
- * HTTP Message Shim is needed for MPDF v8.2+
- */
-if (!defined('HTTP_MSG_SHM_VERSION')) {
-    define('HTTP_MSG_SHM_VERSION', '2.0.1');
-}
-/**
- * Log Aware Trait is needed for MPDF v8.1.6+
- */
-if (!defined('LOG_AWARE_VERSION')) {
-    define('LOG_AWARE_VERSION', '3.0.0');
-}
-/**
- * HTTP Message is needed for MPDF v8+
- */
-if (!defined('HTTP_MSG_VERSION')) {
-    define('HTTP_MSG_VERSION', '1.0');  // 1.1.0
+    define('MPDF81_VERSION', '8.2.5');
 }
 
 if (!defined('DOMPDF8_VERSION')) {
     define('DOMPDF8_VERSION', '-1.2.2');
 }
 if (!defined('DOMPDF2_VERSION')) {
-    define('DOMPDF2_VERSION', '2.0.3');  // 2.0.8/3.0.0
+    define('DOMPDF2_VERSION', '3.0.1');
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.7');  // 5.2.8
-}
-/**
- * TCPDF is needed for HTML2PDF5
- */
-if (!defined('TCPDF5_VERSION')) {
-    define('TCPDF5_VERSION', '6.6.2');  // 6.7.7
+    define('HTML2PDF5_VERSION', '5.2.8');
 }
 
 ?>
