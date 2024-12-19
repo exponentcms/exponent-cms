@@ -69,7 +69,7 @@ if ($user->isAdmin()) {
                                 'text'      => $my_version . $my_type . $my_releasedate . "<br />" .
                                     gt("Framework") . " : " . framework() . "<br />" .
                                     gt("Theme") . " : " . expTheme::getThemeDetails() . "<br />" .
-                                    "<span id='phpinfo-toolbar'>" . gt("PHP Version") . " : " . phpversion() . "</span><br />" .
+                                    "<span id='phpinfo-toolbar' title='" . gt('Click to View PHP Info') . "'>" . gt("PHP Version") . " : " . phpversion() . "</span><br />" .
                                     gt("Max Upload") . " : " . expCore::maxUploadSize() . "<br />" .
                                     gt("DB Version") . " : " . $db->version,
                                 "disabled"  => true
