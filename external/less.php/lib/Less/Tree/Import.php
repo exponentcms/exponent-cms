@@ -154,24 +154,8 @@ class Less_Tree_Import extends Less_Tree {
 	public function compile( $env ) {
 		$features = ( $this->features ? $this->features->compile( $env ) : null );
 
-		// TODO: Upstream doesn't do path resolution here. The reason we need it here is
-		// because skip() takes a $path_and_uri argument. Once the TODO in ImportVisitor
-		// about Less_Tree_Import::PathAndUri() is fixed, this can be removed by letting
-		// skip() call $this->PathAndUri() on its own.
-		// get path & uri
-		$path_and_uri = $env->callImportCallback( $this );
-		if ( !$path_and_uri ) {
-			$path_and_uri = $this->PathAndUri();
-		}
-		if ( $path_and_uri ) {
-			[ $full_path, $uri ] = $path_and_uri;
-		} else {
-			$full_path = $uri = $this->getPath();
-		}
-		'@phan-var string $full_path';
-
 		// import once
-		if ( $this->skip( $full_path, $env ) ) {
+		if ( $this->skip( $env ) ) {
 			return [];
 		}
 
@@ -205,91 +189,28 @@ class Less_Tree_Import extends Less_Tree {
 	}
 
 	/**
-	 * Using the import directories, get the full absolute path and uri of the import
-	 *
-	 * @see less-node/FileManager.getPath https://github.com/less/less.js/blob/v2.5.3/lib/less-node/file-manager.js#L70
-	 */
-	public function PathAndUri() {
-		$evald_path = $this->getPath();
-
-		$tryAppendLessExtension = $this->css === null;
-
-		if ( $tryAppendLessExtension ) {
-			$evald_path = ( isset( $this->css ) || preg_match( '/(\.[a-z]*$)|([\?;].*)$/', $evald_path ) ) ? $evald_path : $evald_path . '.less';
-		}
-
-		// TODO: Move callImportCallback() and getPath() fallback logic from callers
-		//       to here so that PathAndUri() is equivalent to upstream fileManager.getPath()
-
-		if ( $evald_path ) {
-
-			$import_dirs = [];
-
-			if ( Less_Environment::isPathRelative( $evald_path ) ) {
-				// if the path is relative, the file should be in the current directory
-				if ( $this->currentFileInfo ) {
-					$import_dirs[ $this->currentFileInfo['currentDirectory'] ] = $this->currentFileInfo['uri_root'];
-				}
-
-			} else {
-				// otherwise, the file should be relative to the server root
-				if ( $this->currentFileInfo ) {
-					$import_dirs[ $this->currentFileInfo['entryPath'] ] = $this->currentFileInfo['entryUri'];
-				}
-				// if the user supplied entryPath isn't the actual root
-				$import_dirs[ $_SERVER['DOCUMENT_ROOT'] ] = '';
-
-			}
-
-			// always look in user supplied import directories
-			$import_dirs = array_merge( $import_dirs, Less_Parser::$options['import_dirs'] );
-
-			foreach ( $import_dirs as $rootpath => $rooturi ) {
-				if ( is_callable( $rooturi ) ) {
-					$res = $rooturi( $evald_path );
-					if ( $res && is_string( $res[0] ) ) {
-						return [
-							Less_Environment::normalizePath( $res[0] ),
-							Less_Environment::normalizePath( $res[1] ?? dirname( $evald_path ) )
-						];
-					}
-				} elseif ( !empty( $rootpath ) ) {
-					$path = rtrim( $rootpath, '/\\' ) . '/' . ltrim( $evald_path, '/\\' );
-					if ( file_exists( $path ) ) {
-						return [
-							Less_Environment::normalizePath( $path ),
-							Less_Environment::normalizePath( dirname( $rooturi . $evald_path ) )
-						];
-					}
-					if ( file_exists( $path . '.less' ) ) {
-						return [
-							Less_Environment::normalizePath( $path . '.less' ),
-							Less_Environment::normalizePath( dirname( $rooturi . $evald_path . '.less' ) )
-						];
-					}
-				}
-			}
-		}
-	}
-
-	/**
 	 * Should the import be skipped?
 	 *
-	 * @param string|null $path
 	 * @param Less_Environment $env
 	 * @return bool|null
 	 */
-	public function skip( $path, $env ) {
+	public function skip( $env ) {
+		$path = $this->getPath();
+		// TODO: Since our Import->getPath() varies from upstream Less.js (ours can return null).
+		// we therefore need an empty string fallback here. Remove this fallback once getPath()
+		// is in sync with upstream.
+		$fullPath = Less_FileManager::getFilePath( $path, $this->currentFileInfo )[0] ?? $path ?? '';
+
 		if ( $this->doSkip !== null ) {
 			return $this->doSkip;
 		}
 
 		// @see less-2.5.3.js#ImportVisitor.prototype.onImported
-		if ( isset( $env->importVisitorOnceMap[$path] ) ) {
+		if ( isset( $env->importVisitorOnceMap[$fullPath] ) ) {
 			return true;
 		}
 
-		$env->importVisitorOnceMap[$path] = true;
+		$env->importVisitorOnceMap[$fullPath] = true;
 		return false;
 	}
 }

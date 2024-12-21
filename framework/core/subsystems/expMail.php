@@ -70,7 +70,7 @@ class expMail {
 	function __construct($params = array()) {
         if (version_compare(SWIFT_VERSION, '6.0.0', 'ge')) {
             require_once(SWIFT_LEXER_PATH . 'AbstractLexer.php');
-            require_once(SWIFT_DEPRECATIONS_PATH . 'Deprecation.php');
+//            require_once(SWIFT_DEPRECATIONS_PATH . 'Deprecation.php');
             require_once(SWIFT_LEXER_PATH . 'Token.php');
             require_once(SWIFT_EMAIL_PATH . 'EmailValidator.php');
             Egulias\EmailValidator\EmailValidator::registerAutoload();  // our custom autoload function

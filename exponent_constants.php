@@ -628,17 +628,17 @@ if (!defined('SWIFT_PATH')) {
     /**
      * Lexer is needed for Swiftmailer v6
      */
-    define('LEXER_VERSION', '2.1.0');  // 2.1.1/3.0.1
+    define('LEXER_VERSION', '3.0.1');  // 2.1.1/3.0.1
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/src/');
     /**
      * Deprecations is needed for Lexer v2
      */
-    define('DEPRECATIONS_VERSION', '1.1.2');  // 1.1.3
+    define('DEPRECATIONS_VERSION', '1.1.3');  // 1.1.3
     define('SWIFT_DEPRECATIONS_PATH', BASE . 'external/deprecations-' . DEPRECATIONS_VERSION . '/lib/Doctrine/Deprecations/');
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '3.2.6');  // 4.0.2
+    define('EMAIL_VALIDATOR_VERSION', '4.0.2');  // 4.0.2
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
@@ -657,7 +657,7 @@ if (!defined('DOMPDF8_VERSION')) {
     define('DOMPDF8_VERSION', '-1.2.2');
 }
 if (!defined('DOMPDF2_VERSION')) {
-    define('DOMPDF2_VERSION', '2.0.3');
+    define('DOMPDF2_VERSION', '3.0.1');
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
