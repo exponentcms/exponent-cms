@@ -42,14 +42,14 @@ Bootstrap-Icons,1.11.3,icons.getbootstrap.com,1.11.3,"patched bootstrap-icons.sc
 Adminer,4.8.1exp,www.adminer.org,4.8.4evo,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
-MediaElement.js,7.0.5,mediaelementjs.com,7.0.5,
+MediaElement.js,7.0.7,mediaelementjs.com,7.0.7,
 MediaElement plugins,5.0.0,github.com/johndyer/mediaelement-plugins,5.0.0,
 Facebook PHP SDK3,3.2.3,github.com/facebook/php-graph-sdk,5.7.0,
 Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
-CKEditor,4.22.1,ckeditor.com,4.22.1/44.0.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
+CKEditor,4.21.0,ckeditor.com,4.22.1/44.1.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 TinyMCE v5,5.10.9,tiny.cloud,5.10.9/6.8.5/7.5.1,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.9,github.com/moxiecode/plupload,2.3.9/3.1.5,"needed for TinyMCE Quick Upload, placed in that plugin folder"
