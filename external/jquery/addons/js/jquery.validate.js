@@ -1052,6 +1052,7 @@ $.extend( $.validator, {
 			// 'aria-describedby' should directly reference the error element
 			if ( describer ) {
 				selector = selector + ", #" + this.escapeCssMeta( describer )
+                    .trim()  // exp fix
 					.replace( /\s+/g, ", #" );
 			}
 
