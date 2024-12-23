@@ -246,7 +246,7 @@
         }, _head: function (index) {
             return $('<li />', { id: $(this).attr('id') + '-head-' + index });
         }, _header: function () {
-            var header = $('<ul />', { id: $(this).attr('id') + '-header', 'class': 'stepy-header' });
+            var header = $('<ul />', { id: $(this).attr('id') + '-header', 'class': 'stepy-header row' });
 
             if (this.opt.titleTarget) {
                 header.appendTo(this.opt.titleTarget);
