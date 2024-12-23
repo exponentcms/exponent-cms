@@ -71,6 +71,9 @@ expLang::initialize();
 global $default_lang, $cur_lang;
 if (empty($default_lang))
 	$default_lang = include(BASE."framework/core/lang/English - US.php");
+if (empty($default_lang)) {
+    $default_lang = array();
+}
 
 // regex for the gettext smarty modifier
 $regex_gettext_mod='/(?<=["\'])((\\\\.|[^\'"])*)(?=["\']\|gettext)/';
