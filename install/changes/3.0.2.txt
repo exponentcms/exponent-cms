@@ -1,6 +1,6 @@
 Version 3.0.2
 -------------
-### Address issues in v3.0.0rc1/3.0.1, incorporate changes in v2.7.2
+### Address issues in v3.0.0rc1/3.0.1, incorporate changes from v2.7.2
 - compatible with PHP v8.1.x and v8.2.x
   - deprecated support for PHP v7.4.x, v8.0.x still exists
   - initial support for PHP v8.3.x and v8.4.x
