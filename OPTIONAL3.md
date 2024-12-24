@@ -26,13 +26,13 @@ If you are running an older version of PHP, you may need to use an older PDF Lib
 
 #### mPDF
 
-**mPDF is the preferred library.** We currently support five (5) versions:
+**mPDF is the preferred library.** We currently support two (2) versions:
 
 v8.2.5 is the newest version supported
 
 - [mpdf81v272.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf81v272.zip/download)
   This uses the mPDF v8.2.5 library which has been customized for Exponent.
-  This requires Exponent CMS v2.7.2 or later. Works with PHP v5.6 to v8.4
+  This requires Exponent CMS v2.7.2 or later. Works with PHP v5.6 or later
 
 v8.0.17 is supported
 
@@ -42,7 +42,7 @@ v8.0.17 is supported
 
 #### domPDF
 
-domPDF was the first supported PHP based library. We currently support four (4) versions:
+domPDF was the first supported PHP based library. We currently support two (2) versions:
 
 **v3.0.1 is the newest version supported**
 
@@ -65,7 +65,7 @@ library (TCPDF) to perform the actual PDF creation. This appears to the be the s
 
 - [html2pdf5v272.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/html2pdf5v272.zip/download)
   This uses the HTML2PDF v5.2.8 library which has the configuration customized for Exponent. 
-- This package requires Exponent CMS v2.7.2 or later. Requires PHP v5.6 to v8.4.
+- This package requires Exponent CMS v2.7.2 or later. Requires PHP v5.6 or later.
 
 #### WKHTMLtoPDF
 

@@ -23,7 +23,7 @@ class.upload,2.1.6exp,github.com/verot/class.upload.php,2.1.6,"Correct flip oper
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.40.10/2.41.90,uncomment load utilities; php 8 fix
 scssphp,1.11.1exp,github.com/scssphp/scssphp,1.13.0,includes example server; hack to compile newui
 lessphp,0.5.0exp,github.com/leafo/lessphp,0.5.0,"will not compile bootstrap v3+, hack to allow prefix"
-less.php,5.1.2,github.com/wikimedia/less.php,5.1.2,php v5.6 regression fixes
+less.php,5.1.2,github.com/wikimedia/less.php,5.1.2,
 Twitter-Bootstrap2,2.3.2,github.com/twbs/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Bootstrap3,3.4.1,github.com/twbs/bootstrap,3.4.1,patched bootstrap.less includes swatches & exp variables
 Bootstrap4,4.6.2,github.com/twbs/bootstrap,4.6.2,"patched bootstrap.scss includes swatches & exp variables, remove @page"
@@ -101,7 +101,7 @@ jquery.history.js,1.8b2,github.com/browserstate/history.js,1.8.0,
 Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
-dompdf,3.0.1exp/1.2.2exp/0.7.0exp/0.6.2exp,github.com/dompdf/dompdf,3.0.1,"optional, patched to display our images and not break on bad tables and disable links"
+dompdf,3.0.1exp/1.2.2exp,github.com/dompdf/dompdf,3.0.1,"optional, patched to display our images and not break on bad tables and disable links"
 mPDF,8.2.5,github.com/mpdf/mpdf,8.2.5,optional
 HTML2PDF,5.2.8,github.com/spipu/html2pdf,5.2.8,"optional, we tweak tcpdfConfig.php"
 iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
