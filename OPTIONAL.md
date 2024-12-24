@@ -31,7 +31,7 @@ If you are running an older version of PHP, you may need to use an older PDF Lib
 
 v8.2.5 is the newest version supported
 
-- [mpdf81v272.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf81v272.zip/download)
+- [mpdf82v272.zip](https://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf82v272.zip/download)
   This uses the mPDF v8.2.5 library which has been customized for Exponent.
   This requires Exponent CMS v2.7.2 or later. Works with PHP v5.6 to v8.4
 
