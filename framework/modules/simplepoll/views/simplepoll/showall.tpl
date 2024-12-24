@@ -13,6 +13,16 @@
  *
  *}
 
+{if (bs4() || bs5())}
+{css unique='simplepoll'}
+    {literal}
+        .module.simplepoll ol {
+           margin-left: 24px;
+       }
+    {/literal}
+{/css}
+{/if}
+
 <div class="module simplepoll default">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if $config.moduledescription != ""}
