@@ -47,7 +47,7 @@ class sqlsvr_database extends database {
 		} else {
             $host = $hostname;
         }
-		if ($this->connection = sqlsrv_connect($host, array('Uid'=>$username, 'PWD'=>$password, 'Database'=>$database))) {
+		if ($this->connection = sqlsrv_connect($host, array('UID'=>$username, 'PWD'=>$password, 'Database'=>$database))) {
 			$this->havedb = true;
 		}
 		$this->prefix = DB_TABLE_PREFIX . '_';
@@ -1313,8 +1313,12 @@ class sqlsvr_database extends database {
             sqlsrv_fetch($queryID);
             $id =  sqlsrv_get_field($queryID, 0);
             return $id;
-        } else
+        } else {
+            if (DEVELOPMENT) {
+                eLog($sql . ' - ' . $this->error(), 'insertObject Error');
+            }
             return 0;
+        }
     }
 
     /**
@@ -1403,6 +1407,8 @@ class sqlsvr_database extends database {
         }
         //if ($table == 'text') eDebug($sql,true);
         $res = (@sqlsrv_query($this->connection, $sql) != false);
+        if (DEVELOPMENT && !$res)
+            eLog($sql . ' - ' . $this->error(), 'updateObject Error');
         return $res;
     }
 

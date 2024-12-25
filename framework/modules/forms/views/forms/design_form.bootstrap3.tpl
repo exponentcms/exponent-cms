@@ -85,11 +85,6 @@
         {*<a class="{button_style}" href="{$backlink}">{'Done'|gettext}</a>*}
         {br}{icon button=true class=reply link=$backlink text='Exit Forms Designer'|gettext}
     </p>
-    <div id="palette-button" class="btn btn-secondary">
-        Tools
-        <i class="fas fa-bars bi bi-list"></i>
-    </div>
-    <div id="palette">
     <div id="trash" class="trash" title="{'Drag a control from the form and drop it on this box to remove it'|gettext}">
         <strong>{'Trash Can'|gettext}</strong>{br}
         {img class="img-center" src="`$smarty.const.PATH_RELATIVE`framework/modules/recyclebin/assets/images/trashcan_full_large.png"}
