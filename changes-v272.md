@@ -6,6 +6,7 @@ Version 2.7.2 - Specific changes from previous version
 ### v272 adds these features to v271 and previous patches:
 - optional titles for containers (for sorting)
 - add sort items feature to dropdown control form edit
+- add small-device-friendly form design feature
 
 ### v272 fixes these issues in v271 and previous patches:
 - fix group block label to account for multi-column form changes
