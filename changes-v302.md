@@ -6,6 +6,7 @@ Version 3.0.2 - Specific changes from previous version
 ### v3.0.2 adds these features to v300rc1/v301 and previous patches:
 - optional titles for containers (for sorting)
 - add sort items feature to dropdown control form edit
+- add small-device-friendly form design feature
 
 ### v3.0.2 fixes these issues in v300rc1/v301 and previous patches:
 - fix group block label to account for multi-column form changes
