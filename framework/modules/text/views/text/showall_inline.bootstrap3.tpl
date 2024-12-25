@@ -191,7 +191,7 @@
                                     if (msg.replyCode == '200') {
                                         data = $.parseJSON(msg.data);
                                         if (workflow) {
-                                            $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
+                                            $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id).attr('title','Viewing Revision #' + data.revision_id);
                                             if (!data.approved) {
                                                 $('#text-' + data.id).addClass('unapproved');
                                             }
@@ -245,7 +245,7 @@
                         if (msg.replyCode == '200') {
                             data = $.parseJSON(msg.data);
                             if (workflow) {
-                                $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
+                                $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id).attr('title','Viewing Revision #' + data.revision_id);
                                 if (!data.approved) {
                                     $('#text-' + data.id).addClass('unapproved');
                                 }
@@ -455,7 +455,7 @@
                     if (msg.replyCode == '200') {
                         data = $.parseJSON(msg.data);
                         if (workflow) {
-                            $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
+                            $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id).attr('title','Viewing Revision #' + data.revision_id);
                             if (!data.approved) {
                                 $('#text-' + data.id).addClass('unapproved');
                             }
@@ -515,7 +515,7 @@
                         if (msg.replyCode == '200') {
                             data = $.parseJSON(msg.data);
                             if (workflow) {
-                                $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
+                                $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id).attr('title','Viewing Revision #' + data.revision_id);
                                 if (!data.approved) {
                                     $('#text-' + data.id).addClass('unapproved');
                                 }
