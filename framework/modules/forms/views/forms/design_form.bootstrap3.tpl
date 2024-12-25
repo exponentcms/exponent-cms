@@ -85,9 +85,9 @@
         {*<a class="{button_style}" href="{$backlink}">{'Done'|gettext}</a>*}
         {br}{icon button=true class=reply link=$backlink text='Exit Forms Designer'|gettext}
     </p>
-    <div id="palette-button" class="btn btn-secondary">
+    <div id="palette-button" class="btn btn-default btn-secondary">
         Tools
-        <i class="fas fa-bars bi bi-list"></i>
+        <i class="fa fas fa-bars bi bi-list"></i>
     </div>
     <div id="palette">
     <div id="trash" class="trash" title="{'Drag a control from the form and drop it on this box to remove it'|gettext}">
