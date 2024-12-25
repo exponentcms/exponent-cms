@@ -85,18 +85,24 @@
         {*<a class="{button_style}" href="{$backlink}">{'Done'|gettext}</a>*}
         {br}{icon button=true class=reply link=$backlink text='Exit Forms Designer'|gettext}
     </p>
-    <div id="trash" class="trash" title="{'Drag a control from the form and drop it on this box to remove it'|gettext}">
-        <strong>{'Trash Can'|gettext}</strong>{br}
-        {img class="img-center" src="`$smarty.const.PATH_RELATIVE`framework/modules/recyclebin/assets/images/trashcan_full_large.png"}
+    <div id="palette-button" class="btn btn-secondary">
+        Tools
+        <i class="fas fa-bars bi bi-list"></i>
     </div>
-    <ul id="controls" class="controls" title="{'Drag a control from this box and drop it on the form to add it to the selected location'|gettext}">
-        <strong>{'Available Form Controls'|gettext}</strong>
-        {foreach from=$types key=value item=caption}
-            <li class="item" type="{$value}"{if $smarty.const.DEVELOPMENT} title="{$value}"{/if}>
-                {$caption}
-            </li>
-        {/foreach}
-    </ul>
+    <div id="palette">
+        <div id="trash" class="trash" title="{'Drag a control from the form and drop it on this box to remove it'|gettext}">
+            <strong>{'Trash Can'|gettext}</strong>{br}
+            {img class="img-center" src="`$smarty.const.PATH_RELATIVE`framework/modules/recyclebin/assets/images/trashcan_full_large.png"}
+        </div>
+        <ul id="controls" class="controls" title="{'Drag a control from this box and drop it on the form to add it to the selected location'|gettext}">
+            <strong>{'Available Form Controls'|gettext}</strong>
+            {foreach from=$types key=value item=caption}
+                <li class="item" type="{$value}"{if $smarty.const.DEVELOPMENT} title="{$value}"{/if}>
+                    {$caption}
+                </li>
+            {/foreach}
+        </ul>
+    </div>
 </div>
 
 {script unique="design-form" jquery="Sortable,bootbox.all" bootstrap="modal"}
@@ -139,6 +145,12 @@
                     $('.module.forms.design-form').replaceWith(msg);  //  update control in the displayed form
                 }
             });
+        });
+
+        // display tool palette on/off
+        $('#palette-button').on('click', function(evt) {
+            evt.preventDefault();
+            $('#palette').toggle();
         });
 
         // we need to catch 'edit' button clicks

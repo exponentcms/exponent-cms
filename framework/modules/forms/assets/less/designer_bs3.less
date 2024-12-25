@@ -122,24 +122,43 @@ div#trash.trash {
 	text-align: center;
 }
 
-//attempt to make usable on small devices
-@media screen and (max-width: 500px) {
-	div#trash.trash {
-		right: 30px;
-	}
-
-	ul#controls.controls {
-		max-height: 70%;
-		right: 2px;
-		-webkit-overflow-scrolling:touch; /* So iOS Safari gets the inertia & rubber-band effect */
-	}
-
-	ul#controls.controls li {
-		margin-right: 25px;
-	}
-}
-
 #design_form .checkbox,
 #design_form .radio {
     padding-left: 1.25em;
+}
+
+// mobiel tool palette
+div#palette-button {
+	top: 72px;
+	right: 10px;
+	position: fixed;
+	z-index: 1030;
+}
+
+div#palette-button {
+    display: none;
+}
+
+@media screen and (max-width: 500px) {
+    ul#controls.controls {
+  		max-height: 70%;
+  		right: 2px;
+  		-webkit-overflow-scrolling:touch; /* So iOS Safari gets the inertia & rubber-band effect */
+  	}
+
+  	ul#controls.controls li {
+  		margin-right: 25px;
+  	}
+
+    div#trash.trash {
+        right: 70px;
+    }
+
+    div#palette {
+        display: none;
+    }
+
+    div#palette-button {
+        display: block;
+    }
 }
