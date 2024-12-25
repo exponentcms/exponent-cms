@@ -27,6 +27,8 @@ $error = false;
 expSettings::change('LANGUAGE', LANGUAGE);
 
 $user = $db->selectObject('user', 'is_system_user=1');
+if (empty($user))
+	$user = new stdClass();
 
 $user->username = $_REQUEST['username'];
 $pwstrength = expValidator::checkPasswordStrength($_REQUEST['password']);
