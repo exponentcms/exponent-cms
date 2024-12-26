@@ -12,4 +12,4 @@ For a complete list of the changes made from release to release, see the [CHANGE
 
 ----------
 
-### Finalize support for PHP v8.2. Also addresses issues in v3.0.1 and Prepares for v3.0.2.
+### Address issues in v3.0.0rc1/3.0.1, incorporate changes found in v2.7.2
