@@ -4,7 +4,7 @@ Doctrine Lexer,3.0.1,github.com/doctrine/lexer,3.0.1,needed by swiftmailer v6
 EmailValidator,4.0.2,github.com/egulias/EmailValidator,4.0.2,needed by swiftmailer v6; change folder structure and add autoloader to main file
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
-Smarty,4.4.1,smarty.net,4.5.5/5.4.2,
+Smarty,4.4.1,smarty.net,4.5.5/5.4.3,
 phpthumb,1.7.22exp,github.com/JamesHeinrich/phpThumb,1.7.22,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.23,github.com/JamesHeinrich/getID3,1.9.23,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.4/4.0.0,modify config.php
@@ -21,7 +21,7 @@ SimplePie,1.7.0,github.com/simplepie/simplepie,1.8.1,php 8 fix
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,2.1.6exp,github.com/verot/class.upload.php,2.1.6,"Correct flip operation where flip vertical & horizontal were inverted/swapped, php 8 fix"
 iCalCreator,2.28.2,github.com/iCalcreator/iCalcreator,2.40.10/2.41.90,uncomment load utilities; php 8 fix
-scssphp,1.11.1exp,github.com/scssphp/scssphp,1.13.0,includes example server; hack to compile newui
+scssphp,1.11.1exp,github.com/scssphp/scssphp,1.13.0/2.0.0,includes example server; hack to compile newui
 lessphp,0.5.0exp,github.com/leafo/lessphp,0.5.0,"will not compile bootstrap v3+, hack to allow prefix"
 less.php,5.1.2,github.com/wikimedia/less.php,5.1.2,
 Twitter-Bootstrap2,2.3.2,github.com/twbs/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
