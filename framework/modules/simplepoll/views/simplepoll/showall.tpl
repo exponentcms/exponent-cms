@@ -13,7 +13,7 @@
  *
  *}
 
-{if (bs4() || bs5())}
+{if (bs5())}
 {css unique='simplepoll'}
     {literal}
         .module.simplepoll ol {
