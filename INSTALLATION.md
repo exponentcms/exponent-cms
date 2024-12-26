@@ -2,7 +2,7 @@
 
 ----------
 
-Copyright (c) 2004-2023 OIC Group, Inc.
+Copyright (c) 2004-2025 OIC Group, Inc.
 
 Installation of Exponent CMS 2.0
 --------------------------------

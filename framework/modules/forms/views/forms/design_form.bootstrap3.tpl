@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2023 OIC Group, Inc.
+ * Copyright (c) 2004-2025 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -85,6 +85,12 @@
         {*<a class="{button_style}" href="{$backlink}">{'Done'|gettext}</a>*}
         {br}{icon button=true class=reply link=$backlink text='Exit Forms Designer'|gettext}
     </p>
+    <div id="palette-button" class="btn btn-default btn-secondary" title="{'Design Tools'|gettext}">
+        <i class="fa fa-wrench fas fa-tools"></i>&nbsp;
+        <i id="palette-button-bars" class="fa fas fa-bars"></i>
+        <i id="palette-button-x" class="fa fas fa-times fas fa-xmark" style="display:none;"></i>
+    </div>
+    <div id="palette">
     <div id="trash" class="trash" title="{'Drag a control from the form and drop it on this box to remove it'|gettext}">
         <strong>{'Trash Can'|gettext}</strong>{br}
         {img class="img-center" src="`$smarty.const.PATH_RELATIVE`framework/modules/recyclebin/assets/images/trashcan_full_large.png"}
@@ -97,6 +103,7 @@
             </li>
         {/foreach}
     </ul>
+</div>
 </div>
 
 {script unique="design-form" jquery="Sortable,bootstrap-dialog" bootstrap="modal,transition"}
@@ -139,6 +146,14 @@
                     $('.module.forms.design-form').replaceWith(msg);  //  update control in the displayed form
                 }
             });
+        });
+
+        // display tool palette on/off
+        $('#palette-button').on('click', function(evt) {
+            evt.preventDefault();
+            $('#palette').toggle();
+            $('#palette-button-x').toggle();
+            $('#palette-button-bars').toggle();
         });
 
         // we need to catch 'edit' button clicks

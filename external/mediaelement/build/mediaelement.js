@@ -1116,7 +1116,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mejs = {};
 
-mejs.version = '7.0.2';
+mejs.version = '7.0.7';
 
 mejs.html5media = {
 	properties: ['volume', 'src', 'currentTime', 'muted', 'duration', 'paused', 'ended', 'buffered', 'error', 'networkState', 'readyState', 'seeking', 'seekable', 'currentSrc', 'preload', 'bufferedBytes', 'bufferedTime', 'initialTime', 'startOffsetTime', 'defaultPlaybackRate', 'playbackRate', 'played', 'autoplay', 'loop', 'controls'],
@@ -1267,6 +1267,9 @@ var EN = exports.EN = {
 	'mejs.time-slider': 'Time Slider',
 	'mejs.time-help-text': 'Use Left/Right Arrow keys to advance one second, Up/Down arrows to advance ten seconds.',
 	'mejs.live-broadcast': 'Live Broadcast',
+
+	'mejs.current': 'Current time',
+	'mejs.duration': 'Total duration',
 
 	'mejs.volume-help-text': 'Use Up/Down Arrow keys to increase or decrease volume.',
 	'mejs.unmute': 'Unmute',
@@ -1566,7 +1569,7 @@ var DashNativeRenderer = {
 		};
 
 		var event = (0, _general.createEvent)('rendererready', node, false);
-		mediaElement.dispatchEvent(event);
+		mediaElement.originalNode.dispatchEvent(event);
 
 		mediaElement.promises.push(NativeDash.load({
 			options: options.dash,
@@ -1855,7 +1858,7 @@ var HlsNativeRenderer = {
 		};
 
 		var event = (0, _general.createEvent)('rendererready', node, false);
-		mediaElement.dispatchEvent(event);
+		mediaElement.originalNode.dispatchEvent(event);
 
 		mediaElement.promises.push(NativeHls.load({
 			options: options.hls,
@@ -2009,7 +2012,7 @@ var HtmlMediaElement = {
 		});
 
 		var event = (0, _general.createEvent)('rendererready', node, false);
-		mediaElement.dispatchEvent(event);
+		mediaElement.originalNode.dispatchEvent(event);
 
 		return node;
 	}
@@ -2594,24 +2597,7 @@ var IS_FIREFOX = exports.IS_FIREFOX = /firefox/i.test(UA);
 var IS_SAFARI = exports.IS_SAFARI = /safari/i.test(UA) && !IS_CHROME;
 var IS_STOCK_ANDROID = exports.IS_STOCK_ANDROID = /^mozilla\/\d+\.\d+\s\(linux;\su;/i.test(UA);
 var HAS_MSE = exports.HAS_MSE = 'MediaSource' in _window2.default;
-var SUPPORT_POINTER_EVENTS = exports.SUPPORT_POINTER_EVENTS = function () {
-	var element = _document2.default.createElement('x'),
-	    documentElement = _document2.default.documentElement,
-	    getComputedStyle = _window2.default.getComputedStyle;
-
-	if (!('pointerEvents' in element.style)) {
-		return false;
-	}
-
-	element.style.pointerEvents = 'auto';
-	element.style.pointerEvents = 'x';
-	documentElement.appendChild(element);
-	var supports = getComputedStyle && (getComputedStyle(element, '') || {}).pointerEvents === 'auto';
-	element.remove();
-	return !!supports;
-}();
-
-var SUPPORT_PASSIVE_EVENT = exports.SUPPORT_PASSIVE_EVENT = function () {
+var SUPPORT_POINTER_EVENTS = exports.SUPPORT_POINTER_EVENTS = true;var SUPPORT_PASSIVE_EVENT = exports.SUPPORT_PASSIVE_EVENT = function () {
 	var supportsPassive = false;
 	try {
 		var opts = Object.defineProperty({}, 'passive', {

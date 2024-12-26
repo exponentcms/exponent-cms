@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2023 OIC Group, Inc.
+# Copyright (c) 2004-2025 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -193,6 +193,7 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/js/jquery-migrate-3.3.1.min.js',
             'external/jquery/js/jquery-migrate-3.3.2.min.js',
             'external/jquery/js/jquery-migrate-3.4.0.min.js',
+            'external/jquery/js/jquery-migrate-3.4.1.min.js',
             'external/jquery/js/jquery-ui-1.9.1.custom.js',
             'external/jquery/js/jquery-ui-1.9.1.custom.min.js',
             'external/jquery/js/jquery-ui-1.10.0.custom.js',
@@ -204,7 +205,9 @@ class remove_oldfiles extends upgradescript {
 			'external/jquery/js/jquery-ui.js',
             'external/jquery/js/ui/i18n/jquery-ui-i18n.js',
             'external/jquery/js/ui/i18n/jquery.ui.datepicker*.js',
-			'external/jquery/addons/js/jquery.placeholder.js',
+            'external/jquery/addons/js/jquery.placeholder.js',
+            'external/jquery/addons/css/jquery.dataTables.css',
+            'external/jquery/addons/js/jquery.dataTablees.js',
 			'external/jquery/addons/js/spectrum.js',
 			'external/jquery/addons/css/spectrum.css',
             'external/jquery/addons/js/pwstrength-bootstrap-1.1.2.js',

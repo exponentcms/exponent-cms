@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2023 OIC Group, Inc.
+ * Copyright (c) 2004-2025 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,15 +13,23 @@
  *
  *}
 
-{*
+{if (bs4() || bs5())}
 {css unique="install-upgrades"}
 {literal}
-    .install-upgrades h3 {
-        display       : inline;
+    /*.install-upgrades h3 {*/
+    /*    display       : inline;*/
+    /*}*/
+
+    .module.administration.install-upgrades ol {
+        margin-left: 24px;
+    }
+
+    .module.administration.install-upgrades ol li h3 label{
+        display: inline;
     }
 {/literal}
 {/css}
-*}
+{/if}
 
 <div class="module administration install-upgrades">
     <h1>{'Run Upgrade Scripts'|gettext}</h1>

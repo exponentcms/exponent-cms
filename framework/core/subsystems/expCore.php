@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2023 OIC Group, Inc.
+# Copyright (c) 2004-2025 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -404,7 +404,7 @@ class expCore
         $fp = fopen($filename, 'wb');
         curl_setopt($chImg, CURLOPT_FILE, $fp);
 //    	curl_setopt($chImg, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($chImg, CURLOPT_BINARYTRANSFER, 1);
+//        curl_setopt($chImg, CURLOPT_BINARYTRANSFER, 1);
         curl_setopt($chImg, CURLOPT_CONNECTTIMEOUT, 30);
 //    	curl_setopt($chImg, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0) Gecko/20100101 Firefox/4.0");
         curl_setopt($chImg, CURLOPT_SSL_VERIFYPEER, false);

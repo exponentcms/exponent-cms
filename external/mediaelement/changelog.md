@@ -1,5 +1,23 @@
 # Version History
 
+*7.0.7* (2024/12/17)
+* Remove a symlink that got accidentally pushed into git repository
+
+*7.0.6* (2024/12/17)
+* Added keyboard controls for play and pause to container element ([#2978](https://github.com/mediaelement/mediaelement/pull/2978))
+* Added screen reader text for current time and total duration ([#2979](https://github.com/mediaelement/mediaelement/pull/2979))
+
+*7.0.5* (2024/04/26)
+* Fixed wrong focus on load when using default subtitles ([#2958](https://github.com/mediaelement/mediaelement/pull/2958))
+
+*7.0.4* (2024/04/25)
+* Fixed wrong focus on load when using default subtitles([#2957](https://github.com/mediaelement/mediaelement/pull/2957)) @Necxes
+* Improved performance by eliminating a test logic event ([#2954](https://github.com/mediaelement/mediaelement/pull/2954)) @westonruter
+
+*7.0.3* (2024/01/29)
+* HLS and MPEG-Dash renderer should now have working captions, when loaded initially.
+* Updated `demo/index.html` for easier debugging.
+
 *7.0.2* (2023/11/14)
 * Fixed an error that occurred with the iFrame players
 * Fixed a problem with the scaling of iFrames within their containers

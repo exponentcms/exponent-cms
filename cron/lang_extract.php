@@ -2,7 +2,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2023 OIC Group, Inc.
+# Copyright (c) 2004-2025 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -71,6 +71,9 @@ expLang::initialize();
 global $default_lang, $cur_lang;
 if (empty($default_lang))
 	$default_lang = include(BASE."framework/core/lang/English - US.php");
+if (empty($default_lang)) {
+    $default_lang = array();
+}
 
 // regex for the gettext smarty modifier
 $regex_gettext_mod='/(?<=["\'])((\\\\.|[^\'"])*)(?=["\']\|gettext)/';

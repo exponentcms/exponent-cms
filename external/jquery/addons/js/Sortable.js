@@ -1,5 +1,5 @@
 /**!
- * Sortable 1.15.1
+ * Sortable 1.15.4
  * @author	RubaXa   <trash@rubaxa.org>
  * @author	owenm    <owen23355@gmail.com>
  * @license MIT
@@ -134,7 +134,7 @@
     throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
 
-  var version = "1.15.1";
+  var version = "1.15.4";
 
   function userAgent(pattern) {
     if (typeof window !== 'undefined' && window.navigator) {
@@ -333,26 +333,6 @@
       width: width,
       height: height
     };
-  }
-
-  /**
-   * Returns the content rect of the element (bounding rect minus border and padding)
-   * @param {HTMLElement} el 
-   */
-  function getContentRect(el) {
-    var rect = getRect(el);
-    var paddingLeft = parseInt(css(el, 'padding-left')),
-      paddingTop = parseInt(css(el, 'padding-top')),
-      paddingRight = parseInt(css(el, 'padding-right')),
-      paddingBottom = parseInt(css(el, 'padding-bottom'));
-    rect.top += paddingTop + parseInt(css(el, 'border-top-width'));
-    rect.left += paddingLeft + parseInt(css(el, 'border-left-width'));
-    // Client Width/Height includes padding only
-    rect.width = el.clientWidth - paddingLeft - paddingRight;
-    rect.height = el.clientHeight - paddingTop - paddingBottom;
-    rect.bottom = rect.top + rect.height;
-    rect.right = rect.left + rect.width;
-    return rect;
   }
 
   /**
@@ -560,6 +540,23 @@
     css(el, 'left', '');
     css(el, 'width', '');
     css(el, 'height', '');
+  }
+  function getChildContainingRectFromElement(container, options, ghostEl) {
+    var rect = {};
+    Array.from(container.children).forEach(function (child) {
+      var _rect$left, _rect$top, _rect$right, _rect$bottom;
+      if (!closest(child, options.draggable, container, false) || child.animated || child === ghostEl) return;
+      var childRect = getRect(child);
+      rect.left = Math.min((_rect$left = rect.left) !== null && _rect$left !== void 0 ? _rect$left : Infinity, childRect.left);
+      rect.top = Math.min((_rect$top = rect.top) !== null && _rect$top !== void 0 ? _rect$top : Infinity, childRect.top);
+      rect.right = Math.max((_rect$right = rect.right) !== null && _rect$right !== void 0 ? _rect$right : -Infinity, childRect.right);
+      rect.bottom = Math.max((_rect$bottom = rect.bottom) !== null && _rect$bottom !== void 0 ? _rect$bottom : -Infinity, childRect.bottom);
+    });
+    rect.width = rect.right - rect.left;
+    rect.height = rect.bottom - rect.top;
+    rect.x = rect.left;
+    rect.y = rect.top;
+    return rect;
   }
   var expando = 'Sortable' + new Date().getTime();
 
@@ -1241,7 +1238,7 @@
           pluginEvent('filter', _this, {
             evt: evt
           });
-          preventOnFilter && evt.cancelable && evt.preventDefault();
+          preventOnFilter && evt.preventDefault();
           return; // cancel dnd
         }
       } else if (filter) {
@@ -1263,7 +1260,7 @@
           }
         });
         if (filter) {
-          preventOnFilter && evt.cancelable && evt.preventDefault();
+          preventOnFilter && evt.preventDefault();
           return; // cancel dnd
         }
       }
@@ -1335,9 +1332,15 @@
         on(ownerDocument, 'dragover', nearestEmptyInsertDetectEvent);
         on(ownerDocument, 'mousemove', nearestEmptyInsertDetectEvent);
         on(ownerDocument, 'touchmove', nearestEmptyInsertDetectEvent);
-        on(ownerDocument, 'mouseup', _this._onDrop);
-        on(ownerDocument, 'touchend', _this._onDrop);
-        on(ownerDocument, 'touchcancel', _this._onDrop);
+        if (options.supportPointer) {
+          on(ownerDocument, 'pointerup', _this._onDrop);
+          // Native D&D triggers pointercancel
+          !this.nativeDraggable && on(ownerDocument, 'pointercancel', _this._onDrop);
+        } else {
+          on(ownerDocument, 'mouseup', _this._onDrop);
+          on(ownerDocument, 'touchend', _this._onDrop);
+          on(ownerDocument, 'touchcancel', _this._onDrop);
+        }
 
         // Make dragEl draggable (must be before delay for FireFox)
         if (FireFox && this.nativeDraggable) {
@@ -1357,9 +1360,14 @@
           // If the user moves the pointer or let go the click or touch
           // before the delay has been reached:
           // disable the delayed drag
-          on(ownerDocument, 'mouseup', _this._disableDelayedDrag);
-          on(ownerDocument, 'touchend', _this._disableDelayedDrag);
-          on(ownerDocument, 'touchcancel', _this._disableDelayedDrag);
+          if (options.supportPointer) {
+            on(ownerDocument, 'pointerup', _this._disableDelayedDrag);
+            on(ownerDocument, 'pointercancel', _this._disableDelayedDrag);
+          } else {
+            on(ownerDocument, 'mouseup', _this._disableDelayedDrag);
+            on(ownerDocument, 'touchend', _this._disableDelayedDrag);
+            on(ownerDocument, 'touchcancel', _this._disableDelayedDrag);
+          }
           on(ownerDocument, 'mousemove', _this._delayedDragTouchMoveHandler);
           on(ownerDocument, 'touchmove', _this._delayedDragTouchMoveHandler);
           options.supportPointer && on(ownerDocument, 'pointermove', _this._delayedDragTouchMoveHandler);
@@ -1385,6 +1393,8 @@
       off(ownerDocument, 'mouseup', this._disableDelayedDrag);
       off(ownerDocument, 'touchend', this._disableDelayedDrag);
       off(ownerDocument, 'touchcancel', this._disableDelayedDrag);
+      off(ownerDocument, 'pointerup', this._disableDelayedDrag);
+      off(ownerDocument, 'pointercancel', this._disableDelayedDrag);
       off(ownerDocument, 'mousemove', this._delayedDragTouchMoveHandler);
       off(ownerDocument, 'touchmove', this._delayedDragTouchMoveHandler);
       off(ownerDocument, 'pointermove', this._delayedDragTouchMoveHandler);
@@ -1404,14 +1414,13 @@
         on(rootEl, 'dragstart', this._onDragStart);
       }
       try {
-        if (document.selection) {
-          // Timeout neccessary for IE9
-          _nextTick(function () {
+        _nextTick(function () {
+          if (document.selection) {
             document.selection.empty();
-          });
-        } else {
-          window.getSelection().removeAllRanges();
-        }
+          } else {
+            window.getSelection().removeAllRanges();
+          }
+        });
       } catch (err) {}
     },
     _dragStarted: function _dragStarted(fallback, evt) {
@@ -1470,7 +1479,7 @@
             }
             target = parent; // store last element
           }
-          /* jshint boss:true */ while (parent = parent.parentNode);
+          /* jshint boss:true */ while (parent = getParentOrHost(parent));
         }
         _unhideGhostForTarget();
       }
@@ -1898,6 +1907,7 @@
       off(ownerDocument, 'mouseup', this._onDrop);
       off(ownerDocument, 'touchend', this._onDrop);
       off(ownerDocument, 'pointerup', this._onDrop);
+      off(ownerDocument, 'pointercancel', this._onDrop);
       off(ownerDocument, 'touchcancel', this._onDrop);
       off(document, 'selectstart', this);
     },
@@ -2253,15 +2263,15 @@
   }
   function _ghostIsFirst(evt, vertical, sortable) {
     var firstElRect = getRect(getChild(sortable.el, 0, sortable.options, true));
-    var sortableContentRect = getContentRect(sortable.el);
+    var childContainingRect = getChildContainingRectFromElement(sortable.el, sortable.options, ghostEl);
     var spacer = 10;
-    return vertical ? evt.clientX < sortableContentRect.left - spacer || evt.clientY < firstElRect.top && evt.clientX < firstElRect.right : evt.clientY < sortableContentRect.top - spacer || evt.clientY < firstElRect.bottom && evt.clientX < firstElRect.left;
+    return vertical ? evt.clientX < childContainingRect.left - spacer || evt.clientY < firstElRect.top && evt.clientX < firstElRect.right : evt.clientY < childContainingRect.top - spacer || evt.clientY < firstElRect.bottom && evt.clientX < firstElRect.left;
   }
   function _ghostIsLast(evt, vertical, sortable) {
     var lastElRect = getRect(lastChild(sortable.el, sortable.options.draggable));
-    var sortableContentRect = getContentRect(sortable.el);
+    var childContainingRect = getChildContainingRectFromElement(sortable.el, sortable.options, ghostEl);
     var spacer = 10;
-    return vertical ? evt.clientX > sortableContentRect.right + spacer || evt.clientY > lastElRect.bottom && evt.clientX > lastElRect.left : evt.clientY > sortableContentRect.bottom + spacer || evt.clientX > lastElRect.right && evt.clientY > lastElRect.top;
+    return vertical ? evt.clientX > childContainingRect.right + spacer || evt.clientY > lastElRect.bottom && evt.clientX > lastElRect.left : evt.clientY > childContainingRect.bottom + spacer || evt.clientX > lastElRect.right && evt.clientY > lastElRect.top;
   }
   function _getSwapDirection(evt, target, targetRect, vertical, swapThreshold, invertedSwapThreshold, invertSwap, isLastTarget) {
     var mouseOnAxis = vertical ? evt.clientY : evt.clientX,
@@ -2376,7 +2386,8 @@
     nextTick: _nextTick,
     cancelNextTick: _cancelNextTick,
     detectDirection: _detectDirection,
-    getChild: getChild
+    getChild: getChild,
+    expando: expando
   };
 
   /**
@@ -3087,28 +3098,38 @@
               var lastIndex = index(lastMultiDragSelect),
                 currentIndex = index(dragEl$1);
               if (~lastIndex && ~currentIndex && lastIndex !== currentIndex) {
-                // Must include lastMultiDragSelect (select it), in case modified selection from no selection
-                // (but previous selection existed)
-                var n, i;
-                if (currentIndex > lastIndex) {
-                  i = lastIndex;
-                  n = currentIndex;
-                } else {
-                  i = currentIndex;
-                  n = lastIndex + 1;
-                }
-                for (; i < n; i++) {
-                  if (~multiDragElements.indexOf(children[i])) continue;
-                  toggleClass(children[i], options.selectedClass, true);
-                  multiDragElements.push(children[i]);
-                  dispatchEvent({
-                    sortable: sortable,
-                    rootEl: rootEl,
-                    name: 'select',
-                    targetEl: children[i],
-                    originalEvent: evt
-                  });
-                }
+                (function () {
+                  // Must include lastMultiDragSelect (select it), in case modified selection from no selection
+                  // (but previous selection existed)
+                  var n, i;
+                  if (currentIndex > lastIndex) {
+                    i = lastIndex;
+                    n = currentIndex;
+                  } else {
+                    i = currentIndex;
+                    n = lastIndex + 1;
+                  }
+                  var filter = options.filter;
+                  for (; i < n; i++) {
+                    if (~multiDragElements.indexOf(children[i])) continue;
+                    // Check if element is draggable
+                    if (!closest(children[i], options.draggable, parentEl, false)) continue;
+                    // Check if element is filtered
+                    var filtered = filter && (typeof filter === 'function' ? filter.call(sortable, evt, children[i], sortable) : filter.split(',').some(function (criteria) {
+                      return closest(children[i], criteria.trim(), parentEl, false);
+                    }));
+                    if (filtered) continue;
+                    toggleClass(children[i], options.selectedClass, true);
+                    multiDragElements.push(children[i]);
+                    dispatchEvent({
+                      sortable: sortable,
+                      rootEl: rootEl,
+                      name: 'select',
+                      targetEl: children[i],
+                      originalEvent: evt
+                    });
+                  }
+                })();
               }
             } else {
               lastMultiDragSelect = dragEl$1;

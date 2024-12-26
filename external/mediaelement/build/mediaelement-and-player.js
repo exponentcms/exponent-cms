@@ -1116,7 +1116,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mejs = {};
 
-mejs.version = '7.0.2';
+mejs.version = '7.0.7';
 
 mejs.html5media = {
 	properties: ['volume', 'src', 'currentTime', 'muted', 'duration', 'paused', 'ended', 'buffered', 'error', 'networkState', 'readyState', 'seeking', 'seekable', 'currentSrc', 'preload', 'bufferedBytes', 'bufferedTime', 'initialTime', 'startOffsetTime', 'defaultPlaybackRate', 'playbackRate', 'played', 'autoplay', 'loop', 'controls'],
@@ -1985,13 +1985,10 @@ Object.assign(_player2.default.prototype, {
 						seekTime = duration;
 						break;
 					case 13:
-					case 32:
-						if (_constants.IS_FIREFOX) {
-							if (t.paused) {
-								t.play();
-							} else {
-								t.pause();
-							}
+						if (t.paused) {
+							t.play();
+						} else {
+							t.pause();
 						}
 						return;
 					default:
@@ -2230,6 +2227,10 @@ var _player = _dereq_(17);
 
 var _player2 = _interopRequireDefault(_player);
 
+var _i18n = _dereq_(6);
+
+var _i18n2 = _interopRequireDefault(_i18n);
+
 var _time = _dereq_(30);
 
 var _dom = _dereq_(25);
@@ -2250,7 +2251,7 @@ Object.assign(_player2.default.prototype, {
 		time.className = t.options.classPrefix + 'time';
 		time.setAttribute('role', 'timer');
 		time.setAttribute('aria-live', 'off');
-		time.innerHTML = '<span class="' + t.options.classPrefix + 'currenttime">' + (0, _time.secondsToTimeCode)(0, player.options.alwaysShowHours, player.options.showTimecodeFrameCount, player.options.framesPerSecond, player.options.secondsDecimalLength, player.options.timeFormat) + '</span>';
+		time.innerHTML = '<span class="mejs__offscreen">' + _i18n2.default.t('mejs.current') + '</span><span class="' + t.options.classPrefix + 'currenttime">' + (0, _time.secondsToTimeCode)(0, player.options.alwaysShowHours, player.options.showTimecodeFrameCount, player.options.framesPerSecond, player.options.secondsDecimalLength, player.options.timeFormat) + '</span>';
 
 		t.addControlElement(time, 'current');
 		player.updateCurrent();
@@ -2269,7 +2270,7 @@ Object.assign(_player2.default.prototype, {
 		    currTime = controls.lastChild.querySelector('.' + t.options.classPrefix + 'currenttime');
 
 		if (currTime) {
-			controls.querySelector('.' + t.options.classPrefix + 'time').innerHTML += t.options.timeAndDurationSeparator + '<span class="' + t.options.classPrefix + 'duration">' + ((0, _time.secondsToTimeCode)(t.options.duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond, t.options.secondsDecimalLength, t.options.timeFormat) + '</span>');
+			controls.querySelector('.' + t.options.classPrefix + 'time').innerHTML += t.options.timeAndDurationSeparator + '<span class="mejs__offscreen">' + _i18n2.default.t('mejs.duration') + '</span><span class="' + t.options.classPrefix + 'duration">' + ((0, _time.secondsToTimeCode)(t.options.duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond, t.options.secondsDecimalLength, t.options.timeFormat) + '</span>');
 		} else {
 			if (controls.querySelector('.' + t.options.classPrefix + 'currenttime')) {
 				(0, _dom.addClass)(controls.querySelector('.' + t.options.classPrefix + 'currenttime').parentNode, t.options.classPrefix + 'currenttime-container');
@@ -2277,7 +2278,7 @@ Object.assign(_player2.default.prototype, {
 
 			var duration = _document2.default.createElement('div');
 			duration.className = t.options.classPrefix + 'time ' + t.options.classPrefix + 'duration-container';
-			duration.innerHTML = '<span class="' + t.options.classPrefix + 'duration">' + ((0, _time.secondsToTimeCode)(t.options.duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond, t.options.secondsDecimalLength, t.options.timeFormat) + '</span>');
+			duration.innerHTML = '<span class="mejs__offscreen">' + _i18n2.default.t('mejs.duration') + '</span><span class="' + t.options.classPrefix + 'duration">' + ((0, _time.secondsToTimeCode)(t.options.duration, t.options.alwaysShowHours, t.options.showTimecodeFrameCount, t.options.framesPerSecond, t.options.secondsDecimalLength, t.options.timeFormat) + '</span>');
 
 			t.addControlElement(duration, 'duration');
 		}
@@ -2341,7 +2342,7 @@ Object.assign(_player2.default.prototype, {
 	}
 });
 
-},{"17":17,"2":2,"25":25,"30":30}],14:[function(_dereq_,module,exports){
+},{"17":17,"2":2,"25":25,"30":30,"6":6}],14:[function(_dereq_,module,exports){
 'use strict';
 
 var _document = _dereq_(2);
@@ -2437,13 +2438,12 @@ Object.assign(_player2.default.prototype, {
 
     if (t.options.toggleCaptionsButtonWhenOnlyOne && subtitles.length === 1) {
       player.captionsButton.classList.add(t.options.classPrefix + 'captions-button-toggle');
-      player.captionsButton.addEventListener('click', function (e) {
+      player.captionsButton.addEventListener('click', function () {
         var trackId = 'none';
         if (player.selectedTrack === null) {
           trackId = player.getSubtitles()[0].trackId;
         }
-        var keyboard = e.keyCode || e.which;
-        player.setTrack(trackId, typeof keyboard !== 'undefined');
+        player.setTrack(trackId);
       });
     } else {
       var labels = player.captionsButton.querySelectorAll('.' + t.options.classPrefix + 'captions-selector-label'),
@@ -2467,9 +2467,8 @@ Object.assign(_player2.default.prototype, {
 
       for (var _i3 = 0; _i3 < captions.length; _i3++) {
         captions[_i3].addEventListener('click', function (e) {
-          var keyboard = e.keyCode || e.which;
           if (!e.target.disabled) {
-            player.setTrack(this.value, typeof keyboard !== 'undefined');
+            player.setTrack(this.value);
           }
         });
       }
@@ -2591,7 +2590,7 @@ Object.assign(_player2.default.prototype, {
     }
   },
   handleCaptionsLoaded: function handleCaptionsLoaded(target) {
-    var textTracks = this.domNode.textTracks,
+    var textTracks = this.node.textTracks,
         playerTrack = this.getTrackById(target.getAttribute('id'));
 
     if (Number.isInteger(this.options.defaultTrackLine)) {
@@ -2676,7 +2675,7 @@ Object.assign(_player2.default.prototype, {
       }
     }
   },
-  setTrack: function setTrack(trackId, setByKeyboard) {
+  setTrack: function setTrack(trackId) {
     var t = this,
         radios = t.captionsButton.querySelectorAll('input[type="radio"]'),
         captions = t.captionsButton.querySelectorAll('.' + t.options.classPrefix + 'captions-selected'),
@@ -2716,24 +2715,18 @@ Object.assign(_player2.default.prototype, {
     var event = (0, _general.createEvent)('captionschange', t.media);
     event.detail.caption = t.selectedTrack;
     t.media.dispatchEvent(event);
-
-    if (!setByKeyboard) {
-      setTimeout(function () {
-        t.getElement(t.container).focus();
-      }, 500);
-    }
   },
   hideAllTracks: function hideAllTracks() {
-    if (this.domNode.textTracks) {
-      for (var i = 0; i < this.domNode.textTracks.length; i++) {
-        this.domNode.textTracks[i].mode = 'hidden';
+    if (this.node.textTracks) {
+      for (var i = 0; i < this.node.textTracks.length; i++) {
+        this.node.textTracks[i].mode = 'hidden';
       }
     }
   },
   deactivateVideoTracks: function deactivateVideoTracks() {
-    if (this.domNode.textTracks) {
-      for (var i = 0; i < this.domNode.textTracks.length; i++) {
-        var track = this.domNode.textTracks[i];
+    if (this.node.textTracks) {
+      for (var i = 0; i < this.node.textTracks.length; i++) {
+        var track = this.node.textTracks[i];
         if (track.kind === 'subtitles' || track.kind === 'captions') {
           track.mode = 'hidden';
         }
@@ -2744,8 +2737,8 @@ Object.assign(_player2.default.prototype, {
     }
   },
   activateVideoTrack: function activateVideoTrack(srclang) {
-    for (var i = 0; i < this.domNode.textTracks.length; i++) {
-      var track = this.domNode.textTracks[i];
+    for (var i = 0; i < this.node.textTracks.length; i++) {
+      var track = this.node.textTracks[i];
 
       if (track.kind === 'subtitles' || track.kind === 'captions') {
         if (track.language === srclang) {
@@ -2834,7 +2827,7 @@ Object.assign(_player2.default.prototype, {
   },
   drawChapters: function drawChapters(chapterTrackId) {
     var t = this,
-        chapter = this.domNode.textTracks.getTrackById(chapterTrackId),
+        chapter = this.node.textTracks.getTrackById(chapterTrackId),
         numberOfChapters = chapter.cues.length;
 
     if (!numberOfChapters) {
@@ -3398,6 +3391,9 @@ var EN = exports.EN = {
 	'mejs.time-help-text': 'Use Left/Right Arrow keys to advance one second, Up/Down arrows to advance ten seconds.',
 	'mejs.live-broadcast': 'Live Broadcast',
 
+	'mejs.current': 'Current time',
+	'mejs.duration': 'Total duration',
+
 	'mejs.volume-help-text': 'Use Up/Down Arrow keys to increase or decrease volume.',
 	'mejs.unmute': 'Unmute',
 	'mejs.mute': 'Mute',
@@ -3710,6 +3706,8 @@ var MediaElementPlayer = function () {
 			t.mediaFiles = null;
 			t.trackFiles = null;
 
+			t.media.addEventListener('rendererready', this.updateNode.bind(this));
+
 			if (_constants.IS_IPAD && t.options.iPadUseNativeControls || _constants.IS_IPHONE && t.options.iPhoneUseNativeControls) {
 				t.node.setAttribute('controls', true);
 
@@ -3822,15 +3820,13 @@ var MediaElementPlayer = function () {
 				var event = (0, _general.createEvent)('controlsshown', t.getElement(t.container));
 				t.getElement(t.container).dispatchEvent(event);
 			}
-
-			t.media.addEventListener('rendererready', this.updateNode.bind(this));
 		}
 	}, {
 		key: 'updateNode',
 		value: function updateNode(event) {
 			var node = void 0,
 			    iframeId = void 0;
-			var mediaElement = event.detail.target.mediaElement;
+			var mediaElement = event.detail.target.hasOwnProperty('mediaElement') ? event.detail.target.mediaElement : event.detail.target;
 			var originalNode = mediaElement.originalNode;
 
 			if (event.detail.isIframe) {
@@ -4232,6 +4228,20 @@ var MediaElementPlayer = function () {
 						t.setControlsSize();
 					}
 				});
+
+				if (t.options.enableKeyboard) {
+					t.getElement(t.container).addEventListener('keydown', function (e) {
+						var keyCode = e.keyCode || e.which || 0;
+
+						if (e.target === t.container && keyCode === 13) {
+							if (t.paused) {
+								t.play();
+							} else {
+								t.pause();
+							}
+						}
+					});
+				}
 
 				t.getElement(t.container).addEventListener('click', function (e) {
 					dom.addClass(e.currentTarget, t.options.classPrefix + 'container-keyboard-inactive');
@@ -4914,16 +4924,6 @@ var MediaElementPlayer = function () {
 
 					button.setAttribute('aria-pressed', !!pressed);
 					t.getElement(t.container).focus();
-				}
-			});
-
-			bigPlay.addEventListener('keydown', function (e) {
-				var keyPressed = e.keyCode || e.which || 0;
-
-				if (keyPressed === 13 || _constants.IS_FIREFOX && keyPressed === 32) {
-					var event = (0, _general.createEvent)('click', bigPlay);
-					bigPlay.dispatchEvent(event);
-					return false;
 				}
 			});
 
@@ -5767,7 +5767,7 @@ var DashNativeRenderer = {
 		};
 
 		var event = (0, _general.createEvent)('rendererready', node, false);
-		mediaElement.dispatchEvent(event);
+		mediaElement.originalNode.dispatchEvent(event);
 
 		mediaElement.promises.push(NativeDash.load({
 			options: options.dash,
@@ -6056,7 +6056,7 @@ var HlsNativeRenderer = {
 		};
 
 		var event = (0, _general.createEvent)('rendererready', node, false);
-		mediaElement.dispatchEvent(event);
+		mediaElement.originalNode.dispatchEvent(event);
 
 		mediaElement.promises.push(NativeHls.load({
 			options: options.hls,
@@ -6210,7 +6210,7 @@ var HtmlMediaElement = {
 		});
 
 		var event = (0, _general.createEvent)('rendererready', node, false);
-		mediaElement.dispatchEvent(event);
+		mediaElement.originalNode.dispatchEvent(event);
 
 		return node;
 	}
@@ -6795,24 +6795,7 @@ var IS_FIREFOX = exports.IS_FIREFOX = /firefox/i.test(UA);
 var IS_SAFARI = exports.IS_SAFARI = /safari/i.test(UA) && !IS_CHROME;
 var IS_STOCK_ANDROID = exports.IS_STOCK_ANDROID = /^mozilla\/\d+\.\d+\s\(linux;\su;/i.test(UA);
 var HAS_MSE = exports.HAS_MSE = 'MediaSource' in _window2.default;
-var SUPPORT_POINTER_EVENTS = exports.SUPPORT_POINTER_EVENTS = function () {
-	var element = _document2.default.createElement('x'),
-	    documentElement = _document2.default.documentElement,
-	    getComputedStyle = _window2.default.getComputedStyle;
-
-	if (!('pointerEvents' in element.style)) {
-		return false;
-	}
-
-	element.style.pointerEvents = 'auto';
-	element.style.pointerEvents = 'x';
-	documentElement.appendChild(element);
-	var supports = getComputedStyle && (getComputedStyle(element, '') || {}).pointerEvents === 'auto';
-	element.remove();
-	return !!supports;
-}();
-
-var SUPPORT_PASSIVE_EVENT = exports.SUPPORT_PASSIVE_EVENT = function () {
+var SUPPORT_POINTER_EVENTS = exports.SUPPORT_POINTER_EVENTS = true;var SUPPORT_PASSIVE_EVENT = exports.SUPPORT_PASSIVE_EVENT = function () {
 	var supportsPassive = false;
 	try {
 		var opts = Object.defineProperty({}, 'passive', {

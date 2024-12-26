@@ -305,8 +305,22 @@ span.value span.spacer {
 // - uncomment if using left sidebar instead of right sidebar
 //div#trash.trash,
 //ul#controls.controls {
-//    left: 20px!important;
-//	right: inherit!important;
+//    left: 20px !important;
+//    right: inherit !important;
+//}
+//@media screen and (max-width: 500px) {
+//    ul#controls.controls {
+//        left: auto !important;
+//        right: 0 !important;
+//    }
+//    div#trash.trash {
+//        left: auto !important;
+//        right: 64px !important;
+//        top: 74px;
+//    }
+//    ul#controls.controls {
+//        top: 144px;
+//    }
 //}
 
 /* correct exp style conflict with form labels */

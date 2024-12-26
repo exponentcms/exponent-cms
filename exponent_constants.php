@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2023 OIC Group, Inc.
+# Copyright (c) 2004-2025 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -533,8 +533,8 @@ if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
     define('JQUERY3_VERSION', '3.7.1');
-    define('JQUERY3_MIGRATE_VERSION', '3.4.1');
-    define('JQUERYUI_VERSION', '1.13.2');
+    define('JQUERY3_MIGRATE_VERSION', '3.5.2');
+    define('JQUERYUI_VERSION', '1.14.1');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
     define('JQUERY_URL', URL_FULL . 'external/jquery/');
@@ -591,8 +591,7 @@ if (!defined('JQUERY_RELATIVE')) {
         define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v4.x script
     if (!defined('BS5_SCRIPT')) {
-
-        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>');
+        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>');
     } // cdn Bootstrap v5.x script
 /**
  * Font-Awesome CDN links
@@ -605,7 +604,7 @@ if (!defined('JQUERY_RELATIVE')) {
         define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
     } // cdn FontAwesome v5.x stylesheet
     if (!defined('FA6_SCRIPT')) {
-        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
     } // cdn FontAwesome v6.x stylesheet
 //}
 
@@ -617,7 +616,7 @@ if (!defined('SMARTY_PATH')) {
     if (version_compare(PHP_VERSION, '7.1.0', 'lt')) {
         define('SMARTY_VERSION', '3.1.27');
     } else {
-        define('SMARTY_VERSION', '4.3.4');  //note smarty v3.1.28+ won't work properly with php < v7.1+
+        define('SMARTY_VERSION', '4.4.1');  //note smarty v3.1.28+ won't work properly with php < v7.1+
     }
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
@@ -637,12 +636,12 @@ if (!defined('SWIFT_PATH')) {
     /**
      * Lexer is needed for Swiftmailer v6
      */
-    define('LEXER_VERSION', '2.1.0');  // 3.0.0
+    define('LEXER_VERSION', '2.1.0');  // 2.1.1/3.0.1
     define('SWIFT_LEXER_PATH', BASE . 'external/lexer-' . LEXER_VERSION . '/src/');
     /**
      * Deprecations is needed for Lexer v2
      */
-    define('DEPRECATIONS_VERSION', '1.1.2');
+    define('DEPRECATIONS_VERSION', '1.1.2');  // 1.1.3
     define('SWIFT_DEPRECATIONS_PATH', BASE . 'external/deprecations-' . DEPRECATIONS_VERSION . '/lib/Doctrine/Deprecations/');
     /**
      * EmailValidator is needed for Swiftmailer v6
@@ -662,60 +661,18 @@ if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.17');
 }
 if (!defined('MPDF81_VERSION')) {
-    define('MPDF81_VERSION', '8.1.4');  // 8.2.2
-}
-/**
- * Log is needed for MPDF v7+
- */
-if (!defined('LOG_VERSION')) {
-    define('LOG_VERSION', '1.1.4');  // 2.0.0, 3.0.0
-}
-/**
- * random_compat is needed for MPDF v7+ under PHP v5.6
- */
-if (!defined('RANDOM_VERSION')) {
-    define('RANDOM_VERSION', '2.0.21');
-}
-/**
- * FPDI is needed for MPDF v8+
- */
-if (!defined('FPDI_VERSION')) {
-    define('FPDI_VERSION', '2.3.6');  // 2.6.0
-}
-/**
- * HTTP Message Shim is needed for MPDF v8.2+
- */
-if (!defined('HTTP_MSG_SHM_VERSION')) {
-    define('HTTP_MSG_SHM_VERSION', '2.0.1');
-}
-/**
- * Log Aware Trait is needed for MPDF v8.1.6+
- */
-if (!defined('LOG_AWARE_VERSION')) {
-    define('LOG_AWARE_VERSION', '3.0.0');
-}
-/**
- * HTTP Message is needed for MPDF v8+
- */
-if (!defined('HTTP_MSG_VERSION')) {
-    define('HTTP_MSG_VERSION', '1.0');  // 1.1.0
+    define('MPDF81_VERSION', '8.2.5');
 }
 
 if (!defined('DOMPDF8_VERSION')) {
     define('DOMPDF8_VERSION', '-1.2.2');
 }
 if (!defined('DOMPDF2_VERSION')) {
-    define('DOMPDF2_VERSION', '2.0.3');  // 2.0.4
+    define('DOMPDF2_VERSION', '3.0.1');
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.7');  // 5.2.8
-}
-/**
- * TCPDF is needed for HTML2PDF5
- */
-if (!defined('TCPDF5_VERSION')) {
-    define('TCPDF5_VERSION', '6.6.2');  // 6.6.5
+    define('HTML2PDF5_VERSION', '5.2.8');
 }
 
 ?>

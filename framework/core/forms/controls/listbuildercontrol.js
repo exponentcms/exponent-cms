@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2023 OIC Group, Inc.
+ * Copyright (c) 2004-2025 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,6 +15,12 @@
 
 var newList = new Array();
 
+/**
+ * Add an item to the selected list and input
+ *
+ * @param name
+ * @param process 'copy' or move (default)
+ */
 function addSelectedItem(name, process) {
 	var key;
 	var srccontrol = document.getElementById("source_"+name);
@@ -40,11 +46,18 @@ function addSelectedItem(name, process) {
 	}
 	var dataElem = document.getElementById(name);
 	var arr = new Array();
-	if (dataElem.value != "") arr = dataElem.value.split("|!|");
+	if (dataElem.value != "")
+        arr = dataElem.value.split("|!|");
 	arr.push(key);
 	dataElem.value = arr.join("|!|");
 }
 
+/**
+ * Remove an item from the selected list and input
+ *
+ * @param name
+ * @param process 'copy' or move (default)
+ */
 function removeSelectedItem(name, process) {
 	var key;
 	var ptChoices = document.getElementById("dest_" + name);
@@ -74,11 +87,19 @@ function removeSelectedItem(name, process) {
 	}
 }
 
-function moveItem(name,from,to, process) {
+/**
+ * Actually move item between lists
+ *
+ * @param name
+ * @param from
+ * @param to
+ * @param process 'copyonly' or move (default)
+ * @returns {*}
+ */
+function moveItem(name, from, to, process) {
 	var g_src = document.getElementById(from+name);
 	var g_dst = document.getElementById(to+name);
 	var i=0;
-
 
 	if (g_src.selectedIndex < 0) return;
 
@@ -104,4 +125,20 @@ function moveItem(name,from,to, process) {
 		g_src.options[g_src.selectedIndex] = null;
 	}
 	return key;
+}
+
+/**
+ * Rearrange selected items in list after moving up/down
+ *
+ * @param name
+ */
+function adjustItem(name) {
+    var ptChoices = document.getElementById("dest_" + name);
+	var dataElem = document.getElementById(name);
+	var arr = new Array();
+
+    for (var i = 0; i < ptChoices.length; i++) {
+      arr.push(ptChoices.options[i].text);
+    }
+	dataElem.value = arr.join("|!|");
 }

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2023 OIC Group, Inc.
+ * Copyright (c) 2004-2025 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -37,6 +37,8 @@
         {$desc_str = 'The Module Title is displayed by default.'|gettext}
     {/if}
     {control type="checkbox" name="hidemoduletitle" label=$title_str value=1 checked=$config.hidemoduletitle description=$desc_str}
+{else}
+    {control type=text size=31 label="Module Title"|gettext name="moduletitle" value=$container->title caption="Module Title"|gettext description='The module title is used to help the user identify this module.'|gettext focus=1}
 {/if}
 {control type="checkbox" name="is_private" label='Hide Module?'|gettext value=1 checked=$container->is_private description='Should this module be hidden from users without a view permission?'|gettext}
 {control type=hidden id="modcntrol" name=modcntrol value=$container->internal->mod}

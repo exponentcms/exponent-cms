@@ -67,7 +67,7 @@ class listbuildercontrol extends formcontrol {
 		} else {
             $this->_normalize();
 			$html = '<input type="hidden" name="'.$name.'" id="'.$name.'" value="'.implode("|!|",array_keys($this->default)).'" />';
-		    $html .= '<table cellpadding="9" border="0" style="margin-bottom:0;"><tr><td width="40%" style="border:none;">';
+            $html .= "<table id=\"table_$name\" cellpadding=\"9\" border=\"0\" style=\"margin-bottom:0;\"><tr><td width=\"40%\" style=\"border:none;\">";
 			$html .= "<input id='source_$name' type='text' class=\"text form-control\"/>";
 			$html .= "</td>";
 			$html .= '<td align="center" valign="middle" width="20%" style="border:none;">';
@@ -96,7 +96,9 @@ class listbuildercontrol extends formcontrol {
 				$html .= "<option value='$key'>$value</option>";
 			}
 			$html .= "</select>";
-//			$html .= "</td><td width='20%' style='border:none;'></td></tr></table>";
+            $html .= "</td><td width='20%' style='border:none;'>
+                             <div class=\"btn btn-outline-secondary moveup\" title='Move Selected Item Up'><i class=\"fas fa-arrow-up\"></i></div><br>
+                             <div class=\"btn btn-outline-secondary movedown\" title='Move Selected Item Down'><i class=\"fas fa-arrow-down\"></i></div>";
             $html .= "</td></tr></table>";
 //			$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
 		}
@@ -157,7 +159,7 @@ class listbuildercontrol extends formcontrol {
                         btnMoveAllText: '<i class=\"".$arrow_r."\">&nbsp;</i><i class=\"".$arrow_r."\">&nbsp;</i>',
                         btnRemoveAllText: '<i class=\"".$arrow_l."\">&nbsp;</i><i class=\"".$arrow_l."\">&nbsp;</i>',
 //                        preserveSelectionOnMove: 'moved',
-//                        moveOnSelect: false,
+                        moveOnSelect: false,
                     });
                 });
             ";
@@ -167,8 +169,49 @@ class listbuildercontrol extends formcontrol {
                 "jquery"=>"1",
             ));
         } else {
+            $src = "
+                $(document).ready(function() {
+                    upDownCtrl = $('table#table_$name');
+                    box2 = $('select', upDownCtrl);
+                    moveUpButton = $('.moveup', upDownCtrl);
+                    moveDownButton = $('.movedown', upDownCtrl);
+
+                    function moveDown() {
+                       var selectedItems = box2.find(':selected');
+
+                       for (var i = selectedItems.length - 1; i > -1; i--) {
+                           var allItems = box2.find('option');
+                           var selectedItem = $(selectedItems[i]);
+                           var selectedIndex = selectedItem.index();
+                           selectedItem.insertAfter(allItems[selectedIndex + 1]);
+                       }
+                       adjustItem('$name');
+                    }
+
+                    function moveUp() {
+                       var selectedItems = box2.find(':selected');
+
+                       for (var i = 0;i<=selectedItems.length;i++) {
+                           var allItems = box2.find('option');
+                           var selectedItem = $(selectedItems[i]);
+                           var selectedIndex = selectedItem.index();
+                           selectedItem.insertBefore(allItems[selectedIndex - 1]);
+                       }
+                       adjustItem('$name');
+                    }
+
+                    moveUpButton.on('click', function() {
+                      moveUp();
+                    });
+
+                    moveDownButton.on('click', function() {
+                      moveDown();
+                    });
+                });
+            ";
             expJavascript::pushToFoot(array(
                 "unique"=>'listbuildercontrol',
+                "content"=>$src,
                 "src"=> PATH_RELATIVE . 'framework/core/forms/controls/listbuildercontrol.js'
     		));
         }

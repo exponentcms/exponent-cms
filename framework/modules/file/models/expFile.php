@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2023 OIC Group, Inc.
+# Copyright (c) 2004-2025 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -1926,7 +1926,7 @@ class expFile extends expRecord {
                 }
 
                 // make sure the database tables are up to date with the system definitions
-                expDatabase::install_dbtables();
+//                expDatabase::install_dbtables();
 
                 $table = '';
                 $oldformdata = array();

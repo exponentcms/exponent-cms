@@ -1,3 +1,39 @@
+## XML-RPC for PHP version 4.11.0 - 2024/9/7
+
+* new: added new Client option `Client::OPT_EXTRA_HEADERS`, useful to set custom HTTP headers
+
+* improved: compatibility with not-yet-released PHP version 8.4
+
+
+## XML-RPC for PHP version 4.10.4 - 2024/06/27
+
+* fixed: Response returned from the library in case of HttpException did not have set the correct `status_code` member var
+
+
+## XML-RPC for PHP version 4.10.3 - 2024/04/24
+
+* fixed: avoid emitting warnings when parsing some classes of malformed XML (issue #116)
+
+* fixed: the library will now return a Fault `Response` object with error code 2 whenever parsing some xml responses
+  which do not conform to the specification, namely those having both `fault` and `params` elements inside `methodResponse`
+
+
+## XML-RPC for PHP version 4.10.2 - 2024/04/14
+
+* fixed: allow `Server` subclasses to use their own Parser to determine the Request's charset
+
+* fixed: the Server would not swallow and log php warnings generated from end user's method handler functions unless
+  debug mode was set to 2 or higher. It now does that always.
+
+* fixed: the library will now return a Fault `Response` object whenever parsing some xml responses which do not conform
+  to the specification, namely the for following cases:
+
+  - a `methodResponse` element without either `fault` or `params`
+  - a `methodResponse` element with a `params` child which does not have a single `param`
+
+* improved: test on PHP 8.3 as part of CI
+
+
 ## XML-RPC for PHP version 4.10.1 - 2023/02/22
 
 * fixed: class autoloading got broken in rel 4.10.0 for users of the legacy API (issue #111)
