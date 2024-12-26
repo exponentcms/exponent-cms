@@ -85,9 +85,10 @@
         {*<a class="{button_style}" href="{$backlink}">{'Done'|gettext}</a>*}
         {br}{icon button=true class=reply link=$backlink text='Exit Forms Designer'|gettext}
     </p>
-    <div id="palette-button" class="btn btn-default btn-secondary">
-        Tools
-        <i class="fa fas fa-bars bi bi-list"></i>
+    <div id="palette-button" class="btn btn-default btn-secondary" title="{'Design Tools'|gettext}">
+        <i class="fa fa-wrench fas fa-tools"></i>&nbsp;
+        <i id="palette-button-bars" class="fa fas fa-bars"></i>
+        <i id="palette-button-x" class="fa fas fa-times fas fa-xmark" style="display:none;"></i>
     </div>
     <div id="palette">
     <div id="trash" class="trash" title="{'Drag a control from the form and drop it on this box to remove it'|gettext}">
@@ -151,6 +152,8 @@
         $('#palette-button').on('click', function(evt) {
             evt.preventDefault();
             $('#palette').toggle();
+            $('#palette-button-x').toggle();
+            $('#palette-button-bars').toggle();
         });
 
         // we need to catch 'edit' button clicks
