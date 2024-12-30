@@ -67,11 +67,11 @@
                     {if !bs()}
                         &#160;&#160;|&#160;&#160;
                     {/if}
-                    {icon class=configure action=design_form id=$f->id text="Design Form"|gettext}
+                    {icon class=configure action=design_form id=$f->id text="Design Form"|gettext title=$f->title}
                     {if !bs()}
                         &#160;&#160;|&#160;&#160;
                     {/if}
-                    {icon action=manage text="Manage Forms"|gettext}
+                    {icon action=manage text="Manage Forms"|gettext title=$f->title}
                 {/if}
                 {if $permissions.delete}
                     {if !bs()}
