@@ -56,7 +56,7 @@ $.fn.elfindersearchbutton = function(cmd) {
 					}).fail(function() {
 						abort();
 					});
-					
+
 				} else {
 					fm.trigger('searchend');
 				}
@@ -118,7 +118,7 @@ $.fn.elfindersearchbutton = function(cmd) {
 					}
 				}),
 			opts, typeSet, cwdReady, inFocus;
-		
+
 		if (isopts.enable) {
 			isopts.minlen = isopts.minlen || 2;
 			isopts.wait = isopts.wait || 500;
@@ -144,12 +144,12 @@ $.fn.elfindersearchbutton = function(cmd) {
 								incVal = val;
 								if (val === '' && fm.searchStatus.state > 1 && fm.searchStatus.query) {
 									input.val(fm.searchStatus.query).trigger('select');
-								} 
+								}
 							}
 						}, isopts.wait));
 					}
 				});
-			
+
 			if (fm.UA.ltIE8) {
 				input.on('keydown', function(e) {
 						if (e.keyCode === 229) {
@@ -170,7 +170,7 @@ $.fn.elfindersearchbutton = function(cmd) {
 					});
 			}
 		}
-		
+
 		$('<span class="ui-icon ui-icon-search" title="'+cmd.title+'"></span>')
 			.appendTo(button)
 			.on('mousedown', function(e) {
@@ -182,7 +182,7 @@ $.fn.elfindersearchbutton = function(cmd) {
 					input.trigger('focus');
 				}
 			});
-		
+
 		$('<span class="ui-icon ui-icon-close"></span>')
 			.appendTo(button)
 			.on('mousedown', function(e) {
@@ -194,7 +194,7 @@ $.fn.elfindersearchbutton = function(cmd) {
 					abort();
 				}
 			});
-		
+
 		// wait when button will be added to DOM
 		fm.bind('toolbarload', function(){
 			var parent = button.parent();
@@ -211,7 +211,7 @@ $.fn.elfindersearchbutton = function(cmd) {
 				}
 			}
 		});
-		
+
 		fm
 			.one('init', function() {
 				fm.getUI('cwd').on('touchstart click', function() {
@@ -241,7 +241,7 @@ $.fn.elfindersearchbutton = function(cmd) {
 							typeSet.append($('<input id="'+id(i)+'" name="serchcol" type="radio" value="'+fm.escape(i)+'"/><label for="'+id(i)+'">'+fm.i18n(v.name)+'</label>'));
 						});
 					}
-					opts.find('div.buttonset').buttonset();
+					opts.find('div.buttonset').controlgroup();
 					$('#'+id('SearchFromAll')).next('label').attr('title', fm.i18n('searchTarget', fm.i18n('btnAll')));
 					if (sTypes) {
 						$.each(sTypes, function(i, v) {
@@ -269,12 +269,12 @@ $.fn.elfindersearchbutton = function(cmd) {
 			.bind('open parents', function() {
 				var dirs    = [],
 					volroot = fm.file(fm.root(fm.cwd().hash));
-				
+
 				if (volroot) {
 					$.each(fm.parents(fm.cwd().hash), function(i, hash) {
 						dirs.push(fm.file(hash).name);
 					});
-		
+
 					$('#'+id('SearchFromCwd')).next('label').attr('title', fm.i18n('searchTarget', dirs.join(fm.option('separator'))));
 					$('#'+id('SearchFromVol')).next('label').attr('title', fm.i18n('searchTarget', volroot.name));
 				}
@@ -298,16 +298,16 @@ $.fn.elfindersearchbutton = function(cmd) {
 			.shortcut({
 				pattern     : 'ctrl+f f3',
 				description : cmd.title,
-				callback    : function() { 
+				callback    : function() {
 					input.trigger('select').trigger('focus');
 				}
 			})
 			.shortcut({
 				pattern     : 'a b c d e f g h i j k l m n o p q r s t u v w x y z dig0 dig1 dig2 dig3 dig4 dig5 dig6 dig7 dig8 dig9 num0 num1 num2 num3 num4 num5 num6 num7 num8 num9',
 				description : fm.i18n('firstLetterSearch'),
-				callback    : function(e) { 
+				callback    : function(e) {
 					if (! cwdReady) { return; }
-					
+
 					var code = e.originalEvent.keyCode,
 						next = function() {
 							var sel = fm.selected(),
