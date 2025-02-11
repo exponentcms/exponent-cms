@@ -519,7 +519,7 @@ class formsController extends expController {
                             $antispam .= '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
                             if (ANTI_SPAM_CONTROL === 'recaptcha') { // reCaptcha v2 Checkbox
                                 if ($form->horizontal && bs()) {
-                                    $antispam .= "<div class=\"offset-sm-2 col-sm-10\"";
+                                    $antispam .= "<div class=\"offset-sm-2 col-sm-10\">";
                                 }
                                 //create unique recaptcha blocks
                                 $randomNumber = mt_rand(10000000, 99999999);
