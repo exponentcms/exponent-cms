@@ -576,37 +576,35 @@ if (!defined('JQUERY_RELATIVE')) {
     } // local jQueryUI stylesheet
 }
 
-//if (USE_CDN) {
 /**
  * Twitter Bootstrap CDN links
  * Use the entire script tag to include integrity, etc...
  */
-    if (!defined('BS2_SCRIPT')) {
-        define('BS2_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js" integrity="sha384-vOWIrgFbxIPzY09VArRHMsxned7WiY6hzIPtAIIeTFuii9y3Cr6HE6fcHXy5CFhc" crossorigin="anonymous"></script>');
-    } // cdn Bootstrap v2.x script
-    if (!defined('BS3_SCRIPT')) {
-        define('BS3_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>');
-    } // cdn Bootstrap v3.x script
-    if (!defined('BS4_SCRIPT')) {
-        define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>');
-    } // cdn Bootstrap v4.x script
-    if (!defined('BS5_SCRIPT')) {
-        define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>');
-    } // cdn Bootstrap v5.x script
+if (!defined('BS2_SCRIPT')) {
+    define('BS2_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js" integrity="sha384-vOWIrgFbxIPzY09VArRHMsxned7WiY6hzIPtAIIeTFuii9y3Cr6HE6fcHXy5CFhc" crossorigin="anonymous"></script>');
+} // cdn Bootstrap v2.x script
+if (!defined('BS3_SCRIPT')) {
+    define('BS3_SCRIPT', '<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>');
+} // cdn Bootstrap v3.x script
+if (!defined('BS4_SCRIPT')) {
+    define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>');
+} // cdn Bootstrap v4.x script
+if (!defined('BS5_SCRIPT')) {
+    define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>');
+} // cdn Bootstrap v5.x script
 /**
  * Font-Awesome CDN links
  * Use the CDN link
  */
-    if (!defined('FA4_SCRIPT')) {
-        define('FA4_SCRIPT', 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
-    } // cdn FontAwesome v4.x stylesheet
-    if (!defined('FA5_SCRIPT')) {
-        define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
-    } // cdn FontAwesome v5.x stylesheet
-    if (!defined('FA6_SCRIPT')) {
-        define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
-    } // cdn FontAwesome v6.x stylesheet
-//}
+if (!defined('FA4_SCRIPT')) {
+    define('FA4_SCRIPT', 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+} // cdn FontAwesome v4.x stylesheet
+if (!defined('FA5_SCRIPT')) {
+    define('FA5_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+} // cdn FontAwesome v5.x stylesheet
+if (!defined('FA6_SCRIPT')) {
+    define('FA6_SCRIPT', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
+} // cdn FontAwesome v6.x stylesheet
 
 /**
  * Smarty Version Constants
@@ -646,7 +644,7 @@ if (!defined('SWIFT_PATH')) {
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '3.2.6');  // 4.0.2
+    define('EMAIL_VALIDATOR_VERSION', '3.2.6');  // 4.0.4
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
@@ -668,11 +666,11 @@ if (!defined('DOMPDF8_VERSION')) {
     define('DOMPDF8_VERSION', '-1.2.2');
 }
 if (!defined('DOMPDF2_VERSION')) {
-    define('DOMPDF2_VERSION', '3.0.1');
+    define('DOMPDF2_VERSION', '3.0.1');  // 3.1.0
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.8');
+    define('HTML2PDF5_VERSION', '5.2.8');  // 5.3.2
 }
 
 ?>

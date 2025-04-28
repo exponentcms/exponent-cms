@@ -255,7 +255,7 @@ class blogController extends expController {
         expHistory::set('viewable', $this->params, true);
 	    $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
         $record = new blog($id);
-        if (empty($record->id))
+        if (empty($record->id))  // fixme shouldn't show private/draft/unpublished articles??
             redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));
 
 	    // since we are probably getting here via a router mapped url
