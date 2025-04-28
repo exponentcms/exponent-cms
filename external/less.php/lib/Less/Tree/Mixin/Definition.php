@@ -3,16 +3,27 @@
  * @private
  */
 class Less_Tree_Mixin_Definition extends Less_Tree_Ruleset {
+	/** @var string */
 	public $name;
+	/** @var Less_Tree_Selector[] */
 	public $selectors;
+	/** @var array[] */
 	public $params;
+	/** @var int */
 	public $arity = 0;
+	/** @var Less_Tree[] */
 	public $rules;
-	public $lookups		= [];
-	public $required	= 0;
-	public $frames		= [];
+	/** @var array[][] */
+	public $lookups = [];
+	/** @var int */
+	public $required = 0;
+	/** @var array */
+	public $frames = [];
+	/** @var Less_Tree_Condition|null */
 	public $condition;
+	/** @var bool */
 	public $variadic;
+	/** @var array<string,true> */
 	public $optionalParameters = [];
 
 	public function __construct( $name, $params, $rules, $condition, $variadic = false, $frames = [] ) {
@@ -190,7 +201,7 @@ class Less_Tree_Mixin_Definition extends Less_Tree_Ruleset {
 
 		// set array to prevent error on array_merge
 		if ( !is_array( $this->frames ) ) {
-			 $this->frames = [];
+			$this->frames = [];
 		}
 
 		$frame = $this->compileParams( $env, array_merge( $this->frames, $env->frames ), $args );

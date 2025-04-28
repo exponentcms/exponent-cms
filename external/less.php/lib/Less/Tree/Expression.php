@@ -7,8 +7,9 @@ class Less_Tree_Expression extends Less_Tree implements Less_Tree_HasValueProper
 
 	/** @var Less_Tree[] */
 	public $value = [];
-
+	/** @var bool */
 	public $noSpacing;
+	/** @var true|null */
 	public $parens = null;
 
 	public function __construct( $value, $noSpacing = false ) {
@@ -69,7 +70,12 @@ class Less_Tree_Expression extends Less_Tree implements Less_Tree_HasValueProper
 		for ( $i = 0; $i < $val_len; $i++ ) {
 			$this->value[$i]->genCSS( $output );
 			if ( !$this->noSpacing && ( $i + 1 < $val_len ) ) {
-				$output->add( ' ' );
+				// NOTE: Comma handling backported from Less.js 4.2.1 (T386077)
+				if ( !( $this->value[$i + 1] instanceof Less_Tree_Anonymous )
+					|| ( $this->value[$i + 1] instanceof Less_Tree_Anonymous && $this->value[$i + 1]->value !== ',' )
+				) {
+					$output->add( ' ' );
+				}
 			}
 		}
 	}

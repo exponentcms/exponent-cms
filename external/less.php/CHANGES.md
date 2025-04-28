@@ -1,5 +1,42 @@
 # Changelog
 
+## v5.3.1
+
+Fixed:
+* Fix `PHP Warning: Undefined property $value` in `extract()`. (Timo Tijhof) [T391735](https://phabricator.wikimedia.org/T391735)
+
+## v5.3.0
+
+Added:
+* Less_Parser: Add `cache_incremental` option. Set this to false via `Less_Cache` to use the fast whole-output cache without the memory-intensive incremental cache. (Timo Tijhof)
+
+Deprecated:
+* Deprecate `Less_Cache::CheckCacheDir()` as public method. This is called automatically.
+* Deprecate `Less_Cache::CleanCache()` as public method. This is called automatically.
+* Deprecate `Less_Parser::SetCacheDir()`. Set the `cache_dir` option, or use `Less_Cache::SetCacheDir()` instead.
+
+## v5.2.2
+
+Fixed:
+* Fix ParseError on CSS variable when there is no trailing semicolon (Hannah Okwelum) [T386077](https://phabricator.wikimedia.org/T386077)
+* Support functions calls in CSS variable value after first comma (Hannah Okwelum) [T386079](https://phabricator.wikimedia.org/T386079)
+
+## v5.2.1
+
+Fixed:
+* Fix un-parenthesized nested operation via a variable (Hannah Okwelum) [T386074](https://phabricator.wikimedia.org/T386074)
+* Faster Less_Visitor_joinSelector by skipping Declaration blocks (ubermanu)
+
+## v5.2.0
+
+Added:
+* Add support for BrianHenryIE/strauss codemod in Less_Visitor (Stefan Warnat)
+
+Fixed:
+* Fix "PHP Warning: Undefined array key currentUri" when using `@import (inline)` (tck) [T380641](https://phabricator.wikimedia.org/T380641)
+* Fix "Implicit conversion from float to int" PHP 8.1 warning when using `hsv()` (Peter Knut)
+* Less_Visitor: Faster class mapping in `visitObj`  by using inline cache (Thiemo Kreuz)
+
 ## v5.1.2
 
 Fixed:

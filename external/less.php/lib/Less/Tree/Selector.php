@@ -4,21 +4,33 @@
  */
 class Less_Tree_Selector extends Less_Tree {
 
+	/** @var Less_Tree_Element[] */
 	public $elements;
+	/** @var Less_Tree_Condition|null */
 	public $condition;
+	/** @var Less_Tree_Extend[] */
 	public $extendList = [];
-	public $_css;
+	/** @var int|null */
 	public $index;
+	/** @var bool */
 	public $evaldCondition = false;
+	/** @var array|null */
 	public $currentFileInfo = [];
+	/** @var null|bool */
 	public $isReferenced;
+	/** @var null|bool */
 	public $mediaEmpty;
 
+	/** @var int */
 	public $elements_len = 0;
 
+	/** @var string[] */
 	public $_oelements;
+	/** @var array<string,true> */
 	public $_oelements_assoc;
+	/** @var int */
 	public $_oelements_len;
+	/** @var bool */
 	public $cacheable = true;
 
 	/**
@@ -97,7 +109,7 @@ class Less_Tree_Selector extends Less_Tree {
 		foreach ( $this->elements as $v ) {
 
 			$css .= $v->combinator;
-			if ( !$v->value_is_object ) {
+			if ( !( $v->value instanceof Less_Tree ) ) {
 				$css .= $v->value;
 				continue;
 			}
