@@ -1,6 +1,6 @@
 /*! @preserve
  * bootbox.js
- * version: 6.0.0
+ * version: 6.0.3
  * author: Nick Payne <nick@kurai.co.uk>
  * license: MIT
  * http://bootboxjs.com/
@@ -22,7 +22,7 @@
 
   let exports = {};
 
-  let VERSION = '6.0.0';
+  let VERSION = '6.0.3';
   exports.VERSION = VERSION;
 
   let locales = {
@@ -382,7 +382,7 @@
     }
 
     if (options.onHide) {
-      if ($.isFunction(options.onHide)) {
+      if (typeof options.onHide === 'function') {
         dialog.on('hide.bs.modal', options.onHide);
       } else {
         throw new Error('Argument supplied to "onHide" must be a function');
@@ -390,7 +390,7 @@
     }
 
     if (options.onHidden) {
-      if ($.isFunction(options.onHidden)) {
+      if (typeof options.onHidden === 'function') {
         dialog.on('hidden.bs.modal', options.onHidden);
       } else {
         throw new Error('Argument supplied to "onHidden" must be a function');
@@ -398,7 +398,7 @@
     }
 
     if (options.onShow) {
-      if ($.isFunction(options.onShow)) {
+      if (typeof options.onShow === 'function') {
         dialog.on('show.bs.modal', options.onShow);
       } else {
         throw new Error('Argument supplied to "onShow" must be a function');
@@ -410,7 +410,7 @@
     }, focusPrimaryButton);
 
     if (options.onShown) {
-      if ($.isFunction(options.onShown)) {
+      if (typeof options.onShown === 'function') {
         dialog.on('shown.bs.modal', options.onShown);
       } else {
         throw new Error('Argument supplied to "onShown" must be a function');
@@ -499,13 +499,13 @@
     options = mergeDialogOptions('alert', ['ok'], ['message', 'callback'], arguments);
 
     // @TODO: can this move inside exports.dialog when we're iterating over each button and checking its button.callback value instead?
-    if (options.callback && !$.isFunction(options.callback)) {
+    if (options.callback && typeof options.callback !== 'function') {
       throw new Error('alert requires the "callback" property to be a function when provided');
     }
 
     // Override the ok and escape callback to make sure they just invoke the single user-supplied one (if provided)
     options.buttons.ok.callback = options.onEscape = function() {
-      if ($.isFunction(options.callback)) {
+      if (typeof options.callback === 'function') {
         return options.callback.call(this);
       }
 
@@ -526,7 +526,7 @@
     options = mergeDialogOptions('confirm', ['cancel', 'confirm'], ['message', 'callback'], arguments);
 
     // confirm specific validation; they don't make sense without a callback so make sure it's present
-    if (!$.isFunction(options.callback)) {
+    if (typeof options.callback !== 'function') {
       throw new Error('confirm requires a callback');
     }
 
@@ -589,15 +589,14 @@
         value = input.find('input:checked').map(function() {
           return $(this).val();
         }).get();
+        if (value.length === 0 && options.required === true) {
+          // prevents button callback from being called if no checkboxes have been checked
+          return false;
+        }
       } else if (options.inputType === 'radio') {
         value = input.find('input:checked').val();
       } else {
         let el = input[0];
-
-        // Clear any previous custom error message
-        if (options.errorMessage) {
-          el.setCustomValidity('');
-        }
 
         if (el.checkValidity && !el.checkValidity()) {
           // If a custom error message was provided, add it now
@@ -630,7 +629,7 @@
       throw new Error('prompt requires a title');
     }
 
-    if (!$.isFunction(options.callback)) {
+    if (typeof options.callback !== 'function') {
       throw new Error('prompt requires a callback');
     }
 
@@ -730,7 +729,7 @@
         let groups = {};
         inputOptions = options.inputOptions || [];
 
-        if (!$.isArray(inputOptions)) {
+        if (!Array.isArray(inputOptions)) {
           throw new Error('Please pass an array of input options');
         }
 
@@ -786,7 +785,7 @@
         break;
 
       case 'checkbox':
-        let checkboxValues = $.isArray(options.value) ? options.value : [options.value];
+        let checkboxValues = Array.isArray(options.value) ? options.value : [options.value];
         inputOptions = options.inputOptions || [];
 
         if (!inputOptions.length) {
@@ -819,7 +818,7 @@
 
       case 'radio':
         // Make sure that value is not an array (only a single radio can ever be checked)
-        if (options.value !== undefined && $.isArray(options.value)) {
+        if (options.value !== undefined && Array.isArray(options.value)) {
           throw new Error('prompt with "inputType" set to "radio" requires a single, non-array value for "value"');
         }
 
@@ -875,7 +874,7 @@
       promptDialog.find('.bootbox-accept').trigger('click');
     });
 
-    if ($.trim(options.message) !== '') {
+    if (options.message && options.message.trim() !== '') {
       // Add the form to whatever content the user may have added.
       let message = $(templates.promptMessage).html(options.message);
       form.prepend(message);
@@ -1063,7 +1062,7 @@
     total = getKeyLength(buttons);
 
     each(buttons, function(key, button, index) {
-      if ($.isFunction(button)) {
+      if (typeof button === 'function') {
         // Short form, assume value is our callback. Since button isn't an object it isn't a reference either so re-assign it
         button = buttons[key] = {
           callback: button
@@ -1071,7 +1070,7 @@
       }
 
       // Before any further checks, make sure button is the correct type
-      if ($.type(button) !== 'object') {
+      if (typeof button !== 'object') {
         throw new Error('button with key "' + key + '" must be an object');
       }
 
@@ -1147,7 +1146,7 @@
     // By default we assume a callback will get rid of the dialog, although it is given the opportunity to override this
 
     // If the callback can be invoked and it *explicitly returns false*, then we'll set a flag to keep the dialog active...
-    let preserveDialog = $.isFunction(callback) && callback.call(dialog, e) === false;
+    let preserveDialog = typeof callback === 'function' && callback.call(dialog, e) === false;
 
     // ... otherwise we'll bin it
     if (!preserveDialog) {
@@ -1186,8 +1185,8 @@
     }
 
     if (minValid && maxValid) {
-      if (max <= min) {
-        throw new Error('"max" must be greater than "min". See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-max for more information.');
+      if (max < min) {
+        throw new Error('"max" must be greater than or equal to "min". See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-max for more information.');
       } else {
         result = true;
       }
@@ -1210,7 +1209,7 @@
 
 /*! @preserve
  * bootbox.locales.js
- * version: 6.0.0
+ * version: 6.0.3
  * author: Nick Payne <nick@kurai.co.uk>
  * license: MIT
  * http://bootboxjs.com/
@@ -1365,8 +1364,9 @@
   bootbox.addLocale('ja', {
     OK: 'OK',
     CANCEL: 'キャンセル',
-    CONFIRM: '確認'
+    CONFIRM: 'OK'
   });
+
   // locale : Georgian
   // author : Avtandil Kikabidze aka LONGMAN (@akalongman)
   bootbox.addLocale('ka', {
