@@ -2006,6 +2006,9 @@ class expTheme
                 case 'ajax' :
                     $class = "arrow-repeat bi-spin";
                     break;
+                case 'file' :
+                    $class = "file-earmark";
+                    break;
                 case 'file-pdf' :
                     $class = "file-earmark-pdf-fill";
                     break;

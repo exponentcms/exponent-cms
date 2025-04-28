@@ -590,7 +590,7 @@ if (!defined('BS4_SCRIPT')) {
     define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>');
 } // cdn Bootstrap v4.x script
 if (!defined('BS5_SCRIPT')) {
-    define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>');
+    define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>');
 } // cdn Bootstrap v5.x script
 /**
  * Font-Awesome CDN links
@@ -631,7 +631,7 @@ if (!defined('SWIFT_PATH')) {
     /**
      * EmailValidator is needed for Swiftmailer v6
      */
-    define('EMAIL_VALIDATOR_VERSION', '4.0.2');  // 4.0.3
+    define('EMAIL_VALIDATOR_VERSION', '4.0.2');  // 4.0.4
     define('SWIFT_EMAIL_PATH', BASE . 'external/EmailValidator-' . EMAIL_VALIDATOR_VERSION . '/EmailValidator/');
 }
 
@@ -654,7 +654,7 @@ if (!defined('DOMPDF2_VERSION')) {
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.8');  // 5.3.0
+    define('HTML2PDF5_VERSION', '5.2.8');  // 5.3.2
 }
 
 ?>
