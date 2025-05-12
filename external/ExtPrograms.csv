@@ -33,12 +33,12 @@ popper.js/floating-ui,1.16.1,github.com/FezVrasta/popper.js,1.16.1/2.11.8,needed
 Bootswatch2,2.3.2,bootswatch.com,2.3.2,
 Bootswatch3,3.4.1+1,bootswatch.com,3.4.1+1,change 1st line variables.less comment to output to .css file
 Bootswatch4,4.6.2,bootswatch.com,4.6.2,change 1st line variables.scss comment to output to .css file
-Bootswatch5,5.3.5,bootswatch.com,5.3.5,change 1st line variables.scss comment to output to .css file
+Bootswatch5,5.3.6,bootswatch.com,5.3.6,change 1st line variables.scss comment to output to .css file
 Font-Awesome3,3.2.1,fontawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
 Font-Awesome6,6.7.2,fontawesome.com,6.7.2,add import all 'fonts' sheets into main sheet
-Bootstrap-Icons,1.12.1,icons.getbootstrap.com,1.12.1,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
+Bootstrap-Icons,1.13.1,icons.getbootstrap.com,1.13.1,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
 Adminer,4.8.1exp,www.adminer.org,4.8.4evo,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
