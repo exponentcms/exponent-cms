@@ -1,4 +1,4 @@
-/*! DataTables 2.3.0
+/*! DataTables 2.3.1
  * © SpryMedia Ltd - datatables.net/license
  */
 
@@ -1906,6 +1906,10 @@
 			init.orderIndicators = false;
 			init.orderHandler = false;
 		}
+		else if (init.bSort === true) {
+			init.orderIndicators = true;
+			init.orderHandler = true;
+		}
 	
 		// Which cells are the title cells?
 		if (typeof init.bSortCellsTop === 'boolean') {
@@ -3573,7 +3577,9 @@
 	
 		_fnDraw( settings );
 	
-		settings._drawHold = false;
+		settings.api.one('draw', function () {
+			settings._drawHold = false;
+		});
 	}
 	
 	
@@ -10193,7 +10199,7 @@
 	 *  @type string
 	 *  @default Version number
 	 */
-	DataTable.version = "2.3.0";
+	DataTable.version = "2.3.1";
 	
 	/**
 	 * Private data store, containing all of the settings objects that are
