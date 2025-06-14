@@ -32,7 +32,7 @@
         {** top level container module **}
             <div class="exp-skin">
                 <div class="dropdown exp-container-chrome exp-container-chrome-container">
-                    <a id="dropdownMenu{$top->id}" class="dropdown-toggle exp-trigger" data-bs-toggle="dropdown" href="#">{if $container->is_private}<i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-unlockbi-unlock{else}fas fa-unlock-alt fa-fw{/if}" title="{'Private Module'|gettext}"></i> {/if}{'Container'|gettext}</a>
+                    <a id="dropdownMenu{$top->id}" class="dropdown-toggle exp-trigger" data-bs-toggle="dropdown" href="#">{if $container->is_private}<i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-unlock2-fill{else}fas fa-unlock-alt fa-fw{/if}" title="{'Private Module'|gettext}"></i> {/if}{'Container'|gettext}</a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu{$top->id}">
                         <li role="presentation" class="dropdown-header">({$top->scope|gettext|capitalize})</li>
                         <li class="dropdown-divider"></li>
@@ -87,7 +87,7 @@
                     {/if}
                     <div class="exp-skin">
                         <div class="dropdown exp-container-chrome exp-container-chrome-module">
-                            <a id="dropdownMenu{$container->id}" class="dropdown-toggle exp-trigger" data-bs-toggle="dropdown" href="#">{if $container->is_private}<i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-unlock{else}fas fa-unlock-alt fa-fw{/if}" title="{'Private Module'|gettext}"></i> {/if}{$container->info.module|gettext}</a>
+                            <a id="dropdownMenu{$container->id}" class="dropdown-toggle exp-trigger" data-bs-toggle="dropdown" href="#">{if $container->is_private}<i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-unlock2-fill{else}fas fa-unlock fa-fw{/if}" title="{'Private Module'|gettext}"></i> {/if}{$container->info.module|gettext}</a>
                             {nocache}
                                 {getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last}
                             {/nocache}
