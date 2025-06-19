@@ -117,6 +117,7 @@ class event extends expRecord {
                 if ($condense) {
                     $eventid = $event->id;
 //                    $multiday_event = array_filter($events, create_function('$event', 'global $eventid; return $event->id === $eventid;'));
+                    //fixme this doesn't always work
                     $multiday_event = array_filter($events, function($event) {
                         global $eventid;
                         return $event->id === $eventid;
