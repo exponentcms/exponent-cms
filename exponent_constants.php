@@ -576,6 +576,7 @@ if (!defined('JQUERY_RELATIVE')) {
     } // local jQueryUI stylesheet
 }
 
+//if (USE_CDN) {
 /**
  * Twitter Bootstrap CDN links
  * Use the entire script tag to include integrity, etc...
@@ -590,7 +591,7 @@ if (!defined('BS4_SCRIPT')) {
     define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>');
 } // cdn Bootstrap v4.x script
 if (!defined('BS5_SCRIPT')) {
-    define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>');
+    define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>');
 } // cdn Bootstrap v5.x script
 /**
  * Font-Awesome CDN links
@@ -654,7 +655,7 @@ if (!defined('DOMPDF2_VERSION')) {
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
-    define('HTML2PDF5_VERSION', '5.2.8');  // 5.3.2
+    define('HTML2PDF5_VERSION', '5.2.8');  // 5.3.3
 }
 
 ?>

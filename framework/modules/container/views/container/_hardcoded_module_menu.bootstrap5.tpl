@@ -20,7 +20,7 @@
 {permissions}
     <div class="exp-container-module-wrapper exp-skin">
         <div class="exp-container-chrome exp-container-chrome-module hardcoded-chrome">
-            <a id="dropdownMenu{$container->id}" class="dropdown-toggle exp-trigger" data-bs-toggle="dropdown" href="#">{if $container->is_private}<i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-unlock{else}fas fa-unlock fa-fw{/if}" title="{'Private Module'|gettext}"></i> {/if}{$container->info.module|gettext}</a>
+            <a id="dropdownMenu{$container->id}" class="dropdown-toggle exp-trigger" data-bs-toggle="dropdown" href="#">{if $container->is_private}<i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-unlock2-fill{else}fas fa-unlock fa-fw{/if}" title="{'Private Module'|gettext}"></i> {/if}{$container->info.module|gettext}</a>
             {nocache}
                 {getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last hcview=1}
             {/nocache}

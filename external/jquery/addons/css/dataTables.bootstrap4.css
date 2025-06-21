@@ -5,17 +5,18 @@
   --dt-row-stripe: 0, 0, 0;
   --dt-row-hover: 0, 0, 0;
   --dt-column-ordering: 0, 0, 0;
+  --dt-header-align-items: center;
   --dt-html-background: white;
 }
 :root.dark {
   --dt-html-background: rgb(33, 37, 41);
 }
 
-table.dataTable td.dt-control {
+table.dataTable tbody td.dt-control {
   text-align: center;
   cursor: pointer;
 }
-table.dataTable td.dt-control:before {
+table.dataTable tbody td.dt-control:before {
   display: inline-block;
   box-sizing: border-box;
   content: "";
@@ -24,7 +25,7 @@ table.dataTable td.dt-control:before {
   border-bottom: 5px solid transparent;
   border-right: 0px solid transparent;
 }
-table.dataTable tr.dt-hasChild td.dt-control:before {
+table.dataTable tbody tr.dt-hasChild td.dt-control:before {
   border-top: 10px solid rgba(0, 0, 0, 0.5);
   border-left: 5px solid transparent;
   border-bottom: 0px solid transparent;
@@ -151,7 +152,7 @@ table.dataTable tfoot > tr > td div.dt-column-header,
 table.dataTable tfoot > tr > td div.dt-column-footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: var(--dt-header-align-items);
   gap: 4px;
 }
 table.dataTable thead > tr > th div.dt-column-header span.dt-column-title,
@@ -283,6 +284,12 @@ table.dataTable th.dt-left,
 table.dataTable td.dt-left {
   text-align: left;
 }
+table.dataTable th.dt-left div.dt-column-header,
+table.dataTable th.dt-left div.dt-column-footer,
+table.dataTable td.dt-left div.dt-column-header,
+table.dataTable td.dt-left div.dt-column-footer {
+  flex-direction: row;
+}
 table.dataTable th.dt-center,
 table.dataTable td.dt-center {
   text-align: center;
@@ -300,6 +307,12 @@ table.dataTable td.dt-right div.dt-column-footer {
 table.dataTable th.dt-justify,
 table.dataTable td.dt-justify {
   text-align: justify;
+}
+table.dataTable th.dt-justify div.dt-column-header,
+table.dataTable th.dt-justify div.dt-column-footer,
+table.dataTable td.dt-justify div.dt-column-header,
+table.dataTable td.dt-justify div.dt-column-footer {
+  flex-direction: row;
 }
 table.dataTable th.dt-nowrap,
 table.dataTable td.dt-nowrap {
@@ -321,6 +334,16 @@ table.dataTable thead td.dt-head-left,
 table.dataTable tfoot th.dt-head-left,
 table.dataTable tfoot td.dt-head-left {
   text-align: left;
+}
+table.dataTable thead th.dt-head-left div.dt-column-header,
+table.dataTable thead th.dt-head-left div.dt-column-footer,
+table.dataTable thead td.dt-head-left div.dt-column-header,
+table.dataTable thead td.dt-head-left div.dt-column-footer,
+table.dataTable tfoot th.dt-head-left div.dt-column-header,
+table.dataTable tfoot th.dt-head-left div.dt-column-footer,
+table.dataTable tfoot td.dt-head-left div.dt-column-header,
+table.dataTable tfoot td.dt-head-left div.dt-column-footer {
+  flex-direction: row;
 }
 table.dataTable thead th.dt-head-center,
 table.dataTable thead td.dt-head-center,
@@ -350,6 +373,16 @@ table.dataTable tfoot th.dt-head-justify,
 table.dataTable tfoot td.dt-head-justify {
   text-align: justify;
 }
+table.dataTable thead th.dt-head-justify div.dt-column-header,
+table.dataTable thead th.dt-head-justify div.dt-column-footer,
+table.dataTable thead td.dt-head-justify div.dt-column-header,
+table.dataTable thead td.dt-head-justify div.dt-column-footer,
+table.dataTable tfoot th.dt-head-justify div.dt-column-header,
+table.dataTable tfoot th.dt-head-justify div.dt-column-footer,
+table.dataTable tfoot td.dt-head-justify div.dt-column-header,
+table.dataTable tfoot td.dt-head-justify div.dt-column-footer {
+  flex-direction: row;
+}
 table.dataTable thead th.dt-head-nowrap,
 table.dataTable thead td.dt-head-nowrap,
 table.dataTable tfoot th.dt-head-nowrap,
@@ -375,6 +408,10 @@ table.dataTable tbody td.dt-body-justify {
 table.dataTable tbody th.dt-body-nowrap,
 table.dataTable tbody td.dt-body-nowrap {
   white-space: nowrap;
+}
+
+:root {
+  --dt-header-align-items: flex-end;
 }
 
 table.dataTable.table {
@@ -546,14 +583,19 @@ table.dataTable.table-sm > thead > tr td.dt-orderable-asc,
 table.dataTable.table-sm > thead > tr td.dt-orderable-desc,
 table.dataTable.table-sm > thead > tr td.dt-ordering-asc,
 table.dataTable.table-sm > thead > tr td.dt-ordering-desc {
-  padding-right: 20px;
+  padding-right: 4px;
 }
 table.dataTable.table-sm > thead > tr th.dt-orderable-asc span.dt-column-order, table.dataTable.table-sm > thead > tr th.dt-orderable-desc span.dt-column-order, table.dataTable.table-sm > thead > tr th.dt-ordering-asc span.dt-column-order, table.dataTable.table-sm > thead > tr th.dt-ordering-desc span.dt-column-order,
 table.dataTable.table-sm > thead > tr td.dt-orderable-asc span.dt-column-order,
 table.dataTable.table-sm > thead > tr td.dt-orderable-desc span.dt-column-order,
 table.dataTable.table-sm > thead > tr td.dt-ordering-asc span.dt-column-order,
 table.dataTable.table-sm > thead > tr td.dt-ordering-desc span.dt-column-order {
-  right: 5px;
+  right: 4px;
+}
+table.dataTable.table-sm > thead > tr th.dt-type-date span.dt-column-order, table.dataTable.table-sm > thead > tr th.dt-type-numeric span.dt-column-order,
+table.dataTable.table-sm > thead > tr td.dt-type-date span.dt-column-order,
+table.dataTable.table-sm > thead > tr td.dt-type-numeric span.dt-column-order {
+  left: 4px;
 }
 
 div.dt-scroll-head table.table-bordered {
