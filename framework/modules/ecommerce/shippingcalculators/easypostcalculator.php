@@ -23,7 +23,7 @@
  */
 class easypostcalculator extends shippingcalculator
 {
-    private static $version = '7.4.2';  // library version
+    private static $version = '8.2.0';  // library version
     /*
      * Returns the name of the shipping calculator, for use in the Shipping Administration Module
      */
