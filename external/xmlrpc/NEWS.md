@@ -1,3 +1,21 @@
+## XML-RPC for PHP version 4.11.2 - 2025/6/20
+
+* fixed: the Client would not honour the timeout when in Socket mode (issue #127, thanks to @dima-bzzz for PR #84)
+
+* fixed: the Client would use a timeout off by 1 second when in CURL mode
+
+* fixed: the Client would not honour options set via `OPT_EXTRA_SOCKET_OPTS`
+
+* fixed: teach the vm.sh script how to properly configure test envs using Ubuntu versions from xenial (16) to noble (24)
+
+* improved: default the local testing container to using PHP 8.1 on Ubuntu Jammy
+
+* improved: make the vm.sh script more amenable to be used in parallel / quickly switching between different test envs
+
+* improved: added script `tests/ci/matrix.sh` to run the testsuite locally against a matrix of environments, kinda
+  like the test matrix which is run on commit on github
+
+
 ## XML-RPC for PHP version 4.11.1 - 2025/1/17
 
 * fixed: removed one warning emitted by the Server on php 8.4 and later (issue #125, thanks @ziegenberg)

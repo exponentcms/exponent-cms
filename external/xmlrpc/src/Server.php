@@ -437,6 +437,8 @@ class Server
                 header('Content-Length: ' . (int)strlen($payload));
             }
         } else {
+            /// @todo allow the user to easily subclass this in a way which allows the resp. headers to be already sent
+            ///       by now without flagging it as an error. Possibly check for presence of Content-Type header
             $this->getLogger()->error('XML-RPC: ' . __METHOD__ . ': http headers already sent before response is fully generated. Check for php warning or error messages');
         }
 
@@ -461,7 +463,7 @@ class Server
      * @param int $exceptionHandling @see $this->exception_handling
      * @return void
      *
-     * @todo raise a warning if the user tries to register a 'system.' method
+     * @todo raise a warning if the user tries to register a 'system.' method - but allow users to do that
      */
     public function addToMap($methodName, $function, $sig = null, $doc = false, $sigDoc = false, $parametersType = false,
         $exceptionHandling = false)
@@ -1102,7 +1104,8 @@ class Server
         $outAr = array(
             // xml-rpc spec: always supported
             'xmlrpc' => array(
-                'specUrl' => 'http://www.xmlrpc.com/spec', // NB: the spec sits now at http://xmlrpc.com/spec.md
+                // NB: the spec sits now at https://xmlrpc.com/spec.md
+                'specUrl' => 'http://www.xmlrpc.com/spec',
                 'specVersion' => 1
             ),
             // if we support system.xxx functions, we always support multicall, too...
