@@ -612,7 +612,7 @@ if (!defined('FA6_SCRIPT')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    define('SMARTY_VERSION', '4.4.1');  // 4.5.5, 5.4.3
+    define('SMARTY_VERSION', '4.4.1');  // 4.5.5, 5.5.1
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
 }
