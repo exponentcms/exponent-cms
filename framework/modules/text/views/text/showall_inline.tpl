@@ -290,7 +290,7 @@
 
                 skin : '{/literal}{$editor->skin}{literal}',
                 toolbar : mytoolbar,
-                scayt_autoStartup : '{/literal}{$editor->scayt_on}{literal}',
+                scayt_autoStartup : {/literal}{if ($editor->scayt_on)}true{else}talse{/if}{literal},
                 {/literal}{$editor->paste_word}{literal}
                 pasteFromWordPromptCleanup : true,
                 filebrowserBrowseUrl : '{/literal}{link controller="file" action="picker" ajax_action=1 update="ck"}{literal}',
