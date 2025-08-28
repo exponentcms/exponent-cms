@@ -991,8 +991,12 @@ class fileController extends expController {
 //        	echo gt('You must choose at least one table to export.');
 //        } else { // All good
         	$filename = str_replace(
-        		array('__DOMAIN__','__DB__'),
-        		array(str_replace('.','_',HOSTNAME),DB_NAME),
+        		array('__DOMAIN__','__DB__','__DATETIME__','__DATE__','__TIME__'),
+        		array(str_replace('.','_',HOSTNAME),
+                    DB_NAME,date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), time()),
+                    DB_NAME,date(strftime_to_date_format(DISPLAY_DATE_FORMAT), time()),
+                    DB_NAME,date(strftime_to_date_format(DISPLAY_TIME_FORMAT), time()),
+                ),
                 $this->params['filename']);
             if (empty($filename)) {
                 $filename = 'database_' . date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), time());
@@ -1219,8 +1223,12 @@ class fileController extends expController {
         unlink($fname . '.tar');  // remove intermediary .tar file
 
         $filename = str_replace(
-            array('__DOMAIN__','__DB__'),
-            array(str_replace('.','_',HOSTNAME),DB_NAME),
+            array('__DOMAIN__','__DB__','__DATETIME__','__DATE__','__TIME__'),
+            array(str_replace('.','_',HOSTNAME),
+                  DB_NAME,date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), time()),
+                  DB_NAME,date(strftime_to_date_format(DISPLAY_DATE_FORMAT), time()),
+                  DB_NAME,date(strftime_to_date_format(DISPLAY_TIME_FORMAT), time()),
+              ),
             $this->params['filename']);
         if (empty($filename)) {
             $filename = 'files_' . date(strftime_to_date_format(DISPLAY_DATETIME_FORMAT), time());
