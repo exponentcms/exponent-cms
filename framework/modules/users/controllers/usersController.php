@@ -338,11 +338,12 @@ class usersController extends expController {
             //signup email stuff
             if (USER_REGISTRATION_SEND_WELCOME && !empty($u->email)) {
                 $msg = $u->firstname . ", \n\n";
-                $msg .= sprintf(USER_REGISTRATION_WELCOME_MSG, $u->firstname, $u->lastname, $u->username);
+                $msg .= sprintf(USER_REGISTRATION_WELCOME_MSG_HTML, $u->firstname, $u->lastname, $u->username);
 
                 $mail = new expMail();
                 $mail->quickSend(array(
-                    'text_message' => $msg,
+                    'html_message'=>$msg,
+                    'text_message'=>expString::html2text($msg),
                     'to'           => array(trim($u->email) => trim(user::getUserAttribution($u->id))),
                     'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
                     'subject'      => USER_REGISTRATION_WELCOME_SUBJECT,
@@ -1881,11 +1882,12 @@ class usersController extends expController {
                     $usersdone[] = $userinfo['username'];
                     if (USER_REGISTRATION_SEND_WELCOME && $this->params['sendemail'] && !empty($newuser->email)) {
                         $msg = $newuser->firstname . ", \n\n";
-                        $msg .= sprintf(USER_REGISTRATION_WELCOME_MSG, $newuser->firstname, $newuser->lastname, $newuser->username);
+                        $msg .= sprintf(USER_REGISTRATION_WELCOME_MSG_HTML, $newuser->firstname, $newuser->lastname, $newuser->username);
                         $msg .= "/n/nYour new password is: ".$userinfo['clearpassword'];
                         $mail = new expMail();
                         $mail->quickSend(array(
-                            'text_message' => $msg,
+                            'html_message'=>$msg,
+                            'text_message'=>expString::html2text($msg),
                             'to'           => array(trim($newuser->email) => trim(user::getUserAttribution($newuser->id))),
                             'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
                             'subject'      => USER_REGISTRATION_WELCOME_SUBJECT,
