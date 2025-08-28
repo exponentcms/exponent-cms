@@ -10,6 +10,16 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ---
 
+Version 2.7.3
+-------------
+
+### Address issues in v2.7.2 and add fixes found in v3.0.3
+
+- compatible with PHP v7.4.x, v8.0.x, v8.1.x and v8.2.x
+  - deprecated support for PHP v5.6.x, v7.0.x, v7.1.x, v7.2.x and v7.3.x still exists
+  - support for PHP v8.3.x and later has NOT been tested and can't be guaranteed
+- fixes and tweaks many issues in previous versions
+
 Version 2.7.2
 -------------
 
