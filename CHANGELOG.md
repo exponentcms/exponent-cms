@@ -10,6 +10,17 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ---
 
+Version 3.0.3
+-------------
+
+### Address issues in v3.0.2, incorporate changes found in v2.7.3
+
+- compatible with PHP v8.1.x thru v8.4.x
+  - deprecated support for PHP v7.4.x, v8.0.x still exists
+- add datetime variables to export db/files in lieu of deprecated strftime()
+- allow styled (WYSIWYG) New User Welcome message instead of plain text 
+- fixes and tweaks many issues in previous versions, otherwise is code compatible with v2.7.3
+
 Version 3.0.2
 -------------
 
