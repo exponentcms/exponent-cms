@@ -103,7 +103,7 @@
 			</tr>
 			<tr>
 				<td colspan="5">
-					<div style="border-top: 1px solid #CCC;">{'Use __DOMAIN__ for this website\'s domain name, __DB__ for the site\'s database name and any strftime options for time specification. The EQL extension will be added for you. Any other text will be preserved.'|gettext}<br /></div>
+                    <div style="border-top: 1px solid #CCC;">{'Use __DOMAIN__ for this website\'s domain name, __DB__ for the site\'s database name, and __DATETIME__, __DATE__, or __TIME__. The EQL extension will be added for you. Any other text will be preserved.'|gettext}<br /></div>
 				</td>
 			</tr>
 			<tr>

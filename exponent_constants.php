@@ -644,7 +644,7 @@ if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.17');
 }
 if (!defined('MPDF81_VERSION')) {
-    define('MPDF81_VERSION', '8.2.5');
+    define('MPDF81_VERSION', '8.2.5');  // 8.2.6
 }
 
 if (!defined('DOMPDF8_VERSION')) {
