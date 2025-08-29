@@ -1790,7 +1790,7 @@ class storeController extends expController {
         $search_type = ecomconfig::getConfig('ecom_search_results');
 
         // look for term in full text search
-        $sql = "SELECT DISTINCT(p.id) AS id, p.title, model, sef_url, f.id AS fileid, MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AS score ";
+        $sql = "SELECT DISTINCT(p.id) AS id, ANY_VALUE(p.title) as title, ANY_VALUE(model) as model, ANY_VALUE(sef_url) as sef_url, ANY_VALUE(f.id) AS fileid, MATCH (p.title,p.model,p.body) AGAINST ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AS score ";
         $sql .= "  FROM " . $db->tableStmt('product') . " AS p LEFT JOIN " .
             $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->tableStmt('expFiles') .
             " AS f ON cef.expFiles_id = f.id WHERE ";
@@ -1808,7 +1808,7 @@ class storeController extends expController {
         }
 
         // look for specific term in fields
-        $sql = "SELECT DISTINCT(p.id) AS id, p.title, model, sef_url, f.id AS fileid  FROM " . $db->tableStmt('product') . " AS p LEFT JOIN " .
+        $sql = "SELECT DISTINCT(p.id) AS id, ANY_VALUE(p.title) as title, ANY_VALUE(model) as model, ANY_VALUE(sef_url) as sef_url, ANY_VALUE(f.id) AS fileid  FROM " . $db->tableStmt('product') . " AS p LEFT JOIN " .
             $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->tableStmt('expFiles') .
             " AS f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type IS NULL OR p.active_type=1) AND ';
@@ -1825,7 +1825,7 @@ class storeController extends expController {
         }
 
         // look for begins with term in fields
-        $sql = "SELECT DISTINCT(p.id) AS id, p.title, model, sef_url, f.id AS fileid  FROM " . $db->tableStmt('product') . " AS p LEFT JOIN " .
+        $sql = "SELECT DISTINCT(p.id) AS id, ANY_VALUE(p.title) as title, ANY_VALUE(model) as model, ANY_VALUE(sef_url) as sef_url, ANY_VALUE(f.id) AS fileid  FROM " . $db->tableStmt('product') . " AS p LEFT JOIN " .
             $db->tableStmt('content_expFiles') . " AS cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->tableStmt('expFiles') .
             " AS f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type IS NULL OR p.active_type=1) AND ';
@@ -1859,7 +1859,8 @@ class storeController extends expController {
                 }
             }
         }
-        usort($res, 'sortSearch');
+        if (!empty($res))
+            usort($res, 'sortSearch');
 
         $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
