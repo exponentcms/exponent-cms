@@ -25,7 +25,7 @@
 class upgrade_newusermsg extends upgradescript
 {
     protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
-    protected $to_version = '2.7.2';
+    protected $to_version = '3.0.2';
     public $priority = 78; // set this to a low priority
 
     /**
