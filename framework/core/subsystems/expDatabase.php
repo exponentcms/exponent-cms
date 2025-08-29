@@ -208,7 +208,8 @@ class expDatabase {
                                             $rev_aggressive = true;
                                         }
                                     }
-   									if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
+   									if (is_readable("$dirpath/$tablename.info.php"))
+                                           $info = include("$dirpath/$tablename.info.php");
    									if (!$db->tableExists($tablename)) {
    										foreach ($db->createTable($tablename, $dd, $info) as $key=>$status) {
    											$tables[$key] = $status;
@@ -1718,7 +1719,7 @@ abstract class database {
      * @param int|string $workflow is workflow turned on (or force)
      */
     public function trim_revisions($table, $id, $num, $workflow=ENABLE_WORKFLOW) {
-        if ($workflow && $num) {
+        if (1) { //($workflow && $num) {
             $max_revision = $this->max($table, 'revision_id', null, 'id='.$id);
             $max_approved = $this->max($table, 'revision_id', null, 'id='.$id.' AND approved=1');
             $min_revision = $this->min($table, 'revision_id', null, 'id='.$id);
