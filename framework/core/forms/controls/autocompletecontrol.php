@@ -88,19 +88,21 @@ class autocompletecontrol extends formcontrol {
         });
         "; // end JS
 
-        expCSS::pushToHead(array(
-    	    "unique"=>"autocompletecontrol$name",
-    	    "css"=>"
+        if (bs4() || bs5()) {
+            expCSS::pushToHead(array(
+                    "unique" => "autocompletecontrol$name",
+                    "css" => "
                 .yui3-aclist {
                     z-index: 99!important;
                     overflow-x: auto;
                 }
-                #".$name."_autoc {
-                    width: " . $this->wwidth.";
+                #" . $name . "_autoc {
+                    width: " . $this->wwidth . ";
                 }
     	    "
-    	    )
-    	);
+                )
+            );
+        }
 
         expJavascript::pushToFoot(array(
             "unique"=>'ac'.$name,
