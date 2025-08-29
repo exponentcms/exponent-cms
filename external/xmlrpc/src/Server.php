@@ -437,6 +437,8 @@ class Server
                 header('Content-Length: ' . (int)strlen($payload));
             }
         } else {
+            /// @todo allow the user to easily subclass this in a way which allows the resp. headers to be already sent
+            ///       by now without flagging it as an error. Possibly check for presence of Content-Type header
             $this->getLogger()->error('XML-RPC: ' . __METHOD__ . ': http headers already sent before response is fully generated. Check for php warning or error messages');
         }
 
@@ -461,7 +463,7 @@ class Server
      * @param int $exceptionHandling @see $this->exception_handling
      * @return void
      *
-     * @todo raise a warning if the user tries to register a 'system.' method
+     * @todo raise a warning if the user tries to register a 'system.' method - but allow users to do that
      */
     public function addToMap($methodName, $function, $sig = null, $doc = false, $sigDoc = false, $parametersType = false,
         $exceptionHandling = false)
@@ -1102,7 +1104,8 @@ class Server
         $outAr = array(
             // xml-rpc spec: always supported
             'xmlrpc' => array(
-                'specUrl' => 'http://www.xmlrpc.com/spec', // NB: the spec sits now at http://xmlrpc.com/spec.md
+                // NB: the spec sits now at https://xmlrpc.com/spec.md
+                'specUrl' => 'http://www.xmlrpc.com/spec',
                 'specVersion' => 1
             ),
             // if we support system.xxx functions, we always support multicall, too...
@@ -1416,9 +1419,13 @@ class Server
             return;
         }
 
-        //if ($errCode != E_NOTICE && $errCode != E_WARNING && $errCode != E_USER_NOTICE && $errCode != E_USER_WARNING)
-        if ($errCode != E_STRICT) {
+        // From PHP 8.4 the E_STRICT constant has been deprecated and will emit deprecation notices.
+        // PHP core and core extensions since PHP 8.0 and later do not emit E_STRICT notices at all.
+        // On PHP 7 series before PHP 7.4, some functions conditionally emit E_STRICT notices.
+        if (PHP_VERSION_ID >= 70400) {
             static::error_occurred($errString);
+        } elseif ($errCode != E_STRICT) {
+                static::error_occurred($errString);
         }
 
         // Try to avoid as much as possible disruption to the previous error handling mechanism in place

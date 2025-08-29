@@ -66,12 +66,12 @@
                 {/if}
                 {if $permissions.manage}
                     {if !empty($form->id)}
-                        {icon class=configure action=design_form id=$form->id text="Design Form"|gettext}
+                        {icon class=configure action=design_form id=$form->id text="Design Form"|gettext title=$form->title}
                         {if !bs()}
                             &#160;&#160;|&#160;&#160;
                         {/if}
                     {/if}
-                    {icon action=manage select=true text="Manage Forms"|gettext}
+                    {icon action=manage select=true text="Manage Forms"|gettext title=$form->title}
                 {/if}
             </div>
         {/permissions}

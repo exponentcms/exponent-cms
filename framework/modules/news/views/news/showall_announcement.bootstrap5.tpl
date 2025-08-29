@@ -64,7 +64,7 @@
         <div id="alert-{$item->sef_url}" class="item card{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}{if newsController::getVar('alert-'|cat:$item->sef_url)} d-none{/if}">
             <div class="card-header bg-{if $item->is_featured}danger{else}{cycle values="info,success"}{/if}">
                 {if $config.hidefeatured && $item->is_featured}
-                    <span class="float-end clickable close-icon" data-effect="fadeOut"><i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-times{else}fas fa-times{/if}"></i></span>
+                    <span class="float-end clickable close-icon" title="Click to Hide"|gettext data-effect="fadeOut"><i class="{if $smarty.const.USE_BOOTSTRAP_ICONS}bi-times{else}fas fa-times{/if}"></i></span>
                 {/if}
                 <{$config.item_level|default:'h2'} class="card-title text-white">{$item->title}</{$config.item_level|default:'h2'}>
             </div>

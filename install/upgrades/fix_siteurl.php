@@ -37,7 +37,7 @@ class fix_siteurl extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "To prevent a Host Header Injection, we need to know our site url.  This script site url."; }
+	function description() { return "To prevent a Host Header Injection, we need to know our site url.  This script adds the site url."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run

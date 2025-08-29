@@ -108,7 +108,7 @@
                     {group label="New User Welcome Message"|gettext}
                         {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_WELCOME]" label="Send an email to the user after registering?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_WELCOME value=1}
                         {control type="text" name="sc[USER_REGISTRATION_WELCOME_SUBJECT]" label="Welcome Email Subject"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_SUBJECT}
-                        {control type="textarea" name="sc[USER_REGISTRATION_WELCOME_MSG]" label="Welcome Email Content"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_MSG}
+                        {control type="html" name="sc[USER_REGISTRATION_WELCOME_MSG_HTML]" label="Welcome Email Content"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_MSG_HTML description='You may use variables %1$s for first name, %2$s for last name, or %3$s for username.'|gettext}
                     {/group}
                     {if function_exists('ldap_connect')}
                     {group label="LDAP Authentication"|gettext}

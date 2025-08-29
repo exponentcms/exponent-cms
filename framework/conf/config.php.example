@@ -58,7 +58,7 @@ define("USER_REGISTRATION_NOTIF_SUBJECT",'New User Registration From Website');
 define("USER_REGISTRATION_ADMIN_EMAIL",'');
 define("USER_REGISTRATION_SEND_WELCOME",'0');
 define("USER_REGISTRATION_WELCOME_SUBJECT",'Welcome to our website!');
-define("USER_REGISTRATION_WELCOME_MSG",'');
+define("USER_REGISTRATION_WELCOME_MSG_HTML",exponent_unhtmlentities(''));
 define("USE_LDAP",'0');
 define("LDAP_SERVER",'not_configured');
 define("LDAP_BASE_CONTEXT",'not_configured');

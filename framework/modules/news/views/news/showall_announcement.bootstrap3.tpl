@@ -64,7 +64,7 @@
         <div class="item panel panel-{if $item->is_featured}danger{else}{cycle values="info,success"}{/if}{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}{if newsController::getVar('alert-'|cat:$item->sef_url)} hidden{/if}">
             <div class="panel-heading">
                 {if $config.hidefeatured && $item->is_featured}
-                    <span class="pull-right clickable close-icon" data-effect="fadeOut"><i class="fa fa-times"></i></span>
+                    <span class="pull-right clickable close-icon" title="Click to Hide"|gettext data-effect="fadeOut"><i class="fa fa-times"></i></span>
                 {/if}
                 <{$config.item_level|default:'h2'} class="panel-title">{$item->title}</{$config.item_level|default:'h2'}>
             </div>

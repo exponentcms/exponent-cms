@@ -74,9 +74,13 @@ class listbuildercontrol extends formcontrol {
 			if (USE_BOOTSTRAP_ICONS) {
                 $arrow_r = 'bi bi-arrow-right';
                 $arrow_l = 'bi bi-arrow-left';
+                $arrow_u = 'bi bi-arrow-up';
+                $arrow_d = 'bi bi-arrow-down';
             } else {
                 $arrow_r = 'fas fa-fw fa-arrow-right';
                 $arrow_l = 'fas fa-fw fa-arrow-left';
+                $arrow_u = 'fas fa-fw fa-arrow-up';
+                $arrow_d = 'fas fa-fw fa-arrow-down';
             }
 			if($process === "copy") {
 				$html .= "<button type='button' class='btn btn-outline-secondary' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;,&quot;copy&quot;); return false' ><i class='".$arrow_r."' style='display:inline;'></i>&nbsp;<i class='".$arrow_r."' style='display:inline;'></i></button>";
@@ -97,8 +101,8 @@ class listbuildercontrol extends formcontrol {
 			}
 			$html .= "</select>";
             $html .= "</td><td width='20%' style='border:none;'>
-                             <div class=\"btn btn-outline-secondary moveup\" title='Move Selected Item Up'><i class=\"fas fa-arrow-up\"></i></div><br>
-                             <div class=\"btn btn-outline-secondary movedown\" title='Move Selected Item Down'><i class=\"fas fa-arrow-down\"></i></div>";
+                         <div class=\"btn btn-outline-secondary moveup\" title='Move Selected Item Up'><i class=\"".$arrow_u."\"></i></div><br>
+                         <div class=\"btn btn-outline-secondary movedown\" title='Move Selected Item Down'><i class=\"".$arrow_d."\"></i></div>";
             $html .= "</td></tr></table>";
 //			$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
 		}

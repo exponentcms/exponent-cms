@@ -407,7 +407,7 @@ function smarty_function_control($params, &$smarty) {
                             echo '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
                             if (ANTI_SPAM_CONTROL === 'recaptcha') { // reCaptcha v2 Checkbox
                                 if (isset($params['horizontal']) && bs()) {
-                                   echo "<div class=\"offset-sm-2 col-sm-10\"";
+                                   echo "<div class=\"offset-sm-2 col-sm-10\">";
                                 }
                                 //create unique recaptcha checkbox blocks
                                 $randomNumber = mt_rand(10000000, 99999999);

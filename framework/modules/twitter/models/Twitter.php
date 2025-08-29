@@ -81,6 +81,9 @@ class Twitter
      */
     protected $returnAsArray = true;
 
+    public $supports_revisions = false;  // simple flag to turn on revisions/approval support for module
+    public $needs_approval = false;  // flag for no approval authority
+
 // class methods
     /**
      * Default constructor
