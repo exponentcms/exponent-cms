@@ -24,11 +24,11 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
         /** exdoc
          * This is the major version number of Exponent; the 2 in 2.34.2-beta3
          */
-        define('EXPONENT_VERSION_MAJOR', 3);
+        define('EXPONENT_VERSION_MAJOR', 2);
         /** exdoc
          * This is the minor version number of Exponent; the 34 in 2.34.2-beta3
          */
-        define('EXPONENT_VERSION_MINOR', 0);
+        define('EXPONENT_VERSION_MINOR', 7);
         /** exdoc
          * This is the revision version number of Exponent; the 2 in 2.34.2-beta3
          */
