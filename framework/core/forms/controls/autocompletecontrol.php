@@ -28,7 +28,8 @@ if (!defined('EXPONENT')) exit('');
 class autocompletecontrol extends formcontrol {
 
     var $placeholder = "";
-    var $wwidth = "320px";
+    var $wwidth = "320px";  // widget/input width
+    var $lwidth = "320px";  // dropdown list width
     var $controller = "";   // controller to call
     var $action = "";       // action to call
     var $searchmodel = "";  // model to search
@@ -44,7 +45,11 @@ class autocompletecontrol extends formcontrol {
 	}
 
     function controlToHTML($name,$label) {
-        $html = '<div class="yui3-skin-sam" style="z-index: 999;">';
+        $html = "";
+        if (bs4() || bs5()) {
+            $html .= "<div class=\"col\">";
+        }
+        $html .= '<div class="yui3-skin-sam" style="z-index: 999;">';
         $ac_input = new genericcontrol();
         $ac_input->type = 'search';
         $ac_input->id = $name  . '_autoc';
@@ -53,12 +58,15 @@ class autocompletecontrol extends formcontrol {
         $ac_input->placeholder = $this->placeholder;
         $html .= $ac_input->toHTML(null, "$name");
         $html .= '</div>';
+        if (bs4() || bs5()) {
+            $html .= '</div>';
+        }
 
         $script = "
         YUI(EXPONENT.YUI3_CONFIG).use('*', function (Y) {
             var autocomplete = Y.one('#".$name."_autoc');
             autocomplete.plug(Y.Plugin.AutoComplete, {
-                width:'".$this->wwidth."',
+                width:'".$this->lwidth."',
                 maxResults: ".$this->maxresults.",
                 resultListLocator: 'data',  // 'data' field of json response
                 resultTextLocator: 'title', // the field to place in the input after selection
@@ -80,19 +88,21 @@ class autocompletecontrol extends formcontrol {
         });
         "; // end JS
 
-        expCSS::pushToHead(array(
-    	    "unique"=>"autocompletecontrol$name",
-    	    "css"=>"
+        if (bs4() || bs5()) {
+            expCSS::pushToHead(array(
+                    "unique" => "autocompletecontrol$name",
+                    "css" => "
                 .yui3-aclist {
                     z-index: 99!important;
                     overflow-x: auto;
                 }
-                #".$name."_autoc {
-                    width: " . $this->wwidth.";
+                #" . $name . "_autoc {
+                    width: " . $this->wwidth . ";
                 }
     	    "
-    	    )
-    	);
+                )
+            );
+        }
 
         expJavascript::pushToFoot(array(
             "unique"=>'ac'.$name,

@@ -49,13 +49,17 @@ function smarty_function_img($params,&$smarty)
     // set html dimension attributes
     $dims = '';
     if (isset($params['w']) && isset($params['h']) && isset($params['zc'])) {
+        if ($params['h'] === '0')
+            $params['h'] = '';
         $dims = ' height="' . $params['h'] . '" width="' . $params['w'] . '"';
-	 } elseif (isset($params['w']) && isset($params['h'])) {
-		 $dims = ' height="'.$params['h'].'" width="'.$params['w'].'"';
-	 } elseif (isset($params['w'])) {
-		 $dims = ' width="'.$params['w'].'"';
-	 } elseif (isset($params['h'])) {
-		 $dims = ' height="'.$params['h'].'"';
+	} elseif (isset($params['w']) && isset($params['h'])) {
+        if ($params['h'] === '0')
+            $params['h'] = '';
+	    $dims = ' height="'.$params['h'].'" width="'.$params['w'].'"';
+    } elseif (isset($params['w'])) {
+	    $dims = ' width="'.$params['w'].'"';
+    } elseif (isset($params['h'])) {
+        $dims = ' height="'.$params['h'].'"';
     }
 
     if (!isset($params['q']) && defined('THUMB_QUALITY'))

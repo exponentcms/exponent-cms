@@ -52,9 +52,7 @@ class upgrade_newusermsg extends upgradescript
      */
     function needed()
     {
-        $tmp = (empty(USER_REGISTRATION_WELCOME_MSG_HTML) && !empty(USER_REGISTRATION_WELCOME_MSG));
-        $tmp1 = !defined('USER_REGISTRATION_WELCOME_MSG_HTML');
-        return (!defined('USER_REGISTRATION_WELCOME_MSG_HTML') || (empty(USER_REGISTRATION_WELCOME_MSG_HTML) && !empty(USER_REGISTRATION_WELCOME_MSG)));
+        return empty(USER_REGISTRATION_WELCOME_MSG_HTML);
     }
 
     /**
@@ -66,7 +64,6 @@ class upgrade_newusermsg extends upgradescript
     function upgrade()
     {
         expSettings::change('USER_REGISTRATION_WELCOME_MSG_HTML', USER_REGISTRATION_WELCOME_MSG);
-
         return gt('New User Welcome Message was Upgraded.');
     }
 }
