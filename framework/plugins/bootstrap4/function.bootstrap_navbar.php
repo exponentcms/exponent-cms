@@ -108,7 +108,7 @@ function build_menu($page, $params) {
             $menu .= '"><a href="' . $page->url . '" data-target="dropdownMenu' . $page->id . '" class="nav-link dropdown-toggle" href="' . $page->url . '" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"' . ($page->new_window ? ' target="_blank"' : '') . ' title="' . $page->title . '">' . $menu_item;
             $menu .= '<b class="caret"></b>';
         }
-        $menu .= '</a>'."\n".'<ul class="dropdown-menu'.($params['menualign']==='right'?' float-right':'').'" role="menu" id="dropdownMenu' . $page->id . ' aria-labelledby="dropdownMenu' . $page->id . '">'."\n";
+        $menu .= '</a>'."\n".'<ul class="dropdown-menu'.($params['menualign']==='right'?' float-right':'').'" role="menu" id="dropdownMenu' . $page->id . '" aria-labelledby="dropdownMenu' . $page->id . '">'."\n";
         if ($page->url !== "#") {  // we also need a 'menu item' for active parent pages
             $topmenu = new stdClass();
             $topmenu->id = $page->id;
@@ -147,9 +147,7 @@ function build_menu($page, $params) {
         <li class="dropdown' . (empty($page->width) ? ' yamm-fw' : '') . ($page->class === "right" ? ' float-right ' : '') . '">';
         $menu .= '<a href="#" id="dropdownMenu' . $page->id . '" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="'. $page->title .'">'. $menu_item . '<b class="caret"></b></a>';
         $menu .= '<ul class="dropdown-menu" style="right:0;" role="menu" aria-labelledby="dropdownMenu' . $page->id . '"><li role="menuitem"><div class="yamm-content">';
-        if (bs4() || bs5())
-            $menu .= '<div class="row"><div class="col-sm-12">';
-        elseif (bs3())
+        if (bs3() || bs4() || bs5())
             $menu .= '<div class="row"><div class="col-sm-12">';
         elseif (bs2())
             $menu .= '<div class="row-fluid"><div class="span12">';
