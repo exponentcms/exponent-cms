@@ -591,7 +591,7 @@ if (!defined('BS4_SCRIPT')) {
     define('BS4_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>');
 } // cdn Bootstrap v4.x script
 if (!defined('BS5_SCRIPT')) {
-    define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>');
+    define('BS5_SCRIPT', '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>');
 } // cdn Bootstrap v5.x script
 /**
  * Font-Awesome CDN links
@@ -612,7 +612,7 @@ if (!defined('FA6_SCRIPT')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    define('SMARTY_VERSION', '4.4.1');  // 4.5.5, 5.5.1
+    define('SMARTY_VERSION', '4.4.1');  // 4.5.6, 5.5.2
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
 }
