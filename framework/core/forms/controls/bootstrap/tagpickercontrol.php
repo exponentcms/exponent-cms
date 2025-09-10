@@ -109,8 +109,10 @@ class tagpickercontrol extends formcontrol {
 
             $('#" . $this->id . "').attr('data-role', 'tagsinput').tagsinput({
         ";
-        if (bs4() || bs5())
+        if (bs4())
             $script .= "    tagClass: 'badge badge-info',";
+        if (bs5())
+            $script .= "    tagClass: 'badge text-bg-info',";
         $script .= "
                 typeaheadjs: {
                     name: 'exptags',
