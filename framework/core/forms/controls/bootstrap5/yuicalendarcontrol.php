@@ -107,7 +107,7 @@ class yuicalendarcontrol extends formcontrol {
 //        $date_input->name = $idname;
 //        $date_input->disabled = 'disabled';
 //        $html = "<!-- cke lazy -->";
-        $html = '<div class="input-group input-append' . $control_offset . '" id="'.$idname.'dateRangePicker" data-td-target-input="nearest">'.$date_input->toHTML(null, $name).'</div>';
+        $html = '<div class="input-append' . $control_offset . '" id="'.$idname.'dateRangePicker" data-td-target-input="nearest">'.$date_input->toHTML(null, $name).'</div>';
         if (!empty($this->description))
             $html .= "<div id=\"" . $name . "HelpBlock\" class=\"" . $label_offset . "form-text text-muted\">".$this->description."</div>";
 //        $html .= "
@@ -134,29 +134,25 @@ class yuicalendarcontrol extends formcontrol {
                             clock: " . ($this->showtime ? 'true' : 'false') . ",
                         },
                         inline: true,
-                        sideBySide: " . ($this->showdate && $this->showtime ? 'true' : 'false') . ",
+                        sideBySide: " . ($this->showdate && $this->showtime ? 'true' : 'false') . ",";
+        if (USE_BOOTSTRAP_ICONS) {
+            $script .= "
+                        icons: {
+                            time: 'bi bi-clock',
+                            date: 'bi bi-calendar3',
+                            up: 'bi bi-arrow-up',
+                            down: 'bi bi-arrow-down',
+                            previous: 'bi bi-chevron-left',
+                            next: 'bi bi-chevron-right',
+                            today: 'bi bi-calendar-check',
+                            clear: 'bi bi-trash',
+                            close: 'bi bi-x',
+                        },";
+        }
+        $script .= "
                     }
                 });
-
-                if (" . (USE_BOOTSTRAP_ICONS ? '1' : '0') . ") {
-                    tclock.updateOptions({
-                        display: {
-                            icons: {
-                                time: 'bi bi-clock',
-                                date: 'bi bi-calendar3',
-                                up: 'bi bi-arrow-up',
-                                down: 'bi bi-arrow-down',
-                                previous: 'bi bi-chevron-left',
-                                next: 'bi bi-chevron-right',
-                                today: 'bi bi-calendar-check',
-                                clear: 'bi bi-trash',
-                                close: 'bi bi-x',
-                            },
-                        }
-                    });
-                }
-            });
-        ";
+            });";
 
         global $less_vars;
 
