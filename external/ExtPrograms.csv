@@ -5,7 +5,7 @@ Doctrine Deprecations,1.1.2,github.com/doctrine/deprecations,1.1.5,needed by Doc
 EmailValidator,3.2.6,github.com/egulias/EmailValidator,3.2.6/4.0.4,needed by swiftmailer v6; change folder structure and add autoloader to main file
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
-Smarty,3.1.27/4.4.1,smarty.net,4.5.5/5.5.2,
+Smarty,3.1.27/4.4.1,smarty.net,4.5.6/5.5.2,
 phpthumb,1.7.23exp,github.com/JamesHeinrich/phpThumb,1.7.23,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.23,github.com/JamesHeinrich/getID3,1.9.23,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.4/4.0.1,modify config.php
@@ -33,11 +33,11 @@ popper.js/floating-ui,1.16.1,github.com/FezVrasta/popper.js,1.16.1/2.11.8,needed
 Bootswatch2,2.3.2,bootswatch.com,2.3.2,
 Bootswatch3,3.4.1+1,bootswatch.com,3.4.1+1,change 1st line variables.less comment to output to .css file
 Bootswatch4,4.6.2,bootswatch.com,4.6.2,change 1st line variables.scss comment to output to .css file
-Bootswatch5,5.3.7,bootswatch.com,5.3.7,change 1st line variables.scss comment to output to .css file
+Bootswatch5,5.3.8,bootswatch.com,5.3.8,change 1st line variables.scss comment to output to .css file
 Font-Awesome3,3.2.1,fontawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
-Font-Awesome6,6.7.2,fontawesome.com,6.7.2/7.0.0,add import all 'fonts' sheets into main sheet
+Font-Awesome6,6.7.2,fontawesome.com,6.7.2/7.0.1,add import all 'fonts' sheets into main sheet
 Bootstrap-Icons,1.13.1,icons.getbootstrap.com,1.13.1,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
 Adminer,4.8.1exp,www.adminer.org,4.8.4evo,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
