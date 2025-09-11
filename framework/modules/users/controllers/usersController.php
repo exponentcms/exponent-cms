@@ -45,7 +45,8 @@ class usersController extends expController {
     );
 
     public $requires_login = array(
-        'change_password'    => 'You may not change a password without being logged in.'
+        'change_password'    => 'You may not change a password without being logged in.',
+        'edit'             => 'Edit Users',
     );
 
     static function displayname() {
@@ -68,6 +69,16 @@ class usersController extends expController {
         return true;
     }
 
+    // create a permission specific to the module; return true grants permission, false continues with other permission checks
+    public static function checkPermissions($permission, $location) {
+        global $user;
+
+        if (!empty($user->id) && $permission === 'edit') {
+            // users must be allowed to edit their own profiles
+            return true;
+        }
+        return false;
+    }
     public function show() {
         global $user;
 
