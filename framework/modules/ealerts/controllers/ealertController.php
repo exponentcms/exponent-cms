@@ -24,7 +24,7 @@
 class ealertController extends expController {
     public $basemodel_name = 'expeAlerts';
     protected $manage_permissions = array(
-        'send'=>'Send E-Alert',
+//        'send'=>'Send E-Alert', requires Manage permission to send eAlert
     );
 	public $remove_configs = array(
         'aggregation',

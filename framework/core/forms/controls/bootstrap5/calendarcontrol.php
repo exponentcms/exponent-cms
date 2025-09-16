@@ -148,29 +148,25 @@ class calendarcontrol extends formcontrol {
                             calendar: " . ($this->showdate ? 'true' : 'false') . ",
                             clock: " . ($this->showtime ? 'true' : 'false') . ",
                         },
-                        sideBySide: " . ($this->showdate && $this->showtime ? 'true' : 'false') . ",
+                        sideBySide: " . ($this->showdate && $this->showtime ? 'true' : 'false') . ",";
+        if (USE_BOOTSTRAP_ICONS) {
+            $script .= "
+                        icons: {
+                            time: 'bi bi-clock',
+                            date: 'bi bi-calendar3',
+                            up: 'bi bi-arrow-up',
+                            down: 'bi bi-arrow-down',
+                            previous: 'bi bi-chevron-left',
+                            next: 'bi bi-chevron-right',
+                            today: 'bi bi-calendar-check',
+                            clear: 'bi bi-trash',
+                            close: 'bi bi-x',
+                        },";
+        }
+        $script .= "
                     }
                 });
-
-                if (" . (USE_BOOTSTRAP_ICONS ? '1' : '0') . ") {
-                    tclock.updateOptions({
-                        display: {
-                            icons: {
-                                time: 'bi bi-clock',
-                                date: 'bi bi-calendar3',
-                                up: 'bi bi-arrow-up',
-                                down: 'bi bi-arrow-down',
-                                previous: 'bi bi-chevron-left',
-                                next: 'bi bi-chevron-right',
-                                today: 'bi bi-calendar-check',
-                                clear: 'bi bi-trash',
-                                close: 'bi bi-x',
-                            },
-                        }
-                    });
-                }
-            });
-        ";
+            });";
 
         global $less_vars;
 

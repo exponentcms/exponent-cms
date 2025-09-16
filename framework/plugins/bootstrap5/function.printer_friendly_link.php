@@ -50,7 +50,7 @@ function smarty_function_printer_friendly_link($params,&$smarty) {
         } else {
             $printclass = 'print';
         }
-        $text = '<i class="' . expTheme::buttonIcon($printclass)->class . ' ' . expTheme::iconSize().'"></i> ' . (isset($params['text']) ? $params['text'] : gt('View Printer Friendly'));
+        $text = '<i class="' . expTheme::buttonIcon('rss')->prefix . expTheme::buttonIcon($printclass)->class . ' ' . expTheme::iconSize().'"></i> ' . (isset($params['text']) ? $params['text'] : gt('View Printer Friendly'));
 
         // spit out the link
         echo $prepend, $router->printerFriendlyLink($text, $class, 800, 600, $view);

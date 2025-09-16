@@ -52,7 +52,7 @@ abstract class expController {
         'export'    => 'Export Items'
     );
     protected $remove_permissions = array();  // $permissions not applicable for this module from above list
-    protected $add_permissions = array();  // additional $permissions processed and visible  for this module
+    protected $add_permissions = array();  // additional $permissions processed and visible for this module
     protected $manage_permissions = array();  // additional actions requiring manage permission in addition to $m_permissions
     public $requires_login = array();  // actions/methods (lower case ONLY) which ONLY require user be logged in to access...$permissions take priority
 
