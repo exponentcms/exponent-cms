@@ -42,7 +42,7 @@
                             {control type="checkbox" name="ealerts[]" label=" " value=$ealert->id checked=$active}
                         </td>
                         <td>
-                            <{$config.item_level|default:'h2'}>{$ealert->ealert_title}</{$config.item_level|default:'h2'}>
+                            <strong>{$ealert->ealert_title}</strong>
                             <p>{$ealert->ealert_desc}</p>
                         </td>
                     </tr>
