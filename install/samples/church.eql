@@ -370,7 +370,7 @@ RECORD:O:8:"stdClass":2:{s:6:"module";s:9:"container";s:6:"active";s:1:"1";}
 RECORD:O:8:"stdClass":2:{s:6:"module";s:10:"navigation";s:6:"active";s:1:"1";}
 RECORD:O:8:"stdClass":2:{s:6:"module";s:5:"event";s:6:"active";s:1:"1";}
 RECORD:O:8:"stdClass":2:{s:6:"module";s:9:"countdown";s:6:"active";s:1:"1";}
-RECORD:O:8:"stdClass":2:{s:6:"module";s:10:"simplePoll";s:6:"active";s:1:"1";}
+RECORD:O:8:"stdClass":2:{s:6:"module";s:10:"simplepoll";s:6:"active";s:1:"1";}
 RECORD:O:8:"stdClass":2:{s:6:"module";s:4:"motd";s:6:"active";s:1:"1";}
 
 TABLE:motd

@@ -21,7 +21,7 @@
  * @package Modules
  */
 
-class simplePollController extends expController {
+class simplepollController extends expController {
 	public $basemodel_name = 'simplepoll_question';
 	public $useractions = array(
         'showall'=>'Show Poll Question',
