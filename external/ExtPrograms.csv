@@ -6,7 +6,7 @@ EmailValidator,3.2.6,github.com/egulias/EmailValidator,3.2.6/4.0.4,needed by swi
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.27/4.4.1,smarty.net,4.5.6/5.5.2,
-phpthumb,1.7.23exp,github.com/JamesHeinrich/phpThumb,1.7.23,phpThumb.config.php - we also allow &amp in parsing and err command
+phpthumb,1.7.23exp,github.com/JamesHeinrich/phpThumb,1.7.24,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.23,github.com/JamesHeinrich/getID3,1.9.23,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.4/4.0.1,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
@@ -53,7 +53,7 @@ CKEditor,4.21.0,ckeditor.com,4.22.1/45.2.0,"add fieldinsert (exp), autosave, sou
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
 TinyMCE v5,5.10.9,tiny.cloud,5.10.9/6.8.6/8.0.2,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.9,github.com/moxiecode/plupload,2.3.9/3.1.5,"needed for TinyMCE Quick Upload, placed in that plugin folder"
-elFinder,2.1.65,elfinder.org,2.1.65,customized in /framework with Exponent php classes and .js files
+elFinder,2.1.66,elfinder.org,2.1.66,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
 jQuery2,2.2.4,jquery.com,2.2.4,
 jQuery2 Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon

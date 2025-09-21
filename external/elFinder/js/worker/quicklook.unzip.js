@@ -59,7 +59,7 @@ switch (type) {
     self.res.files = tarFiles(self.bzip2.simple(self.bzip2.array(bin)));
     break;
   default:
-
+    
     break;
 }
 
