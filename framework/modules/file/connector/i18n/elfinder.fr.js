@@ -178,6 +178,7 @@
 			'btnCancel' : 'Annuler',
 			'btnNo'     : 'Non',
 			'btnYes'    : 'Oui',
+			'btnDiscard': 'Discard changes',
 			'btnMount'  : 'Monter',  // added 18.04.2012
 			'btnApprove': 'Aller à $1 & approuver', // from v2.1 added 26.04.2012
 			'btnUnmount': 'Démonter', // from v2.1 added 30.04.2012
@@ -526,6 +527,12 @@
 			'kindTTF'         : 'Police True Type',
 			'kindOTF'         : 'Police Open Type',
 			'kindRPM'         : 'Package RPM',
+			// fonts
+			'kindFont'        : 'Police',
+			'kindSFNT'        : 'Police font',
+			'kindEOT'         : 'Police Embedded Open Type',
+			'kindWOFF'        : 'Police Web Open Font Format',
+			'kindWOFF2'       : 'Police Web Open Font Format 2',
 			// texts
 			'kindText'        : 'Document Text',
 			'kindTextPlain'   : 'Texte non formaté',

@@ -1,5 +1,5 @@
 /**
- * @class elFinder command "rename".
+ * @class elFinder command "rename". 
  * Rename selected file.
  *
  * @author Dmitry (dio) Levashov, dio@std42.ru
@@ -9,20 +9,23 @@ elFinder.prototype.commands.rename = function() {
 	"use strict";
 
 	// set alwaysEnabled to allow root rename on client size
-	this.alwaysEnabled = true;
+	if (this.fm.options.enableRootRename !== false) {
+		this.alwaysEnabled = true;
+	}
 
 	this.syncTitleOnChange = true;
 
 	var self = this,
 		fm = self.fm,
+		enableRootRename = fm.options.enableRootRename !== false,
 		request = function(dfrd, targtes, file, name) {
 			var sel = targtes? [file.hash].concat(targtes) : [file.hash],
 				cnt = sel.length,
 				data = {}, rootNames;
-
+			
 			fm.lockfiles({files : sel});
-
-			if (fm.isRoot(file) && !file.netkey) {
+			
+			if (fm.isRoot(file) && !file.netkey && enableRootRename) {
 				if (!(rootNames = fm.storage('rootNames'))) {
 					rootNames = {};
 				}
@@ -67,7 +70,7 @@ elFinder.prototype.commands.rename = function() {
 					data['q'] = name;
 				}
 			}
-
+			
 			fm.request({
 					data   : data,
 					notify : {type : 'rename', cnt : cnt},
@@ -120,7 +123,7 @@ elFinder.prototype.commands.rename = function() {
 				f1 = fm.file(sel[0]),
 				f2 = fm.file(sel[1]),
 				ext, hint, add;
-
+			
 			ext = splits[1]? ('.' + splits[1]) : '';
 			if (splits[1] && splits[0] === '*') {
 				// change extention
@@ -206,7 +209,7 @@ elFinder.prototype.commands.rename = function() {
 				},
 				radios = checks.find('input:radio').on('change', mkPrev),
 				dialog;
-
+			
 			opts.buttons[fm.i18n('btnApply')] = function() {
 				var vName = getName(),
 					file, targets;
@@ -229,7 +232,7 @@ elFinder.prototype.commands.rename = function() {
 					}
 				});
 			} else {
-				checks.controlgroup({
+				checks.buttonset({
 					create: function(e, ui) {
 						num.prop('checked', true).change();
 					}
@@ -237,9 +240,9 @@ elFinder.prototype.commands.rename = function() {
 			}
 			dialog = self.fmDialog(node, opts);
 		};
-
+	
 	this.noChangeDirOnRemovedCwd = true;
-
+	
 	this.shortcuts = [{
 		pattern : 'f2' + (fm.OS == 'mac' ? ' enter' : '')
 	}, {
@@ -249,16 +252,16 @@ elFinder.prototype.commands.rename = function() {
 			fm.selected().length > 1 && batchRename();
 		}
 	}];
-
+	
 	this.getstate = function(select) {
 		var sel = this.files(select),
 			cnt = sel.length,
 			phash, ext, mime, brk, state, isRoot;
-
+		
 		if (!cnt) {
 			return -1;
 		}
-
+		
 		if (cnt > 1 && sel[0].phash) {
 			phash = sel[0].phash;
 			ext = fm.splitFileExtention(sel[0].name)[1].toLowerCase();
@@ -268,7 +271,7 @@ elFinder.prototype.commands.rename = function() {
 			isRoot = fm.isRoot(sel[0]);
 		}
 
-		state = (cnt === 1 && ((fm.cookieEnabled && isRoot) || !sel[0].locked) || (fm.api > 2.1030 && cnt === $.grep(sel, function(f) {
+		state = (cnt === 1 && ((enableRootRename && fm.cookieEnabled && isRoot) || !sel[0].locked) || (fm.api > 2.1030 && cnt === $.grep(sel, function(f) {
 			if (!brk && !f.locked && f.phash === phash && !fm.isRoot(f) && (mime === f.mime || ext === fm.splitFileExtention(f.name)[1].toLowerCase())) {
 				return true;
 			} else {
@@ -276,8 +279,8 @@ elFinder.prototype.commands.rename = function() {
 				return false;
 			}
 		}).length)) ? 0 : -1;
-
-		// because alwaysEnabled = true, it need check disabled on connector
+		
+		// because alwaysEnabled = true, it need check disabled on connector 
 		if (!isRoot && state === 0 && fm.option('disabledFlip', sel[0].hash)['rename']) {
 			state = -1;
 		}
@@ -300,10 +303,10 @@ elFinder.prototype.commands.rename = function() {
 		} else {
 			delete self.extra;
 		}
-
+			
 		return state;
 	};
-
+	
 	this.exec = function(hashes, cOpts) {
 		var cwd      = fm.getUI('cwd'),
 			sel      = hashes || (fm.selected().length? fm.selected() : false) || [fm.cwd().hash],
@@ -396,9 +399,9 @@ elFinder.prototype.commands.rename = function() {
 					}
 				}
 				if (!inError && pnode.length) {
-
+					
 					input.off('blur');
-
+					
 					if (cnt === 1 && name === file.name) {
 						return dfrd.reject();
 					}
@@ -419,7 +422,7 @@ elFinder.prototype.commands.rename = function() {
 						fm.error(['errExists', name], {modal: true, close: function(){setTimeout(select, 120);}});
 						return false;
 					}
-
+					
 					if (cnt === 1) {
 						req();
 					} else {
@@ -497,7 +500,7 @@ elFinder.prototype.commands.rename = function() {
 					: target.find(filename),
 			pnode = node.parent(),
 			overlay = fm.getUI('overlay'),
-			cancel = function(e) {
+			cancel = function(e) { 
 				if (!overlay.is(':hidden')) {
 					pnode.css('z-index', '');
 				}
@@ -513,7 +516,7 @@ elFinder.prototype.commands.rename = function() {
 				target.trigger('scrolltoview', {blink : false});
 			},
 			inError = false;
-
+		
 		pnode.addClass('ui-front')
 			.css('position', 'relative')
 			.on('unselect.'+fm.namespace, unselect);
@@ -530,27 +533,27 @@ elFinder.prototype.commands.rename = function() {
 			}
 			node.empty().append(input.val(file.name));
 		}
-
+		
 		if (cnt > 1 && fm.api <= 2.1030) {
 			return dfrd.reject();
 		}
-
+		
 		if (!file || !node.length) {
 			return dfrd.reject('errCmdParams', this.title);
 		}
-
-		if (file.locked && !fm.isRoot(file)) {
+		
+		if (file.locked && (!fm.isRoot(file) || !enableRootRename)) {
 			return dfrd.reject(['errLocked', file.name]);
 		}
-
+		
 		fm.one('select', function() {
 			input.parent().length && file && $.inArray(file.hash, fm.selected()) === -1 && input.trigger('blur');
 		});
-
+		
 		input.trigger('keyup');
-
+		
 		select();
-
+		
 		return dfrd;
 	};
 

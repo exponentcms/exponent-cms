@@ -188,7 +188,7 @@ if (empty($phpThumb->config_disable_pathinfo_parsing) && (empty($_GET) || isset(
 		$phpThumb->DebugMessage('PATH_INFO."w"x"h" set to "'.$_GET['w'].'"x"'.$_GET['h'].'"', __FILE__, __LINE__);
 	}
 	for ($i = 0; $i < count($args) - 2; $i++) {
-		@list($key, $value) = explode('=', @$args[$i]);
+		list($key, $value) = array_pad(explode('=', $args[$i]), 2, '');
 		if (substr($key, -2) == '[]') {
 			$array_key_name = substr($key, 0, -2);
 			$_GET[$array_key_name][] = $value;
@@ -386,7 +386,7 @@ if (isset($_GET['phpThumbDebug']) && ($_GET['phpThumbDebug'] == '2')) {
 $PHPTHUMB_DEFAULTS_DISABLEGETPARAMS = (bool) ($phpThumb->config_cache_default_only_suffix && (strpos($phpThumb->config_cache_default_only_suffix, '*') !== false));
 
 // deprecated: 'err', 'file', 'goto',
-$allowedGETparameters = array('src', 'new', 'w', 'h', 'wp', 'hp', 'wl', 'hl', 'ws', 'hs', 'f', 'q', 'sx', 'sy', 'sw', 'sh', 'zc', 'ica', 'bc', 'bg', 'bgt', 'fltr', 'xto', 'ra', 'ar', 'aoe', 'far', 'iar', 'maxb', 'down', 'phpThumbDebug', 'hash', 'md5s', 'sfn', 'dpi', 'sia', 'nocache','err'); //fixme exp, add 'err'
+$allowedGETparameters = array('src', 'new', 'w', 'h', 'wp', 'hp', 'wl', 'hl', 'ws', 'hs', 'f', 'q', 'sx', 'sy', 'sw', 'sh', 'zc', 'ica', 'bc', 'bg', 'bgt', 'fltr', 'xto', 'ra', 'ar', 'aoe', 'far', 'iar', 'maxb', 'down', 'phpThumbDebug', 'hash', 'md5s', 'sfn', 'dpi', 'sia', 'nocache');
 foreach ($_GET as $key => $value) {
     if (substr($key,0,4) == 'amp;') $key = substr($key,4); //fixme exp
 	if (!empty($PHPTHUMB_DEFAULTS_DISABLEGETPARAMS) && ($key != 'src')) {
@@ -609,7 +609,7 @@ if ($phpThumb->rawImageData) {
 	if (($phpThumb->w <= 0) || ($phpThumb->h <= 0)) {
 		$phpThumb->ErrorImage('"w" and "h" parameters required for "new"');
 	}
-	@list($bghexcolor, $opacity) = explode('|', $_GET['new']);
+	list($bghexcolor, $opacity) = array_pad(explode('|', $_GET['new']), 2, '');
 	if (!phpthumb_functions::IsHexColor($bghexcolor)) {
 		$phpThumb->ErrorImage('BGcolor parameter for "new" is not valid');
 	}
