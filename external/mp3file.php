@@ -562,9 +562,8 @@ class mp3file
     		{
     			//$data .= fread($handle, 128);
     			$data .= stream_get_contents($this->fd, 128); // Version 2.0 - Using stream_get_contents instead of fread
-
+                $data = substr($data, -128);  // Get just last 128 bytes of file
     		}
-    		$data = substr($data, -128);  // Get just last 128 bytes of file
     		if(substr($data, 0, 3) == "TAG") // If first 3 bytes == "TAG"
     		{
     			$id3_tags["title"] = trim(substr($data, 3, 30));
