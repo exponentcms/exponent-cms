@@ -612,7 +612,7 @@ if (!defined('FA6_SCRIPT')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    define('SMARTY_VERSION', '4.4.1');  // 4.5.6, 5.5.2
+    define('SMARTY_VERSION', '4.4.1');  // 4.5.6, 5.6.0
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
 }
@@ -651,7 +651,7 @@ if (!defined('DOMPDF8_VERSION')) {
     define('DOMPDF8_VERSION', '-1.2.2');
 }
 if (!defined('DOMPDF2_VERSION')) {
-    define('DOMPDF2_VERSION', '3.0.1');  // 3.1.0
+    define('DOMPDF2_VERSION', '3.0.1');  // 3.1.4
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
