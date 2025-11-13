@@ -136,8 +136,8 @@
 		/* ]]> */
 		</script>
 
+        <link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/button.css"/>
 		<style type="text/css">
-		/* <![CDATA[ */
 			html, body {
   				background: ButtonFace;
 				color: ButtonText;
@@ -165,16 +165,22 @@
 			}
 
 			.title {
-				background: #ddf;
-				color: #000;
+				background: #112971;
+				color: #FFF;
 				font-weight: bold;
-				font-size: 120%;
-				padding: 3px 10px;
+				font-size: 140%;
+				padding: 6px 10px;
 				margin-bottom: 10px;
 				border-bottom: 1px
 				solid black;
 				letter-spacing: 2px;
+                text-align: center;
 			}
+
+            .header {
+                color: black;
+                font-size: 120%;
+            }
 
 			a {
 				text-decoration: none;
@@ -184,14 +190,12 @@
 
 			#buttons {
 				margin-top: 1em;
-/*				border-top: 1px */
-				solid #999;
+/*				border-top: 1px
+				solid #999;  */
 				padding: 2px;
-				text-align: right;
+				/*text-align: right;*/
 			}
-		/* ]]> */
 		</style>
-
 	</head>
 
 <!--	<body onload="__dlg_translate(eXp._TR);">-->
@@ -207,22 +211,22 @@
                         <?PHP echo gt('or'); ?>
                     </td>
 					<td align="center">
-						<a href="#" onclick="openContentLinker(); return false;"><?PHP echo gt('Click Here to Link to Content'); ?></a>
+						<a href="#" class="header" onclick="openContentLinker(); return false;"><?PHP echo gt('Click Here to Link to Content'); ?></a>
 						<input id="f_href" type="hidden"/>
 						<input id="f_extern" checked="checked" type="hidden"/>
 						<input id="f_title" type="hidden"/>
 						<input id="f_alt" type="hidden"/>
                         <div id="f_text" style="color:red"><?PHP echo gt('nothing selected'); ?></div>
 						<div id="buttons">
-							<button type="button" name="ok" onclick="return onOK();"><?PHP echo gt('OK'); ?></button>
-							<button type="button" name="cancel" onclick="return onCancel();"><?PHP echo gt('Cancel'); ?></button>
+							<button type="button" class="awesome" name="ok" onclick="return onOK();"><?PHP echo gt('OK'); ?></button>
+							<button type="button" class="awesome" name="cancel" onclick="return onCancel();"><?PHP echo gt('Cancel'); ?></button>
 						</div>
 					</td>
                     <td align="center">
                         <?PHP echo gt('or'); ?>
                     </td>
                     <td align="right">
-                        <a href="#" style="text-align:center;" onclick="openFileManager(); return false;"><?PHP echo gt('Switch to File Manager'); ?></a>
+                        <a href="#" class="header" style="text-align:center;" onclick="openFileManager(); return false;"><?PHP echo gt('Switch to File Manager'); ?></a>
                     </td>
 				</tr>
 			</tbody>
