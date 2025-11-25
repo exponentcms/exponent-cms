@@ -1,4 +1,4 @@
-/*! DataTables 2.3.4
+/*! DataTables 2.3.5
  * © SpryMedia Ltd - datatables.net/license
  */
 
@@ -2937,12 +2937,12 @@
 	
 			// Max length string. Its a fairly cheep recalculation, so not worth
 			// something more complicated
-			cols[ colIdx ].maxLenString = null;
+			cols[ colIdx ].wideStrings = null;
 		}
 		else {
 			for ( i=0, iLen=cols.length ; i<iLen ; i++ ) {
 				cols[i].sType = null;
-				cols[i].maxLenString = null;
+				cols[i].wideStrings = null;
 			}
 	
 			// Update DataTables special `DT_*` attributes for the row
@@ -3483,6 +3483,14 @@
 			{
 				var iDataIndex = aiDisplay[j];
 				var aoData = oSettings.aoData[ iDataIndex ];
+	
+				// Row has been deleted - can't be displayed
+				if (aoData === null)
+				{
+					continue;
+				}
+	
+				// Row node hasn't been created yet
 				if ( aoData.nTr === null )
 				{
 					_fnCreateTr( oSettings, iDataIndex );
@@ -5408,7 +5416,7 @@
 			visibleColumns = _fnGetColumns( settings, 'bVisible' ),
 			tableWidthAttr = table.getAttribute('width'), // from DOM element
 			tableContainer = table.parentNode,
-			i, column, columnIdx;
+			i, j, column, columnIdx;
 			
 		var styleWidth = table.style.width;
 		var containerWidth = _fnWrapperWidth(settings);
@@ -5442,17 +5450,16 @@
 			false
 		);
 	
-		// Construct a single row, worst case, table with the widest
-		// node in the data, assign any user defined widths, then insert it into
-		// the DOM and allow the browser to do all the hard work of calculating
-		// table widths
+		// Construct a worst case table with the widest, assign any user defined
+		// widths, then insert it into  the DOM and allow the browser to do all
+		// the hard work of calculating table widths
 		var tmpTable = $(table.cloneNode())
 			.css( 'visibility', 'hidden' )
+			.css( 'margin', 0 )
 			.removeAttr( 'id' );
 	
 		// Clean up the table body
 		tmpTable.append('<tbody/>')
-		var tr = $('<tr/>').appendTo( tmpTable.find('tbody') );
 	
 		// Clone the table header and footer - we can't use the header / footer
 		// from the cloned table, since if scrolling is active, the table's
@@ -5492,23 +5499,37 @@
 			}
 		} );
 	
-		// Find the widest piece of data for each column and put it into the table
-		for ( i=0 ; i<visibleColumns.length ; i++ ) {
-			columnIdx = visibleColumns[i];
-			column = columns[ columnIdx ];
+		// Get the widest strings for each of the visible columns and add them to
+		// our table to create a "worst case"
+		var longestData = [];
 	
-			var longest = _fnGetMaxLenString(settings, columnIdx);
-			var autoClass = _ext.type.className[column.sType];
-			var text = longest + column.sContentPadding;
-			var insert = longest.indexOf('<') === -1
-				? document.createTextNode(text)
-				: text
-			
-			$('<td/>')
-				.addClass(autoClass)
-				.addClass(column.sClass)
-				.append(insert)
-				.appendTo(tr);
+		for ( i=0 ; i<visibleColumns.length ; i++ ) {
+			longestData.push(_fnGetWideStrings(settings, visibleColumns[i]));
+		}
+	
+		if (longestData.length) {
+			for ( i=0 ; i<longestData[0].length ; i++ ) {
+				var tr = $('<tr/>').appendTo( tmpTable.find('tbody') );
+	
+				for ( j=0 ; j<visibleColumns.length ; j++ ) {
+					columnIdx = visibleColumns[j];
+					column = columns[ columnIdx ];
+	
+					var longest = longestData[j][i] || '';
+					var autoClass = _ext.type.className[column.sType];
+					var padding = column.sContentPadding || (scrollX ? '-' : '');
+					var text = longest + padding;
+					var insert = longest.indexOf('<') === -1
+						? document.createTextNode(text)
+						: text
+	
+					$('<td/>')
+						.addClass(autoClass)
+						.addClass(column.sClass)
+						.append(insert)
+						.appendTo(tr);
+				}
+			}
 		}
 	
 		// Tidy the temporary table - remove name attributes so there aren't
@@ -5647,19 +5668,31 @@
 	}
 	
 	/**
-	 * Get the maximum strlen for each data column
+	 * Get the widest strings for each column.
+	 *
+	 * It is very difficult to determine what the widest string actually is due to variable character
+	 * width and kerning. Doing an exact calculation with the DOM or even Canvas would kill performance
+	 * and this is a critical point, so we use two techniques to determine a collection of the longest
+	 * strings from the column, which will likely contain the widest strings:
+	 *
+	 * 1) Get the top three longest strings from the column
+	 * 2) Get the top three widest words (i.e. an unbreakable phrase)
+	 *
 	 *  @param {object} settings dataTables settings object
 	 *  @param {int} colIdx column of interest
-	 *  @returns {string} string of the max length
+	 *  @returns {string[]} Array of the longest strings
 	 *  @memberof DataTable#oApi
 	 */
-	function _fnGetMaxLenString( settings, colIdx )
+	function _fnGetWideStrings( settings, colIdx )
 	{
 		var column = settings.aoColumns[colIdx];
 	
-		if (! column.maxLenString) {
-			var s, max='', maxLen = -1;
-		
+		// Do we need to recalculate (i.e. was invalidated), or just use the cached data?
+		if (! column.wideStrings) {
+			var allStrings = [];
+			var collection = [];
+	
+			// Create an array with the string information for the column
 			for ( var i=0, iLen=settings.aiDisplayMaster.length ; i<iLen ; i++ ) {
 				var rowIdx = settings.aiDisplayMaster[i];
 				var data = _fnGetRowDisplay(settings, rowIdx)[colIdx];
@@ -5674,21 +5707,49 @@
 					.replace(/id=".*?"/g, '')
 					.replace(/name=".*?"/g, '');
 	
-				s = _stripHtml(cellString)
+				var s = _stripHtml(cellString)
 					.replace( /&nbsp;/g, ' ' );
 		
-				if ( s.length > maxLen ) {
-					// We want the HTML in the string, but the length that
-					// is important is the stripped string
-					max = cellString;
-					maxLen = s.length;
-				}
+				collection.push({
+					str: s,
+					len: s.length
+				});
+	
+				allStrings.push(s);
 			}
 	
-			column.maxLenString = max;
+			// Order and then cut down to the size we need
+			collection
+				.sort(function (a, b) {
+					return b.len - a.len;
+				})
+				.splice(3);
+	
+			column.wideStrings = collection.map(function (item) {
+				return item.str;
+			});
+	
+			// Longest unbroken string
+			let parts = allStrings.join(' ').split(' ');
+	
+			parts.sort(function (a, b) {
+				return b.length - a.length;
+			});
+	
+			if (parts.length) {
+				column.wideStrings.push(parts[0]);
+			}
+	
+			if (parts.length > 1) {
+				column.wideStrings.push(parts[1]);
+			}
+	
+			if (parts.length > 2) {
+				column.wideStrings.push(parts[3]);
+			}
 		}
 	
-		return column.maxLenString;
+		return column.wideStrings;
 	}
 	
 	
@@ -9029,13 +9090,16 @@
 	
 	_api_registerPlural( 'columns().types()', 'column().type()', function () {
 		return this.iterator( 'column', function ( settings, column ) {
-			var type = settings.aoColumns[column].sType;
+			var colObj = settings.aoColumns[column]
+			var type = colObj.sType;
 	
 			// If the type was invalidated, then resolve it. This actually does
 			// all columns at the moment. Would only happen once if getting all
 			// column's data types.
 			if (! type) {
 				_fnColumnTypes(settings);
+	
+				type = colObj.sType;
 			}
 	
 			return type;
@@ -10206,7 +10270,7 @@
 	 *  @type string
 	 *  @default Version number
 	 */
-	DataTable.version = "2.3.4";
+	DataTable.version = "2.3.5";
 	
 	/**
 	 * Private data store, containing all of the settings objects that are
@@ -10508,8 +10572,8 @@
 		 */
 		"sWidthOrig": null,
 	
-		/** Cached string which is the longest in the column */
-		maxLenString: null,
+		/** Cached longest strings from a column */
+		wideStrings: null,
 	
 		/**
 		 * Store for named searches
