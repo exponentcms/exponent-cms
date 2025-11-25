@@ -28,7 +28,6 @@ function adminer_object() {
     $plugins = array(
         // specify enabled plugins here
 //        new AdminerSimpleMenu(),
-//        new AdminerJsonPreview(),
 //        new AdminerDumpAlter,
         new AdminerDumpBz2,  // adds bz2 option to export
 //        new AdminerDumpDate,
