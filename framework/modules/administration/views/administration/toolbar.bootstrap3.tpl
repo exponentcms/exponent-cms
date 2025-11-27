@@ -172,7 +172,8 @@
         }
 
         var adminerwindow = function (){
-            var win = window.open(EXPONENT.PATH_RELATIVE+'external/adminer/admin.php?{/literal}{$db_driver}{literal}={/literal}{$smarty.const.DB_HOST|escape:"url"}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}{/literal}{$ns}{literal}');
+            // var win = window.open(EXPONENT.PATH_RELATIVE+'external/adminer/admin.php?{/literal}{$db_driver}{literal}={/literal}{$smarty.const.DB_HOST|escape:"url"}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}{/literal}{$ns}{literal}');
+            var win = window.open(EXPONENT.PATH_RELATIVE+'external/adminneo/adminneo-custom.php?{/literal}{$db_driver}{literal}={/literal}{$smarty.const.DB_HOST|escape:"url"}{literal}');
             if (!win) { err(); }
         }
 

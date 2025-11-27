@@ -96,7 +96,7 @@ select2,4.0.13,github.com/select2/select2,4.0.13,renamed select2.full.js to sele
 shuffle.js,v3.1.1,github.com/glen-cheney/Shuffle,4.2.0/5.4.1/6.1.2,
 Jasny Bootstrap2,2.3.1,jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,4.0.0,jasny.github.io/bootstrap,4.0.0,only using fileinput at this time
-easypost sdk,4.0.3,github.com/EasyPost/easypost-php,4.0.3/5.9.0/8.3.0,
+easypost sdk,4.0.3,github.com/EasyPost/easypost-php,4.0.3/5.9.0/8.4.0,
 jquery.cookie.js,1.4.1,github.com/carhartl/jquery-cookie,1.4.1,
 jquery.history.js,1.8b2,github.com/browserstate/history.js,1.8.0,
 Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
