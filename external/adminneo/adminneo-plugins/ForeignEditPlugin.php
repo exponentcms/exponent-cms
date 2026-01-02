@@ -7,7 +7,7 @@ namespace AdminNeo;
  *
  * Selection will be displayed only if the number of foreign values will not exceed the given limit.
  *
- * Last changed in release: v5.2.0
+ * Last changed in release: v5.2.1
  *
  * @link https://www.adminneo.org/plugins/#usage
  *
@@ -52,25 +52,27 @@ class ForeignEditPlugin extends Plugin
 				continue;
 			}
 
+			$ns = $foreignKey["ns"];
 			$target = $foreignKey["table"];
+			$key = "$ns.$target";
 			$id = $foreignKey["target"][0];
 
-			if (!isset($this->foreignOptions[$target][$id])) {
+			if (!isset($this->foreignOptions[$key][$id])) {
 				$column = idf_escape($id);
 				if (preg_match('~binary~', $field["type"])) {
 					$column = "HEX($column)";
 				}
 
-				$values = get_vals("SELECT $column FROM " . table($target) . " ORDER BY 1 LIMIT " . ($this->limit + 1));
+				$values = get_vals("SELECT $column FROM " . ($ns ? idf_escape($ns) . "." : "") . table($target) . " ORDER BY 1 LIMIT " . ($this->limit + 1));
 
-				if (count($values) > $this->limit) {
-					$this->foreignOptions[$target][$id] = false;
+				if (Connection::get()->getError() || count($values) > $this->limit) {
+					$this->foreignOptions[$key][$id] = false;
 				} else {
-					$this->foreignOptions[$target][$id] = ["" => ""] + $values;
+					$this->foreignOptions[$key][$id] = ["" => ""] + $values;
 				}
 			}
 
-			if ($options = $this->foreignOptions[$target][$id]) {
+			if ($options = $this->foreignOptions[$key][$id]) {
 				return "<select $attrs>" . optionlist($options, $value) . "</select>";
 			} else {
 				return null;

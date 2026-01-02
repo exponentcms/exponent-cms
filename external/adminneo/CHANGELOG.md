@@ -1,8 +1,19 @@
 Changelog
 =========
 
-AdminNeo 5.2.0
---------------
+AdminNeo 5.2.1 (2025-12-07)
+---------------------------
+
+### Bugfixes
+
+- PostgreSQL: Fix connecting via default socket if server is not specified (regression from 5.2.0)
+- ForeignEditPlugin: Fix displaying foreign values from different schema
+- JsonDumpPlugin: Fix invalid JSON format (regression from 5.2.0)
+- Fix opening exported CSV file to browser window (issue #171, regression from 5.0.0)
+- Fix escaping spaces in cookie value (by @shunf4)
+
+AdminNeo 5.2.0 (2025-11-02)
+---------------------------
 
 ### Changes
 
