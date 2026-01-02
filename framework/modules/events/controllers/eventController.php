@@ -498,7 +498,7 @@ class eventController extends expController {
                 ));
                 break;  // end switch $viewtype administration
             case "default":  //note a simple list of events based on $viewrange
-            default;
+            default:
                 //                $items = null;
                 //                $dates = null;
                 $day = expDateTime::startOfDayTimestamp(time());
@@ -544,7 +544,7 @@ class eventController extends expController {
                         $dates = $ed->find("all", $locsql . " AND (date >= " . $begin . " AND date <= " . $end . ")");
                         break;
                     case "all":  // all events
-                    default;
+                    default:
                         $dates = $ed->find("all", $locsql);
                         $begin = null;
                         $end = null;

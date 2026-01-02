@@ -424,7 +424,7 @@ class expSession {
 		if (!isset($user->id)) {
             $user = new user(0);
         }
-		$ticket->uid = (integer)$user->id;
+		$ticket->uid = (int)$user->id;
 		$ticket->ticket = uniqid("",true);
 		$ticket->last_active = time();
 		$ticket->start_time = time();

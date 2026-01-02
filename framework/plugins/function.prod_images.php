@@ -71,7 +71,7 @@ function smarty_function_prod_images($params,&$smarty) {
         case 'single':
         case 'thumbnail':
         case 'featured':
-        default;
+        default:
             $class = "ecom-image";
             $class .= !empty($params['class']) ? ' ' . $params['class'] : '' ;
             if ($rec->parent_id) {
