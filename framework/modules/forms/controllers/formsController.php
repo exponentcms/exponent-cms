@@ -2128,7 +2128,10 @@ class formsController extends expController {
             if (!empty($this->params["use_header"])) $this->params["rowstart"]++;
             for ($x = 0; $x < $this->params["rowstart"]; $x++) {
                 $lineInfo = fgetcsv($fh, 2000, $this->params["delimiter"]);
-                if ($x == 0 && !empty($this->params["use_header"])) $headerinfo = $lineInfo;
+                if ($x == 0 && !empty($this->params["use_header"])) {
+                    $lineInfo = str_replace("\xEF\xBB\xBF",'', $lineInfo); // remove BOM
+                    $headerinfo = $lineInfo;
+                }
             }
             fclose($fh);
 //            ini_set('auto_detect_line_endings',$line_end);
@@ -2173,7 +2176,7 @@ class formsController extends expController {
                     } else {
                         $form->register("data[$i]", null, new genericcontrol('hidden', gt('empty record')));
                     }
-                    $form->register("control[$i]", $title, new dropdowncontrol("none", $types));
+                    $form->register("control[$i]", $title, new dropdowncontrol("textcontrol", $types));  //"none"
                 }
                 $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
@@ -2202,6 +2205,7 @@ class formsController extends expController {
                 $formcontrols[$key]->control = $control;
                 $label = str_replace('&', 'and', $this->params['name'][$key]);
                 $label = preg_replace("/(-)$/", "", preg_replace('/(-){2,}/', '_', strtolower(preg_replace("/([^0-9a-z-_\+])/i", '_', $label))));
+                $label = ucwords(str_replace("_", " ", $label));
                 $formcontrols[$key]->name = $label;
                 $formcontrols[$key]->caption = $this->params['name'][$key];
                 $formcontrols[$key]->data = $this->params['data'][$key];
@@ -2231,13 +2235,15 @@ class formsController extends expController {
         $f->update();
 
         // create the form controls
+        $i = 1;
         foreach ($this->params['control'] as $key=>$control) {
             $params = array();
             $fc = new forms_control();
             $this->params['column'][$key] = str_replace('&', 'and', $this->params['column'][$key]);
+            $fc->caption = $params['caption'] = $this->params['column'][$key];
             $this->params['column'][$key] = preg_replace("/(-)$/", "", preg_replace('/(-){2,}/', '-', strtolower(preg_replace("/([^0-9a-z-_\+])/i", '-', $this->params['column'][$key]))));
             $fc->name = $params['identifier'] = $this->params['column'][$key];
-            $fc->caption = $params['caption'] = $this->params['caption'][$key];
+//            $fc->caption = $params['caption'] = $this->params['caption'][$key];
             $params['description'] = '';
             if ($control === 'datetimecontrol') {
                 $params['showdate'] = $params['showtime'] = true;
@@ -2252,6 +2258,7 @@ class formsController extends expController {
             $ctl = null;
             $ctl = call_user_func(array($control, 'update'), $params, $ctl);
             $fc->data = serialize($ctl);
+            $fc->rank = $i++;
             $fc->update();
         }
 
@@ -2466,7 +2473,7 @@ class formsController extends expController {
                         if (!empty($def)) {
                             $db_data->$colname = call_user_func(array($control_type, 'convertData'), $colname, $params);
                         }
-                        if (!empty($db_data->$colname) && array_key_exists($colname, $multi_item_control_items) && !in_array($db_data->$colname, $multi_item_control_items[$colname])) {
+                        if (!empty($db_data->$colname) && array_key_exists($colname, $multi_item_control_items) && (is_null($multi_item_control_items[$colname]) || !in_array($db_data->$colname, $multi_item_control_items[$colname]))) {
                             $multi_item_control_items[$colname][$db_data->$colname] = $db_data->$colname;
                         }
                     }
