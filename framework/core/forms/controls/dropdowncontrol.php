@@ -53,7 +53,8 @@ class dropdowncontrol extends formcontrol {
         // compensate for multiple defaults separated by |
         if (!empty($this->default) && stripos($this->default, "|") !== 0) {
             $this->default = explode("|", $this->default);
-        }       $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
+        }
+        $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
         $disabled = $this->disabled != false ? "disabled" : "";
         $html = '<select'.$idname.' name="' . $name;
         if ($this->multiple) $html.= '[]';

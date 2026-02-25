@@ -52,7 +52,8 @@ class dropdowncontrol extends formcontrol {
         // compensate for multiple defaults separated by |
         if (stripos($this->default, "|") !== 0) {
             $this->default = explode("|", $this->default);
-        }       $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
+        }
+        $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
         $disabled = $this->disabled != false ? "disabled" : "";
 
         $html = ($this->horizontal) ? '<div class="col-sm-10">' : '<div style="display:inline">';
@@ -99,6 +100,34 @@ class dropdowncontrol extends formcontrol {
         $html .= '</div>';
         return $html;
     }
+
+    /**
+     * Parse the control value for storage in database
+     *
+     * @static
+     * @param string $name
+     * @param array $values
+     * @param bool $for_db
+     * @return string
+     */
+    static function parseData($name, $values, $for_db = false) {
+        if (is_array($values[$name])) {
+            $values[$name] = implode("|", $values[$name]);
+        }
+		return (isset($values[$name])?$values[$name]:"");
+	}
+
+    /**
+     * Format the control's data for user display
+     *
+     * @param $db_data
+     * @param $ctl
+     * @return string
+     */
+    static function templateFormat($db_data, $ctl) {
+        $db_data = str_replace("|", ", ", $db_data);
+		return isset($db_data)?$db_data:"";
+	}
 
     static function form($object) {
         $form = new form();
