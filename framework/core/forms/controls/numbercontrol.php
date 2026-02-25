@@ -31,6 +31,12 @@ class numbercontrol extends rangecontrol {
 
     static function name() { return "Text Box - Number"; }
 
+    static function update($values, $object) {
+        $values['control_type'] = 'numbercontrol';
+        $object = parent::update($values, $object);
+        return $object;
+    }
+
 }
 
 ?>

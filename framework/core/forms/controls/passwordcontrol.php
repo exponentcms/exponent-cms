@@ -97,6 +97,7 @@ class passwordcontrol extends genericcontrol {
     }
 
     static function update($values, $object) {
+        $values['control_type'] = 'passwordcontrol';
 		$object = parent::update($values, $object);
 		$object->meter = !empty($values['meter']);
 		return $object;

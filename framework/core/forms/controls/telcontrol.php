@@ -58,6 +58,7 @@ class telcontrol extends textcontrol {
     }
 
     static function update($values, $object) {
+        $values['control_type'] = 'telcontrol';
 		$object = parent::update($values, $object);
 		$object->link = !empty($values['link']);
 		return $object;

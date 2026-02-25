@@ -80,6 +80,7 @@ class rangecontrol extends textcontrol {
     }
 
     static function update($values, $object) {
+        $values['control_type'] = !empty($values['control_type']) ? $values['control_type'] : 'rangecontrol';
         $object = parent::update($values, $object);
         if (isset($values['min'])) $object->min = (int)($values['min']);
         if (isset($values['max'])) $object->max = (int)($values['max']);

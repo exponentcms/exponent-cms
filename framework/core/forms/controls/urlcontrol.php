@@ -58,6 +58,7 @@ class urlcontrol extends textcontrol {
     }
 
     static function update($values, $object) {
+        $values['control_type'] = 'urlcontrol';
 		$object = parent::update($values, $object);
 		$object->link = !empty($values['link']);
 		return $object;
