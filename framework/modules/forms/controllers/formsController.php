@@ -705,9 +705,16 @@ class formsController extends expController {
             $this->params['action'],
             $this->params['view']
         );
+        // clean up the submitted data
         foreach ($this->params as $k => $v) {
         //    $this->params[$k]=htmlentities(htmlspecialchars($v,ENT_COMPAT,LANG_CHARSET));
-            $this->params[$k] = htmlspecialchars((string)$v, ENT_COMPAT, LANG_CHARSET);
+            if (is_array($v)) {
+                foreach ($v as $k2 => $v2) {
+                    $this->params[$k][$k2] = htmlspecialchars((string)$v2, ENT_COMPAT, LANG_CHARSET);
+                }
+            } else {
+                $this->params[$k] = htmlspecialchars((string)$v, ENT_COMPAT, LANG_CHARSET);
+            }
         }
         expSession::set('forms_data_' . $this->params['id'], $this->params);
 
