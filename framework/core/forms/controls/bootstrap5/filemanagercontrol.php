@@ -303,7 +303,7 @@ class filemanagercontrol extends formcontrol {
 
                 // callback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
-                    if ($.isArray(id)) {
+                    if (Array.isArray(id)) {
                         EXPONENT.batchAddFiles.".$name."(id);
                         return;
                     }
