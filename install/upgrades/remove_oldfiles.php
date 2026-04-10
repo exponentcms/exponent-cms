@@ -756,6 +756,7 @@ class remove_oldfiles extends upgradescript {
             'external/simplepie-1.6.0/',
             'external/simplepie-1.7.0/',
             'external/simplepie-1.8.0/',
+            'external/simplepie-1.8.1/',
             'external/Smarty/',
             'external/Smarty-2/',
             'external/Smarty-3.1.4/',
