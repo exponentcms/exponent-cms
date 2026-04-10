@@ -1,6 +1,6 @@
 /*
  * bootstrap-tagsinput v0.8.0
- * 
+ *
  */
 
 (function ($) {
@@ -355,7 +355,7 @@
 
           // Determine if main configurations were passed or simply a dataset
           var typeaheadjs = self.options.typeaheadjs;
-          if ($.isArray(typeaheadjs)) {
+          if (Array.isArray(typeaheadjs)) {
             typeaheadConfig = typeaheadjs[0];
             typeaheadDatasets = typeaheadjs[1];
           } else {
@@ -472,7 +472,7 @@
         var character = text.slice(-1);
         var code = character.charCodeAt(0);
         event.which = code;
-        
+
          if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
             // Only attempt to add a tag if there is data in the field
             if (text.length !== 0) {
