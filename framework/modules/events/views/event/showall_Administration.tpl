@@ -27,7 +27,7 @@
             {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext nofollow=1}
         {/if}
         {permissions}
-            <div class="module-actions">
+            <span class="module-actions">
 				{if !bs()}
 					{nbsp count=2}|{nbsp count=2}
 			    {/if}
@@ -45,7 +45,7 @@
 				    {/if}
                     {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
                 {/if}
-            </div>
+            </span>
         {/permissions}
 		{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'|not_bs}
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'|not_bs}
