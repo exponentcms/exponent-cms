@@ -51,18 +51,95 @@ Object.assign(MediaElementPlayer.prototype, {
         if (t.options.audioDescriptionSource) t._createAudioDescription();
         if (t.options.videoDescriptionSource) t._createVideoDescription();
 
-        t.media.addEventListener('play', function () {
+        t.a11yPlayHandler = function () {
             return t.options.isPlaying = true;
-        });
-        t.media.addEventListener('playing', function () {
+        };
+        t.a11yPlayingHandler = function () {
             return t.options.isPlaying = true;
-        });
-        t.media.addEventListener('pause', function () {
+        };
+        t.a11yPauseHandler = function () {
             return t.options.isPlaying = false;
-        });
-        t.media.addEventListener('ended', function () {
+        };
+        t.a11yEndedHandler = function () {
             return t.options.isPlaying = false;
-        });
+        };
+
+        t.media.addEventListener('play', t.a11yPlayHandler);
+        t.media.addEventListener('playing', t.a11yPlayingHandler);
+        t.media.addEventListener('pause', t.a11yPauseHandler);
+        t.media.addEventListener('ended', t.a11yEndedHandler);
+    },
+    cleana11y: function cleana11y(player, layers, controls, media) {
+        var t = this;
+
+        if (t.a11yPlayHandler) {
+            media.removeEventListener('play', t.a11yPlayHandler);
+            media.removeEventListener('playing', t.a11yPlayingHandler);
+            media.removeEventListener('pause', t.a11yPauseHandler);
+            media.removeEventListener('ended', t.a11yEndedHandler);
+        }
+
+        if (t.audioDescriptionButton && t.audioDescriptionClickHandler) {
+            t.audioDescriptionButton.removeEventListener('click', t.audioDescriptionClickHandler);
+            t.audioDescriptionButton = null;
+            t.audioDescriptionClickHandler = null;
+        }
+
+        if (t.videoDescriptionButton && t.videoDescriptionClickHandler) {
+            t.videoDescriptionButton.removeEventListener('click', t.videoDescriptionClickHandler);
+            t.videoDescriptionButton = null;
+            t.videoDescriptionClickHandler = null;
+        }
+
+        if (t.audioDescription) {
+            if (t.audioDescriptionPlayHandler) {
+                media.removeEventListener('play', t.audioDescriptionPlayHandler);
+            }
+            if (t.audioDescriptionPlayingHandler) {
+                media.removeEventListener('playing', t.audioDescriptionPlayingHandler);
+            }
+            if (t.audioDescriptionPauseHandler) {
+                media.removeEventListener('pause', t.audioDescriptionPauseHandler);
+            }
+            if (t.audioDescriptionWaitingHandler) {
+                media.removeEventListener('waiting', t.audioDescriptionWaitingHandler);
+            }
+            if (t.audioDescriptionEndedHandler) {
+                media.removeEventListener('ended', t.audioDescriptionEndedHandler);
+            }
+            if (t.audioDescriptionTimeupdateHandler) {
+                media.removeEventListener('timeupdate', t.audioDescriptionTimeupdateHandler);
+            }
+            if (t.audioDescriptionVolumechangeHandler) {
+                media.removeEventListener('volumechange', t.audioDescriptionVolumechangeHandler);
+            }
+            if (t.audioDescriptionCanplayHandler) {
+                t.audioDescription.node.removeEventListener('canplay', t.audioDescriptionCanplayHandler);
+            }
+
+            var clonedAudioId = t.audioDescription.node.getAttribute('id').replace('_' + media.rendererName, '');
+
+            t.audioDescription.remove();
+            t.audioDescription = null;
+
+            var clonedAudioElement = document.getElementById(clonedAudioId);
+            if (clonedAudioElement) {
+                clonedAudioElement.parentNode.removeChild(clonedAudioElement);
+            }
+        }
+
+        if (t.videoVolumeButton) {
+            mejs.Utils.removeClass(t.videoVolumeButton, 'hidden');
+            t.videoVolumeButton = null;
+        }
+
+        if (t.descriptiveVolumeButton) {
+            t.descriptiveVolumeButton = null;
+        }
+
+        t.options.audioDescriptionToggled = false;
+        t.options.videoDescriptionToggled = false;
+        t.options.audioDescriptionCanPlay = false;
     },
     _getFirstChildNodeByClassName: function _getFirstChildNodeByClassName(parentNode, className) {
         return [].concat(_toConsumableArray(parentNode.childNodes)).find(function (node) {
@@ -82,12 +159,15 @@ Object.assign(MediaElementPlayer.prototype, {
 
         t.addControlElement(audioDescriptionButton, 'audio-description');
 
-        audioDescriptionButton.addEventListener('click', function () {
+        t.audioDescriptionButton = audioDescriptionButton;
+        t.audioDescriptionClickHandler = function () {
             t.options.audioDescriptionToggled = !t.options.audioDescriptionToggled;
             mejs.Utils.toggleClass(audioDescriptionButton, 'audio-description-on');
 
             t._toggleAudioDescription();
-        });
+        };
+
+        audioDescriptionButton.addEventListener('click', t.audioDescriptionClickHandler);
     },
     _createVideoDescription: function _createVideoDescription() {
         var t = this;
@@ -98,12 +178,15 @@ Object.assign(MediaElementPlayer.prototype, {
         videoDescriptionButton.innerHTML = '<button type="button" aria-controls="' + t.id + '" title="' + videoDescriptionTitle + '" aria-label="' + videoDescriptionTitle + '" tabindex="0">' + iconHtml + '</button>';
         t.addControlElement(videoDescriptionButton, 'video-description');
 
-        videoDescriptionButton.addEventListener('click', function () {
+        t.videoDescriptionButton = videoDescriptionButton;
+        t.videoDescriptionClickHandler = function () {
             t.options.videoDescriptionToggled = !t.options.videoDescriptionToggled;
             mejs.Utils.toggleClass(videoDescriptionButton, 'video-description-on');
 
             t._toggleVideoDescription();
-        });
+        };
+
+        videoDescriptionButton.addEventListener('click', t.videoDescriptionClickHandler);
     },
     _loadSourceFromAttribute: function _loadSourceFromAttribute(attribute) {
         var t = this;
@@ -174,41 +257,52 @@ Object.assign(MediaElementPlayer.prototype, {
 
             iconSprite: t.options.iconSprite,
 
-            fakeNodeName: t.options.fakeNodeName || 'mediaelementwrapper'
+            fakeNodeName: t.options.fakeNodeName || 'mediaelementwrapper',
+
+            hideScreenReaderTitle: true
         });
 
-        t.audioDescription.node.addEventListener('canplay', function () {
+        t.audioDescriptionCanplayHandler = function () {
             return t.options.audioDescriptionCanPlay = true;
-        });
-        t.media.addEventListener('play', function () {
+        };
+        t.audioDescriptionPlayHandler = function () {
             return t.audioDescription.node.play().catch(function (e) {
                 return console.error(e);
             });
-        });
-        t.media.addEventListener('playing', function () {
+        };
+        t.audioDescriptionPlayingHandler = function () {
             return t.audioDescription.node.play().catch(function (e) {
                 return console.error(e);
             });
-        });
-        t.media.addEventListener('pause', function () {
+        };
+        t.audioDescriptionPauseHandler = function () {
             return t.audioDescription.node.pause();
-        });
-        t.media.addEventListener('waiting', function () {
+        };
+        t.audioDescriptionWaitingHandler = function () {
             return t.audioDescription.node.pause();
-        });
-        t.media.addEventListener('ended', function () {
+        };
+        t.audioDescriptionEndedHandler = function () {
             return t.audioDescription.node.pause();
-        });
-        t.media.addEventListener('timeupdate', function () {
+        };
+        t.audioDescriptionTimeupdateHandler = function () {
             var shouldSync = Math.abs(t.currentTime - t.audioDescription.node.currentTime) > 0.35;
             var canPlay = t.options.audioDescriptionCanPlay;
             if (shouldSync && canPlay) t.audioDescription.node.currentTime = t.currentTime;
-        });
+        };
+
+        t.audioDescription.node.addEventListener('canplay', t.audioDescriptionCanplayHandler);
+        t.media.addEventListener('play', t.audioDescriptionPlayHandler);
+        t.media.addEventListener('playing', t.audioDescriptionPlayingHandler);
+        t.media.addEventListener('pause', t.audioDescriptionPauseHandler);
+        t.media.addEventListener('waiting', t.audioDescriptionWaitingHandler);
+        t.media.addEventListener('ended', t.audioDescriptionEndedHandler);
+        t.media.addEventListener('timeupdate', t.audioDescriptionTimeupdateHandler);
 
         if (t.options.isVoiceover) {
-            t.media.addEventListener('volumechange', function () {
+            t.audioDescriptionVolumechangeHandler = function () {
                 return t.audioDescription.node.volume = t.node.volume;
-            });
+            };
+            t.media.addEventListener('volumechange', t.audioDescriptionVolumechangeHandler);
         } else {
             var volumeButtonClass = t.options.classPrefix + 'volume-button';
             var videoVolumeButton = t._getFirstChildNodeByClassName(t.controls, volumeButtonClass);
