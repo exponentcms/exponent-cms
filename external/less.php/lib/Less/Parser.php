@@ -226,6 +226,7 @@ class Less_Parser {
 		$locale = setlocale( LC_NUMERIC, 0 );
 		setlocale( LC_NUMERIC, "C" );
 
+		$css = '';
 		try {
 			$root = new Less_Tree_Ruleset( null, $this->rules );
 			$root->root = true;
@@ -340,7 +341,6 @@ class Less_Parser {
 				$return = [];
 				if ( is_array( $var->value ) ) {
 					// in compilation phase, Less_Tree_Anonymous::$val can be a Less_Tree[]
-					// @phan-suppress-next-line PhanTypeMismatchForeach
 					foreach ( $var->value as $value ) {
 						/** @var Less_Tree $value */
 						$return[ $value->name ] = $this->getVariableValue( $value );
@@ -599,7 +599,7 @@ class Less_Parser {
 	 * files may be imported. The value is an optional public URL or URL base path that corresponds to
 	 * the same directory (use empty string otherwise). The value may also be a closure, in
 	 * which case the key is ignored.
-	 * @phan-param array<string,string|callable> $dirs
+	 * @phan-param array<string,string|callable>|callable[] $dirs
 	 */
 	public function SetImportDirs( $dirs ) {
 		self::$options['import_dirs'] = [];
@@ -717,17 +717,17 @@ class Less_Parser {
 
 	private function cacheFile( $file_path ) {
 		if ( $file_path && $this->CacheEnabled() ) {
-
 			$env = get_object_vars( $this->env );
 			unset( $env['frames'] );
 
-			$parts = [];
-			$parts[] = $file_path;
-			$parts[] = filesize( $file_path );
-			$parts[] = filemtime( $file_path );
-			$parts[] = $env;
-			$parts[] = Less_Version::cache_version;
-			$parts[] = self::$options['cache_method'];
+			$parts = [
+				$file_path,
+				filesize( $file_path ),
+				filemtime( $file_path ),
+				$env,
+				Less_Version::cache_version,
+				self::$options['cache_method'],
+			];
 			return self::$options['cache_dir'] . Less_Cache::$prefix . base_convert( sha1( json_encode( $parts ) ), 16, 36 ) . '.lesscache';
 		}
 	}
@@ -1554,14 +1554,18 @@ class Less_Parser {
 	 * `rgb` and `hsl` colors are parsed through the `entities.call` parser.
 	 *
 	 * @return Less_Tree_Color|null
+	 * @see less-3.13.1.js#parsers.entities.color
 	 */
 	private function parseEntitiesColor() {
+		$this->save();
 		if ( $this->peekChar( '#' ) ) {
-			$rgb = $this->matchReg( '/\\G#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/' );
-			if ( $rgb ) {
-				return new Less_Tree_Color( $rgb[1], 1, $rgb[0] );
+			$rgb = $this->matchReg( '/\\G#([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3,4})([\w.#\[])?/' );
+			if ( $rgb && !isset( $rgb[2] ) ) {
+				$this->forget();
+				return new Less_Tree_Color( $rgb[1], null, $rgb[0] );
 			}
 		}
+		$this->restore();
 	}
 
 	/**
@@ -1570,21 +1574,24 @@ class Less_Parser {
 	 *	 0.5em 95%
 	 *
 	 * @return Less_Tree_Dimension|null
+	 * @see less-3.13.1.js#parsers.entities.dimension
 	 */
 	private function parseEntitiesDimension() {
-		$c = @ord( $this->input[$this->pos] ?? '' );
-
+		// Optimization: Inlined version of Less.js parserInput.peekNotNumeric
+		static $CHARCODE_COMMA = 44;
+		static $CHARCODE_FORWARD_SLASH = 47;
+		static $CHARCODE_PLUS = 43;
+		static $CHARCODE_9 = 57;
+		$c = isset( $this->input[$this->pos] ) ? ord( $this->input[$this->pos] ) : 0;
 		// Is the first char of the dimension 0-9, '.', '+' or '-'
-		if ( ( $c > 57 || $c < 43 ) || $c === 47 || $c == 44 ) {
+		$peekNotNumeric = ( $c > $CHARCODE_9 || $c < $CHARCODE_PLUS ) || $c === $CHARCODE_FORWARD_SLASH || $c === $CHARCODE_COMMA;
+
+		if ( $peekNotNumeric ) {
 			return;
 		}
-
-		$value = $this->matchReg( '/\\G([+-]?\d*\.?\d+)(%|[a-z]+)?/i' );
+		$value = $this->matchReg( '/\\G([+-]?\d*\.?\d+)(%|[a-z_]+)?/i' );
 		if ( $value ) {
-			if ( isset( $value[2] ) ) {
-				return new Less_Tree_Dimension( $value[1], $value[2] );
-			}
-			return new Less_Tree_Dimension( $value[1] );
+			return new Less_Tree_Dimension( $value[1], $value[2] ?? null );
 		}
 	}
 
@@ -1846,6 +1853,7 @@ class Less_Parser {
 
 	/**
 	 * @param bool $isCall
+	 * @return array{args:array<array{name?:string,value?:mixed,variadic?:bool}>,variadic:bool}
 	 * @see less-2.5.3.js#parsers.mixin.args
 	 */
 	private function parseMixinArgs( $isCall ) {
