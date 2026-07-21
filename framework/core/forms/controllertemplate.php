@@ -35,7 +35,7 @@ class controllertemplate extends basetemplate {
 		$this->tpl = new Smarty();
 
         if (!SMARTY_DEVELOPMENT)
-            $this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING; //FIXME this disables bad template code reporting 3.x
+            $this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING & ~E_USER_DEPRECATED; //FIXME this disables bad template code reporting 3.x
         $this->tpl->debugging = SMARTY_DEVELOPMENT;  // Opens up the debug console
         $this->tpl->error_unassigned = true;  // display notice when accessing unassigned variable, if warnings turned on
 

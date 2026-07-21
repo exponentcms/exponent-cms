@@ -208,6 +208,7 @@ class checkboxcontrol extends formcontrol {
             $object->default     = false;
             $object->flip        = false;
             $object->required    = false;
+            $object->disabled = false;
             $object->is_hidden = false;
             $object->width = '';
             $object->widths     = array(
@@ -229,6 +230,7 @@ class checkboxcontrol extends formcontrol {
         $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
         $form->register("flip", "Caption on Left", new checkboxcontrol($object->flip, false));
         $form->register("required", gt('Make this a required field'), new checkboxcontrol($object->required, false));
+        $form->register("disabled", gt('Disable this field.'), new checkboxcontrol($object->disabled,true));
         $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
         if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), '', gt('Cancel'), "", 'editable'));
@@ -251,6 +253,7 @@ class checkboxcontrol extends formcontrol {
         if (isset($values['width'])) $object->width = ($values['width']);
         $object->flip        = !empty($values['flip']);
         $object->required    = !empty($values['required']);
+        $object->disabled    = !empty($values['disabled']);
         $object->is_hidden   = !empty($values['is_hidden']);
         return $object;
     }
