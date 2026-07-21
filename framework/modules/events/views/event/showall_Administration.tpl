@@ -86,10 +86,10 @@
 				<td><a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}" href="{link action=show date_id=$item->date_id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
 				<td class="itemdate">
 				{if $item->is_allday == 1}
-					{$item->eventstart|format_date}
+                    {$item->eventstart|format_date}
 				{else}
-					{if $event->eventstart != $event->eventend}
-						{$item->eventstart|format_date:"%b %e %Y"} @ {$item->eventstart|format_date:"%l:%M %p"} - {$event->eventend|format_date:"%l:%M %p"}
+					{if $item->eventstart != $item->eventend}
+						{$item->eventstart|format_date:"%b %e %Y"} @ {$item->eventstart|format_date:"%l:%M %p"} - {$item->eventend|format_date:"%l:%M %p"}
 					{else}
 						{$item->eventstart|format_date:"%b %e %Y"} @ {$item->eventstart|format_date:"%l:%M %p"}
 					{/if}

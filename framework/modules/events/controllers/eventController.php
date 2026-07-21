@@ -2055,12 +2055,14 @@ class eventController extends expController {
                 $event['body'] = $extevent->body;
                 $event['eventdate'] = $extevent->eventdate->date;
                 $event['eventstart'] = $extevent->eventstart;
-                $event['eventstart'] -= $event['eventdate'];
+                if ($event['eventstart'])
+                    $event['eventstart'] -= $event['eventdate'];
                 if (isset($extevent->eventend))
                     $event['eventend'] = $extevent->eventend;
                 else
                     $event['eventend'] = $extevent->eventstart;
-                $event['eventend'] -= $event['eventdate'];
+                if ($event['eventend'])
+                    $event['eventend'] -= $event['eventdate'];
                 if (isset($extevent->is_allday))
                     $event['is_allday'] = $extevent->is_allday;
                 $event['module'] = 'event';
