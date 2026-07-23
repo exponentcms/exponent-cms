@@ -9,7 +9,7 @@ elFinder.prototype.commands.preference = function() {
 		fm      = this.fm,
 		r       = 'replace',
 		tab     = '<li class="' + fm.res('class', 'tabstab') + ' elfinder-preference-tab-{id}"><a href="#'+fm.namespace+'-preference-{id}" id="'+fm.namespace+'-preference-tab-{id}" class="ui-tabs-anchor {class}">{title}</a></li>',
-		base    = $('<div class="ui-tabs ui-widget ui-widget-content ui-corner-all elfinder-preference">'),
+		base    = $('<div class="ui-tabs ui-widget ui-widget-content ui-corner-all elfinder-preference">'), 
 		ul      = $('<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-top">'),
 		tabs    = $('<div class="elfinder-preference-tabs ui-tabs-panel ui-widget-content ui-corner-bottom"></div>'),
 		sep     = '<div class="elfinder-preference-separator"></div>',
@@ -31,13 +31,13 @@ elFinder.prototype.commands.preference = function() {
 					'all' : true
 				},
 				forms = self.options.prefs || ['language', 'theme', 'toolbarPref', 'iconSize', 'columnPref', 'selectAction', 'makefileTypes', 'useStoredEditor', 'editorMaximized', 'useFullscreen', 'showHidden', 'infoItems', 'hashChecker', 'autoFocusDialog', 'clearBrowserData'];
-
+			
 			if (!fm.cookieEnabled) {
 				delete cats.language;
 			}
 
 			forms = fm.arrayFlip(forms, true);
-
+			
 			if (fm.options.getFileCallback) {
 				delete forms.selectAction;
 			}
@@ -99,7 +99,7 @@ elFinder.prototype.commands.preference = function() {
 				});
 				return langSel.append(optTags.join('')).val(fm.lang);
 			})());
-
+			
 			forms.theme && (forms.theme = (function() {
 				var cnt = fm.options.themes? Object.keys(fm.options.themes).length : 0;
 				if (cnt === 0 || (cnt === 1 && fm.options.themes.default)) {
@@ -196,7 +196,7 @@ elFinder.prototype.commands.preference = function() {
 					fm.trigger('toolbarpref');
 				});
 			})());
-
+			
 			forms.iconSize && (forms.iconSize = (function() {
 				var max = fm.options.uiOptions.cwd.iconsView.sizeMax || 3,
 					size = fm.storage('iconsize') || fm.options.uiOptions.cwd.iconsView.size || 0,
@@ -240,7 +240,7 @@ elFinder.prototype.commands.preference = function() {
 					fm.trigger('columnpref', { repaint: true });
 				});
 			})());
-
+			
 			forms.selectAction && (forms.selectAction = (function() {
 				var actSel = $('<select></select>').on('change', function() {
 						var act = $(this).val();
@@ -249,7 +249,7 @@ elFinder.prototype.commands.preference = function() {
 					optTags = [],
 					acts = self.options.selectActions,
 					defAct = fm.getCommand('open').options.selectAction || 'open';
-
+				
 				if ($.inArray(defAct, acts) === -1) {
 					acts.unshift(defAct);
 				}
@@ -265,7 +265,7 @@ elFinder.prototype.commands.preference = function() {
 				});
 				return actSel.append(optTags.join('')).val(fm.storage('selectAction') || defAct);
 			})());
-
+			
 			forms.makefileTypes && (forms.makefileTypes = (function() {
 				var hides = fm.getCommand('edit').getMkfileHides(),
 					getTag = function() {
@@ -401,7 +401,7 @@ elFinder.prototype.commands.preference = function() {
 						}),
 						elms = $().add(chk).add(btn),
 						useTooltip;
-
+					
 					forms.showHidden = $('<div></div>').append(chk, btn);
 					fm.bind('hide', function(e) {
 						var d = e.data;
@@ -423,7 +423,7 @@ elFinder.prototype.commands.preference = function() {
 					setTitle();
 				})();
 			}
-
+			
 			forms.infoItems && (forms.infoItems = (function() {
 				var items = fm.getCommand('info').items,
 					tags = [],
@@ -445,7 +445,7 @@ elFinder.prototype.commands.preference = function() {
 					fm.trigger('infopref', { repaint: true });
 				});
 			})());
-
+			
 			forms.hashChecker && fm.hashCheckers.length && (forms.hashChecker = (function() {
 				var tags = [],
 					enabled = fm.arrayFlip(fm.storage('hashchekcer') || fm.options.commandsOptions.info.showHashAlgorisms, true);
@@ -474,13 +474,13 @@ elFinder.prototype.commands.preference = function() {
 			})()).on('change', function(e) {
 				fm.storage('autoFocusDialog', $(this).is(':checked')? 1 : -1);
 			}));
-
+			
 			forms.clearBrowserData && (forms.clearBrowserData = $('<button></button>').text(fm.i18n('reset')).button().on('click', function(e) {
 				e.preventDefault();
 				fm.storage();
 				$('#'+fm.id).elfinder('reload');
 			}));
-
+			
 			$.each(cats, function(id, prefs) {
 				var dls, found;
 				if (prefs === true) {
@@ -573,7 +573,7 @@ elFinder.prototype.commands.preference = function() {
 				overflow: 'hidden'
 			})
 			.addClass('elfinder-bg-translucent');
-
+			
 			openTab = 'all';
 		},
 		dialog, openTab;
@@ -584,11 +584,11 @@ elFinder.prototype.commands.preference = function() {
 	}];
 
 	this.alwaysEnabled  = true;
-
+	
 	this.getstate = function() {
 		return 0;
 	};
-
+	
 	this.exec = function(sel, cOpts) {
 		!dialog && build();
 		if (cOpts) {
