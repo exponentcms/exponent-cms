@@ -120,7 +120,7 @@ class SerializedPreviewPlugin extends Plugin
 			$out = "";
 			$out .= '<div title="'.htmlentities(print_r($this->expUnserialize(html_entity_decode($original)),true)).'">';
 			$out .= "<a class='toggle jsonly' href='#json-code-s$this->linkIdBase-$this->counter' title='Serialized Text' data-value='" . h($val) . "'>" . icon_chevron_right() . "</a>" .
-					" <code class='jush-js'>$val</code>";
+					" <code class='jush-json'>$val</code>";
 			$out .= $this->convertSerialized($this->expUnserialize($original), 1, $this->counter++);
 			$out .= '</div>';
 			return $out;
@@ -136,7 +136,7 @@ class SerializedPreviewPlugin extends Plugin
 		if (is_string($value) && $this->is_serialized($value)) {
 			$out = "<div class='jsonly' title='" . htmlentities(print_r($this->expUnserialize($value),true)) . "'><a class='toggle' href='#json-code-s$this->linkIdBase-$this->counter'>Serialized" . icon_chevron_down() . "</a></div>";
 			$out .= $this->convertSerialized($this->expUnserialize($value), 1, $this->counter++);
-			$out .= "<textarea class='jush-js' title=\"" . htmlentities(print_r($this->expUnserialize($value),true)) . "\" cols='50' rows='12'$attrs>" . h($value) . '</textarea>';
+			$out .= "<textarea class='jush-json' title=\"" . htmlentities(print_r($this->expUnserialize($value),true)) . "\" cols='50' rows='12'$attrs>" . h($value) . '</textarea>';
 //			$out .= "</div>";
 			return $out;
 		}
@@ -157,7 +157,7 @@ class SerializedPreviewPlugin extends Plugin
 			if ((is_array($val) || is_object($val)) && ($this->maxLevel <= 0 || $level < $this->maxLevel)) {
 				$value .= $this->convertSerialized($val, $level + 1);
 			} elseif (is_array($val)) {
-				$value .= "<code class='jush-js'>" . h(preg_replace('/([,:])([^\s])/', '$1 $2', json_encode($val))) . "</code>";
+				$value .= "<code class='jush-json'>" . h(preg_replace('/([,:])([^\s])/', '$1 $2', json_encode($val))) . "</code>";
 			} elseif (is_string($val)) {
                 if (!empty($val) && $this->is_json($val)) {
                     $val = json_decode(str_replace('\"', '"', $val));
@@ -174,22 +174,22 @@ class SerializedPreviewPlugin extends Plugin
                         $val .= "\n";
                     }
 					if (is_numeric($val) || empty($val)) {
-						$value .= "<code class='jush-js'>" . nl2br($val) . "</code>";
+						$value .= "<code class='jush-json'>" . nl2br($val) . "</code>";
 					} else {
-						$value .= "<code class='jush-js'>'" . nl2br($val) . "'</code>";
+						$value .= "<code class='jush-json'>'" . nl2br($val) . "'</code>";
 					}
                 }
 			} elseif (is_bool($val)) {
 				// Handle boolean values.
-				$value .= "<code class='jush-js'>" . h($val ? "true" : "false") . "</code>";
+				$value .= "<code class='jush-json'>" . h($val ? "true" : "false") . "</code>";
 			} elseif (is_null($val)) {
 				// Handle null value.
-				$value .= "<code class='jush-js'>null</code>";
+				$value .= "<code class='jush-json'>null</code>";
             } elseif (is_object($val) || is_array($val)) {
 			    //fixme here is a deep nested object/array
-                $value .= "<code class='jush-js'>" . serialize($val) . "</code>";
+                $value .= "<code class='jush-json'>" . serialize($val) . "</code>";
             } else {
-                $value .= "<code class='jush-js'>" . $val . "</code>";
+                $value .= "<code class='jush-json'>" . $val . "</code>";
 			}
 		}
 

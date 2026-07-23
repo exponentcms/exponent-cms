@@ -114,4 +114,4 @@ function adminneo_instance()
 	return CustomAdmin::create($config, $plugins);
 }
 
-include "adminneo-5.2.1.php";
+include "adminneo-5.5.1.php";

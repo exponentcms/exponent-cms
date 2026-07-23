@@ -7,7 +7,7 @@ namespace AdminNeo;
  *
  * Selection will be displayed only if the number of foreign values will not exceed the given limit.
  *
- * Last changed in release: v5.2.1
+ * Last changed in release: v5.5.1
  *
  * @link https://www.adminneo.org/plugins/#usage
  *
@@ -63,7 +63,7 @@ class ForeignEditPlugin extends Plugin
 					$column = "HEX($column)";
 				}
 
-				$values = get_vals("SELECT $column FROM " . ($ns ? idf_escape($ns) . "." : "") . table($target) . " ORDER BY 1 LIMIT " . ($this->limit + 1));
+				$values = get_vals("SELECT $column FROM " . ($ns ? idf_escape($ns) . "." : "") . idf_escape($target) . " ORDER BY 1 LIMIT " . ($this->limit + 1));
 
 				if (Connection::get()->getError() || count($values) > $this->limit) {
 					$this->foreignOptions[$key][$id] = false;
