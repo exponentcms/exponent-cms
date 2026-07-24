@@ -17,7 +17,7 @@
 
 {if $config.resp_width}
 {css unique=fblikebox}
-    .fb-like-box, .fb-like-box span, .fb-like-box span iframe[style] {
+    .fb-like-box, .fb-share-button, .fb-like-box span, .fb-like-box span iframe[style] {
         width: 100% !important;
     }
 {/css}

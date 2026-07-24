@@ -84,7 +84,7 @@
                 newslist_{/literal}{$name}{literal}.find('link').each(function(k, n){
                     $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
                 });
-                if (document.getElementsByClassName('fb-like').length) {
+                if (document.getElementsByClassName('fb-share-button').length) {
                     FB.XFBML.parse();
                 }
                 if (document.getElementsByClassName('twitter-share-button').length) {
