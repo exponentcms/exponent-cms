@@ -182,6 +182,7 @@ class checkboxcontrol extends formcontrol {
             $object->default     = false;
             $object->flip        = false;
             $object->required    = false;
+            $object->disabled = false;
             $object->is_hidden = false;
         }
         if (empty($object->description)) $object->description = "";
@@ -190,6 +191,7 @@ class checkboxcontrol extends formcontrol {
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("default", gt('Default value'), new checkboxcontrol($object->default, false));
         $form->register("flip", "Caption on Left", new checkboxcontrol($object->flip, false));
+        $form->register("disabled", gt('Disable this field.'), new checkboxcontrol($object->disabled,true));
         $form->register("required", gt('Make this a required field'), new checkboxcontrol($object->required, false));
         $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
         if (!expJavascript::inAjaxAction())
@@ -211,6 +213,7 @@ class checkboxcontrol extends formcontrol {
         $object->description = $values['description'];
         $object->default     = !empty($values['default']);
         $object->flip        = !empty($values['flip']);
+        $object->disabled    = !empty($values['disabled']);
         $object->required    = !empty($values['required']);
         $object->is_hidden   = !empty($values['is_hidden']);
         return $object;
