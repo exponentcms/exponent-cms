@@ -177,6 +177,7 @@ class dropdowncontrol extends formcontrol {
             $object->items = array();
             $object->include_blank = false;
             $object->required = false;
+            $object->disabled = false;
             $object->width = '';
             $object->widths     = array(
                 '' => 'Full',
@@ -199,6 +200,7 @@ class dropdowncontrol extends formcontrol {
         $form->register("default",gt('Default'), new textcontrol($object->default));
         $form->register("size",gt('Size'), new textcontrol($object->size,3,false,2,"integer"));
         $form->register('width',gt('Control Width').': ',new dropdowncontrol($object->width, $object->widths));
+        $form->register("disabled", gt('Disable this field.'), new checkboxcontrol($object->disabled,true));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
         if (!expJavascript::inAjaxAction())
             $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
@@ -223,6 +225,7 @@ class dropdowncontrol extends formcontrol {
         $object->multiple = !empty($values['multiple']);
         if (isset($values['width'])) $object->width = ($values['width']);
         if (isset($values['size'])) $object->size = ((int)($values['size']) <= 0)?1:(int)($values['size']);
+        $object->disabled    = !empty($values['disabled']);
         $object->required = !empty($values['required']);
         return $object;
     }
