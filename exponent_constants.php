@@ -533,8 +533,10 @@ if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.12.4');
     define('JQUERY2_VERSION', '2.2.4');
     define('JQUERY3_VERSION', '3.7.1');
-    define('JQUERY3_MIGRATE_VERSION', '3.5.2');
-    define('JQUERYUI_VERSION', '1.14.1');
+    define('JQUERY3_MIGRATE_VERSION', '3.6.0');
+    define('JQUERY4_VERSION', '4.0.0');
+    define('JQUERY4_MIGRATE_VERSION', '4.0.2');
+    define('JQUERYUI_VERSION', '1.14.2');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
     define('JQUERY_URL', URL_FULL . 'external/jquery/');
@@ -612,7 +614,7 @@ if (!defined('FA6_SCRIPT')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    define('SMARTY_VERSION', '4.4.1');  // 4.5.6, 5.6.0
+    define('SMARTY_VERSION', '4.5.7');  // 4.5.7, 5.8.4
     define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
 //    define('SMARTY_DEVELOPMENT', false);
 }
@@ -644,14 +646,14 @@ if (!defined('MPDF8_VERSION')) {
     define('MPDF8_VERSION', '8.0.17');
 }
 if (!defined('MPDF81_VERSION')) {
-    define('MPDF81_VERSION', '8.2.5');  // 8.2.6
+    define('MPDF81_VERSION', '8.2.5');  // 8.3.1
 }
 
 if (!defined('DOMPDF8_VERSION')) {
     define('DOMPDF8_VERSION', '-1.2.2');
 }
 if (!defined('DOMPDF2_VERSION')) {
-    define('DOMPDF2_VERSION', '3.0.1');  // 3.1.4
+    define('DOMPDF2_VERSION', '3.0.1');  // 3.1.6
 }
 
 if (!defined('HTML2PDF5_VERSION')) {
