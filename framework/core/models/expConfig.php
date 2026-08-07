@@ -98,6 +98,12 @@ class expConfig extends expRecord {
             $params['config']['ckCsrfToken'],
             $params['config']['scayt_verLang']
         );
+        $keys = array_keys($params['config']); // Get all keys
+            // Find all keys starting with "_ga_" or "_gat_" using a regular expression pattern
+            $matched_keys = preg_grep('/^_ga?t_/', $keys);
+            foreach ($matched_keys as $fkey) {
+                unset($params['config'][$fkey]);
+            }
 
         if(is_array($params['config']))
             $params['config'] = serialize($params['config']);

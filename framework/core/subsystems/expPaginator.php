@@ -372,13 +372,18 @@ class expPaginator extends expSubsystem {
             $page_params['__utmv'],
             $page_params['__utmz'],
             $page_params['__utmli'],
-            $page_params['__utmz'],
             $page_params['__zlcmid'],
             $page_params['__cfduid'],
             $page_params['_gid'],
             $page_params['ckCsrfToken'],
             $page_params['scayt_verLang']
         );
+        $keys = array_keys($page_params); // Get all keys
+        // Find all keys starting with "_ga_" or "_gat_" using a regular expression pattern
+        $matched_keys = preg_grep('/^_ga?t_/', $keys);
+        foreach ($matched_keys as $fkey) {
+            unset($page_params[$fkey]);
+        }
 
         if (!empty($page_params['search_string']))
             $page_params['search_string'] = urlencode($page_params['search_string']);
