@@ -63,6 +63,7 @@ function adminneo_instance()
 	}
 
 	$config = [
+		"theme" => "dune",
 		"colorVariant" => "blue",
 		"navigationMode" => "dual",
 		"preferSelection" => true,
@@ -114,4 +115,4 @@ function adminneo_instance()
 	return CustomAdmin::create($config, $plugins);
 }
 
-include "adminneo-5.5.1.php";
+include "adminneo-5.8.0.php";
