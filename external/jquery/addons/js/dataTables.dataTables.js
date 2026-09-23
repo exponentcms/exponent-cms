@@ -2,44 +2,51 @@
  * © SpryMedia Ltd - datatables.net/license
  */
 
-(function(factory){
-	if (typeof define === 'function' && define.amd) {
+(function( factory ){
+	if ( typeof define === 'function' && define.amd ) {
 		// AMD
-		define(['datatables.net'], function (dt) {
-			return factory(window, document, dt);
-		});
+		define( ['jquery', 'datatables.net'], function ( $ ) {
+			return factory( $, window, document );
+		} );
 	}
-	else if (typeof exports === 'object') {
+	else if ( typeof exports === 'object' ) {
 		// CommonJS
-		var cjsRequires = function (root) {
-			if (! root.DataTable) {
-				require('datatables.net')(root);
+		var jq = require('jquery');
+		var cjsRequires = function (root, $) {
+			if ( ! $.fn.dataTable ) {
+				require('datatables.net')(root, $);
 			}
 		};
 
 		if (typeof window === 'undefined') {
-			module.exports = function (root) {
-				if (! root) {
+			module.exports = function (root, $) {
+				if ( ! root ) {
 					// CommonJS environments without a window global must pass a
 					// root. This will give an error otherwise
 					root = window;
 				}
 
-				cjsRequires(root);
-				return factory(root, root.document, root.DataTable);
+				if ( ! $ ) {
+					$ = jq( root );
+				}
+
+				cjsRequires( root, $ );
+				return factory( $, root, root.document );
 			};
 		}
 		else {
-			cjsRequires(window);
-			module.exports = factory(window, window.document, window.DataTable);
+			cjsRequires( window, jq );
+			module.exports = factory( jq, window, window.document );
 		}
 	}
 	else {
 		// Browser
-		factory(window, document, window.DataTable);
+		factory( jQuery, window, document );
 	}
-}(function(window, document, DataTable) {
+}(function( $, window, document ) {
 'use strict';
+var DataTable = $.fn.dataTable;
+
 
 
 
