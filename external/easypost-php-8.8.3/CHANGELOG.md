@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v8.8.3 (2026-08-26)
+
+- Preserves caller-provided plain PHP objects in request params so `(object) []` is sent as an empty JSON object (`{}`) instead of being stringified
+
+## v8.8.2 (2026-08-11)
+
+- Empty arrays and objects are no longer stripped when passed as params in the request
+
 ## v8.8.1 (2026-07-02)
 
 - Uppercases all HTTP methods to correct a new Guzzle deprecation
