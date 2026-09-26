@@ -4,9 +4,9 @@ Doctrine Lexer,3.0.1,github.com/doctrine/lexer,3.0.1,needed by swiftmailer v6
 EmailValidator,4.0.2,github.com/egulias/EmailValidator,4.0.4,needed by swiftmailer v6; change folder structure and add autoloader to main file
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
-Smarty,4.4.1,smarty.net,4.5.7/5.8.4,
+Smarty,4.5.7,smarty.net,4.5.7/5.8.4,
 phpthumb,1.7.24exp,github.com/JamesHeinrich/phpThumb,1.7.24,phpThumb.config.php - we also allow &amp in parsing and err command
-getid3,1.9.25,github.com/JamesHeinrich/getID3,1.9.25,
+getid3,1.9.26,github.com/JamesHeinrich/getID3,1.9.26,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.4/4.0.2,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
 YUI3,3.18.1,github.com/yui/yui3,3.18.1,
@@ -38,8 +38,8 @@ Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
 Font-Awesome6,6.7.2,fontawesome.com,6.7.2/7.3.1,add import all 'fonts' sheets into main sheet
 Bootstrap-Icons,1.13.1,icons.getbootstrap.com,1.13.1,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
-Adminer,4.8.1exp,www.adminer.org,4.8.4evo/5.4.2,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
-AdminNeo,5.5.1,github.com/adminneo-org/adminneo,5.5.1,"customized plugins: TinyMce, added plugins: SerializedPreview & EditCalendar"
+Adminer,4.8.1exp,www.adminer.org,4.8.4evo/6.0.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
+AdminNeo,5.8.0,github.com/adminneo-org/adminneo,5.8.0,"customized plugins: TinyMce, added plugins: SerializedPreview & EditCalendar"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
 MediaElement.js,7.1.0,mediaelementjs.com,7.1.0,
@@ -49,9 +49,9 @@ Facebook PHP SDK4,4.0.23,github.com/facebook/php-graph-sdk,5.7.0,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
-CKEditor,4.21.0,ckeditor.com,4.22.1/45.2.0/47.6.0,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
+CKEditor,4.21.0,ckeditor.com,4.22.1/45.2.0/48.5.2,"add fieldinsert (exp), autosave, sourcedialog & kama and moono skins"
 TinyMCE,4.9.11,tiny.cloud,4.9.11,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins, & xenmce skin"
-TinyMCE v5,5.10.9,tiny.cloud,5.10.9/6.8.6/7.9.2/8.8.2,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
+TinyMCE v5,5.10.9,tiny.cloud,5.10.9/6.8.6/7.9.3/8.9.2,"add localautosave, fieldinsert (exp) & quickupload (exp) plugins"
 PLUpload,2.3.9,github.com/moxiecode/plupload,2.3.9/3.1.5,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 elFinder,2.1.70,elfinder.org,2.1.70,customized in /framework with Exponent php classes and .js files
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
@@ -67,11 +67,11 @@ validate,1.22.1exp,jqueryvalidation.org,1.22.1,edit for 'undefined' in 'min' & '
 Countdown,1.1,tutorialzine.com/2011/12/countdown-jquery,1.1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker,1.6.3,used by adminer
 TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
-DataTables,3.0.1,www.datatables.net,1.13.8/2.3.8/3.0.1 includes boostrap2 integration w/ renamed 1.10.7 version
+DataTables,2.3.8,www.datatables.net,1.13.8/2.3.8/3.0.4 includes boostrap2 integration w/ renamed 1.10.7 version
 DataTables Checkboxes,1.3.0,github.com/gyrocode/jquery-datatables-checkboxes,1.3.0,
 DataTables Tabletools,2.2.4,www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,github.com/Comanche/datatables-responsive,0.2.0,replaced by 'Responsive' in 1.10.8
-yadcf,0.9.6,github.com/vedmack/yadcf,0.9.6,
+yadcf,2.0.1b9,github.com/vedmack/yadcf,0.9.6/2.0.1b9,
 tag-it,2,aehlke.github.io/tag-it,2,renamed css file to same as js file for our loader
 multiselect,2,mind2soft.com/labs/jquery/multiselect,2,
 excoloSlider,1.1.0,excolo.github.io/Excolo-Slider,1.1.0,
@@ -98,7 +98,7 @@ select2,4.0.13,github.com/select2/select2,4.0.13/4.1.0,renamed select2.full.js t
 shuffle.js,v3.1.1,github.com/glen-cheney/Shuffle,4.2.0/5.4.1/6.1.2/7.0.0,
 Jasny Bootstrap2,2.3.1,jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,4.0.0,jasny.github.io/bootstrap,4.0.0,only using fileinput at this time
-easypost sdk,8.8.1,github.com/EasyPost/easypost-php,8.8.1,
+easypost sdk,8.8.3,github.com/EasyPost/easypost-php,8.8.3,
 jquery.cookie.js,1.4.1,github.com/carhartl/jquery-cookie,1.4.1,
 jquery.history.js,1.8b2,github.com/browserstate/history.js,1.8.0,
 Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
@@ -111,5 +111,5 @@ iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v
 Kint,1.1/2.2/6.1.0,github.com/kint-php/kint,6.1.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
-DataTables Buttons,,www.datatables.net,2.4.2/3.2.6/4.0.1,
-DataTables Responsive,,www.datatables.net,2.5.0/3.0.8/4.0.1,
+DataTables Buttons,,www.datatables.net,2.4.2/3.2.6/4.0.3,
+DataTables Responsive,,www.datatables.net,2.5.0/3.0.8/4.0.3,

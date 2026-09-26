@@ -1374,9 +1374,13 @@ class expTheme
                 $section = $db->selectObject("section", "id=" . $section->parent);
             }
             $params['source'] .= $section->id;
+        } else {
+            $params['source'] = "";
         }
-        $module_scope[$params['source']][$controller] = new stdClass();
-        $module_scope[$params['source']][$controller]->scope = $params['scope'];
+        if (!is_null($params['source'])) {
+            $module_scope[$params['source']][$controller] = new stdClass();
+            $module_scope[$params['source']][$controller]->scope = $params['scope'];
+        }
 //            self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
         return self::showModule(
             $controller,
@@ -1456,7 +1460,7 @@ class expTheme
         $module,
         $view = "Default",
         $title = "",
-        $source = null,
+        $source = "",
         $pickable = false,
         $section = null,
         $hide_menu = false,
@@ -1492,7 +1496,7 @@ class expTheme
         }
         $loc = expCore::makeLocation($module, $source . "");
 
-        if (empty($module_scope[$source][$module]->scope)) {
+        if ((!is_null($source) && !empty($module_scope[$source])) && empty($module_scope[$source][$module]->scope)) {
             $module_scope[$source][$module] = new stdClass();
             $module_scope[$source][$module]->scope = 'global';
         }
@@ -1655,7 +1659,7 @@ class expTheme
             'info'    => 'btn-info',
         );
         if (bs()) {
-            if (!empty($colors[$color])) { // awesome to bootstrap button conversion
+            if (!is_null($color) && !empty($colors[$color])) { // awesome to bootstrap button conversion
                 $found = $colors[$color];
             } else {
                 $found = 'btn-default';
