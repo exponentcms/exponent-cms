@@ -74,7 +74,8 @@ class mysqli_database extends database {
 
 		$this->prefix = DB_TABLE_PREFIX . '_';
         $this->version = 'MySQL ' . $major . '.' . $minor . '.' .  $micro . '.' . $variant;
-        if ($major >= 8 && $minor >= 0 && $micro >= 19) {
+//        if ($major >= 8 && $minor >= 0 && $micro >= 19) {
+        if ($major >= 8) {
             $this->mysql8 = true;
         } else {
             $this->mysql8 = false;
