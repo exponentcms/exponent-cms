@@ -1,10 +1,10 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
 Swiftmailer,6.3.0,github.com/swiftmailer/swiftmailer,6.3.0,we add  eDebugLogger & eDebugHtmlReporter plugins
-Doctrine Lexer,3.0.1,github.com/doctrine/lexer,3.0.1,needed by swiftmailer v6
+Doctrine Lexer,3.0.1,github.com/doctrine/lexer,3.0.3,needed by swiftmailer v6
 EmailValidator,4.0.2,github.com/egulias/EmailValidator,4.0.4,needed by swiftmailer v6; change folder structure and add autoloader to main file
 ups-php,0.2,github.com/sanbornm/ups-php,0.2,"updated/fixed xml, etc to work"
 fedex-php,31.0.0,www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,31.0.0,copy/edit RateAvailableServicesWebServiceClient.php into fedexshippingcalculator->getRates()
-Smarty,4.5.7,smarty.net,4.5.7/5.8.4,
+Smarty,4.5.7,smarty.net,4.5.8/5.8.5,
 phpthumb,1.7.24exp,github.com/JamesHeinrich/phpThumb,1.7.24,phpThumb.config.php - we also allow &amp in parsing and err command
 getid3,1.9.26,github.com/JamesHeinrich/getID3,1.9.26,
 minify,2.3.3,github.com/mrclay/minify,2.3.3/3.0.4/4.0.2,modify config.php
@@ -38,7 +38,7 @@ Font-Awesome4,4.7.0,fontawesome.github.com/Font-Awesome,4.7.0,
 Font-Awesome5,5.15.4,fontawesome.com,5.15.4,add import all 'fonts' sheets into main sheet
 Font-Awesome6,6.7.2,fontawesome.com,6.7.2/7.3.1,add import all 'fonts' sheets into main sheet
 Bootstrap-Icons,1.13.1,icons.getbootstrap.com,1.13.1,"patched bootstrap-icons.scss for custom folder structure, includes animation & size variables"
-Adminer,4.8.1exp,www.adminer.org,4.8.4evo/6.0.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
+Adminer,4.8.1exp,www.adminer.org,4.8.4evo/6.1.1,"customized plugins: tinymce, ckeditor, previewSerialized, edit-textarea & edit-calendar; edit sql tweak"
 AdminNeo,5.8.0,github.com/adminneo-org/adminneo,5.8.0,"customized plugins: TinyMce, added plugins: SerializedPreview & EditCalendar"
 SimpleAjaxUploader,2.6.7,github.com/LPology/Simple-Ajax-Uploader,2.6.7,also converted to yui module 2.5.3
 normalize.css,8.0.1,necolas.github.com/normalize.css,8.0.1,auto included in bootstrap 3
@@ -67,7 +67,7 @@ validate,1.22.1exp,jqueryvalidation.org,1.22.1,edit for 'undefined' in 'min' & '
 Countdown,1.1,tutorialzine.com/2011/12/countdown-jquery,1.1,
 timepicker,1.6.3,trentrichardson.com/examples/timepicker,1.6.3,used by adminer
 TimeCircles,1.5.3,github.com/wimbarelds/TimeCircles,1.5.3,
-DataTables,2.3.8,www.datatables.net,1.13.8/2.3.8/3.0.4 includes boostrap2 integration w/ renamed 1.10.7 version
+DataTables,2.3.8,www.datatables.net,1.13.8/2.3.8/3.1.3 includes boostrap2 integration w/ renamed 1.10.7 version
 DataTables Checkboxes,1.3.0,github.com/gyrocode/jquery-datatables-checkboxes,1.3.0,
 DataTables Tabletools,2.2.4,www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,github.com/Comanche/datatables-responsive,0.2.0,replaced by 'Responsive' in 1.10.8
@@ -111,5 +111,5 @@ iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v
 Kint,1.1/2.2/6.1.0,github.com/kint-php/kint,6.1.0,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
-DataTables Buttons,,www.datatables.net,2.4.2/3.2.6/4.0.3,
-DataTables Responsive,,www.datatables.net,2.5.0/3.0.8/4.0.3,
+DataTables Buttons,,www.datatables.net,2.4.2/3.2.6/4.1.2,
+DataTables Responsive,,www.datatables.net,2.5.0/3.0.8/4.1.1,

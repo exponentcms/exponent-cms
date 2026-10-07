@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.5.8] - 2026-10-04
+
+- Security: prevent attacker-controlled template output from forging a nocache marker that injects raw PHP into the generated cache file when a template is rendered through the `extends:`/inheritance path (CWE-94 code injection); the top-level unifunc's missing nocache hash no longer produces an empty alternative in the cache-split regex
+
 ## [4.5.7] - 2026-06-29
 - Security: prevent symlinks inside a trusted `secure_dir`/template directory from being used to read files outside of it (CWE-22 path traversal), affecting `{include}` and `{fetch}` of local files
 - Security: `{html_image}` now escapes the `file`, `path_prefix`, `href`/`link`, `width` and `height` attributes (it already escaped `alt` and pass-through attributes), and `{html_select_date}` casts `day_size`/`month_size`/`year_size` to int (matching `{html_select_time}`), preventing untrusted values passed into these attributes from breaking out of the generated HTML (CWE-79)
